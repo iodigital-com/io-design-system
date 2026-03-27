@@ -1,0 +1,6 @@
+packages:
+  - 'io-components'
+  - 'io-storefront'
+  - 'io-components-react'
+  - 'io-components-vue'
+  - 'io-components-angular'

@@ -1,0 +1,3058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iO Design Tokens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --page-bg: #f4f4f4;
+      --card-bg: #ffffff;
+      --border: #e5e5e5;
+      --text-primary: #242424;
+      --text-secondary: #747474;
+      --text-code: #a13865;
+      --accent: #0000D2;
+      --nav-bg: #ffffff;
+      --nav-border: #ebebeb;
+      --tag-bg: #EBE8E3;
+      --tag-text: #454545;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--page-bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--nav-bg);
+      border-right: 1px solid var(--nav-border);
+      overflow-y: auto;
+      padding: 24px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--nav-border);
+      margin-bottom: 8px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo svg { width: 72px; height: auto; flex-shrink: 0; color: var(--accent); }
+    .nav-logo svg .lottieIcon { fill: currentColor; }
+    .nav-logo-text span {
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .nav-logo-text strong {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 1px;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 20px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    nav a:hover { color: var(--accent); background: #f7f7f7; }
+    nav a.active { color: var(--accent); border-left-color: var(--accent); background: #f0f0ff; font-weight: 600; }
+    nav a .nav-icon {
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      min-width: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #d9d9e7;
+      border-radius: 9999px;
+      padding: 1px 6px;
+      color: inherit;
+    }
+    .nav-group-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 16px 20px 4px;
+      opacity: 0.6;
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 48px 48px 80px;
+    }
+
+    /* ── Search ── */
+    .search-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--page-bg);
+      padding: 0 0 20px;
+      margin-bottom: 8px;
+    }
+    .search-bar input {
+      width: 100%;
+      max-width: 480px;
+      padding: 10px 16px 10px 40px;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23747474' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 14px center;
+    }
+    .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,0,210,0.1); }
+
+    /* ── Section ── */
+    .section { margin-bottom: 64px; scroll-margin-top: 80px; }
+    .section-header { margin-bottom: 24px; }
+    .section-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .section-desc { font-size: 0.8125rem; color: var(--text-secondary); }
+
+    .subsection { margin-bottom: 32px; }
+    .subsection-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Token card ── */
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .token-grid.wide { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .token-grid.list { grid-template-columns: 1fr; gap: 6px; }
+
+    .token-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .token-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-1px); }
+    .token-card.copied::after {
+      content: 'Copied!';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,210,0.85);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border-radius: 12px;
+      animation: fadeout 0.8s 0.4s forwards;
+    }
+    @keyframes fadeout { to { opacity: 0; pointer-events: none; } }
+
+    .color-swatch { height: 72px; width: 100%; border-bottom: 1px solid var(--border); position: relative; }
+    .color-swatch.light { border-bottom-color: #e5e5e5; }
+
+    .token-info { padding: 10px 12px 12px; }
+    .token-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .token-value { font-size: 0.75rem; font-family: 'Inter', monospace; color: var(--text-code); margin-bottom: 4px; }
+    .token-path { font-size: 0.6875rem; color: var(--text-secondary); font-family: 'Inter', monospace; }
+    .token-desc { font-size: 0.6875rem; color: var(--text-secondary); margin-top: 4px; font-style: italic; }
+
+    /* ── Row token (non-color) ── */
+    .token-row {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: box-shadow 0.15s ease;
+      position: relative;
+    }
+    .token-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .token-row.copied::after {
+      content: 'Copied!';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,210,0.85);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border-radius: 10px;
+      animation: fadeout 0.8s 0.4s forwards;
+    }
+    .token-row-preview { flex-shrink: 0; }
+    .token-row-meta { flex: 1; min-width: 0; }
+    .token-row-meta .token-name { margin-bottom: 1px; }
+    .token-row-value {
+      font-size: 0.75rem;
+      font-family: 'Inter', monospace;
+      color: var(--text-code);
+      background: #fdf5f9;
+      border: 1px solid #f0d8e8;
+      border-radius: 4px;
+      padding: 1px 6px;
+      display: inline-block;
+    }
+    .token-row-path { font-size: 0.6875rem; color: var(--text-secondary); font-family: 'Inter', monospace; margin-top: 2px; }
+
+    /* ── Spacing preview ── */
+    .spacing-bar {
+      background: var(--accent);
+      opacity: 0.7;
+      border-radius: 3px;
+      height: 14px;
+      min-width: 4px;
+    }
+
+    /* ── Typography preview ── */
+    .type-preview-sample {
+      font-family: 'Manrope', sans-serif;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+
+    /* ── Radius preview ── */
+    .radius-preview {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      opacity: 0.15;
+      border: 2px solid var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── Shadow preview ── */
+    .shadow-preview {
+      width: 48px;
+      height: 32px;
+      background: #fff;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Transition preview ── */
+    .transition-demo {
+      width: 40px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 4px;
+      opacity: 0.2;
+      flex-shrink: 0;
+      transition-property: opacity, transform;
+    }
+    .token-row:hover .transition-demo { opacity: 0.9; transform: scale(1.15); }
+
+    /* ── Breakpoint bar ── */
+    .bp-bar-wrap { width: 100%; height: 8px; background: #ebebeb; border-radius: 4px; overflow: hidden; }
+    .bp-bar { height: 100%; background: var(--accent); border-radius: 4px; opacity: 0.6; }
+
+    /* ── Z-index stack ── */
+    .zindex-preview {
+      position: relative;
+      width: 40px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+    .zindex-square {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── Page title ── */
+    .page-title {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-title h1 { font-size: 1.875rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .page-title p { font-size: 0.875rem; color: var(--text-secondary); }
+
+    /* ── Hidden ── */
+    .hidden { display: none !important; }
+
+    /* ── Scrollbar ── */
+    nav::-webkit-scrollbar { width: 4px; }
+    nav::-webkit-scrollbar-track { background: transparent; }
+    nav::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { padding: 24px 20px 60px; }
+    }
+
+    /* ── Component stage ── */
+    .comp-stage {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 8px;
+    }
+    .comp-stage.dark { background: #242424; border-color: #3a3a3a; }
+    .comp-stage.flex-wrap { display: flex; flex-wrap: wrap; gap: 0; }
+    .comp-row { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 32px; align-items: flex-end; }
+    .comp-row:last-child { margin-bottom: 0; }
+    .comp-col { flex: 1; min-width: 200px; }
+    .comp-state-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .gap-24 { gap: 24px; padding: 24px; }
+
+    /* ── Logotype section ── */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .logo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .logo-surface {
+      min-height: 126px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .logo-surface.light { background: #ffffff; }
+    .logo-surface.dark { background: #242424; }
+    .logo-surface.blue { background: #0000D2; }
+    .io-logotype-mark {
+      width: 92px;
+      color: #242424;
+      display: inline-flex;
+    }
+    .io-logotype-mark.light { color: #ffffff; }
+    .io-logotype-mark.accent { color: #0000D2; }
+    .io-logotype-mark svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .io-logotype-mark svg path { fill: currentColor; }
+    .logo-meta {
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .logo-meta-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .logo-meta-note {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .logo-rules {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: grid;
+      gap: 8px;
+    }
+    .logo-rule {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+    .logo-rule strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ── iO Form field ── */
+    .io-field {
+      position: relative;
+      margin-bottom: 1.5rem;
+      padding-top: 1.5rem;
+    }
+    .io-field label {
+      position: absolute;
+      top: 0.25rem;
+      left: 0;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      font-family: 'Manrope', sans-serif;
+    }
+    .io-field input,
+    .io-field select,
+    .io-field textarea {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #242424;
+      border-radius: 0;
+      padding: 0.5rem 1.2rem 0.5rem 0;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-bottom-width 0.15s ease, margin-top 0.15s ease;
+      box-sizing: border-box;
+    }
+    .io-field input:focus,
+    .io-field select:focus,
+    .io-field textarea:focus {
+      border-bottom-width: 5px;
+      margin-top: -2px;
+    }
+    .io-field input:focus-visible,
+    .io-field select:focus-visible,
+    .io-field textarea:focus-visible {
+      box-shadow: none;
+    }
+    /* error state */
+    .io-field.error input,
+    .io-field.error select,
+    .io-field.error textarea { border-bottom-color: #ff6161; }
+    .io-error-msg {
+      font-size: 0.75rem;
+      color: #ff6161;
+      margin-top: 4px;
+      font-family: 'Manrope', sans-serif;
+    }
+    /* filled label stays up */
+    .io-field.filled label,
+    .io-field input:not(:placeholder-shown) ~ label,
+    .io-field textarea:not(:placeholder-shown) ~ label,
+    .io-field select:not([value=""]):not([value="0"]) ~ label {
+      top: 0;
+      font-size: 0.75rem;
+    }
+    /* select custom chevron */
+    .io-field select {
+      appearance: none;
+      padding-right: 1.6rem;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23242424' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0 center;
+    }
+    /* textarea */
+    .io-field textarea { resize: vertical; min-height: 80px; }
+
+    /* ── iO Checkbox ── */
+    .io-checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+    }
+    .io-checkbox-wrap input[type=checkbox] {
+      appearance: none;
+      flex-shrink: 0;
+      width: 1rem;
+      height: 1rem;
+      border: 1px solid #000;
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      margin-top: 2px;
+      transition: background-color 0.2s ease 0.1s, border-color 0.2s ease;
+    }
+    .io-checkbox-wrap input[type=checkbox]:checked {
+      background-color: #000;
+      border-color: #000;
+    }
+    .io-checkbox-wrap input[type=checkbox]:checked::after {
+      content: '';
+      position: absolute;
+      left: 2px; top: 1px;
+      width: 9px; height: 5px;
+      border-left: 1.5px solid #fff;
+      border-bottom: 1.5px solid #fff;
+      transform: rotate(-45deg);
+    }
+    .io-checkbox-wrap input[type=checkbox]:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #7D0034, 0 0 0 4px #FFE4EE;
+    }
+    .io-checkbox-label a {
+      color: inherit;
+      background-repeat: no-repeat;
+      background-position: 100% 100%;
+      background-size: 100% 1px;
+      background-image: linear-gradient(currentColor, currentColor);
+      text-decoration: none;
+      transition: background-size 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    .io-checkbox-label a:hover { background-size: 0 1px; }
+
+    /* ── Form full example ── */
+    .io-form { max-width: 640px; }
+    .io-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    @media (max-width: 600px) { .io-form-grid { grid-template-columns: 1fr; } }
+    .io-form-grid .span-2 { grid-column: span 2; }
+    @media (max-width: 600px) { .io-form-grid .span-2 { grid-column: span 1; } }
+    .io-form-actions { margin-top: 24px; }
+
+    /* ── Card component ── */
+    .io-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      overflow: hidden;
+      width: 280px;
+      flex-shrink: 0;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+    }
+    .io-card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .io-card-image {
+      height: 160px;
+      background: #EBE8E3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #747474;
+    }
+    .io-card-image svg {
+      width: 52px;
+      height: 52px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .io-card-image.blue-bg { background: #0000D2; color: #fff; }
+    .io-card-image.dark-bg { background: #242424; color: #fff; }
+    .io-card-body { padding: 20px; }
+    .io-card-tag {
+      display: inline-block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: #EBE8E3;
+      color: #454545;
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-bottom: 10px;
+    }
+    .io-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #242424;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .io-card-desc {
+      font-size: 0.8125rem;
+      color: #747474;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .io-card-cta {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #0000D2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0 1px;
+      background-image: linear-gradient(#0000D2, #0000D2);
+      transition: background-size 0.3s ease;
+    }
+    .io-card:hover .io-card-cta { background-size: 100% 1px; }
+    .io-card-cta svg { transition: transform 0.3s ease; }
+    .io-card:hover .io-card-cta svg { transform: translateX(4px); }
+
+    /* ── Tag / Badge ── */
+    .io-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-family: 'Manrope', sans-serif;
+      white-space: nowrap;
+    }
+    .io-tag.beige   { background: #EBE8E3; color: #454545; }
+    .io-tag.blue    { background: #0000D2; color: #fff; }
+    .io-tag.dark    { background: #242424; color: #fff; }
+    .io-tag.orange  { background: #ed7f53; color: #fff; }
+    .io-tag.rouge   { background: #a13865; color: #fff; }
+    .io-tag.success { background: #30c58e; color: #fff; }
+    .io-tag.warning { background: #ffa100; color: #fff; }
+    .io-tag.error   { background: #ff6161; color: #fff; }
+    .io-tag.outline { background: transparent; border: 1px solid #c4c4c4; color: #454545; }
+
+    /* ── Carousel component ── */
+    .io-carousel-wrap {
+      position: relative;
+    }
+    .io-carousel-track {
+      display: flex;
+      gap: 1rem;
+      overflow-x: scroll;
+      scroll-behavior: smooth;
+      cursor: grab;
+      padding-bottom: 20px; /* space for scrollbar */
+      /* hide default scrollbar, show custom */
+    }
+    .io-carousel-track:active { cursor: grabbing; }
+    .io-carousel-track::-webkit-scrollbar { height: 4px; }
+    .io-carousel-track::-webkit-scrollbar-track {
+      border-bottom: 1px solid rgba(54, 95, 217, 0.3);
+      margin: 0 1rem;
+    }
+    .io-carousel-track::-webkit-scrollbar-thumb {
+      background-color: #0000D2;
+      border-radius: 9999px;
+    }
+    .io-carousel-track::-webkit-scrollbar-thumb:hover { background-color: #0000a8; }
+    .io-carousel-slide {
+      flex: 0 0 auto;
+      width: 23.5rem;
+      max-width: 80vw;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #e5e5e5;
+    }
+    .io-carousel-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0000D2;
+    }
+    .io-carousel-glyph {
+      width: 68px;
+      height: 68px;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 0, 210, 0.2);
+      background: rgba(255, 255, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
+    }
+    .io-carousel-glyph svg {
+      width: 32px;
+      height: 32px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .io-carousel-pill {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      background: #EBE8E3;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: #242424;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .io-carousel-body {
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .io-carousel-type {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #747474;
+      margin: 1.25rem 0 0.75rem;
+    }
+    .io-carousel-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #242424;
+      margin-bottom: 1.5rem;
+    }
+    .io-carousel-cta {
+      margin-top: auto;
+      padding-bottom: 1.5rem;
+    }
+    /* Nav buttons */
+    .io-carousel-btn {
+      position: absolute;
+      top: calc(23.5rem * 3/8 - 2rem); /* vertically centred over image area */
+      z-index: 10;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 9999px;
+      background: #fff;
+      border: 1px solid #ebebeb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .io-carousel-btn:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transform: scale(1.06);
+    }
+    .io-carousel-btn.prev { left: -1.5rem; }
+    .io-carousel-btn.next { right: -1.5rem; }
+    .io-carousel-btn.prev svg { transform: rotate(180deg); }
+
+    /* ── Accordion component ── */
+    .io-accordion {
+      width: 100%;
+      font-family: 'Manrope', sans-serif;
+    }
+    .io-accordion-item {
+      border-bottom: 1px solid #000;
+    }
+    .io-accordion-item:first-child {
+      border-top: 1px solid #000;
+    }
+    .io-accordion-trigger {
+      position: relative;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+    .io-accordion-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #242424;
+      transition: padding 0.3s ease-in-out;
+    }
+    .io-accordion-trigger:hover .io-accordion-title {
+      padding-left: 1.2rem;
+    }
+    /* +/− icon: two bars inside a square box */
+    .io-accordion-icon {
+      flex-shrink: 0;
+      position: relative;
+      width: 1.5rem;
+      height: 1.5rem;
+      transition: transform 0.3s ease-in-out;
+    }
+    .io-accordion-trigger:hover .io-accordion-icon {
+      transform: scale(0.7);
+    }
+    .io-accordion-icon::before,
+    .io-accordion-icon::after {
+      content: '';
+      position: absolute;
+      background: #0000D2;
+      transition: transform 0.3s ease-in-out, left 0.3s ease-in-out, right 0.3s ease-in-out;
+    }
+    /* Vertical bar */
+    .io-accordion-icon::before {
+      width: 8%;
+      top: 1%;
+      bottom: 1%;
+      left: 44%;
+    }
+    /* Horizontal bar */
+    .io-accordion-icon::after {
+      height: 8%;
+      left: 1%;
+      right: 1%;
+      top: 44%;
+    }
+    /* Open state: vertical bar rotates → becomes horizontal; horizontal bar collapses */
+    .io-accordion-item.open .io-accordion-icon::before {
+      transform: rotate(90deg);
+    }
+    .io-accordion-item.open .io-accordion-icon::after {
+      left: 50%;
+      right: 50%;
+    }
+    /* Panel */
+    .io-accordion-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.5s ease-in-out;
+    }
+    .io-accordion-item.open .io-accordion-panel {
+      max-height: 600px;
+    }
+    .io-accordion-panel-inner {
+      padding-bottom: 4rem;
+    }
+    .io-accordion-body {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #242424;
+      margin-bottom: 1.5rem;
+      max-width: 680px;
+    }
+
+    /* ── Navbar component ── */
+    .io-nav-demo {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-family: 'Manrope', sans-serif;
+      position: relative;
+    }
+    .io-topbar { border-radius: 12px 12px 0 0; }
+    .io-navbar { border-radius: 0 0 12px 12px; }
+    .io-topbar {
+      background: #DCCFC2;
+      padding: 8px 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      justify-content: flex-end;
+      font-size: 0.75rem;
+      color: #242424;
+    }
+    .io-topbar a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .io-topbar-divider { width: 1px; height: 12px; background: rgba(0,0,0,0.2); }
+    .io-navbar {
+      background: #fff;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 0;
+      position: relative;
+    }
+    .io-navbar-logo {
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+      flex-shrink: 0;
+      color: #0000D2;
+    }
+    .io-navbar-logo svg { width: 56px; height: auto; }
+    .io-nav-items {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      flex: 1;
+    }
+    .io-nav-item {
+      position: relative;
+      height: 75px;
+      display: flex;
+      align-items: center;
+    }
+    .io-nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Manrope', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #242424;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0;
+      white-space: nowrap;
+      height: 100%;
+    }
+    .io-nav-btn svg { width: 10px; transition: transform 0.2s ease; }
+    .io-nav-item.open .io-nav-btn svg { transform: rotate(180deg); }
+    .io-nav-actions { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+    .io-nav-search {
+      background: none; border: none; cursor: pointer; padding: 8px; color: #242424;
+      display: flex; align-items: center;
+    }
+    /* Dropdown */
+    .io-dropdown {
+      display: none;
+      position: absolute;
+      top: 75px;
+      left: -32px;
+      z-index: 50;
+      flex-direction: row;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      min-width: 560px;
+    }
+    .io-nav-item.open .io-dropdown { display: flex; }
+    .io-dropdown-primary {
+      background: #fff;
+      padding: 3rem;
+      color: #000;
+      min-width: 260px;
+    }
+    .io-dropdown-secondary {
+      background: #242424;
+      padding: 3rem;
+      color: #fff;
+      min-width: 260px;
+    }
+    .io-dropdown-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.5;
+      margin-bottom: 1.5rem;
+    }
+    .io-dropdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .io-dropdown-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: inherit;
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0 1px;
+      background-image: linear-gradient(currentColor, currentColor);
+      transition: background-size 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    .io-dropdown-link:hover { background-size: 100% 1px; }
+    .io-dropdown-link svg { flex-shrink: 0; width: 14px; }
+
+    /* ── Pagination component ── */
+    .io-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      font-family: 'Manrope', sans-serif;
+    }
+    .io-page-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+    .io-page-btn.number {
+      border: 1px solid #747474;
+      background: transparent;
+      color: #747474;
+    }
+    .io-page-btn.number:hover {
+      border: 2px solid #0000D2;
+      color: #0000D2;
+    }
+    .io-page-btn.active {
+      border: 2px solid #0000D2;
+      color: #0000D2;
+      font-weight: 700;
+      background: transparent;
+    }
+    .io-page-btn.nav-arrow {
+      border: none;
+      background: #DCCFC2;
+      color: #fff;
+    }
+    .io-page-btn.nav-arrow:hover {
+      background: transparent;
+      border: 2px solid #0000D2;
+      color: #0000D2;
+    }
+    .io-page-btn.nav-arrow:disabled,
+    .io-page-btn.nav-arrow.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .io-page-btn.nav-arrow:hover.disabled,
+    .io-page-btn.nav-arrow:disabled:hover {
+      background: #DCCFC2;
+      border: none;
+      color: #fff;
+      opacity: 0.5;
+    }
+    .io-page-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      font-size: 0.875rem;
+      color: #747474;
+      font-weight: 700;
+    }
+
+    /* ── Motion easing ball ── */
+    .easing-track {
+      width: 80px;
+      height: 16px;
+      background: #f4f4f4;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .easing-ball {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      transition: none;
+    }
+    .token-row:hover .easing-ball {
+      left: calc(100% - 15px);
+    }
+
+    /* ── Button showcase ── */
+    .btn-stage {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .btn-stage.dark { background: #242424; border-color: #3a3a3a; }
+    .btn-stage.mid  { background: #454545; border-color: #555; }
+    .btn-stage-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    /* Base button */
+    .io-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 9999px;
+      padding: 0.5rem 1.5rem;
+      font-family: 'Manrope', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.5s cubic-bezier(0.075,0.82,0.165,1),
+                  color 0.5s cubic-bezier(0.075,0.82,0.165,1),
+                  border-color 0.5s cubic-bezier(0.075,0.82,0.165,1);
+    }
+    .io-btn svg {
+      width: 0.875rem;
+      height: 0.875rem;
+      flex-shrink: 0;
+      transition: transform 0.5s cubic-bezier(0.075,0.82,0.165,1);
+    }
+    .io-btn:hover svg { transform: translateX(6px); }
+    .io-btn.back svg  { transform: rotate(180deg); }
+    .io-btn.back:hover svg { transform: rotate(180deg) translateX(6px); }
+    .io-btn.down svg  { transform: rotate(90deg); }
+    .io-btn.down:hover svg { transform: rotate(90deg) translateX(5px); }
+
+    /* Sizes */
+    .io-btn.tiny  { padding: 0.75rem 1.5rem; font-size: 0.875rem; }
+    .io-btn.small { padding: 1rem 2rem; }
+
+    /* Solid variants */
+    .io-btn.blue      { background: #0000D2; color: #fff; border-color: #0000D2; }
+    .io-btn.blue:hover { background: #0000a8; border-color: #0000a8; }
+    .io-btn.white     { background: #fff; color: #000; border-color: #fff; }
+    .io-btn.white:hover { background: #ebebeb; border-color: #ebebeb; }
+    .io-btn.black     { background: #000; color: #fff; border-color: #000; }
+    .io-btn.black:hover { background: #333; border-color: #333; }
+    .io-btn.antraciet { background: #454545; color: #fff; border-color: #454545; }
+    .io-btn.antraciet:hover { background: #333; border-color: #333; }
+    .io-btn.orange    { background: #ed7f53; color: #fff; border-color: #ed7f53; }
+    .io-btn.orange:hover { background: #d96a3b; border-color: #d96a3b; }
+    .io-btn.pink      { background: #DCC8C2; color: #000; border-color: #DCC8C2; }
+    .io-btn.pink:hover { background: #c9afa8; border-color: #c9afa8; }
+    .io-btn.rouge     { background: #a13865; color: #fff; border-color: #a13865; }
+    .io-btn.rouge:hover { background: #8a2e54; border-color: #8a2e54; }
+    .io-btn.yellow    { background: #fdbc75; color: #000; border-color: #fdbc75; }
+    .io-btn.yellow:hover { background: #f0a952; border-color: #f0a952; }
+    .io-btn.beige     { background: #e1cfbf; color: #000; border-color: #e1cfbf; }
+    .io-btn.beige:hover { background: #cdb99e; border-color: #cdb99e; }
+
+    /* Ghost variants */
+    .io-btn.ghost-blue      { background: transparent; color: #0000D2; border-color: #0000D2; }
+    .io-btn.ghost-blue:hover { background: #0000D2; color: #fff; }
+    .io-btn.ghost-black     { background: transparent; color: #000; border-color: #000; }
+    .io-btn.ghost-black:hover { background: #000; color: #fff; }
+    .io-btn.ghost-antraciet { background: transparent; color: #454545; border-color: #000; }
+    .io-btn.ghost-antraciet:hover { background: #454545; color: #fff; border-color: #454545; }
+    .io-btn.ghost-grey      { background: transparent; color: #747474; border-color: #747474; }
+    .io-btn.ghost-grey:hover { background: #747474; color: #fff; }
+    .io-btn.ghost-white     { background: transparent; color: #fff; border-color: #fff; }
+    .io-btn.ghost-white:hover { background: #fff; color: #000; }
+
+    /* Link button */
+    .io-btn.link {
+      background: transparent; color: #0000D2; border-color: transparent;
+      padding: 0; text-decoration: underline; text-underline-offset: 3px;
+    }
+    .io-btn.link:hover { color: #0000a8; }
+
+    /* Animated underline links */
+    .io-inline-link, .io-standalone-link {
+      display: inline;
+      color: #242424;
+      text-decoration: none;
+      font-size: 1.125rem;
+      font-weight: 600;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-repeat: no-repeat;
+      transition: background-size 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    /* inline-link: underlined at rest → slides out to the right on hover */
+    .io-inline-link {
+      background-position: 100% 100%;
+      background-size: 100% 1px;
+    }
+    .io-inline-link:hover { background-size: 0% 1px; }
+    /* standalone-link: no underline at rest → grows from left on hover */
+    .io-standalone-link {
+      background-position: 0 100%;
+      background-size: 0% 1px;
+    }
+    .io-standalone-link:hover { background-size: 100% 1px; }
+    .io-btn.link svg { margin-left: 4px; }
+    .io-btn.link:hover svg { transform: translateX(4px); }
+
+    /* Disabled */
+    .io-btn:disabled, .io-btn.disabled {
+      background: #c4c4c4 !important; color: #fff !important;
+      border-color: #c4c4c4 !important; cursor: not-allowed; opacity: 0.65;
+    }
+    .io-btn:disabled:hover svg, .io-btn.disabled:hover svg { transform: none; }
+
+    /* Arrow SVG icon shared */
+    .arrow-svg { display: inline-flex; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar nav -->
+  <nav id="sidebar">
+    <div class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1668 1000" preserveAspectRatio="xMidYMid meet" aria-label="iO logo" role="img">
+        <defs>
+          <clipPath id="nc4"><rect width="1668" height="1000" x="0" y="0"/></clipPath>
+          <clipPath id="nc6"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+          <clipPath id="nc27"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+          <filter id="nf36" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%"><feComponentTransfer in="SourceGraphic"><feFuncA type="table" tableValues="1.0 0.0"/></feComponentTransfer></filter>
+          <g id="ne23"><g transform="matrix(1,0,0,1,1560,1180)" opacity="1" style="display:block;"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(255,0,255)" stroke-opacity="1" stroke-width="425" d="M0 0"/></g></g>
+          <mask id="nm23" mask-type="alpha"><g filter="url(#nf36)"><rect width="2400" height="2400" x="0" y="0" fill="#ffffff" opacity="0"/><use xlink:href="#ne23"/></g></mask>
+        </defs>
+        <g clip-path="url(#nc4)">
+          <g clip-path="url(#nc6)" transform="matrix(0.8,0,0,0.8,-56,-420)" opacity="1" style="display:block;">
+            <!-- i - body -->
+            <g transform="matrix(3.18,-0.00002,0.00002,3.18,-1758.815,-565.187)" opacity="1" style="display:block;">
+              <g opacity="1" transform="matrix(1,0,0,1,765.789,606.778)">
+                <path class="lottieIcon" fill="currentColor" d="M4.102,-114.545 C4.102,-114.545 -79.283,72.740 -79.283,72.740 C-79.283,72.740 14.615,114.546 14.615,114.546 C14.615,114.546 56.194,21.159 56.194,21.159 C79.283,-30.699 55.961,-91.456 4.102,-114.545z"/>
+              </g>
+            </g>
+            <!-- i - dot/wedge -->
+            <g transform="matrix(3.18,0,0,3.18,-1757.946,-564.117)" opacity="1" style="display:block;">
+              <g opacity="1" transform="matrix(1,0,0,1,753.203,424.380)">
+                <path class="lottieIcon" fill="currentColor" d="M-35.404,-67.852 C-58.493,-15.994 -35.171,44.763 16.688,67.852 C16.688,67.852 58.493,-26.046 58.493,-26.046 C58.493,-26.046 -35.404,-67.852 -35.404,-67.852z"/>
+              </g>
+            </g>
+            <!-- O - ring -->
+            <g mask="url(#nm23)" style="display:block;">
+              <g clip-path="url(#nc27)" transform="matrix(1,0,0,1,0,0)" opacity="1">
+                <g transform="matrix(3.18,0,0,3.18,-1758.800,-565.200)" opacity="1" style="display:block;">
+                  <path class="lottieIcon" fill="currentColor" d="M1043.27,459.98 C1092.07,459.98 1131.77,499.68 1131.77,548.48 C1131.77,597.28 1092.07,636.98 1043.27,636.98 C994.48,636.98 954.78,597.28 954.78,548.48 C954.78,499.68 994.48,459.98 1043.27,459.98z M1043.27,371.49 C945.52,371.49 866.28,450.73 866.28,548.48 C866.28,646.23 945.52,725.47 1043.27,725.47 C1141.03,725.47 1220.27,646.23 1220.27,548.48 C1220.27,450.73 1141.03,371.49 1043.27,371.49z"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <div class="nav-logo-text">
+        <span>Design System</span>
+        <strong>iO Digital</strong>
+      </div>
+    </div>
+    <div class="nav-group-label">Foundation</div>
+    <a href="#color" class="nav-link active"><span class="nav-icon">Clr</span> Color</a>
+    <a href="#logotype" class="nav-link"><span class="nav-icon">Lgo</span> Logotype</a>
+    <a href="#typography" class="nav-link"><span class="nav-icon">Typ</span> Typography</a>
+    <a href="#spacing" class="nav-link"><span class="nav-icon">Spc</span> Spacing</a>
+    <a href="#breakpoint" class="nav-link"><span class="nav-icon">Bp</span> Breakpoints</a>
+    <a href="#borderRadius" class="nav-link"><span class="nav-icon">Rad</span> Border Radius</a>
+    <a href="#shadow" class="nav-link"><span class="nav-icon">Shd</span> Shadows</a>
+    <a href="#motion" class="nav-link"><span class="nav-icon">Mot</span> Motion</a>
+    <a href="#layout" class="nav-link"><span class="nav-icon">Lay</span> Layout &amp; Z-Index</a>
+    <div class="nav-group-label">Components</div>
+    <a href="#buttons" class="nav-link"><span class="nav-icon">Btn</span> Button</a>
+    <a href="#c-input" class="nav-link"><span class="nav-icon">Inp</span> Text Input</a>
+    <a href="#c-select" class="nav-link"><span class="nav-icon">Sel</span> Select</a>
+    <a href="#c-textarea" class="nav-link"><span class="nav-icon">Txa</span> Textarea</a>
+    <a href="#c-checkbox" class="nav-link"><span class="nav-icon">Chk</span> Checkbox</a>
+    <a href="#c-form" class="nav-link"><span class="nav-icon">Frm</span> Form</a>
+    <a href="#c-card" class="nav-link"><span class="nav-icon">Crd</span> Card</a>
+    <a href="#c-tag" class="nav-link"><span class="nav-icon">Tag</span> Tag / Badge</a>
+    <a href="#c-nav" class="nav-link"><span class="nav-icon">Nav</span> Navigation</a>
+    <a href="#c-pagination" class="nav-link"><span class="nav-icon">Pag</span> Pagination</a>
+    <a href="#c-accordion" class="nav-link"><span class="nav-icon">Acc</span> Accordion</a>
+    <a href="#c-carousel" class="nav-link"><span class="nav-icon">Car</span> Carousel</a>
+  </nav>
+
+  <main>
+    <!-- Search -->
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search tokens…" autocomplete="off" />
+    </div>
+
+    <div class="page-title">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1668 1000" preserveAspectRatio="xMidYMid meet" style="width:120px;height:auto;color:#0000D2;flex-shrink:0;" aria-hidden="true">
+          <defs>
+            <clipPath id="hc4"><rect width="1668" height="1000" x="0" y="0"/></clipPath>
+            <clipPath id="hc6"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+            <clipPath id="hc27"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+            <filter id="hf36" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%"><feComponentTransfer in="SourceGraphic"><feFuncA type="table" tableValues="1.0 0.0"/></feComponentTransfer></filter>
+            <g id="he23"><g transform="matrix(1,0,0,1,1560,1180)" opacity="1" style="display:block;"><path stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" stroke-miterlimit="4" stroke="rgb(255,0,255)" stroke-opacity="1" stroke-width="425" d="M0 0"/></g></g>
+            <mask id="hm23" mask-type="alpha"><g filter="url(#hf36)"><rect width="2400" height="2400" x="0" y="0" fill="#ffffff" opacity="0"/><use xlink:href="#he23"/></g></mask>
+          </defs>
+          <g clip-path="url(#hc4)">
+            <g clip-path="url(#hc6)" transform="matrix(0.8,0,0,0.8,-56,-420)" opacity="1" style="display:block;">
+              <g transform="matrix(3.18,-0.00002,0.00002,3.18,-1758.815,-565.187)" opacity="1" style="display:block;">
+                <g opacity="1" transform="matrix(1,0,0,1,765.789,606.778)">
+                  <path fill="currentColor" d="M4.102,-114.545 C4.102,-114.545 -79.283,72.740 -79.283,72.740 C-79.283,72.740 14.615,114.546 14.615,114.546 C14.615,114.546 56.194,21.159 56.194,21.159 C79.283,-30.699 55.961,-91.456 4.102,-114.545z"/>
+                </g>
+              </g>
+              <g transform="matrix(3.18,0,0,3.18,-1757.946,-564.117)" opacity="1" style="display:block;">
+                <g opacity="1" transform="matrix(1,0,0,1,753.203,424.380)">
+                  <path fill="currentColor" d="M-35.404,-67.852 C-58.493,-15.994 -35.171,44.763 16.688,67.852 C16.688,67.852 58.493,-26.046 58.493,-26.046 C58.493,-26.046 -35.404,-67.852 -35.404,-67.852z"/>
+                </g>
+              </g>
+              <g mask="url(#hm23)" style="display:block;">
+                <g clip-path="url(#hc27)" transform="matrix(1,0,0,1,0,0)" opacity="1">
+                  <g transform="matrix(3.18,0,0,3.18,-1758.800,-565.200)" opacity="1" style="display:block;">
+                    <path fill="currentColor" d="M1043.27,459.98 C1092.07,459.98 1131.77,499.68 1131.77,548.48 C1131.77,597.28 1092.07,636.98 1043.27,636.98 C994.48,636.98 954.78,597.28 954.78,548.48 C954.78,499.68 994.48,459.98 1043.27,459.98z M1043.27,371.49 C945.52,371.49 866.28,450.73 866.28,548.48 C866.28,646.23 945.52,725.47 1043.27,725.47 C1141.03,725.47 1220.27,646.23 1220.27,548.48 C1220.27,450.73 1141.03,371.49 1043.27,371.49z"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <h1 style="font-size:1.875rem;font-weight:700;color:#0000D2;">iO Design Tokens</h1>
+      </div>
+      <p>W3C DTCG format · Extracted from iodigital.com · <strong>195 tokens</strong> · <strong>8 components</strong> · Click any token to copy its value</p>
+    </div>
+
+    <!-- ═══════════════════════ COLOR ═══════════════════════ -->
+    <section class="section" id="color">
+      <div class="section-header">
+        <h2>Color</h2>
+        <p class="section-desc">All brand and semantic color tokens</p>
+      </div>
+
+      <!-- Primary -->
+      <div class="subsection">
+        <div class="subsection-title">Primary — Core brand palette</div>
+        <div class="token-grid" id="color-primary"></div>
+      </div>
+
+      <!-- Neutral -->
+      <div class="subsection">
+        <div class="subsection-title">Neutral — Grey scale</div>
+        <div class="token-grid" id="color-neutral"></div>
+      </div>
+
+      <!-- Secondary -->
+      <div class="subsection">
+        <div class="subsection-title">Secondary — Accent &amp; supporting hues</div>
+        <div class="token-grid" id="color-secondary"></div>
+      </div>
+
+      <!-- Tertiary -->
+      <div class="subsection">
+        <div class="subsection-title">Tertiary — Tint pairs (c = mid, d = light)</div>
+        <div class="token-grid" id="color-tertiary"></div>
+      </div>
+
+      <!-- Warm -->
+      <div class="subsection">
+        <div class="subsection-title">Warm — Warm-tinted neutral greys</div>
+        <div class="token-grid" id="color-warm"></div>
+      </div>
+
+      <!-- Semantic -->
+      <div class="subsection">
+        <div class="subsection-title">Semantic — Feedback &amp; status</div>
+        <div class="token-grid" id="color-semantic"></div>
+      </div>
+
+      <!-- Focus -->
+      <div class="subsection">
+        <div class="subsection-title">Focus — Keyboard focus indicators</div>
+        <div class="token-grid" id="color-focus"></div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">System — Supplemental brand/system tokens</div>
+        <div class="token-grid" id="color-system"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ LOGOTYPE ═══════════════════════ -->
+    <section class="section" id="logotype">
+      <div class="section-header">
+        <h2>Logotype</h2>
+        <p class="section-desc">Approved iO logotype treatments, placement guidance, and implementation tokens.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Approved colour treatments</div>
+        <div class="logo-grid">
+          <div class="logo-card">
+            <div class="logo-surface light">
+              <span class="io-logotype-mark">
+                <svg viewBox="0 0 200 200" role="img" aria-label="iO logotype positive">
+                  <path d="M125.42,78.6c12.61,0,22.86,10.26,22.86,22.86s-10.26,22.86-22.86,22.86s-22.86-10.26-22.86-22.86S112.82,78.6,125.42,78.6 M125.42,55.74c-25.25,0-45.72,20.47-45.72,45.72c0,25.25,20.47,45.72,45.72,45.72c25.25,0,45.72-20.47,45.72-45.72C171.15,76.21,150.68,55.74,125.42,55.74L125.42,55.74z"/>
+                  <path d="M54.8,86.94L54.8,86.94l-21.54,48.38l24.26,10.8l10.74-24.13C74.22,108.6,68.19,92.9,54.8,86.94z"/>
+                  <path d="M41.34,51.88c-5.96,13.4,0.06,29.09,13.46,35.06l10.8-24.26L41.34,51.88z"/>
+                </svg>
+              </span>
+            </div>
+            <div class="logo-meta">
+              <div class="logo-meta-title">Positive (dark on light)</div>
+              <div class="logo-meta-note">Default use on light surfaces.</div>
+            </div>
+          </div>
+
+          <div class="logo-card">
+            <div class="logo-surface dark">
+              <span class="io-logotype-mark light">
+                <svg viewBox="0 0 200 200" role="img" aria-label="iO logotype negative">
+                  <path d="M125.42,78.6c12.61,0,22.86,10.26,22.86,22.86s-10.26,22.86-22.86,22.86s-22.86-10.26-22.86-22.86S112.82,78.6,125.42,78.6 M125.42,55.74c-25.25,0-45.72,20.47-45.72,45.72c0,25.25,20.47,45.72,45.72,45.72c25.25,0,45.72-20.47,45.72-45.72C171.15,76.21,150.68,55.74,125.42,55.74L125.42,55.74z"/>
+                  <path d="M54.8,86.94L54.8,86.94l-21.54,48.38l24.26,10.8l10.74-24.13C74.22,108.6,68.19,92.9,54.8,86.94z"/>
+                  <path d="M41.34,51.88c-5.96,13.4,0.06,29.09,13.46,35.06l10.8-24.26L41.34,51.88z"/>
+                </svg>
+              </span>
+            </div>
+            <div class="logo-meta">
+              <div class="logo-meta-title">Negative (light on dark)</div>
+              <div class="logo-meta-note">Preferred treatment where contrast allows.</div>
+            </div>
+          </div>
+
+          <div class="logo-card">
+            <div class="logo-surface light">
+              <span class="io-logotype-mark accent">
+                <svg viewBox="0 0 200 200" role="img" aria-label="iO logotype accent blue">
+                  <path d="M125.42,78.6c12.61,0,22.86,10.26,22.86,22.86s-10.26,22.86-22.86,22.86s-22.86-10.26-22.86-22.86S112.82,78.6,125.42,78.6 M125.42,55.74c-25.25,0-45.72,20.47-45.72,45.72c0,25.25,20.47,45.72,45.72,45.72c25.25,0,45.72-20.47,45.72-45.72C171.15,76.21,150.68,55.74,125.42,55.74L125.42,55.74z"/>
+                  <path d="M54.8,86.94L54.8,86.94l-21.54,48.38l24.26,10.8l10.74-24.13C74.22,108.6,68.19,92.9,54.8,86.94z"/>
+                  <path d="M41.34,51.88c-5.96,13.4,0.06,29.09,13.46,35.06l10.8-24.26L41.34,51.88z"/>
+                </svg>
+              </span>
+            </div>
+            <div class="logo-meta">
+              <div class="logo-meta-title">Accent blue</div>
+              <div class="logo-meta-note">Use on calm/light backgrounds only.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Usage rules</div>
+        <div class="logo-rules">
+          <div class="logo-rule"><strong>Clearspace:</strong> Keep at least <code>0.5×</code> logotype-height free on all sides.</div>
+          <div class="logo-rule"><strong>Placement:</strong> Default placement is <code>bottom-right</code>; alternative is <code>top-left</code>.</div>
+          <div class="logo-rule"><strong>Oversized lockup:</strong> Allowed only at <code>bottom-right</code>.</div>
+          <div class="logo-rule"><strong>Avatar:</strong> Use primary blue background with white logotype.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="logotype-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ BUTTONS ═══════════════════════ -->
+    <section class="section" id="buttons">
+      <div class="section-header">
+        <h2>▣ Buttons</h2>
+        <p class="section-desc">All button variants — pill shape, 600 weight, cubic-bezier transition. Hover to see arrow animation.</p>
+      </div>
+
+      <!-- Solid -->
+      <div class="subsection">
+        <div class="subsection-title">Solid variants</div>
+        <div class="btn-stage" id="btn-solid"></div>
+        <div class="btn-stage-label">token path: <code>color.primary.*</code> · padding: <code>0.5rem 1.5rem</code> · radius: <code>borderRadius.pill</code></div>
+      </div>
+
+      <!-- Ghost -->
+      <div class="subsection">
+        <div class="subsection-title">Ghost / outline variants</div>
+        <div class="btn-stage" id="btn-ghost-light"></div>
+        <div class="btn-stage dark" id="btn-ghost-dark"></div>
+        <div class="btn-stage-label">border: <code>1px solid</code> · background: transparent → fills on hover</div>
+      </div>
+
+      <!-- Sizes -->
+      <div class="subsection">
+        <div class="subsection-title">Sizes</div>
+        <div class="btn-stage" id="btn-sizes"></div>
+        <div class="btn-stage-label">tiny: <code>0.75rem 1.5rem</code> · default: <code>0.5rem 1.5rem</code> · small: <code>1rem 2rem</code></div>
+      </div>
+
+      <!-- Arrow directions -->
+      <div class="subsection">
+        <div class="subsection-title">With arrow icon</div>
+        <div class="btn-stage" id="btn-arrows"></div>
+        <div class="btn-stage-label">SVG arrow · hover animates <code>transform: translateX(6px)</code> · <code>transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1)</code></div>
+      </div>
+
+      <!-- Link -->
+      <div class="subsection">
+        <div class="subsection-title">Link / text button</div>
+        <div class="btn-stage" id="btn-link"></div>
+        <div class="btn-stage-label">padding: <code>0</code> · text-decoration: underline · no background or border</div>
+      </div>
+
+      <!-- Animated underlines -->
+      <div class="subsection">
+        <div class="subsection-title">Animated underline patterns</div>
+        <div class="comp-stage" style="display:flex;flex-direction:column;gap:24px;">
+          <div>
+            <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">inline-link — underlined at rest, slides out on hover</p>
+            <a href="#" class="io-inline-link">+31 88 2013 101</a>
+          </div>
+          <div>
+            <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">standalone-link — no underline at rest, grows in on hover</p>
+            <a href="#" class="io-standalone-link">Get Directions <svg style="display:inline;vertical-align:middle;margin-left:6px;" viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 8h24M17 1l8 7-8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+        <div class="btn-stage-label">
+          <code>background-image: linear-gradient(currentColor, currentColor)</code> ·
+          <code>background-repeat: no-repeat</code> ·
+          transition: <code>background-size 0.35s cubic-bezier(0.645, 0.045, 0.355, 1)</code>
+        </div>
+        <div class="token-grid list" style="margin-top:16px;" id="link-underline-tokens"></div>
+      </div>
+
+      <!-- Disabled -->
+      <div class="subsection">
+        <div class="subsection-title">Disabled state</div>
+        <div class="btn-stage" id="btn-disabled"></div>
+        <div class="btn-stage-label">background: <code>color.neutral.greyThree</code> (#c4c4c4) · cursor: not-allowed</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Core tokens</div>
+        <div class="token-grid list" id="button-core-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ TYPOGRAPHY ═══════════════════════ -->
+    <section class="section" id="typography">
+      <div class="section-header">
+        <h2>Tt Typography</h2>
+        <p class="section-desc">Type scale, families, weights, and line heights</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Font Family</div>
+        <div class="token-grid list" id="typo-family"></div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Font Size</div>
+        <div class="token-grid list" id="typo-size"></div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Font Weight</div>
+        <div class="token-grid list" id="typo-weight"></div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Line Height</div>
+        <div class="token-grid list" id="typo-lh"></div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Letter Spacing</div>
+        <div class="token-grid list" id="typo-tracking"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ SPACING ═══════════════════════ -->
+    <section class="section" id="spacing">
+      <div class="section-header">
+        <h2>↔ Spacing</h2>
+        <p class="section-desc">4px-base spatial scale — keys follow Tailwind convention</p>
+      </div>
+      <div class="token-grid list" id="spacing-list"></div>
+    </section>
+
+    <!-- ═══════════════════════ BREAKPOINTS ═══════════════════════ -->
+    <section class="section" id="breakpoint">
+      <div class="section-header">
+        <h2>Breakpoints</h2>
+        <p class="section-desc">Responsive viewport breakpoints (min-width)</p>
+      </div>
+      <div class="token-grid list" id="bp-list"></div>
+    </section>
+
+    <!-- ═══════════════════════ BORDER RADIUS ═══════════════════════ -->
+    <section class="section" id="borderRadius">
+      <div class="section-header">
+        <h2>⬜ Border Radius</h2>
+        <p class="section-desc">Corner radius scale</p>
+      </div>
+      <div class="token-grid list" id="radius-list"></div>
+    </section>
+
+    <!-- ═══════════════════════ SHADOWS ═══════════════════════ -->
+    <section class="section" id="shadow">
+      <div class="section-header">
+        <h2>◻ Shadows</h2>
+        <p class="section-desc">Elevation and focus shadows</p>
+      </div>
+      <div class="token-grid list" id="shadow-list"></div>
+    </section>
+
+    <!-- ═══════════════════════ MOTION ═══════════════════════ -->
+    <section class="section" id="motion">
+      <div class="section-header">
+        <h2>⚡ Motion</h2>
+        <p class="section-desc">Duration and easing tokens — hover a row to replay the animation</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Transitions (component presets)</div>
+        <div class="token-grid list" id="transition-list"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Duration</div>
+        <div class="token-grid list" id="motion-duration-list"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Easing</div>
+        <div class="token-grid list" id="motion-easing-list"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ LAYOUT & Z-INDEX ═══════════════════════ -->
+    <section class="section" id="layout">
+      <div class="section-header">
+        <h2>⊞ Layout &amp; Z-Index</h2>
+        <p class="section-desc">Page-level layout constraints and stacking order</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Layout</div>
+        <div class="token-grid list" id="layout-list"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Z-Index</div>
+        <div class="token-grid list" id="zindex-list"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════ COMPONENTS ══════════════ -->
+
+    <!-- ═══════════════════════ BUTTON ═══════════════════════ -->
+    <!-- (existing #buttons section stays here — no change) -->
+
+    <!-- ═══════════════════════ TEXT INPUT ═══════════════════════ -->
+    <section class="section" id="c-input">
+      <div class="section-header">
+        <h2>╍ Text Input</h2>
+        <p class="section-desc">Bottom-border only field — no box border. Border expands 1px → 5px on focus. Floating label animates up.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">States</div>
+        <div class="comp-stage" id="input-states"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="input-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ SELECT ═══════════════════════ -->
+    <section class="section" id="c-select">
+      <div class="section-header">
+        <h2>▾ Select</h2>
+        <p class="section-desc">Custom-styled dropdown — same underline language as Text Input.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">States</div>
+        <div class="comp-stage" id="select-states"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="select-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ TEXTAREA ═══════════════════════ -->
+    <section class="section" id="c-textarea">
+      <div class="section-header">
+        <h2>≡ Textarea</h2>
+        <p class="section-desc">Multi-line text field — underline style, resize: vertical.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">States</div>
+        <div class="comp-stage" id="textarea-states"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ CHECKBOX ═══════════════════════ -->
+    <section class="section" id="c-checkbox">
+      <div class="section-header">
+        <h2>☑ Checkbox</h2>
+        <p class="section-desc">Custom appearance — black fill on check, SVG checkmark, double focus ring.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">States</div>
+        <div class="comp-stage" id="checkbox-states"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="checkbox-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ FORM EXAMPLE ═══════════════════════ -->
+    <section class="section" id="c-form">
+      <div class="section-header">
+        <h2>Form — Full Example</h2>
+        <p class="section-desc">Contact-us layout combining all form elements in a 2-column grid.</p>
+      </div>
+      <div class="comp-stage" id="form-example"></div>
+    </section>
+
+    <!-- ═══════════════════════ CARD ═══════════════════════ -->
+    <section class="section" id="c-card">
+      <div class="section-header">
+        <h2>▭ Card</h2>
+        <p class="section-desc">White surface with border — lifts on hover. Anatomy: image · tag · title · description · CTA.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Variants</div>
+        <div class="comp-stage flex-wrap gap-24" id="card-variants"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="card-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ TAG / BADGE ═══════════════════════ -->
+    <section class="section" id="c-tag">
+      <div class="section-header">
+        <h2>◈ Tag / Badge</h2>
+        <p class="section-desc">Small label for categories, services, and statuses.</p>
+      </div>
+      <div class="comp-stage" id="tag-variants"></div>
+    </section>
+
+    <!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+    <section class="section" id="c-nav">
+      <div class="section-header">
+        <h2>≡ Navigation</h2>
+        <p class="section-desc">Top nav bar with utility strip, primary links, and two-column mega-menu dropdown. Click a nav item to toggle the dropdown.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Full header</div>
+        <div class="io-nav-demo">
+          <!-- Utility bar -->
+          <div class="io-topbar">
+            <a href="#">Submit an RFP/RFI</a>
+            <div class="io-topbar-divider"></div>
+            <a href="#">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.9 1.17h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +31 88 2013 101
+            </a>
+            <div class="io-topbar-divider"></div>
+            <a href="#">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              business@iodigital.com
+            </a>
+            <div class="io-topbar-divider"></div>
+            <a href="#">EN ▾</a>
+          </div>
+          <!-- Main nav -->
+          <div class="io-navbar">
+            <!-- Logo -->
+            <div class="io-navbar-logo">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1668 1000" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <defs>
+                  <clipPath id="nc4b"><rect width="1668" height="1000" x="0" y="0"/></clipPath>
+                  <clipPath id="nc6b"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+                  <clipPath id="nc27b"><path d="M0,0 L2400,0 L2400,2400 L0,2400z"/></clipPath>
+                  <filter id="nf36b" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%"><feComponentTransfer in="SourceGraphic"><feFuncA type="table" tableValues="1.0 0.0"/></feComponentTransfer></filter>
+                  <g id="ne23b"><g transform="matrix(1,0,0,1,1560,1180)" style="display:block;"><path fill-opacity="0" stroke="rgb(255,0,255)" stroke-width="425" d="M0 0"/></g></g>
+                  <mask id="nm23b" mask-type="alpha"><g filter="url(#nf36b)"><rect width="2400" height="2400" x="0" y="0" fill="#ffffff" opacity="0"/><use xlink:href="#ne23b"/></g></mask>
+                </defs>
+                <g clip-path="url(#nc4b)">
+                  <g clip-path="url(#nc6b)" transform="matrix(0.8,0,0,0.8,-56,-420)" style="display:block;">
+                    <g transform="matrix(3.18,-0.00002,0.00002,3.18,-1758.815,-565.187)" style="display:block;">
+                      <g transform="matrix(1,0,0,1,765.789,606.778)">
+                        <path fill="currentColor" d="M4.102,-114.545 C4.102,-114.545 -79.283,72.740 -79.283,72.740 C-79.283,72.740 14.615,114.546 14.615,114.546 C14.615,114.546 56.194,21.159 56.194,21.159 C79.283,-30.699 55.961,-91.456 4.102,-114.545z"/>
+                      </g>
+                    </g>
+                    <g transform="matrix(3.18,0,0,3.18,-1757.946,-564.117)" style="display:block;">
+                      <g transform="matrix(1,0,0,1,753.203,424.380)">
+                        <path fill="currentColor" d="M-35.404,-67.852 C-58.493,-15.994 -35.171,44.763 16.688,67.852 C16.688,67.852 58.493,-26.046 58.493,-26.046 C58.493,-26.046 -35.404,-67.852 -35.404,-67.852z"/>
+                      </g>
+                    </g>
+                    <g mask="url(#nm23b)" style="display:block;">
+                      <g clip-path="url(#nc27b)">
+                        <g transform="matrix(3.18,0,0,3.18,-1758.800,-565.200)" style="display:block;">
+                          <path fill="currentColor" d="M1043.27,459.98 C1092.07,459.98 1131.77,499.68 1131.77,548.48 C1131.77,597.28 1092.07,636.98 1043.27,636.98 C994.48,636.98 954.78,597.28 954.78,548.48 C954.78,499.68 994.48,459.98 1043.27,459.98z M1043.27,371.49 C945.52,371.49 866.28,450.73 866.28,548.48 C866.28,646.23 945.52,725.47 1043.27,725.47 C1141.03,725.47 1220.27,646.23 1220.27,548.48 C1220.27,450.73 1141.03,371.49 1043.27,371.49z"/>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <!-- Nav items -->
+            <div class="io-nav-items">
+              <div class="io-nav-item" id="nav-whatwedo">
+                <button class="io-nav-btn" onclick="toggleNav('nav-whatwedo')">
+                  What we do
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="io-dropdown">
+                  <div class="io-dropdown-primary">
+                    <div class="io-dropdown-heading">Discover by service</div>
+                    <div class="io-dropdown-list">
+                      <a href="#" class="io-dropdown-link">Strategy &amp; Consulting <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Digital Experience <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Commerce <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Data &amp; AI <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Technology <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                  </div>
+                  <div class="io-dropdown-secondary">
+                    <div class="io-dropdown-heading">Discover by industry</div>
+                    <div class="io-dropdown-list">
+                      <a href="#" class="io-dropdown-link">Retail &amp; Fashion <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Financial Services <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Healthcare <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Media &amp; Entertainment <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="io-nav-item">
+                <button class="io-nav-btn">Cases</button>
+              </div>
+              <div class="io-nav-item">
+                <button class="io-nav-btn" onclick="toggleNav(this.closest('.io-nav-item').id)">
+                  Careers
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              </div>
+              <div class="io-nav-item" id="nav-insights">
+                <button class="io-nav-btn" onclick="toggleNav('nav-insights')">
+                  Insights
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="io-dropdown">
+                  <div class="io-dropdown-primary">
+                    <div class="io-dropdown-heading">Discover by topic:</div>
+                    <div class="io-dropdown-list">
+                      <a href="#" class="io-dropdown-link">Strategy <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Technology <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Marketing <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Content &amp; creation <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Agency news <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">iO tech_hub <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                  </div>
+                  <div class="io-dropdown-secondary">
+                    <div class="io-dropdown-heading">Discover by format:</div>
+                    <div class="io-dropdown-list">
+                      <a href="#" class="io-dropdown-link">Blogs <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Dossiers <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Events &amp; Webinars <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Videos <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Whitepapers <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <a href="#" class="io-dropdown-link">Podcasts <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="io-nav-item">
+                <button class="io-nav-btn" onclick="toggleNav(this.closest('.io-nav-item').id)">
+                  About us
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              </div>
+            </div>
+            <!-- Right actions -->
+            <div class="io-nav-actions">
+              <button class="io-nav-search" aria-label="Search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </button>
+              <button class="io-btn ghost-black" style="font-size:0.875rem;padding:0.4rem 1.2rem;">
+                <span>Contact</span>
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:8px;">Click "What we do" or "Insights" to open the dropdown panel.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="nav-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ PAGINATION ═══════════════════════ -->
+    <section class="section" id="c-pagination">
+      <div class="section-header">
+        <h2>◦ Pagination</h2>
+        <p class="section-desc">Circular page controls — outlined numbers, active in brand blue, beige prev/next arrows.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Default — page 1 active</div>
+        <div class="comp-stage" style="display:flex;flex-direction:column;gap:32px;">
+          <div class="io-pagination" id="pag-demo-1"></div>
+          <div class="io-pagination" id="pag-demo-2"></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="pag-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ ACCORDION ═══════════════════════ -->
+    <section class="section" id="c-accordion">
+      <div class="section-header">
+        <h2>⊞ Accordion</h2>
+        <p class="section-desc">Collapsible sections with animated +/− icon and title indent — extracted from the "Our expertise" section on the iO Brand &amp; Business page.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Interactive demo</div>
+        <div class="comp-stage">
+          <div class="io-accordion" id="accordion-demo"></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Anatomy</div>
+        <div class="comp-stage" style="background:#f9f9f9;padding:24px 32px;">
+          <div style="font-size:0.8125rem;font-family:'Inter',monospace;line-height:2;color:#747474;">
+            <div><span style="color:#a13865;">border-top/bottom</span>: 1px solid #000</div>
+            <div><span style="color:#a13865;">trigger padding</span>: 1.5rem 0</div>
+            <div><span style="color:#a13865;">title hover</span>: padding-left → 1.2rem (0.3s ease-in-out)</div>
+            <div><span style="color:#a13865;">icon</span>: 1.5rem × 1.5rem · scale(0.7) on hover · bars rotate on open</div>
+            <div><span style="color:#a13865;">panel</span>: max-height 0 → fit-content (0.5s ease-in-out)</div>
+            <div><span style="color:#a13865;">panel padding-bottom</span>: 4rem</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="accordion-tokens"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ CAROUSEL ═══════════════════════ -->
+    <section class="section" id="c-carousel">
+      <div class="section-header">
+        <h2>▷ Carousel</h2>
+        <p class="section-desc">Horizontally scrollable content card slider — extracted from the "Related articles" section. Drag to scroll, or use the prev/next arrow buttons.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Related articles</div>
+        <div style="position:relative;padding:0 2rem;">
+          <div class="io-carousel-wrap">
+            <div class="io-carousel-track" id="carousel-track"></div>
+            <button class="io-carousel-btn prev" id="carousel-prev" aria-label="Previous">
+              <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"/>
+              </svg>
+            </button>
+            <button class="io-carousel-btn next" id="carousel-next" aria-label="Next">
+              <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Tokens used</div>
+        <div class="token-grid list" id="carousel-tokens"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// ── Helpers ────────────────────────────────────────────────
+function isLight(hex) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const r = parseInt(hex.slice(0,2),16);
+  const g = parseInt(hex.slice(2,4),16);
+  const b = parseInt(hex.slice(4,6),16);
+  return (r*299 + g*587 + b*114) / 1000 > 155;
+}
+
+function shadowToCss(v) {
+  const layers = Array.isArray(v) ? v : [v];
+  return layers.map(l => `${l.offsetX} ${l.offsetY} ${l.blur} ${l.spread} ${l.color}`).join(', ');
+}
+
+function copyValue(el, text) {
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1400);
+}
+
+// ── Color swatch card ──────────────────────────────────────
+function colorCard(name, value, path, desc) {
+  const light = isLight(value);
+  const card = document.createElement('div');
+  card.className = 'token-card';
+  card.dataset.search = `${name} ${value} ${path} ${desc || ''}`.toLowerCase();
+  card.innerHTML = `
+    <div class="color-swatch ${light ? 'light' : ''}" style="background:${value}"></div>
+    <div class="token-info">
+      <div class="token-name">${name}</div>
+      <div class="token-value">${value}</div>
+      <div class="token-path">${path}</div>
+      ${desc ? `<div class="token-desc">${desc}</div>` : ''}
+    </div>`;
+  card.addEventListener('click', () => copyValue(card, value));
+  return card;
+}
+
+// ── Row token card ─────────────────────────────────────────
+function rowCard(name, valueDisplay, copyText, path, preview, desc) {
+  const card = document.createElement('div');
+  card.className = 'token-row';
+  card.dataset.search = `${name} ${copyText} ${path} ${desc || ''}`.toLowerCase();
+  card.innerHTML = `
+    <div class="token-row-preview">${preview}</div>
+    <div class="token-row-meta">
+      <div class="token-name">${name}</div>
+      <span class="token-row-value">${valueDisplay}</span>
+      <div class="token-row-path">${path}</div>
+      ${desc ? `<div class="token-desc">${desc}</div>` : ''}
+    </div>`;
+  card.addEventListener('click', () => copyValue(card, copyText));
+  return card;
+}
+
+// ── Brand-safe glyphs (replaces emoji placeholders) ───────
+function brandGlyph(kind) {
+  const glyphs = {
+    network: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/><path d="M12 4a14 14 0 0 1 0 16"/><path d="M12 4a14 14 0 0 0 0 16"/></svg>`,
+    commerce: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2 10h9l2-7H6"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>`,
+    data: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"/><path d="M7 15V9"/><path d="M12 15V6"/><path d="M17 15v-4"/></svg>`,
+    article: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>`,
+    webinar: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="m11 10 4 3-4 3z"/><path d="M9 21h6"/></svg>`,
+    event: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M4 10h16"/></svg>`,
+    whitepaper: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 4 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 16 8 4 8-4"/></svg>`,
+  };
+  return glyphs[kind] || glyphs.article;
+}
+
+// ── Render colors ──────────────────────────────────────────
+const colorGroups = {
+  primary: {
+    blue:       { value: '#0000D2', desc: 'Primary brand blue' },
+    blueHover:  { value: '#0000a8', desc: 'Hover state for primary blue — buttons, scrollbar thumb hover' },
+    beige:      { value: '#DCCFC2' },
+    offWhite:   { value: '#EBE8E3' },
+    orange:     { value: '#ed7f53' },
+    pink:       { value: '#DCC8C2' },
+    rouge:      { value: '#a13865' },
+    pureWhite:  { value: '#ffffff' },
+    black:      { value: '#000000' },
+  },
+  neutral: {
+    greyOne:    { value: '#f7f7f7' },
+    greyTwo:    { value: '#ebebeb' },
+    greyThree:  { value: '#c4c4c4' },
+    greyFour:   { value: '#747474' },
+    greyFive:   { value: '#f4f4f4' },
+    greySix:    { value: '#242424' },
+    offWhite:   { value: '#EBE8E3', desc: 'Alias of primary.offWhite' },
+    antraciet:  { value: '#454545', desc: 'Dark neutral for antracite-themed components' },
+  },
+  secondary: {
+    yellow:     { value: '#fdbc75' },
+    lavendel:   { value: '#868ada' },
+    pink:       { value: '#f5b3cc' },
+    calmPink:   { value: '#dcc8c2' },
+    calmBeige:  { value: '#e1cfbf' },
+    calmBlue:   { value: '#bdcad1' },
+    calmGreen:  { value: '#c4d1ce' },
+    basePink:   { value: '#ebe5e3' },
+    baseBeige:  { value: '#ebe8e3' },
+    baseBlue:   { value: '#dce1e5' },
+    baseGreen:  { value: '#c4d1ce' },
+  },
+  tertiary: {
+    '1c': { value: '#f8c4ae' },
+    '1d': { value: '#fce8df' },
+    '2c': { value: '#9caee9' },
+    '2d': { value: '#d8dff6' },
+    '3c': { value: '#c398b7' },
+    '3d': { value: '#e7d6e2' },
+    '4c': { value: '#6380da' },
+  },
+  warm: {
+    greyOne: { value: '#f4f1ed' },
+    greyTwo: { value: '#ebe8e3' },
+  },
+  semantic: {
+    success:     { value: '#30c58e' },
+    warning:     { value: '#ffa100' },
+    error:       { value: '#ff6161', desc: 'Default error on light backgrounds' },
+    errorOnBlue: { value: '#FF9E9A', desc: 'Error on primary blue backgrounds' },
+    red:         { value: '#D35454' },
+    brightPink:  { value: '#DA6C6C' },
+    greenDark:   { value: '#224400' },
+    blueDark:    { value: '#0000D2', desc: 'Alias of primary.blue' },
+  },
+  focus: {
+    darkRed:   { value: '#7D0034' },
+    lightPink: { value: '#FFE4EE' },
+  },
+  system: {
+    interactiveBlue: {
+      value: '#0019FF',
+      desc: 'Supplemental interactive/system blue from brand assets',
+    },
+  },
+};
+
+Object.entries(colorGroups).forEach(([group, tokens]) => {
+  const container = document.getElementById(`color-${group}`);
+  Object.entries(tokens).forEach(([name, { value, desc }]) => {
+    container.appendChild(colorCard(name, value, `color.${group}.${name}`, desc));
+  });
+});
+
+// ── Typography ─────────────────────────────────────────────
+const typoFamily = {
+  primary: {
+    value: 'Manrope, sans-serif',
+    font: 'Manrope, sans-serif',
+    desc: 'Primary brand typeface',
+  },
+  secondary: {
+    value: '"TT Commons Pro", "Inter", sans-serif',
+    font: '"TT Commons Pro", "Inter", sans-serif',
+    desc: 'Secondary branding typeface (licensed); falls back to Inter',
+  },
+  utility: {
+    value: 'Inter, sans-serif',
+    font: 'Inter, sans-serif',
+    desc: 'Utility fallback typeface',
+  },
+};
+const familyEl = document.getElementById('typo-family');
+Object.entries(typoFamily).forEach(([name, { value, font, desc }]) => {
+  const preview = `<div class="type-preview-sample" style="font-family:${font};font-size:1.25rem;font-weight:600;width:56px;">Aa</div>`;
+  familyEl.appendChild(rowCard(name, value, value, `typography.fontFamily.${name}`, preview, desc));
+});
+
+const typoSizes = [
+  { key: 'xs',   val: '0.75rem',   px: '12px' },
+  { key: 'xs2',  val: '0.8125rem', px: '13px' },
+  { key: 'sm',   val: '0.875rem',  px: '14px' },
+  { key: 'base', val: '1rem',     px: '16px' },
+  { key: 'lg',   val: '1.125rem', px: '18px' },
+  { key: 'xl',   val: '1.25rem',  px: '20px' },
+  { key: '2xl',  val: '1.5rem',   px: '24px' },
+  { key: '3xl',  val: '1.875rem', px: '30px' },
+  { key: '4xl',  val: '2rem',     px: '32px' },
+  { key: '5xl',  val: '2.25rem',  px: '36px' },
+  { key: '6xl',  val: '3rem',     px: '48px' },
+  { key: '7xl',  val: '4rem',     px: '64px' },
+];
+const sizeEl = document.getElementById('typo-size');
+typoSizes.forEach(({ key, val, px }) => {
+  const clampedSize = Math.min(parseFloat(val), 2.5) + 'rem';
+  const preview = `<div class="type-preview-sample" style="font-size:${clampedSize};font-weight:600;width:56px;flex-shrink:0">Ag</div>`;
+  sizeEl.appendChild(rowCard(key, `${val} · ${px}`, val, `typography.fontSize.${key}`, preview, px));
+});
+
+const typoWeights = [
+  { key: 'extraLight', val: 200 },
+  { key: 'light',      val: 300 },
+  { key: 'regular',    val: 400 },
+  { key: 'medium',     val: 500 },
+  { key: 'semiBold',   val: 600 },
+  { key: 'bold',       val: 700 },
+  { key: 'extraBold',  val: 800 },
+];
+const weightEl = document.getElementById('typo-weight');
+typoWeights.forEach(({ key, val }) => {
+  const preview = `<div class="type-preview-sample" style="font-size:1.25rem;font-weight:${val};width:56px;flex-shrink:0">Ag</div>`;
+  weightEl.appendChild(rowCard(key, String(val), String(val), `typography.fontWeight.${key}`, preview));
+});
+
+const lineHeights = [
+  { key: 'none',    val: 1,    desc: 'No additional leading' },
+  { key: 'tight',   val: 1.2 },
+  { key: 'snug',    val: 1.25 },
+  { key: 'normal',  val: 1.5 },
+  { key: 'relaxed', val: 1.6,  desc: 'Body copy, card descriptions, accordion body' },
+  { key: 'loose',   val: 1.75, desc: 'Paragraph text and block content' },
+];
+const lhEl = document.getElementById('typo-lh');
+lineHeights.forEach(({ key, val, desc }) => {
+  const preview = `<div style="width:56px;flex-shrink:0;font-size:0.7rem;line-height:${val};color:#747474;background:#f4f4f4;border-radius:4px;padding:2px 4px;">Line<br>Height</div>`;
+  lhEl.appendChild(rowCard(key, String(val), String(val), `typography.lineHeight.${key}`, preview, desc));
+});
+
+// ── Letter Spacing ───────────────────────────────────────────
+const letterSpacings = [
+  { key: 'tight',  val: '0.025em', desc: 'Button labels' },
+  { key: 'wide',   val: '0.08em',  desc: 'Uppercase tags, badge text, subsection labels' },
+  { key: 'wider',  val: '0.1em',   desc: 'Nav logo superscript' },
+  { key: 'widest', val: '0.12em',  desc: 'Sidebar nav group labels' },
+];
+const trackingEl = document.getElementById('typo-tracking');
+letterSpacings.forEach(({ key, val, desc }) => {
+  const preview = `<div class="type-preview-sample" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:${val};width:56px;flex-shrink:0">ABC</div>`;
+  trackingEl.appendChild(rowCard(key, val, val, `typography.letterSpacing.${key}`, preview, desc));
+});
+
+// ── Spacing ────────────────────────────────────────────────
+const spacings = [
+  { key: '1',  val: '4px'   }, { key: '2',  val: '8px'   }, { key: '3',  val: '12px'  },
+  { key: '4',  val: '16px'  }, { key: '5',  val: '20px'  }, { key: '6',  val: '24px'  },
+  { key: '8',  val: '32px'  }, { key: '10', val: '40px'  }, { key: '12', val: '48px'  },
+  { key: '14', val: '56px'  }, { key: '15', val: '60px'  }, { key: '16', val: '64px'  },
+  { key: '20', val: '80px'  }, { key: '24', val: '96px'  }, { key: '28', val: '112px' },
+  { key: '32', val: '128px' }, { key: '36', val: '144px' }, { key: '40', val: '160px' },
+];
+const spacingEl = document.getElementById('spacing-list');
+spacings.forEach(({ key, val }) => {
+  const px = parseInt(val);
+  const barW = Math.min(px, 96);
+  const preview = `<div style="width:100px;flex-shrink:0;display:flex;align-items:center;"><div class="spacing-bar" style="width:${barW}px"></div></div>`;
+  spacingEl.appendChild(rowCard(`spacing.${key}`, val, val, `spacing.${key}`, preview));
+});
+
+// ── Breakpoints ────────────────────────────────────────────
+const breakpoints = [
+  { key: 'xs', val: '375px',  px: 375  },
+  { key: 'sm', val: '600px',  px: 600  },
+  { key: 'md', val: '768px',  px: 768  },
+  { key: 'lg', val: '1024px', px: 1024 },
+  { key: 'xl', val: '1200px', px: 1200 },
+  { key: '2xl',val: '1440px', px: 1440 },
+  { key: '3xl',val: '1920px', px: 1920 },
+];
+const bpEl = document.getElementById('bp-list');
+breakpoints.forEach(({ key, val, px }) => {
+  const pct = Math.round((px / 1920) * 100);
+  const preview = `<div style="width:100px;flex-shrink:0;"><div class="bp-bar-wrap"><div class="bp-bar" style="width:${pct}%"></div></div><div style="font-size:0.625rem;color:#747474;margin-top:2px;text-align:right">${pct}%</div></div>`;
+  bpEl.appendChild(rowCard(key, val, val, `breakpoint.${key}`, preview));
+});
+
+// ── Border Radius ──────────────────────────────────────────
+const radii = [
+  { key: 'none', val: '0px'    },
+  { key: 'xs',   val: '4px'    },
+  { key: 'sm',   val: '9px'    },
+  { key: 'md',   val: '12px'   },
+  { key: 'lg',   val: '14px'   },
+  { key: 'xl',   val: '24px'   },
+  { key: 'pill', val: '9999px', desc: 'Full pill / capsule shape' },
+];
+const radiusEl = document.getElementById('radius-list');
+radii.forEach(({ key, val, desc }) => {
+  const r = key === 'pill' ? '50%' : val;
+  const preview = `<div class="radius-preview" style="border-radius:${r}"></div>`;
+  radiusEl.appendChild(rowCard(key, val, val, `borderRadius.${key}`, preview, desc));
+});
+
+// ── Shadows ────────────────────────────────────────────────
+const shadows = [
+  { key: 'sm',          css: '0px 1px 3px 0px rgba(0,0,0,0.1), 0px 1px 2px -1px rgba(0,0,0,0.1)',               desc: 'Subtle elevation — general UI lift' },
+  { key: 'md',          css: '0px 0px 10px 0px rgba(0,0,0,0.04), 0px 0px 25px 0px rgba(0,0,0,0.02)',             desc: 'Card resting shadow — soft ambient glow' },
+  { key: 'lg',          css: '0px 0px 24px 0px rgba(36,36,36,0.25)',                                             desc: 'Card hover elevation — pronounced depth' },
+  { key: 'xl',          css: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',            desc: 'Dropdown and raised panel elevation' },
+  { key: '2xl',         css: '0px 25px 50px -12px rgba(0,0,0,0.25)',                                             desc: 'Deep shadow — large modals and overlay panels' },
+  { key: 'focusRing',   css: '0px 0px 0px 2px #7D0034, 0px 0px 0px 4px #FFE4EE',                               desc: 'Double-ring keyboard focus indicator' },
+  { key: 'focusBlue',   css: '0px 0px 0px 2px rgba(54,95,217,0.7)',                                             desc: 'Focus ring for blue elements' },
+  { key: 'focusOrange', css: '0px 0px 0px 2px rgba(237,127,83,0.7)',                                            desc: 'Focus ring for orange elements' },
+];
+const shadowEl = document.getElementById('shadow-list');
+shadows.forEach(({ key, css, desc }) => {
+  const preview = `<div class="shadow-preview" style="box-shadow:${css}"></div>`;
+  shadowEl.appendChild(rowCard(key, css, css, `shadow.${key}`, preview, desc));
+});
+
+// ── Transitions ────────────────────────────────────────────
+const transitions = [
+  { key: 'fast',   dur: '200ms', timing: 'ease',                            desc: 'Micro-interactions and hover states' },
+  { key: 'base',   dur: '300ms', timing: 'ease',                            desc: 'Standard UI transitions' },
+  { key: 'slow',   dur: '500ms', timing: 'ease-in-out',                     desc: 'Deliberate / emphasis transitions' },
+  { key: 'easing', dur: '300ms', timing: 'cubic-bezier(0.075,0.82,0.165,1)', desc: 'Snappy deceleration for panels and drawers' },
+];
+const transEl = document.getElementById('transition-list');
+transitions.forEach(({ key, dur, timing, desc }) => {
+  const cssValue = `${dur} ${timing}`;
+  const durationMs = parseInt(dur);
+  const preview = `<div class="transition-demo" style="transition-duration:${dur};transition-timing-function:${timing}"></div>`;
+  transEl.appendChild(rowCard(key, cssValue, cssValue, `transition.${key}`, preview, desc));
+});
+
+// ── Layout ─────────────────────────────────────────────────
+const layoutEl = document.getElementById('layout-list');
+const barW2 = Math.round((1224/1920)*100);
+const lPreview = `<div style="width:100px;flex-shrink:0;"><div class="bp-bar-wrap"><div class="bp-bar" style="width:${barW2}%"></div></div><div style="font-size:0.625rem;color:#747474;margin-top:2px;text-align:right">1224px</div></div>`;
+layoutEl.appendChild(rowCard('containerMax', '76.5rem', '76.5rem', 'layout.containerMax', lPreview, 'Maximum content container width — 1224px at 16px base'));
+layoutEl.appendChild(rowCard('containerEdge', 'calc((100vw - 76.5rem) / 2)', 'calc((100vw - 76.5rem) / 2)', 'layout.containerEdge', '', 'Dynamic horizontal gutter — centres container on ultra-wide viewports'));
+layoutEl.appendChild(rowCard('sectionSpacingMobile', '6rem', '6rem', 'layout.sectionSpacingMobile', '', 'Section vertical margin at mobile — 96px (spacing.24)'));
+layoutEl.appendChild(rowCard('sectionSpacingTablet', '8rem', '8rem', 'layout.sectionSpacingTablet', '', 'Section vertical margin at 768px+ — 128px (spacing.32)'));
+layoutEl.appendChild(rowCard('sectionSpacingDesktop', '10rem', '10rem', 'layout.sectionSpacingDesktop', '', 'Section vertical margin at 1440px+ — 160px (spacing.40)'));
+
+// ── Z-Index ────────────────────────────────────────────────
+const zIndices = [
+  { key: 'base',     val: 0,  desc: 'Default document flow' },
+  { key: 'overlay',  val: 10, desc: 'Overlays, dropdowns, tooltips' },
+  { key: 'above',    val: 20, desc: 'Above overlays — stacked content layers' },
+  { key: 'dropdown', val: 30, desc: 'Dropdown menus and floating panels' },
+  { key: 'fixed',    val: 40, desc: 'Fixed-position elements — sticky bars below navigation' },
+  { key: 'modal',    val: 50, desc: 'Modal dialogs and drawers' },
+  { key: 'sticky',   val: 60, desc: 'Sticky headers and navigation bars' },
+  { key: 'toast',    val: 70, desc: 'Toast notifications — always on top' },
+];
+const zEl = document.getElementById('zindex-list');
+const zColors = ['#EBE8E3','#dce1e5','#bdcad1','#868ada','#747474','#454545','#0000D2','#000000'];
+zIndices.forEach(({ key, val, desc }, i) => {
+  const stack = zIndices.slice(0, i+1).map((_, j) => {
+    const offset = j * 3;
+    return `<div class="zindex-square" style="background:${zColors[j]};left:${offset}px;bottom:${offset}px;opacity:0.85"></div>`;
+  }).join('');
+  const preview = `<div class="zindex-preview">${stack}</div>`;
+  zEl.appendChild(rowCard(key, String(val), String(val), `zIndex.${key}`, preview, desc));
+});
+
+// ── Search ─────────────────────────────────────────────────
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  document.querySelectorAll('.token-card, .token-row').forEach(el => {
+    const match = !q || el.dataset.search.includes(q);
+    el.classList.toggle('hidden', !match);
+  });
+  // Hide empty subsections
+  document.querySelectorAll('.subsection').forEach(sub => {
+    const visible = sub.querySelectorAll('.token-card:not(.hidden), .token-row:not(.hidden)').length > 0;
+    sub.classList.toggle('hidden', !visible);
+  });
+  // Hide empty sections
+  document.querySelectorAll('.section').forEach(sec => {
+    const visible = sec.querySelectorAll('.token-card:not(.hidden), .token-row:not(.hidden)').length > 0;
+    sec.classList.toggle('hidden', !visible);
+  });
+});
+
+// ── Buttons ────────────────────────────────────────────────
+const ARROW_SVG = `<svg class="arrow-svg" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function makeBtn(label, classes, withArrow) {
+  const btn = document.createElement('button');
+  btn.className = 'io-btn ' + classes;
+  btn.innerHTML = withArrow ? `<span>${label}</span>${ARROW_SVG}` : label;
+  return btn;
+}
+
+// Solid variants
+const solidVariants = [
+  { label: 'Blue',      cls: 'blue'      },
+  { label: 'Black',     cls: 'black'     },
+  { label: 'Antraciet', cls: 'antraciet' },
+  { label: 'Orange',    cls: 'orange'    },
+  { label: 'Rouge',     cls: 'rouge'     },
+  { label: 'Pink',      cls: 'pink'      },
+  { label: 'Yellow',    cls: 'yellow'    },
+  { label: 'Beige',     cls: 'beige'     },
+  { label: 'White',     cls: 'white'     },
+];
+const solidEl = document.getElementById('btn-solid');
+solidVariants.forEach(({ label, cls }) => solidEl.appendChild(makeBtn(label, cls, true)));
+
+// Ghost variants — split across light and dark stage
+const ghostLight = [
+  { label: 'Ghost Blue',      cls: 'ghost-blue'      },
+  { label: 'Ghost Black',     cls: 'ghost-black'     },
+  { label: 'Ghost Antraciet', cls: 'ghost-antraciet' },
+  { label: 'Ghost Grey',      cls: 'ghost-grey'      },
+];
+const ghostLightEl = document.getElementById('btn-ghost-light');
+ghostLight.forEach(({ label, cls }) => ghostLightEl.appendChild(makeBtn(label, cls, true)));
+
+const ghostDarkEl = document.getElementById('btn-ghost-dark');
+ghostDarkEl.appendChild(makeBtn('Ghost White', 'ghost-white', true));
+
+// Sizes
+const sizesEl = document.getElementById('btn-sizes');
+[
+  { label: 'Tiny',    cls: 'blue tiny'  },
+  { label: 'Default', cls: 'blue'       },
+  { label: 'Small',   cls: 'blue small' },
+].forEach(({ label, cls }) => sizesEl.appendChild(makeBtn(label, cls, false)));
+
+// Arrow directions
+const arrowsEl = document.getElementById('btn-arrows');
+arrowsEl.appendChild(makeBtn('Forward', 'blue', true));
+const backBtn = document.createElement('button');
+backBtn.className = 'io-btn blue back';
+backBtn.innerHTML = `${ARROW_SVG}<span>Back</span>`;
+arrowsEl.appendChild(backBtn);
+const downBtn = document.createElement('button');
+downBtn.className = 'io-btn ghost-blue down';
+downBtn.innerHTML = `<span>Scroll down</span>${ARROW_SVG}`;
+arrowsEl.appendChild(downBtn);
+const orangeBtn = makeBtn('Learn more', 'orange', true);
+arrowsEl.appendChild(orangeBtn);
+const rougeBtn = makeBtn('Discover', 'rouge', true);
+arrowsEl.appendChild(rougeBtn);
+
+// Link button
+const linkEl = document.getElementById('btn-link');
+const linkBtn = document.createElement('button');
+linkBtn.className = 'io-btn link';
+linkBtn.innerHTML = `<span>Read the case study</span>${ARROW_SVG}`;
+linkEl.appendChild(linkBtn);
+const linkBtn2 = document.createElement('button');
+linkBtn2.className = 'io-btn link';
+linkBtn2.innerHTML = `<span>View all services</span>${ARROW_SVG}`;
+linkEl.appendChild(linkBtn2);
+
+// Disabled
+const disabledEl = document.getElementById('btn-disabled');
+[
+  { label: 'Disabled solid', cls: 'blue disabled'       },
+  { label: 'Disabled ghost', cls: 'ghost-blue disabled' },
+  { label: 'Disabled small', cls: 'orange small disabled' },
+].forEach(({ label, cls }) => {
+  const btn = makeBtn(label, cls, false);
+  disabledEl.appendChild(btn);
+});
+
+const buttonCoreTokensEl = document.getElementById('button-core-tokens');
+[
+  ['fontSize', '1rem', '1rem', 'component.button.fontSize', 'Base button text size'],
+  ['fontWeight', '600', '600', 'component.button.fontWeight', 'Shared weight across button variants'],
+  ['transition', '0.5s cubic-bezier(0.075, 0.82, 0.165, 1)', '0.5s cubic-bezier(0.075, 0.82, 0.165, 1)', 'component.button.transition', 'Full transition shorthand'],
+].forEach(([label, valueDisplay, copyText, token, desc]) => {
+  buttonCoreTokensEl.appendChild(rowCard(label, valueDisplay, copyText, token, '', desc));
+});
+
+// ── Motion — duration tokens ───────────────────────────────
+const motionDurations = [
+  { key: 'fastest', val: 100, desc: 'Instant feedback — checkbox tick, focus ring, tab indicator' },
+  { key: 'micro',   val: 150, desc: 'Micro-interactions — Tailwind default hover fade' },
+  { key: 'fast',    val: 200, desc: 'Micro-interactions, icon transitions' },
+  { key: 'base',    val: 300, desc: 'Standard UI transitions' },
+  { key: 'slow',    val: 500, desc: 'Deliberate or emphasis transitions' },
+];
+const motionDurEl = document.getElementById('motion-duration-list');
+motionDurations.forEach(({ key, val, desc }) => {
+  const bar = `<div style="width:${Math.round(val/5)}px;height:8px;background:var(--accent);border-radius:4px;opacity:0.6;flex-shrink:0;transition:width 0.3s ease;"></div>`;
+  const preview = `<div style="width:100px;flex-shrink:0;display:flex;align-items:center;">${bar}</div>`;
+  motionDurEl.appendChild(rowCard(key, `${val}ms`, `${val}ms`, `motion.duration.${key}`, preview, desc));
+});
+
+// ── Motion — easing tokens ──────────────────────────────────
+const motionEasings = [
+  { key: 'standard', val: 'ease',                                  desc: 'Default browser ease' },
+  { key: 'easeOut',  val: 'cubic-bezier(0.4, 0, 0.2, 1)',          desc: 'Standard ease-out — Material/Tailwind default, contact page UI transitions' },
+  { key: 'inOut',    val: 'ease-in-out',                           desc: 'Symmetric acceleration/deceleration' },
+  { key: 'snappy',   val: 'cubic-bezier(0.075, 0.82, 0.165, 1)',   desc: 'Fast start, smooth deceleration — buttons and panels' },
+  { key: 'bounce',   val: 'cubic-bezier(0.645, 0.045, 0.355, 1)',  desc: 'Ease-in-out variant — link underline hover' },
+];
+const motionEaseEl = document.getElementById('motion-easing-list');
+motionEasings.forEach(({ key, val, desc }) => {
+  const preview = `<div class="easing-track"><div class="easing-ball" style="transition-property:left;transition-duration:600ms;transition-timing-function:${val};"></div></div>`;
+  motionEaseEl.appendChild(rowCard(key, val, val, `motion.easing.${key}`, preview, desc));
+});
+
+// ── Component: Text Input ───────────────────────────────────
+const inputStatesEl = document.getElementById('input-states');
+inputStatesEl.innerHTML = `
+<div class="comp-row">
+  <div class="comp-col">
+    <div class="comp-state-label">Default</div>
+    <div class="io-field">
+      <input type="text" placeholder=" " />
+      <label>First name</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Focused</div>
+    <div class="io-field">
+      <input type="email" placeholder=" " style="border-bottom-width:5px;margin-top:-2px;" />
+      <label style="font-size:0.75rem;top:0;">Email address</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Filled</div>
+    <div class="io-field filled">
+      <input type="text" value="iO Digital" placeholder=" " />
+      <label>Company</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Error</div>
+    <div class="io-field error">
+      <input type="email" value="not-an-email" placeholder=" " />
+      <label>Email</label>
+    </div>
+    <div class="io-error-msg">Please enter a valid email address.</div>
+  </div>
+</div>`;
+
+const inputTokensEl = document.getElementById('input-tokens');
+[
+  { key: 'borderWidth',      val: '1px',       path: 'form.input.borderWidth',      desc: 'Resting underline thickness' },
+  { key: 'borderWidthFocus', val: '5px',       path: 'form.input.borderWidthFocus', desc: 'Expanded on focus' },
+  { key: 'paddingY',         val: '0.5rem',    path: 'form.input.paddingY' },
+  { key: 'paddingRight',     val: '1.2rem',    path: 'form.input.paddingRight' },
+  { key: 'label.fontSize',   val: '0.875rem',  path: 'form.label.fontSize',         desc: 'Resting label size' },
+  { key: 'label.floating',   val: '0.75rem',   path: 'form.label.fontSizeFloating', desc: 'Floating label size' },
+  { key: 'label.offsetTop',  val: '-2rem',     path: 'form.label.offsetTop',        desc: 'Absolute top position of floating label' },
+  { key: 'focus.ringInner',  val: '0 0 0 2px #7D0034', path: 'form.focus.ringInner', desc: 'Inner focus ring shadow token' },
+  { key: 'focus.ringOuter',  val: '0 0 0 4px #FFE4EE', path: 'form.focus.ringOuter', desc: 'Outer focus ring shadow token' },
+  { key: 'error.indicatorBg',   val: '#DA6C6C', path: 'form.error.indicatorBg',     desc: 'Validation error tooltip background' },
+  { key: 'error.indicatorSize', val: '1rem',    path: 'form.error.indicatorSize',   desc: 'Validation error tooltip arrow size' },
+  { key: 'focus ring',       val: '0 0 0 2px #7D0034, 0 0 0 4px #FFE4EE', path: 'component.focus.ringCss' },
+].forEach(({ key, val, path, desc }) => {
+  const preview = `<div style="width:40px;flex-shrink:0;border-bottom:2px solid var(--accent);opacity:0.4;"></div>`;
+  inputTokensEl.appendChild(rowCard(key, val, val, path, preview, desc));
+});
+
+// ── Component: Select ───────────────────────────────────────
+document.getElementById('select-states').innerHTML = `
+<div class="comp-row">
+  <div class="comp-col">
+    <div class="comp-state-label">Default</div>
+    <div class="io-field">
+      <select><option value="">Choose a topic…</option><option>Strategy &amp; Consulting</option><option>Digital Experience</option><option>Commerce</option><option>Data &amp; AI</option></select>
+      <label>What are you looking for?</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Selected</div>
+    <div class="io-field filled">
+      <select><option value="">Choose a topic…</option><option selected>Digital Experience</option><option>Commerce</option></select>
+      <label>What are you looking for?</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Error</div>
+    <div class="io-field error">
+      <select><option value="">Choose a topic…</option></select>
+      <label>Topic</label>
+    </div>
+    <div class="io-error-msg">Please select an option.</div>
+  </div>
+</div>`;
+
+const selectTokensEl = document.getElementById('select-tokens');
+[
+  ['paddingRight', '1.6rem', '1.6rem', 'form.select.paddingRight', 'Space reserved for custom chevron icon'],
+].forEach(([label, valueDisplay, copyText, token, desc]) => {
+  selectTokensEl.appendChild(rowCard(label, valueDisplay, copyText, token, '', desc));
+});
+
+// ── Component: Textarea ─────────────────────────────────────
+document.getElementById('textarea-states').innerHTML = `
+<div class="comp-row">
+  <div class="comp-col">
+    <div class="comp-state-label">Default</div>
+    <div class="io-field">
+      <textarea placeholder=" " rows="3"></textarea>
+      <label>Message</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Filled</div>
+    <div class="io-field filled">
+      <textarea rows="3">We'd love to discuss a potential collaboration on our upcoming digital platform project.</textarea>
+      <label>Message</label>
+    </div>
+  </div>
+  <div class="comp-col">
+    <div class="comp-state-label">Error</div>
+    <div class="io-field error">
+      <textarea placeholder=" " rows="3"></textarea>
+      <label>Message</label>
+    </div>
+    <div class="io-error-msg">Message is required.</div>
+  </div>
+</div>`;
+
+const checkboxTokensEl = document.getElementById('checkbox-tokens');
+[
+  ['size', '1rem', '1rem', 'form.checkbox.size', 'Checkbox width/height'],
+  ['borderRadius', '2px', '2px', 'form.checkbox.borderRadius', 'Corner radius of checkbox square'],
+].forEach(([label, valueDisplay, copyText, token, desc]) => {
+  checkboxTokensEl.appendChild(rowCard(label, valueDisplay, copyText, token, '', desc));
+});
+
+// ── Component: Checkbox ─────────────────────────────────────
+document.getElementById('checkbox-states').innerHTML = `
+<div class="comp-row" style="align-items:flex-start;flex-direction:column;gap:16px;">
+  <div>
+    <div class="comp-state-label" style="margin-bottom:12px;">Unchecked</div>
+    <div class="io-checkbox-wrap">
+      <input type="checkbox" id="cb1" />
+      <label class="io-checkbox-label" for="cb1">I agree to the <a href="#">terms and conditions</a></label>
+    </div>
+  </div>
+  <div>
+    <div class="comp-state-label" style="margin-bottom:12px;">Checked</div>
+    <div class="io-checkbox-wrap">
+      <input type="checkbox" id="cb2" checked />
+      <label class="io-checkbox-label" for="cb2">Send me the iO newsletter</label>
+    </div>
+  </div>
+  <div>
+    <div class="comp-state-label" style="margin-bottom:12px;">With link (hover to see underline animation)</div>
+    <div class="io-checkbox-wrap">
+      <input type="checkbox" id="cb3" />
+      <label class="io-checkbox-label" for="cb3">I have read and accept the <a href="#">privacy policy</a> and <a href="#">cookie policy</a></label>
+    </div>
+  </div>
+  <div>
+    <div class="comp-state-label" style="margin-bottom:12px;">Disabled</div>
+    <div class="io-checkbox-wrap" style="opacity:0.4;">
+      <input type="checkbox" id="cb4" disabled />
+      <label class="io-checkbox-label" for="cb4">Disabled option</label>
+    </div>
+  </div>
+</div>`;
+
+// ── Component: Form — Full Example ──────────────────────────
+document.getElementById('form-example').innerHTML = `
+<div class="io-form">
+  <div class="io-form-grid">
+    <div class="io-field"><input type="text" placeholder=" " /><label>First name</label></div>
+    <div class="io-field"><input type="text" placeholder=" " /><label>Last name</label></div>
+    <div class="io-field"><input type="email" placeholder=" " /><label>Email address</label></div>
+    <div class="io-field"><input type="tel" placeholder=" " /><label>Phone number</label></div>
+    <div class="io-field span-2"><input type="text" placeholder=" " /><label>Company</label></div>
+    <div class="io-field span-2">
+      <select><option value="">Choose a topic…</option><option>Strategy &amp; Consulting</option><option>Digital Experience</option><option>Commerce</option><option>Data &amp; AI</option><option>Technology</option></select>
+      <label>What are you looking for?</label>
+    </div>
+    <div class="io-field span-2"><textarea rows="4" placeholder=" "></textarea><label>Message</label></div>
+  </div>
+  <div style="margin-top:8px;">
+    <div class="io-checkbox-wrap">
+      <input type="checkbox" id="cb-privacy" />
+      <label class="io-checkbox-label" for="cb-privacy">I have read and accept the <a href="#">privacy policy</a></label>
+    </div>
+  </div>
+  <div class="io-form-actions">
+    <button class="io-btn blue" type="submit">
+      <span>Send message</span>
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>`;
+
+// ── Component: Card ─────────────────────────────────────────
+const cardArrow = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const cards = [
+  { glyph: 'network', imgClass: '', tag: 'Digital Experience', title: 'Building seamless digital experiences', desc: 'We combine strategy, design, and technology to create platforms that drive growth.', cta: 'Read the case study' },
+  { glyph: 'commerce', imgClass: 'blue-bg', tag: 'Commerce', title: 'Commerce solutions that convert', desc: 'From headless storefronts to composable architectures — we build for scale.', cta: 'Explore our work' },
+  { glyph: 'data', imgClass: 'dark-bg', tag: 'Data & AI', title: 'Data-driven intelligence at scale', desc: 'Turning raw data into strategic insight with AI-powered analytics.', cta: 'Learn more' },
+];
+const cardEl = document.getElementById('card-variants');
+cards.forEach(({ glyph, imgClass, tag, title, desc, cta }) => {
+  const card = document.createElement('div');
+  card.className = 'io-card';
+  card.innerHTML = `
+    <div class="io-card-image ${imgClass}">${brandGlyph(glyph)}</div>
+    <div class="io-card-body">
+      <span class="io-card-tag">${tag}</span>
+      <div class="io-card-title">${title}</div>
+      <div class="io-card-desc">${desc}</div>
+      <a href="#" class="io-card-cta">${cta} ${cardArrow}</a>
+    </div>`;
+  cardEl.appendChild(card);
+});
+
+const cardTokensEl = document.getElementById('card-tokens');
+[
+  ['bg', '#ffffff', '#ffffff', 'component.card.bg', 'Card surface background'],
+  ['border', '#e5e5e5', '#e5e5e5', 'component.card.border', 'Card border color'],
+  ['radius', '12px', '12px', 'component.card.radius', 'Card corner radius'],
+].forEach(([label, valueDisplay, copyText, token, desc]) => {
+  cardTokensEl.appendChild(rowCard(label, valueDisplay, copyText, token, '', desc));
+});
+
+// ── Component: Tag / Badge ──────────────────────────────────
+document.getElementById('tag-variants').innerHTML = `
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+  <span class="io-tag beige">Design</span>
+  <span class="io-tag beige">Strategy</span>
+  <span class="io-tag blue">Digital</span>
+  <span class="io-tag dark">Technology</span>
+  <span class="io-tag orange">Commerce</span>
+  <span class="io-tag rouge">Data &amp; AI</span>
+  <span class="io-tag success">Live</span>
+  <span class="io-tag warning">Beta</span>
+  <span class="io-tag error">Deprecated</span>
+  <span class="io-tag outline">Category</span>
+</div>
+<div style="margin-top:16px;font-size:0.75rem;color:var(--text-secondary);font-family:'Inter',monospace;">
+  Variants: beige · blue · dark · orange · rouge · success · warning · error · outline
+</div>`;
+
+// ── Carousel ───────────────────────────────────────────────
+const carouselSlides = [
+  { type: 'Blog',        glyph: 'article',    bg: '#bdcad1', title: 'Is AI taking over the customer journey?' },
+  { type: 'Webinar',     glyph: 'webinar',    bg: '#c4d1ce', title: 'Cloud costs are skyrocketing, AI is growing: how can you maintain control of your platform?' },
+  { type: 'Event',       glyph: 'event',      bg: '#f8c4ae', title: "Workshop: Together we'll make 'Drupal voor Overheden' even better" },
+  { type: 'Webinar',     glyph: 'data',       bg: '#c4d1ce', title: 'Beyond conversion rates: how the best digital experiences drive revenue growth' },
+  { type: 'White paper', glyph: 'whitepaper', bg: '#dcc8c2', title: 'Patient journey mapping in healthcare: From internal processes to measurable patient experience' },
+  { type: 'White paper', glyph: 'whitepaper', bg: '#dcc8c2', title: '7 strategic considerations for building powerful platforms' },
+  { type: 'Webinar',     glyph: 'webinar',    bg: '#c4d1ce', title: 'From mass marketing to audience of one: achieving true personalisation with AI & data' },
+  { type: 'Blog',        glyph: 'article',    bg: '#bdcad1', title: 'Pinterest ads: a channel worthy of discovery' },
+];
+
+const ARROW = `<svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"/></svg>`;
+
+const track = document.getElementById('carousel-track');
+carouselSlides.forEach(({ type, glyph, bg, title }) => {
+  const slide = document.createElement('div');
+  slide.className = 'io-carousel-slide';
+  slide.innerHTML = `
+    <div class="io-carousel-image" style="background:${bg};">
+      <span class="io-carousel-glyph">${brandGlyph(glyph)}</span>
+      <span class="io-carousel-pill">${type}</span>
+    </div>
+    <div class="io-carousel-body">
+      <div class="io-carousel-type">${type}</div>
+      <div class="io-carousel-title">${title}</div>
+      <div class="io-carousel-cta">
+        <a href="#" class="io-standalone-link">Read more ${ARROW}</a>
+      </div>
+    </div>`;
+  track.appendChild(slide);
+});
+
+// Prev / next buttons
+const slideWidth = () => track.firstElementChild
+  ? track.firstElementChild.offsetWidth + 16 /* gap=1rem=16px */ : 390;
+
+document.getElementById('carousel-prev').addEventListener('click', () => {
+  track.scrollBy({ left: -slideWidth(), behavior: 'smooth' });
+});
+document.getElementById('carousel-next').addEventListener('click', () => {
+  track.scrollBy({ left: slideWidth(), behavior: 'smooth' });
+});
+
+// Drag-to-scroll
+let isDragging = false, startX = 0, scrollLeft = 0;
+track.addEventListener('mousedown', e => {
+  isDragging = true;
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+  track.style.cursor = 'grabbing';
+});
+track.addEventListener('mouseleave', () => { isDragging = false; track.style.cursor = 'grab'; });
+track.addEventListener('mouseup',    () => { isDragging = false; track.style.cursor = 'grab'; });
+track.addEventListener('mousemove',  e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX);
+});
+
+// ── Carousel token rows ────────────────────────────────────
+[
+  ['Slide width',          '23.5rem',                     '23.5rem',                     'component.carousel.slideWidth'],
+  ['Slide gap',            '1rem',                        '1rem',                        'component.carousel.slideGap'],
+  ['Image aspect ratio',   '4 / 3',                       '4/3',                         'component.carousel.imageAspectRatio'],
+  ['Pill background',      '#EBE8E3',                     '#EBE8E3',                     'component.carousel.pillBg'],
+  ['Pill border radius',   '9999px',                      '9999px',                      'component.carousel.pillRadius'],
+  ['Pill padding',         '0.5rem 0.75rem',              '0.5rem 0.75rem',              'component.carousel.pillPadding'],
+  ['Pill font-size',       '0.875rem',                    '0.875rem',                    'component.carousel.pillFontSize'],
+  ['Scrollbar height',     '4px',                         '4px',                         'component.carousel.scrollbarHeight'],
+  ['Scrollbar color',      '#0000D2',                     '#0000D2',                     'component.carousel.scrollbarColor'],
+  ['Scrollbar track',      'rgba(54, 95, 217, 0.3)',      'rgba(54,95,217,0.3)',         'component.carousel.scrollbarTrackColor'],
+  ['Nav button size',      '4rem',                        '4rem',                        'component.carousel.navButtonSize'],
+  ['Nav button bg',        '#ffffff',                     '#ffffff',                     'component.carousel.navButtonBg'],
+  ['Nav button border',    '#ebebeb',                     '#ebebeb',                     'component.carousel.navButtonBorder'],
+].forEach(([label, valueDisplay, copyText, token]) => {
+  document.getElementById('carousel-tokens').appendChild(rowCard(label, valueDisplay, copyText, token, '', ''));
+});
+
+// ── Accordion ──────────────────────────────────────────────
+const accordionItems = [
+  {
+    title: 'Audits & research',
+    body: 'Making targeted, data-driven decisions starts with clear, reliable data. When your data tells the real story, you can measure what\u2019s working and what isn\u2019t \u2013 no guesswork involved. This means you\u2019ll set KPIs that reflect actual performance and targets your team can realistically achieve.',
+    open: true,
+  },
+  {
+    title: 'Brand and communication strategy',
+    body: 'Ready to make your mark in the market? A clear brand and communication strategy gets you there. We help you build a brand that not only reflects your ambitions but actually delivers on them.',
+    open: false,
+  },
+  {
+    title: 'Digital strategy',
+    body: 'You don\'t have to constantly reinvent yourself. Streamline your business processes by deploying the right digital tools and platforms.',
+    open: false,
+  },
+  {
+    title: 'Interface Design',
+    body: 'Great interfaces are invisible — they guide users effortlessly to their goal. We design digital products that are intuitive, accessible, and on-brand.',
+    open: false,
+  },
+  {
+    title: 'Service design',
+    body: 'Service design connects people, processes, and technology into seamless experiences that work — for your customers and your organisation.',
+    open: false,
+  },
+  {
+    title: 'UX strategy',
+    body: 'A clear UX strategy aligns user needs with business goals, giving your team a shared language and direction for every design decision.',
+    open: false,
+  },
+];
+
+const accordionEl = document.getElementById('accordion-demo');
+accordionItems.forEach(({ title, body, open }) => {
+  const item = document.createElement('div');
+  item.className = 'io-accordion-item' + (open ? ' open' : '');
+  item.innerHTML = `
+    <button class="io-accordion-trigger" aria-expanded="${open}">
+      <span class="io-accordion-title">${title}</span>
+      <span class="io-accordion-icon" aria-hidden="true"></span>
+    </button>
+    <div class="io-accordion-panel">
+      <div class="io-accordion-panel-inner">
+        <p class="io-accordion-body">${body}</p>
+        <a href="#" class="io-standalone-link">Learn more <svg style="display:inline;vertical-align:middle;margin-left:6px;" viewBox="0 0 26 16" width="20" height="13" fill="none"><path d="M0 8h24M17 1l8 7-8 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>`;
+  item.querySelector('.io-accordion-trigger').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    // close all
+    accordionEl.querySelectorAll('.io-accordion-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.io-accordion-trigger').setAttribute('aria-expanded', 'false');
+    });
+    // open clicked if it was closed
+    if (!isOpen) {
+      item.classList.add('open');
+      item.querySelector('.io-accordion-trigger').setAttribute('aria-expanded', 'true');
+    }
+  });
+  accordionEl.appendChild(item);
+});
+
+// ── Accordion token rows ────────────────────────────────────
+[
+  ['Border color', '#000000', '#000000', 'component.accordion.borderColor'],
+  ['Trigger padding Y', '1.5rem', '1.5rem', 'component.accordion.triggerPaddingY'],
+  ['Title hover indent', '1.2rem', '1.2rem', 'component.accordion.titleHoverIndent'],
+  ['Title transition', 'padding 0.3s ease-in-out', 'padding 0.3s ease-in-out', 'component.accordion.titleTransition'],
+  ['Icon size', '1.5rem', '1.5rem', 'component.accordion.iconSize'],
+  ['Icon hover scale', '0.7', '0.7', 'component.accordion.iconHoverScale'],
+  ['Icon transition', 'transform 0.3s ease-in-out', 'transform 0.3s ease-in-out', 'component.accordion.iconTransition'],
+  ['Panel transition', 'all 0.5s ease-in-out', 'all 0.5s ease-in-out', 'component.accordion.panelTransition'],
+  ['Panel padding bottom', '4rem', '4rem', 'component.accordion.panelPaddingBottom'],
+].forEach(([label, valueDisplay, copyText, token]) => {
+  document.getElementById('accordion-tokens').appendChild(rowCard(label, valueDisplay, copyText, token, '', ''));
+});
+
+// ── Link underline tokens ──────────────────────────────────
+[
+  ['Underline thickness', '1px', '1px', 'component.link.underlineThickness'],
+  ['Underline duration', '350ms', '350ms', 'component.link.underlineDuration'],
+  ['Underline easing', 'cubic-bezier(0.645, 0.045, 0.355, 1)', 'cubic-bezier(0.645, 0.045, 0.355, 1)', 'component.link.underlineEasing'],
+  ['inline-link rest', 'background-size: 100% 1px', '100% 1px', 'component.link.inlineUnderline'],
+  ['standalone-link rest', 'background-size: 0 1px', '0 1px', 'component.link.standaloneUnderline'],
+].forEach(([label, valueDisplay, copyText, token]) => {
+  document.getElementById('link-underline-tokens').appendChild(rowCard(label, valueDisplay, copyText, token, '', ''));
+});
+
+// ── Logotype token rows ────────────────────────────────────
+[
+  ['Default dark', '#242424', '#242424', 'brand.logotype.tokens.defaultColorDark'],
+  ['Default light', '#FFFFFF', '#FFFFFF', 'brand.logotype.tokens.defaultColorLight'],
+  ['Accent blue', '#0000D2', '#0000D2', 'brand.logotype.tokens.accentColor'],
+  ['Avatar background', '#0000D2', '#0000D2', 'brand.logotype.tokens.avatarBackground'],
+  ['Avatar foreground', '#FFFFFF', '#FFFFFF', 'brand.logotype.tokens.avatarForeground'],
+  ['Clearspace factor', '0.5', '0.5', 'brand.logotype.tokens.clearspaceFactor'],
+  ['Placement default', 'bottom-right', 'bottom-right', 'brand.logotype.tokens.placementDefault'],
+  ['Placement alternative', 'top-left', 'top-left', 'brand.logotype.tokens.placementAlternative'],
+  ['Oversized placement', 'bottom-right-only', 'bottom-right-only', 'brand.logotype.tokens.oversizedPlacement'],
+].forEach(([label, valueDisplay, copyText, token]) => {
+  document.getElementById('logotype-tokens').appendChild(rowCard(label, valueDisplay, copyText, token, '', ''));
+});
+
+// ── Navigation dropdown ────────────────────────────────────
+function toggleNav(id) {
+  const item = typeof id === 'string' ? document.getElementById(id) : id;
+  if (!item) return;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.io-nav-item.open').forEach(el => el.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.io-nav-item')) {
+    document.querySelectorAll('.io-nav-item.open').forEach(el => el.classList.remove('open'));
+  }
+});
+
+// ── Pagination rendering ───────────────────────────────────
+function renderPagination(containerId, activePage, totalPages) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const arrowLeft = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m15 18-6-6 6-6"/></svg>`;
+  const arrowRight = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m9 18 6-6-6-6"/></svg>`;
+
+  function pageRange(current, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    const pages = [];
+    pages.push(1);
+    if (current > 3) pages.push('…');
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (current < total - 2) pages.push('…');
+    pages.push(total);
+    return pages;
+  }
+
+  const pages = pageRange(activePage, totalPages);
+  let html = `<button class="io-page-btn nav-arrow" aria-label="Previous" ${activePage === 1 ? 'disabled' : ''}>${arrowLeft}</button>`;
+  pages.forEach(p => {
+    if (p === '…') {
+      html += `<span style="padding:0 4px;color:var(--text-secondary);">…</span>`;
+    } else {
+      const isActive = p === activePage;
+      html += `<button class="io-page-btn number${isActive ? ' active' : ''}" aria-label="Page ${p}" aria-current="${isActive ? 'page' : 'false'}">${p}</button>`;
+    }
+  });
+  html += `<button class="io-page-btn nav-arrow" aria-label="Next" ${activePage === totalPages ? 'disabled' : ''}>${arrowRight}</button>`;
+  container.innerHTML = html;
+}
+
+renderPagination('pag-demo-1', 1, 5);
+renderPagination('pag-demo-2', 5, 12);
+
+// ── Nav token rows ─────────────────────────────────────────
+[
+  ['Topbar background', '#DCCFC2', 'color.primary.beige'],
+  ['Dropdown z-index', '50', 'zIndex.overlay'],
+  ['Dropdown padding', '3rem', 'spacing.12'],
+  ['Link font-size', '1.125rem', 'typography.fontSize.lg'],
+  ['Link font-weight', '600', 'typography.fontWeight.semiBold'],
+  ['Focus ring', '0 0 0 2px #7D0034, 0 0 0 4px #FFE4EE', 'component.focus.ringCss'],
+].forEach(([label, value, token]) => {
+  document.getElementById('nav-tokens').appendChild(rowCard(label, value, value, token, '', ''));
+});
+
+// ── Pagination token rows ──────────────────────────────────
+[
+  ['Button size', '3rem × 3rem', '3rem', 'spacing.12'],
+  ['Button gap', '1rem', '1rem', 'spacing.4'],
+  ['Active color', '#0000D2', '#0000D2', 'color.primary.blue'],
+  ['Inactive color', '#747474', '#747474', 'color.neutral.greyFour'],
+  ['Nav arrow bg', '#DCCFC2', '#DCCFC2', 'color.primary.beige'],
+  ['Border radius', '9999px', '9999px', 'borderRadius.pill'],
+].forEach(([label, valueDisplay, copyText, token]) => {
+  document.getElementById('pag-tokens').appendChild(rowCard(label, valueDisplay, copyText, token, '', ''));
+});
+
+// ── Active nav on scroll ───────────────────────────────────
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// ── Form field: make label float when filled ───────────────
+document.querySelectorAll('.io-field input, .io-field select, .io-field textarea').forEach(el => {
+  const update = () => {
+    const field = el.closest('.io-field');
+    if (!field) return;
+    const empty = el.tagName === 'SELECT'
+      ? el.value === '' || el.value === '0'
+      : el.value.trim() === '';
+    field.classList.toggle('filled', !empty);
+  };
+  el.addEventListener('input', update);
+  el.addEventListener('change', update);
+  update();
+});
+</script>
+</body>
+</html>

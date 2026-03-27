@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Stencil build outputs
+dist/
+dist-custom-elements/
+loader/
+www/
+hydrate/
+
+# Next.js
+.next/
+out/
+
+# Generated wrapper files (regenerated on every Stencil build)
+io-components-react/src/components.ts
+io-components-vue/src/components.ts
+io-components-angular/src/directives/proxies.ts
+io-components-angular/src/directives/index.ts
+
+# AI / Local-only folders (DO NOT COMMIT)
+design-system/
+prompts/
+issues/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Env files
+.env
+.env.local
+.env*.local
+
+# Firebase
+.firebase/
+firebase-debug.log

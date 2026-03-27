@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/*
+ * io-components token stylesheet is loaded via <link> in layout.tsx (not @import here,
+ * because the /stencil/* proxy only rewrites at request time, not at build time).
+ * All --io-* custom properties are therefore available at runtime on :root.
+ */
+
+/* ─── Base styles ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  /* --font-manrope is injected by next/font (layout.tsx) via the .variable class on <html>.
+     Falls back to the system Manrope if the variable isn't present yet. */
+  font-family: var(--font-manrope, var(--io-font-family-base, 'Manrope', sans-serif));
+  background: var(--io-bg-base, #ffffff);
+  color: var(--io-text-primary, #242424);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-manrope, var(--io-font-family-base, 'Manrope', sans-serif));
+  font-weight: var(--io-font-weight-semibold, 600);
+}
+
+h1 {
+  letter-spacing: var(--io-heading-tracking-1, -0.025em);
+  line-height: var(--io-line-height-heading, 1.2);
+}
+
+h2 {
+  letter-spacing: var(--io-heading-tracking-2, -0.02em);
+  line-height: var(--io-line-height-heading, 1.2);
+}
+
+h3 {
+  letter-spacing: var(--io-heading-tracking-3, -0.015em);
+  line-height: 1.3;
+}
+
+h4 { letter-spacing: var(--io-heading-tracking-4, -0.01em); }
+
+h5, h6 { letter-spacing: 0; }
+
+h1, h2, h3 { text-rendering: optimizeLegibility; }
+
+/* ─── Inline code baseline (not inside syntax highlighter) ──────────────────── */
+
+code:not([class*="language-"]) {
+  font-size: 0.875em;
+  background-color: var(--io-bg-raised, #f7f7f7);
+  border: 1px solid var(--io-border, #ebebeb);
+  border-radius: var(--io-border-radius-xs, 4px);
+  padding: 0.1em 0.35em;
+  font-family: ui-monospace, 'Cascadia Mono', 'Fira Code', monospace;
+}
+
+/* ─── Focus visible ─────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--io-focus-inner, #7D0034);
+  outline-offset: 4px;
+}
+
+/* ─── colour-scheme hints (enables native form control theming) ─────────────── */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* ─── Scrollbar styling ─────────────────────────────────────────────────────── */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--io-bg-hover, #ebebeb) transparent;
+}
+
+/* ─── react-syntax-highlighter: inherit background from token ──────────────── */
+
+pre.react-syntax-highlighter-line-numbers {
+  background: var(--io-bg-base) !important;
+}

@@ -1,0 +1,217 @@
+:root {
+  --privacy-policy-background-color: #fff;
+  --privacy-policy-border-top-color: 1px solid #e9ecef;
+  --privacy-policy-btn-dislay: block;
+  --privacy-policy-btn-background-color: #000;
+  --privacy-policy-btn-background-hover-color: #333;
+  --privacy-policy-btn-hover-color: #FFF;
+  --privacy-policy-btn-color: #FFF;
+  --privacy-policy-padding-top: 12px;
+  --privacy-policy-padding-bottom: 12px;
+  --privacy-policy-padding-left: 20px;
+  --privacy-policy-padding-right: 20px;
+  --privacy-policy-font-family: Helvetica,Arial,sans-serif;
+  --privacy-policy-font-size: 14px;
+  --privacy-policy-letter-spacing: 1px;
+  --privacy-policy-line-height: 1.5;
+  --privacy-policy-text-transform: uppercase;
+  --privacy-policy-border: 0;
+  --privacy-policy-text-align: center;
+  --privacy-policy-border-radius: 0;
+  --privacy-policy-outline: none; }
+
+body#privacy-container {
+  font-family: Helvetica, Arial, sans-serif;
+  padding: 20px;
+  width: 900px;
+  margin: 0 auto; }
+
+#privacy-container h2, #policyModal h2, #policyViewModal h2, #privacy-container h1, #policyModal h1, #policyViewModal h1 {
+  margin-bottom: 20px;
+  margin-top: 0; }
+
+#privacy-container label {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #4d5360;
+  margin-bottom: 8px;
+  display: block; }
+
+#privacy-container #wrapper {
+  background: var(--privacy-policy-background-color);
+  margin: 0 8px;
+  position: relative; }
+
+#privacy-container #main {
+  width: 100%;
+  padding: 25px 15px 25px 15px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box; }
+
+#privacy-container input[type="submit"] {
+  display: block;
+  margin: 30px auto 0 auto;
+  /*background-color: #000;*/
+  color: #FFF;
+  padding: 12px 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 0;
+  text-align: center;
+  cursor: pointer; }
+
+#privacy-container .infoBox {
+  font-size: 0.8em;
+  width: 100%;
+  padding: 15px;
+  background-color: #dcdfe5;
+  margin-bottom: 20px; }
+
+#privacy-container .infoBox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#privacy-container .infoBox p {
+  margin: 0 0 6px 0; }
+
+#privacy-container .infoBox p:last-child {
+  margin: 0; }
+
+#privacy-container .error,
+#privacy-container .success {
+  font-size: 0.8em;
+  text-align: center;
+  margin-bottom: 19px; }
+
+#privacy-container .error {
+  color: red; }
+
+#privacy-container .success {
+  color: green; }
+
+/***** START - Policy css rules ****/
+@media (min-width: 768px) {
+  #policyModal .modal-dialog, #policyViewModal .modal-dialog {
+    max-width: 600px;
+    margin: 30px auto; } }
+
+#policyModal .modal-body, #policyViewModal .modal-body {
+  padding: 30px; }
+
+#policyModal .modal-content, #policyViewModal .modal-content {
+  background: var(--privacy-policy-background-color); }
+
+#policyModal .modal-footer, #policyViewModal .modal-footer {
+  padding: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  border-top: var(--privacy-policy-border-top-color); }
+
+#policyModal .privacy-manual-logo, #policyViewModal .privacy-manual-logo {
+  padding: 0 0 30px 0; }
+
+#policyViewModal.fancybox-content,
+#policyModal.fancybox-content {
+  display: none;
+  max-width: 600px;
+  padding: 30px 30px 0 30px;
+  height: auto;
+  border-radius: 5px; }
+
+.hidden-policy-anchor {
+  display: none; }
+
+.fancybox-buttons {
+  display: none !important; }
+
+#policyViewModal table,
+#policyModal table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; }
+
+#policyViewModal table p,
+#policyModal table p {
+  float: left;
+  width: auto;
+  padding: 6px;
+  margin: 0 auto; }
+
+#policyViewModal p,
+#policyModal p {
+  margin: 0 auto;
+  width: auto;
+  padding: 6px 0; }
+
+#footer a, .footer a, a.policy-modal, #copyright-credits a, #footercopy a {
+  outline: none; }
+
+#privacy-container h2,
+#policyModal h6,
+#policyViewModal h6,
+#policyModal h5,
+#policyViewModal h5,
+#policyModal h4,
+#policyViewModal h4,
+#policyModal h3,
+#policyViewModal h3,
+#policyModal h2,
+#policyViewModal h2,
+#privacy-container h1,
+#policyViewModal h1,
+#policyModal h1 {
+  background: var(--privacy-policy-background-color);
+  margin-top: 0 !important; }
+
+.manual-login p.error {
+  display: none !important; }
+
+.manual-login form input.submit.ne {
+  float: none;
+  text-align: center;
+  width: auto; }
+
+#policyViewModal .policy-content,
+#policyModal .policy-content {
+  padding-bottom: 30px; }
+
+#privacy-container input[type="submit"]:hover, #privacy-container a.btn-back:hover, #policyModal .close-btn:hover, #policyModal .accept-btn:hover, #policyViewModal .close-btn:hover {
+  background: var(--privacy-policy-btn-background-hover-color);
+  color: var(--privacy-policy-btn-hover-color); }
+
+#privacy-container a.btn-back, #policyModal .close-btn, #policyModal .accept-btn, #policyViewModal .close-btn {
+  cursor: pointer;
+  text-decoration: none;
+  display: var(--privacy-policy-btn-dislay);
+  background-color: var(--privacy-policy-btn-background-color);
+  color: var(--privacy-policy-btn-color);
+  padding-top: var(--privacy-policy-padding-top);
+  padding-bottom: var(--privacy-policy-padding-bottom);
+  padding-left: var(--privacy-policy-padding-left);
+  padding-right: var(--privacy-policy-padding-right);
+  font-family: var(--privacy-policy-font-family);
+  font-size: var(--privacy-policy-font-size);
+  letter-spacing: var(--privacy-policy-letter-spacing);
+  line-height: var(--privacy-policy-line-height);
+  text-transform: var(--privacy-policy-text-transform);
+  border: var(--privacy-policy-border);
+  text-align: var(--privacy-policy-text-align);
+  border-radius: var(--privacy-policy-border-radius);
+  outline: var(--privacy-policy-outline); }
+  #privacy-container a.btn-back:focus, #policyModal .close-btn:focus, #policyModal .accept-btn:focus, #policyViewModal .close-btn:focus {
+    outline: none;
+    outline-width: 0;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none; }

@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "project": "io-design-system",
+  "description": "Curated Agency Agents pack for io-design-system component engineering, docs, and quality loops.",
+  "agents": [
+    {
+      "source": "engineering/engineering-frontend-developer.md",
+      "priority": "core",
+      "why": "Component implementation, performance, and accessibility in storefront examples."
+    },
+    {
+      "source": "design/design-ui-designer.md",
+      "priority": "core",
+      "why": "Visual consistency and token-aware component polish."
+    },
+    {
+      "source": "design/design-ux-architect.md",
+      "priority": "core",
+      "why": "Interaction structure and implementation-ready UX guidance."
+    },
+    {
+      "source": "testing/testing-accessibility-auditor.md",
+      "priority": "core",
+      "why": "A11y-first validation for WCAG, keyboard flow, and semantics."
+    },
+    {
+      "source": "testing/testing-evidence-collector.md",
+      "priority": "core",
+      "why": "Screenshot-backed QA for storefront examples and regressions."
+    },
+    {
+      "source": "engineering/engineering-code-reviewer.md",
+      "priority": "core",
+      "why": "PR review quality gate focused on correctness, security, and tests."
+    },
+    {
+      "source": "testing/testing-reality-checker.md",
+      "priority": "support",
+      "why": "Sanity-check implementation claims against actual behavior."
+    },
+    {
+      "source": "engineering/engineering-technical-writer.md",
+      "priority": "support",
+      "why": "Improve component docs, examples, and migration notes."
+    },
+    {
+      "source": "engineering/engineering-git-workflow-master.md",
+      "priority": "support",
+      "why": "Branching, commit hygiene, and release-friendly Git flow."
+    }
+  ]
+}

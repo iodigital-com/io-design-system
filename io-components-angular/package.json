@@ -1,0 +1,37 @@
+{
+  "name": "@io-digital/components-angular",
+  "version": "0.0.1",
+  "description": "Angular wrapper package for io Digital Web Components.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=17.0.0 <21.0.0",
+    "@io-digital/components": "^0.0.1",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@angular/core": "^20.0.0",
+    "@io-digital/components": "file:../io-components",
+    "rxjs": "^7.8.0",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

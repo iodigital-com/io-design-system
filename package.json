@@ -1,0 +1,33 @@
+{
+  "name": "io-design-system",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Root workspace orchestration for io Digital Design System",
+  "workspaces": [
+    "io-components",
+    "io-storefront",
+    "io-components-react",
+    "io-components-vue",
+    "io-components-angular"
+  ],
+  "scripts": {
+    "dev": "npm --workspace @io-digital/components run dev",
+    "build:components": "npm --workspace @io-digital/components run build",
+    "build:wrapper:react": "npm --workspace @io-digital/components-react run build",
+    "build:wrapper:vue": "npm --workspace @io-digital/components-vue run build",
+    "build:wrapper:angular": "npm --workspace @io-digital/components-angular run build",
+    "build:wrappers": "npm run build:wrapper:react && npm run build:wrapper:vue && npm run build:wrapper:angular",
+    "build": "npm run build:components && npm run build:wrappers",
+    "test": "npm --workspace @io-digital/components run test",
+    "type-check": "npm --workspace @io-digital/storefront run type-check",
+    "build:storefront": "npm --workspace @io-digital/storefront run build",
+    "sync:stencil-assets": "node scripts/sync-stencil-assets.cjs",
+    "governance:check": "node scripts/agency-validate-governance.cjs",
+    "agents:install:claude": "node scripts/install-curated-agency-claude.cjs",
+    "build:storefront:release": "npm run build:components && npm run sync:stencil-assets && npm run build:storefront",
+    "build:quality-gates": "npm run governance:check && npm run build && npm run test && npm run type-check && npm run build:storefront"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

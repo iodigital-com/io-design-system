@@ -1,0 +1,4 @@
+
+window.sqzl = window.sqzl || [];
+window.sqzl.p = window.sqzl.p || [];
+window.sqzl.p.push( {"event":"SetPersonalizations","data":{"_noFB":true,"_error":true}});

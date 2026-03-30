@@ -46,7 +46,7 @@ function TabsWithPanels() {
       >
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           This is the <strong style={{ color: 'var(--io-text-primary)' }}>Details</strong> panel.
-          Listen for the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioChange</code> event
+          Listen for the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>change</code> event
           to update which panel is shown.
         </p>
       </div>
@@ -73,7 +73,7 @@ function TabsWithPanels() {
       <io-tabs
         tabs={tabs as unknown}
         active-tab={activeTab}
-        onIoChange={(e: CustomEvent<string>) => setActiveTab(e.detail)}
+        onChange={(e: any) => setActiveTab((e as CustomEvent<string>).detail)}
       />
       {panels[activeTab]}
     </div>
@@ -111,7 +111,7 @@ export default function IoTabsExamplesPage() {
             className="text-xs font-mono px-1.5 py-0.5 rounded"
             style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}
           >
-            ioChange
+            change
           </code>{' '}
           with the newly active tab value; the application layer conditionally renders the
           corresponding panel.

@@ -39,7 +39,7 @@ export default function IoTextareaApiPage() {
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Controlled value. Mutable — updated internally on user input. Bind to ioChange or ioInput to keep external state in sync.',
+              'Controlled value. Mutable — updated internally on user input. Bind to change or input to keep external state in sync.',
             ],
             [
               <InlineCode key="n">placeholder</InlineCode>,
@@ -122,25 +122,25 @@ export default function IoTextareaApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioInput</InlineCode>,
+              <InlineCode key="n">input</InlineCode>,
               <InlineCode key="t">InputEvent</InlineCode>,
               'No',
               'Fires on every keystroke, including Enter for new lines. The native InputEvent is passed as the event detail. Use for live character counting.',
             ],
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               'No',
               'Fires when the textarea loses focus after the value has changed. Detail is the current string value. Preferred event for form state management and validation triggers.',
             ],
             [
-              <InlineCode key="n">ioFocus</InlineCode>,
+              <InlineCode key="n">focus</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the textarea gains focus.',
             ],
             [
-              <InlineCode key="n">ioBlur</InlineCode>,
+              <InlineCode key="n">blur</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the textarea loses focus. Recommended trigger point for field-level validation.',
@@ -150,16 +150,16 @@ export default function IoTextareaApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-textarea')
-  .addEventListener('ioChange', (e) => console.log(e.detail));
+  .addEventListener('change', (e) => console.log(e.detail));
 
 // React
 <IoTextarea
   label="Message"
-  onIoChange={(e) => setMessage(e.detail)}
+  onChange={(e) => setMessage(e.detail)}
 />
 
 // Angular
-<io-textarea label="Message" (ioChange)="handleChange($event)"></io-textarea>
+<io-textarea label="Message" (change)="handleChange($event)"></io-textarea>
 
 // Vue
 <io-textarea label="Message" @io-change="handleChange" />`}

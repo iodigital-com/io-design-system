@@ -81,7 +81,7 @@ export default function IoModalUsagePage() {
             <C>closeOnBackdrop</C> is enabled by default. Disable it only for critical dialogs where accidental dismissal would result in data loss — such as a multi-step form. When disabled, the close button in the footer becomes the only dismissal route, so it must always be present.
           </RuleCard>
           <RuleCard label="Return focus to the trigger element on close">
-            When the modal closes, focus should return to the element that opened it — typically the button that called <C>show()</C>. Listen for the <C>ioClose</C> event and call <C>.focus()</C> on the trigger element reference to restore context for keyboard users.
+            When the modal closes, focus should return to the element that opened it — typically the button that called <C>show()</C>. Listen for the <C>close</C> event and call <C>.focus()</C> on the trigger element reference to restore context for keyboard users.
           </RuleCard>
           <RuleCard label="Do not auto-dismiss dialogs">
             Never close a modal automatically after a timeout. Auto-dismissal disorients users who rely on screen readers and prevents keyboard users from completing their interaction. If you need a time-limited message, use a toast instead.

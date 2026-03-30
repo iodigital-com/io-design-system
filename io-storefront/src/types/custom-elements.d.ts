@@ -173,7 +173,7 @@ declare module 'react' {
           tabs?: unknown;
           'active-tab'?: string;
           activeTab?: string;
-          onIoChange?: (e: CustomEvent<string>) => void;
+          onChange?: (e: CustomEvent<string>) => void;
         },
         HTMLElement
       >;
@@ -185,8 +185,8 @@ declare module 'react' {
           heading?: string;
           size?: 'sm' | 'md' | 'lg';
           'close-on-backdrop'?: boolean;
-          onIoOpen?: (e: CustomEvent<void>) => void;
-          onIoClose?: (e: CustomEvent<void>) => void;
+          onOpen?: (e: CustomEvent<void>) => void;
+          onClose?: (e: CustomEvent<void>) => void;
         },
         HTMLElement
       >;
@@ -211,7 +211,7 @@ declare module 'react' {
         HTMLAttributes<HTMLElement> & {
           text?: string;
           variant?: 'neutral' | 'success' | 'error' | 'warning' | 'info';
-          onIoToastDismiss?: (e: CustomEvent<void>) => void;
+          onDismiss?: (e: CustomEvent<void>) => void;
         },
         HTMLElement
       >;

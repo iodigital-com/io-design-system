@@ -39,7 +39,7 @@ export default function IoSelectApiPage() {
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Controlled selected value. Mutable — updated internally when the user selects an option. Bind to ioChange to keep external state in sync.',
+              'Controlled selected value. Mutable — updated internally when the user selects an option. Bind to change to keep external state in sync.',
             ],
             [
               <InlineCode key="n">placeholder</InlineCode>,
@@ -109,19 +109,19 @@ export default function IoSelectApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               'No',
               'Fires when the selected value changes. Detail is the new selected option value string.',
             ],
             [
-              <InlineCode key="n">ioFocus</InlineCode>,
+              <InlineCode key="n">focus</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the select gains focus.',
             ],
             [
-              <InlineCode key="n">ioBlur</InlineCode>,
+              <InlineCode key="n">blur</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the select loses focus. Recommended trigger point for field-level validation.',
@@ -131,17 +131,17 @@ export default function IoSelectApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-select')
-  .addEventListener('ioChange', (e) => console.log('value:', e.detail));
+  .addEventListener('change', (e) => console.log('value:', e.detail));
 
 // React
 <IoSelect
   label="Country"
   options={options}
-  onIoChange={(e) => setCountry(e.detail)}
+  onChange={(e) => setCountry(e.detail)}
 />
 
 // Angular
-<io-select label="Country" [options]="options" (ioChange)="onSelect($event)"></io-select>
+<io-select label="Country" [options]="options" (change)="onSelect($event)"></io-select>
 
 // Vue
 <io-select label="Country" :options="options" @io-change="handleChange" />`}

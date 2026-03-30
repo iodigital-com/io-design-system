@@ -34,7 +34,7 @@ export default function IoSelectAccessibilityPage() {
             },
             {
               key: <Kbd>↓</Kbd>,
-              action: 'Selects the next option. Fires ioChange with the newly selected value.',
+              action: 'Selects the next option. Fires change with the newly selected value.',
             },
             {
               key: <Kbd>Enter</Kbd>,
@@ -149,9 +149,9 @@ export default function IoSelectAccessibilityPage() {
         </RuleCard>
         <RuleCard label="Validate on blur, not on every change">
           Showing errors while the user is still cycling through options is disorienting. Trigger validation on the{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioBlur</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>blur</code>{' '}
           event or on form submit, not on every{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioChange</code>.
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>change</code>.
         </RuleCard>
         <RuleCard label="Do not disable individual options as category headers">
           Disabled options with no value are sometimes used as visual group separators. This pattern is not accessible — use native optgroup elements in the select markup for grouping, or restructure the options to avoid nesting.

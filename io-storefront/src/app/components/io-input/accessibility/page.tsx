@@ -26,7 +26,7 @@ export default function IoInputAccessibilityPage() {
             },
             {
               key: <span className="flex items-center gap-1"><Kbd>Any key</Kbd></span>,
-              action: 'Types into the field. The ioInput event fires on every keystroke with the native InputEvent as detail.',
+              action: 'Types into the field. The input event fires on every keystroke with the native InputEvent as detail.',
             },
             {
               key: <Kbd>Enter</Kbd>,
@@ -151,8 +151,8 @@ export default function IoInputAccessibilityPage() {
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>tel</code>) for fields where browser autofill and password managers can save users effort — especially valuable for users with motor impairments.
         </RuleCard>
         <RuleCard label="Validate on blur, not on every keystroke">
-          Showing errors while the user is still typing is disorienting for screen reader users who receive live announcements. Trigger validation on the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioBlur</code>{' '}
-          event or on form submit — not on <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioInput</code>.
+          Showing errors while the user is still typing is disorienting for screen reader users who receive live announcements. Trigger validation on the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>blur</code>{' '}
+          event or on form submit — not on <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>input</code>.
         </RuleCard>
         <RuleCard label="Do not auto-advance focus">
           Programmatically moving focus to the next field when a maximum length is reached (e.g. OTP fields) bypasses user control. Let users move focus themselves with Tab. If you use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>setFocus()</code>, ensure it is in response to an explicit user action.

@@ -39,13 +39,13 @@ export default function IoCheckboxApiPage() {
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Value submitted with the form when the checkbox is checked. Passed as the value field in the ioChange event detail.',
+              'Value submitted with the form when the checkbox is checked. Passed as the value field in the change event detail.',
             ],
             [
               <span key="n"><InlineCode>checked</InlineCode></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Whether the checkbox is checked. Mutable — updated internally on user interaction. Bind to ioChange to keep external state in sync.',
+              'Whether the checkbox is checked. Mutable — updated internally on user interaction. Bind to change to keep external state in sync.',
             ],
             [
               <InlineCode key="n">indeterminate</InlineCode>,
@@ -102,7 +102,7 @@ export default function IoCheckboxApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">{'{ checked: boolean; value: string }'}</InlineCode>,
               'No',
               'Fires when the user toggles the checkbox. The detail contains the new checked state and the current value string.',
@@ -112,18 +112,18 @@ export default function IoCheckboxApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-checkbox')
-  .addEventListener('ioChange', (e) => {
+  .addEventListener('change', (e) => {
     console.log('checked:', e.detail.checked, 'value:', e.detail.value);
   });
 
 // React
 <IoCheckbox
   label="Accept terms"
-  onIoChange={(e) => setAccepted(e.detail.checked)}
+  onChange={(e) => setAccepted(e.detail.checked)}
 />
 
 // Angular
-<io-checkbox label="Accept terms" (ioChange)="onCheck($event)"></io-checkbox>
+<io-checkbox label="Accept terms" (change)="onCheck($event)"></io-checkbox>
 
 // Vue
 <io-checkbox label="Accept terms" @io-change="handleChange" />`}

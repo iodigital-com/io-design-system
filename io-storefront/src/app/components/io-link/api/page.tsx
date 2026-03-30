@@ -88,7 +88,7 @@ export default function IoLinkApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioClick</InlineCode>,
+              <InlineCode key="n">click</InlineCode>,
               <InlineCode key="t">MouseEvent</InlineCode>,
               'No',
               'Fires when the link is clicked and not disabled. The native MouseEvent is passed as the event detail. Useful for analytics tracking or SPA navigation interception.',
@@ -98,10 +98,10 @@ export default function IoLinkApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-link')
-  .addEventListener('ioClick', (e) => console.log(e.detail));
+  .addEventListener('click', (e) => console.log(e.detail));
 
 // React
-<IoLink onIoClick={(e) => trackNavigation(e.detail)} href="/docs">
+<IoLink onClick={(e) => trackNavigation(e.detail)} href="/docs">
   Documentation
 </IoLink>
 

@@ -170,9 +170,9 @@ export function SearchBar() {
       <IoInput
         label="Search"
         value={query}
-        onIoChange={(event) => setQuery(event.detail.value)}
+        onChange={(event) => setQuery(event.detail.value)}
       />
-      <IoButton variant="solid" onIoClick={handleSearch}>
+      <IoButton variant="solid" onClick={handleSearch}>
         Search
       </IoButton>
     </div>

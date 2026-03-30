@@ -79,7 +79,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-checkbox/configurator',
         status: 'stable',
         slug: 'io-checkbox',
-        description: 'Binary selection with a built-in label and indeterminate state. Emits checked value via ioChange.',
+        description: 'Binary selection with a built-in label and indeterminate state. Emits checked value via change.',
         related: ['io-radio', 'io-select', 'io-input'],
       },
       {
@@ -111,7 +111,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-radio/configurator',
         status: 'stable',
         slug: 'io-radio',
-        description: 'Single-select from a group. Built-in label, helper text, error state, and ioChange event.',
+        description: 'Single-select from a group. Built-in label, helper text, error state, and change event.',
         related: ['io-checkbox', 'io-select', 'io-input'],
       },
       {
@@ -143,7 +143,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-tag/configurator',
         status: 'stable',
         slug: 'io-tag',
-        description: 'Toggleable filter chip or removable label. Renders as a button with aria-pressed — emits ioToggle and ioRemove.',
+        description: 'Toggleable filter chip or removable label. Renders as a button with aria-pressed — emits toggle and remove.',
         related: ['io-badge', 'io-checkbox', 'io-tabs'],
       },
       {

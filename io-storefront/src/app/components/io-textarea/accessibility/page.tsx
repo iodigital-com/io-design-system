@@ -26,11 +26,11 @@ export default function IoTextareaAccessibilityPage() {
             },
             {
               key: <Kbd>Enter</Kbd>,
-              action: 'Inserts a new line within the textarea. Does not submit the parent form (unlike single-line inputs). The ioInput event fires with the native InputEvent.',
+              action: 'Inserts a new line within the textarea. Does not submit the parent form (unlike single-line inputs). The input event fires with the native InputEvent.',
             },
             {
               key: <span className="flex items-center gap-1"><Kbd>Any key</Kbd></span>,
-              action: 'Types into the field. The ioInput event fires on every keystroke with the native InputEvent as detail.',
+              action: 'Types into the field. The input event fires on every keystroke with the native InputEvent as detail.',
             },
           ]}
         />
@@ -151,9 +151,9 @@ export default function IoTextareaAccessibilityPage() {
         </RuleCard>
         <RuleCard label="Validate on blur, not on every keystroke">
           Showing errors while the user is actively typing is disorienting for screen reader users who receive live announcements. Trigger validation on the{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioBlur</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>blur</code>{' '}
           event or on form submit — not on{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>ioInput</code>.
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>input</code>.
         </RuleCard>
         <RuleCard label="Do not use resize=none when content might overflow">
           Preventing resize removes user control and can cause critical content to be obscured inside a scrolling area. Only use{' '}

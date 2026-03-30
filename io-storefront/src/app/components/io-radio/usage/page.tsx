@@ -81,7 +81,7 @@ export default function IoRadioUsagePage() {
             The <C>name</C> attribute is what binds radio buttons into a mutually exclusive group. Without a shared name, the browser treats each radio as independent and will not enforce the one-selection-only constraint.
           </RuleCard>
           <RuleCard label="Set a unique value on each option">
-            The <C>value</C> prop distinguishes options within the group. When the user selects a radio, the <C>ioChange</C> event detail carries both <C>checked: true</C> and the option&rsquo;s value string. If value is omitted it defaults to an empty string, making all options indistinguishable in event handlers.
+            The <C>value</C> prop distinguishes options within the group. When the user selects a radio, the <C>change</C> event detail carries both <C>checked: true</C> and the option&rsquo;s value string. If value is omitted it defaults to an empty string, making all options indistinguishable in event handlers.
           </RuleCard>
           <RuleCard label="Ensure exactly one option is pre-selected when appropriate">
             Radio groups should generally have one option selected by default if a sensible default exists. An empty radio group (no option pre-selected) is acceptable when the choice is genuinely unknown, but avoid it in forms that require one of the options.

@@ -27,7 +27,7 @@ export default function IoTagUsagePage() {
               Keep tag label text concise — one or two words. Tags are compact UI elements; long text breaks the pill shape and creates visual inconsistency.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Listen to <C>ioToggle</C> to track the new selected value and update your application state accordingly.
+              Listen to <C>toggle</C> to track the new selected value and update your application state accordingly.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -94,7 +94,7 @@ export default function IoTagUsagePage() {
             Removable tags appear after a user has typed or selected a value — e.g. a multi-select autocomplete or a keyword entry field. Each tag in the field represents one confirmed selection. The remove icon (×) allows the user to deselect that individual item.
           </RuleCard>
           <RuleCard label="Do not combine removable with selected toggle">
-            Removable tags should not also fire <C>ioToggle</C>. The remove icon is the interaction trigger. If you need both toggle and remove in the same group, reconsider the information architecture.
+            Removable tags should not also fire <C>toggle</C>. The remove icon is the interaction trigger. If you need both toggle and remove in the same group, reconsider the information architecture.
           </RuleCard>
         </div>
       </section>

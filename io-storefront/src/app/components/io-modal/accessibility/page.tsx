@@ -26,7 +26,7 @@ export default function IoModalAccessibilityPage() {
             },
             {
               key: <Kbd>Esc</Kbd>,
-              action: 'Closes the modal and emits the ioClose event. This is native browser behaviour provided by showModal(). Focus returns to the element that opened the modal.',
+              action: 'Closes the modal and emits the close event. This is native browser behaviour provided by showModal(). Focus returns to the element that opened the modal.',
             },
             {
               key: <Kbd>Enter</Kbd>,

@@ -6,7 +6,7 @@ import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/genera
  * Configurator story for io-modal.
  *
  * Renders a trigger <io-button> alongside the <io-modal>.
- * EventConfig wires: button onClick → open:true, modal onIoClose → open:false.
+ * EventConfig wires: button onClick → open:true, modal onClose → open:false.
  */
 export const modalStory: Story<'io-modal'> = {
   state: {
@@ -53,7 +53,7 @@ export const modalStory: Story<'io-modal'> = {
           },
         ],
         events: {
-          onIoClose: { target: 'io-modal', prop: 'open', value: false },
+          onClose: { target: 'io-modal', prop: 'open', value: false },
         },
       },
     ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
@@ -97,7 +97,7 @@ export const modalStoryDefault: Story<'io-modal'> = {
             children: ['Confirm'],
           },
         ],
-        events: { onIoClose: { target: 'io-modal', prop: 'open', value: false } },
+        events: { onClose: { target: 'io-modal', prop: 'open', value: false } },
       },
     ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
   },
@@ -131,7 +131,7 @@ export const modalStorySm: Story<'io-modal'> = {
             children: ['Confirm'],
           },
         ],
-        events: { onIoClose: { target: 'io-modal', prop: 'open', value: false } },
+        events: { onClose: { target: 'io-modal', prop: 'open', value: false } },
       },
     ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
   },
@@ -165,7 +165,7 @@ export const modalStoryLg: Story<'io-modal'> = {
             children: ['Confirm'],
           },
         ],
-        events: { onIoClose: { target: 'io-modal', prop: 'open', value: false } },
+        events: { onClose: { target: 'io-modal', prop: 'open', value: false } },
       },
     ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
   },
@@ -204,7 +204,7 @@ export const modalStoryNoHeading: Story<'io-modal'> = {
             children: ['Confirm'],
           },
         ],
-        events: { onIoClose: { target: 'io-modal', prop: 'open', value: false } },
+        events: { onClose: { target: 'io-modal', prop: 'open', value: false } },
       },
     ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
   },

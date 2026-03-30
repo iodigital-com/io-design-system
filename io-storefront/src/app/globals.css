@@ -66,6 +66,21 @@ code:not([class*="language-"]) {
   outline-offset: 4px;
 }
 
+.io-keyboard-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.io-keyboard-focus-ring:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+html[data-io-focus-modality='keyboard'] .io-keyboard-focus-ring:focus {
+  outline: 2px solid var(--io-focus-inner, #7D0034);
+  outline-offset: 4px;
+}
+
 /* ─── colour-scheme hints (enables native form control theming) ─────────────── */
 
 :root,

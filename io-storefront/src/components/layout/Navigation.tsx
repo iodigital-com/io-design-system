@@ -118,7 +118,7 @@ export function Navigation() {
             onKeyDown={(e) => { if (e.key === 'Escape') setQuery(''); }}
             placeholder="Search…"
             aria-label="Search navigation items"
-            className="w-full pl-3 pr-7 py-1.5 text-sm rounded-lg bg-[var(--io-bg-raised)] border border-[var(--io-border)] text-[var(--io-text-primary)] placeholder:text-[var(--io-text-muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
+            className="io-keyboard-focus-ring w-full pl-3 pr-7 py-1.5 text-sm rounded-lg bg-[var(--io-bg-raised)] border border-[var(--io-border)] text-[var(--io-text-primary)] placeholder:text-[var(--io-text-muted)]"
           />
           {query && (
             <button

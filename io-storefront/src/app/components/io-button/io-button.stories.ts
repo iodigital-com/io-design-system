@@ -164,6 +164,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['solid', 'ghost'],
     defaultValue: 'solid',
+    description: 'Chooses the visual button style.',
     group: 'Appearance',
   },
   {
@@ -171,6 +172,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['blue', 'white', 'black', 'antraciet', 'orange', 'pink', 'rouge', 'yellow', 'beige', 'grey'],
     defaultValue: 'blue',
+    description: 'Sets the button colour token.',
     group: 'Appearance',
   },
   {
@@ -178,6 +180,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['sm', 'md', 'lg', 'xl'],
     defaultValue: 'md',
+    description: 'Adjusts button height and padding.',
     group: 'Appearance',
   },
   // ── Content ───────────────────────────────────────────────
@@ -185,6 +188,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Click me',
+    description: 'Defines the button text label.',
     group: 'Content',
   },
   {
@@ -192,6 +196,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['none', 'forward', 'back', 'down'],
     defaultValue: 'none',
+    description: 'Adds an optional directional arrow icon.',
     group: 'Content',
   },
   {
@@ -199,6 +204,7 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['right', 'left'],
     defaultValue: 'right',
+    description: 'Controls whether the arrow appears before or after the label.',
     group: 'Content',
   },
   // ── State ─────────────────────────────────────────────────
@@ -206,18 +212,21 @@ export const buttonPropDefinitions: PropDefinition[] = [
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+    description: 'Disables interaction and applies disabled styling.',
     group: 'State',
   },
   {
     name: 'loading',
     type: 'boolean',
     defaultValue: false,
+    description: 'Shows a loading state and blocks clicks.',
     group: 'State',
   },
   {
     name: 'fullWidth',
     type: 'boolean',
     defaultValue: false,
+    description: 'Expands the button to fill the available width.',
     group: 'State',
   },
 ];

@@ -49,31 +49,37 @@ export const inputPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Full name',
+    description: 'Sets the field label shown above the input.',
   },
   {
     name: 'type',
     type: 'select',
     options: ['text', 'email', 'password', 'number', 'tel', 'url'],
     defaultValue: 'text',
+    description: 'Defines the native input type and keyboard behavior.',
   },
   {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+    description: 'Prevents editing and focus interactions.',
   },
   {
     name: 'error',
     type: 'boolean',
     defaultValue: false,
+    description: 'Applies the invalid visual state.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     defaultValue: '',
+    description: 'Shows validation feedback below the field.',
   },
   {
     name: 'helperText',
     type: 'string',
     defaultValue: '',
+    description: 'Displays supporting guidance below the input.',
   },
 ];

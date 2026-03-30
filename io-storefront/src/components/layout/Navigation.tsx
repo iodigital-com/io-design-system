@@ -19,7 +19,7 @@ const SECTION_PRIORITY: Record<string, number> = {
 
 const SECTION_ITEM_PRIORITY: Record<string, string[]> = {
   Components: ['Introduction'],
-  Developing: ['Introduction', 'Next.js', 'React', 'Vanilla JS', 'Angular', 'Vue'],
+  Developing: ['Introduction', 'Next.js', 'React', 'Vanilla JS', 'Angular', 'Vue', 'Components Ready'],
   Styles: ['Introduction', 'Logotype', 'Colours', 'Typography', 'Spacing', 'Grid', 'Motion', 'Focus', 'Border Radius'],
 };
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { SectionHeader, InlineCode, ApiTable, ReflectBadge } from '@/components/api/ApiPrimitives';
+import { CopyButton } from '@/components/CopyButton';
 
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -142,10 +143,27 @@ export default function IoButtonApiPage() {
           <p className="text-xs font-semibold mb-2" style={{ color: 'var(--io-text-muted)', letterSpacing: '0.04em' }}>
             Usage
           </p>
-          <pre
-            className="text-xs font-mono overflow-x-auto"
-            style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
-          >
+          <div className="relative group">
+            <CopyButton
+              text={`// Vanilla JS
+document.querySelector('io-button')
+  .addEventListener('ioClick', (e) => console.log(e.detail));
+
+// React
+<IoButton onIoClick={(e) => console.log(e.detail)}>Click me</IoButton>
+
+// Angular
+<io-button (click)="handleClick($event)">Click me</io-button>
+
+// Vue
+<io-button @click="handleClick">Click me</io-button>`}
+              ariaLabel="Copy button events usage code"
+              className="absolute right-2 top-2 z-10"
+            />
+            <pre
+              className="text-xs font-mono overflow-x-auto pr-16"
+              style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
+            >
 {`// Vanilla JS
 document.querySelector('io-button')
   .addEventListener('ioClick', (e) => console.log(e.detail));
@@ -158,7 +176,8 @@ document.querySelector('io-button')
 
 // Vue
 <io-button @click="handleClick">Click me</io-button>`}
-          </pre>
+            </pre>
+          </div>
         </div>
       </section>
 
@@ -189,10 +208,22 @@ document.querySelector('io-button')
           <p className="text-xs font-semibold mb-2" style={{ color: 'var(--io-text-muted)', letterSpacing: '0.04em' }}>
             Usage
           </p>
-          <pre
-            className="text-xs font-mono overflow-x-auto"
-            style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
-          >
+          <div className="relative group">
+            <CopyButton
+              text={`// Vanilla JS
+const btn = document.querySelector('io-button');
+await btn.setFocus({ preventScroll: true });
+
+// React (via ref)
+const ref = useRef(null);
+await ref.current.setFocus();`}
+              ariaLabel="Copy button methods usage code"
+              className="absolute right-2 top-2 z-10"
+            />
+            <pre
+              className="text-xs font-mono overflow-x-auto pr-16"
+              style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
+            >
 {`// Vanilla JS
 const btn = document.querySelector('io-button');
 await btn.setFocus({ preventScroll: true });
@@ -200,7 +231,8 @@ await btn.setFocus({ preventScroll: true });
 // React (via ref)
 const ref = useRef(null);
 await ref.current.setFocus();`}
-          </pre>
+            </pre>
+          </div>
         </div>
       </section>
 

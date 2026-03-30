@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import type { ReactNode } from 'react';
+import { CopyButton } from '@/components/CopyButton';
 
 // ── Accent-bar section heading — io Digital signature ─────────────────────────
 
-function SectionHeading({ children, badge }: { children: React.ReactNode; badge?: string }) {
+function SectionHeading({ children, badge }: { children: ReactNode; badge?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <span
@@ -170,12 +171,19 @@ export default function GettingStarted() {
             Built with Stencil and shipped as standard Web Components — works with React, Angular, Vue, or plain HTML.
           </p>
 
-          <pre
-            className="rounded-md px-4 py-3 text-sm overflow-x-auto"
-            style={{ background: 'var(--io-bg-surface)', color: '#d4d4d4' }}
-          >
-            <code>npm install @io-digital/components</code>
-          </pre>
+          <div className="relative group">
+            <CopyButton
+              text="npm install @io-digital/components"
+              ariaLabel="Copy quick start install command"
+              className="absolute right-3 top-3 z-10"
+            />
+            <pre
+              className="rounded-md px-4 py-3 pr-16 text-sm overflow-x-auto"
+              style={{ background: 'var(--io-bg-surface)', color: '#d4d4d4' }}
+            >
+              <code>npm install @io-digital/components</code>
+            </pre>
+          </div>
         </div>
 
         {/* Right: component name mosaic */}
@@ -221,12 +229,19 @@ export default function GettingStarted() {
                 <h3 className="font-semibold" style={{ color: 'var(--io-text-primary)' }}>
                   {title}
                 </h3>
-                <pre
-                  className="rounded-md p-4 text-sm overflow-x-auto"
-                  style={{ background: 'var(--io-bg-surface)', color: '#d4d4d4' }}
-                >
-                  <code>{code}</code>
-                </pre>
+                <div className="relative group">
+                  <CopyButton
+                    text={code}
+                    ariaLabel={`Copy code for step ${number}`}
+                    className="absolute right-3 top-3 z-10"
+                  />
+                  <pre
+                    className="rounded-md p-4 pr-16 text-sm overflow-x-auto"
+                    style={{ background: 'var(--io-bg-surface)', color: '#d4d4d4' }}
+                  >
+                    <code>{code}</code>
+                  </pre>
+                </div>
               </div>
             </div>
           ))}

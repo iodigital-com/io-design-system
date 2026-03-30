@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { CopyButton } from '@/components/CopyButton';
 
 export type CodeTab = { label: string; code: string };
 
@@ -27,17 +28,24 @@ export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
       </div>
 
       {/* Code panel */}
-      <pre
-        className="p-5 rounded-b-lg rounded-tr-lg text-sm font-mono overflow-x-auto leading-relaxed"
-        style={{
-          background: 'var(--io-bg-raised)',
-          border: '1px solid var(--io-border)',
-          borderTop: 'none',
-          color: 'var(--io-text-primary)',
-        }}
-      >
-        <code>{tabs[active].code}</code>
-      </pre>
+      <div className="relative group">
+        <CopyButton
+          text={tabs[active].code}
+          ariaLabel={`Copy ${tabs[active].label} code`}
+          className="absolute right-3 top-3 z-10"
+        />
+        <pre
+          className="p-5 pr-16 rounded-b-lg rounded-tr-lg text-sm font-mono overflow-x-auto leading-relaxed"
+          style={{
+            background: 'var(--io-bg-raised)',
+            border: '1px solid var(--io-border)',
+            borderTop: 'none',
+            color: 'var(--io-text-primary)',
+          }}
+        >
+          <code>{tabs[active].code}</code>
+        </pre>
+      </div>
     </div>
   );
 }

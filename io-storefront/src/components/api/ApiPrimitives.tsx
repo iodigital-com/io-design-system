@@ -1,4 +1,25 @@
-import type { ReactNode } from 'react';
+import { isValidElement, type ReactNode } from 'react';
+import { CopyButton } from '@/components/CopyButton';
+
+function nodeToText(node: ReactNode): string {
+  if (node == null || typeof node === 'boolean') {
+    return '';
+  }
+
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(nodeToText).join('');
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return nodeToText(node.props.children);
+  }
+
+  return '';
+}
 
 export function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
@@ -127,6 +148,8 @@ export function EmptyNote({ children }: { children: ReactNode }) {
 }
 
 export function CodeNote({ label, children }: { label: string; children: ReactNode }) {
+  const codeText = nodeToText(children);
+
   return (
     <div
       className="rounded-lg p-4"
@@ -135,12 +158,15 @@ export function CodeNote({ label, children }: { label: string; children: ReactNo
       <p className="text-xs font-semibold mb-2" style={{ color: 'var(--io-text-muted)', letterSpacing: '0.04em' }}>
         {label}
       </p>
-      <pre
-        className="text-xs font-mono overflow-x-auto"
-        style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
-      >
-        {children}
-      </pre>
+      <div className="relative group">
+        <CopyButton text={codeText} ariaLabel={`Copy ${label} code`} className="absolute right-2 top-2 z-10" />
+        <pre
+          className="text-xs font-mono overflow-x-auto pr-16"
+          style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}
+        >
+          {children}
+        </pre>
+      </div>
     </div>
   );
 }

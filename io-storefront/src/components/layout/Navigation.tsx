@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { sitemap } from '@/sitemap';
 import { StatusBadge } from '@/components/StatusBadge';
 
@@ -35,6 +35,8 @@ function isItemActive(itemHref: string, pathname: string | null): boolean {
 export function Navigation() {
   const pathname = usePathname();
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [query, setQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const orderedSections = useMemo(
     () =>
       [...sitemap]
@@ -92,12 +94,49 @@ export function Navigation() {
     });
   }
 
+  const trimmed = query.trim().toLowerCase();
+
+  const visibleSections = useMemo(() => {
+    if (!trimmed) return orderedSections;
+    return orderedSections
+      .map((section) => ({
+        ...section,
+        items: section.items.filter((item) => item.label.toLowerCase().includes(trimmed)),
+      }))
+      .filter((section) => section.items.length > 0);
+  }, [orderedSections, trimmed]);
+
   return (
     <nav className="flex-1 flex flex-col py-3" aria-label="Main navigation">
+      <div role="search" aria-label="Filter navigation" className="px-3 mb-3">
+        <div className="relative flex items-center">
+          <input
+            ref={searchInputRef}
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Escape') setQuery(''); }}
+            placeholder="Search…"
+            aria-label="Search navigation items"
+            className="w-full pl-3 pr-7 py-1.5 text-sm rounded-lg bg-[var(--io-bg-raised)] border border-[var(--io-border)] text-[var(--io-text-primary)] placeholder:text-[var(--io-text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--io-border-focus)]"
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => { setQuery(''); searchInputRef.current?.focus(); }}
+              aria-label="Clear search"
+              className="absolute right-2 text-[var(--io-text-muted)] hover:text-[var(--io-text-primary)] leading-none"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      </div>
+
       <div className="flex-1 px-2">
-        {orderedSections.map((section, sectionIndex) => {
+        {visibleSections.map((section, sectionIndex) => {
           const hasActiveItem = section.items.some((item) => isItemActive(item.href, pathname));
-          const isExpanded = hasActiveItem || Boolean(expandedSections[section.title]);
+          const isExpanded = trimmed ? true : hasActiveItem || Boolean(expandedSections[section.title]);
           const panelId = `nav-section-${section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
           return (
@@ -109,19 +148,21 @@ export function Navigation() {
                 type="button"
                 aria-expanded={isExpanded}
                 aria-controls={panelId}
-                onClick={() => toggleSection(section.title)}
+                onClick={() => { if (!trimmed) toggleSection(section.title); }}
                 className="w-full px-2 mb-1 inline-flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[var(--io-text-muted)] hover:text-[var(--io-text-primary)]"
               >
                 <span>{section.title}</span>
-                <span
-                  aria-hidden="true"
-                  className={[
-                    'text-xs leading-none transition-transform duration-200',
-                    isExpanded ? 'rotate-90' : 'rotate-0',
-                  ].join(' ')}
-                >
-                  ▸
-                </span>
+                {!trimmed && (
+                  <span
+                    aria-hidden="true"
+                    className={[
+                      'text-xs leading-none transition-transform duration-200',
+                      isExpanded ? 'rotate-90' : 'rotate-0',
+                    ].join(' ')}
+                  >
+                    ▸
+                  </span>
+                )}
               </button>
 
               {isExpanded && (

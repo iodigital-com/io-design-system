@@ -77,7 +77,7 @@ export function PageHeader({ title, description, tabs, category, status }: Props
                   href={tab.href}
                   aria-current={isActive ? "page" : undefined}
                   className={[
-                    "rounded-lg px-4 py-1.5 text-sm transition-colors",
+                    "rounded-lg px-4 py-1.5 text-sm io-decorative-transition transition-colors duration-[var(--io-duration-normal)]",
                     isActive
                       ? "font-semibold bg-[var(--io-color-primary)] text-white shadow-sm"
                       : "font-medium text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)]",

@@ -133,7 +133,7 @@ export function Canvas({ children }: { children: ReactNode }) {
         <div className="flex items-center gap-3">
           <button
             onClick={toggleSidebarStart}
-            className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] transition-colors cursor-pointer"
+            className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer"
             aria-label={isSidebarStartOpen ? 'Close navigation' : 'Open navigation'}
           >
             <MenuIcon />
@@ -171,7 +171,7 @@ export function Canvas({ children }: { children: ReactNode }) {
               aria-label={`Set theme: ${t}`}
               aria-pressed={theme === t}
               className={[
-                'p-2 rounded-md transition-colors cursor-pointer',
+                'p-2 rounded-md io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer',
                 theme === t
                   ? 'text-[var(--io-text-primary)] bg-[var(--io-bg-raised)]'
                   : 'text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',
@@ -186,7 +186,7 @@ export function Canvas({ children }: { children: ReactNode }) {
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] transition-colors"
+            className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)]"
             aria-label="GitHub"
           >
             <GithubIcon />

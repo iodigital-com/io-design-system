@@ -1,11 +1,12 @@
 'use client';
 
-import { type ReactElement, type ReactNode, useEffect, useRef } from 'react';
+import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Navigation } from './Navigation';
 import { useSidebar } from '@/context/SidebarContext';
 import { useStorefrontTheme } from '@/hooks/useStorefrontTheme';
+import { SearchPalette } from '@/components/SearchPalette';
 
 const THEMES = ['light', 'dark', 'auto'] as const;
 
@@ -104,10 +105,23 @@ export function Canvas({ children }: { children: ReactNode }) {
   const { theme, setTheme } = useStorefrontTheme();
   const pathname = usePathname();
   const mainRef = useRef<HTMLElement>(null);
+  const [isSearchPaletteOpen, setIsSearchPaletteOpen] = useState(false);
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [pathname]);
+
+  useEffect(() => {
+    function onGlobalShortcut(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setIsSearchPaletteOpen(true);
+      }
+    }
+
+    document.addEventListener('keydown', onGlobalShortcut);
+    return () => document.removeEventListener('keydown', onGlobalShortcut);
+  }, []);
 
   return (
     <div className="h-screen flex flex-col bg-[var(--io-bg-base)] text-[var(--io-text-primary)]">
@@ -134,6 +148,18 @@ export function Canvas({ children }: { children: ReactNode }) {
             </span>
           </Link>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsSearchPaletteOpen(true)}
+          className="mx-4 flex-1 max-w-2xl rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-left text-sm text-[var(--io-text-muted)] hover:border-[var(--io-border-hover)] focus:outline-none focus:ring-1 focus:ring-[var(--io-border-focus)]"
+          aria-label="Open search"
+        >
+          <span className="flex items-center justify-between">
+            <span>Search</span>
+            <span className="text-xs">⌘K</span>
+          </span>
+        </button>
 
         <div className="flex items-center gap-1">
           {/* Theme picker — standalone icon-only buttons */}
@@ -192,6 +218,8 @@ export function Canvas({ children }: { children: ReactNode }) {
           </aside>
         )}
       </div>
+
+      <SearchPalette open={isSearchPaletteOpen} onClose={() => setIsSearchPaletteOpen(false)} />
     </div>
   );
 }

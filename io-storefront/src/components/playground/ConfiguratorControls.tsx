@@ -143,7 +143,7 @@ function StyledSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)] rounded-md text-xs"
+        className="io-keyboard-focus-ring w-full cursor-pointer rounded-md text-xs"
         style={{
           appearance: 'none',
           WebkitAppearance: 'none',
@@ -185,7 +185,7 @@ function StyledInput({
       onChange={(e) =>
         onChange(type === 'number' ? e.target.valueAsNumber : e.target.value)
       }
-      className="w-full focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)] rounded-md text-xs"
+      className="io-keyboard-focus-ring w-full rounded-md text-xs"
       style={{
         height: '32px',
         padding: '0 10px',

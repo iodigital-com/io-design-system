@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { NoteCard } from '@/components/developing/DevelopingPrimitives';
 
 const VANILLA_FRAMEWORK =
   {
@@ -48,17 +49,9 @@ export default function DevelopingPage() {
           </div>
         </Link>
 
-        <div
-          className="rounded-lg p-5"
-          style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)' }}
-        >
-          <p className="font-semibold text-sm mb-2" style={{ color: 'var(--io-text-primary)' }}>
-            More frameworks coming in v1.1
-          </p>
-          <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-            Next.js, React, Angular, and Vue integration guides are planned for the v1.1 roadmap.
-          </p>
-        </div>
+        <NoteCard title="More frameworks coming in v1.1">
+          Next.js, React, Angular, and Vue integration guides are planned for the v1.1 roadmap.
+        </NoteCard>
       </div>
     </div>
   );

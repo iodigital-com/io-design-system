@@ -1,6 +1,7 @@
 'use client';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+import { RoadmapNote } from '@/components/developing/DevelopingPrimitives';
 
 export default function DevelopingVuePage() {
   return (
@@ -11,14 +12,9 @@ export default function DevelopingVuePage() {
         tabs={[]}
       />
 
-      <div className="rounded-lg p-5" style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)' }}>
-        <p className="font-semibold text-sm mb-2" style={{ color: 'var(--io-text-primary)' }}>
-          Roadmap
-        </p>
-        <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Planned for v1.1 (target: Q4 2026). This page will include Vue/Nuxt setup, component registration, and composition-friendly examples.
-        </p>
-      </div>
+      <RoadmapNote>
+        Planned for v1.1 (target: Q4 2026). This page will include Vue/Nuxt setup, component registration, and composition-friendly examples.
+      </RoadmapNote>
     </div>
   );
 }

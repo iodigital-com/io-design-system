@@ -178,6 +178,8 @@ export default function DevelopingPage() {
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--io-bg-hover)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--io-bg-raised)'; }}
+                onFocus={(e) => { e.currentTarget.style.background = 'var(--io-bg-hover)'; }}
+                onBlur={(e) => { e.currentTarget.style.background = 'var(--io-bg-raised)'; }}
               >
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-semibold text-sm" style={{ color: 'var(--io-text-primary)' }}>
@@ -280,6 +282,8 @@ export default function DevelopingPage() {
               style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)' }}
               onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--io-bg-hover)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--io-bg-raised)'; }}
+              onFocus={(e) => { e.currentTarget.style.background = 'var(--io-bg-hover)'; }}
+              onBlur={(e) => { e.currentTarget.style.background = 'var(--io-bg-raised)'; }}
             >
               <p className="font-semibold text-sm" style={{ color: 'var(--io-text-primary)' }}>
                 {label}

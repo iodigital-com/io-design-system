@@ -125,6 +125,18 @@ export function Canvas({ children }: { children: ReactNode }) {
 
   return (
     <div className="h-screen flex flex-col bg-[var(--io-bg-base)] text-[var(--io-text-primary)]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:px-3 focus:py-2"
+        style={{
+          background: 'var(--io-bg-raised)',
+          border: '1px solid var(--io-border-focus)',
+          color: 'var(--io-text-primary)',
+        }}
+      >
+        Skip to main content
+      </a>
+
       {/* ── Header ──────────────────────────────────────────────── */}
       <header
         className="h-[var(--io-header-height)] shrink-0 z-50 flex items-center justify-between px-5 bg-[var(--io-bg-base)]"
@@ -204,7 +216,7 @@ export function Canvas({ children }: { children: ReactNode }) {
         )}
 
         {/* Main */}
-        <main ref={mainRef} className="flex-1 min-w-0 overflow-y-auto">
+        <main id="main-content" tabIndex={-1} ref={mainRef} className="flex-1 min-w-0 overflow-y-auto">
           <div className="mx-auto px-8 py-8" style={{ maxWidth: '1224px' }}>
             {children}
           </div>

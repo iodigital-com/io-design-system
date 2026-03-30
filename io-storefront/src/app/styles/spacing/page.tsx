@@ -141,13 +141,13 @@ function SpacingRow({
         onClick={copy}
         aria-label={copied ? 'Copied!' : `Copy token ${token}`}
         title={copied ? 'Copied!' : 'Copy CSS custom property name'}
-        className="ml-auto shrink-0 rounded p-0.5"
+        className="ml-auto shrink-0 rounded-md w-7 h-7 flex items-center justify-center"
         style={{
           color: copied ? 'var(--io-color-success)' : 'var(--io-text-muted)',
-          background: 'transparent',
-          border: 'none',
+          background: copied ? 'var(--io-bg-hover)' : 'var(--io-bg-base)',
+          border: '1px solid var(--io-border)',
           cursor: 'pointer',
-          transition: 'color 150ms ease',
+          transition: 'color 150ms ease, background 150ms ease',
         }}
       >
         {copied ? (

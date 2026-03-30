@@ -1,7 +1,10 @@
 /** Navigation tree for the io Design System storefront sidebar. */
+export type ComponentStatus = 'stable' | 'beta' | 'deprecated';
+
 export type NavItem = {
   label: string;
   href: string;
+  status?: ComponentStatus;
 };
 
 export type NavSection = {
@@ -45,20 +48,20 @@ export const sitemap: NavSection[] = [
     title: 'Components',
     items: [
       { label: 'Introduction', href: '/components' },
-      { label: 'Badge', href: '/components/io-badge/configurator' },
-      { label: 'Button', href: '/components/io-button/configurator' },
-      { label: 'Checkbox', href: '/components/io-checkbox/configurator' },
-      { label: 'Input', href: '/components/io-input/configurator' },
-      { label: 'Link', href: '/components/io-link/configurator' },
-      { label: 'Modal', href: '/components/io-modal/configurator' },
-      { label: 'Radio', href: '/components/io-radio/configurator' },
-      { label: 'Select', href: '/components/io-select/configurator' },
-      { label: 'Spinner', href: '/components/io-spinner/configurator' },
-      { label: 'Tabs', href: '/components/io-tabs/configurator' },
-      { label: 'Tag', href: '/components/io-tag/configurator' },
-      { label: 'Textarea', href: '/components/io-textarea/configurator' },
-      { label: 'Toast', href: '/components/io-toast/configurator' },
-      { label: 'Tooltip', href: '/components/io-tooltip/configurator' },
+      { label: 'Badge', href: '/components/io-badge/configurator', status: 'beta' },
+      { label: 'Button', href: '/components/io-button/configurator', status: 'stable' },
+      { label: 'Checkbox', href: '/components/io-checkbox/configurator', status: 'stable' },
+      { label: 'Input', href: '/components/io-input/configurator', status: 'beta' },
+      { label: 'Link', href: '/components/io-link/configurator', status: 'stable' },
+      { label: 'Modal', href: '/components/io-modal/configurator', status: 'stable' },
+      { label: 'Radio', href: '/components/io-radio/configurator', status: 'stable' },
+      { label: 'Select', href: '/components/io-select/configurator', status: 'stable' },
+      { label: 'Spinner', href: '/components/io-spinner/configurator', status: 'stable' },
+      { label: 'Tabs', href: '/components/io-tabs/configurator', status: 'stable' },
+      { label: 'Tag', href: '/components/io-tag/configurator', status: 'stable' },
+      { label: 'Textarea', href: '/components/io-textarea/configurator', status: 'stable' },
+      { label: 'Toast', href: '/components/io-toast/configurator', status: 'stable' },
+      { label: 'Tooltip', href: '/components/io-tooltip/configurator', status: 'stable' },
     ],
   },
   {

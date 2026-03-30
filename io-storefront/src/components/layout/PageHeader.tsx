@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentStatus } from '@/sitemap';
+import { StatusBadge } from '@/components/StatusBadge';
 
 export type PageTab = {
   label: string;
@@ -15,22 +17,24 @@ type Props = {
   tabs: PageTab[];
   /** Optional category chip rendered above the title, e.g. "Component" */
   category?: string;
+  status?: ComponentStatus;
 };
 
 /**
  * PageHeader — component page header with title, description, and pill tab navigation.
  */
-export function PageHeader({ title, description, tabs, category }: Props) {
+export function PageHeader({ title, description, tabs, category, status }: Props) {
   const pathname = usePathname();
 
   return (
     <div className="mb-0">
       {category && (
-        <span
-          className="block mb-2 text-[11px] font-semibold uppercase tracking-widest text-io-accent-text"
-        >
-          {category}
-        </span>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-io-accent-text">
+            {category}
+          </span>
+          <StatusBadge status={status} />
+        </div>
       )}
 
       <h1

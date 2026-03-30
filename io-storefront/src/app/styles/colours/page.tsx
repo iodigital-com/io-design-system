@@ -3,6 +3,7 @@
 import React from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { CodeTabs } from '@/components/CodeTabs';
+import { ColourTokenGrid } from '@/components/ColourTokenGrid';
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
@@ -357,6 +358,17 @@ export default function ColoursPage() {
       </section>
 
       {/* ── 2. Accent colour ─────────────────────────────────────────── */}
+
+        {/* ── 2. Colour tokens ─────────────────────────────────────────── */}
+        <section id="colour-tokens" className="space-y-6">
+          <SectionHeader
+            title="Colour tokens"
+            description="All design tokens — filter by category, toggle light/dark preview, click the copy icon to grab the CSS custom property name."
+          />
+          <ColourTokenGrid />
+        </section>
+
+        {/* ── 3. Accent colour ─────────────────────────────────────────── */}
       <section id="accent-colour" className="space-y-6">
         <SectionHeader
           title="Accent colour"
@@ -521,104 +533,8 @@ export default function ColoursPage() {
       </section>
 
       {/* ── 5. Adobe swatches ────────────────────────────────────────── */}
-      <section id="adobe-swatches" className="space-y-6">
-        <SectionHeader
-          title="Adobe swatches"
-          description="The complete io Digital brand palette laid out as an Adobe-style swatch panel. Hover a swatch for its token name."
-        />
 
-        {/* Swatch panel */}
-        <div
-          className="rounded-lg overflow-hidden p-4"
-          style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)' }}
-        >
-          <div
-            className="grid"
-            style={{
-              gridTemplateColumns: 'repeat(8, 40px)',
-              gap: 2,
-            }}
-          >
-            {[
-              // Primary
-              { hex: '#0000D2', token: '--io-color-primary' },
-              { hex: '#0000a8', token: '--io-color-primary-hover' },
-              { hex: '#000080', token: '--io-color-primary-active' },
-              // Secondary accents
-              { hex: '#ed7f53', token: '--io-color-orange' },
-              { hex: '#a13865', token: '--io-color-rouge' },
-              { hex: '#fdbc75', token: '--io-color-yellow' },
-              { hex: '#868ada', token: '--io-color-lavendel' },
-              { hex: '#DCC8C2', token: '--io-color-pink' },
-              // Base
-              { hex: '#EBE8E3', token: '--io-color-off-white' },
-              { hex: '#DCCFC2', token: '--io-color-beige' },
-              { hex: '#e1cfbf', token: '--io-color-calm-beige' },
-              { hex: '#dcc8c2', token: '--io-color-calm-pink' },
-              { hex: '#bdcad1', token: '--io-color-calm-blue' },
-              { hex: '#c4d1ce', token: '--io-color-calm-green' },
-              { hex: '#454545', token: '--io-color-antraciet' },
-              { hex: '#242424', token: '--io-color-grey-6' },
-              // Greyscale
-              { hex: '#f7f7f7', token: '--io-color-grey-1' },
-              { hex: '#ebebeb', token: '--io-color-grey-2' },
-              { hex: '#C4C4C4', token: '--io-color-grey-3' },
-              { hex: '#747474', token: '--io-color-grey-4' },
-              { hex: '#F4F4F4', token: '--io-color-grey-5' },
-              { hex: '#ffffff', token: '--io-color-white' },
-              { hex: '#000000', token: '--io-color-black' },
-              // Semantic
-              { hex: '#30c58e', token: '--io-color-success' },
-              { hex: '#ffa100', token: '--io-color-warning' },
-              { hex: '#ff6161', token: '--io-color-error' },
-              { hex: '#FF9E9A', token: '--io-color-error-on-blue' },
-              // Focus
-              { hex: '#7D0034', token: '--io-focus-inner' },
-              { hex: '#FFE4EE', token: '--io-focus-outer' },
-              // System
-              { hex: '#0019FF', token: '--io-color-system-blue' },
-            ].map(({ hex, token }) => (
-              <div
-                key={token}
-                title={`${token}\n${hex}`}
-                className="rounded-sm cursor-default"
-                style={{
-                  width: 40,
-                  height: 40,
-                  background: hex,
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  transition: 'transform 150ms ease, box-shadow 150ms ease',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform = 'scale(1.15)';
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
-                  (e.currentTarget as HTMLDivElement).style.zIndex = '10';
-                  (e.currentTarget as HTMLDivElement).style.position = 'relative';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform = '';
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = '';
-                  (e.currentTarget as HTMLDivElement).style.zIndex = '';
-                  (e.currentTarget as HTMLDivElement).style.position = '';
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        <p
-          className="text-sm"
-          style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}
-        >
-          For official Adobe ASE / ACO swatch files, download from the{' '}
-          <span style={{ color: 'var(--io-accent-text)', fontWeight: 500 }}>
-            io Digital Brand Portal
-          </span>
-          .
-        </p>
-      </section>
-
-      {/* ── 6. Treatment ─────────────────────────────────────────────── */}
+      {/* ── 5. Treatment ─────────────────────────────────────────────── */}
       <section id="treatment" className="space-y-6">
         <SectionHeader
           title="Treatment"

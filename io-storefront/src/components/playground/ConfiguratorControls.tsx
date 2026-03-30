@@ -233,8 +233,8 @@ function DescriptionTrigger({ label, description }: { label: string; description
         <span className="sr-only">Show description for {label}</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9" />
-          <path d="M2.4 12s3.6-5.2 9.6-5.2S21.6 12 21.6 12s-3.6 5.2-9.6 5.2S2.4 12 2.4 12Z" />
-          <circle cx="12" cy="12" r="2.1" />
+          <line x1="12" y1="10" x2="12" y2="16" />
+          <circle cx="12" cy="7" r="0.9" fill="currentColor" stroke="none" />
         </svg>
       </button>
     </io-tooltip>

@@ -7,7 +7,7 @@ export default function DevelopingNextJsPage() {
     <div className="space-y-10">
       <PageHeader
         title="Next.js"
-        description="Integrate iO components into an App Router project using client-side registration and typed React wrappers."
+        description="Integrate io components into an App Router project using client-side registration and typed React wrappers."
         tabs={[]}
       />
 
@@ -79,14 +79,14 @@ export function IoProvider() {
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Mount <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>IoProvider</code> and
-          import the component stylesheet in your root layout so every page has access to iO components and design tokens.
+          import the component stylesheet in your root layout so every page has access to io components and design tokens.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
 {`// app/layout.tsx
-import '@io-digital/components/styles';
+import '@io-digital/components/dist/io/io.css';
 import { IoProvider } from './io-provider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -108,7 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           App Router usage
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          iO components rely on browser APIs, so any component that renders them must be a client component. Add the{' '}
+          io components rely on browser APIs, so any component that renders them must be a client component. Add the{' '}
           <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`'use client'`}</code>{' '}
           directive at the top of the file and import components from the React wrapper package.
         </p>
@@ -172,7 +172,7 @@ export function SearchBar() {
         value={query}
         onIoChange={(event) => setQuery(event.detail.value)}
       />
-      <IoButton variant="solid" onClick={handleSearch}>
+      <IoButton variant="solid" onIoClick={handleSearch}>
         Search
       </IoButton>
     </div>
@@ -213,7 +213,7 @@ export function SearchBar() {
 </div>`}
         </pre>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Alternatively, colocate all iO component rendering inside client components and ensure{' '}
+          Alternatively, colocate all io component rendering inside client components and ensure{' '}
           <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>IoProvider</code>{' '}
           is mounted at the root layout. This is the recommended pattern and avoids hydration mismatches entirely.
         </p>
@@ -231,7 +231,7 @@ export function SearchBar() {
               Component renders but is unstyled
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-              Confirm that <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`import '@io-digital/components/styles'`}</code>{' '}
+              Confirm that <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`import '@io-digital/components/dist/io/io.css'`}</code>{' '}
               is present in your root layout. The stylesheet provides the design tokens that all components depend on.
             </p>
           </div>
@@ -243,7 +243,7 @@ export function SearchBar() {
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
               The custom element registry has not been populated. Check that{' '}
               <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>IoProvider</code>{' '}
-              is mounted in your root layout before any iO component is rendered.
+              is mounted in your root layout before any io component is rendered.
             </p>
           </div>
 

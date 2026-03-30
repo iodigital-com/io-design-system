@@ -123,6 +123,148 @@ pre.react-syntax-highlighter-line-numbers {
   background: var(--io-bg-base) !important;
 }
 
+/* ─── highlight.js token theming for plain <pre><code> blocks ─────────────── */
+
+pre code.hljs {
+  display: block;
+  background: transparent;
+  line-height: 1.65;
+}
+
+[data-theme='light'] pre code.hljs {
+  color: #383a42;
+}
+
+[data-theme='dark'] pre code.hljs {
+  color: #abb2bf;
+}
+
+[data-theme='light'] pre code.hljs .hljs-comment,
+[data-theme='light'] pre code.hljs .hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-comment,
+[data-theme='dark'] pre code.hljs .hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+[data-theme='light'] pre code.hljs .hljs-doctag,
+[data-theme='light'] pre code.hljs .hljs-keyword,
+[data-theme='light'] pre code.hljs .hljs-formula {
+  color: #a626a4;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-doctag,
+[data-theme='dark'] pre code.hljs .hljs-keyword,
+[data-theme='dark'] pre code.hljs .hljs-formula {
+  color: #c678dd;
+}
+
+[data-theme='light'] pre code.hljs .hljs-section,
+[data-theme='light'] pre code.hljs .hljs-name,
+[data-theme='light'] pre code.hljs .hljs-selector-tag,
+[data-theme='light'] pre code.hljs .hljs-deletion,
+[data-theme='light'] pre code.hljs .hljs-subst {
+  color: #e45649;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-section,
+[data-theme='dark'] pre code.hljs .hljs-name,
+[data-theme='dark'] pre code.hljs .hljs-selector-tag,
+[data-theme='dark'] pre code.hljs .hljs-deletion,
+[data-theme='dark'] pre code.hljs .hljs-subst {
+  color: #e06c75;
+}
+
+[data-theme='light'] pre code.hljs .hljs-literal {
+  color: #0184bb;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-literal {
+  color: #56b6c2;
+}
+
+[data-theme='light'] pre code.hljs .hljs-string,
+[data-theme='light'] pre code.hljs .hljs-regexp,
+[data-theme='light'] pre code.hljs .hljs-addition,
+[data-theme='light'] pre code.hljs .hljs-attribute,
+[data-theme='light'] pre code.hljs .hljs-meta-string {
+  color: #50a14f;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-string,
+[data-theme='dark'] pre code.hljs .hljs-regexp,
+[data-theme='dark'] pre code.hljs .hljs-addition,
+[data-theme='dark'] pre code.hljs .hljs-attribute,
+[data-theme='dark'] pre code.hljs .hljs-meta-string {
+  color: #98c379;
+}
+
+[data-theme='light'] pre code.hljs .hljs-built_in,
+[data-theme='light'] pre code.hljs .hljs-class .hljs-title {
+  color: #c18401;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-built_in,
+[data-theme='dark'] pre code.hljs .hljs-class .hljs-title {
+  color: #e6c07b;
+}
+
+[data-theme='light'] pre code.hljs .hljs-attr,
+[data-theme='light'] pre code.hljs .hljs-variable,
+[data-theme='light'] pre code.hljs .hljs-template-variable,
+[data-theme='light'] pre code.hljs .hljs-type,
+[data-theme='light'] pre code.hljs .hljs-selector-class,
+[data-theme='light'] pre code.hljs .hljs-selector-attr,
+[data-theme='light'] pre code.hljs .hljs-selector-pseudo,
+[data-theme='light'] pre code.hljs .hljs-number {
+  color: #986801;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-attr,
+[data-theme='dark'] pre code.hljs .hljs-variable,
+[data-theme='dark'] pre code.hljs .hljs-template-variable,
+[data-theme='dark'] pre code.hljs .hljs-type,
+[data-theme='dark'] pre code.hljs .hljs-selector-class,
+[data-theme='dark'] pre code.hljs .hljs-selector-attr,
+[data-theme='dark'] pre code.hljs .hljs-selector-pseudo,
+[data-theme='dark'] pre code.hljs .hljs-number {
+  color: #d19a66;
+}
+
+[data-theme='light'] pre code.hljs .hljs-symbol,
+[data-theme='light'] pre code.hljs .hljs-bullet,
+[data-theme='light'] pre code.hljs .hljs-meta,
+[data-theme='light'] pre code.hljs .hljs-selector-id,
+[data-theme='light'] pre code.hljs .hljs-title,
+[data-theme='light'] pre code.hljs .hljs-link {
+  color: #4078f2;
+}
+
+[data-theme='dark'] pre code.hljs .hljs-symbol,
+[data-theme='dark'] pre code.hljs .hljs-bullet,
+[data-theme='dark'] pre code.hljs .hljs-meta,
+[data-theme='dark'] pre code.hljs .hljs-selector-id,
+[data-theme='dark'] pre code.hljs .hljs-title,
+[data-theme='dark'] pre code.hljs .hljs-link {
+  color: #61aeee;
+}
+
+pre code.hljs .hljs-link {
+  text-decoration: underline;
+}
+
+pre code.hljs .hljs-emphasis {
+  font-style: italic;
+}
+
+pre code.hljs .hljs-strong {
+  font-weight: bold;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .io-decorative-transition {
     transition: none !important;

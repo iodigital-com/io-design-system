@@ -4,6 +4,7 @@ import { Manrope } from 'next/font/google';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { StorefrontThemeProvider } from '@/hooks/useStorefrontTheme';
 import { Canvas } from '@/components/layout/Canvas';
+import { AutoCodeHighlight } from '@/components/code/AutoCodeHighlight';
 import './globals.css';
 
 /**
@@ -78,6 +79,7 @@ export default function RootLayout({
       <body>
         <StorefrontThemeProvider>
           <SidebarProvider>
+            <AutoCodeHighlight />
             <Canvas>{children}</Canvas>
           </SidebarProvider>
         </StorefrontThemeProvider>

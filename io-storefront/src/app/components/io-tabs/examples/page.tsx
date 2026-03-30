@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   tabsStoryDefault,
   tabsStoryWithDisabled,
@@ -85,42 +86,22 @@ export default function IoTabsExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={tabsStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          With disabled tab
-        </h2>
+        <ExamplesSectionHeader title="With disabled tab" />
         <ComponentStory story={tabsStoryWithDisabled} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Many tabs
-        </h2>
+        <ExamplesSectionHeader title="Many tabs" />
         <ComponentStory story={tabsStoryManyTabs} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          With panel content
-        </h2>
+        <ExamplesSectionHeader title="With panel content" />
         <p
           className="text-sm mb-4"
           style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}

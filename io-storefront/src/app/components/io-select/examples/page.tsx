@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   selectStoryDefault,
   selectStoryPlaceholder,
@@ -12,42 +13,22 @@ export default function IoSelectExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={selectStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          With placeholder
-        </h2>
+        <ExamplesSectionHeader title="With placeholder" />
         <ComponentStory story={selectStoryPlaceholder} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Error state
-        </h2>
+        <ExamplesSectionHeader title="Error state" />
         <ComponentStory story={selectStoryError} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Disabled state
-        </h2>
+        <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={selectStoryDisabled} />
       </section>
     </div>

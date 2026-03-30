@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { Playground } from '@/components/playground/Playground';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import type { FrameworkCode } from '@/models/framework';
 
 // ── Framework code ────────────────────────────────────────────────────────────
@@ -123,9 +124,7 @@ export default function IoToastExamplesPage() {
       <io-toast ref={toastRef} suppressHydrationWarning />
 
       <section className="space-y-4">
-        <h2 className="text-base font-semibold" style={{ color: 'var(--io-text-primary)' }}>
-          States
-        </h2>
+        <ExamplesSectionHeader title="States" />
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Five semantic variants — each uses a distinct colour and icon.
         </p>
@@ -146,9 +145,7 @@ export default function IoToastExamplesPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-base font-semibold" style={{ color: 'var(--io-text-primary)' }}>
-          Custom duration
-        </h2>
+        <ExamplesSectionHeader title="Custom duration" />
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Default duration is 6 000 ms. Pass <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>duration</code> to override. A value of <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>0</code> disables auto-dismiss.
         </p>
@@ -165,9 +162,7 @@ export default function IoToastExamplesPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-base font-semibold" style={{ color: 'var(--io-text-primary)' }}>
-          Multiple messages
-        </h2>
+        <ExamplesSectionHeader title="Multiple messages" />
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Toasts are displayed one at a time in FIFO order. Queued messages appear as each one is dismissed.
         </p>

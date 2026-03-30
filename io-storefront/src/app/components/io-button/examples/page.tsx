@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   buttonStorySolid,
   buttonStoryGhost,
@@ -11,27 +12,7 @@ import {
   buttonStoryStates,
 } from '../io-button.stories';
 
-// ── Local helpers ─────────────────────────────────────────────────────────────
-
-function SectionHeader({ title, description }: { title: string; description?: string }) {
-  return (
-    <div className="mb-4">
-      <h2
-        className="text-base font-bold"
-        style={{ color: 'var(--io-text-primary)' }}
-      >
-        {title}
-      </h2>
-      {description && (
-        <p className="text-xs mt-0.5" style={{ color: 'var(--io-text-secondary)' }}>
-          {description}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function StageLabel({ children }: { children: React.ReactNode }) {
+function StageLabel({ children }: { children: ReactNode }) {
   return (
     <p
       className="text-xs font-semibold uppercase mt-2 mb-6"
@@ -44,7 +25,7 @@ function StageLabel({ children }: { children: React.ReactNode }) {
 
 // ── Dark stage override — for ghost-white and any dark-bg sections ─────────────
 
-const DARK_STAGE: React.CSSProperties = {
+const DARK_STAGE: CSSProperties = {
   backgroundColor: 'var(--io-color-grey-6, #242424)',
   backgroundImage: 'none',
 };
@@ -57,7 +38,7 @@ export default function IoButtonExamplesPage() {
 
       {/* ── Solid variants ───────────────────────────────────── */}
       <section>
-        <SectionHeader
+        <ExamplesSectionHeader
           title="Solid"
           description="Filled backgrounds — use for primary actions. Hover to see the snappy transition."
         />
@@ -69,7 +50,7 @@ export default function IoButtonExamplesPage() {
 
       {/* ── Ghost / outline variants ─────────────────────────── */}
       <section>
-        <SectionHeader
+        <ExamplesSectionHeader
           title="Ghost"
           description="Transparent fill with a coloured border — fills with the matching solid on hover."
         />
@@ -86,7 +67,7 @@ export default function IoButtonExamplesPage() {
 
       {/* ── Sizes ───────────────────────────────────────────── */}
       <section>
-        <SectionHeader
+        <ExamplesSectionHeader
           title="Sizes"
           description="Three size presets driven by padding and font-size tokens."
         />
@@ -98,7 +79,7 @@ export default function IoButtonExamplesPage() {
 
       {/* ── Arrow icon ──────────────────────────────────────── */}
       <section>
-        <SectionHeader
+        <ExamplesSectionHeader
           title="With arrow icon"
           description="Three directions — forward, back, down. Hover to see translateX(6px) animation."
         />
@@ -110,7 +91,7 @@ export default function IoButtonExamplesPage() {
 
       {/* ── States ──────────────────────────────────────────── */}
       <section>
-        <SectionHeader
+        <ExamplesSectionHeader
           title="States"
           description="Disabled and loading states reduce opacity and block interaction."
         />

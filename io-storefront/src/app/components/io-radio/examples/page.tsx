@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   radioStoryDefault,
   radioStoryChecked,
@@ -13,52 +14,27 @@ export default function IoRadioExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={radioStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Checked
-        </h2>
+        <ExamplesSectionHeader title="Checked" />
         <ComponentStory story={radioStoryChecked} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Disabled state
-        </h2>
+        <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={radioStoryDisabled} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Error state
-        </h2>
+        <ExamplesSectionHeader title="Error state" />
         <ComponentStory story={radioStoryError} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Radio group
-        </h2>
+        <ExamplesSectionHeader title="Radio group" />
         <ComponentStory story={radioStoryGroup} />
       </section>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
+import { RelatedComponents } from '@/components/RelatedComponents';
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
 
 const TABS: PageTab[] = [
@@ -11,7 +12,7 @@ const TABS: PageTab[] = [
   { label: 'API', href: '/components/io-spinner/api' },
 ];
 
-export default function IoSpinnerLayout({ children }: { children: React.ReactNode }) {
+export default function IoSpinnerLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <PageHeader
@@ -21,6 +22,7 @@ export default function IoSpinnerLayout({ children }: { children: React.ReactNod
         category="Component"
       />
       {children}
+      <RelatedComponents currentSlug="io-spinner" />
     </div>
   );
 }

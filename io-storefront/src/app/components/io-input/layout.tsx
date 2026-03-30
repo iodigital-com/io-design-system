@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
+import { RelatedComponents } from '@/components/RelatedComponents';
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
 
 const TABS: PageTab[] = [
@@ -11,7 +12,7 @@ const TABS: PageTab[] = [
   { label: 'API', href: '/components/io-input/api' },
 ];
 
-export default function IoInputLayout({ children }: { children: React.ReactNode }) {
+export default function IoInputLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <PageHeader
@@ -22,6 +23,7 @@ export default function IoInputLayout({ children }: { children: React.ReactNode 
         status="beta"
       />
       {children}
+      <RelatedComponents currentSlug="io-input" />
     </div>
   );
 }

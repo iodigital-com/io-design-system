@@ -149,7 +149,7 @@ export function Navigation() {
                 aria-expanded={isExpanded}
                 aria-controls={panelId}
                 onClick={() => { if (!trimmed) toggleSection(section.title); }}
-                className="w-full px-2 mb-1 inline-flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[var(--io-text-muted)] hover:text-[var(--io-text-primary)]"
+                className="w-full px-2 mb-1 inline-flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[var(--io-text-primary)] hover:text-[var(--io-text-primary)]"
               >
                 <span>{section.title}</span>
                 {!trimmed && (

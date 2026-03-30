@@ -378,7 +378,7 @@ export function ConfiguratorControls({ propDefinitions, storyState, setStoryStat
           />
           <span
             className="text-[11px] font-semibold uppercase tracking-widest"
-            style={{ color: 'var(--io-text-muted)', letterSpacing: '0.1em' }}
+            style={{ color: 'var(--io-text-primary)', letterSpacing: '0.1em' }}
           >
             Properties
           </span>

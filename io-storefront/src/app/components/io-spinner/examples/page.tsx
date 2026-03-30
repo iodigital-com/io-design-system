@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   spinnerStorySm,
   spinnerStoryMd,
@@ -13,42 +14,22 @@ export default function IoSpinnerExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Small (16px)
-        </h2>
+        <ExamplesSectionHeader title="Small (16px)" />
         <ComponentStory story={spinnerStorySm} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Medium (24px)
-        </h2>
+        <ExamplesSectionHeader title="Medium (24px)" />
         <ComponentStory story={spinnerStoryMd} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Large (40px)
-        </h2>
+        <ExamplesSectionHeader title="Large (40px)" />
         <ComponentStory story={spinnerStoryLg} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          White colour — for use on dark or coloured backgrounds
-        </h2>
+        <ExamplesSectionHeader title="White colour — for use on dark or coloured backgrounds" />
         <div
           className="rounded-lg p-8 flex items-center justify-center"
           style={{ background: 'var(--io-color-primary)' }}
@@ -58,12 +39,7 @@ export default function IoSpinnerExamplesPage() {
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Current colour — inherits from surrounding text colour
-        </h2>
+        <ExamplesSectionHeader title="Current colour — inherits from surrounding text colour" />
         <ComponentStory story={spinnerStoryCurrent} />
       </section>
     </div>

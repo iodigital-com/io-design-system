@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   modalStoryDefault,
   modalStorySm,
@@ -9,13 +10,10 @@ import {
   modalStoryNoHeading,
 } from '../io-modal.stories';
 
-function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+function Section({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--io-text-primary)' }}>{title}</h2>
-      {description && (
-        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)' }}>{description}</p>
-      )}
+      <ExamplesSectionHeader title={title} description={description} />
       {children}
     </section>
   );

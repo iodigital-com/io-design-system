@@ -2,37 +2,23 @@
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
 import { inputStoryDefault, inputStoryError, inputStoryDisabled } from '../io-input.stories';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 
 export default function IoInputExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={inputStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Error state
-        </h2>
+        <ExamplesSectionHeader title="Error state" />
         <ComponentStory story={inputStoryError} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Disabled state
-        </h2>
+        <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={inputStoryDisabled} />
       </section>
     </div>

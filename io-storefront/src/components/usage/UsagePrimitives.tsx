@@ -14,7 +14,7 @@ export function SectionHeader({ title, description }: { title: string; descripti
           aria-hidden="true"
         />
         <h2
-          className="text-xl font-bold"
+          className="text-lg font-bold"
           style={{ color: 'var(--io-text-primary)', letterSpacing: 'var(--io-heading-tracking-3, -0.015em)' }}
         >
           {title}

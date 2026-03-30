@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   tagStoryDefault,
   tagStorySelected,
@@ -13,52 +14,27 @@ export default function IoTagExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={tagStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Selected state
-        </h2>
+        <ExamplesSectionHeader title="Selected state" />
         <ComponentStory story={tagStorySelected} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Colours
-        </h2>
+        <ExamplesSectionHeader title="Colours" />
         <ComponentStory story={tagStoryColors} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Removable
-        </h2>
+        <ExamplesSectionHeader title="Removable" />
         <ComponentStory story={tagStoryRemovable} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Disabled state
-        </h2>
+        <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={tagStoryDisabled} />
       </section>
     </div>

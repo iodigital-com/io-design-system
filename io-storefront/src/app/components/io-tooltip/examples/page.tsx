@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   tooltipStoryTop,
   tooltipStoryBottom,
@@ -13,52 +14,27 @@ export default function IoTooltipExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Placement: Top
-        </h2>
+        <ExamplesSectionHeader title="Placement: Top" />
         <ComponentStory story={tooltipStoryTop} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Placement: Bottom
-        </h2>
+        <ExamplesSectionHeader title="Placement: Bottom" />
         <ComponentStory story={tooltipStoryBottom} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Placement: Left
-        </h2>
+        <ExamplesSectionHeader title="Placement: Left" />
         <ComponentStory story={tooltipStoryLeft} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Placement: Right
-        </h2>
+        <ExamplesSectionHeader title="Placement: Right" />
         <ComponentStory story={tooltipStoryRight} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Long content
-        </h2>
+        <ExamplesSectionHeader title="Long content" />
         <ComponentStory story={tooltipStoryLong} />
       </section>
     </div>

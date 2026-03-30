@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   checkboxStoryDefault,
   checkboxStoryChecked,
@@ -13,52 +14,27 @@ export default function IoCheckboxExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Default
-        </h2>
+        <ExamplesSectionHeader title="Default" />
         <ComponentStory story={checkboxStoryDefault} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Checked
-        </h2>
+        <ExamplesSectionHeader title="Checked" />
         <ComponentStory story={checkboxStoryChecked} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Indeterminate
-        </h2>
+        <ExamplesSectionHeader title="Indeterminate" />
         <ComponentStory story={checkboxStoryIndeterminate} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Error state
-        </h2>
+        <ExamplesSectionHeader title="Error state" />
         <ComponentStory story={checkboxStoryError} />
       </section>
 
       <section>
-        <h2
-          className="text-xl font-semibold mb-4"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
-          Disabled state
-        </h2>
+        <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={checkboxStoryDisabled} />
       </section>
     </div>

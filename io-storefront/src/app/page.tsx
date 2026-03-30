@@ -70,7 +70,7 @@ const ALL_COMPONENTS: Array<{
   },
   {
     name: 'Input', tag: 'io-input', href: '/components/io-input/configurator', status: 'beta',
-    preview: <io-input label="Label" placeholder="Enter text" />,
+    preview: <div className="w-full"><io-input label="Label" placeholder="Enter text" /></div>,
   },
   {
     name: 'Link', tag: 'io-link', href: '/components/io-link/configurator', status: 'stable',
@@ -86,7 +86,7 @@ const ALL_COMPONENTS: Array<{
   },
   {
     name: 'Select', tag: 'io-select', href: '/components/io-select/configurator', status: 'stable',
-    preview: <io-select label="Select" />,
+    preview: <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
   },
   {
     name: 'Spinner', tag: 'io-spinner', href: '/components/io-spinner/configurator', status: 'stable',
@@ -94,7 +94,7 @@ const ALL_COMPONENTS: Array<{
   },
   {
     name: 'Tabs', tag: 'io-tabs', href: '/components/io-tabs/configurator', status: 'stable',
-    preview: <io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" />,
+    preview: <div className="w-full"><io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" /></div>,
   },
   {
     name: 'Tag', tag: 'io-tag', href: '/components/io-tag/configurator', status: 'stable',
@@ -102,11 +102,11 @@ const ALL_COMPONENTS: Array<{
   },
   {
     name: 'Textarea', tag: 'io-textarea', href: '/components/io-textarea/configurator', status: 'stable',
-    preview: <io-textarea label="Textarea" rows={2} />,
+    preview: <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
   },
   {
     name: 'Toast', tag: 'io-toast', href: '/components/io-toast/configurator', status: 'stable',
-    preview: <io-badge variant="success">Notification</io-badge>,
+    preview: <io-badge variant="blue">Toast</io-badge>,
   },
   {
     name: 'Tooltip', tag: 'io-tooltip', href: '/components/io-tooltip/configurator', status: 'stable',

@@ -24,28 +24,28 @@ const FRAMEWORKS: Framework[] = [
   {
     name: 'React',
     href: '/developing/react',
-    status: 'planned',
+    status: 'available',
     description: 'First-class React wrappers with typed props and strongly-typed event bindings for a seamless developer experience.',
     package: '@io-digital/components-react',
   },
   {
     name: 'Next.js',
     href: '/developing/next-js',
-    status: 'planned',
+    status: 'available',
     description: 'App Router–compatible setup with dynamic import patterns to keep Web Component hydration safe in server components.',
     package: '@io-digital/components-react',
   },
   {
     name: 'Angular',
     href: '/developing/angular',
-    status: 'planned',
+    status: 'available',
     description: 'Angular wrapper components with CUSTOM_ELEMENTS_SCHEMA setup, standalone imports, and full template support.',
     package: '@io-digital/components-angular',
   },
   {
     name: 'Vue',
     href: '/developing/vue',
-    status: 'planned',
+    status: 'available',
     description: 'Vue wrapper components built with defineCustomElement. Works with both Vue 3 and Nuxt composition APIs.',
     package: '@io-digital/components-vue',
   },
@@ -53,7 +53,7 @@ const FRAMEWORKS: Framework[] = [
 
 const STATUS_LABEL: Record<FrameworkStatus, string> = {
   available: 'Available',
-  planned: 'Planned v1.1',
+  planned: 'Planned',
   deferred: 'Deferred',
 };
 
@@ -64,7 +64,7 @@ const STATUS_STYLE: Record<FrameworkStatus, { background: string; color: string 
 };
 
 const PREREQUISITES = [
-  { label: 'Node.js', value: '≥ 20.0.0' },
+  { label: 'Node.js', value: '≥ 18.0.0' },
   { label: 'Package manager', value: 'npm, pnpm, or yarn' },
   { label: 'Browser', value: 'Custom Elements support (Chrome 67+, Firefox 63+, Safari 10.1+)' },
 ];

@@ -72,7 +72,7 @@ export default function DevelopingVanillaJsPage() {
         <ul className="space-y-2 text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           {[
             'A modern browser that supports Custom Elements v1 and ES modules (Chrome 67+, Firefox 63+, Safari 10.1+, Edge 79+).',
-            'Node.js 18 or later if you plan to install via a package manager.',
+            'Node.js 18+ if you plan to install via a package manager.',
             'npm 9+ or pnpm 8+ for dependency management in a bundled project.',
             'A static server or bundler (Vite, webpack, Parcel) is recommended for local development when using npm.',
           ].map((item) => (

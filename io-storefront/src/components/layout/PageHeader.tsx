@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 
 export type PageTab = {
   label: string;
@@ -28,8 +27,7 @@ export function PageHeader({ title, description, tabs, category }: Props) {
     <div className="mb-0">
       {category && (
         <span
-          className="block mb-2 text-[11px] font-semibold uppercase tracking-widest"
-          style={{ color: 'var(--io-accent-text)' }}
+          className="block mb-2 text-[11px] font-semibold uppercase tracking-widest text-io-accent-text"
         >
           {category}
         </span>
@@ -46,7 +44,7 @@ export function PageHeader({ title, description, tabs, category }: Props) {
       </h1>
 
       {description && (
-        <p className="text-[1.1rem] mb-6" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+        <p className="text-[1.1rem] mb-6 text-io-text-secondary leading-[1.6]">
           {description}
         </p>
       )}

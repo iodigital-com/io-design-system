@@ -107,3 +107,10 @@ code:not([class*="language-"]) {
 pre.react-syntax-highlighter-line-numbers {
   background: var(--io-bg-base) !important;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .io-decorative-transition {
+    transition: none !important;
+    animation: none !important;
+  }
+}

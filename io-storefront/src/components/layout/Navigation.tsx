@@ -156,7 +156,7 @@ export function Navigation() {
                   <span
                     aria-hidden="true"
                     className={[
-                      'text-xs leading-none transition-transform duration-200',
+                      'text-xs leading-none io-decorative-transition transition-transform duration-[var(--io-duration-normal)]',
                       isExpanded ? 'rotate-90' : 'rotate-0',
                     ].join(' ')}
                   >
@@ -175,7 +175,7 @@ export function Navigation() {
                           href={item.href}
                           aria-current={active ? 'page' : undefined}
                           className={[
-                            'flex items-center gap-1.5 pl-4 pr-3 py-1.5 rounded-full text-sm transition-colors',
+                            'flex items-center gap-1.5 pl-4 pr-3 py-1.5 rounded-full text-sm io-decorative-transition transition-colors duration-[var(--io-duration-fast)]',
                             active
                               ? 'font-semibold bg-[var(--io-color-primary)] text-white'
                               : 'font-medium text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',

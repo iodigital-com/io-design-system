@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import { useCallback, useState } from 'react';
+import type { ReactNode } from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { CodeTabs } from '@/components/CodeTabs';
 
@@ -27,7 +30,7 @@ function SectionHeader({ title, description }: { title: string; description: str
   );
 }
 
-function SubsectionTitle({ children }: { children: React.ReactNode }) {
+function SubsectionTitle({ children }: { children: ReactNode }) {
   return (
     <h3
       className="text-xs font-semibold uppercase mb-4"
@@ -38,7 +41,7 @@ function SubsectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function RuleCard({ label, children }: { label: string; children: React.ReactNode }) {
+function RuleCard({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div
       className="flex gap-4 p-5 rounded-lg"
@@ -63,7 +66,7 @@ function RuleCard({ label, children }: { label: string; children: React.ReactNod
 
 type DoOrDont = 'do' | 'dont';
 
-function DoOrDontCard({ type, children }: { type: DoOrDont; children: React.ReactNode }) {
+function DoOrDontCard({ type, children }: { type: DoOrDont; children: ReactNode }) {
   return (
     <div
       className="flex gap-3 p-4 rounded-lg"
@@ -90,14 +93,19 @@ function SpacingRow({
   token,
   rem,
   px,
-  twKey,
 }: {
   token: string;
   rem: string;
   px: string;
-  twKey: string;
 }) {
+  const [copied, setCopied] = useState(false);
   const barWidth = Math.min(Math.round((parseInt(px) / 96) * 100), 100);
+  const copy = useCallback(async () => {
+    await navigator.clipboard.writeText(token).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [token]);
+
   return (
     <div
       className="flex items-center gap-4 px-5 py-3 rounded-lg"
@@ -106,7 +114,11 @@ function SpacingRow({
       <code className="text-xs font-mono shrink-0" style={{ color: 'var(--io-text-primary)', width: 132 }}>
         {token}
       </code>
-      <div style={{ flex: '0 0 240px', height: 10, background: 'var(--io-bg-hover)', borderRadius: 3 }}>
+      <div
+        className="h-2.5 rounded shrink-0"
+        style={{ flex: '0 0 240px', background: 'var(--io-bg-hover)' }}
+        aria-hidden="true"
+      >
         <div
           style={{
             height: '100%',
@@ -124,9 +136,31 @@ function SpacingRow({
       <span className="text-xs shrink-0" style={{ color: 'var(--io-text-muted)', width: 36 }}>
         {px}
       </span>
-      <span className="ml-auto text-xs font-mono shrink-0" style={{ color: 'var(--io-text-muted)' }}>
-        {twKey}
-      </span>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={copied ? 'Copied!' : `Copy token ${token}`}
+        title={copied ? 'Copied!' : 'Copy CSS custom property name'}
+        className="ml-auto shrink-0 rounded p-0.5"
+        style={{
+          color: copied ? 'var(--io-color-success)' : 'var(--io-text-muted)',
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'color 150ms ease',
+        }}
+      >
+        {copied ? (
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8l3.5 3.5L13 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        ) : (
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="5" y="5" width="8" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M5 4V3a1 1 0 011-1h7a1 1 0 011 1v9a1 1 0 01-1 1h-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 }
@@ -134,18 +168,18 @@ function SpacingRow({
 // ── Token data ────────────────────────────────────────────────────────────────
 
 const SPACING_TOKENS = [
-  { token: '--io-space-1',  rem: '0.25rem', px: '4px',  twKey: 'space-1'  },
-  { token: '--io-space-2',  rem: '0.5rem',  px: '8px',  twKey: 'space-2'  },
-  { token: '--io-space-3',  rem: '0.75rem', px: '12px', twKey: 'space-3'  },
-  { token: '--io-space-4',  rem: '1rem',    px: '16px', twKey: 'space-4'  },
-  { token: '--io-space-5',  rem: '1.25rem', px: '20px', twKey: 'space-5'  },
-  { token: '--io-space-6',  rem: '1.5rem',  px: '24px', twKey: 'space-6'  },
-  { token: '--io-space-8',  rem: '2rem',    px: '32px', twKey: 'space-8'  },
-  { token: '--io-space-10', rem: '2.5rem',  px: '40px', twKey: 'space-10' },
-  { token: '--io-space-12', rem: '3rem',    px: '48px', twKey: 'space-12' },
-  { token: '--io-space-16', rem: '4rem',    px: '64px', twKey: 'space-16' },
-  { token: '--io-space-20', rem: '5rem',    px: '80px', twKey: 'space-20' },
-  { token: '--io-space-24', rem: '6rem',    px: '96px', twKey: 'space-24' },
+  { token: '--io-space-1', rem: '0.25rem', px: '4px' },
+  { token: '--io-space-2', rem: '0.5rem', px: '8px' },
+  { token: '--io-space-3', rem: '0.75rem', px: '12px' },
+  { token: '--io-space-4', rem: '1rem', px: '16px' },
+  { token: '--io-space-5', rem: '1.25rem', px: '20px' },
+  { token: '--io-space-6', rem: '1.5rem', px: '24px' },
+  { token: '--io-space-8', rem: '2rem', px: '32px' },
+  { token: '--io-space-10', rem: '2.5rem', px: '40px' },
+  { token: '--io-space-12', rem: '3rem', px: '48px' },
+  { token: '--io-space-16', rem: '4rem', px: '64px' },
+  { token: '--io-space-20', rem: '5rem', px: '80px' },
+  { token: '--io-space-24', rem: '6rem', px: '96px' },
 ] as const;
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -190,7 +224,7 @@ export default function SpacingPage() {
         />
         <div className="space-y-2">
           {SPACING_TOKENS.map((t) => (
-            <SpacingRow key={t.token} token={t.token} rem={t.rem} px={t.px} twKey={t.twKey} />
+            <SpacingRow key={t.token} token={t.token} rem={t.rem} px={t.px} />
           ))}
         </div>
         <RuleCard label="Base unit">

@@ -7,9 +7,9 @@ describe('io-select — disabled', () => {
   beforeEach(() => {
     component = new IoSelect();
     (component as any).el = document.createElement('io-select');
-    (component as any).ioChange = { emit: vi.fn() };
-    (component as any).ioFocus = { emit: vi.fn() };
-    (component as any).ioBlur = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
   });
 
   it('is not disabled by default', () => {

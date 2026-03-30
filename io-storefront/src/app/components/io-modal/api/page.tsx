@@ -66,13 +66,13 @@ export default function IoModalApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioOpen</InlineCode>,
+              <InlineCode key="n">open</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
               'Fires after the modal dialog has opened and focus has moved inside. Use this to run post-open logic such as fetching data or setting initial focus on a specific element.',
             ],
             [
-              <InlineCode key="n">ioClose</InlineCode>,
+              <InlineCode key="n">close</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
               'Fires after the modal dialog has closed. Use this to return focus to the trigger element, clean up state, or trigger follow-up actions.',
@@ -83,7 +83,7 @@ export default function IoModalApiPage() {
 {`// Vanilla JS
 const modal = document.querySelector('io-modal');
 openBtn.addEventListener('click', () => modal.show());
-modal.addEventListener('ioClose', () => console.log('closed'));
+modal.addEventListener('close', () => console.log('closed'));
 
 // React
 const ref = useRef(null);
@@ -93,7 +93,7 @@ const ref = useRef(null);
 // Angular
 @ViewChild('modal') modal!: ElementRef;
 openModal() { this.modal.nativeElement.show(); }
-<io-modal #modal heading="Confirm" (ioClose)="onClose()">...</io-modal>
+<io-modal #modal heading="Confirm" (close)="onClose()">...</io-modal>
 
 // Vue
 const modal = ref(null);
@@ -118,12 +118,12 @@ const modal = ref(null);
             [
               <InlineCode key="s">show()</InlineCode>,
               <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
-              'Opens the modal dialog by calling showModal() on the underlying native dialog element. Moves focus to the first focusable element inside the dialog and emits ioOpen.',
+              'Opens the modal dialog by calling showModal() on the underlying native dialog element. Moves focus to the first focusable element inside the dialog and emits open.',
             ],
             [
               <InlineCode key="s">hide()</InlineCode>,
               <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
-              'Closes the modal dialog by calling close() on the underlying native dialog element. Emits ioClose. Focus returns to the element that last had focus before the dialog opened.',
+              'Closes the modal dialog by calling close() on the underlying native dialog element. Emits close. Focus returns to the element that last had focus before the dialog opened.',
             ],
           ]}
         />
@@ -131,7 +131,7 @@ const modal = ref(null);
 {`// Vanilla JS
 const modal = document.querySelector('io-modal');
 openBtn.addEventListener('click', () => modal.show());
-modal.addEventListener('ioClose', () => console.log('closed'));
+modal.addEventListener('close', () => console.log('closed'));
 
 // React
 const ref = useRef(null);
@@ -141,7 +141,7 @@ const ref = useRef(null);
 // Angular
 @ViewChild('modal') modal!: ElementRef;
 openModal() { this.modal.nativeElement.show(); }
-<io-modal #modal heading="Confirm" (ioClose)="onClose()">...</io-modal>
+<io-modal #modal heading="Confirm" (close)="onClose()">...</io-modal>
 
 // Vue
 const modal = ref(null);

@@ -68,10 +68,10 @@ export class AppComponent {}`}
   label="Email"
   placeholder="name@example.com"
   [value]="email"
-  (ioChange)="onEmailChange($event)"
+  (change)="onEmailChange($event)"
 ></io-input>
 
-<io-button variant="solid" (ioClick)="onSubmit()">Submit</io-button>`}
+<io-button variant="solid" (click)="onSubmit()">Submit</io-button>`}
         </pre>
       </section>
 

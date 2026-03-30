@@ -16,10 +16,10 @@ describe('io-link — click handling', () => {
     component = new IoLink();
     (component as any).el = document.createElement('io-link');
     emitMock = vi.fn();
-    (component as any).ioClick = { emit: emitMock };
+    (component as any).click = { emit: emitMock };
   });
 
-  it('emits ioClick on normal click', () => {
+  it('emits click on normal click', () => {
     const ev = makeEvent();
     (component as any).handleClick(ev);
     expect(emitMock).toHaveBeenCalledOnce();

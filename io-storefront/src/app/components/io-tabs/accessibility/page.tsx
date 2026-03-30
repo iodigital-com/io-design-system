@@ -52,12 +52,12 @@ export default function IoTabsAccessibilityPage() {
             {
               key: <Kbd>Enter</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab, and fires the ioChange event with the tab value. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab, and fires the change event with the tab value. Has no effect on disabled tabs.',
             },
             {
               key: <Kbd>Space</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab, and fires the ioChange event with the tab value. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab, and fires the change event with the tab value. Has no effect on disabled tabs.',
             },
           ]}
         />

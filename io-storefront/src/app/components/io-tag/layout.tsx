@@ -17,7 +17,7 @@ export default function IoTagLayout({ children }: { children: ReactNode }) {
     <div>
       <PageHeader
         title="Tag"
-        description="Toggleable filter chip or removable label. Renders as a button with aria-pressed — emits ioToggle and ioRemove."
+        description="Toggleable filter chip or removable label. Renders as a button with aria-pressed — emits toggle and remove."
         tabs={TABS}
         category="Component"
       />

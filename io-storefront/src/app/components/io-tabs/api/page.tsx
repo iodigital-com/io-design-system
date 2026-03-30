@@ -47,7 +47,7 @@ export default function IoTabsApiPage() {
                 The <InlineCode>value</InlineCode> of the currently active tab. Mutable — updated
                 internally when the user activates a tab. Reflected to a host attribute so it can
                 be observed via CSS attribute selectors. Bind to{' '}
-                <InlineCode>ioChange</InlineCode> to keep external state in sync.
+                <InlineCode>change</InlineCode> to keep external state in sync.
               </span>,
             ],
           ]}
@@ -56,7 +56,7 @@ export default function IoTabsApiPage() {
 {`interface IoTabItem {
   /** Text displayed on the tab button and used as the accessible name. */
   label: string;
-  /** Unique identifier emitted in the ioChange event detail. */
+  /** Unique identifier emitted in the change event detail. */
   value: string;
   /** When true, the tab is visually dimmed and cannot be activated. */
   disabled?: boolean;
@@ -79,7 +79,7 @@ export default function IoTabsApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               'No',
               'Fires when the user activates a tab (via click, Enter, or Space). The event detail is the value string of the newly active tab. Use this to update the activeTab prop and render the corresponding panel.',
@@ -89,7 +89,7 @@ export default function IoTabsApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-tabs')
-  .addEventListener('ioChange', (e) => {
+  .addEventListener('change', (e) => {
     console.log('active tab:', e.detail);
   });
 
@@ -97,11 +97,11 @@ document.querySelector('io-tabs')
 <IoTabs
   tabs={tabs}
   activeTab={activeTab}
-  onIoChange={(e) => setActiveTab(e.detail)}
+  onChange={(e) => setActiveTab(e.detail)}
 />
 
 // Angular
-<io-tabs [tabs]="tabs" [activeTab]="activeTab" (ioChange)="onTabChange($event)"></io-tabs>
+<io-tabs [tabs]="tabs" [activeTab]="activeTab" (change)="onTabChange($event)"></io-tabs>
 
 // Vue
 <io-tabs :tabs="tabs" :active-tab="activeTab" @io-change="handleChange" />`}
@@ -117,7 +117,7 @@ document.querySelector('io-tabs')
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-tabs exposes no public methods.</strong>
           {' '}All interactions are driven by prop changes (<InlineCode>tabs</InlineCode>,{' '}
-          <InlineCode>activeTab</InlineCode>) and the <InlineCode>ioChange</InlineCode> event.
+          <InlineCode>activeTab</InlineCode>) and the <InlineCode>change</InlineCode> event.
         </EmptyNote>
       </section>
 

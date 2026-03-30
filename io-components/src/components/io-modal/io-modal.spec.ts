@@ -7,8 +7,8 @@ describe('io-modal — default props', () => {
   beforeEach(() => {
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
-    (component as any).ioOpen = { emit: vi.fn() };
-    (component as any).ioClose = { emit: vi.fn() };
+    (component as any).openEvent = { emit: vi.fn() };
+    (component as any).closeEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
   });
 

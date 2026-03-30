@@ -35,12 +35,12 @@ export class IoToastItem {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the user dismisses the toast */
-  @Event() ioToastDismiss!: EventEmitter<void>;
+  @Event() dismiss!: EventEmitter<void>;
 
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleClose = () => {
-    this.ioToastDismiss.emit();
+    this.dismiss.emit();
   };
 
   // ── Render ───────────────────────────────────────────────────

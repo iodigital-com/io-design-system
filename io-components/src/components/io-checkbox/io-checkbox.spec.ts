@@ -7,7 +7,7 @@ describe('io-checkbox — default props', () => {
   beforeEach(() => {
     component = new IoCheckbox();
     (component as any).el = document.createElement('io-checkbox');
-    (component as any).ioChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
   });
 
   it('is not checked by default', () => {

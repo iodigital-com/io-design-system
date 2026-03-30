@@ -25,16 +25,16 @@ describe('io-select — change handling', () => {
     changeMock = vi.fn();
     focusMock = vi.fn();
     blurMock = vi.fn();
-    (component as any).ioChange = { emit: changeMock };
-    (component as any).ioFocus = { emit: focusMock };
-    (component as any).ioBlur = { emit: blurMock };
+    (component as any).change = { emit: changeMock };
+    (component as any).focus = { emit: focusMock };
+    (component as any).blur = { emit: blurMock };
     component.options = [
       { label: 'Option A', value: 'a' },
       { label: 'Option B', value: 'b' },
     ];
   });
 
-  it('emits ioChange with the selected value', () => {
+  it('emits change with the selected value', () => {
     const ev = makeChangeEvent('a');
     (component as any).handleChange(ev);
     expect(changeMock).toHaveBeenCalledWith('a');
@@ -46,13 +46,13 @@ describe('io-select — change handling', () => {
     expect(component.value).toBe('b');
   });
 
-  it('emits ioFocus on focus', () => {
+  it('emits focus on focus', () => {
     const ev = new FocusEvent('focus');
     (component as any).handleFocus(ev);
     expect(focusMock).toHaveBeenCalledWith(ev);
   });
 
-  it('emits ioBlur on blur', () => {
+  it('emits blur on blur', () => {
     const ev = new FocusEvent('blur');
     (component as any).handleBlur(ev);
     expect(blurMock).toHaveBeenCalledWith(ev);

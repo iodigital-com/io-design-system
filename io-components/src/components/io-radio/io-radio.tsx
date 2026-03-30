@@ -52,7 +52,7 @@ export class IoRadio {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() ioChange!: EventEmitter<IoRadioChangeDetail>;
+  @Event() change!: EventEmitter<IoRadioChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ export class IoRadio {
   private handleChange = (ev: Event) => {
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
-    this.ioChange.emit({ checked: input.checked, value: this.value });
+    this.change.emit({ checked: input.checked, value: this.value });
   };
 
   // ── Render ───────────────────────────────────────────────────

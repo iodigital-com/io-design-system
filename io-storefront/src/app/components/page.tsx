@@ -6,11 +6,11 @@ import { PageHeader } from '@/components/layout/PageHeader';
 const COMPONENTS = [
   { name: 'Badge',    tag: 'io-badge',    href: '/components/io-badge/configurator',    description: 'Labels status, counts, and categories inline. Nine variants map directly to io Digital\'s semantic and brand colour palette.' },
   { name: 'Button',   tag: 'io-button',   href: '/components/io-button/configurator',   description: 'Handles primary interactions — form submissions, navigation, and confirmations. Three variants, ten brand colours, four sizes.' },
-  { name: 'Checkbox', tag: 'io-checkbox', href: '/components/io-checkbox/configurator', description: 'Binary selection with a built-in label and indeterminate state. Emits checked value via ioChange.' },
+  { name: 'Checkbox', tag: 'io-checkbox', href: '/components/io-checkbox/configurator', description: 'Binary selection with a built-in label and indeterminate state. Emits checked value via change.' },
   { name: 'Input',    tag: 'io-input',    href: '/components/io-input/configurator',    description: 'Single-line text entry. Built-in label, helper text, character count, and error state.' },
   { name: 'Link',     tag: 'io-link',     href: '/components/io-link/configurator',     description: 'Inline and standalone hyperlink. Three colour options, external link support, and an animated underline on hover.' },
   { name: 'Modal',    tag: 'io-modal',    href: '/components/io-modal/configurator',    description: 'Focuses attention on a critical task or confirmation. Rendered as a native <dialog> — focus trapping and ESC are built-in.' },
-  { name: 'Radio',    tag: 'io-radio',    href: '/components/io-radio/configurator',    description: 'Single-select from a group. Built-in label, helper text, error state, and ioChange event.' },
+  { name: 'Radio',    tag: 'io-radio',    href: '/components/io-radio/configurator',    description: 'Single-select from a group. Built-in label, helper text, error state, and change event.' },
   { name: 'Select',   tag: 'io-select',   href: '/components/io-select/configurator',   description: 'Dropdown selection with a built-in label, placeholder, and error state. Pass options as an array of objects.' },
   { name: 'Spinner',  tag: 'io-spinner',  href: '/components/io-spinner/configurator',  description: 'Signals a loading or processing state. Three sizes, three colour modes including current to inherit parent colour.' },
   { name: 'Tabs',     tag: 'io-tabs',     href: '/components/io-tabs/configurator',     description: 'Organises content into named panels. Keyboard-navigable with roving tabindex and full ARIA tab role semantics.' },

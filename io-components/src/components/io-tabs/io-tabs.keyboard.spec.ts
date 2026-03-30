@@ -28,7 +28,7 @@ describe('io-tabs — keyboard navigation', () => {
       },
     };
     emitMock = vi.fn();
-    (component as any).ioChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.tabs = TABS;
     component.activeTab = 'first';
   });

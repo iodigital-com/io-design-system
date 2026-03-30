@@ -26,7 +26,7 @@ export default function IoTagAccessibilityPage() {
             },
             {
               key: <Kbd>Enter</Kbd>,
-              action: 'Toggles the selected state and fires ioToggle, or fires ioRemove if the tag is removable.',
+              action: 'Toggles the selected state and fires toggle, or fires remove if the tag is removable.',
             },
             {
               key: <Kbd>Space</Kbd>,

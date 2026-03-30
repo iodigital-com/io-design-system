@@ -57,7 +57,7 @@ export default function IoInputApiPage() {
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Controlled value. Mutable — updated internally on user input. Bind to ioChange or ioInput to keep external state in sync.',
+              'Controlled value. Mutable — updated internally on user input. Bind to change or input to keep external state in sync.',
             ],
             [
               <InlineCode key="n">placeholder</InlineCode>,
@@ -126,25 +126,25 @@ export default function IoInputApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioInput</InlineCode>,
+              <InlineCode key="n">input</InlineCode>,
               <InlineCode key="t">InputEvent</InlineCode>,
               'No',
               'Fires on every keystroke. The native InputEvent is passed as the event detail. Use for live character count or immediate feedback.',
             ],
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               'No',
               'Fires when the input loses focus after the value has changed. Detail is the current string value. Preferred event for form state management and validation triggers.',
             ],
             [
-              <InlineCode key="n">ioFocus</InlineCode>,
+              <InlineCode key="n">focus</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the input gains focus.',
             ],
             [
-              <InlineCode key="n">ioBlur</InlineCode>,
+              <InlineCode key="n">blur</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the input loses focus. Recommended trigger point for field-level validation.',
@@ -154,13 +154,13 @@ export default function IoInputApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-input')
-  .addEventListener('ioChange', (e) => console.log(e.detail));
+  .addEventListener('change', (e) => console.log(e.detail));
 
 // React
-<IoInput onIoChange={(e) => setState(e.detail)} label="Email" />
+<IoInput onChange={(e) => setState(e.detail)} label="Email" />
 
 // Angular
-<io-input (ioChange)="handleChange($event)" label="Email"></io-input>
+<io-input (change)="handleChange($event)" label="Email"></io-input>
 
 // Vue
 <io-input @io-change="handleChange" label="Email" />`}

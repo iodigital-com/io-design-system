@@ -45,13 +45,13 @@ export class IoLink {
   /** Automatically sets target="_blank" and rel="noopener noreferrer" */
   @Prop() external = false;
 
-  /** Disables the link — removes href and blocks ioClick */
+  /** Disables the link — removes href and blocks click */
   @Prop({ reflect: true }) disabled = false;
 
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on click. Not fired when disabled. */
-  @Event() ioClick!: EventEmitter<MouseEvent>;
+  @Event() click!: EventEmitter<MouseEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -70,7 +70,7 @@ export class IoLink {
       ev.stopPropagation();
       return;
     }
-    this.ioClick.emit(ev);
+    this.click.emit(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────

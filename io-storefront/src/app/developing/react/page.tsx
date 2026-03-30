@@ -97,8 +97,8 @@ export function WelcomeBanner() {
           Event handling
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          io components emit custom events prefixed with <code>io</code> (e.g. <code>ioChange</code>,{' '}
-          <code>ioClick</code>). The React wrappers map these to camel-case <code>on*</code> props so they integrate with
+          io components emit custom events prefixed with <code>io</code> (e.g. <code>change</code>,{' '}
+          <code>click</code>). The React wrappers map these to camel-case <code>on*</code> props so they integrate with
           React's synthetic event model. Each handler receives a strongly-typed <code>CustomEvent</code>.
         </p>
         <pre
@@ -112,17 +112,17 @@ export function ContactForm() {
   const [email, setEmail] = useState('');
   const [agreed, setAgreed] = useState(false);
 
-  // ioChange on IoInput — detail is the current string value
+  // change on IoInput — detail is the current string value
   const handleEmailChange = (e: CustomEvent<string>) => {
     setEmail(e.detail);
   };
 
-  // ioChange on IoCheckbox — detail is { checked: boolean }
+  // change on IoCheckbox — detail is { checked: boolean }
   const handleCheckboxChange = (e: CustomEvent<{ checked: boolean }>) => {
     setAgreed(e.detail.checked);
   };
 
-  // ioClick on IoButton — detail is the native MouseEvent
+  // click on IoButton — detail is the native MouseEvent
   const handleSubmit = (e: CustomEvent<MouseEvent>) => {
     e.detail.preventDefault();
     console.log('Submitted:', { email, agreed });
@@ -135,17 +135,17 @@ export function ContactForm() {
         type="email"
         name="email"
         value={email}
-        onIoChange={handleEmailChange}
+        onChange={handleEmailChange}
       />
       <IoCheckbox
         label="I agree to the terms"
         checked={agreed}
-        onIoChange={handleCheckboxChange}
+        onChange={handleCheckboxChange}
       />
       <IoButton
         variant="solid"
         color="blue"
-        onIoClick={handleSubmit}
+        onClick={handleSubmit}
       >
         Submit
       </IoButton>
@@ -171,12 +171,12 @@ export function ContactForm() {
             </thead>
             <tbody>
               {[
-                ['IoButton', 'ioClick', 'onIoClick'],
-                ['IoInput', 'ioChange / ioInput / ioFocus / ioBlur', 'onIoChange / onIoInput / onIoFocus / onIoBlur'],
-                ['IoCheckbox', 'ioChange', 'onIoChange'],
-                ['IoSelect', 'ioChange / ioFocus / ioBlur', 'onIoChange / onIoFocus / onIoBlur'],
-                ['IoTabs', 'ioChange', 'onIoChange'],
-                ['IoTag', 'ioToggle / ioRemove', 'onIoToggle / onIoRemove'],
+                ['IoButton', 'click', 'onClick'],
+                ['IoInput', 'change / input / focus / blur', 'onChange / onInput / onFocus / onBlur'],
+                ['IoCheckbox', 'change', 'onChange'],
+                ['IoSelect', 'change / focus / blur', 'onChange / onFocus / onBlur'],
+                ['IoTabs', 'change', 'onChange'],
+                ['IoTag', 'toggle / remove', 'onToggle / onRemove'],
               ].map(([component, stencil, react]) => (
                 <tr key={component} style={{ borderBottom: '1px solid var(--io-border)' }}>
                   <td className="py-2 pr-4"><code>{component}</code></td>
@@ -296,13 +296,13 @@ beforeAll(() => defineCustomElements());
 import { render, screen } from '@testing-library/react';
 import { ContactForm } from './ContactForm';
 
-test('updates email on ioChange', async () => {
+test('updates email on change', async () => {
   render(<ContactForm />);
   const input = document.querySelector('io-input')!;
 
   // Dispatch the custom event the wrapper listens to
   input.dispatchEvent(
-    new CustomEvent('ioChange', { detail: 'test@example.com', bubbles: true }),
+    new CustomEvent('change', { detail: 'test@example.com', bubbles: true }),
   );
 
   // Assert your React state or visible output changed
@@ -324,7 +324,7 @@ test('updates email on ioChange', async () => {
             },
             {
               problem: 'Event handlers never fire',
-              fix: 'Verify you are using the on* prop form (e.g. onIoChange) on the wrapper, not addEventListener on the host element. Also confirm the event name casing matches the Stencil definition.',
+              fix: 'Verify you are using the on* prop form (e.g. onChange) on the wrapper, not addEventListener on the host element. Also confirm the event name casing matches the Stencil definition.',
             },
             {
               problem: 'TypeScript cannot find module @io-digital/components-react',

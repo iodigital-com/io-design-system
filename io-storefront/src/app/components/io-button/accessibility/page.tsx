@@ -26,11 +26,11 @@ export default function IoButtonAccessibilityPage() {
             },
             {
               key: <Kbd>Enter</Kbd>,
-              action: 'Activates the button — fires ioClick. On anchor variant (<a>), also follows the href.',
+              action: 'Activates the button — fires click. On anchor variant (<a>), also follows the href.',
             },
             {
               key: <Kbd>Space</Kbd>,
-              action: 'Activates the button — fires ioClick. On the anchor variant, also scrolls the page (browser default).',
+              action: 'Activates the button — fires click. On the anchor variant, also scrolls the page (browser default).',
             },
           ]}
         />

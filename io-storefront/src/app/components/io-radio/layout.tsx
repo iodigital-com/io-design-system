@@ -17,7 +17,7 @@ export default function IoRadioLayout({ children }: { children: ReactNode }) {
     <div>
       <PageHeader
         title="Radio"
-        description="Single-select from a group. Built-in label, helper text, error state, and ioChange event."
+        description="Single-select from a group. Built-in label, helper text, error state, and change event."
         tabs={TABS}
         category="Component"
       />

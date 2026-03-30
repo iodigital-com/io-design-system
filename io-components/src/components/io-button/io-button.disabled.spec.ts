@@ -7,7 +7,7 @@ describe('io-button — disabled / loading', () => {
   beforeEach(() => {
     component = new IoButton();
     (component as any).el = document.createElement('io-button');
-    (component as any).ioClick = { emit: vi.fn() };
+    (component as any).click = { emit: vi.fn() };
   });
 
   it('sets disabled prop to false by default', () => {
@@ -32,7 +32,7 @@ describe('io-button — disabled / loading', () => {
 
   it('prevents click emission when disabled', () => {
     component.disabled = true;
-    const emitMock = (component as any).ioClick.emit;
+    const emitMock = (component as any).click.emit;
     const ev = new MouseEvent('click');
     Object.defineProperty(ev, 'preventDefault', { value: vi.fn() });
     Object.defineProperty(ev, 'stopPropagation', { value: vi.fn() });
@@ -42,7 +42,7 @@ describe('io-button — disabled / loading', () => {
 
   it('prevents click emission when loading', () => {
     component.loading = true;
-    const emitMock = (component as any).ioClick.emit;
+    const emitMock = (component as any).click.emit;
     const ev = new MouseEvent('click');
     Object.defineProperty(ev, 'preventDefault', { value: vi.fn() });
     Object.defineProperty(ev, 'stopPropagation', { value: vi.fn() });

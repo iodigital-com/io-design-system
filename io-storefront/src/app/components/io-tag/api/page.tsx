@@ -33,7 +33,7 @@ export default function IoTagApiPage() {
               <InlineCode key="n">removable</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Renders a remove icon (×) inside the tag. Clicking the icon fires ioRemove instead of ioToggle. Use in tag input fields where selected values can be cleared.',
+              'Renders a remove icon (×) inside the tag. Clicking the icon fires remove instead of toggle. Use in tag input fields where selected values can be cleared.',
             ],
             [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
@@ -76,13 +76,13 @@ export default function IoTagApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioToggle</InlineCode>,
+              <InlineCode key="n">toggle</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               'No',
               'Fires when the tag is clicked and not disabled and not removable. The detail is the new selected value (true if now selected, false if now deselected).',
             ],
             [
-              <InlineCode key="n">ioRemove</InlineCode>,
+              <InlineCode key="n">remove</InlineCode>,
               <InlineCode key="t">void</InlineCode>,
               'No',
               'Fires when the remove icon is clicked on a removable tag. No detail value. Handle this event to remove the tag from your data model.',
@@ -92,15 +92,15 @@ export default function IoTagApiPage() {
         <CodeNote label="Usage">
 {`// Vanilla JS
 const tag = document.querySelector('io-tag');
-tag.addEventListener('ioToggle', (e) => console.log('selected:', e.detail));
-tag.addEventListener('ioRemove', () => removeTag(tag));
+tag.addEventListener('toggle', (e) => console.log('selected:', e.detail));
+tag.addEventListener('remove', () => removeTag(tag));
 
 // React
-<IoTag onIoToggle={(e) => setSelected(e.detail)}>React</IoTag>
-<IoTag removable onIoRemove={() => removeTag(id)}>TypeScript</IoTag>
+<IoTag onToggle={(e) => setSelected(e.detail)}>React</IoTag>
+<IoTag removable onRemove={() => removeTag(id)}>TypeScript</IoTag>
 
 // Angular
-<io-tag (ioToggle)="onToggle($event)">React</io-tag>
+<io-tag (toggle)="onToggle($event)">React</io-tag>
 
 // Vue
 <io-tag @io-toggle="handleToggle">React</io-tag>`}

@@ -63,7 +63,7 @@ export class IoToast {
             key={this.currentMsg.id}
             text={this.currentMsg.text}
             variant={this.currentMsg.variant ?? 'neutral'}
-            onIoToastDismiss={() => toastManager.dismiss()}
+            onDismiss={() => toastManager.dismiss()}
           />
         )}
       </Host>

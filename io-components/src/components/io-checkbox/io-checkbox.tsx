@@ -55,7 +55,7 @@ export class IoCheckbox {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() ioChange!: EventEmitter<IoCheckboxChangeDetail>;
+  @Event() change!: EventEmitter<IoCheckboxChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -88,7 +88,7 @@ export class IoCheckbox {
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.indeterminate = false;
-    this.ioChange.emit({ checked: input.checked, value: this.value });
+    this.change.emit({ checked: input.checked, value: this.value });
   };
 
   // ── Render ───────────────────────────────────────────────────

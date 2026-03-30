@@ -17,7 +17,7 @@ export default function IoCheckboxLayout({ children }: { children: ReactNode }) 
     <div>
       <PageHeader
         title="Checkbox"
-        description="Binary selection with a built-in label and indeterminate state. Emits checked value via ioChange."
+        description="Binary selection with a built-in label and indeterminate state. Emits checked value via change."
         tabs={TABS}
         category="Component"
       />

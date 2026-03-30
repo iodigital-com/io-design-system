@@ -7,8 +7,8 @@ describe('io-tag — disabled', () => {
   beforeEach(() => {
     component = new IoTag();
     (component as any).el = document.createElement('io-tag');
-    (component as any).ioToggle = { emit: vi.fn() };
-    (component as any).ioRemove = { emit: vi.fn() };
+    (component as any).toggle = { emit: vi.fn() };
+    (component as any).remove = { emit: vi.fn() };
   });
 
   it('is not disabled by default', () => {

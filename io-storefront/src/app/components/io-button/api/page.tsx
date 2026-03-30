@@ -126,7 +126,7 @@ export default function IoButtonApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioClick</InlineCode>,
+              <InlineCode key="n">click</InlineCode>,
               <InlineCode key="t">MouseEvent</InlineCode>,
               'Yes',
               <span key="desc">
@@ -147,10 +147,10 @@ export default function IoButtonApiPage() {
             <CopyButton
               text={`// Vanilla JS
 document.querySelector('io-button')
-  .addEventListener('ioClick', (e) => console.log(e.detail));
+  .addEventListener('click', (e) => console.log(e.detail));
 
 // React
-<IoButton onIoClick={(e) => console.log(e.detail)}>Click me</IoButton>
+<IoButton onClick={(e) => console.log(e.detail)}>Click me</IoButton>
 
 // Angular
 <io-button (click)="handleClick($event)">Click me</io-button>
@@ -166,10 +166,10 @@ document.querySelector('io-button')
             >
 {`// Vanilla JS
 document.querySelector('io-button')
-  .addEventListener('ioClick', (e) => console.log(e.detail));
+  .addEventListener('click', (e) => console.log(e.detail));
 
 // React
-<IoButton onIoClick={(e) => console.log(e.detail)}>Click me</IoButton>
+<IoButton onClick={(e) => console.log(e.detail)}>Click me</IoButton>
 
 // Angular
 <io-button (click)="handleClick($event)">Click me</io-button>

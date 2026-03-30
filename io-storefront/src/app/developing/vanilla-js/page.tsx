@@ -168,7 +168,7 @@ defineCustomElements();`}</CodeBlock>
 customElements.whenDefined('io-button').then(() => {
   const btn = document.querySelector('io-button');
 
-  btn.addEventListener('ioClick', (event) => {
+  btn.addEventListener('click', (event) => {
     console.log('Button clicked', event.detail);
   });
 });
@@ -177,7 +177,7 @@ customElements.whenDefined('io-button').then(() => {
 customElements.whenDefined('io-input').then(() => {
   const input = document.querySelector('io-input');
 
-  input.addEventListener('ioChange', (event) => {
+  input.addEventListener('change', (event) => {
     console.log('New value:', event.detail.value);
   });
 });`}</CodeBlock>
@@ -261,7 +261,7 @@ if (typeof window !== 'undefined') {
               detail: (
                 <>
                   Ensure you are listening for the correct event name (prefixed <InlineCode>io</InlineCode>, e.g.{' '}
-                  <InlineCode>ioClick</InlineCode>) and that you have waited for{' '}
+                  <InlineCode>click</InlineCode>) and that you have waited for{' '}
                   <InlineCode>customElements.whenDefined()</InlineCode> before attaching the listener.
                 </>
               ),

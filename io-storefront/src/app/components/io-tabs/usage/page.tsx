@@ -62,8 +62,8 @@ export default function IoTabsUsagePage() {
           description="io-tabs does not render panel content. The component is a pure navigation control — consumers are responsible for rendering and showing the correct panel based on the active tab value."
         />
         <div className="space-y-3">
-          <RuleCard label="Listen for ioChange to update the active view">
-            Register an event listener on the <C>ioChange</C> event. The event detail is the{' '}
+          <RuleCard label="Listen for change to update the active view">
+            Register an event listener on the <C>change</C> event. The event detail is the{' '}
             <C>value</C> string of the newly activated tab. Update your application state accordingly
             and conditionally render the matching panel.
           </RuleCard>
@@ -98,7 +98,7 @@ export default function IoTabsUsagePage() {
             three words is ideal.
           </RuleCard>
           <RuleCard label="value — the unique identifier">
-            The <C>value</C> field is the string emitted in the <C>ioChange</C> event detail and
+            The <C>value</C> field is the string emitted in the <C>change</C> event detail and
             compared against <C>activeTab</C> to determine which tab is selected. Values must be
             unique within the tabs array.
           </RuleCard>

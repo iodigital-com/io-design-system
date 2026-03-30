@@ -15,12 +15,12 @@ describe('io-tabs — change handling', () => {
     component = new IoTabs();
     (component as any).el = document.createElement('io-tabs');
     emitMock = vi.fn();
-    (component as any).ioChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.tabs = TABS;
     component.activeTab = 'overview';
   });
 
-  it('emits ioChange with new tab value when tab changes', () => {
+  it('emits change with new tab value when tab changes', () => {
     (component as any).handleTabClick('details');
     expect(emitMock).toHaveBeenCalledWith('details');
   });
@@ -30,7 +30,7 @@ describe('io-tabs — change handling', () => {
     expect(component.activeTab).toBe('details');
   });
 
-  it('does not emit ioChange when clicking already active tab', () => {
+  it('does not emit change when clicking already active tab', () => {
     (component as any).handleTabClick('overview');
     expect(emitMock).not.toHaveBeenCalled();
   });

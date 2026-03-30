@@ -39,13 +39,13 @@ export default function IoRadioApiPage() {
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Value submitted with the form when this radio is selected. Passed as the value field in the ioChange event detail. Should be unique within the group.',
+              'Value submitted with the form when this radio is selected. Passed as the value field in the change event detail. Should be unique within the group.',
             ],
             [
               <span key="n"><InlineCode>checked</InlineCode></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Whether this radio button is selected. Mutable — updated internally on user interaction. Bind to ioChange to keep external state in sync. Only one radio in a group should be checked at any time.',
+              'Whether this radio button is selected. Mutable — updated internally on user interaction. Bind to change to keep external state in sync. Only one radio in a group should be checked at any time.',
             ],
             [
               <InlineCode key="n">required</InlineCode>,
@@ -96,7 +96,7 @@ export default function IoRadioApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">ioChange</InlineCode>,
+              <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">{'{ checked: boolean; value: string }'}</InlineCode>,
               'No',
               'Fires when the user selects this radio option. The detail contains checked: true and the value string of the selected option. Use this to update external state for the entire group.',
@@ -107,7 +107,7 @@ export default function IoRadioApiPage() {
 {`// Vanilla JS
 document.querySelectorAll('io-radio[name="delivery"]')
   .forEach((radio) => {
-    radio.addEventListener('ioChange', (e) => {
+    radio.addEventListener('change', (e) => {
       console.log('selected:', e.detail.value);
     });
   });
@@ -117,11 +117,11 @@ document.querySelectorAll('io-radio[name="delivery"]')
   label="Express delivery"
   name="delivery"
   value="express"
-  onIoChange={(e) => setDelivery(e.detail.value)}
+  onChange={(e) => setDelivery(e.detail.value)}
 />
 
 // Angular
-<io-radio label="Express delivery" name="delivery" value="express" (ioChange)="onDeliveryChange($event)"></io-radio>
+<io-radio label="Express delivery" name="delivery" value="express" (change)="onDeliveryChange($event)"></io-radio>
 
 // Vue
 <io-radio label="Express delivery" name="delivery" value="express" @io-change="handleDeliveryChange" />`}

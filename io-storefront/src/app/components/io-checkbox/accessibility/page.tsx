@@ -26,7 +26,7 @@ export default function IoCheckboxAccessibilityPage() {
             },
             {
               key: <Kbd>Space</Kbd>,
-              action: 'Toggles the checked state and fires the ioChange event with the new checked value and the current value string.',
+              action: 'Toggles the checked state and fires the change event with the new checked value and the current value string.',
             },
           ]}
         />

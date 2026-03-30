@@ -20,8 +20,8 @@ describe('io-modal — open/close', () => {
     (component as any).el = document.createElement('io-modal');
     ioOpenEmit = vi.fn();
     ioCloseEmit = vi.fn();
-    (component as any).ioOpen = { emit: ioOpenEmit };
-    (component as any).ioClose = { emit: ioCloseEmit };
+    (component as any).openEvent = { emit: ioOpenEmit };
+    (component as any).closeEvent = { emit: ioCloseEmit };
     (component as any).componentWillLoad();
     dialogEl = makeDialogEl();
     (component as any).dialogEl = dialogEl;
@@ -38,13 +38,13 @@ describe('io-modal — open/close', () => {
     expect(component.open).toBe(false);
   });
 
-  it('openChanged(true) calls showModal and emits ioOpen', () => {
+  it('openChanged(true) calls showModal and emits open', () => {
     (component as any).openChanged(true);
     expect(dialogEl.showModal).toHaveBeenCalled();
     expect(ioOpenEmit).toHaveBeenCalled();
   });
 
-  it('openChanged(false) calls dialog.close and emits ioClose', () => {
+  it('openChanged(false) calls dialog.close and emits close', () => {
     dialogEl.open = true;
     (component as any).openChanged(false);
     expect(dialogEl.close).toHaveBeenCalled();

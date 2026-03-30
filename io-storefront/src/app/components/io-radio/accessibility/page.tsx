@@ -34,7 +34,7 @@ export default function IoRadioAccessibilityPage() {
             },
             {
               key: <Kbd>Space</Kbd>,
-              action: 'Selects the focused radio option if it is not already checked. Fires the ioChange event with checked: true and the option\'s value string.',
+              action: 'Selects the focused radio option if it is not already checked. Fires the change event with checked: true and the option\'s value string.',
             },
           ]}
         />

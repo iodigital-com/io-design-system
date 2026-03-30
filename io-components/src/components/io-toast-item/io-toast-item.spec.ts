@@ -6,7 +6,7 @@ describe('io-toast-item — default props', () => {
 
   beforeEach(() => {
     component = new IoToastItem();
-    (component as any).ioToastDismiss = { emit: vi.fn() };
+    (component as any).dismiss = { emit: vi.fn() };
   });
 
   it('text defaults to empty string', () => {
@@ -25,15 +25,15 @@ describe('io-toast-item — dismiss', () => {
   beforeEach(() => {
     component = new IoToastItem();
     emitMock = vi.fn();
-    (component as any).ioToastDismiss = { emit: emitMock };
+    (component as any).dismiss = { emit: emitMock };
   });
 
-  it('emits ioToastDismiss when close is clicked', () => {
+  it('emits dismiss when close is clicked', () => {
     (component as any).handleClose();
     expect(emitMock).toHaveBeenCalled();
   });
 
-  it('emits ioToastDismiss once per click', () => {
+  it('emits dismiss once per click', () => {
     (component as any).handleClose();
     (component as any).handleClose();
     expect(emitMock).toHaveBeenCalledTimes(2);
@@ -45,7 +45,7 @@ describe('io-toast-item — variant', () => {
     'accepts %s variant',
     (variant) => {
       const component = new IoToastItem();
-      (component as any).ioToastDismiss = { emit: vi.fn() };
+      (component as any).dismiss = { emit: vi.fn() };
       component.variant = variant;
       expect(component.variant).toBe(variant);
     },

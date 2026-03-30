@@ -55,10 +55,10 @@ export class IoInput {
   /** Autocomplete attribute */
   @Prop() autocomplete: string | undefined;
 
-  @Event() ioInput!: EventEmitter<InputEvent>;
-  @Event() ioChange!: EventEmitter<string>;
-  @Event() ioFocus!: EventEmitter<FocusEvent>;
-  @Event() ioBlur!: EventEmitter<FocusEvent>;
+  @Event() input!: EventEmitter<InputEvent>;
+  @Event() change!: EventEmitter<string>;
+  @Event() focus!: EventEmitter<FocusEvent>;
+  @Event() blur!: EventEmitter<FocusEvent>;
 
   @Method()
   async setFocus(options?: FocusOptions): Promise<void> {
@@ -68,19 +68,19 @@ export class IoInput {
 
   private handleInput = (ev: InputEvent) => {
     this.value = (ev.target as HTMLInputElement).value;
-    this.ioInput.emit(ev);
+    this.input.emit(ev);
   };
 
   private handleChange = (ev: Event) => {
-    this.ioChange.emit((ev.target as HTMLInputElement).value);
+    this.change.emit((ev.target as HTMLInputElement).value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
-    this.ioFocus.emit(ev);
+    this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
-    this.ioBlur.emit(ev);
+    this.blur.emit(ev);
   };
 
   render() {

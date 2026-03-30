@@ -163,7 +163,7 @@ document.querySelector('io-input')
 <io-input (change)="handleChange($event)" label="Email"></io-input>
 
 // Vue
-<io-input @io-change="handleChange" label="Email" />`}
+<io-input @change="handleChange" label="Email" />`}
         </CodeNote>
       </section>
 

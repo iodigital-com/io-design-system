@@ -103,7 +103,7 @@ tag.addEventListener('remove', () => removeTag(tag));
 <io-tag (toggle)="onToggle($event)">React</io-tag>
 
 // Vue
-<io-tag @io-toggle="handleToggle">React</io-tag>`}
+<io-tag @toggle="handleToggle">React</io-tag>`}
         </CodeNote>
       </section>
 

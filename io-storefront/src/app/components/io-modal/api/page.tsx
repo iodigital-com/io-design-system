@@ -97,7 +97,7 @@ openModal() { this.modal.nativeElement.show(); }
 
 // Vue
 const modal = ref(null);
-<io-modal ref="modal" heading="Confirm" @io-close="onClose">...</io-modal>
+<io-modal ref="modal" heading="Confirm" @close="onClose">...</io-modal>
 <button @click="modal?.show()">Open</button>`}
         </CodeNote>
       </section>
@@ -145,7 +145,7 @@ openModal() { this.modal.nativeElement.show(); }
 
 // Vue
 const modal = ref(null);
-<io-modal ref="modal" heading="Confirm" @io-close="onClose">...</io-modal>
+<io-modal ref="modal" heading="Confirm" @close="onClose">...</io-modal>
 <button @click="modal?.show()">Open</button>`}
         </CodeNote>
       </section>

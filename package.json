@@ -23,9 +23,10 @@
     "build:storefront": "npm --workspace @io-digital/storefront run build",
     "sync:stencil-assets": "node scripts/sync-stencil-assets.cjs",
     "governance:check": "node scripts/agency-validate-governance.cjs",
+    "events:guard": "node scripts/check-no-io-prefixed-events.cjs",
     "agents:install:claude": "node scripts/install-curated-agency-claude.cjs",
     "build:storefront:release": "npm run build:components && npm run sync:stencil-assets && npm run build:storefront",
-    "build:quality-gates": "npm run governance:check && npm run build && npm run test && npm run type-check && npm run build:storefront"
+    "build:quality-gates": "npm run governance:check && npm run events:guard && npm run build && npm run test && npm run type-check && npm run build:storefront"
   },
   "engines": {
     "node": ">=20.0.0"

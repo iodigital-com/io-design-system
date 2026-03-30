@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed — Breaking events API policy (`MAJOR`)
+
+- Canonical event mapping is locked for the `io*` prefix removal migration:
+	- `ioInput` → `input`
+	- `ioChange` → `change`
+	- `ioFocus` → `focus`
+	- `ioBlur` → `blur`
+	- `ioOpen` → `open`
+	- `ioClose` → `close`
+	- `ioClick` → `click`
+	- `ioToggle` → `toggle`
+	- `ioRemove` → `remove`
+	- `ioToastDismiss` → `dismiss`
+- This migration is a hard breaking change and ships only in the next **major** release.
+- No dual-emit alias layer is provided.
+- Consumers must migrate listeners and wrapper props from `io*` / `onIo*` names to canonical names.
+
 ---
 
 ## [0.0.1] — 2026-03-27

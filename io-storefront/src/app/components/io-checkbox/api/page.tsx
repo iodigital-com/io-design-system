@@ -126,7 +126,7 @@ document.querySelector('io-checkbox')
 <io-checkbox label="Accept terms" (change)="onCheck($event)"></io-checkbox>
 
 // Vue
-<io-checkbox label="Accept terms" @io-change="handleChange" />`}
+<io-checkbox label="Accept terms" @change="handleChange" />`}
         </CodeNote>
       </section>
 

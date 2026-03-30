@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { sitemap } from '@/sitemap';
 
 type ResultType = 'Components' | 'Design Tokens' | 'Documentation';
@@ -177,7 +177,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
-  const listboxId = useId();
+  const listboxId = 'search-results';
 
   const normalizedQuery = query.trim().toLowerCase();
 
@@ -322,6 +322,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             role="combobox"
             aria-expanded="true"
             aria-controls={listboxId}
+            aria-autocomplete="list"
             aria-activedescendant={activeId}
             type="text"
             value={query}

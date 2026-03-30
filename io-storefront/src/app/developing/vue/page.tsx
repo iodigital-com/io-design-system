@@ -47,7 +47,7 @@ export default function DevelopingVuePage() {
 
       <Section title="Installation">
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Install the core web components package alongside the Vue wrapper. Both are required.
+          Install the core Web Components package alongside the Vue wrapper. Both are required.
         </p>
         <CodeBlock>{`npm install @io-digital/components @io-digital/components-vue`}</CodeBlock>
       </Section>
@@ -55,7 +55,7 @@ export default function DevelopingVuePage() {
       <Section title="Register the loader">
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Call <code>defineCustomElements</code> once in your app entry point (typically <code>main.ts</code>) to register
-          all io web components with the browser. This only needs to happen once per application.
+          all io Web Components with the browser. This only needs to happen once per application.
         </p>
         <CodeBlock>{`// main.ts
 import { createApp } from 'vue';

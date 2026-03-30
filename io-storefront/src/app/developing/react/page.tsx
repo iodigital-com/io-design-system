@@ -17,8 +17,8 @@ export default function DevelopingReactPage() {
           Installation
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Install both the core Web Components package and the React wrapper. The wrapper re-exports every component with
-          full TypeScript types so your editor autocompletes props and events out of the box.
+          Install the core Web Components package together with the React wrapper. The wrapper re-exports components with
+          full TypeScript types so your editor can autocomplete props and events.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"

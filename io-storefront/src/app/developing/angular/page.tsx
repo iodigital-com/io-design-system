@@ -16,7 +16,7 @@ export default function DevelopingAngularPage() {
           Install
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Install the core Web Components package along with the Angular wrapper that provides TypeScript-typed component bindings.
+          Install the core Web Components package with the Angular wrapper to get typed component bindings in templates.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"

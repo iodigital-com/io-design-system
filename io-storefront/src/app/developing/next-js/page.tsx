@@ -20,7 +20,7 @@ export default function DevelopingNextJsPage() {
           Make sure your environment meets the following requirements before you start.
         </p>
         <ul className="text-sm space-y-1 list-disc list-inside" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          <li>Node.js 18 or later</li>
+          <li>Node.js 18+</li>
           <li>Next.js 13 or later with the App Router enabled</li>
           <li>npm, pnpm, or yarn as your package manager</li>
         </ul>
@@ -32,7 +32,7 @@ export default function DevelopingNextJsPage() {
           Install
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Install the core Web Components package and the React wrapper. The React wrapper provides fully-typed component props and maps custom events to React-compatible handlers.
+          Pair the core Web Components package with the React wrapper. The wrapper provides typed props and maps custom events to React-friendly handlers.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"
@@ -263,7 +263,7 @@ export function SearchBar() {
               Hydration warnings in the browser console
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-              Move iO component usage into client components (files with the{' '}
+              Move io component usage into client components (files with the{' '}
               <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`'use client'`}</code>{' '}
               directive) and ensure <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>IoProvider</code>{' '}
               is at the root. For isolated cases, add{' '}

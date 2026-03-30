@@ -14,13 +14,13 @@ export function SectionHeader({ title, description }: { title: string; descripti
           aria-hidden="true"
         />
         <h2
-          className="text-lg font-bold"
-          style={{ color: 'var(--io-text-primary)', letterSpacing: 'var(--io-heading-tracking-3, -0.015em)' }}
+          className="text-lg font-bold text-io-text-primary"
+          style={{ letterSpacing: 'var(--io-heading-tracking-3, -0.015em)' }}
         >
           {title}
         </h2>
       </div>
-      <p className="ml-3 text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+      <p className="ml-3 text-sm text-io-text-secondary leading-[1.6]">
         {description}
       </p>
     </div>
@@ -29,10 +29,7 @@ export function SectionHeader({ title, description }: { title: string; descripti
 
 export function SubsectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h3
-      className="text-xs font-semibold uppercase mb-3"
-      style={{ color: 'var(--io-text-muted)', letterSpacing: '0.08em' }}
-    >
+    <h3 className="text-xs font-semibold uppercase mb-3 text-io-text-muted tracking-[0.08em]">
       {children}
     </h3>
   );
@@ -50,10 +47,10 @@ export function RuleCard({ label, children }: { label: string; children: ReactNo
         aria-hidden="true"
       />
       <div>
-        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--io-text-primary)' }}>
+        <p className="text-sm font-semibold mb-1 text-io-text-primary">
           {label}
         </p>
-        <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+        <p className="text-sm text-io-text-secondary leading-[1.6]">
           {children}
         </p>
       </div>
@@ -75,7 +72,7 @@ export function DoOrDontCard({ type, children }: { type: DoOrDont; children: Rea
         }}
         aria-hidden="true"
       />
-      <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+      <p className="text-sm text-io-text-secondary leading-[1.6]">
         {children}
       </p>
     </div>
@@ -85,8 +82,8 @@ export function DoOrDontCard({ type, children }: { type: DoOrDont; children: Rea
 export function C({ children }: { children: ReactNode }) {
   return (
     <code
-      className="text-xs font-mono px-1.5 py-0.5 rounded"
-      style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}
+      className="text-xs font-mono px-1.5 py-0.5 rounded text-io-text-primary"
+      style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}
     >
       {children}
     </code>

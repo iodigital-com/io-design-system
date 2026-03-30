@@ -10,13 +10,13 @@ export function SectionHeader({ title, description }: { title: string; descripti
           aria-hidden="true"
         />
         <h2
-          className="text-lg font-bold"
-          style={{ color: 'var(--io-text-primary)', letterSpacing: 'var(--io-heading-tracking-3, -0.015em)' }}
+          className="text-lg font-bold text-io-text-primary"
+          style={{ letterSpacing: 'var(--io-heading-tracking-3, -0.015em)' }}
         >
           {title}
         </h2>
       </div>
-      <p className="ml-3 text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+      <p className="ml-3 text-sm text-io-text-secondary leading-[1.6]">
         {description}
       </p>
     </div>
@@ -35,10 +35,10 @@ export function RuleCard({ label, children }: { label: string; children: ReactNo
         aria-hidden="true"
       />
       <div>
-        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--io-text-primary)' }}>
+        <p className="text-sm font-semibold mb-1 text-io-text-primary">
           {label}
         </p>
-        <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+        <p className="text-sm text-io-text-secondary leading-[1.6]">
           {children}
         </p>
       </div>
@@ -54,12 +54,10 @@ export function KeyboardTable({ rows }: { rows: KeyboardRow[] }) {
       <table className="w-full text-sm border-collapse">
         <thead>
           <tr style={{ background: 'var(--io-bg-surface)', borderBottom: '1px solid var(--io-border)' }}>
-            <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest w-48"
-              style={{ color: 'var(--io-text-muted)', letterSpacing: '0.08em' }}>
+            <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest w-48 text-io-text-muted tracking-[0.08em]">
               Key
             </th>
-            <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest"
-              style={{ color: 'var(--io-text-muted)', letterSpacing: '0.08em' }}>
+            <th className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest text-io-text-muted tracking-[0.08em]">
               Action
             </th>
           </tr>
@@ -74,7 +72,7 @@ export function KeyboardTable({ rows }: { rows: KeyboardRow[] }) {
               }}
             >
               <td className="px-4 py-3 font-mono align-top">{row.key}</td>
-              <td className="px-4 py-3 align-top" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+              <td className="px-4 py-3 align-top text-io-text-secondary leading-[1.6]">
                 {row.action}
               </td>
             </tr>
@@ -88,11 +86,10 @@ export function KeyboardTable({ rows }: { rows: KeyboardRow[] }) {
 export function Kbd({ children }: { children: ReactNode }) {
   return (
     <kbd
-      className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono"
+      className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono text-io-text-primary"
       style={{
         background: 'var(--io-bg-surface)',
         border: '1px solid var(--io-border)',
-        color: 'var(--io-text-primary)',
         boxShadow: '0 1px 0 var(--io-border)',
         fontFamily: 'inherit',
       }}
@@ -111,8 +108,7 @@ export function AriaTable({ rows }: { rows: AriaRow[] }) {
         <thead>
           <tr style={{ background: 'var(--io-bg-surface)', borderBottom: '1px solid var(--io-border)' }}>
             {['Attribute', 'Value', 'Description'].map((h) => (
-              <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest"
-                style={{ color: 'var(--io-text-muted)', letterSpacing: '0.08em' }}>
+              <th key={h} className="px-4 py-3 text-left font-semibold text-xs uppercase tracking-widest text-io-text-muted tracking-[0.08em]">
                 {h}
               </th>
             ))}
@@ -129,16 +125,16 @@ export function AriaTable({ rows }: { rows: AriaRow[] }) {
             >
               <td className="px-4 py-3 align-top">
                 <code
-                  className="text-xs px-1.5 py-0.5 rounded font-mono"
-                  style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}
+                  className="text-xs px-1.5 py-0.5 rounded font-mono text-io-text-primary"
+                  style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}
                 >
                   {row.attribute}
                 </code>
               </td>
-              <td className="px-4 py-3 align-top" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.5' }}>
+              <td className="px-4 py-3 align-top text-io-text-secondary leading-[1.5]">
                 {row.value}
               </td>
-              <td className="px-4 py-3 align-top" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+              <td className="px-4 py-3 align-top text-io-text-secondary leading-[1.6]">
                 {row.description}
               </td>
             </tr>
@@ -170,30 +166,30 @@ export function ComplianceCard({
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2">
           <span
-            className="text-xs font-mono font-semibold px-2 py-0.5 rounded"
-            style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
+            className="text-xs font-mono font-semibold px-2 py-0.5 rounded text-io-text-secondary"
+            style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}
           >
             {criterion}
           </span>
           <span
-            className="text-[10px] font-bold px-1.5 py-0.5 rounded"
-            style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-muted)' }}
+            className="text-[10px] font-bold px-1.5 py-0.5 rounded text-io-text-muted"
+            style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}
           >
             {level}
           </span>
         </div>
         <span
-          className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
-          style={{ background: 'color-mix(in srgb, var(--io-color-success) 12%, transparent)', color: 'var(--io-color-success)' }}
+          className="text-[11px] font-semibold px-2.5 py-1 rounded-full text-io-color-success"
+          style={{ background: 'color-mix(in srgb, var(--io-color-success) 12%, transparent)' }}
         >
           Pass
         </span>
       </div>
       <div>
-        <p className="text-sm font-semibold mb-0.5" style={{ color: 'var(--io-text-primary)' }}>
+        <p className="text-sm font-semibold mb-0.5 text-io-text-primary">
           {title}
         </p>
-        <p className="text-xs" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+        <p className="text-xs text-io-text-secondary leading-[1.6]">
           {note}
         </p>
       </div>

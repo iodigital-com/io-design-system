@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactElement, type ReactNode, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Navigation } from './Navigation';
@@ -27,7 +27,7 @@ function IoLogoMark() {
       height="28"
       role="img"
       aria-label="iO logotype"
-      style={{ color: 'var(--io-accent, #0000D2)', flexShrink: 0 }}
+      className="text-io-accent shrink-0"
     >
       <path
         fill="currentColor"
@@ -80,7 +80,7 @@ function AutoIcon() {
   );
 }
 
-const THEME_ICONS: Record<typeof THEMES[number], React.ReactElement> = {
+const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
   light: <SunIcon />,
   dark: <MoonIcon />,
   auto: <AutoIcon />,
@@ -128,8 +128,7 @@ export function Canvas({ children }: { children: ReactNode }) {
           <Link href="/" className="flex items-center gap-2 select-none" aria-label="iO Design System home">
             <IoLogoMark />
             <span
-              className="text-sm font-light"
-              style={{ color: 'var(--io-text-secondary)', letterSpacing: '-0.01em' }}
+              className="text-sm font-light text-io-text-secondary tracking-[-0.01em]"
             >
               Design System
             </span>

@@ -96,35 +96,42 @@ export const selectPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Country',
+    description: 'Sets the field label shown above the select.',
   },
   {
     name: 'placeholder',
     type: 'string',
     defaultValue: '',
+    description: 'Displays hint text when no value is selected.',
   },
   {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+    description: 'Prevents opening and changing the selection.',
   },
   {
     name: 'required',
     type: 'boolean',
     defaultValue: false,
+    description: 'Marks the field as required for form submission.',
   },
   {
     name: 'error',
     type: 'boolean',
     defaultValue: false,
+    description: 'Applies the invalid visual state.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     defaultValue: '',
+    description: 'Shows validation feedback below the select.',
   },
   {
     name: 'helperText',
     type: 'string',
     defaultValue: '',
+    description: 'Displays supporting guidance below the select.',
   },
 ];

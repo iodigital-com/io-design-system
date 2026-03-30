@@ -100,40 +100,48 @@ export const checkboxPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Accept terms',
+    description: 'Sets the text label next to the checkbox.',
   },
   {
     name: 'checked',
     type: 'boolean',
     defaultValue: false,
+    description: 'Controls whether the checkbox is checked.',
   },
   {
     name: 'indeterminate',
     type: 'boolean',
     defaultValue: false,
+    description: 'Shows a mixed state for partially selected groups.',
   },
   {
     name: 'required',
     type: 'boolean',
     defaultValue: false,
+    description: 'Marks the field as required for form validation.',
   },
   {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+    description: 'Prevents toggling and focus interactions.',
   },
   {
     name: 'error',
     type: 'boolean',
     defaultValue: false,
+    description: 'Applies the invalid visual state.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     defaultValue: '',
+    description: 'Shows validation feedback below the checkbox.',
   },
   {
     name: 'helperText',
     type: 'string',
     defaultValue: '',
+    description: 'Displays supporting guidance below the checkbox.',
   },
 ];

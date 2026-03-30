@@ -112,35 +112,42 @@ export const radioPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Option A',
+    description: 'Sets the text label next to the radio option.',
   },
   {
     name: 'checked',
     type: 'boolean',
     defaultValue: false,
+    description: 'Controls whether this radio option is selected.',
   },
   {
     name: 'required',
     type: 'boolean',
     defaultValue: false,
+    description: 'Marks this option as required for validation.',
   },
   {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+    description: 'Prevents selecting and focusing this option.',
   },
   {
     name: 'error',
     type: 'boolean',
     defaultValue: false,
+    description: 'Applies the invalid visual state.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     defaultValue: '',
+    description: 'Shows validation feedback below the radio field.',
   },
   {
     name: 'helperText',
     type: 'string',
     defaultValue: '',
+    description: 'Displays supporting guidance below the radio field.',
   },
 ];

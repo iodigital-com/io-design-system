@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { createPortal } from 'react-dom';
 import type { PropDefinition } from '@/models/propDefinition';
 import type { StoryState } from '@/models/story';
@@ -217,6 +217,30 @@ function SectionLabel({ label }: { label: string }) {
   );
 }
 
+function getPropertyDescription(def: PropDefinition, label: string): string {
+  if (def.description?.trim()) return def.description.trim();
+  return `Configures ${label.toLowerCase()}.`;
+}
+
+function DescriptionTrigger({ label, description }: { label: string; description: string }) {
+  return (
+    <io-tooltip content={description} placement="top">
+      <button
+        type="button"
+        className="inline-flex h-4 w-4 items-center justify-center rounded-full text-[var(--io-text-muted)] hover:text-[var(--io-text-primary)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
+        aria-label={`Show description for ${label}`}
+      >
+        <span className="sr-only">Show description for {label}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <line x1="12" y1="10" x2="12" y2="16" />
+          <circle cx="12" cy="7" r="0.9" fill="currentColor" stroke="none" />
+        </svg>
+      </button>
+    </io-tooltip>
+  );
+}
+
 // ── Control row ───────────────────────────────────────────────────────────────
 
 function ControlRow({ def, value, onUpdate }: {
@@ -225,17 +249,21 @@ function ControlRow({ def, value, onUpdate }: {
   onUpdate: (name: string, val: unknown) => void;
 }) {
   const label = formatLabel(def.name);
+  const description = getPropertyDescription(def, label);
 
   if (def.type === 'boolean') {
     const checked = Boolean(value ?? def.defaultValue ?? false);
     return (
       <div className="flex items-center justify-between gap-3 py-1.5">
-        <span
-          className="text-[13px] font-medium select-none"
-          style={{ color: 'var(--io-text-primary)' }}
-        >
-          {label}
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="text-[13px] font-medium select-none"
+            style={{ color: 'var(--io-text-primary)' }}
+          >
+            {label}
+          </span>
+          <DescriptionTrigger label={label} description={description} />
+        </div>
         <ToggleSwitch
           checked={checked}
           onChange={(v) => onUpdate(def.name, v)}
@@ -249,12 +277,15 @@ function ControlRow({ def, value, onUpdate }: {
     const useSegmented = def.options.length <= SEGMENTED_THRESHOLD;
     return (
       <div className="space-y-1.5 py-1">
-        <label
-          className="block text-[11px] font-medium"
-          style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
-        >
-          {label}
-        </label>
+        <div className="flex items-center gap-1.5">
+          <label
+            className="block text-[11px] font-medium"
+            style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
+          >
+            {label}
+          </label>
+          <DescriptionTrigger label={label} description={description} />
+        </div>
         {useSegmented ? (
           <SegmentedControl
             options={def.options}
@@ -275,12 +306,15 @@ function ControlRow({ def, value, onUpdate }: {
   if (def.type === 'number') {
     return (
       <div className="space-y-1.5 py-1">
-        <label
-          className="block text-[11px] font-medium"
-          style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
-        >
-          {label}
-        </label>
+        <div className="flex items-center gap-1.5">
+          <label
+            className="block text-[11px] font-medium"
+            style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
+          >
+            {label}
+          </label>
+          <DescriptionTrigger label={label} description={description} />
+        </div>
         <StyledInput
           type="number"
           value={Number(value ?? def.defaultValue ?? 0)}
@@ -293,12 +327,15 @@ function ControlRow({ def, value, onUpdate }: {
   if (def.type === 'string') {
     return (
       <div className="space-y-1.5 py-1">
-        <label
-          className="block text-[11px] font-medium"
-          style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
-        >
-          {label}
-        </label>
+        <div className="flex items-center gap-1.5">
+          <label
+            className="block text-[11px] font-medium"
+            style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
+          >
+            {label}
+          </label>
+          <DescriptionTrigger label={label} description={description} />
+        </div>
         <StyledInput
           type="text"
           value={String(value ?? def.defaultValue ?? '')}

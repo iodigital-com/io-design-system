@@ -40,6 +40,31 @@ The storefront ([`io-storefront`](./io-storefront)) is a private Next.js documen
 
 ## Quick start
 
+### Event migration policy (breaking)
+
+The `io*` custom-event prefix has been removed in favor of canonical event names.
+This is a **major-version** breaking change with **no dual-emit alias layer**.
+
+Canonical mapping:
+
+- `ioInput` → `input`
+- `ioChange` → `change`
+- `ioFocus` → `focus`
+- `ioBlur` → `blur`
+- `ioOpen` → `open`
+- `ioClose` → `close`
+- `ioClick` → `click`
+- `ioToggle` → `toggle`
+- `ioRemove` → `remove`
+- `ioToastDismiss` → `dismiss`
+
+Wrapper/event binding examples:
+
+- React: `onIoChange` → `onChange`, `onIoClick` → `onClick`
+- Angular: `(ioChange)` → `(change)`, `(ioClick)` → `(click)`
+- Vue: `@io-change` → `@change`, `@io-click` → `@click`
+- Vanilla DOM: `addEventListener('ioChange', ...)` → `addEventListener('change', ...)`
+
 ### Vanilla HTML / CDN
 
 ```html

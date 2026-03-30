@@ -162,7 +162,7 @@ document.querySelector('io-textarea')
 <io-textarea label="Message" (change)="handleChange($event)"></io-textarea>
 
 // Vue
-<io-textarea label="Message" @io-change="handleChange" />`}
+<io-textarea label="Message" @change="handleChange" />`}
         </CodeNote>
       </section>
 

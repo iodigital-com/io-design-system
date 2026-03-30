@@ -144,7 +144,7 @@ document.querySelector('io-select')
 <io-select label="Country" [options]="options" (change)="onSelect($event)"></io-select>
 
 // Vue
-<io-select label="Country" :options="options" @io-change="handleChange" />`}
+<io-select label="Country" :options="options" @change="handleChange" />`}
         </CodeNote>
       </section>
 

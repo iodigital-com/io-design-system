@@ -124,7 +124,7 @@ document.querySelectorAll('io-radio[name="delivery"]')
 <io-radio label="Express delivery" name="delivery" value="express" (change)="onDeliveryChange($event)"></io-radio>
 
 // Vue
-<io-radio label="Express delivery" name="delivery" value="express" @io-change="handleDeliveryChange" />`}
+<io-radio label="Express delivery" name="delivery" value="express" @change="handleDeliveryChange" />`}
         </CodeNote>
       </section>
 

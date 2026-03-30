@@ -130,7 +130,7 @@ function onEmailChange(event: CustomEvent<{ value: string }>) {
     label="Email address"
     type="email"
     :value="email"
-    @io-change="onEmailChange"
+    @change="onEmailChange"
   />
   <p>Current value: {{ email }}</p>
 </template>`}</CodeBlock>
@@ -234,7 +234,7 @@ describe('MyComponent', () => {
               Events not firing in templates
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-              Custom element events use the <code>io-</code> prefix. Use <code>@io-change</code> rather than
+              Custom element events use canonical names. Use <code>@change</code> rather than
               the plain <code>@change</code> that native inputs emit. Consult the component API docs for the
               exact event names.
             </p>

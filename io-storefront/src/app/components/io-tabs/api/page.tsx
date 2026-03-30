@@ -104,7 +104,7 @@ document.querySelector('io-tabs')
 <io-tabs [tabs]="tabs" [activeTab]="activeTab" (change)="onTabChange($event)"></io-tabs>
 
 // Vue
-<io-tabs :tabs="tabs" :active-tab="activeTab" @io-change="handleChange" />`}
+<io-tabs :tabs="tabs" :active-tab="activeTab" @change="handleChange" />`}
         </CodeNote>
       </section>
 

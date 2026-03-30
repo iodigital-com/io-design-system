@@ -327,7 +327,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search components, tokens, and docs..."
-            className="w-full rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-sm text-[var(--io-text-primary)] placeholder:text-[var(--io-text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--io-border-focus)]"
+            className="w-full rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-sm text-[var(--io-text-primary)] placeholder:text-[var(--io-text-muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
           />
         </div>
 
@@ -353,7 +353,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                                   closePalette();
                                 }}
                                 className={[
-                                  'flex items-center justify-between rounded-md px-3 py-2 text-sm',
+                                  'flex items-center justify-between rounded-md px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]',
                                   active
                                     ? 'bg-[var(--io-color-primary)] text-white'
                                     : 'text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',
@@ -388,7 +388,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                           href={result.href}
                           onClick={() => closePalette()}
                           className={[
-                            'flex items-center justify-between rounded-md px-3 py-2 text-sm',
+                            'flex items-center justify-between rounded-md px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]',
                             active
                               ? 'bg-[var(--io-color-primary)] text-white'
                               : 'text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',

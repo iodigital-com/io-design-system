@@ -349,12 +349,13 @@
   --io-bg-card:                  #222222;
   --io-text-primary:             #f0ece6;
   --io-text-secondary:           #9e9e9e;
-  --io-text-muted:               #666666;
+   --io-text-muted:               #9c9c9c;
   --io-border:                   #333333;
   --io-border-hover:             #444444;
   --io-accent-bg:                rgba(100, 100, 255, 0.15);
-  --io-accent-text:              #868ada;
-  --io-accent:                   #868ada;
+   --io-accent-text:              #9ea3f0;
+   --io-accent:                   #9ea3f0;
+   --io-color-error:              #ff7c7c;
   /* Playground dot grid is slightly more visible in dark — normalize it */
   --io-playground-dot-color:     rgba(255, 255, 255, 0.06);
   color-scheme: dark;

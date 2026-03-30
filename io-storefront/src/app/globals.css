@@ -73,6 +73,24 @@ code:not([class*="language-"]) {
   color-scheme: light;
 }
 
+[data-theme="light"] {
+  --io-bg-base:              #ffffff;
+  --io-bg-page:              #ffffff;
+  --io-bg-surface:           #f7f7f7;
+  --io-bg-raised:            #f7f7f7;
+  --io-bg-hover:             #ebebeb;
+  --io-bg-card:              #ffffff;
+  --io-text-primary:         #242424;
+  --io-text-secondary:       #747474;
+  --io-text-muted:           #C4C4C4;
+  --io-border:               #ebebeb;
+  --io-border-hover:         #C4C4C4;
+  --io-accent-bg:            rgba(0, 0, 210, 0.06);
+  --io-accent-text:          #0000D2;
+  --io-accent:               #0000D2;
+  --io-playground-dot-color: #ebebeb;
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
 }

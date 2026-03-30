@@ -152,7 +152,7 @@ export function Canvas({ children }: { children: ReactNode }) {
         <button
           type="button"
           onClick={() => setIsSearchPaletteOpen(true)}
-          className="mx-4 flex-1 max-w-2xl rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-left text-sm text-[var(--io-text-muted)] hover:border-[var(--io-border-hover)] focus:outline-none focus:ring-1 focus:ring-[var(--io-border-focus)]"
+          className="mx-4 flex-1 max-w-2xl rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-left text-sm text-[var(--io-text-muted)] hover:border-[var(--io-border-hover)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
           aria-label="Open search"
         >
           <span className="flex items-center justify-between">

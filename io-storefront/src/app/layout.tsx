@@ -58,17 +58,17 @@ export default function RootLayout({
             `.trim(),
           }}
         />
-        {/* Focus ring modality — show ring only on keyboard (Tab), hide on pointer */}
+        {/* Focus ring modality — expose keyboard/pointer state to CSS */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
 (function() {
   var r = document.documentElement;
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') r.style.setProperty('--io-focus-ring-active', 'var(--io-shadow-focus-ring)');
+    if (e.key === 'Tab') r.setAttribute('data-io-focus-modality', 'keyboard');
   }, true);
   document.addEventListener('pointerdown', function() {
-    r.style.removeProperty('--io-focus-ring-active');
+    r.setAttribute('data-io-focus-modality', 'pointer');
   }, true);
 })();
             `.trim(),

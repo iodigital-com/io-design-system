@@ -19,6 +19,7 @@ export default function IoInputLayout({ children }: { children: React.ReactNode 
         description="Single-line text entry. Built-in label, helper text, character count, and error state. Underline-only design."
         tabs={TABS}
         category="Component"
+        status="beta"
       />
       {children}
     </div>

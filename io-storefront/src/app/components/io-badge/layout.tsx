@@ -19,6 +19,7 @@ export default function IoBadgeLayout({ children }: { children: React.ReactNode 
         description="Labels status, counts, and categories inline. Nine variants map directly to io Digital's semantic and brand colour palette."
         tabs={TABS}
         category="Component"
+        status="beta"
       />
       {children}
     </div>

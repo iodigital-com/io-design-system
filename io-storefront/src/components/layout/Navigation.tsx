@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { sitemap } from '@/sitemap';
+import { StatusBadge } from '@/components/StatusBadge';
 
 const SIDEBAR_EXPANDED_SECTIONS_KEY = 'io-sidebar-expanded-sections';
 
@@ -133,13 +134,14 @@ export function Navigation() {
                           href={item.href}
                           aria-current={active ? 'page' : undefined}
                           className={[
-                            'block pl-4 pr-3 py-1.5 rounded-full text-sm transition-colors',
+                            'flex items-center gap-1.5 pl-4 pr-3 py-1.5 rounded-full text-sm transition-colors',
                             active
                               ? 'font-semibold bg-[var(--io-color-primary)] text-white'
                               : 'font-medium text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',
                           ].join(' ')}
                         >
-                          {item.label}
+                          <span className={item.status === 'deprecated' ? 'line-through' : undefined}>{item.label}</span>
+                          <StatusBadge status={item.status} />
                         </Link>
                       </li>
                     );

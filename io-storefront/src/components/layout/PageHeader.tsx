@@ -38,7 +38,7 @@ export function PageHeader({ title, description, tabs, category }: Props) {
       <h1
         className="font-bold leading-tight text-[var(--io-text-primary)] mb-4"
         style={{
-          fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+          fontSize: 'clamp(1.75rem, 3vw, 2.25rem)',
           letterSpacing: "var(--io-heading-tracking-1, -0.025em)",
         }}
       >

@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { CopyButton } from '@/components/CopyButton';
+import { ComponentCard } from '@/components/ComponentCard';
+import type { ComponentStatus } from '@/sitemap';
 
 // ── Accent-bar section heading — io Digital signature ─────────────────────────
 
@@ -47,21 +49,69 @@ function ArrowIcon() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-const ALL_COMPONENTS = [
-  { name: 'Badge',    tag: 'io-badge',    href: '/components/io-badge/configurator' },
-  { name: 'Button',   tag: 'io-button',   href: '/components/io-button/configurator' },
-  { name: 'Checkbox', tag: 'io-checkbox', href: '/components/io-checkbox/configurator' },
-  { name: 'Input',    tag: 'io-input',    href: '/components/io-input/configurator' },
-  { name: 'Link',     tag: 'io-link',     href: '/components/io-link/configurator' },
-  { name: 'Modal',    tag: 'io-modal',    href: '/components/io-modal/configurator' },
-  { name: 'Radio',    tag: 'io-radio',    href: '/components/io-radio/configurator' },
-  { name: 'Select',   tag: 'io-select',   href: '/components/io-select/configurator' },
-  { name: 'Spinner',  tag: 'io-spinner',  href: '/components/io-spinner/configurator' },
-  { name: 'Tabs',     tag: 'io-tabs',     href: '/components/io-tabs/configurator' },
-  { name: 'Tag',      tag: 'io-tag',      href: '/components/io-tag/configurator' },
-  { name: 'Textarea', tag: 'io-textarea', href: '/components/io-textarea/configurator' },
-  { name: 'Toast',    tag: 'io-toast',    href: '/components/io-toast/configurator' },
-  { name: 'Tooltip',  tag: 'io-tooltip',  href: '/components/io-tooltip/configurator' },
+const ALL_COMPONENTS: Array<{
+  name: string;
+  tag: string;
+  href: string;
+  status: ComponentStatus;
+  preview: ReactNode;
+}> = [
+  {
+    name: 'Badge', tag: 'io-badge', href: '/components/io-badge/configurator', status: 'beta',
+    preview: <io-badge variant="blue">Active</io-badge>,
+  },
+  {
+    name: 'Button', tag: 'io-button', href: '/components/io-button/configurator', status: 'stable',
+    preview: <io-button>Button</io-button>,
+  },
+  {
+    name: 'Checkbox', tag: 'io-checkbox', href: '/components/io-checkbox/configurator', status: 'stable',
+    preview: <io-checkbox label="Checkbox" />,
+  },
+  {
+    name: 'Input', tag: 'io-input', href: '/components/io-input/configurator', status: 'beta',
+    preview: <div className="w-full"><io-input label="Label" placeholder="Enter text" /></div>,
+  },
+  {
+    name: 'Link', tag: 'io-link', href: '/components/io-link/configurator', status: 'stable',
+    preview: <io-link href="/" variant="standalone">Link text</io-link>,
+  },
+  {
+    name: 'Modal', tag: 'io-modal', href: '/components/io-modal/configurator', status: 'stable',
+    preview: <io-button size="sm">Open modal</io-button>,
+  },
+  {
+    name: 'Radio', tag: 'io-radio', href: '/components/io-radio/configurator', status: 'stable',
+    preview: <io-radio label="Option" name="preview" />,
+  },
+  {
+    name: 'Select', tag: 'io-select', href: '/components/io-select/configurator', status: 'stable',
+    preview: <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
+  },
+  {
+    name: 'Spinner', tag: 'io-spinner', href: '/components/io-spinner/configurator', status: 'stable',
+    preview: <io-spinner size="md" />,
+  },
+  {
+    name: 'Tabs', tag: 'io-tabs', href: '/components/io-tabs/configurator', status: 'stable',
+    preview: <div className="w-full"><io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" /></div>,
+  },
+  {
+    name: 'Tag', tag: 'io-tag', href: '/components/io-tag/configurator', status: 'stable',
+    preview: <io-tag>Label</io-tag>,
+  },
+  {
+    name: 'Textarea', tag: 'io-textarea', href: '/components/io-textarea/configurator', status: 'stable',
+    preview: <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
+  },
+  {
+    name: 'Toast', tag: 'io-toast', href: '/components/io-toast/configurator', status: 'stable',
+    preview: <io-badge variant="blue">Toast</io-badge>,
+  },
+  {
+    name: 'Tooltip', tag: 'io-tooltip', href: '/components/io-tooltip/configurator', status: 'stable',
+    preview: <io-tooltip content="Tooltip text"><span>Hover me</span></io-tooltip>,
+  },
 ];
 
 const STEPS = [
@@ -136,10 +186,10 @@ export default function GettingStarted() {
   return (
     <div className="space-y-16">
 
-      {/* ── Hero — two-column split ────────────────────────────────── */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 gap-12 items-start">
-        {/* Left: headline + tagline + install */}
-        <div className="space-y-5">
+      {/* ── Hero ─────────────────────────────────────────────────── */}
+      <section className="space-y-8">
+        {/* Intro: headline + tagline + install */}
+        <div className="space-y-5 max-w-xl">
           <span
             className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full border"
             style={{
@@ -186,22 +236,12 @@ export default function GettingStarted() {
           </div>
         </div>
 
-        {/* Right: component name mosaic */}
-        <div className="hidden sm:grid grid-cols-4 gap-1.5 content-start pt-2">
-          {ALL_COMPONENTS.map(({ name, tag, href }) => (
-            <Link
-              key={tag}
-              href={href}
-              className="text-xs px-2 py-1.5 rounded text-center transition-opacity hover:opacity-70"
-              style={{
-                background: 'var(--io-accent-bg)',
-                color: 'var(--io-accent-text)',
-                fontFamily: 'ui-monospace, "Cascadia Mono", "Fira Code", monospace',
-              }}
-              title={name}
-            >
-              {tag}
-            </Link>
+        {/* Component preview grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ALL_COMPONENTS.map(({ name, href, status, preview }) => (
+            <ComponentCard key={name} name={name} href={href} status={status}>
+              {preview}
+            </ComponentCard>
           ))}
         </div>
       </section>

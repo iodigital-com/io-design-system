@@ -18,17 +18,17 @@ describe('io-radio — change handling', () => {
     component = new IoRadio();
     (component as any).el = document.createElement('io-radio');
     emitMock = vi.fn();
-    (component as any).ioChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.value = 'test-value';
   });
 
-  it('emits ioChange with checked=true when selecting', () => {
+  it('emits change with checked=true when selecting', () => {
     const ev = makeChangeEvent(true);
     (component as any).handleChange(ev);
     expect(emitMock).toHaveBeenCalledWith({ checked: true, value: 'test-value' });
   });
 
-  it('emits ioChange with checked=false when deselecting', () => {
+  it('emits change with checked=false when deselecting', () => {
     component.checked = true;
     const ev = makeChangeEvent(false);
     (component as any).handleChange(ev);

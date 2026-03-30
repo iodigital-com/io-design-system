@@ -69,16 +69,16 @@ export class IoTextarea {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on every keystroke — raw InputEvent */
-  @Event() ioInput!: EventEmitter<InputEvent>;
+  @Event() input!: EventEmitter<InputEvent>;
 
   /** Fires on change — payload is the current string value */
-  @Event() ioChange!: EventEmitter<string>;
+  @Event() change!: EventEmitter<string>;
 
   /** Fires when the textarea gains focus */
-  @Event() ioFocus!: EventEmitter<FocusEvent>;
+  @Event() focus!: EventEmitter<FocusEvent>;
 
   /** Fires when the textarea loses focus */
-  @Event() ioBlur!: EventEmitter<FocusEvent>;
+  @Event() blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -104,7 +104,7 @@ export class IoTextarea {
   private handleInput = (ev: InputEvent) => {
     const textarea = ev.target as HTMLTextAreaElement;
     this.value = textarea.value;
-    this.ioInput.emit(ev);
+    this.input.emit(ev);
 
     if (this.resize === 'auto') {
       textarea.style.height = 'auto';
@@ -113,15 +113,15 @@ export class IoTextarea {
   };
 
   private handleChange = (ev: Event) => {
-    this.ioChange.emit((ev.target as HTMLTextAreaElement).value);
+    this.change.emit((ev.target as HTMLTextAreaElement).value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
-    this.ioFocus.emit(ev);
+    this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
-    this.ioBlur.emit(ev);
+    this.blur.emit(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────

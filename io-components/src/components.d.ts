@@ -271,7 +271,7 @@ export namespace Components {
          */
         "color": IoLinkColor;
         /**
-          * Disables the link — removes href and blocks ioClick
+          * Disables the link — removes href and blocks click
           * @default false
          */
         "disabled": boolean;
@@ -746,7 +746,7 @@ declare global {
         new (): HTMLIoBadgeElement;
     };
     interface HTMLIoButtonElementEventMap {
-        "ioClick": MouseEvent;
+        "click": MouseEvent;
     }
     /**
      * io-button
@@ -773,7 +773,7 @@ declare global {
         new (): HTMLIoButtonElement;
     };
     interface HTMLIoCheckboxElementEventMap {
-        "ioChange": IoCheckboxChangeDetail;
+        "change": IoCheckboxChangeDetail;
     }
     /**
      * io-checkbox
@@ -799,10 +799,10 @@ declare global {
         new (): HTMLIoCheckboxElement;
     };
     interface HTMLIoInputElementEventMap {
-        "ioInput": InputEvent;
-        "ioChange": string;
-        "ioFocus": FocusEvent;
-        "ioBlur": FocusEvent;
+        "input": InputEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
     }
     /**
      * io-input
@@ -828,7 +828,7 @@ declare global {
         new (): HTMLIoInputElement;
     };
     interface HTMLIoLinkElementEventMap {
-        "ioClick": MouseEvent;
+        "click": MouseEvent;
     }
     /**
      * io-link
@@ -857,8 +857,8 @@ declare global {
         new (): HTMLIoLinkElement;
     };
     interface HTMLIoModalElementEventMap {
-        "ioOpen": void;
-        "ioClose": void;
+        "open": void;
+        "close": void;
     }
     /**
      * io-modal
@@ -891,7 +891,7 @@ declare global {
         new (): HTMLIoModalElement;
     };
     interface HTMLIoRadioElementEventMap {
-        "ioChange": IoRadioChangeDetail;
+        "change": IoRadioChangeDetail;
     }
     /**
      * io-radio
@@ -917,9 +917,9 @@ declare global {
         new (): HTMLIoRadioElement;
     };
     interface HTMLIoSelectElementEventMap {
-        "ioChange": string;
-        "ioFocus": FocusEvent;
-        "ioBlur": FocusEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
     }
     /**
      * io-select
@@ -959,7 +959,7 @@ declare global {
         new (): HTMLIoSpinnerElement;
     };
     interface HTMLIoTabsElementEventMap {
-        "ioChange": string;
+        "change": string;
     }
     /**
      * io-tabs
@@ -987,8 +987,8 @@ declare global {
         new (): HTMLIoTabsElement;
     };
     interface HTMLIoTagElementEventMap {
-        "ioToggle": boolean;
-        "ioRemove": void;
+        "toggle": boolean;
+        "remove": void;
     }
     /**
      * io-tag
@@ -1015,10 +1015,10 @@ declare global {
         new (): HTMLIoTagElement;
     };
     interface HTMLIoTextareaElementEventMap {
-        "ioInput": InputEvent;
-        "ioChange": string;
-        "ioFocus": FocusEvent;
-        "ioBlur": FocusEvent;
+        "input": InputEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
     }
     /**
      * io-textarea
@@ -1066,7 +1066,7 @@ declare global {
         new (): HTMLIoToastElement;
     };
     interface HTMLIoToastItemElementEventMap {
-        "ioToastDismiss": void;
+        "dismiss": void;
     }
     /**
      * io-toast-item
@@ -1192,7 +1192,7 @@ declare namespace LocalJSX {
         /**
           * Fires on user click/Enter/Space activation. Not fired when disabled or loading.
          */
-        "onIoClick"?: (event: IoButtonCustomEvent<MouseEvent>) => void;
+        "onClick"?: (event: IoButtonCustomEvent<MouseEvent>) => void;
         /**
           * Rel attribute — only used when href is set
          */
@@ -1267,7 +1267,7 @@ declare namespace LocalJSX {
         /**
           * Fires when the checked state changes
          */
-        "onIoChange"?: (event: IoCheckboxCustomEvent<IoCheckboxChangeDetail>) => void;
+        "onChange"?: (event: IoCheckboxCustomEvent<IoCheckboxChangeDetail>) => void;
         /**
           * Marks the field as required
           * @default false
@@ -1323,10 +1323,10 @@ declare namespace LocalJSX {
           * Input name
          */
         "name"?: string | undefined;
-        "onIoBlur"?: (event: IoInputCustomEvent<FocusEvent>) => void;
-        "onIoChange"?: (event: IoInputCustomEvent<string>) => void;
-        "onIoFocus"?: (event: IoInputCustomEvent<FocusEvent>) => void;
-        "onIoInput"?: (event: IoInputCustomEvent<InputEvent>) => void;
+        "onBlur"?: (event: IoInputCustomEvent<FocusEvent>) => void;
+        "onChange"?: (event: IoInputCustomEvent<string>) => void;
+        "onFocus"?: (event: IoInputCustomEvent<FocusEvent>) => void;
+        "onInput"?: (event: IoInputCustomEvent<InputEvent>) => void;
         /**
           * Placeholder — shown when no value and label is resting
          */
@@ -1366,7 +1366,7 @@ declare namespace LocalJSX {
          */
         "color"?: IoLinkColor;
         /**
-          * Disables the link — removes href and blocks ioClick
+          * Disables the link — removes href and blocks click
           * @default false
          */
         "disabled"?: boolean;
@@ -1382,7 +1382,7 @@ declare namespace LocalJSX {
         /**
           * Fires on click. Not fired when disabled.
          */
-        "onIoClick"?: (event: IoLinkCustomEvent<MouseEvent>) => void;
+        "onClick"?: (event: IoLinkCustomEvent<MouseEvent>) => void;
         /**
           * Rel attribute. Overridden to 'noopener noreferrer' when external is true.
          */
@@ -1427,11 +1427,11 @@ declare namespace LocalJSX {
         /**
           * Fires after the modal closes
          */
-        "onIoClose"?: (event: IoModalCustomEvent<void>) => void;
+        "onClose"?: (event: IoModalCustomEvent<void>) => void;
         /**
           * Fires after the modal opens
          */
-        "onIoOpen"?: (event: IoModalCustomEvent<void>) => void;
+        "onOpen"?: (event: IoModalCustomEvent<void>) => void;
         /**
           * Controls dialog visibility; synced to showModal/close
           * @default false
@@ -1487,7 +1487,7 @@ declare namespace LocalJSX {
         /**
           * Fires when the checked state changes
          */
-        "onIoChange"?: (event: IoRadioCustomEvent<IoRadioChangeDetail>) => void;
+        "onChange"?: (event: IoRadioCustomEvent<IoRadioChangeDetail>) => void;
         /**
           * Marks the field as required
           * @default false
@@ -1537,15 +1537,15 @@ declare namespace LocalJSX {
         /**
           * Fires when the select loses focus
          */
-        "onIoBlur"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
+        "onBlur"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
         /**
           * Fires when the selected value changes. Payload is the new string value.
          */
-        "onIoChange"?: (event: IoSelectCustomEvent<string>) => void;
+        "onChange"?: (event: IoSelectCustomEvent<string>) => void;
         /**
           * Fires when the select gains focus
          */
-        "onIoFocus"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
+        "onFocus"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
         /**
           * List of options
           * @default []
@@ -1612,7 +1612,7 @@ declare namespace LocalJSX {
         /**
           * Fires when a tab is activated. Payload is the tab's value.
          */
-        "onIoChange"?: (event: IoTabsCustomEvent<string>) => void;
+        "onChange"?: (event: IoTabsCustomEvent<string>) => void;
         /**
           * Array of tab definitions
           * @default []
@@ -1643,11 +1643,11 @@ declare namespace LocalJSX {
         /**
           * Fires when the remove button is clicked (removable only).
          */
-        "onIoRemove"?: (event: IoTagCustomEvent<void>) => void;
+        "onRemove"?: (event: IoTagCustomEvent<void>) => void;
         /**
           * Fires when the tag is toggled. Payload is the new selected value.
          */
-        "onIoToggle"?: (event: IoTagCustomEvent<boolean>) => void;
+        "onToggle"?: (event: IoTagCustomEvent<boolean>) => void;
         /**
           * Renders a remove (×) button alongside the tag
           * @default false
@@ -1711,19 +1711,19 @@ declare namespace LocalJSX {
         /**
           * Fires when the textarea loses focus
          */
-        "onIoBlur"?: (event: IoTextareaCustomEvent<FocusEvent>) => void;
+        "onBlur"?: (event: IoTextareaCustomEvent<FocusEvent>) => void;
         /**
           * Fires on change — payload is the current string value
          */
-        "onIoChange"?: (event: IoTextareaCustomEvent<string>) => void;
+        "onChange"?: (event: IoTextareaCustomEvent<string>) => void;
         /**
           * Fires when the textarea gains focus
          */
-        "onIoFocus"?: (event: IoTextareaCustomEvent<FocusEvent>) => void;
+        "onFocus"?: (event: IoTextareaCustomEvent<FocusEvent>) => void;
         /**
           * Fires on every keystroke — raw InputEvent
          */
-        "onIoInput"?: (event: IoTextareaCustomEvent<InputEvent>) => void;
+        "onInput"?: (event: IoTextareaCustomEvent<InputEvent>) => void;
         /**
           * Placeholder text shown when empty
          */
@@ -1777,7 +1777,7 @@ declare namespace LocalJSX {
         /**
           * Fires when the user dismisses the toast
          */
-        "onIoToastDismiss"?: (event: IoToastItemCustomEvent<void>) => void;
+        "onDismiss"?: (event: IoToastItemCustomEvent<void>) => void;
         /**
           * Notification text
           * @default ''

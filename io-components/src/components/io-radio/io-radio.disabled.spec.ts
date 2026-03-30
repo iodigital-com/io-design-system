@@ -9,7 +9,7 @@ describe('io-radio — disabled state', () => {
     component = new IoRadio();
     (component as any).el = document.createElement('io-radio');
     emitMock = vi.fn();
-    (component as any).ioChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.disabled = true;
   });
 
@@ -17,7 +17,7 @@ describe('io-radio — disabled state', () => {
     expect(component.disabled).toBe(true);
   });
 
-  it('does not emit ioChange when disabled and change fires', () => {
+  it('does not emit change when disabled and change fires', () => {
     // Disabled native inputs do not fire change events in the browser,
     // but verify the component is in the correct state
     expect(component.disabled).toBe(true);

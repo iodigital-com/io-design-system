@@ -42,10 +42,10 @@ export class IoTag {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the tag is toggled. Payload is the new selected value. */
-  @Event() ioToggle!: EventEmitter<boolean>;
+  @Event() toggle!: EventEmitter<boolean>;
 
   /** Fires when the remove button is clicked (removable only). */
-  @Event() ioRemove!: EventEmitter<void>;
+  @Event() remove!: EventEmitter<void>;
 
   // ── Handlers ─────────────────────────────────────────────────
 
@@ -56,7 +56,7 @@ export class IoTag {
       return;
     }
     this.selected = !this.selected;
-    this.ioToggle.emit(this.selected);
+    this.toggle.emit(this.selected);
   };
 
   private handleRemove = (ev: MouseEvent) => {
@@ -65,7 +65,7 @@ export class IoTag {
       ev.preventDefault();
       return;
     }
-    this.ioRemove.emit();
+    this.remove.emit();
   };
 
   // ── Render ───────────────────────────────────────────────────

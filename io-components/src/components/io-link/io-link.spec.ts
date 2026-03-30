@@ -7,7 +7,7 @@ describe('io-link — default props', () => {
   beforeEach(() => {
     component = new IoLink();
     (component as any).el = document.createElement('io-link');
-    (component as any).ioClick = { emit: vi.fn() };
+    (component as any).click = { emit: vi.fn() };
   });
 
   it('has variant standalone by default', () => {

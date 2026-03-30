@@ -13,7 +13,7 @@ describe('io-tabs — default props', () => {
   beforeEach(() => {
     component = new IoTabs();
     (component as any).el = document.createElement('io-tabs');
-    (component as any).ioChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
   });
 
   it('has empty tabs by default', () => {

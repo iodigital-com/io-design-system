@@ -34,7 +34,7 @@ export class IoTabs {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when a tab is activated. Payload is the tab's value. */
-  @Event() ioChange!: EventEmitter<string>;
+  @Event() change!: EventEmitter<string>;
 
   // ── Private ───────────────────────────────────────────────────
 
@@ -56,7 +56,7 @@ export class IoTabs {
   private handleTabClick = (value: string) => {
     if (this.activeTab !== value) {
       this.activeTab = value;
-      this.ioChange.emit(value);
+      this.change.emit(value);
     }
   };
 

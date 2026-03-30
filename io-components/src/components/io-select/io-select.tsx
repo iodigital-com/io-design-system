@@ -54,13 +54,13 @@ export class IoSelect {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the selected value changes. Payload is the new string value. */
-  @Event() ioChange!: EventEmitter<string>;
+  @Event() change!: EventEmitter<string>;
 
   /** Fires when the select gains focus */
-  @Event() ioFocus!: EventEmitter<FocusEvent>;
+  @Event() focus!: EventEmitter<FocusEvent>;
 
   /** Fires when the select loses focus */
-  @Event() ioBlur!: EventEmitter<FocusEvent>;
+  @Event() blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -85,15 +85,15 @@ export class IoSelect {
 
   private handleChange = (ev: Event) => {
     this.value = (ev.target as HTMLSelectElement).value;
-    this.ioChange.emit(this.value);
+    this.change.emit(this.value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
-    this.ioFocus.emit(ev);
+    this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
-    this.ioBlur.emit(ev);
+    this.blur.emit(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────

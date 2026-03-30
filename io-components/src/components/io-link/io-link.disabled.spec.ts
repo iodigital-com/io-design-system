@@ -7,7 +7,7 @@ describe('io-link — disabled', () => {
   beforeEach(() => {
     component = new IoLink();
     (component as any).el = document.createElement('io-link');
-    (component as any).ioClick = { emit: vi.fn() };
+    (component as any).click = { emit: vi.fn() };
   });
 
   it('is not disabled by default', () => {
@@ -19,9 +19,9 @@ describe('io-link — disabled', () => {
     expect(component.disabled).toBe(true);
   });
 
-  it('prevents ioClick when disabled', () => {
+  it('prevents click when disabled', () => {
     component.disabled = true;
-    const emitMock = (component as any).ioClick.emit;
+    const emitMock = (component as any).click.emit;
     const ev = new MouseEvent('click');
     Object.defineProperty(ev, 'preventDefault', { value: vi.fn() });
     Object.defineProperty(ev, 'stopPropagation', { value: vi.fn() });

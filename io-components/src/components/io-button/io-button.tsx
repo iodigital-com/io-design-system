@@ -70,7 +70,7 @@ export class IoButton {
    * Fires on user click/Enter/Space activation.
    * Not fired when disabled or loading.
    */
-  @Event() ioClick!: EventEmitter<MouseEvent>;
+  @Event() click!: EventEmitter<MouseEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -89,7 +89,7 @@ export class IoButton {
       ev.stopPropagation();
       return;
     }
-    this.ioClick.emit(ev);
+    this.click.emit(ev);
   };
 
   private handleKeyDown = (ev: KeyboardEvent) => {

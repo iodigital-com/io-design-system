@@ -7,7 +7,7 @@ describe('io-button — default props', () => {
   beforeEach(() => {
     component = new IoButton();
     (component as any).el = document.createElement('io-button');
-    (component as any).ioClick = { emit: vi.fn() };
+    (component as any).click = { emit: vi.fn() };
   });
 
   it('has variant solid by default', () => {

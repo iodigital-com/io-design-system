@@ -9,8 +9,8 @@ describe('io-modal — keyboard / cancel event', () => {
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
     ioCloseEmit = vi.fn();
-    (component as any).ioOpen = { emit: vi.fn() };
-    (component as any).ioClose = { emit: ioCloseEmit };
+    (component as any).open = { emit: vi.fn() };
+    (component as any).close = { emit: ioCloseEmit };
     (component as any).componentWillLoad();
 
     const dialogEl = document.createElement('div') as unknown as HTMLDialogElement;

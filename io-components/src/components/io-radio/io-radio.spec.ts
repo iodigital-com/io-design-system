@@ -7,7 +7,7 @@ describe('io-radio — default props', () => {
   beforeEach(() => {
     component = new IoRadio();
     (component as any).el = document.createElement('io-radio');
-    (component as any).ioChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
   });
 
   it('is not checked by default', () => {

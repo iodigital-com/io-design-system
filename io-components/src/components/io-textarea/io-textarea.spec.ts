@@ -7,10 +7,10 @@ describe('io-textarea — default props', () => {
   beforeEach(() => {
     component = new IoTextarea();
     (component as any).el = document.createElement('io-textarea');
-    (component as any).ioInput = { emit: vi.fn() };
-    (component as any).ioChange = { emit: vi.fn() };
-    (component as any).ioFocus = { emit: vi.fn() };
-    (component as any).ioBlur = { emit: vi.fn() };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
   });
 
   it('has empty value by default', () => {

@@ -59,6 +59,14 @@ export const sitemap: NavSection[] = [
     items: [
       { label: 'Introduction', href: '/components' },
       {
+        label: 'Accordion',
+        href: '/components/io-accordion/configurator',
+        status: 'beta',
+        slug: 'io-accordion',
+        description: 'Collapsible content sections with animated plus/minus icon and keyboard navigation.',
+        related: ['io-tabs', 'io-modal', 'io-button'],
+      },
+      {
         label: 'Badge',
         href: '/components/io-badge/configurator',
         status: 'beta',
@@ -73,6 +81,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-button',
         description: 'Handles primary interactions — form submissions, navigation, and confirmations. Three variants, ten brand colours, four sizes.',
         related: ['io-link', 'io-modal', 'io-tabs'],
+      },
+      {
+        label: 'Carousel',
+        href: '/components/io-carousel/configurator',
+        status: 'beta',
+        slug: 'io-carousel',
+        description: 'Horizontally scrollable content card slider with drag-to-scroll and prev/next navigation.',
+        related: ['io-button', 'io-tag', 'io-badge'],
       },
       {
         label: 'Checkbox',
@@ -105,6 +121,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-modal',
         description: 'Focuses attention on a critical task or confirmation. Rendered as a native dialog element — focus trapping and ESC are built-in.',
         related: ['io-button', 'io-toast', 'io-tabs'],
+      },
+      {
+        label: 'Pagination',
+        href: '/components/io-pagination/configurator',
+        status: 'beta',
+        slug: 'io-pagination',
+        description: 'Circular page controls with outlined numbers, active page in brand blue, and beige nav arrows.',
+        related: ['io-button', 'io-select', 'io-spinner'],
       },
       {
         label: 'Radio',

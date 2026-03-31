@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 import { Playground } from '@/components/playground/Playground';
 import {
@@ -18,21 +18,55 @@ const singleOpenItems = [
   { id: 'digital', heading: 'Digital strategy', content: 'Build a measurable roadmap that links experience quality to business outcomes.' },
 ];
 
+/**
+ * Live single-open demo.
+ *
+ * Uses imperative DOM via refs instead of React 19 JSX props because
+ * Stencil's @Prop({ mutable: true }) self-mutates `open` on click,
+ * and React 19's property-setting on custom elements does not reliably
+ * override the in-flight Stencil mutation.
+ */
 function SingleOpenDemo() {
   const [openId, setOpenId] = useState('audits');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Attach a single delegated event listener for `update` events.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleUpdate = (ev: Event) => {
+      const accordion = (ev.target as HTMLElement).closest('io-accordion');
+      if (!accordion) return;
+      const id = accordion.getAttribute('data-id');
+      const { open } = (ev as CustomEvent<{ open: boolean }>).detail;
+      setOpenId(open ? (id ?? '') : '');
+    };
+
+    container.addEventListener('update', handleUpdate);
+    return () => container.removeEventListener('update', handleUpdate);
+  }, []);
+
+  // Imperatively sync the `open` property on every accordion element.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.querySelectorAll('io-accordion').forEach((acc) => {
+      (acc as unknown as { open: boolean }).open =
+        acc.getAttribute('data-id') === openId;
+    });
+  }, [openId]);
 
   return (
     <Playground frameworkCode={accordionSingleOpenCode} codeVisible>
-      <div className="w-full max-w-[42.5rem]">
+      <div ref={containerRef} className="w-full max-w-[42.5rem]">
         {singleOpenItems.map((item) => (
           <io-accordion
             key={item.id}
+            data-id={item.id}
             heading={item.heading}
-            open={openId === item.id}
             suppressHydrationWarning
-            onUpdate={(ev: CustomEvent<{ open: boolean }>) => {
-              setOpenId(ev.detail.open ? item.id : '');
-            }}
           >
             <p>{item.content}</p>
           </io-accordion>

@@ -86,8 +86,6 @@ declare module 'react' {
           'next-label'?: string;
           /** number of slides to move per step, or auto */
           'slides-per-page'?: number | 'auto';
-          /** show or hide pagination bullets */
-          pagination?: boolean;
           /** rewind navigation from ends */
           rewind?: boolean;
           /** zero-based active slide index */

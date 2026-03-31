@@ -21,10 +21,6 @@ describe('io-carousel — default props', () => {
     expect(component.slidesPerPage).toBe(1);
   });
 
-  it('defaults pagination to true', () => {
-    expect(component.pagination).toBe(true);
-  });
-
   it('defaults rewind to false', () => {
     expect(component.rewind).toBe(false);
   });
@@ -125,6 +121,27 @@ describe('io-carousel — behavior helpers', () => {
   it('computes page for numeric slidesPerPage', () => {
     const component = new IoCarousel();
     component.slidesPerPage = 2;
-    expect((component as any).getPageForIndex(3)).toBe(1);
+    expect((component as any).stepSize).toBe(2);
+  });
+
+  it('onNext advances index when slides exist', () => {
+    const component = new IoCarousel();
+    (component as any).scrollToIndex = vi.fn();
+    (component as any).setActiveIndex = vi.fn();
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    component.activeSlideIndex = 0;
+    (component as any).onNext();
+    expect((component as any).setActiveIndex).toHaveBeenCalledWith(1, true);
+  });
+
+  it('onPrev rewinds when enabled', () => {
+    const component = new IoCarousel();
+    (component as any).scrollToIndex = vi.fn();
+    (component as any).setActiveIndex = vi.fn();
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    component.activeSlideIndex = 0;
+    component.rewind = true;
+    (component as any).onPrev();
+    expect((component as any).setActiveIndex).toHaveBeenCalledWith(3, true);
   });
 });

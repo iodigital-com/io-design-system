@@ -25,12 +25,6 @@ export default function IoCarouselApiPage() {
               <span key="desc">Number of slides to move per navigation step. Set <InlineCode>&apos;auto&apos;</InlineCode> to move slide-by-slide.</span>,
             ],
             [
-              <InlineCode key="name">pagination</InlineCode>,
-              <InlineCode key="type">boolean</InlineCode>,
-              <InlineCode key="default">true</InlineCode>,
-              <span key="desc">Shows pagination bullets below the track.</span>,
-            ],
-            [
               <InlineCode key="name">rewind</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,

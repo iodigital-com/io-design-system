@@ -115,7 +115,6 @@ export const carouselStory: Story<'io-carousel'> = {
   state: {
     properties: {
       slidesPerPage: 1,
-      pagination: true,
       rewind: false,
       activeSlideIndex: 0,
     },
@@ -134,7 +133,6 @@ export const carouselStory: Story<'io-carousel'> = {
       tag: 'io-carousel' as const,
       properties: {
         slidesPerPage,
-        pagination: (properties?.pagination as boolean | undefined) ?? true,
         rewind: (properties?.rewind as boolean | undefined) ?? false,
         activeSlideIndex: (properties?.activeSlideIndex as number | undefined) ?? 0,
       },
@@ -150,7 +148,6 @@ export const carouselStoryMore: Story<'io-carousel'> = {
       tag: 'io-carousel' as const,
       properties: {
         slidesPerPage: 1,
-        pagination: true,
         rewind: false,
         activeSlideIndex: 0,
       },
@@ -166,12 +163,6 @@ export const carouselPropDefinitions: PropDefinition[] = [
     options: ['1', '2', '3', '4', 'auto'],
     defaultValue: '1',
     description: 'Number of slides to move per step.',
-  },
-  {
-    name: 'pagination',
-    type: 'boolean',
-    defaultValue: true,
-    description: 'Show pagination bullets.',
   },
   {
     name: 'rewind',

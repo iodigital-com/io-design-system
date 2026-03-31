@@ -38,9 +38,6 @@ export class IoCarousel {
   /** Number of slides to move per navigation step; use auto for slide-by-slide. */
   @Prop() slidesPerPage: IoCarouselSlidesPerPage = 1;
 
-  /** Controls whether pagination bullets are rendered. */
-  @Prop() pagination = true;
-
   /** Rewinds from last to first (and first to last) when navigating. */
   @Prop() rewind = false;
 
@@ -53,7 +50,6 @@ export class IoCarousel {
   // ── State ─────────────────────────────────────────────────────
 
   @State() private isDragging = false;
-  @State() private pageCount = 0;
 
   // ── Drag helpers ──────────────────────────────────────────────
 
@@ -102,22 +98,6 @@ export class IoCarousel {
     const trackRect = track.getBoundingClientRect();
     const slideRect = slide.getBoundingClientRect();
     return track.scrollLeft + (slideRect.left - trackRect.left);
-  }
-
-  private getPageForIndex(index: number): number {
-    const spp = this.normalizedSlidesPerPage;
-    if (spp === 'auto') return index;
-    return Math.floor(index / spp);
-  }
-
-  private updatePageCount(): void {
-    const total = this.totalSlides;
-    if (total === 0) {
-      this.pageCount = 0;
-      return;
-    }
-    const spp = this.normalizedSlidesPerPage;
-    this.pageCount = spp === 'auto' ? total : Math.ceil(total / spp);
   }
 
   private clampIndex(index: number): number {
@@ -190,19 +170,11 @@ export class IoCarousel {
     this.setActiveIndex(nextIndex, true);
   };
 
-  private onPaginationClick = (page: number) => {
-    const spp = this.normalizedSlidesPerPage;
-    const index = spp === 'auto' ? page : page * spp;
-    this.scrollToIndex(index, 'smooth');
-    this.setActiveIndex(index, true);
-  };
-
   private onTrackScroll = () => {
     this.syncIndexFromScroll();
   };
 
   private onSlotChange = () => {
-    this.updatePageCount();
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
   };
@@ -232,7 +204,6 @@ export class IoCarousel {
 
   @Listen('resize', { target: 'window' })
   onResize() {
-    this.updatePageCount();
     this.scrollToIndex(this.activeSlideIndex, 'auto');
   }
 
@@ -242,7 +213,6 @@ export class IoCarousel {
   }
 
   componentDidLoad() {
-    this.updatePageCount();
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
   }
@@ -250,11 +220,7 @@ export class IoCarousel {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { prevLabel, nextLabel, isDragging, pagination } = this;
-    const hasPagination = pagination && this.pageCount > 1;
-    const currentPage = this.getPageForIndex(this.activeSlideIndex);
-    const disablePrev = !this.rewind && this.activeSlideIndex <= 0;
-    const disableNext = !this.rewind && this.activeSlideIndex >= Math.max(this.totalSlides - 1, 0);
+    const { prevLabel, nextLabel, isDragging } = this;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -274,24 +240,12 @@ export class IoCarousel {
             <slot onSlotchange={this.onSlotChange} />
           </div>
 
-          <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev} disabled={disablePrev}>
+          <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>
             {arrowSvg}
           </button>
-          <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext} disabled={disableNext}>
+          <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
             {arrowSvg}
           </button>
-
-          {hasPagination && (
-            <div class="carousel-pagination" aria-hidden="true">
-              {Array.from({ length: this.pageCount }).map((_, page) => (
-                <button
-                  class={`carousel-dot${page === currentPage ? ' carousel-dot--active' : ''}`}
-                  type="button"
-                  onClick={() => this.onPaginationClick(page)}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </Host>
     );

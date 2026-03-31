@@ -187,11 +187,6 @@ export namespace Components {
          */
         "nextLabel": string;
         /**
-          * Controls whether pagination bullets are rendered.
-          * @default true
-         */
-        "pagination": boolean;
-        /**
           * Accessible label for the previous button
           * @default 'Previous'
          */
@@ -1489,11 +1484,6 @@ declare namespace LocalJSX {
          */
         "onUpdate"?: (event: IoCarouselCustomEvent<IoCarouselUpdateDetail>) => void;
         /**
-          * Controls whether pagination bullets are rendered.
-          * @default true
-         */
-        "pagination"?: boolean;
-        /**
           * Accessible label for the previous button
           * @default 'Previous'
          */
@@ -2167,7 +2157,6 @@ declare namespace LocalJSX {
         "prevLabel": string;
         "nextLabel": string;
         "slidesPerPage": string;
-        "pagination": boolean;
         "rewind": boolean;
         "activeSlideIndex": number;
     }

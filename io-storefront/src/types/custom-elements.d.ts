@@ -42,6 +42,18 @@ declare module 'react' {
         HTMLElement
       >;
 
+      // ── io-accordion ─────────────────────────────────────
+      'io-accordion': DetailedHTMLProps<
+        HTMLAttributes<HTMLElement> & {
+          /** Array of IoAccordionItem — set via JS property */
+          items?: unknown;
+          /** Allow multiple panels open simultaneously */
+          'allow-multiple'?: boolean;
+          onAccordionChange?: (ev: CustomEvent<{ index: number; open: boolean }>) => void;
+        },
+        HTMLElement
+      >;
+
       // ── io-input ──────────────────────────────────────────
       'io-input': DetailedHTMLProps<
         HTMLAttributes<HTMLElement> & {
@@ -61,6 +73,19 @@ declare module 'react' {
         HTMLElement
       >;
 
+      // ── io-carousel ──────────────────────────────────────
+      'io-carousel': DetailedHTMLProps<
+        HTMLAttributes<HTMLElement> & {
+          /** Array of IoCarouselItem — set via JS property */
+          items?: unknown;
+          /** aria-label for previous nav button */
+          'prev-label'?: string;
+          /** aria-label for next nav button */
+          'next-label'?: string;
+        },
+        HTMLElement
+      >;
+
       // ── io-link ───────────────────────────────────────────
       'io-link': DetailedHTMLProps<
         HTMLAttributes<HTMLElement> & {
@@ -71,6 +96,22 @@ declare module 'react' {
           rel?: string;
           external?: boolean;
           disabled?: boolean;
+        },
+        HTMLElement
+      >;
+
+      // ── io-pagination ────────────────────────────────────
+      'io-pagination': DetailedHTMLProps<
+        HTMLAttributes<HTMLElement> & {
+          /** Current 1-based active page */
+          page?: number;
+          /** Total number of pages */
+          'total-pages'?: number;
+          /** aria-label for previous page button */
+          'prev-label'?: string;
+          /** aria-label for next page button */
+          'next-label'?: string;
+          onPageChange?: (ev: CustomEvent<{ page: number }>) => void;
         },
         HTMLElement
       >;

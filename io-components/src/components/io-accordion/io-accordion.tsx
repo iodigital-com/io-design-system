@@ -67,7 +67,7 @@ export class IoAccordion {
         <style>{getAccordionStyles()}</style>
         <div class="accordion">
           <div class={itemClass}>
-            <HeadingTag class="accordion-title">
+            <HeadingTag class="accordion-heading">
               <button
                 id={triggerId}
                 class="accordion-trigger"
@@ -75,7 +75,9 @@ export class IoAccordion {
                 aria-controls={panelId}
                 onClick={this.toggleSingle}
               >
-                <slot name="heading">{this.heading}</slot>
+                <span class="accordion-title">
+                  <slot name="heading">{this.heading}</slot>
+                </span>
                 <span class="accordion-icon" aria-hidden="true" />
               </button>
             </HeadingTag>

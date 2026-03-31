@@ -49,17 +49,21 @@ export function getAccordionStyles(): string {
 
     /* ── Title ──────────────────────────────────────────── */
 
-    .accordion-title {
+    .accordion-heading {
       margin: 0;
+    }
+
+    .accordion-title {
+      display: inline-block;
       font-size: var(--io-font-size-lg);
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);
-      transition: padding var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base) ease-in-out;
     }
 
     @media (hover: hover) and (pointer: fine) {
       .accordion-trigger:hover .accordion-title {
-        padding-left: 1.2rem;
+        transform: translateX(var(--io-space-5));
       }
     }
 

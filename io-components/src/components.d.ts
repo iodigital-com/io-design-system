@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionItem } from "./components/io-accordion/io-accordion";
-import { IoAccordionChangeDetail } from "./components/io-accordion/types";
+import { IoAccordionChangeDetail, IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoCarouselItem } from "./components/io-carousel/types";
@@ -24,7 +24,7 @@ import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionItem } from "./components/io-accordion/io-accordion";
-export { IoAccordionChangeDetail } from "./components/io-accordion/types";
+export { IoAccordionChangeDetail, IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoCarouselItem } from "./components/io-carousel/types";
@@ -63,10 +63,25 @@ export namespace Components {
          */
         "allowMultiple": boolean;
         /**
+          * Heading text for single-item slot mode
+          * @default ''
+         */
+        "heading": string;
+        /**
+          * Semantic heading tag for single-item slot mode
+          * @default 'h3'
+         */
+        "headingTag": IoAccordionHeadingTag;
+        /**
           * Array of accordion items to render
           * @default []
          */
         "items": IoAccordionItem[];
+        /**
+          * Open state for single-item slot mode (used when items is empty)
+          * @default false
+         */
+        "open": boolean;
     }
     /**
      * io-badge
@@ -836,6 +851,7 @@ export interface IoToastItemCustomEvent<T> extends CustomEvent<T> {
 declare global {
     interface HTMLIoAccordionElementEventMap {
         "accordionChange": IoAccordionChangeDetail;
+        "update": IoAccordionUpdateDetail;
     }
     /**
      * io-accordion
@@ -1329,6 +1345,16 @@ declare namespace LocalJSX {
          */
         "allowMultiple"?: boolean;
         /**
+          * Heading text for single-item slot mode
+          * @default ''
+         */
+        "heading"?: string;
+        /**
+          * Semantic heading tag for single-item slot mode
+          * @default 'h3'
+         */
+        "headingTag"?: IoAccordionHeadingTag;
+        /**
           * Array of accordion items to render
           * @default []
          */
@@ -1337,6 +1363,15 @@ declare namespace LocalJSX {
           * Fires when a panel opens or closes
          */
         "onAccordionChange"?: (event: IoAccordionCustomEvent<IoAccordionChangeDetail>) => void;
+        /**
+          * Fires when single-item slot mode is toggled
+         */
+        "onUpdate"?: (event: IoAccordionCustomEvent<IoAccordionUpdateDetail>) => void;
+        /**
+          * Open state for single-item slot mode (used when items is empty)
+          * @default false
+         */
+        "open"?: boolean;
     }
     /**
      * io-badge
@@ -2092,6 +2127,9 @@ declare namespace LocalJSX {
 
     interface IoAccordionAttributes {
         "allowMultiple": boolean;
+        "open": boolean;
+        "heading": string;
+        "headingTag": IoAccordionHeadingTag;
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;

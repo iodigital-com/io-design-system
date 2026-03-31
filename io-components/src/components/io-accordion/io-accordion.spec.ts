@@ -22,6 +22,14 @@ describe('io-accordion — default props', () => {
   it('does not allow multiple open panels by default', () => {
     expect(component.allowMultiple).toBe(false);
   });
+
+  it('starts closed in single-item mode', () => {
+    expect(component.open).toBe(false);
+  });
+
+  it('uses h3 heading tag by default in single-item mode', () => {
+    expect(component.headingTag).toBe('h3');
+  });
 });
 
 describe('io-accordion — open states', () => {
@@ -73,5 +81,40 @@ describe('io-accordion — disabled interaction', () => {
     (component as any).accordionChange = { emit: vi.fn() };
     (component as any).el = { forceUpdate: vi.fn() };
     expect(() => component.componentWillLoad()).not.toThrow();
+  });
+});
+
+describe('io-accordion — single-item mode', () => {
+  let component: IoAccordion;
+  let updateEmitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoAccordion();
+    updateEmitSpy = vi.fn();
+    (component as any).update = { emit: updateEmitSpy };
+    (component as any).el = { id: 'accordion-single' };
+    component.componentWillLoad();
+  });
+
+  it('toggles open state when no items are provided', () => {
+    expect(component.open).toBe(false);
+    (component as any).toggleSingle();
+    expect(component.open).toBe(true);
+    (component as any).toggleSingle();
+    expect(component.open).toBe(false);
+  });
+
+  it('emits update event with new open state in single-item mode', () => {
+    (component as any).toggleSingle();
+    expect(updateEmitSpy).toHaveBeenCalledWith({ open: true });
+
+    (component as any).toggleSingle();
+    expect(updateEmitSpy).toHaveBeenCalledWith({ open: false });
+  });
+
+  it('uses single-item mode only when items is empty', () => {
+    expect((component as any).isItemsMode).toBe(false);
+    component.items = [{ title: 'Item', body: 'Body' }];
+    expect((component as any).isItemsMode).toBe(true);
   });
 });

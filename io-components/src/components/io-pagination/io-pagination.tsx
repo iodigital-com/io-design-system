@@ -54,14 +54,17 @@ export class IoPagination {
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1);
     }
-    const pages: Array<number | '…'> = [1];
-    if (current > 3) pages.push('…');
-    const start = Math.max(2, current - 1);
-    const end = Math.min(total - 1, current + 1);
-    for (let i = start; i <= end; i++) pages.push(i);
-    if (current < total - 2) pages.push('…');
-    pages.push(total);
-    return pages;
+
+    // Keep edge windows fuller so first/last pages don't collapse to too few numbers.
+    if (current <= 3) {
+      return [1, 2, 3, '…', total];
+    }
+
+    if (current >= total - 2) {
+      return [1, '…', total - 2, total - 1, total];
+    }
+
+    return [1, '…', current - 1, current, current + 1, '…', total];
   }
 
   private go(page: number) {

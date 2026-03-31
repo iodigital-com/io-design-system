@@ -45,6 +45,16 @@ describe('io-pagination — pageRange', () => {
     expect(range[0]).toBe(1);
     expect(range[range.length - 1]).toBe(10);
   });
+
+  it('shows a fuller range near the start', () => {
+    const range = (component as any).pageRange(1, 12);
+    expect(range).toEqual([1, 2, 3, '…', 12]);
+  });
+
+  it('shows a fuller range near the end', () => {
+    const range = (component as any).pageRange(12, 12);
+    expect(range).toEqual([1, '…', 10, 11, 12]);
+  });
 });
 
 describe('io-pagination — navigation', () => {

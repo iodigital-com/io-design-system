@@ -26,9 +26,17 @@
     "events:guard": "node scripts/check-no-io-prefixed-events.cjs",
     "agents:install:claude": "node scripts/install-curated-agency-claude.cjs",
     "build:storefront:release": "npm run build:components && npm run sync:stencil-assets && npm run build:storefront",
-    "build:quality-gates": "npm run governance:check && npm run events:guard && npm run build && npm run test && npm run type-check && npm run build:storefront"
+    "build:quality-gates": "npm run governance:check && npm run events:guard && npm run build && npm run test && npm run type-check && npm run build:storefront",
+    "tokens:scrape": "node scripts/scrape-tokens.mjs",
+    "tokens:scrape:resume": "node scripts/scrape-tokens.mjs --resume",
+    "tokens:merge": "node scripts/merge-tokens.mjs",
+    "tokens:html": "node scripts/generate-html.mjs",
+    "tokens:sync": "npm run tokens:scrape && npm run tokens:merge && npm run tokens:html"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2"
   }
 }

@@ -1,0 +1,109 @@
+[2026-03-31T11:01:21.937Z] Loaded 15 pages from token-page-list.json
+[2026-03-31T11:01:22.410Z] Scraping [Home] https://www.iodigital.com/en
+[2026-03-31T11:01:27.126Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:28.681Z] Scraping [Services] https://www.iodigital.com/en/services
+[2026-03-31T11:01:30.463Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:32.026Z] Scraping [Experience Design] https://www.iodigital.com/en/services/experience-design
+[2026-03-31T11:01:33.886Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:35.446Z] Scraping [About] https://www.iodigital.com/en/about
+[2026-03-31T11:01:37.232Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:38.797Z] Scraping [Work] https://www.iodigital.com/en/work
+[2026-03-31T11:01:40.569Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:42.131Z] Scraping [Work — Heineken] https://www.iodigital.com/en/work/heineken
+[2026-03-31T11:01:44.709Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:46.270Z] Scraping [Insights] https://www.iodigital.com/en/insights
+[2026-03-31T11:01:49.265Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:50.836Z] Scraping [Insights — Blog] https://www.iodigital.com/en/insights/blog
+[2026-03-31T11:01:52.653Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:54.213Z] Scraping [Careers] https://www.iodigital.com/en/careers
+[2026-03-31T11:01:57.944Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:01:59.503Z] Scraping [Contact] https://www.iodigital.com/en/contact
+[2026-03-31T11:02:01.267Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:02.824Z] Scraping [Tech] https://www.iodigital.com/en/tech
+[2026-03-31T11:02:05.377Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:06.925Z] Scraping [Data] https://www.iodigital.com/en/data
+[2026-03-31T11:02:09.431Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:10.986Z] Scraping [Strategy] https://www.iodigital.com/en/strategy
+[2026-03-31T11:02:12.851Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:14.406Z] Scraping [Partners] https://www.iodigital.com/en/partners
+[2026-03-31T11:02:16.922Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:18.516Z] Scraping [Offices] https://www.iodigital.com/en/offices
+[2026-03-31T11:02:20.347Z]   ✗ ERROR: page.evaluate: TypeError: node.className.split is not a function
+    at eval (eval at evaluate (:290:30), <anonymous>:15:12)
+    at NodeList.forEach (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:13:44)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+[2026-03-31T11:02:21.894Z] 
+Done. Written → /Users/jakeortega/Documents/Projects/io-design-system/docs/tokens.live.json
+[2026-03-31T11:02:21.895Z] Log file      → /Users/jakeortega/Documents/Projects/io-design-system/logs/scrape-2026-03-31T11-01-21.log

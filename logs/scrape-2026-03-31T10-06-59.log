@@ -1,0 +1,34 @@
+[2026-03-31T10:06:59.406Z] Loaded 15 pages from token-page-list.json
+[2026-03-31T10:07:02.591Z] Scraping [Home] https://www.iodigital.com/en
+[2026-03-31T10:07:07.019Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:08.581Z] Scraping [Services] https://www.iodigital.com/en/services
+[2026-03-31T10:07:10.306Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:11.866Z] Scraping [Experience Design] https://www.iodigital.com/en/services/experience-design
+[2026-03-31T10:07:13.669Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:15.231Z] Scraping [About] https://www.iodigital.com/en/about
+[2026-03-31T10:07:16.962Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:18.525Z] Scraping [Work] https://www.iodigital.com/en/work
+[2026-03-31T10:07:20.319Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:21.879Z] Scraping [Work — Heineken] https://www.iodigital.com/en/work/heineken
+[2026-03-31T10:07:24.359Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:25.923Z] Scraping [Insights] https://www.iodigital.com/en/insights
+[2026-03-31T10:07:28.504Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:30.065Z] Scraping [Insights — Blog] https://www.iodigital.com/en/insights/blog
+[2026-03-31T10:07:32.583Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:34.142Z] Scraping [Careers] https://www.iodigital.com/en/careers
+[2026-03-31T10:07:38.863Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:40.429Z] Scraping [Contact] https://www.iodigital.com/en/contact
+[2026-03-31T10:07:42.157Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:43.721Z] Scraping [Tech] https://www.iodigital.com/en/tech
+[2026-03-31T10:07:45.527Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:47.085Z] Scraping [Data] https://www.iodigital.com/en/data
+[2026-03-31T10:07:48.879Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:50.446Z] Scraping [Strategy] https://www.iodigital.com/en/strategy
+[2026-03-31T10:07:52.234Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:53.792Z] Scraping [Partners] https://www.iodigital.com/en/partners
+[2026-03-31T10:07:56.750Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:07:58.314Z] Scraping [Offices] https://www.iodigital.com/en/offices
+[2026-03-31T10:08:00.472Z]   ✓ 70 CSS custom properties
+[2026-03-31T10:08:02.003Z] 
+Done. Written → /Users/jakeortega/Documents/Projects/io-design-system/docs/tokens.live.json
+[2026-03-31T10:08:02.003Z] Log file      → /Users/jakeortega/Documents/Projects/io-design-system/logs/scrape-2026-03-31T10-06-59.log

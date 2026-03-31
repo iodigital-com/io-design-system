@@ -84,6 +84,14 @@ declare module 'react' {
           'prev-label'?: string;
           /** aria-label for next nav button */
           'next-label'?: string;
+          /** number of slides to move per step, or auto */
+          'slides-per-page'?: number | 'auto';
+          /** show or hide pagination bullets */
+          pagination?: boolean;
+          /** rewind navigation from ends */
+          rewind?: boolean;
+          /** zero-based active slide index */
+          'active-slide-index'?: number;
         },
         HTMLElement
       >;

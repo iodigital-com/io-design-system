@@ -112,21 +112,77 @@ const SLIDES_FULL: ElementConfig<HTMLTagOrComponent>[] = [
 ];
 
 export const carouselStory: Story<'io-carousel'> = {
-  generator: () => [
+  state: {
+    properties: {
+      slidesPerPage: 1,
+      pagination: true,
+      rewind: false,
+      activeSlideIndex: 0,
+    },
+  },
+  generator: ({ properties } = {}) => {
+    const rawSlidesPerPage = properties?.slidesPerPage as string | number | undefined;
+    const slidesPerPage =
+      rawSlidesPerPage === 'auto'
+        ? 'auto'
+        : Number.isFinite(Number(rawSlidesPerPage))
+          ? Number(rawSlidesPerPage)
+          : 1;
+
+    return [
     {
       tag: 'io-carousel' as const,
+      properties: {
+        slidesPerPage,
+        pagination: (properties?.pagination as boolean | undefined) ?? true,
+        rewind: (properties?.rewind as boolean | undefined) ?? false,
+        activeSlideIndex: (properties?.activeSlideIndex as number | undefined) ?? 0,
+      },
       children: SLIDES_SHORT,
     },
-  ],
+  ];
+  },
 };
 
 export const carouselStoryMore: Story<'io-carousel'> = {
   generator: () => [
     {
       tag: 'io-carousel' as const,
+      properties: {
+        slidesPerPage: 1,
+        pagination: true,
+        rewind: false,
+        activeSlideIndex: 0,
+      },
       children: SLIDES_FULL,
     },
   ],
 };
 
-export const carouselPropDefinitions: PropDefinition[] = [];
+export const carouselPropDefinitions: PropDefinition[] = [
+  {
+    name: 'slidesPerPage',
+    type: 'select',
+    options: ['1', '2', '3', '4', 'auto'],
+    defaultValue: '1',
+    description: 'Number of slides to move per step.',
+  },
+  {
+    name: 'pagination',
+    type: 'boolean',
+    defaultValue: true,
+    description: 'Show pagination bullets.',
+  },
+  {
+    name: 'rewind',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Wrap from end to start and vice versa.',
+  },
+  {
+    name: 'activeSlideIndex',
+    type: 'number',
+    defaultValue: 0,
+    description: 'Zero-based active slide index.',
+  },
+];

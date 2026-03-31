@@ -17,6 +17,22 @@ describe('io-carousel — default props', () => {
     expect(component.nextLabel).toBe('Next');
   });
 
+  it('defaults slidesPerPage to 1', () => {
+    expect(component.slidesPerPage).toBe(1);
+  });
+
+  it('defaults pagination to true', () => {
+    expect(component.pagination).toBe(true);
+  });
+
+  it('defaults rewind to false', () => {
+    expect(component.rewind).toBe(false);
+  });
+
+  it('defaults activeSlideIndex to 0', () => {
+    expect(component.activeSlideIndex).toBe(0);
+  });
+
   it('is not dragging by default', () => {
     expect((component as any).isDragging).toBe(false);
   });
@@ -84,5 +100,31 @@ describe('io-carousel — slideWidth', () => {
     };
     (component as any).el = { shadowRoot };
     expect((component as any).slideWidth()).toBe(376 + 16);
+  });
+});
+
+describe('io-carousel — behavior helpers', () => {
+  it('normalizes invalid slidesPerPage values to 1', () => {
+    const component = new IoCarousel();
+    component.slidesPerPage = 0 as any;
+    expect((component as any).normalizedSlidesPerPage).toBe(1);
+  });
+
+  it('accepts slidesPerPage auto', () => {
+    const component = new IoCarousel();
+    component.slidesPerPage = 'auto';
+    expect((component as any).normalizedSlidesPerPage).toBe('auto');
+  });
+
+  it('clamps active index to last slide', () => {
+    const component = new IoCarousel();
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    expect((component as any).clampIndex(99)).toBe(3);
+  });
+
+  it('computes page for numeric slidesPerPage', () => {
+    const component = new IoCarousel();
+    component.slidesPerPage = 2;
+    expect((component as any).getPageForIndex(3)).toBe(1);
   });
 });

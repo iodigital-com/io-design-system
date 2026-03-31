@@ -1,6 +1,8 @@
-/**
- * io-carousel types
- *
- * The carousel is a generic scrollable container — it accepts any slotted
- * content via the default slot. No component-specific prop types are needed.
- */
+/** Public value for `slidesPerPage`. */
+export type IoCarouselSlidesPerPage = number | 'auto';
+
+/** Detail payload emitted by the `update` event. */
+export type IoCarouselUpdateDetail = {
+	activeIndex: number;
+	totalSlides: number;
+};

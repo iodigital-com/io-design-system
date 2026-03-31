@@ -1,5 +1,6 @@
-import { Component, Prop, Element, Host, h, State, Listen } from '@stencil/core';
+import { Component, Prop, Element, Host, h, State, Listen, Event, EventEmitter, Watch } from '@stencil/core';
 import { getCarouselStyles } from './io-carousel-styles';
+import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
 
 /**
  * io-carousel
@@ -34,9 +35,25 @@ export class IoCarousel {
   /** Accessible label for the next button */
   @Prop() nextLabel = 'Next';
 
+  /** Number of slides to move per navigation step; use auto for slide-by-slide. */
+  @Prop() slidesPerPage: IoCarouselSlidesPerPage = 1;
+
+  /** Controls whether pagination bullets are rendered. */
+  @Prop() pagination = true;
+
+  /** Rewinds from last to first (and first to last) when navigating. */
+  @Prop() rewind = false;
+
+  /** Zero-based active slide index. */
+  @Prop({ mutable: true, reflect: true }) activeSlideIndex = 0;
+
+  /** Emitted when the active slide index changes. */
+  @Event({ bubbles: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
+
   // ── State ─────────────────────────────────────────────────────
 
   @State() private isDragging = false;
+  @State() private pageCount = 0;
 
   // ── Drag helpers ──────────────────────────────────────────────
 
@@ -47,20 +64,147 @@ export class IoCarousel {
     return this.el.shadowRoot?.querySelector<HTMLElement>('.carousel-track') ?? null;
   }
 
+  private get slotEl(): HTMLSlotElement | null {
+    return this.el.shadowRoot?.querySelector<HTMLSlotElement>('slot') ?? null;
+  }
+
+  private get slides(): HTMLElement[] {
+    return (this.slotEl?.assignedElements() ?? []).filter((el): el is HTMLElement => el instanceof HTMLElement);
+  }
+
+  private get totalSlides(): number {
+    return this.slides.length;
+  }
+
+  private get normalizedSlidesPerPage(): IoCarouselSlidesPerPage {
+    if (this.slidesPerPage === 'auto') return 'auto';
+    const parsed = Number(this.slidesPerPage);
+    if (!Number.isFinite(parsed) || parsed < 1) return 1;
+    return Math.floor(parsed);
+  }
+
+  private get stepSize(): number {
+    const spp = this.normalizedSlidesPerPage;
+    return spp === 'auto' ? 1 : spp;
+  }
+
   private slideWidth(): number {
-    const slot = this.el.shadowRoot?.querySelector<HTMLSlotElement>('slot');
-    const first = slot?.assignedElements()?.[0] as HTMLElement | undefined;
+    const first = this.slides[0];
     if (!first) return 390;
     const gap = 16; // var(--io-space-4) = 1rem = 16px
     return first.offsetWidth + gap;
   }
 
+  private getSlideLeft(index: number): number {
+    const track = this.track;
+    const slide = this.slides[index];
+    if (!track || !slide) return 0;
+    const trackRect = track.getBoundingClientRect();
+    const slideRect = slide.getBoundingClientRect();
+    return track.scrollLeft + (slideRect.left - trackRect.left);
+  }
+
+  private getPageForIndex(index: number): number {
+    const spp = this.normalizedSlidesPerPage;
+    if (spp === 'auto') return index;
+    return Math.floor(index / spp);
+  }
+
+  private updatePageCount(): void {
+    const total = this.totalSlides;
+    if (total === 0) {
+      this.pageCount = 0;
+      return;
+    }
+    const spp = this.normalizedSlidesPerPage;
+    this.pageCount = spp === 'auto' ? total : Math.ceil(total / spp);
+  }
+
+  private clampIndex(index: number): number {
+    if (this.totalSlides === 0) return 0;
+    return Math.max(0, Math.min(index, this.totalSlides - 1));
+  }
+
+  private syncIndexFromScroll = () => {
+    const track = this.track;
+    if (!track || this.totalSlides === 0) return;
+
+    const spp = this.normalizedSlidesPerPage;
+    let nextIndex = 0;
+
+    if (spp === 'auto') {
+      const current = track.scrollLeft;
+      let minDistance = Number.POSITIVE_INFINITY;
+      this.slides.forEach((_, i) => {
+        const dist = Math.abs(this.getSlideLeft(i) - current);
+        if (dist < minDistance) {
+          minDistance = dist;
+          nextIndex = i;
+        }
+      });
+    } else {
+      const page = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      nextIndex = page * spp;
+    }
+
+    this.setActiveIndex(nextIndex, true);
+  };
+
+  private scrollToIndex(index: number, behavior: ScrollBehavior): void {
+    const track = this.track;
+    if (!track || this.totalSlides === 0) return;
+    const clamped = this.clampIndex(index);
+    const spp = this.normalizedSlidesPerPage;
+
+    if (spp === 'auto') {
+      track.scrollTo({ left: this.getSlideLeft(clamped), behavior });
+      return;
+    }
+
+    const page = Math.floor(clamped / spp);
+    track.scrollTo({ left: page * track.clientWidth, behavior });
+  }
+
+  private setActiveIndex(index: number, emitEvent: boolean): void {
+    const next = this.clampIndex(index);
+    if (next === this.activeSlideIndex) return;
+    this.activeSlideIndex = next;
+    if (emitEvent) {
+      this.update.emit({ activeIndex: next, totalSlides: this.totalSlides });
+    }
+  }
+
   private onPrev = () => {
-    this.track?.scrollBy({ left: -this.slideWidth(), behavior: 'smooth' });
+    if (this.totalSlides === 0) return;
+    const target = this.activeSlideIndex - this.stepSize;
+    const nextIndex = target < 0 ? (this.rewind ? this.totalSlides - 1 : 0) : target;
+    this.scrollToIndex(nextIndex, 'smooth');
+    this.setActiveIndex(nextIndex, true);
   };
 
   private onNext = () => {
-    this.track?.scrollBy({ left: this.slideWidth(), behavior: 'smooth' });
+    if (this.totalSlides === 0) return;
+    const target = this.activeSlideIndex + this.stepSize;
+    const nextIndex = target >= this.totalSlides ? (this.rewind ? 0 : this.totalSlides - 1) : target;
+    this.scrollToIndex(nextIndex, 'smooth');
+    this.setActiveIndex(nextIndex, true);
+  };
+
+  private onPaginationClick = (page: number) => {
+    const spp = this.normalizedSlidesPerPage;
+    const index = spp === 'auto' ? page : page * spp;
+    this.scrollToIndex(index, 'smooth');
+    this.setActiveIndex(index, true);
+  };
+
+  private onTrackScroll = () => {
+    this.syncIndexFromScroll();
+  };
+
+  private onSlotChange = () => {
+    this.updatePageCount();
+    this.setActiveIndex(this.activeSlideIndex, false);
+    this.scrollToIndex(this.activeSlideIndex, 'auto');
   };
 
   private onMouseDown = (ev: MouseEvent) => {
@@ -86,10 +230,31 @@ export class IoCarousel {
     track.scrollLeft = this.scrollLeft - (x - this.startX);
   }
 
+  @Listen('resize', { target: 'window' })
+  onResize() {
+    this.updatePageCount();
+    this.scrollToIndex(this.activeSlideIndex, 'auto');
+  }
+
+  @Watch('activeSlideIndex')
+  onActiveSlideIndexChange(newValue: number) {
+    this.scrollToIndex(newValue, 'auto');
+  }
+
+  componentDidLoad() {
+    this.updatePageCount();
+    this.setActiveIndex(this.activeSlideIndex, false);
+    this.scrollToIndex(this.activeSlideIndex, 'auto');
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { prevLabel, nextLabel, isDragging } = this;
+    const { prevLabel, nextLabel, isDragging, pagination } = this;
+    const hasPagination = pagination && this.pageCount > 1;
+    const currentPage = this.getPageForIndex(this.activeSlideIndex);
+    const disablePrev = !this.rewind && this.activeSlideIndex <= 0;
+    const disableNext = !this.rewind && this.activeSlideIndex >= Math.max(this.totalSlides - 1, 0);
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -104,16 +269,29 @@ export class IoCarousel {
           <div
             class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
             onMouseDown={this.onMouseDown}
+            onScroll={this.onTrackScroll}
           >
-            <slot />
+            <slot onSlotchange={this.onSlotChange} />
           </div>
 
-          <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>
+          <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev} disabled={disablePrev}>
             {arrowSvg}
           </button>
-          <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
+          <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext} disabled={disableNext}>
             {arrowSvg}
           </button>
+
+          {hasPagination && (
+            <div class="carousel-pagination" aria-hidden="true">
+              {Array.from({ length: this.pageCount }).map((_, page) => (
+                <button
+                  class={`carousel-dot${page === currentPage ? ' carousel-dot--active' : ''}`}
+                  type="button"
+                  onClick={() => this.onPaginationClick(page)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </Host>
     );

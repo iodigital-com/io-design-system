@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -24,6 +25,7 @@ import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -175,15 +177,35 @@ export namespace Components {
      */
     interface IoCarousel {
         /**
+          * Zero-based active slide index.
+          * @default 0
+         */
+        "activeSlideIndex": number;
+        /**
           * Accessible label for the next button
           * @default 'Next'
          */
         "nextLabel": string;
         /**
+          * Controls whether pagination bullets are rendered.
+          * @default true
+         */
+        "pagination": boolean;
+        /**
           * Accessible label for the previous button
           * @default 'Previous'
          */
         "prevLabel": string;
+        /**
+          * Rewinds from last to first (and first to last) when navigating.
+          * @default false
+         */
+        "rewind": boolean;
+        /**
+          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * @default 1
+         */
+        "slidesPerPage": IoCarouselSlidesPerPage;
     }
     /**
      * io-checkbox
@@ -784,6 +806,10 @@ export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoButtonElement;
 }
+export interface IoCarouselCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoCarouselElement;
+}
 export interface IoCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoCheckboxElement;
@@ -895,6 +921,9 @@ declare global {
         prototype: HTMLIoButtonElement;
         new (): HTMLIoButtonElement;
     };
+    interface HTMLIoCarouselElementEventMap {
+        "update": IoCarouselUpdateDetail;
+    }
     /**
      * io-carousel
      * ============
@@ -909,6 +938,14 @@ declare global {
      * </io-carousel>
      */
     interface HTMLIoCarouselElement extends Components.IoCarousel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoCarouselElementEventMap>(type: K, listener: (this: HTMLIoCarouselElement, ev: IoCarouselCustomEvent<HTMLIoCarouselElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoCarouselElementEventMap>(type: K, listener: (this: HTMLIoCarouselElement, ev: IoCarouselCustomEvent<HTMLIoCarouselElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoCarouselElement: {
         prototype: HTMLIoCarouselElement;
@@ -1438,15 +1475,39 @@ declare namespace LocalJSX {
      */
     interface IoCarousel {
         /**
+          * Zero-based active slide index.
+          * @default 0
+         */
+        "activeSlideIndex"?: number;
+        /**
           * Accessible label for the next button
           * @default 'Next'
          */
         "nextLabel"?: string;
         /**
+          * Emitted when the active slide index changes.
+         */
+        "onUpdate"?: (event: IoCarouselCustomEvent<IoCarouselUpdateDetail>) => void;
+        /**
+          * Controls whether pagination bullets are rendered.
+          * @default true
+         */
+        "pagination"?: boolean;
+        /**
           * Accessible label for the previous button
           * @default 'Previous'
          */
         "prevLabel"?: string;
+        /**
+          * Rewinds from last to first (and first to last) when navigating.
+          * @default false
+         */
+        "rewind"?: boolean;
+        /**
+          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * @default 1
+         */
+        "slidesPerPage"?: IoCarouselSlidesPerPage;
     }
     /**
      * io-checkbox
@@ -2105,6 +2166,10 @@ declare namespace LocalJSX {
     interface IoCarouselAttributes {
         "prevLabel": string;
         "nextLabel": string;
+        "slidesPerPage": string;
+        "pagination": boolean;
+        "rewind": boolean;
+        "activeSlideIndex": number;
     }
     interface IoCheckboxAttributes {
         "label": string;

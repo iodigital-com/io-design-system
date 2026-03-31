@@ -105,6 +105,12 @@ export function getCarouselStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    .carousel-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
     .carousel-btn--prev {
       left: 0;
     }
@@ -115,6 +121,28 @@ export function getCarouselStyles(): string {
 
     .carousel-btn--prev svg {
       transform: rotate(180deg);
+    }
+
+    .carousel-pagination {
+      display: flex;
+      justify-content: center;
+      gap: var(--io-space-2);
+      margin-top: var(--io-space-4);
+    }
+
+    .carousel-dot {
+      width: var(--io-space-2);
+      height: var(--io-space-2);
+      border-radius: var(--io-border-radius-pill);
+      border: none;
+      background: color-mix(in srgb, var(--io-color-primary) 30%, transparent);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .carousel-dot--active {
+      background: var(--io-color-primary);
+      width: var(--io-space-12);
     }
 
     @media (prefers-reduced-motion: reduce) {

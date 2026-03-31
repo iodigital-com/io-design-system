@@ -67,38 +67,6 @@ describe('io-carousel — drag interaction', () => {
   });
 });
 
-describe('io-carousel — slideWidth', () => {
-  it('returns 390 when slot has no assigned elements', () => {
-    const component = new IoCarousel();
-    const slot = document.createElement('slot');
-    vi.spyOn(slot, 'assignedElements').mockReturnValue([]);
-    const shadowRoot = {
-      querySelector: vi.fn((sel: string) => {
-        if (sel === 'slot') return slot;
-        return null;
-      }),
-    };
-    (component as any).el = { shadowRoot };
-    expect((component as any).slideWidth()).toBe(390);
-  });
-
-  it('uses first assigned element width + gap', () => {
-    const component = new IoCarousel();
-    const child = document.createElement('div');
-    Object.defineProperty(child, 'offsetWidth', { value: 376 });
-    const slot = document.createElement('slot');
-    vi.spyOn(slot, 'assignedElements').mockReturnValue([child]);
-    const shadowRoot = {
-      querySelector: vi.fn((sel: string) => {
-        if (sel === 'slot') return slot;
-        return null;
-      }),
-    };
-    (component as any).el = { shadowRoot };
-    expect((component as any).slideWidth()).toBe(376 + 16);
-  });
-});
-
 describe('io-carousel — behavior helpers', () => {
   it('normalizes invalid slidesPerPage values to 1', () => {
     const component = new IoCarousel();
@@ -124,31 +92,41 @@ describe('io-carousel — behavior helpers', () => {
     expect((component as any).stepSize).toBe(2);
   });
 
-  it('onNext scrolls track by one step', () => {
+  it('onNext scrolls to target slide boundary', () => {
     const component = new IoCarousel();
-    const track = document.createElement('div');
-    Object.defineProperty(track, 'scrollWidth', { value: 1600 });
-    Object.defineProperty(track, 'clientWidth', { value: 800 });
-    Object.defineProperty(track, 'scrollLeft', { value: 0, writable: true });
-    (track as any).scrollBy = vi.fn();
-    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
-    (component as any).slideWidth = vi.fn(() => 300);
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
+    (component as any).getNearestSlideIndex = vi.fn(() => 1);
+    (component as any).scrollToIndex = vi.fn();
+    (component as any).setActiveIndex = vi.fn();
     component.slidesPerPage = 1;
     (component as any).onNext();
-    expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 300, behavior: 'smooth' });
+    expect((component as any).scrollToIndex).toHaveBeenCalledWith(2, 'smooth');
+    expect((component as any).setActiveIndex).toHaveBeenCalledWith(2, true);
   });
 
-  it('onPrev rewinds to end when enabled and at start', () => {
+  it('onPrev rewinds to end when enabled and at first slide', () => {
     const component = new IoCarousel();
-    const track = document.createElement('div');
-    Object.defineProperty(track, 'scrollWidth', { value: 1600 });
-    Object.defineProperty(track, 'clientWidth', { value: 800 });
-    Object.defineProperty(track, 'scrollLeft', { value: 0, writable: true });
-    (track as any).scrollTo = vi.fn();
-    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
-    (component as any).slideWidth = vi.fn(() => 300);
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    (component as any).getNearestSlideIndex = vi.fn(() => 0);
+    (component as any).scrollToIndex = vi.fn();
+    (component as any).setActiveIndex = vi.fn();
     component.rewind = true;
     (component as any).onPrev();
-    expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 800, behavior: 'smooth' });
+    expect((component as any).scrollToIndex).toHaveBeenCalledWith(3, 'smooth');
+    expect((component as any).setActiveIndex).toHaveBeenCalledWith(3, true);
+  });
+
+  it('uses step size against nearest slide index for mixed-width content', () => {
+    const component = new IoCarousel();
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 6 });
+    (component as any).getNearestSlideIndex = vi.fn(() => 2);
+    (component as any).scrollToIndex = vi.fn();
+    (component as any).setActiveIndex = vi.fn();
+    component.slidesPerPage = 2;
+
+    (component as any).onNext();
+
+    expect((component as any).scrollToIndex).toHaveBeenCalledWith(4, 'smooth');
+    expect((component as any).setActiveIndex).toHaveBeenCalledWith(4, true);
   });
 });

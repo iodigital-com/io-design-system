@@ -90,6 +90,8 @@ declare module 'react' {
           rewind?: boolean;
           /** zero-based active slide index */
           'active-slide-index'?: number;
+          /** emitted when active slide index changes */
+          onUpdate?: (ev: CustomEvent<{ activeIndex: number; totalSlides: number }>) => void;
         },
         HTMLElement
       >;

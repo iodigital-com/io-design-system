@@ -1,66 +1,106 @@
 import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
 
-type IoAccordionItem = {
-  title: string;
-  body: string;
-  open?: boolean;
-};
-
-const SAMPLE_ITEMS: IoAccordionItem[] = [
-  {
-    title: 'Audits & research',
-    body: 'Making targeted, data-driven decisions starts with clear, reliable data...',
-    open: true,
-  },
-  {
-    title: 'Brand and communication strategy',
-    body: 'A clear brand and communication strategy gets you there...',
-  },
-  {
-    title: 'Digital strategy',
-    body: "You don't have to constantly reinvent yourself...",
-  },
-  {
-    title: 'Interface Design',
-    body: 'Great interfaces are invisible - they guide users effortlessly to their goal...',
-  },
-  {
-    title: 'Service design',
-    body: 'Service design connects people, processes, and technology into seamless experiences...',
-  },
-  {
-    title: 'UX strategy',
-    body: 'A clear UX strategy aligns user needs with business goals...',
-  },
-];
-
 export const accordionStory: Story<'io-accordion'> = {
-  state: { properties: { 'allow-multiple': false } },
+  state: { properties: { open: false, heading: 'Some Heading', 'heading-tag': 'h3' } },
   generator: ({ properties } = {}) => [
     {
       tag: 'io-accordion' as const,
       properties: {
-        items: SAMPLE_ITEMS,
-        'allow-multiple': properties?.['allow-multiple'] ?? false,
+        open: (properties?.open as boolean) ?? false,
+        heading: (properties?.heading as string) ?? 'Some Heading',
+        'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
       },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: [
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
+          ],
+        },
+      ],
     },
   ],
 };
 
-export const accordionStoryAllowMultiple: Story<'io-accordion'> = {
-  state: { properties: { 'allow-multiple': true } },
+export const accordionStoryOpen: Story<'io-accordion'> = {
+  state: { properties: { open: true, heading: 'Some Heading', 'heading-tag': 'h3' } },
   generator: () => [
     {
       tag: 'io-accordion' as const,
       properties: {
-        items: SAMPLE_ITEMS,
-        'allow-multiple': true,
+        open: true,
+        heading: 'Some Heading',
+        'heading-tag': 'h3',
       },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: [
+            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStorySlottedHeading: Story<'io-accordion'> = {
+  state: { properties: { open: false } },
+  generator: ({ properties } = {}) => [
+    {
+      tag: 'io-accordion' as const,
+      properties: {
+        open: (properties?.open as boolean) ?? false,
+      },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'span' as const,
+          properties: { slot: 'heading', className: 'p-static-md' },
+          children: ['Some slotted heading'],
+        },
+        {
+          tag: 'p' as const,
+          children: [
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStoryGroup: Story<'io-accordion'> = {
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { open: true, heading: 'Audits & research' },
+      children: [{ tag: 'p' as const, children: ['Making targeted, data-driven decisions starts with clear, reliable data.'] }],
+    },
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Brand and communication strategy' },
+      children: [{ tag: 'p' as const, children: ['A clear brand and communication strategy helps teams move in one direction.'] }],
+    },
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Digital strategy' },
+      children: [{ tag: 'p' as const, children: ['Build a measurable roadmap that links experience quality to business outcomes.'] }],
     },
   ],
 };
 
 export const accordionPropDefinitions: PropDefinition[] = [
-  { name: 'allow-multiple', type: 'boolean', defaultValue: false },
+  { name: 'open', type: 'boolean', defaultValue: false },
+  { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
+  { name: 'heading-tag', type: 'select', defaultValue: 'h3', options: ['h2', 'h3', 'h4', 'h5', 'h6'] },
 ];

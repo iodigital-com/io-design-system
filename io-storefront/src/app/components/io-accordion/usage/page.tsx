@@ -8,7 +8,7 @@ export default function IoAccordionUsagePage() {
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
           title="When to use"
-          description="Use accordion when users need progressive disclosure without overwhelming the page with full-content blocks."
+          description="Use accordion when users need progressive disclosure per content block without overwhelming the page."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
@@ -17,10 +17,10 @@ export default function IoAccordionUsagePage() {
               Use for FAQ sections, progressive disclosure of complex information, and reducing visual noise on dense content pages.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use single-open mode (default) when items are mutually exclusive or relate to a single decision.
+              Use one <C>io-accordion</C> per content section, following the PDS disclosure pattern.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <C>allow-multiple</C> when users may need to compare information across multiple panels.
+              Use the <C>heading</C> prop for simple labels, or the <C>heading</C> slot when richer heading markup is needed.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -41,14 +41,14 @@ export default function IoAccordionUsagePage() {
       <section id="behaviour" className="space-y-6">
         <SectionHeader
           title="Behaviour"
-          description="Accordion supports single-open and multi-open disclosure patterns with animated affordances for state change."
+          description="Each accordion toggles one panel and communicates state via the update event."
         />
         <div className="space-y-3">
-          <RuleCard label="Single-open (default)">
-            Opening a new panel automatically closes the currently open panel.
+          <RuleCard label="One accordion, one panel">
+            Each <C>io-accordion</C> instance controls exactly one expandable content region.
           </RuleCard>
-          <RuleCard label="Multiple open (allow-multiple)">
-            Each panel toggles independently.
+          <RuleCard label="Controlled state">
+            Use the <C>open</C> prop and the <C>update</C> event detail (<C>{`{ open: boolean }`}</C>) to sync state in framework apps.
           </RuleCard>
           <RuleCard label="Animation">
             Panel height animates from 0 to full via max-height transition; icon rotates from + to -.

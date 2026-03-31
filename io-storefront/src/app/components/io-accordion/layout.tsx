@@ -17,7 +17,7 @@ export default function IoAccordionLayout({ children }: { children: ReactNode })
     <div>
       <PageHeader
         title="Accordion"
-        description="Collapsible content sections with animated plus/minus icon and title indent. Single-open by default; allow-multiple for FAQ-style patterns."
+        description="PDS-style disclosure with one accordion per content section, animated plus/minus icon, and heading slot support."
         tabs={TABS}
         category="Component"
         status="beta"

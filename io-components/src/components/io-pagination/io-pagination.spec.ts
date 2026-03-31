@@ -48,12 +48,22 @@ describe('io-pagination — pageRange', () => {
 
   it('shows a fuller range near the start', () => {
     const range = (component as any).pageRange(1, 12);
-    expect(range).toEqual([1, 2, 3, '…', 12]);
+    expect(range).toEqual([1, 2, 3, 4, 5, '…', 12]);
   });
 
   it('shows a fuller range near the end', () => {
     const range = (component as any).pageRange(12, 12);
-    expect(range).toEqual([1, '…', 10, 11, 12]);
+    expect(range).toEqual([1, '…', 8, 9, 10, 11, 12]);
+  });
+
+  it('keeps token count stable across edge and middle ranges', () => {
+    const startRange = (component as any).pageRange(1, 12);
+    const middleRange = (component as any).pageRange(6, 12);
+    const endRange = (component as any).pageRange(12, 12);
+
+    expect(startRange).toHaveLength(7);
+    expect(middleRange).toHaveLength(7);
+    expect(endRange).toHaveLength(7);
   });
 });
 

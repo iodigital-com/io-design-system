@@ -1,80 +1,187 @@
 # io Design System
 
-A component library for io Digital products — 15 production-ready Web Components built with [Stencil](https://stenciljs.com/) and shipped as standard custom elements. Works with React, Angular, Vue, or plain HTML with no framework lock-in.
+The io Design System is iO's cross-framework UI component library.
 
----
+It is built with Stencil Web Components at the core, plus generated wrappers for React, Vue, and Angular. The repository also includes a Next.js storefront used for component documentation, usage examples, and token reference.
 
-## Packages
+## What this repo includes
 
-| Package | Description | Version |
-|---------|-------------|---------|
-| [`@io-digital/components`](./io-components) | Core Web Components (framework-agnostic) | `0.0.1` |
-| [`@io-digital/components-react`](./io-components-react) | React 18+ typed wrappers | `0.0.1` |
-| [`@io-digital/components-vue`](./io-components-vue) | Vue 3.4+ typed wrappers | `0.0.1` |
-| [`@io-digital/components-angular`](./io-components-angular) | Angular 17–20 typed wrappers | `0.0.1` |
+- `@io-digital/components`: framework-agnostic Web Components (source of truth)
+- `@io-digital/components-react`: React wrappers
+- `@io-digital/components-vue`: Vue wrappers
+- `@io-digital/components-angular`: Angular wrappers
+- `io-storefront`: internal docs site and playground
+- Token scraping/generation scripts for docs under `scripts/`
 
-The storefront ([`io-storefront`](./io-storefront)) is a private Next.js documentation site — it is not published to npm.
+## Component catalog
 
----
+Current component set (18):
 
-## Components
+- `io-accordion`
+- `io-badge`
+- `io-button`
+- `io-carousel`
+- `io-checkbox`
+- `io-input`
+- `io-link`
+- `io-modal`
+- `io-pagination`
+- `io-radio`
+- `io-select`
+- `io-spinner`
+- `io-tabs`
+- `io-tag`
+- `io-textarea`
+- `io-toast`
+- `io-toast-item`
+- `io-tooltip`
 
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| Badge | `io-badge` | Status and category labels. Nine semantic variants. |
-| Button | `io-button` | Primary interactions. Three variants, ten brand colours, four sizes. |
-| Checkbox | `io-checkbox` | Binary selection with indeterminate state. |
-| Input | `io-input` | Single-line text entry with label, helper text, and error state. |
-| Link | `io-link` | Inline and standalone hyperlink with animated underline. |
-| Modal | `io-modal` | Native `<dialog>` with focus trapping and ESC support. |
-| Radio | `io-radio` | Single-select radio with label and error state. |
-| Select | `io-select` | Dropdown with label, placeholder, and error state. |
-| Spinner | `io-spinner` | Loading indicator in three sizes and colour modes. |
-| Tabs | `io-tabs` | Tab navigation with keyboard support and ARIA roles. |
-| Tag | `io-tag` | Toggleable filter chip or removable label. |
-| Textarea | `io-textarea` | Multi-line text entry with character count and resize modes. |
-| Toast | `io-toast` | Time-limited feedback notifications via `addToast()`. |
-| Tooltip | `io-tooltip` | Contextual help on hover or focus, auto-positioned. |
+### Component maturity
 
----
+Component status is documented in the storefront navigation and individual component pages.
 
-## Quick start
+- `Stable`: ready for broad production usage
+- `Beta`: usable, but API or behavior may still evolve
 
-### Event migration policy (breaking)
+If you are integrating this library in a production product, prefer stable components first and treat beta components as opt-in.
 
-The `io*` custom-event prefix has been removed in favor of canonical event names.
-This is a **major-version** breaking change with **no dual-emit alias layer**.
+## Browser support
 
-Canonical mapping:
+This library targets modern evergreen browsers:
 
-- `ioInput` → `input`
-- `ioChange` → `change`
-- `ioFocus` → `focus`
-- `ioBlur` → `blur`
-- `ioOpen` → `open`
-- `ioClose` → `close`
-- `ioClick` → `click`
-- `ioToggle` → `toggle`
-- `ioRemove` → `remove`
-- `ioToastDismiss` → `dismiss`
+- Chrome (latest)
+- Edge (latest)
+- Firefox (latest)
+- Safari (latest)
 
-Wrapper/event binding examples:
+Legacy browsers (for example Internet Explorer) are not supported.
 
-- React: `onIoChange` → `onChange`, `onIoClick` → `onClick`
-- Angular: `(ioChange)` → `(change)`, `(ioClick)` → `(click)`
-- Vue: `@io-change` → `@change`, `@io-click` → `@click`
-- Vanilla DOM: `addEventListener('ioChange', ...)` → `addEventListener('change', ...)`
+## Versioning and releases
 
-### Vanilla HTML / CDN
+This repository follows Semantic Versioning:
 
-```html
-<link rel="stylesheet" href="node_modules/@io-digital/components/dist/io-components/io-components.css">
-<script type="module" src="node_modules/@io-digital/components/dist/io-components/io-components.esm.js"></script>
+- `MAJOR`: breaking API/event/behavior changes
+- `MINOR`: backward-compatible features
+- `PATCH`: backward-compatible fixes
 
-<io-button variant="solid" color="blue" size="md">Get started</io-button>
+Conventional Commits are used to keep release intent explicit (`feat`, `fix`, `refactor`, `docs`, `test`, `chore`).
+
+## Local setup
+
+### Prerequisites
+
+- Node.js `>= 20.0.0`
+- npm (comes with Node)
+
+### Install
+
+```bash
+git clone https://github.com/iodigital-com/io-design-system.git
+cd io-design-system
+npm ci
 ```
 
-### npm install
+### Run locally
+
+```bash
+npm run dev
+```
+
+This starts the Stencil component dev workflow and the storefront app. The storefront is available on `http://localhost:3000`.
+
+## Useful root scripts
+
+### Core workflows
+
+```bash
+npm run dev
+npm run build
+npm run test
+npm run type-check
+npm run build:storefront
+```
+
+### Quality gates
+
+```bash
+npm run governance:check
+npm run events:guard
+npm run build:quality-gates
+```
+
+`build:quality-gates` runs:
+
+1. `governance:check`
+2. `events:guard`
+3. `build`
+4. `test`
+5. `type-check`
+6. `build:storefront`
+
+### Build granularity
+
+```bash
+npm run build:components
+npm run build:wrappers
+npm run build:storefront:release
+```
+
+### Token scraping/generation (docs)
+
+```bash
+npm run tokens:scrape
+npm run tokens:scrape:resume
+npm run tokens:merge
+npm run tokens:html
+npm run tokens:sync
+```
+
+These scripts update:
+
+- `docs/tokens.live.json` (raw scrape)
+- `docs/tokens.json` (merged docs token data)
+- `docs/token.json` (mirror for compatibility)
+- `docs/index.html` (generated docs sections)
+
+## Event model (canonical names)
+
+This codebase uses canonical DOM event names.
+
+Important: `ioInput` has been fully refactored to `input` in the codebase.
+
+Canonical event mapping:
+
+- `ioInput` -> `input`
+- `ioChange` -> `change`
+- `ioFocus` -> `focus`
+- `ioBlur` -> `blur`
+- `ioOpen` -> `open`
+- `ioClose` -> `close`
+- `ioClick` -> `click`
+- `ioToggle` -> `toggle`
+- `ioRemove` -> `remove`
+- `ioToastDismiss` -> `dismiss`
+
+Migration examples:
+
+- React: `onIoInput` -> `onInput`, `onIoChange` -> `onChange`
+- Angular: `(ioInput)` -> `(input)`, `(ioChange)` -> `(change)`
+- Vue: `@io-input` -> `@input`, `@io-change` -> `@change`
+- DOM: `addEventListener('ioInput', ...)` -> `addEventListener('input', ...)`
+
+### Before/after migration example
+
+```ts
+// Before
+element.addEventListener('ioInput', handleInput);
+
+// After
+element.addEventListener('input', handleInput);
+```
+
+## Using the packages
+
+### Web Components (vanilla)
 
 ```bash
 npm install @io-digital/components
@@ -83,6 +190,13 @@ npm install @io-digital/components
 ```js
 import { defineCustomElements } from '@io-digital/components/loader';
 defineCustomElements();
+```
+
+```html
+<link rel="stylesheet" href="node_modules/@io-digital/components/dist/io-components/io-components.css" />
+<script type="module" src="node_modules/@io-digital/components/dist/io-components/io-components.esm.js"></script>
+
+<io-button variant="solid" color="blue" size="md">Get started</io-button>
 ```
 
 ### React
@@ -122,7 +236,6 @@ npm install @io-digital/components @io-digital/components-angular
 ```
 
 ```ts
-// app.module.ts
 import { IoComponentsAngularModule } from '@io-digital/components-angular';
 
 @NgModule({
@@ -131,71 +244,167 @@ import { IoComponentsAngularModule } from '@io-digital/components-angular';
 export class AppModule {}
 ```
 
-```html
-<io-button variant="solid" color="blue" size="md">Get started</io-button>
-```
+## SSR and framework guidance
 
----
+When using wrappers in SSR frameworks (for example Next.js or Nuxt), ensure custom elements are defined on the client runtime.
 
-## Design tokens
+- Load Web Component definitions only in browser contexts.
+- Avoid directly touching DOM APIs during server rendering.
+- Keep hydration-safe defaults for controlled component values.
 
-All visual values are CSS custom properties on `:root`. Import the stylesheet to access them:
+If a framework integration has rendering mismatches, validate client-only registration first before debugging component internals.
 
-```css
-@import '@io-digital/components/dist/io-components/io-components.css';
-```
+## Theming contract
 
-Token categories: brand colours, semantic roles, typography, spacing, shadows, motion, z-index, breakpoints, and form states. See the [Styles section](http://localhost:3000/styles) in the storefront for the full reference.
+Public theming API:
 
----
+- CSS custom properties (`--io-*`) exposed by the component styles
+
+Internal implementation details (DOM shape, private class names, internal animation timings) are not part of the public contract and may change between versions.
+
+## Accessibility baseline
+
+The design system aims for WCAG AA as a baseline for shipped components.
+
+For contributors, every component change should preserve:
+
+- keyboard accessibility
+- visible focus states
+- semantic labeling/ARIA behavior
+- contrast requirements
+
+Run component tests and storefront validation before merging accessibility-impacting changes.
 
 ## Repository structure
 
-```
+```text
 io-design-system/
-├── io-components/           # @io-digital/components — Stencil core
-│   ├── src/components/      # Component source (one directory per component)
-│   ├── src/global/app.css   # Design tokens (CSS custom properties on :root)
-│   └── stencil.config.ts    # Build config + framework output targets
-├── io-storefront/           # Private documentation site (Next.js + Tailwind)
-├── io-components-react/     # @io-digital/components-react
-├── io-components-vue/       # @io-digital/components-vue
-└── io-components-angular/   # @io-digital/components-angular
+  io-components/           # Stencil core package
+  io-components-react/     # React wrappers
+  io-components-vue/       # Vue wrappers
+  io-components-angular/   # Angular wrappers
+  io-storefront/           # Next.js docs/playground
+  docs/                    # Token docs and generated HTML
+  scripts/                 # Governance, scrape, and build utilities
 ```
 
----
+## Contributor quickstart
 
-## Development
+If you want to contribute quickly, this is the shortest path:
 
-**Requirements:** Node >= 20.0.0
+1. Fork the repository and clone your fork.
+2. Create a feature branch from `main`.
+3. Install dependencies and run local dev.
+4. Make focused changes with tests.
+5. Run quality gates.
+6. Open a PR with clear scope and screenshots/evidence when relevant.
+
+Suggested workflow:
 
 ```bash
-# Install dependencies from repo root
+git checkout -b feat/your-change-name
 npm ci
-
-# Start Stencil dev server + storefront concurrently
 npm run dev
+```
 
-# Run tests
-npm run test
+Before opening a PR, run:
 
-# Type-check all packages
-npm run type-check
-
-# Full quality-gate sequence (governance → build → test → type-check → storefront build)
+```bash
 npm run build:quality-gates
 ```
 
-The storefront runs at `http://localhost:3000` and hot-reloads alongside the Stencil build.
-
----
-
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full contributor guide — including how to add new components, the commit convention, and the pull request checklist.
+Please also read [CONTRIBUTING.md](./CONTRIBUTING.md) for full project rules.
 
----
+### What to include in each PR
+
+- concise summary of behavior change
+- testing evidence (command output, screenshots, or notes)
+- accessibility impact note for UI changes
+- migration note when behavior or events change
+
+### Definition of done
+
+A contribution is considered ready when:
+
+- all required quality gates pass
+- component behavior is covered by tests
+- storefront docs/examples are updated when API/UX changes
+- no `io*` event regressions are introduced (canonical names only)
+- naming and token conventions are respected
+
+### Component contribution checklist
+
+For Stencil components in `io-components/src/components`:
+
+- use tokens (`var(--io-*)`) instead of hardcoded values
+- keep IDs generated in lifecycle methods, not in render
+- keep custom events canonical (no `io`-prefixed event names)
+- add/update render, interaction, and disabled-state tests
+
+### Storefront contribution checklist
+
+For docs pages in `io-storefront/src/app/components`:
+
+- use shared primitives for Usage and Accessibility tabs
+- keep examples executable and aligned with live component API
+- update sitemap/type registrations when adding new components
+
+### Commit style
+
+Use Conventional Commits:
+
+- `feat(scope): ...`
+- `fix(scope): ...`
+- `docs(scope): ...`
+- `test(scope): ...`
+- `refactor(scope): ...`
+- `chore(scope): ...`
+
+## Security
+
+Please do not disclose security issues in public issues.
+
+Report vulnerabilities privately to repository maintainers through your standard internal security/contact process.
+
+## Roadmap
+
+Near-term focus areas typically include:
+
+- component hardening and API consistency
+- accessibility and documentation coverage
+- cross-framework wrapper quality
+- design token governance
+
+For active roadmap items, check open issues and pull requests.
+
+## FAQ
+
+### Are `io*` events still supported?
+
+No. Canonical DOM event names are the standard now (for example `input`, `change`, `click`).
+
+### Can I style components with custom CSS classes?
+
+Use CSS custom properties (`--io-*`) as the primary styling contract.
+
+### Is the storefront package published to npm?
+
+No. `io-storefront` is a documentation/playground app in this repository.
+
+### Which package should I use in React/Vue/Angular projects?
+
+Use the framework wrapper package plus `@io-digital/components`.
+
+### How do I run all validation gates before opening a PR?
+
+Run:
+
+```bash
+npm run build:quality-gates
+```
 
 ## License
 
-MIT — © io Digital
+MIT - Copyright (c) io Digital

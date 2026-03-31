@@ -35,7 +35,6 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
     ReactOverlayProps & {
       forwardedRef?: StencilReactForwardedRef<OverlayType>;
     };
-  type ExternalProps = Omit<Props, 'forwardedRef'>;
 
   let isDismissing = false;
 
@@ -137,8 +136,7 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
     }
   }
 
-  return React.forwardRef<OverlayType, ExternalProps>((props, ref) => {
-    const overlayProps = { ...props, forwardedRef: ref } as unknown as Props;
-    return <Overlay {...overlayProps} />;
+  return React.forwardRef<OverlayType, Props>((props, ref) => {
+    return <Overlay {...props} forwardedRef={ref} />;
   });
 };

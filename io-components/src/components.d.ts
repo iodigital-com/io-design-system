@@ -5,12 +5,15 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IoAccordionItem } from "./components/io-accordion/io-accordion";
+import { IoAccordionChangeDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
+import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectOption } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
@@ -19,12 +22,15 @@ import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
+export { IoAccordionItem } from "./components/io-accordion/io-accordion";
+export { IoAccordionChangeDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
+export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectOption } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
@@ -34,6 +40,32 @@ export { IoTextareaResize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export namespace Components {
+    /**
+     * io-accordion
+     * =============
+     * Collapsible sections with animated +/− icon and title indent animation.
+     * Extracted from the "Our expertise" section of the iO Brand & Business page.
+     * By default only one panel can be open at a time (accordion behaviour).
+     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * @example <io-accordion></io-accordion>
+     * // Set items via property (framework usage):
+     * accordionEl.items = [
+     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
+     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
+     * ];
+     */
+    interface IoAccordion {
+        /**
+          * Allow multiple panels open simultaneously
+          * @default false
+         */
+        "allowMultiple": boolean;
+        /**
+          * Array of accordion items to render
+          * @default []
+         */
+        "items": IoAccordionItem[];
+    }
     /**
      * io-badge
      * =========
@@ -347,6 +379,37 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoModalSize;
+    }
+    /**
+     * io-pagination
+     * ==============
+     * Circular page controls — outlined page numbers, active page in brand blue,
+     * beige prev/next arrow buttons. Automatically generates ellipsis for large
+     * page counts.
+     * @example <io-pagination page="1" total-pages="10" />
+     * <io-pagination page="5" total-pages="12" />
+     */
+    interface IoPagination {
+        /**
+          * Visually label the next button (used by aria-label)
+          * @default 'Next page'
+         */
+        "nextLabel": string;
+        /**
+          * Current 1-based active page number
+          * @default 1
+         */
+        "page": number;
+        /**
+          * Visually label the prev button (used by aria-label)
+          * @default 'Previous page'
+         */
+        "prevLabel": string;
+        /**
+          * Total number of pages
+          * @default 1
+         */
+        "totalPages": number;
     }
     /**
      * io-radio
@@ -686,6 +749,10 @@ export namespace Components {
         "placement": IoTooltipPlacement;
     }
 }
+export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoAccordionElement;
+}
 export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoButtonElement;
@@ -705,6 +772,10 @@ export interface IoLinkCustomEvent<T> extends CustomEvent<T> {
 export interface IoModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoModalElement;
+}
+export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoPaginationElement;
 }
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -731,6 +802,37 @@ export interface IoToastItemCustomEvent<T> extends CustomEvent<T> {
     target: HTMLIoToastItemElement;
 }
 declare global {
+    interface HTMLIoAccordionElementEventMap {
+        "accordionChange": IoAccordionChangeDetail;
+    }
+    /**
+     * io-accordion
+     * =============
+     * Collapsible sections with animated +/− icon and title indent animation.
+     * Extracted from the "Our expertise" section of the iO Brand & Business page.
+     * By default only one panel can be open at a time (accordion behaviour).
+     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * @example <io-accordion></io-accordion>
+     * // Set items via property (framework usage):
+     * accordionEl.items = [
+     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
+     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
+     * ];
+     */
+    interface HTMLIoAccordionElement extends Components.IoAccordion, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoAccordionElementEventMap>(type: K, listener: (this: HTMLIoAccordionElement, ev: IoAccordionCustomEvent<HTMLIoAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoAccordionElementEventMap>(type: K, listener: (this: HTMLIoAccordionElement, ev: IoAccordionCustomEvent<HTMLIoAccordionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoAccordionElement: {
+        prototype: HTMLIoAccordionElement;
+        new (): HTMLIoAccordionElement;
+    };
     /**
      * io-badge
      * =========
@@ -889,6 +991,32 @@ declare global {
     var HTMLIoModalElement: {
         prototype: HTMLIoModalElement;
         new (): HTMLIoModalElement;
+    };
+    interface HTMLIoPaginationElementEventMap {
+        "pageChange": IoPaginationChangeDetail;
+    }
+    /**
+     * io-pagination
+     * ==============
+     * Circular page controls — outlined page numbers, active page in brand blue,
+     * beige prev/next arrow buttons. Automatically generates ellipsis for large
+     * page counts.
+     * @example <io-pagination page="1" total-pages="10" />
+     * <io-pagination page="5" total-pages="12" />
+     */
+    interface HTMLIoPaginationElement extends Components.IoPagination, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPaginationElementEventMap>(type: K, listener: (this: HTMLIoPaginationElement, ev: IoPaginationCustomEvent<HTMLIoPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPaginationElementEventMap>(type: K, listener: (this: HTMLIoPaginationElement, ev: IoPaginationCustomEvent<HTMLIoPaginationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoPaginationElement: {
+        prototype: HTMLIoPaginationElement;
+        new (): HTMLIoPaginationElement;
     };
     interface HTMLIoRadioElementEventMap {
         "change": IoRadioChangeDetail;
@@ -1106,12 +1234,14 @@ declare global {
         new (): HTMLIoTooltipElement;
     };
     interface HTMLElementTagNameMap {
+        "io-accordion": HTMLIoAccordionElement;
         "io-badge": HTMLIoBadgeElement;
         "io-button": HTMLIoButtonElement;
         "io-checkbox": HTMLIoCheckboxElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
+        "io-pagination": HTMLIoPaginationElement;
         "io-radio": HTMLIoRadioElement;
         "io-select": HTMLIoSelectElement;
         "io-spinner": HTMLIoSpinnerElement;
@@ -1126,6 +1256,36 @@ declare global {
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
+    /**
+     * io-accordion
+     * =============
+     * Collapsible sections with animated +/− icon and title indent animation.
+     * Extracted from the "Our expertise" section of the iO Brand & Business page.
+     * By default only one panel can be open at a time (accordion behaviour).
+     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * @example <io-accordion></io-accordion>
+     * // Set items via property (framework usage):
+     * accordionEl.items = [
+     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
+     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
+     * ];
+     */
+    interface IoAccordion {
+        /**
+          * Allow multiple panels open simultaneously
+          * @default false
+         */
+        "allowMultiple"?: boolean;
+        /**
+          * Array of accordion items to render
+          * @default []
+         */
+        "items"?: IoAccordionItem[];
+        /**
+          * Fires when a panel opens or closes
+         */
+        "onAccordionChange"?: (event: IoAccordionCustomEvent<IoAccordionChangeDetail>) => void;
+    }
     /**
      * io-badge
      * =========
@@ -1442,6 +1602,41 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoModalSize;
+    }
+    /**
+     * io-pagination
+     * ==============
+     * Circular page controls — outlined page numbers, active page in brand blue,
+     * beige prev/next arrow buttons. Automatically generates ellipsis for large
+     * page counts.
+     * @example <io-pagination page="1" total-pages="10" />
+     * <io-pagination page="5" total-pages="12" />
+     */
+    interface IoPagination {
+        /**
+          * Visually label the next button (used by aria-label)
+          * @default 'Next page'
+         */
+        "nextLabel"?: string;
+        /**
+          * Fires when the user navigates to a new page
+         */
+        "onPageChange"?: (event: IoPaginationCustomEvent<IoPaginationChangeDetail>) => void;
+        /**
+          * Current 1-based active page number
+          * @default 1
+         */
+        "page"?: number;
+        /**
+          * Visually label the prev button (used by aria-label)
+          * @default 'Previous page'
+         */
+        "prevLabel"?: string;
+        /**
+          * Total number of pages
+          * @default 1
+         */
+        "totalPages"?: number;
     }
     /**
      * io-radio
@@ -1813,6 +2008,9 @@ declare namespace LocalJSX {
         "placement"?: IoTooltipPlacement;
     }
 
+    interface IoAccordionAttributes {
+        "allowMultiple": boolean;
+    }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
     }
@@ -1871,6 +2069,12 @@ declare namespace LocalJSX {
         "heading": string;
         "size": IoModalSize;
         "closeOnBackdrop": boolean;
+    }
+    interface IoPaginationAttributes {
+        "page": number;
+        "totalPages": number;
+        "prevLabel": string;
+        "nextLabel": string;
     }
     interface IoRadioAttributes {
         "label": string;
@@ -1934,12 +2138,14 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
+        "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
@@ -1955,6 +2161,21 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * io-accordion
+             * =============
+             * Collapsible sections with animated +/− icon and title indent animation.
+             * Extracted from the "Our expertise" section of the iO Brand & Business page.
+             * By default only one panel can be open at a time (accordion behaviour).
+             * Set `allow-multiple` to allow multiple open panels simultaneously.
+             * @example <io-accordion></io-accordion>
+             * // Set items via property (framework usage):
+             * accordionEl.items = [
+             *   { title: 'Audits & research', body: 'Making targeted decisions...' },
+             *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
+             * ];
+             */
+            "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;
             /**
              * io-badge
              * =========
@@ -2025,6 +2246,16 @@ declare module "@stencil/core" {
              * </script>
              */
             "io-modal": LocalJSX.IntrinsicElements["io-modal"] & JSXBase.HTMLAttributes<HTMLIoModalElement>;
+            /**
+             * io-pagination
+             * ==============
+             * Circular page controls — outlined page numbers, active page in brand blue,
+             * beige prev/next arrow buttons. Automatically generates ellipsis for large
+             * page counts.
+             * @example <io-pagination page="1" total-pages="10" />
+             * <io-pagination page="5" total-pages="12" />
+             */
+            "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
             /**
              * io-radio
              * =========

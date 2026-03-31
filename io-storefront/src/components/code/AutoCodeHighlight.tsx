@@ -64,7 +64,7 @@ export function AutoCodeHighlight() {
       const preBlocks = Array.from(document.querySelectorAll('pre')) as HTMLPreElement[];
 
       preBlocks.forEach((pre) => {
-        if (pre.className.includes('react-syntax-highlighter')) {
+        if (pre.className.includes('react-syntax-highlighter') || pre.querySelector('code.hljs')) {
           return;
         }
 

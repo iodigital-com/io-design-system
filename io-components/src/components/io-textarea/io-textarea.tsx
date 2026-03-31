@@ -135,19 +135,11 @@ export class IoTextarea {
       <Host>
         <style>{getTextareaStyles()}</style>
         <div class={`textarea-wrapper${error ? ' textarea-wrapper--error' : ''}${disabled ? ' textarea-wrapper--disabled' : ''}`}>
-          <label htmlFor={textareaId} class="textarea-label">
-            {label}
-            {required && (
-              <span class="textarea-required" aria-hidden="true">
-                {' *'}
-              </span>
-            )}
-          </label>
           <textarea
             id={textareaId}
             class={`textarea-field textarea-field--resize-${resize}`}
             name={name}
-            placeholder={placeholder}
+            placeholder={placeholder ?? ' '}
             value={value}
             required={required}
             disabled={disabled}
@@ -161,6 +153,14 @@ export class IoTextarea {
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
           />
+          <label htmlFor={textareaId} class="textarea-label">
+            {label}
+            {required && (
+              <span class="textarea-required" aria-hidden="true">
+                {' *'}
+              </span>
+            )}
+          </label>
         </div>
         {error && errorMessage && (
           <p id={errorId} class="textarea-error" role="alert">

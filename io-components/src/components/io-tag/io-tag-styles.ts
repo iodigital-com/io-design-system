@@ -69,6 +69,48 @@ export function getTagStyles(): string {
       color: var(--io-color-grey-6);
     }
 
+    .tag--dark {
+      background: var(--io-color-grey-6);
+      border-color: var(--io-color-grey-6);
+      color: var(--io-color-white);
+    }
+
+    .tag--orange {
+      background: var(--io-color-orange);
+      border-color: var(--io-color-orange);
+      color: var(--io-color-white);
+    }
+
+    .tag--rouge {
+      background: var(--io-color-rouge);
+      border-color: var(--io-color-rouge);
+      color: var(--io-color-white);
+    }
+
+    .tag--success {
+      background: var(--io-color-success-soft);
+      border-color: var(--io-color-success);
+      color: var(--io-color-success);
+    }
+
+    .tag--warning {
+      background: var(--io-color-warning-soft);
+      border-color: var(--io-color-warning);
+      color: var(--io-color-warning);
+    }
+
+    .tag--error {
+      background: var(--io-color-error-soft);
+      border-color: var(--io-color-error);
+      color: var(--io-color-error);
+    }
+
+    .tag--outline {
+      background: transparent;
+      border-color: var(--io-border);
+      color: var(--io-text-primary);
+    }
+
     /* ── Selected state ─────────────────────────────────── */
 
     .tag--selected {
@@ -91,6 +133,30 @@ export function getTagStyles(): string {
 
       .tag--beige:hover:not(.tag--disabled):not(.tag--selected) {
         background: var(--io-color-beige);
+      }
+
+      .tag--dark:hover:not(.tag--disabled):not(.tag--selected) {
+        opacity: 0.85;
+      }
+
+      .tag--orange:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-color-orange-hover);
+        border-color: var(--io-color-orange-hover);
+      }
+
+      .tag--rouge:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-color-rouge-hover);
+        border-color: var(--io-color-rouge-hover);
+      }
+
+      .tag--success:hover:not(.tag--disabled):not(.tag--selected),
+      .tag--warning:hover:not(.tag--disabled):not(.tag--selected),
+      .tag--error:hover:not(.tag--disabled):not(.tag--selected) {
+        opacity: 0.85;
+      }
+
+      .tag--outline:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-state-hover);
       }
 
       .tag--selected:hover:not(.tag--disabled) {

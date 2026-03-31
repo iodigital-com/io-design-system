@@ -1,14 +1,46 @@
 'use client';
 
+import { useState } from 'react';
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { Playground } from '@/components/playground/Playground';
 import {
+  accordionSingleOpenCode,
   accordionStory,
   accordionStoryGroupMultiOpen,
-  accordionStoryGroupSingleOpen,
   accordionStoryOpen,
   accordionStorySlottedHeading,
 } from '../io-accordion.stories';
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+
+const singleOpenItems = [
+  { id: 'audits', heading: 'Audits & research', content: 'Making targeted, data-driven decisions starts with clear, reliable data.' },
+  { id: 'brand', heading: 'Brand and communication strategy', content: 'A clear brand and communication strategy helps teams move in one direction.' },
+  { id: 'digital', heading: 'Digital strategy', content: 'Build a measurable roadmap that links experience quality to business outcomes.' },
+];
+
+function SingleOpenDemo() {
+  const [openId, setOpenId] = useState('audits');
+
+  return (
+    <Playground frameworkCode={accordionSingleOpenCode} codeVisible>
+      <div className="w-full max-w-[42.5rem]">
+        {singleOpenItems.map((item) => (
+          <io-accordion
+            key={item.id}
+            heading={item.heading}
+            open={openId === item.id || undefined}
+            suppressHydrationWarning
+            onUpdate={(ev: CustomEvent<{ open: boolean }>) => {
+              setOpenId(ev.detail.open ? item.id : '');
+            }}
+          >
+            <p>{item.content}</p>
+          </io-accordion>
+        ))}
+      </div>
+    </Playground>
+  );
+}
 
 export default function IoAccordionExamplesPage() {
   return (
@@ -39,13 +71,7 @@ export default function IoAccordionExamplesPage() {
           title="One accordion per content item (single-open pattern)"
           description="Render multiple io-accordion elements in a vertical list and keep one panel open at a time in your page-level state logic."
         />
-        <ComponentStory story={accordionStoryGroupSingleOpen} />
-        <p
-          className="text-xs mt-3"
-          style={{ color: 'var(--io-text-muted)' }}
-        >
-          Note: Single-open behaviour requires page-level state management. The preview above does not enforce it — see the code tabs for a working implementation.
-        </p>
+        <SingleOpenDemo />
       </section>
       <section>
         <ExamplesSectionHeader

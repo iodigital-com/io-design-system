@@ -2,7 +2,7 @@ import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
 import type { FrameworkCode } from '@/models/framework';
 
-const accordionSingleOpenCode: FrameworkCode = {
+export const accordionSingleOpenCode: FrameworkCode = {
   html: `<div class="accordion-group" data-accordion-group>
   <io-accordion heading="Audits & research" open>
     <p>Making targeted, data-driven decisions starts with clear, reliable data.</p>

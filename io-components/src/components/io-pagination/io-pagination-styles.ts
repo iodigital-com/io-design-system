@@ -62,10 +62,10 @@ export function getPaginationStyles(): string {
     /* ── Active page ────────────────────────────────────── */
 
     .page-btn--active {
-      border: 2px solid var(--io-color-primary);
-      color: var(--io-color-primary);
+      border: none;
+      color: var(--io-color-white);
       font-weight: var(--io-font-weight-bold);
-      background: transparent;
+      background: var(--io-color-beige);
       cursor: default;
     }
 
@@ -79,9 +79,9 @@ export function getPaginationStyles(): string {
 
     @media (hover: hover) and (pointer: fine) {
       .page-btn--nav:hover:not(:disabled) {
-        background: transparent;
-        border: 2px solid var(--io-color-primary);
-        color: var(--io-color-primary);
+        background: var(--io-color-beige);
+        border: none;
+        color: var(--io-color-white);
       }
     }
 

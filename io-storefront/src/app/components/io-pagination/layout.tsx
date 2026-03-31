@@ -17,7 +17,7 @@ export default function IoPaginationLayout({ children }: { children: ReactNode }
     <div>
       <PageHeader
         title="Pagination"
-        description="Circular page controls - outlined numbers, active page in brand blue, beige prev/next arrows with ellipsis for large sets."
+        description="Circular page controls - outlined numbers, active page in beige, beige prev/next arrows with ellipsis for large sets."
         tabs={TABS}
         category="Component"
         status="beta"

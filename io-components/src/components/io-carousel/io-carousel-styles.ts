@@ -14,6 +14,7 @@ export function getCarouselStyles(): string {
   return `
     :host {
       display: block;
+      width: 100%;
       font-family: var(--io-font-primary);
     }
 
@@ -21,6 +22,7 @@ export function getCarouselStyles(): string {
 
     .carousel-wrap {
       position: relative;
+      width: 100%;
       padding: 0 var(--io-space-8);
     }
 

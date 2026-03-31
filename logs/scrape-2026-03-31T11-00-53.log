@@ -1,0 +1,20 @@
+[2026-03-31T11:00:53.376Z] Loaded 15 pages from token-page-list.json
+[2026-03-31T11:00:53.379Z] Resume mode: 15 pages already scraped
+[2026-03-31T11:00:53.777Z]   skip (cached): https://www.iodigital.com/en
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/services
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/services/experience-design
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/about
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/work
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/work/heineken
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/insights
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/insights/blog
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/careers
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/contact
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/tech
+[2026-03-31T11:00:53.778Z]   skip (cached): https://www.iodigital.com/en/data
+[2026-03-31T11:00:53.779Z]   skip (cached): https://www.iodigital.com/en/strategy
+[2026-03-31T11:00:53.779Z]   skip (cached): https://www.iodigital.com/en/partners
+[2026-03-31T11:00:53.779Z]   skip (cached): https://www.iodigital.com/en/offices
+[2026-03-31T11:00:53.794Z] 
+Done. Written → /Users/jakeortega/Documents/Projects/io-design-system/docs/tokens.live.json
+[2026-03-31T11:00:53.794Z] Log file      → /Users/jakeortega/Documents/Projects/io-design-system/logs/scrape-2026-03-31T11-00-53.log

@@ -1,0 +1,17 @@
+[
+  { "url": "https://www.iodigital.com/en", "label": "Home" },
+  { "url": "https://www.iodigital.com/en/services", "label": "Services" },
+  { "url": "https://www.iodigital.com/en/services/experience-design", "label": "Experience Design" },
+  { "url": "https://www.iodigital.com/en/about", "label": "About" },
+  { "url": "https://www.iodigital.com/en/work", "label": "Work" },
+  { "url": "https://www.iodigital.com/en/work/heineken", "label": "Work — Heineken" },
+  { "url": "https://www.iodigital.com/en/insights", "label": "Insights" },
+  { "url": "https://www.iodigital.com/en/insights/blog", "label": "Insights — Blog" },
+  { "url": "https://www.iodigital.com/en/careers", "label": "Careers" },
+  { "url": "https://www.iodigital.com/en/contact", "label": "Contact" },
+  { "url": "https://www.iodigital.com/en/tech", "label": "Tech" },
+  { "url": "https://www.iodigital.com/en/data", "label": "Data" },
+  { "url": "https://www.iodigital.com/en/strategy", "label": "Strategy" },
+  { "url": "https://www.iodigital.com/en/partners", "label": "Partners" },
+  { "url": "https://www.iodigital.com/en/offices", "label": "Offices" }
+]

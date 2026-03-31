@@ -103,11 +103,9 @@ describe('io-carousel — behavior helpers', () => {
     Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
     (component as any).getNearestSlideIndex = vi.fn(() => 1);
     (component as any).getSlideLeft = vi.fn(() => 500);
-    (component as any).setActiveIndex = vi.fn();
     component.slidesPerPage = 1;
     (component as any).onNext();
     expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 500, behavior: 'smooth' });
-    expect((component as any).setActiveIndex).toHaveBeenCalledWith(2, true);
   });
 
   it('onPrev rewinds to end when enabled and at first slide', () => {
@@ -135,13 +133,11 @@ describe('io-carousel — behavior helpers', () => {
     (track as any).scrollTo = vi.fn();
     (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
     (component as any).getSlideLeft = vi.fn(() => 900);
-    (component as any).setActiveIndex = vi.fn();
     component.slidesPerPage = 2;
 
     (component as any).onNext();
 
     expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 900, behavior: 'smooth' });
-    expect((component as any).setActiveIndex).toHaveBeenCalledWith(4, true);
   });
 
   it('falls back to scrollBy when target boundary equals current scrollLeft', () => {
@@ -155,11 +151,10 @@ describe('io-carousel — behavior helpers', () => {
     Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
     (component as any).getNearestSlideIndex = vi.fn(() => 1);
     (component as any).getSlideLeft = vi.fn(() => 500);
-    (component as any).setActiveIndex = vi.fn();
     component.slidesPerPage = 1;
 
     (component as any).onNext();
 
-    expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 900, behavior: 'smooth' });
+    expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 810, behavior: 'smooth' });
   });
 });

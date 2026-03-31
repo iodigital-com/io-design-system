@@ -147,15 +147,13 @@ export class IoCarousel {
       const targetIndex = rawTarget < 0 ? (this.rewind ? this.totalSlides - 1 : 0) : rawTarget;
       const targetLeft = this.getSlideLeft(targetIndex);
 
-      this.setActiveIndex(targetIndex, true);
-
       if (Math.abs(targetLeft - track.scrollLeft) > 1) {
         track.scrollTo({ left: targetLeft, behavior: 'smooth' });
         return;
       }
     }
 
-    const fallbackDistance = Math.max(track.clientWidth / Math.max(this.stepSize, 1), 1);
+    const fallbackDistance = Math.max(track.clientWidth * 0.9, 120);
     const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
 
     if (this.rewind && track.scrollLeft <= 1) {
@@ -176,15 +174,13 @@ export class IoCarousel {
       const targetIndex = rawTarget >= this.totalSlides ? (this.rewind ? 0 : this.totalSlides - 1) : rawTarget;
       const targetLeft = this.getSlideLeft(targetIndex);
 
-      this.setActiveIndex(targetIndex, true);
-
       if (Math.abs(targetLeft - track.scrollLeft) > 1) {
         track.scrollTo({ left: targetLeft, behavior: 'smooth' });
         return;
       }
     }
 
-    const fallbackDistance = Math.max(track.clientWidth / Math.max(this.stepSize, 1), 1);
+    const fallbackDistance = Math.max(track.clientWidth * 0.9, 120);
     const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
 
     if (this.rewind && track.scrollLeft >= maxScroll - 1) {

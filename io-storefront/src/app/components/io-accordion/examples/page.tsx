@@ -28,7 +28,7 @@ function SingleOpenDemo() {
           <io-accordion
             key={item.id}
             heading={item.heading}
-            open={openId === item.id || undefined}
+            open={openId === item.id}
             suppressHydrationWarning
             onUpdate={(ev: CustomEvent<{ open: boolean }>) => {
               setOpenId(ev.detail.open ? item.id : '');

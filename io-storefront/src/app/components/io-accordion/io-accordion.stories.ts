@@ -1,5 +1,163 @@
 import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
+import type { FrameworkCode } from '@/models/framework';
+
+const accordionSingleOpenCode: FrameworkCode = {
+  html: `<div class="accordion-group" data-accordion-group>
+  <io-accordion heading="Audits & research" open>
+    <p>Making targeted, data-driven decisions starts with clear, reliable data.</p>
+  </io-accordion>
+  <io-accordion heading="Brand and communication strategy">
+    <p>A clear brand and communication strategy helps teams move in one direction.</p>
+  </io-accordion>
+  <io-accordion heading="Digital strategy">
+    <p>Build a measurable roadmap that links experience quality to business outcomes.</p>
+  </io-accordion>
+</div>
+
+<script>
+  const accordions = [...document.querySelectorAll('[data-accordion-group] io-accordion')];
+
+  accordions.forEach((accordion) => {
+    accordion.addEventListener('update', (event) => {
+      const { open } = event.detail;
+      if (!open) return;
+
+      accordions.forEach((other) => {
+        if (other !== accordion) other.open = false;
+      });
+    });
+  });
+</script>`,
+  react: `import React, { useState } from 'react';
+import { IoAccordion } from '@io-digital/components-react';
+
+const items = [
+  {
+    id: 'audits',
+    heading: 'Audits & research',
+    content: 'Making targeted, data-driven decisions starts with clear, reliable data.',
+  },
+  {
+    id: 'brand',
+    heading: 'Brand and communication strategy',
+    content: 'A clear brand and communication strategy helps teams move in one direction.',
+  },
+  {
+    id: 'digital',
+    heading: 'Digital strategy',
+    content: 'Build a measurable roadmap that links experience quality to business outcomes.',
+  },
+];
+
+export const Example: React.FC = () => {
+  const [openId, setOpenId] = useState('audits');
+
+  return (
+    <div className="w-full max-w-[42.5rem]">
+      {items.map((item) => (
+        <IoAccordion
+          key={item.id}
+          heading={item.heading}
+          open={openId === item.id}
+          onUpdate={(event) => {
+            setOpenId(event.detail.open ? item.id : '');
+          }}
+        >
+          <p>{item.content}</p>
+        </IoAccordion>
+      ))}
+    </div>
+  );
+};`,
+  angular: `import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IoAccordion } from '@io-digital/components-angular';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [IoAccordion],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`<div class="w-full max-w-[42.5rem]">
+  @for (item of items; track item.id) {
+    <io-accordion
+      [heading]="item.heading"
+      [open]="openId === item.id"
+      (update)="onUpdate(item.id, $event.detail.open)"
+    >
+      <p>{{ item.content }}</p>
+    </io-accordion>
+  }
+</div>\`,
+})
+export class ExampleComponent {
+  openId = 'audits';
+
+  readonly items = [
+    {
+      id: 'audits',
+      heading: 'Audits & research',
+      content: 'Making targeted, data-driven decisions starts with clear, reliable data.',
+    },
+    {
+      id: 'brand',
+      heading: 'Brand and communication strategy',
+      content: 'A clear brand and communication strategy helps teams move in one direction.',
+    },
+    {
+      id: 'digital',
+      heading: 'Digital strategy',
+      content: 'Build a measurable roadmap that links experience quality to business outcomes.',
+    },
+  ];
+
+  onUpdate(id: string, open: boolean): void {
+    this.openId = open ? id : '';
+  }
+}`,
+  vue: `<script setup lang="ts">
+import { ref } from 'vue';
+import { IoAccordion } from '@io-digital/components-vue';
+
+const items = [
+  {
+    id: 'audits',
+    heading: 'Audits & research',
+    content: 'Making targeted, data-driven decisions starts with clear, reliable data.',
+  },
+  {
+    id: 'brand',
+    heading: 'Brand and communication strategy',
+    content: 'A clear brand and communication strategy helps teams move in one direction.',
+  },
+  {
+    id: 'digital',
+    heading: 'Digital strategy',
+    content: 'Build a measurable roadmap that links experience quality to business outcomes.',
+  },
+];
+
+const openId = ref('audits');
+
+const onUpdate = (id: string, open: boolean) => {
+  openId.value = open ? id : '';
+};
+</script>
+
+<template>
+  <div class="w-full max-w-[42.5rem]">
+    <IoAccordion
+      v-for="item in items"
+      :key="item.id"
+      :heading="item.heading"
+      :open="openId === item.id"
+      @update="({ detail }) => onUpdate(item.id, detail.open)"
+    >
+      <p>{{ item.content }}</p>
+    </IoAccordion>
+  </div>
+</template>`,
+};
 
 export const accordionStory: Story<'io-accordion'> = {
   state: {
@@ -105,6 +263,7 @@ export const accordionStorySlottedHeading: Story<'io-accordion'> = {
 };
 
 export const accordionStoryGroupSingleOpen: Story<'io-accordion'> = {
+  frameworkCode: accordionSingleOpenCode,
   generator: () => [
     {
       tag: 'div' as const,

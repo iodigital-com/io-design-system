@@ -58,7 +58,7 @@ export function getAccordionStyles(): string {
       font-size: var(--io-font-size-lg);
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);
-      transition: transform var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -74,7 +74,7 @@ export function getAccordionStyles(): string {
       position: relative;
       width: var(--io-space-6);
       height: var(--io-space-6);
-      transition: transform var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -88,7 +88,7 @@ export function getAccordionStyles(): string {
       content: '';
       position: absolute;
       background: var(--io-color-primary);
-      transition: transform var(--io-motion-base) ease-in-out, left var(--io-motion-base) ease-in-out, right var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base), left var(--io-motion-base), right var(--io-motion-base);
     }
 
     /* Vertical bar */
@@ -122,7 +122,7 @@ export function getAccordionStyles(): string {
     .accordion-panel {
       max-height: 0;
       overflow: hidden;
-      transition: max-height var(--io-motion-slow) ease-in-out;
+      transition: max-height var(--io-motion-slow);
     }
 
     .accordion-item--open .accordion-panel {

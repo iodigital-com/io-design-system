@@ -9,10 +9,6 @@ describe('io-carousel — default props', () => {
     (component as any).el = { shadowRoot: null };
   });
 
-  it('has empty items array by default', () => {
-    expect(component.items).toHaveLength(0);
-  });
-
   it('defaults prevLabel to "Previous"', () => {
     expect(component.prevLabel).toBe('Previous');
   });
@@ -35,12 +31,18 @@ describe('io-carousel — drag interaction', () => {
     track.className = 'carousel-track';
     Object.defineProperty(track, 'offsetLeft', { value: 0 });
     track.scrollLeft = 100;
-    const shadowRoot = { querySelector: vi.fn().mockReturnValue(track) };
+    const slot = document.createElement('slot');
+    const shadowRoot = {
+      querySelector: vi.fn((sel: string) => {
+        if (sel === '.carousel-track') return track;
+        if (sel === 'slot') return slot;
+        return null;
+      }),
+    };
     (component as any).el = { shadowRoot };
   });
 
   it('sets isDragging true on mousedown', () => {
-    const track = (component as any).el.shadowRoot.querySelector('.carousel-track');
     const ev = { pageX: 200 } as MouseEvent;
     (component as any).onMouseDown(ev);
     expect((component as any).isDragging).toBe(true);
@@ -53,12 +55,34 @@ describe('io-carousel — drag interaction', () => {
   });
 });
 
-describe('io-carousel — slideWidth fallback', () => {
-  it('returns 390 when track has no slides', () => {
+describe('io-carousel — slideWidth', () => {
+  it('returns 390 when slot has no assigned elements', () => {
     const component = new IoCarousel();
-    const track = document.createElement('div');
-    const shadowRoot = { querySelector: vi.fn().mockReturnValue(track) };
+    const slot = document.createElement('slot');
+    vi.spyOn(slot, 'assignedElements').mockReturnValue([]);
+    const shadowRoot = {
+      querySelector: vi.fn((sel: string) => {
+        if (sel === 'slot') return slot;
+        return null;
+      }),
+    };
     (component as any).el = { shadowRoot };
     expect((component as any).slideWidth()).toBe(390);
+  });
+
+  it('uses first assigned element width + gap', () => {
+    const component = new IoCarousel();
+    const child = document.createElement('div');
+    Object.defineProperty(child, 'offsetWidth', { value: 376 });
+    const slot = document.createElement('slot');
+    vi.spyOn(slot, 'assignedElements').mockReturnValue([child]);
+    const shadowRoot = {
+      querySelector: vi.fn((sel: string) => {
+        if (sel === 'slot') return slot;
+        return null;
+      }),
+    };
+    (component as any).el = { shadowRoot };
+    expect((component as any).slideWidth()).toBe(376 + 16);
   });
 });

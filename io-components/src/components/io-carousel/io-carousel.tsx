@@ -1,23 +1,23 @@
 import { Component, Prop, Element, Host, h, State, Listen } from '@stencil/core';
-import type { IoCarouselItem } from './types';
 import { getCarouselStyles } from './io-carousel-styles';
 
 /**
  * io-carousel
  * ============
- * Horizontally scrollable content card slider.
- * Supports drag-to-scroll and prev/next navigation buttons.
+ * Generic horizontally scrollable container with prev/next navigation,
+ * drag-to-scroll, and a custom scrollbar.
  *
- * Extracted from the "Related articles" section on iodigital.com.
+ * Inner content is projected via the default slot — the carousel does not
+ * dictate slide structure. Put any HTML you need inside.
+ *
+ * @slot - Default slot for slide content (cards, images, etc.)
  *
  * @example
- * <io-carousel></io-carousel>
- *
- * // Set items via property (framework usage):
- * carouselEl.items = [
- *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
- *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
- * ];
+ * <io-carousel>
+ *   <div class="card">Slide 1</div>
+ *   <div class="card">Slide 2</div>
+ *   <div class="card">Slide 3</div>
+ * </io-carousel>
  */
 @Component({
   tag: 'io-carousel',
@@ -27,9 +27,6 @@ export class IoCarousel {
   @Element() el!: HTMLElement;
 
   // ── Props ─────────────────────────────────────────────────────
-
-  /** Slide data to render */
-  @Prop({ mutable: false }) items: IoCarouselItem[] = [];
 
   /** Accessible label for the previous button */
   @Prop() prevLabel = 'Previous';
@@ -51,10 +48,11 @@ export class IoCarousel {
   }
 
   private slideWidth(): number {
-    const firstSlide = this.track?.querySelector<HTMLElement>('.carousel-slide');
-    if (!firstSlide) return 390;
+    const slot = this.el.shadowRoot?.querySelector<HTMLSlotElement>('slot');
+    const first = slot?.assignedElements()?.[0] as HTMLElement | undefined;
+    if (!first) return 390;
     const gap = 16; // var(--io-space-4) = 1rem = 16px
-    return firstSlide.offsetWidth + gap;
+    return first.offsetWidth + gap;
   }
 
   private onPrev = () => {
@@ -91,7 +89,7 @@ export class IoCarousel {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { items, prevLabel, nextLabel, isDragging } = this;
+    const { prevLabel, nextLabel, isDragging } = this;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -107,28 +105,7 @@ export class IoCarousel {
             class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
             onMouseDown={this.onMouseDown}
           >
-            {items.map(item => (
-              <div class="carousel-slide">
-                <div
-                  class="carousel-image"
-                  style={item.imageBackground ? { background: item.imageBackground } : undefined}
-                >
-                  <span class="carousel-pill">{item.type}</span>
-                </div>
-                <div class="carousel-body">
-                  <div class="carousel-type">{item.type}</div>
-                  <div class="carousel-title">{item.title}</div>
-                  {item.ctaLabel && (
-                    <div class="carousel-cta">
-                      <a href={item.ctaHref ?? '#'}>
-                        {item.ctaLabel}
-                        {arrowSvg}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+            <slot />
           </div>
 
           <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>

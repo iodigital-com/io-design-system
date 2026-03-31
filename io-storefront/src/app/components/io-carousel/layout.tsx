@@ -17,7 +17,7 @@ export default function IoCarouselLayout({ children }: { children: ReactNode }) 
     <div>
       <PageHeader
         title="Carousel"
-        description="Horizontally scrollable content card slider with drag-to-scroll and prev/next navigation."
+        description="Generic horizontally scrollable container with prev/next navigation, drag-to-scroll, and a custom scrollbar. Inner content is slotted — put any HTML you need inside."
         tabs={TABS}
         category="Component"
         status="beta"

@@ -8,16 +8,16 @@ export default function IoCarouselUsagePage() {
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
           title="When to use"
-          description="Use carousel for horizontally browsable content sets where items share a consistent card format."
+          description="Use carousel for horizontally browsable content sets where items benefit from scroll-and-browse navigation."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
             <SubsectionTitle>Do</SubsectionTitle>
             <DoOrDontCard type="do">
-              Use for related-content sections such as blog posts, webinars, or case studies that share the same card layout.
+              Use for related-content sections such as blog posts, webinars, or case studies that share a consistent card layout.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Provide a CTA link on each slide so users can navigate to the full content.
+              Slot any content you need — cards, images, tiles, or custom layouts. The carousel does not dictate child structure.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Keep slide counts manageable (4–8 items). For larger data sets, consider pagination or filtering instead.
@@ -45,16 +45,19 @@ export default function IoCarouselUsagePage() {
         />
         <div className="space-y-3">
           <RuleCard label="Prev / Next buttons">
-            Arrow buttons scroll the track by one slide width (card width + gap). Buttons remain available at all scroll positions.
+            Circular arrow buttons scroll the track by one child-element width plus gap. Buttons remain available at all scroll positions.
           </RuleCard>
           <RuleCard label="Drag to scroll">
             On pointer devices, users can click and drag the track to scroll freely. The cursor changes to <C>grabbing</C> during drag.
           </RuleCard>
+          <RuleCard label="Custom scrollbar">
+            A 4px scrollbar in <C>var(--io-color-primary)</C> appears below the track, giving a visual cue that more content exists.
+          </RuleCard>
           <RuleCard label="No snap">
             Slides do not snap to a grid position after scrolling. The track uses native smooth scrolling behaviour.
           </RuleCard>
-          <RuleCard label="Overflow">
-            Content that overflows the track is hidden; the custom scrollbar is not rendered — navigation relies solely on the prev/next buttons and drag interaction.
+          <RuleCard label="Slot-based content">
+            The carousel renders a <C>{'<slot />'}</C> inside its scrollable track. Any HTML elements placed as children become the scrolling items. The component applies <C>{'flex: 0 0 auto'}</C> to slotted children so they don&apos;t shrink.
           </RuleCard>
         </div>
       </section>
@@ -62,20 +65,17 @@ export default function IoCarouselUsagePage() {
       <section id="content-guidelines" className="space-y-6">
         <SectionHeader
           title="Content guidelines"
-          description="Each slide maps to one IoCarouselItem. Keep content concise and consistently structured."
+          description="Since the carousel accepts any slotted content, follow these general patterns for best results."
         />
         <div className="space-y-3">
-          <RuleCard label="Type label">
-            Use a short category label (1–2 words): Blog, Webinar, Event, White paper.
+          <RuleCard label="Consistent sizing">
+            Give each child element an explicit width (e.g. <C>width: 23.5rem</C>). The carousel track uses flexbox with <C>gap: var(--io-space-4)</C> between children.
           </RuleCard>
-          <RuleCard label="Title">
-            Keep titles to one sentence and under 80 characters so they fit comfortably within the card body.
+          <RuleCard label="Interactive children">
+            Include focusable elements (links, buttons) inside each slide so keyboard users can Tab through the full carousel content.
           </RuleCard>
-          <RuleCard label="CTA">
-            Provide a clear action verb paired with the content type: &quot;Read more&quot;, &quot;Watch now&quot;, &quot;Download&quot;, &quot;Register&quot;.
-          </RuleCard>
-          <RuleCard label="Image background">
-            Use <C>imageBackground</C> for a solid or gradient CSS colour string. Do not embed complex images — the area is a coloured backdrop with a pill badge overlay.
+          <RuleCard label="Background colour">
+            Use <C>var(--io-bg-card)</C> or brand palette colours on children — the carousel itself provides no card background.
           </RuleCard>
         </div>
       </section>

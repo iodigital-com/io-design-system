@@ -8,13 +8,13 @@ export default function IoCarouselAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="Carousel navigation relies on focusable prev/next buttons. Slide content links are reachable via sequential Tab navigation."
+          description="Carousel navigation relies on focusable prev/next buttons. Interactive elements inside slotted content are reachable via sequential Tab navigation."
         />
         <KeyboardTable
           rows={[
             {
               key: <Kbd>Tab</Kbd>,
-              action: 'Move focus to the next interactive element (prev/next button or slide CTA link).',
+              action: 'Move focus to the next interactive element (prev/next button or interactive content inside slides).',
             },
             {
               key: <span className="flex items-center gap-1"><Kbd>Shift</Kbd><span style={{ color: 'var(--io-text-muted)' }}>+</span><Kbd>Tab</Kbd></span>,
@@ -22,7 +22,7 @@ export default function IoCarouselAccessibilityPage() {
             },
             {
               key: <span className="flex items-center gap-1"><Kbd>Enter</Kbd><span style={{ color: 'var(--io-text-muted)' }}>/</span><Kbd>Space</Kbd></span>,
-              action: 'Activate the focused prev/next button or follow the focused CTA link.',
+              action: 'Activate the focused prev/next button or follow the focused interactive element.',
             },
           ]}
         />
@@ -56,13 +56,13 @@ export default function IoCarouselAccessibilityPage() {
             criterion="1.3.1"
             level="A"
             title="Info and Relationships"
-            note="Slide content is structured with semantic type labels, titles, and links."
+              note="Slotted content structure is the consumer's responsibility — use semantic markup inside slides."
           />
           <ComplianceCard
             criterion="2.1.1"
             level="A"
             title="Keyboard"
-            note="Prev/Next buttons and CTA links are keyboard-operable. Drag-to-scroll is pointer-only (see known limitation below)."
+              note="Prev/Next buttons are keyboard-operable. Interactive slotted content is Tab-reachable. Drag-to-scroll is pointer-only (see known limitation below)."
           />
           <ComplianceCard
             criterion="2.4.7"
@@ -74,7 +74,7 @@ export default function IoCarouselAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="Navigation buttons have accessible names via aria-label. CTA links have visible text labels."
+              note="Navigation buttons have accessible names via aria-label. Slotted content must provide its own accessible labels."
           />
         </div>
       </section>

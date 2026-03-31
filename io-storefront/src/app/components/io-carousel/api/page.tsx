@@ -8,22 +8,16 @@ export default function IoCarouselApiPage() {
       <section id="properties" className="space-y-4">
         <SectionHeader
           title="Properties"
-          description="Public API for io-carousel. The items property must be set via JavaScript — it is not serialisable as an HTML attribute."
+          description="Public API for io-carousel. Only navigation labels are configurable — content is provided via the default slot."
         />
         <ApiTable
           columns={[
             { label: 'Property', width: '170px' },
-            { label: 'Type', width: '260px' },
+            { label: 'Type', width: '200px' },
             { label: 'Default', width: '140px' },
             { label: 'Description' },
           ]}
           rows={[
-            [
-              <InlineCode key="name">items</InlineCode>,
-              <InlineCode key="type">IoCarouselItem[]</InlineCode>,
-              <InlineCode key="default">[]</InlineCode>,
-              <span key="desc">Array of slide data objects. Must be set imperatively via JavaScript property assignment — not as an HTML attribute.</span>,
-            ],
             [
               <InlineCode key="name">prevLabel</InlineCode>,
               <InlineCode key="type">string</InlineCode>,
@@ -40,48 +34,24 @@ export default function IoCarouselApiPage() {
         />
       </section>
 
-      <section id="carousel-item-type" className="space-y-4">
+      <section id="slots" className="space-y-4">
         <SectionHeader
-          title="IoCarouselItem"
-          description="Shape of each slide object passed to the items array."
+          title="Slots"
+          description="The carousel is a generic container — content is projected via the default slot."
         />
         <ApiTable
           columns={[
-            { label: 'Field', width: '200px' },
-            { label: 'Type', width: '220px' },
-            { label: 'Required', width: '100px' },
+            { label: 'Slot', width: '170px' },
             { label: 'Description' },
           ]}
           rows={[
             [
-              <InlineCode key="name">type</InlineCode>,
-              <InlineCode key="type">string</InlineCode>,
-              'Yes',
-              'Category label shown in the image pill and body section (e.g. "Blog", "Webinar").',
-            ],
-            [
-              <InlineCode key="name">title</InlineCode>,
-              <InlineCode key="type">string</InlineCode>,
-              'Yes',
-              'Slide title text displayed in the card body.',
-            ],
-            [
-              <InlineCode key="name">imageBackground</InlineCode>,
-              <InlineCode key="type">string</InlineCode>,
-              'No',
-              'CSS background value for the image area. Defaults to the component theme colour when omitted.',
-            ],
-            [
-              <InlineCode key="name">ctaLabel</InlineCode>,
-              <InlineCode key="type">string</InlineCode>,
-              'No',
-              'Label for the call-to-action link. When omitted, no CTA is rendered.',
-            ],
-            [
-              <InlineCode key="name">ctaHref</InlineCode>,
-              <InlineCode key="type">string</InlineCode>,
-              'No',
-              <span key="desc">Destination URL for the CTA link. Defaults to <InlineCode>#</InlineCode> when <InlineCode>ctaLabel</InlineCode> is set but href is omitted.</span>,
+              <span key="slot" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>default</span>,
+              <span key="desc">
+                Any HTML elements placed as direct children of <InlineCode>{'<io-carousel>'}</InlineCode> are projected
+                into the scrollable track. Each child becomes a flex item with <InlineCode>flex: 0 0 auto</InlineCode>.
+                Give children an explicit width for consistent card sizing.
+              </span>,
             ],
           ]}
         />
@@ -97,14 +67,40 @@ export default function IoCarouselApiPage() {
         </p>
       </section>
 
-      <section id="slots" className="space-y-4">
+      <section id="css" className="space-y-4">
         <SectionHeader
-          title="Slots"
-          description="io-carousel does not use slots. Slide content is driven entirely by the items property."
+          title="CSS architecture"
+          description="The carousel provides the scrollable track, nav buttons, and scrollbar via Shadow DOM. Slotted content is unstyled."
         />
-        <p className="text-sm" style={{ color: 'var(--io-text-muted)' }}>
-          No named or default slots. All slide content is rendered from the <InlineCode>IoCarouselItem</InlineCode> data model.
-        </p>
+        <ApiTable
+          columns={[
+            { label: 'Part', width: '200px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="part">carousel-track</InlineCode>,
+              <span key="desc">
+                Flex container with <InlineCode>overflow-x: scroll</InlineCode>, custom scrollbar (4px, <InlineCode>var(--io-color-primary)</InlineCode>),
+                and <InlineCode>gap: var(--io-space-4)</InlineCode>.
+              </span>,
+            ],
+            [
+              <InlineCode key="part">carousel-btn</InlineCode>,
+              <span key="desc">
+                Circular prev/next buttons, absolutely positioned at 50% vertical, with <InlineCode>var(--io-shadow-md)</InlineCode> and
+                focus ring support.
+              </span>,
+            ],
+            [
+              <InlineCode key="part">::slotted(*)</InlineCode>,
+              <span key="desc">
+                Applies <InlineCode>flex: 0 0 auto</InlineCode> to prevent slotted children from shrinking. Width, background,
+                and internal layout are the consumer&apos;s responsibility.
+              </span>,
+            ],
+          ]}
+        />
       </section>
     </div>
   );

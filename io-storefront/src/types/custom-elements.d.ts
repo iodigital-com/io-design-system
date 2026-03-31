@@ -80,8 +80,6 @@ declare module 'react' {
       // ── io-carousel ──────────────────────────────────────
       'io-carousel': DetailedHTMLProps<
         HTMLAttributes<HTMLElement> & {
-          /** Array of IoCarouselItem — set via JS property */
-          items?: unknown;
           /** aria-label for previous nav button */
           'prev-label'?: string;
           /** aria-label for next nav button */

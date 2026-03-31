@@ -10,14 +10,14 @@ export default function IoCarouselExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Related articles (4 slides)"
-          description="A compact carousel with four content cards. Prev/Next buttons scroll one slide at a time; drag to scroll is available on pointer devices."
+              description="A compact carousel with four slotted content cards. Prev/Next buttons scroll one slide at a time; drag to scroll is available on pointer devices."
         />
         <ComponentStory story={carouselStory} />
       </section>
       <section>
         <ExamplesSectionHeader
           title="Extended set (8 slides)"
-          description="A longer carousel demonstrating how the component handles overflow with many slides. Content remains accessible via button navigation and drag scrolling."
+              description="A longer carousel demonstrating how the component handles overflow with many slotted children. Content remains accessible via button navigation and drag scrolling."
         />
         <ComponentStory story={carouselStoryMore} />
       </section>

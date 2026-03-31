@@ -104,11 +104,11 @@ export function getCarouselStyles(): string {
     }
 
     .carousel-btn--prev {
-      left: calc(-1 * var(--io-space-6));
+      left: 0;
     }
 
     .carousel-btn--next {
-      right: calc(-1 * var(--io-space-6));
+      right: 0;
     }
 
     .carousel-btn--prev svg {

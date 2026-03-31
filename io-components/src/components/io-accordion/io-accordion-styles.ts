@@ -126,7 +126,18 @@ export function getAccordionStyles(): string {
     }
 
     .accordion-item--open .accordion-panel {
-      max-height: 600px;
+      max-height: var(--io-accordion-max-height, 600px);
+    }
+
+    /* ── Disabled ────────────────────────────────────────── */
+
+    .accordion-item--disabled {
+      opacity: var(--io-state-disabled-opacity, 0.4);
+      pointer-events: none;
+    }
+
+    .accordion-item--disabled .accordion-trigger {
+      cursor: not-allowed;
     }
 
     .accordion-panel-inner {
@@ -145,6 +156,17 @@ export function getAccordionStyles(): string {
       .accordion-icon::before,
       .accordion-icon::after,
       .accordion-panel { transition: none; }
+    }
+
+    /* ── Disabled: no hover effects ──────────────────────── */
+
+    @media (hover: hover) and (pointer: fine) {
+      .accordion-item--disabled .accordion-trigger:hover .accordion-title {
+        transform: none;
+      }
+      .accordion-item--disabled .accordion-trigger:hover .accordion-icon {
+        transform: none;
+      }
     }
   `;
 }

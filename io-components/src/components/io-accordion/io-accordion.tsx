@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 import type { IoAccordionHeadingTag, IoAccordionUpdateDetail } from './types';
 import { getAccordionStyles } from './io-accordion-styles';
+import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
 /**
  * io-accordion
@@ -32,6 +33,9 @@ export class IoAccordion {
   /** Semantic heading tag wrapping the trigger button */
   @Prop({ attribute: 'heading-tag' }) headingTag: IoAccordionHeadingTag = 'h3';
 
+  /** Prevents interaction and applies reduced-opacity styling */
+  @Prop({ reflect: true }) disabled = false;
+
   private baseId = '';
 
   // ── Events ────────────────────────────────────────────────────
@@ -42,10 +46,11 @@ export class IoAccordion {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.baseId = this.el.id || `io-accordion-${Math.random().toString(36).slice(2, 10)}`;
+    this.baseId = getAccordionBaseId(this.el.id);
   }
 
   private toggleSingle = () => {
+    if (this.disabled) return;
     this.open = !this.open;
     this.update.emit({ open: this.open });
   };
@@ -56,9 +61,7 @@ export class IoAccordion {
     const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
     const HeadingTag = headingTag;
     const isOpen = this.open;
-    const itemClass = ['accordion-item', 'accordion-item--first', isOpen ? 'accordion-item--open' : '']
-      .filter(Boolean)
-      .join(' ');
+    const itemClass = getAccordionItemClass({ open: isOpen, disabled: this.disabled });
     const triggerId = `${this.baseId}-trigger`;
     const panelId = `${this.baseId}-panel`;
 
@@ -73,6 +76,8 @@ export class IoAccordion {
                 class="accordion-trigger"
                 aria-expanded={String(isOpen)}
                 aria-controls={panelId}
+                aria-disabled={this.disabled ? 'true' : undefined}
+                disabled={this.disabled}
                 onClick={this.toggleSingle}
               >
                 <span class="accordion-title">

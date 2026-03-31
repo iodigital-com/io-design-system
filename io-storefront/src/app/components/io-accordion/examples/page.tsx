@@ -40,6 +40,12 @@ export default function IoAccordionExamplesPage() {
           description="Render multiple io-accordion elements in a vertical list and keep one panel open at a time in your page-level state logic."
         />
         <ComponentStory story={accordionStoryGroupSingleOpen} />
+        <p
+          className="text-xs mt-3"
+          style={{ color: 'var(--io-text-muted)' }}
+        >
+          Note: Single-open behaviour requires page-level state management. The preview above does not enforce it — see the code tabs for a working implementation.
+        </p>
       </section>
       <section>
         <ExamplesSectionHeader

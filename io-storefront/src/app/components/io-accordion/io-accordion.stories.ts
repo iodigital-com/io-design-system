@@ -165,6 +165,7 @@ export const accordionStory: Story<'io-accordion'> = {
       open: false,
       heading: 'Some Heading',
       'heading-tag': 'h3',
+      disabled: false,
       'use-heading-slot': false,
     },
   },
@@ -177,6 +178,7 @@ export const accordionStory: Story<'io-accordion'> = {
         tag: 'io-accordion' as const,
         properties: {
           open: (properties?.open as boolean) ?? false,
+          disabled: (properties?.disabled as boolean) ?? false,
           ...(useHeadingSlot
             ? {}
             : {
@@ -319,6 +321,7 @@ export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false },
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
   { name: 'heading-tag', type: 'select', defaultValue: 'h3', options: ['h2', 'h3', 'h4', 'h5', 'h6'] },
+  { name: 'disabled', type: 'boolean', defaultValue: false },
   {
     name: 'use-heading-slot',
     type: 'boolean',

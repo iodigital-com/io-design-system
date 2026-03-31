@@ -40,6 +40,13 @@ export default function IoAccordionApiPage() {
               <InlineCode key="default">false</InlineCode>,
               <span key="description">Controls whether the panel is expanded. Reflects to attribute.</span>,
             ],
+            [
+              <span key="property"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">disabled</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">Prevents interaction, reduces opacity, and sets <InlineCode>aria-disabled</InlineCode>. Reflects to attribute.</span>,
+            ],
           ]}
         />
       </section>

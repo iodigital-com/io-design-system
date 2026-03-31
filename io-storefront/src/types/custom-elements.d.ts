@@ -51,6 +51,8 @@ declare module 'react' {
           heading?: string;
           /** Semantic heading tag */
           'heading-tag'?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+          /** Prevents interaction */
+          disabled?: boolean;
           onUpdate?: (ev: CustomEvent<{ open: boolean }>) => void;
         },
         HTMLElement

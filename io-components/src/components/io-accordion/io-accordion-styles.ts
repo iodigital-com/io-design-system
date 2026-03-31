@@ -49,16 +49,21 @@ export function getAccordionStyles(): string {
 
     /* ── Title ──────────────────────────────────────────── */
 
+    .accordion-heading {
+      margin: 0;
+    }
+
     .accordion-title {
+      display: inline-block;
       font-size: var(--io-font-size-lg);
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);
-      transition: padding var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base);
     }
 
     @media (hover: hover) and (pointer: fine) {
       .accordion-trigger:hover .accordion-title {
-        padding-left: 1.2rem;
+        transform: translateX(var(--io-space-5));
       }
     }
 
@@ -69,7 +74,7 @@ export function getAccordionStyles(): string {
       position: relative;
       width: var(--io-space-6);
       height: var(--io-space-6);
-      transition: transform var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -83,7 +88,7 @@ export function getAccordionStyles(): string {
       content: '';
       position: absolute;
       background: var(--io-color-primary);
-      transition: transform var(--io-motion-base) ease-in-out, left var(--io-motion-base) ease-in-out, right var(--io-motion-base) ease-in-out;
+      transition: transform var(--io-motion-base), left var(--io-motion-base), right var(--io-motion-base);
     }
 
     /* Vertical bar */
@@ -117,11 +122,22 @@ export function getAccordionStyles(): string {
     .accordion-panel {
       max-height: 0;
       overflow: hidden;
-      transition: max-height var(--io-motion-slow) ease-in-out;
+      transition: max-height var(--io-motion-slow);
     }
 
     .accordion-item--open .accordion-panel {
-      max-height: 600px;
+      max-height: var(--io-accordion-max-height, 600px);
+    }
+
+    /* ── Disabled ────────────────────────────────────────── */
+
+    .accordion-item--disabled {
+      opacity: var(--io-state-disabled-opacity, 0.4);
+      pointer-events: none;
+    }
+
+    .accordion-item--disabled .accordion-trigger {
+      cursor: not-allowed;
     }
 
     .accordion-panel-inner {
@@ -140,6 +156,17 @@ export function getAccordionStyles(): string {
       .accordion-icon::before,
       .accordion-icon::after,
       .accordion-panel { transition: none; }
+    }
+
+    /* ── Disabled: no hover effects ──────────────────────── */
+
+    @media (hover: hover) and (pointer: fine) {
+      .accordion-item--disabled .accordion-trigger:hover .accordion-title {
+        transform: none;
+      }
+      .accordion-item--disabled .accordion-trigger:hover .accordion-icon {
+        transform: none;
+      }
     }
   `;
 }

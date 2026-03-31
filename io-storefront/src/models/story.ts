@@ -1,4 +1,5 @@
 import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
+import type { FrameworkCode } from './framework';
 
 /**
  * Story<Tag> — describes a component demo that can be both rendered (React)
@@ -8,6 +9,8 @@ export type Story<Tag extends HTMLTagOrComponent> = {
   name?: string;
   /** Initial state displayed when the page loads (optional for static stories). */
   state?: StoryState<Tag>;
+  /** Optional explicit code shown in framework tabs instead of auto-generated markup. */
+  frameworkCode?: FrameworkCode | ((state?: StoryState<Tag>) => FrameworkCode);
   /**
    * Pure function: given current state → returns the element tree to render.
    * Returning the same shape for every call allows both the live preview and

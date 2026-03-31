@@ -5,8 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionItem } from "./components/io-accordion/io-accordion";
-import { IoAccordionChangeDetail } from "./components/io-accordion/types";
+import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoCarouselItem } from "./components/io-carousel/types";
@@ -23,8 +22,7 @@ import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
-export { IoAccordionItem } from "./components/io-accordion/io-accordion";
-export { IoAccordionChangeDetail } from "./components/io-accordion/types";
+export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoCarouselItem } from "./components/io-carousel/types";
@@ -47,26 +45,25 @@ export namespace Components {
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * By default only one panel can be open at a time (accordion behaviour).
-     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * PDS-style: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
-     * // Set items via property (framework usage):
-     * accordionEl.items = [
-     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
-     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
-     * ];
      */
     interface IoAccordion {
         /**
-          * Allow multiple panels open simultaneously
+          * Heading text fallback when heading slot is not provided
+          * @default ''
+         */
+        "heading": string;
+        /**
+          * Semantic heading tag wrapping the trigger button
+          * @default 'h3'
+         */
+        "headingTag": IoAccordionHeadingTag;
+        /**
+          * Open state for the accordion item
           * @default false
          */
-        "allowMultiple": boolean;
-        /**
-          * Array of accordion items to render
-          * @default []
-         */
-        "items": IoAccordionItem[];
+        "open": boolean;
     }
     /**
      * io-badge
@@ -835,21 +832,15 @@ export interface IoToastItemCustomEvent<T> extends CustomEvent<T> {
 }
 declare global {
     interface HTMLIoAccordionElementEventMap {
-        "accordionChange": IoAccordionChangeDetail;
+        "update": IoAccordionUpdateDetail;
     }
     /**
      * io-accordion
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * By default only one panel can be open at a time (accordion behaviour).
-     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * PDS-style: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
-     * // Set items via property (framework usage):
-     * accordionEl.items = [
-     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
-     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
-     * ];
      */
     interface HTMLIoAccordionElement extends Components.IoAccordion, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoAccordionElementEventMap>(type: K, listener: (this: HTMLIoAccordionElement, ev: IoAccordionCustomEvent<HTMLIoAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1313,30 +1304,29 @@ declare namespace LocalJSX {
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * By default only one panel can be open at a time (accordion behaviour).
-     * Set `allow-multiple` to allow multiple open panels simultaneously.
+     * PDS-style: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
-     * // Set items via property (framework usage):
-     * accordionEl.items = [
-     *   { title: 'Audits & research', body: 'Making targeted decisions...' },
-     *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
-     * ];
      */
     interface IoAccordion {
         /**
-          * Allow multiple panels open simultaneously
+          * Heading text fallback when heading slot is not provided
+          * @default ''
+         */
+        "heading"?: string;
+        /**
+          * Semantic heading tag wrapping the trigger button
+          * @default 'h3'
+         */
+        "headingTag"?: IoAccordionHeadingTag;
+        /**
+          * Fires when accordion open state is toggled
+         */
+        "onUpdate"?: (event: IoAccordionCustomEvent<IoAccordionUpdateDetail>) => void;
+        /**
+          * Open state for the accordion item
           * @default false
          */
-        "allowMultiple"?: boolean;
-        /**
-          * Array of accordion items to render
-          * @default []
-         */
-        "items"?: IoAccordionItem[];
-        /**
-          * Fires when a panel opens or closes
-         */
-        "onAccordionChange"?: (event: IoAccordionCustomEvent<IoAccordionChangeDetail>) => void;
+        "open"?: boolean;
     }
     /**
      * io-badge
@@ -2091,7 +2081,9 @@ declare namespace LocalJSX {
     }
 
     interface IoAccordionAttributes {
-        "allowMultiple": boolean;
+        "open": boolean;
+        "heading": string;
+        "headingTag": IoAccordionHeadingTag;
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
@@ -2253,14 +2245,8 @@ declare module "@stencil/core" {
              * =============
              * Collapsible sections with animated +/− icon and title indent animation.
              * Extracted from the "Our expertise" section of the iO Brand & Business page.
-             * By default only one panel can be open at a time (accordion behaviour).
-             * Set `allow-multiple` to allow multiple open panels simultaneously.
+             * PDS-style: one accordion instance controls one content section.
              * @example <io-accordion></io-accordion>
-             * // Set items via property (framework usage):
-             * accordionEl.items = [
-             *   { title: 'Audits & research', body: 'Making targeted decisions...' },
-             *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
-             * ];
              */
             "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;
             /**

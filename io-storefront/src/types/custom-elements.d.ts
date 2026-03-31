@@ -45,11 +45,15 @@ declare module 'react' {
       // ── io-accordion ─────────────────────────────────────
       'io-accordion': DetailedHTMLProps<
         HTMLAttributes<HTMLElement> & {
-          /** Array of IoAccordionItem — set via JS property */
-          items?: unknown;
-          /** Allow multiple panels open simultaneously */
-          'allow-multiple'?: boolean;
-          onAccordionChange?: (ev: CustomEvent<{ index: number; open: boolean }>) => void;
+          /** Open state */
+          open?: boolean;
+          /** Heading text fallback */
+          heading?: string;
+          /** Semantic heading tag */
+          'heading-tag'?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+          /** Prevents interaction */
+          disabled?: boolean;
+          onUpdate?: (ev: CustomEvent<{ open: boolean }>) => void;
         },
         HTMLElement
       >;

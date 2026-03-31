@@ -1,15 +1,7 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch, State } from '@stencil/core';
-import type { IoAccordionChangeDetail } from './types';
+import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
+import type { IoAccordionHeadingTag, IoAccordionUpdateDetail } from './types';
 import { getAccordionStyles } from './io-accordion-styles';
-
-export interface IoAccordionItem {
-  /** Visible trigger text */
-  title: string;
-  /** Panel body content */
-  body: string;
-  /** Whether this item is open initially */
-  open?: boolean;
-}
+import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
 /**
  * io-accordion
@@ -17,17 +9,11 @@ export interface IoAccordionItem {
  * Collapsible sections with animated +/− icon and title indent animation.
  * Extracted from the "Our expertise" section of the iO Brand & Business page.
  *
- * By default only one panel can be open at a time (accordion behaviour).
- * Set `allow-multiple` to allow multiple open panels simultaneously.
+ * PDS-style: one accordion instance controls one content section.
  *
  * @example
  * <io-accordion></io-accordion>
  *
- * // Set items via property (framework usage):
- * accordionEl.items = [
- *   { title: 'Audits & research', body: 'Making targeted decisions...' },
- *   { title: 'Brand strategy', body: 'Ready to make your mark...' },
- * ];
  */
 @Component({
   tag: 'io-accordion',
@@ -38,92 +24,80 @@ export class IoAccordion {
 
   // ── Props ─────────────────────────────────────────────────────
 
-  /** Array of accordion items to render */
-  @Prop({ mutable: false }) items: IoAccordionItem[] = [];
+  /** Open state for the accordion item */
+  @Prop({ reflect: true, mutable: true }) open = false;
 
-  /** Allow multiple panels open simultaneously */
-  @Prop({ reflect: true }) allowMultiple = false;
+  /** Heading text fallback when heading slot is not provided */
+  @Prop() heading = '';
 
-  // ── Internal open-state map ───────────────────────────────────
+  /** Semantic heading tag wrapping the trigger button */
+  @Prop({ attribute: 'heading-tag' }) headingTag: IoAccordionHeadingTag = 'h3';
 
-  @State() private openStates: boolean[] = [];
+  /** Prevents interaction and applies reduced-opacity styling */
+  @Prop({ reflect: true }) disabled = false;
+
+  private baseId = '';
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Fires when a panel opens or closes */
-  @Event() accordionChange!: EventEmitter<IoAccordionChangeDetail>;
+  /** Fires when accordion open state is toggled */
+  @Event() update!: EventEmitter<IoAccordionUpdateDetail>;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.openStates = this.items.map(item => item.open ?? false);
+    this.baseId = getAccordionBaseId(this.el.id);
   }
 
-  @Watch('items')
-  onItemsChange(items: IoAccordionItem[]) {
-    this.openStates = items.map(item => item.open ?? false);
-  }
-
-  // ── Private ───────────────────────────────────────────────────
-
-  private toggle(index: number) {
-    const currentlyOpen = this.openStates[index];
-    const next = [...this.openStates];
-
-    if (!this.allowMultiple) {
-      next.fill(false);
-    }
-    next[index] = !currentlyOpen;
-    this.openStates = next;
-    this.accordionChange.emit({ index, open: next[index] });
-  }
+  private toggleSingle = () => {
+    if (this.disabled) return;
+    this.open = !this.open;
+    this.update.emit({ open: this.open });
+  };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { items, openStates } = this;
+    const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
+    const HeadingTag = headingTag;
+    const isOpen = this.open;
+    const itemClass = getAccordionItemClass({ open: isOpen, disabled: this.disabled });
+    const triggerId = `${this.baseId}-trigger`;
+    const panelId = `${this.baseId}-panel`;
 
     return (
       <Host>
         <style>{getAccordionStyles()}</style>
-        <div class="accordion" role="list">
-          {items.map((item, index) => {
-            const isOpen = openStates[index] ?? false;
-            const itemClass = [
-              'accordion-item',
-              index === 0 ? 'accordion-item--first' : '',
-              isOpen ? 'accordion-item--open' : '',
-            ]
-              .filter(Boolean)
-              .join(' ');
-            const triggerId = `io-accordion-trigger-${index}`;
-            const panelId = `io-accordion-panel-${index}`;
-
-            return (
-              <div class={itemClass} role="listitem">
-                <button
-                  id={triggerId}
-                  class="accordion-trigger"
-                  aria-expanded={String(isOpen)}
-                  aria-controls={panelId}
-                  onClick={() => this.toggle(index)}
-                >
-                  <span class="accordion-title">{item.title}</span>
-                  <span class="accordion-icon" aria-hidden="true" />
-                </button>
-                <div
-                  id={panelId}
-                  class="accordion-panel"
-                  role="region"
-                  aria-labelledby={triggerId}
-                >
-                  <div class="accordion-panel-inner">
-                    <p class="accordion-body">{item.body}</p>
-                  </div>
-                </div>
+        <div class="accordion">
+          <div class={itemClass}>
+            <HeadingTag class="accordion-heading">
+              <button
+                id={triggerId}
+                class="accordion-trigger"
+                aria-expanded={String(isOpen)}
+                aria-controls={panelId}
+                aria-disabled={this.disabled ? 'true' : undefined}
+                disabled={this.disabled}
+                onClick={this.toggleSingle}
+              >
+                <span class="accordion-title">
+                  <slot name="heading">{this.heading}</slot>
+                </span>
+                <span class="accordion-icon" aria-hidden="true" />
+              </button>
+            </HeadingTag>
+            <div
+              id={panelId}
+              class="accordion-panel"
+              role="region"
+              aria-labelledby={triggerId}
+              inert={!isOpen || undefined}
+            >
+              <div class="accordion-panel-inner">
+                <slot />
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
       </Host>
     );

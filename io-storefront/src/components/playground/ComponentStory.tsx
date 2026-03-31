@@ -26,12 +26,15 @@ type ComponentStoryProps = {
 export function ComponentStory({ story, previewClassName, previewStyle }: ComponentStoryProps) {
   const nodes = story.generator(story.state);
   const preview = createElements(nodes, () => {});
-  const frameworkCode = {
-    html: generateHtmlMarkup(nodes),
-    react: generateReactMarkup(nodes),
-    angular: generateAngularMarkup(nodes),
-    vue: generateVueMarkup(nodes),
-  };
+  const frameworkCode =
+    typeof story.frameworkCode === 'function'
+      ? story.frameworkCode(story.state)
+      : story.frameworkCode ?? {
+          html: generateHtmlMarkup(nodes),
+          react: generateReactMarkup(nodes),
+          angular: generateAngularMarkup(nodes),
+          vue: generateVueMarkup(nodes),
+        };
 
   return (
     <Playground frameworkCode={frameworkCode} codeVisible previewClassName={previewClassName} previewStyle={previewStyle}>

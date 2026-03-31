@@ -143,6 +143,7 @@ export class IoAccordion {
                       class="accordion-panel"
                       role="region"
                       aria-labelledby={triggerId}
+                      inert={!isOpen || undefined}
                     >
                       <div class="accordion-panel-inner">
                         <p class="accordion-body">{item.body}</p>
@@ -161,23 +162,24 @@ export class IoAccordion {
 
                 return (
                   <div class={itemClass}>
-                    <button
-                      id={triggerId}
-                      class="accordion-trigger"
-                      aria-expanded={String(isOpen)}
-                      aria-controls={panelId}
-                      onClick={this.toggleSingle}
-                    >
-                      <HeadingTag class="accordion-title">
+                    <HeadingTag class="accordion-title">
+                      <button
+                        id={triggerId}
+                        class="accordion-trigger"
+                        aria-expanded={String(isOpen)}
+                        aria-controls={panelId}
+                        onClick={this.toggleSingle}
+                      >
                         <slot name="heading">{this.heading}</slot>
-                      </HeadingTag>
-                      <span class="accordion-icon" aria-hidden="true" />
-                    </button>
+                        <span class="accordion-icon" aria-hidden="true" />
+                      </button>
+                    </HeadingTag>
                     <div
                       id={panelId}
                       class="accordion-panel"
                       role="region"
                       aria-labelledby={triggerId}
+                      inert={!isOpen || undefined}
                     >
                       <div class="accordion-panel-inner">
                         <slot />

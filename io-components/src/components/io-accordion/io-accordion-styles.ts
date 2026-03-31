@@ -50,6 +50,7 @@ export function getAccordionStyles(): string {
     /* ── Title ──────────────────────────────────────────── */
 
     .accordion-title {
+      margin: 0;
       font-size: var(--io-font-size-lg);
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);

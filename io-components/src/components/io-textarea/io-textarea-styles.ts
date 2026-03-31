@@ -14,12 +14,11 @@ export function getTextareaStyles(): string {
       font-family: var(--io-font-primary);
     }
 
-    /* ── Wrapper ────────────────────────────────────────── */
+    /* ── Wrapper — io brand: underline-only, floating label ── */
 
     .textarea-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: var(--io-space-1);
+      position: relative;
+      padding-top: var(--io-space-6);
     }
 
     .textarea-wrapper--disabled {
@@ -27,55 +26,64 @@ export function getTextareaStyles(): string {
       pointer-events: none;
     }
 
-    /* ── Label ──────────────────────────────────────────── */
+    /* ── Label — floats above field when textarea has content ── */
 
     .textarea-label {
+      position: absolute;
+      top: var(--io-space-1);
+      left: 0;
       font-size: var(--io-label-font-size);
       font-weight: var(--io-label-font-weight);
       color: var(--io-text-secondary);
+      pointer-events: none;
+      transition: top var(--io-motion-base), font-size var(--io-motion-base);
+    }
+
+    /* Float label when textarea has a value (textarea must precede label in DOM) */
+    .textarea-field:not(:placeholder-shown) ~ .textarea-label {
+      top: 0;
+      font-size: var(--io-label-font-size-float);
     }
 
     .textarea-required {
       color: var(--io-color-error);
     }
 
-    /* ── Textarea field ─────────────────────────────────── */
+    /* ── Textarea field — underline only, no box border ─── */
 
     .textarea-field {
+      display: block;
       width: 100%;
       background: transparent;
-      border: var(--io-input-border-width) solid var(--io-border);
-      border-radius: var(--io-border-radius-sm);
-      padding: var(--io-space-3) var(--io-space-4);
+      border: none;
+      border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
+      border-radius: 0;
+      padding: var(--io-input-padding-y) var(--io-input-padding-right) var(--io-input-padding-y) 0;
       font-family: var(--io-font-primary);
       font-size: var(--io-font-size-sm);
       color: var(--io-text-primary);
       line-height: var(--io-line-height-relaxed);
       outline: none;
       box-sizing: border-box;
-      transition: border-color var(--io-motion-fast), box-shadow var(--io-motion-fast);
+      transition: border-bottom-width var(--io-motion-fast), margin-top var(--io-motion-fast);
     }
 
     .textarea-field::placeholder {
-      color: var(--io-text-secondary);
+      color: transparent;
     }
 
     .textarea-field:focus {
-      border-color: var(--io-border-focus);
+      border-bottom-width: var(--io-input-border-width-focus);
+      margin-top: -2px;
     }
 
     .textarea-field:focus-visible {
       outline: none;
-      box-shadow: var(--io-focus-ring-active);
+      box-shadow: none;
     }
 
     .textarea-wrapper--error .textarea-field {
-      border-color: var(--io-border-error);
-    }
-
-    .textarea-wrapper--error .textarea-field:focus-visible {
-      border-color: var(--io-border-error);
-      box-shadow: var(--io-focus-ring-active);
+      border-bottom-color: var(--io-border-error);
     }
 
     /* Resize variants */
@@ -86,19 +94,20 @@ export function getTextareaStyles(): string {
     /* ── Helper / error ─────────────────────────────────── */
 
     .textarea-error {
-      margin: 0;
+      margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-color-error);
     }
 
     .textarea-helper {
-      margin: 0;
+      margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .textarea-field { transition: none; }
+      .textarea-field,
+      .textarea-label { transition: none; }
     }
   `;
 }

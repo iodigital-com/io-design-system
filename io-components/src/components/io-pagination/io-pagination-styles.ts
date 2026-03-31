@@ -54,34 +54,35 @@ export function getPaginationStyles(): string {
 
     @media (hover: hover) and (pointer: fine) {
       .page-btn--number:hover:not(:disabled) {
-        border: 2px solid var(--io-color-primary);
-        color: var(--io-color-primary);
+        border: 2px solid var(--io-color-beige);
+        color: var(--io-color-beige);
+        background: transparent;
       }
     }
 
     /* ── Active page ────────────────────────────────────── */
 
     .page-btn--active {
-      border: none;
-      color: var(--io-color-white);
+      border: 2px solid var(--io-color-beige);
+      color: var(--io-color-beige);
       font-weight: var(--io-font-weight-bold);
-      background: var(--io-color-beige);
+      background: transparent;
       cursor: default;
     }
 
     /* ── Nav arrow buttons ──────────────────────────────── */
 
     .page-btn--nav {
-      border: none;
+      border: 1px solid var(--io-color-black);
       background: var(--io-color-beige);
-      color: var(--io-color-white);
+      color: var(--io-color-black);
     }
 
     @media (hover: hover) and (pointer: fine) {
       .page-btn--nav:hover:not(:disabled) {
-        background: var(--io-color-beige);
-        border: none;
-        color: var(--io-color-white);
+        background: transparent;
+        border: 2px solid var(--io-color-beige);
+        color: var(--io-color-beige);
       }
     }
 

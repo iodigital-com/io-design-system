@@ -19,8 +19,12 @@ export const accordionStory: Story<'io-accordion'> = {
         tag: 'io-accordion' as const,
         properties: {
           open: (properties?.open as boolean) ?? false,
-          ...(useHeadingSlot ? {} : { heading }),
-          'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
+          ...(useHeadingSlot
+            ? {}
+            : {
+                heading,
+                'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
+              }),
         },
         events: {
           onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },

@@ -19,7 +19,7 @@ export const accordionStory: Story<'io-accordion'> = {
         tag: 'io-accordion' as const,
         properties: {
           open: (properties?.open as boolean) ?? false,
-          heading,
+          ...(useHeadingSlot ? {} : { heading }),
           'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
         },
         events: {

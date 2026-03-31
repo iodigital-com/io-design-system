@@ -80,12 +80,18 @@ declare module 'react' {
       // ── io-carousel ──────────────────────────────────────
       'io-carousel': DetailedHTMLProps<
         HTMLAttributes<HTMLElement> & {
-          /** Array of IoCarouselItem — set via JS property */
-          items?: unknown;
           /** aria-label for previous nav button */
           'prev-label'?: string;
           /** aria-label for next nav button */
           'next-label'?: string;
+          /** number of slides to move per step, or auto */
+          'slides-per-page'?: number | 'auto';
+          /** rewind navigation from ends */
+          rewind?: boolean;
+          /** zero-based active slide index */
+          'active-slide-index'?: number;
+          /** emitted when active slide index changes */
+          onUpdate?: (ev: CustomEvent<{ activeIndex: number; totalSlides: number }>) => void;
         },
         HTMLElement
       >;

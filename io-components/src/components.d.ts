@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-import { IoCarouselItem } from "./components/io-carousel/types";
+import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -25,7 +25,7 @@ import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-export { IoCarouselItem } from "./components/io-carousel/types";
+export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -49,6 +49,11 @@ export namespace Components {
      * @example <io-accordion></io-accordion>
      */
     interface IoAccordion {
+        /**
+          * Prevents interaction and applies reduced-opacity styling
+          * @default false
+         */
+        "disabled": boolean;
         /**
           * Heading text fallback when heading slot is not provided
           * @default ''
@@ -160,22 +165,22 @@ export namespace Components {
     /**
      * io-carousel
      * ============
-     * Horizontally scrollable content card slider.
-     * Supports drag-to-scroll and prev/next navigation buttons.
-     * Extracted from the "Related articles" section on iodigital.com.
-     * @example <io-carousel></io-carousel>
-     * // Set items via property (framework usage):
-     * carouselEl.items = [
-     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
-     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
-     * ];
+     * Generic horizontally scrollable container with prev/next navigation,
+     * drag-to-scroll, and a custom scrollbar.
+     * Inner content is projected via the default slot — the carousel does not
+     * dictate slide structure. Put any HTML you need inside.
+     * @example <io-carousel>
+     *   <div class="card">Slide 1</div>
+     *   <div class="card">Slide 2</div>
+     *   <div class="card">Slide 3</div>
+     * </io-carousel>
      */
     interface IoCarousel {
         /**
-          * Slide data to render
-          * @default []
+          * Zero-based active slide index.
+          * @default 0
          */
-        "items": IoCarouselItem[];
+        "activeSlideIndex": number;
         /**
           * Accessible label for the next button
           * @default 'Next'
@@ -186,6 +191,16 @@ export namespace Components {
           * @default 'Previous'
          */
         "prevLabel": string;
+        /**
+          * Rewinds from last to first (and first to last) when navigating.
+          * @default false
+         */
+        "rewind": boolean;
+        /**
+          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * @default 1
+         */
+        "slidesPerPage": IoCarouselSlidesPerPage;
     }
     /**
      * io-checkbox
@@ -786,6 +801,10 @@ export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoButtonElement;
 }
+export interface IoCarouselCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoCarouselElement;
+}
 export interface IoCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoCheckboxElement;
@@ -897,20 +916,31 @@ declare global {
         prototype: HTMLIoButtonElement;
         new (): HTMLIoButtonElement;
     };
+    interface HTMLIoCarouselElementEventMap {
+        "update": IoCarouselUpdateDetail;
+    }
     /**
      * io-carousel
      * ============
-     * Horizontally scrollable content card slider.
-     * Supports drag-to-scroll and prev/next navigation buttons.
-     * Extracted from the "Related articles" section on iodigital.com.
-     * @example <io-carousel></io-carousel>
-     * // Set items via property (framework usage):
-     * carouselEl.items = [
-     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
-     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
-     * ];
+     * Generic horizontally scrollable container with prev/next navigation,
+     * drag-to-scroll, and a custom scrollbar.
+     * Inner content is projected via the default slot — the carousel does not
+     * dictate slide structure. Put any HTML you need inside.
+     * @example <io-carousel>
+     *   <div class="card">Slide 1</div>
+     *   <div class="card">Slide 2</div>
+     *   <div class="card">Slide 3</div>
+     * </io-carousel>
      */
     interface HTMLIoCarouselElement extends Components.IoCarousel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoCarouselElementEventMap>(type: K, listener: (this: HTMLIoCarouselElement, ev: IoCarouselCustomEvent<HTMLIoCarouselElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoCarouselElementEventMap>(type: K, listener: (this: HTMLIoCarouselElement, ev: IoCarouselCustomEvent<HTMLIoCarouselElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoCarouselElement: {
         prototype: HTMLIoCarouselElement;
@@ -1309,6 +1339,11 @@ declare namespace LocalJSX {
      */
     interface IoAccordion {
         /**
+          * Prevents interaction and applies reduced-opacity styling
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Heading text fallback when heading slot is not provided
           * @default ''
          */
@@ -1423,32 +1458,46 @@ declare namespace LocalJSX {
     /**
      * io-carousel
      * ============
-     * Horizontally scrollable content card slider.
-     * Supports drag-to-scroll and prev/next navigation buttons.
-     * Extracted from the "Related articles" section on iodigital.com.
-     * @example <io-carousel></io-carousel>
-     * // Set items via property (framework usage):
-     * carouselEl.items = [
-     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
-     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
-     * ];
+     * Generic horizontally scrollable container with prev/next navigation,
+     * drag-to-scroll, and a custom scrollbar.
+     * Inner content is projected via the default slot — the carousel does not
+     * dictate slide structure. Put any HTML you need inside.
+     * @example <io-carousel>
+     *   <div class="card">Slide 1</div>
+     *   <div class="card">Slide 2</div>
+     *   <div class="card">Slide 3</div>
+     * </io-carousel>
      */
     interface IoCarousel {
         /**
-          * Slide data to render
-          * @default []
+          * Zero-based active slide index.
+          * @default 0
          */
-        "items"?: IoCarouselItem[];
+        "activeSlideIndex"?: number;
         /**
           * Accessible label for the next button
           * @default 'Next'
          */
         "nextLabel"?: string;
         /**
+          * Emitted when the active slide index changes.
+         */
+        "onUpdate"?: (event: IoCarouselCustomEvent<IoCarouselUpdateDetail>) => void;
+        /**
           * Accessible label for the previous button
           * @default 'Previous'
          */
         "prevLabel"?: string;
+        /**
+          * Rewinds from last to first (and first to last) when navigating.
+          * @default false
+         */
+        "rewind"?: boolean;
+        /**
+          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * @default 1
+         */
+        "slidesPerPage"?: IoCarouselSlidesPerPage;
     }
     /**
      * io-checkbox
@@ -2084,6 +2133,7 @@ declare namespace LocalJSX {
         "open": boolean;
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
+        "disabled": boolean;
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
@@ -2106,6 +2156,9 @@ declare namespace LocalJSX {
     interface IoCarouselAttributes {
         "prevLabel": string;
         "nextLabel": string;
+        "slidesPerPage": string;
+        "rewind": boolean;
+        "activeSlideIndex": number;
     }
     interface IoCheckboxAttributes {
         "label": string;
@@ -2272,15 +2325,15 @@ declare module "@stencil/core" {
             /**
              * io-carousel
              * ============
-             * Horizontally scrollable content card slider.
-             * Supports drag-to-scroll and prev/next navigation buttons.
-             * Extracted from the "Related articles" section on iodigital.com.
-             * @example <io-carousel></io-carousel>
-             * // Set items via property (framework usage):
-             * carouselEl.items = [
-             *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
-             *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
-             * ];
+             * Generic horizontally scrollable container with prev/next navigation,
+             * drag-to-scroll, and a custom scrollbar.
+             * Inner content is projected via the default slot — the carousel does not
+             * dictate slide structure. Put any HTML you need inside.
+             * @example <io-carousel>
+             *   <div class="card">Slide 1</div>
+             *   <div class="card">Slide 2</div>
+             *   <div class="card">Slide 3</div>
+             * </io-carousel>
              */
             "io-carousel": LocalJSX.IntrinsicElements["io-carousel"] & JSXBase.HTMLAttributes<HTMLIoCarouselElement>;
             /**

@@ -1,13 +1,8 @@
-/** A single slide in the carousel */
-export interface IoCarouselItem {
-  /** Category/type label shown in the image area pill and body */
-  type: string;
-  /** Slide title */
-  title: string;
-  /** Background color for the image area (CSS color string) */
-  imageBackground?: string;
-  /** CTA link label */
-  ctaLabel?: string;
-  /** CTA link href */
-  ctaHref?: string;
-}
+/** Public value for `slidesPerPage`. */
+export type IoCarouselSlidesPerPage = number | 'auto';
+
+/** Detail payload emitted by the `update` event. */
+export type IoCarouselUpdateDetail = {
+	activeIndex: number;
+	totalSlides: number;
+};

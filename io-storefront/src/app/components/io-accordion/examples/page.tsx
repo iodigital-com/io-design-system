@@ -1,7 +1,13 @@
 'use client';
 
 import { ComponentStory } from '@/components/playground/ComponentStory';
-import { accordionStory, accordionStoryGroup, accordionStoryOpen, accordionStorySlottedHeading } from '../io-accordion.stories';
+import {
+  accordionStory,
+  accordionStoryGroupMultiOpen,
+  accordionStoryGroupSingleOpen,
+  accordionStoryOpen,
+  accordionStorySlottedHeading,
+} from '../io-accordion.stories';
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 
 export default function IoAccordionExamplesPage() {
@@ -30,10 +36,17 @@ export default function IoAccordionExamplesPage() {
       </section>
       <section>
         <ExamplesSectionHeader
-          title="One accordion per content item"
-          description="To build a list of disclosures, render multiple io-accordion elements instead of passing an items array."
+          title="One accordion per content item (single-open pattern)"
+          description="Render multiple io-accordion elements in a vertical list and keep one panel open at a time in your page-level state logic."
         />
-        <ComponentStory story={accordionStoryGroup} />
+        <ComponentStory story={accordionStoryGroupSingleOpen} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="One accordion per content item (multiple-open pattern)"
+          description="When users need side-by-side comparison, allow multiple panels to remain open by controlling each accordion independently."
+        />
+        <ComponentStory story={accordionStoryGroupMultiOpen} />
       </section>
     </div>
   );

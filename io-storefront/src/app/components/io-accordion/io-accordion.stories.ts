@@ -104,22 +104,54 @@ export const accordionStorySlottedHeading: Story<'io-accordion'> = {
   ],
 };
 
-export const accordionStoryGroup: Story<'io-accordion'> = {
+export const accordionStoryGroupSingleOpen: Story<'io-accordion'> = {
   generator: () => [
     {
-      tag: 'io-accordion' as const,
-      properties: { open: true, heading: 'Audits & research' },
-      children: [{ tag: 'p' as const, children: ['Making targeted, data-driven decisions starts with clear, reliable data.'] }],
+      tag: 'div' as const,
+      properties: { className: 'w-full max-w-[42.5rem]' },
+      children: [
+        {
+          tag: 'io-accordion' as const,
+          properties: { open: true, heading: 'Audits & research' },
+          children: [{ tag: 'p' as const, children: ['Making targeted, data-driven decisions starts with clear, reliable data.'] }],
+        },
+        {
+          tag: 'io-accordion' as const,
+          properties: { heading: 'Brand and communication strategy' },
+          children: [{ tag: 'p' as const, children: ['A clear brand and communication strategy helps teams move in one direction.'] }],
+        },
+        {
+          tag: 'io-accordion' as const,
+          properties: { heading: 'Digital strategy' },
+          children: [{ tag: 'p' as const, children: ['Build a measurable roadmap that links experience quality to business outcomes.'] }],
+        },
+      ],
     },
+  ],
+};
+
+export const accordionStoryGroupMultiOpen: Story<'io-accordion'> = {
+  generator: () => [
     {
-      tag: 'io-accordion' as const,
-      properties: { heading: 'Brand and communication strategy' },
-      children: [{ tag: 'p' as const, children: ['A clear brand and communication strategy helps teams move in one direction.'] }],
-    },
-    {
-      tag: 'io-accordion' as const,
-      properties: { heading: 'Digital strategy' },
-      children: [{ tag: 'p' as const, children: ['Build a measurable roadmap that links experience quality to business outcomes.'] }],
+      tag: 'div' as const,
+      properties: { className: 'w-full max-w-[42.5rem]' },
+      children: [
+        {
+          tag: 'io-accordion' as const,
+          properties: { open: true, heading: 'Audits & research' },
+          children: [{ tag: 'p' as const, children: ['Making targeted, data-driven decisions starts with clear, reliable data.'] }],
+        },
+        {
+          tag: 'io-accordion' as const,
+          properties: { open: true, heading: 'Brand and communication strategy' },
+          children: [{ tag: 'p' as const, children: ['A clear brand and communication strategy helps teams move in one direction.'] }],
+        },
+        {
+          tag: 'io-accordion' as const,
+          properties: { heading: 'Digital strategy' },
+          children: [{ tag: 'p' as const, children: ['Build a measurable roadmap that links experience quality to business outcomes.'] }],
+        },
+      ],
     },
   ],
 };

@@ -2,27 +2,48 @@ import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
 
 export const accordionStory: Story<'io-accordion'> = {
-  state: { properties: { open: false, heading: 'Some Heading', 'heading-tag': 'h3' } },
-  generator: ({ properties } = {}) => [
-    {
-      tag: 'io-accordion' as const,
-      properties: {
-        open: (properties?.open as boolean) ?? false,
-        heading: (properties?.heading as string) ?? 'Some Heading',
-        'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
-      },
-      events: {
-        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
-      },
-      children: [
-        {
-          tag: 'p' as const,
-          children: [
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
-          ],
-        },
-      ],
+  state: {
+    properties: {
+      open: false,
+      heading: 'Some Heading',
+      'heading-tag': 'h3',
+      'use-heading-slot': false,
     },
+  },
+  generator: ({ properties } = {}) => [
+    (() => {
+      const useHeadingSlot = (properties?.['use-heading-slot'] as boolean) ?? false;
+      const heading = (properties?.heading as string) ?? 'Some Heading';
+
+      return {
+        tag: 'io-accordion' as const,
+        properties: {
+          open: (properties?.open as boolean) ?? false,
+          heading,
+          'heading-tag': (properties?.['heading-tag'] as string) ?? 'h3',
+        },
+        events: {
+          onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+        },
+        children: [
+          ...(useHeadingSlot
+            ? [
+                {
+                  tag: 'span' as const,
+                  properties: { slot: 'heading', className: 'p-static-md' },
+                  children: [heading],
+                },
+              ]
+            : []),
+          {
+            tag: 'p' as const,
+            children: [
+              'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
+            ],
+          },
+        ],
+      };
+    })(),
   ],
 };
 
@@ -103,4 +124,11 @@ export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false },
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
   { name: 'heading-tag', type: 'select', defaultValue: 'h3', options: ['h2', 'h3', 'h4', 'h5', 'h6'] },
+  {
+    name: 'use-heading-slot',
+    type: 'boolean',
+    defaultValue: false,
+    group: 'slots',
+    description: 'Use the named heading slot instead of the heading prop fallback.',
+  },
 ];

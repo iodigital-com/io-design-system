@@ -145,21 +145,33 @@ export class IoCarousel {
   }
 
   private onPrev = () => {
-    if (this.totalSlides === 0) return;
-    const current = this.getNearestSlideIndex();
-    const target = current - this.stepSize;
-    const nextIndex = target < 0 ? (this.rewind ? this.totalSlides - 1 : 0) : target;
-    this.scrollToIndex(nextIndex, 'smooth');
-    this.setActiveIndex(nextIndex, true);
+    const track = this.track;
+    if (!track) return;
+
+    const distance = this.slideWidth() * this.stepSize;
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    if (this.rewind && track.scrollLeft <= 1) {
+      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      return;
+    }
+
+    track.scrollBy({ left: -distance, behavior: 'smooth' });
   };
 
   private onNext = () => {
-    if (this.totalSlides === 0) return;
-    const current = this.getNearestSlideIndex();
-    const target = current + this.stepSize;
-    const nextIndex = target >= this.totalSlides ? (this.rewind ? 0 : this.totalSlides - 1) : target;
-    this.scrollToIndex(nextIndex, 'smooth');
-    this.setActiveIndex(nextIndex, true);
+    const track = this.track;
+    if (!track) return;
+
+    const distance = this.slideWidth() * this.stepSize;
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    if (this.rewind && track.scrollLeft >= maxScroll - 1) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
+
+    track.scrollBy({ left: distance, behavior: 'smooth' });
   };
 
   private onTrackScroll = () => {

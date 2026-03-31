@@ -124,26 +124,31 @@ describe('io-carousel — behavior helpers', () => {
     expect((component as any).stepSize).toBe(2);
   });
 
-  it('onNext advances index when slides exist', () => {
+  it('onNext scrolls track by one step', () => {
     const component = new IoCarousel();
-    (component as any).scrollToIndex = vi.fn();
-    (component as any).setActiveIndex = vi.fn();
-    (component as any).getNearestSlideIndex = vi.fn(() => 0);
-    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
-    component.activeSlideIndex = 0;
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollWidth', { value: 1600 });
+    Object.defineProperty(track, 'clientWidth', { value: 800 });
+    Object.defineProperty(track, 'scrollLeft', { value: 0, writable: true });
+    (track as any).scrollBy = vi.fn();
+    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
+    (component as any).slideWidth = vi.fn(() => 300);
+    component.slidesPerPage = 1;
     (component as any).onNext();
-    expect((component as any).setActiveIndex).toHaveBeenCalledWith(1, true);
+    expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 300, behavior: 'smooth' });
   });
 
-  it('onPrev rewinds when enabled', () => {
+  it('onPrev rewinds to end when enabled and at start', () => {
     const component = new IoCarousel();
-    (component as any).scrollToIndex = vi.fn();
-    (component as any).setActiveIndex = vi.fn();
-    (component as any).getNearestSlideIndex = vi.fn(() => 0);
-    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
-    component.activeSlideIndex = 0;
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollWidth', { value: 1600 });
+    Object.defineProperty(track, 'clientWidth', { value: 800 });
+    Object.defineProperty(track, 'scrollLeft', { value: 0, writable: true });
+    (track as any).scrollTo = vi.fn();
+    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
+    (component as any).slideWidth = vi.fn(() => 300);
     component.rewind = true;
     (component as any).onPrev();
-    expect((component as any).setActiveIndex).toHaveBeenCalledWith(3, true);
+    expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 800, behavior: 'smooth' });
   });
 });

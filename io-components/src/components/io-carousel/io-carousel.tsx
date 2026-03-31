@@ -105,44 +105,34 @@ export class IoCarousel {
     return Math.max(0, Math.min(index, this.totalSlides - 1));
   }
 
-  private syncIndexFromScroll = () => {
+  private getNearestSlideIndex(): number {
     const track = this.track;
-    if (!track || this.totalSlides === 0) return;
+    if (!track || this.totalSlides === 0) return 0;
 
-    const spp = this.normalizedSlidesPerPage;
-    let nextIndex = 0;
+    const current = track.scrollLeft;
+    let nearest = 0;
+    let minDistance = Number.POSITIVE_INFINITY;
 
-    if (spp === 'auto') {
-      const current = track.scrollLeft;
-      let minDistance = Number.POSITIVE_INFINITY;
-      this.slides.forEach((_, i) => {
-        const dist = Math.abs(this.getSlideLeft(i) - current);
-        if (dist < minDistance) {
-          minDistance = dist;
-          nextIndex = i;
-        }
-      });
-    } else {
-      const page = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
-      nextIndex = page * spp;
-    }
+    this.slides.forEach((_, i) => {
+      const dist = Math.abs(this.getSlideLeft(i) - current);
+      if (dist < minDistance) {
+        minDistance = dist;
+        nearest = i;
+      }
+    });
 
-    this.setActiveIndex(nextIndex, true);
+    return nearest;
+  }
+
+  private syncIndexFromScroll = () => {
+    this.setActiveIndex(this.getNearestSlideIndex(), true);
   };
 
   private scrollToIndex(index: number, behavior: ScrollBehavior): void {
     const track = this.track;
     if (!track || this.totalSlides === 0) return;
     const clamped = this.clampIndex(index);
-    const spp = this.normalizedSlidesPerPage;
-
-    if (spp === 'auto') {
-      track.scrollTo({ left: this.getSlideLeft(clamped), behavior });
-      return;
-    }
-
-    const page = Math.floor(clamped / spp);
-    track.scrollTo({ left: page * track.clientWidth, behavior });
+    track.scrollTo({ left: this.getSlideLeft(clamped), behavior });
   }
 
   private setActiveIndex(index: number, emitEvent: boolean): void {
@@ -156,7 +146,8 @@ export class IoCarousel {
 
   private onPrev = () => {
     if (this.totalSlides === 0) return;
-    const target = this.activeSlideIndex - this.stepSize;
+    const current = this.getNearestSlideIndex();
+    const target = current - this.stepSize;
     const nextIndex = target < 0 ? (this.rewind ? this.totalSlides - 1 : 0) : target;
     this.scrollToIndex(nextIndex, 'smooth');
     this.setActiveIndex(nextIndex, true);
@@ -164,7 +155,8 @@ export class IoCarousel {
 
   private onNext = () => {
     if (this.totalSlides === 0) return;
-    const target = this.activeSlideIndex + this.stepSize;
+    const current = this.getNearestSlideIndex();
+    const target = current + this.stepSize;
     const nextIndex = target >= this.totalSlides ? (this.rewind ? 0 : this.totalSlides - 1) : target;
     this.scrollToIndex(nextIndex, 'smooth');
     this.setActiveIndex(nextIndex, true);

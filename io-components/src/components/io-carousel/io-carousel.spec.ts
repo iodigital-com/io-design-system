@@ -128,6 +128,7 @@ describe('io-carousel — behavior helpers', () => {
     const component = new IoCarousel();
     (component as any).scrollToIndex = vi.fn();
     (component as any).setActiveIndex = vi.fn();
+    (component as any).getNearestSlideIndex = vi.fn(() => 0);
     Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
     component.activeSlideIndex = 0;
     (component as any).onNext();
@@ -138,6 +139,7 @@ describe('io-carousel — behavior helpers', () => {
     const component = new IoCarousel();
     (component as any).scrollToIndex = vi.fn();
     (component as any).setActiveIndex = vi.fn();
+    (component as any).getNearestSlideIndex = vi.fn(() => 0);
     Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
     component.activeSlideIndex = 0;
     component.rewind = true;

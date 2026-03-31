@@ -9,6 +9,7 @@ import { IoAccordionItem } from "./components/io-accordion/io-accordion";
 import { IoAccordionChangeDetail } from "./components/io-accordion/types";
 import { IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoCarouselItem } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -26,6 +27,7 @@ export { IoAccordionItem } from "./components/io-accordion/io-accordion";
 export { IoAccordionChangeDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoCarouselItem } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -157,6 +159,36 @@ export namespace Components {
           * @default 'solid'
          */
         "variant": IoButtonVariant;
+    }
+    /**
+     * io-carousel
+     * ============
+     * Horizontally scrollable content card slider.
+     * Supports drag-to-scroll and prev/next navigation buttons.
+     * Extracted from the "Related articles" section on iodigital.com.
+     * @example <io-carousel></io-carousel>
+     * // Set items via property (framework usage):
+     * carouselEl.items = [
+     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
+     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
+     * ];
+     */
+    interface IoCarousel {
+        /**
+          * Slide data to render
+          * @default []
+         */
+        "items": IoCarouselItem[];
+        /**
+          * Accessible label for the next button
+          * @default 'Next'
+         */
+        "nextLabel": string;
+        /**
+          * Accessible label for the previous button
+          * @default 'Previous'
+         */
+        "prevLabel": string;
     }
     /**
      * io-checkbox
@@ -874,6 +906,25 @@ declare global {
         prototype: HTMLIoButtonElement;
         new (): HTMLIoButtonElement;
     };
+    /**
+     * io-carousel
+     * ============
+     * Horizontally scrollable content card slider.
+     * Supports drag-to-scroll and prev/next navigation buttons.
+     * Extracted from the "Related articles" section on iodigital.com.
+     * @example <io-carousel></io-carousel>
+     * // Set items via property (framework usage):
+     * carouselEl.items = [
+     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
+     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
+     * ];
+     */
+    interface HTMLIoCarouselElement extends Components.IoCarousel, HTMLStencilElement {
+    }
+    var HTMLIoCarouselElement: {
+        prototype: HTMLIoCarouselElement;
+        new (): HTMLIoCarouselElement;
+    };
     interface HTMLIoCheckboxElementEventMap {
         "change": IoCheckboxChangeDetail;
     }
@@ -1237,6 +1288,7 @@ declare global {
         "io-accordion": HTMLIoAccordionElement;
         "io-badge": HTMLIoBadgeElement;
         "io-button": HTMLIoButtonElement;
+        "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
@@ -1377,6 +1429,36 @@ declare namespace LocalJSX {
           * @default 'solid'
          */
         "variant"?: IoButtonVariant;
+    }
+    /**
+     * io-carousel
+     * ============
+     * Horizontally scrollable content card slider.
+     * Supports drag-to-scroll and prev/next navigation buttons.
+     * Extracted from the "Related articles" section on iodigital.com.
+     * @example <io-carousel></io-carousel>
+     * // Set items via property (framework usage):
+     * carouselEl.items = [
+     *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
+     *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
+     * ];
+     */
+    interface IoCarousel {
+        /**
+          * Slide data to render
+          * @default []
+         */
+        "items"?: IoCarouselItem[];
+        /**
+          * Accessible label for the next button
+          * @default 'Next'
+         */
+        "nextLabel"?: string;
+        /**
+          * Accessible label for the previous button
+          * @default 'Previous'
+         */
+        "prevLabel"?: string;
     }
     /**
      * io-checkbox
@@ -2029,6 +2111,10 @@ declare namespace LocalJSX {
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;
     }
+    interface IoCarouselAttributes {
+        "prevLabel": string;
+        "nextLabel": string;
+    }
     interface IoCheckboxAttributes {
         "label": string;
         "name": string | undefined;
@@ -2141,6 +2227,7 @@ declare namespace LocalJSX {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
+        "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
@@ -2196,6 +2283,20 @@ declare module "@stencil/core" {
              * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
              */
             "io-button": LocalJSX.IntrinsicElements["io-button"] & JSXBase.HTMLAttributes<HTMLIoButtonElement>;
+            /**
+             * io-carousel
+             * ============
+             * Horizontally scrollable content card slider.
+             * Supports drag-to-scroll and prev/next navigation buttons.
+             * Extracted from the "Related articles" section on iodigital.com.
+             * @example <io-carousel></io-carousel>
+             * // Set items via property (framework usage):
+             * carouselEl.items = [
+             *   { type: 'Blog', title: 'Is AI taking over the customer journey?', ctaLabel: 'Read more', ctaHref: '#' },
+             *   { type: 'Webinar', title: 'Cloud costs are skyrocketing', ctaLabel: 'Watch now', ctaHref: '#' },
+             * ];
+             */
+            "io-carousel": LocalJSX.IntrinsicElements["io-carousel"] & JSXBase.HTMLAttributes<HTMLIoCarouselElement>;
             /**
              * io-checkbox
              * ============

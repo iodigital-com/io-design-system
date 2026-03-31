@@ -73,7 +73,7 @@ export function getPaginationStyles(): string {
     /* ── Nav arrow buttons ──────────────────────────────── */
 
     .page-btn--nav {
-      border: 1px solid var(--io-color-black);
+      border: 1px solid var(--io-color-grey-4);
       background: var(--io-color-beige);
       color: var(--io-color-black);
     }

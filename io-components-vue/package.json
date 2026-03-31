@@ -1,6 +1,6 @@
 {
   "name": "@io-digital/components-vue",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Vue wrapper package for io Digital Web Components.",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@io-digital/components": "^0.0.1",
+    "@io-digital/components": "^1.0.0",
     "vue": "^3.4.0"
   },
   "devDependencies": {

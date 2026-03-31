@@ -1,6 +1,6 @@
 {
   "name": "@io-digital/components-angular",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Angular wrapper package for io Digital Web Components.",
   "license": "MIT",
   "type": "module",
@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0 <21.0.0",
-    "@io-digital/components": "^0.0.1",
+    "@io-digital/components": "^1.0.0",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {

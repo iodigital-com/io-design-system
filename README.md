@@ -147,37 +147,22 @@ These scripts update:
 
 This codebase uses canonical DOM event names.
 
-Important: `ioInput` has been fully refactored to `input` in the codebase.
+All public component events follow native/canonical naming only.
 
-Canonical event mapping:
+Examples:
 
-- `ioInput` -> `input`
-- `ioChange` -> `change`
-- `ioFocus` -> `focus`
-- `ioBlur` -> `blur`
-- `ioOpen` -> `open`
-- `ioClose` -> `close`
-- `ioClick` -> `click`
-- `ioToggle` -> `toggle`
-- `ioRemove` -> `remove`
-- `ioToastDismiss` -> `dismiss`
+- `input`
+- `change`
+- `focus`
+- `blur`
+- `open`
+- `close`
+- `click`
+- `toggle`
+- `remove`
+- `dismiss`
 
-Migration examples:
-
-- React: `onIoInput` -> `onInput`, `onIoChange` -> `onChange`
-- Angular: `(ioInput)` -> `(input)`, `(ioChange)` -> `(change)`
-- Vue: `@io-input` -> `@input`, `@io-change` -> `@change`
-- DOM: `addEventListener('ioInput', ...)` -> `addEventListener('input', ...)`
-
-### Before/after migration example
-
-```ts
-// Before
-element.addEventListener('ioInput', handleInput);
-
-// After
-element.addEventListener('input', handleInput);
-```
+No `io*` event prefixes are part of the event API.
 
 ## Using the packages
 
@@ -381,29 +366,29 @@ For active roadmap items, check open issues and pull requests.
 
 ## FAQ
 
-### Are `io*` events still supported?
+### Which package should I install first?
 
-No. Canonical DOM event names are the standard now (for example `input`, `change`, `click`).
+Always start with `@io-digital/components`. If you use a framework, add its wrapper package as well.
 
-### Can I style components with custom CSS classes?
+### Is `io-storefront` published to npm?
 
-Use CSS custom properties (`--io-*`) as the primary styling contract.
+No. `io-storefront` is the documentation/playground app and stays in-repo.
 
-### Is the storefront package published to npm?
+### How do I validate my change before opening a PR?
 
-No. `io-storefront` is a documentation/playground app in this repository.
-
-### Which package should I use in React/Vue/Angular projects?
-
-Use the framework wrapper package plus `@io-digital/components`.
-
-### How do I run all validation gates before opening a PR?
-
-Run:
+Run the full gate:
 
 ```bash
 npm run build:quality-gates
 ```
+
+### Where should I add new design values?
+
+Add new tokens in `io-components/src/global/app.css` first, then consume them in component styles via `var(--io-*)`.
+
+### What is the quickest way to work on a component and docs together?
+
+Run `npm run dev`, implement in `io-components/src/components`, and verify behavior in the matching `io-storefront/src/app/components` pages.
 
 ## License
 

@@ -47,11 +47,8 @@ export class IoModal {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Fires after the modal opens */
-  @Event({ eventName: 'open' }) openEvent!: EventEmitter<void>;
-
-  /** Fires after the modal closes */
-  @Event({ eventName: 'close' }) closeEvent!: EventEmitter<void>;
+  /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
+  @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -73,12 +70,11 @@ export class IoModal {
     if (newVal) {
       if (!this.dialogEl.open) {
         this.dialogEl.showModal();
-        this.openEvent.emit();
       }
     } else {
       if (this.dialogEl.open) {
         this.dialogEl.close();
-        this.closeEvent.emit();
+        this.dismissEvent.emit();
       }
     }
   }

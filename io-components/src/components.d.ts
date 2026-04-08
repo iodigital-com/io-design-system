@@ -391,8 +391,9 @@ export namespace Components {
      * </io-modal>
      * <script>
      *   const modal = document.querySelector('io-modal');
-     *   modal.show();
-     *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+     *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+     *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+     *   modal.addEventListener('dismiss', () => console.log('dismissed'));
      * </script>
      */
     interface IoModal {
@@ -406,18 +407,10 @@ export namespace Components {
          */
         "heading"?: string;
         /**
-          * Closes the modal dialog
-         */
-        "hide": () => Promise<void>;
-        /**
           * Controls dialog visibility; synced to showModal/close
           * @default false
          */
         "open": boolean;
-        /**
-          * Opens the modal dialog
-         */
-        "show": () => Promise<void>;
         /**
           * Width preset for the dialog
           * @default 'md'
@@ -1031,8 +1024,7 @@ declare global {
         new (): HTMLIoLinkElement;
     };
     interface HTMLIoModalElementEventMap {
-        "open": void;
-        "close": void;
+        "dismiss": void;
     }
     /**
      * io-modal
@@ -1046,8 +1038,9 @@ declare global {
      * </io-modal>
      * <script>
      *   const modal = document.querySelector('io-modal');
-     *   modal.show();
-     *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+     *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+     *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+     *   modal.addEventListener('dismiss', () => console.log('dismissed'));
      * </script>
      */
     interface HTMLIoModalElement extends Components.IoModal, HTMLStencilElement {
@@ -1691,8 +1684,9 @@ declare namespace LocalJSX {
      * </io-modal>
      * <script>
      *   const modal = document.querySelector('io-modal');
-     *   modal.show();
-     *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+     *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+     *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+     *   modal.addEventListener('dismiss', () => console.log('dismissed'));
      * </script>
      */
     interface IoModal {
@@ -1706,13 +1700,9 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
-          * Fires after the modal closes
+          * Emitted after the modal closes (any close path: user-initiated or programmatic)
          */
-        "onClose"?: (event: IoModalCustomEvent<void>) => void;
-        /**
-          * Fires after the modal opens
-         */
-        "onOpen"?: (event: IoModalCustomEvent<void>) => void;
+        "onDismiss"?: (event: IoModalCustomEvent<void>) => void;
         /**
           * Controls dialog visibility; synced to showModal/close
           * @default false
@@ -2381,8 +2371,9 @@ declare module "@stencil/core" {
              * </io-modal>
              * <script>
              *   const modal = document.querySelector('io-modal');
-             *   modal.show();
-             *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+             *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+             *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+             *   modal.addEventListener('dismiss', () => console.log('dismissed'));
              * </script>
              */
             "io-modal": LocalJSX.IntrinsicElements["io-modal"] & JSXBase.HTMLAttributes<HTMLIoModalElement>;

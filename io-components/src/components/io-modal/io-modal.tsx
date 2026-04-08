@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Method, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
 import type { IoModalSize } from './types';
 import { getModalStyles } from './io-modal-styles';
 
@@ -17,8 +17,9 @@ import { getModalStyles } from './io-modal-styles';
  *
  * <script>
  *   const modal = document.querySelector('io-modal');
- *   modal.show();
- *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+ *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+ *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+ *   modal.addEventListener('dismiss', () => console.log('dismissed'));
  * </script>
  */
 @Component({
@@ -47,11 +48,8 @@ export class IoModal {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Fires after the modal opens */
-  @Event({ eventName: 'open' }) openEvent!: EventEmitter<void>;
-
-  /** Fires after the modal closes */
-  @Event({ eventName: 'close' }) closeEvent!: EventEmitter<void>;
+  /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
+  @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -73,28 +71,13 @@ export class IoModal {
     if (newVal) {
       if (!this.dialogEl.open) {
         this.dialogEl.showModal();
-        this.openEvent.emit();
       }
     } else {
       if (this.dialogEl.open) {
         this.dialogEl.close();
-        this.closeEvent.emit();
+        this.dismissEvent.emit();
       }
     }
-  }
-
-  // ── Methods ───────────────────────────────────────────────────
-
-  /** Opens the modal dialog */
-  @Method()
-  async show(): Promise<void> {
-    this.open = true;
-  }
-
-  /** Closes the modal dialog */
-  @Method()
-  async hide(): Promise<void> {
-    this.open = false;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

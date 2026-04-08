@@ -27,7 +27,7 @@ export default function IoModalApiPage() {
               <span key="n"><InlineCode>open</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Controls dialog visibility. Set to true to open the modal; false to close it. Prefer calling show() and hide() over setting this prop directly.',
+              'Controls dialog visibility. Set to true to open the modal; false to close it.',
             ],
             [
               <InlineCode key="n">heading</InlineCode>,
@@ -66,89 +66,32 @@ export default function IoModalApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">open</InlineCode>,
+              <InlineCode key="n">dismiss</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
-              'Fires after the modal dialog has opened and focus has moved inside. Use this to run post-open logic such as fetching data or setting initial focus on a specific element.',
-            ],
-            [
-              <InlineCode key="n">close</InlineCode>,
-              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
-              'No',
-              'Fires after the modal dialog has closed. Use this to return focus to the trigger element, clean up state, or trigger follow-up actions.',
+              'Emitted after the modal closes — whether via backdrop click, ESC key, the built-in close button, or setting open to false. Use this to return focus to the trigger element, clean up state, or trigger follow-up actions.',
             ],
           ]}
         />
         <CodeNote label="Usage">
 {`// Vanilla JS
 const modal = document.querySelector('io-modal');
-openBtn.addEventListener('click', () => modal.show());
-modal.addEventListener('close', () => console.log('closed'));
+openBtn.addEventListener('click', () => { modal.open = true; });
+modal.addEventListener('dismiss', () => console.log('dismissed'));
 
 // React
-const ref = useRef(null);
-<io-modal ref={ref} heading="Confirm">...</io-modal>
-<button onClick={() => ref.current.show()}>Open</button>
+<io-modal open={isOpen} onDismiss={() => setIsOpen(false)} heading="Confirm">...</io-modal>
 
 // Angular
-@ViewChild('modal') modal!: ElementRef;
-openModal() { this.modal.nativeElement.show(); }
-<io-modal #modal heading="Confirm" (close)="onClose()">...</io-modal>
+<io-modal [open]="isOpen" (dismiss)="isOpen = false" heading="Confirm">...</io-modal>
 
 // Vue
-const modal = ref(null);
-<io-modal ref="modal" heading="Confirm" @close="onClose">...</io-modal>
+<IoModal :open="isOpen" @dismiss="isOpen = false" heading="Confirm">...</IoModal>
 <button @click="modal?.show()">Open</button>`}
         </CodeNote>
       </section>
 
-      {/* ── Methods ──────────────────────────────────────────────── */}
-      <section id="methods" className="space-y-4">
-        <SectionHeader
-          title="Methods"
-          description="Public @Method() calls exposed on the element reference. Call these imperatively to control modal visibility."
-        />
-        <ApiTable
-          columns={[
-            { label: 'Signature', width: '220px' },
-            { label: 'Returns', width: '160px' },
-            { label: 'Description' },
-          ]}
-          rows={[
-            [
-              <InlineCode key="s">show()</InlineCode>,
-              <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
-              'Opens the modal dialog by calling showModal() on the underlying native dialog element. Moves focus to the first focusable element inside the dialog and emits open.',
-            ],
-            [
-              <InlineCode key="s">hide()</InlineCode>,
-              <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
-              'Closes the modal dialog by calling close() on the underlying native dialog element. Emits close. Focus returns to the element that last had focus before the dialog opened.',
-            ],
-          ]}
-        />
-        <CodeNote label="Imperative usage across frameworks">
-{`// Vanilla JS
-const modal = document.querySelector('io-modal');
-openBtn.addEventListener('click', () => modal.show());
-modal.addEventListener('close', () => console.log('closed'));
 
-// React
-const ref = useRef(null);
-<io-modal ref={ref} heading="Confirm">...</io-modal>
-<button onClick={() => ref.current.show()}>Open</button>
-
-// Angular
-@ViewChild('modal') modal!: ElementRef;
-openModal() { this.modal.nativeElement.show(); }
-<io-modal #modal heading="Confirm" (close)="onClose()">...</io-modal>
-
-// Vue
-const modal = ref(null);
-<io-modal ref="modal" heading="Confirm" @close="onClose">...</io-modal>
-<button @click="modal?.show()">Open</button>`}
-        </CodeNote>
-      </section>
 
       {/* ── Slots ────────────────────────────────────────────────── */}
       <section id="slots" className="space-y-4">

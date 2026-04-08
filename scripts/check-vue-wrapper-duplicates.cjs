@@ -10,14 +10,16 @@ if (!fs.existsSync(filePath)) {
 }
 
 const source = fs.readFileSync(filePath, 'utf8');
-const defineContainerRegex = /export const\s+(\w+)\s*=\s*\/\*@__PURE__\*\/\s*defineContainer<[^>]+>\([^,]+,\s*undefined,\s*\[(.*?)\]\);/gs;
+const defineContainerRegex = /export const\s+(\w+)\s*=\s*\/\*@__PURE__\*\/\s*defineContainer<[\s\S]*?>\([\s\S]*?\[([\s\S]*?)\]\s*\);/g;
 
 const duplicateReports = [];
+let containersScanned = 0;
 
 for (const match of source.matchAll(defineContainerRegex)) {
+  containersScanned += 1;
   const componentName = match[1];
   const entriesSource = match[2];
-  const entryRegex = /'([^']+)'/g;
+  const entryRegex = /['"]([^'"]+)['"]/g;
 
   const seen = new Set();
   const duplicates = new Set();
@@ -34,6 +36,12 @@ for (const match of source.matchAll(defineContainerRegex)) {
   if (duplicates.size > 0) {
     duplicateReports.push({ componentName, duplicates: [...duplicates] });
   }
+}
+
+if (containersScanned === 0) {
+  console.error('[check-vue-wrapper-duplicates] No defineContainer entries were parsed.');
+  console.error('[check-vue-wrapper-duplicates] Aborting to avoid a false pass due to parser drift.');
+  process.exit(1);
 }
 
 if (duplicateReports.length > 0) {

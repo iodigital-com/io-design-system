@@ -27,8 +27,8 @@ describe('io-input — stable id linkage', () => {
     (component as any).componentWillLoad();
 
     const ids = (component as any).getInputIds();
-    expect(ids.inputId).toBe('io-input-email');
-    expect(ids.errorId).toBe('io-input-email-error');
+    expect(ids.inputId).toMatch(/^io-input-email-[a-z0-9]+$/);
+    expect(ids.errorId).toBe(`${ids.inputId}-error`);
   });
 
   it('updates ids when name changes after load', () => {
@@ -36,8 +36,8 @@ describe('io-input — stable id linkage', () => {
     (component as any).nameChanged('username');
 
     const ids = (component as any).getInputIds();
-    expect(ids.inputId).toBe('io-input-username');
-    expect(ids.errorId).toBe('io-input-username-error');
+    expect(ids.inputId).toMatch(/^io-input-username-[a-z0-9]+$/);
+    expect(ids.errorId).toBe(`${ids.inputId}-error`);
   });
 
   it('keeps aria-describedby target stable for error state across rerenders', () => {
@@ -52,5 +52,23 @@ describe('io-input — stable id linkage', () => {
 
     expect(secondIds.inputId).toBe(firstIds.inputId);
     expect(secondIds.errorId).toBe(firstIds.errorId);
+  });
+
+  it('keeps ids unique across instances with the same name', () => {
+    const first = new IoInput();
+    const second = new IoInput();
+
+    first.name = 'email';
+    second.name = 'email';
+
+    (first as any).componentWillLoad();
+    (second as any).componentWillLoad();
+
+    const firstIds = (first as any).getInputIds();
+    const secondIds = (second as any).getInputIds();
+
+    expect(firstIds.inputId).not.toBe(secondIds.inputId);
+    expect(firstIds.inputId).toMatch(/^io-input-email-[a-z0-9]+$/);
+    expect(secondIds.inputId).toMatch(/^io-input-email-[a-z0-9]+$/);
   });
 });

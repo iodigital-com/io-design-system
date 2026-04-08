@@ -73,8 +73,19 @@ export class IoInput {
     this.inputId = this.resolveInputId(newName);
   }
 
+  private sanitizeNameSegment(name: string): string {
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   private resolveInputId(name: string | undefined): string {
-    return `io-input-${name || this.fallbackId}`;
+    const normalizedName = typeof name === 'string' ? this.sanitizeNameSegment(name) : '';
+    return normalizedName
+      ? `io-input-${normalizedName}-${this.fallbackId}`
+      : `io-input-${this.fallbackId}`;
   }
 
   private getInputIds() {

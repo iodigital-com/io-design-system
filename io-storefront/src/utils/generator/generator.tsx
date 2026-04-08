@@ -69,6 +69,11 @@ export type EventConfig = {
 // ---------------------------------------------------------------------------
 
 type SetState = Dispatch<SetStateAction<StoryState<HTMLTagOrComponent>>>;
+type CustomListenerStore = Array<{ eventName: string; handler: EventListener }>;
+
+type StoryHostElement = HTMLElement & {
+  __ioStoryListeners?: CustomListenerStore;
+};
 
 let _keyCounter = 0;
 
@@ -99,15 +104,17 @@ function createElement(
 
   const { tag, properties = {}, events = {}, children = [] } = node;
 
-  // Build event handler props from EventConfig
+  const isCustomEl = typeof tag === 'string' && tag.includes('-');
+
+  // Build event handlers from EventConfig
   const eventProps: Record<string, (e: CustomEvent) => void> = {};
   for (const [eventName, config] of Object.entries(events)) {
-    eventProps[eventName] = (e: CustomEvent) => {
+    const handler = (e: CustomEvent) => {
       setState((prev) => {
         const current = prev.properties ?? {};
         let newValue: unknown;
         if (config.eventValueKey !== undefined) {
-          newValue = (e.detail as Record<string, unknown>)[config.eventValueKey];
+          newValue = (e.detail as Record<string, unknown> | undefined)?.[config.eventValueKey];
         } else {
           newValue = config.value;
         }
@@ -118,6 +125,8 @@ function createElement(
         };
       });
     };
+
+    eventProps[eventName] = handler;
   }
 
   const key = `el-${_keyCounter++}`;
@@ -127,11 +136,38 @@ function createElement(
   // attributes for custom elements, but client-side React does not, causing
   // a hydration mismatch. Suppress the warning since Stencil manages its own
   // attribute reflection after hydration.
-  const isCustomEl = typeof tag === 'string' && tag.includes('-');
   const suppressHydration = isCustomEl || parentIsCustomEl;
+
+  const customRef = isCustomEl
+    ? (el: StoryHostElement | null) => {
+        if (!el) return;
+
+        const previous = el.__ioStoryListeners ?? [];
+        previous.forEach(({ eventName, handler }) => el.removeEventListener(eventName, handler));
+
+        const next: CustomListenerStore = Object.entries(eventProps).map(([eventName, handler]) => {
+          const domEventName =
+            eventName.startsWith('on') && eventName.length > 2
+              ? eventName.slice(2, 3).toLowerCase() + eventName.slice(3)
+              : eventName;
+
+          el.addEventListener(domEventName, handler as EventListener);
+          return { eventName: domEventName, handler: handler as EventListener };
+        });
+
+        el.__ioStoryListeners = next;
+      }
+    : undefined;
+
   return React.createElement(
     tag as string,
-    { key, ...(suppressHydration ? { suppressHydrationWarning: true } : {}), ...properties, ...eventProps },
+    {
+      key,
+      ...(suppressHydration ? { suppressHydrationWarning: true } : {}),
+      ...properties,
+      ...(isCustomEl ? {} : eventProps),
+      ...(customRef ? { ref: customRef } : {}),
+    },
     ...children.map((child) => createElement(child, setState, isCustomEl)),
   );
 }

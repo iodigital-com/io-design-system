@@ -236,8 +236,7 @@ declare module 'react' {
           heading?: string;
           size?: 'sm' | 'md' | 'lg';
           'close-on-backdrop'?: boolean;
-          onOpen?: (e: CustomEvent<void>) => void;
-          onClose?: (e: CustomEvent<void>) => void;
+          onDismiss?: (e: CustomEvent<void>) => void;
         },
         HTMLElement
       >;

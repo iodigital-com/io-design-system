@@ -8,7 +8,7 @@ import { generateReactMarkup } from '@/utils/generator/generateReactMarkup';
 import { generateAngularMarkup } from '@/utils/generator/generateAngularMarkup';
 import { generateVueMarkup } from '@/utils/generator/generateVueMarkup';
 import type { HTMLTagOrComponent } from '@/utils/generator/generator';
-import type { Story } from '@/models/story';
+import type { Story, StoryState } from '@/models/story';
 
 type ComponentStoryProps = {
   story: Story<HTMLTagOrComponent>;
@@ -16,16 +16,31 @@ type ComponentStoryProps = {
   previewClassName?: string;
   /** Inline styles merged into the Playground preview wrapper — use to override background for dark stages. */
   previewStyle?: React.CSSProperties;
+  /** Enables local interactive state so story EventConfig handlers can update preview state. */
+  interactive?: boolean;
 };
 
 /**
- * ComponentStory — static read-only demo.
- * Used on Examples pages to show fixed variants without prop controls.
- * Code block is expanded by default.
+ * ComponentStory — static by default, optionally interactive.
+ * Used on Examples pages to show fixed variants; can opt-in to local state
+ * so EventConfig interactions are demonstrable.
  */
-export function ComponentStory({ story, previewClassName, previewStyle }: ComponentStoryProps) {
-  const nodes = story.generator(story.state);
-  const preview = createElements(nodes, () => {});
+export function ComponentStory({ story, previewClassName, previewStyle, interactive = false }: ComponentStoryProps) {
+  const baseState = React.useMemo(
+    () => ((story.state ?? {}) as StoryState<HTMLTagOrComponent>),
+    [story],
+  );
+
+  const [localState, setLocalState] = React.useState<StoryState<HTMLTagOrComponent>>(baseState);
+
+  React.useEffect(() => {
+    setLocalState(baseState);
+  }, [baseState]);
+
+  const state = interactive ? localState : baseState;
+  const nodes = story.generator(state);
+  const noopSetState: React.Dispatch<React.SetStateAction<StoryState<HTMLTagOrComponent>>> = () => undefined;
+  const preview = createElements(nodes, interactive ? setLocalState : noopSetState);
   const frameworkCode =
     typeof story.frameworkCode === 'function'
       ? story.frameworkCode(story.state)

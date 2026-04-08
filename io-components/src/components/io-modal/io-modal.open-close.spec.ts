@@ -24,17 +24,6 @@ describe('io-modal — open/close', () => {
     (component as any).dialogEl = dialogEl;
   });
 
-  it('show() sets open to true', async () => {
-    await component.show();
-    expect(component.open).toBe(true);
-  });
-
-  it('hide() sets open to false', async () => {
-    component.open = true;
-    await component.hide();
-    expect(component.open).toBe(false);
-  });
-
   it('openChanged(true) calls showModal', () => {
     (component as any).openChanged(true);
     expect(dialogEl.showModal).toHaveBeenCalled();
@@ -44,6 +33,13 @@ describe('io-modal — open/close', () => {
     dialogEl.open = true;
     (component as any).openChanged(false);
     expect(dialogEl.close).toHaveBeenCalled();
+    expect(ioDismissEmit).toHaveBeenCalled();
+  });
+
+  it('openChanged(false) emits dismiss even if dialog is already closed', () => {
+    dialogEl.open = false;
+    (component as any).openChanged(false);
+    expect(dialogEl.close).not.toHaveBeenCalled();
     expect(ioDismissEmit).toHaveBeenCalled();
   });
 

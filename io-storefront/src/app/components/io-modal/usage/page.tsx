@@ -71,17 +71,17 @@ export default function IoModalUsagePage() {
       <section id="triggering-and-dismissal" className="space-y-6">
         <SectionHeader
           title="Triggering and dismissal"
-          description="io-modal is controlled imperatively via show() and hide() method calls. There is no open attribute you set declaratively — call the methods to toggle visibility."
+          description="io-modal is controlled via the open prop. Set open to true to show the dialog and false to close it. Dismissal can also happen via ESC, backdrop click, or the built-in close button — all of which set open to false and emit the dismiss event."
         />
         <div className="space-y-3">
           <RuleCard label="Always provide a close button in the footer">
-            Every modal must include a way for the user to dismiss it without completing the primary action. Place a ghost-variant &ldquo;Cancel&rdquo; or &ldquo;Close&rdquo; button in the <C>footer</C> slot that calls <C>hide()</C>. Do not rely solely on backdrop clicks or the ESC key, as these may be disabled or unavailable.
+            Every modal must include a way for the user to dismiss it without completing the primary action. Place a ghost-variant &ldquo;Cancel&rdquo; or &ldquo;Close&rdquo; button in the <C>footer</C> slot that sets <C>open</C> to false. Do not rely solely on backdrop clicks or the ESC key, as these may be disabled or unavailable.
           </RuleCard>
           <RuleCard label="Use closeOnBackdrop thoughtfully">
             <C>closeOnBackdrop</C> is enabled by default. Disable it only for critical dialogs where accidental dismissal would result in data loss — such as a multi-step form. When disabled, the close button in the footer becomes the only dismissal route, so it must always be present.
           </RuleCard>
           <RuleCard label="Return focus to the trigger element on close">
-            When the modal closes, focus should return to the element that opened it — typically the button that called <C>show()</C>. Listen for the <C>dismiss</C> event and call <C>.focus()</C> on the trigger element reference to restore context for keyboard users.
+            When the modal closes, focus should return to the element that opened it — typically the button that set <C>open</C> to true. Listen for the <C>dismiss</C> event and call <C>.focus()</C> on the trigger element reference to restore context for keyboard users.
           </RuleCard>
           <RuleCard label="Do not auto-dismiss dialogs">
             Never close a modal automatically after a timeout. Auto-dismissal disorients users who rely on screen readers and prevents keyboard users from completing their interaction. If you need a time-limited message, use a toast instead.

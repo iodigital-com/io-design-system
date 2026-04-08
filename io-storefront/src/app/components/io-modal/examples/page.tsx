@@ -26,28 +26,28 @@ export default function IoModalExamplesPage() {
         title="Default"
         description="A standard modal with heading, body text, and footer action buttons. Dismiss via the × button, Escape key, or clicking the backdrop."
       >
-        <ComponentStory story={modalStoryDefault} />
+        <ComponentStory story={modalStoryDefault} interactive />
       </Section>
 
       <Section
         title="Small (sm)"
         description="A compact modal suited for confirmations and short focused interactions."
       >
-        <ComponentStory story={modalStorySm} />
+        <ComponentStory story={modalStorySm} interactive />
       </Section>
 
       <Section
         title="Large (lg)"
         description="A wider modal for forms, tables, or any content that benefits from extra horizontal space."
       >
-        <ComponentStory story={modalStoryLg} />
+        <ComponentStory story={modalStoryLg} interactive />
       </Section>
 
       <Section
         title="Custom header slot"
         description="Override the heading prop with the header slot to render custom heading markup — useful for sub-titles or badge labels."
       >
-        <ComponentStory story={modalStoryNoHeading} />
+        <ComponentStory story={modalStoryNoHeading} interactive />
       </Section>
     </div>
   );

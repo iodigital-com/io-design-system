@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Method, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
 import type { IoModalSize } from './types';
 import { getModalStyles } from './io-modal-styles';
 
@@ -17,8 +17,9 @@ import { getModalStyles } from './io-modal-styles';
  *
  * <script>
  *   const modal = document.querySelector('io-modal');
- *   modal.show();
- *   document.getElementById('cancel-btn').addEventListener('click', () => modal.hide());
+ *   document.getElementById('open-btn').addEventListener('click', () => { modal.open = true; });
+ *   document.getElementById('cancel-btn').addEventListener('click', () => { modal.open = false; });
+ *   modal.addEventListener('dismiss', () => console.log('dismissed'));
  * </script>
  */
 @Component({
@@ -74,23 +75,9 @@ export class IoModal {
     } else {
       if (this.dialogEl.open) {
         this.dialogEl.close();
-        this.dismissEvent.emit();
       }
+      this.dismissEvent.emit();
     }
-  }
-
-  // ── Methods ───────────────────────────────────────────────────
-
-  /** Opens the modal dialog */
-  @Method()
-  async show(): Promise<void> {
-    this.open = true;
-  }
-
-  /** Closes the modal dialog */
-  @Method()
-  async hide(): Promise<void> {
-    this.open = false;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

@@ -12,6 +12,7 @@ io-components/.stencil/*
 # Next.js
 .next/
 out/
+io-storefront/public/stencil/
 
 # Generated wrapper files (regenerated on every Stencil build)
 io-components-react/src/components.ts

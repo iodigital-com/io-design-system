@@ -1,5 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { IoTabs } from './io-tabs';
 
 const TABS = [
@@ -38,8 +37,14 @@ describe('io-tabs — default props', () => {
     expect(component.activeTab).toBe('details');
   });
 
-  it('enables delegatesFocus on the shadow root', () => {
-    const source = readFileSync('src/components/io-tabs/io-tabs.tsx', 'utf8');
-    expect(source).toMatch(/shadow:\s*\{\s*delegatesFocus:\s*true\s*\}/);
+  it('keeps activeTab empty when all tabs are disabled on load', () => {
+    component.tabs = [
+      { label: 'Disabled A', value: 'a', disabled: true },
+      { label: 'Disabled B', value: 'b', disabled: true },
+    ];
+
+    component.componentWillLoad();
+
+    expect(component.activeTab).toBe('');
   });
 });

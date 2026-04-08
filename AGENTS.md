@@ -130,6 +130,22 @@ This project ships a curated set of 9 specialised Claude agents via the `agency-
 npm run agents:install:claude   # Install managed set to ~/.claude/agents
 ```
 
+## AI Agents (GitHub Copilot)
+
+This project also maintains a repo-local high-signal daily default curated set for GitHub Copilot under `.github/agents`.
+
+```bash
+npm run agents:sync:copilot            # Sync daily default set (12 agents) to .github/agents
+npm run agents:sync:copilot-extended   # Sync extended on-demand set (14 agents) to .github/agents
+```
+
+Drift checks (daily is enforced by `governance:check`):
+
+```bash
+npm run agents:check:copilot-drift           # Verify daily agents match curated manifest
+npm run agents:check:copilot-extended-drift  # Verify extended agents match curated manifest
+```
+
 See `docs/agency-agents/README.md` for the full list and `docs/agency-agents/ADAPTATION_LAYER.md` for behavioral guardrails.
 
 ## Commit Messages

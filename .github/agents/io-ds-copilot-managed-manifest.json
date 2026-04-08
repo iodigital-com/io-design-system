@@ -1,0 +1,83 @@
+{
+  "managedBy": "scripts/sync-curated-agency-copilot.cjs",
+  "project": "io-design-system",
+  "sourceRepository": "msitarzewski/agency-agents",
+  "ref": "main",
+  "adaptedWith": "docs/agency-agents/ADAPTATION_LAYER.md",
+  "installedAt": "2026-04-08T08:00:42.061Z",
+  "count": 12,
+  "files": [
+    {
+      "source": "engineering/engineering-frontend-developer.md",
+      "destination": "io-ds-engineering-frontend-developer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/engineering/engineering-frontend-developer.md",
+      "sha256": "e7dd3cbf0e2ccebc325d279922689ba51d79f62cad419cfc647271e91e96ca13"
+    },
+    {
+      "source": "engineering/engineering-senior-developer.md",
+      "destination": "io-ds-engineering-senior-developer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/engineering/engineering-senior-developer.md",
+      "sha256": "8e3498c4f86d966908377cc864cec2cec5fbdd1addb4769cc1b372a101cc1f9d"
+    },
+    {
+      "source": "engineering/engineering-code-reviewer.md",
+      "destination": "io-ds-engineering-code-reviewer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/engineering/engineering-code-reviewer.md",
+      "sha256": "902445d85dc44887593eecf8c490e6a8e1428de0c25aec02efa16299c5a00c72"
+    },
+    {
+      "source": "engineering/engineering-technical-writer.md",
+      "destination": "io-ds-engineering-technical-writer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/engineering/engineering-technical-writer.md",
+      "sha256": "c763d053dbacad5b0c9d6e8d3421cd07f90a7817c166d9ed100943e28c0b75d3"
+    },
+    {
+      "source": "testing/testing-accessibility-auditor.md",
+      "destination": "io-ds-testing-accessibility-auditor.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/testing/testing-accessibility-auditor.md",
+      "sha256": "80631fa066c4f3980df7f8f6165130cd15a2ffa90caa34ef24a300591a869807"
+    },
+    {
+      "source": "testing/testing-evidence-collector.md",
+      "destination": "io-ds-testing-evidence-collector.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/testing/testing-evidence-collector.md",
+      "sha256": "327b7d5b6f94f221686f7d0d0dd7aaafe93aebb9796ad8796e8c5b4953e0149f"
+    },
+    {
+      "source": "testing/testing-reality-checker.md",
+      "destination": "io-ds-testing-reality-checker.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/testing/testing-reality-checker.md",
+      "sha256": "4736cf9b9cdc0ff7f8704af36df9059d94ad449ea83b1cbea500d54dabe5ad19"
+    },
+    {
+      "source": "testing/testing-test-results-analyzer.md",
+      "destination": "io-ds-testing-test-results-analyzer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/testing/testing-test-results-analyzer.md",
+      "sha256": "8d3c83c5b0c0513719f0927b6a3f82ae092cd5b6ee7f8aba6b23a216205699f9"
+    },
+    {
+      "source": "design/design-ux-architect.md",
+      "destination": "io-ds-design-ux-architect.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/design/design-ux-architect.md",
+      "sha256": "34052faf79feef5e2104c6198d3d32ba7286a9c2cc4b1fdb369a49e5b0f3eeff"
+    },
+    {
+      "source": "product/product-sprint-prioritizer.md",
+      "destination": "io-ds-product-sprint-prioritizer.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/product/product-sprint-prioritizer.md",
+      "sha256": "43b8b8ad50438915e49d629b0274ec38fb1ba2a3c1408c659f7b7e4cadcd5b22"
+    },
+    {
+      "source": "project-management/project-management-project-shepherd.md",
+      "destination": "io-ds-project-management-project-shepherd.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/project-management/project-management-project-shepherd.md",
+      "sha256": "65b457a6857b2f5044b5e8e13019ae266c0e269b526409dda6fcfe6b2ba62f87"
+    },
+    {
+      "source": "specialized/agents-orchestrator.md",
+      "destination": "io-ds-agents-orchestrator.md",
+      "url": "https://raw.githubusercontent.com/msitarzewski/agency-agents/main/specialized/agents-orchestrator.md",
+      "sha256": "00367035647149224d449232fbdeb731a5029fa0899b5f6b6afd68365b060ee3"
+    }
+  ]
+}

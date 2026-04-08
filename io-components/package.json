@@ -36,7 +36,7 @@
     "build": "stencil build",
     "build.watch": "stencil build --watch",
     "dev:stencil": "stencil build --watch --serve",
-    "dev": "concurrently -n \"stencil,storefront\" -c \"blue,green\" \"npm run dev:stencil\" \"npm --prefix ../io-storefront run dev\"",
+    "dev": "concurrently -n \"stencil,storefront,sync\" -c \"blue,green,magenta\" \"npm run dev:stencil\" \"npm --prefix ../io-storefront run dev\" \"node ../scripts/sync-stencil-assets-watch.cjs\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

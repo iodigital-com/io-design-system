@@ -11,17 +11,14 @@ function makeDialogEl() {
 
 describe('io-modal — open/close', () => {
   let component: IoModal;
-  let ioOpenEmit: ReturnType<typeof vi.fn>;
-  let ioCloseEmit: ReturnType<typeof vi.fn>;
+  let ioDismissEmit: ReturnType<typeof vi.fn>;
   let dialogEl: ReturnType<typeof makeDialogEl>;
 
   beforeEach(() => {
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
-    ioOpenEmit = vi.fn();
-    ioCloseEmit = vi.fn();
-    (component as any).openEvent = { emit: ioOpenEmit };
-    (component as any).closeEvent = { emit: ioCloseEmit };
+    ioDismissEmit = vi.fn();
+    (component as any).dismissEvent = { emit: ioDismissEmit };
     (component as any).componentWillLoad();
     dialogEl = makeDialogEl();
     (component as any).dialogEl = dialogEl;
@@ -38,17 +35,16 @@ describe('io-modal — open/close', () => {
     expect(component.open).toBe(false);
   });
 
-  it('openChanged(true) calls showModal and emits open', () => {
+  it('openChanged(true) calls showModal', () => {
     (component as any).openChanged(true);
     expect(dialogEl.showModal).toHaveBeenCalled();
-    expect(ioOpenEmit).toHaveBeenCalled();
   });
 
-  it('openChanged(false) calls dialog.close and emits close', () => {
+  it('openChanged(false) calls dialog.close and emits dismiss', () => {
     dialogEl.open = true;
     (component as any).openChanged(false);
     expect(dialogEl.close).toHaveBeenCalled();
-    expect(ioCloseEmit).toHaveBeenCalled();
+    expect(ioDismissEmit).toHaveBeenCalled();
   });
 
   it('openChanged(true) does not call showModal if dialog is already open', () => {

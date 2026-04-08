@@ -1031,8 +1031,7 @@ declare global {
         new (): HTMLIoLinkElement;
     };
     interface HTMLIoModalElementEventMap {
-        "open": void;
-        "close": void;
+        "dismiss": void;
     }
     /**
      * io-modal
@@ -1706,13 +1705,9 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
-          * Fires after the modal closes
+          * Emitted after the modal closes (any close path: user-initiated or programmatic)
          */
-        "onClose"?: (event: IoModalCustomEvent<void>) => void;
-        /**
-          * Fires after the modal opens
-         */
-        "onOpen"?: (event: IoModalCustomEvent<void>) => void;
+        "onDismiss"?: (event: IoModalCustomEvent<void>) => void;
         /**
           * Controls dialog visibility; synced to showModal/close
           * @default false

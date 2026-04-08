@@ -17,6 +17,7 @@
     }
   },
   "scripts": {
+    "prebuild": "node ../scripts/check-vue-wrapper-duplicates.cjs",
     "build": "tsc -p tsconfig.json",
     "prepack": "npm run build"
   },

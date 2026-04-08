@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 import type { IoInputType } from './types';
 
 /**
@@ -18,6 +18,9 @@ import type { IoInputType } from './types';
 })
 export class IoInput {
   @Element() el!: HTMLElement;
+
+  private fallbackId!: string;
+  private inputId!: string;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -60,6 +63,39 @@ export class IoInput {
   @Event() focus!: EventEmitter<FocusEvent>;
   @Event() blur!: EventEmitter<FocusEvent>;
 
+  componentWillLoad() {
+    this.fallbackId = Math.random().toString(36).slice(2);
+    this.inputId = this.resolveInputId(this.name);
+  }
+
+  @Watch('name')
+  nameChanged(newName: string | undefined) {
+    this.inputId = this.resolveInputId(newName);
+  }
+
+  private sanitizeNameSegment(name: string): string {
+    return name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  private resolveInputId(name: string | undefined): string {
+    const normalizedName = typeof name === 'string' ? this.sanitizeNameSegment(name) : '';
+    return normalizedName
+      ? `io-input-${normalizedName}-${this.fallbackId}`
+      : `io-input-${this.fallbackId}`;
+  }
+
+  private getInputIds() {
+    const inputId = this.inputId;
+    return {
+      inputId,
+      errorId: `${inputId}-error`,
+    };
+  }
+
   @Method()
   async setFocus(options?: FocusOptions): Promise<void> {
     const input = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
@@ -85,8 +121,7 @@ export class IoInput {
 
   render() {
     const { label, type, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, autocomplete } = this;
-    const inputId = `io-input-${name || Math.random().toString(36).slice(2)}`;
-    const errorId = `${inputId}-error`;
+    const { inputId, errorId } = this.getInputIds();
 
     return (
       <Host>

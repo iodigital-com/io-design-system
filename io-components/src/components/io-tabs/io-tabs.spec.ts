@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { IoTabs } from './io-tabs';
 
 const TABS = [
@@ -35,5 +36,10 @@ describe('io-tabs — default props', () => {
     component.activeTab = 'details';
     component.componentWillLoad();
     expect(component.activeTab).toBe('details');
+  });
+
+  it('enables delegatesFocus on the shadow root', () => {
+    const source = readFileSync('src/components/io-tabs/io-tabs.tsx', 'utf8');
+    expect(source).toMatch(/shadow:\s*\{\s*delegatesFocus:\s*true\s*\}/);
   });
 });

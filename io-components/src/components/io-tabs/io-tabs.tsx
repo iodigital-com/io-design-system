@@ -18,7 +18,7 @@ import { getTabsStyles } from './io-tabs-styles';
  */
 @Component({
   tag: 'io-tabs',
-  shadow: true,
+  shadow: { delegatesFocus: true },
 })
 export class IoTabs {
   @Element() el!: HTMLElement;

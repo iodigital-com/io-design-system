@@ -75,8 +75,8 @@ export class IoModal {
     } else {
       if (this.dialogEl.open) {
         this.dialogEl.close();
-        this.dismissEvent.emit();
       }
+      this.dismissEvent.emit();
     }
   }
 

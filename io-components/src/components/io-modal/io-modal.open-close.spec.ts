@@ -36,6 +36,13 @@ describe('io-modal — open/close', () => {
     expect(ioDismissEmit).toHaveBeenCalled();
   });
 
+  it('openChanged(false) emits dismiss even if dialog is already closed', () => {
+    dialogEl.open = false;
+    (component as any).openChanged(false);
+    expect(dialogEl.close).not.toHaveBeenCalled();
+    expect(ioDismissEmit).toHaveBeenCalled();
+  });
+
   it('openChanged(true) does not call showModal if dialog is already open', () => {
     dialogEl.open = true;
     (component as any).openChanged(true);

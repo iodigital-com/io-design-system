@@ -6,6 +6,8 @@ const path = require("node:path");
 const repoRoot = process.cwd();
 const errors = [];
 const EXPECTED_AGENT_COUNT = 9;
+const EXPECTED_COPILOT_AGENT_COUNT = 12;
+const EXPECTED_COPILOT_EXTENDED_AGENT_COUNT = 14;
 
 function resolve(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -94,11 +96,93 @@ function validateCuratedJson(relativePath) {
   }
 }
 
+function validateCopilotCuratedJson(relativePath) {
+  if (!exists(relativePath)) {
+    errors.push(`Missing required file: ${relativePath}`);
+    return;
+  }
+
+  try {
+    const parsed = JSON.parse(read(relativePath));
+    if (parsed.project !== "io-design-system") {
+      errors.push(`${relativePath} must set "project" to "io-design-system".`);
+    }
+    if (parsed.target !== "github-copilot-repo-local") {
+      errors.push(`${relativePath} must set "target" to "github-copilot-repo-local".`);
+    }
+    if (!Array.isArray(parsed.agents) || parsed.agents.length !== EXPECTED_COPILOT_AGENT_COUNT) {
+      errors.push(
+        `${relativePath} must include exactly ${EXPECTED_COPILOT_AGENT_COUNT} curated Copilot agents.`,
+      );
+    }
+
+    const sources = Array.isArray(parsed.agents)
+      ? parsed.agents.map((agent) => agent.source).filter(Boolean)
+      : [];
+
+    if (sources.length !== EXPECTED_COPILOT_AGENT_COUNT) {
+      errors.push(
+        `${relativePath} must define source paths for all ${EXPECTED_COPILOT_AGENT_COUNT} Copilot agents.`,
+      );
+    }
+
+    if (new Set(sources).size !== sources.length) {
+      errors.push(`${relativePath} contains duplicate Copilot agent source paths.`);
+    }
+  } catch (error) {
+    errors.push(`${relativePath} is not valid JSON: ${error.message}`);
+  }
+}
+
+function validateCopilotExtendedCuratedJson(relativePath) {
+  if (!exists(relativePath)) {
+    errors.push(`Missing required file: ${relativePath}`);
+    return;
+  }
+
+  try {
+    const parsed = JSON.parse(read(relativePath));
+    if (parsed.project !== "io-design-system") {
+      errors.push(`${relativePath} must set "project" to "io-design-system".`);
+    }
+    if (parsed.target !== "github-copilot-repo-local-extended") {
+      errors.push(`${relativePath} must set "target" to "github-copilot-repo-local-extended".`);
+    }
+    if (!Array.isArray(parsed.agents) || parsed.agents.length !== EXPECTED_COPILOT_EXTENDED_AGENT_COUNT) {
+      errors.push(
+        `${relativePath} must include exactly ${EXPECTED_COPILOT_EXTENDED_AGENT_COUNT} extended Copilot agents.`,
+      );
+    }
+
+    const sources = Array.isArray(parsed.agents)
+      ? parsed.agents.map((agent) => agent.source).filter(Boolean)
+      : [];
+
+    if (sources.length !== EXPECTED_COPILOT_EXTENDED_AGENT_COUNT) {
+      errors.push(
+        `${relativePath} must define source paths for all ${EXPECTED_COPILOT_EXTENDED_AGENT_COUNT} extended Copilot agents.`,
+      );
+    }
+
+    if (new Set(sources).size !== sources.length) {
+      errors.push(`${relativePath} contains duplicate extended Copilot agent source paths.`);
+    }
+  } catch (error) {
+    errors.push(`${relativePath} is not valid JSON: ${error.message}`);
+  }
+}
+
 // Required governance files
 requireFile("docs/agency-agents/ADAPTATION_LAYER.md");
 requireFile("docs/agency-agents/README.md");
 requireFile("docs/agency-agents/curated-io-design-system.json");
+requireFile("docs/agency-agents/curated-io-design-system-copilot.json");
+requireFile("docs/agency-agents/curated-io-design-system-copilot-extended.json");
 requireFile("scripts/install-curated-agency-claude.cjs");
+requireFile("scripts/sync-curated-agency-copilot.cjs");
+requireFile("scripts/sync-curated-agency-copilot-extended.cjs");
+requireFile("scripts/check-copilot-agent-drift.cjs");
+requireFile("scripts/check-copilot-agent-extended-drift.cjs");
 requireFile("scripts/sync-stencil-assets.cjs");
 requireFile("io-storefront/package.json");
 
@@ -107,7 +191,6 @@ requirePathAbsent(".agent");
 requirePathAbsent(".claude");
 requirePathAbsent(".codex");
 requirePathAbsent(".gemini");
-requirePathAbsent(".github");
 requirePathAbsent("CLAUDE.md");
 requirePathAbsent("design-system");
 
@@ -116,6 +199,10 @@ requireText("package.json", [
   "\"io-storefront\"",
   "\"governance:check\"",
   "\"agents:install:claude\"",
+  "\"agents:sync:copilot\"",
+  "\"agents:sync:copilot-extended\"",
+  "\"agents:check:copilot-drift\"",
+  "\"agents:check:copilot-extended-drift\"",
 ]);
 requireTextAbsent("package.json", [
   "\"io-components/storefront\"",
@@ -149,7 +236,16 @@ requireText("scripts/sync-stencil-assets.cjs", [
 requireText("docs/agency-agents/README.md", [
   "Curated source of truth",
   "npm run agents:install:claude",
+  "npm run agents:sync:copilot",
+  "npm run agents:sync:copilot-extended",
   "CI is intentionally disabled",
+]);
+
+requireText("AGENTS.md", [
+  "AI Agents (Claude)",
+  "AI Agents (GitHub Copilot)",
+  "npm run agents:sync:copilot",
+  "npm run agents:sync:copilot-extended",
 ]);
 
 requireText("docs/agency-agents/ADAPTATION_LAYER.md", [
@@ -160,6 +256,8 @@ requireText("docs/agency-agents/ADAPTATION_LAYER.md", [
 ]);
 
 validateCuratedJson("docs/agency-agents/curated-io-design-system.json");
+validateCopilotCuratedJson("docs/agency-agents/curated-io-design-system-copilot.json");
+validateCopilotExtendedCuratedJson("docs/agency-agents/curated-io-design-system-copilot-extended.json");
 
 if (errors.length > 0) {
   console.error("[Governance Gate] Validation failed:");

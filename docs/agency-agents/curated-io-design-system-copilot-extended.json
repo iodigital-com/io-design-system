@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "project": "io-design-system",
+  "target": "github-copilot-repo-local-extended",
+  "description": "On-demand extended curated Agency Agents for repo-local GitHub Copilot in io-design-system. Install alongside the daily default set when specialised work requires it.",
+  "agents": [
+    {
+      "source": "engineering/engineering-security-engineer.md",
+      "priority": "on-demand",
+      "why": "Invoked for supply-chain, web security, or dependency audit tasks."
+    },
+    {
+      "source": "engineering/engineering-software-architect.md",
+      "priority": "on-demand",
+      "why": "Invoked for major cross-package architecture decisions."
+    },
+    {
+      "source": "engineering/engineering-rapid-prototyper.md",
+      "priority": "on-demand",
+      "why": "Invoked to safely experiment before hardening a new pattern."
+    },
+    {
+      "source": "engineering/engineering-git-workflow-master.md",
+      "priority": "on-demand",
+      "why": "Invoked for complex branching, release tagging, or merge-conflict resolution."
+    },
+    {
+      "source": "engineering/engineering-devops-automator.md",
+      "priority": "on-demand",
+      "why": "Invoked for CI pipeline improvements or monorepo automation work."
+    },
+    {
+      "source": "testing/testing-api-tester.md",
+      "priority": "on-demand",
+      "why": "Invoked to validate component API contracts or integration assumptions."
+    },
+    {
+      "source": "testing/testing-performance-benchmarker.md",
+      "priority": "on-demand",
+      "why": "Invoked when tracking runtime or bundle size regressions."
+    },
+    {
+      "source": "testing/testing-workflow-optimizer.md",
+      "priority": "on-demand",
+      "why": "Invoked to improve QA workflows across the multi-package iteration loop."
+    },
+    {
+      "source": "design/design-ui-designer.md",
+      "priority": "on-demand",
+      "why": "Invoked for visual-polish-heavy or design-language-critical tasks."
+    },
+    {
+      "source": "design/design-inclusive-visuals-specialist.md",
+      "priority": "on-demand",
+      "why": "Invoked when strengthening inclusive design in visuals or usage examples."
+    },
+    {
+      "source": "design/design-ux-researcher.md",
+      "priority": "on-demand",
+      "why": "Invoked to apply user-centric validation to component design decisions."
+    },
+    {
+      "source": "product/product-manager.md",
+      "priority": "on-demand",
+      "why": "Invoked to frame work in outcome-driven scope and trade-off language."
+    },
+    {
+      "source": "product/product-feedback-synthesizer.md",
+      "priority": "on-demand",
+      "why": "Invoked during large feedback intake cycles to consolidate input into actions."
+    },
+    {
+      "source": "specialized/specialized-workflow-architect.md",
+      "priority": "on-demand",
+      "why": "Invoked to design complex deterministic multi-stage workflows."
+    }
+  ]
+}

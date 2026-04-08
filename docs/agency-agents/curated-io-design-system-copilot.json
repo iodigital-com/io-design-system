@@ -1,0 +1,68 @@
+{
+  "version": "1.0.0",
+  "project": "io-design-system",
+  "target": "github-copilot-repo-local",
+  "description": "High-signal daily default curated Agency Agents pack for repo-local GitHub Copilot in io-design-system.",
+  "agents": [
+    {
+      "source": "engineering/engineering-frontend-developer.md",
+      "priority": "core",
+      "why": "Primary implementation agent for Stencil components and storefront UI changes."
+    },
+    {
+      "source": "engineering/engineering-senior-developer.md",
+      "priority": "support",
+      "why": "Drives practical implementation strategies in complex refactors."
+    },
+    {
+      "source": "engineering/engineering-code-reviewer.md",
+      "priority": "core",
+      "why": "Maintains correctness, regression safety, and test quality in PR-ready changes."
+    },
+    {
+      "source": "engineering/engineering-technical-writer.md",
+      "priority": "core",
+      "why": "Improves component docs, usage guidance, and migration narrative."
+    },
+    {
+      "source": "testing/testing-accessibility-auditor.md",
+      "priority": "core",
+      "why": "Ensures WCAG-compliant interactions and semantic quality in components."
+    },
+    {
+      "source": "testing/testing-evidence-collector.md",
+      "priority": "core",
+      "why": "Requires proof-backed QA for regressions and visual behavior."
+    },
+    {
+      "source": "testing/testing-reality-checker.md",
+      "priority": "core",
+      "why": "Prevents unsupported claims and catches gaps before merge."
+    },
+    {
+      "source": "testing/testing-test-results-analyzer.md",
+      "priority": "support",
+      "why": "Improves signal extraction from test output and flaky failure triage."
+    },
+    {
+      "source": "design/design-ux-architect.md",
+      "priority": "core",
+      "why": "Shapes interaction patterns and information architecture for components/docs."
+    },
+    {
+      "source": "product/product-sprint-prioritizer.md",
+      "priority": "support",
+      "why": "Prioritizes backlog slices for high-value design-system delivery."
+    },
+    {
+      "source": "project-management/project-management-project-shepherd.md",
+      "priority": "support",
+      "why": "Coordinates multi-step delivery across code, docs, and verification."
+    },
+    {
+      "source": "specialized/agents-orchestrator.md",
+      "priority": "core",
+      "why": "Coordinates multi-agent runs with explicit handoffs and quality checks."
+    }
+  ]
+}

@@ -31,18 +31,18 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
   const willDismissEventName = `on${displayName}WillDismiss`;
   const willPresentEventName = `on${displayName}WillPresent`;
 
-  type Props = OverlayComponent &
-    ReactOverlayProps & {
-      forwardedRef?: StencilReactForwardedRef<OverlayType>;
-    };
+  type Props = OverlayComponent & ReactOverlayProps;
+  type PropsWithRef = Props & {
+    forwardedRef?: StencilReactForwardedRef<OverlayType>;
+  };
 
   let isDismissing = false;
 
-  class Overlay extends React.Component<Props> {
+  class Overlay extends React.Component<PropsWithRef> {
     overlay?: OverlayType;
     el!: HTMLDivElement;
 
-    constructor(props: Props) {
+    constructor(props: PropsWithRef) {
       super(props);
       if (typeof document !== 'undefined') {
         this.el = document.createElement('div');
@@ -73,7 +73,7 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
       setRef(this.props.forwardedRef, null);
     }
 
-    shouldComponentUpdate(nextProps: Props) {
+    shouldComponentUpdate(nextProps: PropsWithRef) {
       // Check if the overlay component is about to dismiss
       if (this.overlay && nextProps.isOpen !== this.props.isOpen && nextProps.isOpen === false) {
         isDismissing = true;
@@ -82,7 +82,7 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
       return true;
     }
 
-    async componentDidUpdate(prevProps: Props) {
+    async componentDidUpdate(prevProps: PropsWithRef) {
       if (this.overlay) {
         attachProps(this.overlay, this.props, prevProps);
       }
@@ -103,7 +103,7 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
       }
     }
 
-    async present(prevProps?: Props) {
+    async present(prevProps?: PropsWithRef) {
       const { children, isOpen, onDidDismiss, onDidPresent, onWillDismiss, onWillPresent, ...cProps } = this.props;
       const elementProps = {
         ...cProps,
@@ -137,6 +137,6 @@ export const createOverlayComponent = <OverlayComponent extends object, OverlayT
   }
 
   return React.forwardRef<OverlayType, Props>((props, ref) => {
-    return <Overlay {...props} forwardedRef={ref} />;
+    return <Overlay {...(props as PropsWithRef)} forwardedRef={ref} />;
   });
 };

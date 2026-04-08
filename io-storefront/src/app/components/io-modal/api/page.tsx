@@ -87,7 +87,7 @@ modal.addEventListener('dismiss', () => console.log('dismissed'));
 
 // Vue
 <IoModal :open="isOpen" @dismiss="isOpen = false" heading="Confirm">...</IoModal>
-<button @click="modal?.show()">Open</button>`}
+`}
         </CodeNote>
       </section>
 

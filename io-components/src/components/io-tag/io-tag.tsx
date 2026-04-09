@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 import type { IoTagSize, IoTagColor } from './types';
 import { getTagStyles } from './io-tag-styles';
+import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
 
 /**
  * io-tag
@@ -50,7 +51,7 @@ export class IoTag {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleToggle = (ev: MouseEvent) => {
-    if (this.disabled) {
+    if (shouldBlockTagInteraction(this.disabled)) {
       ev.preventDefault();
       ev.stopPropagation();
       return;
@@ -61,7 +62,7 @@ export class IoTag {
 
   private handleRemove = (ev: MouseEvent) => {
     ev.stopPropagation();
-    if (this.disabled) {
+    if (shouldBlockTagInteraction(this.disabled)) {
       ev.preventDefault();
       return;
     }
@@ -72,22 +73,14 @@ export class IoTag {
 
   render() {
     const { selected, removable, disabled, size, color } = this;
-    const tagClass = [
-      'tag',
-      `tag--${size}`,
-      `tag--${color}`,
-      selected ? 'tag--selected' : '',
-      disabled ? 'tag--disabled' : '',
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const tagClass = getTagClassName(size, color, selected, disabled);
 
     if (removable) {
       return (
         <Host>
           <style>{getTagStyles()}</style>
           <div
-            class={`tag-group tag-group--${size} tag-group--${color}${selected ? ' tag-group--selected' : ''}${disabled ? ' tag-group--disabled' : ''}`}
+            class={getTagGroupClassName(size, color, selected, disabled)}
             role="none"
           >
             <button

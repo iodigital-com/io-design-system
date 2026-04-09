@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
 import type { IoLinkVariant, IoLinkColor } from './types';
 import { getLinkStyles } from './io-link-styles';
+import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
 
 /**
  * io-link
@@ -65,7 +66,7 @@ export class IoLink {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleClick = (ev: MouseEvent) => {
-    if (this.disabled) {
+    if (shouldBlockLinkClick(this.disabled)) {
       ev.preventDefault();
       ev.stopPropagation();
       return;
@@ -77,14 +78,14 @@ export class IoLink {
 
   render() {
     const { variant, color, href, target, rel, external, disabled } = this;
-    const resolvedTarget = external ? '_blank' : target;
-    const resolvedRel = external ? 'noopener noreferrer' : rel;
+    const resolvedTarget = resolveLinkTarget(target, external);
+    const resolvedRel = resolveLinkRel(rel, external);
 
     return (
       <Host>
         <style>{getLinkStyles()}</style>
         <a
-          class={`link link--${variant} link--${color}${disabled ? ' link--disabled' : ''}`}
+          class={getLinkClassName(variant, color, disabled)}
           href={disabled ? undefined : href}
           target={resolvedTarget}
           rel={resolvedRel}

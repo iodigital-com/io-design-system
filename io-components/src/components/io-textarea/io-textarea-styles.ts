@@ -74,7 +74,7 @@ export function getTextareaStyles(): string {
 
     .textarea-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
-      margin-top: -2px;
+      margin-top: var(--io-field-focus-offset-y);
     }
 
     .textarea-field:focus-visible {

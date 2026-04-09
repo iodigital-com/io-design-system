@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { IoToast } from './io-toast';
 import { toastManager } from './io-toast-manager';
+import { getToastStyles } from './io-toast-styles';
 
 describe('io-toast — registration', () => {
   let component: IoToast;
@@ -47,5 +48,17 @@ describe('io-toast — registration', () => {
     expect(() => component.render()).not.toThrow();
     (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
     expect(() => component.render()).not.toThrow();
+  });
+});
+
+describe('io-toast — style contracts', () => {
+  it('uses a literal breakpoint for media queries', () => {
+    const styles = getToastStyles();
+    expect(styles).toContain('@media (max-width: 480px)');
+  });
+
+  it('does not use var() inside media query conditions', () => {
+    const styles = getToastStyles();
+    expect(styles).not.toContain('@media (max-width: var(');
   });
 });

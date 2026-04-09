@@ -1,0 +1,76 @@
+{
+  "$schemaVersion": 1,
+  "$description": "Approved literal exceptions for scoped style files in issues #108 and #109.",
+  "entries": [
+    {
+      "file": "io-components/src/components/io-button/io-button-styles.ts",
+      "literal": "1px",
+      "context": "base border width",
+      "rationale": "Border width uses fixed 1px stroke for crisp rendering across variants.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-button/io-button-styles.ts",
+      "literal": "500ms",
+      "context": "snappy transition duration",
+      "rationale": "Transition timing retained for interaction feel parity; easing remains tokenized.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-button/io-button-styles.ts",
+      "literal": "150ms",
+      "context": "loading label fade",
+      "rationale": "Micro-fade remains fixed pending full motion-duration token set migration.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-carousel/io-carousel-styles.ts",
+      "literal": "1px",
+      "context": "scrollbar track border width and nav button border width",
+      "rationale": "Single-pixel stroke is intentional for visual alignment with adjacent surfaces.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-carousel/io-carousel-styles.ts",
+      "literal": "30%",
+      "context": "color-mix intensity",
+      "rationale": "color-mix percentage is a CSS function argument and not a design token scale value.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-carousel/io-carousel-styles.ts",
+      "literal": "50%",
+      "context": "vertical centering",
+      "rationale": "Positional percentage used for transform-based centering.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-carousel/io-carousel-styles.ts",
+      "literal": "1.06",
+      "context": "hover icon scale",
+      "rationale": "Scale factor is a motion geometry value, not a tokenized brand scalar.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-accordion/io-accordion-styles.ts",
+      "literal": "1px",
+      "context": "item divider border width",
+      "rationale": "Divider stroke width intentionally fixed at one device pixel.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-toast-item/io-toast-item-styles.ts",
+      "literal": "1px",
+      "context": "toast outer border width",
+      "rationale": "Toast outline remains fixed at one pixel for consistent contrast.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "file": "io-components/src/components/io-toast-item/io-toast-item-styles.ts",
+      "literal": "100%",
+      "context": "enter animation off-canvas translation",
+      "rationale": "Percentage-based translation is relative animation geometry and not token-scale spacing.",
+      "reviewAfter": "2026-12-31"
+    }
+  ]
+}

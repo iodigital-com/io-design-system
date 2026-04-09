@@ -62,7 +62,7 @@ export function getSelectStyles(): string {
 
     .select-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
-      margin-top: -2px;
+      margin-top: var(--io-field-focus-offset-y);
     }
 
     .select-field:focus-visible {
@@ -77,7 +77,7 @@ export function getSelectStyles(): string {
     /* Chevron icon */
     .select-chevron {
       position: absolute;
-      bottom: calc(var(--io-input-padding-y) + 2px);
+      bottom: calc(var(--io-input-padding-y) + var(--io-select-chevron-offset-y));
       right: 0;
       pointer-events: none;
       color: var(--io-text-secondary);

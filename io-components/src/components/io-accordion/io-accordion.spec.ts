@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { IoAccordion } from './io-accordion';
+import { getAccordionStyles } from './io-accordion-styles';
 
 describe('io-accordion — default props', () => {
   let component: IoAccordion;
@@ -66,5 +67,10 @@ describe('io-accordion — lifecycle', () => {
     (component as any).el = { id: 'accordion-host' };
     component.componentWillLoad();
     expect((component as any).baseId).toBe('accordion-host');
+  });
+
+  it('keeps max-height fallback in open panel styles', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('max-height: var(--io-accordion-max-height, 600px);');
   });
 });

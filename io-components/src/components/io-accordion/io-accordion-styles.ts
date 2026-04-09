@@ -93,18 +93,18 @@ export function getAccordionStyles(): string {
 
     /* Vertical bar */
     .accordion-icon::before {
-      width: 8%;
-      top: 1%;
-      bottom: 1%;
-      left: 44%;
+      width: var(--io-accordion-icon-bar-thickness);
+      top: var(--io-accordion-icon-bar-inset);
+      bottom: var(--io-accordion-icon-bar-inset);
+      left: var(--io-accordion-icon-bar-axis-offset);
     }
 
     /* Horizontal bar */
     .accordion-icon::after {
-      height: 8%;
-      left: 1%;
-      right: 1%;
-      top: 44%;
+      height: var(--io-accordion-icon-bar-thickness);
+      left: var(--io-accordion-icon-bar-inset);
+      right: var(--io-accordion-icon-bar-inset);
+      top: var(--io-accordion-icon-bar-axis-offset);
     }
 
     /* Open: vertical bar rotates to horizontal; horizontal bar collapses */
@@ -113,8 +113,8 @@ export function getAccordionStyles(): string {
     }
 
     .accordion-item--open .accordion-icon::after {
-      left: 50%;
-      right: 50%;
+      left: var(--io-accordion-icon-horizontal-collapsed-side);
+      right: var(--io-accordion-icon-horizontal-collapsed-side);
     }
 
     /* ── Panel ──────────────────────────────────────────── */

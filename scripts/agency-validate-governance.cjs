@@ -94,6 +94,18 @@ function validatePackageScripts(relativePath) {
       );
     }
 
+    if (!governance.includes("node scripts/check-token-doc-coverage.cjs")) {
+      errors.push(
+        `${relativePath} scripts.governance:check must invoke node scripts/check-token-doc-coverage.cjs directly.`,
+      );
+    }
+
+    if (!governance.includes("node scripts/check-style-literals.cjs")) {
+      errors.push(
+        `${relativePath} scripts.governance:check must invoke node scripts/check-style-literals.cjs directly.`,
+      );
+    }
+
     if (!governance.includes("node scripts/check-token-cssvar-naming.cjs")) {
       errors.push(
         `${relativePath} scripts.governance:check must invoke node scripts/check-token-cssvar-naming.cjs directly.`,
@@ -227,9 +239,14 @@ requireFile("scripts/sync-curated-agency-copilot-extended.cjs");
 requireFile("scripts/check-copilot-agent-drift.cjs");
 requireFile("scripts/check-copilot-agent-extended-drift.cjs");
 requireFile("scripts/check-token-runtime-reconciliation.cjs");
+requireFile("scripts/check-token-doc-coverage.cjs");
+requireFile("scripts/check-style-literals.cjs");
 requireFile("scripts/sync-stencil-assets.cjs");
 requireFile("io-storefront/package.json");
 requireFile("docs/token-runtime-reconciliation.json");
+requireFile("docs/token-cssvar-implemented-map.json");
+requireFile("docs/token-deprecated-unused.json");
+requireFile("docs/style-literal-allowlist.json");
 
 // Deprecated paths must be removed
 requirePathAbsent(".agent");
@@ -244,6 +261,8 @@ requireText("package.json", [
   "\"io-storefront\"",
   "\"governance:check\"",
   "\"token-runtime:check\"",
+  "\"token-doc-coverage:check\"",
+  "\"style-literals:check\"",
   "\"agents:install:claude\"",
   "\"agents:sync:copilot\"",
   "\"agents:sync:copilot-extended\"",

@@ -68,13 +68,13 @@ export function getButtonStyles(): string {
     /* xl  = 56px  (18px V + 18px text + 18px V + 2px border) */
     .btn--xl {
       height: var(--io-space-14);
-      padding: 1.125rem var(--io-space-10);
+      padding: var(--io-button-xl-padding-y) var(--io-space-10);
       font-size: var(--io-font-size-lg);
     }
 
     .btn--xl .btn__arrow {
-      width: 1.5rem;
-      height: 0.923rem;
+      width: var(--io-button-arrow-xl-width);
+      height: var(--io-button-arrow-xl-height);
     }
 
     /* ── Full width ─────────────────────────────────────── */
@@ -308,7 +308,7 @@ export function getButtonStyles(): string {
       bottom: 0;
       left: 0;
       width: 0;
-      height: 1px;
+      height: var(--io-button-link-underline-height);
       background-color: var(--io-color-primary);
       transition: width var(--io-motion-base) var(--io-motion-easing-bounce);
     }
@@ -325,8 +325,8 @@ export function getButtonStyles(): string {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 0.875rem;
-      height: 0.54rem;
+      width: var(--io-button-arrow-width-default);
+      height: var(--io-button-arrow-height-default);
       flex-shrink: 0;
       transition: transform 500ms var(--io-motion-easing-snappy);
     }
@@ -349,17 +349,17 @@ export function getButtonStyles(): string {
     @media (hover: hover) and (pointer: fine) {
       /* forward: slide right */
       .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow:not(.btn__arrow--back):not(.btn__arrow--down) {
-        transform: translateX(6px);
+        transform: translateX(var(--io-button-arrow-shift-forward));
       }
 
       /* back: slide left (reversed) */
       .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow--back {
-        transform: rotate(180deg) translateX(6px);
+        transform: rotate(180deg) translateX(var(--io-button-arrow-shift-forward));
       }
 
       /* down: slide down */
       .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow--down {
-        transform: rotate(90deg) translateX(5px);
+        transform: rotate(90deg) translateX(var(--io-button-arrow-shift-down));
       }
     }
 
@@ -384,10 +384,10 @@ export function getButtonStyles(): string {
       margin: auto;
       width: 1em;
       height: 1em;
-      border: 2px solid currentColor;
+      border: var(--io-button-spinner-border-width) solid currentColor;
       border-top-color: transparent;
       border-radius: 50%;
-      animation: io-btn-spin 0.6s linear infinite;
+      animation: io-btn-spin var(--io-button-spinner-duration) linear infinite;
     }
 
     @keyframes io-btn-spin {

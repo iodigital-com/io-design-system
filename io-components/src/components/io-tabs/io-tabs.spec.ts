@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { IoTabs } from './io-tabs';
 
 const TABS = [
@@ -35,5 +35,21 @@ describe('io-tabs — default props', () => {
     component.activeTab = 'details';
     component.componentWillLoad();
     expect(component.activeTab).toBe('details');
+  });
+
+  it('keeps activeTab empty when all tabs are disabled on load', () => {
+    component.tabs = [
+      { label: 'Disabled A', value: 'a', disabled: true },
+      { label: 'Disabled B', value: 'b', disabled: true },
+    ];
+
+    component.componentWillLoad();
+
+    expect(component.activeTab).toBe('');
+  });
+
+  it('enables delegatesFocus for the component shadow root', async () => {
+    const builtComponent = await import('../../../dist-custom-elements/io-tabs.js');
+    expect((builtComponent.IoTabs as { delegatesFocus?: boolean }).delegatesFocus).toBe(true);
   });
 });

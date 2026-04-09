@@ -27,7 +27,7 @@ This document defines canonical naming and alias rules between token paths in `d
 
 - `scripts/check-token-cssvar-naming.cjs` validates mapping integrity.
 - `scripts/check-token-runtime-reconciliation.cjs` validates full runtime coverage for `io-components/src/global/app.css`.
-- The check runs in `npm run governance:check`.
+- These checks run in `npm run governance:check`.
 
 ## Runtime Reconciliation Scope (#111)
 
@@ -43,7 +43,11 @@ This document defines canonical naming and alias rules between token paths in `d
   - stale reconciliation rows for vars no longer declared
   - duplicate runtime var rows
   - invalid disposition/schema metadata
+  - entry integrity violations (`tokenPath`, `canonicalCssVar`, `documentationScope` constraints)
+  - alias consistency mismatches with `docs/token-cssvar-naming-map.json`
 
 ## Current Scope (#113)
 
-This phase intentionally scopes to known naming divergences and explicit aliases only. Full token coverage reconciliation is tracked separately.
+Issue #113 remains scoped to naming divergences and explicit alias integrity in `docs/token-cssvar-naming-map.json`.
+Issue #111 adds full reconciliation coverage for runtime `--io-*` declarations in `io-components/src/global/app.css` via `docs/token-runtime-reconciliation.json`.
+Broader semantic token harmonization beyond runtime declarations remains tracked separately.

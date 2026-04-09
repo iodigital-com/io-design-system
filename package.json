@@ -24,7 +24,7 @@
     "sync:stencil-assets": "node scripts/sync-stencil-assets.cjs",
     "token-naming:check": "node scripts/check-token-cssvar-naming.cjs",
     "token-runtime:check": "node scripts/check-token-runtime-reconciliation.cjs",
-    "governance:check": "node scripts/agency-validate-governance.cjs && npm run token-naming:check && npm run token-runtime:check && node scripts/check-copilot-agent-drift.cjs",
+    "governance:check": "node scripts/agency-validate-governance.cjs && node scripts/check-token-cssvar-naming.cjs && node scripts/check-token-runtime-reconciliation.cjs && node scripts/check-copilot-agent-drift.cjs",
     "events:guard": "node scripts/check-no-io-prefixed-events.cjs",
     "agents:install:claude": "node scripts/install-curated-agency-claude.cjs",
     "agents:sync:copilot": "node scripts/sync-curated-agency-copilot.cjs",

@@ -50,6 +50,10 @@ function getTokenAtPath(tokens, tokenPath) {
       return undefined;
     }
 
+    if (!Object.prototype.hasOwnProperty.call(acc, segment)) {
+      return undefined;
+    }
+
     return acc[segment];
   }, tokens);
 }
@@ -131,15 +135,46 @@ function main() {
   const runtimeVars = new Set(cssMap.keys());
   const entryByRuntimeVar = new Map();
   const aliasByVar = new Map();
+  const tokenPathToCanonical = new Map();
+  const expectedAliasedVars = new Set();
 
   for (const row of namingMap.mappings || []) {
     if (!row || typeof row !== "object" || Array.isArray(row)) {
       continue;
     }
 
-    if (typeof row.aliasCssVar === "string") {
-      aliasByVar.set(row.aliasCssVar, row);
+    const { tokenPath, canonicalCssVar, aliasCssVar, status } = row;
+
+    if (status !== "aliased") {
+      continue;
     }
+
+    if (typeof aliasCssVar !== "string" || !VAR_NAME.test(aliasCssVar)) {
+      errors.push(`Invalid aliasCssVar in docs/token-cssvar-naming-map.json: ${aliasCssVar}`);
+      continue;
+    }
+
+    if (aliasByVar.has(aliasCssVar)) {
+      errors.push(`Duplicate aliasCssVar in docs/token-cssvar-naming-map.json: ${aliasCssVar}`);
+      continue;
+    }
+
+    if (typeof canonicalCssVar !== "string" || !VAR_NAME.test(canonicalCssVar)) {
+      errors.push(`Invalid canonicalCssVar in docs/token-cssvar-naming-map.json for ${aliasCssVar}`);
+      continue;
+    }
+
+    if (typeof tokenPath !== "string" || tokenPath.trim().length === 0) {
+      errors.push(`Invalid tokenPath in docs/token-cssvar-naming-map.json for ${aliasCssVar}`);
+      continue;
+    }
+
+    if (!tokenPathToCanonical.has(tokenPath)) {
+      tokenPathToCanonical.set(tokenPath, canonicalCssVar);
+    }
+
+    expectedAliasedVars.add(aliasCssVar);
+    aliasByVar.set(aliasCssVar, row);
   }
 
   for (const entry of reconciliation.entries) {
@@ -193,6 +228,17 @@ function main() {
           errors.push(`tokenPath is required for documented tokens-json entry: ${runtimeCssVar}`);
         } else if (!hasTokenLeaf(tokens, tokenPath)) {
           errors.push(`tokenPath must resolve to a token leaf for ${runtimeCssVar}: ${tokenPath}`);
+        } else {
+          const expectedCanonical = tokenPathToCanonical.get(tokenPath);
+          if (!expectedCanonical) {
+            errors.push(
+              `documented tokens-json entry must map to a canonical CSS var in docs/token-cssvar-naming-map.json: ${runtimeCssVar}`,
+            );
+          } else if (runtimeCssVar !== expectedCanonical) {
+            errors.push(
+              `documented tokens-json entry mismatch for ${runtimeCssVar}: tokenPath ${tokenPath} maps to canonical ${expectedCanonical}`,
+            );
+          }
         }
       }
 
@@ -220,6 +266,12 @@ function main() {
 
       if (typeof canonicalCssVar !== "string" || !VAR_NAME.test(canonicalCssVar)) {
         errors.push(`canonicalCssVar is required for aliased entry: ${runtimeCssVar}`);
+      }
+
+      if (typeof canonicalCssVar === "string" && VAR_NAME.test(canonicalCssVar)) {
+        if (!cssMap.has(canonicalCssVar)) {
+          errors.push(`canonicalCssVar not found in app.css for ${runtimeCssVar}: ${canonicalCssVar}`);
+        }
       }
 
       const mapRow = aliasByVar.get(runtimeCssVar);
@@ -287,6 +339,39 @@ function main() {
     const entry = entryByRuntimeVar.get(runtimeCssVar);
     if (entry.disposition !== "removed" && !runtimeVars.has(runtimeCssVar)) {
       errors.push(`Reconciliation entry is stale (var not found in app.css): ${runtimeCssVar}`);
+    }
+  }
+
+  for (const [runtimeCssVar, entry] of entryByRuntimeVar.entries()) {
+    if (entry.disposition !== "aliased") {
+      continue;
+    }
+
+    const canonicalCssVar = entry.canonicalCssVar;
+    if (typeof canonicalCssVar !== "string" || !VAR_NAME.test(canonicalCssVar)) {
+      continue;
+    }
+
+    const canonicalEntry = entryByRuntimeVar.get(canonicalCssVar);
+    if (!canonicalEntry) {
+      errors.push(`canonicalCssVar must have a reconciliation entry for ${runtimeCssVar}: ${canonicalCssVar}`);
+      continue;
+    }
+
+    if (canonicalEntry.disposition === "removed") {
+      errors.push(`canonicalCssVar cannot be marked removed for ${runtimeCssVar}: ${canonicalCssVar}`);
+    }
+  }
+
+  for (const aliasCssVar of expectedAliasedVars) {
+    const entry = entryByRuntimeVar.get(aliasCssVar);
+    if (!entry) {
+      errors.push(`Aliased var from docs/token-cssvar-naming-map.json missing in reconciliation: ${aliasCssVar}`);
+      continue;
+    }
+
+    if (entry.disposition !== "aliased") {
+      errors.push(`Aliased var must be marked disposition \"aliased\" in reconciliation: ${aliasCssVar}`);
     }
   }
 

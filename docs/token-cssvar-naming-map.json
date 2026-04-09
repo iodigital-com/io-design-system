@@ -1,0 +1,56 @@
+{
+  "$schemaVersion": 1,
+  "$description": "Canonical token path to CSS variable mappings for naming convergence governance.",
+  "mappings": [
+    {
+      "tokenPath": "color.semantic.red",
+      "canonicalCssVar": "--io-color-error-dark",
+      "aliasCssVar": "--io-color-semantic-red",
+      "status": "aliased",
+      "migration": {
+        "notes": "Use alias var for token-path discoverability while preserving existing runtime canonical var.",
+        "reviewAfter": "2026-12-31"
+      }
+    },
+    {
+      "tokenPath": "color.system.interactiveBlue",
+      "canonicalCssVar": "--io-color-system-blue",
+      "aliasCssVar": "--io-color-system-interactive-blue",
+      "status": "aliased",
+      "migration": {
+        "notes": "Alias aligns token path naming with runtime var naming.",
+        "reviewAfter": "2026-12-31"
+      }
+    },
+    {
+      "tokenPath": "color.focus.darkRed",
+      "canonicalCssVar": "--io-focus-inner",
+      "aliasCssVar": "--io-color-focus-dark-red",
+      "status": "aliased",
+      "migration": {
+        "notes": "Alias preserves focus-ring internals while making token-path mapping explicit.",
+        "reviewAfter": "2026-12-31"
+      }
+    },
+    {
+      "tokenPath": "color.focus.lightPink",
+      "canonicalCssVar": "--io-focus-outer",
+      "aliasCssVar": "--io-color-focus-light-pink",
+      "status": "aliased",
+      "migration": {
+        "notes": "Alias preserves focus-ring internals while making token-path mapping explicit.",
+        "reviewAfter": "2026-12-31"
+      }
+    },
+    {
+      "tokenPath": "form.checkbox.borderRadius",
+      "canonicalCssVar": "--io-checkbox-radius",
+      "aliasCssVar": "--io-form-checkbox-border-radius",
+      "status": "aliased",
+      "migration": {
+        "notes": "Alias keeps current checkbox token API stable and documents form token mapping explicitly.",
+        "reviewAfter": "2026-12-31"
+      }
+    }
+  ]
+}

@@ -27,4 +27,13 @@ describe('io-pagination - disabled behavior (boundary guarded)', () => {
     expect(component.page).toBe(5);
     expect(emitMock).not.toHaveBeenCalled();
   });
+
+  it('does not emit when target page equals current page', () => {
+    component.page = 3;
+
+    (component as any).go(3);
+
+    expect(component.page).toBe(3);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
 });

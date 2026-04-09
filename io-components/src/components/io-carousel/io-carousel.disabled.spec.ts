@@ -2,10 +2,14 @@ import { describe, it, expect, vi } from 'vitest';
 import { IoCarousel } from './io-carousel';
 
 describe('io-carousel - disabled behavior (not applicable)', () => {
-  it('has no disabled prop because carousel navigation remains available', () => {
-    const component = new IoCarousel() as any;
+  it('navigation handlers are safe no-ops when track is unavailable', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(null) } };
 
-    expect('disabled' in component).toBe(false);
+    expect(() => {
+      (component as any).onPrev();
+      (component as any).onNext();
+    }).not.toThrow();
   });
 
   it('rewinds at boundaries when configured', () => {

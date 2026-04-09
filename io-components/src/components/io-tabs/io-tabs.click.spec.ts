@@ -31,4 +31,15 @@ describe('io-tabs - click handling', () => {
     expect(component.activeTab).toBe('overview');
     expect(emitMock).not.toHaveBeenCalled();
   });
+
+  it('emits once per distinct tab transition across sequential clicks', () => {
+    (component as any).handleTabClick('details');
+    (component as any).handleTabClick('details');
+    (component as any).handleTabClick('overview');
+
+    expect(component.activeTab).toBe('overview');
+    expect(emitMock).toHaveBeenCalledTimes(2);
+    expect(emitMock).toHaveBeenNthCalledWith(1, 'details');
+    expect(emitMock).toHaveBeenNthCalledWith(2, 'overview');
+  });
 });

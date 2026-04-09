@@ -47,4 +47,15 @@ describe('io-spinner — interaction model consistency', () => {
       component.render();
     }).not.toThrow();
   });
+
+  it('falls back to Loading when label is nullish at runtime', () => {
+    const component = new IoSpinner() as any;
+
+    expect(() => {
+      component.label = undefined;
+      component.render();
+      component.label = null;
+      component.render();
+    }).not.toThrow();
+  });
 });

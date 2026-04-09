@@ -4,7 +4,8 @@ export function getSpinnerClassName(size: IoSpinnerSize, color: IoSpinnerColor):
   return `spinner spinner--${size} spinner--${color}`;
 }
 
-export function normalizeSpinnerLabel(label: string): string {
-  const trimmed = label.trim();
+export function normalizeSpinnerLabel(label: unknown): string {
+  const normalizedLabel = typeof label === 'string' ? label : '';
+  const trimmed = normalizedLabel.trim();
   return trimmed.length > 0 ? trimmed : 'Loading';
 }

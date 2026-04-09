@@ -1,5 +1,5 @@
 import { Component, Prop, Event, EventEmitter, Host, h } from '@stencil/core';
-import type { IoToastItemVariant } from './types';
+import type { IoToastVariant } from '../io-toast/types';
 import { getToastItemStyles } from './io-toast-item-styles';
 import { getToastCloseIcon, getToastVariantIcon } from './io-toast-item-utils';
 
@@ -20,7 +20,7 @@ export class IoToastItem {
   @Prop() text = '';
 
   /** Visual variant controlling colour accent and icon */
-  @Prop({ reflect: true }) variant: IoToastItemVariant = 'neutral';
+  @Prop({ reflect: true }) variant: IoToastVariant = 'neutral';
 
   // ── Events ────────────────────────────────────────────────────
 

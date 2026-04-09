@@ -51,3 +51,22 @@ describe('io-toast-item — variant', () => {
     },
   );
 });
+
+describe('io-toast-item — interaction model consistency', () => {
+  it('uses dismiss semantics without prefixed custom-event APIs', () => {
+    const component = new IoToastItem() as any;
+
+    expect('dismiss' in component).toBe(false);
+    expect(component.didDismiss).toBeUndefined();
+    expect(component.onDismiss).toBeUndefined();
+  });
+
+  it('close interaction only emits dismiss', () => {
+    const component = new IoToastItem() as any;
+    const emitMock = vi.fn();
+    component.dismiss = { emit: emitMock };
+
+    expect(() => component.handleClose()).not.toThrow();
+    expect(emitMock).toHaveBeenCalledTimes(1);
+  });
+});

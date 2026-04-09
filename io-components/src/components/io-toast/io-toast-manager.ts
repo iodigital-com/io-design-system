@@ -1,4 +1,5 @@
 import type { IoToastMessage, IoToastEntry } from './types';
+import { createToastEntry, hasToastText } from './io-toast-utils';
 
 const DEFAULT_DURATION = 6000;
 /** Gap before showing next queued item — matches slide-out animation duration. */
@@ -51,16 +52,12 @@ export class IoToastManagerClass {
       console.warn('[io-toast] addToast() called but no <io-toast> element is mounted.');
       return;
     }
-    if (!message.text?.trim()) {
+    if (!hasToastText(message)) {
       console.warn('[io-toast] addToast() called with empty text.');
       return;
     }
 
-    const entry: IoToastEntry = {
-      variant: 'neutral',
-      ...message,
-      id: this.nextId++,
-    };
+    const entry = createToastEntry(message, this.nextId++);
 
     if (this.current === null) {
       this.show(entry);

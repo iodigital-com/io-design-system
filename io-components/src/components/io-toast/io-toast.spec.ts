@@ -35,4 +35,17 @@ describe('io-toast — registration', () => {
     await component.addToast({ text: 'Hello', variant: 'success' });
     expect(addSpy).toHaveBeenCalledWith({ text: 'Hello', variant: 'success' });
   });
+
+  it('exposes imperative addToast API without prefixed methods', () => {
+    const methodNames = Object.getOwnPropertyNames(IoToast.prototype);
+    expect(methodNames).toContain('addToast');
+    expect(methodNames).not.toContain('onAddToast');
+    expect(methodNames).not.toContain('didAddToast');
+  });
+
+  it('render remains stable with and without an active message', () => {
+    expect(() => component.render()).not.toThrow();
+    (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
+    expect(() => component.render()).not.toThrow();
+  });
 });

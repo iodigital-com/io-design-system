@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
 import type { IoModalSize } from './types';
 import { getModalStyles } from './io-modal-styles';
+import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
 
 /**
  * io-modal
@@ -54,7 +55,7 @@ export class IoModal {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.headingId = `io-modal-heading-${Math.random().toString(36).slice(2)}`;
+    this.headingId = createModalHeadingId(Math.random().toString(36).slice(2));
   }
 
   componentDidLoad() {
@@ -86,11 +87,7 @@ export class IoModal {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop =
-      ev.clientX < rect.left ||
-      ev.clientX > rect.right ||
-      ev.clientY < rect.top ||
-      ev.clientY > rect.bottom;
+    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
       this.open = false;
     }
@@ -109,8 +106,7 @@ export class IoModal {
 
   render() {
     const { size, heading, headingId } = this;
-
-    const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    const closeIcon = getModalCloseIcon();
 
     return (
       <Host>

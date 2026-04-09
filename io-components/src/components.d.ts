@@ -20,7 +20,8 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoTabItem } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
-import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
+import { IoToastMessage } from "./components/io-toast/types";
+import { IoToastItemVariant } from "./components/io-toast-item/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeVariant } from "./components/io-badge/types";
@@ -37,7 +38,8 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoTabItem } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize } from "./components/io-textarea/types";
-export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
+export { IoToastMessage } from "./components/io-toast/types";
+export { IoToastItemVariant } from "./components/io-toast-item/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export namespace Components {
     /**
@@ -760,7 +762,7 @@ export namespace Components {
           * Visual variant controlling colour accent and icon
           * @default 'neutral'
          */
-        "variant": IoToastVariant;
+        "variant": IoToastItemVariant;
     }
     /**
      * io-tooltip
@@ -2093,7 +2095,7 @@ declare namespace LocalJSX {
           * Visual variant controlling colour accent and icon
           * @default 'neutral'
          */
-        "variant"?: IoToastVariant;
+        "variant"?: IoToastItemVariant;
     }
     /**
      * io-tooltip
@@ -2251,7 +2253,7 @@ declare namespace LocalJSX {
     }
     interface IoToastItemAttributes {
         "text": string;
-        "variant": IoToastVariant;
+        "variant": IoToastItemVariant;
     }
     interface IoTooltipAttributes {
         "content": string;

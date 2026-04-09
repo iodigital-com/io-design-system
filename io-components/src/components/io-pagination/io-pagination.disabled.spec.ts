@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { IoPagination } from './io-pagination';
 
-describe('io-pagination - disabled behavior (boundary guarded)', () => {
+describe('io-pagination - boundary guard behavior', () => {
   let component: IoPagination;
   let emitMock: ReturnType<typeof vi.fn>;
 

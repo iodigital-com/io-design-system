@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { IoCarousel } from './io-carousel';
 
-describe('io-carousel - disabled behavior (not applicable)', () => {
+describe('io-carousel - navigation guard behavior (disabled not applicable)', () => {
   it('navigation handlers are safe no-ops when track is unavailable', () => {
     const component = new IoCarousel();
     (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(null) } };

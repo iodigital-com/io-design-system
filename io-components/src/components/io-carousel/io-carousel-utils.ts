@@ -23,15 +23,21 @@ export function getCarouselTargetIndex(
   rewind: boolean,
   direction: 'prev' | 'next',
 ): number {
+  if (totalSlides <= 0) {
+    return 0;
+  }
+
+  const safeStep = Number.isFinite(stepSize) && stepSize >= 1 ? Math.floor(stepSize) : 1;
+
   if (direction === 'prev') {
-    const rawTarget = currentIndex - stepSize;
+    const rawTarget = currentIndex - safeStep;
     if (rawTarget < 0) {
       return rewind ? totalSlides - 1 : 0;
     }
     return rawTarget;
   }
 
-  const rawTarget = currentIndex + stepSize;
+  const rawTarget = currentIndex + safeStep;
   if (rawTarget >= totalSlides) {
     return rewind ? 0 : totalSlides - 1;
   }

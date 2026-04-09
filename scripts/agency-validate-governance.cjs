@@ -111,7 +111,6 @@ function validatePackageScripts(relativePath) {
         `${relativePath} scripts.governance:check must invoke node scripts/check-storefront-status-governance.cjs directly.`,
       );
     }
-
     if (!governance.includes("node scripts/check-token-cssvar-naming.cjs")) {
       errors.push(
         `${relativePath} scripts.governance:check must invoke node scripts/check-token-cssvar-naming.cjs directly.`,
@@ -254,8 +253,11 @@ requireFile("docs/token-runtime-reconciliation.json");
 requireFile("docs/token-cssvar-implemented-map.json");
 requireFile("docs/token-deprecated-unused.json");
 requireFile("docs/style-literal-allowlist.json");
+<<<<<<< HEAD
 requireFile("docs/storefront-status-governance.md");
 requireFile("docs/component-stability-recommendations.md");
+=======
+>>>>>>> origin/main
 
 // Deprecated paths must be removed
 requirePathAbsent(".agent");
@@ -272,7 +274,10 @@ requireText("package.json", [
   "\"token-runtime:check\"",
   "\"token-doc-coverage:check\"",
   "\"style-literals:check\"",
+<<<<<<< HEAD
   "\"status-governance:check\"",
+=======
+>>>>>>> origin/main
   "\"agents:install:claude\"",
   "\"agents:sync:copilot\"",
   "\"agents:sync:copilot-extended\"",

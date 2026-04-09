@@ -32,7 +32,7 @@ This document defines canonical naming and alias rules between token paths in `d
 ## Runtime Reconciliation Scope (#111)
 
 - Machine-readable source of truth for runtime variable reconciliation is `docs/token-runtime-reconciliation.json`.
-- Every runtime `--io-*` declaration in `io-components/src/global/app.css` must have exactly one reconciliation row.
+- Every runtime `--io-*` custom property name declared in `io-components/src/global/app.css` must have exactly one reconciliation row.
 - Allowed `disposition` values are:
   - `documented`
   - `aliased`

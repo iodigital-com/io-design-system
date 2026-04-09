@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
 import type { IoCheckboxChangeDetail } from './types';
 import { getCheckboxStyles } from './io-checkbox-styles';
+import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
 
 /**
  * io-checkbox
@@ -68,12 +69,14 @@ export class IoCheckbox {
 
   // ── Private ───────────────────────────────────────────────────
 
+  private fallbackId!: string;
   private fieldId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.fieldId = `io-checkbox-${this.name || Math.random().toString(36).slice(2)}`;
+    this.fallbackId = Math.random().toString(36).slice(2);
+    this.fieldId = resolveCheckboxId(this.name, this.fallbackId);
   }
 
   componentDidRender() {
@@ -85,6 +88,7 @@ export class IoCheckbox {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
+    if (this.disabled) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.indeterminate = false;
@@ -101,7 +105,7 @@ export class IoCheckbox {
     return (
       <Host>
         <style>{getCheckboxStyles()}</style>
-        <div class={`checkbox-wrapper${disabled ? ' checkbox-wrapper--disabled' : ''}${error ? ' checkbox-wrapper--error' : ''}`}>
+        <div class={getCheckboxWrapperClass(disabled, error)}>
           <label class="checkbox-label" htmlFor={inputId}>
             <span class="checkbox-control">
               <input
@@ -118,13 +122,7 @@ export class IoCheckbox {
                 onChange={this.handleChange}
               />
               <span
-                class={[
-                  'checkbox-custom',
-                  checked ? 'checkbox-custom--checked' : '',
-                  indeterminate ? 'checkbox-custom--indeterminate' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
+                class={getCheckboxCustomClass(checked, indeterminate)}
                 aria-hidden="true"
               >
                 {checked && !indeterminate && (

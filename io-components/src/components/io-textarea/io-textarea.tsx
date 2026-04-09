@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
 import type { IoTextareaResize } from './types';
 import { getTextareaStyles } from './io-textarea-styles';
+import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
 
 /**
  * io-textarea
@@ -91,17 +92,20 @@ export class IoTextarea {
 
   // ── Private ───────────────────────────────────────────────────
 
+  private fallbackId!: string;
   private fieldId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.fieldId = `io-textarea-${this.name || Math.random().toString(36).slice(2)}`;
+    this.fallbackId = Math.random().toString(36).slice(2);
+    this.fieldId = resolveTextareaId(this.name, this.fallbackId);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleInput = (ev: InputEvent) => {
+    if (this.disabled) return;
     const textarea = ev.target as HTMLTextAreaElement;
     this.value = textarea.value;
     this.input.emit(ev);
@@ -113,14 +117,17 @@ export class IoTextarea {
   };
 
   private handleChange = (ev: Event) => {
+    if (this.disabled) return;
     this.change.emit((ev.target as HTMLTextAreaElement).value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
+    if (this.disabled) return;
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
+    if (this.disabled) return;
     this.blur.emit(ev);
   };
 
@@ -134,10 +141,10 @@ export class IoTextarea {
     return (
       <Host>
         <style>{getTextareaStyles()}</style>
-        <div class={`textarea-wrapper${error ? ' textarea-wrapper--error' : ''}${disabled ? ' textarea-wrapper--disabled' : ''}`}>
+        <div class={getTextareaWrapperClass(error, disabled)}>
           <textarea
             id={textareaId}
-            class={`textarea-field textarea-field--resize-${resize}`}
+            class={getTextareaFieldClass(resize)}
             name={name}
             placeholder={placeholder ?? ' '}
             value={value}

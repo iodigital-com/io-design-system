@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
 import type { IoSelectOption } from './types';
 import { getSelectStyles } from './io-select-styles';
+import { resolveSelectId, getSelectWrapperClass } from './io-select-utils';
 
 /**
  * io-select
@@ -73,26 +74,31 @@ export class IoSelect {
 
   // ── Private ───────────────────────────────────────────────────
 
+  private fallbackId!: string;
   private fieldId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.fieldId = `io-select-${this.name || Math.random().toString(36).slice(2)}`;
+    this.fallbackId = Math.random().toString(36).slice(2);
+    this.fieldId = resolveSelectId(this.name, this.fallbackId);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
+    if (this.disabled) return;
     this.value = (ev.target as HTMLSelectElement).value;
     this.change.emit(this.value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
+    if (this.disabled) return;
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
+    if (this.disabled) return;
     this.blur.emit(ev);
   };
 
@@ -106,7 +112,7 @@ export class IoSelect {
     return (
       <Host>
         <style>{getSelectStyles()}</style>
-        <div class={`select-wrapper${error ? ' select-wrapper--error' : ''}${disabled ? ' select-wrapper--disabled' : ''}`}>
+        <div class={getSelectWrapperClass(error, disabled)}>
           <select
             id={selectId}
             class="select-field"

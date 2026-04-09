@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
 import type { IoRadioChangeDetail } from './types';
 import { getRadioStyles } from './io-radio-styles';
+import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
 
 /**
  * io-radio
@@ -65,17 +66,20 @@ export class IoRadio {
 
   // ── Private ───────────────────────────────────────────────────
 
+  private fallbackId!: string;
   private fieldId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.fieldId = `io-radio-${this.name || Math.random().toString(36).slice(2)}`;
+    this.fallbackId = Math.random().toString(36).slice(2);
+    this.fieldId = resolveRadioId(this.name, this.fallbackId);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
+    if (this.disabled) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });
@@ -91,7 +95,7 @@ export class IoRadio {
     return (
       <Host>
         <style>{getRadioStyles()}</style>
-        <div class={`radio-wrapper${disabled ? ' radio-wrapper--disabled' : ''}${error ? ' radio-wrapper--error' : ''}`}>
+        <div class={getRadioWrapperClass(disabled, error)}>
           <label class="radio-label" htmlFor={inputId}>
             <span class="radio-control">
               <input
@@ -108,7 +112,7 @@ export class IoRadio {
                 onChange={this.handleChange}
               />
               <span
-                class={`radio-custom${checked ? ' radio-custom--checked' : ''}`}
+                class={getRadioCustomClass(checked)}
                 aria-hidden="true"
               >
                 <span class="radio-dot" />

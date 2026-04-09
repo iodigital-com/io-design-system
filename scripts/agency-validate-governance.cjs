@@ -61,6 +61,49 @@ function requireTextAbsent(relativePath, textChecks) {
   }
 }
 
+function validatePackageScripts(relativePath) {
+  if (!exists(relativePath)) {
+    errors.push(`Missing required file: ${relativePath}`);
+    return;
+  }
+
+  try {
+    const parsed = JSON.parse(read(relativePath));
+    const scripts = parsed && typeof parsed === "object" ? parsed.scripts : undefined;
+
+    if (!scripts || typeof scripts !== "object") {
+      errors.push(`${relativePath} must define a scripts object.`);
+      return;
+    }
+
+    if (scripts["token-runtime:check"] !== "node scripts/check-token-runtime-reconciliation.cjs") {
+      errors.push(
+        `${relativePath} scripts.token-runtime:check must equal "node scripts/check-token-runtime-reconciliation.cjs".`,
+      );
+    }
+
+    const governance = scripts["governance:check"];
+    if (typeof governance !== "string") {
+      errors.push(`${relativePath} must define scripts.governance:check as a string.`);
+      return;
+    }
+
+    if (!governance.includes("node scripts/check-token-runtime-reconciliation.cjs")) {
+      errors.push(
+        `${relativePath} scripts.governance:check must invoke node scripts/check-token-runtime-reconciliation.cjs directly.`,
+      );
+    }
+
+    if (!governance.includes("node scripts/check-token-cssvar-naming.cjs")) {
+      errors.push(
+        `${relativePath} scripts.governance:check must invoke node scripts/check-token-cssvar-naming.cjs directly.`,
+      );
+    }
+  } catch (error) {
+    errors.push(`${relativePath} is not valid JSON: ${error.message}`);
+  }
+}
+
 function validateCuratedJson(relativePath) {
   if (!exists(relativePath)) {
     errors.push(`Missing required file: ${relativePath}`);
@@ -183,8 +226,10 @@ requireFile("scripts/sync-curated-agency-copilot.cjs");
 requireFile("scripts/sync-curated-agency-copilot-extended.cjs");
 requireFile("scripts/check-copilot-agent-drift.cjs");
 requireFile("scripts/check-copilot-agent-extended-drift.cjs");
+requireFile("scripts/check-token-runtime-reconciliation.cjs");
 requireFile("scripts/sync-stencil-assets.cjs");
 requireFile("io-storefront/package.json");
+requireFile("docs/token-runtime-reconciliation.json");
 
 // Deprecated paths must be removed
 requirePathAbsent(".agent");
@@ -198,6 +243,7 @@ requirePathAbsent("design-system");
 requireText("package.json", [
   "\"io-storefront\"",
   "\"governance:check\"",
+  "\"token-runtime:check\"",
   "\"agents:install:claude\"",
   "\"agents:sync:copilot\"",
   "\"agents:sync:copilot-extended\"",
@@ -210,6 +256,8 @@ requireTextAbsent("package.json", [
   ".claude/skills",
   "ui-ux-pro-max",
 ]);
+
+validatePackageScripts("package.json");
 
 requireText("pnpm-workspace.yaml", ["- 'io-storefront'"]);
 requireTextAbsent("pnpm-workspace.yaml", ["io-components/storefront"]);

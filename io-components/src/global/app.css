@@ -75,10 +75,19 @@
   --io-color-error-on-blue:      #FF9E9A;
   --io-color-error-dark:         #D35454;
   --io-color-system-blue:        #0019FF;
+  /* Naming-convergence aliases: compatibility tokens that intentionally
+     retain the --io-color-* prefix while resolving to other tokens.
+     These are NOT primitive palette values — see docs/token-naming-conventions.md. */
+  --io-color-semantic-red:       var(--io-color-error-dark);
+  --io-color-system-interactive-blue: var(--io-color-system-blue);
 
   /* ── Focus Ring (double-ring a11y pattern) ──────────────── */
   --io-focus-inner:              #7D0034;
   --io-focus-outer:              #FFE4EE;
+  /* Naming-convergence aliases for focus primitives. Components must use
+     var(--io-focus-ring-active) (set by initFocusVisible()), not these vars directly. */
+  --io-color-focus-dark-red:     var(--io-focus-inner);
+  --io-color-focus-light-pink:   var(--io-focus-outer);
 
   /* ============================================================
      2. SEMANTIC TOKENS — Role-based aliases for component use
@@ -285,6 +294,7 @@
   --io-label-offset-top:         -2rem;
   --io-checkbox-size:            1rem;
   --io-checkbox-radius:          2px;
+  --io-form-checkbox-border-radius: var(--io-checkbox-radius);
   --io-checkbox-border-width:    1.5px;
   --io-checkbox-icon-size:       10px;
   --io-select-padding-right:     1.6rem;

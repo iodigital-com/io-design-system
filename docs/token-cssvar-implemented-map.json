@@ -1,0 +1,1260 @@
+{
+  "$schemaVersion": 1,
+  "$description": "Implemented token-to-runtime CSS variable mappings for issue #112.",
+  "mappings": [
+    {
+      "tokenPath": "borderRadius.lg",
+      "runtimeCssVar": "--io-border-radius-lg",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "borderRadius.md",
+      "runtimeCssVar": "--io-border-radius-md",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "borderRadius.pill",
+      "runtimeCssVar": "--io-border-radius-pill",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "borderRadius.sm",
+      "runtimeCssVar": "--io-border-radius-sm",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "borderRadius.xl",
+      "runtimeCssVar": "--io-border-radius-xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "borderRadius.xs",
+      "runtimeCssVar": "--io-border-radius-xs",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.accentColor",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.avatarBackground",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.avatarForeground",
+      "runtimeCssVar": "--io-color-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.clearspaceFactor",
+      "runtimeCssVar": "--io-state-disabled-opacity",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.defaultColorDark",
+      "runtimeCssVar": "--io-color-grey-6",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.defaultColorLight",
+      "runtimeCssVar": "--io-color-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.2xl",
+      "runtimeCssVar": "--io-breakpoint-2xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.3xl",
+      "runtimeCssVar": "--io-breakpoint-3xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.lg",
+      "runtimeCssVar": "--io-breakpoint-lg",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.md",
+      "runtimeCssVar": "--io-breakpoint-md",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.sm",
+      "runtimeCssVar": "--io-accordion-max-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.xl",
+      "runtimeCssVar": "--io-breakpoint-xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "breakpoint.xs",
+      "runtimeCssVar": "--io-breakpoint-xs",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.accent",
+      "runtimeCssVar": "--io-color-dark-accent",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.accentBg",
+      "runtimeCssVar": "--io-color-dark-accent-bg",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.bgBase",
+      "runtimeCssVar": "--io-color-dark-bg-base",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.bgHover",
+      "runtimeCssVar": "--io-color-dark-bg-hover",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.bgRaised",
+      "runtimeCssVar": "--io-color-dark-bg-raised",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.bgSurface",
+      "runtimeCssVar": "--io-color-dark-bg-surface",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.border",
+      "runtimeCssVar": "--io-color-dark-border",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.borderHover",
+      "runtimeCssVar": "--io-color-dark-border-hover",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.error",
+      "runtimeCssVar": "--io-color-dark-error",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.playgroundDot",
+      "runtimeCssVar": "--io-color-dark-playground-dot",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.textMuted",
+      "runtimeCssVar": "--io-color-dark-text-muted",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.textPrimary",
+      "runtimeCssVar": "--io-color-dark-text-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.dark.textSecondary",
+      "runtimeCssVar": "--io-color-dark-text-secondary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.focus.darkRed",
+      "runtimeCssVar": "--io-focus-inner",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.focus.lightPink",
+      "runtimeCssVar": "--io-focus-outer",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.antraciet",
+      "runtimeCssVar": "--io-color-antraciet",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greyFive",
+      "runtimeCssVar": "--io-color-grey-5",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greyFour",
+      "runtimeCssVar": "--io-color-grey-4",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greyOne",
+      "runtimeCssVar": "--io-color-grey-1",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greySix",
+      "runtimeCssVar": "--io-color-grey-6",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greyThree",
+      "runtimeCssVar": "--io-color-grey-3",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.greyTwo",
+      "runtimeCssVar": "--io-color-grey-2",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.neutral.offWhite",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.beige",
+      "runtimeCssVar": "--io-color-beige",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.black",
+      "runtimeCssVar": "--io-color-black",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.blue",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.blueHover",
+      "runtimeCssVar": "--io-color-primary-hover",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.offWhite",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.orange",
+      "runtimeCssVar": "--io-color-orange",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.pink",
+      "runtimeCssVar": "--io-color-pink",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.pureWhite",
+      "runtimeCssVar": "--io-color-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.primary.rouge",
+      "runtimeCssVar": "--io-color-rouge",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.baseBeige",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.baseGreen",
+      "runtimeCssVar": "--io-color-calm-green",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.calmBeige",
+      "runtimeCssVar": "--io-color-calm-beige",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.calmBlue",
+      "runtimeCssVar": "--io-color-calm-blue",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.calmGreen",
+      "runtimeCssVar": "--io-color-calm-green",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.calmPink",
+      "runtimeCssVar": "--io-color-calm-pink",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.lavendel",
+      "runtimeCssVar": "--io-color-lavendel",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.secondary.yellow",
+      "runtimeCssVar": "--io-color-yellow",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.blueDark",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.error",
+      "runtimeCssVar": "--io-color-error",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.errorOnBlue",
+      "runtimeCssVar": "--io-color-error-on-blue",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.red",
+      "runtimeCssVar": "--io-color-error-dark",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.success",
+      "runtimeCssVar": "--io-color-success",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.semantic.warning",
+      "runtimeCssVar": "--io-color-warning",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.system.interactiveBlue",
+      "runtimeCssVar": "--io-color-system-blue",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "color.warm.greyTwo",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.borderColor",
+      "runtimeCssVar": "--io-color-black",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.iconBarAxisOffset",
+      "runtimeCssVar": "--io-accordion-icon-bar-axis-offset",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.iconBarInset",
+      "runtimeCssVar": "--io-accordion-icon-bar-inset",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.iconBarThickness",
+      "runtimeCssVar": "--io-accordion-icon-bar-thickness",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.iconHorizontalCollapsedSide",
+      "runtimeCssVar": "--io-accordion-icon-horizontal-collapsed-side",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.iconSize",
+      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.maxHeight",
+      "runtimeCssVar": "--io-accordion-max-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.panelPaddingBottom",
+      "runtimeCssVar": "--io-font-size-7xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.titleHoverIndent",
+      "runtimeCssVar": "--io-input-padding-right",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.accordion.triggerPaddingY",
+      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowHeightDefault",
+      "runtimeCssVar": "--io-button-arrow-height-default",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowShiftDown",
+      "runtimeCssVar": "--io-button-arrow-shift-down",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowShiftForward",
+      "runtimeCssVar": "--io-button-arrow-shift-forward",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowWidthDefault",
+      "runtimeCssVar": "--io-button-arrow-width-default",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowXlHeight",
+      "runtimeCssVar": "--io-button-arrow-xl-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.arrowXlWidth",
+      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.fontSize",
+      "runtimeCssVar": "--io-checkbox-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.fontWeight",
+      "runtimeCssVar": "--io-font-weight-semibold",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.linkUnderlineHeight",
+      "runtimeCssVar": "--io-button-link-underline-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.spinnerBorderWidth",
+      "runtimeCssVar": "--io-button-spinner-border-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.spinnerDuration",
+      "runtimeCssVar": "--io-button-spinner-duration",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.button.xlPaddingY",
+      "runtimeCssVar": "--io-button-xl-padding-y",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.card.bg",
+      "runtimeCssVar": "--io-color-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.card.radius",
+      "runtimeCssVar": "--io-border-radius-md",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.navButtonBg",
+      "runtimeCssVar": "--io-color-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.navButtonBorder",
+      "runtimeCssVar": "--io-color-grey-2",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.navButtonSize",
+      "runtimeCssVar": "--io-font-size-7xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.pillBg",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.pillFontSize",
+      "runtimeCssVar": "--io-button-arrow-width-default",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.pillRadius",
+      "runtimeCssVar": "--io-border-radius-pill",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.scrollbarColor",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.scrollbarHeight",
+      "runtimeCssVar": "--io-carousel-scrollbar-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.carousel.slideGap",
+      "runtimeCssVar": "--io-checkbox-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.link.underlineEasing",
+      "runtimeCssVar": "--io-motion-easing-bounce",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.link.underlineThickness",
+      "runtimeCssVar": "--io-button-link-underline-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.itemAccentBorderWidth",
+      "runtimeCssVar": "--io-toast-item-accent-border-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.itemCloseOffsetTop",
+      "runtimeCssVar": "--io-toast-item-close-offset-top",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.itemCloseSize",
+      "runtimeCssVar": "--io-toast-item-close-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.itemEnterDuration",
+      "runtimeCssVar": "--io-toast-item-enter-duration",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.itemIconOffsetTop",
+      "runtimeCssVar": "--io-toast-item-icon-offset-top",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "component.toast.mobileBreakpointMax",
+      "runtimeCssVar": "--io-toast-breakpoint-mobile-max",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.checkbox.borderRadius",
+      "runtimeCssVar": "--io-checkbox-radius",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.checkbox.size",
+      "runtimeCssVar": "--io-checkbox-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.error.indicatorSize",
+      "runtimeCssVar": "--io-checkbox-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.input.borderWidth",
+      "runtimeCssVar": "--io-button-link-underline-height",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.input.borderWidthFocus",
+      "runtimeCssVar": "--io-button-arrow-shift-down",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.input.focusOffsetY",
+      "runtimeCssVar": "--io-field-focus-offset-y",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.input.paddingRight",
+      "runtimeCssVar": "--io-input-padding-right",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.input.paddingY",
+      "runtimeCssVar": "--io-input-padding-y",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.label.fontSize",
+      "runtimeCssVar": "--io-button-arrow-width-default",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.label.fontSizeFloating",
+      "runtimeCssVar": "--io-font-size-xs",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.label.fontWeight",
+      "runtimeCssVar": "--io-font-weight-bold",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.label.offsetTop",
+      "runtimeCssVar": "--io-label-offset-top",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.select.chevronOffsetY",
+      "runtimeCssVar": "--io-select-chevron-offset-y",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "form.select.paddingRight",
+      "runtimeCssVar": "--io-select-padding-right",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "layout.containerEdge",
+      "runtimeCssVar": "--io-container-edge",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "layout.containerMax",
+      "runtimeCssVar": "--io-container-max",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "layout.sectionSpacingDesktop",
+      "runtimeCssVar": "--io-section-spacing-desktop",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "layout.sectionSpacingMobile",
+      "runtimeCssVar": "--io-section-spacing-mobile",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "layout.sectionSpacingTablet",
+      "runtimeCssVar": "--io-section-spacing-tablet",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.duration.base",
+      "runtimeCssVar": "--io-font-weight-light",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.duration.fast",
+      "runtimeCssVar": "--io-font-weight-extra-light",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.duration.slow",
+      "runtimeCssVar": "--io-font-weight-medium",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.easing.bounce",
+      "runtimeCssVar": "--io-motion-easing-bounce",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.easing.easeOut",
+      "runtimeCssVar": "--io-motion-easing-ease-out",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.easing.inOut",
+      "runtimeCssVar": "--io-motion-easing-in-out",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.easing.snappy",
+      "runtimeCssVar": "--io-motion-easing-snappy",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "motion.easing.standard",
+      "runtimeCssVar": "--io-motion-easing-standard",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorAntraciet",
+      "runtimeCssVar": "--io-color-antraciet",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorBlack",
+      "runtimeCssVar": "--io-color-black",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorBlueDark",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorErrorOnblue",
+      "runtimeCssVar": "--io-color-error-on-blue",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorFocusDarkRed",
+      "runtimeCssVar": "--io-focus-inner",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorFocusLightPink",
+      "runtimeCssVar": "--io-focus-outer",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreyFive",
+      "runtimeCssVar": "--io-color-grey-5",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreyFour",
+      "runtimeCssVar": "--io-color-grey-4",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreyOne",
+      "runtimeCssVar": "--io-color-grey-1",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreySix",
+      "runtimeCssVar": "--io-color-grey-6",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreyThree",
+      "runtimeCssVar": "--io-color-grey-3",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralGreyTwo",
+      "runtimeCssVar": "--io-color-grey-2",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorNeutralOffWhite",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryBeige",
+      "runtimeCssVar": "--io-color-beige",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryBlue",
+      "runtimeCssVar": "--io-color-primary",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryOffWhite",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryOrange",
+      "runtimeCssVar": "--io-color-orange",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryPink",
+      "runtimeCssVar": "--io-color-calm-pink",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryRouge",
+      "runtimeCssVar": "--io-color-rouge",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorRed",
+      "runtimeCssVar": "--io-color-error-dark",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryBaseBeige",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryBaseGreen",
+      "runtimeCssVar": "--io-color-calm-green",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryCalmBeige",
+      "runtimeCssVar": "--io-color-calm-beige",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryCalmBlue",
+      "runtimeCssVar": "--io-color-calm-blue",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryCalmGreen",
+      "runtimeCssVar": "--io-color-calm-green",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryCalmPink",
+      "runtimeCssVar": "--io-color-calm-pink",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryLavendel",
+      "runtimeCssVar": "--io-color-lavendel",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryYellow",
+      "runtimeCssVar": "--io-color-yellow",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSuccess",
+      "runtimeCssVar": "--io-color-success",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorWarmGreyTwo",
+      "runtimeCssVar": "--io-color-off-white",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.color.colorWarning",
+      "runtimeCssVar": "--io-color-warning",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.container.containerEdge",
+      "runtimeCssVar": "--io-container-edge",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "pageTokens.max.maxWidthContainer",
+      "runtimeCssVar": "--io-container-max",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "spacing.1",
+      "runtimeCssVar": "--io-border-radius-xs",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "spacing.2",
+      "runtimeCssVar": "--io-radio-dot-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "spacing.3",
+      "runtimeCssVar": "--io-border-radius-md",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "spacing.6",
+      "runtimeCssVar": "--io-border-radius-xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.2xl",
+      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.3xl",
+      "runtimeCssVar": "--io-font-size-3xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.4xl",
+      "runtimeCssVar": "--io-font-size-4xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.5xl",
+      "runtimeCssVar": "--io-font-size-5xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.6xl",
+      "runtimeCssVar": "--io-font-size-6xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.7xl",
+      "runtimeCssVar": "--io-font-size-7xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.base",
+      "runtimeCssVar": "--io-checkbox-size",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.lg",
+      "runtimeCssVar": "--io-button-xl-padding-y",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.sm",
+      "runtimeCssVar": "--io-button-arrow-width-default",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.xl",
+      "runtimeCssVar": "--io-font-size-xl",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.xs",
+      "runtimeCssVar": "--io-font-size-xs",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontSize.xs2",
+      "runtimeCssVar": "--io-font-size-xs2",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.bold",
+      "runtimeCssVar": "--io-font-weight-bold",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.extraBold",
+      "runtimeCssVar": "--io-font-weight-extra-bold",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.extraLight",
+      "runtimeCssVar": "--io-font-weight-extra-light",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.light",
+      "runtimeCssVar": "--io-font-weight-light",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.medium",
+      "runtimeCssVar": "--io-font-weight-medium",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.regular",
+      "runtimeCssVar": "--io-font-weight-regular",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.fontWeight.semiBold",
+      "runtimeCssVar": "--io-font-weight-semibold",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.letterSpacing.tight",
+      "runtimeCssVar": "--io-letter-spacing-tight",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.letterSpacing.wide",
+      "runtimeCssVar": "--io-letter-spacing-wide",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.letterSpacing.wider",
+      "runtimeCssVar": "--io-letter-spacing-wider",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.letterSpacing.widest",
+      "runtimeCssVar": "--io-letter-spacing-widest",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.loose",
+      "runtimeCssVar": "--io-line-height-loose",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.none",
+      "runtimeCssVar": "--io-line-height-none",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.normal",
+      "runtimeCssVar": "--io-line-height-normal",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.relaxed",
+      "runtimeCssVar": "--io-line-height-relaxed",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.snug",
+      "runtimeCssVar": "--io-line-height-snug",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "typography.lineHeight.tight",
+      "runtimeCssVar": "--io-line-height-heading",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.above",
+      "runtimeCssVar": "--io-z-above",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.base",
+      "runtimeCssVar": "--io-z-base",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.dropdown",
+      "runtimeCssVar": "--io-z-dropdown",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.fixed",
+      "runtimeCssVar": "--io-z-fixed",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.modal",
+      "runtimeCssVar": "--io-z-modal",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.overlay",
+      "runtimeCssVar": "--io-z-overlay",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.sticky",
+      "runtimeCssVar": "--io-z-sticky",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    },
+    {
+      "tokenPath": "zIndex.toast",
+      "runtimeCssVar": "--io-z-toast",
+      "sourceFile": "io-components/src/global/app.css",
+      "notes": "Mapped via governance coverage for issue #112."
+    }
+  ]
+}

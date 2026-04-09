@@ -13,7 +13,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-accent-bg",
@@ -21,7 +21,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-accent-text",
@@ -29,7 +29,47 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-icon-bar-axis-offset",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-icon-bar-inset",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-icon-bar-thickness",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-icon-horizontal-collapsed-side",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-max-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-base",
@@ -37,7 +77,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-card",
@@ -45,7 +85,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-hover",
@@ -53,7 +93,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-overlay",
@@ -61,7 +101,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-page",
@@ -69,7 +109,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-raised",
@@ -77,7 +117,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-bg-surface",
@@ -85,7 +125,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border",
@@ -93,7 +133,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-error",
@@ -101,7 +141,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-focus",
@@ -109,7 +149,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-hover",
@@ -117,7 +157,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-lg",
@@ -125,7 +165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-md",
@@ -133,7 +173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-pill",
@@ -141,7 +181,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-sm",
@@ -149,7 +189,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-xl",
@@ -157,7 +197,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-border-radius-xs",
@@ -165,7 +205,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-2xl",
@@ -173,7 +213,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-3xl",
@@ -181,7 +221,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-lg",
@@ -189,7 +229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-md",
@@ -197,7 +237,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-sm",
@@ -205,7 +245,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-xl",
@@ -213,7 +253,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-breakpoint-xs",
@@ -221,7 +261,95 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-height-default",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-shift-down",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-shift-forward",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-width-default",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-xl-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-link-underline-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-spinner-border-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-spinner-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-xl-padding-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-carousel-scrollbar-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-checkbox-border-width",
@@ -229,7 +357,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-checkbox-icon-size",
@@ -237,7 +365,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-checkbox-radius",
@@ -245,7 +373,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-checkbox-size",
@@ -253,7 +381,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-antraciet",
@@ -261,7 +389,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-antraciet-hover",
@@ -269,7 +397,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-beige",
@@ -277,7 +405,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-beige-hover",
@@ -285,7 +413,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-black",
@@ -293,7 +421,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-calm-beige",
@@ -301,7 +429,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-calm-blue",
@@ -309,7 +437,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-calm-green",
@@ -317,7 +445,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-calm-pink",
@@ -325,7 +453,111 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-accent",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-accent-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-bg-base",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-bg-hover",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-bg-raised",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-bg-surface",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-border",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-border-hover",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-error",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-playground-dot",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-text-muted",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-text-primary",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-text-secondary",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-error",
@@ -333,7 +565,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-error-dark",
@@ -341,7 +573,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-error-on-blue",
@@ -349,7 +581,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-error-soft",
@@ -357,7 +589,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-focus-dark-red",
@@ -381,7 +613,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-grey-2",
@@ -389,7 +621,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-grey-3",
@@ -397,7 +629,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-grey-4",
@@ -405,7 +637,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-grey-5",
@@ -413,7 +645,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-grey-6",
@@ -421,7 +653,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-lavendel",
@@ -429,7 +661,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-off-white",
@@ -437,7 +669,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-orange",
@@ -445,7 +677,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-orange-hover",
@@ -453,7 +685,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-pink",
@@ -461,7 +693,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-pink-hover",
@@ -469,7 +701,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-primary",
@@ -477,7 +709,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-primary-active",
@@ -485,7 +717,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-primary-bg",
@@ -493,7 +725,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-primary-hover",
@@ -501,7 +733,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-primary-muted",
@@ -509,7 +741,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-rouge",
@@ -517,7 +749,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-rouge-hover",
@@ -525,7 +757,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-semantic-red",
@@ -541,7 +773,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-success-soft",
@@ -549,7 +781,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-system-blue",
@@ -557,7 +789,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-system-interactive-blue",
@@ -573,7 +805,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-warning-soft",
@@ -581,7 +813,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-white",
@@ -589,7 +821,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-white-alpha-30",
@@ -597,7 +829,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-yellow",
@@ -605,7 +837,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-color-yellow-hover",
@@ -613,7 +845,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-container-edge",
@@ -621,7 +853,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-container-max",
@@ -629,7 +861,15 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-field-focus-offset-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-focus-inner",
@@ -637,7 +877,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-focus-outer",
@@ -645,7 +885,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-focus-ring-active",
@@ -653,7 +893,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-family-base",
@@ -661,7 +901,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-primary",
@@ -669,7 +909,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-2xl",
@@ -677,7 +917,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-3xl",
@@ -685,7 +925,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-4xl",
@@ -693,7 +933,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-5xl",
@@ -701,7 +941,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-6xl",
@@ -709,7 +949,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-7xl",
@@ -717,7 +957,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-base",
@@ -725,7 +965,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-lg",
@@ -733,7 +973,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-sm",
@@ -741,7 +981,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-xl",
@@ -749,7 +989,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-xs",
@@ -757,7 +997,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-size-xs2",
@@ -765,7 +1005,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-bold",
@@ -773,7 +1013,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-extra-bold",
@@ -781,7 +1021,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-extra-light",
@@ -789,7 +1029,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-light",
@@ -797,7 +1037,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-medium",
@@ -805,7 +1045,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-regular",
@@ -813,7 +1053,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-font-weight-semibold",
@@ -821,7 +1061,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-form-checkbox-border-radius",
@@ -837,7 +1077,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-heading-tracking-1",
@@ -845,7 +1085,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-heading-tracking-2",
@@ -853,7 +1093,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-heading-tracking-3",
@@ -861,7 +1101,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-heading-tracking-4",
@@ -869,7 +1109,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-icon-size-lg",
@@ -877,7 +1117,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-icon-size-md",
@@ -885,7 +1125,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-icon-size-sm",
@@ -893,7 +1133,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-input-border-width",
@@ -901,7 +1141,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-input-border-width-focus",
@@ -909,7 +1149,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-input-padding-right",
@@ -917,7 +1157,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-input-padding-y",
@@ -925,7 +1165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-label-font-size",
@@ -933,7 +1173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-label-font-size-float",
@@ -941,7 +1181,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-label-font-weight",
@@ -949,7 +1189,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-label-offset-top",
@@ -957,7 +1197,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-letter-spacing-tight",
@@ -965,7 +1205,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-letter-spacing-wide",
@@ -973,7 +1213,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-letter-spacing-wider",
@@ -981,7 +1221,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-letter-spacing-widest",
@@ -989,7 +1229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-display",
@@ -997,7 +1237,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-heading",
@@ -1005,7 +1245,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-loose",
@@ -1013,7 +1253,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-none",
@@ -1021,7 +1261,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-normal",
@@ -1029,7 +1269,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-relaxed",
@@ -1037,7 +1277,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-snug",
@@ -1045,7 +1285,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-line-height-tight",
@@ -1053,7 +1293,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-modal-max-height",
@@ -1061,7 +1301,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-modal-width-lg",
@@ -1069,7 +1309,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-modal-width-md",
@@ -1077,7 +1317,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-modal-width-sm",
@@ -1085,7 +1325,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-base",
@@ -1093,7 +1333,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-easing-bounce",
@@ -1101,7 +1341,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-easing-ease-out",
@@ -1109,7 +1349,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-easing-in-out",
@@ -1117,7 +1357,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-easing-snappy",
@@ -1125,7 +1365,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-easing-standard",
@@ -1133,7 +1373,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-fast",
@@ -1141,7 +1381,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-motion-slow",
@@ -1149,7 +1389,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-playground-dot-color",
@@ -1157,7 +1397,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-playground-min-height",
@@ -1165,7 +1405,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-radio-border-width",
@@ -1173,7 +1413,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-radio-dot-size",
@@ -1181,7 +1421,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-radio-size",
@@ -1189,7 +1429,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-section-spacing-desktop",
@@ -1197,7 +1437,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-section-spacing-mobile",
@@ -1205,7 +1445,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-section-spacing-tablet",
@@ -1213,7 +1453,15 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-select-chevron-offset-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-select-padding-right",
@@ -1221,7 +1469,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-2xl",
@@ -1229,7 +1477,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-focus-blue",
@@ -1237,7 +1485,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-focus-orange",
@@ -1245,7 +1493,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-focus-ring",
@@ -1253,7 +1501,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-lg",
@@ -1261,7 +1509,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-md",
@@ -1269,7 +1517,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-sm",
@@ -1277,7 +1525,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-shadow-xl",
@@ -1285,7 +1533,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-sidebar-config-width",
@@ -1293,7 +1541,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-sidebar-nav-width",
@@ -1301,7 +1549,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-skeleton-bg",
@@ -1309,7 +1557,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-skeleton-bg-size",
@@ -1317,7 +1565,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-skeleton-duration",
@@ -1325,7 +1573,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-1",
@@ -1333,7 +1581,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-10",
@@ -1341,7 +1589,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-12",
@@ -1349,7 +1597,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-14",
@@ -1357,7 +1605,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-15",
@@ -1365,7 +1613,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-16",
@@ -1373,7 +1621,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-2",
@@ -1381,7 +1629,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-20",
@@ -1389,7 +1637,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-24",
@@ -1397,7 +1645,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-28",
@@ -1405,7 +1653,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-3",
@@ -1413,7 +1661,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-32",
@@ -1421,7 +1669,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-36",
@@ -1429,7 +1677,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-4",
@@ -1437,7 +1685,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-40",
@@ -1445,7 +1693,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-5",
@@ -1453,7 +1701,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-6",
@@ -1461,7 +1709,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-space-8",
@@ -1469,7 +1717,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-state-active",
@@ -1477,7 +1725,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-state-disabled-bg",
@@ -1485,7 +1733,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-state-disabled-opacity",
@@ -1493,7 +1741,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-state-hover",
@@ -1501,7 +1749,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-tabs-indicator-color",
@@ -1509,7 +1757,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-tabs-track-color",
@@ -1517,7 +1765,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-disabled",
@@ -1525,7 +1773,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-inverse",
@@ -1533,7 +1781,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-muted",
@@ -1541,7 +1789,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-on-primary",
@@ -1549,7 +1797,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-primary",
@@ -1557,7 +1805,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-text-secondary",
@@ -1565,7 +1813,55 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-breakpoint-mobile-max",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-accent-border-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-close-offset-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-close-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-enter-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-icon-offset-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-toast-max-width",
@@ -1573,7 +1869,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-touch-target-min",
@@ -1581,7 +1877,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-touch-target-min-size",
@@ -1589,7 +1885,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-above",
@@ -1597,7 +1893,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-base",
@@ -1605,7 +1901,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-dropdown",
@@ -1613,7 +1909,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-fixed",
@@ -1621,7 +1917,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-modal",
@@ -1629,7 +1925,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-overlay",
@@ -1637,7 +1933,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-sticky",
@@ -1645,7 +1941,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-toast",
@@ -1653,7 +1949,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     },
     {
       "runtimeCssVar": "--io-z-tooltip",
@@ -1661,7 +1957,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory (issue #111)."
+      "notes": "Documented runtime variable in app.css inventory."
     }
   ]
 }

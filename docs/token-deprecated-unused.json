@@ -1,0 +1,1436 @@
+{
+  "$schemaVersion": 1,
+  "$description": "Deprecated or docs-only token entries without runtime CSS variable mappings for issue #112.",
+  "entries": [
+    {
+      "tokenPath": "borderRadius.none",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.oversizedPlacement",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.placementAlternative",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.placementDefault",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.secondary.baseBlue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.secondary.basePink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.secondary.pink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.semantic.brightPink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.semantic.greenDark",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.1c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.1d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.2c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.2d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.3c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.3d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.tertiary.4c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "color.warm.greyOne",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.iconHoverScale",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.iconTransition",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.panelTransition",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.titleTransition",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.button.transition",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.card.border",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.imageAspectRatio",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.pillPadding",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.scrollbarTrackColor",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.slideWidth",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.focus.ringCss",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.link.inlineUnderline",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.link.standaloneUnderline",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.link.underlineDuration",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "form.error.indicatorBg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "form.focus.ringInner",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "form.focus.ringOuter",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "motion.duration.fastest",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "motion.duration.micro",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.absolute",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.arrow_icon",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.arrow_link",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.block",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Button_arrow",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Button_buttonBase",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.col_span_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.cursor_pointer",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.flex",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.flex_col",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.focusable",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.font_bold",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.font_light",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.font_medium",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Footer_award",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Footer_iconLink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.gap_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.grow",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.grow_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.h_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.h_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Heading_heading",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.hidden",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.hover_cursor_pointer",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.inline_block",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.inline_link",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.io_grid",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.items_center",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.justify_between",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.LanguageSwitch_langRadio",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.LanguageSwitch_lightRadio",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.LanguageSwitch_mobileButton",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.last_pr_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.leading_5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.leading_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lg_h_auto",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lg_overflow_hidden",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lg_text_ellipsis",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lg_text_lg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lg_whitespace_nowrap",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.lottieIcon",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.mb_2",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.mb_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.md_mb_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.md_pl_32",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.md_pr_64",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.ml_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.MobileNav_parentButton",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.mr_2",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.mt_3",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.NavItem_navItem",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.NavLink_isActive",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.NavLink_root",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.p_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.pl_1",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.py_4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.relative",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.rotate_45",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.shrink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.shrink_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.SimpleSubnav_link",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.SimpleSubnav_linkSmall",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Subnav_subnavLink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Subnav_subnavWideLink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.Subnav_subnavWrapper",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.SubnavLink_subnavLink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_2xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_base",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_black",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_blue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_left",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_lg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_primary_blue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_sm",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.text_xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.themed_text_color",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.underline",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.w_5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.w_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.blocks.whitespace_nowrap",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageComponents.customElements.next_route_announcer",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.absolute",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.arrow_icon",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.arrow_link",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.bg_white",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.block",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.border_b",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.bottom_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_arrow_t_Uqq",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_buttonBase_0n5Sh",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_buttonLink_TmU8j",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_chevron_RYm_N",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_ghostAntraciet_Ka3hQ",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Button_noHoverAnimation_2SwEc",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.ch2_btn",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.col_span_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.container",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.cursor_pointer",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.flex",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.flex_1",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.flex_col",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.focusable",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.font_bold",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.font_light",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.font_medium",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Footer_award_a_i1z",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Footer_iconLink_eTh0L",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.gap_2",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.gap_4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.gap_5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.gap_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.grow",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.grow_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.h_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.h_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Heading_heading_z1lL6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Heading_headingSize6_cLIRL",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.hidden",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.hover_cursor_pointer",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.hover_text_inherit",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.inline_block",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.inline_flex",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.inline_link",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.io_grid",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.items_center",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.justify_between",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.LanguageSwitch_langRadio_fur_K",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.LanguageSwitch_lightRadio_njIoL",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.LanguageSwitch_mobileButton_sNjj_",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.last_mb_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.last_pr_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.leading_5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.leading_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.left_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_flex_row",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_gap_4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_h_auto",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_hidden",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_mt_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_overflow_hidden",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_p_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_text_ellipsis",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_text_inherit",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_text_lg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lg_whitespace_nowrap",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.lottieIcon",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mb_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mb_2",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mb_4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mb_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.md_mb_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.md_pl_32",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.md_pr_64",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.md_pt_14",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.ml_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.MobileNav_parentButton_8_SFE",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mobileSubNav",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mr_2",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mt_16",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mt_3",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.mt_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.NavItem_navItem_T0Tlg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.NavLink_isActive_Ie_VI",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.NavLink_root_JhHHo",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.p_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.p_8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.pl_1",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.pt_24",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.px_6",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.py_4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.relative",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.rotate_45",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.rounded_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.shrink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.shrink_0",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.SimpleSubnav_link_b0_lz",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.SimpleSubnav_linkSmall_cdIGP",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.size_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Subnav_subnav_GBqpu",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Subnav_subnavLink_8o9oW",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Subnav_subnavWideLink_Vk2F1",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.Subnav_subnavWrapper_rXLgH",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.SubnavLink_subnavLink_3hoQQ",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_2xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_base",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_black",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_blue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_left",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_lg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_primary_blue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_sm",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.text_xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.themed_text_color",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.top_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.underline",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.w_5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.w_7",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.w_full",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.whitespace_nowrap",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.z_10",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageStyles.z_50",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorAntracietRgb",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorBrightPink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorError",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorGreenDark",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryBeigeRgb",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPrimaryBlueRgb",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorPureWhite",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryBaseBlue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryBasePink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorSecondaryPink",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary1c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary1d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary2c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary2d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary3c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary3d",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorTertiary4c",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.color.colorWarmGreyOne",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.font.fontPrimary",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "pageTokens.innervw.innervw",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.2xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.focusBlue",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.focusOrange",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.focusRing",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.lg",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.md",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.sm",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "shadow.xl",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.10",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.12",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.14",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.15",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.16",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.20",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.24",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.28",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.32",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.36",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.4",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.40",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.5",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "spacing.8",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "transition.base",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "transition.easing",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "transition.fast",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "transition.slow",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "typography.fontFamily.primary",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "typography.fontFamily.secondary",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "typography.fontFamily.utility",
+      "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
+      "reviewAfter": "2026-12-31"
+    }
+  ]
+}

@@ -221,6 +221,8 @@
   --io-motion-base:              300ms ease;
   --io-motion-slow:              500ms ease-in-out;
   --io-motion-easing-standard:   ease;
+  --io-button-spinner-duration:  600ms;
+  --io-toast-item-enter-duration: 250ms;
   --io-motion-easing-in-out:     ease-in-out;
   --io-motion-easing-snappy:     cubic-bezier(0.075, 0.82, 0.165, 1);
   --io-motion-easing-bounce:     cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -248,6 +250,7 @@
   --io-breakpoint-sm:            600px;
   --io-breakpoint-md:            768px;
   --io-breakpoint-lg:            1024px;
+  --io-toast-breakpoint-mobile-max: 480px;
   --io-breakpoint-xl:            1200px;
   --io-breakpoint-2xl:           1440px;
   --io-breakpoint-3xl:           1920px;
@@ -292,12 +295,14 @@
   --io-label-font-size-float:    0.75rem;      /* floating — smaller when field has value */
   --io-label-font-weight:        var(--io-font-weight-bold);  /* 700 — bold per iodigital.com */
   --io-label-offset-top:         -2rem;
+  --io-field-focus-offset-y:     -2px;
   --io-checkbox-size:            1rem;
   --io-checkbox-radius:          2px;
   --io-form-checkbox-border-radius: var(--io-checkbox-radius);
   --io-checkbox-border-width:    1.5px;
   --io-checkbox-icon-size:       10px;
   --io-select-padding-right:     1.6rem;
+  --io-select-chevron-offset-y:  2px;
   --io-color-white-alpha-30:     rgba(255, 255, 255, 0.3);
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:       1.5px;
@@ -313,6 +318,46 @@
 
   /* Toast */
   --io-toast-max-width:          400px;
+  --io-toast-item-accent-border-width: 4px;
+  --io-toast-item-icon-offset-top: 1px;
+  --io-toast-item-close-size:    var(--io-icon-size-lg);
+  --io-toast-item-close-offset-top: -2px;
+
+  /* Button */
+  --io-button-xl-padding-y:      1.125rem;
+  --io-button-arrow-width-default: 0.875rem;
+  --io-button-arrow-height-default: 0.54rem;
+  --io-button-arrow-xl-width:    1.5rem;
+  --io-button-arrow-xl-height:   0.923rem;
+  --io-button-link-underline-height: 1px;
+  --io-button-arrow-shift-forward: 6px;
+  --io-button-arrow-shift-down:  5px;
+  --io-button-spinner-border-width: 2px;
+
+  /* Carousel */
+  --io-carousel-scrollbar-height: 4px;
+
+  /* Accordion */
+  --io-accordion-max-height:     600px;
+  --io-accordion-icon-bar-thickness: 8%;
+  --io-accordion-icon-bar-inset: 1%;
+  --io-accordion-icon-bar-axis-offset: 44%;
+  --io-accordion-icon-horizontal-collapsed-side: 50%;
+
+  /* Dark theme source values */
+  --io-color-dark-bg-base:       #181818;
+  --io-color-dark-bg-surface:    #222222;
+  --io-color-dark-bg-raised:     #2a2a2a;
+  --io-color-dark-bg-hover:      #333333;
+  --io-color-dark-text-primary:  #f0ece6;
+  --io-color-dark-text-secondary: #9e9e9e;
+  --io-color-dark-text-muted:    #9c9c9c;
+  --io-color-dark-border:        #333333;
+  --io-color-dark-border-hover:  #444444;
+  --io-color-dark-accent-bg:     rgba(100, 100, 255, 0.15);
+  --io-color-dark-accent:        #9ea3f0;
+  --io-color-dark-error:         #ff7c7c;
+  --io-color-dark-playground-dot: rgba(255, 255, 255, 0.06);
 
   /* ============================================================
      12. SKELETON LOADING
@@ -351,23 +396,22 @@
    ============================================================ */
 
 [data-theme="dark"] {
-  --io-bg-base:                  #181818;
-  --io-bg-page:                  #181818;
-  --io-bg-surface:               #222222;
-  --io-bg-raised:                #2a2a2a;
-  --io-bg-hover:                 #333333;
-  --io-bg-card:                  #222222;
-  --io-text-primary:             #f0ece6;
-  --io-text-secondary:           #9e9e9e;
-   --io-text-muted:               #9c9c9c;
-  --io-border:                   #333333;
-  --io-border-hover:             #444444;
-  --io-accent-bg:                rgba(100, 100, 255, 0.15);
-   --io-accent-text:              #9ea3f0;
-   --io-accent:                   #9ea3f0;
-   --io-color-error:              #ff7c7c;
-  /* Playground dot grid is slightly more visible in dark — normalize it */
-  --io-playground-dot-color:     rgba(255, 255, 255, 0.06);
+  --io-bg-base:                  var(--io-color-dark-bg-base);
+  --io-bg-page:                  var(--io-color-dark-bg-base);
+  --io-bg-surface:               var(--io-color-dark-bg-surface);
+  --io-bg-raised:                var(--io-color-dark-bg-raised);
+  --io-bg-hover:                 var(--io-color-dark-bg-hover);
+  --io-bg-card:                  var(--io-color-dark-bg-surface);
+  --io-text-primary:             var(--io-color-dark-text-primary);
+  --io-text-secondary:           var(--io-color-dark-text-secondary);
+  --io-text-muted:               var(--io-color-dark-text-muted);
+  --io-border:                   var(--io-color-dark-border);
+  --io-border-hover:             var(--io-color-dark-border-hover);
+  --io-accent-bg:                var(--io-color-dark-accent-bg);
+  --io-accent-text:              var(--io-color-dark-accent);
+  --io-accent:                   var(--io-color-dark-accent);
+  --io-color-error:              var(--io-color-dark-error);
+  --io-playground-dot-color:     var(--io-color-dark-playground-dot);
   color-scheme: dark;
 }
 

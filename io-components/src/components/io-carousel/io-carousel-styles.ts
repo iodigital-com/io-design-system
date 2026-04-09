@@ -43,7 +43,7 @@ export function getCarouselStyles(): string {
     }
 
     .carousel-track::-webkit-scrollbar {
-      height: 4px;
+      height: var(--io-carousel-scrollbar-height);
     }
 
     .carousel-track::-webkit-scrollbar-track {

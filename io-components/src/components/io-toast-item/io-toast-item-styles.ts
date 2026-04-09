@@ -23,20 +23,20 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       padding: var(--io-space-4);
       background: var(--io-bg-card);
       border: 1px solid var(--io-border);
-      border-left: 4px solid ${accentColor};
+      border-left: var(--io-toast-item-accent-border-width) solid ${accentColor};
       border-radius: var(--io-border-radius-sm);
       box-shadow: var(--io-shadow-lg);
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
-      animation: io-toast-in 250ms var(--io-motion-easing-ease-out) both;
+      animation: io-toast-in var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out) both;
     }
 
     .toast__icon {
       flex-shrink: 0;
       color: ${accentColor};
-      margin-top: 1px;
+      margin-top: var(--io-toast-item-icon-offset-top);
     }
 
     .toast__text {
@@ -49,15 +49,15 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 1.5rem;
-      height: 1.5rem;
+      width: var(--io-toast-item-close-size);
+      height: var(--io-toast-item-close-size);
       border: none;
       background: transparent;
       color: var(--io-text-secondary);
       border-radius: var(--io-border-radius-sm);
       cursor: pointer;
       padding: 0;
-      margin-top: -2px;
+      margin-top: var(--io-toast-item-close-offset-top);
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
     }
 

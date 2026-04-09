@@ -183,8 +183,10 @@ requireFile("scripts/sync-curated-agency-copilot.cjs");
 requireFile("scripts/sync-curated-agency-copilot-extended.cjs");
 requireFile("scripts/check-copilot-agent-drift.cjs");
 requireFile("scripts/check-copilot-agent-extended-drift.cjs");
+requireFile("scripts/check-token-runtime-reconciliation.cjs");
 requireFile("scripts/sync-stencil-assets.cjs");
 requireFile("io-storefront/package.json");
+requireFile("docs/token-runtime-reconciliation.json");
 
 // Deprecated paths must be removed
 requirePathAbsent(".agent");
@@ -198,6 +200,7 @@ requirePathAbsent("design-system");
 requireText("package.json", [
   "\"io-storefront\"",
   "\"governance:check\"",
+  "\"token-runtime:check\"",
   "\"agents:install:claude\"",
   "\"agents:sync:copilot\"",
   "\"agents:sync:copilot-extended\"",

@@ -1,6 +1,7 @@
 import { Component, Prop, Element, Host, h, State, Listen, Event, EventEmitter, Watch } from '@stencil/core';
 import { getCarouselStyles } from './io-carousel-styles';
 import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
+import { clampSlideIndex, getCarouselFallbackDistance, getCarouselStepSize, getCarouselTargetIndex, normalizeSlidesPerPage, shouldUseTargetScroll } from './io-carousel-utils';
 
 /**
  * io-carousel
@@ -73,15 +74,11 @@ export class IoCarousel {
   }
 
   private get normalizedSlidesPerPage(): IoCarouselSlidesPerPage {
-    if (this.slidesPerPage === 'auto') return 'auto';
-    const parsed = Number(this.slidesPerPage);
-    if (!Number.isFinite(parsed) || parsed < 1) return 1;
-    return Math.floor(parsed);
+    return normalizeSlidesPerPage(this.slidesPerPage);
   }
 
   private get stepSize(): number {
-    const spp = this.normalizedSlidesPerPage;
-    return spp === 'auto' ? 1 : spp;
+    return getCarouselStepSize(this.normalizedSlidesPerPage);
   }
 
   private getSlideLeft(index: number): number {
@@ -94,8 +91,7 @@ export class IoCarousel {
   }
 
   private clampIndex(index: number): number {
-    if (this.totalSlides === 0) return 0;
-    return Math.max(0, Math.min(index, this.totalSlides - 1));
+    return clampSlideIndex(index, this.totalSlides);
   }
 
   private getNearestSlideIndex(): number {
@@ -143,17 +139,16 @@ export class IoCarousel {
 
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
-      const rawTarget = currentIndex - this.stepSize;
-      const targetIndex = rawTarget < 0 ? (this.rewind ? this.totalSlides - 1 : 0) : rawTarget;
+      const targetIndex = getCarouselTargetIndex(currentIndex, this.stepSize, this.totalSlides, this.rewind, 'prev');
       const targetLeft = this.getSlideLeft(targetIndex);
 
-      if (Math.abs(targetLeft - track.scrollLeft) > 1) {
+      if (shouldUseTargetScroll(targetLeft, track.scrollLeft)) {
         track.scrollTo({ left: targetLeft, behavior: 'smooth' });
         return;
       }
     }
 
-    const fallbackDistance = Math.max(track.clientWidth * 0.9, 120);
+    const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
     const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
 
     if (this.rewind && track.scrollLeft <= 1) {
@@ -170,17 +165,16 @@ export class IoCarousel {
 
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
-      const rawTarget = currentIndex + this.stepSize;
-      const targetIndex = rawTarget >= this.totalSlides ? (this.rewind ? 0 : this.totalSlides - 1) : rawTarget;
+      const targetIndex = getCarouselTargetIndex(currentIndex, this.stepSize, this.totalSlides, this.rewind, 'next');
       const targetLeft = this.getSlideLeft(targetIndex);
 
-      if (Math.abs(targetLeft - track.scrollLeft) > 1) {
+      if (shouldUseTargetScroll(targetLeft, track.scrollLeft)) {
         track.scrollTo({ left: targetLeft, behavior: 'smooth' });
         return;
       }
     }
 
-    const fallbackDistance = Math.max(track.clientWidth * 0.9, 120);
+    const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
     const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
 
     if (this.rewind && track.scrollLeft >= maxScroll - 1) {

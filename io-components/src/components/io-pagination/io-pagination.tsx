@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 import type { IoPaginationChangeDetail } from './types';
 import { getPaginationStyles } from './io-pagination-styles';
+import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
 
 /**
  * io-pagination
@@ -44,31 +45,18 @@ export class IoPagination {
   private navId!: string;
 
   componentWillLoad() {
-    this.navId = `io-pagination-${Math.random().toString(36).slice(2)}`;
+    this.navId = createPaginationNavId(Math.random().toString(36).slice(2));
   }
 
   // ── Private helpers ───────────────────────────────────────────
 
   /** Derives the visible page numbers / ellipsis markers to render */
   private pageRange(current: number, total: number): Array<number | '…'> {
-    if (total <= 7) {
-      return Array.from({ length: total }, (_, i) => i + 1);
-    }
-
-    // Keep the number of rendered tokens stable for large sets to avoid layout shifts.
-    if (current <= 4) {
-      return [1, 2, 3, 4, 5, '…', total];
-    }
-
-    if (current >= total - 3) {
-      return [1, '…', total - 4, total - 3, total - 2, total - 1, total];
-    }
-
-    return [1, '…', current - 1, current, current + 1, '…', total];
+    return getPaginationRange(current, total);
   }
 
   private go(page: number) {
-    if (page < 1 || page > this.totalPages || page === this.page) return;
+    if (!canNavigateToPage(page, this.totalPages, this.page)) return;
     this.page = page;
     this.pageChange.emit({ page });
   }

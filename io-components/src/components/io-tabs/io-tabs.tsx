@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 import type { IoTabItem } from './types';
 import { getTabsStyles } from './io-tabs-styles';
+import { createTabsIdPrefix, getEnabledTabs, getFirstEnabledTabValue, getNextEnabledIndex, getTabClassName, getTabIds } from './io-tabs-utils';
 
 /**
  * io-tabs
@@ -43,11 +44,11 @@ export class IoTabs {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.tabIdPrefix = `io-tabs-${Math.random().toString(36).slice(2)}`;
+    this.tabIdPrefix = createTabsIdPrefix(Math.random().toString(36).slice(2));
     // Default to first enabled tab if activeTab is not set
     if (!this.activeTab && this.tabs.length > 0) {
-      const first = this.tabs.find(t => !t.disabled);
-      if (first) this.activeTab = first.value;
+      const firstEnabled = getFirstEnabledTabValue(this.tabs);
+      if (firstEnabled) this.activeTab = firstEnabled;
     }
   }
 
@@ -61,39 +62,27 @@ export class IoTabs {
   };
 
   private handleKeyDown = (ev: KeyboardEvent, index: number) => {
-    const enabledTabs = this.tabs
-      .map((t, i) => ({ tab: t, index: i }))
-      .filter(({ tab }) => !tab.disabled);
+    const enabledTabs = getEnabledTabs(this.tabs);
 
-    const currentEnabledIndex = enabledTabs.findIndex(({ index: i }) => i === index);
-
-    let nextEnabledIndex: number | null = null;
-
-    switch (ev.key) {
-      case 'ArrowRight':
-        ev.preventDefault();
-        nextEnabledIndex = (currentEnabledIndex + 1) % enabledTabs.length;
-        break;
-      case 'ArrowLeft':
-        ev.preventDefault();
-        nextEnabledIndex = (currentEnabledIndex - 1 + enabledTabs.length) % enabledTabs.length;
-        break;
-      case 'Home':
-        ev.preventDefault();
-        nextEnabledIndex = 0;
-        break;
-      case 'End':
-        ev.preventDefault();
-        nextEnabledIndex = enabledTabs.length - 1;
-        break;
-      case 'Enter':
-      case ' ':
-        ev.preventDefault();
-        this.handleTabClick(this.tabs[index].value);
-        return;
+    if (enabledTabs.length === 0) {
+      return;
     }
 
+    const currentEnabledIndex = enabledTabs.findIndex(item => item.index === index);
+    if (currentEnabledIndex < 0) {
+      return;
+    }
+
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      this.handleTabClick(this.tabs[index].value);
+      return;
+    }
+
+    const nextEnabledIndex = getNextEnabledIndex(ev.key, currentEnabledIndex, enabledTabs.length);
+
     if (nextEnabledIndex !== null) {
+      ev.preventDefault();
       const targetIndex = enabledTabs[nextEnabledIndex].index;
       const tabEl = this.el.shadowRoot?.querySelectorAll<HTMLButtonElement>('.tab')[targetIndex];
       tabEl?.focus();
@@ -111,20 +100,13 @@ export class IoTabs {
         <div class="tablist" role="tablist">
           {tabs.map((tab, index) => {
             const isActive = tab.value === activeTab;
-            const tabId = `${tabIdPrefix}-tab-${tab.value}`;
-            const panelId = `${tabIdPrefix}-panel-${tab.value}`;
+            const { tabId, panelId } = getTabIds(tabIdPrefix, tab.value);
 
             return (
               <button
                 key={tab.value}
                 id={tabId}
-                class={[
-                  'tab',
-                  isActive ? 'tab--active' : '',
-                  tab.disabled ? 'tab--disabled' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
+                class={getTabClassName(isActive, !!tab.disabled)}
                 role="tab"
                 aria-selected={String(isActive)}
                 aria-controls={panelId}

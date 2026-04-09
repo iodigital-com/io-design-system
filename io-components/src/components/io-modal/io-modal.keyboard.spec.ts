@@ -59,4 +59,17 @@ describe('io-modal — keyboard / cancel event', () => {
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(true);
   });
+
+  it('backdrop click does not close when closeOnBackdrop is false', () => {
+    component.closeOnBackdrop = false;
+    const dialogEl = (component as any).dialogEl as HTMLDialogElement;
+    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue({
+      left: 100, right: 400, top: 100, bottom: 400,
+      width: 300, height: 300, x: 100, y: 100, toJSON: () => ({}),
+    });
+
+    const ev = { clientX: 10, clientY: 10, currentTarget: dialogEl } as unknown as MouseEvent;
+    (component as any).handleDialogClick(ev);
+    expect(component.open).toBe(true);
+  });
 });

@@ -1,7 +1,8 @@
 import { Component, Prop, Element, Host, State, Listen, h } from '@stencil/core';
-import { computePosition, flip, offset, shift } from '@floating-ui/dom';
+import { computePosition } from '@floating-ui/dom';
 import type { IoTooltipPlacement } from './types';
 import { getTooltipStyles } from './io-tooltip-styles';
+import { createTooltipId, getTooltipMiddleware, getTooltipPositionStyle } from './io-tooltip-utils';
 
 /**
  * io-tooltip
@@ -42,7 +43,7 @@ export class IoTooltip {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.tooltipId = `io-tooltip-${Math.random().toString(36).slice(2)}`;
+    this.tooltipId = createTooltipId(Math.random().toString(36).slice(2));
   }
 
   componentDidLoad() {
@@ -83,11 +84,7 @@ export class IoTooltip {
     const { x, y } = await computePosition(this.el, this.tooltipEl, {
       placement: this.placement,
       strategy: 'fixed',
-      middleware: [
-        offset(8),
-        flip(),
-        shift({ padding: 8 }),
-      ],
+      middleware: getTooltipMiddleware(),
     });
     this.x = x;
     this.y = y;
@@ -97,6 +94,7 @@ export class IoTooltip {
 
   render() {
     const { visible, x, y, tooltipId, content } = this;
+    const style = getTooltipPositionStyle(x, y);
 
     return (
       <Host>
@@ -107,7 +105,7 @@ export class IoTooltip {
           id={tooltipId}
           role="tooltip"
           class={{ tooltip: true, 'tooltip--visible': visible }}
-          style={{ top: `${y}px`, left: `${x}px` }}
+          style={style}
         >
           {content}
         </div>

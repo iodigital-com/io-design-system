@@ -1,6 +1,7 @@
 import { Component, Prop, Host, h } from '@stencil/core';
 import type { IoSpinnerSize, IoSpinnerColor } from './types';
 import { getSpinnerStyles } from './io-spinner-styles';
+import { getSpinnerClassName, normalizeSpinnerLabel } from './io-spinner-utils';
 
 /**
  * io-spinner
@@ -33,13 +34,15 @@ export class IoSpinner {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { size, color, label } = this;
+    const { size, color } = this;
+    const label = normalizeSpinnerLabel(this.label);
+    const className = getSpinnerClassName(size, color);
 
     return (
       <Host role="status" aria-label={label}>
         <style>{getSpinnerStyles()}</style>
         <span
-          class={`spinner spinner--${size} spinner--${color}`}
+          class={className}
           aria-hidden="true"
         />
       </Host>

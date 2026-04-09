@@ -49,6 +49,28 @@ describe('io-tooltip — visibility', () => {
     (component as any).handleFocusOut();
     expect((component as any).visible).toBe(false);
   });
+
+  it('handleMouseEnter updates position and shows tooltip', async () => {
+    const updatePositionSpy = vi
+      .spyOn(component as any, 'updatePosition')
+      .mockResolvedValue(undefined);
+
+    await (component as any).handleMouseEnter();
+
+    expect(updatePositionSpy).toHaveBeenCalledTimes(1);
+    expect((component as any).visible).toBe(true);
+  });
+
+  it('handleFocusIn updates position and shows tooltip', async () => {
+    const updatePositionSpy = vi
+      .spyOn(component as any, 'updatePosition')
+      .mockResolvedValue(undefined);
+
+    await (component as any).handleFocusIn();
+
+    expect(updatePositionSpy).toHaveBeenCalledTimes(1);
+    expect((component as any).visible).toBe(true);
+  });
 });
 
 describe('io-tooltip — aria-describedby injection', () => {

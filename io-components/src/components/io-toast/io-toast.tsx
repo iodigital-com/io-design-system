@@ -2,6 +2,7 @@ import { Component, Element, State, Method, Host, h } from '@stencil/core';
 import type { IoToastMessage, IoToastEntry } from './types';
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';
+import { getToastItemVariant } from './io-toast-utils';
 
 /**
  * io-toast
@@ -52,6 +53,10 @@ export class IoToast {
     toastManager.addToast(message);
   }
 
+  private handleItemDismiss = () => {
+    toastManager.dismiss();
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -62,8 +67,8 @@ export class IoToast {
           <io-toast-item
             key={this.currentMsg.id}
             text={this.currentMsg.text}
-            variant={this.currentMsg.variant ?? 'neutral'}
-            onDismiss={() => toastManager.dismiss()}
+            variant={getToastItemVariant(this.currentMsg)}
+            onDismiss={this.handleItemDismiss}
           />
         )}
       </Host>

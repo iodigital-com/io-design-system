@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { RelatedComponents } from '@/components/RelatedComponents';
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
+import { getComponentStatusBySlug } from '@/sitemap';
 
 const TABS: PageTab[] = [
   { label: 'Configurator', href: '/components/io-carousel/configurator' },
@@ -13,6 +14,8 @@ const TABS: PageTab[] = [
 ];
 
 export default function IoCarouselLayout({ children }: { children: ReactNode }) {
+  const status = getComponentStatusBySlug('io-carousel');
+
   return (
     <div>
       <PageHeader
@@ -20,7 +23,7 @@ export default function IoCarouselLayout({ children }: { children: ReactNode }) 
         description="Generic horizontally scrollable container with prev/next navigation, drag-to-scroll, and a custom scrollbar. Inner content is slotted — put any HTML you need inside."
         tabs={TABS}
         category="Component"
-        status="beta"
+        status={status}
       />
       {children}
       <RelatedComponents currentSlug="io-carousel" />

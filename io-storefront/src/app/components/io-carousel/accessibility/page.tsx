@@ -81,7 +81,7 @@ export default function IoCarouselAccessibilityPage() {
 
       <section id="known-limitation" className="space-y-4">
         <RuleCard label="Known limitation: drag-to-scroll is not keyboard accessible">
-          The drag-to-scroll interaction uses mousedown/mousemove/mouseup listeners and has no keyboard equivalent. Keyboard users must rely on the Prev/Next buttons to navigate between slides. Touch-device users can swipe natively via the scrollable track. This is acceptable for supplementary content browsing but should be noted if carousel content is not reachable through other navigation paths.
+          Decision for this release: Option B (pointer-only drag). The drag-to-scroll interaction uses mousedown/mousemove/mouseup listeners and has no keyboard equivalent. Keyboard users must rely on the Prev/Next buttons to navigate between slides. Touch-device users can swipe natively via the scrollable track. This is acceptable for supplementary content browsing when all slide content remains reachable via keyboard through other controls.
         </RuleCard>
       </section>
     </div>

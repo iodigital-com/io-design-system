@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { CopyButton } from '@/components/CopyButton';
 import { ComponentCard } from '@/components/ComponentCard';
-import type { ComponentStatus } from '@/sitemap';
+import { getComponentItems } from '@/sitemap';
 
 // ── Accent-bar section heading — io Digital signature ─────────────────────────
 
@@ -49,70 +49,33 @@ function ArrowIcon() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-const ALL_COMPONENTS: Array<{
-  name: string;
-  tag: string;
-  href: string;
-  status: ComponentStatus;
-  preview: ReactNode;
-}> = [
-  {
-    name: 'Badge', tag: 'io-badge', href: '/components/io-badge/configurator', status: 'beta',
-    preview: <io-badge variant="blue">Active</io-badge>,
-  },
-  {
-    name: 'Button', tag: 'io-button', href: '/components/io-button/configurator', status: 'stable',
-    preview: <io-button>Button</io-button>,
-  },
-  {
-    name: 'Checkbox', tag: 'io-checkbox', href: '/components/io-checkbox/configurator', status: 'stable',
-    preview: <io-checkbox label="Checkbox" />,
-  },
-  {
-    name: 'Input', tag: 'io-input', href: '/components/io-input/configurator', status: 'beta',
-    preview: <div className="w-full"><io-input label="Label" placeholder="Enter text" /></div>,
-  },
-  {
-    name: 'Link', tag: 'io-link', href: '/components/io-link/configurator', status: 'stable',
-    preview: <io-link href="/" variant="standalone">Link text</io-link>,
-  },
-  {
-    name: 'Modal', tag: 'io-modal', href: '/components/io-modal/configurator', status: 'stable',
-    preview: <io-button size="sm">Open modal</io-button>,
-  },
-  {
-    name: 'Radio', tag: 'io-radio', href: '/components/io-radio/configurator', status: 'stable',
-    preview: <io-radio label="Option" name="preview" />,
-  },
-  {
-    name: 'Select', tag: 'io-select', href: '/components/io-select/configurator', status: 'stable',
-    preview: <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
-  },
-  {
-    name: 'Spinner', tag: 'io-spinner', href: '/components/io-spinner/configurator', status: 'stable',
-    preview: <io-spinner size="md" />,
-  },
-  {
-    name: 'Tabs', tag: 'io-tabs', href: '/components/io-tabs/configurator', status: 'stable',
-    preview: <div className="w-full"><io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" /></div>,
-  },
-  {
-    name: 'Tag', tag: 'io-tag', href: '/components/io-tag/configurator', status: 'stable',
-    preview: <io-tag>Label</io-tag>,
-  },
-  {
-    name: 'Textarea', tag: 'io-textarea', href: '/components/io-textarea/configurator', status: 'stable',
-    preview: <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
-  },
-  {
-    name: 'Toast', tag: 'io-toast', href: '/components/io-toast/configurator', status: 'stable',
-    preview: <io-badge variant="blue">Toast</io-badge>,
-  },
-  {
-    name: 'Tooltip', tag: 'io-tooltip', href: '/components/io-tooltip/configurator', status: 'stable',
-    preview: <io-tooltip content="Tooltip text"><span>Hover me</span></io-tooltip>,
-  },
-];
+const COMPONENT_PREVIEWS: Record<string, ReactNode> = {
+  'io-accordion': <io-badge variant="blue">Accordion</io-badge>,
+  'io-badge': <io-badge variant="blue">Active</io-badge>,
+  'io-button': <io-button>Button</io-button>,
+  'io-carousel': <io-badge variant="blue">Carousel</io-badge>,
+  'io-checkbox': <io-checkbox label="Checkbox" />,
+  'io-input': <div className="w-full"><io-input label="Label" placeholder="Enter text" /></div>,
+  'io-link': <io-link href="/" variant="standalone">Link text</io-link>,
+  'io-modal': <io-button size="sm">Open modal</io-button>,
+  'io-pagination': <io-badge variant="blue">Pagination</io-badge>,
+  'io-radio': <io-radio label="Option" name="preview" />,
+  'io-select': <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
+  'io-spinner': <io-spinner size="md" />,
+  'io-tabs': <div className="w-full"><io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" /></div>,
+  'io-tag': <io-tag>Label</io-tag>,
+  'io-textarea': <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
+  'io-toast': <io-badge variant="blue">Toast</io-badge>,
+  'io-tooltip': <io-tooltip content="Tooltip text"><span>Hover me</span></io-tooltip>,
+};
+
+const ALL_COMPONENTS = getComponentItems().map((item) => ({
+  name: item.label,
+  tag: item.slug,
+  href: item.href,
+  status: item.status,
+  preview: COMPONENT_PREVIEWS[item.slug] ?? <io-badge variant="blue">{item.label}</io-badge>,
+}));
 
 const STEPS = [
   {

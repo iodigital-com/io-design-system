@@ -36,4 +36,22 @@ describe('io-pagination - boundary guard behavior', () => {
     expect(component.page).toBe(3);
     expect(emitMock).not.toHaveBeenCalled();
   });
+
+  it('prevents previous navigation when already on first page', () => {
+    component.page = 1;
+
+    (component as any).go(component.page - 1);
+
+    expect(component.page).toBe(1);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+
+  it('prevents next navigation when already on last page', () => {
+    component.page = component.totalPages;
+
+    (component as any).go(component.page + 1);
+
+    expect(component.page).toBe(component.totalPages);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
 });

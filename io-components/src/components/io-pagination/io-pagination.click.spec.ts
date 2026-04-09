@@ -27,4 +27,12 @@ describe('io-pagination - click handling', () => {
     expect(component.page).toBe(2);
     expect(emitMock).not.toHaveBeenCalled();
   });
+
+  it('does not emit when target page is outside valid range', () => {
+    (component as any).go(0);
+    (component as any).go(99);
+
+    expect(component.page).toBe(2);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
 });

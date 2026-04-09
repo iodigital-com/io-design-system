@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { RelatedComponents } from '@/components/RelatedComponents';
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
+import { getComponentStatusBySlug } from '@/sitemap';
 
 const TABS: PageTab[] = [
   { label: 'Configurator', href: '/components/io-accordion/configurator' },
@@ -13,6 +14,8 @@ const TABS: PageTab[] = [
 ];
 
 export default function IoAccordionLayout({ children }: { children: ReactNode }) {
+  const status = getComponentStatusBySlug('io-accordion');
+
   return (
     <div>
       <PageHeader
@@ -20,7 +23,7 @@ export default function IoAccordionLayout({ children }: { children: ReactNode })
         description="PDS-style disclosure with one accordion per content section, animated plus/minus icon, and heading slot support."
         tabs={TABS}
         category="Component"
-        status="beta"
+        status={status}
       />
       {children}
       <RelatedComponents currentSlug="io-accordion" />

@@ -226,3 +226,11 @@ export function getComponentItems(): ComponentNavItem[] {
 
   return componentsSection.items.filter(isComponentNavItem);
 }
+
+export function getComponentItemBySlug(slug: string): ComponentNavItem | undefined {
+  return getComponentItems().find((item) => item.slug === slug);
+}
+
+export function getComponentStatusBySlug(slug: string): ComponentStatus | undefined {
+  return getComponentItemBySlug(slug)?.status;
+}

@@ -66,6 +66,12 @@ io-design-system/
 
 ## Development workflow
 
+Status governance rubric (component maturity model):
+- [docs/storefront-status-governance.md](docs/storefront-status-governance.md)
+
+Current beta-to-stable recommendations:
+- [docs/component-stability-recommendations.md](docs/component-stability-recommendations.md)
+
 ### Running checks
 
 ```bash

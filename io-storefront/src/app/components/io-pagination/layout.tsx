@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { RelatedComponents } from '@/components/RelatedComponents';
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
+import { getComponentStatusBySlug } from '@/sitemap';
 
 const TABS: PageTab[] = [
   { label: 'Configurator', href: '/components/io-pagination/configurator' },
@@ -13,6 +14,8 @@ const TABS: PageTab[] = [
 ];
 
 export default function IoPaginationLayout({ children }: { children: ReactNode }) {
+  const status = getComponentStatusBySlug('io-pagination');
+
   return (
     <div>
       <PageHeader
@@ -20,7 +23,7 @@ export default function IoPaginationLayout({ children }: { children: ReactNode }
         description="Circular page controls - outlined numbers, active page in beige, beige prev/next arrows with ellipsis for large sets."
         tabs={TABS}
         category="Component"
-        status="beta"
+        status={status}
       />
       {children}
       <RelatedComponents currentSlug="io-pagination" />

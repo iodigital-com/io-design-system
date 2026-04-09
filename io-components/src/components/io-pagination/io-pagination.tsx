@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch } from '@stencil/core';
 import type { IoPaginationChangeDetail } from './types';
 import { getPaginationStyles } from './io-pagination-styles';
 import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
@@ -44,8 +44,46 @@ export class IoPagination {
 
   private navId!: string;
 
+  private normalizeTotalPages(totalPages: number): number {
+    const parsed = Number(totalPages);
+    if (!Number.isFinite(parsed)) return 1;
+    return Math.max(1, Math.floor(parsed));
+  }
+
+  private normalizePage(page: number, totalPages: number): number {
+    const parsed = Number(page);
+    if (!Number.isFinite(parsed)) return 1;
+    return Math.max(1, Math.min(Math.floor(parsed), totalPages));
+  }
+
   componentWillLoad() {
     this.navId = createPaginationNavId(Math.random().toString(36).slice(2));
+    const normalizedTotalPages = this.normalizeTotalPages(this.totalPages);
+    this.totalPages = normalizedTotalPages;
+    this.page = this.normalizePage(this.page, normalizedTotalPages);
+  }
+
+  @Watch('totalPages')
+  onTotalPagesChange(newValue: number) {
+    const normalizedTotalPages = this.normalizeTotalPages(newValue);
+
+    if (normalizedTotalPages !== newValue) {
+      this.totalPages = normalizedTotalPages;
+      return;
+    }
+
+    const normalizedPage = this.normalizePage(this.page, normalizedTotalPages);
+    if (normalizedPage !== this.page) {
+      this.page = normalizedPage;
+    }
+  }
+
+  @Watch('page')
+  onPageChange(newValue: number) {
+    const normalizedPage = this.normalizePage(newValue, this.normalizeTotalPages(this.totalPages));
+    if (normalizedPage !== newValue) {
+      this.page = normalizedPage;
+    }
   }
 
   // ── Private helpers ───────────────────────────────────────────

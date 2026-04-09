@@ -106,6 +106,12 @@ function validatePackageScripts(relativePath) {
       );
     }
 
+    if (!governance.includes("node scripts/check-storefront-status-governance.cjs")) {
+      errors.push(
+        `${relativePath} scripts.governance:check must invoke node scripts/check-storefront-status-governance.cjs directly.`,
+      );
+    }
+
     if (!governance.includes("node scripts/check-token-cssvar-naming.cjs")) {
       errors.push(
         `${relativePath} scripts.governance:check must invoke node scripts/check-token-cssvar-naming.cjs directly.`,
@@ -241,12 +247,15 @@ requireFile("scripts/check-copilot-agent-extended-drift.cjs");
 requireFile("scripts/check-token-runtime-reconciliation.cjs");
 requireFile("scripts/check-token-doc-coverage.cjs");
 requireFile("scripts/check-style-literals.cjs");
+requireFile("scripts/check-storefront-status-governance.cjs");
 requireFile("scripts/sync-stencil-assets.cjs");
 requireFile("io-storefront/package.json");
 requireFile("docs/token-runtime-reconciliation.json");
 requireFile("docs/token-cssvar-implemented-map.json");
 requireFile("docs/token-deprecated-unused.json");
 requireFile("docs/style-literal-allowlist.json");
+requireFile("docs/storefront-status-governance.md");
+requireFile("docs/component-stability-recommendations.md");
 
 // Deprecated paths must be removed
 requirePathAbsent(".agent");
@@ -263,6 +272,7 @@ requireText("package.json", [
   "\"token-runtime:check\"",
   "\"token-doc-coverage:check\"",
   "\"style-literals:check\"",
+  "\"status-governance:check\"",
   "\"agents:install:claude\"",
   "\"agents:sync:copilot\"",
   "\"agents:sync:copilot-extended\"",

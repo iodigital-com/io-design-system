@@ -157,4 +157,18 @@ describe('io-carousel — behavior helpers', () => {
 
     expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 810, behavior: 'smooth' });
   });
+
+  it('syncs active index from scroll and emits update payload', () => {
+    const component = new IoCarousel();
+    const emitSpy = vi.fn();
+    (component as any).update = { emit: emitSpy };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    (component as any).getNearestSlideIndex = vi.fn(() => 2);
+    component.activeSlideIndex = 0;
+
+    (component as any).onTrackScroll();
+
+    expect(component.activeSlideIndex).toBe(2);
+    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 4 });
+  });
 });

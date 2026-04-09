@@ -126,7 +126,7 @@ export function getAccordionStyles(): string {
     }
 
     .accordion-item--open .accordion-panel {
-      max-height: var(--io-accordion-max-height);
+      max-height: var(--io-accordion-max-height, 600px);
     }
 
     /* ── Disabled ────────────────────────────────────────── */

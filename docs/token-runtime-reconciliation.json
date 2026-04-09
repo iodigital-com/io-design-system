@@ -1816,14 +1816,6 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
-      "runtimeCssVar": "--io-toast-breakpoint-mobile-max",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
       "runtimeCssVar": "--io-toast-item-accent-border-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

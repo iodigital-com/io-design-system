@@ -10,7 +10,7 @@ export function getToastStyles(): string {
       max-width: calc(100vw - 2 * var(--io-space-6));
     }
 
-    @media (max-width: var(--io-toast-breakpoint-mobile-max)) {
+    @media (max-width: 480px) {
       :host {
         left: var(--io-space-4);
         right: var(--io-space-4);

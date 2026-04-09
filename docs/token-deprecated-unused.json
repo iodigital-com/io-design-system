@@ -1431,6 +1431,56 @@
       "tokenPath": "typography.fontFamily.utility",
       "rationale": "No runtime CSS variable mapping in app.css; retained as docs-only or metadata token until future implementation.",
       "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "brand.logotype.tokens.clearspaceFactor",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.iconSize",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.panelPaddingBottom",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.titleHoverIndent",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.triggerPaddingY",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.button.fontSize",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.navButtonSize",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.pillFontSize",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.carousel.slideGap",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.toast.mobileBreakpointMax",
+      "rationale": "No runtime CSS variable implementation. Docs/reference only.",
+      "reviewAfter": "2026-12-31"
     }
   ]
 }

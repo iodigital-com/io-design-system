@@ -57,12 +57,6 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "brand.logotype.tokens.clearspaceFactor",
-      "runtimeCssVar": "--io-state-disabled-opacity",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "brand.logotype.tokens.defaultColorDark",
       "runtimeCssVar": "--io-color-grey-6",
       "sourceFile": "io-components/src/global/app.css",
@@ -100,9 +94,9 @@
     },
     {
       "tokenPath": "breakpoint.sm",
-      "runtimeCssVar": "--io-accordion-max-height",
+      "runtimeCssVar": "--io-breakpoint-sm",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "breakpoint.xl",
@@ -435,32 +429,8 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "component.accordion.iconSize",
-      "runtimeCssVar": "--io-button-arrow-xl-width",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "component.accordion.maxHeight",
       "runtimeCssVar": "--io-accordion-max-height",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.accordion.panelPaddingBottom",
-      "runtimeCssVar": "--io-font-size-7xl",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.accordion.titleHoverIndent",
-      "runtimeCssVar": "--io-input-padding-right",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.accordion.triggerPaddingY",
-      "runtimeCssVar": "--io-button-arrow-xl-width",
       "sourceFile": "io-components/src/global/app.css",
       "notes": "Mapped via governance coverage for issue #112."
     },
@@ -497,12 +467,6 @@
     {
       "tokenPath": "component.button.arrowXlWidth",
       "runtimeCssVar": "--io-button-arrow-xl-width",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.button.fontSize",
-      "runtimeCssVar": "--io-checkbox-size",
       "sourceFile": "io-components/src/global/app.css",
       "notes": "Mapped via governance coverage for issue #112."
     },
@@ -561,20 +525,8 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "component.carousel.navButtonSize",
-      "runtimeCssVar": "--io-font-size-7xl",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "component.carousel.pillBg",
       "runtimeCssVar": "--io-color-off-white",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.carousel.pillFontSize",
-      "runtimeCssVar": "--io-button-arrow-width-default",
       "sourceFile": "io-components/src/global/app.css",
       "notes": "Mapped via governance coverage for issue #112."
     },
@@ -593,12 +545,6 @@
     {
       "tokenPath": "component.carousel.scrollbarHeight",
       "runtimeCssVar": "--io-carousel-scrollbar-height",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
-      "tokenPath": "component.carousel.slideGap",
-      "runtimeCssVar": "--io-checkbox-size",
       "sourceFile": "io-components/src/global/app.css",
       "notes": "Mapped via governance coverage for issue #112."
     },
@@ -645,12 +591,6 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "component.toast.mobileBreakpointMax",
-      "runtimeCssVar": "--io-toast-breakpoint-mobile-max",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "form.checkbox.borderRadius",
       "runtimeCssVar": "--io-checkbox-radius",
       "sourceFile": "io-components/src/global/app.css",
@@ -678,7 +618,7 @@
       "tokenPath": "form.input.borderWidthFocus",
       "runtimeCssVar": "--io-button-arrow-shift-down",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "form.input.focusOffsetY",
@@ -766,21 +706,21 @@
     },
     {
       "tokenPath": "motion.duration.base",
-      "runtimeCssVar": "--io-font-weight-light",
+      "runtimeCssVar": "--io-motion-base",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "motion.duration.fast",
-      "runtimeCssVar": "--io-font-weight-extra-light",
+      "runtimeCssVar": "--io-motion-fast",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "motion.duration.slow",
-      "runtimeCssVar": "--io-font-weight-medium",
+      "runtimeCssVar": "--io-motion-slow",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "motion.easing.bounce",
@@ -1012,33 +952,33 @@
     },
     {
       "tokenPath": "spacing.1",
-      "runtimeCssVar": "--io-border-radius-xs",
+      "runtimeCssVar": "--io-space-1",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "spacing.2",
-      "runtimeCssVar": "--io-radio-dot-size",
+      "runtimeCssVar": "--io-space-2",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "spacing.3",
-      "runtimeCssVar": "--io-border-radius-md",
+      "runtimeCssVar": "--io-space-3",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "spacing.6",
-      "runtimeCssVar": "--io-border-radius-xl",
+      "runtimeCssVar": "--io-space-6",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "typography.fontSize.2xl",
-      "runtimeCssVar": "--io-button-arrow-xl-width",
+      "runtimeCssVar": "--io-font-size-2xl",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "typography.fontSize.3xl",
@@ -1072,21 +1012,21 @@
     },
     {
       "tokenPath": "typography.fontSize.base",
-      "runtimeCssVar": "--io-checkbox-size",
+      "runtimeCssVar": "--io-font-size-base",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "typography.fontSize.lg",
-      "runtimeCssVar": "--io-button-xl-padding-y",
+      "runtimeCssVar": "--io-font-size-lg",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "typography.fontSize.sm",
-      "runtimeCssVar": "--io-button-arrow-width-default",
+      "runtimeCssVar": "--io-font-size-sm",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "typography.fontSize.xl",

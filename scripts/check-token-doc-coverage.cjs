@@ -65,6 +65,11 @@ function getTokenLeaves(node, basePath = [], out = []) {
 
 function parseCssVars(content) {
   const stripped = content.replace(/\/\*[\s\S]*?\*\//g, "");
+    if (stripped.includes("/*")) {
+      throw new Error(
+        "app.css contains an unclosed CSS comment — run parseCssVars on a syntactically valid file."
+      );
+    }
   const regex = /(--io-[a-z0-9-]+)\s*:\s*([^;]+);/g;
   const vars = new Set();
   let match = regex.exec(stripped);

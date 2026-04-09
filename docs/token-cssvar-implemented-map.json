@@ -616,9 +616,9 @@
     },
     {
       "tokenPath": "form.input.borderWidthFocus",
-      "runtimeCssVar": "--io-button-arrow-shift-down",
+      "runtimeCssVar": "--io-input-border-width-focus",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Corrected mapping (post-review fix, issue #112)."
+      "notes": "Corrected semantic mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "form.input.focusOffsetY",
@@ -640,9 +640,9 @@
     },
     {
       "tokenPath": "form.label.fontSize",
-      "runtimeCssVar": "--io-button-arrow-width-default",
+      "runtimeCssVar": "--io-label-font-size",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected semantic mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "form.label.fontSizeFloating",
@@ -856,9 +856,9 @@
     },
     {
       "tokenPath": "pageTokens.color.colorPrimaryPink",
-      "runtimeCssVar": "--io-color-calm-pink",
+      "runtimeCssVar": "--io-color-pink",
       "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
+      "notes": "Corrected semantic mapping (post-review fix, issue #112)."
     },
     {
       "tokenPath": "pageTokens.color.colorPrimaryRouge",

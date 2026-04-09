@@ -11,6 +11,11 @@ const appCssPath = path.join(repoRoot, "io-components/src/global/app.css");
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const CSS_VAR = /^--io-[a-z0-9-]+$/;
+const REQUIRED_SEMANTIC_MAPPINGS = {
+  "form.input.borderWidthFocus": "--io-input-border-width-focus",
+  "form.label.fontSize": "--io-label-font-size",
+  "pageTokens.color.colorPrimaryPink": "--io-color-pink",
+};
 
 function fail(message) {
   console.error(`[token-doc-coverage] ${message}`);
@@ -152,6 +157,15 @@ function main() {
       errors.push(`Invalid runtimeCssVar for ${tokenPath}: ${runtimeCssVar}`);
     } else if (!cssVars.has(runtimeCssVar)) {
       errors.push(`runtimeCssVar not found in app.css for ${tokenPath}: ${runtimeCssVar}`);
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(REQUIRED_SEMANTIC_MAPPINGS, tokenPath) &&
+      runtimeCssVar !== REQUIRED_SEMANTIC_MAPPINGS[tokenPath]
+    ) {
+      errors.push(
+        `Semantic mapping mismatch for ${tokenPath}: expected ${REQUIRED_SEMANTIC_MAPPINGS[tokenPath]}, got ${runtimeCssVar}`,
+      );
     }
 
     if (typeof sourceFile !== "string" || sourceFile.trim().length === 0) {

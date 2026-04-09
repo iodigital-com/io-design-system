@@ -27,7 +27,7 @@ export class IoPagination {
   @Prop({ mutable: true, reflect: true }) page = 1;
 
   /** Total number of pages */
-  @Prop({ reflect: true }) totalPages = 1;
+  @Prop({ mutable: true, reflect: true }) totalPages = 1;
 
   /** Visually label the prev button (used by aria-label) */
   @Prop() prevLabel = 'Previous page';

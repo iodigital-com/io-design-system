@@ -54,8 +54,8 @@ export function PageHeader({ title, description, tabs, category, status }: Props
       )}
 
       {tabs.length > 0 && (
-        <nav className="mb-8" aria-label="Component page tabs">
-          <div className="inline-flex items-center bg-[var(--io-bg-raised)] border border-[var(--io-border)] rounded-xl p-1 gap-0.5">
+        <nav className="mb-8 -mx-1 overflow-x-auto" aria-label="Component page tabs">
+          <div className="inline-flex items-center bg-[var(--io-bg-raised)] border border-[var(--io-border)] rounded-xl p-1 gap-0.5 mx-1">
             {tabs.map((tab) => {
               if (!tab.href) {
                 return (

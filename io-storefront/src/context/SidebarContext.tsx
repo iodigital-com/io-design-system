@@ -19,17 +19,30 @@ const SidebarContext = createContext<SidebarState>({
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const [isSidebarStartOpen, setSidebarStartOpen] = useState(true);
+  const [isSidebarStartOpen, setSidebarStartOpen] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 1024;
+  });
 
   // Initialise synchronously from pathname so `#io-sidebar-end` exists on the
   // very first render when landing on a configurator page (avoids a 2nd-render flicker).
-  const [isSidebarEndOpen, setSidebarEndOpen] = useState(
-    () => Boolean(pathname?.includes('/configurator')),
-  );
+  // On mobile viewports the drawer starts closed — user opens it via the FAB.
+  const [isSidebarEndOpen, setSidebarEndOpen] = useState(() => {
+    if (typeof window === 'undefined') return Boolean(pathname?.includes('/configurator'));
+    if (window.innerWidth < 1024) return false;
+    return Boolean(pathname?.includes('/configurator'));
+  });
 
   // Keep sidebar-end in sync when the user navigates between tabs.
   useEffect(() => {
-    setSidebarEndOpen(Boolean(pathname?.includes('/configurator')));
+    if (!pathname?.includes('/configurator')) {
+      // Always close when leaving a configurator page.
+      setSidebarEndOpen(false);
+    } else if (typeof window === 'undefined' || window.innerWidth >= 1024) {
+      // Auto-open on desktop configurator pages.
+      setSidebarEndOpen(true);
+    }
+    // On mobile configurator pages: leave it closed so the user can tap the FAB.
   }, [pathname]);
 
   return (

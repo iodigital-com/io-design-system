@@ -401,7 +401,7 @@ export function ConfiguratorControls({ propDefinitions, storyState, setStoryStat
   }
 
   const controls = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col min-h-0 h-full">
       {/* ── Panel header ─────────────────────────────────────── */}
       <div
         className="flex items-center justify-between px-4 py-3 shrink-0"
@@ -459,7 +459,7 @@ export function ConfiguratorControls({ propDefinitions, storyState, setStoryStat
       </div>
 
       {/* ── Controls ─────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-4 pb-6">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-6">
         {Array.from(grouped.entries()).map(([groupKey, defs], groupIndex) => (
           <div key={groupKey}>
             {groupKey !== UNGROUPED && (

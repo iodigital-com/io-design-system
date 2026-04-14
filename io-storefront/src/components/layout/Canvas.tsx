@@ -81,6 +81,19 @@ function AutoIcon() {
   );
 }
 
+function SlidersIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="4" y1="12" x2="20" y2="12" />
+      <line x1="4" y1="18" x2="20" y2="18" />
+      <circle cx="8" cy="6" r="2" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="10" cy="18" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
   light: <SunIcon />,
   dark: <MoonIcon />,
@@ -101,11 +114,13 @@ const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
  * ConfiguratorControls portals its prop panel into.
  */
 export function Canvas({ children }: { children: ReactNode }) {
-  const { isSidebarStartOpen, toggleSidebarStart, isSidebarEndOpen } = useSidebar();
+  const { isSidebarStartOpen, toggleSidebarStart, isSidebarEndOpen, setSidebarEndOpen } = useSidebar();
   const { theme, setTheme } = useStorefrontTheme();
   const pathname = usePathname();
   const mainRef = useRef<HTMLElement>(null);
   const [isSearchPaletteOpen, setIsSearchPaletteOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const prevPathnameRef = useRef<string | null>(null);
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
@@ -123,6 +138,23 @@ export function Canvas({ children }: { children: ReactNode }) {
     return () => document.removeEventListener('keydown', onGlobalShortcut);
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 1023px)');
+    const syncViewport = () => setIsMobileViewport(mediaQuery.matches);
+    syncViewport();
+    mediaQuery.addEventListener('change', syncViewport);
+    return () => mediaQuery.removeEventListener('change', syncViewport);
+  }, []);
+
+  // Close nav sidebar only when navigating to a new page (not when the sidebar is toggled open)
+  useEffect(() => {
+    const didNavigate = prevPathnameRef.current !== null && prevPathnameRef.current !== pathname;
+    prevPathnameRef.current = pathname;
+    if (didNavigate && isMobileViewport && isSidebarStartOpen) {
+      toggleSidebarStart();
+    }
+  }, [pathname, isMobileViewport, isSidebarStartOpen, toggleSidebarStart]);
+
   return (
     <div className="h-screen flex flex-col bg-[var(--io-bg-base)] text-[var(--io-text-primary)]">
       <a
@@ -139,23 +171,23 @@ export function Canvas({ children }: { children: ReactNode }) {
 
       {/* ── Header ──────────────────────────────────────────────── */}
       <header
-        className="h-[var(--io-header-height)] shrink-0 z-50 flex items-center justify-between px-5 bg-[var(--io-bg-base)]"
+        className="h-[var(--io-header-height)] shrink-0 z-50 flex items-center justify-between px-3 sm:px-5 bg-[var(--io-bg-base)]"
         style={{ borderTop: '3px solid var(--io-color-primary)', boxShadow: '0 1px 0 var(--io-border), 0 2px 8px rgba(0,0,0,0.04)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={toggleSidebarStart}
             className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer"
             aria-label={isSidebarStartOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={isSidebarStartOpen}
+            aria-controls="io-sidebar-start"
           >
             <MenuIcon />
           </button>
           {/* io Digital wordmark — SVG logotype mark + "Design System" label */}
           <Link href="/" className="flex items-center gap-2 select-none" aria-label="iO Design System home">
             <IoLogoMark />
-            <span
-              className="text-sm font-light text-io-text-secondary tracking-[-0.01em]"
-            >
+            <span className="hidden sm:inline text-sm font-light text-io-text-secondary tracking-[-0.01em]">
               Design System
             </span>
           </Link>
@@ -164,34 +196,28 @@ export function Canvas({ children }: { children: ReactNode }) {
         <button
           type="button"
           onClick={() => setIsSearchPaletteOpen(true)}
-          className="mx-4 flex-1 max-w-2xl rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-left text-sm text-[var(--io-text-muted)] hover:border-[var(--io-border-hover)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
+          className="mx-2 sm:mx-4 flex-1 min-w-0 max-w-2xl rounded-lg border border-[var(--io-border)] bg-[var(--io-bg-raised)] px-3 py-2 text-left text-sm text-[var(--io-text-muted)] hover:border-[var(--io-border-hover)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
           aria-label="Open search"
         >
           <span className="flex items-center justify-between">
             <span>Search</span>
-            <span className="text-xs">⌘K</span>
+            <span className="hidden sm:inline text-xs">⌘K</span>
           </span>
         </button>
 
-        <div className="flex items-center gap-1">
-          {/* Theme picker — standalone icon-only buttons */}
-          {THEMES.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTheme(t)}
-              title={t.charAt(0).toUpperCase() + t.slice(1)}
-              aria-label={`Set theme: ${t}`}
-              aria-pressed={theme === t}
-              className={[
-                'p-2 rounded-md io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer',
-                theme === t
-                  ? 'text-[var(--io-text-primary)] bg-[var(--io-bg-raised)]'
-                  : 'text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',
-              ].join(' ')}
-            >
-              {THEME_ICONS[t]}
-            </button>
-          ))}
+        <div className="flex items-center gap-0.5 sm:gap-1">
+          {/* Theme picker — single cycle button */}
+          <button
+            onClick={() => {
+              const idx = THEMES.indexOf(theme);
+              setTheme(THEMES[(idx + 1) % THEMES.length]);
+            }}
+            title={`Theme: ${theme} (click to change)`}
+            aria-label={`Current theme: ${theme}. Click to cycle theme.`}
+            className="p-2 rounded-md text-[var(--io-text-primary)] bg-[var(--io-bg-raised)] hover:bg-[var(--io-bg-hover)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer"
+          >
+            {THEME_ICONS[theme]}
+          </button>
 
           {/* GitHub link */}
           <a
@@ -210,26 +236,75 @@ export function Canvas({ children }: { children: ReactNode }) {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar start */}
         {isSidebarStartOpen && (
-          <aside className="w-[var(--io-sidebar-nav-width)] shrink-0 border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col">
+          <>
+            {isMobileViewport && (
+              <button
+                type="button"
+                aria-label="Close navigation overlay"
+                className="fixed inset-0 z-40 bg-black/35"
+                onClick={toggleSidebarStart}
+              />
+            )}
+            <aside
+              id="io-sidebar-start"
+              className={[
+                'border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col',
+                isMobileViewport
+                  ? 'fixed left-0 bottom-0 top-[var(--io-header-height)] z-50 w-[min(86vw,var(--io-sidebar-nav-width))] shadow-xl'
+                  : 'w-[var(--io-sidebar-nav-width)] shrink-0',
+              ].join(' ')}
+            >
             <Navigation />
-          </aside>
+            </aside>
+          </>
         )}
 
         {/* Main */}
         <main id="main-content" tabIndex={-1} ref={mainRef} className="flex-1 min-w-0 overflow-y-auto">
-          <div className="mx-auto px-8 py-8" style={{ maxWidth: '1224px' }}>
+          <div className="mx-auto px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8" style={{ maxWidth: '1224px' }}>
             {children}
           </div>
         </main>
 
         {/* Sidebar end — visible only on configurator pages */}
         {isSidebarEndOpen && (
-          <aside className="w-[var(--io-sidebar-config-width)] shrink-0 border-l border-[var(--io-border)] bg-[var(--io-bg-raised)] flex flex-col overflow-hidden">
-            {/* Portal target — ConfiguratorControls renders here via createPortal */}
-            <div id="io-sidebar-end" className="flex-1 flex flex-col overflow-hidden" />
-          </aside>
+          <>
+            {isMobileViewport && (
+              <button
+                type="button"
+                aria-label="Close properties panel"
+                className="fixed inset-0 z-40 bg-black/35"
+                onClick={() => setSidebarEndOpen(false)}
+              />
+            )}
+            <aside
+              className={[
+                'border-[var(--io-border)] bg-[var(--io-bg-raised)] flex flex-col overflow-hidden',
+                isMobileViewport
+                  ? 'fixed left-0 right-0 bottom-0 z-50 max-h-[58vh] border-t shadow-[0_-8px_24px_rgba(0,0,0,0.18)]'
+                  : 'w-[var(--io-sidebar-config-width)] shrink-0 border-l',
+              ].join(' ')}
+            >
+              {/* Portal target — ConfiguratorControls renders here via createPortal */}
+              <div id="io-sidebar-end" className="flex-1 min-h-0 flex flex-col overflow-hidden" />
+            </aside>
+          </>
         )}
       </div>
+
+      {/* Properties FAB — mobile only, shown when bottom sheet is closed on configurator pages */}
+      {isMobileViewport && !isSidebarEndOpen && pathname?.includes('/configurator') && (
+        <button
+          type="button"
+          onClick={() => setSidebarEndOpen(true)}
+          className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold shadow-lg cursor-pointer"
+          style={{ background: 'var(--io-color-primary)', color: '#fff' }}
+          aria-label="Open properties panel"
+        >
+          <SlidersIcon />
+          Properties
+        </button>
+      )}
 
       <SearchPalette open={isSearchPaletteOpen} onClose={() => setIsSearchPaletteOpen(false)} />
     </div>

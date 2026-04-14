@@ -1,11 +1,11 @@
 # io Design System - Storefront Deployment
 
 ## Live URL
-https://diwa-copilot-ai-491108.web.app
+https://io-design-system-showcase.web.app
 
 ## Deployment Details
 - **Platform:** Firebase Hosting
-- **Project:** diwa-copilot-ai-491108 (Diwa Copilot AI)
+- **Project:** io-design-system-showcase
 - **Files Deployed:** 1,489 static files
 - **Status:** ✓ Live and Accessible
 - **Response Time:** HTTP 200 OK
@@ -53,11 +53,11 @@ https://diwa-copilot-ai-491108.web.app
 ## Deployment Command
 ```bash
 cd io-storefront
-firebase deploy --project=diwa-copilot-ai-491108
+firebase deploy --project=io-design-system-showcase
 ```
 
 ## Sharing with Manager
-Share the URL: https://diwa-copilot-ai-491108.web.app
+Share the URL: https://io-design-system-showcase.web.app
 
 The storefront showcases:
 1. Complete component library with interactive demos
@@ -71,4 +71,4 @@ Once your organization provides the production hosting environment, the same dep
 
 ---
 Deployed: April 14, 2026
-Account: ortegavialeigh@gmail.com
+Project scope: io-design-system-showcase

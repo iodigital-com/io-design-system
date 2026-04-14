@@ -549,6 +549,7 @@ export default function MotionPage() {
               code: `export function MotionExample() {
   return (
     <div
+      className="motion-safe"
       style={{
         transition:
           'opacity var(--io-motion-base) var(--io-motion-easing-standard), transform var(--io-motion-base) var(--io-motion-easing-standard)',

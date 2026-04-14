@@ -114,13 +114,35 @@ const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
  * ConfiguratorControls portals its prop panel into.
  */
 export function Canvas({ children }: { children: ReactNode }) {
-  const { isSidebarStartOpen, toggleSidebarStart, isSidebarEndOpen, setSidebarEndOpen } = useSidebar();
+  const { isSidebarStartOpen, setSidebarStartOpen, isSidebarEndOpen, setSidebarEndOpen } = useSidebar();
   const { theme, setTheme } = useStorefrontTheme();
   const pathname = usePathname();
   const mainRef = useRef<HTMLElement>(null);
+  const sidebarStartRef = useRef<HTMLElement>(null);
+  const sidebarEndRef = useRef<HTMLElement>(null);
+  const focusRestoreRef = useRef<HTMLElement | null>(null);
   const [isSearchPaletteOpen, setIsSearchPaletteOpen] = useState(false);
   const [isMobileViewport, setIsMobileViewport] = useState(false);
   const prevPathnameRef = useRef<string | null>(null);
+
+  function closeSidebarStart() {
+    setSidebarStartOpen(false);
+  }
+
+  function openSidebarEnd() {
+    if (isMobileViewport) {
+      setSidebarStartOpen(false);
+    }
+    setSidebarEndOpen(true);
+  }
+
+  function toggleSidebarStart() {
+    const nextOpen = !isSidebarStartOpen;
+    if (isMobileViewport && nextOpen) {
+      setSidebarEndOpen(false);
+    }
+    setSidebarStartOpen(nextOpen);
+  }
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
@@ -151,9 +173,53 @@ export function Canvas({ children }: { children: ReactNode }) {
     const didNavigate = prevPathnameRef.current !== null && prevPathnameRef.current !== pathname;
     prevPathnameRef.current = pathname;
     if (didNavigate && isMobileViewport && isSidebarStartOpen) {
-      toggleSidebarStart();
+      closeSidebarStart();
     }
-  }, [pathname, isMobileViewport, isSidebarStartOpen, toggleSidebarStart]);
+  }, [pathname, isMobileViewport, isSidebarStartOpen, setSidebarStartOpen]);
+
+  useEffect(() => {
+    if (!isMobileViewport) return;
+
+    function onEscape(event: KeyboardEvent) {
+      if (event.key !== 'Escape') return;
+      if (isSidebarEndOpen) {
+        setSidebarEndOpen(false);
+        return;
+      }
+      if (isSidebarStartOpen) {
+        closeSidebarStart();
+      }
+    }
+
+    document.addEventListener('keydown', onEscape);
+    return () => document.removeEventListener('keydown', onEscape);
+  }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen, setSidebarEndOpen, setSidebarStartOpen]);
+
+  useEffect(() => {
+    if (!isMobileViewport) {
+      return;
+    }
+
+    const activeDrawer = isSidebarEndOpen
+      ? sidebarEndRef.current
+      : isSidebarStartOpen
+        ? sidebarStartRef.current
+        : null;
+
+    if (!activeDrawer) {
+      if (focusRestoreRef.current) {
+        focusRestoreRef.current.focus();
+        focusRestoreRef.current = null;
+      }
+      return;
+    }
+
+    if (!focusRestoreRef.current && document.activeElement instanceof HTMLElement) {
+      focusRestoreRef.current = document.activeElement;
+    }
+
+    activeDrawer.focus();
+  }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen]);
 
   return (
     <div className="h-screen flex flex-col bg-[var(--io-bg-base)] text-[var(--io-text-primary)]">
@@ -221,9 +287,9 @@ export function Canvas({ children }: { children: ReactNode }) {
 
           {/* GitHub link */}
           <a
-            href="https://github.com"
+            href="https://github.com/iodigital-com/io-design-system"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="p-1.5 rounded hover:bg-[var(--io-bg-hover)] text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)]"
             aria-label="GitHub"
           >
@@ -242,11 +308,16 @@ export function Canvas({ children }: { children: ReactNode }) {
                 type="button"
                 aria-label="Close navigation overlay"
                 className="fixed inset-0 z-40 bg-black/35"
-                onClick={toggleSidebarStart}
+                onClick={closeSidebarStart}
               />
             )}
             <aside
               id="io-sidebar-start"
+              ref={sidebarStartRef}
+              role={isMobileViewport ? 'dialog' : undefined}
+              aria-modal={isMobileViewport ? true : undefined}
+              aria-label="Navigation panel"
+              tabIndex={-1}
               className={[
                 'border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col',
                 isMobileViewport
@@ -278,6 +349,11 @@ export function Canvas({ children }: { children: ReactNode }) {
               />
             )}
             <aside
+              ref={sidebarEndRef}
+              role={isMobileViewport ? 'dialog' : undefined}
+              aria-modal={isMobileViewport ? true : undefined}
+              aria-label="Properties panel"
+              tabIndex={-1}
               className={[
                 'border-[var(--io-border)] bg-[var(--io-bg-raised)] flex flex-col overflow-hidden',
                 isMobileViewport
@@ -296,9 +372,9 @@ export function Canvas({ children }: { children: ReactNode }) {
       {isMobileViewport && !isSidebarEndOpen && pathname?.includes('/configurator') && (
         <button
           type="button"
-          onClick={() => setSidebarEndOpen(true)}
+          onClick={openSidebarEnd}
           className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold shadow-lg cursor-pointer"
-          style={{ background: 'var(--io-color-primary)', color: '#fff' }}
+          style={{ background: 'var(--io-color-primary)', color: 'var(--io-text-on-primary)' }}
           aria-label="Open properties panel"
         >
           <SlidersIcon />

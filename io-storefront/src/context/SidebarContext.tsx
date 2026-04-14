@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 type SidebarState = {
   isSidebarStartOpen: boolean;
+  setSidebarStartOpen: (v: boolean) => void;
   toggleSidebarStart: () => void;
   isSidebarEndOpen: boolean;
   setSidebarEndOpen: (v: boolean) => void;
@@ -12,6 +13,7 @@ type SidebarState = {
 
 const SidebarContext = createContext<SidebarState>({
   isSidebarStartOpen: true,
+  setSidebarStartOpen: () => {},
   toggleSidebarStart: () => {},
   isSidebarEndOpen: false,
   setSidebarEndOpen: () => {},
@@ -19,19 +21,28 @@ const SidebarContext = createContext<SidebarState>({
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const [isSidebarStartOpen, setSidebarStartOpen] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    return window.innerWidth >= 1024;
-  });
+  const [isSidebarStartOpen, setSidebarStartOpen] = useState(true);
 
   // Initialise synchronously from pathname so `#io-sidebar-end` exists on the
   // very first render when landing on a configurator page (avoids a 2nd-render flicker).
   // On mobile viewports the drawer starts closed — user opens it via the FAB.
-  const [isSidebarEndOpen, setSidebarEndOpen] = useState(() => {
-    if (typeof window === 'undefined') return Boolean(pathname?.includes('/configurator'));
-    if (window.innerWidth < 1024) return false;
-    return Boolean(pathname?.includes('/configurator'));
-  });
+  const [isSidebarEndOpen, setSidebarEndOpen] = useState(Boolean(pathname?.includes('/configurator')));
+
+  // Keep sidebar defaults in sync with viewport changes.
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const syncByViewport = () => {
+      const isDesktop = mediaQuery.matches;
+      setSidebarStartOpen(isDesktop);
+
+      const isConfiguratorPage = Boolean(pathname?.includes('/configurator'));
+      setSidebarEndOpen(isDesktop && isConfiguratorPage);
+    };
+
+    syncByViewport();
+    mediaQuery.addEventListener('change', syncByViewport);
+    return () => mediaQuery.removeEventListener('change', syncByViewport);
+  }, [pathname]);
 
   // Keep sidebar-end in sync when the user navigates between tabs.
   useEffect(() => {
@@ -49,6 +60,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     <SidebarContext.Provider
       value={{
         isSidebarStartOpen,
+        setSidebarStartOpen,
         toggleSidebarStart: () => setSidebarStartOpen((v) => !v),
         isSidebarEndOpen,
         setSidebarEndOpen,

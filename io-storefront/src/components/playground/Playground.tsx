@@ -36,7 +36,7 @@ export function Playground({ children, frameworkCode, codeVisible = true, previe
     <div className="rounded-lg overflow-hidden border border-[var(--io-border)] mb-8">
       {/* Live preview — dot grid stage */}
       <div
-        className={['p-8 flex items-center justify-center min-h-[var(--io-playground-min-height)]', previewClassName].filter(Boolean).join(' ')}
+        className={['p-4 sm:p-8 flex items-center justify-center min-h-[var(--io-playground-min-height)]', previewClassName].filter(Boolean).join(' ')}
         data-preview
         style={{
           backgroundColor: 'var(--io-bg-raised)',

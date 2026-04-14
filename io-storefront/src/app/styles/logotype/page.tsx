@@ -576,6 +576,7 @@ export default function LogotypePage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* In your Angular component styles */
 .brand-mark {
   color: var(--io-color-primary);     /* Energetic Blue — default brand colour */

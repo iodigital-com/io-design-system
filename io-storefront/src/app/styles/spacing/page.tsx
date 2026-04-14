@@ -325,6 +325,7 @@ export default function SpacingPage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* In your Angular component styles */
 .card {
   padding: var(--io-space-6);     /* 24px — comfortable card padding */

@@ -22,7 +22,6 @@ type SearchPaletteProps = {
 const RECENT_SEARCHES_KEY = 'io-search-palette-recent';
 
 const SECTION_HEADINGS = [
-  'FAQ',
   'Keyboard interaction',
   'Screen reader behaviour',
   'WCAG 2.2 compliance',
@@ -36,7 +35,6 @@ const SECTION_HEADINGS = [
 ] as const;
 
 const DOC_ALIASES = [
-  { label: 'FAQ', href: '/help#faq', type: 'Documentation' as const },
   { label: 'Bug report', href: '/help/support', type: 'Documentation' as const },
   { label: 'Feature request', href: '/help/support', type: 'Documentation' as const },
   { label: 'Implementation question', href: '/help/support', type: 'Documentation' as const },

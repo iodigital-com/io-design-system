@@ -200,6 +200,7 @@ export const sitemap: NavSection[] = [
     title: 'Help',
     items: [
       { label: 'Introduction', href: '/help' },
+      { label: 'FAQ', href: '/help#faq' },
       { label: 'Support', href: '/help/support' },
     ],
   },

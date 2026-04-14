@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,7 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 const FAQ = [
   {
     q: 'How do I report a bug or request a feature?',
-    a: 'Open an issue on the io-design-system GitHub repository. Please include steps to reproduce, expected behavior, and your environment.',
+    a: 'Start on the Support page to choose the right GitHub issue path for bugs, feature requests, and implementation questions. Include reproduction steps, expected behavior, and your environment details.',
   },
   {
     q: 'Can I use io Design System outside of io Digital products?',
@@ -19,7 +17,7 @@ const FAQ = [
   },
   {
     q: 'How do I upgrade between major versions?',
-    a: 'Each major version includes a migration guide in the Changelog section. Breaking changes to component APIs are documented with before/after code examples.',
+    a: 'Breaking changes are called out in the repository changelog. When migration guidance exists, it is linked from the relevant changelog entry.',
   },
 ];
 
@@ -45,6 +43,13 @@ export default function HelpPage() {
           behavior and upgrade notes are maintained in the changelog.
         </p>
         <div className="flex flex-wrap gap-3">
+          <Link
+            href="/help#faq"
+            className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+            style={{ background: 'var(--io-bg-hover)', color: 'var(--io-text-primary)' }}
+          >
+            Browse FAQ
+          </Link>
           <Link
             href="/help/support"
             className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"

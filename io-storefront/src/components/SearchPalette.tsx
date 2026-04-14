@@ -22,6 +22,7 @@ type SearchPaletteProps = {
 const RECENT_SEARCHES_KEY = 'io-search-palette-recent';
 
 const SECTION_HEADINGS = [
+  'FAQ',
   'Keyboard interaction',
   'Screen reader behaviour',
   'WCAG 2.2 compliance',
@@ -32,6 +33,13 @@ const SECTION_HEADINGS = [
   'Events',
   'Methods',
   'Slots',
+] as const;
+
+const DOC_ALIASES = [
+  { label: 'FAQ', href: '/help#faq', type: 'Documentation' as const },
+  { label: 'Bug report', href: '/help/support', type: 'Documentation' as const },
+  { label: 'Feature request', href: '/help/support', type: 'Documentation' as const },
+  { label: 'Implementation question', href: '/help/support', type: 'Documentation' as const },
 ] as const;
 
 const PROP_NAMES = [
@@ -164,7 +172,14 @@ function buildSearchIndex(): SearchResult[] {
     type: 'Design Tokens' as const,
   }));
 
-  return dedupe([...componentItems, ...tokenItems, ...docPageItems, ...docHeadingItems, ...propItems]);
+  const docAliases = DOC_ALIASES.map((item) => ({
+    id: `doc-alias:${item.label.toLowerCase().replace(/\s+/g, '-')}`,
+    label: item.label,
+    href: item.href,
+    type: item.type,
+  }));
+
+  return dedupe([...componentItems, ...tokenItems, ...docPageItems, ...docHeadingItems, ...docAliases, ...propItems]);
 }
 
 const SEARCH_INDEX = buildSearchIndex();

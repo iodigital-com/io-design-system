@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,18 +5,21 @@ import { PageHeader } from '@/components/layout/PageHeader';
 const SUPPORT_OPTIONS = [
   {
     title: 'Report a bug',
-    description: 'Use the bug template when behavior is broken or differs from documentation.',
+    description: 'Open a GitHub issue when behavior is broken or differs from documentation.',
     href: 'https://github.com/iodigital-com/io-design-system/issues/new/choose',
+    cta: 'Report bug in GitHub',
   },
   {
     title: 'Request a feature',
     description: 'Suggest component additions or API improvements with product impact context.',
     href: 'https://github.com/iodigital-com/io-design-system/issues/new?labels=enhancement&title=%5BFeature%5D%20',
+    cta: 'Request feature in GitHub',
   },
   {
     title: 'Ask an implementation question',
     description: 'Share usage details, expected behavior, and minimal code examples.',
     href: 'https://github.com/iodigital-com/io-design-system/issues/new?labels=question&title=%5BQuestion%5D%20',
+    cta: 'Ask question in GitHub',
   },
 ];
 
@@ -52,9 +53,9 @@ export default function SupportPage() {
               className="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold"
               style={{ background: 'var(--io-bg-hover)', color: 'var(--io-text-primary)' }}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              Open GitHub form
+              {option.cta}
             </a>
           </article>
         ))}
@@ -80,8 +81,8 @@ export default function SupportPage() {
           What happens next
         </h2>
         <p className="text-sm text-[var(--io-text-secondary)]">
-          Maintainers triage new requests and label them by impact and priority. You can monitor status updates in the
-          issue thread and track shipped changes in the changelog.
+          Maintainers review new requests and continue follow-up in the issue thread when more context is needed.
+          Shipped changes are reflected in the repository changelog and release notes when available.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
@@ -94,7 +95,7 @@ export default function SupportPage() {
           <a
             href="https://github.com/iodigital-com/io-design-system/blob/main/CONTRIBUTING.md"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
             style={{ background: 'var(--io-bg-hover)', color: 'var(--io-text-primary)' }}
           >

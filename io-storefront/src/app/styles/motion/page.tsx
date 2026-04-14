@@ -178,14 +178,14 @@ function MotionToggleDemo({
             style={{
               position: 'absolute',
               top: '50%',
-              left: 'var(--io-space-3)',
+              left: active
+                ? 'calc(100% - var(--io-space-3) - var(--io-space-6))'
+                : 'var(--io-space-3)',
               width: 'var(--io-space-6)',
               height: 'var(--io-space-6)',
               borderRadius: 'var(--io-border-radius-pill)',
               background: 'var(--io-accent)',
-              transform: active
-                ? 'translate(calc(100% - var(--io-space-3) - var(--io-space-3) - var(--io-space-6)), -50%)'
-                : 'translate(0, -50%)',
+              transform: 'translateY(-50%)',
               transition: reducedMotion ? 'none' : transition,
             }}
           />
@@ -218,7 +218,7 @@ function EasingComparisonDemo({
   easingValue: string;
 }) {
   const [active, setActive] = React.useState(false);
-  const transition = `transform var(--io-toast-item-enter-duration) var(${easingToken})`;
+  const transition = `left var(--io-toast-item-enter-duration) var(${easingToken})`;
 
   return (
     <div
@@ -259,14 +259,14 @@ function EasingComparisonDemo({
           style={{
             position: 'absolute',
             top: '50%',
-            left: 'var(--io-space-3)',
+            left: active
+              ? 'calc(100% - var(--io-space-3) - var(--io-space-5))'
+              : 'var(--io-space-3)',
             width: 'var(--io-space-5)',
             height: 'var(--io-space-5)',
             borderRadius: 'var(--io-border-radius-pill)',
             background: 'var(--io-accent)',
-            transform: active
-              ? 'translate(calc(100% - var(--io-space-3) - var(--io-space-3) - var(--io-space-5)), -50%)'
-              : 'translate(0, -50%)',
+            transform: 'translateY(-50%)',
             transition: reducedMotion ? 'none' : transition,
           }}
         />
@@ -381,26 +381,26 @@ export default function MotionPage() {
     {
       title: 'Fast transition',
       motionToken: '--io-motion-fast',
-      transition: 'transform var(--io-motion-fast)',
+      transition: 'left var(--io-motion-fast)',
       note: 'Best for micro-interactions like hover and compact state feedback.',
     },
     {
       title: 'Base transition',
       motionToken: '--io-motion-base',
-      transition: 'transform var(--io-motion-base)',
+      transition: 'left var(--io-motion-base)',
       note: 'Use as the default interaction tempo across most components.',
     },
     {
       title: 'Slow transition',
       motionToken: '--io-motion-slow',
-      transition: 'transform var(--io-motion-slow)',
+      transition: 'left var(--io-motion-slow)',
       note: 'Reserve for larger structural changes where orientation matters.',
     },
     {
       title: 'Toast-style enter',
       motionToken: '--io-toast-item-enter-duration',
       transition:
-        'transform var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out), opacity var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out)',
+        'left var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out), opacity var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out)',
       note: 'Matches notification-entry rhythm used by toast item animations.',
     },
   ] as const;

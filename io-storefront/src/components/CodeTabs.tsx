@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { CopyButton } from '@/components/CopyButton';
 
-export type CodeTab = { label: string; code: string };
+export type CodeTab = { label: string; code: string; language?: string };
 
 const languageByTabLabel: Record<string, string> = {
   html: 'xml',
@@ -29,7 +29,7 @@ const getLanguageFromLabel = (label: string): string | undefined => {
 
 export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
   const [active, setActive] = useState(0);
-  const activeLanguage = getLanguageFromLabel(tabs[active]?.label ?? '');
+  const activeLanguage = tabs[active]?.language ?? getLanguageFromLabel(tabs[active]?.label ?? '');
 
   return (
     <div>

@@ -145,6 +145,7 @@ function MotionToggleDemo({
             border: '1px solid var(--io-border)',
             background: 'var(--io-bg-card)',
             minWidth: 'var(--io-touch-target-min)',
+            cursor: 'pointer',
           }}
           aria-pressed={active}
         >
@@ -183,7 +184,7 @@ function MotionToggleDemo({
               borderRadius: 'var(--io-border-radius-pill)',
               background: 'var(--io-accent)',
               transform: active
-                ? 'translate(calc(100% + var(--io-space-8) + var(--io-space-7)), -50%)'
+                ? 'translate(calc(100% - var(--io-space-3) - var(--io-space-3) - var(--io-space-6)), -50%)'
                 : 'translate(0, -50%)',
               transition: reducedMotion ? 'none' : transition,
             }}
@@ -237,6 +238,7 @@ function EasingComparisonDemo({
             border: '1px solid var(--io-border)',
             background: 'var(--io-bg-card)',
             minWidth: 'var(--io-touch-target-min)',
+            cursor: 'pointer',
           }}
           aria-pressed={active}
         >
@@ -263,7 +265,7 @@ function EasingComparisonDemo({
             borderRadius: 'var(--io-border-radius-pill)',
             background: 'var(--io-accent)',
             transform: active
-              ? 'translate(calc(100% + var(--io-space-8) + var(--io-space-7) + var(--io-space-5)), -50%)'
+              ? 'translate(calc(100% - var(--io-space-3) - var(--io-space-3) - var(--io-space-5)), -50%)'
               : 'translate(0, -50%)',
             transition: reducedMotion ? 'none' : transition,
           }}
@@ -523,6 +525,7 @@ export default function MotionPage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* Angular component styles */
 .card {
   transition: opacity var(--io-motion-base) var(--io-motion-easing-standard),
@@ -542,6 +545,7 @@ export default function MotionPage() {
             },
             {
               label: 'React',
+              language: 'typescript',
               code: `export function MotionExample() {
   return (
     <div

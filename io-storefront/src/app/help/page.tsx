@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 
 const FAQ = [
@@ -26,15 +28,42 @@ export default function HelpPage() {
     <div className="space-y-10">
       <PageHeader
         title="Help"
-        description="Frequently asked questions and support resources for io Design System."
+        description="Get support quickly, learn how requests are triaged, and find answers to common integration questions."
         tabs={[]}
       />
 
-      <section className="space-y-4">
-        <h2
-          className="text-xl font-semibold"
-          style={{ color: 'var(--io-text-primary, #242424)' }}
-        >
+      <section
+        className="rounded-lg border p-6 space-y-4"
+        style={{
+          background: 'var(--io-bg-raised)',
+          borderColor: 'var(--io-border)',
+        }}
+      >
+        <h2 className="text-xl font-semibold text-[var(--io-text-primary)]">Start here</h2>
+        <p className="text-sm text-[var(--io-text-secondary)]">
+          Use the support page if you need a bug fix, feature request, or implementation guidance. Release-specific
+          behavior and upgrade notes are maintained in the changelog.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/help/support"
+            className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+            style={{ background: 'var(--io-color-primary-bg)', color: 'var(--io-color-primary)' }}
+          >
+            Open support options
+          </Link>
+          <Link
+            href="/news/changelog"
+            className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold"
+            style={{ background: 'var(--io-bg-hover)', color: 'var(--io-text-primary)' }}
+          >
+            View changelog
+          </Link>
+        </div>
+      </section>
+
+      <section className="space-y-4" id="faq" aria-labelledby="help-faq">
+        <h2 id="help-faq" className="text-xl font-semibold" style={{ color: 'var(--io-text-primary, #242424)' }}>
           FAQ
         </h2>
         <div className="space-y-4">
@@ -47,9 +76,9 @@ export default function HelpPage() {
                 border: '1px solid var(--io-border, #e8e8e8)',
               }}
             >
-              <p className="font-semibold mb-2" style={{ color: 'var(--io-text-primary, #242424)' }}>
+              <h3 className="font-semibold mb-2" style={{ color: 'var(--io-text-primary, #242424)' }}>
                 {q}
-              </p>
+              </h3>
               <p className="text-sm" style={{ color: 'var(--io-text-secondary, #6b6b6b)' }}>
                 {a}
               </p>

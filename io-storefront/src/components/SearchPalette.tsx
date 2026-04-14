@@ -34,6 +34,12 @@ const SECTION_HEADINGS = [
   'Slots',
 ] as const;
 
+const DOC_ALIASES = [
+  { label: 'Bug report', href: '/help/support', type: 'Documentation' as const },
+  { label: 'Feature request', href: '/help/support', type: 'Documentation' as const },
+  { label: 'Implementation question', href: '/help/support', type: 'Documentation' as const },
+] as const;
+
 const PROP_NAMES = [
   'activeTab',
   'arrow',
@@ -164,7 +170,14 @@ function buildSearchIndex(): SearchResult[] {
     type: 'Design Tokens' as const,
   }));
 
-  return dedupe([...componentItems, ...tokenItems, ...docPageItems, ...docHeadingItems, ...propItems]);
+  const docAliases = DOC_ALIASES.map((item) => ({
+    id: `doc-alias:${item.label.toLowerCase().replace(/\s+/g, '-')}`,
+    label: item.label,
+    href: item.href,
+    type: item.type,
+  }));
+
+  return dedupe([...componentItems, ...tokenItems, ...docPageItems, ...docHeadingItems, ...docAliases, ...propItems]);
 }
 
 const SEARCH_INDEX = buildSearchIndex();

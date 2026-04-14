@@ -4,6 +4,13 @@ import React from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { CodeTabs } from '@/components/CodeTabs';
 
+function getCssVarValue(token: string): string {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+  return getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+}
+
 function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
     <div className="mb-6">
@@ -103,39 +110,171 @@ function TokenRow({ token, value, useCase }: { token: string; value: string; use
   );
 }
 
-function MotionDemoCard({
+function MotionToggleDemo({
   title,
   transition,
+  motionToken,
+  motionValue,
   note,
+  reducedMotion,
 }: {
   title: string;
   transition: string;
+  motionToken: string;
+  motionValue: string;
   note: string;
+  reducedMotion: boolean;
 }) {
+  const [active, setActive] = React.useState(false);
+
   return (
     <div
       className="rounded-lg p-5"
       style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
     >
-      <p className="text-sm font-semibold mb-3" style={{ color: 'var(--io-text-primary)' }}>
-        {title}
-      </p>
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <p className="text-sm font-semibold" style={{ color: 'var(--io-text-primary)' }}>
+          {title}
+        </p>
+        <button
+          type="button"
+          onClick={() => setActive((current) => !current)}
+          className="text-xs font-semibold px-3 py-2 rounded-md"
+          style={{
+            color: 'var(--io-text-primary)',
+            border: '1px solid var(--io-border)',
+            background: 'var(--io-bg-card)',
+            minWidth: 'var(--io-touch-target-min)',
+          }}
+          aria-pressed={active}
+        >
+          {active ? 'Reset' : 'Play'}
+        </button>
+      </div>
+
       <div className="rounded-md p-3" style={{ background: 'var(--io-bg-base)' }}>
         <div
-          className="h-2 rounded"
+          className="relative rounded"
           style={{
-            width: '70%',
+            height: 'calc(var(--io-space-7) + var(--io-space-4))',
+            border: '1px solid var(--io-border)',
+            background: 'var(--io-bg-card)',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              insetInline: 'var(--io-space-3)',
+              top: '50%',
+              height: '2px',
+              background: 'var(--io-border)',
+              transform: 'translateY(-50%)',
+            }}
+            aria-hidden="true"
+          />
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: 'var(--io-space-3)',
+              width: 'var(--io-space-6)',
+              height: 'var(--io-space-6)',
+              borderRadius: 'var(--io-border-radius-pill)',
+              background: 'var(--io-accent)',
+              transform: active
+                ? 'translate(calc(100% + var(--io-space-8) + var(--io-space-7)), -50%)'
+                : 'translate(0, -50%)',
+              transition: reducedMotion ? 'none' : transition,
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="mt-3 space-y-1">
+        <code className="block text-xs font-mono" style={{ color: 'var(--io-text-primary)' }}>
+          {motionToken} = {motionValue || '...'}
+        </code>
+        <code className="block text-xs font-mono" style={{ color: 'var(--io-text-muted)' }}>
+          transition: {reducedMotion ? 'none (prefers-reduced-motion)' : transition}
+        </code>
+      </div>
+
+      <p className="mt-2 text-xs" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+        {note}
+      </p>
+    </div>
+  );
+}
+
+function EasingComparisonDemo({
+  reducedMotion,
+  easingToken,
+  easingValue,
+}: {
+  reducedMotion: boolean;
+  easingToken: string;
+  easingValue: string;
+}) {
+  const [active, setActive] = React.useState(false);
+  const transition = `transform var(--io-toast-item-enter-duration) var(${easingToken})`;
+
+  return (
+    <div
+      className="rounded-lg p-4"
+      style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
+    >
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <p className="text-xs font-semibold" style={{ color: 'var(--io-text-primary)' }}>
+          {easingToken}
+        </p>
+        <button
+          type="button"
+          onClick={() => setActive((current) => !current)}
+          className="text-xs font-semibold px-3 py-2 rounded-md"
+          style={{
+            color: 'var(--io-text-primary)',
+            border: '1px solid var(--io-border)',
+            background: 'var(--io-bg-card)',
+            minWidth: 'var(--io-touch-target-min)',
+          }}
+          aria-pressed={active}
+        >
+          {active ? 'Reset' : 'Play'}
+        </button>
+      </div>
+
+      <div
+        className="relative rounded"
+        style={{
+          height: 'calc(var(--io-space-7) + var(--io-space-2))',
+          border: '1px solid var(--io-border)',
+          background: 'var(--io-bg-card)',
+        }}
+      >
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: 'var(--io-space-3)',
+            width: 'var(--io-space-5)',
+            height: 'var(--io-space-5)',
+            borderRadius: 'var(--io-border-radius-pill)',
             background: 'var(--io-accent)',
-            opacity: 0.85,
-            transition,
+            transform: active
+              ? 'translate(calc(100% + var(--io-space-8) + var(--io-space-7) + var(--io-space-5)), -50%)'
+              : 'translate(0, -50%)',
+            transition: reducedMotion ? 'none' : transition,
           }}
         />
       </div>
+
       <code className="block mt-3 text-xs font-mono" style={{ color: 'var(--io-text-muted)' }}>
-        {transition}
+        {easingToken} = {easingValue || '...'}
       </code>
       <p className="mt-2 text-xs" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-        {note}
+        Uses <code style={{ fontSize: '0.85em' }}>--io-toast-item-enter-duration</code> with this easing token.
       </p>
     </div>
   );
@@ -198,6 +337,78 @@ const EASING_TOKENS = [
 ] as const;
 
 export default function MotionPage() {
+  const [reducedMotion, setReducedMotion] = React.useState(false);
+  const [resolvedTokens, setResolvedTokens] = React.useState<Record<string, string>>({});
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const applyReducedMotion = () => {
+      setReducedMotion(mq.matches);
+    };
+
+    const syncTokenValues = () => {
+      const tokens = [
+        '--io-motion-fast',
+        '--io-motion-base',
+        '--io-motion-slow',
+        '--io-toast-item-enter-duration',
+        '--io-motion-easing-standard',
+        '--io-motion-easing-snappy',
+        '--io-motion-easing-ease-out',
+      ] as const;
+
+      const nextValues = tokens.reduce<Record<string, string>>((acc, token) => {
+        acc[token] = getCssVarValue(token);
+        return acc;
+      }, {});
+
+      setResolvedTokens(nextValues);
+    };
+
+    applyReducedMotion();
+    syncTokenValues();
+
+    mq.addEventListener('change', applyReducedMotion);
+    return () => {
+      mq.removeEventListener('change', applyReducedMotion);
+    };
+  }, []);
+
+  const durationMotionDemos = [
+    {
+      title: 'Fast transition',
+      motionToken: '--io-motion-fast',
+      transition: 'transform var(--io-motion-fast)',
+      note: 'Best for micro-interactions like hover and compact state feedback.',
+    },
+    {
+      title: 'Base transition',
+      motionToken: '--io-motion-base',
+      transition: 'transform var(--io-motion-base)',
+      note: 'Use as the default interaction tempo across most components.',
+    },
+    {
+      title: 'Slow transition',
+      motionToken: '--io-motion-slow',
+      transition: 'transform var(--io-motion-slow)',
+      note: 'Reserve for larger structural changes where orientation matters.',
+    },
+    {
+      title: 'Toast-style enter',
+      motionToken: '--io-toast-item-enter-duration',
+      transition:
+        'transform var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out), opacity var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out)',
+      note: 'Matches notification-entry rhythm used by toast item animations.',
+    },
+  ] as const;
+
+  const easingComparison = [
+    '--io-motion-easing-standard',
+    '--io-motion-easing-snappy',
+    '--io-motion-easing-ease-out',
+  ] as const;
+
   return (
     <div className="space-y-16">
       <PageHeader
@@ -251,31 +462,34 @@ export default function MotionPage() {
       <section id="application-patterns" className="space-y-6">
         <SectionHeader
           title="Application patterns"
-          description="Reference patterns for common product interactions using approved motion tokens."
+          description="Interactive examples showing real token values in motion."
         />
 
-        <SubsectionTitle>Common pairings</SubsectionTitle>
+        <SubsectionTitle>Duration in action</SubsectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MotionDemoCard
-            title="Micro feedback"
-            transition="transform var(--io-motion-fast), opacity var(--io-motion-fast)"
-            note="Use for button hover, icon transitions, and lightweight state acknowledgment."
-          />
-          <MotionDemoCard
-            title="Component transition"
-            transition="opacity var(--io-motion-base), transform var(--io-motion-base)"
-            note="Use for panel reveal/collapse where movement supports orientation."
-          />
-          <MotionDemoCard
-            title="Emphasis transition"
-            transition="opacity var(--io-motion-slow) var(--io-motion-easing-ease-out)"
-            note="Use sparingly for larger overlays or staged reveals."
-          />
-          <MotionDemoCard
-            title="Toast enter"
-            transition="opacity var(--io-toast-item-enter-duration) var(--io-motion-easing-ease-out)"
-            note="Align notification entry timing to toast token for consistency."
-          />
+          {durationMotionDemos.map((demo) => (
+            <MotionToggleDemo
+              key={demo.title}
+              title={demo.title}
+              transition={demo.transition}
+              motionToken={demo.motionToken}
+              motionValue={resolvedTokens[demo.motionToken]}
+              note={demo.note}
+              reducedMotion={reducedMotion}
+            />
+          ))}
+        </div>
+
+        <SubsectionTitle>Easing comparison</SubsectionTitle>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {easingComparison.map((token) => (
+            <EasingComparisonDemo
+              key={token}
+              easingToken={token}
+              easingValue={resolvedTokens[token]}
+              reducedMotion={reducedMotion}
+            />
+          ))}
         </div>
       </section>
 
@@ -288,6 +502,10 @@ export default function MotionPage() {
           <RuleCard label="Always support prefers-reduced-motion">
             Provide a reduced-motion path that removes or significantly minimizes non-essential animation.
             Interaction outcomes must remain understandable without movement.
+          </RuleCard>
+          <RuleCard label="Interactive demos follow user preference">
+            These motion previews disable transitions when reduced motion is enabled and still show
+            state change on toggle.
           </RuleCard>
           <RuleCard label="Do not rely on motion as the only cue">
             Pair animated transitions with semantic state, clear labels, and visual contrast so meaning is

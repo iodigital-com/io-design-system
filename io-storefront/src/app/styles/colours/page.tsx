@@ -675,6 +675,7 @@ export default function ColoursPage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* In your Angular component styles */
 .card {
   background: var(--io-bg-raised);

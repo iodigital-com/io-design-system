@@ -490,6 +490,7 @@ export default function GridPage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* In your Angular component styles */
 .page-container {
   max-width: var(--io-container-max); /* 1224px */

@@ -666,6 +666,7 @@ export default function TypographyPage() {
           tabs={[
             {
               label: 'Angular',
+              language: 'css',
               code: `/* In your Angular component styles */
 .heading-1 {
   font-family: var(--io-font-primary);

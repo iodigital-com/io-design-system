@@ -32,8 +32,9 @@ export class IoModal {
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
-  private focusTrigger?: Element;  // Track element that opened modal for focus restoration
-  private inertElements: Element[] = [];  // Track elements with inert applied
+  private focusTrigger?: Element; // Track element that opened modal for focus restoration
+  private inertElements: Element[] = []; // Track elements with inert applied
+  private focusTrapHandler?: (ev: KeyboardEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -65,8 +66,16 @@ export class IoModal {
 
   componentDidLoad() {
     if (this.open && this.dialogEl) {
+      this.focusTrigger = document.activeElement as Element;
       this.dialogEl.showModal();
+      this.applyBackgroundInert();
+      this.setupFocusTrap();
     }
+  }
+
+  disconnectedCallback() {
+    this.clearFocusTrap();
+    this.removeBackgroundInert();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -91,6 +100,8 @@ export class IoModal {
       if (this.dialogEl.open) {
         this.dialogEl.close();
       }
+
+      this.clearFocusTrap();
       
       // Remove inert from background elements
       this.removeBackgroundInert();
@@ -140,6 +151,8 @@ export class IoModal {
    */
   private setupFocusTrap() {
     if (!this.dialogEl) return;
+
+    this.clearFocusTrap();
     
     // Get all focusable elements within the modal (in shadow DOM and slots)
     const focusableSelector =
@@ -169,7 +182,7 @@ export class IoModal {
         firstElement.focus();
       }
     };
-    
+    this.focusTrapHandler = handleKeyDown;
     this.dialogEl.addEventListener('keydown', handleKeyDown);
     
     // Auto-focus first focusable element when modal opens
@@ -179,6 +192,12 @@ export class IoModal {
         firstElement.focus();
       }, 0);
     }
+  }
+
+  private clearFocusTrap() {
+    if (!this.dialogEl || !this.focusTrapHandler) return;
+    this.dialogEl.removeEventListener('keydown', this.focusTrapHandler);
+    this.focusTrapHandler = undefined;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

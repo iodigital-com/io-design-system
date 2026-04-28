@@ -92,6 +92,11 @@ function clearDescribedBy(trigger: HTMLElement, describedById: string): void {
 async function positionTooltip(trigger: HTMLElement): Promise<void> {
   const el = ensureTooltipElement();
   const placement = resolvePlacement(trigger);
+  // Reset to origin before computing — floating-ui measures the element's current
+  // position when calculating available space; an off-origin starting point causes
+  // flip() to fire incorrectly and produces wrong placement.
+  el.style.left = '0';
+  el.style.top = '0';
   const { x, y } = await computePosition(trigger, el, {
     placement,
     strategy: 'fixed',

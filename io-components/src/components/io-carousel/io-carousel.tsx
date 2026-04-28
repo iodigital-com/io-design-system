@@ -53,18 +53,7 @@ export class IoCarousel {
 
   // ── State ─────────────────────────────────────────────────────
 
-  @State() private isDragging = false;
-  @State() private slideAnnouncement = '';
-
-  // ── Private fields ────────────────────────────────────────────
-
-  /**
-   * True while setActiveIndex is propagating an internal scroll-driven change.
-   * Prevents the @Watch from calling scrollToIndex and interrupting ongoing
-   * smooth-scroll animations (e.g. rewind from last to first slide).
-   */
-  private _internalScroll = false;
-
+  @State() private isDragging = false;  @State() private slideAnnouncement = '';
   // ── Drag helpers ──────────────────────────────────────────────
 
   private startX = 0;
@@ -140,10 +129,6 @@ export class IoCarousel {
   private setActiveIndex(index: number, emitEvent: boolean): void {
     const next = this.clampIndex(index);
     if (next === this.activeSlideIndex) return;
-    // Mark this as an internal change so the @Watch skips its scrollToIndex call.
-    // The scroll is already in progress; Watch-driven instant scrolls would
-    // interrupt smooth-scroll animations (most visibly: rewind navigation).
-    this._internalScroll = true;
     this.activeSlideIndex = next;
     // Always announce slide change — AT users need feedback regardless of event emission.
     this.slideAnnouncement = `Slide ${next + 1} of ${this.totalSlides}`;
@@ -155,15 +140,6 @@ export class IoCarousel {
   private onPrev = () => {
     const track = this.track;
     if (!track) return;
-
-    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
-
-    // Rewind should follow physical boundaries first so it works even when
-    // "last page" does not map to the final slide index on wide layouts.
-    if (this.rewind && track.scrollLeft <= 1) {
-      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
-      return;
-    }
 
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
@@ -177,6 +153,12 @@ export class IoCarousel {
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    if (this.rewind && track.scrollLeft <= 1) {
+      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      return;
+    }
 
     track.scrollBy({ left: -fallbackDistance, behavior: 'smooth' });
   };
@@ -184,15 +166,6 @@ export class IoCarousel {
   private onNext = () => {
     const track = this.track;
     if (!track) return;
-
-    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
-
-    // Rewind should follow physical boundaries first so it works even when
-    // "last page" does not map to the final slide index on wide layouts.
-    if (this.rewind && track.scrollLeft >= maxScroll - 1) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-      return;
-    }
 
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
@@ -206,6 +179,12 @@ export class IoCarousel {
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    if (this.rewind && track.scrollLeft >= maxScroll - 1) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
 
     track.scrollBy({ left: fallbackDistance, behavior: 'smooth' });
   };
@@ -249,20 +228,7 @@ export class IoCarousel {
 
   @Watch('activeSlideIndex')
   onActiveSlideIndexChange(newValue: number) {
-    if (this._internalScroll) {
-      // Consume the flag — next external change will proceed normally.
-      this._internalScroll = false;
-      return;
-    }
-
-    const normalized = this.clampIndex(newValue);
-    if (normalized !== newValue) {
-      this.activeSlideIndex = normalized;
-      return;
-    }
-
-    this.slideAnnouncement = `Slide ${normalized + 1} of ${this.totalSlides}`;
-    this.scrollToIndex(normalized, 'auto');
+    this.scrollToIndex(newValue, 'auto');
   }
 
   componentDidLoad() {

@@ -1,19 +1,15 @@
-import { Component, Prop, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Element, Host, State, Listen, Watch, h } from '@stencil/core';
+import { computePosition } from '@floating-ui/dom';
 import type { IoTooltipPlacement } from './types';
-
-const PREV_TOOLTIP_VALUE_ATTR = 'data-io-tooltip-prev-value';
-const PREV_TOOLTIP_HAD_ATTR = 'data-io-tooltip-prev-had';
-const PREV_PLACEMENT_VALUE_ATTR = 'data-io-tooltip-placement-prev-value';
-const PREV_PLACEMENT_HAD_ATTR = 'data-io-tooltip-placement-prev-had';
+import { getTooltipStyles } from './io-tooltip-styles';
+import { createTooltipId, getTooltipMiddleware, getTooltipPositionStyle } from './io-tooltip-utils';
 
 /**
  * io-tooltip
  * ===========
- * Compatibility wrapper around the global [io-tooltip] attribute API.
- *
- * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
- * directly on the trigger element. This wrapper is kept to avoid breaking
- * existing markup and simply maps props to attributes on the first child.
+ * Wraps any trigger element via the default slot. Shows a floating tooltip
+ * label on hover and focus. Uses @floating-ui/dom for viewport-aware
+ * positioning with automatic flip and shift.
  *
  * @example
  * <io-tooltip content="More information">
@@ -22,13 +18,16 @@ const PREV_PLACEMENT_HAD_ATTR = 'data-io-tooltip-placement-prev-had';
  */
 @Component({
   tag: 'io-tooltip',
-  shadow: false,
+  shadow: true,
 })
 export class IoTooltip {
   @Element() el!: HTMLElement;
 
-  private trigger?: HTMLElement;
-  private observer?: MutationObserver;
+  private tooltipEl?: HTMLDivElement;
+  private tooltipId!: string;
+  /** Light-DOM hidden span holding tooltip text for aria-describedby */
+  private descSpan?: HTMLSpanElement;
+  private supportsPopover = typeof HTMLElement !== 'undefined' && 'showPopover' in HTMLElement.prototype;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -38,98 +37,125 @@ export class IoTooltip {
   /** Preferred placement of the tooltip relative to the trigger */
   @Prop() placement: IoTooltipPlacement = 'top';
 
+  // ── State ─────────────────────────────────────────────────────
+
+  @State() visible = false;
+  @State() x = 0;
+  @State() y = 0;
+
   // ── Lifecycle ─────────────────────────────────────────────────
 
-  componentDidLoad() {
-    this.syncTriggerAttributes();
+  componentWillLoad() {
+    this.tooltipId = createTooltipId(Math.random().toString(36).slice(2));
+  }
 
-    // Keep compatibility wrapper stable when frameworks replace the first child.
-    this.observer = new MutationObserver(() => this.syncTriggerAttributes());
-    this.observer.observe(this.el, { childList: true });
+  componentDidLoad() {
+    if (this.descSpan) return; // guard: prevent duplicate spans on reconnect
+    // Create a visually-hidden span in the LIGHT DOM so aria-describedby
+    // resolves within the same DOM tree as the slotted trigger element.
+    // (ARIA IDREFs cannot cross shadow DOM boundaries.)
+    const descId = `${this.tooltipId}-desc`;
+    const span = document.createElement('span');
+    span.id = descId;
+    span.setAttribute('aria-hidden', 'true');
+    span.style.cssText =
+      'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
+    span.textContent = this.content;
+    this.el.appendChild(span);
+    this.descSpan = span;
+
+    // Wire aria-describedby on the slotted trigger to the light-DOM span.
+    const trigger = this.el.querySelector(':scope > *:not([id$="-desc"])');
+    if (trigger) {
+      trigger.setAttribute('aria-describedby', descId);
+    }
+
+    // Progressive enhancement: use Popover API for top-layer rendering
+    // so overflow:hidden ancestors cannot clip the tooltip.
+    if (this.supportsPopover && this.tooltipEl) {
+      this.tooltipEl.setAttribute('popover', 'manual');
+    }
+  }
+
+  // ── Handlers ─────────────────────────────────────────────────
+
+  @Listen('mouseenter')
+  async handleMouseEnter() {
+    await this.updatePosition();
+    this.visible = true;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).showPopover(); } catch { /* already shown */ }
+    }
+  }
+
+  @Listen('mouseleave')
+  handleMouseLeave() {
+    this.visible = false;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).hidePopover(); } catch { /* already hidden */ }
+    }
+  }
+
+  @Listen('focusin')
+  async handleFocusIn() {
+    await this.updatePosition();
+    this.visible = true;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).showPopover(); } catch { /* already shown */ }
+    }
+  }
+
+  @Listen('focusout')
+  handleFocusOut() {
+    this.visible = false;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).hidePopover(); } catch { /* already hidden */ }
+    }
   }
 
   disconnectedCallback() {
-    this.observer?.disconnect();
-    this.observer = undefined;
-    this.clearTriggerAttributes();
+    this.descSpan?.remove();
+    this.descSpan = undefined;
   }
 
+  /** Keep the light-DOM description span in sync when content prop changes. */
   @Watch('content')
-  onContentChange() {
-    this.syncTriggerAttributes();
-  }
-
-  @Watch('placement')
-  onPlacementChange() {
-    this.syncTriggerAttributes();
-  }
-
-  private getTrigger(): HTMLElement | undefined {
-    const first = this.el.querySelector(':scope > *');
-    return first instanceof HTMLElement ? first : undefined;
-  }
-
-  private syncTriggerAttributes() {
-    const trigger = this.getTrigger();
-    if (!trigger) return;
-
-    if (this.trigger && this.trigger !== trigger) {
-      this.clearTriggerAttributes();
-    }
-
-    this.trigger = trigger;
-    this.backupTriggerAttributes(trigger);
-    trigger.setAttribute('io-tooltip', this.content);
-    trigger.setAttribute('io-tooltip-placement', this.placement);
-  }
-
-  private backupTriggerAttributes(trigger: HTMLElement) {
-    if (!trigger.hasAttribute(PREV_TOOLTIP_HAD_ATTR)) {
-      trigger.setAttribute(PREV_TOOLTIP_HAD_ATTR, trigger.hasAttribute('io-tooltip') ? '1' : '0');
-      trigger.setAttribute(PREV_TOOLTIP_VALUE_ATTR, trigger.getAttribute('io-tooltip') ?? '');
-    }
-
-    if (!trigger.hasAttribute(PREV_PLACEMENT_HAD_ATTR)) {
-      trigger.setAttribute(PREV_PLACEMENT_HAD_ATTR, trigger.hasAttribute('io-tooltip-placement') ? '1' : '0');
-      trigger.setAttribute(PREV_PLACEMENT_VALUE_ATTR, trigger.getAttribute('io-tooltip-placement') ?? '');
+  onContentChange(newContent: string) {
+    if (this.descSpan) {
+      this.descSpan.textContent = newContent;
     }
   }
 
-  private restoreTriggerAttributes(trigger: HTMLElement) {
-    const hadTooltip = trigger.getAttribute(PREV_TOOLTIP_HAD_ATTR) === '1';
-    const previousTooltip = trigger.getAttribute(PREV_TOOLTIP_VALUE_ATTR) ?? '';
-    if (hadTooltip) {
-      trigger.setAttribute('io-tooltip', previousTooltip);
-    } else {
-      trigger.removeAttribute('io-tooltip');
-    }
-
-    const hadPlacement = trigger.getAttribute(PREV_PLACEMENT_HAD_ATTR) === '1';
-    const previousPlacement = trigger.getAttribute(PREV_PLACEMENT_VALUE_ATTR) ?? '';
-    if (hadPlacement) {
-      trigger.setAttribute('io-tooltip-placement', previousPlacement);
-    } else {
-      trigger.removeAttribute('io-tooltip-placement');
-    }
-
-    trigger.removeAttribute(PREV_TOOLTIP_HAD_ATTR);
-    trigger.removeAttribute(PREV_TOOLTIP_VALUE_ATTR);
-    trigger.removeAttribute(PREV_PLACEMENT_HAD_ATTR);
-    trigger.removeAttribute(PREV_PLACEMENT_VALUE_ATTR);
-  }
-
-  private clearTriggerAttributes() {
-    if (!this.trigger) return;
-    this.restoreTriggerAttributes(this.trigger);
-    this.trigger = undefined;
+  private async updatePosition() {
+    if (!this.tooltipEl) return;
+    const { x, y } = await computePosition(this.el, this.tooltipEl, {
+      placement: this.placement,
+      strategy: 'fixed',
+      middleware: getTooltipMiddleware(),
+    });
+    this.x = x;
+    this.y = y;
   }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
+    const { visible, x, y, tooltipId, content } = this;
+    const style = getTooltipPositionStyle(x, y);
+
     return (
       <Host>
+        <style>{getTooltipStyles()}</style>
         <slot />
+        <div
+          ref={(el) => (this.tooltipEl = el as HTMLDivElement)}
+          id={tooltipId}
+          role="tooltip"
+          class={{ tooltip: true, 'tooltip--visible': visible }}
+          style={style}
+        >
+          {content}
+        </div>
       </Host>
     );
   }

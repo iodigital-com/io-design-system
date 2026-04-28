@@ -156,6 +156,15 @@ export class IoCarousel {
     const track = this.track;
     if (!track) return;
 
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    // Rewind should follow physical boundaries first so it works even when
+    // "last page" does not map to the final slide index on wide layouts.
+    if (this.rewind && track.scrollLeft <= 1) {
+      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      return;
+    }
+
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
       const targetIndex = getCarouselTargetIndex(currentIndex, this.stepSize, this.totalSlides, this.rewind, 'prev');
@@ -168,12 +177,6 @@ export class IoCarousel {
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
-    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
-
-    if (this.rewind && track.scrollLeft <= 1) {
-      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
-      return;
-    }
 
     track.scrollBy({ left: -fallbackDistance, behavior: 'smooth' });
   };
@@ -181,6 +184,15 @@ export class IoCarousel {
   private onNext = () => {
     const track = this.track;
     if (!track) return;
+
+    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
+
+    // Rewind should follow physical boundaries first so it works even when
+    // "last page" does not map to the final slide index on wide layouts.
+    if (this.rewind && track.scrollLeft >= maxScroll - 1) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
 
     if (this.totalSlides > 0) {
       const currentIndex = this.getNearestSlideIndex();
@@ -194,12 +206,6 @@ export class IoCarousel {
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
-    const maxScroll = Math.max(track.scrollWidth - track.clientWidth, 0);
-
-    if (this.rewind && track.scrollLeft >= maxScroll - 1) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-      return;
-    }
 
     track.scrollBy({ left: fallbackDistance, behavior: 'smooth' });
   };

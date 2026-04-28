@@ -32,6 +32,8 @@ export class IoModal {
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
+  private focusTrigger?: Element;  // Track element that opened modal for focus restoration
+  private inertElements: Element[] = [];  // Track elements with inert applied
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -46,6 +48,9 @@ export class IoModal {
 
   /** Close the modal when the backdrop is clicked */
   @Prop() closeOnBackdrop = true;
+
+  /** Description text for accessibility (used in aria-describedby) */
+  @Prop() description?: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -70,14 +75,109 @@ export class IoModal {
   openChanged(newVal: boolean) {
     if (!this.dialogEl) return;
     if (newVal) {
+      // Track the currently focused element (trigger button) for restoration on close
+      this.focusTrigger = document.activeElement as Element;
+      
       if (!this.dialogEl.open) {
         this.dialogEl.showModal();
       }
+      
+      // Apply inert to background elements to prevent screen reader navigation
+      this.applyBackgroundInert();
+      
+      // Set up focus trap for keyboard navigation
+      this.setupFocusTrap();
     } else {
       if (this.dialogEl.open) {
         this.dialogEl.close();
       }
+      
+      // Remove inert from background elements
+      this.removeBackgroundInert();
+      
+      // Restore focus to trigger element
+      if (this.focusTrigger && this.focusTrigger instanceof HTMLElement) {
+        this.focusTrigger.focus();
+      }
+      
       this.dismissEvent.emit();
+    }
+  }
+
+  // ── Private Helpers ───────────────────────────────────────────
+
+  /**
+   * Apply inert attribute to sibling and parent elements when modal opens.
+   * This prevents screen reader users from navigating outside the modal.
+   */
+  private applyBackgroundInert() {
+    if (!this.el || !this.el.parentElement) return;
+    
+    const parent = this.el.parentElement;
+    const siblings = Array.from(parent.children).filter((child) => child !== this.el);
+    
+    siblings.forEach((sibling) => {
+      if (!(sibling as HTMLElement).hasAttribute('inert')) {
+        (sibling as HTMLElement).setAttribute('inert', '');
+        this.inertElements.push(sibling);
+      }
+    });
+  }
+
+  /**
+   * Remove inert attribute from background elements when modal closes.
+   */
+  private removeBackgroundInert() {
+    this.inertElements.forEach((el) => {
+      (el as HTMLElement).removeAttribute('inert');
+    });
+    this.inertElements = [];
+  }
+
+  /**
+   * Set up focus trap: Tab/Shift+Tab within modal cycles through focusable elements.
+   * Browser's native dialog focus trap may not work reliably in jsdom, so implement manual trap.
+   */
+  private setupFocusTrap() {
+    if (!this.dialogEl) return;
+    
+    // Get all focusable elements within the modal (in shadow DOM and slots)
+    const focusableSelector =
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableElements = Array.from(
+      this.dialogEl.querySelectorAll(focusableSelector)
+    ) as HTMLElement[];
+    
+    if (focusableElements.length === 0) return;
+    
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    
+    const handleKeyDown = (ev: KeyboardEvent) => {
+      if (ev.key !== 'Tab') return;
+      
+      const activeElement = this.dialogEl?.ownerDocument?.activeElement;
+      
+      // Shift+Tab on first element → focus last element
+      if (ev.shiftKey && activeElement === firstElement) {
+        ev.preventDefault();
+        lastElement.focus();
+      }
+      // Tab on last element → focus first element
+      else if (!ev.shiftKey && activeElement === lastElement) {
+        ev.preventDefault();
+        firstElement.focus();
+      }
+    };
+    
+    this.dialogEl.addEventListener('keydown', handleKeyDown);
+    
+    // Auto-focus first focusable element when modal opens
+    // (browser's showModal may not focus correctly in all cases)
+    if (firstElement && firstElement !== this.dialogEl.ownerDocument?.activeElement) {
+      setTimeout(() => {
+        firstElement.focus();
+      }, 0);
     }
   }
 
@@ -105,8 +205,9 @@ export class IoModal {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { size, heading, headingId } = this;
+    const { size, heading, headingId, description } = this;
     const closeIcon = getModalCloseIcon();
+    const descriptionId = description ? `${headingId}-description` : undefined;
 
     return (
       <Host>
@@ -115,6 +216,7 @@ export class IoModal {
           ref={(el) => (this.dialogEl = el as HTMLDialogElement)}
           class={`modal--${size}`}
           aria-labelledby={heading ? headingId : undefined}
+          aria-describedby={descriptionId}
           onClick={this.handleDialogClick}
           onCancel={this.handleCancel}
         >
@@ -134,7 +236,7 @@ export class IoModal {
               innerHTML={closeIcon}
             />
           </div>
-          <div class="modal__body">
+          <div class="modal__body" id={descriptionId}>
             <slot />
           </div>
           <div class="modal__footer">

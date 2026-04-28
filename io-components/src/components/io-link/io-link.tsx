@@ -46,6 +46,9 @@ export class IoLink {
   /** Automatically sets target="_blank" and rel="noopener noreferrer" */
   @Prop() external = false;
 
+  /** Downloadable file name. Enables download behavior on click. */
+  @Prop() download: string | undefined;
+
   /** Disables the link — removes href and blocks click */
   @Prop({ reflect: true }) disabled = false;
 
@@ -77,9 +80,13 @@ export class IoLink {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, color, href, target, rel, external, disabled } = this;
+    const { variant, color, href, target, rel, external, disabled, download } = this;
     const resolvedTarget = resolveLinkTarget(target, external);
-    const resolvedRel = resolveLinkRel(rel, external);
+    const resolvedRel = resolveLinkRel(rel, resolvedTarget, external);
+    
+    // Compute aria-label: append "(opens in new tab)" for external links
+    const linkText = this.el.textContent?.trim() || '';
+    const ariaLabel = external && linkText ? `${linkText}, opens in new tab` : undefined;
 
     return (
       <Host>
@@ -89,6 +96,8 @@ export class IoLink {
           href={disabled ? undefined : href}
           target={resolvedTarget}
           rel={resolvedRel}
+          download={download}
+          aria-label={ariaLabel}
           aria-disabled={disabled ? 'true' : undefined}
           tabIndex={disabled ? -1 : undefined}
           onClick={this.handleClick}

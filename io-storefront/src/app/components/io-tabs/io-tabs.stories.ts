@@ -1,88 +1,79 @@
 import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
 
-type TabItem = { label: string; value: string; disabled?: boolean };
-
-const DEFAULT_TABS: TabItem[] = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'Details', value: 'details' },
-  { label: 'Settings', value: 'settings' },
-];
-
-const TABS_WITH_DISABLED: TabItem[] = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'Details', value: 'details' },
-  { label: 'Settings', value: 'settings', disabled: true },
-];
-
-const MANY_TABS: TabItem[] = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'Details', value: 'details' },
-  { label: 'Settings', value: 'settings' },
-  { label: 'Permissions', value: 'permissions' },
-  { label: 'History', value: 'history' },
-];
-
 export const tabsStory: Story<'io-tabs'> = {
   state: {
     properties: {
-      activeTab: 'overview',
+      activeTabIndex: 0,
     },
   },
   generator: ({ properties } = {}) => [
     {
       tag: 'io-tabs' as const,
       properties: {
-        tabs: DEFAULT_TABS,
-        activeTab: (properties?.activeTab as string) ?? 'overview',
+        activeTabIndex: (properties?.activeTabIndex as number) ?? 0,
       },
+      children: [
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Overview'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Details'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Settings'] },
+      ],
     },
   ],
 };
 
 export const tabsStoryDefault: Story<'io-tabs'> = {
-  state: { properties: { activeTab: 'overview' } },
+  state: { properties: { activeTabIndex: 0 } },
   generator: () => [
     {
       tag: 'io-tabs' as const,
-      properties: {
-        tabs: DEFAULT_TABS,
-        activeTab: 'overview',
-      },
+      properties: { activeTabIndex: 0 },
+      children: [
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Overview'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Details'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Settings'] },
+      ],
     },
   ],
 };
 
 export const tabsStoryWithDisabled: Story<'io-tabs'> = {
-  state: { properties: { activeTab: 'overview' } },
+  state: { properties: { activeTabIndex: 0 } },
   generator: () => [
     {
       tag: 'io-tabs' as const,
-      properties: {
-        tabs: TABS_WITH_DISABLED,
-        activeTab: 'overview',
-      },
+      properties: { activeTabIndex: 0 },
+      children: [
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Overview'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Details'] },
+        { tag: 'button' as const, properties: { type: 'button', disabled: true }, children: ['Settings'] },
+      ],
     },
   ],
 };
 
 export const tabsStoryManyTabs: Story<'io-tabs'> = {
-  state: { properties: { activeTab: 'overview' } },
+  state: { properties: { activeTabIndex: 0 } },
   generator: () => [
     {
       tag: 'io-tabs' as const,
-      properties: {
-        tabs: MANY_TABS,
-        activeTab: 'overview',
-      },
+      properties: { activeTabIndex: 0 },
+      children: [
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Overview'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Details'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Settings'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['Permissions'] },
+        { tag: 'button' as const, properties: { type: 'button' }, children: ['History'] },
+      ],
     },
   ],
 };
 
 export const tabsPropDefinitions: PropDefinition[] = [
   {
-    name: 'activeTab',
-    type: 'string',
-    defaultValue: 'overview',
+    name: 'activeTabIndex',
+    type: 'number',
+    defaultValue: 0,
   },
 ];
+

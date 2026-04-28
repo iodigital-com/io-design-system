@@ -52,12 +52,12 @@ export default function IoTabsAccessibilityPage() {
             {
               key: <Kbd>Enter</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTabIndex, and fires update. Has no effect on disabled tabs.',
             },
             {
               key: <Kbd>Space</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTabIndex, and fires update. Has no effect on disabled tabs.',
             },
           ]}
         />
@@ -100,7 +100,7 @@ export default function IoTabsAccessibilityPage() {
                 </span>
               ),
               description:
-                'Applied to individual tab buttons when their IoTabItem has disabled: true. Using aria-disabled (rather than the HTML disabled attribute) keeps the tab button focusable so keyboard users can perceive that a tab exists but is currently unavailable.',
+                'Applied to slotted buttons that have the HTML disabled attribute. The component also sets aria-selected="false" and tabindex="-1" on disabled tabs. Keyboard navigation skips them for activation.',
             },
             {
               attribute: 'tabindex',
@@ -181,8 +181,7 @@ export default function IoTabsAccessibilityPage() {
         <RuleCard label="Treat update as the source of truth">
           Use the{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>update</code>{' '}
-          event detail (<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTab</code>{' '}
-          + <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTabIndex</code>)
+          event detail (<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTabIndex</code>)
           to keep application state and rendered content in sync.
         </RuleCard>
         <RuleCard label="Disabled triggers remain visible and announced">

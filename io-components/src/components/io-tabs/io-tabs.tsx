@@ -1,18 +1,25 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
-import type { IoTabItem, IoTabsUpdateDetail } from './types';
+import type { IoTabsUpdateDetail } from './types';
 import { getTabsStyles } from './io-tabs-styles';
-import { createTabsIdPrefix, getEnabledTabs, getFirstEnabledTabValue, getNextEnabledIndex, getTabClassName, getTabIds } from './io-tabs-utils';
+import { getNextEnabledIndex } from './io-tabs-utils';
 
 /**
  * io-tabs
  * ========
- * Controlled tabs-bar style navigation with full keyboard support.
+ * Slot-based controlled tabs-bar navigation with full keyboard support.
+ * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+ * component and control the active tab via activeTabIndex + the update event.
  *
  * Manages roving tabindex (only the active tab is in the tab order).
  * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
+ * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
  *
  * @example
- * <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
+ * <io-tabs active-tab-index="0">
+ *   <button type="button">Overview</button>
+ *   <button type="button">Details</button>
+ *   <button type="button" disabled>Settings</button>
+ * </io-tabs>
  */
 @Component({
   tag: 'io-tabs',
@@ -23,170 +30,141 @@ export class IoTabs {
 
   // ── Props ─────────────────────────────────────────────────────
 
-  /** Array of tab definitions */
-  @Prop() tabs: IoTabItem[] = [];
-
-  /** Value of the currently active tab */
-  @Prop({ mutable: true, reflect: true }) activeTab = '';
-
-  /** 0-based index of the active tab (controlled like Porsche Tabs Bar). */
-  @Prop({ mutable: true, reflect: true }) activeTabIndex = -1;
+  /** 0-based index of the active tab (controlled, like Porsche Tabs Bar). */
+  @Prop({ mutable: true, reflect: true }) activeTabIndex = 0;
 
   /** Optional accessible label for the tablist region. */
   @Prop() label?: string;
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Fires when a tab is activated. Payload is the tab's value. */
-  @Event() change!: EventEmitter<string>;
-
-  /** Fires when the active tab changes. Payload includes value + index. */
+  /**
+   * Fires when the user activates a different tab (click, Enter, or Space).
+   * Update your controlled state in the handler:
+   *   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
+   */
   @Event() update!: EventEmitter<IoTabsUpdateDetail>;
 
   // ── Private ───────────────────────────────────────────────────
 
-  private tabIdPrefix!: string;
-
-  private static instanceCount = 0;
-  private isSyncingProps = false;
+  private slotEl: HTMLSlotElement | null = null;
+  private buttons: HTMLButtonElement[] = [];
+  private clickHandlers: Map<HTMLButtonElement, () => void> = new Map();
+  private keyHandlers: Map<HTMLButtonElement, (ev: KeyboardEvent) => void> = new Map();
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
-  componentWillLoad() {
-    this.tabIdPrefix = createTabsIdPrefix(String(++IoTabs.instanceCount));
-    this.reconcileActiveState();
+  componentDidLoad() {
+    this.slotEl = this.el.shadowRoot?.querySelector('slot') ?? null;
+    this.syncFromSlot();
   }
 
-  @Watch('tabs')
-  onTabsChange() {
-    this.reconcileActiveState();
-  }
-
-  private reconcileActiveState() {
-    if (this.tabs.length === 0) {
-      this.activeTab = '';
-      this.activeTabIndex = -1;
-      return;
-    }
-
-    if (this.activeTab) {
-      const activeByValueIndex = this.tabs.findIndex(tab => tab.value === this.activeTab && !tab.disabled);
-      if (activeByValueIndex >= 0) {
-        this.activeTabIndex = activeByValueIndex;
-        return;
-      }
-    }
-
-    if (this.activeTabIndex >= 0 && this.activeTabIndex < this.tabs.length && !this.tabs[this.activeTabIndex].disabled) {
-      this.activeTab = this.tabs[this.activeTabIndex].value;
-      return;
-    }
-
-    const firstEnabled = getFirstEnabledTabValue(this.tabs);
-    if (firstEnabled) {
-      this.activeTab = firstEnabled;
-      this.activeTabIndex = this.tabs.findIndex(tab => tab.value === firstEnabled);
-    } else {
-      this.activeTab = '';
-      this.activeTabIndex = -1;
-    }
-  }
-
-  @Watch('activeTab')
-  onActiveTabChange(newValue: string) {
-    if (this.isSyncingProps) return;
-    const idx = this.tabs.findIndex(tab => tab.value === newValue && !tab.disabled);
-    if (idx >= 0 && idx !== this.activeTabIndex) {
-      this.isSyncingProps = true;
-      this.activeTabIndex = idx;
-      this.isSyncingProps = false;
-    }
+  disconnectedCallback() {
+    this.teardownListeners();
   }
 
   @Watch('activeTabIndex')
-  onActiveTabIndexChange(newValue: number) {
-    if (this.isSyncingProps) return;
-    if (newValue < 0 || newValue >= this.tabs.length) return;
-    if (this.tabs[newValue].disabled) return;
+  onActiveTabIndexChange(newIndex: number) {
+    this.applyAriaToButtons(this.buttons, newIndex);
+  }
 
-    const nextValue = this.tabs[newValue].value;
-    if (nextValue !== this.activeTab) {
-      this.isSyncingProps = true;
-      this.activeTab = nextValue;
-      this.isSyncingProps = false;
+  // ── Slot handling ─────────────────────────────────────────────
+
+  private onSlotChange = () => {
+    this.syncFromSlot();
+  };
+
+  /** Called after slot changes — reads assigned buttons and wires them up. */
+  private syncFromSlot() {
+    this.teardownListeners();
+
+    const assigned = this.slotEl?.assignedElements() ?? [];
+    this.buttons = assigned.filter((el): el is HTMLButtonElement => el.tagName === 'BUTTON');
+
+    // Clamp activeTabIndex if the new slot has fewer tabs
+    if (this.buttons.length > 0 && this.activeTabIndex >= this.buttons.length) {
+      this.activeTabIndex = 0;
     }
+
+    this.setupListeners();
+    this.applyAriaToButtons(this.buttons, this.activeTabIndex);
+  }
+
+  private setupListeners() {
+    this.buttons.forEach((btn, index) => {
+      const clickHandler = () => this.handleTabClick(index);
+      const keyHandler = (ev: KeyboardEvent) => this.handleKeyDown(ev, index);
+      btn.addEventListener('click', clickHandler);
+      btn.addEventListener('keydown', keyHandler);
+      this.clickHandlers.set(btn, clickHandler);
+      this.keyHandlers.set(btn, keyHandler);
+    });
+  }
+
+  private teardownListeners() {
+    for (const [btn, handler] of this.clickHandlers) {
+      btn.removeEventListener('click', handler);
+    }
+    for (const [btn, handler] of this.keyHandlers) {
+      btn.removeEventListener('keydown', handler);
+    }
+    this.clickHandlers.clear();
+    this.keyHandlers.clear();
+  }
+
+  private applyAriaToButtons(buttons: HTMLButtonElement[], activeIndex: number) {
+    buttons.forEach((btn, index) => {
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', String(index === activeIndex));
+      btn.setAttribute('tabindex', String(index === activeIndex ? 0 : -1));
+    });
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
-  private handleTabClick = (value: string, index: number) => {
-    if (this.activeTab !== value) {
-      this.activeTab = value;
-      this.activeTabIndex = index;
-      this.change.emit(value);
-      this.update.emit({ activeTab: value, activeTabIndex: index });
-    }
-  };
+  private handleTabClick(index: number) {
+    const btn = this.buttons[index];
+    if (!btn || btn.disabled) return;
+    if (index === this.activeTabIndex) return;
 
-  private handleKeyDown = (ev: KeyboardEvent, index: number) => {
-    const enabledTabs = getEnabledTabs(this.tabs);
+    this.activeTabIndex = index;
+    this.update.emit({ activeTabIndex: index });
+  }
 
-    if (enabledTabs.length === 0) {
-      return;
-    }
+  private handleKeyDown(ev: KeyboardEvent, index: number) {
+    const enabled = this.getEnabledButtons();
+    if (enabled.length === 0) return;
 
-    const currentEnabledIndex = enabledTabs.findIndex(item => item.index === index);
-    if (currentEnabledIndex < 0) {
-      return;
-    }
+    const currentEnabledIndex = enabled.findIndex(item => item.index === index);
+    if (currentEnabledIndex < 0) return;
 
     if (ev.key === 'Enter' || ev.key === ' ') {
       ev.preventDefault();
-      this.handleTabClick(this.tabs[index].value, index);
+      this.handleTabClick(index);
       return;
     }
 
-    const nextEnabledIndex = getNextEnabledIndex(ev.key, currentEnabledIndex, enabledTabs.length);
-
+    const nextEnabledIndex = getNextEnabledIndex(ev.key, currentEnabledIndex, enabled.length);
     if (nextEnabledIndex !== null) {
       ev.preventDefault();
-      const targetIndex = enabledTabs[nextEnabledIndex].index;
-      const tabEl = this.el.shadowRoot?.querySelectorAll<HTMLButtonElement>('.tab')[targetIndex];
-      tabEl?.focus();
+      enabled[nextEnabledIndex].btn.focus();
     }
-  };
+  }
+
+  private getEnabledButtons(): Array<{ btn: HTMLButtonElement; index: number }> {
+    return this.buttons
+      .map((btn, index) => ({ btn, index }))
+      .filter(({ btn }) => !btn.disabled);
+  }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { tabs, activeTab, tabIdPrefix, label } = this;
-
     return (
       <Host>
         <style>{getTabsStyles()}</style>
-        <div class="tablist" role="tablist" aria-label={label || undefined}>
-          {tabs.map((tab, index) => {
-            const isActive = tab.value === activeTab;
-            const { tabId } = getTabIds(tabIdPrefix, tab.value);
-
-            return (
-              <button
-                key={tab.value}
-                id={tabId}
-                class={getTabClassName(isActive, !!tab.disabled)}
-                role="tab"
-                aria-selected={String(isActive)}
-                aria-controls={tab.panelId || undefined}
-                aria-disabled={tab.disabled ? 'true' : undefined}
-                tabIndex={isActive ? 0 : -1}
-                disabled={tab.disabled}
-                onClick={() => !tab.disabled && this.handleTabClick(tab.value, index)}
-                onKeyDown={(ev: KeyboardEvent) => this.handleKeyDown(ev, index)}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+        <div class="tablist" role="tablist" aria-label={this.label || undefined}>
+          <slot onSlotchange={this.onSlotChange} />
         </div>
       </Host>
     );

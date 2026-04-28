@@ -17,7 +17,7 @@ import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectOption } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-import { IoTabItem, IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -34,7 +34,7 @@ export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectOption } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-export { IoTabItem, IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -605,31 +605,28 @@ export namespace Components {
     /**
      * io-tabs
      * ========
-     * Controlled tabs-bar style navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface IoTabs {
         /**
-          * Value of the currently active tab
-          * @default ''
-         */
-        "activeTab": string;
-        /**
-          * 0-based index of the active tab (controlled like Porsche Tabs Bar).
-          * @default -1
+          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * @default 0
          */
         "activeTabIndex": number;
         /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
-        /**
-          * Array of tab definitions
-          * @default []
-         */
-        "tabs": IoTabItem[];
     }
     /**
      * io-tag
@@ -1171,16 +1168,22 @@ declare global {
         new (): HTMLIoSpinnerElement;
     };
     interface HTMLIoTabsElementEventMap {
-        "change": string;
         "update": IoTabsUpdateDetail;
     }
     /**
      * io-tabs
      * ========
-     * Controlled tabs-bar style navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface HTMLIoTabsElement extends Components.IoTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTabsElementEventMap>(type: K, listener: (this: HTMLIoTabsElement, ev: IoTabsCustomEvent<HTMLIoTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1931,20 +1934,22 @@ declare namespace LocalJSX {
     /**
      * io-tabs
      * ========
-     * Controlled tabs-bar style navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface IoTabs {
         /**
-          * Value of the currently active tab
-          * @default ''
-         */
-        "activeTab"?: string;
-        /**
-          * 0-based index of the active tab (controlled like Porsche Tabs Bar).
-          * @default -1
+          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * @default 0
          */
         "activeTabIndex"?: number;
         /**
@@ -1952,18 +1957,9 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Fires when a tab is activated. Payload is the tab's value.
-         */
-        "onChange"?: (event: IoTabsCustomEvent<string>) => void;
-        /**
-          * Fires when the active tab changes. Payload includes value + index.
+          * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
-        /**
-          * Array of tab definitions
-          * @default []
-         */
-        "tabs"?: IoTabItem[];
     }
     /**
      * io-tag
@@ -2268,7 +2264,6 @@ declare namespace LocalJSX {
         "label": string;
     }
     interface IoTabsAttributes {
-        "activeTab": string;
         "activeTabIndex": number;
         "label": string;
     }
@@ -2464,10 +2459,17 @@ declare module "@stencil/core" {
             /**
              * io-tabs
              * ========
-             * Controlled tabs-bar style navigation with full keyboard support.
+             * Slot-based controlled tabs-bar navigation with full keyboard support.
+             * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+             * component and control the active tab via activeTabIndex + the update event.
              * Manages roving tabindex (only the active tab is in the tab order).
              * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-             * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
+             * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+             * @example <io-tabs active-tab-index="0">
+             *   <button type="button">Overview</button>
+             *   <button type="button">Details</button>
+             *   <button type="button" disabled>Settings</button>
+             * </io-tabs>
              */
             "io-tabs": LocalJSX.IntrinsicElements["io-tabs"] & JSXBase.HTMLAttributes<HTMLIoTabsElement>;
             /**

@@ -28,9 +28,9 @@ export function getTabsStyles(): string {
       display: none;
     }
 
-    /* ── Tab button ──────────────────────────────────────── */
+    /* ── Slotted tab button (base) ──────────────────────── */
 
-    .tab {
+    ::slotted(button) {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -52,7 +52,7 @@ export function getTabsStyles(): string {
 
     /* ── Active tab ──────────────────────────────────────── */
 
-    .tab--active {
+    ::slotted(button[aria-selected="true"]) {
       color: var(--io-text-primary);
       border-bottom-color: var(--io-tabs-indicator-color);
     }
@@ -60,7 +60,7 @@ export function getTabsStyles(): string {
     /* ── Hover ───────────────────────────────────────────── */
 
     @media (hover: hover) and (pointer: fine) {
-      .tab:not(.tab--active):not(.tab--disabled):hover {
+      ::slotted(button:not([aria-selected="true"]):not(:disabled):hover) {
         color: var(--io-text-primary);
         background: var(--io-state-hover);
       }
@@ -68,7 +68,7 @@ export function getTabsStyles(): string {
 
     /* ── Disabled ────────────────────────────────────────── */
 
-    .tab--disabled {
+    ::slotted(button:disabled) {
       opacity: var(--io-state-disabled-opacity);
       cursor: not-allowed;
       pointer-events: none;
@@ -76,7 +76,7 @@ export function getTabsStyles(): string {
 
     /* ── Focus visible ───────────────────────────────────── */
 
-    .tab:focus-visible {
+    ::slotted(button:focus-visible) {
       outline: none;
       box-shadow: var(--io-focus-ring-active);
       border-radius: var(--io-border-radius-xs);
@@ -85,7 +85,7 @@ export function getTabsStyles(): string {
     /* ── Reduced motion ──────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      .tab { transition: none; }
+      ::slotted(button) { transition: none; }
     }
   `;
 }

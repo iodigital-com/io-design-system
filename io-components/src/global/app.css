@@ -397,6 +397,8 @@
    position: fixed;
    top: 0;
    left: 0;
+   inset: auto;
+   margin: 0;
    z-index: var(--io-z-tooltip);
    background: var(--io-bg-card);
    border: 1px solid var(--io-border);

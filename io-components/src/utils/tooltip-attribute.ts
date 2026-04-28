@@ -40,10 +40,6 @@ function ensureTooltipElement(): HTMLDivElement {
   el.setAttribute('role', 'tooltip');
   el.setAttribute('aria-hidden', 'true');
 
-  if ('showPopover' in HTMLElement.prototype) {
-    el.setAttribute('popover', 'manual');
-  }
-
   document.body.appendChild(el);
   tooltipEl = el;
   return el;
@@ -118,15 +114,13 @@ async function showTooltip(trigger: HTMLElement): Promise<void> {
 
   activeTrigger = trigger;
   el.textContent = text;
-  el.setAttribute('aria-hidden', 'false');
-  el.setAttribute('data-visible', 'true');
   setDescribedBy(trigger, TOOLTIP_ID);
 
   await positionTooltip(trigger);
+  if (activeTrigger !== trigger) return;
 
-  if ('showPopover' in HTMLElement.prototype) {
-    try { (el as any).showPopover(); } catch { /* already visible */ }
-  }
+  el.setAttribute('aria-hidden', 'false');
+  el.setAttribute('data-visible', 'true');
 }
 
 function hideTooltip(): void {
@@ -140,10 +134,6 @@ function hideTooltip(): void {
   activeTrigger = null;
   el.setAttribute('aria-hidden', 'true');
   el.removeAttribute('data-visible');
-
-  if ('hidePopover' in HTMLElement.prototype) {
-    try { (el as any).hidePopover(); } catch { /* already hidden */ }
-  }
 }
 
 function findTooltipTrigger(target: EventTarget | null): HTMLElement | null {

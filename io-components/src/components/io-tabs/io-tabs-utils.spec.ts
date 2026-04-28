@@ -1,42 +1,36 @@
 import { describe, it, expect } from 'vitest';
-import { getNextEnabledIndex } from './io-tabs-utils';
+import { createTabsIdPrefix, getEnabledTabs, getFirstEnabledTabValue, getNextEnabledIndex, getTabClassName, getTabIds } from './io-tabs-utils';
 
-describe('io-tabs-utils — getNextEnabledIndex', () => {
-  it('returns null for an empty enabled list', () => {
+describe('io-tabs-utils', () => {
+  const tabs = [
+    { label: 'A', value: 'a' },
+    { label: 'B', value: 'b', disabled: true },
+    { label: 'C', value: 'c' },
+  ];
+
+  it('builds tab ids and class names', () => {
+    expect(createTabsIdPrefix('xyz')).toBe('io-tabs-xyz');
+    expect(getTabIds('io-tabs-xyz', 'a')).toEqual({ tabId: 'io-tabs-xyz-tab-a' });
+    expect(getTabClassName(true, false)).toBe('tab tab--active');
+    expect(getTabClassName(false, true)).toBe('tab tab--disabled');
+  });
+
+  it('returns enabled tabs and first enabled value', () => {
+    expect(getFirstEnabledTabValue(tabs)).toBe('a');
+    expect(getEnabledTabs(tabs).map(item => item.index)).toEqual([0, 2]);
+  });
+
+  it('returns null when enabled count or index are invalid', () => {
     expect(getNextEnabledIndex('ArrowRight', 0, 0)).toBeNull();
+    expect(getNextEnabledIndex('ArrowRight', -1, 2)).toBeNull();
+    expect(getNextEnabledIndex('ArrowRight', 2, 2)).toBeNull();
   });
 
-  it('returns null for an out-of-bounds currentEnabledIndex', () => {
-    expect(getNextEnabledIndex('ArrowRight', -1, 3)).toBeNull();
-    expect(getNextEnabledIndex('ArrowRight', 3, 3)).toBeNull();
-  });
-
-  it('returns null for unrecognised keys', () => {
-    expect(getNextEnabledIndex('Enter', 0, 3)).toBeNull();
-    expect(getNextEnabledIndex('Escape', 0, 3)).toBeNull();
-    expect(getNextEnabledIndex('Tab', 0, 3)).toBeNull();
-  });
-
-  it('ArrowRight advances index with wrap-around', () => {
-    expect(getNextEnabledIndex('ArrowRight', 0, 3)).toBe(1);
-    expect(getNextEnabledIndex('ArrowRight', 1, 3)).toBe(2);
-    expect(getNextEnabledIndex('ArrowRight', 2, 3)).toBe(0); // wraps
-  });
-
-  it('ArrowLeft reverses index with wrap-around', () => {
-    expect(getNextEnabledIndex('ArrowLeft', 2, 3)).toBe(1);
-    expect(getNextEnabledIndex('ArrowLeft', 1, 3)).toBe(0);
-    expect(getNextEnabledIndex('ArrowLeft', 0, 3)).toBe(2); // wraps
-  });
-
-  it('Home returns 0', () => {
-    expect(getNextEnabledIndex('Home', 2, 3)).toBe(0);
-    expect(getNextEnabledIndex('Home', 0, 3)).toBe(0);
-  });
-
-  it('End returns the last index', () => {
-    expect(getNextEnabledIndex('End', 0, 3)).toBe(2);
-    expect(getNextEnabledIndex('End', 2, 3)).toBe(2);
+  it('resolves next enabled index for key navigation', () => {
+    expect(getNextEnabledIndex('ArrowRight', 0, 2)).toBe(1);
+    expect(getNextEnabledIndex('ArrowLeft', 0, 2)).toBe(1);
+    expect(getNextEnabledIndex('Home', 1, 2)).toBe(0);
+    expect(getNextEnabledIndex('End', 0, 2)).toBe(1);
+    expect(getNextEnabledIndex('Enter', 0, 2)).toBeNull();
   });
 });
-

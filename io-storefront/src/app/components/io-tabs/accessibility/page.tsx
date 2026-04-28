@@ -52,12 +52,12 @@ export default function IoTabsAccessibilityPage() {
             {
               key: <Kbd>Enter</Kbd>,
               action:
-                'Activates the focused tab, updates activeTabIndex, and fires update. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
             },
             {
               key: <Kbd>Space</Kbd>,
               action:
-                'Activates the focused tab, updates activeTabIndex, and fires update. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
             },
           ]}
         />
@@ -67,7 +67,7 @@ export default function IoTabsAccessibilityPage() {
       <section id="screen-reader-behaviour" className="space-y-6">
         <SectionHeader
           title="Screen reader behaviour"
-          description="io-tabs uses ARIA tab semantics while still keeping content ownership in the consuming application."
+          description="io-tabs exposes ARIA roles and selected-state metadata for the tab strip itself. Panel/content semantics are owned by the consuming application."
         />
         <AriaTable
           rows={[
@@ -75,31 +75,45 @@ export default function IoTabsAccessibilityPage() {
               attribute: 'role="tablist"',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On the tab strip wrapper
+                  On the tab list wrapper
                 </span>
               ),
               description:
-                'Groups all tab triggers into a single tab widget for assistive technology.',
+                'Applied to the container element that wraps all tab buttons. Informs screen readers that this is a tab navigation widget. Screen readers announce the number of tabs when the user enters the group.',
             },
             {
-              attribute: 'role="tab" + aria-selected',
+              attribute: 'role="tab"',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On each tab trigger
+                  On each tab button
                 </span>
               ),
               description:
-                'Each trigger is announced as a tab, with selected state read from aria-selected.',
+                'Applied to every tab button element. Combined with role="tablist" on the parent, screen readers announce each button as a tab and include its position within the set (e.g. "Overview, tab, 1 of 3").',
             },
             {
-              attribute: 'disabled (native HTML)',
+              attribute: 'aria-selected',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On slotted <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&lt;button&gt;</code>
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
+                  {' '}on active tab,{' '}
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;false&quot;</code>
+                  {' '}on all others
                 </span>
               ),
               description:
-                'Disabled tabs rely on the native HTML disabled attribute. io-tabs sets aria-selected="false" and tabindex="-1" for non-active tabs, and keyboard navigation skips disabled tabs.',
+                'Communicates the selected state to assistive technology. Only one tab carries aria-selected="true" at a time. Screen readers announce "selected" when the user focuses the active tab.',
+            },
+            {
+              attribute: 'aria-disabled',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
+                  {' '}when disabled
+                </span>
+              ),
+              description:
+                'Applied to individual tab buttons when their IoTabItem has disabled: true. Using aria-disabled (rather than the HTML disabled attribute) keeps the tab button focusable so keyboard users can perceive that a tab exists but is currently unavailable.',
             },
             {
               attribute: 'tabindex',
@@ -136,7 +150,7 @@ export default function IoTabsAccessibilityPage() {
             criterion="1.3.1"
             level="A"
             title="Info and Relationships"
-            note="Tab relationships and selected state are communicated programmatically via tablist/tab roles and aria-selected."
+            note="The tab list and tab roles convey structure programmatically. Active state is communicated via aria-selected, not visual styling alone."
           />
           <ComplianceCard
             criterion="1.4.3"
@@ -166,7 +180,7 @@ export default function IoTabsAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="Each trigger has role=tab and selected state via aria-selected. Optional aria-controls can link to consumer-owned external panels."
+            note="Each tab button has an accessible name from its label text, role='tab', and aria-selected. The tablist container has role='tablist'. All state changes are reflected in ARIA attributes."
           />
         </div>
       </section>
@@ -180,13 +194,14 @@ export default function IoTabsAccessibilityPage() {
         <RuleCard label="Treat update as the source of truth">
           Use the{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>update</code>{' '}
-          event detail (<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTabIndex</code>)
+          event detail (<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTab</code>{' '}
+          + <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTabIndex</code>)
           to keep application state and rendered content in sync.
         </RuleCard>
-        <RuleCard label="Disabled triggers remain visible and announced">
-          Disabled items use the native{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>disabled</code>{' '}
-          attribute on slotted buttons. Keep disabled labels descriptive and avoid long runs of unavailable actions.
+        <RuleCard label="Use aria-disabled rather than hiding disabled tabs">
+          Disabled tabs in io-tabs expose{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-disabled=&quot;true&quot;</code>{' '}
+          and are not activatable. Keep disabled labels descriptive and avoid long runs of unavailable tabs.
         </RuleCard>
         <RuleCard label="Do not rely on colour alone to indicate the active tab">
           The active tab is indicated visually by an underline or accent colour, and programmatically

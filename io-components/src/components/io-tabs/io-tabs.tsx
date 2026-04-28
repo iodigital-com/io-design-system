@@ -1,21 +1,18 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
-import type { IoTabItem } from './types';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
+import type { IoTabItem, IoTabsUpdateDetail } from './types';
 import { getTabsStyles } from './io-tabs-styles';
 import { createTabsIdPrefix, getEnabledTabs, getFirstEnabledTabValue, getNextEnabledIndex, getTabClassName, getTabIds } from './io-tabs-utils';
 
 /**
  * io-tabs
  * ========
- * Accessible tabbed navigation with full keyboard support.
+ * Controlled tabs-bar style navigation with full keyboard support.
  *
  * Manages roving tabindex (only the active tab is in the tab order).
  * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
  *
  * @example
- * <io-tabs
- *   active-tab="overview"
- *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
- * ></io-tabs>
+ * <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
  */
 @Component({
   tag: 'io-tabs',
@@ -32,34 +29,91 @@ export class IoTabs {
   /** Value of the currently active tab */
   @Prop({ mutable: true, reflect: true }) activeTab = '';
 
+  /** 0-based index of the active tab (controlled like Porsche Tabs Bar). */
+  @Prop({ mutable: true, reflect: true }) activeTabIndex = -1;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when a tab is activated. Payload is the tab's value. */
   @Event() change!: EventEmitter<string>;
+
+  /** Fires when the active tab changes. Payload includes value + index. */
+  @Event() update!: EventEmitter<IoTabsUpdateDetail>;
 
   // ── Private ───────────────────────────────────────────────────
 
   private tabIdPrefix!: string;
 
   private static instanceCount = 0;
+  private isSyncingProps = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.tabIdPrefix = createTabsIdPrefix(String(++IoTabs.instanceCount));
-    // Default to first enabled tab if activeTab is not set
-    if (!this.activeTab && this.tabs.length > 0) {
-      const firstEnabled = getFirstEnabledTabValue(this.tabs);
-      if (firstEnabled) this.activeTab = firstEnabled;
+
+    if (this.tabs.length === 0) {
+      this.activeTab = '';
+      this.activeTabIndex = -1;
+      return;
+    }
+
+    if (this.activeTab) {
+      const activeByValueIndex = this.tabs.findIndex(tab => tab.value === this.activeTab && !tab.disabled);
+      if (activeByValueIndex >= 0) {
+        this.activeTabIndex = activeByValueIndex;
+        return;
+      }
+    }
+
+    if (this.activeTabIndex >= 0 && this.activeTabIndex < this.tabs.length && !this.tabs[this.activeTabIndex].disabled) {
+      this.activeTab = this.tabs[this.activeTabIndex].value;
+      return;
+    }
+
+    const firstEnabled = getFirstEnabledTabValue(this.tabs);
+    if (firstEnabled) {
+      this.activeTab = firstEnabled;
+      this.activeTabIndex = this.tabs.findIndex(tab => tab.value === firstEnabled);
+    } else {
+      this.activeTab = '';
+      this.activeTabIndex = -1;
+    }
+  }
+
+  @Watch('activeTab')
+  onActiveTabChange(newValue: string) {
+    if (this.isSyncingProps) return;
+    const idx = this.tabs.findIndex(tab => tab.value === newValue && !tab.disabled);
+    if (idx >= 0 && idx !== this.activeTabIndex) {
+      this.isSyncingProps = true;
+      this.activeTabIndex = idx;
+      this.isSyncingProps = false;
+    }
+  }
+
+  @Watch('activeTabIndex')
+  onActiveTabIndexChange(newValue: number) {
+    if (this.isSyncingProps) return;
+    if (newValue < 0 || newValue >= this.tabs.length) return;
+    if (this.tabs[newValue].disabled) return;
+
+    const nextValue = this.tabs[newValue].value;
+    if (nextValue !== this.activeTab) {
+      this.isSyncingProps = true;
+      this.activeTab = nextValue;
+      this.isSyncingProps = false;
     }
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
-  private handleTabClick = (value: string) => {
+  private handleTabClick = (value: string, index: number) => {
     if (this.activeTab !== value) {
       this.activeTab = value;
+      this.activeTabIndex = index;
       this.change.emit(value);
+      this.update.emit({ activeTab: value, activeTabIndex: index });
     }
   };
 
@@ -77,7 +131,7 @@ export class IoTabs {
 
     if (ev.key === 'Enter' || ev.key === ' ') {
       ev.preventDefault();
-      this.handleTabClick(this.tabs[index].value);
+      this.handleTabClick(this.tabs[index].value, index);
       return;
     }
 
@@ -115,7 +169,7 @@ export class IoTabs {
                 aria-disabled={tab.disabled ? 'true' : undefined}
                 tabIndex={isActive ? 0 : -1}
                 disabled={tab.disabled}
-                onClick={() => !tab.disabled && this.handleTabClick(tab.value)}
+                onClick={() => !tab.disabled && this.handleTabClick(tab.value, index)}
                 onKeyDown={(ev: KeyboardEvent) => this.handleKeyDown(ev, index)}
               >
                 {tab.label}

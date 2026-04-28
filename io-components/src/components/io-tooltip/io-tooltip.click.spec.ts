@@ -3,12 +3,16 @@ import { IoTooltip } from './io-tooltip';
 
 describe('io-tooltip — click behavior (N/A: no click contract)', () => {
   let component: IoTooltip;
+  let host: HTMLElement;
+  let trigger: HTMLButtonElement;
 
   beforeEach(() => {
     component = new IoTooltip();
-    (component as any).el = document.createElement('io-tooltip');
-    (component as any).tooltipEl = document.createElement('div');
-    (component as any).componentWillLoad();
+    host = document.createElement('io-tooltip');
+    trigger = document.createElement('button');
+    host.appendChild(trigger);
+    (component as any).el = host;
+    component.componentDidLoad();
   });
 
   it('does not expose click handlers or click events', () => {
@@ -18,13 +22,9 @@ describe('io-tooltip — click behavior (N/A: no click contract)', () => {
     expect((component as any).click).toBeUndefined();
   });
 
-  it('shows tooltip through hover/focus handlers', async () => {
-    const updatePositionSpy = vi
-      .spyOn(component as any, 'updatePosition')
-      .mockResolvedValue(undefined);
-
-    await (component as any).handleMouseEnter();
-    expect(updatePositionSpy).toHaveBeenCalledTimes(1);
-    expect((component as any).visible).toBe(true);
+  it('maps click trigger attributes via wrapper sync', async () => {
+    component.content = 'Action help';
+    (component as any).onContentChange();
+    expect(trigger.getAttribute('io-tooltip')).toBe('Action help');
   });
 });

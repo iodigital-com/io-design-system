@@ -4,5 +4,7 @@
  * --io-focus-ring-active automatically via CSS custom property inheritance.
  */
 import { initFocusVisible } from '../utils/focus-visible';
+import { initTooltipAttribute } from '../utils/tooltip-attribute';
 
 initFocusVisible();
+initTooltipAttribute();

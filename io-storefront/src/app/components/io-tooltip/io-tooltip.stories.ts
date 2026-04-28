@@ -1,7 +1,7 @@
 import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
 
-export const tooltipStory: Story<'io-tooltip'> = {
+export const tooltipStory: Story<'io-button'> = {
   state: {
     properties: {
       content: 'Tooltip text',
@@ -10,91 +10,62 @@ export const tooltipStory: Story<'io-tooltip'> = {
   },
   generator: ({ properties } = {}) => [
     {
-      tag: 'io-tooltip' as const,
+      tag: 'io-button' as const,
       properties: {
-        content: (properties?.content as string) ?? 'Tooltip text',
-        placement: (properties?.placement as string) ?? 'top',
+        size: 'sm',
+        'io-tooltip': (properties?.content as string) ?? 'Tooltip text',
+        'io-tooltip-placement': (properties?.placement as string) ?? 'top',
       },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      children: ['Hover me'],
     },
   ],
 };
 
-export const tooltipStoryTop: Story<'io-tooltip'> = {
+export const tooltipStoryTop: Story<'io-button'> = {
   state: { properties: { content: 'Tooltip on top', placement: 'top' } },
   generator: () => [
     {
-      tag: 'io-tooltip' as const,
-      properties: { content: 'Tooltip on top', placement: 'top' },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      tag: 'io-button' as const,
+      properties: { size: 'sm', 'io-tooltip': 'Tooltip on top', 'io-tooltip-placement': 'top' },
+      children: ['Hover me'],
     },
   ],
 };
 
-export const tooltipStoryBottom: Story<'io-tooltip'> = {
+export const tooltipStoryBottom: Story<'io-button'> = {
   state: { properties: { content: 'Tooltip on bottom', placement: 'bottom' } },
   generator: () => [
     {
-      tag: 'io-tooltip' as const,
-      properties: { content: 'Tooltip on bottom', placement: 'bottom' },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      tag: 'io-button' as const,
+      properties: { size: 'sm', 'io-tooltip': 'Tooltip on bottom', 'io-tooltip-placement': 'bottom' },
+      children: ['Hover me'],
     },
   ],
 };
 
-export const tooltipStoryLeft: Story<'io-tooltip'> = {
+export const tooltipStoryLeft: Story<'io-button'> = {
   state: { properties: { content: 'Tooltip on left', placement: 'left' } },
   generator: () => [
     {
-      tag: 'io-tooltip' as const,
-      properties: { content: 'Tooltip on left', placement: 'left' },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      tag: 'io-button' as const,
+      properties: { size: 'sm', 'io-tooltip': 'Tooltip on left', 'io-tooltip-placement': 'left' },
+      children: ['Hover me'],
     },
   ],
 };
 
-export const tooltipStoryRight: Story<'io-tooltip'> = {
+export const tooltipStoryRight: Story<'io-button'> = {
   state: { properties: { content: 'Tooltip on right', placement: 'right' } },
   generator: () => [
     {
-      tag: 'io-tooltip' as const,
-      properties: { content: 'Tooltip on right', placement: 'right' },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      tag: 'io-button' as const,
+      properties: { size: 'sm', 'io-tooltip': 'Tooltip on right', 'io-tooltip-placement': 'right' },
+      children: ['Hover me'],
     },
   ],
 };
 
-export const tooltipStoryLong: Story<'io-tooltip'> = {
+export const tooltipStoryLong: Story<'io-button'> = {
   state: {
     properties: {
       content: 'This is a longer tooltip with more information that wraps to multiple lines.',
@@ -103,18 +74,13 @@ export const tooltipStoryLong: Story<'io-tooltip'> = {
   },
   generator: () => [
     {
-      tag: 'io-tooltip' as const,
+      tag: 'io-button' as const,
       properties: {
-        content: 'This is a longer tooltip with more information that wraps to multiple lines.',
-        placement: 'top',
+        size: 'sm',
+        'io-tooltip': 'This is a longer tooltip with more information that wraps to multiple lines.',
+        'io-tooltip-placement': 'top',
       },
-      children: [
-        {
-          tag: 'io-button' as const,
-          properties: { size: 'sm' },
-          children: ['Hover me'],
-        },
-      ],
+      children: ['Hover me'],
     },
   ],
 };

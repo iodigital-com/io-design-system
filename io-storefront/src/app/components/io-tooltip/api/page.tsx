@@ -12,8 +12,8 @@ export default function IoTooltipApiPage() {
       {/* ── Properties ───────────────────────────────────────────── */}
       <section id="properties" className="space-y-4">
         <SectionHeader
-          title="Properties"
-          description="All @Prop() declarations on the io-tooltip Stencil component."
+          title="Attribute API"
+          description="Tooltip now behaves as a global attribute directive on any focusable trigger element."
         />
         <ApiTable
           columns={[
@@ -24,13 +24,13 @@ export default function IoTooltipApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">content</InlineCode>,
+              <InlineCode key="n">io-tooltip</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Tooltip text content displayed in the floating panel.',
+              'Tooltip text content displayed in the global floating overlay.',
             ],
             [
-              <InlineCode key="n">placement</InlineCode>,
+              <InlineCode key="n">io-tooltip-placement</InlineCode>,
               <span key="t" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                 <InlineCode>&apos;top&apos;</InlineCode>
                 {' | '}
@@ -41,7 +41,7 @@ export default function IoTooltipApiPage() {
                 <InlineCode>&apos;right&apos;</InlineCode>
               </span>,
               <InlineCode key="d">&apos;top&apos;</InlineCode>,
-              '@floating-ui/dom will flip or shift automatically if it overflows the viewport.',
+              'Preferred placement. @floating-ui/dom flips/shifts automatically when needed.',
             ],
           ]}
         />
@@ -51,10 +51,10 @@ export default function IoTooltipApiPage() {
       <section id="events" className="space-y-4">
         <SectionHeader
           title="Events"
-          description="Custom events emitted by io-tooltip."
+          description="Custom events emitted by the tooltip system."
         />
         <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-tooltip has no events.</strong>
+          <strong style={{ color: 'var(--io-text-primary)' }}>No tooltip events are emitted.</strong>
         </EmptyNote>
       </section>
 
@@ -62,39 +62,34 @@ export default function IoTooltipApiPage() {
       <section id="methods" className="space-y-4">
         <SectionHeader
           title="Methods"
-          description="Public @Method() calls exposed on the element reference."
+          description="Public calls for the tooltip system."
         />
         <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-tooltip has no public methods.</strong>
-          {' '}Visibility is managed automatically on hover and focus.
+          <strong style={{ color: 'var(--io-text-primary)' }}>No public methods.</strong>
+          {' '}Visibility is managed automatically through hover/focus/blur and Escape dismissal.
         </EmptyNote>
       </section>
 
       {/* ── Slots ────────────────────────────────────────────────── */}
       <section id="slots" className="space-y-4">
         <SectionHeader
-          title="Slots"
-          description="Content slots available on io-tooltip."
+          title="Compatibility Wrapper"
+          description="Legacy <io-tooltip> remains as a non-breaking wrapper that maps props to trigger attributes."
         />
-        <ApiTable
-          columns={[
-            { label: 'Name', width: '180px' },
-            { label: 'Description' },
-          ]}
-          rows={[
-            [
-              <span key="n" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>default</span>,
-              'The trigger element. Receives aria-describedby automatically in componentDidLoad. Must be a focusable element (button, link, or element with tabindex).',
-            ],
-          ]}
-        />
+        <EmptyNote>
+          <strong style={{ color: 'var(--io-text-primary)' }}>Prefer attributes on trigger elements.</strong>
+          {' '}Use <InlineCode>io-tooltip</InlineCode> directly on controls. Keep <InlineCode>&lt;io-tooltip&gt;</InlineCode>
+          only while migrating older markup.
+        </EmptyNote>
         <CodeNote label="Usage">
-{`<io-tooltip content="Edit this item">
-  <io-button variant="ghost" size="sm">
-    <!-- icon-only button example -->
-    Edit
-  </io-button>
-</io-tooltip>`}
+{`<io-button
+  variant="ghost"
+  size="sm"
+  io-tooltip="Edit this item"
+  io-tooltip-placement="top"
+>
+  Edit
+</io-button>`}
         </CodeNote>
       </section>
 

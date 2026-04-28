@@ -780,12 +780,12 @@ export namespace Components {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -1297,12 +1297,12 @@ declare global {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface HTMLIoTooltipElement extends Components.IoTooltip, HTMLStencilElement {
@@ -2130,12 +2130,12 @@ declare namespace LocalJSX {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -2509,12 +2509,12 @@ declare module "@stencil/core" {
             /**
              * io-tooltip
              * ===========
-             * Wraps any trigger element via the default slot. Shows a floating tooltip
-             * label on hover and focus. Uses
-             * @floating-ui /dom for viewport-aware
-             * positioning with automatic flip and shift.
+             * Compatibility wrapper around the global [io-tooltip] attribute API.
+             * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+             * directly on the trigger element. This wrapper is kept to avoid breaking
+             * existing markup and simply maps props to attributes on the first child.
              * @example <io-tooltip content="More information">
-             * <io-button>Info</io-button>
+             *   <io-button>Info</io-button>
              * </io-tooltip>
              */
             "io-tooltip": LocalJSX.IntrinsicElements["io-tooltip"] & JSXBase.HTMLAttributes<HTMLIoTooltipElement>;

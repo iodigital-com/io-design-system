@@ -82,56 +82,14 @@ export default function IoTooltipApiPage() {
           only while migrating older markup.
         </EmptyNote>
         <CodeNote label="Usage">
-{`<!-- HTML — attribute directly on any focusable element -->
-<io-button
+{`<io-button
+  variant="ghost"
+  size="sm"
   io-tooltip="Edit this item"
   io-tooltip-placement="top"
 >
   Edit
-</io-button>
-
-// React — pass attributes as props on Stencil components
-function App() {
-  return (
-    <io-button io-tooltip="Save changes" io-tooltip-placement="top">
-      Save
-    </io-button>
-  );
-}
-
-// Angular (standalone) — bind attributes directly
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IoButton } from '@io-digital/components-angular';
-
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [IoButton],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: \`
-    <io-button
-      io-tooltip="Save changes"
-      io-tooltip-placement="top"
-    >
-      Save
-    </io-button>
-  \`,
-})
-export class AppComponent {}
-
-// Vue — pass as regular HTML attributes
-<template>
-  <io-button
-    io-tooltip="Save changes"
-    io-tooltip-placement="top"
-  >
-    Save
-  </io-button>
-</template>
-
-<script setup lang="ts">
-import { IoButton } from '@io-digital/components-vue';
-</script>`}
+</io-button>`}
         </CodeNote>
       </section>
 

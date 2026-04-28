@@ -12,12 +12,6 @@ let activeTrigger: HTMLElement | null = null;
 let tooltipEl: HTMLDivElement | null = null;
 let listenersBound = false;
 
-let pointerOverHandler: ((ev: Event) => void) | null = null;
-let pointerOutHandler: ((ev: MouseEvent) => void) | null = null;
-let focusInHandler: ((ev: FocusEvent) => void) | null = null;
-let focusOutHandler: ((ev: FocusEvent) => void) | null = null;
-let keyDownHandler: ((ev: KeyboardEvent) => void) | null = null;
-
 function isPlacement(value: string | null): value is IoTooltipPlacement {
   return value === 'top' || value === 'bottom' || value === 'left' || value === 'right';
 }
@@ -39,6 +33,10 @@ function ensureTooltipElement(): HTMLDivElement {
   el.className = 'io-tooltip-overlay';
   el.setAttribute('role', 'tooltip');
   el.setAttribute('aria-hidden', 'true');
+
+  if ('showPopover' in HTMLElement.prototype) {
+    el.setAttribute('popover', 'manual');
+  }
 
   document.body.appendChild(el);
   tooltipEl = el;
@@ -88,11 +86,6 @@ function clearDescribedBy(trigger: HTMLElement, describedById: string): void {
 async function positionTooltip(trigger: HTMLElement): Promise<void> {
   const el = ensureTooltipElement();
   const placement = resolvePlacement(trigger);
-  // Reset to origin before computing — floating-ui measures the element's current
-  // position when calculating available space; an off-origin starting point causes
-  // flip() to fire incorrectly and produces wrong placement.
-  el.style.left = '0';
-  el.style.top = '0';
   const { x, y } = await computePosition(trigger, el, {
     placement,
     strategy: 'fixed',
@@ -114,21 +107,14 @@ async function showTooltip(trigger: HTMLElement): Promise<void> {
 
   activeTrigger = trigger;
   el.textContent = text;
+  el.setAttribute('aria-hidden', 'false');
+  el.setAttribute('data-visible', 'true');
   setDescribedBy(trigger, TOOLTIP_ID);
 
-  try {
-    await positionTooltip(trigger);
-    if (activeTrigger !== trigger) return;
+  await positionTooltip(trigger);
 
-    el.setAttribute('aria-hidden', 'false');
-    el.setAttribute('data-visible', 'true');
-  } catch {
-    if (activeTrigger === trigger) {
-      clearDescribedBy(trigger, TOOLTIP_ID);
-      activeTrigger = null;
-    }
-    el.setAttribute('aria-hidden', 'true');
-    el.removeAttribute('data-visible');
+  if ('showPopover' in HTMLElement.prototype) {
+    try { (el as any).showPopover(); } catch { /* already visible */ }
   }
 }
 
@@ -143,6 +129,10 @@ function hideTooltip(): void {
   activeTrigger = null;
   el.setAttribute('aria-hidden', 'true');
   el.removeAttribute('data-visible');
+
+  if ('hidePopover' in HTMLElement.prototype) {
+    try { (el as any).hidePopover(); } catch { /* already hidden */ }
+  }
 }
 
 function findTooltipTrigger(target: EventTarget | null): HTMLElement | null {
@@ -185,25 +175,17 @@ function onKeyDown(ev: KeyboardEvent): void {
 
 function onWindowChange(): void {
   if (!activeTrigger) return;
-  void positionTooltip(activeTrigger).catch(() => {
-    hideTooltip();
-  });
+  void positionTooltip(activeTrigger);
 }
 
 export function initTooltipAttribute(): void {
   if (typeof document === 'undefined' || listenersBound) return;
 
-  pointerOverHandler = (ev) => { void onPointerOver(ev); };
-  pointerOutHandler = onPointerOut;
-  focusInHandler = (ev) => { void onFocusIn(ev); };
-  focusOutHandler = onFocusOut;
-  keyDownHandler = onKeyDown;
-
-  document.addEventListener('pointerover', pointerOverHandler, true);
-  document.addEventListener('pointerout', pointerOutHandler, true);
-  document.addEventListener('focusin', focusInHandler, true);
-  document.addEventListener('focusout', focusOutHandler, true);
-  document.addEventListener('keydown', keyDownHandler, true);
+  document.addEventListener('pointerover', (ev) => { void onPointerOver(ev); }, true);
+  document.addEventListener('pointerout', onPointerOut, true);
+  document.addEventListener('focusin', (ev) => { void onFocusIn(ev); }, true);
+  document.addEventListener('focusout', onFocusOut, true);
+  document.addEventListener('keydown', onKeyDown, true);
   window.addEventListener('resize', onWindowChange, true);
   window.addEventListener('scroll', onWindowChange, true);
 
@@ -211,20 +193,6 @@ export function initTooltipAttribute(): void {
 }
 
 export function __resetTooltipAttributeForTests(): void {
-  if (pointerOverHandler) document.removeEventListener('pointerover', pointerOverHandler, true);
-  if (pointerOutHandler) document.removeEventListener('pointerout', pointerOutHandler, true);
-  if (focusInHandler) document.removeEventListener('focusin', focusInHandler, true);
-  if (focusOutHandler) document.removeEventListener('focusout', focusOutHandler, true);
-  if (keyDownHandler) document.removeEventListener('keydown', keyDownHandler, true);
-  window.removeEventListener('resize', onWindowChange, true);
-  window.removeEventListener('scroll', onWindowChange, true);
-
-  pointerOverHandler = null;
-  pointerOutHandler = null;
-  focusInHandler = null;
-  focusOutHandler = null;
-  keyDownHandler = null;
-
   activeTrigger = null;
   tooltipEl?.remove();
   tooltipEl = null;

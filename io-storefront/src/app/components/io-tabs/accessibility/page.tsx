@@ -92,15 +92,14 @@ export default function IoTabsAccessibilityPage() {
                 'Each trigger is announced as a tab, with selected state read from aria-selected.',
             },
             {
-              attribute: 'aria-disabled',
+              attribute: 'disabled (native HTML)',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
-                  {' '}when disabled
+                  On slotted <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&lt;button&gt;</code>
                 </span>
               ),
               description:
-                'Applied to slotted buttons that have the HTML disabled attribute. The component also sets aria-selected="false" and tabindex="-1" on disabled tabs. Keyboard navigation skips them for activation.',
+                'Disabled tabs rely on the native HTML disabled attribute. io-tabs sets aria-selected="false" and tabindex="-1" for non-active tabs, and keyboard navigation skips disabled tabs.',
             },
             {
               attribute: 'tabindex',
@@ -185,10 +184,9 @@ export default function IoTabsAccessibilityPage() {
           to keep application state and rendered content in sync.
         </RuleCard>
         <RuleCard label="Disabled triggers remain visible and announced">
-          Disabled items use{' '}
+          Disabled items use the native{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>disabled</code>{' '}
-          plus <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-disabled=&quot;true&quot;</code>.
-          Keep disabled labels descriptive and avoid long runs of unavailable actions.
+          attribute on slotted buttons. Keep disabled labels descriptive and avoid long runs of unavailable actions.
         </RuleCard>
         <RuleCard label="Do not rely on colour alone to indicate the active tab">
           The active tab is indicated visually by an underline or accent colour, and programmatically

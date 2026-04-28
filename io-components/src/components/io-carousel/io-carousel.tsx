@@ -55,6 +55,16 @@ export class IoCarousel {
 
   @State() private isDragging = false;
   @State() private slideAnnouncement = '';
+
+  // ── Private fields ────────────────────────────────────────────
+
+  /**
+   * True while setActiveIndex is propagating an internal scroll-driven change.
+   * Prevents the @Watch from calling scrollToIndex and interrupting ongoing
+   * smooth-scroll animations (e.g. rewind from last to first slide).
+   */
+  private _internalScroll = false;
+
   // ── Drag helpers ──────────────────────────────────────────────
 
   private startX = 0;
@@ -130,6 +140,10 @@ export class IoCarousel {
   private setActiveIndex(index: number, emitEvent: boolean): void {
     const next = this.clampIndex(index);
     if (next === this.activeSlideIndex) return;
+    // Mark this as an internal change so the @Watch skips its scrollToIndex call.
+    // The scroll is already in progress; Watch-driven instant scrolls would
+    // interrupt smooth-scroll animations (most visibly: rewind navigation).
+    this._internalScroll = true;
     this.activeSlideIndex = next;
     // Always announce slide change — AT users need feedback regardless of event emission.
     this.slideAnnouncement = `Slide ${next + 1} of ${this.totalSlides}`;
@@ -229,6 +243,11 @@ export class IoCarousel {
 
   @Watch('activeSlideIndex')
   onActiveSlideIndexChange(newValue: number) {
+    if (this._internalScroll) {
+      // Consume the flag — next external change will proceed normally.
+      this._internalScroll = false;
+      return;
+    }
     this.scrollToIndex(newValue, 'auto');
   }
 

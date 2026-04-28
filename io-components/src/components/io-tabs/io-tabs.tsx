@@ -163,7 +163,7 @@ export class IoTabs {
     return (
       <Host>
         <style>{getTabsStyles()}</style>
-        <div class="tablist" role="tablist" aria-label={this.label || undefined}>
+        <div class="tablist" role="tablist" aria-orientation="horizontal" aria-label={this.label || undefined}>
           <slot onSlotchange={this.onSlotChange} />
         </div>
       </Host>

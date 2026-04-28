@@ -107,38 +107,82 @@ export default function IoTabsApiPage() {
           ]}
         />
         <CodeNote label="Usage">
-{`// Vanilla JS
-document.querySelector('io-tabs')
-  .addEventListener('update', (e) => {
-    activeTabIndex = e.detail.activeTabIndex;
-  });
-
-// React
-const [activeTabIndex, setActiveTabIndex] = useState(0);
-<IoTabs
-  activeTabIndex={activeTabIndex}
-  onUpdate={(e) => setActiveTabIndex(e.detail.activeTabIndex)}
->
-  <button type="button">Overview</button>
-  <button type="button">Details</button>
-</IoTabs>
-
-// Angular
-activeTabIndex = 0;
-onUpdate(e: CustomEvent<{ activeTabIndex: number }>) {
-  this.activeTabIndex = e.detail.activeTabIndex;
-}
-
-<io-tabs [activeTabIndex]="activeTabIndex" (update)="onUpdate($event)">
+{`// HTML
+<io-tabs active-tab-index="0">
   <button type="button">Overview</button>
   <button type="button">Details</button>
 </io-tabs>
 
+<script>
+  document.querySelector('io-tabs')
+    .addEventListener('update', (e) => {
+      console.log('Active tab:', e.detail.activeTabIndex);
+    });
+</script>
+
+// React
+import { useState, useRef, useEffect } from 'react';
+
+function App() {
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const tabsRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    const handler = (e: Event) =>
+      setActiveTabIndex((e as CustomEvent<{ activeTabIndex: number }>).detail.activeTabIndex);
+    el.addEventListener('update', handler);
+    return () => el.removeEventListener('update', handler);
+  }, []);
+
+  return (
+    <io-tabs ref={tabsRef} active-tab-index={activeTabIndex}>
+      <button type="button">Overview</button>
+      <button type="button">Details</button>
+    </io-tabs>
+  );
+}
+
+// Angular (standalone)
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { IoTabs } from '@io-digital/components-angular';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [IoTabs],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <io-tabs [activeTabIndex]="activeTabIndex()" (update)="onUpdate($event)">
+      <button type="button">Overview</button>
+      <button type="button">Details</button>
+    </io-tabs>
+  \`,
+})
+export class AppComponent {
+  activeTabIndex = signal(0);
+
+  onUpdate(e: CustomEvent<{ activeTabIndex: number }>) {
+    this.activeTabIndex.set(e.detail.activeTabIndex);
+  }
+}
+
 // Vue
-<io-tabs :active-tab-index="activeTabIndex" @update="e => activeTabIndex = e.detail.activeTabIndex">
-  <button type="button">Overview</button>
-  <button type="button">Details</button>
-</io-tabs>`}
+<template>
+  <io-tabs
+    :active-tab-index="activeTabIndex"
+    @update="e => activeTabIndex = e.detail.activeTabIndex"
+  >
+    <button type="button">Overview</button>
+    <button type="button">Details</button>
+  </io-tabs>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const activeTabIndex = ref(0);
+</script>`}
         </CodeNote>
       </section>
 

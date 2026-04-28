@@ -1,6 +1,6 @@
 'use client';
 
-import { ApiTable, EmptyNote, InlineCode, MutableBadge, ReflectBadge, SectionHeader } from '@/components/api/ApiPrimitives';
+import { ApiTable, EmptyNote, InlineCode, MutableBadge, ReflectBadge, SectionHeader, CodeNote } from '@/components/api/ApiPrimitives';
 
 export default function IoPaginationApiPage() {
   return (
@@ -27,11 +27,11 @@ export default function IoPaginationApiPage() {
               <span key="description">Current 1-based active page.</span>,
             ],
             [
-              <span key="property"><InlineCode>totalPages</InlineCode><ReflectBadge /></span>,
+              <span key="property"><InlineCode>totalPages</InlineCode><ReflectBadge /><MutableBadge /></span>,
               <InlineCode key="attribute">total-pages</InlineCode>,
               <InlineCode key="type">number</InlineCode>,
               <InlineCode key="default">1</InlineCode>,
-              <span key="description">Total number of pages.</span>,
+              <span key="description">Total number of pages. Mutable — normalised internally if a non-finite or negative value is supplied.</span>,
             ],
             [
               <InlineCode key="property">prevLabel</InlineCode>,
@@ -80,6 +80,86 @@ export default function IoPaginationApiPage() {
         <EmptyNote>
           None. io-pagination is fully configured through props and emits pageChange events for integration.
         </EmptyNote>
+      </section>
+
+      {/* ── Code examples ─────────────────────────────────────────────────── */}
+      <section id="code-examples" className="space-y-4">
+        <SectionHeader
+          title="Code examples"
+          description="Framework integration snippets for io-pagination."
+        />
+        <CodeNote label="HTML">
+{`<io-pagination page="1" total-pages="10"></io-pagination>
+
+<script>
+  document.querySelector('io-pagination')
+    .addEventListener('pageChange', (e) => {
+      console.log('Page:', e.detail.page);
+    });
+</script>`}
+        </CodeNote>
+        <CodeNote label="React">
+{`import { useState, useRef, useEffect } from 'react';
+
+function App() {
+  const [page, setPage] = useState(1);
+  const paginationRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = paginationRef.current;
+    if (!el) return;
+    const handler = (e: Event) =>
+      setPage((e as CustomEvent<{ page: number }>).detail.page);
+    el.addEventListener('pageChange', handler);
+    return () => el.removeEventListener('pageChange', handler);
+  }, []);
+
+  return <io-pagination ref={paginationRef} page={page} total-pages={10} />;
+}`}
+        </CodeNote>
+        <CodeNote label="Angular">
+{`import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { IoPagination } from '@io-digital/components-angular';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [IoPagination],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <io-pagination
+      [page]="page()"
+      [totalPages]="10"
+      (pageChange)="onPageChange($event)"
+    />
+  \`,
+})
+export class AppComponent {
+  page = signal(1);
+
+  onPageChange(e: CustomEvent<{ page: number }>) {
+    this.page.set(e.detail.page);
+  }
+}`}
+        </CodeNote>
+        <CodeNote label="Vue">
+{`<template>
+  <io-pagination
+    :page="page"
+    :total-pages="10"
+    @pageChange="onPageChange"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const page = ref(1);
+const onPageChange = (e: CustomEvent<{ page: number }>) => {
+  page.value = e.detail.page;
+};
+</script>`}
+        </CodeNote>
       </section>
     </div>
   );

@@ -36,6 +36,15 @@ export default function IoTabsApiPage() {
               </span>,
             ],
             [
+              <InlineCode key="n">label</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Optional accessible label applied to the internal tablist via{' '}
+                <InlineCode>aria-label</InlineCode>. Recommended when multiple tablists appear on the same page.
+              </span>,
+            ],
+            [
               <span key="n">
                 <InlineCode>activeTab</InlineCode>
                 <MutableBadge />

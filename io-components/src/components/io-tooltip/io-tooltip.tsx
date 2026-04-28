@@ -23,6 +23,7 @@ export class IoTooltip {
   @Element() el!: HTMLElement;
 
   private trigger?: HTMLElement;
+  private observer?: MutationObserver;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -36,9 +37,15 @@ export class IoTooltip {
 
   componentDidLoad() {
     this.syncTriggerAttributes();
+
+    // Keep compatibility wrapper stable when frameworks replace the first child.
+    this.observer = new MutationObserver(() => this.syncTriggerAttributes());
+    this.observer.observe(this.el, { childList: true });
   }
 
   disconnectedCallback() {
+    this.observer?.disconnect();
+    this.observer = undefined;
     this.clearTriggerAttributes();
   }
 

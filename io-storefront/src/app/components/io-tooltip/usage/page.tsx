@@ -16,7 +16,7 @@ export default function IoTooltipUsagePage() {
         />
         <div className="space-y-3">
           <RuleCard label="Icon-only buttons">
-            When a button or action control has no visible text label — for example, a toolbar icon — use a tooltip to communicate what the control does. The tooltip acts as the accessible name supplement, surfaced on hover and keyboard focus.
+            For icon-only controls, always provide an accessible name first (for example via aria-label). Use tooltip text only as supplementary context surfaced on hover and keyboard focus.
           </RuleCard>
           <RuleCard label="Abbreviated or truncated labels">
             When interface constraints force a label to be shortened or clipped, a tooltip can expose the full text. This is common in data tables, breadcrumbs, and navigation items that truncate at a fixed width.

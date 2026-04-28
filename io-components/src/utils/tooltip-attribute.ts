@@ -12,6 +12,12 @@ let activeTrigger: HTMLElement | null = null;
 let tooltipEl: HTMLDivElement | null = null;
 let listenersBound = false;
 
+let pointerOverHandler: ((ev: Event) => void) | null = null;
+let pointerOutHandler: ((ev: MouseEvent) => void) | null = null;
+let focusInHandler: ((ev: FocusEvent) => void) | null = null;
+let focusOutHandler: ((ev: FocusEvent) => void) | null = null;
+let keyDownHandler: ((ev: KeyboardEvent) => void) | null = null;
+
 function isPlacement(value: string | null): value is IoTooltipPlacement {
   return value === 'top' || value === 'bottom' || value === 'left' || value === 'right';
 }
@@ -181,11 +187,17 @@ function onWindowChange(): void {
 export function initTooltipAttribute(): void {
   if (typeof document === 'undefined' || listenersBound) return;
 
-  document.addEventListener('pointerover', (ev) => { void onPointerOver(ev); }, true);
-  document.addEventListener('pointerout', onPointerOut, true);
-  document.addEventListener('focusin', (ev) => { void onFocusIn(ev); }, true);
-  document.addEventListener('focusout', onFocusOut, true);
-  document.addEventListener('keydown', onKeyDown, true);
+  pointerOverHandler = (ev) => { void onPointerOver(ev); };
+  pointerOutHandler = onPointerOut;
+  focusInHandler = (ev) => { void onFocusIn(ev); };
+  focusOutHandler = onFocusOut;
+  keyDownHandler = onKeyDown;
+
+  document.addEventListener('pointerover', pointerOverHandler, true);
+  document.addEventListener('pointerout', pointerOutHandler, true);
+  document.addEventListener('focusin', focusInHandler, true);
+  document.addEventListener('focusout', focusOutHandler, true);
+  document.addEventListener('keydown', keyDownHandler, true);
   window.addEventListener('resize', onWindowChange, true);
   window.addEventListener('scroll', onWindowChange, true);
 
@@ -193,6 +205,20 @@ export function initTooltipAttribute(): void {
 }
 
 export function __resetTooltipAttributeForTests(): void {
+  if (pointerOverHandler) document.removeEventListener('pointerover', pointerOverHandler, true);
+  if (pointerOutHandler) document.removeEventListener('pointerout', pointerOutHandler, true);
+  if (focusInHandler) document.removeEventListener('focusin', focusInHandler, true);
+  if (focusOutHandler) document.removeEventListener('focusout', focusOutHandler, true);
+  if (keyDownHandler) document.removeEventListener('keydown', keyDownHandler, true);
+  window.removeEventListener('resize', onWindowChange, true);
+  window.removeEventListener('scroll', onWindowChange, true);
+
+  pointerOverHandler = null;
+  pointerOutHandler = null;
+  focusInHandler = null;
+  focusOutHandler = null;
+  keyDownHandler = null;
+
   activeTrigger = null;
   tooltipEl?.remove();
   tooltipEl = null;

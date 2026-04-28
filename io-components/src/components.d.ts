@@ -622,6 +622,10 @@ export namespace Components {
          */
         "activeTabIndex": number;
         /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+        /**
           * Array of tab definitions
           * @default []
          */
@@ -1944,6 +1948,10 @@ declare namespace LocalJSX {
          */
         "activeTabIndex"?: number;
         /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+        /**
           * Fires when a tab is activated. Payload is the tab's value.
          */
         "onChange"?: (event: IoTabsCustomEvent<string>) => void;
@@ -2262,6 +2270,7 @@ declare namespace LocalJSX {
     interface IoTabsAttributes {
         "activeTab": string;
         "activeTabIndex": number;
+        "label": string;
     }
     interface IoTagAttributes {
         "selected": boolean;

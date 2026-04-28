@@ -158,6 +158,27 @@ describe('io-carousel — behavior helpers', () => {
     expect((track as any).scrollBy).toHaveBeenCalledWith({ left: 810, behavior: 'smooth' });
   });
 
+  it('onNext rewinds to start from physical end when rewind is enabled', () => {
+    const component = new IoCarousel();
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'clientWidth', { value: 1000 });
+    Object.defineProperty(track, 'scrollWidth', { value: 2000 });
+    Object.defineProperty(track, 'scrollLeft', { value: 1000, writable: true });
+    (track as any).scrollTo = vi.fn();
+    (track as any).scrollBy = vi.fn();
+    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 10 });
+    (component as any).getNearestSlideIndex = vi.fn(() => 6);
+    (component as any).getSlideLeft = vi.fn(() => 1500);
+    component.rewind = true;
+    component.slidesPerPage = 3;
+
+    (component as any).onNext();
+
+    expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 0, behavior: 'smooth' });
+    expect((track as any).scrollBy).not.toHaveBeenCalled();
+  });
+
   it('syncs active index from scroll and emits update payload', () => {
     const component = new IoCarousel();
     const emitSpy = vi.fn();

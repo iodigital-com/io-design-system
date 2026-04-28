@@ -88,7 +88,10 @@ export class IoPagination {
     const normalizedPage = this.normalizePage(newValue, this.normalizeTotalPages(this.totalPages));
     if (normalizedPage !== newValue) {
       this.page = normalizedPage;
+      return;
     }
+
+    this.liveMessage = `Page ${normalizedPage} of ${this.totalPages}`;
   }
 
   // ── Private helpers ───────────────────────────────────────────

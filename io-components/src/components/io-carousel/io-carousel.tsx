@@ -254,7 +254,15 @@ export class IoCarousel {
       this._internalScroll = false;
       return;
     }
-    this.scrollToIndex(newValue, 'auto');
+
+    const normalized = this.clampIndex(newValue);
+    if (normalized !== newValue) {
+      this.activeSlideIndex = normalized;
+      return;
+    }
+
+    this.slideAnnouncement = `Slide ${normalized + 1} of ${this.totalSlides}`;
+    this.scrollToIndex(normalized, 'auto');
   }
 
   componentDidLoad() {

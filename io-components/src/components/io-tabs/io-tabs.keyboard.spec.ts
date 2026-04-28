@@ -91,5 +91,12 @@ describe('io-tabs — keyboard navigation', () => {
     expect(ev.preventDefault).not.toHaveBeenCalled();
     expect(updateEmitMock).not.toHaveBeenCalled();
   });
+
+  it('recovers keyboard navigation when current index is disabled', () => {
+    const ev = makeKeyEvent('ArrowRight');
+    (component as any).handleKeyDown(ev, 2); // disabled index
+    expect(ev.preventDefault).toHaveBeenCalled();
+    expect(btns[0].focus).toHaveBeenCalled();
+  });
 });
 

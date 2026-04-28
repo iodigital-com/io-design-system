@@ -1,6 +1,11 @@
 import { Component, Prop, Element, Host, Watch, h } from '@stencil/core';
 import type { IoTooltipPlacement } from './types';
 
+const PREV_TOOLTIP_VALUE_ATTR = 'data-io-tooltip-prev-value';
+const PREV_TOOLTIP_HAD_ATTR = 'data-io-tooltip-prev-had';
+const PREV_PLACEMENT_VALUE_ATTR = 'data-io-tooltip-placement-prev-value';
+const PREV_PLACEMENT_HAD_ATTR = 'data-io-tooltip-placement-prev-had';
+
 /**
  * io-tooltip
  * ===========
@@ -73,18 +78,49 @@ export class IoTooltip {
     }
 
     this.trigger = trigger;
+    this.backupTriggerAttributes(trigger);
     trigger.setAttribute('io-tooltip', this.content);
     trigger.setAttribute('io-tooltip-placement', this.placement);
   }
 
+  private backupTriggerAttributes(trigger: HTMLElement) {
+    if (!trigger.hasAttribute(PREV_TOOLTIP_HAD_ATTR)) {
+      trigger.setAttribute(PREV_TOOLTIP_HAD_ATTR, trigger.hasAttribute('io-tooltip') ? '1' : '0');
+      trigger.setAttribute(PREV_TOOLTIP_VALUE_ATTR, trigger.getAttribute('io-tooltip') ?? '');
+    }
+
+    if (!trigger.hasAttribute(PREV_PLACEMENT_HAD_ATTR)) {
+      trigger.setAttribute(PREV_PLACEMENT_HAD_ATTR, trigger.hasAttribute('io-tooltip-placement') ? '1' : '0');
+      trigger.setAttribute(PREV_PLACEMENT_VALUE_ATTR, trigger.getAttribute('io-tooltip-placement') ?? '');
+    }
+  }
+
+  private restoreTriggerAttributes(trigger: HTMLElement) {
+    const hadTooltip = trigger.getAttribute(PREV_TOOLTIP_HAD_ATTR) === '1';
+    const previousTooltip = trigger.getAttribute(PREV_TOOLTIP_VALUE_ATTR) ?? '';
+    if (hadTooltip) {
+      trigger.setAttribute('io-tooltip', previousTooltip);
+    } else {
+      trigger.removeAttribute('io-tooltip');
+    }
+
+    const hadPlacement = trigger.getAttribute(PREV_PLACEMENT_HAD_ATTR) === '1';
+    const previousPlacement = trigger.getAttribute(PREV_PLACEMENT_VALUE_ATTR) ?? '';
+    if (hadPlacement) {
+      trigger.setAttribute('io-tooltip-placement', previousPlacement);
+    } else {
+      trigger.removeAttribute('io-tooltip-placement');
+    }
+
+    trigger.removeAttribute(PREV_TOOLTIP_HAD_ATTR);
+    trigger.removeAttribute(PREV_TOOLTIP_VALUE_ATTR);
+    trigger.removeAttribute(PREV_PLACEMENT_HAD_ATTR);
+    trigger.removeAttribute(PREV_PLACEMENT_VALUE_ATTR);
+  }
+
   private clearTriggerAttributes() {
     if (!this.trigger) return;
-    if (this.trigger.getAttribute('io-tooltip') === this.content) {
-      this.trigger.removeAttribute('io-tooltip');
-    }
-    if (this.trigger.getAttribute('io-tooltip-placement') === this.placement) {
-      this.trigger.removeAttribute('io-tooltip-placement');
-    }
+    this.restoreTriggerAttributes(this.trigger);
     this.trigger = undefined;
   }
 

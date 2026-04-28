@@ -8,6 +8,7 @@ vi.mock('@floating-ui/dom', () => ({
 }));
 
 import { __resetTooltipAttributeForTests, initTooltipAttribute } from './tooltip-attribute';
+import { computePosition } from '@floating-ui/dom';
 
 async function flushAsyncTooltipShow(): Promise<void> {
   // showTooltip now awaits computePosition before marking visible.
@@ -64,5 +65,20 @@ describe('tooltip-attribute', () => {
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(overlay?.hasAttribute('data-visible')).toBe(false);
+  });
+
+  it('gracefully recovers when computePosition rejects', async () => {
+    vi.mocked(computePosition).mockRejectedValueOnce(new Error('position failed'));
+
+    const button = document.createElement('button');
+    button.setAttribute('io-tooltip', 'Broken tooltip');
+    document.body.appendChild(button);
+
+    button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await flushAsyncTooltipShow();
+
+    const overlay = document.getElementById('io-tooltip-attribute-overlay');
+    expect(overlay?.hasAttribute('data-visible')).toBe(false);
+    expect(button.hasAttribute('aria-describedby')).toBe(false);
   });
 });

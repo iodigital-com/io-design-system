@@ -240,6 +240,30 @@ describe('io-carousel — Watch suppression (rewind / smooth-scroll integrity)',
     (component as any).onActiveSlideIndexChange(2);
 
     expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 400, behavior: 'auto' });
+    expect((component as any).slideAnnouncement).toBe('Slide 3 of 3');
+  });
+
+  it('normalizes invalid external activeSlideIndex values', () => {
+    const component = new IoCarousel();
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollLeft', { value: 0 });
+    (track as any).scrollTo = vi.fn();
+    const slot = document.createElement('slot');
+    (component as any).el = {
+      shadowRoot: {
+        querySelector: vi.fn((sel: string) => {
+          if (sel === '.carousel-track') return track;
+          if (sel === 'slot') return slot;
+          return null;
+        }),
+      },
+    };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    (component as any).getSlideLeft = vi.fn(() => 0);
+
+    (component as any).onActiveSlideIndexChange(Number.NaN);
+
+    expect(component.activeSlideIndex).toBe(0);
   });
 
   it('multiple setActiveIndex calls (mid-scroll) each mark the flag', () => {

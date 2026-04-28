@@ -18,6 +18,7 @@ describe('io-carousel-utils', () => {
     expect(clampSlideIndex(5, 3)).toBe(2);
     expect(clampSlideIndex(-1, 3)).toBe(0);
     expect(clampSlideIndex(2, 0)).toBe(0);
+    expect(clampSlideIndex(Number.NaN, 3)).toBe(0);
   });
 
   it('returns safe target index across rewind and empty-list edges', () => {

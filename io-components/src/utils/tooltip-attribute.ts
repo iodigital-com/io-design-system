@@ -116,11 +116,20 @@ async function showTooltip(trigger: HTMLElement): Promise<void> {
   el.textContent = text;
   setDescribedBy(trigger, TOOLTIP_ID);
 
-  await positionTooltip(trigger);
-  if (activeTrigger !== trigger) return;
+  try {
+    await positionTooltip(trigger);
+    if (activeTrigger !== trigger) return;
 
-  el.setAttribute('aria-hidden', 'false');
-  el.setAttribute('data-visible', 'true');
+    el.setAttribute('aria-hidden', 'false');
+    el.setAttribute('data-visible', 'true');
+  } catch {
+    if (activeTrigger === trigger) {
+      clearDescribedBy(trigger, TOOLTIP_ID);
+      activeTrigger = null;
+    }
+    el.setAttribute('aria-hidden', 'true');
+    el.removeAttribute('data-visible');
+  }
 }
 
 function hideTooltip(): void {
@@ -176,7 +185,9 @@ function onKeyDown(ev: KeyboardEvent): void {
 
 function onWindowChange(): void {
   if (!activeTrigger) return;
-  void positionTooltip(activeTrigger);
+  void positionTooltip(activeTrigger).catch(() => {
+    hideTooltip();
+  });
 }
 
 export function initTooltipAttribute(): void {

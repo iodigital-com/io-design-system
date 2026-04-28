@@ -71,6 +71,22 @@ describe('io-tabs — syncFromSlot', () => {
     expect(component.activeTabIndex).toBe(0);
   });
 
+  it('normalizes negative activeTabIndex to first enabled tab', () => {
+    component.activeTabIndex = -3;
+    (component as any).syncFromSlot();
+    expect(component.activeTabIndex).toBe(0);
+    expect(btn1.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('moves activeTabIndex away from disabled active tab', () => {
+    component.activeTabIndex = 2; // disabled button
+    (component as any).syncFromSlot();
+
+    expect(component.activeTabIndex).toBe(0);
+    expect(btn3.getAttribute('aria-selected')).toBe('false');
+    expect(btn3.getAttribute('tabindex')).toBe('-1');
+  });
+
   it('populates internal buttons array from slotted elements', () => {
     (component as any).syncFromSlot();
     expect((component as any).buttons).toHaveLength(3);
@@ -98,6 +114,18 @@ describe('io-tabs — onActiveTabIndexChange', () => {
     expect(btn2.getAttribute('aria-selected')).toBe('true');
     expect(btn2.getAttribute('tabindex')).toBe('0');
     expect(btn1.getAttribute('tabindex')).toBe('-1');
+  });
+
+  it('normalizes non-finite activeTabIndex values', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B');
+    const component = makeComponent([btn1, btn2]);
+    (component as any).syncFromSlot();
+
+    (component as any).onActiveTabIndexChange(Number.NaN);
+
+    expect(component.activeTabIndex).toBe(0);
+    expect(btn1.getAttribute('tabindex')).toBe('0');
   });
 });
 

@@ -65,7 +65,12 @@ export class IoTabs {
 
   @Watch('activeTabIndex')
   onActiveTabIndexChange(newIndex: number) {
-    this.applyAriaToButtons(this.buttons, newIndex);
+    const normalized = this.normalizeActiveTabIndex(newIndex);
+    if (normalized !== newIndex) {
+      this.activeTabIndex = normalized;
+      return;
+    }
+    this.applyAriaToButtons(this.buttons, normalized);
   }
 
   // ── Slot handling ─────────────────────────────────────────────
@@ -81,13 +86,28 @@ export class IoTabs {
     const assigned = this.slotEl?.assignedElements() ?? [];
     this.buttons = assigned.filter((el): el is HTMLButtonElement => el.tagName === 'BUTTON');
 
-    // Clamp activeTabIndex if the new slot has fewer tabs
-    if (this.buttons.length > 0 && this.activeTabIndex >= this.buttons.length) {
-      this.activeTabIndex = 0;
+    const normalized = this.normalizeActiveTabIndex(this.activeTabIndex);
+    if (normalized !== this.activeTabIndex) {
+      this.activeTabIndex = normalized;
     }
 
     this.setupListeners();
-    this.applyAriaToButtons(this.buttons, this.activeTabIndex);
+    this.applyAriaToButtons(this.buttons, normalized);
+  }
+
+  private normalizeActiveTabIndex(index: number): number {
+    if (this.buttons.length === 0) return 0;
+
+    const parsed = Number(index);
+    const safeIndex = Number.isFinite(parsed) ? Math.floor(parsed) : 0;
+    const clamped = Math.max(0, Math.min(safeIndex, this.buttons.length - 1));
+
+    if (!this.buttons[clamped]?.disabled) {
+      return clamped;
+    }
+
+    const firstEnabled = this.getEnabledButtons()[0];
+    return firstEnabled ? firstEnabled.index : 0;
   }
 
   private setupListeners() {
@@ -114,9 +134,10 @@ export class IoTabs {
 
   private applyAriaToButtons(buttons: HTMLButtonElement[], activeIndex: number) {
     buttons.forEach((btn, index) => {
+      const isActive = index === activeIndex && !btn.disabled;
       btn.setAttribute('role', 'tab');
-      btn.setAttribute('aria-selected', String(index === activeIndex));
-      btn.setAttribute('tabindex', String(index === activeIndex ? 0 : -1));
+      btn.setAttribute('aria-selected', String(isActive));
+      btn.setAttribute('tabindex', String(isActive ? 0 : -1));
     });
   }
 
@@ -135,12 +156,24 @@ export class IoTabs {
     const enabled = this.getEnabledButtons();
     if (enabled.length === 0) return;
 
-    const currentEnabledIndex = enabled.findIndex(item => item.index === index);
-    if (currentEnabledIndex < 0) return;
-
     if (ev.key === 'Enter' || ev.key === ' ') {
       ev.preventDefault();
       this.handleTabClick(index);
+      return;
+    }
+
+    const currentEnabledIndex = enabled.findIndex(item => item.index === index);
+    if (currentEnabledIndex < 0) {
+      const fallbackIndex = ev.key === 'ArrowLeft' || ev.key === 'End'
+        ? enabled.length - 1
+        : ev.key === 'ArrowRight' || ev.key === 'Home'
+          ? 0
+          : null;
+
+      if (fallbackIndex !== null) {
+        ev.preventDefault();
+        enabled[fallbackIndex].btn.focus();
+      }
       return;
     }
 

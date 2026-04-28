@@ -69,4 +69,26 @@ describe('io-tooltip — wrapper syncing', () => {
     expect(trigger.hasAttribute('io-tooltip')).toBe(false);
     expect(trigger.hasAttribute('io-tooltip-placement')).toBe(false);
   });
+
+  it('restores pre-existing trigger tooltip attributes on disconnect', () => {
+    const localComponent = new IoTooltip();
+    const localHost = document.createElement('io-tooltip');
+    const localTrigger = document.createElement('button');
+    localTrigger.setAttribute('io-tooltip', 'Original tooltip');
+    localTrigger.setAttribute('io-tooltip-placement', 'right');
+    localHost.appendChild(localTrigger);
+    (localComponent as any).el = localHost;
+
+    localComponent.content = 'Mapped tooltip';
+    localComponent.placement = 'left';
+    localComponent.componentDidLoad();
+
+    expect(localTrigger.getAttribute('io-tooltip')).toBe('Mapped tooltip');
+    expect(localTrigger.getAttribute('io-tooltip-placement')).toBe('left');
+
+    localComponent.disconnectedCallback();
+
+    expect(localTrigger.getAttribute('io-tooltip')).toBe('Original tooltip');
+    expect(localTrigger.getAttribute('io-tooltip-placement')).toBe('right');
+  });
 });

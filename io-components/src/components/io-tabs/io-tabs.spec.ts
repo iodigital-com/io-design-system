@@ -24,16 +24,50 @@ describe('io-tabs — default props', () => {
     expect(component.activeTab).toBe('');
   });
 
+  it('has activeTabIndex=-1 by default', () => {
+    expect(component.activeTabIndex).toBe(-1);
+  });
+
   it('defaults activeTab to first enabled tab on load', () => {
     component.tabs = TABS;
     component.componentWillLoad();
     expect(component.activeTab).toBe('overview');
+    expect(component.activeTabIndex).toBe(0);
   });
 
   it('preserves explicitly set activeTab on load', () => {
     component.tabs = TABS;
     component.activeTab = 'details';
     component.componentWillLoad();
+    expect(component.activeTab).toBe('details');
+    expect(component.activeTabIndex).toBe(1);
+  });
+
+  it('uses valid activeTabIndex to resolve activeTab on load', () => {
+    component.tabs = TABS;
+    component.activeTabIndex = 1;
+    component.componentWillLoad();
+    expect(component.activeTab).toBe('details');
+    expect(component.activeTabIndex).toBe(1);
+  });
+
+  it('syncs activeTabIndex when activeTab changes after load', () => {
+    component.tabs = TABS;
+    component.componentWillLoad();
+
+    component.activeTab = 'details';
+    (component as any).onActiveTabChange('details');
+
+    expect(component.activeTabIndex).toBe(1);
+  });
+
+  it('syncs activeTab when activeTabIndex changes after load', () => {
+    component.tabs = TABS;
+    component.componentWillLoad();
+
+    component.activeTabIndex = 1;
+    (component as any).onActiveTabIndexChange(1);
+
     expect(component.activeTab).toBe('details');
   });
 
@@ -46,6 +80,7 @@ describe('io-tabs — default props', () => {
     component.componentWillLoad();
 
     expect(component.activeTab).toBe('');
+    expect(component.activeTabIndex).toBe(-1);
   });
 
   it('enables delegatesFocus for the component shadow root', async () => {

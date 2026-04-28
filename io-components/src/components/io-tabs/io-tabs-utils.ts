@@ -37,10 +37,9 @@ export function getNextEnabledIndex(key: string, currentEnabledIndex: number, en
   }
 }
 
-export function getTabIds(prefix: string, value: string): { tabId: string; panelId: string } {
+export function getTabIds(prefix: string, value: string): { tabId: string } {
   return {
     tabId: `${prefix}-tab-${value}`,
-    panelId: `${prefix}-panel-${value}`,
   };
 }
 

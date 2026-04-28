@@ -17,7 +17,7 @@ import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectOption } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-import { IoTabItem } from "./components/io-tabs/types";
+import { IoTabItem, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -34,7 +34,7 @@ export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectOption } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-export { IoTabItem } from "./components/io-tabs/types";
+export { IoTabItem, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -605,13 +605,10 @@ export namespace Components {
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Controlled tabs-bar style navigation with full keyboard support.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
      */
     interface IoTabs {
         /**
@@ -619,6 +616,11 @@ export namespace Components {
           * @default ''
          */
         "activeTab": string;
+        /**
+          * 0-based index of the active tab (controlled like Porsche Tabs Bar).
+          * @default -1
+         */
+        "activeTabIndex": number;
         /**
           * Array of tab definitions
           * @default []
@@ -1166,17 +1168,15 @@ declare global {
     };
     interface HTMLIoTabsElementEventMap {
         "change": string;
+        "update": IoTabsUpdateDetail;
     }
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Controlled tabs-bar style navigation with full keyboard support.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
      */
     interface HTMLIoTabsElement extends Components.IoTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTabsElementEventMap>(type: K, listener: (this: HTMLIoTabsElement, ev: IoTabsCustomEvent<HTMLIoTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1927,13 +1927,10 @@ declare namespace LocalJSX {
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Controlled tabs-bar style navigation with full keyboard support.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
      */
     interface IoTabs {
         /**
@@ -1942,9 +1939,18 @@ declare namespace LocalJSX {
          */
         "activeTab"?: string;
         /**
+          * 0-based index of the active tab (controlled like Porsche Tabs Bar).
+          * @default -1
+         */
+        "activeTabIndex"?: number;
+        /**
           * Fires when a tab is activated. Payload is the tab's value.
          */
         "onChange"?: (event: IoTabsCustomEvent<string>) => void;
+        /**
+          * Fires when the active tab changes. Payload includes value + index.
+         */
+        "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
         /**
           * Array of tab definitions
           * @default []
@@ -2255,6 +2261,7 @@ declare namespace LocalJSX {
     }
     interface IoTabsAttributes {
         "activeTab": string;
+        "activeTabIndex": number;
     }
     interface IoTagAttributes {
         "selected": boolean;
@@ -2448,13 +2455,10 @@ declare module "@stencil/core" {
             /**
              * io-tabs
              * ========
-             * Accessible tabbed navigation with full keyboard support.
+             * Controlled tabs-bar style navigation with full keyboard support.
              * Manages roving tabindex (only the active tab is in the tab order).
              * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-             * @example <io-tabs
-             *   active-tab="overview"
-             *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-             * ></io-tabs>
+             * @example <io-tabs active-tab="overview" active-tab-index="0" tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'></io-tabs>
              */
             "io-tabs": LocalJSX.IntrinsicElements["io-tabs"] & JSXBase.HTMLAttributes<HTMLIoTabsElement>;
             /**

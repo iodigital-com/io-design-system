@@ -47,7 +47,21 @@ export default function IoTabsApiPage() {
                 The <InlineCode>value</InlineCode> of the currently active tab. Mutable — updated
                 internally when the user activates a tab. Reflected to a host attribute so it can
                 be observed via CSS attribute selectors. Bind to{' '}
-                <InlineCode>change</InlineCode> to keep external state in sync.
+                <InlineCode>update</InlineCode> to keep external state in sync.
+              </span>,
+            ],
+            [
+              <span key="n">
+                <InlineCode>activeTabIndex</InlineCode>
+                <MutableBadge />
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">-1</InlineCode>,
+              <span key="desc">
+                The 0-based index of the active tab, aligned with Tabs Bar style controlled state.
+                This is updated together with <InlineCode>activeTab</InlineCode> and emitted in{' '}
+                <InlineCode>update</InlineCode> detail.
               </span>,
             ],
           ]}
@@ -60,6 +74,8 @@ export default function IoTabsApiPage() {
   value: string;
   /** When true, the tab is visually dimmed and cannot be activated. */
   disabled?: boolean;
+  /** Optional external panel id for aria-controls linkage. */
+  panelId?: string;
 }`}
         </CodeNote>
       </section>
@@ -79,32 +95,46 @@ export default function IoTabsApiPage() {
           ]}
           rows={[
             [
+              <InlineCode key="n">update</InlineCode>,
+              <InlineCode key="t">{'{ activeTab: string; activeTabIndex: number }'}</InlineCode>,
+              'No',
+              'Fires when the user activates a different tab (via click, Enter, or Space). Use this as the primary controlled-state event.',
+            ],
+            [
               <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               'No',
-              'Fires when the user activates a tab (via click, Enter, or Space). The event detail is the value string of the newly active tab. Use this to update the activeTab prop and render the corresponding panel.',
+              'Legacy value-only event for backward compatibility. Event detail is the active tab value string.',
             ],
           ]}
         />
         <CodeNote label="Usage">
 {`// Vanilla JS
 document.querySelector('io-tabs')
+  .addEventListener('update', (e) => {
+    console.log('active tab detail:', e.detail.activeTab, e.detail.activeTabIndex);
+  });
+
+document.querySelector('io-tabs')
   .addEventListener('change', (e) => {
-    console.log('active tab:', e.detail);
+    console.log('active tab value (legacy):', e.detail);
   });
 
 // React
 <IoTabs
   tabs={tabs}
   activeTab={activeTab}
-  onChange={(e) => setActiveTab(e.detail)}
+  onUpdate={(e) => {
+    setActiveTab(e.detail.activeTab);
+    setActiveTabIndex(e.detail.activeTabIndex);
+  }}
 />
 
 // Angular
-<io-tabs [tabs]="tabs" [activeTab]="activeTab" (change)="onTabChange($event)"></io-tabs>
+<io-tabs [tabs]="tabs" [activeTab]="activeTab" [activeTabIndex]="activeTabIndex" (update)="onTabUpdate($event)"></io-tabs>
 
 // Vue
-<io-tabs :tabs="tabs" :active-tab="activeTab" @change="handleChange" />`}
+<io-tabs :tabs="tabs" :active-tab="activeTab" :active-tab-index="activeTabIndex" @update="handleUpdate" />`}
         </CodeNote>
       </section>
 
@@ -117,7 +147,8 @@ document.querySelector('io-tabs')
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-tabs exposes no public methods.</strong>
           {' '}All interactions are driven by prop changes (<InlineCode>tabs</InlineCode>,{' '}
-          <InlineCode>activeTab</InlineCode>) and the <InlineCode>change</InlineCode> event.
+          <InlineCode>activeTab</InlineCode>, <InlineCode>activeTabIndex</InlineCode>) and the{' '}
+          <InlineCode>update</InlineCode> event.
         </EmptyNote>
       </section>
 
@@ -129,10 +160,8 @@ document.querySelector('io-tabs')
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-tabs has no content slots.</strong>
-          {' '}The component renders tab buttons only. Panel content is managed entirely by the
-          consuming application — render each panel as a sibling element with{' '}
-          <InlineCode>role=&quot;tabpanel&quot;</InlineCode> and conditionally show the panel whose
-          value matches <InlineCode>activeTab</InlineCode>.
+          {' '}The component renders tab buttons only. Content rendering remains fully owned by the
+          consuming application (Tabs Bar style).
         </EmptyNote>
       </section>
 

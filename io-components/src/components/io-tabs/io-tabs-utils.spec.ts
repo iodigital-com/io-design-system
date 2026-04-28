@@ -10,7 +10,7 @@ describe('io-tabs-utils', () => {
 
   it('builds tab ids and class names', () => {
     expect(createTabsIdPrefix('xyz')).toBe('io-tabs-xyz');
-    expect(getTabIds('io-tabs-xyz', 'a')).toEqual({ tabId: 'io-tabs-xyz-tab-a', panelId: 'io-tabs-xyz-panel-a' });
+    expect(getTabIds('io-tabs-xyz', 'a')).toEqual({ tabId: 'io-tabs-xyz-tab-a' });
     expect(getTabClassName(true, false)).toBe('tab tab--active');
     expect(getTabClassName(false, true)).toBe('tab tab--disabled');
   });

@@ -17,6 +17,7 @@ function makeKeyEvent(key: string): KeyboardEvent {
 describe('io-tabs — keyboard navigation', () => {
   let component: IoTabs;
   let emitMock: ReturnType<typeof vi.fn>;
+  let updateEmitMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     component = new IoTabs();
@@ -28,9 +29,12 @@ describe('io-tabs — keyboard navigation', () => {
       },
     };
     emitMock = vi.fn();
+    updateEmitMock = vi.fn();
     (component as any).change = { emit: emitMock };
+    (component as any).update = { emit: updateEmitMock };
     component.tabs = TABS;
     component.activeTab = 'first';
+    component.activeTabIndex = 0;
   });
 
   it('ArrowRight moves focus to next enabled tab', () => {

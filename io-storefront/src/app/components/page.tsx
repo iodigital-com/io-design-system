@@ -13,7 +13,7 @@ const COMPONENTS = [
   { name: 'Radio',    tag: 'io-radio',    href: '/components/io-radio/configurator',    description: 'Single-select from a group. Built-in label, helper text, error state, and change event.' },
   { name: 'Select',   tag: 'io-select',   href: '/components/io-select/configurator',   description: 'Dropdown selection with a built-in label, placeholder, and error state. Pass options as an array of objects.' },
   { name: 'Spinner',  tag: 'io-spinner',  href: '/components/io-spinner/configurator',  description: 'Signals a loading or processing state. Three sizes, three colour modes including current to inherit parent colour.' },
-  { name: 'Tabs',     tag: 'io-tabs',     href: '/components/io-tabs/configurator',     description: 'Organises content into named panels. Keyboard-navigable with roving tabindex and full ARIA tab role semantics.' },
+  { name: 'Tabs',     tag: 'io-tabs',     href: '/components/io-tabs/configurator',     description: 'Tabs-bar style navigation control. Controlled active value/index, keyboard roving tabindex, and external content ownership.' },
   { name: 'Tag',      tag: 'io-tag',      href: '/components/io-tag/configurator',      description: 'Toggleable filter chip or removable label. Renders as a <button> with aria-pressed.' },
   { name: 'Textarea', tag: 'io-textarea', href: '/components/io-textarea/configurator', description: 'Multi-line text entry with label, helper text, character count, error state, and three resize modes.' },
   { name: 'Toast',    tag: 'io-toast',    href: '/components/io-toast/configurator',    description: 'Delivers time-limited feedback after a user action. Queue multiple messages via addToast() — one visible at a time.' },

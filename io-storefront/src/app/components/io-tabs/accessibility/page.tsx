@@ -12,7 +12,7 @@ export default function IoTabsAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="io-tabs implements the ARIA Authoring Practices Guide tab pattern with automatic activation and roving tabindex. Only the active tab is included in the page tab sequence; arrow keys move focus between tabs."
+          description="io-tabs provides tabs-bar style keyboard navigation with roving tabindex. Only the active tab is in the page tab sequence; arrow keys move focus between tabs."
         />
         <KeyboardTable
           rows={[
@@ -52,12 +52,12 @@ export default function IoTabsAccessibilityPage() {
             {
               key: <Kbd>Enter</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab, and fires the change event with the tab value. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
             },
             {
               key: <Kbd>Space</Kbd>,
               action:
-                'Activates the focused tab, updates activeTab, and fires the change event with the tab value. Has no effect on disabled tabs.',
+                'Activates the focused tab, updates activeTab/activeTabIndex, and fires update (plus legacy change). Has no effect on disabled tabs.',
             },
           ]}
         />
@@ -67,7 +67,7 @@ export default function IoTabsAccessibilityPage() {
       <section id="screen-reader-behaviour" className="space-y-6">
         <SectionHeader
           title="Screen reader behaviour"
-          description="io-tabs uses the WAI-ARIA tab pattern. The tab list container, individual tab buttons, and consumer-provided panels each carry explicit roles and relationships."
+          description="io-tabs exposes ARIA roles and selected-state metadata for the tab strip itself. Panel/content semantics are owned by the consuming application."
         />
         <AriaTable
           rows={[
@@ -105,16 +105,6 @@ export default function IoTabsAccessibilityPage() {
                 'Communicates the selected state to assistive technology. Only one tab carries aria-selected="true" at a time. Screen readers announce "selected" when the user focuses the active tab.',
             },
             {
-              attribute: 'aria-controls',
-              value: (
-                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>
-                  panel-{'{value}'}
-                </span>
-              ),
-              description:
-                'Points to the id of the associated panel element. The convention is id="panel-{value}" on the panel element. This relationship allows screen reader users to jump directly from a tab to its panel using a shortcut.',
-            },
-            {
               attribute: 'aria-disabled',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
@@ -136,14 +126,14 @@ export default function IoTabsAccessibilityPage() {
                 'Only the active tab has tabindex="0"; all other tabs have tabindex="-1". This roving tabindex pattern ensures that Tab moves focus in and out of the tab list as a single stop, while Arrow keys move between tabs.',
             },
             {
-              attribute: 'role="tabpanel"',
+              attribute: 'aria-current (optional)',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On consumer panel elements
+                  Consumer-managed content state
                 </span>
               ),
               description:
-                'Consumers must apply role="tabpanel" to each panel element. This role, combined with the aria-controls link from the tab, gives screen reader users a complete semantic picture of the tabs widget.',
+                'When tabs switch application views, consumers may expose additional state in their own content region. io-tabs itself does not enforce panel/link wiring.',
             },
           ]}
         />
@@ -160,7 +150,7 @@ export default function IoTabsAccessibilityPage() {
             criterion="1.3.1"
             level="A"
             title="Info and Relationships"
-            note="The tablist, tab, and tabpanel roles convey structure programmatically. The active state is communicated via aria-selected, not visual styling alone."
+            note="The tab list and tab roles convey structure programmatically. Active state is communicated via aria-selected, not visual styling alone."
           />
           <ComplianceCard
             criterion="1.4.3"
@@ -178,7 +168,7 @@ export default function IoTabsAccessibilityPage() {
             criterion="2.4.3"
             level="A"
             title="Focus Order"
-            note="Tab enters the tab list on the active tab. Arrow keys move focus within the list. Tab exits to the panel. Focus order is logical and matches the visual layout."
+            note="Tab enters the tab list on the active tab. Arrow keys move focus within the list. Tab exits to the next focusable element. Focus order is logical and matches the visual layout."
           />
           <ComplianceCard
             criterion="2.4.7"
@@ -190,7 +180,7 @@ export default function IoTabsAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="Each tab button has an accessible name from its label text, role='tab', aria-selected, and aria-controls. The tablist container has role='tablist'. All state changes are reflected in ARIA attributes."
+            note="Each tab button has an accessible name from its label text, role='tab', and aria-selected. The tablist container has role='tablist'. All state changes are reflected in ARIA attributes."
           />
         </div>
       </section>
@@ -199,24 +189,19 @@ export default function IoTabsAccessibilityPage() {
       <section id="best-practices" className="space-y-4">
         <SectionHeader
           title="Best practices"
-          description="Guidelines for building fully accessible tab interfaces with io-tabs."
+          description="Guidelines for building accessible tabs-bar style interfaces with io-tabs."
         />
-        <RuleCard label="Always link tabs to panels with aria-controls">
-          Set{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>id=&quot;panel-{'{value}'}&quot;</code>{' '}
-          on each panel element and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>role=&quot;tabpanel&quot;</code>{' '}
-          on the panel container. This allows screen reader users to jump between a tab and its panel
-          using their shortcut for associated elements.
+        <RuleCard label="Treat update as the source of truth">
+          Use the{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>update</code>{' '}
+          event detail (<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTab</code>{' '}
+          + <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>activeTabIndex</code>)
+          to keep application state and rendered content in sync.
         </RuleCard>
         <RuleCard label="Use aria-disabled rather than hiding disabled tabs">
-          Disabled tabs in io-tabs use{' '}
+          Disabled tabs in io-tabs expose{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-disabled=&quot;true&quot;</code>{' '}
-          rather than the HTML{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>disabled</code>{' '}
-          attribute to preserve focusability. This is intentional — if the button were not focusable,
-          keyboard users would not know it exists. Consider providing a tooltip or helper text
-          explaining why the tab is unavailable.
+          and are not activatable. Keep disabled labels descriptive and avoid long runs of unavailable tabs.
         </RuleCard>
         <RuleCard label="Do not rely on colour alone to indicate the active tab">
           The active tab is indicated visually by an underline or accent colour, and programmatically

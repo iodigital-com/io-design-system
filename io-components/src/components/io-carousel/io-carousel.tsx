@@ -53,7 +53,8 @@ export class IoCarousel {
 
   // ── State ─────────────────────────────────────────────────────
 
-  @State() private isDragging = false;  @State() private slideAnnouncement = '';
+  @State() private isDragging = false;
+  @State() private slideAnnouncement = '';
   // ── Drag helpers ──────────────────────────────────────────────
 
   private startX = 0;

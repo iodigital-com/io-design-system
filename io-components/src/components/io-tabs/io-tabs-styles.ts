@@ -31,26 +31,21 @@ export function getTabsStyles(): string {
     /* ── Slotted tab button (base) ──────────────────────── */
 
     ::slotted(button) {
-      /* !important overrides are required here: Tailwind's preflight resets
-         button {padding:0; color:inherit; font-*:inherit; cursor:default}
-         in the outer document, and light-DOM author styles take cascade
-         precedence over shadow-DOM ::slotted() at equal specificity.        */
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      padding: var(--io-space-3) var(--io-space-4) !important;
-      font-family: var(--io-font-primary) !important;
-      font-size: var(--io-font-size-sm) !important;
-      font-weight: var(--io-font-weight-medium) !important;
-      line-height: var(--io-line-height-normal) !important;
-      color: var(--io-text-secondary) !important;
-      background: transparent !important;
-      border: none !important;
-      border-bottom: 2px solid transparent !important;
-      margin: 0 0 -1px 0 !important;
-      cursor: pointer !important;
-      white-space: nowrap !important;
-      flex-shrink: 0 !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--io-space-3) var(--io-space-4);
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      font-weight: var(--io-font-weight-medium);
+      color: var(--io-text-secondary);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast), border-bottom-color var(--io-motion-fast);
       -webkit-font-smoothing: antialiased;
     }
@@ -58,16 +53,16 @@ export function getTabsStyles(): string {
     /* ── Active tab ──────────────────────────────────────── */
 
     ::slotted(button[aria-selected="true"]) {
-      color: var(--io-text-primary) !important;
-      border-bottom-color: var(--io-tabs-indicator-color) !important;
+      color: var(--io-text-primary);
+      border-bottom-color: var(--io-tabs-indicator-color);
     }
 
     /* ── Hover ───────────────────────────────────────────── */
 
     @media (hover: hover) and (pointer: fine) {
       ::slotted(button:not([aria-selected="true"]):not(:disabled):hover) {
-        color: var(--io-text-primary) !important;
-        background: var(--io-state-hover) !important;
+        color: var(--io-text-primary);
+        background: var(--io-state-hover);
       }
     }
 

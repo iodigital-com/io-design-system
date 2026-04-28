@@ -9,6 +9,12 @@ vi.mock('@floating-ui/dom', () => ({
 
 import { __resetTooltipAttributeForTests, initTooltipAttribute } from './tooltip-attribute';
 
+async function flushAsyncTooltipShow(): Promise<void> {
+  // showTooltip now awaits computePosition before marking visible.
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
 describe('tooltip-attribute', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
@@ -22,7 +28,7 @@ describe('tooltip-attribute', () => {
     document.body.appendChild(button);
 
     button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
-    await Promise.resolve();
+    await flushAsyncTooltipShow();
 
     const overlay = document.getElementById('io-tooltip-attribute-overlay');
     expect(overlay).not.toBeNull();
@@ -37,7 +43,7 @@ describe('tooltip-attribute', () => {
     document.body.appendChild(button);
 
     button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
-    await Promise.resolve();
+    await flushAsyncTooltipShow();
     button.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
 
     const overlay = document.getElementById('io-tooltip-attribute-overlay');
@@ -51,7 +57,7 @@ describe('tooltip-attribute', () => {
     document.body.appendChild(button);
 
     button.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
-    await Promise.resolve();
+    await flushAsyncTooltipShow();
 
     const overlay = document.getElementById('io-tooltip-attribute-overlay');
     expect(overlay?.getAttribute('data-visible')).toBe('true');

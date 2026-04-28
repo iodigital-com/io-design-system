@@ -27,6 +27,10 @@ describe('io-modal — default props', () => {
     expect(component.heading).toBeUndefined();
   });
 
+  it('has no description by default', () => {
+    expect(component.description).toBeUndefined();
+  });
+
   it('generates a stable headingId in componentWillLoad', () => {
     const id = (component as any).headingId as string;
     expect(id).toMatch(/^io-modal-heading-/);

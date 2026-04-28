@@ -34,6 +34,10 @@ describe('io-link — default props', () => {
     expect(component.rel).toBeUndefined();
   });
 
+  it('has no download by default', () => {
+    expect(component.download).toBeUndefined();
+  });
+
   it('setFocus resolves without throwing', async () => {
     const inner = document.createElement('a');
     inner.className = 'link';
@@ -47,5 +51,45 @@ describe('io-link — default props', () => {
     const shadowRoot = { querySelector: vi.fn().mockReturnValue(null) };
     (component as any).el = { shadowRoot };
     await expect(component.setFocus()).resolves.toBeUndefined();
+  });
+});
+
+describe('io-link — download prop', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('accepts download prop value', () => {
+    component.download = 'file.pdf';
+    expect(component.download).toBe('file.pdf');
+  });
+
+  it('allows filename in download attribute', () => {
+    component.download = 'my-document.pdf';
+    expect(component.download).toBe('my-document.pdf');
+  });
+});
+
+describe('io-link — external link security', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('has external prop settable to true', () => {
+    component.external = true;
+    expect(component.external).toBe(true);
+  });
+
+  it('has external prop settable to false', () => {
+    component.external = false;
+    expect(component.external).toBe(false);
   });
 });

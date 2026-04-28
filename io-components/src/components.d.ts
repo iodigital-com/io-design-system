@@ -352,6 +352,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Downloadable file name. Enables download behavior on click.
+         */
+        "download": string | undefined;
+        /**
           * Automatically sets target="_blank" and rel="noopener noreferrer"
           * @default false
          */
@@ -402,6 +406,10 @@ export namespace Components {
           * @default true
          */
         "closeOnBackdrop": boolean;
+        /**
+          * Description text for accessibility (used in aria-describedby)
+         */
+        "description"?: string;
         /**
           * Heading text displayed in the modal header
          */
@@ -1645,6 +1653,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Downloadable file name. Enables download behavior on click.
+         */
+        "download"?: string | undefined;
+        /**
           * Automatically sets target="_blank" and rel="noopener noreferrer"
           * @default false
          */
@@ -1695,6 +1707,10 @@ declare namespace LocalJSX {
           * @default true
          */
         "closeOnBackdrop"?: boolean;
+        /**
+          * Description text for accessibility (used in aria-describedby)
+         */
+        "description"?: string;
         /**
           * Heading text displayed in the modal header
          */
@@ -2183,6 +2199,7 @@ declare namespace LocalJSX {
         "target": string | undefined;
         "rel": string | undefined;
         "external": boolean;
+        "download": string | undefined;
         "disabled": boolean;
     }
     interface IoModalAttributes {
@@ -2190,6 +2207,7 @@ declare namespace LocalJSX {
         "heading": string;
         "size": IoModalSize;
         "closeOnBackdrop": boolean;
+        "description": string;
     }
     interface IoPaginationAttributes {
         "page": number;

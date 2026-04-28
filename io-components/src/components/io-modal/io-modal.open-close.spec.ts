@@ -48,4 +48,28 @@ describe('io-modal — open/close', () => {
     (component as any).openChanged(true);
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
+
+  it('clears focus trap listener on close', () => {
+    const removeListenerSpy = vi.spyOn(dialogEl, 'removeEventListener');
+    (component as any).focusTrapHandler = vi.fn();
+    dialogEl.open = true;
+
+    (component as any).openChanged(false);
+
+    expect(removeListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    expect((component as any).focusTrapHandler).toBeUndefined();
+  });
+
+  it('componentDidLoad applies modal setup when initially open', () => {
+    const inertSpy = vi.spyOn(component as any, 'applyBackgroundInert');
+    const focusTrapSpy = vi.spyOn(component as any, 'setupFocusTrap');
+    component.open = true;
+    dialogEl.open = false;
+
+    component.componentDidLoad();
+
+    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(inertSpy).toHaveBeenCalled();
+    expect(focusTrapSpy).toHaveBeenCalled();
+  });
 });

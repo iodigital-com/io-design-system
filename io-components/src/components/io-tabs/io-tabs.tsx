@@ -41,10 +41,12 @@ export class IoTabs {
 
   private tabIdPrefix!: string;
 
+  private static instanceCount = 0;
+
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.tabIdPrefix = createTabsIdPrefix(Math.random().toString(36).slice(2));
+    this.tabIdPrefix = createTabsIdPrefix(String(++IoTabs.instanceCount));
     // Default to first enabled tab if activeTab is not set
     if (!this.activeTab && this.tabs.length > 0) {
       const firstEnabled = getFirstEnabledTabValue(this.tabs);
@@ -100,7 +102,7 @@ export class IoTabs {
         <div class="tablist" role="tablist">
           {tabs.map((tab, index) => {
             const isActive = tab.value === activeTab;
-            const { tabId, panelId } = getTabIds(tabIdPrefix, tab.value);
+            const { tabId } = getTabIds(tabIdPrefix, tab.value);
 
             return (
               <button
@@ -109,7 +111,7 @@ export class IoTabs {
                 class={getTabClassName(isActive, !!tab.disabled)}
                 role="tab"
                 aria-selected={String(isActive)}
-                aria-controls={panelId}
+                aria-controls={tab.panelId || undefined}
                 aria-disabled={tab.disabled ? 'true' : undefined}
                 tabIndex={isActive ? 0 : -1}
                 disabled={tab.disabled}

@@ -108,6 +108,12 @@ export class IoSelect {
     const { label, name, value, placeholder, options, required, disabled, error, errorMessage, helperText } = this;
     const selectId = this.fieldId;
     const errorId = `${selectId}-error`;
+    const helperId = `${selectId}-helper`;
+
+    const describedBy = [
+      error && errorMessage ? errorId : '',
+      !error && helperText ? helperId : '',
+    ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host>
@@ -120,7 +126,7 @@ export class IoSelect {
             disabled={disabled}
             required={required}
             aria-invalid={error ? 'true' : undefined}
-            aria-describedby={error && errorMessage ? errorId : undefined}
+            aria-describedby={describedBy}
             onChange={this.handleChange}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
@@ -155,7 +161,9 @@ export class IoSelect {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && <p class="select-helper">{helperText}</p>}
+        {!error && helperText && (
+          <p id={helperId} class="select-helper">{helperText}</p>
+        )}
       </Host>
     );
   }

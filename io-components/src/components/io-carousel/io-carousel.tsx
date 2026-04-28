@@ -36,6 +36,9 @@ export class IoCarousel {
   /** Accessible label for the next button */
   @Prop() nextLabel = 'Next';
 
+  /** Accessible label for the carousel region. Required for screen reader context. */
+  @Prop() label = 'Carousel';
+
   /** Number of slides to move per navigation step; use auto for slide-by-slide. */
   @Prop() slidesPerPage: IoCarouselSlidesPerPage = 1;
 
@@ -50,8 +53,7 @@ export class IoCarousel {
 
   // ── State ─────────────────────────────────────────────────────
 
-  @State() private isDragging = false;
-
+  @State() private isDragging = false;  @State() private slideAnnouncement = '';
   // ── Drag helpers ──────────────────────────────────────────────
 
   private startX = 0;
@@ -128,6 +130,8 @@ export class IoCarousel {
     const next = this.clampIndex(index);
     if (next === this.activeSlideIndex) return;
     this.activeSlideIndex = next;
+    // Always announce slide change — AT users need feedback regardless of event emission.
+    this.slideAnnouncement = `Slide ${next + 1} of ${this.totalSlides}`;
     if (emitEvent) {
       this.update.emit({ activeIndex: next, totalSlides: this.totalSlides });
     }
@@ -235,7 +239,7 @@ export class IoCarousel {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { prevLabel, nextLabel, isDragging } = this;
+    const { prevLabel, nextLabel, isDragging, label, slideAnnouncement } = this;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -246,21 +250,28 @@ export class IoCarousel {
     return (
       <Host>
         <style>{getCarouselStyles()}</style>
-        <div class="carousel-wrap">
-          <div
-            class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
-            onMouseDown={this.onMouseDown}
-            onScroll={this.onTrackScroll}
-          >
-            <slot onSlotchange={this.onSlotChange} />
-          </div>
+        <div
+          role="region"
+          aria-label={label}
+          aria-roledescription="carousel"
+        >
+          <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
+          <div class="carousel-wrap">
+            <div
+              class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
+              onMouseDown={this.onMouseDown}
+              onScroll={this.onTrackScroll}
+            >
+              <slot onSlotchange={this.onSlotChange} />
+            </div>
 
-          <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>
-            {arrowSvg}
-          </button>
-          <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
-            {arrowSvg}
-          </button>
+            <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>
+              {arrowSvg}
+            </button>
+            <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
+              {arrowSvg}
+            </button>
+          </div>
         </div>
       </Host>
     );

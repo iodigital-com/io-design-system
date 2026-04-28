@@ -74,7 +74,7 @@ describe('io-tooltip — visibility', () => {
 });
 
 describe('io-tooltip — aria-describedby injection', () => {
-  it('injects aria-describedby on the first slotted child in componentDidLoad', () => {
+  it('injects aria-describedby on the first slotted child pointing to light-DOM desc span', () => {
     const component = new IoTooltip();
     const host = document.createElement('io-tooltip');
     const trigger = document.createElement('button');
@@ -83,6 +83,10 @@ describe('io-tooltip — aria-describedby injection', () => {
     (component as any).componentWillLoad();
     const tooltipId = (component as any).tooltipId as string;
     (component as any).componentDidLoad();
-    expect(trigger.getAttribute('aria-describedby')).toBe(tooltipId);
+    const expectedDescId = `${tooltipId}-desc`;
+    expect(trigger.getAttribute('aria-describedby')).toBe(expectedDescId);
+    // The light-DOM span must exist with the correct id
+    const span = host.querySelector(`#${expectedDescId}`);
+    expect(span).not.toBeNull();
   });
 });

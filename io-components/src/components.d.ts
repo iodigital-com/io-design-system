@@ -182,6 +182,11 @@ export namespace Components {
          */
         "activeSlideIndex": number;
         /**
+          * Accessible label for the carousel region. Required for screen reader context.
+          * @default 'Carousel'
+         */
+        "label": string;
+        /**
           * Accessible label for the next button
           * @default 'Next'
          */
@@ -1476,6 +1481,11 @@ declare namespace LocalJSX {
          */
         "activeSlideIndex"?: number;
         /**
+          * Accessible label for the carousel region. Required for screen reader context.
+          * @default 'Carousel'
+         */
+        "label"?: string;
+        /**
           * Accessible label for the next button
           * @default 'Next'
          */
@@ -2162,6 +2172,7 @@ declare namespace LocalJSX {
     interface IoCarouselAttributes {
         "prevLabel": string;
         "nextLabel": string;
+        "label": string;
         "slidesPerPage": string;
         "rewind": boolean;
         "activeSlideIndex": number;

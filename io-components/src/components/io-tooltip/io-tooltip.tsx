@@ -1,4 +1,4 @@
-import { Component, Prop, Element, Host, State, Listen, h } from '@stencil/core';
+import { Component, Prop, Element, Host, State, Listen, Watch, h } from '@stencil/core';
 import { computePosition } from '@floating-ui/dom';
 import type { IoTooltipPlacement } from './types';
 import { getTooltipStyles } from './io-tooltip-styles';
@@ -25,6 +25,9 @@ export class IoTooltip {
 
   private tooltipEl?: HTMLDivElement;
   private tooltipId!: string;
+  /** Light-DOM hidden span holding tooltip text for aria-describedby */
+  private descSpan?: HTMLSpanElement;
+  private supportsPopover = typeof HTMLElement !== 'undefined' && 'showPopover' in HTMLElement.prototype;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -47,11 +50,30 @@ export class IoTooltip {
   }
 
   componentDidLoad() {
-    // Inject aria-describedby on the first slotted child so assistive
-    // technology announces the tooltip text when the trigger is focused.
-    const trigger = this.el.querySelector(':scope > *');
+    if (this.descSpan) return; // guard: prevent duplicate spans on reconnect
+    // Create a visually-hidden span in the LIGHT DOM so aria-describedby
+    // resolves within the same DOM tree as the slotted trigger element.
+    // (ARIA IDREFs cannot cross shadow DOM boundaries.)
+    const descId = `${this.tooltipId}-desc`;
+    const span = document.createElement('span');
+    span.id = descId;
+    span.setAttribute('aria-hidden', 'true');
+    span.style.cssText =
+      'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
+    span.textContent = this.content;
+    this.el.appendChild(span);
+    this.descSpan = span;
+
+    // Wire aria-describedby on the slotted trigger to the light-DOM span.
+    const trigger = this.el.querySelector(':scope > *:not([id$="-desc"])');
     if (trigger) {
-      trigger.setAttribute('aria-describedby', this.tooltipId);
+      trigger.setAttribute('aria-describedby', descId);
+    }
+
+    // Progressive enhancement: use Popover API for top-layer rendering
+    // so overflow:hidden ancestors cannot clip the tooltip.
+    if (this.supportsPopover && this.tooltipEl) {
+      this.tooltipEl.setAttribute('popover', 'manual');
     }
   }
 
@@ -61,22 +83,47 @@ export class IoTooltip {
   async handleMouseEnter() {
     await this.updatePosition();
     this.visible = true;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).showPopover(); } catch { /* already shown */ }
+    }
   }
 
   @Listen('mouseleave')
   handleMouseLeave() {
     this.visible = false;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).hidePopover(); } catch { /* already hidden */ }
+    }
   }
 
   @Listen('focusin')
   async handleFocusIn() {
     await this.updatePosition();
     this.visible = true;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).showPopover(); } catch { /* already shown */ }
+    }
   }
 
   @Listen('focusout')
   handleFocusOut() {
     this.visible = false;
+    if (this.supportsPopover && this.tooltipEl) {
+      try { (this.tooltipEl as any).hidePopover(); } catch { /* already hidden */ }
+    }
+  }
+
+  disconnectedCallback() {
+    this.descSpan?.remove();
+    this.descSpan = undefined;
+  }
+
+  /** Keep the light-DOM description span in sync when content prop changes. */
+  @Watch('content')
+  onContentChange(newContent: string) {
+    if (this.descSpan) {
+      this.descSpan.textContent = newContent;
+    }
   }
 
   private async updatePosition() {

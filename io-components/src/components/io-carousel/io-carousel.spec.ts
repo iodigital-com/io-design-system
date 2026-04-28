@@ -172,3 +172,67 @@ describe('io-carousel — behavior helpers', () => {
     expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 4 });
   });
 });
+
+describe('io-carousel — Watch suppression (rewind / smooth-scroll integrity)', () => {
+  it('setActiveIndex sets _internalScroll flag before mutating activeSlideIndex', () => {
+    const component = new IoCarousel();
+    (component as any).update = { emit: vi.fn() };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+
+    expect((component as any)._internalScroll).toBe(false);
+    (component as any).setActiveIndex(2, false);
+    // Flag must still be true (Watch hasn't fired yet in unit tests)
+    expect((component as any)._internalScroll).toBe(true);
+    expect(component.activeSlideIndex).toBe(2);
+  });
+
+  it('onActiveSlideIndexChange resets flag and skips scrollToIndex on internal change', () => {
+    const component = new IoCarousel();
+    const scrollToIndexSpy = vi.spyOn(component as any, 'scrollToIndex');
+    (component as any)._internalScroll = true;
+
+    (component as any).onActiveSlideIndexChange(3);
+
+    expect((component as any)._internalScroll).toBe(false);
+    expect(scrollToIndexSpy).not.toHaveBeenCalled();
+  });
+
+  it('onActiveSlideIndexChange calls scrollToIndex for external changes', () => {
+    const component = new IoCarousel();
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollLeft', { value: 0 });
+    (track as any).scrollTo = vi.fn();
+    const slot = document.createElement('slot');
+    (component as any).el = {
+      shadowRoot: {
+        querySelector: vi.fn((sel: string) => {
+          if (sel === '.carousel-track') return track;
+          if (sel === 'slot') return slot;
+          return null;
+        }),
+      },
+    };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 3 });
+    (component as any).getSlideLeft = vi.fn(() => 400);
+    (component as any)._internalScroll = false;
+
+    (component as any).onActiveSlideIndexChange(2);
+
+    expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 400, behavior: 'auto' });
+  });
+
+  it('multiple setActiveIndex calls (mid-scroll) each mark the flag', () => {
+    const component = new IoCarousel();
+    (component as any).update = { emit: vi.fn() };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
+    component.activeSlideIndex = 4;
+
+    (component as any).setActiveIndex(3, true);
+    expect((component as any)._internalScroll).toBe(true);
+    // Simulate Watch consuming flag mid-scroll
+    (component as any)._internalScroll = false;
+
+    (component as any).setActiveIndex(2, true);
+    expect((component as any)._internalScroll).toBe(true);
+  });
+});

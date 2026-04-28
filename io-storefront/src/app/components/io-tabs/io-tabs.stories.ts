@@ -18,6 +18,13 @@ export const tabsStory: Story<'io-tabs'> = {
         { tag: 'button' as const, properties: { type: 'button' }, children: ['Details'] },
         { tag: 'button' as const, properties: { type: 'button' }, children: ['Settings'] },
       ],
+          events: {
+            onUpdate: {
+              target: 'io-tabs',
+              prop: 'activeTabIndex',
+              eventValueKey: 'activeTabIndex',
+            },
+          },
     },
   ],
 };

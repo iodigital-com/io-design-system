@@ -35,7 +35,7 @@ export default function IoCarouselAccessibilityPage() {
         />
         <div className="space-y-3">
           <RuleCard label="region landmark">
-            The outer wrapper renders as <code className="text-xs">{`<div role="region" aria-roledescription="carousel" aria-label="...">`}</code>. The <code className="text-xs">label</code> prop provides the accessible name and is required for screen reader context.
+            The outer wrapper renders as <code className="text-xs">{`<div role="region" aria-roledescription="carousel" aria-label="...">`}</code>. The <code className="text-xs">label</code> prop provides the accessible name and defaults to <code className="text-xs">&quot;Carousel&quot;</code>; override it for clearer context.
           </RuleCard>
           <RuleCard label="Prev button">
             Renders as <code className="text-xs">{`<button aria-label="Previous">`}</code>. Override via the <code className="text-xs">prevLabel</code> prop for localisation.

@@ -172,7 +172,7 @@ export class AppComponent {
 <template>
   <io-tabs
     :active-tab-index="activeTabIndex"
-    @update="e => activeTabIndex = e.detail.activeTabIndex"
+    @update="e => activeTabIndex.value = e.detail.activeTabIndex"
   >
     <button type="button">Overview</button>
     <button type="button">Details</button>

@@ -40,7 +40,7 @@ export default function IoCarouselApiPage() {
               <InlineCode key="name">label</InlineCode>,
               <InlineCode key="type">string</InlineCode>,
               <InlineCode key="default">&apos;Carousel&apos;</InlineCode>,
-              <span key="desc">Accessible label applied to the carousel <InlineCode>role=&quot;region&quot;</InlineCode> via <InlineCode>aria-label</InlineCode>. Required for screen reader context — override to a descriptive value such as <InlineCode>&apos;Product gallery&apos;</InlineCode>.</span>,
+              <span key="desc">Accessible label applied to the carousel <InlineCode>role=&quot;region&quot;</InlineCode> via <InlineCode>aria-label</InlineCode>. Defaults to <InlineCode>&apos;Carousel&apos;</InlineCode>; override to a more descriptive value such as <InlineCode>&apos;Product gallery&apos;</InlineCode> for clearer screen reader context.</span>,
             ],
             [
               <InlineCode key="name">prevLabel</InlineCode>,

@@ -42,7 +42,7 @@ export default function IoPaginationUsagePage() {
             Show all page numbers directly with no ellipsis.
           </RuleCard>
           <RuleCard label="8 or more pages">
-            Show first page, last page, active page ± 1, and ellipsis where there are gaps.
+            Render a stable 7-token window: near start <C>1 2 3 4 5 … last</C>, in the middle <C>1 … current-1 current current+1 … last</C>, and near end <C>1 … last-4 last-3 last-2 last-1 last</C>.
           </RuleCard>
           <RuleCard label="Boundary controls">
             The previous button is disabled on page 1 and the next button is disabled on the last page.

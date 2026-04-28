@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { CopyButton } from '@/components/CopyButton';
 import { ComponentCard } from '@/components/ComponentCard';
+import { WallpaperHero } from '@/components/WallpaperHero';
 import { getComponentItems } from '@/sitemap';
 
 // ── Accent-bar section heading — io Digital signature ─────────────────────────
@@ -148,6 +149,9 @@ const EXPLORE_PATHS = [
 export default function GettingStarted() {
   return (
     <div className="space-y-16">
+
+      {/* ── Wallpaper Hero ───────────────────────────────────────── */}
+      <WallpaperHero />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="space-y-8">

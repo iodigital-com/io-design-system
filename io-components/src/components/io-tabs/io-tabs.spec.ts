@@ -83,6 +83,20 @@ describe('io-tabs — default props', () => {
     expect(component.activeTabIndex).toBe(-1);
   });
 
+  it('reconciles to a valid enabled tab when tabs prop changes at runtime', () => {
+    component.tabs = TABS;
+    component.componentWillLoad();
+
+    component.tabs = [
+      { label: 'Only', value: 'only' },
+      { label: 'Disabled', value: 'disabled', disabled: true },
+    ];
+    (component as any).onTabsChange();
+
+    expect(component.activeTab).toBe('only');
+    expect(component.activeTabIndex).toBe(0);
+  });
+
   it('enables delegatesFocus for the component shadow root', async () => {
     const builtComponent = await import('../../../dist-custom-elements/io-tabs.js');
     expect((builtComponent.IoTabs as { delegatesFocus?: boolean }).delegatesFocus).toBe(true);

@@ -32,6 +32,9 @@ export class IoTabs {
   /** 0-based index of the active tab (controlled like Porsche Tabs Bar). */
   @Prop({ mutable: true, reflect: true }) activeTabIndex = -1;
 
+  /** Optional accessible label for the tablist region. */
+  @Prop() label?: string;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when a tab is activated. Payload is the tab's value. */
@@ -51,7 +54,15 @@ export class IoTabs {
 
   componentWillLoad() {
     this.tabIdPrefix = createTabsIdPrefix(String(++IoTabs.instanceCount));
+    this.reconcileActiveState();
+  }
 
+  @Watch('tabs')
+  onTabsChange() {
+    this.reconcileActiveState();
+  }
+
+  private reconcileActiveState() {
     if (this.tabs.length === 0) {
       this.activeTab = '';
       this.activeTabIndex = -1;
@@ -148,12 +159,12 @@ export class IoTabs {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { tabs, activeTab, tabIdPrefix } = this;
+    const { tabs, activeTab, tabIdPrefix, label } = this;
 
     return (
       <Host>
         <style>{getTabsStyles()}</style>
-        <div class="tablist" role="tablist">
+        <div class="tablist" role="tablist" aria-label={label || undefined}>
           {tabs.map((tab, index) => {
             const isActive = tab.value === activeTab;
             const { tabId } = getTabIds(tabIdPrefix, tab.value);

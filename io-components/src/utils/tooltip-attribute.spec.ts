@@ -44,4 +44,19 @@ describe('tooltip-attribute', () => {
     expect(overlay?.hasAttribute('data-visible')).toBe(false);
     expect(button.hasAttribute('aria-describedby')).toBe(false);
   });
+
+  it('shows on pointerover and hides on Escape', async () => {
+    const button = document.createElement('button');
+    button.setAttribute('io-tooltip', 'Pointer tooltip');
+    document.body.appendChild(button);
+
+    button.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+    await Promise.resolve();
+
+    const overlay = document.getElementById('io-tooltip-attribute-overlay');
+    expect(overlay?.getAttribute('data-visible')).toBe('true');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(overlay?.hasAttribute('data-visible')).toBe(false);
+  });
 });

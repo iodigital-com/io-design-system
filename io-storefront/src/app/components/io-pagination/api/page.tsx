@@ -64,7 +64,7 @@ export default function IoPaginationApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="event">pageChange</InlineCode>,
+              <InlineCode key="event">change</InlineCode>,
               <InlineCode key="detail">{`{ page: number }`}</InlineCode>,
               <span key="description">Fires when the user navigates to a different 1-based page.</span>,
             ],
@@ -78,7 +78,7 @@ export default function IoPaginationApiPage() {
           description="Imperative APIs and slots exposed by io-pagination."
         />
         <EmptyNote>
-          None. io-pagination is fully configured through props and emits pageChange events for integration.
+          None. io-pagination is fully configured through props and emits change events for integration.
         </EmptyNote>
       </section>
 
@@ -93,7 +93,7 @@ export default function IoPaginationApiPage() {
 
 <script>
   document.querySelector('io-pagination')
-    .addEventListener('pageChange', (e) => {
+    .addEventListener('change', (e) => {
       console.log('Page:', e.detail.page);
     });
 </script>`}
@@ -110,8 +110,8 @@ function App() {
     if (!el) return;
     const handler = (e: Event) =>
       setPage((e as CustomEvent<{ page: number }>).detail.page);
-    el.addEventListener('pageChange', handler);
-    return () => el.removeEventListener('pageChange', handler);
+    el.addEventListener('change', handler);
+    return () => el.removeEventListener('change', handler);
   }, []);
 
   return <io-pagination ref={paginationRef} page={page} total-pages={10} />;
@@ -130,7 +130,7 @@ import { IoPagination } from '@io-digital/components-angular';
     <io-pagination
       [page]="page()"
       [totalPages]="10"
-      (pageChange)="onPageChange($event)"
+      (change)="onPageChange($event)"
     />
   \`,
 })
@@ -147,7 +147,7 @@ export class AppComponent {
   <io-pagination
     :page="page"
     :total-pages="10"
-    @pageChange="onPageChange"
+    @change="onPageChange"
   />
 </template>
 

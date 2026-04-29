@@ -1074,7 +1074,7 @@ declare global {
         new (): HTMLIoModalElement;
     };
     interface HTMLIoPaginationElementEventMap {
-        "pageChange": IoPaginationChangeDetail;
+        "change": IoPaginationChangeDetail;
     }
     /**
      * io-pagination
@@ -1765,7 +1765,7 @@ declare namespace LocalJSX {
         /**
           * Fires when the user navigates to a new page
          */
-        "onPageChange"?: (event: IoPaginationCustomEvent<IoPaginationChangeDetail>) => void;
+        "onChange"?: (event: IoPaginationCustomEvent<IoPaginationChangeDetail>) => void;
         /**
           * Current 1-based active page number
           * @default 1

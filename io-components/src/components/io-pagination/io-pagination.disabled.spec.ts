@@ -8,7 +8,7 @@ describe('io-pagination - boundary guard behavior', () => {
   beforeEach(() => {
     component = new IoPagination();
     emitMock = vi.fn();
-    (component as any).pageChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.totalPages = 5;
     component.page = 1;
   });

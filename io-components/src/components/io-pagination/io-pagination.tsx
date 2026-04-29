@@ -38,7 +38,7 @@ export class IoPagination {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the user navigates to a new page */
-  @Event() pageChange!: EventEmitter<IoPaginationChangeDetail>;
+  @Event() change!: EventEmitter<IoPaginationChangeDetail>;
 
   // ── State ───────────────────────────────────────────────────
 
@@ -105,7 +105,7 @@ export class IoPagination {
     if (!canNavigateToPage(page, this.totalPages, this.page)) return;
     this.page = page;
     this.liveMessage = `Page ${page} of ${this.totalPages}`;
-    this.pageChange.emit({ page });
+    this.change.emit({ page });
   }
 
   // ── Render ───────────────────────────────────────────────────

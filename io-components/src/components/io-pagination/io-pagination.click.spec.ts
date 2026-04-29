@@ -8,12 +8,12 @@ describe('io-pagination - click handling', () => {
   beforeEach(() => {
     component = new IoPagination();
     emitMock = vi.fn();
-    (component as any).pageChange = { emit: emitMock };
+    (component as any).change = { emit: emitMock };
     component.totalPages = 5;
     component.page = 2;
   });
 
-  it('emits pageChange when navigating to a different page', () => {
+  it('emits change when navigating to a different page', () => {
     (component as any).go(3);
 
     expect(component.page).toBe(3);
@@ -21,7 +21,7 @@ describe('io-pagination - click handling', () => {
     expect(emitMock).toHaveBeenCalledWith({ page: 3 });
   });
 
-  it('does not emit pageChange when clicking current page', () => {
+  it('does not emit change when clicking current page', () => {
     (component as any).go(2);
 
     expect(component.page).toBe(2);

@@ -6,7 +6,7 @@ describe('io-pagination — default props', () => {
 
   beforeEach(() => {
     component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
   });
 
   it('defaults to page 1', () => {
@@ -31,7 +31,7 @@ describe('io-pagination — pageRange', () => {
 
   beforeEach(() => {
     component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
   });
 
   it('returns all pages when total <= 7', () => {
@@ -74,12 +74,12 @@ describe('io-pagination — navigation', () => {
   beforeEach(() => {
     component = new IoPagination();
     emitSpy = vi.fn();
-    (component as any).pageChange = { emit: emitSpy };
+    (component as any).change = { emit: emitSpy };
     component.totalPages = 5;
     component.page = 3;
   });
 
-  it('emits pageChange with next page when navigating forward', () => {
+  it('emits change with next page when navigating forward', () => {
     (component as any).go(4);
     expect(emitSpy).toHaveBeenCalledWith({ page: 4 });
     expect(component.page).toBe(4);
@@ -101,7 +101,7 @@ describe('io-pagination — navigation', () => {
 describe('io-pagination — accessibility rendering', () => {
   it('keeps active page state and semantic labels normalized for accessible rendering', () => {
     const component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
     component.page = 2;
     component.totalPages = 5;
     component.componentWillLoad();
@@ -116,7 +116,7 @@ describe('io-pagination — accessibility rendering', () => {
 
   it('preserves configurable previous and next button labels', () => {
     const component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
     component.prevLabel = 'Go to previous page';
     component.nextLabel = 'Go to next page';
     component.componentWillLoad();
@@ -129,7 +129,7 @@ describe('io-pagination — accessibility rendering', () => {
 describe('io-pagination — invalid prop guards', () => {
   it('normalizes invalid totalPages and page values on load', () => {
     const component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
     component.totalPages = 0;
     component.page = -3;
 
@@ -141,7 +141,7 @@ describe('io-pagination — invalid prop guards', () => {
 
   it('clamps page when totalPages shrinks below current page', () => {
     const component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
     component.totalPages = 10;
     component.page = 8;
     component.componentWillLoad();
@@ -154,7 +154,7 @@ describe('io-pagination — invalid prop guards', () => {
 
   it('updates live message for external page changes', () => {
     const component = new IoPagination();
-    (component as any).pageChange = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
     component.totalPages = 8;
 
     (component as any).onPageChange(4);

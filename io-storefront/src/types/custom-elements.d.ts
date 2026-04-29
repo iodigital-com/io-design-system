@@ -121,7 +121,7 @@ declare module 'react' {
           'prev-label'?: string;
           /** aria-label for next page button */
           'next-label'?: string;
-          onPageChange?: (ev: CustomEvent<{ page: number }>) => void;
+          onChange?: (ev: CustomEvent<{ page: number }>) => void;
         },
         HTMLElement
       >;

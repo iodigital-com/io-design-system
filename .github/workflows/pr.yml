@@ -153,11 +153,8 @@ jobs:
       - name: Build components
         run: npm run build:components
 
-      - name: Check size budgets and comment on PR
-        uses: andresz1/size-limit-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          script: npm run size
+      - name: Check size budgets
+        run: npm run size
 
   # ──────────────────────────────────────────────────────────────────────────
   # 5. TypeScript (storefront)

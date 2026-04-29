@@ -92,7 +92,11 @@ function TabsWithPanels() {
           </button>
         ))}
       </io-tabs>
-      {panels[activeTabIndex]}
+      {panels.map((panel, index) => (
+        <div key={panelIds[index]} hidden={index !== activeTabIndex}>
+          {panel}
+        </div>
+      ))}
     </div>
   );
 }

@@ -15,15 +15,18 @@ import { ComponentStory } from '@/components/playground/ComponentStory';
 
 function TabsWithPanels() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const tabsRef = useRef<HTMLElement & { activeTabIndex?: number }>(null);
+  const tabsRef = useRef<HTMLIoTabsElement | null>(null);
 
   const tabs = ['Overview', 'Details', 'Settings'];
+  const tabIds = tabs.map((_, index) => `tabs-demo-tab-${index}`);
+  const panelIds = tabs.map((_, index) => `tabs-demo-panel-${index}`);
 
   const panels: React.ReactNode[] = [
     <div
       key="overview"
+      id={panelIds[0]}
       role="tabpanel"
-      aria-label="Overview"
+      aria-labelledby={tabIds[0]}
       className="p-5 rounded-lg"
       style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
     >
@@ -35,8 +38,9 @@ function TabsWithPanels() {
     </div>,
     <div
       key="details"
+      id={panelIds[1]}
       role="tabpanel"
-      aria-label="Details"
+      aria-labelledby={tabIds[1]}
       className="p-5 rounded-lg"
       style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
     >
@@ -48,8 +52,9 @@ function TabsWithPanels() {
     </div>,
     <div
       key="settings"
+      id={panelIds[2]}
       role="tabpanel"
-      aria-label="Settings"
+      aria-labelledby={tabIds[2]}
       className="p-5 rounded-lg"
       style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
     >
@@ -76,8 +81,15 @@ function TabsWithPanels() {
     <div className="space-y-4">
       { }
       <io-tabs ref={tabsRef} active-tab-index={activeTabIndex}>
-        {tabs.map(label => (
-          <button key={label} type="button">{label}</button>
+        {tabs.map((label, index) => (
+          <button
+            key={label}
+            id={tabIds[index]}
+            type="button"
+            aria-controls={panelIds[index]}
+          >
+            {label}
+          </button>
         ))}
       </io-tabs>
       {panels[activeTabIndex]}

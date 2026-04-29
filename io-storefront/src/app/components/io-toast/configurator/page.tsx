@@ -11,7 +11,7 @@ import { ConfiguratorControls } from '@/components/playground/ConfiguratorContro
 import { Playground } from '@/components/playground/Playground';
 
 export default function IoToastConfiguratorPage() {
-  const toastRef = useRef<HTMLElement | null>(null);
+  const toastRef = useRef<HTMLIoToastElement | null>(null);
   const [storyState, setStoryState] = useState<StoryState<HTMLTagOrComponent>>({
     properties: { text: 'Notification message.', variant: 'neutral' },
   });
@@ -69,7 +69,7 @@ export class AppComponent {
 
 <script setup lang="ts">
 import { ref } from 'vue';
-const toast = ref<HTMLElement | null>(null);
+const toast = ref<HTMLIoToastElement | null>(null);
 const showToast = () => (toast.value as any)?.addToast({ text: '${text}', variant: '${variant}' });
 </script>`,
   };

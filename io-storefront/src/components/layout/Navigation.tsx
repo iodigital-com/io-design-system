@@ -10,12 +10,12 @@ import { sitemap } from '@/sitemap';
 const SIDEBAR_EXPANDED_SECTIONS_KEY = 'io-sidebar-expanded-sections';
 
 const SECTION_PRIORITY: Record<string, number> = {
-  Developing: 1,
-  Components: 2,
-  Styles: 3,
-  Designing: 4,
-  Help: 5,
-  News: 6,
+  News: 1,
+  Developing: 2,
+  Components: 3,
+  Styles: 4,
+  Designing: 5,
+  Help: 6,
 };
 
 const SECTION_ITEM_PRIORITY: Record<string, string[]> = {

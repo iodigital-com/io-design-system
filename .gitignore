@@ -13,6 +13,8 @@ io-components/.stencil/*
 .next/
 out/
 io-storefront/public/stencil/
+io-storefront/.lighthouseci/
+io-storefront/lighthouseci/
 
 # Generated wrapper files (regenerated on every Stencil build)
 io-components-react/src/components.ts

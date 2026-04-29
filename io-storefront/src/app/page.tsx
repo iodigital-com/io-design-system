@@ -65,7 +65,7 @@ const COMPONENT_PREVIEWS: Record<string, ReactNode> = {
   'io-radio': <io-radio label="Option" name="preview" />,
   'io-select': <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
   'io-spinner': <io-spinner size="md" />,
-  'io-tabs': <div className="w-full"><io-tabs tabs={[{id:'a',label:'Tab 1'},{id:'b',label:'Tab 2'}] as unknown} active-tab="a" /></div>,
+  'io-tabs': <div className="w-full"><io-tabs active-tab-index={0}><button type="button">Tab 1</button><button type="button">Tab 2</button></io-tabs></div>,
   'io-tag': <io-tag>Label</io-tag>,
   'io-textarea': <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
   'io-toast': <io-badge variant="blue">Toast</io-badge>,

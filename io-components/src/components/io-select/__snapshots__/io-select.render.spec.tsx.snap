@@ -1,0 +1,88 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`io-select — render snapshots > renders default state 1`] = `
+<io-select class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="select-wrapper">
+      <select id="io-select-4fzzzxjylrx" class="select-field">
+        <option value disabled selected>
+          Choose
+        </option>
+        <option value="nl">
+          Netherlands
+        </option>
+        <option value="be">
+          Belgium
+        </option>
+        <option value="de" disabled>
+          Germany
+        </option>
+      </select>
+      <label for="io-select-4fzzzxjylrx" class="select-label">
+        Country
+      </label>
+      <span class="select-chevron" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    </div>
+  </mock:shadow-root>
+</io-select>
+`;
+
+exports[`io-select — render snapshots > renders disabled state 1`] = `
+<io-select disabled class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="select-wrapper select-wrapper--disabled">
+      <select id="io-select-4fzzzxjylrx" class="select-field" disabled>
+        <option value="nl">
+          Netherlands
+        </option>
+        <option value="be">
+          Belgium
+        </option>
+        <option value="de" disabled>
+          Germany
+        </option>
+      </select>
+      <label for="io-select-4fzzzxjylrx" class="select-label">
+        Country
+      </label>
+      <span class="select-chevron" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    </div>
+  </mock:shadow-root>
+</io-select>
+`;
+
+exports[`io-select — render snapshots > renders selected value state 1`] = `
+<io-select class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="select-wrapper">
+      <select id="io-select-4fzzzxjylrx" class="select-field">
+        <option value="nl">
+          Netherlands
+        </option>
+        <option value="be" selected>
+          Belgium
+        </option>
+        <option value="de" disabled>
+          Germany
+        </option>
+      </select>
+      <label for="io-select-4fzzzxjylrx" class="select-label">
+        Country
+      </label>
+      <span class="select-chevron" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </span>
+    </div>
+  </mock:shadow-root>
+</io-select>
+`;

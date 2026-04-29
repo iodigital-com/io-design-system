@@ -167,6 +167,18 @@ export class IoModal {
     
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
+
+    // Auto-focus first focusable element when modal opens
+    // (browser's showModal may not focus correctly in all cases)
+    if (firstElement && firstElement !== this.dialogEl.ownerDocument?.activeElement) {
+      setTimeout(() => {
+        firstElement.focus();
+      }, 0);
+    }
+
+    if (firstElement === lastElement) {
+      return;
+    }
     
     const handleKeyDown = (ev: KeyboardEvent) => {
       if (ev.key !== 'Tab') return;
@@ -186,14 +198,6 @@ export class IoModal {
     };
     this.focusTrapHandler = handleKeyDown;
     this.dialogEl.addEventListener('keydown', handleKeyDown);
-    
-    // Auto-focus first focusable element when modal opens
-    // (browser's showModal may not focus correctly in all cases)
-    if (firstElement && firstElement !== this.dialogEl.ownerDocument?.activeElement) {
-      setTimeout(() => {
-        firstElement.focus();
-      }, 0);
-    }
   }
 
   private clearFocusTrap() {

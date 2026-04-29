@@ -66,7 +66,7 @@ export class IoTooltip {
   }
 
   private getTrigger(): HTMLElement | undefined {
-    const first = this.el.querySelector(':scope > *');
+    const first = this.el.firstElementChild;
     return first instanceof HTMLElement ? first : undefined;
   }
 

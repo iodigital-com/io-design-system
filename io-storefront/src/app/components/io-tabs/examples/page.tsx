@@ -75,12 +75,12 @@ function TabsWithPanels() {
   return (
     <div className="space-y-4">
       { }
-      {/* @ts-ignore — Stencil web component not in JSX intrinsic elements */}
+      {/* @ts-expect-error — Stencil web component not in JSX intrinsic elements */}
       <io-tabs ref={tabsRef} active-tab-index={activeTabIndex}>
         {tabs.map(label => (
           <button key={label} type="button">{label}</button>
         ))}
-        {/* @ts-ignore — closing tag */}
+        {/* @ts-expect-error — closing tag */}
       </io-tabs>
       {panels[activeTabIndex]}
     </div>

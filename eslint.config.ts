@@ -32,7 +32,6 @@ export default tseslint.config(
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
       'import/order': [
         'warn',
         {
@@ -49,7 +48,9 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
     },
   },
-  // Stencil component TSX files: `h` is the JSX factory — consumed by compiler, not at runtime
+  // Stencil component TSX files: `h` is the JSX factory — consumed by compiler, not at runtime.
+  // jsx-a11y rules are `warn` here to surface issues without blocking PRs during Wave-B a11y remediation.
+  // Wave-B (#213) will upgrade these to `error` once existing violations are fixed.
   {
     files: ['io-components/src/components/**/*.tsx'],
     plugins: {
@@ -58,13 +59,25 @@ export default tseslint.config(
     rules: {
       ...jsxA11yRecommendedWarn,
       '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^h$' }],
+      // Ban console.log/debug/info (debug spam); allow console.warn/error for diagnostic messaging
+      'no-console': ['error', { allow: ['warn', 'error'] }],
     },
   },
-  // Test/spec files: `any` is often necessary for mocking; relax the strict rule
+  // Component source .ts files (non-TSX): enforce no-console
+  {
+    files: ['io-components/src/**/*.ts'],
+    ignores: ['**/*.spec.ts', '**/*.test.ts'],
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
+  },
+  // Test/spec files: `any` is often necessary for mocking; relax the strict rule.
+  // ban-ts-comment is also relaxed here (test scaffolding may need @ts-ignore in jsdom context).
   {
     files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
   {

@@ -31,7 +31,6 @@ const path = require('path');
 
 const ROOT      = path.resolve(__dirname, '..');
 const BASELINE  = path.join(ROOT, 'docs', 'api-surface.json');
-const SNAPPER   = path.join(ROOT, 'scripts', 'snapshot-api-surface.cjs');
 
 // ---------------------------------------------------------------------------
 // Parse the live types file the same way the snapper does — but return the

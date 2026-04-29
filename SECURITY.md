@@ -33,4 +33,12 @@ If a dependency cannot be upgraded immediately, document an explicit accepted-ri
 - mitigation in place
 - expiry date for re-evaluation
 
-Accepted risk can be tracked via `.nsprc` or `pnpm audit --ignore` with a linked issue and expiry date.
+Accepted risk can be tracked by opening a GitHub issue tagged `security-accepted-risk` that includes:
+- affected advisory/dependency
+- rationale for temporary acceptance
+- mitigation in place
+- expiry date for re-evaluation and a reference to the advisory ID
+
+## Response Timeline
+
+We will acknowledge receipt of a reported vulnerability within **5 business days** and aim to release a patch for critical/high findings within **30 days**. For medium/low findings, remediation will be included in the next scheduled release.

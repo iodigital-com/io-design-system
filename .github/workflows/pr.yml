@@ -75,7 +75,7 @@ jobs:
 
       - name: Check public API for breaking changes
         id: api_check
-        run: node scripts/check-api-surface.cjs --json > /tmp/api-breaks.json; echo "exit_code=$?" >> $GITHUB_OUTPUT
+        run: node scripts/check-api-surface.cjs --json > /tmp/api-breaks.json; echo "exit_code=$?" >> "$GITHUB_OUTPUT"
         # We capture JSON output regardless of exit code, then decide below.
         continue-on-error: true
 
@@ -157,7 +157,7 @@ jobs:
         run: npm run type-check
 
   # ──────────────────────────────────────────────────────────────────────────
-  # 5. Storefront build
+  # 5. Security audit
   # ──────────────────────────────────────────────────────────────────────────
   security-audit:
     name: Security audit

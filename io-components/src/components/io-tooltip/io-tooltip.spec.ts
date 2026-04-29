@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { IoTooltip } from './io-tooltip';
+import { getTooltipStyles } from './io-tooltip-styles';
 
 describe('io-tooltip — default props', () => {
   let component: IoTooltip;
@@ -32,7 +33,6 @@ describe('io-tooltip — default props', () => {
     expect(trigger.getAttribute('io-tooltip-placement')).toBe('bottom');
   });
 });
-
 describe('io-tooltip — wrapper syncing', () => {
   let component: IoTooltip;
   let host: HTMLElement;
@@ -91,5 +91,20 @@ describe('io-tooltip — wrapper syncing', () => {
 
     expect(localTrigger.getAttribute('io-tooltip')).toBe('Original tooltip');
     expect(localTrigger.getAttribute('io-tooltip-placement')).toBe('right');
+
+  });
+});
+
+describe('io-tooltip — overlay transition contract', () => {
+  it('fade transition uses --io-motion-overlay-fade semantic token', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('--io-motion-overlay-fade');
+  });
+
+  it('prefers-reduced-motion guard disables transition', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
+    const rmIdx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
+    expect(styles.slice(rmIdx)).toContain('transition: none');
   });
 });

@@ -321,11 +321,11 @@ export function Canvas({ children }: { children: ReactNode }) {
               aria-label="Navigation panel"
               tabIndex={-1}
               className={[
-                'border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col',
-                isMobileViewport
-                  ? 'fixed left-0 bottom-0 top-[var(--io-header-height)] z-50 w-[min(86vw,var(--io-sidebar-nav-width))] shadow-xl'
-                  : 'w-[var(--io-sidebar-nav-width)] shrink-0',
-              ].join(' ')}
+                  'border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col',
+                  isMobileViewport
+                    ? 'fixed left-0 bottom-0 top-[var(--io-header-height)] z-50 w-[min(86vw,var(--io-sidebar-nav-width))] shadow-xl io-drawer-start'
+                    : 'w-[var(--io-sidebar-nav-width)] shrink-0',
+                ].join(' ')}
             >
             <Navigation />
             </aside>
@@ -357,11 +357,11 @@ export function Canvas({ children }: { children: ReactNode }) {
               aria-label="Properties panel"
               tabIndex={-1}
               className={[
-                'border-[var(--io-border)] bg-[var(--io-bg-raised)] flex flex-col overflow-hidden',
-                isMobileViewport
-                  ? 'fixed left-0 right-0 bottom-0 z-50 max-h-[58vh] border-t shadow-[0_-8px_24px_rgba(0,0,0,0.18)]'
-                  : 'w-[var(--io-sidebar-config-width)] shrink-0 border-l',
-              ].join(' ')}
+                  'border-[var(--io-border)] bg-[var(--io-bg-raised)] flex flex-col overflow-hidden',
+                  isMobileViewport
+                    ? 'fixed left-0 right-0 bottom-0 z-50 max-h-[58vh] border-t shadow-[0_-8px_24px_rgba(0,0,0,0.18)] io-drawer-end-mobile'
+                    : 'w-[var(--io-sidebar-config-width)] shrink-0 border-l io-drawer-end-desktop',
+                ].join(' ')}
             >
               {/* Portal target — ConfiguratorControls renders here via createPortal */}
               <div id="io-sidebar-end" className="flex-1 min-h-0 flex flex-col overflow-hidden" />

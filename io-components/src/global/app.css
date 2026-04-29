@@ -228,6 +228,11 @@
   --io-motion-easing-bounce:     cubic-bezier(0.645, 0.045, 0.355, 1);
   --io-motion-easing-ease-out:   cubic-bezier(0.4, 0, 0.2, 1);
 
+   /* Overlay transition contract — semantic aliases for consistent enter/exit */
+   --io-motion-overlay-enter:     var(--io-motion-base);
+   --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
+   --io-motion-overlay-fade:      var(--io-motion-fast);
+
   /* ============================================================
      7. Z-INDEX SCALE
      ============================================================ */

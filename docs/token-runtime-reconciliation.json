@@ -1336,6 +1336,30 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-motion-overlay-enter",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for modal/overlay enter animation duration. Maps to --io-motion-base."
+    },
+    {
+      "runtimeCssVar": "--io-motion-overlay-easing",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for modal/overlay enter easing. Maps to --io-motion-easing-ease-out."
+    },
+    {
+      "runtimeCssVar": "--io-motion-overlay-fade",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for tooltip/overlay fade transition duration. Maps to --io-motion-fast."
+    },
+    {
       "runtimeCssVar": "--io-motion-easing-bounce",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

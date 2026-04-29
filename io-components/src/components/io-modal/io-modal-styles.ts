@@ -14,7 +14,7 @@ export function getModalStyles(): string {
       overflow-y: auto;
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
-      animation: io-modal-in var(--io-motion-base) var(--io-motion-easing-ease-out) both;
+      animation: io-modal-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
     dialog[open] {
@@ -25,7 +25,7 @@ export function getModalStyles(): string {
     dialog::backdrop {
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
-      animation: io-backdrop-in var(--io-motion-base) var(--io-motion-easing-ease-out) both;
+      animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }

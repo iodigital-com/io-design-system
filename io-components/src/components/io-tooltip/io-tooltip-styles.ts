@@ -24,8 +24,8 @@ export function getTooltipStyles(): string {
       opacity: 0;
       visibility: hidden;
       transition:
-        opacity var(--io-motion-fast),
-        visibility var(--io-motion-fast);
+        opacity var(--io-motion-overlay-fade),
+        visibility var(--io-motion-overlay-fade);
     }
 
     .tooltip--visible {

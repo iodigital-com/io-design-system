@@ -1,6 +1,6 @@
 'use client';
 
-import { ApiTable, InlineCode, SectionHeader } from '@/components/api/ApiPrimitives';
+import { ApiTable, InlineCode, MutableBadge, ReflectBadge, SectionHeader, CodeNote } from '@/components/api/ApiPrimitives';
 
 export default function IoCarouselApiPage() {
   return (
@@ -31,10 +31,16 @@ export default function IoCarouselApiPage() {
               <span key="desc">When true, next from last rewinds to first and prev from first rewinds to last.</span>,
             ],
             [
-              <InlineCode key="name">activeSlideIndex</InlineCode>,
+              <span key="name"><InlineCode>activeSlideIndex</InlineCode><MutableBadge /><ReflectBadge /></span>,
               <InlineCode key="type">number</InlineCode>,
               <InlineCode key="default">0</InlineCode>,
-              <span key="desc">Zero-based active slide index. Can be controlled externally.</span>,
+              <span key="desc">Zero-based active slide index. Mutable — updated internally on navigation and drag-scroll. Reflected to the <InlineCode>active-slide-index</InlineCode> attribute.</span>,
+            ],
+            [
+              <InlineCode key="name">label</InlineCode>,
+              <InlineCode key="type">string</InlineCode>,
+              <InlineCode key="default">&apos;Carousel&apos;</InlineCode>,
+              <span key="desc">Accessible label applied to the carousel <InlineCode>role=&quot;region&quot;</InlineCode> via <InlineCode>aria-label</InlineCode>. Defaults to <InlineCode>&apos;Carousel&apos;</InlineCode>; override to a more descriptive value such as <InlineCode>&apos;Product gallery&apos;</InlineCode> for clearer screen reader context.</span>,
             ],
             [
               <InlineCode key="name">prevLabel</InlineCode>,
@@ -130,6 +136,101 @@ export default function IoCarouselApiPage() {
             ],
           ]}
         />
+      </section>
+
+      {/* ── Code examples ─────────────────────────────────────────────────── */}
+      <section id="code-examples" className="space-y-4">
+        <SectionHeader
+          title="Code examples"
+          description="Framework integration snippets for io-carousel. Always provide a descriptive label prop for screen reader context."
+        />
+        <CodeNote label="HTML">
+{`<io-carousel label="Product gallery" slides-per-page="2">
+  <div class="slide">Slide 1</div>
+  <div class="slide">Slide 2</div>
+  <div class="slide">Slide 3</div>
+</io-carousel>
+
+<script>
+  document.querySelector('io-carousel')
+    .addEventListener('update', (e) => {
+      console.log('Active slide:', e.detail.activeIndex);
+    });
+</script>`}
+        </CodeNote>
+        <CodeNote label="React">
+{`import { useCallback, useRef } from 'react';
+
+function ProductGallery() {
+  const carouselRef = useRef<HTMLElement>(null);
+
+  const handleUpdate = useCallback(
+    (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
+      console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+    },
+    [],
+  );
+
+  return (
+    <io-carousel
+      ref={carouselRef}
+      label="Product gallery"
+      slides-per-page={2}
+      onUpdate={handleUpdate}
+    >
+      <div className="slide">Slide 1</div>
+      <div className="slide">Slide 2</div>
+      <div className="slide">Slide 3</div>
+    </io-carousel>
+  );
+}`}
+        </CodeNote>
+        <CodeNote label="Angular">
+{`import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IoCarousel } from '@io-digital/components-angular';
+
+@Component({
+  selector: 'app-product-gallery',
+  standalone: true,
+  imports: [IoCarousel],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <io-carousel
+      label="Product gallery"
+      [slidesPerPage]="2"
+      (update)="onUpdate($event)"
+    >
+      <div class="slide">Slide 1</div>
+      <div class="slide">Slide 2</div>
+      <div class="slide">Slide 3</div>
+    </io-carousel>
+  \`,
+})
+export class ProductGalleryComponent {
+  onUpdate(e: CustomEvent<{ activeIndex: number; totalSlides: number }>) {
+    console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+  }
+}`}
+        </CodeNote>
+        <CodeNote label="Vue">
+{`<template>
+  <io-carousel
+    label="Product gallery"
+    :slides-per-page="2"
+    @update="onUpdate"
+  >
+    <div class="slide">Slide 1</div>
+    <div class="slide">Slide 2</div>
+    <div class="slide">Slide 3</div>
+  </io-carousel>
+</template>
+
+<script setup lang="ts">
+const onUpdate = (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
+  console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+};
+</script>`}
+        </CodeNote>
       </section>
     </div>
   );

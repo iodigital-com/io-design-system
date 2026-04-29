@@ -31,17 +31,20 @@ export default function IoCarouselAccessibilityPage() {
       <section id="aria" className="space-y-6">
         <SectionHeader
           title="ARIA"
-          description="Prev/Next buttons use aria-label for accessible names. No ARIA live region is used because scrolling is user-initiated."
+          description="Carousel uses a landmark region, accessible names on all controls, and a polite live region that announces slide position to screen reader users."
         />
         <div className="space-y-3">
+          <RuleCard label="region landmark">
+            The outer wrapper renders as <code className="text-xs">{`<div role="region" aria-roledescription="carousel" aria-label="...">`}</code>. The <code className="text-xs">label</code> prop provides the accessible name and defaults to <code className="text-xs">&quot;Carousel&quot;</code>; override it for clearer context.
+          </RuleCard>
           <RuleCard label="Prev button">
             Renders as <code className="text-xs">{`<button aria-label="Previous">`}</code>. Override via the <code className="text-xs">prevLabel</code> prop for localisation.
           </RuleCard>
           <RuleCard label="Next button">
             Renders as <code className="text-xs">{`<button aria-label="Next">`}</code>. Override via the <code className="text-xs">nextLabel</code> prop for localisation.
           </RuleCard>
-          <RuleCard label="No live region">
-            Scroll position changes do not trigger screen reader announcements. This is appropriate for user-controlled horizontal scrolling.
+          <RuleCard label="aria-live slide announcement">
+            A visually hidden <code className="text-xs">{`<span aria-live="polite" aria-atomic="true">`}</code> announces <em>"Slide N of M"</em> whenever the active slide changes. Assistive technology users receive position feedback without interrupting ongoing speech.
           </RuleCard>
         </div>
       </section>

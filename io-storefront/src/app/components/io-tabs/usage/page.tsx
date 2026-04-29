@@ -30,7 +30,7 @@ export default function IoTabsUsagePage() {
               &ldquo;Members&rdquo;. Labels should describe the content, not the action.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Always set an initial <C>activeTab</C> so the correct panel is visible on first render.
+              Always set an initial <C>activeTabIndex</C> so the correct panel is visible on first render.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -59,13 +59,13 @@ export default function IoTabsUsagePage() {
       <section id="panel-content" className="space-y-6">
         <SectionHeader
           title="Panel content management"
-          description="io-tabs does not render panel content. The component is a pure navigation control — consumers are responsible for rendering and showing the correct panel based on the active tab value."
+          description="io-tabs does not render panel content. The component is a pure navigation control — consumers are responsible for rendering and showing the correct panel based on the active tab index."
         />
         <div className="space-y-3">
-          <RuleCard label="Listen for change to update the active view">
-            Register an event listener on the <C>change</C> event. The event detail is the{' '}
-            <C>value</C> string of the newly activated tab. Update your application state accordingly
-            and conditionally render the matching panel.
+          <RuleCard label="Listen for update to switch the active view">
+            Register an event listener on the <C>update</C> event. The event detail is{' '}
+            <C>{'{ activeTabIndex: number }'}</C>. Update your application state accordingly
+            and conditionally render the matching panel by index.
           </RuleCard>
           <RuleCard label="Apply role=&quot;tabpanel&quot; to each panel element">
             Each panel element must carry <C>role=&quot;tabpanel&quot;</C>. When using the recommended
@@ -89,24 +89,21 @@ export default function IoTabsUsagePage() {
       <section id="configuring-tabs" className="space-y-6">
         <SectionHeader
           title="Configuring tabs"
-          description="The tabs prop accepts an array of IoTabItem objects. Each item describes one tab button."
+          description="Place one &lt;button type=&quot;button&quot;&gt; element per tab directly inside io-tabs. The component manages role, aria-selected, and tabindex automatically."
         />
         <div className="space-y-3">
-          <RuleCard label="label — the visible tab name">
-            The <C>label</C> field is the text displayed on the tab button. It also serves as the
-            accessible name for <C>role=&quot;tab&quot;</C>. Keep labels short and descriptive — one to
-            three words is ideal.
+          <RuleCard label="Button text — the visible tab name">
+            The text content of each <C>&lt;button&gt;</C> is the label displayed on the tab. It also
+            serves as the accessible name for <C>role=&quot;tab&quot;</C>. Keep labels short and
+            descriptive — one to three words is ideal.
           </RuleCard>
-          <RuleCard label="value — the unique identifier">
-            The <C>value</C> field is the string emitted in the <C>change</C> event detail and
-            compared against <C>activeTab</C> to determine which tab is selected. Values must be
-            unique within the tabs array.
+          <RuleCard label="Tab order follows DOM order">
+            The visual and keyboard order of tabs matches the DOM order of the slotted{' '}
+            <C>&lt;button&gt;</C> elements. Reorder the buttons in your template to reorder the tabs.
           </RuleCard>
           <RuleCard label="disabled — per-tab availability">
-            Set <C>disabled: true</C> on an individual <C>IoTabItem</C> to prevent that tab from
-            being activated. Disabled tabs remain focusable during keyboard navigation (roving
-            tabindex skips them for activation, but they are still reachable). There is no
-            top-level disabled prop — disable tabs individually via the array.
+            Add the HTML <C>disabled</C> attribute to a <C>&lt;button&gt;</C> to prevent that tab
+            from being activated. Disabled tabs are skipped during keyboard navigation.
           </RuleCard>
         </div>
       </section>

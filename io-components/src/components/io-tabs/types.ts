@@ -1,5 +1,4 @@
-export interface IoTabItem {
-  label: string;
-  value: string;
-  disabled?: boolean;
+export interface IoTabsUpdateDetail {
+  /** The 0-based index of the newly activated tab. */
+  activeTabIndex: number;
 }

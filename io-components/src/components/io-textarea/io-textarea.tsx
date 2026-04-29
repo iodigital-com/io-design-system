@@ -137,6 +137,12 @@ export class IoTextarea {
     const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, rows, autocomplete, resize } = this;
     const textareaId = this.fieldId;
     const errorId = `${textareaId}-error`;
+    const helperId = `${textareaId}-helper`;
+
+    const describedBy = [
+      error && errorMessage ? errorId : '',
+      !error && helperText ? helperId : '',
+    ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host>
@@ -154,7 +160,7 @@ export class IoTextarea {
             rows={rows}
             autocomplete={autocomplete}
             aria-invalid={error ? 'true' : undefined}
-            aria-describedby={error && errorMessage ? errorId : undefined}
+            aria-describedby={describedBy}
             onInput={this.handleInput}
             onChange={this.handleChange}
             onFocus={this.handleFocus}
@@ -174,7 +180,9 @@ export class IoTextarea {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && <p class="textarea-helper">{helperText}</p>}
+        {!error && helperText && (
+          <p id={helperId} class="textarea-helper">{helperText}</p>
+        )}
       </Host>
     );
   }

@@ -12,13 +12,13 @@ export default function IoTooltipAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="io-tooltip does not add keyboard behaviour of its own. The tooltip appears and disappears based on the focus state of the slotted trigger element."
+          description="Tooltip attributes do not change trigger keyboard behaviour. The tooltip appears and disappears based on the focus state of the annotated trigger element."
         />
         <KeyboardTable
           rows={[
             {
               key: <Kbd>Tab</Kbd>,
-              action: 'Moves focus to the trigger element inside io-tooltip. The tooltip panel becomes visible as focus enters the trigger.',
+              action: 'Moves focus to a trigger element carrying io-tooltip. The tooltip panel becomes visible as focus enters the trigger.',
             },
             {
               key: (
@@ -62,9 +62,9 @@ export default function IoTooltipAccessibilityPage() {
             {
               attribute: 'aria-describedby',
               value: (
-                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Auto-injected on trigger</span>
+                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Auto-managed on [io-tooltip] trigger</span>
               ),
-              description: 'Injected automatically onto the first slotted child element in componentDidLoad. The value is the ID of the floating tooltip panel. This creates the association that causes screen readers to read the tooltip content when the trigger receives focus.',
+              description: 'Managed automatically by the global tooltip engine. The value references the overlay ID and enables screen readers to read tooltip text when trigger focus enters.',
             },
             {
               attribute: 'tabindex',
@@ -126,7 +126,7 @@ export default function IoTooltipAccessibilityPage() {
       <section id="best-practices" className="space-y-4">
         <SectionHeader
           title="Best practices"
-          description="Guidelines for building accessible experiences with io-tooltip."
+          description="Guidelines for building accessible experiences with attribute-driven tooltips."
         />
         <RuleCard label="Keep tooltip content concise">
           The tooltip content is read by screen readers as a description when the trigger is focused. Long sentences or multiple pieces of information create a poor screen reader experience. Aim for a single short phrase or sentence.

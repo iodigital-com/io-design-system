@@ -151,4 +151,14 @@ describe('io-pagination — invalid prop guards', () => {
 
     expect(component.page).toBe(3);
   });
+
+  it('updates live message for external page changes', () => {
+    const component = new IoPagination();
+    (component as any).pageChange = { emit: vi.fn() };
+    component.totalPages = 8;
+
+    (component as any).onPageChange(4);
+
+    expect((component as any).liveMessage).toBe('Page 4 of 8');
+  });
 });

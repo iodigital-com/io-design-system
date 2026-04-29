@@ -45,7 +45,7 @@ export default function IoCarouselUsagePage() {
         />
         <div className="space-y-3">
           <RuleCard label="Prev / Next buttons">
-            Circular arrow buttons scroll the track by one child-element width plus gap. Buttons remain available at all scroll positions.
+            Circular arrow buttons attempt to scroll to the computed target slide boundary using the current <C>slidesPerPage</C> step (with <C>auto</C> mapped to step size 1). If no distinct target boundary is available, the component falls back to smooth scrolling by roughly 90% of the track width (minimum 120px).
           </RuleCard>
           <RuleCard label="Drag to scroll">
             On pointer devices, users can click and drag the track to scroll freely. The cursor changes to <C>grabbing</C> during drag.

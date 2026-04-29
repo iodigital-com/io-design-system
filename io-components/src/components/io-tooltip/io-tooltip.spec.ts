@@ -3,11 +3,15 @@ import { IoTooltip } from './io-tooltip';
 
 describe('io-tooltip — default props', () => {
   let component: IoTooltip;
+  let host: HTMLElement;
+  let trigger: HTMLButtonElement;
 
   beforeEach(() => {
     component = new IoTooltip();
-    (component as any).el = document.createElement('io-tooltip');
-    (component as any).componentWillLoad();
+    host = document.createElement('io-tooltip');
+    trigger = document.createElement('button');
+    host.appendChild(trigger);
+    (component as any).el = host;
   });
 
   it('content defaults to empty string', () => {
@@ -18,71 +22,73 @@ describe('io-tooltip — default props', () => {
     expect(component.placement).toBe('top');
   });
 
-  it('is not visible by default', () => {
-    expect((component as any).visible).toBe(false);
-  });
+  it('maps props to trigger attributes on load', () => {
+    component.content = 'Hello';
+    component.placement = 'bottom';
+    component.componentDidLoad();
 
-  it('generates a stable tooltipId in componentWillLoad', () => {
-    const id = (component as any).tooltipId as string;
-    expect(id).toMatch(/^io-tooltip-/);
+    expect(trigger.getAttribute('io-tooltip')).toBe('Hello');
+    expect(trigger.getAttribute('io-tooltip-placement')).toBe('bottom');
   });
 });
 
-describe('io-tooltip — visibility', () => {
+describe('io-tooltip — wrapper syncing', () => {
   let component: IoTooltip;
+  let host: HTMLElement;
+  let trigger: HTMLButtonElement;
 
   beforeEach(() => {
     component = new IoTooltip();
-    (component as any).el = document.createElement('io-tooltip');
-    (component as any).tooltipEl = document.createElement('div');
-    (component as any).componentWillLoad();
-  });
-
-  it('handleMouseLeave sets visible to false', () => {
-    (component as any).visible = true;
-    (component as any).handleMouseLeave();
-    expect((component as any).visible).toBe(false);
-  });
-
-  it('handleFocusOut sets visible to false', () => {
-    (component as any).visible = true;
-    (component as any).handleFocusOut();
-    expect((component as any).visible).toBe(false);
-  });
-
-  it('handleMouseEnter updates position and shows tooltip', async () => {
-    const updatePositionSpy = vi
-      .spyOn(component as any, 'updatePosition')
-      .mockResolvedValue(undefined);
-
-    await (component as any).handleMouseEnter();
-
-    expect(updatePositionSpy).toHaveBeenCalledTimes(1);
-    expect((component as any).visible).toBe(true);
-  });
-
-  it('handleFocusIn updates position and shows tooltip', async () => {
-    const updatePositionSpy = vi
-      .spyOn(component as any, 'updatePosition')
-      .mockResolvedValue(undefined);
-
-    await (component as any).handleFocusIn();
-
-    expect(updatePositionSpy).toHaveBeenCalledTimes(1);
-    expect((component as any).visible).toBe(true);
-  });
-});
-
-describe('io-tooltip — aria-describedby injection', () => {
-  it('injects aria-describedby on the first slotted child in componentDidLoad', () => {
-    const component = new IoTooltip();
-    const host = document.createElement('io-tooltip');
-    const trigger = document.createElement('button');
+    host = document.createElement('io-tooltip');
+    trigger = document.createElement('button');
     host.appendChild(trigger);
     (component as any).el = host;
-    (component as any).componentWillLoad();
-    const tooltipId = (component as any).tooltipId as string;
-    (component as any).componentDidLoad();
-    expect(trigger.getAttribute('aria-describedby')).toBe(tooltipId);
+    component.componentDidLoad();
+  });
+
+  it('updates io-tooltip when content changes', () => {
+    component.content = 'Updated';
+    (component as any).onContentChange();
+
+    expect(trigger.getAttribute('io-tooltip')).toBe('Updated');
+  });
+
+  it('updates io-tooltip-placement when placement changes', () => {
+    component.placement = 'left';
+    (component as any).onPlacementChange();
+
+    expect(trigger.getAttribute('io-tooltip-placement')).toBe('left');
+  });
+
+  it('removes mapped attributes on disconnect', () => {
+    component.content = 'Bye';
+    component.placement = 'right';
+    component.componentDidLoad();
+    component.disconnectedCallback();
+
+    expect(trigger.hasAttribute('io-tooltip')).toBe(false);
+    expect(trigger.hasAttribute('io-tooltip-placement')).toBe(false);
+  });
+
+  it('restores pre-existing trigger tooltip attributes on disconnect', () => {
+    const localComponent = new IoTooltip();
+    const localHost = document.createElement('io-tooltip');
+    const localTrigger = document.createElement('button');
+    localTrigger.setAttribute('io-tooltip', 'Original tooltip');
+    localTrigger.setAttribute('io-tooltip-placement', 'right');
+    localHost.appendChild(localTrigger);
+    (localComponent as any).el = localHost;
+
+    localComponent.content = 'Mapped tooltip';
+    localComponent.placement = 'left';
+    localComponent.componentDidLoad();
+
+    expect(localTrigger.getAttribute('io-tooltip')).toBe('Mapped tooltip');
+    expect(localTrigger.getAttribute('io-tooltip-placement')).toBe('left');
+
+    localComponent.disconnectedCallback();
+
+    expect(localTrigger.getAttribute('io-tooltip')).toBe('Original tooltip');
+    expect(localTrigger.getAttribute('io-tooltip-placement')).toBe('right');
   });
 });

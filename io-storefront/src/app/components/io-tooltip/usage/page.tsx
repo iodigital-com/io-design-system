@@ -12,11 +12,11 @@ export default function IoTooltipUsagePage() {
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
           title="When to use"
-          description="io-tooltip provides supplementary context for interface elements that benefit from a brief explanation. Use it to reduce visual clutter while keeping helpful information discoverable on hover and focus."
+          description="Tooltip attributes provide supplementary context for interface elements that benefit from a brief explanation. Use them to reduce visual clutter while keeping help discoverable on hover and focus."
         />
         <div className="space-y-3">
           <RuleCard label="Icon-only buttons">
-            When a button or action control has no visible text label — for example, a toolbar icon — use a tooltip to communicate what the control does. The tooltip acts as the accessible name supplement, surfaced on hover and keyboard focus.
+            For icon-only controls, always provide an accessible name first (for example via aria-label). Use tooltip text only as supplementary context surfaced on hover and keyboard focus.
           </RuleCard>
           <RuleCard label="Abbreviated or truncated labels">
             When interface constraints force a label to be shortened or clipped, a tooltip can expose the full text. This is common in data tables, breadcrumbs, and navigation items that truncate at a fixed width.
@@ -65,7 +65,7 @@ export default function IoTooltipUsagePage() {
               Let <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>@floating-ui/dom</code> handle placement. Set a preferred <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>placement</code> but rely on the automatic flip and shift behaviour to keep the tooltip within the viewport.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Wrap a focusable element — a button, link, or element with <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>tabindex="0"</code> — in the default slot so that keyboard users can access the tooltip via focus.
+              Apply <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-tooltip</code> on a focusable trigger (button, link, or element with <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>tabindex=&quot;0&quot;</code>) so keyboard users get the same help text on focus.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -77,10 +77,10 @@ export default function IoTooltipUsagePage() {
               Don&apos;t rely on a tooltip alone to convey error states, warnings, or required fields. These must always have a persistent visible indicator in addition to any supplementary tooltip.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Don&apos;t nest io-tooltip inside another tooltip trigger. Overlapping floating elements create unpredictable stacking and positioning behaviour.
+              Don&apos;t stack multiple tooltip attributes on nested trigger elements. Overlapping overlays create unpredictable stacking and positioning behaviour.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Don&apos;t use a tooltip when a title attribute on a native element would suffice for your use case. Reserve io-tooltip for cases where styled, accessible floating labels are needed.
+              Don&apos;t use tooltip attributes when a native <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>title</code> attribute is enough. Reserve the system tooltip for consistent, styled, accessible overlays.
             </DoOrDontCard>
           </div>
         </div>

@@ -125,7 +125,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Pagination',
         href: '/components/io-pagination/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-pagination',
         description: 'Circular page controls with outlined numbers, active page in brand blue, and beige nav arrows.',
         related: ['io-button', 'io-select', 'io-spinner'],

@@ -17,7 +17,7 @@ import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectOption } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-import { IoTabItem } from "./components/io-tabs/types";
+import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -34,7 +34,7 @@ export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectOption } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
-export { IoTabItem } from "./components/io-tabs/types";
+export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
@@ -181,6 +181,11 @@ export namespace Components {
           * @default 0
          */
         "activeSlideIndex": number;
+        /**
+          * Accessible label for the carousel region. Required for screen reader context.
+          * @default 'Carousel'
+         */
+        "label": string;
         /**
           * Accessible label for the next button
           * @default 'Next'
@@ -600,25 +605,28 @@ export namespace Components {
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface IoTabs {
         /**
-          * Value of the currently active tab
-          * @default ''
+          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * @default 0
          */
-        "activeTab": string;
+        "activeTabIndex": number;
         /**
-          * Array of tab definitions
-          * @default []
+          * Optional accessible label for the tablist region.
          */
-        "tabs": IoTabItem[];
+        "label"?: string;
     }
     /**
      * io-tag
@@ -773,12 +781,12 @@ export namespace Components {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -1160,18 +1168,22 @@ declare global {
         new (): HTMLIoSpinnerElement;
     };
     interface HTMLIoTabsElementEventMap {
-        "change": string;
+        "update": IoTabsUpdateDetail;
     }
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface HTMLIoTabsElement extends Components.IoTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTabsElementEventMap>(type: K, listener: (this: HTMLIoTabsElement, ev: IoTabsCustomEvent<HTMLIoTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1292,12 +1304,12 @@ declare global {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface HTMLIoTooltipElement extends Components.IoTooltip, HTMLStencilElement {
@@ -1475,6 +1487,11 @@ declare namespace LocalJSX {
           * @default 0
          */
         "activeSlideIndex"?: number;
+        /**
+          * Accessible label for the carousel region. Required for screen reader context.
+          * @default 'Carousel'
+         */
+        "label"?: string;
         /**
           * Accessible label for the next button
           * @default 'Next'
@@ -1917,29 +1934,32 @@ declare namespace LocalJSX {
     /**
      * io-tabs
      * ========
-     * Accessible tabbed navigation with full keyboard support.
+     * Slot-based controlled tabs-bar navigation with full keyboard support.
+     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-     * @example <io-tabs
-     *   active-tab="overview"
-     *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-     * ></io-tabs>
+     * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+     * @example <io-tabs active-tab-index="0">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs>
      */
     interface IoTabs {
         /**
-          * Value of the currently active tab
-          * @default ''
+          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * @default 0
          */
-        "activeTab"?: string;
+        "activeTabIndex"?: number;
         /**
-          * Fires when a tab is activated. Payload is the tab's value.
+          * Optional accessible label for the tablist region.
          */
-        "onChange"?: (event: IoTabsCustomEvent<string>) => void;
+        "label"?: string;
         /**
-          * Array of tab definitions
-          * @default []
+          * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
-        "tabs"?: IoTabItem[];
+        "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
     }
     /**
      * io-tag
@@ -2114,12 +2134,12 @@ declare namespace LocalJSX {
     /**
      * io-tooltip
      * ===========
-     * Wraps any trigger element via the default slot. Shows a floating tooltip
-     * label on hover and focus. Uses
-     * @floating-ui /dom for viewport-aware
-     * positioning with automatic flip and shift.
+     * Compatibility wrapper around the global [io-tooltip] attribute API.
+     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+     * directly on the trigger element. This wrapper is kept to avoid breaking
+     * existing markup and simply maps props to attributes on the first child.
      * @example <io-tooltip content="More information">
-     * <io-button>Info</io-button>
+     *   <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -2162,6 +2182,7 @@ declare namespace LocalJSX {
     interface IoCarouselAttributes {
         "prevLabel": string;
         "nextLabel": string;
+        "label": string;
         "slidesPerPage": string;
         "rewind": boolean;
         "activeSlideIndex": number;
@@ -2243,7 +2264,8 @@ declare namespace LocalJSX {
         "label": string;
     }
     interface IoTabsAttributes {
-        "activeTab": string;
+        "activeTabIndex": number;
+        "label": string;
     }
     interface IoTagAttributes {
         "selected": boolean;
@@ -2437,13 +2459,17 @@ declare module "@stencil/core" {
             /**
              * io-tabs
              * ========
-             * Accessible tabbed navigation with full keyboard support.
+             * Slot-based controlled tabs-bar navigation with full keyboard support.
+             * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+             * component and control the active tab via activeTabIndex + the update event.
              * Manages roving tabindex (only the active tab is in the tab order).
              * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
-             * @example <io-tabs
-             *   active-tab="overview"
-             *   tabs='[{"label":"Overview","value":"overview"},{"label":"Details","value":"details"}]'
-             * ></io-tabs>
+             * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
+             * @example <io-tabs active-tab-index="0">
+             *   <button type="button">Overview</button>
+             *   <button type="button">Details</button>
+             *   <button type="button" disabled>Settings</button>
+             * </io-tabs>
              */
             "io-tabs": LocalJSX.IntrinsicElements["io-tabs"] & JSXBase.HTMLAttributes<HTMLIoTabsElement>;
             /**
@@ -2494,12 +2520,12 @@ declare module "@stencil/core" {
             /**
              * io-tooltip
              * ===========
-             * Wraps any trigger element via the default slot. Shows a floating tooltip
-             * label on hover and focus. Uses
-             * @floating-ui /dom for viewport-aware
-             * positioning with automatic flip and shift.
+             * Compatibility wrapper around the global [io-tooltip] attribute API.
+             * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
+             * directly on the trigger element. This wrapper is kept to avoid breaking
+             * existing markup and simply maps props to attributes on the first child.
              * @example <io-tooltip content="More information">
-             * <io-button>Info</io-button>
+             *   <io-button>Info</io-button>
              * </io-tooltip>
              */
             "io-tooltip": LocalJSX.IntrinsicElements["io-tooltip"] & JSXBase.HTMLAttributes<HTMLIoTooltipElement>;

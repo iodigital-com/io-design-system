@@ -60,6 +60,11 @@ export default function IoPaginationAccessibilityPage() {
               value: '<button> prev/next at boundaries',
               description: 'Prevents impossible navigation at first and last page.',
             },
+            {
+              attribute: 'aria-live="polite" aria-atomic="true"',
+              value: '<span class="sr-only">',
+              description: 'Announces the new page as "Page N of M" after each navigation. Keeps AT users informed of their position without interrupting speech.',
+            },
           ]}
         />
       </section>

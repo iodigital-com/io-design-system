@@ -24,43 +24,63 @@ export default function IoTabsApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">tabs</InlineCode>,
-              <InlineCode key="t">IoTabItem[]</InlineCode>,
-              <InlineCode key="d">[]</InlineCode>,
-              <span key="desc">
-                Array of tab descriptors. Each item has a required{' '}
-                <InlineCode>label</InlineCode> (display text),{' '}
-                <InlineCode>value</InlineCode> (unique identifier string), and optional{' '}
-                <InlineCode>disabled</InlineCode> (boolean). The order of items determines the
-                visual and keyboard order of the tab buttons.
-              </span>,
-            ],
-            [
               <span key="n">
-                <InlineCode>activeTab</InlineCode>
+                <InlineCode>activeTabIndex</InlineCode>
                 <MutableBadge />
                 <ReflectBadge />
               </span>,
-              <InlineCode key="t">string</InlineCode>,
-              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">0</InlineCode>,
               <span key="desc">
-                The <InlineCode>value</InlineCode> of the currently active tab. Mutable — updated
-                internally when the user activates a tab. Reflected to a host attribute so it can
-                be observed via CSS attribute selectors. Bind to{' '}
-                <InlineCode>change</InlineCode> to keep external state in sync.
+                The 0-based index of the currently active tab. This is the primary controlled-state
+                prop — pass the current index down, and update it in response to the{' '}
+                <InlineCode>update</InlineCode> event. Mutable — updated internally when the user
+                activates a tab. Reflected to the host attribute <InlineCode>active-tab-index</InlineCode>.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">label</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Optional accessible label applied to the internal tablist via{' '}
+                <InlineCode>aria-label</InlineCode>. Recommended when multiple tablists appear on the same page.
               </span>,
             ],
           ]}
         />
-        <CodeNote label="IoTabItem type">
-{`interface IoTabItem {
-  /** Text displayed on the tab button and used as the accessible name. */
-  label: string;
-  /** Unique identifier emitted in the change event detail. */
-  value: string;
-  /** When true, the tab is visually dimmed and cannot be activated. */
-  disabled?: boolean;
-}`}
+      </section>
+
+      {/* ── Slots ────────────────────────────────────────────────────────── */}
+      <section id="slots" className="space-y-4">
+        <SectionHeader
+          title="Slots"
+          description="io-tabs uses a default slot to project tab trigger buttons."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Expected content' },
+          ]}
+          rows={[
+            [
+              <span key="s" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>default</span>,
+              <span key="d">
+                One <InlineCode>{'<button type="button">'}</InlineCode> per tab. The component
+                assigns <InlineCode>role=&quot;tab&quot;</InlineCode>,{' '}
+                <InlineCode>aria-selected</InlineCode>, and <InlineCode>tabindex</InlineCode> to
+                each button automatically. Add the HTML <InlineCode>disabled</InlineCode> attribute
+                to prevent a tab from being activated.
+              </span>,
+            ],
+          ]}
+        />
+        <CodeNote label="HTML">
+{`<io-tabs active-tab-index="0">
+  <button type="button">Overview</button>
+  <button type="button">Details</button>
+  <button type="button" disabled>Settings</button>
+</io-tabs>`}
         </CodeNote>
       </section>
 
@@ -73,38 +93,96 @@ export default function IoTabsApiPage() {
         <ApiTable
           columns={[
             { label: 'Event', width: '160px' },
-            { label: 'Detail type', width: '180px' },
+            { label: 'Detail type', width: '200px' },
             { label: 'Bubbles', width: '100px' },
             { label: 'Description' },
           ]}
           rows={[
             [
-              <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="n">update</InlineCode>,
+              <InlineCode key="t">{'{ activeTabIndex: number }'}</InlineCode>,
               'No',
-              'Fires when the user activates a tab (via click, Enter, or Space). The event detail is the value string of the newly active tab. Use this to update the activeTab prop and render the corresponding panel.',
+              'Fires when the user activates a different tab (via click, Enter, or Space). Update your controlled state with the emitted activeTabIndex.',
             ],
           ]}
         />
         <CodeNote label="Usage">
-{`// Vanilla JS
-document.querySelector('io-tabs')
-  .addEventListener('change', (e) => {
-    console.log('active tab:', e.detail);
-  });
+{`// HTML
+<io-tabs active-tab-index="0">
+  <button type="button">Overview</button>
+  <button type="button">Details</button>
+</io-tabs>
+
+<script>
+  document.querySelector('io-tabs')
+    .addEventListener('update', (e) => {
+      console.log('Active tab:', e.detail.activeTabIndex);
+    });
+</script>
 
 // React
-<IoTabs
-  tabs={tabs}
-  activeTab={activeTab}
-  onChange={(e) => setActiveTab(e.detail)}
-/>
+import { useState, useRef, useEffect } from 'react';
 
-// Angular
-<io-tabs [tabs]="tabs" [activeTab]="activeTab" (change)="onTabChange($event)"></io-tabs>
+function App() {
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const tabsRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    const handler = (e: Event) =>
+      setActiveTabIndex((e as CustomEvent<{ activeTabIndex: number }>).detail.activeTabIndex);
+    el.addEventListener('update', handler);
+    return () => el.removeEventListener('update', handler);
+  }, []);
+
+  return (
+    <io-tabs ref={tabsRef} active-tab-index={activeTabIndex}>
+      <button type="button">Overview</button>
+      <button type="button">Details</button>
+    </io-tabs>
+  );
+}
+
+// Angular (standalone)
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { IoTabs } from '@io-digital/components-angular';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [IoTabs],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`
+    <io-tabs [activeTabIndex]="activeTabIndex()" (update)="onUpdate($event)">
+      <button type="button">Overview</button>
+      <button type="button">Details</button>
+    </io-tabs>
+  \`,
+})
+export class AppComponent {
+  activeTabIndex = signal(0);
+
+  onUpdate(e: CustomEvent<{ activeTabIndex: number }>) {
+    this.activeTabIndex.set(e.detail.activeTabIndex);
+  }
+}
 
 // Vue
-<io-tabs :tabs="tabs" :active-tab="activeTab" @change="handleChange" />`}
+<template>
+  <io-tabs
+    :active-tab-index="activeTabIndex"
+    @update="e => activeTabIndex.value = e.detail.activeTabIndex"
+  >
+    <button type="button">Overview</button>
+    <button type="button">Details</button>
+  </io-tabs>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const activeTabIndex = ref(0);
+</script>`}
         </CodeNote>
       </section>
 
@@ -116,23 +194,8 @@ document.querySelector('io-tabs')
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-tabs exposes no public methods.</strong>
-          {' '}All interactions are driven by prop changes (<InlineCode>tabs</InlineCode>,{' '}
-          <InlineCode>activeTab</InlineCode>) and the <InlineCode>change</InlineCode> event.
-        </EmptyNote>
-      </section>
-
-      {/* ── Slots ────────────────────────────────────────────────────────── */}
-      <section id="slots" className="space-y-4">
-        <SectionHeader
-          title="Slots"
-          description="Content slots available on io-tabs."
-        />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-tabs has no content slots.</strong>
-          {' '}The component renders tab buttons only. Panel content is managed entirely by the
-          consuming application — render each panel as a sibling element with{' '}
-          <InlineCode>role=&quot;tabpanel&quot;</InlineCode> and conditionally show the panel whose
-          value matches <InlineCode>activeTab</InlineCode>.
+          {' '}All interactions are driven by the <InlineCode>activeTabIndex</InlineCode> prop and the{' '}
+          <InlineCode>update</InlineCode> event.
         </EmptyNote>
       </section>
 

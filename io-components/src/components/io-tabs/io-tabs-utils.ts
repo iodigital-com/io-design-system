@@ -1,19 +1,7 @@
-import type { IoTabItem } from './types';
-
-export function createTabsIdPrefix(randomId: string): string {
-  return `io-tabs-${randomId}`;
-}
-
-export function getFirstEnabledTabValue(tabs: IoTabItem[]): string | undefined {
-  return tabs.find(tab => !tab.disabled)?.value;
-}
-
-export function getEnabledTabs(tabs: IoTabItem[]): Array<{ tab: IoTabItem; index: number }> {
-  return tabs
-    .map((tab, index) => ({ tab, index }))
-    .filter(({ tab }) => !tab.disabled);
-}
-
+/**
+ * Returns the next index in the enabled-only list for keyboard navigation,
+ * or null if the key is not a navigation key.
+ */
 export function getNextEnabledIndex(key: string, currentEnabledIndex: number, enabledCount: number): number | null {
   if (enabledCount <= 0) {
     return null;
@@ -35,21 +23,4 @@ export function getNextEnabledIndex(key: string, currentEnabledIndex: number, en
     default:
       return null;
   }
-}
-
-export function getTabIds(prefix: string, value: string): { tabId: string; panelId: string } {
-  return {
-    tabId: `${prefix}-tab-${value}`,
-    panelId: `${prefix}-panel-${value}`,
-  };
-}
-
-export function getTabClassName(isActive: boolean, disabled: boolean): string {
-  return [
-    'tab',
-    isActive ? 'tab--active' : '',
-    disabled ? 'tab--disabled' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
 }

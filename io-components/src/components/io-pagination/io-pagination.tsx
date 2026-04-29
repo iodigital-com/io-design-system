@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch, State } from '@stencil/core';
 import type { IoPaginationChangeDetail } from './types';
 import { getPaginationStyles } from './io-pagination-styles';
 import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
@@ -39,6 +39,11 @@ export class IoPagination {
 
   /** Fires when the user navigates to a new page */
   @Event() pageChange!: EventEmitter<IoPaginationChangeDetail>;
+
+  // ── State ───────────────────────────────────────────────────
+
+  /** Polite announcement for assistive technology when the page changes */
+  @State() private liveMessage = '';
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -83,7 +88,10 @@ export class IoPagination {
     const normalizedPage = this.normalizePage(newValue, this.normalizeTotalPages(this.totalPages));
     if (normalizedPage !== newValue) {
       this.page = normalizedPage;
+      return;
     }
+
+    this.liveMessage = `Page ${normalizedPage} of ${this.totalPages}`;
   }
 
   // ── Private helpers ───────────────────────────────────────────
@@ -96,6 +104,7 @@ export class IoPagination {
   private go(page: number) {
     if (!canNavigateToPage(page, this.totalPages, this.page)) return;
     this.page = page;
+    this.liveMessage = `Page ${page} of ${this.totalPages}`;
     this.pageChange.emit({ page });
   }
 
@@ -120,6 +129,7 @@ export class IoPagination {
     return (
       <Host>
         <style>{getPaginationStyles()}</style>
+        <span aria-live="polite" aria-atomic="true" class="sr-only">{this.liveMessage}</span>
         <nav aria-label="Pagination" id={navId}>
           <div class="pagination">
             <button

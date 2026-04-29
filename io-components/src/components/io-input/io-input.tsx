@@ -80,6 +80,7 @@ export class IoInput {
     return {
       inputId,
       errorId: `${inputId}-error`,
+      helperId: `${inputId}-helper`,
     };
   }
 
@@ -120,7 +121,12 @@ export class IoInput {
 
   render() {
     const { label, type, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, autocomplete } = this;
-    const { inputId, errorId } = this.getInputIds();
+    const { inputId, errorId, helperId } = this.getInputIds();
+
+    const describedBy = [
+      error && errorMessage ? errorId : '',
+      !error && helperText ? helperId : '',
+    ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host>
@@ -138,7 +144,7 @@ export class IoInput {
             maxLength={maxLength}
             autocomplete={autocomplete}
             aria-invalid={error ? 'true' : undefined}
-            aria-describedby={error && errorMessage ? errorId : undefined}
+            aria-describedby={describedBy}
             onInput={this.handleInput}
             onChange={this.handleChange}
             onFocus={this.handleFocus}
@@ -160,7 +166,7 @@ export class IoInput {
           <p id={errorId} class="input-error" role="alert">{errorMessage}</p>
         )}
         {!error && helperText && (
-          <p class="input-helper">{helperText}</p>
+          <p id={helperId} class="input-helper">{helperText}</p>
         )}
       </Host>
     );

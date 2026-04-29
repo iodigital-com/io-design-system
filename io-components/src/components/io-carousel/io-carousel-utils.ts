@@ -13,7 +13,9 @@ export function getCarouselStepSize(slidesPerPage: IoCarouselSlidesPerPage): num
 
 export function clampSlideIndex(index: number, totalSlides: number): number {
   if (totalSlides === 0) return 0;
-  return Math.max(0, Math.min(index, totalSlides - 1));
+  const parsed = Number(index);
+  if (!Number.isFinite(parsed)) return 0;
+  return Math.max(0, Math.min(Math.floor(parsed), totalSlides - 1));
 }
 
 export function getCarouselTargetIndex(

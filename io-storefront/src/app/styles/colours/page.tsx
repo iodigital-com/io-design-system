@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { PageHeader } from '@/components/layout/PageHeader';
+
 import { CodeTabs } from '@/components/CodeTabs';
 import { ColourTokenGrid } from '@/components/ColourTokenGrid';
+import { PageHeader } from '@/components/layout/PageHeader';
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
@@ -41,29 +42,6 @@ function SubsectionTitle({ children }: { children: React.ReactNode }) {
     >
       {children}
     </h3>
-  );
-}
-
-function RuleCard({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div
-      className="flex gap-4 p-5 rounded-lg"
-      style={{ border: '1px solid var(--io-border)', background: 'var(--io-bg-raised)' }}
-    >
-      <span
-        className="block w-1 shrink-0 rounded-full mt-0.5"
-        style={{ background: 'var(--io-accent)', height: '1rem' }}
-        aria-hidden="true"
-      />
-      <div>
-        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--io-text-primary)' }}>
-          {label}
-        </p>
-        <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          {children}
-        </p>
-      </div>
-    </div>
   );
 }
 

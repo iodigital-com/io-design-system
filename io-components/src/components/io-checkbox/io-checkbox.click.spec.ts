@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoCheckbox } from './io-checkbox';
 
 describe('io-checkbox — event behavior', () => {

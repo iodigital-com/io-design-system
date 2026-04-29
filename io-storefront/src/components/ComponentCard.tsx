@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import type { ReactNode } from 'react';
-import { StatusBadge } from '@/components/StatusBadge';
+
 import type { ComponentStatus } from '@/sitemap';
+import type { ReactNode } from 'react';
+
+import { StatusBadge } from '@/components/StatusBadge';
 
 type ComponentCardProps = {
   name: string;

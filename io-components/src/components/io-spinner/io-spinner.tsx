@@ -1,7 +1,9 @@
 import { Component, Prop, Host, h } from '@stencil/core';
-import type { IoSpinnerSize, IoSpinnerColor } from './types';
+
 import { getSpinnerStyles } from './io-spinner-styles';
 import { getSpinnerClassName, normalizeSpinnerLabel } from './io-spinner-utils';
+
+import type { IoSpinnerSize, IoSpinnerColor } from './types';
 
 /**
  * io-spinner

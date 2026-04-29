@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoAccordion } from './io-accordion';
 
 describe('io-accordion — disabled state', () => {

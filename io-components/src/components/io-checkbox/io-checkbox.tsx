@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoCheckboxChangeDetail } from './types';
+
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
+
+import type { IoCheckboxChangeDetail } from './types';
 
 /**
  * io-checkbox

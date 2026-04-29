@@ -1,14 +1,16 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   modalStoryDefault,
   modalStorySm,
   modalStoryLg,
   modalStoryNoHeading,
 } from '../io-modal.stories';
+
+import type { ReactNode } from 'react';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 function Section({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
   return (

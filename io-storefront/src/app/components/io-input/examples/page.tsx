@@ -1,8 +1,9 @@
 'use client';
 
-import { ComponentStory } from '@/components/playground/ComponentStory';
 import { inputStoryDefault, inputStoryError, inputStoryDisabled } from '../io-input.stories';
+
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoInputExamplesPage() {
   return (

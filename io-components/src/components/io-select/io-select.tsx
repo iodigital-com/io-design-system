@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoSelectOption } from './types';
+
 import { getSelectStyles } from './io-select-styles';
 import { resolveSelectId, getSelectWrapperClass } from './io-select-utils';
+
+import type { IoSelectOption } from './types';
 
 /**
  * io-select

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { getNextEnabledIndex } from './io-tabs-utils';
 
 describe('io-tabs-utils — getNextEnabledIndex', () => {

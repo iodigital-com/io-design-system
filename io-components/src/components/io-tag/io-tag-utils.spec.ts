@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
 
 describe('io-tag-utils', () => {

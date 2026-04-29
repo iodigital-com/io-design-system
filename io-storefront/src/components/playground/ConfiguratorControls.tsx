@@ -2,9 +2,11 @@
 
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { createPortal } from 'react-dom';
+
 import type { PropDefinition } from '@/models/propDefinition';
 import type { StoryState } from '@/models/story';
 import type { HTMLTagOrComponent } from '@/utils/generator/generator';
+
 import { useSidebar } from '@/context/SidebarContext';
 
 // ── Types ─────────────────────────────────────────────────────────────────────

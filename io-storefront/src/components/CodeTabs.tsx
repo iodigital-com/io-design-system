@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+
 import { CopyButton } from '@/components/CopyButton';
 
 export type CodeTab = { label: string; code: string; language?: string };

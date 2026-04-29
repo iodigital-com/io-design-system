@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { selectStory, selectPropDefinitions } from '../io-select.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoSelectConfiguratorPage() {
   return (

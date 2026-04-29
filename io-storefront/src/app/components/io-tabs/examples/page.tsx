@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+
 import {
   tabsStoryDefault,
   tabsStoryWithDisabled,
   tabsStoryManyTabs,
 } from '../io-tabs.stories';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 // ── Panel content demo ─────────────────────────────────────────────────────────
 
@@ -72,7 +74,7 @@ function TabsWithPanels() {
 
   return (
     <div className="space-y-4">
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      { }
       {/* @ts-ignore — Stencil web component not in JSX intrinsic elements */}
       <io-tabs ref={tabsRef} active-tab-index={activeTabIndex}>
         {tabs.map(label => (

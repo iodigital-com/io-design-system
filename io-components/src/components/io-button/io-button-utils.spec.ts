@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 
 describe('getButtonAriaAttrs', () => {

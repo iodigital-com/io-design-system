@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { buttonStory, buttonPropDefinitions } from '../io-button.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoButtonConfiguratorPage() {
   return (

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { getSpinnerClassName, normalizeSpinnerLabel } from './io-spinner-utils';
 
 describe('io-spinner-utils', () => {

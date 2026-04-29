@@ -1,7 +1,5 @@
 'use client';
 
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   tooltipStoryTop,
   tooltipStoryBottom,
@@ -9,6 +7,9 @@ import {
   tooltipStoryRight,
   tooltipStoryLong,
 } from '../io-tooltip.stories';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoTooltipExamplesPage() {
   return (

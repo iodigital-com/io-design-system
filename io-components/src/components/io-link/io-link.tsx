@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoLinkVariant, IoLinkColor } from './types';
+
 import { getLinkStyles } from './io-link-styles';
 import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
+
+import type { IoLinkVariant, IoLinkColor } from './types';
 
 /**
  * io-link

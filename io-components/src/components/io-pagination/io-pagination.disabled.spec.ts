@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoPagination } from './io-pagination';
 
 describe('io-pagination - boundary guard behavior', () => {

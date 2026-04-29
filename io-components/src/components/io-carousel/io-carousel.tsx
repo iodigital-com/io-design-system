@@ -1,7 +1,9 @@
 import { Component, Prop, Element, Host, h, State, Listen, Event, EventEmitter, Watch } from '@stencil/core';
+
 import { getCarouselStyles } from './io-carousel-styles';
-import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
 import { clampSlideIndex, getCarouselFallbackDistance, getCarouselStepSize, getCarouselTargetIndex, normalizeSlidesPerPage, shouldUseTargetScroll } from './io-carousel-utils';
+
+import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
 
 /**
  * io-carousel

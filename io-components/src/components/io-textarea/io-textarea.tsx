@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoTextareaResize } from './types';
+
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
+
+import type { IoTextareaResize } from './types';
 
 /**
  * io-textarea

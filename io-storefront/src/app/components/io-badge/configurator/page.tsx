@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { badgeStory, badgePropDefinitions } from '../io-badge.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoBadgeConfiguratorPage() {
   return (

@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
-import type { IoInputType } from './types';
+
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
+
+import type { IoInputType } from './types';
 
 /**
  * io-input

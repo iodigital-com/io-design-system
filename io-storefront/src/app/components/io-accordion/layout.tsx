@@ -1,8 +1,9 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { RelatedComponents } from '@/components/RelatedComponents';
+
 import { PageHeader, type PageTab } from '@/components/layout/PageHeader';
+import { RelatedComponents } from '@/components/RelatedComponents';
 import { getComponentStatusBySlug } from '@/sitemap';
 
 const TABS: PageTab[] = [

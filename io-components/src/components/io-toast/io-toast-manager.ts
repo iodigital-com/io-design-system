@@ -1,5 +1,6 @@
-import type { IoToastMessage, IoToastEntry } from './types';
 import { createToastEntry, hasToastText } from './io-toast-utils';
+
+import type { IoToastMessage, IoToastEntry } from './types';
 
 const DEFAULT_DURATION = 6000;
 /** Gap before showing next queued item — matches slide-out animation duration. */

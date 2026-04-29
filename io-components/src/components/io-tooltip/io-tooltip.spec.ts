@@ -1,4 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+
 import { IoTooltip } from './io-tooltip';
 
 describe('io-tooltip — default props', () => {

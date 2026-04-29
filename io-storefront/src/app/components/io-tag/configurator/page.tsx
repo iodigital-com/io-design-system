@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { tagStory, tagPropDefinitions } from '../io-tag.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoTagConfiguratorPage() {
   return (

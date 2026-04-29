@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { inputStory, inputPropDefinitions } from '../io-input.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoInputConfiguratorPage() {
   return (

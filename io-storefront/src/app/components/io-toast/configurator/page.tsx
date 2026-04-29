@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
-import { Playground } from '@/components/playground/Playground';
-import { ConfiguratorControls } from '@/components/playground/ConfiguratorControls';
+
 import { toastPropDefinitions } from '../io-toast.stories';
+
 import type { StoryState } from '@/models/story';
 import type { HTMLTagOrComponent } from '@/utils/generator/generator';
+
+import { ConfiguratorControls } from '@/components/playground/ConfiguratorControls';
+import { Playground } from '@/components/playground/Playground';
 
 export default function IoToastConfiguratorPage() {
   const toastRef = useRef<HTMLElement | null>(null);

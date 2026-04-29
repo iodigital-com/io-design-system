@@ -1,4 +1,5 @@
 import { Component, Prop, Element, Host, Watch, h } from '@stencil/core';
+
 import type { IoTooltipPlacement } from './types';
 
 const PREV_TOOLTIP_VALUE_ATTR = 'data-io-tooltip-prev-value';

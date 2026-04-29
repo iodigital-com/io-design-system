@@ -1,5 +1,5 @@
-import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
+import type { Story } from '@/models/story';
 
 const DEFAULT_OPTIONS = [
   { label: 'Netherlands', value: 'nl' },

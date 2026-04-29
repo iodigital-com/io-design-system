@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoTabs } from './io-tabs';
 
 function makeButton(label: string, disabled = false): HTMLButtonElement {

@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+
 import type { ReactNode } from 'react';
-import { CopyButton } from '@/components/CopyButton';
+
 import { ComponentCard } from '@/components/ComponentCard';
+import { CopyButton } from '@/components/CopyButton';
 import { WallpaperHero } from '@/components/WallpaperHero';
 import { getComponentItems } from '@/sitemap';
 

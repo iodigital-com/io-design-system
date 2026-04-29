@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { radioStory, radioPropDefinitions } from '../io-radio.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoRadioConfiguratorPage() {
   return (

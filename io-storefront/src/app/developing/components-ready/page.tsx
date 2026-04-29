@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 
 export default function ComponentsReadyPage() {

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoSelect } from './io-select';
 
 describe('io-select — event behavior', () => {

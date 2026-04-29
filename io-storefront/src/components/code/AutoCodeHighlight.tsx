@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 const tryGetExplicitLanguage = (element: HTMLElement): string | undefined => {
   const dataLanguage = element.getAttribute('data-language');

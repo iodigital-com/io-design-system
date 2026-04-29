@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { IoSpinner } from './io-spinner';
 
 describe('io-spinner — disabled behavior (N/A: no disabled state)', () => {

@@ -1,10 +1,12 @@
-import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Manrope } from 'next/font/google';
+import Script from 'next/script';
+
+import type { Metadata } from 'next';
+
+import { AutoCodeHighlight } from '@/components/code/AutoCodeHighlight';
+import { Canvas } from '@/components/layout/Canvas';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { StorefrontThemeProvider } from '@/hooks/useStorefrontTheme';
-import { Canvas } from '@/components/layout/Canvas';
-import { AutoCodeHighlight } from '@/components/code/AutoCodeHighlight';
 import './globals.css';
 
 /**

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoSelect } from './io-select';
 
 describe('io-select — disabled', () => {

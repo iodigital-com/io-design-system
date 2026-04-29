@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { IoInput } from './io-input';
 
 describe('io-input — stable id linkage', () => {

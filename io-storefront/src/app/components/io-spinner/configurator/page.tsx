@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { spinnerStory, spinnerPropDefinitions } from '../io-spinner.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoSpinnerConfiguratorPage() {
   return (

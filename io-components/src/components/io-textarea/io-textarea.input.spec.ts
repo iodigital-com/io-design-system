@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoTextarea } from './io-textarea';
 
 describe('io-textarea — input handling', () => {
@@ -12,6 +13,7 @@ describe('io-textarea — input handling', () => {
     const textarea = document.createElement('textarea');
     textarea.value = value;
     textarea.style.height = '';
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     textarea.scrollHeight;
     const ev = new InputEvent('input');
     Object.defineProperty(ev, 'target', { value: textarea });

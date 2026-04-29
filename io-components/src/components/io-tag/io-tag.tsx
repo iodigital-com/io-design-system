@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
-import type { IoTagSize, IoTagColor } from './types';
+
 import { getTagStyles } from './io-tag-styles';
 import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
+
+import type { IoTagSize, IoTagColor } from './types';
 
 /**
  * io-tag

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoToastItem } from './io-toast-item';
 
 describe('io-toast-item — disabled behavior (N/A: no disabled state)', () => {

@@ -1,8 +1,5 @@
 'use client';
 
-import type { CSSProperties, ReactNode } from 'react';
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   buttonStorySolid,
   buttonStoryGhost,
@@ -11,6 +8,11 @@ import {
   buttonStorySizes,
   buttonStoryStates,
 } from '../io-button.stories';
+
+import type { CSSProperties, ReactNode } from 'react';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 function StageLabel({ children }: { children: ReactNode }) {
   return (

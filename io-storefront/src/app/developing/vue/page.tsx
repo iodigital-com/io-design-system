@@ -1,6 +1,7 @@
 'use client';
 
 import { type ReactNode } from 'react';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 
 function CodeBlock({ children }: { children: string }) {

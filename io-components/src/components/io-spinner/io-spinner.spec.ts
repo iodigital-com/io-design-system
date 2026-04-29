@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { IoSpinner } from './io-spinner';
 
 describe('io-spinner — default props', () => {

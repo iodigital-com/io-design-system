@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { IoToastManagerClass } from './io-toast-manager';
 
 function makeManager() {

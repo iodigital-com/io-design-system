@@ -1,5 +1,5 @@
-import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
 import type { FrameworkCode } from './framework';
+import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
 
 /**
  * Story<Tag> — describes a component demo that can be both rendered (React)
@@ -20,6 +20,7 @@ export type Story<Tag extends HTMLTagOrComponent> = {
 };
 
 /** The mutable state managed by the Configurator. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type StoryState<Tag extends HTMLTagOrComponent> = {
   /** Component properties (JSX key names, real TS types). */
   properties?: Partial<Record<string, unknown>>;

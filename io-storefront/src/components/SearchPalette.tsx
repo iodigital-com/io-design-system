@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
+
 import { sitemap } from '@/sitemap';
 
 type ResultType = 'Components' | 'Design Tokens' | 'Documentation';

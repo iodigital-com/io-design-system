@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { modalStory, modalPropDefinitions } from '../io-modal.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoModalConfiguratorPage() {
   return (

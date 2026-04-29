@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoPagination } from './io-pagination';
 
 describe('io-pagination — default props', () => {

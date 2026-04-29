@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { accordionStory, accordionPropDefinitions } from '../io-accordion.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoAccordionConfiguratorPage() {
   return (

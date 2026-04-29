@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoModal } from './io-modal';
 
 describe('io-modal — click handling', () => {

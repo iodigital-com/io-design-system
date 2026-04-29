@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoTag } from './io-tag';
 
 describe('io-tag — click handling', () => {

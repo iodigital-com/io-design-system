@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { clampSlideIndex, getCarouselFallbackDistance, getCarouselTargetIndex, getCarouselStepSize, normalizeSlidesPerPage, shouldUseTargetScroll } from './io-carousel-utils';
 
 describe('io-carousel-utils', () => {

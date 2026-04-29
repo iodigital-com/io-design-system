@@ -1,13 +1,14 @@
 'use client';
 
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import {
   textareaStoryDefault,
   textareaStoryResize,
   textareaStoryError,
   textareaStoryDisabled,
 } from '../io-textarea.stories';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoTextareaExamplesPage() {
   return (

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
 
 describe('io-pagination-utils', () => {

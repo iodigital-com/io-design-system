@@ -1,0 +1,53 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "groupName": "stencil",
+      "matchPackageNames": [
+        "@stencil/core",
+        "@stencil/react-output-target",
+        "@stencil/vue-output-target",
+        "@stencil/angular-output-target"
+      ]
+    },
+    {
+      "groupName": "nextjs",
+      "matchPackageNames": [
+        "next",
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "description": "Automerge patch updates for dev dependencies",
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Keep Stencil major updates separate for manual review",
+      "matchPackageNames": [
+        "@stencil/core",
+        "@stencil/react-output-target",
+        "@stencil/vue-output-target",
+        "@stencil/angular-output-target"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "separateMajorMinor": true,
+      "automerge": false
+    }
+  ]
+}

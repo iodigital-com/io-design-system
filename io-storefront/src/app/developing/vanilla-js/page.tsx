@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 
 function CodeBlock({ children }: { children: string }) {

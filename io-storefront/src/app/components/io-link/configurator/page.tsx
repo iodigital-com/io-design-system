@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { linkStory, linkPropDefinitions } from '../io-link.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoLinkConfiguratorPage() {
   return (

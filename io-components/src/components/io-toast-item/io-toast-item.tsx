@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Host, h } from '@stencil/core';
-import type { IoToastVariant } from '../io-toast/types';
+
 import { getToastItemStyles } from './io-toast-item-styles';
 import { getToastCloseIcon, getToastVariantIcon } from './io-toast-item-utils';
+
+import type { IoToastVariant } from '../io-toast/types';
 
 /**
  * io-toast-item

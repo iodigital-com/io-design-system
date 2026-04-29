@@ -1,4 +1,5 @@
 import { isValidElement, type ReactNode } from 'react';
+
 import { CopyButton } from '@/components/CopyButton';
 
 function nodeToText(node: ReactNode): string {

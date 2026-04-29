@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
-import type { IoAccordionHeadingTag, IoAccordionUpdateDetail } from './types';
+
 import { getAccordionStyles } from './io-accordion-styles';
 import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
+
+import type { IoAccordionHeadingTag, IoAccordionUpdateDetail } from './types';
 
 /**
  * io-accordion

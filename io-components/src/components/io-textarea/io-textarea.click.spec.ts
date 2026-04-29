@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoTextarea } from './io-textarea';
 
 describe('io-textarea — event behavior', () => {

@@ -1,17 +1,21 @@
 'use client';
 
 import React, { useEffect, useState, type ReactNode } from 'react';
-import { Playground } from './Playground';
+
 import { ConfiguratorControls } from './ConfiguratorControls';
-import { createElements } from '@/utils/generator/generator';
+import { Playground } from './Playground';
+
+import type { FrameworkCode } from '@/models/framework';
+import type { PropDefinition } from '@/models/propDefinition';
+import type { Story, StoryState } from '@/models/story';
+import type { HTMLTagOrComponent } from '@/utils/generator/generator';
+
+import { generateAngularMarkup } from '@/utils/generator/generateAngularMarkup';
 import { generateHtmlMarkup } from '@/utils/generator/generateHtmlMarkup';
 import { generateReactMarkup } from '@/utils/generator/generateReactMarkup';
-import { generateAngularMarkup } from '@/utils/generator/generateAngularMarkup';
 import { generateVueMarkup } from '@/utils/generator/generateVueMarkup';
-import type { HTMLTagOrComponent } from '@/utils/generator/generator';
-import type { Story, StoryState } from '@/models/story';
-import type { PropDefinition } from '@/models/propDefinition';
-import type { FrameworkCode } from '@/models/framework';
+import { createElements } from '@/utils/generator/generator';
+
 
 type ConfiguratorProps = {
   tagName: HTMLTagOrComponent;

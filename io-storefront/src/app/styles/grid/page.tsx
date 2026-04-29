@@ -1,6 +1,7 @@
 import React from 'react';
-import { PageHeader } from '@/components/layout/PageHeader';
+
 import { CodeTabs } from '@/components/CodeTabs';
+import { PageHeader } from '@/components/layout/PageHeader';
 
 // ── Mandatory helpers (Rule 11 — copy verbatim) ───────────────────────────────
 

@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { carouselStory, carouselPropDefinitions } from '../io-carousel.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoCarouselConfiguratorPage() {
   return (

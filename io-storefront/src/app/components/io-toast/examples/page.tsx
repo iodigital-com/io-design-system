@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Playground } from '@/components/playground/Playground';
-import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+
 import type { FrameworkCode } from '@/models/framework';
+
+import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { Playground } from '@/components/playground/Playground';
 
 // ── Framework code ────────────────────────────────────────────────────────────
 

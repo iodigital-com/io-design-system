@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 type SidebarState = {
   isSidebarStartOpen: boolean;

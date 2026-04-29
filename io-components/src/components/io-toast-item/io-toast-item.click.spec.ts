@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoToastItem } from './io-toast-item';
 
 describe('io-toast-item — click behavior', () => {

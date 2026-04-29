@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/iodigital-com/io-design-system/blob/main/docs/api-surface.schema.json",
+  "title": "io Design System — API Surface Snapshot",
+  "description": "Machine-generated public API baseline produced by scripts/snapshot-api-surface.cjs. Used by scripts/check-api-surface.cjs to detect breaking changes across PRs.",
+  "type": "object",
+  "required": ["generated", "components"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference (self-referential)."
+    },
+    "generated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when this snapshot was generated."
+    },
+    "components": {
+      "type": "object",
+      "description": "Map of component tag names (e.g. 'io-button') to their public API definition.",
+      "additionalProperties": {
+        "$ref": "#/definitions/ComponentApi"
+      }
+    }
+  },
+  "definitions": {
+    "ComponentApi": {
+      "type": "object",
+      "required": ["props", "methods", "events"],
+      "additionalProperties": false,
+      "properties": {
+        "props": {
+          "type": "object",
+          "description": "Map of prop name to TypeScript type string.",
+          "additionalProperties": { "type": "string" }
+        },
+        "methods": {
+          "type": "object",
+          "description": "Map of public method name to signature string.",
+          "additionalProperties": { "type": "string" }
+        },
+        "events": {
+          "type": "object",
+          "description": "Map of event name to CustomEvent detail type string.",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    }
+  }
+}

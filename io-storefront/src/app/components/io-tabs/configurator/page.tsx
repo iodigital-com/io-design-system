@@ -1,7 +1,8 @@
 'use client';
 
-import { Configurator } from '@/components/playground/Configurator';
 import { tabsStory, tabsPropDefinitions } from '../io-tabs.stories';
+
+import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoTabsConfiguratorPage() {
   return (

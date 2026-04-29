@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoCarousel } from './io-carousel';
 
 describe('io-carousel - navigation guard behavior (disabled not applicable)', () => {

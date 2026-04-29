@@ -1,12 +1,14 @@
 'use client';
 
-import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
+
 import { Navigation } from './Navigation';
+
+import { SearchPalette } from '@/components/SearchPalette';
 import { useSidebar } from '@/context/SidebarContext';
 import { useStorefrontTheme } from '@/hooks/useStorefrontTheme';
-import { SearchPalette } from '@/components/SearchPalette';
 
 const THEMES = ['light', 'dark', 'auto'] as const;
 

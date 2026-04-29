@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch, State } from '@stencil/core';
-import type { IoPaginationChangeDetail } from './types';
+
 import { getPaginationStyles } from './io-pagination-styles';
 import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
+
+import type { IoPaginationChangeDetail } from './types';
 
 /**
  * io-pagination

@@ -1,6 +1,6 @@
-import type { Story } from '@/models/story';
-import type { PropDefinition } from '@/models/propDefinition';
 import type { FrameworkCode } from '@/models/framework';
+import type { PropDefinition } from '@/models/propDefinition';
+import type { Story } from '@/models/story';
 
 export const accordionSingleOpenCode: FrameworkCode = {
   html: `<div class="accordion-group" data-accordion-group>

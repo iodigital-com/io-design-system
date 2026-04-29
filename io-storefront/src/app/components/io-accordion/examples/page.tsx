@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ComponentStory } from '@/components/playground/ComponentStory';
-import { Playground } from '@/components/playground/Playground';
+
 import {
   accordionSingleOpenCode,
   accordionStory,
@@ -10,7 +9,10 @@ import {
   accordionStoryOpen,
   accordionStorySlottedHeading,
 } from '../io-accordion.stories';
+
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { ComponentStory } from '@/components/playground/ComponentStory';
+import { Playground } from '@/components/playground/Playground';
 
 const singleOpenItems = [
   { id: 'audits', heading: 'Audits & research', content: 'Making targeted, data-driven decisions starts with clear, reliable data.' },

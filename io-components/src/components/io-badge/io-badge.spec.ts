@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { IoBadge } from './io-badge';
 import { getBadgeClassName } from './io-badge-utils';
 

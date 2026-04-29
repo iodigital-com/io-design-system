@@ -1,5 +1,5 @@
-import type { Story } from '@/models/story';
 import type { PropDefinition } from '@/models/propDefinition';
+import type { Story } from '@/models/story';
 
 export const textareaStory: Story<'io-textarea'> = {
   state: {

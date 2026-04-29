@@ -1,8 +1,10 @@
 import { Component, Element, State, Method, Host, h } from '@stencil/core';
-import type { IoToastMessage, IoToastEntry } from './types';
+
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';
 import { getToastItemVariant } from './io-toast-utils';
+
+import type { IoToastMessage, IoToastEntry } from './types';
 
 /**
  * io-toast

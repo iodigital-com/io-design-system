@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
-import type { IoModalSize } from './types';
+
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
+
+import type { IoModalSize } from './types';
 
 /**
  * io-modal

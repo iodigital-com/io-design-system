@@ -1,6 +1,8 @@
 import { computePosition } from '@floating-ui/dom';
-import type { IoTooltipPlacement } from '../components/io-tooltip/types';
+
 import { getTooltipMiddleware } from '../components/io-tooltip/io-tooltip-utils';
+
+import type { IoTooltipPlacement } from '../components/io-tooltip/types';
 
 const TOOLTIP_ATTR = 'io-tooltip';
 const TOOLTIP_PLACEMENT_ATTR = 'io-tooltip-placement';

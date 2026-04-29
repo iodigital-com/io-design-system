@@ -75,9 +75,12 @@ Current beta-to-stable recommendations:
 ### Running checks
 
 ```bash
+npm run lint              # ESLint (TypeScript + import order + jsx-a11y on component TSX)
 npm run test              # Vitest unit tests
+npm run type-coverage     # Enforce >=95% type coverage in io-components
 npm run type-check        # TypeScript (storefront)
-npm run governance:check  # Validates workspace invariants
+npm run governance:check  # Validates workspace invariants (+ API surface drift)
+npm run security:audit    # Dependency vulnerability check (high+)
 ```
 
 Or run the full quality-gate sequence in one command:
@@ -86,7 +89,7 @@ Or run the full quality-gate sequence in one command:
 npm run build:quality-gates
 ```
 
-This runs: `governance:check` → `build` → `test` → `type-check` → `build:storefront`
+This runs: `governance:check` → `events:guard` → `lint` → `build` → `test` → `type-coverage` → `type-check` → `build:storefront` → `security:audit`
 
 ### Building
 
@@ -257,17 +260,81 @@ chore(deps): update @stencil/core to 4.44.0
 
 ---
 
+## Breaking change process
+
+The public API is automatically guarded by `docs/api-surface.json` — a committed snapshot of every component's props, events, and public methods generated from `dist/types/components.d.ts`.
+
+### What counts as a breaking change
+
+| Change | Breaking? |
+|--------|-----------|
+| Remove a `@Prop()` | **Yes** |
+| Rename a `@Prop()` | **Yes** (removal of the old name) |
+| Remove an `@Event()` | **Yes** |
+| Rename an `@Event()` | **Yes** |
+| Remove a `@Method()` | **Yes** |
+| Add a new prop / event / method | No |
+| Change a prop's type (TypeScript strict-mode catches these) | Depends |
+
+### How to make a breaking change intentionally
+
+1. Make the change in your branch.
+2. Run `npm run build:components` to regenerate `dist/types/components.d.ts`.
+3. Run `npm run api:check` — it will print the detected breaks.
+4. Update the baseline: `npm run api:snapshot` → commit `docs/api-surface.json`.
+5. Add the `breaking-change` label to your PR on GitHub.
+6. Add a `CHANGELOG.md` entry under `[Unreleased] > Breaking Changes`.
+7. Open or update the PR — CI will see the label and allow the merge.
+
+### Scripts
+
+```bash
+npm run api:snapshot   # Regenerate docs/api-surface.json from current dist
+npm run api:check      # Fail if current dist breaks the baseline
+```
+
+The `api:check` script is included in `npm run governance:check` and runs in CI on every PR.
+
+---
+
+## Dependency update process
+
+Dependency updates are handled by Renovate via `renovate.json` at repo root.
+
+- Stencil ecosystem packages (`@stencil/*`) are grouped together and require manual review for major updates.
+- Next.js ecosystem packages (`next`, `react`, `react-dom`) are grouped together.
+- Dev dependency patch updates are configured for automerge.
+- Use the Renovate dashboard issue to coordinate/rebase pending dependency PRs.
+
+## Security audit process
+
+Run audits locally before opening a PR:
+
+```bash
+pnpm audit --audit-level=high
+```
+
+For fixable advisories:
+
+```bash
+pnpm audit --fix
+```
+
+If an advisory must be temporarily accepted, document the risk, justification, and expiry in the chosen ignore mechanism (`.nsprc` or explicit `pnpm audit --ignore`) and link the tracking issue.
+
 ## Pull request checklist
 
 Before opening a PR, verify:
 
 - [ ] `npm run build:quality-gates` passes with no errors
+- [ ] Local `pnpm audit --audit-level=high` is clean or risk acceptance is documented with expiry
 - [ ] New component: all five storefront tab pages exist
 - [ ] New component: `IoTagNames` union and `custom-elements.d.ts` updated
 - [ ] New component: added to `sitemap.ts` in alphabetical order
 - [ ] No hardcoded design values — all via `var(--io-*)`
 - [ ] No `@ts-expect-error` suppressions
 - [ ] Commit messages follow the conventional commits format
+- [ ] If a public API member was removed/renamed: `breaking-change` label + `CHANGELOG.md` entry + updated `docs/api-surface.json`
 
 ---
 
@@ -283,10 +350,15 @@ Individual gates:
 
 | Command | Checks |
 |---------|--------|
-| `npm run governance:check` | Workspace topology, curated file integrity, no legacy paths |
+| `npm run governance:check` | Workspace topology, curated file integrity, no legacy paths, **API surface** |
+| `npm run events:guard` | Enforces custom event naming contract (no `io-` prefixed events) |
+| `npm run lint` | ESLint flat config (`@typescript-eslint`, `jsx-a11y`, `import/order`) |
+| `npm run api:check` | No breaking changes vs committed `docs/api-surface.json` baseline |
 | `npm run build` | Stencil build + all framework wrapper builds |
 | `npm run test` | Vitest unit tests |
+| `npm run type-coverage` | `io-components` type coverage must remain >=95% |
 | `npm run type-check` | TypeScript (storefront) |
 | `npm run build:storefront` | Next.js production build |
+| `npm run security:audit` | `pnpm audit --audit-level=high` |
 
-> GitHub Actions CI is intentionally disabled during the current development phase. Run the gates locally before opening or updating a pull request.
+CI runs automatically on every PR to `main` via `.github/workflows/pr.yml`.

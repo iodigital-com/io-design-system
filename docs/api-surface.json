@@ -1,0 +1,272 @@
+{
+  "$schema": "./api-surface.schema.json",
+  "generated": "2026-04-29T08:32:51.686Z",
+  "components": {
+    "io-accordion": {
+      "props": {
+        "disabled": "boolean",
+        "heading": "string",
+        "headingTag": "IoAccordionHeadingTag",
+        "open": "boolean"
+      },
+      "methods": {},
+      "events": {
+        "update": "IoAccordionUpdateDetail"
+      }
+    },
+    "io-badge": {
+      "props": {
+        "variant": "IoBadgeVariant"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-button": {
+      "props": {
+        "arrow": "IoButtonArrow | undefined",
+        "arrowPlacement": "IoButtonArrowPlacement",
+        "color": "IoButtonColor",
+        "disabled": "boolean",
+        "fullWidth": "boolean",
+        "href": "string | undefined",
+        "label": "string | undefined",
+        "loading": "boolean",
+        "rel": "string | undefined",
+        "size": "IoButtonSize",
+        "target": "string | undefined",
+        "type": "IoButtonType",
+        "variant": "IoButtonVariant"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "click": "MouseEvent"
+      }
+    },
+    "io-carousel": {
+      "props": {
+        "activeSlideIndex": "number",
+        "label": "string",
+        "nextLabel": "string",
+        "prevLabel": "string",
+        "rewind": "boolean",
+        "slidesPerPage": "IoCarouselSlidesPerPage"
+      },
+      "methods": {},
+      "events": {
+        "update": "IoCarouselUpdateDetail"
+      }
+    },
+    "io-checkbox": {
+      "props": {
+        "checked": "boolean",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "indeterminate": "boolean",
+        "label": "string",
+        "name": "string | undefined",
+        "required": "boolean",
+        "value": "string"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "change": "IoCheckboxChangeDetail"
+      }
+    },
+    "io-input": {
+      "props": {
+        "autocomplete": "string | undefined",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "maxLength": "number | undefined",
+        "name": "string | undefined",
+        "placeholder": "string | undefined",
+        "required": "boolean",
+        "type": "IoInputType",
+        "value": "string"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "blur": "FocusEvent",
+        "change": "string",
+        "focus": "FocusEvent",
+        "input": "InputEvent"
+      }
+    },
+    "io-link": {
+      "props": {
+        "color": "IoLinkColor",
+        "disabled": "boolean",
+        "download": "string | undefined",
+        "external": "boolean",
+        "href": "string",
+        "rel": "string | undefined",
+        "target": "string | undefined",
+        "variant": "IoLinkVariant"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "click": "MouseEvent"
+      }
+    },
+    "io-modal": {
+      "props": {
+        "closeOnBackdrop": "boolean",
+        "open": "boolean",
+        "size": "IoModalSize"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
+      }
+    },
+    "io-pagination": {
+      "props": {
+        "nextLabel": "string",
+        "page": "number",
+        "prevLabel": "string",
+        "totalPages": "number"
+      },
+      "methods": {},
+      "events": {
+        "change": "IoPaginationChangeDetail"
+      }
+    },
+    "io-radio": {
+      "props": {
+        "checked": "boolean",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "name": "string | undefined",
+        "required": "boolean",
+        "value": "string"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "change": "IoRadioChangeDetail"
+      }
+    },
+    "io-select": {
+      "props": {
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "name": "string | undefined",
+        "options": "IoSelectOption[]",
+        "placeholder": "string | undefined",
+        "required": "boolean",
+        "value": "string"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "blur": "FocusEvent",
+        "change": "string",
+        "focus": "FocusEvent"
+      }
+    },
+    "io-spinner": {
+      "props": {
+        "color": "IoSpinnerColor",
+        "label": "string",
+        "size": "IoSpinnerSize"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-tabs": {
+      "props": {
+        "activeTabIndex": "number"
+      },
+      "methods": {},
+      "events": {
+        "update": "IoTabsUpdateDetail"
+      }
+    },
+    "io-tag": {
+      "props": {
+        "color": "IoTagColor",
+        "disabled": "boolean",
+        "removable": "boolean",
+        "selected": "boolean",
+        "size": "IoTagSize"
+      },
+      "methods": {},
+      "events": {
+        "remove": "void",
+        "toggle": "boolean"
+      }
+    },
+    "io-textarea": {
+      "props": {
+        "autocomplete": "string | undefined",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "maxLength": "number | undefined",
+        "name": "string | undefined",
+        "placeholder": "string | undefined",
+        "required": "boolean",
+        "resize": "IoTextareaResize",
+        "rows": "number",
+        "value": "string"
+      },
+      "methods": {
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "blur": "FocusEvent",
+        "change": "string",
+        "focus": "FocusEvent",
+        "input": "InputEvent"
+      }
+    },
+    "io-toast": {
+      "props": {},
+      "methods": {
+        "addToast": "(message: IoToastMessage) => Promise<void>"
+      },
+      "events": {}
+    },
+    "io-toast-item": {
+      "props": {
+        "text": "string",
+        "variant": "IoToastVariant"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
+      }
+    },
+    "io-tooltip": {
+      "props": {
+        "content": "string",
+        "placement": "IoTooltipPlacement"
+      },
+      "methods": {},
+      "events": {}
+    }
+  }
+}

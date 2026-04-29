@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { IoTooltip } from './io-tooltip';
 
 describe('io-tooltip — disabled behavior (N/A: no disabled state)', () => {

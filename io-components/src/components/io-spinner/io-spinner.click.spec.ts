@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { IoSpinner } from './io-spinner';
 
 describe('io-spinner — click behavior (N/A: no click contract)', () => {

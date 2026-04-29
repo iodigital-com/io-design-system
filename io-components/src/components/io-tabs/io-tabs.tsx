@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
-import type { IoTabsUpdateDetail } from './types';
+
 import { getTabsStyles } from './io-tabs-styles';
 import { getNextEnabledIndex } from './io-tabs-utils';
+
+import type { IoTabsUpdateDetail } from './types';
 
 /**
  * io-tabs

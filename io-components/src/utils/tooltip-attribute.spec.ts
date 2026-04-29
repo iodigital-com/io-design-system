@@ -8,6 +8,8 @@ vi.mock('@floating-ui/dom', () => ({
 }));
 
 import { __resetTooltipAttributeForTests, initTooltipAttribute } from './tooltip-attribute';
+
+// eslint-disable-next-line import/order -- must follow local import to reference the vi.mock() hoisted above
 import { computePosition } from '@floating-ui/dom';
 
 async function flushAsyncTooltipShow(): Promise<void> {

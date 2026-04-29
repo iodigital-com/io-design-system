@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
-import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
+
 import { getButtonStyles } from './io-button-styles';
+import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
+
+import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
 
 /**
  * io-button

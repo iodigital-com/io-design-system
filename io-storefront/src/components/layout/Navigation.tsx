@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { sitemap } from '@/sitemap';
+
 import { StatusBadge } from '@/components/StatusBadge';
+import { sitemap } from '@/sitemap';
 
 const SIDEBAR_EXPANDED_SECTIONS_KEY = 'io-sidebar-expanded-sections';
 

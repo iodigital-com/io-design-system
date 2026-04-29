@@ -6,8 +6,10 @@ import {
   atomOneDark,
   atomOneLight,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { useStorefrontTheme } from "@/hooks/useStorefrontTheme";
+
 import type { Framework, FrameworkCode } from "@/models/framework";
+
+import { useStorefrontTheme } from "@/hooks/useStorefrontTheme";
 
 const LS_KEY = "io-playground-framework";
 

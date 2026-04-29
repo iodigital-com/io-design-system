@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { IoLink } from './io-link';
 
 describe('io-link — disabled', () => {

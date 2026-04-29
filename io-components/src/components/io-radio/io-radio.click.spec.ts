@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoRadio } from './io-radio';
 
 describe('io-radio — event behavior', () => {

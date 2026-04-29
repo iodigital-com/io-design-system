@@ -1,7 +1,9 @@
 import { Component, Prop, Host, h } from '@stencil/core';
-import type { IoBadgeVariant } from './types';
+
 import { getBadgeStyles } from './io-badge-styles';
 import { getBadgeClassName } from './io-badge-utils';
+
+import type { IoBadgeVariant } from './types';
 
 /**
  * io-badge

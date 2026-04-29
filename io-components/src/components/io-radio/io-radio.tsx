@@ -1,7 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
-import type { IoRadioChangeDetail } from './types';
+
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
+
+import type { IoRadioChangeDetail } from './types';
 
 /**
  * io-radio

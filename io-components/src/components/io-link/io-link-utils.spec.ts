@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
 
 describe('io-link-utils', () => {

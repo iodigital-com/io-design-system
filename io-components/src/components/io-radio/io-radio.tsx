@@ -93,6 +93,10 @@ export class IoRadio {
     const { label, name, value, checked, required, disabled, error, errorMessage, helperText } = this;
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
+    const helperId = `${inputId}-helper`;
+    const describedBy = [!error && helperText ? helperId : null, error && errorMessage ? errorId : null]
+      .filter((value): value is string => Boolean(value))
+      .join(' ');
 
     return (
       <Host>
@@ -110,7 +114,7 @@ export class IoRadio {
                 disabled={disabled}
                 required={required}
                 aria-invalid={error ? 'true' : undefined}
-                aria-describedby={error && errorMessage ? errorId : undefined}
+                aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />
               <span
@@ -135,7 +139,11 @@ export class IoRadio {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && <p class="radio-helper">{helperText}</p>}
+        {!error && helperText && (
+          <p id={helperId} class="radio-helper">
+            {helperText}
+          </p>
+        )}
       </Host>
     );
   }

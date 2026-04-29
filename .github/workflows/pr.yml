@@ -73,6 +73,9 @@ jobs:
       - name: Build components
         run: npm run build:components
 
+      - name: Storefront type sync drift
+        run: node scripts/sync-stencil-assets.cjs --check
+
       - name: Check public API for breaking changes
         id: api_check
         run: node scripts/check-api-surface.cjs --json > /tmp/api-breaks.json; echo "exit_code=$?" >> "$GITHUB_OUTPUT"
@@ -127,7 +130,76 @@ jobs:
         run: npm run test
 
   # ──────────────────────────────────────────────────────────────────────────
-  # 4. TypeScript (storefront)
+  # 4. Bundle size budgets
+  # ──────────────────────────────────────────────────────────────────────────
+  size-limit:
+    name: Bundle size budgets
+    runs-on: ubuntu-latest
+    needs: [governance]
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build components
+        run: npm run build:components
+
+      - name: Check size budgets
+        id: size_report
+        run: |
+          npm run size | tee /tmp/size-report.txt
+          {
+            echo 'report<<EOF'
+            cat /tmp/size-report.txt
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment size report on PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- size-budget-report -->';
+            const body = `${marker}\n## Bundle Size Report\n\n\`\`\`text\n${{ steps.size_report.outputs.report }}\n\`\`\``;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existing = comments.find(
+              (comment) => comment.user?.type === 'Bot' && comment.body?.includes(marker)
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # 5. TypeScript (storefront)
   # ──────────────────────────────────────────────────────────────────────────
   type-check:
     name: TypeScript check
@@ -157,7 +229,7 @@ jobs:
         run: npm run type-check
 
   # ──────────────────────────────────────────────────────────────────────────
-  # 5. Security audit
+  # 6. Security audit
   # ──────────────────────────────────────────────────────────────────────────
   security-audit:
     name: Security audit
@@ -180,7 +252,7 @@ jobs:
   storefront:
     name: Storefront build
     runs-on: ubuntu-latest
-    needs: [type-check, security-audit]
+    needs: [type-check, security-audit, size-limit]
     steps:
       - uses: actions/checkout@v4
 
@@ -200,3 +272,13 @@ jobs:
 
       - name: Build storefront
         run: npm run build:storefront
+
+      - name: Lighthouse CI
+        run: npm run lighthouse:ci
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: io-storefront/lighthouseci

@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`io-radio — render snapshots > renders checked state 1`] = `
+<io-radio checked class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="radio-wrapper">
+      <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
+        <span class="radio-control">
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="b" checked>
+          <span class="radio-custom radio-custom--checked" aria-hidden="true">
+            <span class="radio-dot"></span>
+          </span>
+        </span>
+        <span class="radio-text">
+          Selected
+        </span>
+      </label>
+    </div>
+  </mock:shadow-root>
+</io-radio>
+`;
+
+exports[`io-radio — render snapshots > renders default state 1`] = `
+<io-radio class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="radio-wrapper">
+      <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
+        <span class="radio-control">
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="a">
+          <span class="radio-custom" aria-hidden="true">
+            <span class="radio-dot"></span>
+          </span>
+        </span>
+        <span class="radio-text">
+          Option A
+        </span>
+      </label>
+    </div>
+  </mock:shadow-root>
+</io-radio>
+`;
+
+exports[`io-radio — render snapshots > renders disabled state 1`] = `
+<io-radio disabled class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="radio-wrapper radio-wrapper--disabled">
+      <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
+        <span class="radio-control">
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="c" disabled>
+          <span class="radio-custom" aria-hidden="true">
+            <span class="radio-dot"></span>
+          </span>
+        </span>
+        <span class="radio-text">
+          Disabled
+        </span>
+      </label>
+    </div>
+  </mock:shadow-root>
+</io-radio>
+`;

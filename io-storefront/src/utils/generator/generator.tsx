@@ -3,37 +3,16 @@
 import React, { type Dispatch, type ReactNode, type SetStateAction } from 'react';
 
 import type { StoryState } from '@/models/story';
+import type { IoTagNames } from '@/types/io-tag-names.generated';
 
 /**
  * io Design System — Component Tag Registry + Element Generator
  * ==============================================================
  *
- * ⚠️  GOVERNANCE (RULE 3): When you add a new io-* Web Component, you MUST:
- *   1. Add its tag name to the IoTagNames union below
- *   2. Add the JSX element signature to custom-elements.d.ts
- *   3. NEVER use @ts-expect-error to suppress custom element typing
+ * ⚠️  GOVERNANCE (RULE 3): io-* tag names and React JSX custom element typings
+ * are generated from Stencil output by scripts/sync-stencil-assets.cjs.
+ * NEVER use @ts-expect-error to suppress custom element typing drift.
  */
-
-/** All io component tag names. Extend this union as new components are built. */
-export type IoTagNames =
-  | 'io-accordion'
-  | 'io-badge'
-  | 'io-button'
-  | 'io-carousel'
-  | 'io-checkbox'
-  | 'io-input'
-  | 'io-link'
-  | 'io-modal'
-  | 'io-pagination'
-  | 'io-radio'
-  | 'io-select'
-  | 'io-spinner'
-  | 'io-tabs'
-  | 'io-tag'
-  | 'io-textarea'
-  | 'io-tooltip'
-  | 'io-toast'
-  | 'io-toast-item';
 
 /** All HTML intrinsic + io component tags that a story can reference. */
 export type HTMLTagOrComponent = IoTagNames | keyof React.JSX.IntrinsicElements;

@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`io-tabs — render snapshots > renders active index and disabled tab state 1`] = `
+<io-tabs active-tab-index="1" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="tablist" role="tablist" aria-orientation="horizontal">
+      <slot></slot>
+    </div>
+  </mock:shadow-root>
+  <button type="button" __self="[object global]" __source="[object Object]" role="tab" aria-selected="false" tabindex="-1">
+    Overview
+  </button>
+  <button type="button" __self="[object global]" __source="[object Object]" role="tab" aria-selected="true" tabindex="0">
+    Details
+  </button>
+  <button type="button" disabled __self="[object global]" __source="[object Object]" role="tab" aria-selected="false" tabindex="-1">
+    Settings
+  </button>
+</io-tabs>
+`;
+
+exports[`io-tabs — render snapshots > renders default state 1`] = `
+<io-tabs active-tab-index="0" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="tablist" role="tablist" aria-orientation="horizontal">
+      <slot></slot>
+    </div>
+  </mock:shadow-root>
+  <button type="button" __self="[object global]" __source="[object Object]" role="tab" aria-selected="true" tabindex="0">
+    Overview
+  </button>
+  <button type="button" __self="[object global]" __source="[object Object]" role="tab" aria-selected="false" tabindex="-1">
+    Details
+  </button>
+</io-tabs>
+`;

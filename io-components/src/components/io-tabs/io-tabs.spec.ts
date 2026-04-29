@@ -144,10 +144,4 @@ describe('io-tabs — listener teardown', () => {
   });
 });
 
-describe('io-tabs — delegatesFocus', () => {
-  it('enables delegatesFocus for the component shadow root', async () => {
-    const builtComponent = await import('../../../dist-custom-elements/io-tabs.js');
-    expect((builtComponent.IoTabs as { delegatesFocus?: boolean }).delegatesFocus).toBe(true);
-  });
-});
 

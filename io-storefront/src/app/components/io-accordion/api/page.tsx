@@ -48,11 +48,11 @@ export default function IoAccordionApiPage() {
               <span key="description">Prevents interaction, reduces opacity, and sets <InlineCode>aria-disabled</InlineCode>. Reflects to attribute.</span>,
             ],
             [
-              <span key="property"><InlineCode>defaultExpanded</InlineCode><ReflectBadge /></span>,
+              <span key="property"><InlineCode>defaultExpanded</InlineCode></span>,
               <InlineCode key="attribute">default-expanded</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
-              <span key="description">Expands the panel on first render. Has no effect after initial mount — use the <InlineCode>open</InlineCode> prop for runtime control. Reflects to attribute.</span>,
+              <span key="description">Expands the panel on the very first render. Has no effect after initial mount — use the <InlineCode>open</InlineCode> prop for runtime control. Does not reflect back to attribute (preventing the attribute from persisting after the user closes the panel).</span>,
             ],
             [
               <span key="property"><InlineCode>allowMultiple</InlineCode><ReflectBadge /></span>,

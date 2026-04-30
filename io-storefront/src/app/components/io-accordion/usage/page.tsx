@@ -50,6 +50,12 @@ export default function IoAccordionUsagePage() {
           <RuleCard label="Controlled state">
             Use the <C>open</C> prop and the <C>update</C> event detail (<C>{`{ open: boolean }`}</C>) to sync state in framework apps.
           </RuleCard>
+          <RuleCard label="default-expanded — open on first render">
+            Set <C>default-expanded</C> to expand a panel on first render without managing <C>open</C> externally. This is a one-time initialisation — it has no effect after the component has mounted. Use <C>open</C> for any runtime state control.
+          </RuleCard>
+          <RuleCard label="allow-multiple — group coordination">
+            By default (<C>allow-multiple=false</C>), opening one accordion automatically closes sibling accordions in the same parent element. Set <C>allow-multiple=true</C> to opt a specific accordion out of this coordination and allow it to stay open regardless of what its siblings do. All sibling accordions in a &ldquo;multi-open&rdquo; group should have <C>allow-multiple=true</C>.
+          </RuleCard>
           <RuleCard label="Animation">
             Panel height animates from 0 to full via max-height transition; icon rotates from + to -.
           </RuleCard>

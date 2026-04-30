@@ -38,10 +38,11 @@ export default function IoButtonGroupApiPage() {
                 <MutableBadge />
               </span>,
               <InlineCode key="t">string | string[]</InlineCode>,
-              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              <span key="d"><InlineCode>&apos;&apos;</InlineCode> / <InlineCode>[]</InlineCode></span>,
               <span key="desc">
                 The selected value(s). In exclusive mode, a string matching one of the item values (or empty string
-                for no selection). In multi-select mode, a string array. Mutable — updated internally when the user
+                for no selection; default <InlineCode>&apos;&apos;</InlineCode>). In multi-select mode, a string array
+                of active values (default <InlineCode>[]</InlineCode>). Mutable — updated internally when the user
                 selects an item.
               </span>,
             ],

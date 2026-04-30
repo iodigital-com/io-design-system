@@ -134,7 +134,17 @@ export default function IoButtonGroupAccessibilityPage() {
                 'Provides the accessible name for the group. Strongly recommended — without it, screen readers cannot tell users what the group is for.',
             },
             {
-              attribute: 'aria-disabled + disabled',
+              attribute: 'aria-disabled (container)',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>
+                  On the container when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>disabled</code> is true
+                </span>
+              ),
+              description:
+                'When the entire group is disabled, aria-disabled="true" is set on the radiogroup or group container. Screen readers announce the group itself as disabled before users move focus into it.',
+            },
+            {
+              attribute: 'aria-disabled + disabled (button)',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
                   On individual disabled buttons

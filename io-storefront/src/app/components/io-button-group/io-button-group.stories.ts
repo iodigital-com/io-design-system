@@ -66,7 +66,7 @@ export const buttonGroupStoryMultiSelect: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: false, label: 'Working days' },
+      properties: { exclusive: false, value: ['mon', 'wed'], label: 'Working days' },
       children: [
         createButtonGroupItem('mon', 'Mon'),
         createButtonGroupItem('tue', 'Tue'),
@@ -118,6 +118,7 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     name: 'value',
     type: 'string',
     defaultValue: '',
+    description: 'Selected value(s). A single string in exclusive mode; a comma-separated list represents multi-select state (managed programmatically as string[]).',
   },
   {
     name: 'disabled',

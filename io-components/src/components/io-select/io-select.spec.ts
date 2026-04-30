@@ -21,6 +21,10 @@ describe('io-select — default props', () => {
     expect(component.options).toEqual([]);
   });
 
+  it('has size md by default', () => {
+    expect(component.size).toBe('md');
+  });
+
   it('is not required by default', () => {
     expect(component.required).toBe(false);
   });

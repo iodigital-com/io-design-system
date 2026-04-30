@@ -1,5 +1,5 @@
-import type { IoBadgeVariant } from './types';
+import type { IoBadgeVariant, IoBadgeSize } from './types';
 
-export function getBadgeClassName(variant: IoBadgeVariant): string {
-  return `badge badge--${variant}`;
+export function getBadgeClassName(variant: IoBadgeVariant, size: IoBadgeSize): string {
+  return `badge badge--${variant} badge--${size}`;
 }

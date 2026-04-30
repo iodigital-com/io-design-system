@@ -56,6 +56,19 @@ export function getInputStyles(): string {
       transition: border-bottom-width var(--io-motion-fast), margin-top var(--io-motion-fast);
     }
 
+    .input-field--sm {
+      min-height: var(--io-size-input-sm);
+    }
+
+    .input-field--md {
+      min-height: var(--io-size-input-md);
+    }
+
+    .input-field--lg {
+      min-height: var(--io-size-input-lg);
+      font-size: var(--io-font-size-base);
+    }
+
     .input-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
       margin-top: -2px;

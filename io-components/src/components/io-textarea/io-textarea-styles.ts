@@ -68,6 +68,19 @@ export function getTextareaStyles(): string {
       transition: border-bottom-width var(--io-motion-fast), margin-top var(--io-motion-fast);
     }
 
+    .textarea-field--sm {
+      min-height: var(--io-size-input-sm);
+    }
+
+    .textarea-field--md {
+      min-height: var(--io-size-input-md);
+    }
+
+    .textarea-field--lg {
+      min-height: var(--io-size-input-lg);
+      font-size: var(--io-font-size-base);
+    }
+
     .textarea-field::placeholder {
       color: transparent;
     }

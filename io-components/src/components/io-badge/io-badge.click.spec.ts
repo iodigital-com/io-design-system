@@ -29,6 +29,6 @@ describe('io-badge - event behavior (non-interactive by design)', () => {
       component.render();
     }).not.toThrow();
 
-    expect(getBadgeClassName(component.variant)).toBe('badge badge--warning');
+    expect(getBadgeClassName(component.variant, component.size)).toBe('badge badge--warning badge--md');
   });
 });

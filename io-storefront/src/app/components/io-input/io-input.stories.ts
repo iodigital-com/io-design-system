@@ -6,6 +6,10 @@ export const inputStory: Story<'io-input'> = {
     properties: {
       label: 'Full name',
       type: 'text',
+      size: 'md',
+      min: '',
+      max: '',
+      step: '',
       disabled: false,
       error: false,
       errorMessage: '',
@@ -54,9 +58,34 @@ export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'type',
     type: 'select',
-    options: ['text', 'email', 'password', 'number', 'tel', 'url'],
+    options: ['text', 'email', 'password', 'number', 'tel', 'url', 'date', 'time'],
     defaultValue: 'text',
     description: 'Defines the native input type and keyboard behavior.',
+  },
+  {
+    name: 'size',
+    type: 'select',
+    options: ['sm', 'md', 'lg'],
+    defaultValue: 'md',
+    description: 'Aligns field height with io-button sizes.',
+  },
+  {
+    name: 'min',
+    type: 'string',
+    defaultValue: '',
+    description: 'Minimum value forwarded to the native input (number/date/time).',
+  },
+  {
+    name: 'max',
+    type: 'string',
+    defaultValue: '',
+    description: 'Maximum value forwarded to the native input (number/date/time).',
+  },
+  {
+    name: 'step',
+    type: 'string',
+    defaultValue: '',
+    description: 'Step value forwarded to the native input (number/date/time).',
   },
   {
     name: 'disabled',

@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-input — render snapshots > renders default state 1`] = `
-<io-input class="hydrated">
+<io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field" type="text" value placeholder="name@example.com">
+      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value placeholder="name@example.com">
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Email
       </label>
@@ -14,10 +14,10 @@ exports[`io-input — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-input — render snapshots > renders disabled state 1`] = `
-<io-input disabled class="hydrated">
+<io-input size="md" disabled class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper input-wrapper--disabled">
-      <input id="io-input-4fzzzxjylrx" class="input-field" type="text" value="Read only" placeholder=" " disabled>
+      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value="Read only" placeholder=" " disabled>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Disabled
       </label>
@@ -47,30 +47,30 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-input class="hydrated">
+    <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field" type="email" value placeholder=" ">
+      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="email" value placeholder=" ">
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Email
       </label>
     </div>
   </mock:shadow-root>
 </io-input>,
-    <io-input class="hydrated">
+    <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field" type="search" value placeholder=" ">
+      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="search" value placeholder=" ">
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Search
       </label>
     </div>
   </mock:shadow-root>
 </io-input>,
-    <io-input class="hydrated">
+    <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field" type="tel" value placeholder=" ">
+      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="tel" value placeholder=" ">
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Telephone
       </label>

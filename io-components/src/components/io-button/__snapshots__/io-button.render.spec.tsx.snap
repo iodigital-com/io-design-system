@@ -1238,3 +1238,18 @@ MockHTMLElement {
   "s-hn": "DIV",
 }
 `;
+
+exports[`io-button — render snapshots > renders icon-only mode without arrow markup 1`] = `
+<io-button class="io-button--solid io-button--blue io-button--md io-button--icon-only hydrated" variant="solid" color="blue" size="md" icon-only arrow="forward" arrow-placement="right">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <button class="btn btn--solid btn--blue btn--md btn--icon-only" type="button" aria-label="Open menu">
+      <span class="btn__icon" aria-hidden="true">
+        <slot></slot>
+      </span>
+    </button>
+  </mock:shadow-root>
+  <svg viewBox="0 0 16 16" aria-hidden="true">
+    <path d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h12v2H2v-2z"></path>
+  </svg>
+</io-button>
+`;

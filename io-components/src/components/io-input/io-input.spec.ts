@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 
@@ -39,6 +40,37 @@ describe('io-input — stable id linkage', () => {
     const ids = (component as any).getInputIds();
     expect(ids.inputId).toMatch(/^io-input-username-[a-z0-9]+$/);
     expect(ids.errorId).toBe(`${ids.inputId}-error`);
+  });
+
+  it('defaults to size=md', () => {
+    expect(component.size).toBe('md');
+  });
+
+  it('accepts date and time input types', () => {
+    component.type = 'date';
+    expect(component.type).toBe('date');
+
+    component.type = 'time';
+    expect(component.type).toBe('time');
+  });
+
+  it('forwards min, max, and step to native input', () => {
+    (component as any).componentWillLoad();
+    component.type = 'time';
+    component.min = '09:00';
+    component.max = '17:00';
+    component.step = '900';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+
+    expect(inputProps['type']).toBe('time');
+    expect(inputProps['min']).toBe('09:00');
+    expect(inputProps['max']).toBe('17:00');
+    expect(inputProps['step']).toBe('900');
   });
 
   it('keeps aria-describedby target stable for error state across rerenders', () => {

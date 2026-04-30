@@ -5,6 +5,7 @@ export const textareaStory: Story<'io-textarea'> = {
   state: {
     properties: {
       label: 'Message',
+      size: 'md',
       placeholder: '',
       rows: 4,
       resize: 'vertical',
@@ -20,6 +21,7 @@ export const textareaStory: Story<'io-textarea'> = {
       tag: 'io-textarea' as const,
       properties: {
         label: (properties?.label as string) ?? 'Message',
+        size: (properties?.size as string) ?? 'md',
         placeholder: (properties?.placeholder as string) || undefined,
         rows: (properties?.rows as number) ?? 4,
         resize: (properties?.resize as string) ?? 'vertical',
@@ -98,6 +100,13 @@ export const textareaPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: 'Message',
     description: 'Sets the field label shown above the textarea.',
+  },
+  {
+    name: 'size',
+    type: 'select',
+    options: ['sm', 'md', 'lg'],
+    defaultValue: 'md',
+    description: 'Aligns field height with io-button sizes.',
   },
   {
     name: 'placeholder',

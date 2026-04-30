@@ -10,8 +10,13 @@ describe('io-badge - default props and render contract', () => {
   });
 
   it('maps variant to expected class name', () => {
-    expect(getBadgeClassName('success')).toBe('badge badge--success');
-    expect(getBadgeClassName('outline')).toBe('badge badge--outline');
+    expect(getBadgeClassName('success', 'sm')).toBe('badge badge--success badge--sm');
+    expect(getBadgeClassName('outline', 'md')).toBe('badge badge--outline badge--md');
+  });
+
+  it('uses md as the default size', () => {
+    const component = new IoBadge();
+    expect(component.size).toBe('md');
   });
 
   it('renders without throwing for each supported variant', () => {

@@ -1,4 +1,4 @@
-import type { IoTextareaResize } from './types';
+import type { IoTextareaResize, IoTextareaSize } from './types';
 
 export function sanitizeNameSegment(name: string): string {
   return name
@@ -21,6 +21,6 @@ export function getTextareaWrapperClass(error: boolean, disabled: boolean): stri
     .join(' ');
 }
 
-export function getTextareaFieldClass(resize: IoTextareaResize): string {
-  return `textarea-field textarea-field--resize-${resize}`;
+export function getTextareaFieldClass(resize: IoTextareaResize, size: IoTextareaSize): string {
+  return `textarea-field textarea-field--resize-${resize} textarea-field--${size}`;
 }

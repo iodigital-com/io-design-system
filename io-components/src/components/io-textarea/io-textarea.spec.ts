@@ -26,6 +26,10 @@ describe('io-textarea — default props', () => {
     expect(component.resize).toBe('vertical');
   });
 
+  it('has size=md by default', () => {
+    expect(component.size).toBe('md');
+  });
+
   it('is not required by default', () => {
     expect(component.required).toBe(false);
   });

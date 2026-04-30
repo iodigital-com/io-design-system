@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '
 import { getSelectStyles } from './io-select-styles';
 import { resolveSelectId, getSelectWrapperClass } from './io-select-utils';
 
-import type { IoSelectOption } from './types';
+import type { IoSelectOption, IoSelectSize } from './types';
 
 /**
  * io-select
@@ -32,6 +32,9 @@ export class IoSelect {
 
   /** Selected value */
   @Prop({ mutable: true }) value = '';
+
+  /** Field size aligned to io-button scale */
+  @Prop({ reflect: true }) size: IoSelectSize = 'md';
 
   /** Placeholder option shown when no value is selected */
   @Prop() placeholder: string | undefined;
@@ -107,7 +110,7 @@ export class IoSelect {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, placeholder, options, required, disabled, error, errorMessage, helperText } = this;
+    const { label, name, value, placeholder, options, required, disabled, error, errorMessage, helperText, size } = this;
     const selectId = this.fieldId;
     const errorId = `${selectId}-error`;
     const helperId = `${selectId}-helper`;
@@ -123,7 +126,7 @@ export class IoSelect {
         <div class={getSelectWrapperClass(error, disabled)}>
           <select
             id={selectId}
-            class="select-field"
+            class={`select-field select-field--${size}`}
             name={name}
             disabled={disabled}
             required={required}

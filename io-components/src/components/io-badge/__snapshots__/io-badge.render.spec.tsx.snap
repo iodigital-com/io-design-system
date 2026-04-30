@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-badge — render snapshots > renders default state 1`] = `
-<io-badge variant="blue" class="hydrated">
+<io-badge variant="blue" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--blue">
+    <span class="badge badge--blue badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
@@ -32,73 +32,73 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-badge variant="beige" class="hydrated">
+    <io-badge variant="beige" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--beige">
+    <span class="badge badge--beige badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Beige
 </io-badge>,
-    <io-badge variant="blue" class="hydrated">
+    <io-badge variant="blue" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--blue">
+    <span class="badge badge--blue badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Blue
 </io-badge>,
-    <io-badge variant="dark" class="hydrated">
+    <io-badge variant="dark" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--dark">
+    <span class="badge badge--dark badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Dark
 </io-badge>,
-    <io-badge variant="orange" class="hydrated">
+    <io-badge variant="orange" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--orange">
+    <span class="badge badge--orange badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Orange
 </io-badge>,
-    <io-badge variant="rouge" class="hydrated">
+    <io-badge variant="rouge" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--rouge">
+    <span class="badge badge--rouge badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Rouge
 </io-badge>,
-    <io-badge variant="success" class="hydrated">
+    <io-badge variant="success" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--success">
+    <span class="badge badge--success badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Success
 </io-badge>,
-    <io-badge variant="warning" class="hydrated">
+    <io-badge variant="warning" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--warning">
+    <span class="badge badge--warning badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Warning
 </io-badge>,
-    <io-badge variant="error" class="hydrated">
+    <io-badge variant="error" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--error">
+    <span class="badge badge--error badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>
   Error
 </io-badge>,
-    <io-badge variant="outline" class="hydrated">
+    <io-badge variant="outline" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="badge badge--outline">
+    <span class="badge badge--outline badge--md">
       <slot></slot>
     </span>
   </mock:shadow-root>

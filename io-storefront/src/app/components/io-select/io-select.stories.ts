@@ -11,6 +11,7 @@ export const selectStory: Story<'io-select'> = {
   state: {
     properties: {
       label: 'Country',
+      size: 'md',
       placeholder: '',
       disabled: false,
       required: false,
@@ -24,6 +25,7 @@ export const selectStory: Story<'io-select'> = {
       tag: 'io-select' as const,
       properties: {
         label: (properties?.label as string) ?? 'Country',
+        size: (properties?.size as string) ?? 'md',
         placeholder: (properties?.placeholder as string) || undefined,
         disabled: (properties?.disabled as boolean) ?? false,
         required: (properties?.required as boolean) ?? false,
@@ -97,6 +99,13 @@ export const selectPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: 'Country',
     description: 'Sets the field label shown above the select.',
+  },
+  {
+    name: 'size',
+    type: 'select',
+    options: ['sm', 'md', 'lg'],
+    defaultValue: 'md',
+    description: 'Aligns field height with io-button sizes.',
   },
   {
     name: 'placeholder',

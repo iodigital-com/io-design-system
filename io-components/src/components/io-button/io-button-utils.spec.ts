@@ -41,6 +41,7 @@ describe('getButtonClassList', () => {
       disabled: false,
       loading: false,
       fullWidth: false,
+      iconOnly: false,
     });
     expect(result).toBe('io-button--solid io-button--blue io-button--md');
   });
@@ -53,6 +54,7 @@ describe('getButtonClassList', () => {
       disabled: true,
       loading: false,
       fullWidth: false,
+      iconOnly: false,
     });
     expect(result).toContain('io-button--disabled');
   });
@@ -65,6 +67,7 @@ describe('getButtonClassList', () => {
       disabled: false,
       loading: true,
       fullWidth: false,
+      iconOnly: false,
     });
     expect(result).toContain('io-button--loading');
   });
@@ -77,6 +80,7 @@ describe('getButtonClassList', () => {
       disabled: false,
       loading: false,
       fullWidth: true,
+      iconOnly: false,
     });
     expect(result).toContain('io-button--full-width');
   });
@@ -89,9 +93,11 @@ describe('getButtonClassList', () => {
       disabled: true,
       loading: true,
       fullWidth: true,
+      iconOnly: true,
     });
     expect(result).toContain('io-button--disabled');
     expect(result).toContain('io-button--loading');
     expect(result).toContain('io-button--full-width');
+    expect(result).toContain('io-button--icon-only');
   });
 });

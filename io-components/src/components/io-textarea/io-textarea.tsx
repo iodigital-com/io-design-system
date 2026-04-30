@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
 
-import type { IoTextareaResize } from './types';
+import type { IoTextareaResize, IoTextareaSize } from './types';
 
 /**
  * io-textarea
@@ -57,6 +57,9 @@ export class IoTextarea {
 
   /** Visible rows (controls initial height) */
   @Prop() rows = 4;
+
+  /** Field size aligned to io-button scale */
+  @Prop({ reflect: true }) size: IoTextareaSize = 'md';
 
   /** Autocomplete attribute */
   @Prop() autocomplete: string | undefined;
@@ -136,7 +139,7 @@ export class IoTextarea {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, rows, autocomplete, resize } = this;
+    const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, rows, autocomplete, resize, size } = this;
     const textareaId = this.fieldId;
     const errorId = `${textareaId}-error`;
     const helperId = `${textareaId}-helper`;
@@ -152,7 +155,7 @@ export class IoTextarea {
         <div class={getTextareaWrapperClass(error, disabled)}>
           <textarea
             id={textareaId}
-            class={getTextareaFieldClass(resize)}
+            class={getTextareaFieldClass(resize, size)}
             name={name}
             placeholder={placeholder ?? ' '}
             value={value}

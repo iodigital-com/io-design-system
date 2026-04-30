@@ -17,6 +17,7 @@ export const buttonStory: Story<'io-button'> = {
       disabled: false,
       loading: false,
       fullWidth: false,
+      iconOnly: false,
       label: 'Click me',
     },
   },
@@ -111,6 +112,16 @@ export const buttonStorySizes: Story<'io-button'> = {
     { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'md' }, children: ['Medium'] },
     { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'lg' }, children: ['Large'] },
     { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'xl' }, children: ['Extra Large'] },
+  ],
+};
+
+/** Icon-only examples. */
+export const buttonStoryIconOnly: Story<'io-button'> = {
+  state: { properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, label: 'Close' } },
+  generator: () => [
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'sm', iconOnly: true, label: 'Close' }, children: ['×'] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, label: 'Close' }, children: ['×'] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'lg', iconOnly: true, label: 'Close' }, children: ['×'] },
   ],
 };
 
@@ -227,6 +238,13 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Expands the button to fill the available width.',
+    group: 'State',
+  },
+  {
+    name: 'iconOnly',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Renders a square icon-only button. Requires label or aria-label for accessibility.',
     group: 'State',
   },
 ];

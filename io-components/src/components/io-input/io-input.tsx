@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h }
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 
-import type { IoInputType } from './types';
+import type { IoInputType, IoInputSize } from './types';
 
 /**
  * io-input
@@ -32,6 +32,9 @@ export class IoInput {
   /** Input type */
   @Prop() type: IoInputType = 'text';
 
+  /** Field size aligned to io-button scale */
+  @Prop({ reflect: true }) size: IoInputSize = 'md';
+
   /** Input name */
   @Prop() name: string | undefined;
 
@@ -58,6 +61,15 @@ export class IoInput {
 
   /** Max length */
   @Prop() maxLength: number | undefined;
+
+  /** Native minimum value (date/time/number) */
+  @Prop() min: string | number | undefined;
+
+  /** Native maximum value (date/time/number) */
+  @Prop() max: string | number | undefined;
+
+  /** Native step value (date/time/number) */
+  @Prop() step: string | number | undefined;
 
   /** Autocomplete attribute */
   @Prop() autocomplete: string | undefined;
@@ -122,7 +134,7 @@ export class IoInput {
   };
 
   render() {
-    const { label, type, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, autocomplete } = this;
+    const { label, type, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, min, max, step, autocomplete, size } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const describedBy = [
@@ -136,7 +148,7 @@ export class IoInput {
         <div class={`input-wrapper${error ? ' input-wrapper--error' : ''}${disabled ? ' input-wrapper--disabled' : ''}`}>
           <input
             id={inputId}
-            class="input-field"
+            class={`input-field input-field--${size}`}
             type={type}
             name={name}
             value={value}
@@ -144,6 +156,9 @@ export class IoInput {
             required={required}
             disabled={disabled}
             maxLength={maxLength}
+            min={min}
+            max={max}
+            step={step}
             autocomplete={autocomplete}
             aria-invalid={error ? 'true' : undefined}
             aria-describedby={describedBy}

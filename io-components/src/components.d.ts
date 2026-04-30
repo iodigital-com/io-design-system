@@ -6,37 +6,37 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-import { IoBadgeVariant } from "./components/io-badge/types";
+import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
-import { IoInputType } from "./components/io-input/types";
+import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
-import { IoSelectOption } from "./components/io-select/types";
+import { IoSelectOption, IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
-import { IoTextareaResize } from "./components/io-textarea/types";
+import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-export { IoBadgeVariant } from "./components/io-badge/types";
+export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
-export { IoInputType } from "./components/io-input/types";
+export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
-export { IoSelectOption } from "./components/io-select/types";
+export { IoSelectOption, IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
-export { IoTextareaResize } from "./components/io-textarea/types";
+export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export namespace Components {
@@ -79,6 +79,11 @@ export namespace Components {
      * <io-badge variant="error">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Size variant aligned with io-tag
+          * @default 'md'
+         */
+        "size": IoBadgeSize;
         /**
           * Color/semantic variant
           * @default 'blue'
@@ -124,6 +129,11 @@ export namespace Components {
           * Renders the button as an anchor tag with this href
          */
         "href": string | undefined;
+        /**
+          * Renders a square icon-only button and suppresses text label rendering
+          * @default false
+         */
+        "iconOnly": boolean;
         /**
           * Accessible label — required for icon-only buttons
          */
@@ -305,9 +315,17 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Native maximum value (date/time/number)
+         */
+        "max": string | number | undefined;
+        /**
           * Max length
          */
         "maxLength": number | undefined;
+        /**
+          * Native minimum value (date/time/number)
+         */
+        "min": string | number | undefined;
         /**
           * Input name
          */
@@ -322,6 +340,15 @@ export namespace Components {
          */
         "required": boolean;
         "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoInputSize;
+        /**
+          * Native step value (date/time/number)
+         */
+        "step": string | number | undefined;
         /**
           * Input type
           * @default 'text'
@@ -571,6 +598,11 @@ export namespace Components {
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
         /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoSelectSize;
+        /**
           * Selected value
           * @default ''
          */
@@ -732,6 +764,11 @@ export namespace Components {
           * Programmatically move focus to the textarea
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoTextareaSize;
         /**
           * Current value
           * @default ''
@@ -1386,6 +1423,11 @@ declare namespace LocalJSX {
      */
     interface IoBadge {
         /**
+          * Size variant aligned with io-tag
+          * @default 'md'
+         */
+        "size"?: IoBadgeSize;
+        /**
           * Color/semantic variant
           * @default 'blue'
          */
@@ -1430,6 +1472,11 @@ declare namespace LocalJSX {
           * Renders the button as an anchor tag with this href
          */
         "href"?: string | undefined;
+        /**
+          * Renders a square icon-only button and suppresses text label rendering
+          * @default false
+         */
+        "iconOnly"?: boolean;
         /**
           * Accessible label — required for icon-only buttons
          */
@@ -1615,9 +1662,17 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Native maximum value (date/time/number)
+         */
+        "max"?: string | number | undefined;
+        /**
           * Max length
          */
         "maxLength"?: number | undefined;
+        /**
+          * Native minimum value (date/time/number)
+         */
+        "min"?: string | number | undefined;
         /**
           * Input name
          */
@@ -1635,6 +1690,15 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoInputSize;
+        /**
+          * Native step value (date/time/number)
+         */
+        "step"?: string | number | undefined;
         /**
           * Input type
           * @default 'text'
@@ -1900,6 +1964,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoSelectSize;
+        /**
           * Selected value
           * @default ''
          */
@@ -2086,6 +2155,11 @@ declare namespace LocalJSX {
          */
         "rows"?: number;
         /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoTextareaSize;
+        /**
           * Current value
           * @default ''
          */
@@ -2163,6 +2237,7 @@ declare namespace LocalJSX {
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
+        "size": IoBadgeSize;
     }
     interface IoButtonAttributes {
         "variant": IoButtonVariant;
@@ -2176,6 +2251,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "fullWidth": boolean;
         "label": string | undefined;
+        "iconOnly": boolean;
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;
     }
@@ -2202,6 +2278,7 @@ declare namespace LocalJSX {
     interface IoInputAttributes {
         "label": string;
         "type": IoInputType;
+        "size": IoInputSize;
         "name": string | undefined;
         "value": string;
         "placeholder": string | undefined;
@@ -2211,6 +2288,9 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string | undefined;
         "maxLength": number | undefined;
+        "min": string;
+        "max": string;
+        "step": string;
         "autocomplete": string | undefined;
     }
     interface IoLinkAttributes {
@@ -2251,6 +2331,7 @@ declare namespace LocalJSX {
         "label": string;
         "name": string | undefined;
         "value": string;
+        "size": IoSelectSize;
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
@@ -2286,6 +2367,7 @@ declare namespace LocalJSX {
         "helperText": string | undefined;
         "maxLength": number | undefined;
         "rows": number;
+        "size": IoTextareaSize;
         "autocomplete": string | undefined;
         "resize": IoTextareaResize;
     }

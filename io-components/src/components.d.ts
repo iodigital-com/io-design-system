@@ -181,6 +181,10 @@ export namespace Components {
          */
         "type": IoButtonType;
         /**
+          * Value used by io-button-group to identify this item
+         */
+        "value": string | undefined;
+        /**
           * Visual fill style
           * @default 'solid'
          */
@@ -1643,6 +1647,10 @@ declare namespace LocalJSX {
          */
         "type"?: IoButtonType;
         /**
+          * Value used by io-button-group to identify this item
+         */
+        "value"?: string | undefined;
+        /**
           * Visual fill style
           * @default 'solid'
          */
@@ -2446,6 +2454,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "fullWidth": boolean;
         "label": string | undefined;
+        "value": string | undefined;
         "iconOnly": boolean;
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;

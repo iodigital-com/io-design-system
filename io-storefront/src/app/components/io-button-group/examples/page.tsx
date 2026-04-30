@@ -16,7 +16,7 @@ import { ComponentStory } from '@/components/playground/ComponentStory';
 
 function ExclusiveLiveDemo() {
   const [value, setValue] = useState('week');
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<HTMLIoButtonGroupElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -32,7 +32,7 @@ function ExclusiveLiveDemo() {
   return (
     <div className="space-y-4">
       <io-button-group
-        ref={ref as React.RefObject<HTMLElement>}
+        ref={ref}
         exclusive={true}
         value={value}
         label="View period"
@@ -52,7 +52,7 @@ function ExclusiveLiveDemo() {
 
 function MultiSelectLiveDemo() {
   const [values, setValues] = useState<string[]>(['mon', 'wed']);
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<HTMLIoButtonGroupElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -68,7 +68,7 @@ function MultiSelectLiveDemo() {
   return (
     <div className="space-y-4">
       <io-button-group
-        ref={ref as React.RefObject<HTMLElement>}
+        ref={ref}
         exclusive={false}
         label="Working days"
       >

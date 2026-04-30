@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 
 import { AutoCodeHighlight } from '@/components/code/AutoCodeHighlight';
 import { Canvas } from '@/components/layout/Canvas';
+import { StencilInit } from '@/components/layout/StencilInit';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { StorefrontThemeProvider } from '@/hooks/useStorefrontTheme';
 import './globals.css';
@@ -81,6 +82,7 @@ export default function RootLayout({
       <body>
         <StorefrontThemeProvider>
           <SidebarProvider>
+            <StencilInit />
             <AutoCodeHighlight />
             <Canvas>{children}</Canvas>
           </SidebarProvider>

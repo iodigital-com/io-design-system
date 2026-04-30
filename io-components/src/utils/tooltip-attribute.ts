@@ -10,6 +10,14 @@ const TOOLTIP_SELECTOR = `[${TOOLTIP_ATTR}]`;
 const TOOLTIP_ID = 'io-tooltip-attribute-overlay';
 const DESCRIBEDBY_BACKUP_ATTR = 'data-io-tooltip-prev-describedby';
 
+// Cross-module-instance guard. The Stencil bundle and the storefront may each
+// import this module as separate instances (different module specifiers). The
+// module-level `listenersBound` flag prevents double-registration within one
+// instance; this window flag coordinates across instances so only one set of
+// listeners and one overlay element is created in a given browsing context.
+const WIN_INIT_FLAG = '__io_tooltip_attr_init';
+type WinWithFlag = typeof globalThis & { [WIN_INIT_FLAG]?: boolean };
+
 let activeTrigger: HTMLElement | null = null;
 let tooltipEl: HTMLDivElement | null = null;
 let listenersBound = false;
@@ -194,6 +202,10 @@ function onWindowChange(): void {
 
 export function initTooltipAttribute(): void {
   if (typeof document === 'undefined' || listenersBound) return;
+  // Cross-instance guard: bail if another module instance already initialised.
+  const win = globalThis as WinWithFlag;
+  if (win[WIN_INIT_FLAG]) return;
+  win[WIN_INIT_FLAG] = true;
 
   pointerOverHandler = (ev) => { void onPointerOver(ev); };
   pointerOutHandler = onPointerOut;
@@ -231,4 +243,6 @@ export function __resetTooltipAttributeForTests(): void {
   tooltipEl?.remove();
   tooltipEl = null;
   listenersBound = false;
+  // Clear the cross-instance window flag so tests can re-initialise cleanly.
+  delete (globalThis as WinWithFlag)[WIN_INIT_FLAG];
 }

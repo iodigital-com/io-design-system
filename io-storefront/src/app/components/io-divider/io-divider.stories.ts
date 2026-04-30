@@ -49,9 +49,9 @@ export function App() {
 // ── Stories ───────────────────────────────────────────────────────────────────
 
 /**
- * Configurator story — bare io-divider so the code tab shows clean markup.
- * The configurator page removes the grid background via previewStyle so the
- * line is visible even without a content wrapper.
+ * Configurator story — wraps io-divider in a context container so the line is
+ * visible in the preview. `frameworkCode` is a function so the code tabs always
+ * show clean markup (without the wrapper) that reflects the current prop values.
  */
 export const dividerStory: Story<'io-divider'> = {
   state: {
@@ -60,15 +60,85 @@ export const dividerStory: Story<'io-divider'> = {
       label: '',
     },
   },
-  generator: ({ properties } = {}) => [
-    {
+  generator: ({ properties } = {}) => {
+    const orientation = (properties?.orientation as string) ?? 'horizontal';
+    const label = properties?.label as string | undefined;
+
+    const dividerNode = {
       tag: 'io-divider' as const,
       properties: {
-        orientation: (properties?.orientation as string) ?? 'horizontal',
-        ...(properties?.label ? { label: properties.label as string } : {}),
+        orientation: orientation as 'horizontal' | 'vertical',
+        ...(label ? { label } : {}),
       },
-    },
-  ],
+    };
+
+    // Vertical (no label) — flex row so the vertical line has content either side.
+    if (orientation === 'vertical' && !label) {
+      return [
+        {
+          tag: 'div' as const,
+          properties: { className: 'flex items-center gap-4 h-10' },
+          children: [
+            {
+              tag: 'span' as const,
+              properties: { className: 'text-sm text-[var(--io-text-secondary)]' },
+              children: ['Content'],
+            },
+            dividerNode,
+            {
+              tag: 'span' as const,
+              properties: { className: 'text-sm text-[var(--io-text-secondary)]' },
+              children: ['Content'],
+            },
+          ],
+        },
+      ];
+    }
+
+    // Horizontal or labeled — block container with paragraphs above and below.
+    return [
+      {
+        tag: 'div' as const,
+        properties: { className: 'w-full max-w-xs' },
+        children: [
+          {
+            tag: 'p' as const,
+            properties: { className: 'text-sm mb-3 text-[var(--io-text-secondary)]' },
+            children: ['Section one content goes here.'],
+          },
+          dividerNode,
+          {
+            tag: 'p' as const,
+            properties: { className: 'text-sm mt-3 text-[var(--io-text-secondary)]' },
+            children: ['Section two content goes here.'],
+          },
+        ],
+      },
+    ];
+  },
+  frameworkCode: ({ properties } = {}) => {
+    const orientation = (properties?.orientation as string) ?? 'horizontal';
+    const label = properties?.label as string | undefined;
+    const attrs = [
+      orientation !== 'horizontal' ? `orientation="${orientation}"` : null,
+      label ? `label="${label}"` : null,
+    ]
+      .filter(Boolean)
+      .join(' ');
+    const htmlTag = `<io-divider${attrs ? ` ${attrs}` : ''}></io-divider>`;
+    const reactProps = [
+      orientation !== 'horizontal' ? `orientation="${orientation}"` : null,
+      label ? `label="${label}"` : null,
+    ]
+      .filter(Boolean)
+      .join(' ');
+    return {
+      html: htmlTag,
+      react: `import { IoDivider } from '@io-digital/components-react';\n\nexport function App() {\n  return <IoDivider${reactProps ? ` ${reactProps}` : ''} />;\n}`,
+      angular: htmlTag,
+      vue: `<template>\n  <io-divider${attrs ? ` ${attrs}` : ''} />\n</template>`,
+    };
+  },
 };
 
 /**

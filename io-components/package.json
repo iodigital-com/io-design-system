@@ -26,6 +26,10 @@
     },
     "./styles": {
       "import": "./dist/styles/index.js"
+    },
+    "./utils/tooltip-init": {
+      "types": "./src/utils/tooltip-init.ts",
+      "import": "./src/utils/tooltip-init.ts"
     }
   },
   "types": "dist/types/index.d.ts",

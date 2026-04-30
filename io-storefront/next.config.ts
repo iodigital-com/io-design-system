@@ -3,6 +3,11 @@ import type { NextConfig } from 'next';
 const isDev = process.env.NODE_ENV === 'development';
 
 const nextConfig: NextConfig = {
+  // Compile @io-digital/components TypeScript source files directly so the
+  // storefront can import ./utils/tooltip-init without a separate pre-build.
+  // Acceptable pattern for monorepo-internal packages; update to a compiled
+  // dist export if this package is ever published externally.
+  transpilePackages: ['@io-digital/components'],
   ...(isDev ? {} : { output: 'export' }),
   ...(isDev
     ? {

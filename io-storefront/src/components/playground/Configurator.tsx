@@ -43,6 +43,8 @@ export function Configurator({ story, propDefinitions, previewClassName, preview
     createElements(story.generator(story.state), setExampleState),
   );
   const [frameworkCode, setFrameworkCode] = useState<FrameworkCode>(() => {
+    if (typeof story.frameworkCode === 'function') return story.frameworkCode(story.state);
+    if (story.frameworkCode) return story.frameworkCode;
     const g = story.generator(story.state);
     return {
       html: generateHtmlMarkup(g),
@@ -56,12 +58,18 @@ export function Configurator({ story, propDefinitions, previewClassName, preview
   useEffect(() => {
     const generated = story.generator(exampleState);
     setExampleElement(createElements(generated, setExampleState));
-    setFrameworkCode({
-      html: generateHtmlMarkup(generated),
-      react: generateReactMarkup(generated),
-      angular: generateAngularMarkup(generated),
-      vue: generateVueMarkup(generated),
-    });
+    if (typeof story.frameworkCode === 'function') {
+      setFrameworkCode(story.frameworkCode(exampleState));
+    } else if (story.frameworkCode) {
+      setFrameworkCode(story.frameworkCode);
+    } else {
+      setFrameworkCode({
+        html: generateHtmlMarkup(generated),
+        react: generateReactMarkup(generated),
+        angular: generateAngularMarkup(generated),
+        vue: generateVueMarkup(generated),
+      });
+    }
   }, [exampleState]);
 
   return (

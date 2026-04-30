@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote, CodeNote } from '@/components/api/ApiPrimitives';
+import { SectionHeader, InlineCode, ApiTable, ReflectBadge, CodeNote } from '@/components/api/ApiPrimitives';
 
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -54,19 +54,6 @@ export default function IoSelectApiPage() {
               'Placeholder option rendered as the first disabled option. Shown when value is empty. Provides a "Select an option" prompt.',
             ],
             [
-              <InlineCode key="n">options</InlineCode>,
-              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>IoSelectOption[]</InlineCode>
-              </span>,
-              <InlineCode key="d">[]</InlineCode>,
-              <span key="desc">
-                Array of option objects. Each object has{' '}
-                <InlineCode>label</InlineCode>{' '}(string, displayed text),{' '}
-                <InlineCode>value</InlineCode>{' '}(string, form value), and optional{' '}
-                <InlineCode>disabled</InlineCode>{' '}(boolean).
-              </span>,
-            ],
-            [
               <InlineCode key="n">required</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
@@ -96,6 +83,24 @@ export default function IoSelectApiPage() {
               '—',
               'Helper text shown below the select when error is false. Hidden when the error state is active.',
             ],
+            [
+              <span key="n"><InlineCode>custom</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Switches from the native <select> element to a fully accessible ARIA combobox/listbox implementation. Required for multiple selection and filter mode.',
+            ],
+            [
+              <InlineCode key="n">multiple</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Enables multi-value selection. Requires custom=true. The change event detail becomes string[] instead of string.',
+            ],
+            [
+              <InlineCode key="n">filter</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Adds a search input inside the dropdown to filter options by label. Requires custom=true.',
+            ],
           ]}
         />
       </section>
@@ -116,9 +121,9 @@ export default function IoSelectApiPage() {
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | string[]</InlineCode>,
               'No',
-              'Fires when the selected value changes. Detail is the new selected option value string.',
+              'Fires when the selected value changes. Detail is the new value string (single mode) or array of selected values (multiple mode).',
             ],
             [
               <InlineCode key="n">focus</InlineCode>,
@@ -140,17 +145,22 @@ document.querySelector('io-select')
   .addEventListener('change', (e) => console.log('value:', e.detail));
 
 // React
-<IoSelect
-  label="Country"
-  options={options}
-  onChange={(e) => setCountry(e.detail)}
-/>
+<IoSelect label="Country" onChange={(e) => setCountry(e.detail)}>
+  <io-option value="nl" label="Netherlands" />
+  <io-option value="be" label="Belgium" />
+</IoSelect>
 
 // Angular
-<io-select label="Country" [options]="options" (change)="onSelect($event)"></io-select>
+<io-select label="Country" (change)="onSelect($event)">
+  <io-option value="nl" label="Netherlands"></io-option>
+  <io-option value="be" label="Belgium"></io-option>
+</io-select>
 
 // Vue
-<io-select label="Country" :options="options" @change="handleChange" />`}
+<io-select label="Country" @change="handleChange">
+  <io-option value="nl" label="Netherlands" />
+  <io-option value="be" label="Belgium" />
+</io-select>`}
         </CodeNote>
       </section>
 
@@ -180,16 +190,32 @@ document.querySelector('io-select')
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="Content slots available on io-select."
+          description="io-option and io-optgroup are the slot children of io-select. Place them as direct children to define the available options and groups."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-select has no content slots.</strong>
-          {' '}All content is passed through props:{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>options</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Element', width: '200px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">io-option</InlineCode>,
+              <span key="d">
+                A single selectable option. Accepts <InlineCode>value</InlineCode> (string, required),{' '}
+                <InlineCode>label</InlineCode> (string, displayed text), and optional{' '}
+                <InlineCode>disabled</InlineCode> (boolean) attributes.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">io-optgroup</InlineCode>,
+              <span key="d">
+                A labelled group of <InlineCode>io-option</InlineCode> children. Accepts{' '}
+                <InlineCode>label</InlineCode> (string, group heading) and optional{' '}
+                <InlineCode>disabled</InlineCode> (boolean, propagates to all child options).
+              </span>,
+            ],
+          ]}
+        />
       </section>
 
     </div>

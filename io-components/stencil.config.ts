@@ -133,7 +133,7 @@ export const config: Config = {
   // Bundle grouping — components that must be co-loaded.
   // ──────────────────────────────────────────────────────────────
   bundles: [
-    // { components: ['io-select', 'io-select-option'] },
+    { components: ['io-select', 'io-option', 'io-optgroup'] },
     // { components: ['io-tabs', 'io-tabs-item'] },
   ],
 

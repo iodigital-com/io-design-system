@@ -248,34 +248,44 @@ export function Canvas({ children }: { children: ReactNode }) {
     };
   }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen]);
 
-  // Focus trap — cycle Tab/Shift+Tab within the active drawer on mobile
+  // Focus trap — cycle Tab/Shift+Tab within the active drawer on mobile.
+  // aria-modal="true" requires that focus never leaves the dialog, so we also
+  // re-capture any focus that escapes via programmatic or pointer means.
   useEffect(() => {
     if (!isMobileViewport) return;
 
-    const activeDrawer = isSidebarEndOpen
+    const drawer = isSidebarEndOpen
       ? sidebarEndRef.current
       : isSidebarStartOpen
         ? sidebarStartRef.current
         : null;
 
-    if (!activeDrawer) return;
+    if (!drawer) return;
+    // Capture narrowed non-null ref for use inside the closure
+    const drawerEl: HTMLElement = drawer;
 
     function trapFocus(event: KeyboardEvent) {
       if (event.key !== 'Tab') return;
-      const focusable = getFocusableElements(activeDrawer!);
+      const focusable = getFocusableElements(drawerEl);
       if (focusable.length === 0) {
         event.preventDefault();
         return;
       }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      // Re-capture focus if it escaped the drawer via non-keyboard means
+      if (!drawerEl.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+        return;
+      }
       if (event.shiftKey) {
-        if (document.activeElement === first || document.activeElement === activeDrawer) {
+        if (document.activeElement === first || document.activeElement === drawerEl) {
           event.preventDefault();
           last.focus();
         }
       } else {
-        if (document.activeElement === last || document.activeElement === activeDrawer) {
+        if (document.activeElement === last || document.activeElement === drawerEl) {
           event.preventDefault();
           first.focus();
         }

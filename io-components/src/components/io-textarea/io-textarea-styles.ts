@@ -70,15 +70,24 @@ export function getTextareaStyles(): string {
 
     .textarea-field--sm {
       min-height: var(--io-size-input-sm);
+      font-size: var(--io-font-size-xs);
+      line-height: var(--io-line-height-base);
+      padding-top: var(--io-space-1);
+      padding-bottom: var(--io-space-1);
     }
 
     .textarea-field--md {
       min-height: var(--io-size-input-md);
+      font-size: var(--io-font-size-sm);
+      line-height: var(--io-line-height-relaxed);
     }
 
     .textarea-field--lg {
       min-height: var(--io-size-input-lg);
       font-size: var(--io-font-size-base);
+      line-height: var(--io-line-height-relaxed);
+      padding-top: var(--io-space-3);
+      padding-bottom: var(--io-space-3);
     }
 
     .textarea-field::placeholder {

@@ -57,14 +57,18 @@ export function getInputStyles(): string {
     }
 
     .input-field--sm {
+      height: var(--io-size-input-sm);
       min-height: var(--io-size-input-sm);
+      font-size: var(--io-font-size-xs);
     }
 
     .input-field--md {
+      height: var(--io-size-input-md);
       min-height: var(--io-size-input-md);
     }
 
     .input-field--lg {
+      height: var(--io-size-input-lg);
       min-height: var(--io-size-input-lg);
       font-size: var(--io-font-size-base);
     }

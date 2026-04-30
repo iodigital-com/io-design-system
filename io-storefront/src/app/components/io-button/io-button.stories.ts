@@ -26,11 +26,12 @@ export const buttonStory: Story<'io-button'> = {
     // null tells React to explicitly reset the DOM property (delete skips the reset).
     // Code generators already filter out null, so it won't appear in output.
     if (attrs['arrow'] === 'none') attrs['arrow'] = null;
+    const content = attrs['iconOnly'] ? '×' : (label as string);
     return [
       {
         tag: 'io-button' as const,
         properties: attrs,
-        children: [label as string],
+        children: [content],
       },
     ];
   },

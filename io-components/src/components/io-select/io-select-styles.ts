@@ -61,14 +61,18 @@ export function getSelectStyles(): string {
     }
 
     .select-field--sm {
+      height: var(--io-size-input-sm);
       min-height: var(--io-size-input-sm);
+      font-size: var(--io-font-size-xs);
     }
 
     .select-field--md {
+      height: var(--io-size-input-md);
       min-height: var(--io-size-input-md);
     }
 
     .select-field--lg {
+      height: var(--io-size-input-lg);
       min-height: var(--io-size-input-lg);
       font-size: var(--io-font-size-base);
     }

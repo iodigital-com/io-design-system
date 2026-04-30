@@ -282,3 +282,17 @@ describe('io-carousel — Watch suppression (rewind / smooth-scroll integrity)',
     expect((component as any)._internalScroll).toBe(true);
   });
 });
+
+describe('io-carousel — scrollBehavior (prefers-reduced-motion)', () => {
+  it('returns "smooth" when prefers-reduced-motion is not set', () => {
+    window.matchMedia = vi.fn().mockReturnValue({ matches: false });
+    const component = new IoCarousel();
+    expect((component as any).scrollBehavior).toBe('smooth');
+  });
+
+  it('returns "auto" when prefers-reduced-motion: reduce is active', () => {
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true });
+    const component = new IoCarousel();
+    expect((component as any).scrollBehavior).toBe('auto');
+  });
+});

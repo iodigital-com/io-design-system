@@ -76,6 +76,13 @@ export class IoCarousel {
     return this.el.shadowRoot?.querySelector<HTMLElement>('.carousel-track') ?? null;
   }
 
+
+  private get scrollBehavior(): ScrollBehavior {
+    return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'auto'
+      : 'smooth';
+  }
+
   private get slotEl(): HTMLSlotElement | null {
     return this.el.shadowRoot?.querySelector<HTMLSlotElement>('slot') ?? null;
   }
@@ -163,7 +170,7 @@ export class IoCarousel {
     // Rewind should follow physical boundaries first so it works even when
     // "last page" does not map to the final slide index on wide layouts.
     if (this.rewind && track.scrollLeft <= 1) {
-      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      track.scrollTo({ left: maxScroll, behavior: this.scrollBehavior });
       return;
     }
 
@@ -173,14 +180,14 @@ export class IoCarousel {
       const targetLeft = this.getSlideLeft(targetIndex);
 
       if (shouldUseTargetScroll(targetLeft, track.scrollLeft)) {
-        track.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        track.scrollTo({ left: targetLeft, behavior: this.scrollBehavior });
         return;
       }
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
 
-    track.scrollBy({ left: -fallbackDistance, behavior: 'smooth' });
+    track.scrollBy({ left: -fallbackDistance, behavior: this.scrollBehavior });
   };
 
   private onNext = () => {
@@ -192,7 +199,7 @@ export class IoCarousel {
     // Rewind should follow physical boundaries first so it works even when
     // "last page" does not map to the final slide index on wide layouts.
     if (this.rewind && track.scrollLeft >= maxScroll - 1) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
+      track.scrollTo({ left: 0, behavior: this.scrollBehavior });
       return;
     }
 
@@ -202,14 +209,14 @@ export class IoCarousel {
       const targetLeft = this.getSlideLeft(targetIndex);
 
       if (shouldUseTargetScroll(targetLeft, track.scrollLeft)) {
-        track.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        track.scrollTo({ left: targetLeft, behavior: this.scrollBehavior });
         return;
       }
     }
 
     const fallbackDistance = getCarouselFallbackDistance(track.clientWidth);
 
-    track.scrollBy({ left: fallbackDistance, behavior: 'smooth' });
+    track.scrollBy({ left: fallbackDistance, behavior: this.scrollBehavior });
   };
 
   private onTrackScroll = () => {

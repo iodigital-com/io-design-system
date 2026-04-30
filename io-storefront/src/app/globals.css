@@ -265,9 +265,54 @@ pre code.hljs .hljs-strong {
   font-weight: bold;
 }
 
+
 @media (prefers-reduced-motion: reduce) {
   .io-decorative-transition {
     transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Overlay / drawer enter animations (#151)
+   Applied via .io-drawer-start and .io-drawer-end classes.
+   Reduced-motion guard at the bottom suppresses all animations.
+─────────────────────────────────────────────────────────────── */
+
+@keyframes io-slide-in-left {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes io-slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes io-slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* Mobile nav drawer — slides in from left */
+.io-drawer-start {
+  animation: io-slide-in-left 220ms var(--io-motion-easing-snappy, cubic-bezier(0.075, 0.82, 0.165, 1)) both;
+}
+
+/* Mobile bottom sheet (configurator) — slides up */
+.io-drawer-end-mobile {
+  animation: io-slide-up 220ms var(--io-motion-easing-snappy, cubic-bezier(0.075, 0.82, 0.165, 1)) both;
+}
+
+/* Desktop side panel — slides in from right */
+.io-drawer-end-desktop {
+  animation: io-slide-in-right 220ms var(--io-motion-easing-snappy, cubic-bezier(0.075, 0.82, 0.165, 1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .io-drawer-start,
+  .io-drawer-end-mobile,
+  .io-drawer-end-desktop {
     animation: none !important;
   }
 }

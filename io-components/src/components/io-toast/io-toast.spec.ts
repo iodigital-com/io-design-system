@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+import { h } from '@stencil/core';
 import { IoToast } from './io-toast';
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';
@@ -10,7 +11,6 @@ describe('io-toast — registration', () => {
   beforeEach(() => {
     component = new IoToast();
     (component as any).el = document.createElement('io-toast');
-    // Ensure clean state before each test
     toastManager.unregister();
   });
 
@@ -49,6 +49,15 @@ describe('io-toast — registration', () => {
     expect(() => component.render()).not.toThrow();
     (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
     expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with aria-atomic="true" for atomic screen-reader announcements', () => {
+    vi.mocked(h).mockClear();
+    component.render();
+    const hostCall = vi.mocked(h).mock.calls.find(
+      (call) => call[1] && typeof call[1] === 'object' && 'aria-atomic' in (call[1] as object),
+    );
+    expect((hostCall?.[1] as Record<string, unknown>)?.['aria-atomic']).toBe('true');
   });
 });
 

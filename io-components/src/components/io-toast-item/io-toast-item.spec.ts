@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoToastItem } from './io-toast-item';
+import { getToastItemStyles } from './io-toast-item-styles';
 
 describe('io-toast-item — default props', () => {
   let component: IoToastItem;
@@ -69,5 +70,19 @@ describe('io-toast-item — interaction model consistency', () => {
 
     expect(() => component.handleClose()).not.toThrow();
     expect(emitMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('io-toast-item — overlay transition contract', () => {
+  it('enter animation uses motion easing token', () => {
+    const styles: string = getToastItemStyles();
+    expect(styles).toContain('--io-motion-easing-ease-out');
+  });
+
+  it('prefers-reduced-motion guard disables enter animation', () => {
+    const styles: string = getToastItemStyles();
+    expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
+    const rmIdx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
+    expect(styles.slice(rmIdx)).toContain('animation: none');
   });
 });

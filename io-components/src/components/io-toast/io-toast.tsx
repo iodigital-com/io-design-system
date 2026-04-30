@@ -63,7 +63,7 @@ export class IoToast {
 
   render() {
     return (
-      <Host role="status" aria-live="polite" aria-atomic="false">
+      <Host role="status" aria-live="polite" aria-atomic="true">
         <style>{getToastStyles()}</style>
         {this.currentMsg && (
           <io-toast-item

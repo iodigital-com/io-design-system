@@ -62,19 +62,19 @@ export default function IoSelectAccessibilityPage() {
             },
             {
               key: <span className="flex items-center gap-1"><Kbd>Enter</Kbd><span style={{ color: 'var(--io-text-muted)' }}>/</span><Kbd>Space</Kbd><span style={{ color: 'var(--io-text-muted)' }}>/</span><Kbd>↓</Kbd></span>,
-              action: 'Opens the dropdown when the trigger has focus. ArrowDown also sets the first option as active.',
+              action: 'When the dropdown is closed: opens it and sets the first option as active.',
             },
             {
               key: <Kbd>↑</Kbd>,
-              action: 'Opens the dropdown and sets the last option as active.',
+              action: 'When the dropdown is closed: opens it and sets the last option as active.',
             },
             {
               key: <Kbd>↓</Kbd>,
-              action: 'Moves focus to the next option in the dropdown (wraps to first).',
+              action: 'When the dropdown is open: moves focus to the next option (wraps to first).',
             },
             {
               key: <Kbd>↑</Kbd>,
-              action: 'Moves focus to the previous option in the dropdown (wraps to last).',
+              action: 'When the dropdown is open: moves focus to the previous option (wraps to last).',
             },
             {
               key: <Kbd>Home</Kbd>,

@@ -91,6 +91,14 @@ export const sitemap: NavSection[] = [
         related: ['io-button', 'io-tag', 'io-badge'],
       },
       {
+        label: 'Divider',
+        href: '/components/io-divider/configurator',
+        status: 'beta',
+        slug: 'io-divider',
+        description: 'Token-based visual separator between sections of content. Supports horizontal and vertical orientations, plus a labeled variant for "or" / "and" patterns.',
+        related: ['io-accordion', 'io-tabs', 'io-badge'],
+      },
+      {
         label: 'Checkbox',
         href: '/components/io-checkbox/configurator',
         status: 'stable',

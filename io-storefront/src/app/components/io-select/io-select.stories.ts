@@ -7,6 +7,16 @@ const DEFAULT_CHILDREN = [
   { tag: 'io-option' as const, properties: { value: 'de', label: 'Germany' } },
 ];
 
+const COMBOBOX_CHILDREN = [
+  { tag: 'io-option' as const, properties: { value: 'nl', label: 'Netherlands' } },
+  { tag: 'io-option' as const, properties: { value: 'be', label: 'Belgium' } },
+  { tag: 'io-option' as const, properties: { value: 'de', label: 'Germany' } },
+  { tag: 'io-option' as const, properties: { value: 'fr', label: 'France' } },
+  { tag: 'io-option' as const, properties: { value: 'es', label: 'Spain' } },
+  { tag: 'io-option' as const, properties: { value: 'it', label: 'Italy' } },
+  { tag: 'io-option' as const, properties: { value: 'se', label: 'Sweden', disabled: true } },
+];
+
 export const selectStory: Story<'io-select'> = {
   state: {
     properties: {
@@ -112,6 +122,50 @@ export const selectStorySizes: Story<'io-select'> = {
       tag: 'io-select' as const,
       properties: { label: 'Large', size: 'lg', placeholder: 'Choose' },
       children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const selectStoryCombobox: Story<'io-select'> = {
+  state: { properties: { label: 'Country', custom: true } },
+  generator: () => [
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Country', placeholder: 'Select a country', custom: true },
+      children: COMBOBOX_CHILDREN,
+    },
+  ],
+};
+
+export const selectStoryMultiple: Story<'io-select'> = {
+  state: { properties: { label: 'Countries', custom: true, multiple: true } },
+  generator: () => [
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Countries', placeholder: 'Select countries', custom: true, multiple: true },
+      children: COMBOBOX_CHILDREN,
+    },
+  ],
+};
+
+export const selectStoryFilter: Story<'io-select'> = {
+  state: { properties: { label: 'Country', custom: true, filter: true } },
+  generator: () => [
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Country', placeholder: 'Search countries', custom: true, filter: true },
+      children: COMBOBOX_CHILDREN,
+    },
+  ],
+};
+
+export const selectStoryMultipleFilter: Story<'io-select'> = {
+  state: { properties: { label: 'Countries', custom: true, multiple: true, filter: true } },
+  generator: () => [
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Countries', placeholder: 'Search and select', custom: true, multiple: true, filter: true },
+      children: COMBOBOX_CHILDREN,
     },
   ],
 };

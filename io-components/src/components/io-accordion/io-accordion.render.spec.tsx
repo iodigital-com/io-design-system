@@ -15,4 +15,15 @@ describe('io-accordion — render snapshots', () => {
     const { root } = await render(<io-accordion heading="Disabled section" disabled />);
     expect(root).toMatchSnapshot();
   });
+
+  it('renders allow-multiple state (attribute reflected, markup unchanged)', async () => {
+    const { root } = await render(<io-accordion heading="Multi open" allow-multiple />);
+    expect(root).toMatchSnapshot();
+  });
+
+  it('renders defaultExpanded (results in open panel, no extra attribute since not reflected)', async () => {
+    const { root } = await render(<io-accordion heading="Default expanded" default-expanded />);
+    // Panel should be rendered open
+    expect(root).toMatchSnapshot();
+  });
 });

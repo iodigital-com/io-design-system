@@ -10,7 +10,7 @@ describe('io-accordion — event emission', () => {
     component = new IoAccordion();
     emitSpy = vi.fn();
     (component as any).update = { emit: emitSpy };
-    (component as any).el = { id: '' };
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
     component.componentWillLoad();
   });
 

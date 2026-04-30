@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   accordionSingleOpenCode,
   accordionStory,
+  accordionStoryDefaultExpanded,
   accordionStoryGroupMultiOpen,
   accordionStoryOpen,
   accordionStorySlottedHeading,
@@ -21,16 +22,29 @@ const singleOpenItems = [
 ];
 
 /**
- * Live single-open demo.
+ * Live single-open demo (controlled pattern).
  *
  * Uses imperative DOM via refs instead of React 19 JSX props because
  * Stencil's @Prop({ mutable: true }) self-mutates `open` on click,
  * and React 19's property-setting on custom elements does not reliably
  * override the in-flight Stencil mutation.
+ *
+ * Sets allowMultiple=true on each accordion so this controlled demo manages
+ * open state exclusively through React — opting out of the built-in
+ * single-open coordination that fires when allowMultiple=false (the default).
  */
 function SingleOpenDemo() {
   const [openId, setOpenId] = useState('audits');
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Opt these controlled accordions out of built-in group coordination.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    container.querySelectorAll('io-accordion').forEach((acc) => {
+      (acc as unknown as { allowMultiple: boolean }).allowMultiple = true;
+    });
+  }, []);
 
   // Attach a single delegated event listener for `update` events.
   useEffect(() => {
@@ -101,6 +115,13 @@ export default function IoAccordionExamplesPage() {
           description="Provide rich heading markup through the heading slot when you need custom typography or inline elements."
         />
         <ComponentStory story={accordionStorySlottedHeading} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Default expanded"
+          description="Use default-expanded to expand a panel on first render without setting open externally. The prop has no effect after initial mount."
+        />
+        <ComponentStory story={accordionStoryDefaultExpanded} />
       </section>
       <section>
         <ExamplesSectionHeader

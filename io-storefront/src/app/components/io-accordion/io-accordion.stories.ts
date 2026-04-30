@@ -166,6 +166,8 @@ export const accordionStory: Story<'io-accordion'> = {
       heading: 'Some Heading',
       'heading-tag': 'h3',
       disabled: false,
+      'default-expanded': false,
+      'allow-multiple': false,
       'use-heading-slot': false,
     },
   },
@@ -179,6 +181,8 @@ export const accordionStory: Story<'io-accordion'> = {
         properties: {
           open: (properties?.open as boolean) ?? false,
           disabled: (properties?.disabled as boolean) ?? false,
+          'default-expanded': (properties?.['default-expanded'] as boolean) ?? false,
+          'allow-multiple': (properties?.['allow-multiple'] as boolean) ?? false,
           ...(useHeadingSlot
             ? {}
             : {
@@ -291,6 +295,29 @@ export const accordionStoryGroupSingleOpen: Story<'io-accordion'> = {
   ],
 };
 
+export const accordionStoryDefaultExpanded: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Expanded on load', 'heading-tag': 'h3' } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: {
+        heading: 'Expanded on load',
+        'heading-tag': 'h3',
+        'default-expanded': true,
+      },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['This panel opens immediately on first render without requiring the open prop to be set externally.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const accordionStoryGroupMultiOpen: Story<'io-accordion'> = {
   generator: () => [
     {
@@ -299,17 +326,17 @@ export const accordionStoryGroupMultiOpen: Story<'io-accordion'> = {
       children: [
         {
           tag: 'io-accordion' as const,
-          properties: { open: true, heading: 'Audits & research' },
+          properties: { open: true, heading: 'Audits & research', 'allow-multiple': true },
           children: [{ tag: 'p' as const, children: ['Making targeted, data-driven decisions starts with clear, reliable data.'] }],
         },
         {
           tag: 'io-accordion' as const,
-          properties: { open: true, heading: 'Brand and communication strategy' },
+          properties: { open: true, heading: 'Brand and communication strategy', 'allow-multiple': true },
           children: [{ tag: 'p' as const, children: ['A clear brand and communication strategy helps teams move in one direction.'] }],
         },
         {
           tag: 'io-accordion' as const,
-          properties: { heading: 'Digital strategy' },
+          properties: { heading: 'Digital strategy', 'allow-multiple': true },
           children: [{ tag: 'p' as const, children: ['Build a measurable roadmap that links experience quality to business outcomes.'] }],
         },
       ],
@@ -322,6 +349,18 @@ export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
   { name: 'heading-tag', type: 'select', defaultValue: 'h3', options: ['h2', 'h3', 'h4', 'h5', 'h6'] },
   { name: 'disabled', type: 'boolean', defaultValue: false },
+  {
+    name: 'default-expanded',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Expands this panel on the very first render. Has no effect after initial mount.',
+  },
+  {
+    name: 'allow-multiple',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Set to true to opt out of single-open group coordination. Siblings with allow-multiple=false will auto-close when another opens.',
+  },
   {
     name: 'use-heading-slot',
     type: 'boolean',

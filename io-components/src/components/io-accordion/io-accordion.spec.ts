@@ -21,6 +21,14 @@ describe('io-accordion — default props', () => {
   it('uses empty heading fallback by default', () => {
     expect(component.heading).toBe('');
   });
+
+  it('defaults defaultExpanded to false', () => {
+    expect(component.defaultExpanded).toBe(false);
+  });
+
+  it('defaults allowMultiple to false', () => {
+    expect(component.allowMultiple).toBe(false);
+  });
 });
 
 describe('io-accordion — toggling', () => {
@@ -31,7 +39,7 @@ describe('io-accordion — toggling', () => {
     component = new IoAccordion();
     emitSpy = vi.fn();
     (component as any).update = { emit: emitSpy };
-    (component as any).el = { forceUpdate: vi.fn() };
+    (component as any).el = { forceUpdate: vi.fn(), dispatchEvent: vi.fn() };
     component.componentWillLoad();
   });
 
@@ -59,13 +67,13 @@ describe('io-accordion — lifecycle', () => {
   it('does not throw during componentWillLoad', () => {
     const component = new IoAccordion();
     (component as any).update = { emit: vi.fn() };
-    (component as any).el = { forceUpdate: vi.fn() };
+    (component as any).el = { forceUpdate: vi.fn(), dispatchEvent: vi.fn() };
     expect(() => component.componentWillLoad()).not.toThrow();
   });
 
   it('creates a stable base id when host id exists', () => {
     const component = new IoAccordion();
-    (component as any).el = { id: 'accordion-host' };
+    (component as any).el = { id: 'accordion-host', dispatchEvent: vi.fn() };
     component.componentWillLoad();
     expect((component as any).baseId).toBe('accordion-host');
   });

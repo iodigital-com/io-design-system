@@ -8,7 +8,7 @@ describe('io-accordion — disabled state', () => {
   beforeEach(() => {
     component = new IoAccordion();
     (component as any).update = { emit: vi.fn() };
-    (component as any).el = { id: '' };
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
     component.componentWillLoad();
   });
 

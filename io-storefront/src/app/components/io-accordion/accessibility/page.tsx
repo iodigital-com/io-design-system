@@ -55,6 +55,11 @@ export default function IoAccordionAccessibilityPage() {
               value: '<div> panel: trigger button ID',
               description: 'Associates panel region with its trigger label.',
             },
+            {
+              attribute: 'aria-disabled',
+              value: '<button>: "true" when disabled',
+              description: 'Set on the trigger button when the disabled prop is true. Screen readers announce the trigger as unavailable. The native disabled attribute is also set, so the button is removed from the tab sequence.',
+            },
           ]}
         />
       </section>

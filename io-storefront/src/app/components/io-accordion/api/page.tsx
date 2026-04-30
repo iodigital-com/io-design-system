@@ -47,6 +47,20 @@ export default function IoAccordionApiPage() {
               <InlineCode key="default">false</InlineCode>,
               <span key="description">Prevents interaction, reduces opacity, and sets <InlineCode>aria-disabled</InlineCode>. Reflects to attribute.</span>,
             ],
+            [
+              <span key="property"><InlineCode>defaultExpanded</InlineCode></span>,
+              <InlineCode key="attribute">default-expanded</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">Expands the panel on the very first render. Has no effect after initial mount — use the <InlineCode>open</InlineCode> prop for runtime control. Does not reflect back to attribute (preventing the attribute from persisting after the user closes the panel).</span>,
+            ],
+            [
+              <span key="property"><InlineCode>allowMultiple</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">allow-multiple</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">When <InlineCode>false</InlineCode> (default), opening this accordion dispatches a coordination event so sibling accordions in the same parent auto-close. Set to <InlineCode>true</InlineCode> to allow multiple panels to remain open simultaneously. Reflects to attribute.</span>,
+            ],
           ]}
         />
       </section>

@@ -1,5 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`io-accordion — render snapshots > renders allow-multiple state (attribute reflected, markup unchanged) 1`] = `
+<io-accordion allow-multiple class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="accordion">
+      <div class="accordion-item accordion-item--first">
+        <h3 class="accordion-heading">
+          <button id="io-accordion-4fzzzxjy-trigger" class="accordion-trigger" aria-expanded="false" aria-controls="io-accordion-4fzzzxjy-panel">
+            <span class="accordion-title">
+              <slot name="heading">
+                Multi open
+              </slot>
+            </span>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div id="io-accordion-4fzzzxjy-panel" class="accordion-panel" role="region" aria-labelledby="io-accordion-4fzzzxjy-trigger" inert>
+          <div class="accordion-panel-inner">
+            <slot></slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</io-accordion>
+`;
+
 exports[`io-accordion — render snapshots > renders default state 1`] = `
 <io-accordion class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
@@ -16,6 +42,32 @@ exports[`io-accordion — render snapshots > renders default state 1`] = `
           </button>
         </h3>
         <div id="io-accordion-4fzzzxjy-panel" class="accordion-panel" role="region" aria-labelledby="io-accordion-4fzzzxjy-trigger" inert>
+          <div class="accordion-panel-inner">
+            <slot></slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mock:shadow-root>
+</io-accordion>
+`;
+
+exports[`io-accordion — render snapshots > renders defaultExpanded (results in open panel, no extra attribute since not reflected) 1`] = `
+<io-accordion default-expanded open class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="accordion">
+      <div class="accordion-item accordion-item--first accordion-item--open">
+        <h3 class="accordion-heading">
+          <button id="io-accordion-4fzzzxjy-trigger" class="accordion-trigger" aria-expanded="true" aria-controls="io-accordion-4fzzzxjy-panel">
+            <span class="accordion-title">
+              <slot name="heading">
+                Default expanded
+              </slot>
+            </span>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div id="io-accordion-4fzzzxjy-panel" class="accordion-panel" role="region" aria-labelledby="io-accordion-4fzzzxjy-trigger">
           <div class="accordion-panel-inner">
             <slot></slot>
           </div>

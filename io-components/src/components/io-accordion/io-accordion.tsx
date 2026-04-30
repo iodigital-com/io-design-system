@@ -38,7 +38,34 @@ export class IoAccordion {
   /** Prevents interaction and applies reduced-opacity styling */
   @Prop({ reflect: true }) disabled = false;
 
+  /**
+   * Expands this panel on the very first render.
+   * Has no effect after initial render — use the `open` prop for runtime control.
+   *
+   * Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple`
+   * is `false` (the default) will leave all of them open at initial render,
+   * because coordination events are not dispatched during `componentWillLoad`.
+   * Only one `defaultExpanded` accordion per group is recommended when
+   * `allowMultiple` is `false`.
+   */
+  @Prop() defaultExpanded = false;
+
+  /**
+   * When `false` (default), opening this accordion dispatches a coordination
+   * event so sibling accordions sharing the same parent auto-close (single-open
+   * group behaviour). Set to `true` to allow multiple panels open at once.
+   *
+   * The coordination event is dispatched by the *opener* unconditionally;
+   * each receiver decides independently whether to auto-close based on its
+   * own `allowMultiple` value. This means accordions with `allowMultiple=false`
+   * will auto-close even if the opener has `allowMultiple=true`.
+   */
+  @Prop({ reflect: true }) allowMultiple = false;
+
   private baseId = '';
+
+  /** Cached parent reference for listener add/remove symmetry. */
+  private groupParent: HTMLElement | null = null;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -49,12 +76,52 @@ export class IoAccordion {
 
   componentWillLoad() {
     this.baseId = getAccordionBaseId(this.el.id);
+    if (this.defaultExpanded && !this.open) {
+      this.open = true;
+    }
   }
+
+  componentDidLoad() {
+    this.groupParent = this.el.parentElement;
+    this.groupParent?.addEventListener('io-accordion-group-open', this.handleGroupOpen);
+  }
+
+  disconnectedCallback() {
+    this.groupParent?.removeEventListener('io-accordion-group-open', this.handleGroupOpen);
+    this.groupParent = null;
+  }
+
+  /**
+   * Handles the `io-accordion-group-open` coordination event.
+   * When `allowMultiple=false`, closes self if another accordion in the same
+   * parent group opened.
+   */
+  private handleGroupOpen = (event: Event) => {
+    const e = event as CustomEvent<{ source: HTMLElement }>;
+    if (this.allowMultiple) return;
+    if (e.detail.source === this.el) return;
+    if (this.open) {
+      this.open = false;
+      this.update.emit({ open: false });
+    }
+  };
 
   private toggleSingle = () => {
     if (this.disabled) return;
     this.open = !this.open;
     this.update.emit({ open: this.open });
+    // Always dispatch on open — each receiver's own `allowMultiple` flag
+    // decides whether to auto-close. This ensures mixed-mode groups work
+    // correctly: an opener with `allowMultiple=true` still notifies siblings
+    // that have `allowMultiple=false`.
+    if (this.open) {
+      this.el.dispatchEvent(
+        new CustomEvent('io-accordion-group-open', {
+          bubbles: true,
+          detail: { source: this.el },
+        }),
+      );
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────

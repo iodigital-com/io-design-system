@@ -50,6 +50,16 @@ export namespace Components {
      */
     interface IoAccordion {
         /**
+          * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
+          * @default false
+         */
+        "allowMultiple": boolean;
+        /**
+          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
+          * @default false
+         */
+        "defaultExpanded": boolean;
+        /**
           * Prevents interaction and applies reduced-opacity styling
           * @default false
          */
@@ -1389,6 +1399,16 @@ declare namespace LocalJSX {
      */
     interface IoAccordion {
         /**
+          * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
+          * @default false
+         */
+        "allowMultiple"?: boolean;
+        /**
+          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
+          * @default false
+         */
+        "defaultExpanded"?: boolean;
+        /**
           * Prevents interaction and applies reduced-opacity styling
           * @default false
          */
@@ -2234,6 +2254,8 @@ declare namespace LocalJSX {
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
         "disabled": boolean;
+        "defaultExpanded": boolean;
+        "allowMultiple": boolean;
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;

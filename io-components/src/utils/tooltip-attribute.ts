@@ -180,7 +180,7 @@ function onFocusOut(ev: FocusEvent): void {
 }
 
 function onKeyDown(ev: KeyboardEvent): void {
-  if (ev.key === 'Escape') {
+  if (ev.key === 'Escape' && activeTrigger) {
     hideTooltip();
   }
 }

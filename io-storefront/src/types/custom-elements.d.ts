@@ -18,10 +18,11 @@ declare module 'react' {
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
-  'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
+  'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptgroupElement>, HTMLIoOptgroupElement> & Partial<StencilJSX.IoOptgroup>;
+  'io-option': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptionElement>, HTMLIoOptionElement> & Partial<StencilJSX.IoOption>;
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;

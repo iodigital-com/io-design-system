@@ -8,6 +8,7 @@ export type IoTagNames =
   | 'io-accordion'
   | 'io-badge'
   | 'io-button'
+  | 'io-button-group'
   | 'io-carousel'
   | 'io-checkbox'
   | 'io-divider'

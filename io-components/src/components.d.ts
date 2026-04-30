@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
@@ -26,6 +27,7 @@ import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
@@ -179,10 +181,48 @@ export namespace Components {
          */
         "type": IoButtonType;
         /**
+          * Value used by io-button-group to identify this item
+         */
+        "value": string | undefined;
+        /**
           * Visual fill style
           * @default 'solid'
          */
         "variant": IoButtonVariant;
+    }
+    /**
+     * io-button-group
+     * ================
+     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Place `<io-button value="...">Label</io-button>` children inside the component.
+     * The group reads their values/labels at load time and renders internal buttons with
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * @example <io-button-group value="week" exclusive label="View period">
+     *   <io-button value="day">Day</io-button>
+     *   <io-button value="week">Week</io-button>
+     *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     */
+    interface IoButtonGroup {
+        /**
+          * Disables all buttons in the group
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Exclusive (single-select) mode. When true: container gets `role="radiogroup"`, items get `role="radio"`. When false: container gets `role="group"`, items get `role="checkbox"`.
+          * @default false
+         */
+        "exclusive": boolean;
+        /**
+          * Accessible label for the group container (aria-label)
+         */
+        "label": string | undefined;
+        /**
+          * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
+          * @default ''
+         */
+        "value": string | string[];
     }
     /**
      * io-carousel
@@ -881,6 +921,10 @@ export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoButtonElement;
 }
+export interface IoButtonGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoButtonGroupElement;
+}
 export interface IoCarouselCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoCarouselElement;
@@ -995,6 +1039,36 @@ declare global {
     var HTMLIoButtonElement: {
         prototype: HTMLIoButtonElement;
         new (): HTMLIoButtonElement;
+    };
+    interface HTMLIoButtonGroupElementEventMap {
+        "change": IoButtonGroupChangeDetail;
+    }
+    /**
+     * io-button-group
+     * ================
+     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Place `<io-button value="...">Label</io-button>` children inside the component.
+     * The group reads their values/labels at load time and renders internal buttons with
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * @example <io-button-group value="week" exclusive label="View period">
+     *   <io-button value="day">Day</io-button>
+     *   <io-button value="week">Week</io-button>
+     *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     */
+    interface HTMLIoButtonGroupElement extends Components.IoButtonGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoButtonGroupElementEventMap>(type: K, listener: (this: HTMLIoButtonGroupElement, ev: IoButtonGroupCustomEvent<HTMLIoButtonGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoButtonGroupElementEventMap>(type: K, listener: (this: HTMLIoButtonGroupElement, ev: IoButtonGroupCustomEvent<HTMLIoButtonGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoButtonGroupElement: {
+        prototype: HTMLIoButtonGroupElement;
+        new (): HTMLIoButtonGroupElement;
     };
     interface HTMLIoCarouselElementEventMap {
         "update": IoCarouselUpdateDetail;
@@ -1410,6 +1484,7 @@ declare global {
         "io-accordion": HTMLIoAccordionElement;
         "io-badge": HTMLIoBadgeElement;
         "io-button": HTMLIoButtonElement;
+        "io-button-group": HTMLIoButtonGroupElement;
         "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
         "io-divider": HTMLIoDividerElement;
@@ -1572,10 +1647,52 @@ declare namespace LocalJSX {
          */
         "type"?: IoButtonType;
         /**
+          * Value used by io-button-group to identify this item
+         */
+        "value"?: string | undefined;
+        /**
           * Visual fill style
           * @default 'solid'
          */
         "variant"?: IoButtonVariant;
+    }
+    /**
+     * io-button-group
+     * ================
+     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Place `<io-button value="...">Label</io-button>` children inside the component.
+     * The group reads their values/labels at load time and renders internal buttons with
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * @example <io-button-group value="week" exclusive label="View period">
+     *   <io-button value="day">Day</io-button>
+     *   <io-button value="week">Week</io-button>
+     *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     */
+    interface IoButtonGroup {
+        /**
+          * Disables all buttons in the group
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Exclusive (single-select) mode. When true: container gets `role="radiogroup"`, items get `role="radio"`. When false: container gets `role="group"`, items get `role="checkbox"`.
+          * @default false
+         */
+        "exclusive"?: boolean;
+        /**
+          * Accessible label for the group container (aria-label)
+         */
+        "label"?: string | undefined;
+        /**
+          * Fires when the selection changes. Detail contains the new value or value array.
+         */
+        "onChange"?: (event: IoButtonGroupCustomEvent<IoButtonGroupChangeDetail>) => void;
+        /**
+          * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
+          * @default ''
+         */
+        "value"?: string | string[];
     }
     /**
      * io-carousel
@@ -2337,9 +2454,16 @@ declare namespace LocalJSX {
         "loading": boolean;
         "fullWidth": boolean;
         "label": string | undefined;
+        "value": string | undefined;
         "iconOnly": boolean;
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;
+    }
+    interface IoButtonGroupAttributes {
+        "exclusive": boolean;
+        "value": string | string[];
+        "disabled": boolean;
+        "label": string | undefined;
     }
     interface IoCarouselAttributes {
         "prevLabel": string;
@@ -2474,6 +2598,7 @@ declare namespace LocalJSX {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
+        "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
@@ -2525,6 +2650,20 @@ declare module "@stencil/core" {
              * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
              */
             "io-button": LocalJSX.IntrinsicElements["io-button"] & JSXBase.HTMLAttributes<HTMLIoButtonElement>;
+            /**
+             * io-button-group
+             * ================
+             * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+             * Place `<io-button value="...">Label</io-button>` children inside the component.
+             * The group reads their values/labels at load time and renders internal buttons with
+             * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+             * @example <io-button-group value="week" exclusive label="View period">
+             *   <io-button value="day">Day</io-button>
+             *   <io-button value="week">Week</io-button>
+             *   <io-button value="month">Month</io-button>
+             * </io-button-group>
+             */
+            "io-button-group": LocalJSX.IntrinsicElements["io-button-group"] & JSXBase.HTMLAttributes<HTMLIoButtonGroupElement>;
             /**
              * io-carousel
              * ============

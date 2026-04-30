@@ -353,6 +353,25 @@
   --io-divider-gap:                var(--io-space-3);
   --io-divider-label-size:         var(--io-font-size-sm);
 
+  /* Button Group */
+  --io-button-group-border-width:      1px;
+  --io-button-group-border-color:      var(--io-color-grey-3);
+  --io-button-group-border-radius:     var(--io-border-radius-sm);
+  --io-button-group-bg:                var(--io-color-white);
+  --io-button-group-color:             var(--io-color-grey-6);
+  --io-button-group-padding-y:         var(--io-space-2);
+  --io-button-group-padding-x:         var(--io-space-4);
+  --io-button-group-font-size:         var(--io-font-size-base);
+  --io-button-group-active-bg:         var(--io-color-primary);
+  --io-button-group-active-color:      var(--io-color-white);
+  --io-button-group-active-border:     var(--io-color-primary);
+  --io-button-group-hover-bg:          var(--io-state-hover);
+  --io-button-group-disabled-opacity:  var(--io-state-disabled-opacity);
+  --io-button-group-min-height:        var(--io-touch-target-min);
+  --io-button-group-transition:        background-color 500ms var(--io-motion-easing-snappy),
+                                       color 500ms var(--io-motion-easing-snappy),
+                                       border-color 500ms var(--io-motion-easing-snappy);
+
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 

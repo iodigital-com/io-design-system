@@ -152,7 +152,7 @@ MockHTMLElement {
                 "_childNodes": [
                   _MockTextNode {
                     "_childNodes": [],
-                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                     "nodeName": "#text",
                     "nodeType": 3,
                     "ownerDocument": [Circular],
@@ -167,7 +167,7 @@ MockHTMLElement {
                 "sheet": MockCSSStyleSheet {
                   "cssRules": [
                     MockCSSRule {
-                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                       "parentStyleSheet": [Circular],
                       "type": 0,
                     },
@@ -367,7 +367,7 @@ MockHTMLElement {
                   "_childNodes": [
                     _MockTextNode {
                       "_childNodes": [],
-                      "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                      "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                       "nodeName": "#text",
                       "nodeType": 3,
                       "ownerDocument": [Circular],
@@ -382,7 +382,7 @@ MockHTMLElement {
                   "sheet": MockCSSStyleSheet {
                     "cssRules": [
                       MockCSSRule {
-                        "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                        "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                         "parentStyleSheet": [Circular],
                         "type": 0,
                       },
@@ -554,7 +554,7 @@ MockHTMLElement {
                         "_childNodes": [
                           _MockTextNode {
                             "_childNodes": [],
-                            "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                            "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                             "nodeName": "#text",
                             "nodeType": 3,
                             "ownerDocument": [Circular],
@@ -569,7 +569,7 @@ MockHTMLElement {
                         "sheet": MockCSSStyleSheet {
                           "cssRules": [
                             MockCSSRule {
-                              "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                              "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                               "parentStyleSheet": [Circular],
                               "type": 0,
                             },
@@ -710,7 +710,7 @@ MockHTMLElement {
                     "_childNodes": [
                       _MockTextNode {
                         "_childNodes": [],
-                        "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                        "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                         "nodeName": "#text",
                         "nodeType": 3,
                         "ownerDocument": [Circular],
@@ -725,7 +725,7 @@ MockHTMLElement {
                     "sheet": MockCSSStyleSheet {
                       "cssRules": [
                         MockCSSRule {
-                          "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                          "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                           "parentStyleSheet": [Circular],
                           "type": 0,
                         },
@@ -795,7 +795,7 @@ MockHTMLElement {
                 "_childNodes": [
                   _MockTextNode {
                     "_childNodes": [],
-                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                     "nodeName": "#text",
                     "nodeType": 3,
                     "ownerDocument": _MockDocument {
@@ -958,7 +958,7 @@ MockHTMLElement {
                 "sheet": MockCSSStyleSheet {
                   "cssRules": [
                     MockCSSRule {
-                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-badge,io-button,io-button-group,io-carousel,io-checkbox,io-divider,io-input,io-link,io-modal,io-pagination,io-radio,io-select,io-spinner,io-tabs,io-tag,io-textarea,io-toast,io-toast-item,io-tooltip{visibility:hidden}.hydrated{visibility:inherit}",
                       "parentStyleSheet": [Circular],
                       "type": 0,
                     },

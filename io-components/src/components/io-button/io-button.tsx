@@ -60,6 +60,9 @@ export class IoButton {
   /** Accessible label — required for icon-only buttons */
   @Prop() label: string | undefined;
 
+  /** Value used by io-button-group to identify this item */
+  @Prop({ reflect: true }) value: string | undefined;
+
   /** Renders a square icon-only button and suppresses text label rendering */
   @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
 

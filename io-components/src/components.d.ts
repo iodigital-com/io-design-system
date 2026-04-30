@@ -15,9 +15,10 @@ import { IoDividerOrientation } from "./components/io-divider/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
+import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
-import { IoSelectOption, IoSelectSize } from "./components/io-select/types";
+import { IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
@@ -34,9 +35,10 @@ export { IoDividerOrientation } from "./components/io-divider/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
+export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
-export { IoSelectOption, IoSelectSize } from "./components/io-select/types";
+export { IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
@@ -532,6 +534,68 @@ export namespace Components {
         "size": IoModalSize;
     }
     /**
+     * io-optgroup
+     * ============
+     * Groups related io-option elements inside a custom io-select combobox.
+     * @example <io-optgroup label="Leadership">
+     *   <io-option value="charlie" label="Charlie Brown"></io-option>
+     * </io-optgroup>
+     */
+    interface IoOptgroup {
+        /**
+          * Disables all child io-option elements visually
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Group heading text
+         */
+        "label": string;
+    }
+    /**
+     * io-option
+     * ==========
+     * Individual option item for the custom combobox mode of io-select.
+     * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * @example <io-option value="alice" label="Alice Smith"></io-option>
+     */
+    interface IoOption {
+        /**
+          * Checked state used in multiple mode (set by parent)
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * Prevents selection
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Visual keyboard-focus indicator (driven by parent's activeIndex)
+          * @default false
+         */
+        "focused": boolean;
+        /**
+          * Display text
+         */
+        "label": string;
+        /**
+          * When true, renders a checkbox visual
+          * @default false
+         */
+        "multipleMode": boolean;
+        /**
+          * Whether currently selected (set by parent io-select)
+          * @default false
+         */
+        "selected": boolean;
+        /**
+          * The value submitted on selection
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
      * io-pagination
      * ==============
      * Circular page controls — outlined page numbers, active page in brand blue,
@@ -622,11 +686,25 @@ export namespace Components {
      * io-select
      * ==========
      * Styled native select with floating label — companion to io-input.
-     * Uses the same underline-only visual language (border expands 1px → 5px on focus).
-     * @example <io-select label="Country" :options="[{ label: 'Netherlands', value: 'nl' }]" />
-     * <io-select label="Role" placeholder="Choose a role" required error error-message="Required" />
+     * With `custom` prop: switches to a fully accessible ARIA combobox/listbox.
+     * Options are defined as slotted `<io-option>` children. Groups are wrapped
+     * in `<io-optgroup>` elements.
+     * @example <io-select label="Country">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     * </io-select>
+     * <io-select label="Assign to" custom multiple filter>
+     *   <io-optgroup label="Leadership">
+     *     <io-option value="alice" label="Alice Smith"></io-option>
+     *   </io-optgroup>
+     * </io-select>
      */
     interface IoSelect {
+        /**
+          * Switches to ARIA combobox/listbox implementation
+          * @default false
+         */
+        "custom": boolean;
         /**
           * Disables the select
           * @default false
@@ -642,6 +720,11 @@ export namespace Components {
          */
         "errorMessage": string | undefined;
         /**
+          * Adds a search input inside the dropdown (custom mode only)
+          * @default false
+         */
+        "filter": boolean;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -650,14 +733,14 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Multi-value selection (custom mode only)
+          * @default false
+         */
+        "multiple": boolean;
+        /**
           * Input name
          */
         "name": string | undefined;
-        /**
-          * List of options
-          * @default []
-         */
-        "options": IoSelectOption[];
         /**
           * Placeholder option shown when no value is selected
          */
@@ -677,7 +760,7 @@ export namespace Components {
          */
         "size": IoSelectSize;
         /**
-          * Selected value
+          * Selected value (single mode)
           * @default ''
          */
         "value": string;
@@ -944,6 +1027,10 @@ export interface IoLinkCustomEvent<T> extends CustomEvent<T> {
 export interface IoModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoModalElement;
+}
+export interface IoOptionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoOptionElement;
 }
 export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1235,6 +1322,44 @@ declare global {
         prototype: HTMLIoModalElement;
         new (): HTMLIoModalElement;
     };
+    /**
+     * io-optgroup
+     * ============
+     * Groups related io-option elements inside a custom io-select combobox.
+     * @example <io-optgroup label="Leadership">
+     *   <io-option value="charlie" label="Charlie Brown"></io-option>
+     * </io-optgroup>
+     */
+    interface HTMLIoOptgroupElement extends Components.IoOptgroup, HTMLStencilElement {
+    }
+    var HTMLIoOptgroupElement: {
+        prototype: HTMLIoOptgroupElement;
+        new (): HTMLIoOptgroupElement;
+    };
+    interface HTMLIoOptionElementEventMap {
+        "optionSelect": IoOptionSelectDetail;
+    }
+    /**
+     * io-option
+     * ==========
+     * Individual option item for the custom combobox mode of io-select.
+     * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * @example <io-option value="alice" label="Alice Smith"></io-option>
+     */
+    interface HTMLIoOptionElement extends Components.IoOption, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoOptionElementEventMap>(type: K, listener: (this: HTMLIoOptionElement, ev: IoOptionCustomEvent<HTMLIoOptionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoOptionElementEventMap>(type: K, listener: (this: HTMLIoOptionElement, ev: IoOptionCustomEvent<HTMLIoOptionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoOptionElement: {
+        prototype: HTMLIoOptionElement;
+        new (): HTMLIoOptionElement;
+    };
     interface HTMLIoPaginationElementEventMap {
         "change": IoPaginationChangeDetail;
     }
@@ -1288,7 +1413,7 @@ declare global {
         new (): HTMLIoRadioElement;
     };
     interface HTMLIoSelectElementEventMap {
-        "change": string;
+        "change": string | string[];
         "focus": FocusEvent;
         "blur": FocusEvent;
     }
@@ -1296,9 +1421,18 @@ declare global {
      * io-select
      * ==========
      * Styled native select with floating label — companion to io-input.
-     * Uses the same underline-only visual language (border expands 1px → 5px on focus).
-     * @example <io-select label="Country" :options="[{ label: 'Netherlands', value: 'nl' }]" />
-     * <io-select label="Role" placeholder="Choose a role" required error error-message="Required" />
+     * With `custom` prop: switches to a fully accessible ARIA combobox/listbox.
+     * Options are defined as slotted `<io-option>` children. Groups are wrapped
+     * in `<io-optgroup>` elements.
+     * @example <io-select label="Country">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     * </io-select>
+     * <io-select label="Assign to" custom multiple filter>
+     *   <io-optgroup label="Leadership">
+     *     <io-option value="alice" label="Alice Smith"></io-option>
+     *   </io-optgroup>
+     * </io-select>
      */
     interface HTMLIoSelectElement extends Components.IoSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoSelectElementEventMap>(type: K, listener: (this: HTMLIoSelectElement, ev: IoSelectCustomEvent<HTMLIoSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1491,6 +1625,8 @@ declare global {
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
+        "io-optgroup": HTMLIoOptgroupElement;
+        "io-option": HTMLIoOptionElement;
         "io-pagination": HTMLIoPaginationElement;
         "io-radio": HTMLIoRadioElement;
         "io-select": HTMLIoSelectElement;
@@ -2013,6 +2149,72 @@ declare namespace LocalJSX {
         "size"?: IoModalSize;
     }
     /**
+     * io-optgroup
+     * ============
+     * Groups related io-option elements inside a custom io-select combobox.
+     * @example <io-optgroup label="Leadership">
+     *   <io-option value="charlie" label="Charlie Brown"></io-option>
+     * </io-optgroup>
+     */
+    interface IoOptgroup {
+        /**
+          * Disables all child io-option elements visually
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Group heading text
+         */
+        "label": string;
+    }
+    /**
+     * io-option
+     * ==========
+     * Individual option item for the custom combobox mode of io-select.
+     * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * @example <io-option value="alice" label="Alice Smith"></io-option>
+     */
+    interface IoOption {
+        /**
+          * Checked state used in multiple mode (set by parent)
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * Prevents selection
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Visual keyboard-focus indicator (driven by parent's activeIndex)
+          * @default false
+         */
+        "focused"?: boolean;
+        /**
+          * Display text
+         */
+        "label": string;
+        /**
+          * When true, renders a checkbox visual
+          * @default false
+         */
+        "multipleMode"?: boolean;
+        /**
+          * Fires when the option is activated (click or keyboard Enter/Space from parent)
+         */
+        "onOptionSelect"?: (event: IoOptionCustomEvent<IoOptionSelectDetail>) => void;
+        /**
+          * Whether currently selected (set by parent io-select)
+          * @default false
+         */
+        "selected"?: boolean;
+        /**
+          * The value submitted on selection
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
      * io-pagination
      * ==============
      * Circular page controls — outlined page numbers, active page in brand blue,
@@ -2107,11 +2309,25 @@ declare namespace LocalJSX {
      * io-select
      * ==========
      * Styled native select with floating label — companion to io-input.
-     * Uses the same underline-only visual language (border expands 1px → 5px on focus).
-     * @example <io-select label="Country" :options="[{ label: 'Netherlands', value: 'nl' }]" />
-     * <io-select label="Role" placeholder="Choose a role" required error error-message="Required" />
+     * With `custom` prop: switches to a fully accessible ARIA combobox/listbox.
+     * Options are defined as slotted `<io-option>` children. Groups are wrapped
+     * in `<io-optgroup>` elements.
+     * @example <io-select label="Country">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     * </io-select>
+     * <io-select label="Assign to" custom multiple filter>
+     *   <io-optgroup label="Leadership">
+     *     <io-option value="alice" label="Alice Smith"></io-option>
+     *   </io-optgroup>
+     * </io-select>
      */
     interface IoSelect {
+        /**
+          * Switches to ARIA combobox/listbox implementation
+          * @default false
+         */
+        "custom"?: boolean;
         /**
           * Disables the select
           * @default false
@@ -2127,6 +2343,11 @@ declare namespace LocalJSX {
          */
         "errorMessage"?: string | undefined;
         /**
+          * Adds a search input inside the dropdown (custom mode only)
+          * @default false
+         */
+        "filter"?: boolean;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText"?: string | undefined;
@@ -2134,6 +2355,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Multi-value selection (custom mode only)
+          * @default false
+         */
+        "multiple"?: boolean;
         /**
           * Input name
          */
@@ -2143,18 +2369,13 @@ declare namespace LocalJSX {
          */
         "onBlur"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
         /**
-          * Fires when the selected value changes. Payload is the new string value.
+          * Fires when the selected value changes.
          */
-        "onChange"?: (event: IoSelectCustomEvent<string>) => void;
+        "onChange"?: (event: IoSelectCustomEvent<string | string[]>) => void;
         /**
           * Fires when the select gains focus
          */
         "onFocus"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
-        /**
-          * List of options
-          * @default []
-         */
-        "options"?: IoSelectOption[];
         /**
           * Placeholder option shown when no value is selected
          */
@@ -2170,7 +2391,7 @@ declare namespace LocalJSX {
          */
         "size"?: IoSelectSize;
         /**
-          * Selected value
+          * Selected value (single mode)
           * @default ''
          */
         "value"?: string;
@@ -2524,6 +2745,19 @@ declare namespace LocalJSX {
         "closeOnBackdrop": boolean;
         "description": string;
     }
+    interface IoOptgroupAttributes {
+        "label": string;
+        "disabled": boolean;
+    }
+    interface IoOptionAttributes {
+        "value": string;
+        "label": string;
+        "disabled": boolean;
+        "selected": boolean;
+        "checked": boolean;
+        "multipleMode": boolean;
+        "focused": boolean;
+    }
     interface IoPaginationAttributes {
         "page": number;
         "totalPages": number;
@@ -2552,6 +2786,9 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
+        "custom": boolean;
+        "multiple": boolean;
+        "filter": boolean;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;
@@ -2605,6 +2842,8 @@ declare namespace LocalJSX {
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
+        "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
+        "io-option": Omit<IoOption, keyof IoOptionAttributes> & { [K in keyof IoOption & keyof IoOptionAttributes]?: IoOption[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `attr:${K}`]?: IoOptionAttributes[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `prop:${K}`]?: IoOption[K] } & OneOf<"label", IoOption["label"], IoOptionAttributes["label"]>;
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
@@ -2742,6 +2981,23 @@ declare module "@stencil/core" {
              */
             "io-modal": LocalJSX.IntrinsicElements["io-modal"] & JSXBase.HTMLAttributes<HTMLIoModalElement>;
             /**
+             * io-optgroup
+             * ============
+             * Groups related io-option elements inside a custom io-select combobox.
+             * @example <io-optgroup label="Leadership">
+             *   <io-option value="charlie" label="Charlie Brown"></io-option>
+             * </io-optgroup>
+             */
+            "io-optgroup": LocalJSX.IntrinsicElements["io-optgroup"] & JSXBase.HTMLAttributes<HTMLIoOptgroupElement>;
+            /**
+             * io-option
+             * ==========
+             * Individual option item for the custom combobox mode of io-select.
+             * Must be a direct child of io-select[custom] (slotted into the listbox).
+             * @example <io-option value="alice" label="Alice Smith"></io-option>
+             */
+            "io-option": LocalJSX.IntrinsicElements["io-option"] & JSXBase.HTMLAttributes<HTMLIoOptionElement>;
+            /**
              * io-pagination
              * ==============
              * Circular page controls — outlined page numbers, active page in brand blue,
@@ -2765,9 +3021,18 @@ declare module "@stencil/core" {
              * io-select
              * ==========
              * Styled native select with floating label — companion to io-input.
-             * Uses the same underline-only visual language (border expands 1px → 5px on focus).
-             * @example <io-select label="Country" :options="[{ label: 'Netherlands', value: 'nl' }]" />
-             * <io-select label="Role" placeholder="Choose a role" required error error-message="Required" />
+             * With `custom` prop: switches to a fully accessible ARIA combobox/listbox.
+             * Options are defined as slotted `<io-option>` children. Groups are wrapped
+             * in `<io-optgroup>` elements.
+             * @example <io-select label="Country">
+             *   <io-option value="nl" label="Netherlands"></io-option>
+             *   <io-option value="be" label="Belgium"></io-option>
+             * </io-select>
+             * <io-select label="Assign to" custom multiple filter>
+             *   <io-optgroup label="Leadership">
+             *     <io-option value="alice" label="Alice Smith"></io-option>
+             *   </io-optgroup>
+             * </io-select>
              */
             "io-select": LocalJSX.IntrinsicElements["io-select"] & JSXBase.HTMLAttributes<HTMLIoSelectElement>;
             /**

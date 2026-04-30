@@ -12,7 +12,7 @@ export default function IoSelectUsagePage() {
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
           title="When to use"
-          description="io-select is a styled native select with a floating label. Use it when a user must choose exactly one value from a predefined list of five or more options."
+          description="io-select offers two modes: a styled native select for simple single-value choices, and a fully accessible ARIA combobox (custom=true) for filtering and multi-select scenarios."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
@@ -24,10 +24,10 @@ export default function IoSelectUsagePage() {
               Use for well-known enumerable sets such as country, language, currency, or time zone — lists users are familiar with.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Always provide a <C>label</C> prop. The floating label is the accessible name — there is no fallback.
+              Set <C>custom</C> when you need filtering, multi-select, or a consistent cross-platform dropdown experience beyond what the native select provides.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <C>placeholder</C> to provide a &ldquo;Select an option&rdquo; prompt when no default value is pre-selected.
+              Always provide a <C>label</C> prop. The floating label is the accessible name — there is no fallback.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -36,10 +36,10 @@ export default function IoSelectUsagePage() {
               Use for fewer than five options — use radio buttons instead. They are faster to scan and require fewer interactions.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Use for searching or autocomplete scenarios — use a combobox or searchable dropdown instead. The native select has no search capability.
+              Use the native select (custom=false) for search or autocomplete — enable <C>custom</C> and <C>filter</C> instead. The native select element has no built-in search capability.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Use for multi-select scenarios. The native select&apos;s multi-select UX is inconsistent across operating systems. Use a checkbox group or tag input instead.
+              Use the native select (custom=false) for multi-value selection — its UX is inconsistent across operating systems. Enable <C>custom</C> and <C>multiple</C> for a consistent, accessible multi-select combobox.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Show <C>error</C> state before the user has had a chance to interact. Validate on blur or on form submit — not on mount.
@@ -104,6 +104,28 @@ export default function IoSelectUsagePage() {
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The entire component renders at 40% opacity and pointer events are blocked.
+          </RuleCard>
+        </div>
+      </section>
+
+      {/* ── Combobox mode ────────────────────────────────────────── */}
+      <section id="combobox-mode" className="space-y-6">
+        <SectionHeader
+          title="Combobox mode"
+          description="Set custom=true to replace the native select with a fully accessible ARIA combobox. Use the additional props below to layer on filtering and multi-select."
+        />
+        <div className="space-y-3">
+          <RuleCard label="custom — switch to the ARIA combobox">
+            Set <C>custom</C> when you need more control than the native select provides: consistent cross-platform appearance, keyboard-managed focus, or the ability to add filtering and multi-select. The combobox renders a <C>button[role=combobox]</C> trigger and a <C>ul[role=listbox]</C> dropdown with full ARIA wiring.
+          </RuleCard>
+          <RuleCard label="multiple — allow multiple selections">
+            Set <C>multiple</C> (alongside <C>custom</C>) to let users select more than one option. The dropdown stays open after each selection. Each option shows a checkbox indicator. The trigger summarises the selection: one item shows its label, two or more items show &ldquo;N selected&rdquo;. The <C>change</C> event detail is <C>string[]</C> in this mode.
+          </RuleCard>
+          <RuleCard label="filter — add type-to-search">
+            Set <C>filter</C> (alongside <C>custom</C>) to add a text input at the top of the dropdown. Options are filtered in real time by label as the user types. Focus moves automatically to the filter input when the dropdown opens. Combine with <C>multiple</C> for a searchable multi-select combobox.
+          </RuleCard>
+          <RuleCard label="Combine multiple + filter for long option lists">
+            When users need to select several items from a list of ten or more, combining <C>multiple</C> and <C>filter</C> reduces the time spent scrolling and improves accuracy. Use when options are not easily predictable — for example &ldquo;Assign to team member&rdquo; in a large organisation.
           </RuleCard>
         </div>
       </section>

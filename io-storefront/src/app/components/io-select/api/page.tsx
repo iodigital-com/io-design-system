@@ -96,6 +96,24 @@ export default function IoSelectApiPage() {
               '—',
               'Helper text shown below the select when error is false. Hidden when the error state is active.',
             ],
+            [
+              <span key="n"><InlineCode>custom</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Switches to the ARIA combobox/listbox implementation. Required before using multiple or filter. Renders a keyboard-accessible custom dropdown instead of the native select element.',
+            ],
+            [
+              <InlineCode key="n">multiple</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">Enables multi-value selection. Requires <InlineCode>custom=true</InlineCode>. The dropdown stays open after each selection. The <InlineCode>change</InlineCode> event detail becomes <InlineCode>string[]</InlineCode> instead of <InlineCode>string</InlineCode>.</span>,
+            ],
+            [
+              <InlineCode key="n">filter</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">Adds a text search input inside the dropdown. Options are filtered by label as the user types. Requires <InlineCode>custom=true</InlineCode>. Focus is moved to the filter input when the dropdown opens.</span>,
+            ],
           ]}
         />
       </section>
@@ -116,9 +134,9 @@ export default function IoSelectApiPage() {
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | string[]</InlineCode>,
               'No',
-              'Fires when the selected value changes. Detail is the new selected option value string.',
+              <span key="desc">Fires when the selected value changes. Detail is a <InlineCode>string</InlineCode> in single-select mode, or <InlineCode>string[]</InlineCode> when <InlineCode>multiple=true</InlineCode>. In multiple mode the array reflects the full current selection after each toggle.</span>,
             ],
             [
               <InlineCode key="n">focus</InlineCode>,
@@ -135,15 +153,24 @@ export default function IoSelectApiPage() {
           ]}
         />
         <CodeNote label="Usage">
-{`// Vanilla JS
+{`// Single select (detail: string)
 document.querySelector('io-select')
   .addEventListener('change', (e) => console.log('value:', e.detail));
 
-// React
+// Multi-select (detail: string[])
+document.querySelector('io-select[multiple]')
+  .addEventListener('change', (e) => console.log('selected:', e.detail));
+
+// React — single
+<IoSelect label="Country" options={options} onChange={(e) => setCountry(e.detail)} />
+
+// React — multi-select (custom + multiple)
 <IoSelect
-  label="Country"
+  label="Countries"
   options={options}
-  onChange={(e) => setCountry(e.detail)}
+  custom
+  multiple
+  onChange={(e) => setCountries(e.detail as string[])}
 />
 
 // Angular

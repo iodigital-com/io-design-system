@@ -229,7 +229,7 @@ export class IoButtonGroup {
                 disabled={itemDisabled || undefined}
                 onClick={() => this.handleItemClick(index)}
                 onKeyDown={(ev: KeyboardEvent) => this.handleKeyDown(ev, index)}
-                ref={(el: HTMLButtonElement) => { if (el) this.buttonRefs.set(index, el); }}
+                ref={(el?: HTMLButtonElement) => { if (el) this.buttonRefs.set(index, el); }}
               >
                 {item.label}
               </button>

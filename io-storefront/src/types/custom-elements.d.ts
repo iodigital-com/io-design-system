@@ -18,6 +18,7 @@ declare module 'react' {
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
+  'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;

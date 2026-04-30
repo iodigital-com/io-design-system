@@ -40,6 +40,23 @@ export default function IoDividerUsagePage() {
         </RuleCard>
       </section>
 
+      <section id="prop-interactions" className="space-y-6">
+        <SectionHeader
+          title="Prop interactions"
+          description="Notes on how props interact when used together."
+        />
+        <RuleCard label="label overrides the visual layout">
+          When <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>{' '}
+          is set, the component always renders a horizontal flex row with the label text centered between two lines — regardless of the{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>orientation</code>{' '}
+          prop value. The <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>orientation</code>{' '}
+          prop still controls the ARIA <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-orientation</code>{' '}
+          attribute on the labeled wrapper. Do not expect <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>{' '}
+          combined with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>orientation=&quot;vertical&quot;</code>{' '}
+          to produce a vertically-oriented labeled divider.
+        </RuleCard>
+      </section>
+
       <section id="content-guidelines" className="space-y-6">
         <SectionHeader
           title="Content guidelines"

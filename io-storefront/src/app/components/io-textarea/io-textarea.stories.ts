@@ -94,6 +94,15 @@ export const textareaStoryDisabled: Story<'io-textarea'> = {
   ],
 };
 
+export const textareaStorySizes: Story<'io-textarea'> = {
+  state: { properties: {} },
+  generator: () => [
+    { tag: 'io-textarea' as const, properties: { label: 'Small', size: 'sm', rows: 3, placeholder: 'Compact notes' } },
+    { tag: 'io-textarea' as const, properties: { label: 'Medium', size: 'md', rows: 3, placeholder: 'Default notes' } },
+    { tag: 'io-textarea' as const, properties: { label: 'Large', size: 'lg', rows: 3, placeholder: 'Prominent notes' } },
+  ],
+};
+
 export const textareaPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
@@ -116,8 +125,8 @@ export const textareaPropDefinitions: PropDefinition[] = [
   },
   {
     name: 'rows',
-    type: 'string',
-    defaultValue: '4',
+    type: 'number',
+    defaultValue: 4,
     description: 'Sets the initial visible row count.',
   },
   {

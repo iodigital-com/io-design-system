@@ -93,6 +93,24 @@ export const selectStoryDisabled: Story<'io-select'> = {
   ],
 };
 
+export const selectStorySizes: Story<'io-select'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Small', size: 'sm', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+    },
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Medium', size: 'md', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+    },
+    {
+      tag: 'io-select' as const,
+      properties: { label: 'Large', size: 'lg', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+    },
+  ],
+};
+
 export const selectPropDefinitions: PropDefinition[] = [
   {
     name: 'label',

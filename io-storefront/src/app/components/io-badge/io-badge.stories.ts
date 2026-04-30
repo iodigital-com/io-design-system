@@ -25,17 +25,27 @@ export const badgeStoryVariants: Story<'io-badge'> = {
     ),
 };
 
+export const badgeStorySizes: Story<'io-badge'> = {
+  state: { properties: {} },
+  generator: () => [
+    { tag: 'io-badge' as const, properties: { variant: 'blue', size: 'sm' }, children: ['Small'] },
+    { tag: 'io-badge' as const, properties: { variant: 'blue', size: 'md' }, children: ['Medium'] },
+  ],
+};
+
 export const badgePropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
     options: ['sm', 'md'],
     defaultValue: 'md',
+    description: 'Adjusts badge density for compact or standard layouts.',
   },
   {
     name: 'variant',
     type: 'select',
     options: ['beige', 'blue', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
     defaultValue: 'blue',
+    description: 'Sets visual style and semantic meaning of the badge.',
   },
 ];

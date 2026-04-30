@@ -67,6 +67,25 @@ export default function IoSelectUsagePage() {
         </div>
       </section>
 
+      {/* ── Sizes ────────────────────────────────────────────────── */}
+      <section id="sizes" className="space-y-6">
+        <SectionHeader
+          title="Sizes"
+          description="Use size to align select controls with inputs, textareas, and buttons in the same form group."
+        />
+        <div className="space-y-3">
+          <RuleCard label="sm — Dense UIs">
+            Use <C>sm</C> for compact desktop layouts where many controls share limited vertical space.
+          </RuleCard>
+          <RuleCard label="md — Default">
+            Use <C>md</C> for most forms. It balances readability and information density.
+          </RuleCard>
+          <RuleCard label="lg — Touch-first contexts">
+            Use <C>lg</C> for mobile-heavy flows and prominent primary filters.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── States ───────────────────────────────────────────────── */}
       <section id="states" className="space-y-6">
         <SectionHeader

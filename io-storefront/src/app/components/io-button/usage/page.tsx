@@ -114,13 +114,13 @@ export default function IoButtonUsagePage() {
       <section id="sizes" className="space-y-6">
         <SectionHeader
           title="Sizes"
-          description="Three size presets driven by padding and font-size tokens. Choose based on context density, not personal preference."
+          description="Four size presets driven by control-size tokens. Choose based on density and input method."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <SizeCard
             size="sm"
             height="~31px"
-            use="Compact UI — data tables, inline toolbars, tag inputs, or anywhere vertical space is at a premium."
+            use="Compact desktop UI only — dense tables/toolbars where vertical space is limited."
           />
           <SizeCard
             size="md"
@@ -130,9 +130,17 @@ export default function IoButtonUsagePage() {
           <SizeCard
             size="lg"
             height="50px"
-            use="Hero sections and high-impact CTAs where the button must anchor the layout."
+            use="High-impact CTAs and touch-heavy contexts requiring larger visual targets."
+          />
+          <SizeCard
+            size="xl"
+            height="56px"
+            use="Hero actions and prominent marketing layouts where the button anchors hierarchy."
           />
         </div>
+        <RuleCard label="Touch target guidance">
+          Prefer <C>md</C>, <C>lg</C>, or <C>xl</C> in touch-first contexts. Reserve <C>sm</C> for dense desktop layouts with careful spacing.
+        </RuleCard>
       </section>
 
       {/* ── Arrow icon ───────────────────────────────────────────── */}
@@ -157,7 +165,18 @@ export default function IoButtonUsagePage() {
           place it before the label — useful for &ldquo;back&rdquo; navigation where the visual direction should lead the text.
         </RuleCard>
       </section>
-
+      <section id="icon-only" className="space-y-6">
+        <SectionHeader
+          title="Icon-only"
+          description="Use icon-only buttons for compact utility actions while preserving accessible naming."
+        />
+        <RuleCard label="When to use iconOnly">
+          Use <C>iconOnly</C> for utility actions such as close, dismiss, clear, or toolbar commands. Avoid icon-only for primary CTAs.
+        </RuleCard>
+        <RuleCard label="Accessible label is required">
+          When <C>iconOnly</C> is true, provide a descriptive <C>label</C> (or host <C>aria-label</C>) so screen readers announce the action.
+        </RuleCard>
+      </section>
       {/* ── States ───────────────────────────────────────────────── */}
       <section id="states" className="space-y-6">
         <SectionHeader

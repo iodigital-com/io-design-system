@@ -48,6 +48,40 @@ export const inputStoryDisabled: Story<'io-input'> = {
   ],
 };
 
+export const inputStorySizes: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    { tag: 'io-input' as const, properties: { label: 'Small', size: 'sm', placeholder: 'Compact field' } },
+    { tag: 'io-input' as const, properties: { label: 'Medium', size: 'md', placeholder: 'Default field' } },
+    { tag: 'io-input' as const, properties: { label: 'Large', size: 'lg', placeholder: 'Prominent field' } },
+  ],
+};
+
+export const inputStoryDateTime: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    { tag: 'io-input' as const, properties: { label: 'Date', type: 'date', min: '2026-01-01', max: '2026-12-31' } },
+    { tag: 'io-input' as const, properties: { label: 'Time', type: 'time', step: '900' } },
+  ],
+};
+
+export const inputStoryConstraints: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-input' as const,
+      properties: {
+        label: 'Quantity',
+        type: 'number',
+        min: '1',
+        max: '10',
+        step: '1',
+        helperText: 'Allowed range: 1 to 10',
+      },
+    },
+  ],
+};
+
 export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'label',

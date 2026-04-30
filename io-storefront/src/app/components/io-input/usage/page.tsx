@@ -76,7 +76,41 @@ export default function IoInputUsagePage() {
           <RuleCard label="number — Numeric values">
             Shows a numeric keyboard on mobile. Browser hides native spinners (hidden via CSS). Only use when the value is genuinely numeric — for phone numbers, postcodes, or card numbers, prefer <C>tel</C> or <C>text</C> with <C>inputmode</C>.
           </RuleCard>
+          <RuleCard label="date — Calendar date values">
+            Uses the browser's native date picker where available. Combine with <C>min</C>, <C>max</C>, and <C>step</C> when business rules constrain allowed dates.
+          </RuleCard>
+          <RuleCard label="time — Time-of-day values">
+            Uses native time entry controls and supports <C>min</C>, <C>max</C>, and <C>step</C>. Use helper text for expected granularity (e.g. 15-minute intervals).
+          </RuleCard>
         </div>
+      </section>
+
+      <section id="sizes" className="space-y-6">
+        <SectionHeader
+          title="Sizes"
+          description="Use size to align vertical rhythm across inputs, selects, textareas, and buttons in the same form layout."
+        />
+        <div className="space-y-3">
+          <RuleCard label="sm — Dense layouts">
+            Use <C>sm</C> in compact desktop UIs such as data tables or side-panel filters where vertical space is constrained.
+          </RuleCard>
+          <RuleCard label="md — Default">
+            Use <C>md</C> for most forms. It balances readability and density and should be your baseline choice.
+          </RuleCard>
+          <RuleCard label="lg — High-emphasis or touch-heavy">
+            Use <C>lg</C> for touch-priority screens or when fields need stronger visual prominence.
+          </RuleCard>
+        </div>
+      </section>
+
+      <section id="constraints" className="space-y-6">
+        <SectionHeader
+          title="Numeric and temporal constraints"
+          description="The min, max, and step props map directly to native input attributes for number/date/time fields."
+        />
+        <RuleCard label="Expose constraints in helper text">
+          When using <C>min</C>, <C>max</C>, or <C>step</C>, communicate allowed ranges in <C>helperText</C> so users understand constraints before submitting.
+        </RuleCard>
       </section>
 
       {/* ── States ───────────────────────────────────────────────── */}

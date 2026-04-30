@@ -30,6 +30,12 @@ export default function IoSelectApiPage() {
               'Label text. Rendered as a floating label above the select on focus or when a value is present. This is the only accessible name for the field.',
             ],
             [
+              <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,
+              <InlineCode key="d">&apos;md&apos;</InlineCode>,
+              'Field size aligned with io-input and io-textarea for consistent form rhythm.',
+            ],
+            [
               <InlineCode key="n">name</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',

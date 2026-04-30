@@ -6,6 +6,7 @@ import {
   buttonStoryGhostWhite,
   buttonStoryArrows,
   buttonStorySizes,
+  buttonStoryIconOnly,
   buttonStoryStates,
 } from '../io-button.stories';
 
@@ -71,11 +72,22 @@ export default function IoButtonExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Sizes"
-          description="Three size presets driven by padding and font-size tokens."
+          description="Four size presets driven by control-size tokens and spacing rhythm."
         />
         <ComponentStory story={buttonStorySizes} previewClassName="flex-wrap gap-3 items-end" />
         <StageLabel>
-          sm: space-2/space-4 · md: space-3/space-6 · lg: space-4/space-8
+          sm: ~31px · md: 42px · lg: 50px · xl: 56px
+        </StageLabel>
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Icon only"
+          description="Square icon-only actions for compact UI. Always provide an accessible label."
+        />
+        <ComponentStory story={buttonStoryIconOnly} previewClassName="flex-wrap gap-3 items-end" />
+        <StageLabel>
+          iconOnly=true · label required for accessible name
         </StageLabel>
       </section>
 

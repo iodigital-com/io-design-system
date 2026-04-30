@@ -2,6 +2,7 @@
 
 import {
   textareaStoryDefault,
+  textareaStorySizes,
   textareaStoryResize,
   textareaStoryError,
   textareaStoryDisabled,
@@ -16,6 +17,11 @@ export default function IoTextareaExamplesPage() {
       <section>
         <ExamplesSectionHeader title="Default" />
         <ComponentStory story={textareaStoryDefault} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="Sizes" description="sm, md, and lg sizes to match surrounding form controls." />
+        <ComponentStory story={textareaStorySizes} previewClassName="flex flex-wrap gap-4 items-end" />
       </section>
 
       <section>

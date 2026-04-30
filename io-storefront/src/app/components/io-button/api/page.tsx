@@ -43,9 +43,9 @@ export default function IoButtonApiPage() {
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,
+              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
-              'Size preset. sm ≈ 31px height, md = 42px, lg = 50px. Heights are driven by padding + line-height, not min-height.',
+              'Size preset. sm ≈ 31px height, md = 42px, lg = 50px, xl = 56px. Heights are driven by control-size tokens.',
             ],
             [
               <InlineCode key="n">type</InlineCode>,
@@ -94,6 +94,12 @@ export default function IoButtonApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'Sets aria-label on the inner element. Required for icon-only buttons that have no visible slot text.',
+            ],
+            [
+              <span key="n"><InlineCode>iconOnly</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Renders a square icon-only button and suppresses visible label text. Requires label prop or host aria-label for accessibility.',
             ],
             [
               <span key="n"><InlineCode>arrow</InlineCode><ReflectBadge /></span>,

@@ -316,6 +316,13 @@
   --io-checkbox-icon-size:       10px;
   --io-select-padding-right:     1.6rem;
   --io-select-chevron-offset-y:  2px;
+
+  /* Combobox / Custom Select */
+  --io-combobox-max-height:      280px;
+  --io-combobox-option-height:   44px;
+  --io-combobox-filter-height:   var(--io-size-input-sm);
+  --io-combobox-z:               var(--io-z-dropdown);
+
   --io-color-white-alpha-30:     rgba(255, 255, 255, 0.3);
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:       1.5px;

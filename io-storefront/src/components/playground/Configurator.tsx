@@ -23,6 +23,8 @@ type ConfiguratorProps = {
   propDefinitions: PropDefinition[];
   /** Extra class names forwarded to the Playground preview wrapper. */
   previewClassName?: string;
+  /** Inline styles merged into the Playground preview wrapper — use to override background for components that need a plain stage. */
+  previewStyle?: React.CSSProperties;
 };
 
 /**
@@ -33,7 +35,7 @@ type ConfiguratorProps = {
  *  - Passes the result to `createElements()` for the live preview
  *  - Passes the result to `generateHtmlMarkup()` for the code block
  */
-export function Configurator({ story, propDefinitions, previewClassName }: ConfiguratorProps) {
+export function Configurator({ story, propDefinitions, previewClassName, previewStyle }: ConfiguratorProps) {
   const [exampleState, setExampleState] = useState<StoryState<HTMLTagOrComponent>>(
     story.state ?? {},
   );
@@ -64,7 +66,7 @@ export function Configurator({ story, propDefinitions, previewClassName }: Confi
 
   return (
     <div>
-      <Playground frameworkCode={frameworkCode} previewClassName={previewClassName}>{exampleElement}</Playground>
+      <Playground frameworkCode={frameworkCode} previewClassName={previewClassName} previewStyle={previewStyle}>{exampleElement}</Playground>
       <ConfiguratorControls
         propDefinitions={propDefinitions}
         storyState={exampleState}

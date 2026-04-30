@@ -347,6 +347,12 @@
   --io-button-arrow-shift-down:  5px;
   --io-button-spinner-border-width: 2px;
 
+  /* Divider */
+  --io-divider-color:              var(--io-border);
+  --io-divider-thickness:          1px;
+  --io-divider-gap:                var(--io-space-3);
+  --io-divider-label-size:         var(--io-font-size-sm);
+
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 

@@ -10,6 +10,7 @@ export default function IoDividerConfiguratorPage() {
       tagName="io-divider"
       story={dividerStory}
       propDefinitions={dividerPropDefinitions}
+      previewStyle={{ backgroundImage: 'none', backgroundColor: 'var(--io-bg-raised)' }}
     />
   );
 }

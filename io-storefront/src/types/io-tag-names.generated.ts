@@ -10,6 +10,7 @@ export type IoTagNames =
   | 'io-button'
   | 'io-carousel'
   | 'io-checkbox'
+  | 'io-divider'
   | 'io-input'
   | 'io-link'
   | 'io-modal'

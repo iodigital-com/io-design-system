@@ -10,6 +10,7 @@ import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+import { IoDividerOrientation } from "./components/io-divider/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
@@ -27,6 +28,7 @@ export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+export { IoDividerOrientation } from "./components/io-divider/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
@@ -277,6 +279,28 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    /**
+     * io-divider
+     * ==========
+     * Visual separator between sections of content.
+     * Horizontal (default): renders as `<hr role="separator">`.
+     * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
+     * With label: renders a flex row with a centered text label flanked by lines.
+     * @example <io-divider />
+     * <io-divider orientation="vertical" />
+     * <io-divider label="or" />
+     */
+    interface IoDivider {
+        /**
+          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
+         */
+        "label": string | undefined;
+        /**
+          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).
+          * @default 'horizontal'
+         */
+        "orientation": IoDividerOrientation;
     }
     /**
      * io-input
@@ -1018,6 +1042,23 @@ declare global {
         prototype: HTMLIoCheckboxElement;
         new (): HTMLIoCheckboxElement;
     };
+    /**
+     * io-divider
+     * ==========
+     * Visual separator between sections of content.
+     * Horizontal (default): renders as `<hr role="separator">`.
+     * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
+     * With label: renders a flex row with a centered text label flanked by lines.
+     * @example <io-divider />
+     * <io-divider orientation="vertical" />
+     * <io-divider label="or" />
+     */
+    interface HTMLIoDividerElement extends Components.IoDivider, HTMLStencilElement {
+    }
+    var HTMLIoDividerElement: {
+        prototype: HTMLIoDividerElement;
+        new (): HTMLIoDividerElement;
+    };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
         "change": string;
@@ -1361,6 +1402,7 @@ declare global {
         "io-button": HTMLIoButtonElement;
         "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
+        "io-divider": HTMLIoDividerElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -1624,6 +1666,28 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    /**
+     * io-divider
+     * ==========
+     * Visual separator between sections of content.
+     * Horizontal (default): renders as `<hr role="separator">`.
+     * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
+     * With label: renders a flex row with a centered text label flanked by lines.
+     * @example <io-divider />
+     * <io-divider orientation="vertical" />
+     * <io-divider label="or" />
+     */
+    interface IoDivider {
+        /**
+          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
+         */
+        "label"?: string | undefined;
+        /**
+          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).
+          * @default 'horizontal'
+         */
+        "orientation"?: IoDividerOrientation;
     }
     /**
      * io-input
@@ -2275,6 +2339,10 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string | undefined;
     }
+    interface IoDividerAttributes {
+        "orientation": IoDividerOrientation;
+        "label": string | undefined;
+    }
     interface IoInputAttributes {
         "label": string;
         "type": IoInputType;
@@ -2386,6 +2454,7 @@ declare namespace LocalJSX {
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
+        "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -2458,6 +2527,18 @@ declare module "@stencil/core" {
              * <io-checkbox label="Required field" required error error-message="This field is required" />
              */
             "io-checkbox": LocalJSX.IntrinsicElements["io-checkbox"] & JSXBase.HTMLAttributes<HTMLIoCheckboxElement>;
+            /**
+             * io-divider
+             * ==========
+             * Visual separator between sections of content.
+             * Horizontal (default): renders as `<hr role="separator">`.
+             * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
+             * With label: renders a flex row with a centered text label flanked by lines.
+             * @example <io-divider />
+             * <io-divider orientation="vertical" />
+             * <io-divider label="or" />
+             */
+            "io-divider": LocalJSX.IntrinsicElements["io-divider"] & JSXBase.HTMLAttributes<HTMLIoDividerElement>;
             /**
              * io-input
              * =========

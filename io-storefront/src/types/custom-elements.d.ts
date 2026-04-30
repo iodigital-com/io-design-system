@@ -16,8 +16,8 @@ declare module 'react' {
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
-  'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { orientation?: 'horizontal' | 'vertical'; label?: string };
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
+  'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;

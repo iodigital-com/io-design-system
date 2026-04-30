@@ -63,12 +63,32 @@ export class IoButtonGroup {
   // ── Private ───────────────────────────────────────────────────
 
   private buttonRefs: Map<number, HTMLButtonElement> = new Map();
+  private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentDidLoad() {
     this.items = parseButtonGroupItems(this.el);
     this.initFocusIndex();
+
+    // Guard against the SSR/hydration race: when Stencil's beforeInteractive
+    // script upgrades elements before React has run, child <io-button> elements
+    // have no `value` property yet (React ref callbacks haven't fired) so
+    // parseButtonGroupItems returns []. Re-parse after one macro-task tick to
+    // give React time to commit and fire its ref callbacks.
+    if (this.items.length === 0 && this.el.children.length > 0) {
+      this.lateParseTimeout = setTimeout(() => {
+        this.items = parseButtonGroupItems(this.el);
+        this.initFocusIndex();
+      }, 0);
+    }
+  }
+
+  disconnectedCallback() {
+    if (this.lateParseTimeout !== undefined) {
+      clearTimeout(this.lateParseTimeout);
+      this.lateParseTimeout = undefined;
+    }
   }
 
   @Watch('value')

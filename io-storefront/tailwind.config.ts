@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
+        sans: ['var(--font-manrope)', 'sans-serif'],
       },
       colors: {
         // io Digital brand palette — mirrors docs/tokens.json

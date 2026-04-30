@@ -102,6 +102,21 @@ const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
   auto: <AutoIcon />,
 };
 
+const FOCUSABLE_SELECTORS = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ');
+
+function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)).filter(
+    el => el.offsetParent !== null,
+  );
+}
+
 /**
  * Canvas — 3-panel layout shell.
  *
@@ -221,6 +236,54 @@ export function Canvas({ children }: { children: ReactNode }) {
     }
 
     activeDrawer.focus();
+  }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen]);
+
+  // Body scroll lock — prevent background scroll while a drawer is open on mobile
+  useEffect(() => {
+    if (!isMobileViewport) return;
+    if (!isSidebarStartOpen && !isSidebarEndOpen) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen]);
+
+  // Focus trap — cycle Tab/Shift+Tab within the active drawer on mobile
+  useEffect(() => {
+    if (!isMobileViewport) return;
+
+    const activeDrawer = isSidebarEndOpen
+      ? sidebarEndRef.current
+      : isSidebarStartOpen
+        ? sidebarStartRef.current
+        : null;
+
+    if (!activeDrawer) return;
+
+    function trapFocus(event: KeyboardEvent) {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusableElements(activeDrawer!);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey) {
+        if (document.activeElement === first || document.activeElement === activeDrawer) {
+          event.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last || document.activeElement === activeDrawer) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', trapFocus);
+    return () => document.removeEventListener('keydown', trapFocus);
   }, [isMobileViewport, isSidebarStartOpen, isSidebarEndOpen]);
 
   return (

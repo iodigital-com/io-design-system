@@ -14,7 +14,8 @@ declare module 'react' {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
-  'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
+  'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton> & { value?: string };
+  'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { exclusive?: boolean; value?: string | string[]; disabled?: boolean; label?: string; onchange?: (e: CustomEvent<{ value: string | string[] }>) => void };
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;

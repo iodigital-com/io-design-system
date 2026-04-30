@@ -83,6 +83,14 @@ export const sitemap: NavSection[] = [
         related: ['io-link', 'io-modal', 'io-tabs'],
       },
       {
+        label: 'Button Group',
+        href: '/components/io-button-group/configurator',
+        status: 'beta',
+        slug: 'io-button-group',
+        description: 'Segmented single or multi-select control. Renders a horizontal button strip with shared borders, active state in brand blue, and full radiogroup/checkbox ARIA semantics.',
+        related: ['io-button', 'io-tabs', 'io-checkbox'],
+      },
+      {
         label: 'Carousel',
         href: '/components/io-carousel/configurator',
         status: 'beta',

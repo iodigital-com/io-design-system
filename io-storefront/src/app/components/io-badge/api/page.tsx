@@ -24,6 +24,12 @@ export default function IoBadgeApiPage() {
           ]}
           rows={[
             [
+              <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,
+              <InlineCode key="d">&apos;md&apos;</InlineCode>,
+              'Badge size for density and hierarchy control in lists, cards, and metadata.',
+            ],
+            [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoBadgeVariant</InlineCode>

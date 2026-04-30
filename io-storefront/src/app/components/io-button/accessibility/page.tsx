@@ -132,7 +132,7 @@ export default function IoButtonAccessibilityPage() {
           description="Guidelines for building inclusive experiences with io-button across all contexts and assistive technologies."
         />
         <RuleCard label="Always label icon-only buttons">
-          When the slot contains no visible text — for example an arrow-only or icon-only button — you must pass
+          When <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>iconOnly</code> is true, you must pass
           a descriptive <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code> prop.
           Without it, screen readers announce nothing useful. The label should describe the action, not the icon (e.g. <em>&ldquo;Next page&rdquo;</em>, not <em>&ldquo;Arrow&rdquo;</em>).
         </RuleCard>

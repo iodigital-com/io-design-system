@@ -1974,6 +1974,62 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-size-button-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Shared control size token matching io-button sm height."
+    },
+    {
+      "runtimeCssVar": "--io-size-button-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Shared control size token matching io-button md height."
+    },
+    {
+      "runtimeCssVar": "--io-size-button-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Shared control size token matching io-button lg height."
+    },
+    {
+      "runtimeCssVar": "--io-size-button-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Shared control size token matching io-button xl height."
+    },
+    {
+      "runtimeCssVar": "--io-size-input-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Input/select/textarea size token aligned to io-button sm."
+    },
+    {
+      "runtimeCssVar": "--io-size-input-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Input/select/textarea size token aligned to io-button md."
+    },
+    {
+      "runtimeCssVar": "--io-size-input-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Input/select/textarea size token aligned to io-button lg."
     }
   ]
 }

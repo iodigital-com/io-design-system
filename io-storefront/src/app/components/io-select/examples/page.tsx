@@ -2,6 +2,7 @@
 
 import {
   selectStoryDefault,
+  selectStorySizes,
   selectStoryPlaceholder,
   selectStoryError,
   selectStoryDisabled,
@@ -18,8 +19,11 @@ export default function IoSelectExamplesPage() {
         <ComponentStory story={selectStoryDefault} />
       </section>
 
-      <section>
-        <ExamplesSectionHeader title="With placeholder" />
+      <section>        <ExamplesSectionHeader title="Sizes" description="sm, md, and lg sizes for compact to touch-friendly layouts." />
+        <ComponentStory story={selectStorySizes} previewClassName="flex flex-wrap gap-4 items-end" />
+      </section>
+
+      <section>        <ExamplesSectionHeader title="With placeholder" />
         <ComponentStory story={selectStoryPlaceholder} />
       </section>
 

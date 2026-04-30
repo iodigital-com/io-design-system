@@ -53,6 +53,7 @@ type CustomListenerStore = Array<{ eventName: string; handler: EventListener }>;
 
 type StoryHostElement = HTMLElement & {
   __ioStoryListeners?: CustomListenerStore;
+  [key: string]: unknown;
 };
 
 let _keyCounter = 0;
@@ -136,18 +137,28 @@ function createElement(
         });
 
         el.__ioStoryListeners = next;
+
+        // Apply custom-element properties directly on each render. This avoids
+        // React normalizing certain prop names (e.g. size, iconOnly) in ways
+        // that can prevent Stencil props from updating correctly.
+        for (const [propName, propValue] of Object.entries(properties)) {
+          el[propName] = propValue;
+        }
       }
     : undefined;
 
-  return React.createElement(
-    tag as string,
-    {
-      key,
-      ...(suppressHydration ? { suppressHydrationWarning: true } : {}),
-      ...properties,
-      ...(isCustomEl ? {} : eventProps),
-      ...(customRef ? { ref: customRef } : {}),
-    },
-    ...children.map((child) => createElement(child, setState, isCustomEl)),
-  );
+  const elementProps = isCustomEl
+    ? {
+        key,
+        ...(suppressHydration ? { suppressHydrationWarning: true } : {}),
+        ...(customRef ? { ref: customRef } : {}),
+      }
+    : {
+        key,
+        ...(suppressHydration ? { suppressHydrationWarning: true } : {}),
+        ...properties,
+        ...eventProps,
+      };
+
+  return React.createElement(tag as string, elementProps, ...children.map((child) => createElement(child, setState, isCustomEl)));
 }

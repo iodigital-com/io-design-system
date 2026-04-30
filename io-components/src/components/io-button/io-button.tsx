@@ -60,11 +60,16 @@ export class IoButton {
   /** Accessible label — required for icon-only buttons */
   @Prop() label: string | undefined;
 
+  /** Renders a square icon-only button and suppresses text label rendering */
+  @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
+
   /** Direction of the optional animated arrow icon. Omit to hide the arrow. */
   @Prop({ reflect: true }) arrow: IoButtonArrow | undefined;
 
   /** Side on which the arrow is rendered. Defaults to 'right'. */
   @Prop({ reflect: true }) arrowPlacement: IoButtonArrowPlacement = 'right';
+
+  private hasWarnedIconOnlyLabel = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -101,22 +106,41 @@ export class IoButton {
     }
   };
 
+  private getAccessibleLabel(): string | undefined {
+    const hostAriaLabel = this.el.getAttribute('aria-label') ?? undefined;
+    return this.label ?? hostAriaLabel;
+  }
+
+  private warnIconOnlyLabelMissing(): void {
+    if (!this.iconOnly || this.hasWarnedIconOnlyLabel || this.getAccessibleLabel()) {
+      return;
+    }
+
+    const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (!isStencilProd) {
+      console.warn('io-button: icon-only buttons require an accessible label via the label prop or aria-label attribute.');
+    }
+    this.hasWarnedIconOnlyLabel = true;
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, label, arrowPlacement } = this;
+    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement } = this;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
     const arrow = rawArrow === 'none' || rawArrow === null ? undefined : this.arrow;
 
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
-    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth });
+    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
+    const accessibleLabel = this.getAccessibleLabel();
+    this.warnIconOnlyLabelMissing();
 
     const Tag = href ? 'a' : 'button';
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
       onClick: this.handleClick,
       onKeyDown: this.handleKeyDown,
       ...ariaAttrs,
@@ -131,8 +155,8 @@ export class IoButton {
       innerProps['disabled'] = disabled || loading;
     }
 
-    if (label) {
-      innerProps['aria-label'] = label;
+    if (accessibleLabel) {
+      innerProps['aria-label'] = accessibleLabel;
     }
 
     return (
@@ -140,7 +164,7 @@ export class IoButton {
         <style>{getButtonStyles()}</style>
         <Tag {...innerProps}>
           {loading && <span class="btn__spinner" aria-hidden="true" />}
-          {arrow !== undefined && arrowPlacement === 'left' && (
+          {!iconOnly && arrow !== undefined && arrowPlacement === 'left' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"
@@ -150,8 +174,8 @@ export class IoButton {
               </svg>
             </span>
           )}
-          <span class="btn__label"><slot /></span>
-          {arrow !== undefined && arrowPlacement === 'right' && (
+          {iconOnly ? <span class="btn__icon" aria-hidden="true"><slot /></span> : <span class="btn__label"><slot /></span>}
+          {!iconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"

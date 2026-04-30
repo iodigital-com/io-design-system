@@ -8,13 +8,23 @@ export function getBadgeStyles(): string {
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: var(--io-space-1) var(--io-space-3);
-      font-size: var(--io-font-size-xs);
       font-weight: var(--io-font-weight-semibold);
       line-height: var(--io-line-height-tight);
       border-radius: var(--io-border-radius-pill);
       border: 1px solid transparent;
       white-space: nowrap;
+    }
+
+    .badge--sm {
+      padding: var(--io-space-1) var(--io-space-3);
+      font-size: var(--io-font-size-xs);
+      min-height: var(--io-space-6);
+    }
+
+    .badge--md {
+      padding: var(--io-space-2) var(--io-space-4);
+      font-size: var(--io-font-size-sm);
+      min-height: var(--io-space-10);
     }
 
     .badge--blue {

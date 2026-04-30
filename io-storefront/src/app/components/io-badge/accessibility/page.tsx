@@ -146,6 +146,9 @@ export default function IoBadgeAccessibilityPage() {
           where white text on a coloured fill may reduce to white on black, and the outline variant where the border
           may disappear against certain system themes.
         </RuleCard>
+        <RuleCard label="Match size to surrounding text hierarchy">
+          Use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;sm&quot;</code> for dense metadata and <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;lg&quot;</code> only where higher emphasis aids scanning.
+        </RuleCard>
       </section>
 
     </div>

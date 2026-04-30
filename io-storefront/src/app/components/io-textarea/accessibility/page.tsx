@@ -160,6 +160,9 @@ export default function IoTextareaAccessibilityPage() {
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>resize=&quot;none&quot;</code>{' '}
           when the field is part of a layout-constrained component where the height is deliberately fixed.
         </RuleCard>
+        <RuleCard label="Use lg size for touch-heavy text entry">
+          On mobile-heavy flows, prefer <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;lg&quot;</code> to improve hit area and readability.
+        </RuleCard>
       </section>
 
     </div>

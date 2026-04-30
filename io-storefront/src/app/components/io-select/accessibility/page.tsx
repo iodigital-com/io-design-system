@@ -161,6 +161,9 @@ export default function IoSelectAccessibilityPage() {
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>value</code>{' '}
           prop. This is especially helpful for users with motor impairments.
         </RuleCard>
+        <RuleCard label="Choose size for context and touch targets">
+          Use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;lg&quot;</code> where touch interaction is primary to improve target size and reduce selection errors.
+        </RuleCard>
       </section>
 
     </div>

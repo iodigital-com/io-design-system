@@ -77,6 +77,40 @@ export function getButtonStyles(): string {
       height: var(--io-button-arrow-xl-height);
     }
 
+    /* Icon-only contract */
+    .btn--icon-only {
+      aspect-ratio: 1;
+      padding: var(--io-button-icon-padding, var(--io-space-2));
+      width: var(--io-size-button-md);
+      height: var(--io-size-button-md);
+    }
+
+    .btn--sm.btn--icon-only {
+      width: var(--io-size-button-sm);
+      height: var(--io-size-button-sm);
+    }
+
+    .btn--lg.btn--icon-only {
+      width: var(--io-size-button-lg);
+      height: var(--io-size-button-lg);
+    }
+
+    .btn--xl.btn--icon-only {
+      width: var(--io-size-button-xl);
+      height: var(--io-size-button-xl);
+    }
+
+    .btn--icon-only .btn__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+
+    .btn--icon-only .btn__arrow {
+      display: none;
+    }
+
     /* ── Full width ─────────────────────────────────────── */
 
     :host(.io-button--full-width) {

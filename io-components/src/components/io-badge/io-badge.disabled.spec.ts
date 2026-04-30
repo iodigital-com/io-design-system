@@ -9,7 +9,7 @@ describe('io-badge - disabled behavior (not applicable)', () => {
     component.variant = 'warning';
 
     expect(() => component.render()).not.toThrow();
-    expect(getBadgeClassName(component.variant)).toBe('badge badge--warning');
+    expect(getBadgeClassName(component.variant, component.size)).toBe('badge badge--warning badge--md');
     expect(component.click).toBeUndefined();
     expect(component.toggle).toBeUndefined();
   });

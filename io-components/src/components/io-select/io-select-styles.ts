@@ -60,6 +60,23 @@ export function getSelectStyles(): string {
       transition: border-bottom-width var(--io-motion-fast), margin-top var(--io-motion-fast);
     }
 
+    .select-field--sm {
+      height: var(--io-size-input-sm);
+      min-height: var(--io-size-input-sm);
+      font-size: var(--io-font-size-xs);
+    }
+
+    .select-field--md {
+      height: var(--io-size-input-md);
+      min-height: var(--io-size-input-md);
+    }
+
+    .select-field--lg {
+      height: var(--io-size-input-lg);
+      min-height: var(--io-size-input-lg);
+      font-size: var(--io-font-size-base);
+    }
+
     .select-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
       margin-top: var(--io-field-focus-offset-y);

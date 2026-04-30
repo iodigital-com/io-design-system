@@ -100,6 +100,25 @@ export default function IoBadgeUsagePage() {
         </div>
       </section>
 
+      {/* ── Sizes ────────────────────────────────────────────────── */}
+      <section id="sizes" className="space-y-6">
+        <SectionHeader
+          title="Sizes"
+          description="Choose size by density and hierarchy. Keep badge size aligned with nearby typography and controls."
+        />
+        <div className="space-y-3">
+          <RuleCard label="sm — Dense metadata">
+            Use <C>sm</C> in compact tables, list rows, and secondary metadata where space is limited.
+          </RuleCard>
+          <RuleCard label="md — Default">
+            Use <C>md</C> for general-purpose badges in cards, lists, and content headers.
+          </RuleCard>
+          <RuleCard label="lg — High emphasis">
+            Use <C>lg</C> sparingly for prominent status chips where stronger visual weight improves scanning.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── Content guidelines ───────────────────────────────────── */}
       <section id="content-guidelines" className="space-y-6">
         <SectionHeader

@@ -67,6 +67,25 @@ export default function IoTextareaUsagePage() {
         </div>
       </section>
 
+      {/* ── Sizes ────────────────────────────────────────────────── */}
+      <section id="sizes" className="space-y-6">
+        <SectionHeader
+          title="Sizes"
+          description="Use size to align textarea rhythm with surrounding inputs, selects, and buttons."
+        />
+        <div className="space-y-3">
+          <RuleCard label="sm — Compact notes and dense forms">
+            Use <C>sm</C> for constrained desktop layouts where vertical density is important.
+          </RuleCard>
+          <RuleCard label="md — Default">
+            Use <C>md</C> for most form experiences.
+          </RuleCard>
+          <RuleCard label="lg — Touch-first and high-emphasis fields">
+            Use <C>lg</C> for mobile-heavy contexts and long-form text entry areas that need stronger prominence.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── States ───────────────────────────────────────────────── */}
       <section id="states" className="space-y-6">
         <SectionHeader

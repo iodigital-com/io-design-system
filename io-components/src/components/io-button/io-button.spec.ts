@@ -43,6 +43,10 @@ describe('io-button — default props', () => {
     expect(component.fullWidth).toBe(false);
   });
 
+  it('is not iconOnly by default', () => {
+    expect(component.iconOnly).toBe(false);
+  });
+
   it('has no arrow by default', () => {
     expect(component.arrow).toBeUndefined();
   });
@@ -54,5 +58,15 @@ describe('io-button — default props', () => {
     const shadowRoot = { querySelector: vi.fn().mockReturnValue(inner) };
     (component as any).el = { shadowRoot };
     await expect(component.setFocus()).resolves.toBeUndefined();
+  });
+
+  it('warns in dev when iconOnly is true without label or aria-label', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    component.iconOnly = true;
+
+    expect(() => component.render()).not.toThrow();
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+
+    warnSpy.mockRestore();
   });
 });

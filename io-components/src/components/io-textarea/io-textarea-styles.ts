@@ -68,6 +68,28 @@ export function getTextareaStyles(): string {
       transition: border-bottom-width var(--io-motion-fast), margin-top var(--io-motion-fast);
     }
 
+    .textarea-field--sm {
+      min-height: var(--io-size-input-sm);
+      font-size: var(--io-font-size-xs);
+      line-height: var(--io-line-height-base);
+      padding-top: var(--io-space-1);
+      padding-bottom: var(--io-space-1);
+    }
+
+    .textarea-field--md {
+      min-height: var(--io-size-input-md);
+      font-size: var(--io-font-size-sm);
+      line-height: var(--io-line-height-relaxed);
+    }
+
+    .textarea-field--lg {
+      min-height: var(--io-size-input-lg);
+      font-size: var(--io-font-size-base);
+      line-height: var(--io-line-height-relaxed);
+      padding-top: var(--io-space-3);
+      padding-bottom: var(--io-space-3);
+    }
+
     .textarea-field::placeholder {
       color: transparent;
     }

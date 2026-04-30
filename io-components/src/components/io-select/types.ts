@@ -4,3 +4,6 @@ export type IoSelectOption = {
   value: string;
   disabled?: boolean;
 };
+
+/** Visual size scale aligned with io-button sizing tokens */
+export type IoSelectSize = 'sm' | 'md' | 'lg';

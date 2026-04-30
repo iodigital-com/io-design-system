@@ -3,7 +3,7 @@ import { Component, Prop, Host, h } from '@stencil/core';
 import { getBadgeStyles } from './io-badge-styles';
 import { getBadgeClassName } from './io-badge-utils';
 
-import type { IoBadgeVariant } from './types';
+import type { IoBadgeVariant, IoBadgeSize } from './types';
 
 /**
  * io-badge
@@ -23,11 +23,14 @@ export class IoBadge {
   /** Color/semantic variant */
   @Prop({ reflect: true }) variant: IoBadgeVariant = 'blue';
 
+  /** Size variant aligned with io-tag */
+  @Prop({ reflect: true }) size: IoBadgeSize = 'md';
+
   render() {
     return (
       <Host>
         <style>{getBadgeStyles()}</style>
-        <span class={getBadgeClassName(this.variant)}>
+        <span class={getBadgeClassName(this.variant, this.size)}>
           <slot />
         </span>
       </Host>

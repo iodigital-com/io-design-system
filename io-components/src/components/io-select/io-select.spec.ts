@@ -17,8 +17,12 @@ describe('io-select — default props', () => {
     expect(component.value).toBe('');
   });
 
-  it('has empty options array by default', () => {
-    expect(component.options).toEqual([]);
+  it('has empty flatOptions by default', () => {
+    expect((component as any).flatOptions).toEqual([]);
+  });
+
+  it('has empty groups by default', () => {
+    expect((component as any).groups).toEqual([]);
   });
 
   it('has size md by default', () => {

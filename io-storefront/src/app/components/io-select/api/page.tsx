@@ -54,19 +54,6 @@ export default function IoSelectApiPage() {
               'Placeholder option rendered as the first disabled option. Shown when value is empty. Provides a "Select an option" prompt.',
             ],
             [
-              <InlineCode key="n">options</InlineCode>,
-              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>IoSelectOption[]</InlineCode>
-              </span>,
-              <InlineCode key="d">[]</InlineCode>,
-              <span key="desc">
-                Array of option objects. Each object has{' '}
-                <InlineCode>label</InlineCode>{' '}(string, displayed text),{' '}
-                <InlineCode>value</InlineCode>{' '}(string, form value), and optional{' '}
-                <InlineCode>disabled</InlineCode>{' '}(boolean).
-              </span>,
-            ],
-            [
               <InlineCode key="n">required</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
@@ -100,19 +87,19 @@ export default function IoSelectApiPage() {
               <span key="n"><InlineCode>custom</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Switches to the ARIA combobox/listbox implementation. Required before using multiple or filter. Renders a keyboard-accessible custom dropdown instead of the native select element.',
+              'Switches from the native <select> element to a fully accessible ARIA combobox/listbox implementation. Required for multiple selection and filter mode.',
             ],
             [
               <InlineCode key="n">multiple</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              <span key="desc">Enables multi-value selection. Requires <InlineCode>custom=true</InlineCode>. The dropdown stays open after each selection. The <InlineCode>change</InlineCode> event detail becomes <InlineCode>string[]</InlineCode> instead of <InlineCode>string</InlineCode>.</span>,
+              'Enables multi-value selection. Requires custom=true. The change event detail becomes string[] instead of string.',
             ],
             [
               <InlineCode key="n">filter</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              <span key="desc">Adds a text search input inside the dropdown. Options are filtered by label as the user types. Requires <InlineCode>custom=true</InlineCode>. Focus is moved to the filter input when the dropdown opens.</span>,
+              'Adds a search input inside the dropdown to filter options by label. Requires custom=true.',
             ],
           ]}
         />
@@ -136,7 +123,7 @@ export default function IoSelectApiPage() {
               <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string | string[]</InlineCode>,
               'No',
-              <span key="desc">Fires when the selected value changes. Detail is a <InlineCode>string</InlineCode> in single-select mode, or <InlineCode>string[]</InlineCode> when <InlineCode>multiple=true</InlineCode>. In multiple mode the array reflects the full current selection after each toggle.</span>,
+              'Fires when the selected value changes. Detail is the new value string (single mode) or array of selected values (multiple mode).',
             ],
             [
               <InlineCode key="n">focus</InlineCode>,
@@ -153,31 +140,27 @@ export default function IoSelectApiPage() {
           ]}
         />
         <CodeNote label="Usage">
-{`// Single select (detail: string)
+{`// Vanilla JS
 document.querySelector('io-select')
   .addEventListener('change', (e) => console.log('value:', e.detail));
 
-// Multi-select (detail: string[])
-document.querySelector('io-select[multiple]')
-  .addEventListener('change', (e) => console.log('selected:', e.detail));
-
-// React — single
-<IoSelect label="Country" options={options} onChange={(e) => setCountry(e.detail)} />
-
-// React — multi-select (custom + multiple)
-<IoSelect
-  label="Countries"
-  options={options}
-  custom
-  multiple
-  onChange={(e) => setCountries(e.detail as string[])}
-/>
+// React
+<IoSelect label="Country" onChange={(e) => setCountry(e.detail)}>
+  <io-option value="nl" label="Netherlands" />
+  <io-option value="be" label="Belgium" />
+</IoSelect>
 
 // Angular
-<io-select label="Country" [options]="options" (change)="onSelect($event)"></io-select>
+<io-select label="Country" (change)="onSelect($event)">
+  <io-option value="nl" label="Netherlands"></io-option>
+  <io-option value="be" label="Belgium"></io-option>
+</io-select>
 
 // Vue
-<io-select label="Country" :options="options" @change="handleChange" />`}
+<io-select label="Country" @change="handleChange">
+  <io-option value="nl" label="Netherlands" />
+  <io-option value="be" label="Belgium" />
+</io-select>`}
         </CodeNote>
       </section>
 
@@ -207,54 +190,28 @@ document.querySelector('io-select[multiple]')
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="Content slots available on io-select."
-        />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-select has no content slots.</strong>
-          {' '}All content is passed through props:{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>options</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>.
-        </EmptyNote>
-      </section>
-
-      {/* ── Companion components ─────────────────────────────────── */}
-      <section id="companion-components" className="space-y-4">
-        <SectionHeader
-          title="Companion components"
-          description="io-option and io-optgroup are standalone Stencil components shipped alongside io-select for future slot-based usage."
+          description="io-option and io-optgroup are the slot children of io-select. Place them as direct children to define the available options and groups."
         />
         <ApiTable
           columns={[
-            { label: 'Component', width: '160px' },
-            { label: 'Props', width: '340px' },
+            { label: 'Element', width: '200px' },
             { label: 'Description' },
           ]}
           rows={[
             [
               <InlineCode key="n">io-option</InlineCode>,
-              <span key="p">
-                <InlineCode>value</InlineCode>, <InlineCode>label</InlineCode>,{' '}
-                <InlineCode>disabled</InlineCode>, <InlineCode>selected</InlineCode>,{' '}
-                <InlineCode>checked</InlineCode>, <InlineCode>focused</InlineCode>,{' '}
-                <InlineCode>multiple-mode</InlineCode>
-              </span>,
               <span key="d">
-                Individual option item. Emits <InlineCode>optionSelect</InlineCode> with{' '}
-                <InlineCode>{'{ value, label }'}</InlineCode>. Designed for use as a direct child of{' '}
-                <InlineCode>io-select[custom]</InlineCode> in a future slot-based API.
+                A single selectable option. Accepts <InlineCode>value</InlineCode> (string, required),{' '}
+                <InlineCode>label</InlineCode> (string, displayed text), and optional{' '}
+                <InlineCode>disabled</InlineCode> (boolean) attributes.
               </span>,
             ],
             [
               <InlineCode key="n">io-optgroup</InlineCode>,
-              <span key="p">
-                <InlineCode>label</InlineCode>, <InlineCode>disabled</InlineCode>
-              </span>,
               <span key="d">
-                Groups related <InlineCode>io-option</InlineCode> elements with a labelled heading.
-                Renders <InlineCode>role=&quot;group&quot;</InlineCode> with <InlineCode>aria-label</InlineCode>.
-                Accepts a default slot for child <InlineCode>io-option</InlineCode> elements.
+                A labelled group of <InlineCode>io-option</InlineCode> children. Accepts{' '}
+                <InlineCode>label</InlineCode> (string, group heading) and optional{' '}
+                <InlineCode>disabled</InlineCode> (boolean, propagates to all child options).
               </span>,
             ],
           ]}

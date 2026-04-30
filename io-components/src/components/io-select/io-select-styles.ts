@@ -14,6 +14,13 @@ export function getSelectStyles(): string {
       font-family: var(--io-font-primary);
     }
 
+    /* Hide slotted io-option and io-optgroup — they are parsed as data in
+       componentDidLoad and re-rendered as internal option/group elements */
+    ::slotted(io-option),
+    ::slotted(io-optgroup) {
+      display: none !important;
+    }
+
     /* io brand: underline-only style — matches io-input */
     .select-wrapper {
       position: relative;

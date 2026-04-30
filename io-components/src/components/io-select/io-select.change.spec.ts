@@ -29,10 +29,11 @@ describe('io-select — change handling', () => {
     (component as any).change = { emit: changeMock };
     (component as any).focus = { emit: focusMock };
     (component as any).blur = { emit: blurMock };
-    component.options = [
+    (component as any).flatOptions = [
       { label: 'Option A', value: 'a' },
       { label: 'Option B', value: 'b' },
     ];
+    (component as any).groups = [{ options: [{ label: 'Option A', value: 'a' }, { label: 'Option B', value: 'b' }] }];
   });
 
   it('emits change with the selected value', () => {

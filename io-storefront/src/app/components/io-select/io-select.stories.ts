@@ -1,20 +1,10 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
-const DEFAULT_OPTIONS = [
-  { label: 'Netherlands', value: 'nl' },
-  { label: 'Belgium', value: 'be' },
-  { label: 'Germany', value: 'de' },
-];
-
-const COMBOBOX_OPTIONS = [
-  { label: 'Netherlands', value: 'nl' },
-  { label: 'Belgium', value: 'be' },
-  { label: 'Germany', value: 'de' },
-  { label: 'France', value: 'fr' },
-  { label: 'Spain', value: 'es' },
-  { label: 'Italy', value: 'it' },
-  { label: 'Sweden', value: 'se', disabled: true },
+const DEFAULT_CHILDREN = [
+  { tag: 'io-option' as const, properties: { value: 'nl', label: 'Netherlands' } },
+  { tag: 'io-option' as const, properties: { value: 'be', label: 'Belgium' } },
+  { tag: 'io-option' as const, properties: { value: 'de', label: 'Germany' } },
 ];
 
 export const selectStory: Story<'io-select'> = {
@@ -28,9 +18,6 @@ export const selectStory: Story<'io-select'> = {
       error: false,
       errorMessage: '',
       helperText: '',
-      custom: false,
-      multiple: false,
-      filter: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -45,11 +32,8 @@ export const selectStory: Story<'io-select'> = {
         error: (properties?.error as boolean) ?? false,
         errorMessage: (properties?.errorMessage as string) || undefined,
         helperText: (properties?.helperText as string) || undefined,
-        custom: (properties?.custom as boolean) ?? false,
-        multiple: (properties?.multiple as boolean) ?? false,
-        filter: (properties?.filter as boolean) ?? false,
-        options: COMBOBOX_OPTIONS,
       },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -59,7 +43,8 @@ export const selectStoryDefault: Story<'io-select'> = {
   generator: () => [
     {
       tag: 'io-select' as const,
-      properties: { label: 'Country', options: DEFAULT_OPTIONS },
+      properties: { label: 'Country' },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -72,8 +57,8 @@ export const selectStoryPlaceholder: Story<'io-select'> = {
       properties: {
         label: 'Country',
         placeholder: 'Select a country',
-        options: DEFAULT_OPTIONS,
       },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -93,8 +78,8 @@ export const selectStoryError: Story<'io-select'> = {
         label: 'Country',
         error: true,
         errorMessage: 'Please select a country',
-        options: DEFAULT_OPTIONS,
       },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -104,71 +89,8 @@ export const selectStoryDisabled: Story<'io-select'> = {
   generator: () => [
     {
       tag: 'io-select' as const,
-      properties: { label: 'Country', disabled: true, options: DEFAULT_OPTIONS },
-    },
-  ],
-};
-
-export const selectStoryCombobox: Story<'io-select'> = {
-  state: { properties: { label: 'Country', custom: true } },
-  generator: () => [
-    {
-      tag: 'io-select' as const,
-      properties: {
-        label: 'Country',
-        placeholder: 'Select a country',
-        custom: true,
-        options: COMBOBOX_OPTIONS,
-      },
-    },
-  ],
-};
-
-export const selectStoryMultiple: Story<'io-select'> = {
-  state: { properties: { label: 'Countries', custom: true, multiple: true } },
-  generator: () => [
-    {
-      tag: 'io-select' as const,
-      properties: {
-        label: 'Countries',
-        placeholder: 'Select countries',
-        custom: true,
-        multiple: true,
-        options: COMBOBOX_OPTIONS,
-      },
-    },
-  ],
-};
-
-export const selectStoryFilter: Story<'io-select'> = {
-  state: { properties: { label: 'Country', custom: true, filter: true } },
-  generator: () => [
-    {
-      tag: 'io-select' as const,
-      properties: {
-        label: 'Country',
-        placeholder: 'Search countries',
-        custom: true,
-        filter: true,
-        options: COMBOBOX_OPTIONS,
-      },
-    },
-  ],
-};
-
-export const selectStoryMultipleFilter: Story<'io-select'> = {
-  state: { properties: { label: 'Countries', custom: true, multiple: true, filter: true } },
-  generator: () => [
-    {
-      tag: 'io-select' as const,
-      properties: {
-        label: 'Countries',
-        placeholder: 'Search and select',
-        custom: true,
-        multiple: true,
-        filter: true,
-        options: COMBOBOX_OPTIONS,
-      },
+      properties: { label: 'Country', disabled: true },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -178,15 +100,18 @@ export const selectStorySizes: Story<'io-select'> = {
   generator: () => [
     {
       tag: 'io-select' as const,
-      properties: { label: 'Small', size: 'sm', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+      properties: { label: 'Small', size: 'sm', placeholder: 'Choose' },
+      children: DEFAULT_CHILDREN,
     },
     {
       tag: 'io-select' as const,
-      properties: { label: 'Medium', size: 'md', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+      properties: { label: 'Medium', size: 'md', placeholder: 'Choose' },
+      children: DEFAULT_CHILDREN,
     },
     {
       tag: 'io-select' as const,
-      properties: { label: 'Large', size: 'lg', options: DEFAULT_OPTIONS, placeholder: 'Choose' },
+      properties: { label: 'Large', size: 'lg', placeholder: 'Choose' },
+      children: DEFAULT_CHILDREN,
     },
   ],
 };
@@ -240,23 +165,5 @@ export const selectPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Displays supporting guidance below the select.',
-  },
-  {
-    name: 'custom',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Switches to a fully accessible ARIA combobox/listbox. Required before using multiple or filter.',
-  },
-  {
-    name: 'multiple',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Enables multi-value selection. Requires custom=true. The change event detail becomes string[].',
-  },
-  {
-    name: 'filter',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Adds a text search input inside the dropdown to filter options by label. Requires custom=true.',
   },
 ];

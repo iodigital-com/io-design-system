@@ -2,9 +2,17 @@ import { Component, Prop, State, Watch, Event, EventEmitter, Method, Element, Ho
 import { computePosition } from '@floating-ui/dom';
 
 import { getSelectStyles } from './io-select-styles';
-import { resolveSelectId, getSelectWrapperClass, getComboboxMiddleware, getComboboxOptionId, getComboboxWrapperClass, getComboboxOptionClass } from './io-select-utils';
+import {
+  resolveSelectId,
+  getSelectWrapperClass,
+  getComboboxMiddleware,
+  getComboboxOptionId,
+  getComboboxWrapperClass,
+  getComboboxOptionClass,
+  parseSelectContent,
+} from './io-select-utils';
 
-import type { IoSelectOption, IoSelectSize } from './types';
+import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types';
 
 /**
  * io-select
@@ -12,9 +20,20 @@ import type { IoSelectOption, IoSelectSize } from './types';
  * Styled native select with floating label — companion to io-input.
  * With `custom` prop: switches to a fully accessible ARIA combobox/listbox.
  *
+ * Options are defined as slotted `<io-option>` children. Groups are wrapped
+ * in `<io-optgroup>` elements.
+ *
  * @example
- * <io-select label="Country" :options="[{ label: 'Netherlands', value: 'nl' }]" />
- * <io-select label="Assign to" custom multiple filter :options="myOptions" />
+ * <io-select label="Country">
+ *   <io-option value="nl" label="Netherlands"></io-option>
+ *   <io-option value="be" label="Belgium"></io-option>
+ * </io-select>
+ *
+ * <io-select label="Assign to" custom multiple filter>
+ *   <io-optgroup label="Leadership">
+ *     <io-option value="alice" label="Alice Smith"></io-option>
+ *   </io-optgroup>
+ * </io-select>
  */
 @Component({
   tag: 'io-select',
@@ -40,9 +59,6 @@ export class IoSelect {
   /** Placeholder option shown when no value is selected */
   @Prop() placeholder: string | undefined;
 
-  /** List of options */
-  @Prop() options: IoSelectOption[] = [];
-
   /** Marks the field as required */
   @Prop() required = false;
 
@@ -66,6 +82,14 @@ export class IoSelect {
 
   /** Adds a search input inside the dropdown (custom mode only) */
   @Prop() filter = false;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Parsed option groups — drives rendering in both modes */
+  @State() private groups: IoSelectOptionGroup[] = [];
+
+  /** Flat ordered option list — drives keyboard navigation, filtering, display value */
+  @State() private flatOptions: IoSelectOption[] = [];
 
   // ── State (custom mode) ───────────────────────────────────────
 
@@ -106,6 +130,7 @@ export class IoSelect {
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
   private clickOutsideHandler?: (ev: PointerEvent) => void;
+  private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -114,8 +139,30 @@ export class IoSelect {
     this.fieldId = resolveSelectId(this.name, this.fallbackId);
   }
 
+  componentDidLoad() {
+    const parsed = parseSelectContent(this.el);
+    this.groups = parsed.groups;
+    this.flatOptions = parsed.flatOptions;
+
+    // Guard against the SSR/hydration race: when Stencil's beforeInteractive script
+    // upgrades elements before React has run, <io-option> children have no value
+    // property yet (React ref callbacks haven't fired). Re-parse after one macro-task
+    // tick to give React time to commit and fire its ref callbacks.
+    if (this.flatOptions.length === 0 && this.el.children.length > 0) {
+      this.lateParseTimeout = setTimeout(() => {
+        const late = parseSelectContent(this.el);
+        this.groups = late.groups;
+        this.flatOptions = late.flatOptions;
+      }, 0);
+    }
+  }
+
   disconnectedCallback() {
     this.removeClickOutside();
+    if (this.lateParseTimeout !== undefined) {
+      clearTimeout(this.lateParseTimeout);
+      this.lateParseTimeout = undefined;
+    }
   }
 
   // ── Watchers ─────────────────────────────────────────────────
@@ -131,7 +178,10 @@ export class IoSelect {
         const firstSelected = this.multiple
           ? this.filteredOptions.findIndex(o => this.selectedValues.includes(o.value))
           : this.filteredOptions.findIndex(o => o.value === this.value);
-        this.activeIndex = firstSelected >= 0 ? firstSelected : 0;
+        // Fall back to the first enabled option so aria-activedescendant never
+        // points to a disabled option on initial open.
+        const firstEnabled = this.filteredOptions.findIndex(o => !o.disabled);
+        this.activeIndex = firstSelected >= 0 ? firstSelected : Math.max(firstEnabled, -1);
       }
     } else {
       this.removeClickOutside();
@@ -144,20 +194,22 @@ export class IoSelect {
   // ── Computed ──────────────────────────────────────────────────
 
   private get filteredOptions(): IoSelectOption[] {
-    if (!this.filter || !this.filterQuery) return this.options;
+    if (!this.filter || !this.filterQuery) return this.flatOptions;
     const q = this.filterQuery.toLowerCase();
-    return this.options.filter(o => o.label.toLowerCase().includes(q));
+    return this.flatOptions.filter(o => o.label.toLowerCase().includes(q));
   }
 
   private get displayValue(): string {
     if (this.multiple) {
-      if (this.selectedValues.length === 0) return this.placeholder ?? '';
+      if (this.selectedValues.length === 0) return '';
       if (this.selectedValues.length === 1) {
-        return this.options.find(o => o.value === this.selectedValues[0])?.label ?? this.selectedValues[0];
+        return this.flatOptions.find(o => o.value === this.selectedValues[0])?.label ?? this.selectedValues[0];
       }
       return `${this.selectedValues.length} selected`;
     }
-    return this.options.find(o => o.value === this.value)?.label ?? this.placeholder ?? '';
+    // Return '' when no value is matched so the placeholder span in the trigger
+    // template is reached via the falsy branch (|| <span class="...placeholder">).
+    return this.flatOptions.find(o => o.value === this.value)?.label ?? '';
   }
 
   private isSelected(value: string): boolean {
@@ -336,6 +388,79 @@ export class IoSelect {
     }
   };
 
+  // ── Render helpers ────────────────────────────────────────────
+
+  private renderComboboxOption(opt: IoSelectOption, flatIndex: number) {
+    const sel = this.isSelected(opt.value);
+    const { multiple, activeIndex } = this;
+    const listboxId = `${this.fieldId}-listbox`;
+    return (
+      <li
+        key={opt.value}
+        id={getComboboxOptionId(listboxId, flatIndex)}
+        role="option"
+        aria-selected={String(sel)}
+        aria-disabled={opt.disabled ? 'true' : undefined}
+        aria-checked={multiple ? String(sel) : undefined}
+        class={getComboboxOptionClass(sel, opt.disabled ?? false, flatIndex === activeIndex, multiple)}
+        onClick={opt.disabled ? undefined : () => this.selectOption(opt)}
+      >
+        {multiple && (
+          <span class="combobox-option__checkbox" aria-hidden="true">
+            {sel && (
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+          </span>
+        )}
+        <span class="combobox-option__label">{opt.label}</span>
+        {!multiple && sel && (
+          <span class="combobox-option__check" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        )}
+      </li>
+    );
+  }
+
+  private renderListboxItems() {
+    const isFiltering = this.filter && this.filterQuery.length > 0;
+
+    if (isFiltering) {
+      // Flat list when actively filtering — group headers would be confusing mid-search
+      return this.filteredOptions.map((opt, i) => this.renderComboboxOption(opt, i));
+    }
+
+    // Grouped rendering: walk groups in DOM order; use flatOptions index for ARIA
+    const items: ReturnType<typeof this.renderComboboxOption>[] = [];
+    let flatIdx = 0;
+
+    for (const group of this.groups) {
+      if (group.label) {
+        const groupHeadingId = `${this.fieldId}-group-${flatIdx}`;
+        const groupItems = group.options.map(opt => {
+          const el = this.renderComboboxOption(opt, flatIdx++);
+          return el;
+        });
+        items.push(
+          <li role="presentation" class="combobox-group">
+            <span id={groupHeadingId} class="combobox-group__label" aria-hidden="true">{group.label}</span>
+            {groupItems}
+          </li>
+        );
+      } else {
+        for (const opt of group.options) {
+          items.push(this.renderComboboxOption(opt, flatIdx++));
+        }
+      }
+    }
+
+    return items;
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -346,7 +471,7 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, options, required, disabled, error, errorMessage, helperText, size } = this;
+    const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, size, groups } = this;
     const selectId = this.fieldId;
     const errorId = `${selectId}-error`;
     const helperId = `${selectId}-helper`;
@@ -358,6 +483,10 @@ export class IoSelect {
     return (
       <Host>
         <style>{getSelectStyles()}</style>
+        {/* Hidden slot — io-option/io-optgroup children are parsed in componentDidLoad
+            and rendered as internal <option>/<optgroup> elements. The originals are
+            visually hidden so the native select controls the displayed value. */}
+        <slot />
         <div class={getSelectWrapperClass(error, disabled)}>
           <select
             id={selectId}
@@ -374,11 +503,23 @@ export class IoSelect {
             {placeholder && (
               <option value="" disabled selected={value === ''}>{placeholder}</option>
             )}
-            {options.map(opt => (
-              <option key={opt.value} value={opt.value} disabled={opt.disabled} selected={opt.value === value}>
-                {opt.label}
-              </option>
-            ))}
+            {groups.map(group =>
+              group.label
+                ? (
+                  <optgroup key={group.label} label={group.label} disabled={group.disabled}>
+                    {group.options.map(opt => (
+                      <option key={opt.value} value={opt.value} disabled={opt.disabled} selected={opt.value === value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </optgroup>
+                )
+                : group.options.map(opt => (
+                  <option key={opt.value} value={opt.value} disabled={opt.disabled} selected={opt.value === value}>
+                    {opt.label}
+                  </option>
+                ))
+            )}
           </select>
           <label htmlFor={selectId} class="select-label">
             {label}
@@ -416,6 +557,9 @@ export class IoSelect {
     return (
       <Host>
         <style>{getSelectStyles()}</style>
+        {/* Hidden slot — io-option/io-optgroup children are parsed and rendered
+            as internal listbox items. The originals are visually hidden. */}
+        <slot />
         <div class={getComboboxWrapperClass(error, disabled)}>
           <label id={labelId} class="select-label" aria-hidden="true">
             {label}
@@ -477,39 +621,7 @@ export class IoSelect {
               aria-multiselectable={this.multiple ? 'true' : undefined}
               class="combobox-listbox"
             >
-              {opts.map((opt, i) => {
-                const sel = this.isSelected(opt.value);
-                return (
-                  <li
-                    key={opt.value}
-                    id={getComboboxOptionId(listboxId, i)}
-                    role="option"
-                    aria-selected={String(sel)}
-                    aria-disabled={opt.disabled ? 'true' : undefined}
-                    aria-checked={this.multiple ? String(sel) : undefined}
-                    class={getComboboxOptionClass(sel, opt.disabled ?? false, i === activeIndex, this.multiple)}
-                    onClick={opt.disabled ? undefined : () => this.selectOption(opt)}
-                  >
-                    {this.multiple && (
-                      <span class="combobox-option__checkbox" aria-hidden="true">
-                        {sel && (
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                        )}
-                      </span>
-                    )}
-                    <span class="combobox-option__label">{opt.label}</span>
-                    {!this.multiple && sel && (
-                      <span class="combobox-option__check" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path d="M2.5 7l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
+              {this.renderListboxItems()}
               {opts.length === 0 && (
                 <li class="combobox-empty" role="option" aria-disabled="true">No options</li>
               )}

@@ -9,7 +9,7 @@ import type { IoDividerOrientation } from './types';
  * ==========
  * Visual separator between sections of content.
  *
- * Horizontal (default): renders as `<hr role="separator">`.
+ * Horizontal (default): renders as `<hr>` (implicit role="separator", no explicit attribute needed).
  * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
  * With label: renders a flex row with a centered text label flanked by lines.
  *
@@ -46,13 +46,16 @@ export class IoDivider {
     const isVertical = orientation === 'vertical';
 
     if (label) {
+      // The labeled variant always renders a horizontal flex layout regardless
+      // of the orientation prop. aria-orientation is therefore always
+      // "horizontal" — setting it to "vertical" here would be misleading to AT.
       return (
         <Host>
           <style>{getDividerStyles()}</style>
           <div
             class="divider divider--labeled"
             role="separator"
-            aria-orientation={orientation}
+            aria-orientation="horizontal"
           >
             <span class="divider__line" aria-hidden="true" />
             <span class="divider__label">{label}</span>
@@ -75,11 +78,12 @@ export class IoDivider {
       );
     }
 
-    // Default horizontal — use semantic <hr> element
+    // Default horizontal — use semantic <hr> element.
+    // <hr> has an implicit role="separator"; no need for an explicit role attribute.
     return (
       <Host>
         <style>{getDividerStyles()}</style>
-        <hr class="divider" role="separator" />
+        <hr class="divider" />
       </Host>
     );
   }

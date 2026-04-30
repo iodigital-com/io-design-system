@@ -284,7 +284,7 @@ export namespace Components {
      * io-divider
      * ==========
      * Visual separator between sections of content.
-     * Horizontal (default): renders as `<hr role="separator">`.
+     * Horizontal (default): renders as `<hr>` (implicit role="separator", no explicit attribute needed).
      * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
      * With label: renders a flex row with a centered text label flanked by lines.
      * @example <io-divider />
@@ -1046,7 +1046,7 @@ declare global {
      * io-divider
      * ==========
      * Visual separator between sections of content.
-     * Horizontal (default): renders as `<hr role="separator">`.
+     * Horizontal (default): renders as `<hr>` (implicit role="separator", no explicit attribute needed).
      * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
      * With label: renders a flex row with a centered text label flanked by lines.
      * @example <io-divider />
@@ -1671,7 +1671,7 @@ declare namespace LocalJSX {
      * io-divider
      * ==========
      * Visual separator between sections of content.
-     * Horizontal (default): renders as `<hr role="separator">`.
+     * Horizontal (default): renders as `<hr>` (implicit role="separator", no explicit attribute needed).
      * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
      * With label: renders a flex row with a centered text label flanked by lines.
      * @example <io-divider />
@@ -2531,7 +2531,7 @@ declare module "@stencil/core" {
              * io-divider
              * ==========
              * Visual separator between sections of content.
-             * Horizontal (default): renders as `<hr role="separator">`.
+             * Horizontal (default): renders as `<hr>` (implicit role="separator", no explicit attribute needed).
              * Vertical: renders as `<div role="separator" aria-orientation="vertical">`.
              * With label: renders a flex row with a centered text label flanked by lines.
              * @example <io-divider />

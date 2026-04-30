@@ -28,11 +28,11 @@ export default function IoDividerAccessibilityPage() {
               attribute: 'aria-orientation="vertical"',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  When <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>orientation=&quot;vertical&quot;</code>
+                  Vertical variant only (no label)
                 </span>
               ),
               description:
-                'Informs AT of the separator\'s orientation. The default "horizontal" orientation does not require an explicit aria-orientation attribute (it is the default for role="separator").',
+                'Informs AT of the separator\'s orientation. Applied only when orientation="vertical" and no label is set. The horizontal unlabeled variant omits this attribute (horizontal is the ARIA default for role="separator"). The labeled variant always emits aria-orientation="horizontal" because its visual layout is always a horizontal flex row, regardless of the orientation prop.',
             },
             {
               attribute: '<hr> element',

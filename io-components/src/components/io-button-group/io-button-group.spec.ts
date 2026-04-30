@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 import { IoButtonGroup } from './io-button-group';
 
@@ -160,5 +160,60 @@ describe('io-button-group — @Watch handlers', () => {
     (comp as any).onExclusiveChange(false);
 
     expect(comp.value).toEqual([]);
+  });
+});
+
+describe('io-button-group — disconnectedCallback', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('clears lateParseTimeout when component disconnects before the timeout fires', () => {
+    vi.useFakeTimers();
+
+    const host = document.createElement('io-button-group');
+    // Add a non-io-button child so el.children.length > 0 but parseButtonGroupItems → []
+    const div = document.createElement('div');
+    host.appendChild(div);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+
+    comp.componentDidLoad();
+
+    // lateParseTimeout should be set (items empty, children present)
+    expect((comp as any).lateParseTimeout).toBeDefined();
+
+    // Disconnect before timeout fires
+    comp.disconnectedCallback();
+
+    expect((comp as any).lateParseTimeout).toBeUndefined();
+
+    // Advancing timers should not invoke the late-parse callback
+    const itemsBefore = (comp as any).items.length;
+    vi.runAllTimers();
+    expect((comp as any).items.length).toBe(itemsBefore);
+  });
+
+  it('does not throw in disconnectedCallback when no timeout was scheduled', () => {
+    const host = document.createElement('io-button-group');
+    ['day', 'week'].forEach(val => {
+      const btn = document.createElement('io-button');
+      btn.setAttribute('value', val);
+      btn.textContent = val;
+      host.appendChild(btn);
+    });
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    // Items were parsed successfully — lateParseTimeout was never set
+    expect((comp as any).lateParseTimeout).toBeUndefined();
+
+    // Should not throw
+    expect(() => comp.disconnectedCallback()).not.toThrow();
   });
 });

@@ -24,6 +24,8 @@ declare module 'react' {
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
+  'io-option': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { value?: string; label?: string; disabled?: boolean; selected?: boolean; checked?: boolean; focused?: boolean; 'multiple-mode'?: boolean; onoptionselect?: (e: CustomEvent<{ value: string; label: string }>) => void };
+  'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { label?: string; disabled?: boolean };
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;

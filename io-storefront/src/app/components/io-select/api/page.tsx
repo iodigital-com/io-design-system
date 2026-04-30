@@ -219,6 +219,48 @@ document.querySelector('io-select[multiple]')
         </EmptyNote>
       </section>
 
+      {/* ── Companion components ─────────────────────────────────── */}
+      <section id="companion-components" className="space-y-4">
+        <SectionHeader
+          title="Companion components"
+          description="io-option and io-optgroup are standalone Stencil components shipped alongside io-select for future slot-based usage."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Component', width: '160px' },
+            { label: 'Props', width: '340px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">io-option</InlineCode>,
+              <span key="p">
+                <InlineCode>value</InlineCode>, <InlineCode>label</InlineCode>,{' '}
+                <InlineCode>disabled</InlineCode>, <InlineCode>selected</InlineCode>,{' '}
+                <InlineCode>checked</InlineCode>, <InlineCode>focused</InlineCode>,{' '}
+                <InlineCode>multiple-mode</InlineCode>
+              </span>,
+              <span key="d">
+                Individual option item. Emits <InlineCode>optionSelect</InlineCode> with{' '}
+                <InlineCode>{'{ value, label }'}</InlineCode>. Designed for use as a direct child of{' '}
+                <InlineCode>io-select[custom]</InlineCode> in a future slot-based API.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">io-optgroup</InlineCode>,
+              <span key="p">
+                <InlineCode>label</InlineCode>, <InlineCode>disabled</InlineCode>
+              </span>,
+              <span key="d">
+                Groups related <InlineCode>io-option</InlineCode> elements with a labelled heading.
+                Renders <InlineCode>role=&quot;group&quot;</InlineCode> with <InlineCode>aria-label</InlineCode>.
+                Accepts a default slot for child <InlineCode>io-option</InlineCode> elements.
+              </span>,
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

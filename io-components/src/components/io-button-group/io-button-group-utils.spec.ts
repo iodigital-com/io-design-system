@@ -75,6 +75,39 @@ describe('parseButtonGroupItems', () => {
     const items = parseButtonGroupItems(host);
     expect(items[0].label).toBe('Week');
   });
+
+  it('reads value from JS property when attribute is not set (generator ref pattern)', () => {
+    const btn = document.createElement('io-button') as HTMLElement & { value: string };
+    btn.value = 'day'; // set as JS property, no setAttribute call
+    btn.textContent = 'Day';
+    host.appendChild(btn);
+
+    const items = parseButtonGroupItems(host);
+    expect(items).toHaveLength(1);
+    expect(items[0].value).toBe('day');
+  });
+
+  it('reads disabled from JS property when attribute is not set (generator ref pattern)', () => {
+    const btn = document.createElement('io-button') as HTMLElement & { value: string; disabled: boolean };
+    btn.value = 'day';
+    btn.disabled = true; // set as JS property, no setAttribute call
+    btn.textContent = 'Day';
+    host.appendChild(btn);
+
+    const items = parseButtonGroupItems(host);
+    expect(items[0].disabled).toBe(true);
+  });
+
+  it('prefers JS property over attribute when both are present', () => {
+    const btn = document.createElement('io-button') as HTMLElement & { value: string };
+    btn.setAttribute('value', 'attr-value');
+    btn.value = 'prop-value';
+    btn.textContent = 'Item';
+    host.appendChild(btn);
+
+    const items = parseButtonGroupItems(host);
+    expect(items[0].value).toBe('prop-value');
+  });
 });
 
 // ── getNextEnabledGroupIndex ───────────────────────────────────────────────────

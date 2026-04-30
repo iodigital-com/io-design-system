@@ -3,6 +3,14 @@ import type { IoButtonGroupItem } from './types';
 /**
  * Parses `<io-button>` children of a host element into structured item definitions.
  * Items with an empty or missing `value` attribute are filtered out.
+ *
+ * Checks the JS property first, then falls back to the HTML attribute.
+ * This handles two distinct usage patterns:
+ *   1. Static HTML / framework bindings — `value` is an HTML attribute set
+ *      before the element upgrades (`getAttribute` works).
+ *   2. Storefront generator — properties are applied via a ref callback
+ *      (`el.value = 'day'`) before Stencil upgrades the children, so the
+ *      attribute does not exist yet but the JS property is already present.
  */
 export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] {
   // Use direct children only — avoids accidentally picking up io-button elements
@@ -11,11 +19,16 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
     (el): el is Element => el.tagName.toLowerCase() === 'io-button',
   );
   return elements
-    .map(el => ({
-      value: el.getAttribute('value') ?? '',
-      label: el.textContent?.trim() ?? '',
-      disabled: el.hasAttribute('disabled'),
-    }))
+    .map(el => {
+      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown };
+      const value =
+        (typeof elAny.value === 'string' && elAny.value !== ''
+          ? elAny.value
+          : el.getAttribute('value')) ?? '';
+      const disabled =
+        typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
+      return { value, label: el.textContent?.trim() ?? '', disabled };
+    })
     .filter(item => item.value !== '');
 }
 

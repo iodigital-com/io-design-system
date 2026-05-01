@@ -7,7 +7,7 @@ import { type ComponentStatus, getComponentItems } from '@/sitemap';
 
 export const metadata: Metadata = {
   title: 'Component Status — io Design System',
-  description: 'Maturity model and per-component stability matrix for all io Design System components — alpha, beta, and stable classifications with promotion criteria.',
+  description: 'Maturity model and per-component stability matrix for all io Design System components — stable, beta, and deprecated classifications with promotion criteria.',
   openGraph: {
     title: 'Component Status — io Design System',
     description: 'Per-component stability matrix and promotion criteria for the io Design System.',

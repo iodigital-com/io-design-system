@@ -171,7 +171,7 @@ export default function BordersPage() {
             >
               <div
                 className="h-12 w-full rounded-md"
-                style={{ border: `2px solid var(${token})`, background: 'var(--io-bg-surface)' }}
+                style={{ border: `1px solid var(${token})`, background: 'var(--io-bg-surface)' }}
                 aria-hidden="true"
               />
               <div className="space-y-1">

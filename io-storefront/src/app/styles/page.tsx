@@ -1,3 +1,5 @@
+import { type ReactNode } from 'react';
+
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -124,7 +126,7 @@ function SectionHeader({ title, description }: { title: string; description: str
   );
 }
 
-function TokenGroup({ title, children }: { title: string; children: React.ReactNode }) {
+function TokenGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
       <h3

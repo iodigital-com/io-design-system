@@ -105,10 +105,12 @@ export default function FaqPage() {
       />
 
       <div className="space-y-10">
-        {FAQ_CATEGORIES.map((category) => (
-          <section key={category.title} className="space-y-3" aria-labelledby={`faq-${category.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}>
+        {FAQ_CATEGORIES.map((category) => {
+          const categoryId = `faq-${category.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+          return (
+          <section key={category.title} className="space-y-3" aria-labelledby={categoryId}>
             <h2
-              id={`faq-${category.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+              id={categoryId}
               className="text-base font-semibold"
               style={{ color: 'var(--io-text-primary)' }}
             >
@@ -125,7 +127,8 @@ export default function FaqPage() {
               ))}
             </div>
           </section>
-        ))}
+          );
+        })}
       </div>
 
       <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>

@@ -98,41 +98,11 @@ function TokenRow({ token, value, useCase }: { token: string; value: string; use
 // ── Token data ────────────────────────────────────────────────────────────────
 
 const ELEVATION_TOKENS = [
-  {
-    token: '--io-shadow-sm',
-    level: 0,
-    label: 'sm',
-    useCase: 'Subtle lift — buttons, input fields, chips',
-    css: '0px 1px 3px rgba(0,0,0,0.1), 0px 1px 2px -1px rgba(0,0,0,0.1)',
-  },
-  {
-    token: '--io-shadow-md',
-    level: 1,
-    label: 'md',
-    useCase: 'Default raised surface — cards, dropdowns',
-    css: '0px 0px 10px rgba(0,0,0,0.04), 0px 0px 25px rgba(0,0,0,0.02)',
-  },
-  {
-    token: '--io-shadow-lg',
-    level: 2,
-    label: 'lg',
-    useCase: 'Overlaid panels — navigation drawers, popovers',
-    css: '0px 0px 24px rgba(36,36,36,0.25)',
-  },
-  {
-    token: '--io-shadow-xl',
-    level: 3,
-    label: 'xl',
-    useCase: 'Modals and dialogs',
-    css: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
-  },
-  {
-    token: '--io-shadow-2xl',
-    level: 4,
-    label: '2xl',
-    useCase: 'Full-screen overlays and page-level sheets',
-    css: '0px 25px 50px -12px rgba(0,0,0,0.25)',
-  },
+  { token: '--io-shadow-sm',  level: 0, label: 'sm',  useCase: 'Subtle lift — buttons, input fields, chips' },
+  { token: '--io-shadow-md',  level: 1, label: 'md',  useCase: 'Default raised surface — cards, dropdowns' },
+  { token: '--io-shadow-lg',  level: 2, label: 'lg',  useCase: 'Overlaid panels — navigation drawers, popovers' },
+  { token: '--io-shadow-xl',  level: 3, label: 'xl',  useCase: 'Modals and dialogs' },
+  { token: '--io-shadow-2xl', level: 4, label: '2xl', useCase: 'Full-screen overlays and page-level sheets' },
 ] as const;
 
 const FOCUS_SHADOW_TOKENS = [

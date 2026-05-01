@@ -85,7 +85,17 @@ function TokenRow({ token, value, useCase }: { token: string; value: string; use
       <code className="text-xs font-mono shrink-0 pt-0.5" style={{ color: 'var(--io-text-primary)', width: 220 }}>
         {token}
       </code>
-      <code className="text-xs font-mono shrink-0 pt-0.5" style={{ color: 'var(--io-accent-text)', width: 60 }}>
+      <code
+        className="text-xs font-mono shrink-0 pt-0.5"
+        style={{
+          color: 'var(--io-accent-text)',
+          width: 200,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+        title={value}
+      >
         {value}
       </code>
       <span className="text-xs" style={{ color: 'var(--io-text-secondary)' }}>
@@ -98,27 +108,57 @@ function TokenRow({ token, value, useCase }: { token: string; value: string; use
 // ── Token data ────────────────────────────────────────────────────────────────
 
 const ELEVATION_TOKENS = [
-  { token: '--io-shadow-sm',  level: 0, label: 'sm',  useCase: 'Subtle lift — buttons, input fields, chips' },
-  { token: '--io-shadow-md',  level: 1, label: 'md',  useCase: 'Default raised surface — cards, dropdowns' },
-  { token: '--io-shadow-lg',  level: 2, label: 'lg',  useCase: 'Overlaid panels — navigation drawers, popovers' },
-  { token: '--io-shadow-xl',  level: 3, label: 'xl',  useCase: 'Modals and dialogs' },
-  { token: '--io-shadow-2xl', level: 4, label: '2xl', useCase: 'Full-screen overlays and page-level sheets' },
+  {
+    token: '--io-shadow-sm',
+    level: 0,
+    label: 'sm',
+    value: '0px 1px 3px rgba(0,0,0,.1), 0px 1px 2px -1px rgba(0,0,0,.1)',
+    useCase: 'Subtle lift — buttons, input fields, chips',
+  },
+  {
+    token: '--io-shadow-md',
+    level: 1,
+    label: 'md',
+    value: '0px 0px 10px rgba(0,0,0,.04), 0px 0px 25px rgba(0,0,0,.02)',
+    useCase: 'Default raised surface — cards, dropdowns',
+  },
+  {
+    token: '--io-shadow-lg',
+    level: 2,
+    label: 'lg',
+    value: '0px 0px 24px rgba(36,36,36,.25)',
+    useCase: 'Overlaid panels — navigation drawers, popovers',
+  },
+  {
+    token: '--io-shadow-xl',
+    level: 3,
+    label: 'xl',
+    value: '0px 10px 15px -3px rgba(0,0,0,.1), 0px 4px 6px -4px rgba(0,0,0,.1)',
+    useCase: 'Modals and dialogs',
+  },
+  {
+    token: '--io-shadow-2xl',
+    level: 4,
+    label: '2xl',
+    value: '0px 25px 50px -12px rgba(0,0,0,.25)',
+    useCase: 'Full-screen overlays and page-level sheets',
+  },
 ] as const;
 
 const FOCUS_SHADOW_TOKENS = [
   {
     token: '--io-shadow-focus-ring',
-    value: 'composed',
+    value: '0 0 0 2px var(--io-focus-inner), 0 0 0 5px var(--io-focus-outer)',
     useCase: 'Keyboard focus indicator — 2px inner + 5px outer ring',
   },
   {
     token: '--io-shadow-focus-blue',
-    value: 'composed',
+    value: '0 0 0 2px rgba(54,95,217,.7)',
     useCase: 'Alternative blue focus ring for specific contexts',
   },
   {
     token: '--io-shadow-focus-orange',
-    value: 'composed',
+    value: '0 0 0 2px rgba(237,127,83,.7)',
     useCase: 'Alternative orange focus ring for specific contexts',
   },
 ] as const;
@@ -195,7 +235,7 @@ export default function ElevationPage() {
         />
         <div className="space-y-2">
           {ELEVATION_TOKENS.map((row) => (
-            <TokenRow key={row.token} token={row.token} value={row.label} useCase={row.useCase} />
+            <TokenRow key={row.token} token={row.token} value={row.value} useCase={row.useCase} />
           ))}
         </div>
 

@@ -22,7 +22,7 @@ function getSystemTheme(): 'dark' | 'light' {
 }
 
 export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<StorefrontTheme>('light');
+  const [theme, setThemeState] = useState<StorefrontTheme>('auto');
   const resolvedTheme: 'dark' | 'light' = theme === 'auto' ? getSystemTheme() : theme;
 
   // Apply data-theme to <html> and persist to localStorage

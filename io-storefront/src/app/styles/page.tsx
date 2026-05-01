@@ -1,4 +1,4 @@
-'use client';
+import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
 
@@ -38,10 +38,7 @@ export default function StylesIntroduction() {
           <ColorSwatch color="var(--io-color-error, #ff6161)" hex="#ff6161" name="Error" token="--io-color-error" />
         </TokenGroup>
 
-        <TokenGroup title="Focus Ring">
-          <ColorSwatch color="var(--io-focus-inner, #7D0034)" hex="#7D0034" name="Focus Inner" token="--io-focus-inner" />
-          <ColorSwatch color="var(--io-focus-outer, #FFE4EE)" hex="#FFE4EE" name="Focus Outer" token="--io-focus-outer" border />
-        </TokenGroup>
+        <CrossLink href="/styles/focus" label="Focus Ring" description="Double-ring keyboard indicator — dark red inner ring + light pink outer halo. Includes live demo and initFocusVisible() docs." />
       </section>
 
       {/* Typography */}
@@ -139,35 +136,40 @@ export default function StylesIntroduction() {
 
       {/* Border Radius */}
       <section id="border-radius" className="space-y-6">
-        <SectionHeader title="Border Radius" description="Corner radius scale" />
-        <div className="flex flex-wrap items-end gap-8">
-          {[
-            { name: 'xs', value: '4px' },
-            { name: 'sm', value: '9px' },
-            { name: 'md', value: '12px' },
-            { name: 'lg', value: '14px' },
-            { name: 'xl', value: '24px' },
-            { name: 'pill', value: '9999px' },
-          ].map(({ name, value }) => (
-            <div key={name} className="flex flex-col items-center gap-3">
-              <div
-                className="w-16 h-16"
-                style={{
-                  borderRadius: value,
-                  background: 'var(--io-color-primary, #0000D2)',
-                }}
-              />
-              <code className="text-xs" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
-                {name}
-              </code>
-              <span className="text-xs" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
-                {value}
-              </span>
-            </div>
-          ))}
-        </div>
+        <SectionHeader title="Border Radius" description="Corner radius scale — 6 steps from xs (4px) to pill (9999px)" />
+        <CrossLink href="/styles/border-radius" label="Border Radius" description="Full token scale with visual swatches, token reference, usage guidance, and framework code examples." />
       </section>
     </div>
+  );
+}
+
+function CrossLink({ href, label, description }: { href: string; label: string; description: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center justify-between gap-4 p-5 rounded-lg no-underline group"
+      style={{
+        border: '1px solid var(--io-border)',
+        background: 'var(--io-bg-raised)',
+        textDecoration: 'none',
+      }}
+    >
+      <div>
+        <p className="text-sm font-semibold mb-1" style={{ color: 'var(--io-text-primary)' }}>
+          {label}
+        </p>
+        <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+          {description}
+        </p>
+      </div>
+      <span
+        className="shrink-0 text-base font-semibold transition-transform group-hover:translate-x-1"
+        style={{ color: 'var(--io-accent)' }}
+        aria-hidden="true"
+      >
+        →
+      </span>
+    </Link>
   );
 }
 
@@ -232,6 +234,7 @@ function ColorSwatch({
           background: color,
           border: border ? '1px solid var(--io-border, #e8e8e8)' : undefined,
         }}
+        aria-hidden="true"
       />
       <span className="text-xs font-medium text-center" style={{ color: 'var(--io-text-primary, #242424)' }}>
         {name}

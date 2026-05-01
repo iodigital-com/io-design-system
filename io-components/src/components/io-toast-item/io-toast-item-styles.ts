@@ -5,7 +5,7 @@ const VARIANT_COLORS: Record<IoToastVariant, string> = {
   success: 'var(--io-color-success)',
   error:   'var(--io-color-error)',
   warning: 'var(--io-color-warning)',
-  info:    'var(--io-color-primary)',
+  info:    'var(--io-color-info)',
 };
 
 export function getToastItemStyles(variant: IoToastVariant): string {

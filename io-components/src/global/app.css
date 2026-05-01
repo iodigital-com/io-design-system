@@ -72,6 +72,8 @@
   --io-color-warning-soft:       rgba(255, 161, 0, 0.1);
   --io-color-error:              #ff6161;
   --io-color-error-soft:         rgba(255, 97, 97, 0.1);
+  --io-color-info:               #1565C0;
+  --io-color-info-soft:          rgba(21, 101, 192, 0.1);
   --io-color-error-on-blue:      #FF9E9A;
   --io-color-error-dark:         #D35454;
   --io-color-system-blue:        #0019FF;
@@ -402,6 +404,9 @@
   --io-color-dark-accent-bg:     rgba(100, 100, 255, 0.15);
   --io-color-dark-accent:        #9ea3f0;
   --io-color-dark-error:         #ff7c7c;
+  --io-color-dark-success:       #4ade80;
+  --io-color-dark-warning:       #ffa100; /* same as light-mode — verified 8.75:1 on dark bg, no adjustment needed */
+  --io-color-dark-info:          #64b5f6;
   --io-color-dark-playground-dot: rgba(255, 255, 255, 0.06);
 
   /* ============================================================
@@ -499,6 +504,9 @@
   --io-accent-text:              var(--io-color-dark-accent);
   --io-accent:                   var(--io-color-dark-accent);
   --io-color-error:              var(--io-color-dark-error);
+  --io-color-success:            var(--io-color-dark-success);
+  --io-color-warning:            var(--io-color-dark-warning);
+  --io-color-info:               var(--io-color-dark-info);
   --io-playground-dot-color:     var(--io-color-dark-playground-dot);
   color-scheme: dark;
 }

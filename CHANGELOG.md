@@ -27,6 +27,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [0.1.0] — 2026-05-01
+
+Wave-C/D: three new components, io-select combobox mode, and storefront accessibility improvements.
+
+### Added — Core (`@io-digital/components`)
+
+- **`io-button-group`** — Segmented single or multi-select control. Horizontal button strip with shared borders, brand-blue active state, and full `radiogroup` / `checkbox` ARIA semantics. Supports `value`, `type`, and `size` props. (#247)
+- **`io-divider`** — Token-based visual separator between content sections. Supports horizontal and vertical orientations, plus a labelled variant for "or" / "and" patterns. (#248)
+
+### Changed — Core (`@io-digital/components`)
+
+- **`io-select`** — Custom combobox mode added via `combobox` prop. Full ARIA `listbox` semantics with keyboard-navigable filtered list, multi-select via `multiple`, and option groups via `<io-optgroup>`. (#246)
+
+### Changed — Storefront (private)
+
+- Tailwind `fontFamily.sans` now resolves via the `--font-manrope` CSS variable set by `next/font/google`, applying optimised Manrope subsetting site-wide. (#250)
+- Mobile navigation drawer: keyboard focus trap (Tab / Shift+Tab cycles within the active `aria-modal` drawer) and body scroll lock (`overflow: hidden`) added. (#250)
+
+---
+
 ## [0.0.1] — 2026-03-27
 
 Initial development baseline. All packages are pre-release (`0.0.x`). APIs are unstable and subject to change before `1.0.0`.
@@ -82,5 +102,6 @@ Initial development baseline. All packages are pre-release (`0.0.x`). APIs are u
 
 ---
 
-[Unreleased]: https://github.com/io-digital/io-design-system/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/io-digital/io-design-system/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/io-digital/io-design-system/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/io-digital/io-design-system/releases/tag/v0.0.1

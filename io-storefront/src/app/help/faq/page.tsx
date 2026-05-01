@@ -118,8 +118,8 @@ export default function FaqPage() {
             </h2>
 
             <div className="space-y-2">
-              {category.items.map((item) => (
-                <io-accordion key={item.heading} heading={item.heading}>
+              {category.items.map((item, i) => (
+                <io-accordion key={`${categoryId}-${i}`} heading={item.heading}>
                   <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
                     {item.answer}
                   </p>

@@ -1,3 +1,5 @@
+import { type ReactNode } from 'react';
+
 import { Manrope } from 'next/font/google';
 import Script from 'next/script';
 
@@ -28,11 +30,7 @@ export const metadata: Metadata = {
   description: 'io Digital Design System — Component library and design token documentation',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={manrope.variable}>
       <head>

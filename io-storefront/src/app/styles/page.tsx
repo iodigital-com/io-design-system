@@ -4,71 +4,7 @@ import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
 
-export default function StylesIntroduction() {
-  return (
-    <div className="space-y-16">
-      <PageHeader
-        title="Design Tokens"
-        description="The complete io Digital token system — colour, type, spacing, motion, and shape. All values are CSS custom properties on :root."
-        tabs={[]}
-      />
-
-      {/* Color Tokens */}
-      <section id="colors" className="space-y-8">
-        <SectionHeader title="Colors" description="io Digital brand palette from design tokens" />
-
-        <TokenGroup title="Primary Brand">
-          <ColorSwatch color="var(--io-color-primary, #0000D2)" hex="#0000D2" name="Primary Blue" token="--io-color-primary" />
-          <ColorSwatch color="var(--io-color-primary-hover, #0000a8)" hex="#0000a8" name="Primary Hover" token="--io-color-primary-hover" />
-          <ColorSwatch color="var(--io-color-off-white, #EBE8E3)" hex="#EBE8E3" name="Off White" token="--io-color-off-white" border />
-          <ColorSwatch color="var(--io-color-beige, #DCCFC2)" hex="#DCCFC2" name="Beige" token="--io-color-beige" />
-          <ColorSwatch color="var(--io-color-antraciet, #454545)" hex="#454545" name="Antraciet" token="--io-color-antraciet" />
-          <ColorSwatch color="var(--io-color-grey-6, #242424)" hex="#242424" name="Grey 6" token="--io-color-grey-6" />
-        </TokenGroup>
-
-        <TokenGroup title="Accents">
-          <ColorSwatch color="var(--io-color-orange, #ed7f53)" hex="#ed7f53" name="Orange" token="--io-color-orange" />
-          <ColorSwatch color="var(--io-color-pink, #DCC8C2)" hex="#DCC8C2" name="Pink" token="--io-color-pink" />
-          <ColorSwatch color="var(--io-color-rouge, #a13865)" hex="#a13865" name="Rouge" token="--io-color-rouge" />
-          <ColorSwatch color="var(--io-color-yellow, #fdbc75)" hex="#fdbc75" name="Yellow" token="--io-color-yellow" />
-          <ColorSwatch color="var(--io-color-lavendel, #868ada)" hex="#868ada" name="Lavendel" token="--io-color-lavendel" />
-        </TokenGroup>
-
-        <TokenGroup title="Status">
-          <ColorSwatch color="var(--io-color-success, #30c58e)" hex="#30c58e" name="Success" token="--io-color-success" />
-          <ColorSwatch color="var(--io-color-warning, #ffa100)" hex="#ffa100" name="Warning" token="--io-color-warning" />
-          <ColorSwatch color="var(--io-color-error, #ff6161)" hex="#ff6161" name="Error" token="--io-color-error" />
-        </TokenGroup>
-
-        <CrossLink href="/styles/focus" label="Focus Ring" description="Double-ring keyboard indicator — dark red inner ring + light pink outer halo. Includes live demo and initFocusVisible() docs." />
-      </section>
-
-      {/* Typography */}
-      <section id="typography" className="space-y-4">
-        <SectionHeader title="Typography" description="Manrope — 8-step type scale from XSmall to Heading 1, font tokens, and letter-spacing guidance." />
-        <CrossLink href="/styles/typography" label="Typography" description="Complete type scale, font-family token, weight reference, and framework code examples." />
-      </section>
-
-      {/* Spacing */}
-      <section id="spacing" className="space-y-6">
-        <SectionHeader title="Spacing" description="4px base scale — 16 steps from space-1 (4px) to space-40 (160px)." />
-        <CrossLink href="/styles/spacing" label="Spacing" description="Full spacing scale with visual step reference, token table, and Tailwind class mapping." />
-      </section>
-
-      {/* Motion */}
-      <section id="motion" className="space-y-6">
-        <SectionHeader title="Motion" description="Three named timing tokens — fast (200ms), base (300ms), and slow (500ms)." />
-        <CrossLink href="/styles/motion" label="Motion" description="Animation timing tokens, reduced-motion guidance, live transition demos, and framework code examples." />
-      </section>
-
-      {/* Border Radius */}
-      <section id="border-radius" className="space-y-6">
-        <SectionHeader title="Border Radius" description="Corner radius scale — 6 steps from xs (4px) to pill (9999px)" />
-        <CrossLink href="/styles/border-radius" label="Border Radius" description="Full token scale with visual swatches, token reference, usage guidance, and framework code examples." />
-      </section>
-    </div>
-  );
-}
+// ── Local helpers ─────────────────────────────────────────────────────────────
 
 function CrossLink({ href, label, description }: { href: string; label: string; description: string }) {
   return (
@@ -131,7 +67,7 @@ function TokenGroup({ title, children }: { title: string; children: ReactNode })
     <div>
       <h3
         className="text-xs font-semibold uppercase tracking-wider mb-4"
-        style={{ color: 'var(--io-text-muted, #9e9e9e)' }}
+        style={{ color: 'var(--io-text-muted)' }}
       >
         {title}
       </h3>
@@ -159,19 +95,87 @@ function ColorSwatch({
         className="w-16 h-16 rounded-md shadow-sm"
         style={{
           background: color,
-          border: border ? '1px solid var(--io-border, #e8e8e8)' : undefined,
+          border: border ? '1px solid var(--io-border)' : undefined,
         }}
         aria-hidden="true"
       />
-      <span className="text-xs font-medium text-center" style={{ color: 'var(--io-text-primary, #242424)' }}>
+      <span className="text-xs font-medium text-center" style={{ color: 'var(--io-text-primary)' }}>
         {name}
       </span>
-      <code className="text-xs text-center" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
+      <code className="text-xs text-center" style={{ color: 'var(--io-text-muted)' }}>
         {hex}
       </code>
-      <code className="text-xs text-center" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
+      <code className="text-xs text-center" style={{ color: 'var(--io-text-muted)' }}>
         {token}
       </code>
+    </div>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+export default function StylesIntroduction() {
+  return (
+    <div className="space-y-16">
+      <PageHeader
+        title="Design Tokens"
+        description="The complete io Digital token system — colour, type, spacing, motion, and shape. All values are CSS custom properties on :root."
+        tabs={[]}
+      />
+
+      {/* Color Tokens */}
+      <section id="colors" className="space-y-8">
+        <SectionHeader title="Colors" description="io Digital brand palette from design tokens" />
+
+        <TokenGroup title="Primary Brand">
+          <ColorSwatch color="var(--io-color-primary)" hex="#0000D2" name="Primary Blue" token="--io-color-primary" />
+          <ColorSwatch color="var(--io-color-primary-hover)" hex="#0000a8" name="Primary Hover" token="--io-color-primary-hover" />
+          <ColorSwatch color="var(--io-color-off-white)" hex="#EBE8E3" name="Off White" token="--io-color-off-white" border />
+          <ColorSwatch color="var(--io-color-beige)" hex="#DCCFC2" name="Beige" token="--io-color-beige" />
+          <ColorSwatch color="var(--io-color-antraciet)" hex="#454545" name="Antraciet" token="--io-color-antraciet" />
+          <ColorSwatch color="var(--io-color-grey-6)" hex="#242424" name="Grey 6" token="--io-color-grey-6" />
+        </TokenGroup>
+
+        <TokenGroup title="Accents">
+          <ColorSwatch color="var(--io-color-orange)" hex="#ed7f53" name="Orange" token="--io-color-orange" />
+          <ColorSwatch color="var(--io-color-pink)" hex="#DCC8C2" name="Pink" token="--io-color-pink" />
+          <ColorSwatch color="var(--io-color-rouge)" hex="#a13865" name="Rouge" token="--io-color-rouge" />
+          <ColorSwatch color="var(--io-color-yellow)" hex="#fdbc75" name="Yellow" token="--io-color-yellow" />
+          <ColorSwatch color="var(--io-color-lavendel)" hex="#868ada" name="Lavendel" token="--io-color-lavendel" />
+        </TokenGroup>
+
+        <TokenGroup title="Status">
+          <ColorSwatch color="var(--io-color-success)" hex="#30c58e" name="Success" token="--io-color-success" />
+          <ColorSwatch color="var(--io-color-warning)" hex="#ffa100" name="Warning" token="--io-color-warning" />
+          <ColorSwatch color="var(--io-color-error)" hex="#ff6161" name="Error" token="--io-color-error" />
+        </TokenGroup>
+
+        <CrossLink href="/styles/focus" label="Focus Ring" description="Double-ring keyboard indicator — dark red inner ring + light pink outer halo. Includes live demo and initFocusVisible() docs." />
+      </section>
+
+      {/* Typography */}
+      <section id="typography" className="space-y-4">
+        <SectionHeader title="Typography" description="Manrope — 8-step type scale from XSmall to Heading 1, font tokens, and letter-spacing guidance." />
+        <CrossLink href="/styles/typography" label="Typography" description="Complete type scale, font-family token, weight reference, and framework code examples." />
+      </section>
+
+      {/* Spacing */}
+      <section id="spacing" className="space-y-6">
+        <SectionHeader title="Spacing" description="4px base scale — 16 steps from space-1 (4px) to space-40 (160px)." />
+        <CrossLink href="/styles/spacing" label="Spacing" description="Full spacing scale with visual step reference, token table, and Tailwind class mapping." />
+      </section>
+
+      {/* Motion */}
+      <section id="motion" className="space-y-6">
+        <SectionHeader title="Motion" description="Three named timing tokens — fast (200ms), base (300ms), and slow (500ms)." />
+        <CrossLink href="/styles/motion" label="Motion" description="Animation timing tokens, reduced-motion guidance, live transition demos, and framework code examples." />
+      </section>
+
+      {/* Border Radius */}
+      <section id="border-radius" className="space-y-6">
+        <SectionHeader title="Border Radius" description="Corner radius scale — 6 steps from xs (4px) to pill (9999px)" />
+        <CrossLink href="/styles/border-radius" label="Border Radius" description="Full token scale with visual swatches, token reference, usage guidance, and framework code examples." />
+      </section>
     </div>
   );
 }

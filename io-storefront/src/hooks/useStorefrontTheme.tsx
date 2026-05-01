@@ -1,7 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import React from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type StorefrontTheme = 'dark' | 'light' | 'auto';
 
@@ -22,7 +21,7 @@ function getSystemTheme(): 'dark' | 'light' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export function StorefrontThemeProvider({ children }: { children: React.ReactNode }) {
+export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<StorefrontTheme>('light');
   const resolvedTheme: 'dark' | 'light' = theme === 'auto' ? getSystemTheme() : theme;
 

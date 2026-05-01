@@ -1,6 +1,11 @@
-'use client';
+import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Angular Integration — io Design System',
+  description: 'Use @io-digital/components-angular standalone wrappers with OnPush change detection support.',
+};
 
 export default function DevelopingAngularPage() {
   return (

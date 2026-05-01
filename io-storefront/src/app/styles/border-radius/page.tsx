@@ -1,7 +1,19 @@
 import { type ReactNode } from 'react';
 
+import type { Metadata } from 'next';
+
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Border Radius — io Design System',
+  description: 'Corner radius scale — 6 steps from xs (4px) to pill (9999px) with visual swatches and framework code examples.',
+  openGraph: {
+    title: 'Border Radius — io Design System',
+    description: 'Corner radius scale — 6 steps from xs (4px) to pill (9999px) with visual swatches and framework code examples.',
+    type: 'website',
+  },
+};
 
 // ── Local helpers (same pattern as motion/page.tsx) ──────────────────────────
 

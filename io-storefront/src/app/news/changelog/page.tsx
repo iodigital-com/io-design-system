@@ -5,8 +5,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import type { Metadata } from 'next';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 import { parseChangelog, SECTION_ORDER } from '@/utils/parseChangelog';
+
+export const metadata: Metadata = {
+  title: 'Changelog — io Design System',
+  description: 'Release-by-release history of breaking changes, additions, and fixes across all io Design System packages.',
+  openGraph: {
+    title: 'Changelog — io Design System',
+    description: 'Release-by-release history of breaking changes, additions, and fixes across all io Design System packages.',
+    type: 'website',
+  },
+};
 
 function getChangelog() {
   try {

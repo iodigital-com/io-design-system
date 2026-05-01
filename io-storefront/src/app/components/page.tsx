@@ -1,6 +1,18 @@
+import type { Metadata } from 'next';
+
 import { ComponentCard } from '@/components/ComponentCard';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { getComponentItems } from '@/sitemap';
+
+export const metadata: Metadata = {
+  title: 'Components — io Design System',
+  description: '19 production-ready Web Components — each ships with a live configurator, full API reference, and Angular, React, Vue, and HTML examples.',
+  openGraph: {
+    title: 'Components — io Design System',
+    description: '19 production-ready Web Components — each ships with a live configurator, full API reference, and Angular, React, Vue, and HTML examples.',
+    type: 'website',
+  },
+};
 
 export default function ComponentsPage() {
   const components = getComponentItems();

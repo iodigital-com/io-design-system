@@ -1,9 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
 
-import React from 'react';
+import { type ReactNode, type CSSProperties } from 'react';
 
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Typography — io Design System',
+  description: 'Manrope type scale — 8 steps from XSmall to Heading 1, font-family token, weight reference, and letter-spacing guidance.',
+};
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
@@ -33,7 +38,7 @@ function SectionHeader({ title, description }: { title: string; description: str
   );
 }
 
-function SubsectionTitle({ children }: { children: React.ReactNode }) {
+function SubsectionTitle({ children }: { children: ReactNode }) {
   return (
     <h3
       className="text-xs font-semibold uppercase mb-4"
@@ -44,7 +49,7 @@ function SubsectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function RuleCard({ label, children }: { label: string; children: React.ReactNode }) {
+function RuleCard({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div
       className="flex gap-4 p-5 rounded-lg"
@@ -69,7 +74,7 @@ function RuleCard({ label, children }: { label: string; children: React.ReactNod
 
 type DoOrDont = 'do' | 'dont';
 
-function DoOrDontCard({ type, children }: { type: DoOrDont; children: React.ReactNode }) {
+function DoOrDontCard({ type, children }: { type: DoOrDont; children: ReactNode }) {
   const isdo = type === 'do';
   return (
     <div
@@ -144,7 +149,7 @@ export default function TypographyPage() {
             style={{
               fontFamily: 'var(--io-font-primary)',
               fontSize: 'var(--io-font-size-7xl)',
-              fontWeight: 'var(--io-font-weight-bold)' as React.CSSProperties['fontWeight'],
+              fontWeight: 'var(--io-font-weight-bold)' as CSSProperties['fontWeight'],
               color: 'var(--io-text-primary)',
               letterSpacing: 'var(--io-heading-tracking-1)',
               lineHeight: 1,

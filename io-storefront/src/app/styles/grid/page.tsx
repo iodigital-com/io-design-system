@@ -1,7 +1,19 @@
 import React from 'react';
 
+import type { Metadata } from 'next';
+
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Grid — io Design System',
+  description: '12-column responsive grid system — column spans, gutter tokens, and breakpoint guidance.',
+  openGraph: {
+    title: 'Grid — io Design System',
+    description: '12-column responsive grid system — column spans, gutter tokens, and breakpoint guidance.',
+    type: 'website',
+  },
+};
 
 // ── Mandatory helpers (Rule 11 — copy verbatim) ───────────────────────────────
 

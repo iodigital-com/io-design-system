@@ -1,4 +1,16 @@
+import type { Metadata } from 'next';
+
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Roadmap — io Design System',
+  description: 'Planned features, component additions, and infrastructure work for upcoming io Design System waves.',
+  openGraph: {
+    title: 'Roadmap — io Design System',
+    description: 'Planned features, component additions, and infrastructure work for upcoming io Design System waves.',
+    type: 'website',
+  },
+};
 
 type RoadmapStatus = 'In progress' | 'Planned' | 'Exploring';
 type RoadmapHorizon = 'Now' | 'Next' | 'Later';

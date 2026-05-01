@@ -1,9 +1,20 @@
 import { type ReactNode } from 'react';
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Elevation — io Design System',
+  description: 'Five-level box-shadow elevation scale and three focus shadow tokens, with visual swatches and usage guidance.',
+  openGraph: {
+    title: 'Elevation — io Design System',
+    description: 'Five-level box-shadow elevation scale and three focus shadow tokens, with visual swatches and usage guidance.',
+    type: 'website',
+  },
+};
 
 // ── Local helpers ─────────────────────────────────────────────────────────────
 

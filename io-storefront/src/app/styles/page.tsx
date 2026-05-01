@@ -1,8 +1,19 @@
 import { type ReactNode } from 'react';
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Design Tokens — io Design System',
+  description: 'Overview of the complete io Design System token set — colour, typography, spacing, motion, borders, and shape.',
+  openGraph: {
+    title: 'Design Tokens — io Design System',
+    description: 'Overview of the complete io Design System token set — colour, typography, spacing, motion, borders, and shape.',
+    type: 'website',
+  },
+};
 
 // ── Local helpers ─────────────────────────────────────────────────────────────
 

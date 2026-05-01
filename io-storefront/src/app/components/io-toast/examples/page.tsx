@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import type { FrameworkCode } from '@/models/framework';
 
@@ -60,9 +60,9 @@ export class AppComponent {
 
 <script setup lang="ts">
 import { ref } from 'vue';
-const toast = ref<HTMLElement | null>(null);
+const toast = ref<HTMLIoToastElement | null>(null);
 const notify = (text: string, variant: string) =>
-  (toast.value as any)?.addToast({ text, variant });
+  toast.value?.addToast({ text, variant });
 </script>`,
 };
 
@@ -80,8 +80,8 @@ toastRef.current?.addToast({ text: 'Disappears in 2 s.', variant: 'info', durati
 toastRef.current?.addToast({ text: 'Stays until closed.', variant: 'warning', duration: 0 });`,
   angular: `this.toast.addToast({ text: 'Disappears in 2 s.', variant: 'info', duration: 2000 });
 this.toast.addToast({ text: 'Stays until closed.', variant: 'warning', duration: 0 });`,
-  vue: `(toast.value as any)?.addToast({ text: 'Disappears in 2 s.', variant: 'info', duration: 2000 });
-(toast.value as any)?.addToast({ text: 'Stays until closed.', variant: 'warning', duration: 0 });`,
+  vue: `toast.value?.addToast({ text: 'Disappears in 2 s.', variant: 'info', duration: 2000 });
+toast.value?.addToast({ text: 'Stays until closed.', variant: 'warning', duration: 0 });`,
 };
 
 const multipleCode: FrameworkCode = {
@@ -99,9 +99,9 @@ toastRef.current?.addToast({ text: 'Third message.', variant: 'info' });`,
   angular: `this.toast.addToast({ text: 'First message.', variant: 'neutral' });
 this.toast.addToast({ text: 'Second message.', variant: 'success' });
 this.toast.addToast({ text: 'Third message.', variant: 'info' });`,
-  vue: `(toast.value as any)?.addToast({ text: 'First message.', variant: 'neutral' });
-(toast.value as any)?.addToast({ text: 'Second message.', variant: 'success' });
-(toast.value as any)?.addToast({ text: 'Third message.', variant: 'info' });`,
+  vue: `toast.value?.addToast({ text: 'First message.', variant: 'neutral' });
+toast.value?.addToast({ text: 'Second message.', variant: 'success' });
+toast.value?.addToast({ text: 'Third message.', variant: 'info' });`,
 };
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -114,10 +114,12 @@ const VARIANTS = [
   { label: 'Info', variant: 'info', text: 'A new version is available.' },
 ] as const;
 
-export default function IoToastExamplesPage() {
-  const toastRef = useRef<any>(null);
+type ShowToastVariant = typeof VARIANTS[number]['variant'];
 
-  const showToast = (text: string, variant: string, duration?: number) => {
+export default function IoToastExamplesPage() {
+  const toastRef = useRef<HTMLIoToastElement | null>(null);
+
+  const showToast = (text: string, variant: ShowToastVariant, duration?: number) => {
     toastRef.current?.addToast({ text, variant, duration });
   };
 

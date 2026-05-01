@@ -1,6 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Support — io Design System',
+  description: 'Open a bug report, request a feature, or get help with io Design System integration.',
+  openGraph: {
+    title: 'Support — io Design System',
+    description: 'Open a bug report, request a feature, or get help with io Design System integration.',
+    type: 'website',
+  },
+};
 
 const SUPPORT_OPTIONS = [
   {

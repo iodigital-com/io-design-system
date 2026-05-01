@@ -1,6 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Help — io Design System',
+  description: 'Support, FAQ, and troubleshooting resources for io Design System.',
+  openGraph: {
+    title: 'Help — io Design System',
+    description: 'Support, FAQ, and troubleshooting resources for io Design System.',
+    type: 'website',
+  },
+};
 
 const FAQ = [
   {

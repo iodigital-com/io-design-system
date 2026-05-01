@@ -27,7 +27,19 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: 'io Design System',
-  description: 'io Digital Design System — Component library and design token documentation',
+  description: 'Production-ready Web Components with a CSS token system, framework integration guides for React, Angular, Vue, and Next.js, and full design documentation.',
+  openGraph: {
+    title: 'io Design System',
+    description: 'Production-ready Web Components — one token system, any framework.',
+    type: 'website',
+    images: [{ url: '/wallpaper.png', alt: 'io Design System' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'io Design System',
+    description: 'Production-ready Web Components — one token system, any framework.',
+    images: ['/wallpaper.png'],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

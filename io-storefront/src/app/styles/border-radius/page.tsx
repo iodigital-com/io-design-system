@@ -233,7 +233,9 @@ export default function BorderRadiusPage() {
             {
               label: 'React',
               language: 'typescript',
-              code: `export function Card({ children }: { children: ReactNode }) {
+              code: `import { type ReactNode } from 'react';
+
+export function Card({ children }: { children: ReactNode }) {
   return (
     <div style={{ borderRadius: 'var(--io-border-radius-md)' }}>
       {children}

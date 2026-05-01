@@ -30,6 +30,10 @@
     "./utils/tooltip-init": {
       "types": "./src/utils/tooltip-init.ts",
       "import": "./src/utils/tooltip-init.ts"
+    },
+    "./utils/focus-visible": {
+      "types": "./src/utils/focus-visible.ts",
+      "import": "./src/utils/focus-visible.ts"
     }
   },
   "types": "dist/types/index.d.ts",

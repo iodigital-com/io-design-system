@@ -15,7 +15,8 @@ function getChangelog() {
       'utf-8',
     );
     return parseChangelog(raw);
-  } catch {
+  } catch (err) {
+    console.error('[changelog] Failed to read CHANGELOG.md:', err);
     return [];
   }
 }
@@ -30,6 +31,12 @@ export default function ChangelogPage() {
         description="Track release changes, upgrades, and migration impact across io Design System versions."
         tabs={[]}
       />
+
+      {releases.length === 0 && (
+        <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>
+          Changelog could not be loaded — check the build log for details.
+        </p>
+      )}
 
       <div className="space-y-6">
         {releases.map((release) => (

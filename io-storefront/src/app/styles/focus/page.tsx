@@ -131,6 +131,8 @@ function FocusRingDemo() {
         </button>
       </div>
 
+      <style>{`.focus-demo-live:focus-visible{outline:none;box-shadow:0 0 0 2px var(--io-focus-inner),0 0 0 5px var(--io-focus-outer)}`}</style>
+
       <div className="flex flex-wrap items-center gap-6 p-4 rounded-md" style={{ background: 'var(--io-bg-base)' }}>
         {/* Simulated button with programmatic focus ring */}
         <div
@@ -151,7 +153,7 @@ function FocusRingDemo() {
         <button
           type="button"
           aria-label="Tab into me"
-          className="px-4 py-2 rounded-lg text-sm font-semibold"
+          className="focus-demo-live px-4 py-2 rounded-lg text-sm font-semibold"
           style={{
             background: 'var(--io-bg-raised)',
             border: '1px solid var(--io-border)',
@@ -275,8 +277,8 @@ export default function FocusPage() {
           <p className="text-base" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.7' }}>
             <code style={{ fontSize: '0.85em' }}>initFocusVisible()</code> listens for{' '}
             <code style={{ fontSize: '0.85em' }}>keydown</code> and{' '}
-            <code style={{ fontSize: '0.85em' }}>pointerdown</code> events on the document. When a Tab or Arrow key
-            press is detected, it sets{' '}
+            <code style={{ fontSize: '0.85em' }}>pointerdown</code> events on the document. When a Tab key press is
+            detected, it sets{' '}
             <code style={{ fontSize: '0.85em' }}>--io-focus-ring-active</code> on the root element to the full
             double-ring <code style={{ fontSize: '0.85em' }}>box-shadow</code>. A subsequent pointer interaction
             clears it back to <code style={{ fontSize: '0.85em' }}>none</code>.

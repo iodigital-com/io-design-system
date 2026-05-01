@@ -30,6 +30,7 @@ export type Release = {
 const VERSION_RE = /^\[(?<version>[^\]]+)\](?:\s*[—–-]+\s*(?<date>\d{4}-\d{2}-\d{2}))?/;
 const SECTION_RE = /^### (?<type>Added|Changed|Fixed|Deprecated)(?:\s*[—–-].*)?$/;
 const BULLET_RE = /^[-*]\s+(.+)$/;
+const BOLD_HEADING_RE = /^\*\*(.+?)\*\*[:\s]*$/;
 
 const SECTION_ORDER: ReleaseSection[] = ['Added', 'Changed', 'Fixed', 'Deprecated'];
 
@@ -107,6 +108,14 @@ export function parseChangelog(raw: string): Release[] {
         } else {
           if (!sections[currentSection]) sections[currentSection] = [];
           sections[currentSection]!.push(text);
+        }
+      } else {
+        // Capture standalone bold lines as sub-section headings (e.g. **15 Web Components:**)
+        const boldMatch = BOLD_HEADING_RE.exec(line.trim());
+        if (boldMatch) {
+          const heading = boldMatch[1].trim();
+          if (!sections[currentSection]) sections[currentSection] = [];
+          sections[currentSection]!.push(heading);
         }
       }
     }

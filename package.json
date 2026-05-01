@@ -18,7 +18,7 @@
     "build:wrapper:angular": "npm --workspace @io-digital/components-angular run build",
     "build:wrappers": "npm run build:wrapper:react && npm run build:wrapper:vue && npm run build:wrapper:angular",
     "build": "npm run build:components && npm run build:wrappers",
-    "test": "npm --workspace @io-digital/components run test",
+    "test": "npm --workspace @io-digital/components run test && npm --workspace @io-digital/storefront run test",
     "type-check": "npm --workspace @io-digital/storefront run type-check",
     "build:storefront": "npm --workspace @io-digital/storefront run build",
     "size": "size-limit",

@@ -52,6 +52,7 @@ export const sitemap: NavSection[] = [
       { label: 'Motion', href: '/styles/motion' },
       { label: 'Focus', href: '/styles/focus' },
       { label: 'Border Radius', href: '/styles/border-radius' },
+      { label: 'Elevation', href: '/styles/elevation' },
     ],
   },
   {
@@ -216,12 +217,14 @@ export const sitemap: NavSection[] = [
     title: 'Help',
     items: [
       { label: 'Introduction', href: '/help' },
+      { label: 'FAQ', href: '/help/faq' },
       { label: 'Support', href: '/help/support' },
     ],
   },
   {
     title: 'News',
     items: [
+      { label: 'Overview', href: '/news' },
       { label: 'Changelog', href: '/news/changelog' },
       { label: 'Roadmap', href: '/news/roadmap' },
     ],

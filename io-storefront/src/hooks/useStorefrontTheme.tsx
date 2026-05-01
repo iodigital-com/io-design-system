@@ -1,7 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import React from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type StorefrontTheme = 'dark' | 'light' | 'auto';
 
@@ -12,7 +11,7 @@ const ThemeContext = createContext<{
   resolvedTheme: 'dark' | 'light';
   setTheme: (t: StorefrontTheme) => void;
 }>({
-  theme: 'light',
+  theme: 'auto',
   resolvedTheme: 'light',
   setTheme: () => {},
 });
@@ -22,8 +21,8 @@ function getSystemTheme(): 'dark' | 'light' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export function StorefrontThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<StorefrontTheme>('light');
+export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setThemeState] = useState<StorefrontTheme>('auto');
   const resolvedTheme: 'dark' | 'light' = theme === 'auto' ? getSystemTheme() : theme;
 
   // Apply data-theme to <html> and persist to localStorage
@@ -32,9 +31,9 @@ export function StorefrontThemeProvider({ children }: { children: React.ReactNod
     document.documentElement.setAttribute('data-theme', resolved);
   }, []);
 
-  // Read persisted preference on mount
+  // Read persisted preference on mount; fall back to OS preference on first visit
   useEffect(() => {
-    const stored = (localStorage.getItem(STORAGE_KEY) as StorefrontTheme | null) ?? 'light';
+    const stored = (localStorage.getItem(STORAGE_KEY) as StorefrontTheme | null) ?? 'auto';
     setThemeState(stored);
     applyTheme(stored);
   }, [applyTheme]);

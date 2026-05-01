@@ -38,6 +38,8 @@ export const sitemap: NavSection[] = [
       { label: 'Angular', href: '/developing/angular' },
       { label: 'Vue', href: '/developing/vue' },
       { label: 'Components Ready', href: '/developing/components-ready' },
+      { label: 'Component Status', href: '/developing/component-status' },
+      { label: 'Token Usage', href: '/developing/tokens' },
     ],
   },
   {
@@ -52,6 +54,8 @@ export const sitemap: NavSection[] = [
       { label: 'Motion', href: '/styles/motion' },
       { label: 'Focus', href: '/styles/focus' },
       { label: 'Border Radius', href: '/styles/border-radius' },
+      { label: 'Borders', href: '/styles/borders' },
+      { label: 'Icons', href: '/styles/icons' },
       { label: 'Elevation', href: '/styles/elevation' },
     ],
   },

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -35,7 +35,7 @@ function SectionHeader({ title, description }: { title: string; description: str
   );
 }
 
-function SubsectionTitle({ children }: { children: React.ReactNode }) {
+function SubsectionTitle({ children }: { children: ReactNode }) {
   return (
     <h3
       className="text-xs font-semibold uppercase mb-4"
@@ -46,7 +46,7 @@ function SubsectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function RuleCard({ label, children }: { label: string; children: React.ReactNode }) {
+function RuleCard({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div
       className="flex gap-4 p-5 rounded-lg"
@@ -71,7 +71,7 @@ function RuleCard({ label, children }: { label: string; children: React.ReactNod
 
 type DoOrDont = 'do' | 'dont';
 
-function DoOrDontCard({ type, children }: { type: DoOrDont; children: React.ReactNode }) {
+function DoOrDontCard({ type, children }: { type: DoOrDont; children: ReactNode }) {
   return (
     <div
       className="flex gap-3 p-4 rounded-lg"
@@ -126,7 +126,7 @@ function MotionToggleDemo({
   note: string;
   reducedMotion: boolean;
 }) {
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = useState(false);
 
   return (
     <div
@@ -218,7 +218,7 @@ function EasingComparisonDemo({
   easingToken: string;
   easingValue: string;
 }) {
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = useState(false);
   const transition = `left var(--io-toast-item-enter-duration) var(${easingToken})`;
 
   return (
@@ -340,10 +340,10 @@ const EASING_TOKENS = [
 ] as const;
 
 export default function MotionPage() {
-  const [reducedMotion, setReducedMotion] = React.useState(false);
-  const [resolvedTokens, setResolvedTokens] = React.useState<Record<string, string>>({});
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [resolvedTokens, setResolvedTokens] = useState<Record<string, string>>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     const applyReducedMotion = () => {

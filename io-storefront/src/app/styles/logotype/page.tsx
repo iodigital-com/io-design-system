@@ -1,7 +1,19 @@
 import React from 'react';
 
+import type { Metadata } from 'next';
+
 import { CodeTabs } from '@/components/CodeTabs';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Logotype — io Design System',
+  description: 'io Digital logotype usage rules, clear space requirements, and approved colour variants.',
+  openGraph: {
+    title: 'Logotype — io Design System',
+    description: 'io Digital logotype usage rules, clear space requirements, and approved colour variants.',
+    type: 'website',
+  },
+};
 
 // ── SVG paths ─────────────────────────────────────────────────────────────────
 

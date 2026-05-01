@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { toastPropDefinitions } from '../io-toast.stories';
 
@@ -70,13 +70,13 @@ export class AppComponent {
 <script setup lang="ts">
 import { ref } from 'vue';
 const toast = ref<HTMLIoToastElement | null>(null);
-const showToast = () => (toast.value as any)?.addToast({ text: '${text}', variant: '${variant}' });
+const showToast = () => toast.value?.addToast({ text: '${text}', variant: '${variant}' });
 </script>`,
   };
 
   const showToast = useCallback(() => {
     if (toastRef.current) {
-      (toastRef.current as any).addToast({ text, variant });
+      toastRef.current.addToast({ text, variant: variant as Parameters<HTMLIoToastElement['addToast']>[0]['variant'] });
     }
   }, [text, variant]);
 

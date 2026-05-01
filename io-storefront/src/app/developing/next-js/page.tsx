@@ -1,6 +1,16 @@
-'use client';
+import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Next.js Integration — io Design System',
+  description: 'Integrate io Web Components into a Next.js App Router project using client-side registration, the React wrapper, and IoProvider.',
+  openGraph: {
+    title: 'Next.js Integration — io Design System',
+    description: 'App Router setup guide for io Design System components — IoProvider, defineCustomElements, and SSR hydration patterns.',
+    type: 'website',
+  },
+};
 
 export default function DevelopingNextJsPage() {
   return (

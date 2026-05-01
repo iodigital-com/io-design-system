@@ -1,10 +1,15 @@
-'use client';
+import type { Metadata } from 'next';
 
-import React from 'react';
+import { type ReactNode } from 'react';
 
 import { CodeTabs } from '@/components/CodeTabs';
 import { ColourTokenGrid } from '@/components/ColourTokenGrid';
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Colours — io Design System',
+  description: 'Full io Digital brand palette — primary, accent, status, and neutral colour tokens with hex values and usage guidance.',
+};
 
 // ── Shared helpers ────────────────────────────────────────────────────────────
 
@@ -34,7 +39,7 @@ function SectionHeader({ title, description }: { title: string; description: str
   );
 }
 
-function SubsectionTitle({ children }: { children: React.ReactNode }) {
+function SubsectionTitle({ children }: { children: ReactNode }) {
   return (
     <h3
       className="text-xs font-semibold uppercase mb-4"
@@ -47,7 +52,7 @@ function SubsectionTitle({ children }: { children: React.ReactNode }) {
 
 type DoOrDont = 'do' | 'dont';
 
-function DoOrDontCard({ type, children }: { type: DoOrDont; children: React.ReactNode }) {
+function DoOrDontCard({ type, children }: { type: DoOrDont; children: ReactNode }) {
   return (
     <div
       className="flex gap-3 p-4 rounded-lg"

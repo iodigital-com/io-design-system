@@ -1,8 +1,13 @@
-'use client';
+import type { Metadata } from 'next';
 
 import { type ReactNode } from 'react';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Vue Integration — io Design System',
+  description: 'Use @io-digital/components-vue wrappers for fully typed props and events in Vue 3 Composition API projects.',
+};
 
 function CodeBlock({ children }: { children: string }) {
   return (

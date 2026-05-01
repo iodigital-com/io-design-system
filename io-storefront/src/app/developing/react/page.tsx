@@ -1,6 +1,16 @@
-'use client';
+import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'React Integration — io Design System',
+  description: 'Use io Web Components in React 18+ via Stencil-generated wrapper components with typed props and strongly-typed custom events.',
+  openGraph: {
+    title: 'React Integration — io Design System',
+    description: 'React wrapper components, event handling patterns, typed props, and SSR caveats for the io Design System.',
+    type: 'website',
+  },
+};
 
 export default function DevelopingReactPage() {
   return (

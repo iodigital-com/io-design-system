@@ -1,6 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'FAQ — io Design System',
+  description: 'Answers to common questions about installation, framework integration, accessibility, versioning, and contributing to io Design System.',
+  openGraph: {
+    title: 'FAQ — io Design System',
+    description: 'Answers to common questions about installation, framework integration, accessibility, versioning, and contributing to io Design System.',
+    type: 'website',
+  },
+};
 
 type FaqItem = {
   heading: string;

@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+import { type ReactNode } from 'react';
+
 import { PageHeader } from '@/components/layout/PageHeader';
 
 function CodeBlock({ children }: { children: string }) {
@@ -20,7 +22,7 @@ function CodeBlock({ children }: { children: string }) {
   );
 }
 
-function InlineCode({ children }: { children: React.ReactNode }) {
+function InlineCode({ children }: { children: ReactNode }) {
   return (
     <code
       className="rounded px-1 py-0.5 text-[0.8125em] font-mono"
@@ -31,7 +33,7 @@ function InlineCode({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function SectionHeading({ children }: { children: ReactNode }) {
   return (
     <h2 className="text-lg font-bold" style={{ color: 'var(--io-text-primary)' }}>
       {children}
@@ -39,7 +41,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Note({ children }: { children: React.ReactNode }) {
+function Note({ children }: { children: ReactNode }) {
   return (
     <div
       className="rounded-lg p-4 text-sm"

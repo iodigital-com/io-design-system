@@ -1,6 +1,17 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'News — io Design System',
+  description: 'Release news, changelog, and roadmap for the io Design System.',
+  openGraph: {
+    title: 'News — io Design System',
+    description: 'Release news, changelog, and roadmap for the io Design System.',
+    type: 'website',
+  },
+};
 
 function CrossLink({ href, label, description }: { href: string; label: string; description: string }) {
   return (

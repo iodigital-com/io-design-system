@@ -131,4 +131,19 @@ describe('parseChangelog', () => {
     expect(() => parseChangelog('not a changelog at all')).not.toThrow();
     expect(() => parseChangelog('## [no closing bracket')).not.toThrow();
   });
+
+  it('returns a release with empty sections when no ### headers are present', () => {
+    const raw = `## [1.0.1] — 2026-05-01\n\nHotfix release.\n`;
+    const result = parseChangelog(raw);
+    expect(result).toHaveLength(1);
+    expect(result[0].version).toBe('1.0.1');
+    expect(result[0].sections).toEqual({});
+  });
+
+  it('preserves duplicate bullet items as separate entries', () => {
+    const raw = `## [1.0.0] — 2026-01-01\n\nRelease.\n\n### Added\n\n- Fix A\n- Fix A\n`;
+    const result = parseChangelog(raw);
+    expect(result[0].sections['Added']).toHaveLength(2);
+    expect(result[0].sections['Added']).toEqual(['Fix A', 'Fix A']);
+  });
 });

@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="light" className={manrope.variable}>
+    <html lang="en" className={manrope.variable}>
       <head>
         {/* io Design System tokens + component styles */}
         <link rel="stylesheet" href="/stencil/io-components.css" />
@@ -44,7 +44,8 @@ export default function RootLayout({
           type="module"
           strategy="beforeInteractive"
         />
-        {/* Blocking theme init — reads io-theme from localStorage before first paint */}
+        {/* Blocking theme init — reads io-theme from localStorage before first paint.
+            Falls back to OS preference (prefers-color-scheme) on first visit (null). */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -53,7 +54,7 @@ export default function RootLayout({
     var t = localStorage.getItem('io-theme');
     if (t === 'dark' || t === 'light') {
       document.documentElement.setAttribute('data-theme', t);
-    } else if (t === 'auto') {
+    } else {
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     }

@@ -43,95 +43,20 @@ export default function StylesIntroduction() {
 
       {/* Typography */}
       <section id="typography" className="space-y-4">
-        <SectionHeader title="Typography" description="Manrope — io Digital's primary typeface" />
-        <div className="space-y-1" style={{ borderTop: '1px solid var(--io-border, #e8e8e8)' }}>
-          {[
-            { label: 'Heading 1', cls: 'text-4xl font-bold', sample: 'The quick brown fox' },
-            { label: 'Heading 2', cls: 'text-3xl font-bold', sample: 'The quick brown fox' },
-            { label: 'Heading 3', cls: 'text-2xl font-semibold', sample: 'The quick brown fox jumps' },
-            { label: 'Heading 4', cls: 'text-xl font-semibold', sample: 'The quick brown fox jumps over' },
-            { label: 'Lead', cls: 'text-lg font-medium', sample: 'The quick brown fox jumps over the lazy dog' },
-            { label: 'Body', cls: 'text-base font-normal', sample: 'The quick brown fox jumps over the lazy dog. Bright vixens jump; dozy fowl quack.' },
-            { label: 'Small', cls: 'text-sm font-normal', sample: 'Used for captions, helper text, and labels' },
-            { label: 'XSmall', cls: 'text-xs font-normal', sample: 'Used for badges, timestamps, and metadata' },
-          ].map(({ label, cls, sample }) => (
-            <div
-              key={label}
-              className="flex items-baseline gap-6 py-4"
-              style={{ borderBottom: '1px solid var(--io-border, #e8e8e8)' }}
-            >
-              <span
-                className="w-24 text-xs shrink-0"
-                style={{ color: 'var(--io-text-muted, #9e9e9e)' }}
-              >
-                {label}
-              </span>
-              <span className={`${cls}`} style={{ color: 'var(--io-text-primary, #242424)' }}>
-                {sample}
-              </span>
-            </div>
-          ))}
-        </div>
+        <SectionHeader title="Typography" description="Manrope — 8-step type scale from XSmall to Heading 1, font tokens, and letter-spacing guidance." />
+        <CrossLink href="/styles/typography" label="Typography" description="Complete type scale, font-family token, weight reference, and framework code examples." />
       </section>
 
       {/* Spacing */}
       <section id="spacing" className="space-y-6">
-        <SectionHeader title="Spacing" description="4px base scale — 16 steps" />
-        <div className="flex flex-wrap gap-8 items-end">
-          {[
-            { step: 1, px: 4 }, { step: 2, px: 8 }, { step: 3, px: 12 },
-            { step: 4, px: 16 }, { step: 5, px: 20 }, { step: 6, px: 24 },
-            { step: 8, px: 32 }, { step: 10, px: 40 }, { step: 12, px: 48 },
-          ].map(({ step, px }) => (
-            <div key={step} className="flex flex-col items-center gap-2">
-              <div
-                className="rounded-xs"
-                style={{
-                  width: px,
-                  height: px,
-                  background: 'var(--io-color-primary, #0000D2)',
-                }}
-              />
-              <code className="text-xs" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
-                space-{step}
-              </code>
-              <span className="text-xs" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
-                {px}px
-              </span>
-            </div>
-          ))}
-        </div>
+        <SectionHeader title="Spacing" description="4px base scale — 16 steps from space-1 (4px) to space-40 (160px)." />
+        <CrossLink href="/styles/spacing" label="Spacing" description="Full spacing scale with visual step reference, token table, and Tailwind class mapping." />
       </section>
 
       {/* Motion */}
       <section id="motion" className="space-y-6">
-        <SectionHeader title="Motion" description="Animation timing tokens" />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
-            { name: 'Fast', token: '--io-motion-fast', ms: '200ms', desc: 'Micro-interactions, icon swaps' },
-            { name: 'Base', token: '--io-motion-base', ms: '300ms', desc: 'Standard transitions' },
-            { name: 'Slow', token: '--io-motion-slow', ms: '500ms', desc: 'Emphasis, panels, modals' },
-          ].map(({ name, token, ms, desc }) => (
-            <div
-              key={name}
-              className="p-6 rounded-lg"
-              style={{
-                background: 'var(--io-bg-raised, #f5f5f5)',
-                border: '1px solid var(--io-border, #e8e8e8)',
-              }}
-            >
-              <p className="text-lg font-semibold" style={{ color: 'var(--io-text-primary, #242424)' }}>
-                {name} — {ms}
-              </p>
-              <code className="text-xs block mt-1" style={{ color: 'var(--io-text-muted, #9e9e9e)' }}>
-                {token}
-              </code>
-              <p className="text-sm mt-2" style={{ color: 'var(--io-text-secondary, #6b6b6b)' }}>
-                {desc}
-              </p>
-            </div>
-          ))}
-        </div>
+        <SectionHeader title="Motion" description="Three named timing tokens — fast (200ms), base (300ms), and slow (500ms)." />
+        <CrossLink href="/styles/motion" label="Motion" description="Animation timing tokens, reduced-motion guidance, live transition demos, and framework code examples." />
       </section>
 
       {/* Border Radius */}

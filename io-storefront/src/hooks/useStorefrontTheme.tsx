@@ -12,7 +12,7 @@ const ThemeContext = createContext<{
   resolvedTheme: 'dark' | 'light';
   setTheme: (t: StorefrontTheme) => void;
 }>({
-  theme: 'light',
+  theme: 'auto',
   resolvedTheme: 'light',
   setTheme: () => {},
 });
@@ -32,9 +32,9 @@ export function StorefrontThemeProvider({ children }: { children: React.ReactNod
     document.documentElement.setAttribute('data-theme', resolved);
   }, []);
 
-  // Read persisted preference on mount
+  // Read persisted preference on mount; fall back to OS preference on first visit
   useEffect(() => {
-    const stored = (localStorage.getItem(STORAGE_KEY) as StorefrontTheme | null) ?? 'light';
+    const stored = (localStorage.getItem(STORAGE_KEY) as StorefrontTheme | null) ?? 'auto';
     setThemeState(stored);
     applyTheme(stored);
   }, [applyTheme]);

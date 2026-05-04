@@ -249,6 +249,25 @@ padding: 'var(--io-space-4)';
 - `vi.mock()` must be at the top level of the spec file (not inside `beforeEach`).
 - Every component requires at minimum: render test, event emission test, disabled-state test.
 
+#### Accessibility tests (axe-core)
+
+Interactive components must include an `io-{name}.a11y.spec.ts` that runs axe against the rendered element. Use the shared helper — the `toHaveNoViolations` matcher is registered globally via `tests/unit/config/vitest.setup.ts`:
+
+```ts
+import { describe, it } from 'vitest';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+
+describe('io-foo — a11y', () => {
+  it('has no violations', async () => {
+    const el = document.createElement('button');
+    el.textContent = 'Label';
+    await renderAndCheckA11y(el);
+  });
+});
+```
+
+Note: axe in jsdom validates ARIA roles, attributes, and DOM structure. CSS-based contrast checks require Lighthouse (run via `npm run lighthouse:ci`).
+
 ---
 
 ## Commit messages

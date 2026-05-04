@@ -1,5 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { axe } from 'vitest-axe';
+import { describe, it } from 'vitest';
 
 /**
  * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-radio
@@ -8,20 +7,12 @@ import { axe } from 'vitest-axe';
  * (fieldset + legend + input[type=radio] + label). Full component-level
  * auditing against the Shadow DOM requires the Stencil render environment.
  */
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+
 describe('io-radio — a11y (ARIA patterns)', () => {
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   it('radio group with fieldset/legend has no axe violations', async () => {
-    container.innerHTML = `
+    const el = document.createElement('div');
+    el.innerHTML = `
       <fieldset>
         <legend>Preferred contact</legend>
         <div>
@@ -34,12 +25,12 @@ describe('io-radio — a11y (ARIA patterns)', () => {
         </div>
       </fieldset>
     `;
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await renderAndCheckA11y(el);
   });
 
   it('checked radio in group has no axe violations', async () => {
-    container.innerHTML = `
+    const el = document.createElement('div');
+    el.innerHTML = `
       <fieldset>
         <legend>Size</legend>
         <div>
@@ -52,12 +43,12 @@ describe('io-radio — a11y (ARIA patterns)', () => {
         </div>
       </fieldset>
     `;
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await renderAndCheckA11y(el);
   });
 
   it('radio with aria-describedby error message has no axe violations', async () => {
-    container.innerHTML = `
+    const el = document.createElement('div');
+    el.innerHTML = `
       <fieldset>
         <legend>Plan</legend>
         <div>
@@ -67,7 +58,6 @@ describe('io-radio — a11y (ARIA patterns)', () => {
         <p id="plan-error" role="alert">Please select a plan</p>
       </fieldset>
     `;
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    await renderAndCheckA11y(el);
   });
 });

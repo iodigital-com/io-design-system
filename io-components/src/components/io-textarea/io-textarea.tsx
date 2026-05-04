@@ -127,6 +127,11 @@ export class IoTextarea {
     this.syncFormValue();
   }
 
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     if (this.required && !this.value) {

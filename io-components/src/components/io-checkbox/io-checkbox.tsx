@@ -101,6 +101,16 @@ export class IoCheckbox {
     this.syncFormValue();
   }
 
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
     this.internals?.setFormValue?.(this.checked ? this.value : null);

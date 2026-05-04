@@ -98,6 +98,16 @@ export class IoRadio {
     this.syncFormValue();
   }
 
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
     this.internals?.setFormValue?.(this.checked ? this.value : null);

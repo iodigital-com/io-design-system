@@ -164,6 +164,16 @@ export class IoSelect {
     if (this.multiple) this.syncFormValue();
   }
 
+  @Watch('name')
+  onNameChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     if (this.multiple) {
       // Use FormData to submit multiple values under the same name.

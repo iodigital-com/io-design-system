@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, Listen, h } from '@stencil/core';
 
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
@@ -26,6 +26,9 @@ export class IoInput {
   private fallbackId!: string;
   private inputId!: string;
 
+  @State() private hasPrefix = false;
+  @State() private hasSuffix = false;
+
   /** Label text — required for accessibility */
   @Prop() label!: string;
 
@@ -46,6 +49,9 @@ export class IoInput {
 
   /** Marks the input as required */
   @Prop() required = false;
+
+  /** Makes the field read-only — value is not editable but the field stays in tab order */
+  @Prop({ reflect: true }) readonly = false;
 
   /** Disables the input */
   @Prop({ reflect: true }) disabled = false;
@@ -82,6 +88,14 @@ export class IoInput {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.inputId = resolveInputId(this.name, this.fallbackId);
+  }
+
+  @Listen('slotchange')
+  handleSlotChange(ev: Event) {
+    const slot = ev.target as HTMLSlotElement;
+    const hasNodes = slot.assignedNodes({ flatten: true }).length > 0;
+    if (slot.name === 'prefix') this.hasPrefix = hasNodes;
+    if (slot.name === 'suffix') this.hasSuffix = hasNodes;
   }
 
   @Watch('name')
@@ -134,7 +148,7 @@ export class IoInput {
   };
 
   render() {
-    const { label, type, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, min, max, step, autocomplete, size } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, error, errorMessage, helperText, maxLength, min, max, step, autocomplete, size, hasPrefix, hasSuffix } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const describedBy = [
@@ -142,42 +156,69 @@ export class IoInput {
       !error && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
+    const wrapperClass = [
+      'input-wrapper',
+      error ? 'input-wrapper--error' : '',
+      disabled ? 'input-wrapper--disabled' : '',
+      readonly ? 'input-wrapper--readonly' : '',
+    ].filter(Boolean).join(' ');
+
+    const fieldClass = [
+      'input-field',
+      `input-field--${size}`,
+      hasPrefix ? 'input-field--has-prefix' : '',
+      hasSuffix ? 'input-field--has-suffix' : '',
+    ].filter(Boolean).join(' ');
+
     return (
       <Host>
         <style>{getInputStyles()}</style>
-        <div class={`input-wrapper${error ? ' input-wrapper--error' : ''}${disabled ? ' input-wrapper--disabled' : ''}`}>
-          <input
-            id={inputId}
-            class={`input-field input-field--${size}`}
-            type={type}
-            name={name}
-            value={value}
-            placeholder={placeholder ?? ' '}
-            required={required}
-            disabled={disabled}
-            maxLength={maxLength}
-            min={min}
-            max={max}
-            step={step}
-            autocomplete={autocomplete}
-            aria-invalid={error ? 'true' : undefined}
-            aria-describedby={describedBy}
-            onInput={this.handleInput}
-            onChange={this.handleChange}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur}
-          />
+        <div class={wrapperClass}>
+          {/* Flex row: prefix slot, input, suffix slot, error icon */}
+          <div class="input-field-row">
+            <span class="input-slot input-slot--prefix">
+              <slot name="prefix" />
+            </span>
+            <input
+              id={inputId}
+              class={fieldClass}
+              type={type}
+              name={name}
+              value={value}
+              placeholder={placeholder ?? ' '}
+              required={required}
+              readOnly={readonly}
+              disabled={disabled}
+              maxLength={maxLength}
+              min={min}
+              max={max}
+              step={step}
+              autocomplete={autocomplete}
+              aria-invalid={error ? 'true' : undefined}
+              aria-readonly={readonly ? 'true' : undefined}
+              aria-describedby={describedBy}
+              onInput={this.handleInput}
+              onChange={this.handleChange}
+              onFocus={this.handleFocus}
+              onBlur={this.handleBlur}
+            />
+            <span class="input-slot input-slot--suffix">
+              <slot name="suffix" />
+            </span>
+            {error && (
+              <div class="input-error-icon" aria-hidden="true">
+                <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z" fill="currentColor" />
+                </svg>
+              </div>
+            )}
+          </div>
+          {/* Label sits outside the row so it can use absolute positioning
+              within the wrapper for the floating-label effect */}
           <label htmlFor={inputId} class="input-label">
             {label}
             {required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
-          {error && (
-            <div class="input-error-icon" aria-hidden="true">
-              <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z" fill="currentColor" />
-              </svg>
-            </div>
-          )}
         </div>
         {error && errorMessage && (
           <p id={errorId} class="input-error" role="alert">{errorMessage}</p>

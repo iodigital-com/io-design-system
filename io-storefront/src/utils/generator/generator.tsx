@@ -141,8 +141,18 @@ function createElement(
         // Apply custom-element properties directly on each render. This avoids
         // React normalizing certain prop names (e.g. size, iconOnly) in ways
         // that can prevent Stencil props from updating correctly.
+        // Hyphenated names (e.g. io-tooltip, data-*) are HTML attributes and
+        // must use setAttribute — Stencil props are always camelCase/lowercase.
         for (const [propName, propValue] of Object.entries(properties)) {
-          el[propName] = propValue;
+          if (propName.includes('-')) {
+            if (propValue === null || propValue === undefined || propValue === false) {
+              el.removeAttribute(propName);
+            } else {
+              el.setAttribute(propName, String(propValue));
+            }
+          } else {
+            el[propName] = propValue;
+          }
         }
       }
     : undefined;

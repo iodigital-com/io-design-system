@@ -7,7 +7,7 @@ import { Configurator } from '@/components/playground/Configurator';
 export default function IoTooltipConfiguratorPage() {
   return (
     <Configurator
-      tagName="io-button"
+      tagName="io-tooltip"
       story={tooltipStory}
       propDefinitions={tooltipPropDefinitions}
     />

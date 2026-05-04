@@ -382,3 +382,45 @@ Individual gates:
 | `npm run security:audit` | `pnpm audit --audit-level=high` |
 
 CI runs automatically on every PR to `main` via `.github/workflows/pr.yml`.
+
+---
+
+## Release process (Changesets)
+
+This repo uses [Changesets](https://github.com/changesets/changesets) for automated multi-package versioning and changelog generation.
+
+### Adding a changeset to your PR
+
+Every PR that changes user-facing behaviour in a published package (`@io-digital/components`, `-react`, `-vue`, `-angular`) must include a changeset entry:
+
+```bash
+npm run changeset:add
+```
+
+The CLI will ask:
+1. Which packages are affected
+2. Whether it is a `major` / `minor` / `patch` bump
+3. A one-line summary of the change
+
+Commit the generated `.changeset/*.md` file alongside your code changes.
+
+**When to include a changeset:**
+
+| Change type | Bump |
+|---|---|
+| Breaking API change | `major` |
+| New prop, slot, method, or event | `minor` |
+| Bug fix, accessibility fix, token tweak | `patch` |
+| Docs-only, CI, test, storefront | none (skip) |
+
+### Release flow
+
+On merge to `main`, the `release.yml` workflow opens a _Release PR_ that aggregates all pending changesets into version bumps and CHANGELOG entries. When that PR is merged, the workflow publishes to npm with provenance attestation.
+
+```bash
+# Check pending changeset status locally
+npm run changeset:status
+
+# Preview version bumps (does not publish)
+npm run changeset:version
+```

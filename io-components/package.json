@@ -1,11 +1,12 @@
 {
   "name": "@io-digital/components",
   "version": "1.0.0",
-  "description": "io Digital Design System — Framework-agnostic Web Components built with Stencil.js",
+  "description": "io Digital Design System \u2014 Framework-agnostic Web Components built with Stencil.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "provenance": true
   },
   "files": [
     "dist/",

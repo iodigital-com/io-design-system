@@ -74,13 +74,13 @@ export class IoCheckbox {
   /** Check validity without showing browser validation UI. Returns true if valid. */
   @Method()
   async checkValidity(): Promise<boolean> {
-    return this.internals?.checkValidity() ?? true;
+    return this.internals?.checkValidity?.() ?? true;
   }
 
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
-    return this.internals?.reportValidity() ?? true;
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   // ── Private ───────────────────────────────────────────────────
@@ -103,11 +103,11 @@ export class IoCheckbox {
 
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
-    this.internals?.setFormValue(this.checked ? this.value : null);
+    this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
-      this.internals?.setValidity({ valueMissing: true }, 'Please check this box');
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
     } else {
-      this.internals?.setValidity({});
+      this.internals?.setValidity?.({});
     }
   }
 

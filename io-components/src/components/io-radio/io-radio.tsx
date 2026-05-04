@@ -71,13 +71,13 @@ export class IoRadio {
   /** Check validity without showing browser validation UI. Returns true if valid. */
   @Method()
   async checkValidity(): Promise<boolean> {
-    return this.internals?.checkValidity() ?? true;
+    return this.internals?.checkValidity?.() ?? true;
   }
 
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
-    return this.internals?.reportValidity() ?? true;
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   // ── Private ───────────────────────────────────────────────────
@@ -100,11 +100,11 @@ export class IoRadio {
 
   private syncFormValue() {
     // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
-    this.internals?.setFormValue(this.checked ? this.value : null);
+    this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
-      this.internals?.setValidity({ valueMissing: true }, 'Please select an option');
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
     } else {
-      this.internals?.setValidity({});
+      this.internals?.setValidity?.({});
     }
   }
 

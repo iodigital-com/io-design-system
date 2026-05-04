@@ -99,11 +99,11 @@ export class IoInput {
   }
 
   private syncFormValue() {
-    this.internals?.setFormValue(this.value ?? '');
+    this.internals?.setFormValue?.(this.value ?? '');
     if (this.required && !this.value) {
-      this.internals?.setValidity({ valueMissing: true }, 'Please fill in this field');
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
     } else {
-      this.internals?.setValidity({});
+      this.internals?.setValidity?.({});
     }
   }
 
@@ -138,13 +138,13 @@ export class IoInput {
   /** Check validity without showing browser validation UI. Returns true if valid. */
   @Method()
   async checkValidity(): Promise<boolean> {
-    return this.internals?.checkValidity() ?? true;
+    return this.internals?.checkValidity?.() ?? true;
   }
 
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
-    return this.internals?.reportValidity() ?? true;
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   private handleInput = (ev: InputEvent) => {

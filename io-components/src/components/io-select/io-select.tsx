@@ -116,13 +116,13 @@ export class IoSelect {
   /** Check validity without showing browser validation UI. Returns true if valid. */
   @Method()
   async checkValidity(): Promise<boolean> {
-    return this.internals?.checkValidity() ?? true;
+    return this.internals?.checkValidity?.() ?? true;
   }
 
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
-    return this.internals?.reportValidity() ?? true;
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   /** Programmatically move focus to the select */
@@ -168,20 +168,20 @@ export class IoSelect {
     if (this.multiple) {
       // Use FormData to submit multiple values under the same name
       if (this.selectedValues.length === 0) {
-        this.internals?.setFormValue(null);
+        this.internals?.setFormValue?.(null);
       } else {
         const fd = new FormData();
         const key = this.name ?? this.fieldId;
         this.selectedValues.forEach(v => fd.append(key, v));
-        this.internals?.setFormValue(fd);
+        this.internals?.setFormValue?.(fd);
       }
     } else {
-      this.internals?.setFormValue(this.value ?? '');
+      this.internals?.setFormValue?.(this.value ?? '');
     }
     if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
-      this.internals?.setValidity({ valueMissing: true }, 'Please select an option');
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
     } else {
-      this.internals?.setValidity({});
+      this.internals?.setValidity?.({});
     }
   }
 

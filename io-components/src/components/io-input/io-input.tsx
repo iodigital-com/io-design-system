@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
@@ -107,7 +107,6 @@ export class IoInput {
     }
   }
 
-  @Listen('slotchange')
   handleSlotChange(ev: Event) {
     const slot = ev.target as HTMLSlotElement;
     const hasNodes = slot.assignedNodes({ flatten: true }).length > 0;
@@ -205,8 +204,8 @@ export class IoInput {
         <div class={wrapperClass}>
           {/* Flex row: prefix slot, input, suffix slot, error icon */}
           <div class="input-field-row">
-            <span class="input-slot input-slot--prefix">
-              <slot name="prefix" />
+            <span class={`input-slot input-slot--prefix${hasPrefix ? '' : ' input-slot--hidden'}`}>
+              <slot name="prefix" onSlotchange={this.handleSlotChange} />
             </span>
             <input
               id={inputId}
@@ -231,8 +230,8 @@ export class IoInput {
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
             />
-            <span class="input-slot input-slot--suffix">
-              <slot name="suffix" />
+            <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
+              <slot name="suffix" onSlotchange={this.handleSlotChange} />
             </span>
             {error && (
               <div class="input-error-icon" aria-hidden="true">

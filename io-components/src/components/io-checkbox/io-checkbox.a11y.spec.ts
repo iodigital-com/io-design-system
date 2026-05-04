@@ -1,16 +1,14 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { axe } from 'vitest-axe';
-import { toHaveNoViolations } from 'vitest-axe/matchers';
-import { expect } from 'vitest';
-
-expect.extend({ toHaveNoViolations });
 
 /**
- * Axe smoke tests — WCAG 2.1 AA
- * These tests use the rendered HTML markup (not Shadow DOM internals) to verify
- * that the accessible role, label, and state attributes are correct.
+ * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-checkbox
+ *
+ * Tests the native HTML patterns rendered inside io-checkbox's Shadow DOM
+ * (input[type=checkbox] + label + aria-invalid/describedby). Full component-level
+ * auditing against the Shadow DOM requires the Stencil render environment.
  */
-describe('io-checkbox — a11y (axe)', () => {
+describe('io-checkbox — a11y (ARIA patterns)', () => {
   let container: HTMLDivElement;
 
   beforeEach(() => {

@@ -1,15 +1,14 @@
-import { describe, it, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { axe } from 'vitest-axe';
-import { toHaveNoViolations } from 'vitest-axe/matchers';
-import { expect } from 'vitest';
-
-expect.extend({ toHaveNoViolations });
 
 /**
- * Axe smoke tests — WCAG 2.1 AA
- * Tests the accessible role, grouping, and state of radio inputs.
+ * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-radio
+ *
+ * Tests the native HTML patterns rendered inside io-radio's Shadow DOM
+ * (fieldset + legend + input[type=radio] + label). Full component-level
+ * auditing against the Shadow DOM requires the Stencil render environment.
  */
-describe('io-radio — a11y (axe)', () => {
+describe('io-radio — a11y (ARIA patterns)', () => {
   let container: HTMLDivElement;
 
   beforeEach(() => {

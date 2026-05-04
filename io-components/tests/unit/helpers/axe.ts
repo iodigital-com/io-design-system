@@ -14,10 +14,7 @@
  *   });
  */
 import { axe } from 'vitest-axe';
-import { toHaveNoViolations } from 'vitest-axe/matchers';
 import { expect } from 'vitest';
-
-expect.extend({ toHaveNoViolations });
 
 /**
  * Mounts `element` in a detached container, runs axe against it, and

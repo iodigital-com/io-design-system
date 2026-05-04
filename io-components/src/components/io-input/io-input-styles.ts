@@ -38,8 +38,8 @@ export function getInputStyles(): string {
       color: var(--io-text-secondary);
     }
 
-    /* Hide slot containers when no nodes are assigned (set via @State hasPrefix/hasSuffix) */
-    .input-slot:not(:has(slot[name] ~ *)):empty {
+    /* Hide slot containers when no nodes are assigned — driven by @State hasPrefix/hasSuffix */
+    .input-slot--hidden {
       display: none;
     }
 

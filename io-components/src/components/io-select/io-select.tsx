@@ -166,13 +166,13 @@ export class IoSelect {
 
   private syncFormValue() {
     if (this.multiple) {
-      // Use FormData to submit multiple values under the same name
-      if (this.selectedValues.length === 0) {
+      // Use FormData to submit multiple values under the same name.
+      // Only submit when name is set — unnamed controls are not successful (matches native behaviour).
+      if (!this.name || this.selectedValues.length === 0) {
         this.internals?.setFormValue?.(null);
       } else {
         const fd = new FormData();
-        const key = this.name ?? this.fieldId;
-        this.selectedValues.forEach(v => fd.append(key, v));
+        this.selectedValues.forEach(v => fd.append(this.name!, v));
         this.internals?.setFormValue?.(fd);
       }
     } else {

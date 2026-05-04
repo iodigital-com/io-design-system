@@ -283,6 +283,13 @@ describe('io-select — FACE (multiple mode)', () => {
     expect(internals.setFormValue).toHaveBeenCalledWith(null);
   });
 
+  it('sets null form value when selections exist but name is undefined (unnamed control)', () => {
+    component.name = undefined;
+    (component as any).selectedValues = ['a', 'b'];
+    (component as any).syncFormValue();
+    expect(internals.setFormValue).toHaveBeenCalledWith(null);
+  });
+
   it('sets FormData with multiple values when selections exist', () => {
     component.name = 'tags';
     (component as any).selectedValues = ['a', 'b'];

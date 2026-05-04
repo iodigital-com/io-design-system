@@ -125,6 +125,22 @@ export class IoRadio {
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });
+
+    // Mutual exclusion: when this radio becomes checked, deselect all other
+    // io-radio elements in the document that share the same name. Native
+    // <input type="radio"> handles this automatically within a single tree,
+    // but Shadow DOM boundaries prevent cross-component grouping.
+    if (input.checked && this.name) {
+      const name = this.name;
+      document.querySelectorAll('io-radio').forEach((sibling) => {
+        if (sibling !== this.el) {
+          const s = sibling as HTMLElement & { name?: string; checked: boolean };
+          if (s.name === name && s.checked) {
+            s.checked = false;
+          }
+        }
+      });
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────

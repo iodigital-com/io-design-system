@@ -26,7 +26,10 @@ export default function IoRadioExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={radioStoryDisabled} />
+        <ComponentStory
+          story={radioStoryDisabled}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--io-spacing-md, 16px)' }}
+        />
       </section>
 
       <section>
@@ -36,7 +39,10 @@ export default function IoRadioExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Radio group" />
-        <ComponentStory story={radioStoryGroup} />
+        <ComponentStory
+          story={radioStoryGroup}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--io-spacing-md, 16px)' }}
+        />
       </section>
     </div>
   );

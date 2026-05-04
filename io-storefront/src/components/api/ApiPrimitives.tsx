@@ -163,7 +163,6 @@ export function CodeNote({ label, children }: { label: string; children: ReactNo
         <CopyButton text={codeText} ariaLabel={`Copy ${label} code`} className="absolute right-2 top-2 z-10" />
         <pre
           className="text-xs font-mono overflow-x-auto pr-16"
-          data-no-auto-highlight="true"
           style={{ color: 'var(--io-text-primary)', lineHeight: '1.7', whiteSpace: 'pre' }}
         >
           {children}

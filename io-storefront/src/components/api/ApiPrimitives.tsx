@@ -1,6 +1,11 @@
+'use client';
+
 import { isValidElement, type ReactNode } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { CopyButton } from '@/components/CopyButton';
+import { useStorefrontTheme } from '@/hooks/useStorefrontTheme';
 
 function nodeToText(node: ReactNode): string {
   if (node == null || typeof node === 'boolean') {
@@ -20,6 +25,29 @@ function nodeToText(node: ReactNode): string {
   }
 
   return '';
+}
+
+// Language inference for CodeNote labels (mirrors CodeTabs logic)
+const codeNoteLangMap: Record<string, string> = {
+  html: 'xml',
+  vue: 'xml',
+  angular: 'typescript',
+  react: 'tsx',
+  'next.js': 'tsx',
+  next: 'tsx',
+  javascript: 'javascript',
+  'vanilla js': 'javascript',
+  'vanilla javascript': 'javascript',
+  typescript: 'typescript',
+  ts: 'typescript',
+  css: 'css',
+  json: 'json',
+  bash: 'bash',
+  sh: 'bash',
+};
+
+function getCodeLanguage(label: string): string {
+  return codeNoteLangMap[label.trim().toLowerCase()] ?? 'javascript';
 }
 
 export function SectionHeader({ title, description }: { title: string; description: string }) {
@@ -150,6 +178,9 @@ export function EmptyNote({ children }: { children: ReactNode }) {
 
 export function CodeNote({ label, children }: { label: string; children: ReactNode }) {
   const codeText = nodeToText(children);
+  const { resolvedTheme } = useStorefrontTheme();
+  const syntaxStyle = resolvedTheme === 'dark' ? atomOneDark : atomOneLight;
+  const language = getCodeLanguage(label);
 
   return (
     <div
@@ -159,14 +190,25 @@ export function CodeNote({ label, children }: { label: string; children: ReactNo
       <p className="text-xs font-semibold mb-2" style={{ color: 'var(--io-text-muted)', letterSpacing: '0.04em' }}>
         {label}
       </p>
-      <div className="relative group">
+      <div className="relative group" data-no-auto-highlight="true">
         <CopyButton text={codeText} ariaLabel={`Copy ${label} code`} className="absolute right-2 top-2 z-10" />
-        <pre
-          className="text-xs font-mono overflow-x-auto pr-16"
-          style={{ color: 'var(--io-text-primary)', lineHeight: '1.7', whiteSpace: 'pre' }}
+        <SyntaxHighlighter
+          language={language}
+          style={syntaxStyle}
+          customStyle={{
+            margin: 0,
+            padding: '0',
+            paddingRight: '4rem',
+            background: 'var(--io-bg-raised)',
+            fontSize: '0.75rem',
+            lineHeight: '1.7',
+            overflow: 'auto',
+          }}
+          showLineNumbers={false}
+          wrapLongLines={false}
         >
-          {children}
-        </pre>
+          {codeText}
+        </SyntaxHighlighter>
       </div>
     </div>
   );

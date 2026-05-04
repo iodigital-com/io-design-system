@@ -38,7 +38,7 @@ export default function IoCheckboxExamplesPage() {
         <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory
           story={checkboxStoryDisabled}
-          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--io-spacing-md, 16px)' }}
+          previewStyle={{ flexDirection: 'column', alignItems: 'center', gap: 'var(--io-space-2, 8px)' }}
         />
       </section>
     </div>

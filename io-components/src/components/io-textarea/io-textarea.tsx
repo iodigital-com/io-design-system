@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
@@ -19,9 +19,11 @@ import type { IoTextareaResize, IoTextareaSize } from './types';
 @Component({
   tag: 'io-textarea',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoTextarea {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -95,6 +97,18 @@ export class IoTextarea {
     textarea?.focus(options);
   }
 
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity() ?? true;
+  }
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -105,6 +119,21 @@ export class IoTextarea {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveTextareaId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    this.internals?.setFormValue(this.value ?? '');
+    if (this.required && !this.value) {
+      this.internals?.setValidity({ valueMissing: true }, 'Please fill in this field');
+    } else {
+      this.internals?.setValidity({});
+    }
   }
 
   // ── Handlers ─────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
@@ -19,9 +19,11 @@ import type { IoRadioChangeDetail } from './types';
 @Component({
   tag: 'io-radio',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoRadio {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -66,6 +68,18 @@ export class IoRadio {
     input?.focus(options);
   }
 
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity() ?? true;
+  }
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -76,6 +90,22 @@ export class IoRadio {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveRadioId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('checked')
+  onCheckedChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
+    this.internals?.setFormValue(this.checked ? this.value : null);
+    if (this.required && !this.checked) {
+      this.internals?.setValidity({ valueMissing: true }, 'Please select an option');
+    } else {
+      this.internals?.setValidity({});
+    }
   }
 
   // ── Handlers ─────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, Listen, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
 
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
@@ -19,9 +19,11 @@ import type { IoInputType, IoInputSize } from './types';
 @Component({
   tag: 'io-input',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoInput {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   private fallbackId!: string;
   private inputId!: string;
@@ -88,6 +90,21 @@ export class IoInput {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.inputId = resolveInputId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    this.internals?.setFormValue(this.value ?? '');
+    if (this.required && !this.value) {
+      this.internals?.setValidity({ valueMissing: true }, 'Please fill in this field');
+    } else {
+      this.internals?.setValidity({});
+    }
   }
 
   @Listen('slotchange')
@@ -116,6 +133,18 @@ export class IoInput {
   async setFocus(options?: FocusOptions): Promise<void> {
     const input = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
     input?.focus(options);
+  }
+
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity() ?? true;
   }
 
   private handleInput = (ev: InputEvent) => {

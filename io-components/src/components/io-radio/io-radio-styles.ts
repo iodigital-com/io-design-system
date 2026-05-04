@@ -56,7 +56,7 @@ export function getRadioStyles(): string {
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: var(--io-radio-border-width) solid var(--io-border-hover);
+      border: var(--io-radio-border-width) solid var(--io-border-interactive);
       background: transparent;
       display: flex;
       align-items: center;

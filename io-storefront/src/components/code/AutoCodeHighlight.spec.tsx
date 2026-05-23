@@ -20,11 +20,11 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('highlight.js', () => ({
   default: {
-    highlight: (_code: string, _opts: unknown) => ({
+    highlight: () => ({
       value: '<span class="hljs-string">hello</span>',
       language: 'typescript',
     }),
-    highlightAuto: (_code: string) => ({
+    highlightAuto: () => ({
       value: '<span class="hljs-auto">hello</span>',
       language: 'javascript',
     }),

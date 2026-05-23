@@ -21,7 +21,7 @@ tools:
 
 # Wave Implementation Prompt — io-design-system
 
-You are a senior Stencil / Next.js developer implementing a wave of tickets for **io-design-system** — an accessibility-first design-system monorepo built on Stencil 4 web components and a Next.js 15 storefront. Follow every phase in order. Do not skip phases. Do not merge without passing the review loop.
+You are a senior Stencil / Next.js developer implementing a wave of tickets for **io-design-system** — an accessibility-first design-system monorepo built on Stencil 4 web components and a Next.js 16 storefront. Follow every phase in order. Do not skip phases. Do not merge without passing the review loop.
 
 ---
 
@@ -187,7 +187,7 @@ For io-input, io-textarea, io-select, io-checkbox, io-radio:
 
 After each file change, verify TypeScript compiles:
 ```bash
-cd /Users/jakeortega/Documents/Projects/io-design-system
+cd <repo-root>
 npm run type-check 2>&1 | tail -30
 ```
 Fix type errors before moving to the next file.
@@ -199,7 +199,7 @@ Fix type errors before moving to the next file.
 Run existing tests first:
 
 ```bash
-cd /Users/jakeortega/Documents/Projects/io-design-system
+cd <repo-root>
 npm run test 2>&1 | tail -40
 ```
 
@@ -228,7 +228,7 @@ io-storefront/src/app/components/io-{name}/__tests__/
 Run the full verification checklist:
 
 ```bash
-cd /Users/jakeortega/Documents/Projects/io-design-system
+cd <repo-root>
 
 # Governance gate — must pass before any commit
 npm run governance:check 2>&1 | tail -20

@@ -1,9 +1,11 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-04-29T08:32:51.686Z",
+  "generated": "2026-05-23T07:59:53.783Z",
   "components": {
     "io-accordion": {
       "props": {
+        "allowMultiple": "boolean",
+        "defaultExpanded": "boolean",
         "disabled": "boolean",
         "heading": "string",
         "headingTag": "IoAccordionHeadingTag",
@@ -16,6 +18,7 @@
     },
     "io-badge": {
       "props": {
+        "size": "IoBadgeSize",
         "variant": "IoBadgeVariant"
       },
       "methods": {},
@@ -29,12 +32,14 @@
         "disabled": "boolean",
         "fullWidth": "boolean",
         "href": "string | undefined",
+        "iconOnly": "boolean",
         "label": "string | undefined",
         "loading": "boolean",
         "rel": "string | undefined",
         "size": "IoButtonSize",
         "target": "string | undefined",
         "type": "IoButtonType",
+        "value": "string | undefined",
         "variant": "IoButtonVariant"
       },
       "methods": {
@@ -42,6 +47,18 @@
       },
       "events": {
         "click": "MouseEvent"
+      }
+    },
+    "io-button-group": {
+      "props": {
+        "disabled": "boolean",
+        "exclusive": "boolean",
+        "label": "string | undefined",
+        "value": "string | string[]"
+      },
+      "methods": {},
+      "events": {
+        "change": "IoButtonGroupChangeDetail"
       }
     },
     "io-carousel": {
@@ -72,11 +89,21 @@
         "value": "string"
       },
       "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
         "setFocus": "(options?: FocusOptions) => Promise<void>"
       },
       "events": {
         "change": "IoCheckboxChangeDetail"
       }
+    },
+    "io-divider": {
+      "props": {
+        "label": "string | undefined",
+        "orientation": "IoDividerOrientation"
+      },
+      "methods": {},
+      "events": {}
     },
     "io-input": {
       "props": {
@@ -86,14 +113,21 @@
         "errorMessage": "string | undefined",
         "helperText": "string | undefined",
         "label": "string",
+        "max": "string | number | undefined",
         "maxLength": "number | undefined",
+        "min": "string | number | undefined",
         "name": "string | undefined",
         "placeholder": "string | undefined",
+        "readonly": "boolean",
         "required": "boolean",
+        "size": "IoInputSize",
+        "step": "string | number | undefined",
         "type": "IoInputType",
         "value": "string"
       },
       "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
         "setFocus": "(options?: FocusOptions) => Promise<void>"
       },
       "events": {
@@ -127,9 +161,35 @@
         "open": "boolean",
         "size": "IoModalSize"
       },
-      "methods": {},
+      "methods": {
+        "close": "() => Promise<void>",
+        "show": "() => Promise<void>"
+      },
       "events": {
         "dismiss": "void"
+      }
+    },
+    "io-optgroup": {
+      "props": {
+        "disabled": "boolean",
+        "label": "string"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-option": {
+      "props": {
+        "checked": "boolean",
+        "disabled": "boolean",
+        "focused": "boolean",
+        "label": "string",
+        "multipleMode": "boolean",
+        "selected": "boolean",
+        "value": "string"
+      },
+      "methods": {},
+      "events": {
+        "optionSelect": "IoOptionSelectDetail"
       }
     },
     "io-pagination": {
@@ -157,6 +217,8 @@
         "value": "string"
       },
       "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
         "setFocus": "(options?: FocusOptions) => Promise<void>"
       },
       "events": {
@@ -165,23 +227,28 @@
     },
     "io-select": {
       "props": {
+        "custom": "boolean",
         "disabled": "boolean",
         "error": "boolean",
         "errorMessage": "string | undefined",
+        "filter": "boolean",
         "helperText": "string | undefined",
         "label": "string",
+        "multiple": "boolean",
         "name": "string | undefined",
-        "options": "IoSelectOption[]",
         "placeholder": "string | undefined",
         "required": "boolean",
+        "size": "IoSelectSize",
         "value": "string"
       },
       "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
         "setFocus": "(options?: FocusOptions) => Promise<void>"
       },
       "events": {
         "blur": "FocusEvent",
-        "change": "string",
+        "change": "string | string[]",
         "focus": "FocusEvent"
       }
     },
@@ -231,9 +298,12 @@
         "required": "boolean",
         "resize": "IoTextareaResize",
         "rows": "number",
+        "size": "IoTextareaSize",
         "value": "string"
       },
       "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
         "setFocus": "(options?: FocusOptions) => Promise<void>"
       },
       "events": {

@@ -156,7 +156,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-checkbox-group/configurator',
         status: 'beta',
         slug: 'io-checkbox-group',
-        description: 'Wraps io-checkbox items in a semantic fieldset with a shared legend, name propagation, and a group-level ioChange event.',
+        description: 'Wraps io-checkbox items in a semantic fieldset with a shared legend, name propagation, and a group-level change event.',
         related: ['io-checkbox', 'io-radio-group', 'io-form-field'],
       },
       {
@@ -228,7 +228,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-radio-group/configurator',
         status: 'beta',
         slug: 'io-radio-group',
-        description: 'Wraps io-radio buttons in a semantic fieldset with a shared legend, name and value propagation, and a group-level ioChange event.',
+        description: 'Wraps io-radio buttons in a semantic fieldset with a shared legend, name and value propagation, and a group-level change event.',
         related: ['io-radio', 'io-checkbox-group', 'io-form-field'],
       },
       {

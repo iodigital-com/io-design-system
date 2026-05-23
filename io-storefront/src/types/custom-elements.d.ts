@@ -22,6 +22,7 @@ declare module 'react' {
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
+  'io-file-upload': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFileUploadElement>, HTMLIoFileUploadElement> & Partial<StencilJSX.IoFileUpload>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;

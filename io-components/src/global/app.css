@@ -436,6 +436,8 @@
     var(--io-color-grey-2) 75%
   );
   --io-skeleton-bg-size:         200% 100%;
+  --io-skeleton-border-radius-text:    var(--io-border-radius-xs);   /* text variant pill-ish line */
+  --io-skeleton-border-radius-rounded: var(--io-border-radius-md);   /* rounded variant (card level) */
 
   /* ============================================================
      13. STOREFRONT SHELL SEMANTIC ALIASES

@@ -20,6 +20,7 @@ export type IoTagNames =
   | 'io-pagination'
   | 'io-radio'
   | 'io-select'
+  | 'io-skeleton'
   | 'io-spinner'
   | 'io-tabs'
   | 'io-tag'

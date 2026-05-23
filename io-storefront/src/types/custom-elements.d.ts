@@ -27,6 +27,7 @@ declare module 'react' {
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;
+  'io-skeleton': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSkeletonElement>, HTMLIoSkeletonElement> & Partial<StencilJSX.IoSkeleton>;
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;

@@ -1,4 +1,5 @@
 import { describe, it } from 'vitest';
+
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 function makeRadioGroup(label: string, items: Array<{ label: string; checked: boolean }>): HTMLElement {

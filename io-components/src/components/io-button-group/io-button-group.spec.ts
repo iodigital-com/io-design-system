@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 import { IoButtonGroup } from './io-button-group';
+
 import type { IoButtonGroupItem } from './types';
 
 function makeComponent(overrides: Partial<IoButtonGroup> = {}): IoButtonGroup {
@@ -235,11 +236,6 @@ function makeRenderComp(overrides: Partial<IoButtonGroup> = {}): IoButtonGroup {
   (comp as any).items = [...RENDER_ITEMS];
   Object.assign(comp, overrides);
   return comp;
-}
-
-function hCallProps(tag: string): Record<string, unknown> | undefined {
-  const call = vi.mocked(h).mock.calls.find((args) => args[0] === tag);
-  return call?.[1] as Record<string, unknown> | undefined;
 }
 
 function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {

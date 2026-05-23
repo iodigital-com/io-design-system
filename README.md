@@ -1,77 +1,95 @@
 # io Design System
 
-The io Design System is iO's cross-framework UI component library.
+io Design System is iO Digital's cross-framework component platform.
 
-It is built with Stencil Web Components at the core, plus generated wrappers for React, Vue, and Angular. The repository also includes a Next.js storefront used for component documentation, usage examples, and token reference.
+It provides one source of truth for UI components using Stencil Web Components, then generates framework wrappers for React, Vue, and Angular. This repository also contains a private storefront used for internal documentation, usage examples, API reference, and design-token visibility.
 
-## What this repo includes
+## What This Repository Does
 
-- `@io-digital/components`: framework-agnostic Web Components (source of truth)
-- `@io-digital/components-react`: React wrappers
-- `@io-digital/components-vue`: Vue wrappers
-- `@io-digital/components-angular`: Angular wrappers
-- `io-storefront`: internal docs site and playground
-- Token scraping/generation scripts for docs under `scripts/`
+This repository is responsible for all of the following:
 
-## Component catalog
+1. Building and testing production web components under the io namespace.
+2. Generating wrapper libraries so product teams can consume the same components in React, Vue, and Angular.
+3. Maintaining a static Next.js documentation storefront for component docs and examples.
+4. Enforcing governance and quality gates for API surface, design tokens, bundle size, accessibility, and release hygiene.
+5. Publishing versioned packages under the io-digital scope to GitHub Packages.
 
-Current component set (18):
+## Repository Contents
 
-- `io-accordion`
-- `io-badge`
-- `io-button`
-- `io-carousel`
-- `io-checkbox`
-- `io-input`
-- `io-link`
-- `io-modal`
-- `io-pagination`
-- `io-radio`
-- `io-select`
-- `io-spinner`
-- `io-tabs`
-- `io-tag`
-- `io-textarea`
-- `io-toast`
-- `io-toast-item`
-- `io-tooltip`
+| Package/Area | Name | Purpose | Published |
+|---|---|---|---|
+| Stencil core | @io-digital/components | Source of truth for all components and tokens | Yes |
+| React wrappers | @io-digital/components-react | Auto-generated React wrappers around core components | Yes |
+| Vue wrappers | @io-digital/components-vue | Auto-generated Vue wrappers around core components | Yes |
+| Angular wrappers | @io-digital/components-angular | Auto-generated Angular wrappers around core components | Yes |
+| Storefront | @io-digital/storefront | Internal docs/playground site | No (private) |
+| Scripts | scripts/ | Governance checks, sync helpers, automation | N/A |
+| Docs artifacts | docs/ | API snapshots, governance docs, token docs | N/A |
 
-### Component maturity
+## Component Catalog
 
-Component status is documented in the storefront navigation and individual component pages.
+Current component set (22):
 
-- `Stable`: ready for broad production usage
-- `Beta`: usable, but API or behavior may still evolve
+- io-accordion
+- io-badge
+- io-button
+- io-button-group
+- io-carousel
+- io-checkbox
+- io-divider
+- io-input
+- io-link
+- io-modal
+- io-optgroup
+- io-option
+- io-pagination
+- io-radio
+- io-select
+- io-spinner
+- io-tabs
+- io-tag
+- io-textarea
+- io-toast
+- io-toast-item
+- io-tooltip
 
-If you are integrating this library in a production product, prefer stable components first and treat beta components as opt-in.
+Component status (Stable or Beta) is governed in storefront status docs and rendered in the component pages.
 
-## Browser support
+## Technology Stack
 
-This library targets modern evergreen browsers:
+- Stencil 4 for web component authoring.
+- TypeScript (strict patterns).
+- Vitest for unit and render coverage.
+- Next.js 16 for internal storefront docs.
+- npm workspaces for monorepo orchestration.
+- GitHub Packages for scoped distribution.
+- GitHub Actions for release automation.
+
+## Browser Support
+
+This system targets modern evergreen browsers:
 
 - Chrome (latest)
 - Edge (latest)
 - Firefox (latest)
 - Safari (latest)
 
-Legacy browsers (for example Internet Explorer) are not supported.
+Internet Explorer and other legacy browsers are out of scope.
 
-## Versioning and releases
+## Architecture and Source-of-Truth Rules
 
-This repository follows Semantic Versioning:
+1. All component behavior changes must happen in the Stencil core under io-components/src/components.
+2. React, Vue, and Angular wrappers are generated outputs and should not be hand-maintained.
+3. Design token ownership is in io-components/src/global/app.css.
+4. Storefront remains static-export compatible and consumes generated assets/types.
+5. Public events use canonical names only. io-prefixed public event names are blocked.
 
-- `MAJOR`: breaking API/event/behavior changes
-- `MINOR`: backward-compatible features
-- `PATCH`: backward-compatible fixes
-
-Conventional Commits are used to keep release intent explicit (`feat`, `fix`, `refactor`, `docs`, `test`, `chore`).
-
-## Local setup
+## Quick Start (Local Development)
 
 ### Prerequisites
 
-- Node.js `>= 20.0.0`
-- npm (comes with Node)
+- Node 20 or newer.
+- npm (bundled with Node).
 
 ### Install
 
@@ -81,52 +99,103 @@ cd io-design-system
 npm ci
 ```
 
-### Run locally
+### Run local dev
 
 ```bash
 npm run dev
 ```
 
-This starts the Stencil component dev workflow and the storefront app. The storefront is available on `http://localhost:3000`.
+This starts Stencil watch mode and the storefront. The storefront is available at http://localhost:3000.
 
-## Useful root scripts
+## Repository Structure
 
-### Core workflows
+```text
+io-design-system/
+  io-components/                  # Stencil core package (source of truth)
+    src/components/               # Component implementations
+    src/global/app.css            # Global design tokens
+    src/global/app.ts             # Global app behavior
+  io-components-react/            # Generated React wrappers
+  io-components-vue/              # Generated Vue wrappers
+  io-components-angular/          # Generated Angular wrappers
+  io-storefront/                  # Private Next.js docs site
+  docs/                           # API snapshots, token docs, governance docs
+  scripts/                        # Tooling, governance checks, sync automation
+  .github/workflows/              # CI and release workflows
+```
+
+## Command Reference
+
+All commands below run from repository root unless stated otherwise.
+
+### Daily development commands
 
 ```bash
 npm run dev
 npm run build
 npm run test
 npm run type-check
-npm run build:storefront
+npm run lint
 ```
 
-### Quality gates
+### Granular build commands
+
+```bash
+npm run build:components
+npm run build:wrapper:react
+npm run build:wrapper:vue
+npm run build:wrapper:angular
+npm run build:wrappers
+npm run build:storefront
+npm run build:storefront:release
+```
+
+### Governance and safety checks
 
 ```bash
 npm run governance:check
 npm run events:guard
+npm run api:check
+npm run sync:stencil-assets:check
+npm run token-naming:check
+npm run token-runtime:check
+npm run token-doc-coverage:check
+npm run style-literals:check
+npm run status-governance:check
+```
+
+### Quality and compliance checks
+
+```bash
+npm run size
+npm run lighthouse:ci
+npm run security:audit
+npm run type-coverage
+```
+
+### Full gate command
+
+```bash
 npm run build:quality-gates
 ```
 
-`build:quality-gates` runs:
+This runs the complete release-grade sequence:
 
-1. `governance:check`
-2. `events:guard`
-3. `build`
-4. `test`
-5. `type-check`
-6. `build:storefront`
+1. governance:check
+2. events:guard
+3. lint
+4. build
+5. api:check
+6. sync:stencil-assets:check
+7. size
+8. test
+9. type-coverage
+10. type-check
+11. build:storefront
+12. lighthouse:ci
+13. security:audit
 
-### Build granularity
-
-```bash
-npm run build:components
-npm run build:wrappers
-npm run build:storefront:release
-```
-
-### Token scraping/generation (docs)
+### Token documentation pipeline
 
 ```bash
 npm run tokens:scrape
@@ -136,76 +205,64 @@ npm run tokens:html
 npm run tokens:sync
 ```
 
-These scripts update:
+These generate and synchronize token docs artifacts under docs/.
 
-- `docs/tokens.live.json` (raw scrape)
-- `docs/tokens.json` (merged docs token data)
-- `docs/token.json` (mirror for compatibility)
-- `docs/index.html` (generated docs sections)
+## How To Consume The Design System
 
-## Event model (canonical names)
+Packages are published to GitHub Packages under the io-digital scope.
 
-This codebase uses canonical DOM event names.
+### Consumer .npmrc setup
 
-All public component events follow native/canonical naming only.
+Create project-level .npmrc:
 
-Examples:
+```ini
+@io-digital:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+always-auth=true
+```
 
-- `input`
-- `change`
-- `focus`
-- `blur`
-- `open`
-- `close`
-- `click`
-- `toggle`
-- `remove`
-- `dismiss`
+### Install packages
 
-No `io*` event prefixes are part of the event API.
-
-## Using the packages
-
-### Web Components (vanilla)
+Install core only (vanilla web components):
 
 ```bash
 npm install @io-digital/components
 ```
 
-```js
+Install with framework wrappers:
+
+```bash
+npm install @io-digital/components @io-digital/components-react
+npm install @io-digital/components @io-digital/components-vue
+npm install @io-digital/components @io-digital/components-angular
+```
+
+### Vanilla usage
+
+```ts
 import { defineCustomElements } from '@io-digital/components/loader';
+
 defineCustomElements();
 ```
 
 ```html
-<link rel="stylesheet" href="node_modules/@io-digital/components/dist/io-components/io-components.css" />
-<script type="module" src="node_modules/@io-digital/components/dist/io-components/io-components.esm.js"></script>
-
 <io-button variant="solid" color="blue" size="md">Get started</io-button>
 ```
 
-### React
-
-```bash
-npm install @io-digital/components @io-digital/components-react
-```
+### React usage
 
 ```tsx
 import { IoButton } from '@io-digital/components-react';
 
-export default function App() {
+export function Example() {
   return <IoButton variant="solid" color="blue" size="md">Get started</IoButton>;
 }
 ```
 
-### Vue
-
-```bash
-npm install @io-digital/components @io-digital/components-vue
-```
+### Vue usage
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { IoButton } from '@io-digital/components-vue';
 </script>
 
@@ -214,13 +271,10 @@ import { IoButton } from '@io-digital/components-vue';
 </template>
 ```
 
-### Angular
-
-```bash
-npm install @io-digital/components @io-digital/components-angular
-```
+### Angular usage
 
 ```ts
+import { NgModule } from '@angular/core';
 import { IoComponentsAngularModule } from '@io-digital/components-angular';
 
 @NgModule({
@@ -229,150 +283,210 @@ import { IoComponentsAngularModule } from '@io-digital/components-angular';
 export class AppModule {}
 ```
 
-## SSR and framework guidance
+### SSR and hydration guidance
 
-When using wrappers in SSR frameworks (for example Next.js or Nuxt), ensure custom elements are defined on the client runtime.
+In SSR apps (for example Next.js or Nuxt):
 
-- Load Web Component definitions only in browser contexts.
-- Avoid directly touching DOM APIs during server rendering.
-- Keep hydration-safe defaults for controlled component values.
+1. Register custom elements in browser/client context only.
+2. Avoid direct DOM access during server render.
+3. Use hydration-safe defaults for controlled values.
 
-If a framework integration has rendering mismatches, validate client-only registration first before debugging component internals.
+If hydration mismatch appears, validate client-only registration before debugging component internals.
 
-## Theming contract
+## Theming and Tokens
 
-Public theming API:
+The theming API is CSS custom properties under the io prefix.
 
-- CSS custom properties (`--io-*`) exposed by the component styles
+- Public API: --io-* custom properties.
+- Token source of truth: io-components/src/global/app.css.
+- Do not rely on internal class names or internal DOM shape as public contract.
 
-Internal implementation details (DOM shape, private class names, internal animation timings) are not part of the public contract and may change between versions.
+## Event Model
 
-## Accessibility baseline
+Public events follow canonical/native naming.
 
-The design system aims for WCAG AA as a baseline for shipped components.
+Examples:
 
-For contributors, every component change should preserve:
+- click
+- input
+- change
+- focus
+- blur
+- open
+- close
+- dismiss
 
-- keyboard accessibility
-- visible focus states
-- semantic labeling/ARIA behavior
-- contrast requirements
+io-prefixed custom event names are intentionally not part of public API and are guarded by events:guard.
 
-Run component tests and storefront validation before merging accessibility-impacting changes.
+## Accessibility Commitments
 
-## Repository structure
+The system targets WCAG AA baseline for shipped components.
 
-```text
-io-design-system/
-  io-components/           # Stencil core package
-  io-components-react/     # React wrappers
-  io-components-vue/       # Vue wrappers
-  io-components-angular/   # Angular wrappers
-  io-storefront/           # Next.js docs/playground
-  docs/                    # Token docs and generated HTML
-  scripts/                 # Governance, scrape, and build utilities
-```
+Every component change should preserve:
 
-## Contributor quickstart
+1. Keyboard accessibility.
+2. Visible focus indicators.
+3. Correct semantic role/ARIA behavior.
+4. Contrast compliance.
+5. Reduced motion compatibility where relevant.
 
-If you want to contribute quickly, this is the shortest path:
+## Contributing Workflow
 
-1. Fork the repository and clone your fork.
-2. Create a feature branch from `main`.
-3. Install dependencies and run local dev.
-4. Make focused changes with tests.
-5. Run quality gates.
-6. Open a PR with clear scope and screenshots/evidence when relevant.
+For full details, see CONTRIBUTING.md. High-level path:
 
-Suggested workflow:
+1. Create a branch from main.
+2. Build and test locally.
+3. Make focused component/storefront changes.
+4. Regenerate generated outputs when API changes.
+5. Run full gates.
+6. Open PR with test evidence and migration notes if needed.
+
+Suggested start:
 
 ```bash
-git checkout -b feat/your-change-name
+git checkout -b feat/your-change
 npm ci
 npm run dev
 ```
 
-Before opening a PR, run:
+Before PR:
 
 ```bash
 npm run build:quality-gates
 ```
 
-## Contributing
+## Adding a New Component
 
-Please also read [CONTRIBUTING.md](./CONTRIBUTING.md) for full project rules.
+High-level checklist:
 
-### What to include in each PR
+1. Create io-components/src/components/io-name with implementation, styles, types, and tests.
+2. Add full storefront docs pages under io-storefront/src/app/components/io-name.
+3. Build core and sync storefront generated types/assets.
+4. Register new component in storefront sitemap.
+5. Re-run tests and full quality gates.
 
-- concise summary of behavior change
-- testing evidence (command output, screenshots, or notes)
-- accessibility impact note for UI changes
-- migration note when behavior or events change
+Generated files and wrappers must not be hand-maintained.
 
-### Definition of done
+## API Surface Governance and Breaking Changes
 
-A contribution is considered ready when:
+This repo tracks public API contracts using docs/api-surface.json.
 
-- all required quality gates pass
-- component behavior is covered by tests
-- storefront docs/examples are updated when API/UX changes
-- no `io*` event regressions are introduced (canonical names only)
-- naming and token conventions are respected
+- Use npm run api:check to detect unapproved API breaks.
+- Use npm run api:snapshot to intentionally update baseline when breaking change is approved.
 
-### Component contribution checklist
+SemVer policy:
 
-For Stencil components in `io-components/src/components`:
+- MAJOR: breaking API/event/behavior changes.
+- MINOR: backward-compatible features.
+- PATCH: backward-compatible fixes.
 
-- use tokens (`var(--io-*)`) instead of hardcoded values
-- keep IDs generated in lifecycle methods, not in render
-- keep custom events canonical (no `io`-prefixed event names)
-- add/update render, interaction, and disabled-state tests
+Conventional commits are expected for clarity in release intent.
 
-### Storefront contribution checklist
+## Release and Publishing
 
-For docs pages in `io-storefront/src/app/components`:
+### Registry
 
-- use shared primitives for Usage and Accessibility tabs
-- keep examples executable and aligned with live component API
-- update sitemap/type registrations when adding new components
+All publishable packages target:
 
-### Commit style
+- https://npm.pkg.github.com
+- scope: @io-digital
 
-Use Conventional Commits:
+### Release workflow
 
-- `feat(scope): ...`
-- `fix(scope): ...`
-- `docs(scope): ...`
-- `test(scope): ...`
-- `refactor(scope): ...`
-- `chore(scope): ...`
+Automated publishing is handled by .github/workflows/release-packages.yml.
 
-## Security
+Supported tag triggers:
 
-Please do not disclose security issues in public issues.
+- release/components/v*
+- release/components-react/v*
+- release/components-vue/v*
+- release/components-angular/v*
 
-Report vulnerabilities privately to repository maintainers through your standard internal security/contact process.
+Manual workflow_dispatch also supports package selection and dry-run mode.
 
-## Roadmap
+### Publish preconditions
 
-Near-term focus areas typically include:
+1. Version in package.json matches release tag version for tag-based releases.
+2. Full quality-gate job passes.
+3. Target version does not already exist in registry.
+4. Publish environment approvals (if configured) are satisfied.
 
-- component hardening and API consistency
-- accessibility and documentation coverage
-- cross-framework wrapper quality
-- design token governance
+### Local maintainer publish flow
 
-For active roadmap items, check open issues and pull requests.
+If doing a local/manual publish:
+
+```bash
+npm ci
+npm run build:quality-gates
+
+npm publish --workspace @io-digital/components --registry https://npm.pkg.github.com
+npm publish --workspace @io-digital/components-react --registry https://npm.pkg.github.com
+npm publish --workspace @io-digital/components-vue --registry https://npm.pkg.github.com
+npm publish --workspace @io-digital/components-angular --registry https://npm.pkg.github.com
+```
+
+Publish core first, then wrappers.
+
+### Maintainer token setup
+
+Example user-level .npmrc:
+
+```ini
+@io-digital:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}
+always-auth=true
+```
+
+Token scopes:
+
+- read:packages
+- write:packages
+- repo when org policy requires repository-scoped access
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| 401 Unauthorized when install/publish | Missing or invalid token | Confirm token value and scopes, then retry |
+| 404 for @io-digital package | Registry scope mapping missing or package/version not published | Verify .npmrc mapping and run npm view against GitHub registry |
+| Wrapper install warnings | Core-wrapper version mismatch | Align versions and reinstall dependencies |
+| CI release skips publish | Version already exists | Bump version and rerun release |
+| Storefront type drift check fails | Generated files outdated | Run build:components and sync:stencil-assets |
+
+Useful checks:
+
+```bash
+npm config get @io-digital:registry
+npm view @io-digital/components versions --registry https://npm.pkg.github.com
+npm ls @io-digital/components
+```
+
+## Security and Governance Notes
+
+1. Do not commit package tokens or credentials.
+2. Use runtime environment variables for npm auth.
+3. Keep release automation under review with least-privilege permissions.
+4. Run governance and audit scripts before publishing.
+
+## Additional Docs
+
+- CONTRIBUTING.md for implementation and PR rules.
+- AGENTS.md for architecture boundaries and agent guidance.
+- docs/agency-agents/README.md for AI workflow and governance context.
+- docs/component-stability-recommendations.md for stability posture.
+- docs/storefront-status-governance.md for status governance rubric.
+
+If you are new to the repo, start with this README, then move to CONTRIBUTING.md before opening your first PR.
 
 ## FAQ
 
 ### Which package should I install first?
 
-Always start with `@io-digital/components`. If you use a framework, add its wrapper package as well.
+Always start with @io-digital/components. If you use a framework, add its wrapper package as well.
 
-### Is `io-storefront` published to npm?
+### Is io-storefront published to npm?
 
-No. `io-storefront` is the documentation/playground app and stays in-repo.
+No. io-storefront is the documentation/playground app and stays in-repo.
 
 ### How do I validate my change before opening a PR?
 
@@ -384,12 +498,12 @@ npm run build:quality-gates
 
 ### Where should I add new design values?
 
-Add new tokens in `io-components/src/global/app.css` first, then consume them in component styles via `var(--io-*)`.
+Add new tokens in io-components/src/global/app.css first, then consume them in component styles via var(--io-*).
 
 ### What is the quickest way to work on a component and docs together?
 
-Run `npm run dev`, implement in `io-components/src/components`, and verify behavior in the matching `io-storefront/src/app/components` pages.
+Run npm run dev, implement in io-components/src/components, and verify behavior in the matching io-storefront/src/app/components pages.
 
 ## License
 
-MIT - Copyright (c) io Digital
+MIT

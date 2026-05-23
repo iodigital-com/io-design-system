@@ -27,6 +27,24 @@ Prioritize stable component APIs, wrapper parity, and deterministic quality gate
    - `prompts/`
    - `issues/`
    - `.codex/`
+   - `.claude/` (Claude Code CLI tooling — gitignored)
+
+## Known Constraints and Anti-Regression Controls
+
+- **API surface snapshot**: `docs/api-surface.json` is the contract baseline for `npm run api:check`.
+  After any prop addition/removal run `npm run api:snapshot` and commit the updated snapshot.
+  Intentional breaking changes require the `breaking-change` PR label + a `CHANGELOG.md` entry.
+- **Token reconciliation**: Every CSS custom property in `io-components/src/global/app.css` must have
+  a matching entry in `docs/token-runtime-reconciliation.json`. Add new tokens there when you add them
+  to `app.css`, or `npm run token-runtime:check` will fail.
+- **Governance script**: `.claude/` is explicitly excluded from the deprecated-paths check.
+  Do not re-add it to `requirePathAbsent()` in `scripts/agency-validate-governance.cjs`.
+- **FACE double optional-chaining**: All `ElementInternals` method calls must use
+  `this.internals?.methodName?.()` (double optional chain) — jsdom returns a partial object
+  whose methods are `undefined`, so a single `?.` on the object does not prevent the call.
+- **io-select combobox mode**: The `options: IoSelectOption[]` prop was removed when custom combobox
+  mode was introduced (PR #226). Use slotted `io-option` / `io-optgroup` elements instead.
+  The api-surface snapshot was updated to reflect this removal.
 
 ## Working Preferences
 

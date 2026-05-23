@@ -1,7 +1,7 @@
 'use client';
 
-import React, { startTransition, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { ConfiguratorControls } from './ConfiguratorControls';
 import { Playground } from './Playground';
@@ -115,7 +115,6 @@ function fallbackCopy(text: string) {
 }
 
 function ConfiguratorInner({ story, propDefinitions, previewClassName, previewStyle }: ConfiguratorProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -153,11 +152,9 @@ function ConfiguratorInner({ story, propDefinitions, previewClassName, previewSt
   const syncUrl = useCallback(
     (properties: Partial<Record<string, unknown>>) => {
       const qs = buildSearchParams(properties, propDefinitions);
-      startTransition(() => {
-        router.replace(`${pathname}${qs}`, { scroll: false });
-      });
+      window.history.replaceState(null, '', `${pathname}${qs}`);
     },
-    [router, pathname, propDefinitions],
+    [pathname, propDefinitions],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: state change drives re-render

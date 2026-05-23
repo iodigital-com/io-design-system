@@ -34,4 +34,5 @@ export type IoTagNames =
   | 'io-textarea'
   | 'io-toast'
   | 'io-toast-item'
-  | 'io-tooltip';
+  | 'io-tooltip'
+  | 'io-wordmark';

@@ -6,9 +6,7 @@
 
 export type IoTagNames =
   | 'io-accordion'
-  | 'io-avatar'
   | 'io-badge'
-  | 'io-breadcrumb'
   | 'io-button'
   | 'io-button-group'
   | 'io-carousel'

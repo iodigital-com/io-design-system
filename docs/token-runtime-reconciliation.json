@@ -2184,6 +2184,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-spacing-component-x",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Default horizontal component padding. Overridden by [data-density] attribute."
+    },
+    {
+      "runtimeCssVar": "--io-spacing-component-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Default vertical component padding. Overridden by [data-density] attribute."
+    },
+    {
       "runtimeCssVar": "--io-state-active",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

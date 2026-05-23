@@ -52,9 +52,11 @@ export function getButtonStyles(): string {
       font-size: var(--io-font-size-sm);
     }
 
-    /* md  = 42px  (8px V + 24px text + 8px V + 2px border) */
+    /* md  = 42px  (8px V + 24px text + 8px V + 2px border)
+       Density tokens control the vertical/horizontal padding so consumers
+       can switch compact / default / comfortable via [data-density]. */
     .btn--md {
-      padding: var(--io-space-2) var(--io-space-6);
+      padding: var(--io-spacing-component-y) var(--io-spacing-component-x);
       font-size: var(--io-font-size-base);
     }
 

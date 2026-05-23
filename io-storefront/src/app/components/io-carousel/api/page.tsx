@@ -96,7 +96,7 @@ export default function IoCarouselApiPage() {
             [
               <InlineCode key="event">update</InlineCode>,
               <InlineCode key="detail">{`{ activeIndex: number; totalSlides: number }`}</InlineCode>,
-              'Emitted when navigation or scrolling changes the active slide index.',
+              <span key="desc">Emitted when navigation or scrolling changes the active slide index. Bubbles and crosses the Shadow DOM boundary (<InlineCode>bubbles: true, composed: true</InlineCode>) — framework wrapper listeners (React <InlineCode>onUpdate</InlineCode>, Angular <InlineCode>(update)</InlineCode>, Vue <InlineCode>@update</InlineCode>) receive it reliably.</span>,
             ],
           ]}
         />

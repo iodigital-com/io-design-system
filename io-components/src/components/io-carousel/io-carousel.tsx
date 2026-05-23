@@ -51,7 +51,7 @@ export class IoCarousel {
   @Prop({ mutable: true, reflect: true }) activeSlideIndex = 0;
 
   /** Emitted when the active slide index changes. */
-  @Event({ bubbles: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
+  @Event({ eventName: 'update', bubbles: true, composed: true, cancelable: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
 
   // ── State ─────────────────────────────────────────────────────
 

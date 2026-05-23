@@ -584,13 +584,13 @@ npm run governance:check 2>&1 | tail -5
 
 | Wave | GitHub Label | Description | Status | Gate |
 |------|-------------|-------------|--------|------|
-| **Wave I** | `wave-i` | FACE forms, io-modal methods, io-input slots, axe-core a11y, Changesets | **MERGED** (#264, 2026-05-23) | ✅ |
-| **Wave II** | `wave-ii` | Dark mode tokens, io-toast positions, io-tabs slots, FACE checkbox/radio | Pending Wave I | Wave I merged |
-| **Wave III** | `wave-iii` | Docs: CSS overrides API, token explorer, CONTRIBUTING.md, wrapper READMEs | Parallel-safe | Any time |
-| **Wave IV** | `wave-iv` | New components: io-skeleton, io-progress, io-breadcrumb, io-avatar | Pending Wave I | Wave I merged |
-| **Wave V** | `wave-v` | New components: io-drawer, io-file-upload, io-stepper | Pending Wave II | Wave II merged |
-| **Wave VI** | `wave-vi` | Storefront UX: /designing page, docs strategy, migration guide | Parallel-safe | Any time |
-| **Wave J** | `wave-j` | Audit remediation — CI health, security, token gaps, git hygiene | Immediate | Fix P1s first |
+| **Wave I** | `wave-i` | FACE forms, io-modal methods, io-input slots, axe-core a11y, Changesets | ✅ **MERGED** (#264, 2026-05-23) | — |
+| **Wave J** | `wave-j` | Audit remediation — CI health, security, token gaps, git hygiene | 🔴 **Active** — P1s before next feature PR | Immediate |
+| **Wave II** | `wave-ii` | Dark mode tokens, io-toast positions, io-tabs slots, FACE reset/:invalid | 🟡 **Unblocked** (Wave I merged); #228 unblocked | After J P1s |
+| **Wave III** | `wave-iii` | Docs: CSS overrides API, token explorer, CONTRIBUTING.md, wrapper READMEs | 🟢 **Parallel-safe** | Any time |
+| **Wave IV** | `wave-iv` | New components: io-skeleton, io-progress, io-breadcrumb, io-avatar | 🟡 **Unblocked** (Wave I merged) | After J P1s |
+| **Wave V** | `wave-v` | New components: io-drawer, io-file-upload (P1), io-stepper | ⏳ Blocked on Wave II | Wave II merged |
+| **Wave VI** | `wave-vi` | Storefront UX: /designing, docs, migration guide; #196 blocked on #228 | 🟢 Mostly parallel-safe | Any time; #196 after #228 |
 
 ---
 
@@ -619,19 +619,21 @@ npm run governance:check 2>&1 | tail -5
 ### Wave II — Dark Mode + io-toast + io-tabs
 
 **GitHub label:** `wave-ii`
-**Gate:** Wave I must be merged first (dark mode uses Changesets from Wave I).
+**Gate:** Wave I merged ✅ — unblocked. Start after Wave J P1s are cleared.
 
-| # | Title | Priority | Blocker |
+| # | Title | Priority | Status |
 |---|---|---|---|
-| #175 | feat(tokens): dark mode token overrides across all 18 components | P1 | — |
-| #195 | feat(io-toast): position prop (6 positions) + persistent variant | P2 | — |
-| #199 | feat(io-tabs): icon slot and badge slot for io-tab-item | P2 | — |
-| #228 | fix(io-checkbox/io-radio): complete FACE — reset, :invalid support | P1 | `blocked` (#166 Wave I) |
+| #175 | feat(tokens): dark mode token overrides across all 18 components | P1 | Ready |
+| #228 | fix(io-checkbox/io-radio): complete FACE — form reset + :invalid support | P1 | ✅ Unblocked (Wave I FACE merged) |
+| #195 | feat(io-toast): position prop (6 positions) + persistent variant | P2 | Ready |
+| #199 | feat(io-tabs): icon slot and badge slot for io-tab-item | P2 | Ready |
+
+**Notes on #228:** Wave I delivered basic FACE (formAssociated + syncFormValue + required validity). #228 adds the remaining work: `form.reset()` event handling and `:invalid` CSS pseudo-class support for io-checkbox and io-radio.
 
 **Batching rules:**
 - #175 — standalone; touches all component style files + new dark-mode token set
+- #228 — standalone; targeted FACE completion
 - #195 + #199 — safe to batch (different components, no shared files)
-- #228 — wait until #166 (Wave I FACE) is merged and verified
 
 ---
 
@@ -730,14 +732,14 @@ npm run governance:check 2>&1 | tail -5
 
 #### P1 — Fix before next PR to main
 
-| # | Title | Type | Effort |
-|---|---|---|---|
-| #272 | chore(git): untrack `.claude/` CLI tooling artifacts from git history | chore | XS |
-| #273 | chore(api-surface): update io-select snapshot — options prop removed in PR #226 | chore | S |
-| #265 | fix(governance): block io-* custom events from bypassing events guard | fix | S |
-| #266 | security(storefront): remove global innerHTML sink from AutoCodeHighlight | security | S |
-| #267 | chore(deps): refresh storefront dependency tree — vulnerable next/fast-uri chain | chore | M |
-| #268 | fix(accessibility): make io-tag remove control contextual and 44px minimum | fix | S |
+| # | Title | Type | Effort | Status |
+|---|---|---|---|---|
+| #272 | chore(git): untrack `.claude/` CLI tooling artifacts from git history | chore | XS | Open |
+| #273 | chore(api-surface): update io-select snapshot — options prop removed in PR #226 | chore | S | Open |
+| #265 | fix(governance): block io-* custom events from bypassing events guard | fix | S | Open |
+| #266 | security(storefront): remove global innerHTML sink from AutoCodeHighlight | security | S | Open |
+| ~~#267~~ | ~~chore(deps): refresh storefront dependency tree — vulnerable next/fast-uri chain~~ | chore | — | ✅ **Resolved in Wave I** (npm audit fix bumped next→16.2.6, fast-uri→3.1.2) — close this issue |
+| #268 | fix(accessibility): make io-tag remove control contextual and 44px minimum | fix | S | Open |
 
 #### P2 — Next sprint
 
@@ -786,13 +788,12 @@ git add docs/api-surface.json
 
 ---
 
-**PR J-2 — Security** `security/wave-j/issue-266-267`
-Both touch storefront security surface. Can share one CI run.
+**PR J-2 — Security** `security/wave-j/issue-266`
+#267 resolved in Wave I (npm audit fix). #266 is the remaining security item.
 
 | # | Title | Effort |
 |---|---|---|
 | #266 | Remove innerHTML sink from AutoCodeHighlight | S |
-| #267 | Refresh vulnerable dependency chain | M |
 
 ---
 

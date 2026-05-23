@@ -11,8 +11,10 @@ Thank you for contributing. This document covers everything you need to get star
 - [Development workflow](#development-workflow)
 - [Adding a new component](#adding-a-new-component)
 - [Code conventions](#code-conventions)
+- [Token naming conventions](#token-naming-conventions)
 - [Commit messages](#commit-messages)
 - [Pull request checklist](#pull-request-checklist)
+- [Governance scripts reference](#governance-scripts-reference)
 - [Quality gates](#quality-gates)
 
 ---
@@ -270,6 +272,36 @@ Note: axe in jsdom validates ARIA roles, attributes, and DOM structure. CSS-base
 
 ---
 
+## Token naming conventions
+
+All design tokens live in `io-components/src/global/app.css`. The system uses a three-tier hierarchy:
+
+```
+Tier 1 — Brand primitives    --io-color-{name}          #0000D2
+Tier 2 — Semantic aliases    --io-{role}                var(--io-color-primary)
+Tier 3 — Component tokens    --io-{component}-{prop}    var(--io-border)
+```
+
+**Rules:**
+
+1. **Never skip tiers.** Component styles reference Tier 2 or Tier 3 tokens — never Tier 1 hex values directly.
+2. **All new tokens must be declared in `:root` first.** Adding a token only inside `[data-theme="dark"]` violates the governance contract and will fail `npm run governance:check`.
+3. **Naming pattern:** `--io-{category}-{scale}` — allowed category names: `color`, `font`, `space`, `size`, `border`, `shadow`, `motion`, `z`, `focus`, `state`, `icon`, component names (e.g. `button`, `tabs`, `toast`).
+4. **Consumer override API (Tier 3):** expose exactly the properties consumers are permitted to override; internal implementation details stay as internal Tier 2 references.
+5. **Dark mode overrides:** only semantic Tier 2/3 tokens that use light-only primitives need dark overrides. Palette primitives (`--io-color-*`) must never be changed in `[data-theme="dark"]`.
+
+After adding tokens, run:
+
+```bash
+npm run token-naming:check        # validates naming conventions
+npm run token-runtime:check       # validates reconciliation table
+npm run token-doc-coverage:check  # validates token documentation coverage
+```
+
+And add entries to `docs/token-runtime-reconciliation.json` for each new `--io-*` variable used in component style functions.
+
+---
+
 ## Commit messages
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
@@ -365,15 +397,62 @@ If an advisory must be temporarily accepted, document the risk, justification, a
 
 Before opening a PR, verify:
 
+**Quality gates**
 - [ ] `npm run build:quality-gates` passes with no errors
-- [ ] Local `pnpm audit --audit-level=high` is clean or risk acceptance is documented with expiry
-- [ ] New component: all five storefront tab pages exist
-- [ ] New component: `IoTagNames` union and `custom-elements.d.ts` updated
-- [ ] New component: added to `sitemap.ts` in alphabetical order
+- [ ] Local `npm audit --audit-level=high` is clean or risk acceptance is documented with expiry
+- [ ] Changeset created (`npm run changeset:add`) if any published package changed
+
+**Components**
 - [ ] No hardcoded design values — all via `var(--io-*)`
 - [ ] No `@ts-expect-error` suppressions
-- [ ] Commit messages follow the conventional commits format
-- [ ] If a public API member was removed/renamed: `breaking-change` label + `CHANGELOG.md` entry + updated `docs/api-surface.json`
+- [ ] New tokens declared in `:root` before any `[data-theme]` override block
+- [ ] New tokens added to `docs/token-runtime-reconciliation.json`
+- [ ] Tests added/updated: render, events, disabled, a11y, FACE (form fields only)
+- [ ] Keyboard navigation tested manually
+
+**New components only**
+- [ ] All five storefront tab pages exist (Overview, Usage, API, Accessibility, Examples)
+- [ ] `IoTagNames` union updated in `io-storefront/src/utils/generator/generator.tsx`
+- [ ] `custom-elements.d.ts` updated
+- [ ] Component added to `sitemap.ts` in alphabetical order
+
+**Accessibility**
+- [ ] `npm run lint` passes (jsx-a11y rules)
+- [ ] `.a11y.spec.ts` passes axe-core validation
+- [ ] Keyboard focus and reduced-motion scenarios tested
+
+**Breaking changes**
+- [ ] `breaking-change` label added to PR
+- [ ] Migration note in changeset body
+- [ ] `docs/api-surface.json` snapshot updated (`npm run api:snapshot`)
+
+**Commit messages**
+- [ ] All commits follow Conventional Commits format (`feat:`, `fix:`, `chore:`, etc.)
+
+---
+
+## Governance scripts reference
+
+These scripts live in `scripts/` and enforce design-system invariants. Most run automatically via `npm run governance:check` (which is part of `build:quality-gates`), but you can run them individually during development.
+
+| Script | Run automatically | Purpose |
+|--------|:-----------------:|---------|
+| `npm run governance:check` | ✅ CI gate | Runs all sub-checks below in sequence |
+| `npm run token-naming:check` | ✅ (via governance) | Validates `--io-*` CSS variable naming against conventions |
+| `npm run token-runtime:check` | ✅ (via governance) | Verifies every runtime CSS var is documented in `docs/token-runtime-reconciliation.json` |
+| `npm run token-doc-coverage:check` | ✅ (via governance) | Verifies every token leaf in `docs/tokens.json` is covered by an implemented or deprecated artifact |
+| `npm run style-literals:check` | ✅ (via governance) | Fails if hardcoded hex/px/radius values appear in component `-styles.ts` files |
+| `npm run status-governance:check` | ✅ (via governance) | Validates storefront component status model (Stable/Beta/Internal) |
+| `npm run agents:check:copilot-drift` | ✅ (via governance) | Fails if curated agency files drift from their canonical source |
+| `npm run events:guard` | ✅ CI gate | Fails if any custom event name starts with `io` (legacy prefix) |
+| `npm run api:snapshot` | ❌ Manual | Regenerates `docs/api-surface.json` — run when you add/remove public props, methods, or events |
+| `npm run api:check` | ✅ CI gate | Fails if public API changed without an updated snapshot |
+| `npm run sync:stencil-assets` | ❌ Manual | Copies Stencil build output to `io-storefront/public` and regenerates type declarations |
+| `npm run sync:stencil-assets:check` | ✅ CI gate | Fails if sync is out of date |
+| `npm run dark-mode-tokens:check` | ✅ (via governance) | Fails if a semantic token uses a light-only primitive without a `[data-theme="dark"]` override |
+
+**When to run `npm run api:snapshot` manually:**
+Any time you add, remove, or rename a `@Prop()`, `@Method()`, or `@Event()` on a published component. Run it before committing so CI's `api:check` does not fail.
 
 ---
 
@@ -398,7 +477,7 @@ Individual gates:
 | `npm run type-coverage` | `io-components` type coverage must remain >=95% |
 | `npm run type-check` | TypeScript (storefront) |
 | `npm run build:storefront` | Next.js production build |
-| `npm run security:audit` | `pnpm audit --audit-level=high` |
+| `npm run security:audit` | `npm audit --audit-level=high` |
 
 CI runs automatically on every PR to `main` via `.github/workflows/pr.yml`.
 

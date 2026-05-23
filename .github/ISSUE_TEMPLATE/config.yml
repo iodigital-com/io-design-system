@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: io Design System storefront
+    url: https://io-design-system.iodigital.com
+    about: Browse component documentation, usage examples, and API reference.
+  - name: CONTRIBUTING guide
+    url: https://github.com/iodigital-com/io-design-system/blob/main/CONTRIBUTING.md
+    about: Read the contribution guide before opening your first PR.

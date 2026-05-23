@@ -1,0 +1,96 @@
+name: Bug Report
+description: Something is broken in a component, token, or storefront page.
+title: "fix({scope}): {short description}"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Fill in as much detail as you can — it helps us triage and fix faster.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Affected area
+      options:
+        - io-component (web component)
+        - io-storefront (documentation site)
+        - Design tokens (CSS custom properties)
+        - Framework wrapper (React / Vue / Angular)
+        - Governance script
+        - Build / CI pipeline
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Component or file name
+      placeholder: "e.g. io-button, io-select, app.css"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly. What did you see?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: What should have happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Minimal steps to reproduce. Include a code snippet or storefront URL if possible.
+      placeholder: |
+        1. Add `<io-button>` to page
+        2. Focus via keyboard
+        3. Observe focus ring missing
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "@io-digital/components@1.2.0"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browsers affected
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile Chrome
+        - Mobile Safari
+        - All browsers
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Impact / priority
+      options:
+        - P0 — Production blocker (data loss, security, a11y regression)
+        - P1 — High (broken feature, no workaround)
+        - P2 — Medium (broken feature, workaround exists)
+        - P3 — Low (cosmetic or minor)
+    validations:
+      required: true

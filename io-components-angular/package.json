@@ -2,6 +2,15 @@
   "name": "@io-digital/components-angular",
   "version": "3.0.0",
   "description": "Angular wrapper package for io Digital Web Components.",
+  "homepage": "https://io-design-system.iodigital.com",
+  "bugs": {
+    "url": "https://github.com/iodigital-com/io-design-system/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iodigital-com/io-design-system.git",
+    "directory": "io-components-angular"
+  },
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",

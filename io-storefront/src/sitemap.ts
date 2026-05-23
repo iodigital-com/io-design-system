@@ -41,6 +41,7 @@ export const sitemap: NavSection[] = [
       { label: 'Component Status', href: '/developing/component-status' },
       { label: 'Customisation', href: '/developing/customisation' },
       { label: 'Token Usage', href: '/developing/tokens' },
+      { label: 'Stories', href: '/developing/stories' },
     ],
   },
   {

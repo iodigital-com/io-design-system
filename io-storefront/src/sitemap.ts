@@ -72,6 +72,14 @@ export const sitemap: NavSection[] = [
         related: ['io-tabs', 'io-modal', 'io-button'],
       },
       {
+        label: 'Avatar',
+        href: '/components/io-avatar/configurator',
+        status: 'beta',
+        slug: 'io-avatar',
+        description: 'User avatar with image, initials, and icon fallback. Supports five sizes, five colour variants, and circle or square shapes.',
+        related: ['io-badge', 'io-skeleton'],
+      },
+      {
         label: 'Badge',
         href: '/components/io-badge/configurator',
         status: 'beta',

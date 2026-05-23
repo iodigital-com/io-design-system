@@ -85,7 +85,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Avatar background token: green variant (#1a7a4a — no palette primitive available)."
+      "notes": "Avatar background token: green variant (#1a7a4a \u2014 no palette primitive available)."
     },
     {
       "runtimeCssVar": "--io-avatar-bg-grey",
@@ -109,7 +109,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Avatar background token: purple variant (#6b3fa0 — no palette primitive available)."
+      "notes": "Avatar background token: purple variant (#6b3fa0 \u2014 no palette primitive available)."
     },
     {
       "runtimeCssVar": "--io-avatar-text-blue",
@@ -573,7 +573,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
       "runtimeCssVar": "--io-checkbox-icon-size",
@@ -749,7 +749,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode info colour token — added Wave H."
+      "notes": "Dark-mode info colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-dark-playground-dot",
@@ -765,7 +765,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode success colour token — added Wave H."
+      "notes": "Dark-mode success colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-dark-text-muted",
@@ -797,7 +797,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode warning colour token — added Wave H."
+      "notes": "Dark-mode warning colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-error",
@@ -901,7 +901,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Info colour token — added Wave H."
+      "notes": "Info colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-info-soft",
@@ -909,7 +909,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Soft info colour token (rgba, 10% opacity) — added Wave H."
+      "notes": "Soft info colour token (rgba, 10% opacity) \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-lavendel",
@@ -1392,6 +1392,102 @@
       "notes": "Alias mapping governed by docs/token-cssvar-naming-map.json."
     },
     {
+      "runtimeCssVar": "--io-gradient-brand-cool",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Brand cool gradient \u2014 lavender to primary-muted, for calm accent panels."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-brand-primary",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Brand primary gradient \u2014 primary blue to primary-hover, for CTA and hero accent."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-brand-warm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Brand warm gradient \u2014 orange to yellow, for warm accent surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-card-overlay",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for --io-gradient-overlay-bottom. Use for card image scrim."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-cta",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for --io-gradient-brand-primary. Use for call-to-action surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-hero",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic alias for --io-gradient-surface-hero. Use for hero section backgrounds."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-overlay-bottom",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Transparent to dark overlay fading at the bottom \u2014 card and image captions."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-overlay-scrim",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Soft full-height transparent-to-dark scrim for media overlays."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-overlay-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Transparent to dark overlay fading at the top \u2014 reverse caption placement."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-surface-hero",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Deep primary-blue surface gradient for full-bleed hero backgrounds."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-surface-subtle",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Greyscale wash gradient for light-mode page section backgrounds."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-surface-warm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Off-white to beige gradient for warm editorial section fills."
+    },
+    {
       "runtimeCssVar": "--io-header-height",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -1765,7 +1861,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
       "runtimeCssVar": "--io-radio-dot-size",
@@ -2397,7 +2493,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Elevated surface — floating overlays (select dropdown, combobox, tooltip). White in light mode; dark-bg-raised in dark mode."
+      "notes": "Elevated surface \u2014 floating overlays (select dropdown, combobox, tooltip). White in light mode; dark-bg-raised in dark mode."
     },
     {
       "runtimeCssVar": "--io-option-hover-bg",
@@ -2421,7 +2517,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Focus ring inner color for dark surfaces (#ff9eb5 — 9.5:1 vs #181818). Overrides --io-focus-inner in [data-theme=dark]."
+      "notes": "Focus ring inner color for dark surfaces (#ff9eb5 \u2014 9.5:1 vs #181818). Overrides --io-focus-inner in [data-theme=dark]."
     },
     {
       "runtimeCssVar": "--io-progress-track-bg",

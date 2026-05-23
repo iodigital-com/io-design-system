@@ -62,6 +62,7 @@ export const sitemap: NavSection[] = [
       { label: 'Icons', href: '/styles/icons' },
       { label: 'Elevation', href: '/styles/elevation' },
       { label: 'Token Explorer', href: '/styles/tokens' },
+      { label: 'Gradients', href: '/styles/gradients' },
     ],
   },
   {

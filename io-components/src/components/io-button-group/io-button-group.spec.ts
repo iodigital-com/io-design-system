@@ -343,7 +343,7 @@ describe('io-button-group render — group disabled', () => {
 
   it('all buttons get the disabled attribute', () => {
     const buttons = hCallsForTag('button');
-    expect(buttons.every((p) => p?.['disabled'] === true || p?.['disabled'] !== undefined)).toBe(true);
+    expect(buttons.every((p) => p?.['disabled'] === true)).toBe(true);
   });
 
   it('no button gets tabIndex=0 when all are disabled (none in tab order)', () => {

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
@@ -19,9 +19,11 @@ import type { IoRadioChangeDetail } from './types';
 @Component({
   tag: 'io-radio',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoRadio {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -66,6 +68,18 @@ export class IoRadio {
     input?.focus(options);
   }
 
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity?.() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity?.() ?? true;
+  }
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -76,6 +90,45 @@ export class IoRadio {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveRadioId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('checked')
+  onCheckedChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
+    this.internals?.setFormValue?.(this.checked ? this.value : null);
+    if (this.required && !this.checked) {
+      // For a radio group, required is satisfied when *any* radio sharing the same
+      // name is checked — not just this one. Without this check, form.checkValidity()
+      // fails even when another radio in the group is selected.
+      const groupSatisfied = this.name
+        ? Array.from(document.querySelectorAll('io-radio')).some((r) => {
+            const sibling = r as HTMLElement & { name?: string; checked?: boolean };
+            return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
+          })
+        : false;
+      if (!groupSatisfied) {
+        this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+      } else {
+        this.internals?.setValidity?.({});
+      }
+    } else {
+      this.internals?.setValidity?.({});
+    }
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -85,6 +138,22 @@ export class IoRadio {
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });
+
+    // Mutual exclusion: when this radio becomes checked, deselect all other
+    // io-radio elements in the document that share the same name. Native
+    // <input type="radio"> handles this automatically within a single tree,
+    // but Shadow DOM boundaries prevent cross-component grouping.
+    if (input.checked && this.name) {
+      const name = this.name;
+      document.querySelectorAll('io-radio').forEach((sibling) => {
+        if (sibling !== this.el) {
+          const s = sibling as HTMLElement & { name?: string; checked: boolean };
+          if (s.name === name && s.checked) {
+            s.checked = false;
+          }
+        }
+      });
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────

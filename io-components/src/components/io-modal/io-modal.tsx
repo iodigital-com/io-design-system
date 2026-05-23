@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
@@ -59,6 +59,39 @@ export class IoModal {
 
   /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
+
+  // ── Methods ───────────────────────────────────────────────────
+
+  /**
+   * Programmatically show (open) the modal. No-op if already open.
+   *
+   * Named `show()` to mirror the native <dialog> API and avoid a
+   * TypeScript duplicate-identifier conflict with the `open` boolean prop.
+   * Equivalent to setting `open = true`.
+   *
+   * @example
+   *   const modal = document.querySelector('io-modal');
+   *   modal.show();
+   */
+  @Method()
+  async show(): Promise<void> {
+    if (this.open) return;
+    this.open = true;
+  }
+
+  /**
+   * Programmatically close the modal. No-op if already closed.
+   * Equivalent to setting `open = false`. Emits the `dismiss` event.
+   *
+   * @example
+   *   const modal = document.querySelector('io-modal');
+   *   modal.close();
+   */
+  @Method()
+  async close(): Promise<void> {
+    if (!this.open) return;
+    this.open = false;
+  }
 
   // ── Lifecycle ─────────────────────────────────────────────────
 

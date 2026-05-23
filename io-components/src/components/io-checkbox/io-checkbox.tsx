@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
@@ -19,9 +19,11 @@ import type { IoCheckboxChangeDetail } from './types';
 @Component({
   tag: 'io-checkbox',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoCheckbox {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -69,6 +71,18 @@ export class IoCheckbox {
     input?.focus(options);
   }
 
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity?.() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity?.() ?? true;
+  }
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -79,6 +93,32 @@ export class IoCheckbox {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveCheckboxId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('checked')
+  onCheckedChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
+    this.internals?.setFormValue?.(this.checked ? this.value : null);
+    if (this.required && !this.checked) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
+    } else {
+      this.internals?.setValidity?.({});
+    }
   }
 
   componentDidRender() {

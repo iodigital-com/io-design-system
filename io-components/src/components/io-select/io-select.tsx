@@ -1,4 +1,4 @@
-import { Component, Prop, State, Watch, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, State, Watch, Event, EventEmitter, Method, Element, Host, AttachInternals, h } from '@stencil/core';
 import { computePosition } from '@floating-ui/dom';
 
 import { getSelectStyles } from './io-select-styles';
@@ -38,9 +38,11 @@ import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types'
 @Component({
   tag: 'io-select',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoSelect {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -111,6 +113,18 @@ export class IoSelect {
 
   // ── Methods ───────────────────────────────────────────────────
 
+  /** Check validity without showing browser validation UI. Returns true if valid. */
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity?.() ?? true;
+  }
+
+  /** Check validity and show browser validation UI if invalid. Returns true if valid. */
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    return this.internals?.reportValidity?.() ?? true;
+  }
+
   /** Programmatically move focus to the select */
   @Method()
   async setFocus(options?: FocusOptions): Promise<void> {
@@ -137,6 +151,48 @@ export class IoSelect {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSelectId(this.name, this.fallbackId);
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    if (!this.multiple) this.syncFormValue();
+  }
+
+  @Watch('selectedValues')
+  onSelectedValuesChange() {
+    if (this.multiple) this.syncFormValue();
+  }
+
+  @Watch('name')
+  onNameChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
+    if (this.multiple) {
+      // Use FormData to submit multiple values under the same name.
+      // Only submit when name is set — unnamed controls are not successful (matches native behaviour).
+      if (!this.name || this.selectedValues.length === 0) {
+        this.internals?.setFormValue?.(null);
+      } else {
+        const fd = new FormData();
+        this.selectedValues.forEach(v => fd.append(this.name!, v));
+        this.internals?.setFormValue?.(fd);
+      }
+    } else {
+      this.internals?.setFormValue?.(this.value ?? '');
+    }
+    if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+    } else {
+      this.internals?.setValidity?.({});
+    }
   }
 
   componentDidLoad() {

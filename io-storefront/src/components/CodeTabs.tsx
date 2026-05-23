@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { CopyButton } from '@/components/CopyButton';
+import { useStorefrontTheme } from '@/hooks/useStorefrontTheme';
 
 export type CodeTab = { label: string; code: string; language?: string };
 
@@ -24,13 +27,17 @@ const languageByTabLabel: Record<string, string> = {
   sh: 'bash',
 };
 
-const getLanguageFromLabel = (label: string): string | undefined => {
-  return languageByTabLabel[label.trim().toLowerCase()];
+const getLanguageFromLabel = (label: string): string => {
+  return languageByTabLabel[label.trim().toLowerCase()] ?? 'typescript';
 };
 
 export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
   const [active, setActive] = useState(0);
-  const activeLanguage = tabs[active]?.language ?? getLanguageFromLabel(tabs[active]?.label ?? '');
+  const { resolvedTheme } = useStorefrontTheme();
+
+  const activeTab = tabs[active];
+  const activeLanguage = activeTab?.language ?? getLanguageFromLabel(activeTab?.label ?? '');
+  const syntaxStyle = resolvedTheme === 'dark' ? atomOneDark : atomOneLight;
 
   return (
     <div>
@@ -52,24 +59,32 @@ export function CodeTabs({ tabs }: { tabs: CodeTab[] }) {
       </div>
 
       {/* Code panel */}
-      <div className="relative group">
+      <div className="relative group" data-no-auto-highlight="true">
         <CopyButton
-          text={tabs[active].code}
-          ariaLabel={`Copy ${tabs[active].label} code`}
+          text={activeTab.code}
+          ariaLabel={`Copy ${activeTab.label} code`}
           className="absolute right-3 top-3 z-10"
         />
-        <pre
-          className="p-5 pr-16 rounded-b-lg rounded-tr-lg text-sm font-mono overflow-x-auto leading-relaxed"
-          data-language={activeLanguage}
-          style={{
+        <SyntaxHighlighter
+          language={activeLanguage}
+          style={syntaxStyle}
+          customStyle={{
+            margin: 0,
+            padding: '1.25rem 1.25rem',
+            paddingRight: '4rem',
             background: 'var(--io-bg-raised)',
+            fontSize: '0.8125rem',
+            lineHeight: '1.65',
+            borderRadius: '0 0 0.5rem 0.5rem',
             border: '1px solid var(--io-border)',
             borderTop: 'none',
-            color: 'var(--io-text-primary)',
+            overflow: 'auto',
           }}
+          showLineNumbers={false}
+          wrapLongLines={false}
         >
-          <code>{tabs[active].code}</code>
-        </pre>
+          {activeTab.code}
+        </SyntaxHighlighter>
       </div>
     </div>
   );

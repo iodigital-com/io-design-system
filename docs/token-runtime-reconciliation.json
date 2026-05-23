@@ -160,6 +160,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-border-interactive",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "WCAG 1.4.11 compliant border token for interactive UI components (#230). #767676 achieves 4.57:1 vs white and 3.88:1 vs dark-bg."
+    },
+    {
       "runtimeCssVar": "--io-border-radius-lg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

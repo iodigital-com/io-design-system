@@ -26,7 +26,10 @@ export default function IoTextareaExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Resize variants" />
-        <ComponentStory story={textareaStoryResize} />
+        <ComponentStory
+          story={textareaStoryResize}
+          previewStyle={{ flexDirection: 'column', alignItems: 'center', gap: 'var(--io-space-2, 8px)' }}
+        />
       </section>
 
       <section>

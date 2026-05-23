@@ -5,7 +5,8 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public",
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "provenance": true
   },
   "files": [
     "dist/",
@@ -65,11 +66,13 @@
     "@stencil/react-output-target": "^0.5.3",
     "@stencil/vue-output-target": "^0.8.8",
     "@vitest/coverage-v8": "^4.1.0",
+    "axe-core": "^4.11.4",
     "concurrently": "^9.2.1",
     "jsdom": "^29.0.0",
     "type-coverage": "^2.29.7",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vitest-axe": "^0.1.0"
   },
   "engines": {
     "node": ">=20.0.0"

@@ -16,6 +16,42 @@ export function getInputStyles(): string {
       pointer-events: none;
     }
 
+    /* Readonly: full opacity, still tabbable, cursor indicates non-editable */
+    .input-wrapper--readonly .input-field {
+      cursor: default;
+      border-bottom-style: dashed;
+    }
+
+    /* Flex row wrapping prefix slot, input, suffix slot, and error icon */
+    .input-field-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--io-space-2);
+    }
+
+    /* Prefix / suffix slot containers — zero-width when empty, expand when slotted */
+    .input-slot {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      color: var(--io-text-secondary);
+    }
+
+    /* Hide slot containers when no nodes are assigned — driven by @State hasPrefix/hasSuffix */
+    .input-slot--hidden {
+      display: none;
+    }
+
+    /* Token-driven padding added to input when a slot is populated */
+    .input-field--has-prefix {
+      padding-left: var(--io-space-2);
+    }
+
+    .input-field--has-suffix {
+      padding-right: var(--io-space-2);
+    }
+
     /* Label: absolutely positioned over the padding-top area; floats up on value */
     .input-label {
       position: absolute;
@@ -28,8 +64,12 @@ export function getInputStyles(): string {
       transition: top var(--io-motion-base), font-size var(--io-motion-base);
     }
 
-    /* Float label when input has a value - CSS sibling (input must precede label in DOM) */
-    .input-field:not(:placeholder-shown) ~ .input-label {
+    /* Float label when input has a value.
+       Using :has() because the input is now nested inside .input-field-row
+       and can't use the sibling combinator (~) to reach .input-label.
+       :has() baseline 2023 — supported in all modern browsers. */
+    .input-wrapper:has(.input-field:not(:placeholder-shown)) .input-label,
+    .input-wrapper:has(.input-field:focus) .input-label {
       top: 0;
       font-size: var(--io-label-font-size-float);
     }

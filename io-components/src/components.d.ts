@@ -282,6 +282,10 @@ export namespace Components {
      */
     interface IoCheckbox {
         /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
           * Checked state
           * @default false
          */
@@ -317,6 +321,10 @@ export namespace Components {
           * Input name
          */
         "name": string | undefined;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
         /**
           * Marks the field as required
           * @default false
@@ -369,6 +377,10 @@ export namespace Components {
          */
         "autocomplete": string | undefined;
         /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
           * Disables the input
           * @default false
          */
@@ -410,6 +422,15 @@ export namespace Components {
           * Placeholder — shown when no value and label is resting
          */
         "placeholder": string | undefined;
+        /**
+          * Makes the field read-only — value is not editable but the field stays in tab order
+          * @default false
+         */
+        "readonly": boolean;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
         /**
           * Marks the input as required
           * @default false
@@ -510,6 +531,11 @@ export namespace Components {
      */
     interface IoModal {
         /**
+          * Programmatically close the modal. No-op if already closed. Equivalent to setting `open = false`. Emits the `dismiss` event.
+          * @example   const modal = document.querySelector('io-modal');   modal.close();
+         */
+        "close": () => Promise<void>;
+        /**
           * Close the modal when the backdrop is clicked
           * @default true
          */
@@ -527,6 +553,11 @@ export namespace Components {
           * @default false
          */
         "open": boolean;
+        /**
+          * Programmatically show (open) the modal. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop. Equivalent to setting `open = true`.
+          * @example   const modal = document.querySelector('io-modal');   modal.show();
+         */
+        "show": () => Promise<void>;
         /**
           * Width preset for the dialog
           * @default 'md'
@@ -637,6 +668,10 @@ export namespace Components {
      */
     interface IoRadio {
         /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
           * Checked state
           * @default false
          */
@@ -667,6 +702,10 @@ export namespace Components {
           * Input name — share across radio group
          */
         "name": string | undefined;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
         /**
           * Marks the field as required
           * @default false
@@ -700,6 +739,10 @@ export namespace Components {
      * </io-select>
      */
     interface IoSelect {
+        /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
         /**
           * Switches to ARIA combobox/listbox implementation
           * @default false
@@ -745,6 +788,10 @@ export namespace Components {
           * Placeholder option shown when no value is selected
          */
         "placeholder": string | undefined;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
         /**
           * Marks the field as required
           * @default false
@@ -869,6 +916,10 @@ export namespace Components {
          */
         "autocomplete": string | undefined;
         /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
           * Disables the textarea
           * @default false
          */
@@ -902,6 +953,10 @@ export namespace Components {
           * Placeholder text shown when empty
          */
         "placeholder": string | undefined;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
         /**
           * Marks the field as required
           * @default false
@@ -1909,6 +1964,10 @@ declare namespace LocalJSX {
          */
         "errorMessage"?: string | undefined;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText"?: string | undefined;
@@ -1991,6 +2050,10 @@ declare namespace LocalJSX {
          */
         "errorMessage"?: string | undefined;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText"?: string | undefined;
@@ -2022,6 +2085,11 @@ declare namespace LocalJSX {
           * Placeholder — shown when no value and label is resting
          */
         "placeholder"?: string | undefined;
+        /**
+          * Makes the field read-only — value is not editable but the field stays in tab order
+          * @default false
+         */
+        "readonly"?: boolean;
         /**
           * Marks the input as required
           * @default false
@@ -2279,6 +2347,10 @@ declare namespace LocalJSX {
          */
         "errorMessage"?: string | undefined;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText"?: string | undefined;
@@ -2347,6 +2419,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "filter"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
         /**
           * Helper text shown below (replaced by error when error=true)
          */
@@ -2525,6 +2601,10 @@ declare namespace LocalJSX {
           * Error message shown below
          */
         "errorMessage"?: string | undefined;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
         /**
           * Helper text shown below (replaced by error when error=true)
          */
@@ -2718,6 +2798,7 @@ declare namespace LocalJSX {
         "value": string;
         "placeholder": string | undefined;
         "required": boolean;
+        "readonly": boolean;
         "disabled": boolean;
         "error": boolean;
         "errorMessage": string | undefined;

@@ -56,7 +56,7 @@ export function getCheckboxStyles(): string {
       position: absolute;
       inset: 0;
       border-radius: var(--io-checkbox-radius);
-      border: var(--io-checkbox-border-width) solid var(--io-border-hover);
+      border: var(--io-checkbox-border-width) solid var(--io-border-interactive);
       background: transparent;
       display: flex;
       align-items: center;

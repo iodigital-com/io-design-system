@@ -4,7 +4,15 @@ exports[`io-input — render snapshots > renders default state 1`] = `
 <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value placeholder="name@example.com">
+      <div class="input-field-row">
+        <span class="input-slot input-slot--prefix input-slot--hidden">
+          <slot name="prefix"></slot>
+        </span>
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value placeholder="name@example.com">
+        <span class="input-slot input-slot--suffix input-slot--hidden">
+          <slot name="suffix"></slot>
+        </span>
+      </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Email
       </label>
@@ -17,7 +25,15 @@ exports[`io-input — render snapshots > renders disabled state 1`] = `
 <io-input size="md" disabled class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper input-wrapper--disabled">
-      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value="Read only" placeholder=" " disabled>
+      <div class="input-field-row">
+        <span class="input-slot input-slot--prefix input-slot--hidden">
+          <slot name="prefix"></slot>
+        </span>
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value="Read only" placeholder=" " disabled>
+        <span class="input-slot input-slot--suffix input-slot--hidden">
+          <slot name="suffix"></slot>
+        </span>
+      </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Disabled
       </label>
@@ -50,7 +66,15 @@ MockHTMLElement {
     <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="email" value placeholder=" ">
+      <div class="input-field-row">
+        <span class="input-slot input-slot--prefix input-slot--hidden">
+          <slot name="prefix"></slot>
+        </span>
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="email" value placeholder=" ">
+        <span class="input-slot input-slot--suffix input-slot--hidden">
+          <slot name="suffix"></slot>
+        </span>
+      </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Email
       </label>
@@ -60,7 +84,15 @@ MockHTMLElement {
     <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="search" value placeholder=" ">
+      <div class="input-field-row">
+        <span class="input-slot input-slot--prefix input-slot--hidden">
+          <slot name="prefix"></slot>
+        </span>
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="search" value placeholder=" ">
+        <span class="input-slot input-slot--suffix input-slot--hidden">
+          <slot name="suffix"></slot>
+        </span>
+      </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Search
       </label>
@@ -70,7 +102,15 @@ MockHTMLElement {
     <io-input size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
-      <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="tel" value placeholder=" ">
+      <div class="input-field-row">
+        <span class="input-slot input-slot--prefix input-slot--hidden">
+          <slot name="prefix"></slot>
+        </span>
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="tel" value placeholder=" ">
+        <span class="input-slot input-slot--suffix input-slot--hidden">
+          <slot name="suffix"></slot>
+        </span>
+      </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
         Telephone
       </label>

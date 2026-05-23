@@ -61,6 +61,56 @@ describe('io-modal — open/close', () => {
     expect((component as any).focusTrapHandler).toBeUndefined();
   });
 
+  // ── @Method show() / close() ──────────────────────────────────
+
+  // @Watch is not auto-invoked in unit tests (Stencil decorator mock).
+  // We verify that each method sets the prop correctly, then call
+  // openChanged manually to confirm the side-effect chain still fires.
+
+  it('show() sets open prop to true', async () => {
+    component.open = false;
+    await component.show();
+    expect(component.open).toBe(true);
+  });
+
+  it('show() triggers showModal when openChanged is propagated', async () => {
+    component.open = false;
+    await component.show();
+    // Simulate @Watch propagation
+    (component as any).openChanged(component.open);
+    expect(dialogEl.showModal).toHaveBeenCalled();
+  });
+
+  it('show() is a no-op when already open (prop stays true, openChanged not triggered)', async () => {
+    component.open = true;
+    dialogEl.open = true;
+    await component.show();
+    // prop unchanged — the guard prevents the assignment
+    expect(component.open).toBe(true);
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('close() sets open prop to false', async () => {
+    component.open = true;
+    await component.close();
+    expect(component.open).toBe(false);
+  });
+
+  it('close() triggers dismiss when openChanged is propagated', async () => {
+    component.open = true;
+    dialogEl.open = true;
+    await component.close();
+    // Simulate @Watch propagation
+    (component as any).openChanged(component.open);
+    expect(ioDismissEmit).toHaveBeenCalled();
+  });
+
+  it('close() is a no-op when already closed', async () => {
+    component.open = false;
+    await component.close();
+    expect(ioDismissEmit).not.toHaveBeenCalled();
+  });
+
   it('componentDidLoad applies modal setup when initially open', () => {
     const inertSpy = vi.spyOn(component as any, 'applyBackgroundInert');
     const focusTrapSpy = vi.spyOn(component as any, 'setupFocusTrap');

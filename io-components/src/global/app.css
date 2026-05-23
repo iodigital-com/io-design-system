@@ -111,6 +111,9 @@
   /* Borders */
   --io-border:                   var(--io-color-grey-2);
   --io-border-hover:             var(--io-color-grey-3);
+  /* WCAG 1.4.11: UI component boundaries require ≥3:1 contrast.
+     #767676 = 4.57:1 vs white, 3.88:1 vs dark-bg (#181818) — passes both themes. */
+  --io-border-interactive:       #767676;
   --io-border-focus:             var(--io-color-primary);
   --io-border-error:             var(--io-color-error);
   --io-border-radius-xs:         4px;

@@ -249,6 +249,25 @@ padding: 'var(--io-space-4)';
 - `vi.mock()` must be at the top level of the spec file (not inside `beforeEach`).
 - Every component requires at minimum: render test, event emission test, disabled-state test.
 
+#### Accessibility tests (axe-core)
+
+Interactive components must include an `io-{name}.a11y.spec.ts` that runs axe against the rendered element. Use the shared helper — the `toHaveNoViolations` matcher is registered globally via `tests/unit/config/vitest.setup.ts`:
+
+```ts
+import { describe, it } from 'vitest';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+
+describe('io-foo — a11y', () => {
+  it('has no violations', async () => {
+    const el = document.createElement('button');
+    el.textContent = 'Label';
+    await renderAndCheckA11y(el);
+  });
+});
+```
+
+Note: axe in jsdom validates ARIA roles, attributes, and DOM structure. CSS-based contrast checks require Lighthouse (run via `npm run lighthouse:ci`).
+
 ---
 
 ## Commit messages
@@ -382,3 +401,45 @@ Individual gates:
 | `npm run security:audit` | `pnpm audit --audit-level=high` |
 
 CI runs automatically on every PR to `main` via `.github/workflows/pr.yml`.
+
+---
+
+## Release process (Changesets)
+
+This repo uses [Changesets](https://github.com/changesets/changesets) for automated multi-package versioning and changelog generation.
+
+### Adding a changeset to your PR
+
+Every PR that changes user-facing behaviour in a published package (`@io-digital/components`, `-react`, `-vue`, `-angular`) must include a changeset entry:
+
+```bash
+npm run changeset:add
+```
+
+The CLI will ask:
+1. Which packages are affected
+2. Whether it is a `major` / `minor` / `patch` bump
+3. A one-line summary of the change
+
+Commit the generated `.changeset/*.md` file alongside your code changes.
+
+**When to include a changeset:**
+
+| Change type | Bump |
+|---|---|
+| Breaking API change | `major` |
+| New prop, slot, method, or event | `minor` |
+| Bug fix, accessibility fix, token tweak | `patch` |
+| Docs-only, CI, test, storefront | none (skip) |
+
+### Release flow
+
+On merge to `main`, the `release.yml` workflow opens a _Release PR_ that aggregates all pending changesets into version bumps and CHANGELOG entries. When that PR is merged, the workflow publishes to npm with provenance attestation.
+
+```bash
+# Check pending changeset status locally
+npm run changeset:status
+
+# Preview version bumps (does not publish)
+npm run changeset:version
+```

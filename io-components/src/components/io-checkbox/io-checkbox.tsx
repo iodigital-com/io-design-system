@@ -158,8 +158,16 @@ export class IoCheckbox {
     const { label, name, value, checked, indeterminate, required, disabled, error, errorMessage, helperText } = this;
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
+    const helperId = `${inputId}-helper`;
     const faceErrorId = `${inputId}-face-error`;
     const showFaceError = this.faceInvalid && !error;
+    const describedBy = [
+      !error && !showFaceError && helperText ? helperId : null,
+      error && errorMessage ? errorId : null,
+      showFaceError ? faceErrorId : null,
+    ]
+      .filter((id): id is string => Boolean(id))
+      .join(' ');
 
     return (
       <Host>
@@ -177,7 +185,7 @@ export class IoCheckbox {
                 disabled={disabled}
                 required={required}
                 aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
-                aria-describedby={error && errorMessage ? errorId : (showFaceError ? faceErrorId : undefined)}
+                aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />
               <span
@@ -216,7 +224,11 @@ export class IoCheckbox {
             Please check this box
           </p>
         )}
-        {!error && !this.faceInvalid && helperText && <p class="checkbox-helper">{helperText}</p>}
+        {!error && !this.faceInvalid && helperText && (
+          <p id={helperId} class="checkbox-helper">
+            {helperText}
+          </p>
+        )}
       </Host>
     );
   }

@@ -128,6 +128,7 @@ export function AutoCodeHighlight() {
     observer.observe(observerRoot, {
       childList: true,
       subtree: true,
+      attributes: true,
       attributeFilter: ['data-language', 'class'],
     });
 

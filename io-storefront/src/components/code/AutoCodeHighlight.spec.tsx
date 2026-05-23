@@ -10,7 +10,7 @@
  */
 
 import { act, cleanup, render } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { AutoCodeHighlight } from './AutoCodeHighlight';
 
@@ -55,7 +55,9 @@ afterEach(() => {
 });
 
 describe('AutoCodeHighlight — innerHTML sink', () => {
-  it('populates code element with real DOM nodes, not raw HTML text', async () => {
+  it('populates code element via createContextualFragment, not innerHTML', async () => {
+    const createRangeSpy = vi.spyOn(document, 'createRange');
+
     const main = addMainContent();
     const pre = document.createElement('pre');
     pre.textContent = 'const x = 1;';
@@ -64,14 +66,12 @@ describe('AutoCodeHighlight — innerHTML sink', () => {
     render(<AutoCodeHighlight />);
     await flushHighlight();
 
+    // Verify the safe path was taken — if innerHTML were used instead, createRange would not be called.
+    expect(createRangeSpy).toHaveBeenCalled();
     const codeEl = pre.querySelector('code');
     expect(codeEl).not.toBeNull();
-    const firstChild = codeEl!.firstChild;
-    expect(firstChild).not.toBeNull();
-    // If innerHTML were used, firstChild would be a text node containing '<span...>'.
-    // With createContextualFragment it is a real ELEMENT_NODE (<span>).
-    expect(firstChild!.nodeType).toBe(Node.ELEMENT_NODE);
-    expect((firstChild as Element).tagName.toLowerCase()).toBe('span');
+    expect(codeEl!.firstChild).not.toBeNull();
+    expect((codeEl!.firstChild as Element).tagName.toLowerCase()).toBe('span');
     expect(pre.dataset.ioHighlighted).toBe('true');
   });
 

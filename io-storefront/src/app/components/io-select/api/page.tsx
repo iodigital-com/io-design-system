@@ -218,6 +218,53 @@ document.querySelector('io-select')
         />
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-select-padding-right</InlineCode>,
+              <InlineCode key="d">1.6rem</InlineCode>,
+              'Right padding on the native select field that reserves space for the chevron icon.',
+            ],
+            [
+              <InlineCode key="n">--io-select-chevron-offset-y</InlineCode>,
+              <InlineCode key="d">2px</InlineCode>,
+              'Fine-tunes the vertical position of the chevron icon relative to the field bottom.',
+            ],
+            [
+              <InlineCode key="n">--io-combobox-max-height</InlineCode>,
+              <InlineCode key="d">280px</InlineCode>,
+              'Maximum height of the custom combobox dropdown list before it scrolls.',
+            ],
+            [
+              <InlineCode key="n">--io-combobox-option-height</InlineCode>,
+              <InlineCode key="d">44px</InlineCode>,
+              'Minimum height of each option row in the combobox dropdown. Matches the 44px touch target minimum.',
+            ],
+            [
+              <InlineCode key="n">--io-combobox-filter-height</InlineCode>,
+              <InlineCode key="d">var(--io-size-input-sm)</InlineCode>,
+              'Height of the filter input inside the combobox dropdown when filtering is enabled.',
+            ],
+            [
+              <InlineCode key="n">--io-combobox-z</InlineCode>,
+              <InlineCode key="d">var(--io-z-dropdown)</InlineCode>,
+              'z-index of the combobox dropdown overlay.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

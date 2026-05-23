@@ -199,6 +199,43 @@ const activeTabIndex = ref(0);
         </EmptyNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-tabs-track-color</InlineCode>,
+              <InlineCode key="d">var(--io-border)</InlineCode>,
+              'Colour of the full-width baseline track line under the tab list.',
+            ],
+            [
+              <InlineCode key="n">--io-tabs-indicator-color</InlineCode>,
+              <InlineCode key="d">var(--io-color-primary)</InlineCode>,
+              'Colour of the active-tab indicator border drawn below the selected tab.',
+            ],
+            [
+              <InlineCode key="n">--io-tabs-icon-size</InlineCode>,
+              <InlineCode key="d">var(--io-icon-size-sm)</InlineCode>,
+              'Size of icon elements placed inside tab buttons.',
+            ],
+            [
+              <InlineCode key="n">--io-tabs-icon-gap</InlineCode>,
+              <InlineCode key="d">var(--io-space-1)</InlineCode>,
+              'Gap between an icon and the tab label text.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

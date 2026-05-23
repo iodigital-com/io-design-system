@@ -142,6 +142,43 @@ modal.addEventListener('dismiss', () => console.log('dismissed'));
         </CodeNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-modal-width-sm</InlineCode>,
+              <InlineCode key="d">400px</InlineCode>,
+              'Dialog width for the sm size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-modal-width-md</InlineCode>,
+              <InlineCode key="d">560px</InlineCode>,
+              'Dialog width for the md size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-modal-width-lg</InlineCode>,
+              <InlineCode key="d">768px</InlineCode>,
+              'Dialog width for the lg size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-modal-max-height</InlineCode>,
+              <InlineCode key="d">90vh</InlineCode>,
+              'Maximum height of the dialog before the body becomes scrollable.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

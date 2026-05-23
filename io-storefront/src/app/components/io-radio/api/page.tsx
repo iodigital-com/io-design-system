@@ -165,6 +165,43 @@ document.querySelectorAll('io-radio[name="delivery"]')
         </EmptyNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-radio-size</InlineCode>,
+              <InlineCode key="d">1rem</InlineCode>,
+              'Width and height of the radio control circle.',
+            ],
+            [
+              <InlineCode key="n">--io-radio-border-width</InlineCode>,
+              <InlineCode key="d">1.5px</InlineCode>,
+              'Border width of the radio control in its resting state.',
+            ],
+            [
+              <InlineCode key="n">--io-radio-border-error-width</InlineCode>,
+              <InlineCode key="d">2px</InlineCode>,
+              'Border width when the radio is in an error state. Thicker to satisfy WCAG 1.4.1.',
+            ],
+            [
+              <InlineCode key="n">--io-radio-dot-size</InlineCode>,
+              <InlineCode key="d">8px</InlineCode>,
+              'Diameter of the filled inner dot shown when the radio is checked.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

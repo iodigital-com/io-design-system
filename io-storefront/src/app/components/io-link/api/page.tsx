@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { SectionHeader, InlineCode, ApiTable, ReflectBadge, CodeNote } from '@/components/api/ApiPrimitives';
 
 
@@ -153,6 +154,17 @@ document.querySelector('io-link')
             ],
           ]}
         />
+      </section>
+
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
+          This component has no component-level override tokens. All visual properties are governed by global design tokens documented in the <Link href="/styles/tokens" className="underline">Token Explorer</Link>.
+        </p>
       </section>
 
     </div>

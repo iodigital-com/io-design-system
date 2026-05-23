@@ -36,6 +36,9 @@ declare module 'react' {
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
   'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;
   'io-stepper': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepperElement>, HTMLIoStepperElement> & Partial<StencilJSX.IoStepper>;
+  'io-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableElement>, HTMLIoTableElement> & Partial<StencilJSX.IoTable>;
+  'io-table-column': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableColumnElement>, HTMLIoTableColumnElement> & Partial<StencilJSX.IoTableColumn>;
+  'io-table-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableRowElement>, HTMLIoTableRowElement> & Partial<StencilJSX.IoTableRow>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;

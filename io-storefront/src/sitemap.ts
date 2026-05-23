@@ -264,6 +264,14 @@ export const sitemap: NavSection[] = [
         related: ['io-progress', 'io-button', 'io-modal'],
       },
       {
+        label: 'Table',
+        href: '/components/io-table/configurator',
+        status: 'beta',
+        slug: 'io-table',
+        description: 'Accessible data table with optional sortable columns and row selection. Supports sticky headers, selectable rows, and a JavaScript data API.',
+        related: ['io-checkbox', 'io-pagination', 'io-spinner'],
+      },
+      {
         label: 'Tabs',
         href: '/components/io-tabs/configurator',
         status: 'stable',

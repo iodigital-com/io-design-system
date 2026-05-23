@@ -1848,6 +1848,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-skeleton-border-radius-text",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius for text variant skeleton. References --io-border-radius-xs."
+    },
+    {
+      "runtimeCssVar": "--io-skeleton-border-radius-rounded",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius for rounded variant skeleton. References --io-border-radius-md."
+    },
+    {
       "runtimeCssVar": "--io-space-1",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

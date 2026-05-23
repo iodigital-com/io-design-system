@@ -168,6 +168,14 @@ export const sitemap: NavSection[] = [
         related: ['io-input', 'io-radio', 'io-checkbox'],
       },
       {
+        label: 'Skeleton',
+        href: '/components/io-skeleton/configurator',
+        status: 'beta',
+        slug: 'io-skeleton',
+        description: 'Animated loading placeholder. Use while async content loads to communicate activity without a spinner. Supports text, circular, rectangular, and rounded shape variants.',
+        related: ['io-spinner', 'io-toast'],
+      },
+      {
         label: 'Spinner',
         href: '/components/io-spinner/configurator',
         status: 'stable',

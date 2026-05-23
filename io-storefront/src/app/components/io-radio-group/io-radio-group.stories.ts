@@ -9,7 +9,8 @@ export const radioGroupStory: Story<'io-radio-group'> = {
       value: 'email',
       required: false,
       disabled: false,
-      invalid: false,
+      error: false,
+      errorMessage: '',
       helperText: '',
     },
   },
@@ -75,6 +76,26 @@ export const radioGroupStoryWithHelper: Story<'io-radio-group'> = {
   ],
 };
 
+export const radioGroupStoryError: Story<'io-radio-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-radio-group' as const,
+      properties: {
+        label: 'Preferred contact',
+        name: 'contact-error',
+        error: true,
+        errorMessage: 'Please select a contact method.',
+      },
+      children: [
+        { tag: 'io-radio' as const, properties: { label: 'Email', value: 'email' } },
+        { tag: 'io-radio' as const, properties: { label: 'Phone', value: 'phone' } },
+        { tag: 'io-radio' as const, properties: { label: 'Post', value: 'post' } },
+      ],
+    },
+  ],
+};
+
 export const radioGroupStoryDisabled: Story<'io-radio-group'> = {
   state: { properties: {} },
   generator: () => [
@@ -127,9 +148,15 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     description: 'Disables the entire group and all child radios.',
   },
   {
-    name: 'invalid',
+    name: 'error',
     type: 'boolean',
     defaultValue: false,
-    description: 'Marks the group as invalid.',
+    description: 'Puts the group in error state.',
+  },
+  {
+    name: 'errorMessage',
+    type: 'string',
+    defaultValue: '',
+    description: 'Error message shown below the group when error is true.',
   },
 ];

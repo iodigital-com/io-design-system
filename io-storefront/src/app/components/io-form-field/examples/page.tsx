@@ -24,7 +24,7 @@ export default function IoFormFieldExamplesPage() {
       </section>
 
       <section>
-        <ExamplesSectionHeader title="Invalid state" description="Set invalid and errorText to show validation feedback." />
+        <ExamplesSectionHeader title="Error state" description="Set error and errorMessage to show validation feedback." />
         <ComponentStory story={formFieldStoryInvalid} />
       </section>
 

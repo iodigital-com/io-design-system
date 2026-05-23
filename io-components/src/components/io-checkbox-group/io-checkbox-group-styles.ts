@@ -57,5 +57,15 @@ export function getCheckboxGroupStyles(): string {
       flex-direction: column;
       gap: var(--io-space-1, 4px);
     }
+
+    /* ── Error message ──────────────────────────────────────── */
+
+    .checkbox-group__error {
+      display: block;
+      font-size: var(--io-font-size-xs, 12px);
+      color: var(--io-color-error);
+      line-height: var(--io-line-height-normal);
+      margin-top: var(--io-space-1, 4px);
+    }
   `;
 }

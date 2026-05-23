@@ -78,8 +78,8 @@ export default function IoCheckboxGroupUsagePage() {
           <RuleCard label="Disabled — entire group unavailable">
             Set <C>disabled</C> to grey out the fieldset and block all user interaction. Use sparingly — prefer showing unavailable groups as read-only where possible.
           </RuleCard>
-          <RuleCard label="Invalid — group validation failed">
-            Set <C>invalid</C> to indicate that the group has a validation error. Pair with an external error message element for accessible feedback.
+          <RuleCard label="Error — group validation failed">
+            Set <C>error</C> to indicate that the group has a validation error. Pair with <C>errorMessage</C> to provide accessible error text rendered below the group.
           </RuleCard>
         </div>
       </section>

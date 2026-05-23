@@ -29,19 +29,19 @@ export default function IoFormFieldApiPage() {
               <InlineCode key="n">helperText</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Supporting guidance shown below the control when invalid is false. Hidden when invalid is true.',
+              'Supporting guidance shown below the control when error is false. Hidden when error is true.',
             ],
             [
-              <InlineCode key="n">errorText</InlineCode>,
+              <InlineCode key="n">errorMessage</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Validation error message shown below the control when invalid is true. Rendered with aria-live="polite".',
+              'Validation error message shown below the control when error is true. Rendered with aria-live="polite".',
             ],
             [
-              <span key="n"><InlineCode>invalid</InlineCode><ReflectBadge /></span>,
+              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Marks the field as invalid. Shows errorText, hides helperText, and sets aria-invalid="true" on the slotted control.',
+              'Marks the field as in error state. Shows errorMessage, hides helperText, and sets aria-invalid="true" on the slotted control.',
             ],
             [
               <InlineCode key="n">required</InlineCode>,
@@ -75,7 +75,7 @@ export default function IoFormFieldApiPage() {
   <io-input name="email" type="email"></io-input>
 </io-form-field>
 
-<io-form-field label="Username" invalid error-text="This username is already taken.">
+<io-form-field label="Username" error error-message="This username is already taken.">
   <io-input name="username" type="text"></io-input>
 </io-form-field>`}
         </CodeNote>

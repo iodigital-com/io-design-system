@@ -21,7 +21,7 @@ export default function IoFormFieldUsagePage() {
               Always provide a <C>label</C> prop. It is the accessible name for the slotted control.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Pair <C>invalid</C> with <C>errorText</C> to give specific, actionable feedback after validation fails.
+              Pair <C>error</C> with <C>errorMessage</C> to give specific, actionable feedback after validation fails.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use <C>helperText</C> for format hints or constraints before the user starts interacting.
@@ -45,17 +45,17 @@ export default function IoFormFieldUsagePage() {
       <section id="states" className="space-y-6">
         <SectionHeader
           title="States"
-          description="io-form-field has three visual states driven by the invalid prop and text props."
+          description="io-form-field has three visual states driven by the error prop and text props."
         />
         <div className="space-y-3">
           <RuleCard label="Default — label above control">
             The label is always visible above the slotted control. The control&apos;s own focus and hover states are not affected.
           </RuleCard>
           <RuleCard label="Helper — supplementary guidance">
-            When <C>helperText</C> is set and <C>invalid</C> is false, the helper text is shown below the control and linked via <C>aria-describedby</C>.
+            When <C>helperText</C> is set and <C>error</C> is false, the helper text is shown below the control and linked via <C>aria-describedby</C>.
           </RuleCard>
-          <RuleCard label="Invalid — validation feedback">
-            When <C>invalid</C> is true and <C>errorText</C> is set, the error message replaces the helper text. The slotted control receives <C>aria-invalid=&quot;true&quot;</C> automatically.
+          <RuleCard label="Error — validation feedback">
+            When <C>error</C> is true and <C>errorMessage</C> is set, the error message replaces the helper text. The slotted control receives <C>aria-invalid=&quot;true&quot;</C> automatically.
           </RuleCard>
         </div>
       </section>

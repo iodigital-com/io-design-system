@@ -14,12 +14,12 @@ describe('io-form-field — default props', () => {
     expect(component.helperText).toBe('');
   });
 
-  it('has empty errorText by default', () => {
-    expect(component.errorText).toBe('');
+  it('has empty errorMessage by default', () => {
+    expect(component.errorMessage).toBe('');
   });
 
-  it('is not invalid by default', () => {
-    expect(component.invalid).toBe(false);
+  it('is not in error state by default', () => {
+    expect(component.error).toBe(false);
   });
 
   it('is not required by default', () => {
@@ -34,18 +34,18 @@ describe('io-form-field — default props', () => {
     expect((a as any).inputId).not.toBe((b as any).inputId);
   });
 
-  it('buildDescribedBy returns helper ID when not invalid and helperText is set', () => {
+  it('buildDescribedBy returns helper ID when not in error and helperText is set', () => {
     component.helperText = 'Some help';
-    component.invalid = false;
+    component.error = false;
     (component as any).helperId = 'io-ff-helper-abc';
     (component as any).errorId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
     expect(result).toBe('io-ff-helper-abc');
   });
 
-  it('buildDescribedBy returns error ID when invalid and errorText is set', () => {
-    component.errorText = 'Something went wrong';
-    component.invalid = true;
+  it('buildDescribedBy returns error ID when error and errorMessage is set', () => {
+    component.errorMessage = 'Something went wrong';
+    component.error = true;
     (component as any).helperId = 'io-ff-helper-abc';
     (component as any).errorId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
@@ -54,8 +54,8 @@ describe('io-form-field — default props', () => {
 
   it('buildDescribedBy returns empty string when no text is set', () => {
     component.helperText = '';
-    component.errorText = '';
-    component.invalid = false;
+    component.errorMessage = '';
+    component.error = false;
     (component as any).helperId = 'io-ff-helper-abc';
     (component as any).errorId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
@@ -64,7 +64,7 @@ describe('io-form-field — default props', () => {
 });
 
 describe('io-form-field — syncChildAttributes', () => {
-  it('sets aria-invalid on slotted child when invalid is true', () => {
+  it('sets aria-invalid on slotted child when error is true', () => {
     const component = new IoFormField();
     const host = document.createElement('io-form-field');
     const child = document.createElement('io-input');
@@ -73,8 +73,8 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
     (component as any).errorId = 'test-error';
-    component.invalid = true;
-    component.errorText = 'Error occurred';
+    component.error = true;
+    component.errorMessage = 'Error occurred';
     component.helperText = '';
 
     (component as any).syncChildAttributes();
@@ -84,7 +84,7 @@ describe('io-form-field — syncChildAttributes', () => {
     expect(child.getAttribute('aria-describedby')).toBe('test-error');
   });
 
-  it('removes aria-invalid when invalid is false', () => {
+  it('removes aria-invalid when error is false', () => {
     const component = new IoFormField();
     const host = document.createElement('io-form-field');
     const child = document.createElement('io-input');
@@ -94,16 +94,16 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
     (component as any).errorId = 'test-error';
-    component.invalid = false;
+    component.error = false;
     component.helperText = '';
-    component.errorText = '';
+    component.errorMessage = '';
 
     (component as any).syncChildAttributes();
 
     expect(child.getAttribute('aria-invalid')).toBeNull();
   });
 
-  it('sets aria-describedby to helper ID when not invalid', () => {
+  it('sets aria-describedby to helper ID when not in error', () => {
     const component = new IoFormField();
     const host = document.createElement('io-form-field');
     const child = document.createElement('io-input');
@@ -112,9 +112,9 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
     (component as any).errorId = 'test-error';
-    component.invalid = false;
+    component.error = false;
     component.helperText = 'Helpful hint';
-    component.errorText = '';
+    component.errorMessage = '';
 
     (component as any).syncChildAttributes();
 

@@ -232,6 +232,28 @@ const onUpdate = (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) 
 </script>`}
         </CodeNote>
       </section>
+
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-carousel-scrollbar-height</InlineCode>,
+              <InlineCode key="d">4px</InlineCode>,
+              'Height of the custom scrollbar track rendered below the carousel slide area.',
+            ],
+          ]}
+        />
+      </section>
     </div>
   );
 }

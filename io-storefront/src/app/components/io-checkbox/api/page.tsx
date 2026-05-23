@@ -167,6 +167,48 @@ document.querySelector('io-checkbox')
         </EmptyNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-checkbox-size</InlineCode>,
+              <InlineCode key="d">1rem</InlineCode>,
+              'Width and height of the checkbox control square.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-radius</InlineCode>,
+              <InlineCode key="d">2px</InlineCode>,
+              'Border radius of the checkbox control square.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-border-width</InlineCode>,
+              <InlineCode key="d">1.5px</InlineCode>,
+              'Border width of the checkbox control in its resting state.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-border-error-width</InlineCode>,
+              <InlineCode key="d">2px</InlineCode>,
+              'Border width when the checkbox is in an error state. Thicker than the resting border to satisfy WCAG 1.4.1.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-icon-size</InlineCode>,
+              <InlineCode key="d">10px</InlineCode>,
+              'Width of the checkmark SVG icon rendered inside the checkbox.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

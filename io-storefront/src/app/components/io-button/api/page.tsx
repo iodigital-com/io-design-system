@@ -210,6 +210,78 @@ await ref.current.setFocus();`}
         />
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-button-spinner-duration</InlineCode>,
+              <InlineCode key="d">600ms</InlineCode>,
+              'Duration of the loading spinner rotation animation.',
+            ],
+            [
+              <InlineCode key="n">--io-button-spinner-border-width</InlineCode>,
+              <InlineCode key="d">2px</InlineCode>,
+              'Border width of the loading spinner ring.',
+            ],
+            [
+              <InlineCode key="n">--io-button-icon-padding</InlineCode>,
+              <InlineCode key="d">var(--io-space-2)</InlineCode>,
+              'Padding applied to icon-only buttons. Falls back to the global spacing token.',
+            ],
+            [
+              <InlineCode key="n">--io-button-xl-padding-y</InlineCode>,
+              <InlineCode key="d">1.125rem</InlineCode>,
+              'Vertical padding for the xl size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-width-default</InlineCode>,
+              <InlineCode key="d">0.875rem</InlineCode>,
+              'Width of the arrow icon for sm, md, and lg sizes.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-height-default</InlineCode>,
+              <InlineCode key="d">0.54rem</InlineCode>,
+              'Height of the arrow icon for sm, md, and lg sizes.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-xl-width</InlineCode>,
+              <InlineCode key="d">1.5rem</InlineCode>,
+              'Width of the arrow icon for the xl size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-xl-height</InlineCode>,
+              <InlineCode key="d">0.923rem</InlineCode>,
+              'Height of the arrow icon for the xl size variant.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-shift-forward</InlineCode>,
+              <InlineCode key="d">6px</InlineCode>,
+              'Distance the forward arrow translates on hover.',
+            ],
+            [
+              <InlineCode key="n">--io-button-arrow-shift-down</InlineCode>,
+              <InlineCode key="d">5px</InlineCode>,
+              'Distance the down arrow translates on hover.',
+            ],
+            [
+              <InlineCode key="n">--io-button-link-underline-height</InlineCode>,
+              <InlineCode key="d">1px</InlineCode>,
+              'Height of the animated underline on link-variant buttons.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

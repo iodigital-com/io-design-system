@@ -108,6 +108,48 @@ export default function IoAccordionApiPage() {
           ]}
         />
       </section>
+
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '310px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-accordion-max-height</InlineCode>,
+              <InlineCode key="d">600px</InlineCode>,
+              'Maximum height of an open accordion panel. Content that exceeds this height will overflow with a vertical scrollbar.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-icon-bar-thickness</InlineCode>,
+              <InlineCode key="d">8%</InlineCode>,
+              'Thickness of the +/− icon bars as a percentage of the icon container size.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-icon-bar-inset</InlineCode>,
+              <InlineCode key="d">1%</InlineCode>,
+              'Inset (padding) of the icon bars from the edges of the icon container.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-icon-bar-axis-offset</InlineCode>,
+              <InlineCode key="d">44%</InlineCode>,
+              'Position of each bar along its cross-axis to achieve visual centring.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-icon-horizontal-collapsed-side</InlineCode>,
+              <InlineCode key="d">50%</InlineCode>,
+              'The left and right values used to collapse the horizontal bar when the panel is open, producing the − appearance.',
+            ],
+          ]}
+        />
+      </section>
     </div>
   );
 }

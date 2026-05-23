@@ -131,6 +131,28 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
         </EmptyNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-toast-max-width</InlineCode>,
+              <InlineCode key="d">400px</InlineCode>,
+              'Maximum width of the toast container. On mobile viewports under 480px the container expands to full width automatically.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

@@ -240,6 +240,48 @@ await ref.current.setFocus({ preventScroll: true });`}
         </EmptyNote>
       </section>
 
+      {/* ── CSS Custom Properties ─────────────────────────────────── */}
+      <section id="css-custom-properties" className="space-y-4">
+        <SectionHeader
+          title="CSS Custom Properties"
+          description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '280px' },
+            { label: 'Default', width: '220px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">--io-input-border-width</InlineCode>,
+              <InlineCode key="d">1px</InlineCode>,
+              'Width of the underline border in its resting state.',
+            ],
+            [
+              <InlineCode key="n">--io-input-border-width-focus</InlineCode>,
+              <InlineCode key="d">5px</InlineCode>,
+              'Width of the underline border when the input is focused.',
+            ],
+            [
+              <InlineCode key="n">--io-input-padding-y</InlineCode>,
+              <InlineCode key="d">0.5rem</InlineCode>,
+              'Vertical padding inside the input field.',
+            ],
+            [
+              <InlineCode key="n">--io-input-padding-right</InlineCode>,
+              <InlineCode key="d">1.2rem</InlineCode>,
+              'Right padding that reserves space for the error icon.',
+            ],
+            [
+              <InlineCode key="n">--io-field-focus-offset-y</InlineCode>,
+              <InlineCode key="d">-2px</InlineCode>,
+              'Vertical offset applied on focus to compensate for the thicker border without shifting surrounding layout.',
+            ],
+          ]}
+        />
+      </section>
+
     </div>
   );
 }

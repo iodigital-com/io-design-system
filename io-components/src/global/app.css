@@ -192,6 +192,10 @@
   --io-heading-tracking-3:       -0.015em;   /* h3 */
   --io-heading-tracking-4:       -0.01em;    /* h4 */
 
+  /* ── Component Density ─────────────────────────────────── */
+  --io-spacing-component-y: var(--io-space-2, 8px);   /* default vertical padding */
+  --io-spacing-component-x: var(--io-space-3, 12px);  /* default horizontal padding */
+
   /* ============================================================
      4. SPACING (4px base scale)
      ============================================================ */
@@ -623,6 +627,66 @@
 
 [data-theme="light"] {
   color-scheme: light;
+
+  /* Reset semantic tokens to their light-mode defaults.
+     These mirror the :root values and explicitly undo any dark-mode overrides
+     so that switching from dark → light works without a page reload. */
+  --io-bg-base:                  var(--io-color-white);
+  --io-bg-page:                  var(--io-color-white);
+  --io-bg-surface:               var(--io-color-grey-1);
+  --io-bg-raised:                var(--io-color-grey-1);
+  --io-bg-hover:                 var(--io-color-grey-2);
+  --io-bg-card:                  var(--io-color-white);
+  --io-bg-overlay:               rgba(0, 0, 0, 0.5);
+  --io-text-primary:             var(--io-color-grey-6);
+  --io-text-secondary:           var(--io-color-grey-4);
+  --io-text-muted:               var(--io-color-grey-3);
+  --io-text-disabled:            var(--io-color-grey-3);
+  --io-border:                   var(--io-color-grey-2);
+  --io-border-hover:             var(--io-color-grey-3);
+  --io-accent:                   var(--io-color-primary);
+  --io-accent-text:              var(--io-color-primary);
+  --io-accent-bg:                var(--io-color-primary-bg);
+  --io-color-error:              #c0392b;
+  --io-color-success:            #1a7a4a;
+  --io-color-warning:            #ffa100;
+  --io-color-info:               #1565c0;
+  --io-playground-dot-color:     rgba(0, 0, 0, 0.06);
+
+  /* Semantic state tokens */
+  --io-state-disabled-bg:        var(--io-color-grey-3);
+
+  /* Component tokens — restore light defaults */
+  --io-color-primary:            #0000D2;
+  --io-focus-inner:              #7D0034;
+  --io-focus-outer:              #FFE4EE;
+  --io-surface-elevated:         var(--io-color-white);
+  --io-option-hover-bg:          var(--io-color-grey-1);
+  --io-button-group-bg:          var(--io-color-white);
+  --io-button-group-color:       var(--io-color-grey-6);
+  --io-button-group-border-color: var(--io-color-grey-2);
+  --io-skeleton-bg:              linear-gradient(
+    90deg,
+    var(--io-color-grey-2) 25%,
+    var(--io-color-grey-1) 50%,
+    var(--io-color-grey-2) 75%
+  );
+  --io-progress-track-bg:        var(--io-color-grey-2);
+
+  /* Avatar — grey variant: light surface + dark text */
+  --io-avatar-bg-grey:           var(--io-color-grey-3);
+  --io-avatar-text-grey:         var(--io-color-grey-6);
+}
+
+/* ── Density overrides ─────────────────────────────────────────────────── */
+[data-density="compact"] {
+  --io-spacing-component-y: var(--io-space-1, 4px);
+  --io-spacing-component-x: var(--io-space-2, 8px);
+}
+
+[data-density="comfortable"] {
+  --io-spacing-component-y: var(--io-space-3, 12px);
+  --io-spacing-component-x: var(--io-space-4, 16px);
 }
 
 } /* end @layer io */

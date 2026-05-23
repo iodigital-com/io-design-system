@@ -55,7 +55,7 @@ export function getSelectStyles(): string {
       border: none;
       border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
       border-radius: 0;
-      padding: var(--io-input-padding-y) var(--io-select-padding-right) var(--io-input-padding-y) 0;
+      padding: var(--io-spacing-component-y) var(--io-select-padding-right) var(--io-spacing-component-y) 0;
       font-family: var(--io-font-primary);
       font-size: var(--io-font-size-sm);
       color: var(--io-text-primary);
@@ -138,7 +138,7 @@ export function getSelectStyles(): string {
       border: none;
       border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
       border-radius: 0;
-      padding: var(--io-input-padding-y) var(--io-select-padding-right) var(--io-input-padding-y) 0;
+      padding: var(--io-spacing-component-y) var(--io-select-padding-right) var(--io-spacing-component-y) 0;
       font-family: var(--io-font-primary);
       font-size: var(--io-font-size-sm);
       color: var(--io-text-primary);

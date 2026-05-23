@@ -146,6 +146,14 @@ export const sitemap: NavSection[] = [
         related: ['io-radio', 'io-select', 'io-input'],
       },
       {
+        label: 'File Upload',
+        href: '/components/io-file-upload/configurator',
+        status: 'beta',
+        slug: 'io-file-upload',
+        description: 'Drag-and-drop or click-to-browse file input with type/size validation, accessible live announcements, and a removable file list.',
+        related: ['io-button', 'io-progress', 'io-input'],
+      },
+      {
         label: 'Input',
         href: '/components/io-input/configurator',
         status: 'beta',
@@ -216,6 +224,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-spinner',
         description: 'Signals a loading or processing state. Three sizes, three colour modes including current to inherit parent colour.',
         related: ['io-button', 'io-toast', 'io-modal'],
+      },
+      {
+        label: 'Stepper',
+        href: '/components/io-stepper/configurator',
+        status: 'beta',
+        slug: 'io-stepper',
+        description: 'Guides users through a multi-step process. Shows progress at a glance with complete, current, and upcoming states in horizontal or vertical orientation.',
+        related: ['io-progress', 'io-button', 'io-modal'],
       },
       {
         label: 'Tabs',

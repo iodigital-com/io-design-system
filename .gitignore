@@ -12,6 +12,7 @@ io-components/.stencil/*
 # Next.js
 .next/
 out/
+io-storefront/next-env.d.ts
 io-storefront/public/stencil/
 io-storefront/.lighthouseci/
 io-storefront/lighthouseci/

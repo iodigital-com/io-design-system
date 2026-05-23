@@ -50,7 +50,7 @@ const confirmationModalStory: Story<'io-modal'> = {
           {
             tag: 'div' as const,
             properties: {
-              style: 'display:flex;flex-direction:column;gap:var(--io-space-3,12px);align-items:center',
+              style: { display: 'flex', flexDirection: 'column', gap: 'var(--io-space-3,12px)', alignItems: 'center' },
             },
             children: [
               {
@@ -91,23 +91,20 @@ const dataTableStory: Story<'io-badge'> = {
       {
         tag: 'div' as const,
         properties: {
-          style:
-            'width:100%;border:1px solid var(--io-border);border-radius:var(--io-border-radius-sm,9px);overflow:hidden',
+          style: { width: '100%', border: '1px solid var(--io-border)', borderRadius: 'var(--io-border-radius-sm,9px)', overflow: 'hidden' },
         },
         children: [
           {
             tag: 'div' as const,
             properties: {
-              style:
-                'display:grid;grid-template-columns:1fr 120px 120px;padding:var(--io-space-2,8px) var(--io-space-4,16px);background:var(--io-bg-raised);border-bottom:1px solid var(--io-border);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--io-text-secondary)',
+              style: { display: 'grid', gridTemplateColumns: '1fr 120px 120px', padding: 'var(--io-space-2,8px) var(--io-space-4,16px)', background: 'var(--io-bg-raised)', borderBottom: '1px solid var(--io-border)', fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--io-text-secondary)' },
             },
             children: ['Name', 'Status', 'Actions'],
           },
           {
             tag: 'div' as const,
             properties: {
-              style:
-                'display:grid;grid-template-columns:1fr 120px 120px;align-items:center;padding:var(--io-space-2,8px) var(--io-space-4,16px);background:var(--io-bg-base);border-bottom:1px solid var(--io-border);font-size:13px;color:var(--io-text-primary)',
+              style: { display: 'grid', gridTemplateColumns: '1fr 120px 120px', alignItems: 'center', padding: 'var(--io-space-2,8px) var(--io-space-4,16px)', background: 'var(--io-bg-base)', borderBottom: '1px solid var(--io-border)', fontSize: '13px', color: 'var(--io-text-primary)' },
             },
             children: [
               'Alice Johnson',
@@ -126,8 +123,7 @@ const dataTableStory: Story<'io-badge'> = {
           {
             tag: 'div' as const,
             properties: {
-              style:
-                'display:grid;grid-template-columns:1fr 120px 120px;align-items:center;padding:var(--io-space-2,8px) var(--io-space-4,16px);background:var(--io-bg-raised);border-bottom:1px solid var(--io-border);font-size:13px;color:var(--io-text-primary)',
+              style: { display: 'grid', gridTemplateColumns: '1fr 120px 120px', alignItems: 'center', padding: 'var(--io-space-2,8px) var(--io-space-4,16px)', background: 'var(--io-bg-raised)', borderBottom: '1px solid var(--io-border)', fontSize: '13px', color: 'var(--io-text-primary)' },
             },
             children: [
               'Bob Smith',
@@ -146,8 +142,7 @@ const dataTableStory: Story<'io-badge'> = {
           {
             tag: 'div' as const,
             properties: {
-              style:
-                'display:grid;grid-template-columns:1fr 120px 120px;align-items:center;padding:var(--io-space-2,8px) var(--io-space-4,16px);background:var(--io-bg-base);font-size:13px;color:var(--io-text-primary)',
+              style: { display: 'grid', gridTemplateColumns: '1fr 120px 120px', alignItems: 'center', padding: 'var(--io-space-2,8px) var(--io-space-4,16px)', background: 'var(--io-bg-base)', fontSize: '13px', color: 'var(--io-text-primary)' },
             },
             children: [
               'Carol White',
@@ -166,8 +161,7 @@ const dataTableStory: Story<'io-badge'> = {
           {
             tag: 'div' as const,
             properties: {
-              style:
-                'display:flex;justify-content:flex-end;padding:var(--io-space-2,8px) var(--io-space-4,16px);background:var(--io-bg-raised);border-top:1px solid var(--io-border)',
+              style: { display: 'flex', justifyContent: 'flex-end', padding: 'var(--io-space-2,8px) var(--io-space-4,16px)', background: 'var(--io-bg-raised)', borderTop: '1px solid var(--io-border)' },
             },
             children: [
               {
@@ -188,8 +182,7 @@ const notificationStory: Story<'io-toast-item'> = {
       {
         tag: 'div' as const,
         properties: {
-          style:
-            'display:flex;flex-direction:column;gap:var(--io-space-3,12px);width:100%;max-width:360px',
+          style: { display: 'flex', flexDirection: 'column', gap: 'var(--io-space-3,12px)', width: '100%', maxWidth: '360px' },
         },
         children: [
           {
@@ -232,8 +225,7 @@ const multiStepFormStory: Story<'io-stepper'> = {
       {
         tag: 'div' as const,
         properties: {
-          style:
-            'display:flex;flex-direction:column;gap:var(--io-space-4,16px);width:100%;max-width:420px',
+          style: { display: 'flex', flexDirection: 'column', gap: 'var(--io-space-4,16px)', width: '100%', maxWidth: '420px' },
         },
         children: [
           {
@@ -286,7 +278,7 @@ const multiStepFormStory: Story<'io-stepper'> = {
           {
             tag: 'div' as const,
             properties: {
-              style: 'display:flex;flex-direction:column;gap:var(--io-space-2,8px)',
+              style: { display: 'flex', flexDirection: 'column', gap: 'var(--io-space-2,8px)' },
             },
             children: [
               {

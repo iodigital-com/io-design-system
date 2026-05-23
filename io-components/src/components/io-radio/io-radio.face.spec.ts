@@ -43,16 +43,37 @@ describe('io-radio — FACE', () => {
     expect(internals.setFormValue).toHaveBeenCalledWith(null);
   });
 
-  it('syncFormValue sets valueMissing when required and unchecked', () => {
+  it('syncFormValue sets valueMissing when required and unchecked with no checked sibling', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
     component.required = true;
     component.checked = false;
+    (component as any).el.setAttribute('name', 'choice');
+    (component as any).name = 'choice';
     (component as any).syncFormValue();
     expect(internals.setValidity).toHaveBeenCalledWith(
       { valueMissing: true },
       'Please select an option',
     );
+  });
+
+  it('syncFormValue clears validity when required and a sibling radio in the group is checked', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.checked = false;
+    (component as any).name = 'choice';
+
+    // Simulate a checked sibling in the document
+    const sibling = document.createElement('io-radio') as HTMLElement & { name: string; checked: boolean };
+    sibling.name = 'choice';
+    sibling.checked = true;
+    document.body.appendChild(sibling);
+
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith({});
+
+    document.body.removeChild(sibling);
   });
 
   it('syncFormValue clears validity when required and checked', () => {

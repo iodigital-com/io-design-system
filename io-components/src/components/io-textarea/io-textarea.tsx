@@ -132,9 +132,24 @@ export class IoTextarea {
     this.syncFormValue();
   }
 
+  @Watch('maxLength')
+  onMaxLengthChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
-    if (this.required && !this.value) {
+    // Derive validity from the native <textarea> when available so constraints like
+    // maxLength (tooLong) are reflected automatically — matches native behaviour.
+    // Falls back to required-only check before the shadow root exists.
+    const nativeTextarea = this.el?.shadowRoot?.querySelector<HTMLTextAreaElement>('textarea');
+    if (nativeTextarea) {
+      if (!nativeTextarea.checkValidity()) {
+        this.internals?.setValidity?.(nativeTextarea.validity, nativeTextarea.validationMessage, nativeTextarea);
+      } else {
+        this.internals?.setValidity?.({});
+      }
+    } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
     } else {
       this.internals?.setValidity?.({});

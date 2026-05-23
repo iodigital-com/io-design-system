@@ -103,9 +103,24 @@ export class IoInput {
     this.syncFormValue();
   }
 
+  @Watch('maxLength')
+  onMaxLengthChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
-    if (this.required && !this.value) {
+    // Derive validity from the native <input> when available so constraints like
+    // maxLength, min, max, step, and typeMismatch are reflected automatically.
+    // Falls back to required-only check before the shadow root exists.
+    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (nativeInput) {
+      if (!nativeInput.checkValidity()) {
+        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+      } else {
+        this.internals?.setValidity?.({});
+      }
+    } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
     } else {
       this.internals?.setValidity?.({});

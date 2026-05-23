@@ -112,7 +112,20 @@ export class IoRadio {
     // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
     this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+      // For a radio group, required is satisfied when *any* radio sharing the same
+      // name is checked — not just this one. Without this check, form.checkValidity()
+      // fails even when another radio in the group is selected.
+      const groupSatisfied = this.name
+        ? Array.from(document.querySelectorAll('io-radio')).some((r) => {
+            const sibling = r as HTMLElement & { name?: string; checked?: boolean };
+            return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
+          })
+        : false;
+      if (!groupSatisfied) {
+        this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+      } else {
+        this.internals?.setValidity?.({});
+      }
     } else {
       this.internals?.setValidity?.({});
     }

@@ -43,11 +43,14 @@ describe('io-input — FACE', () => {
     expect(internals.setFormValue).toHaveBeenCalledWith('');
   });
 
-  it('syncFormValue sets valueMissing validity when required and empty', () => {
+  it('syncFormValue sets valueMissing validity when required and empty (fallback — no shadow root in jsdom)', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
     component.required = true;
     component.value = '';
+    // shadowRoot is null in jsdom so the fallback required-only path is exercised here.
+    // Native constraint validation (maxLength, min, max, step) is covered via the native
+    // <input>.validity object in real browsers; jsdom does not run constraint validation.
     (component as any).syncFormValue();
     expect(internals.setValidity).toHaveBeenCalledWith(
       { valueMissing: true },
@@ -55,7 +58,7 @@ describe('io-input — FACE', () => {
     );
   });
 
-  it('syncFormValue clears validity when required and value is present', () => {
+  it('syncFormValue clears validity when required and value is present (fallback — no shadow root in jsdom)', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
     component.required = true;

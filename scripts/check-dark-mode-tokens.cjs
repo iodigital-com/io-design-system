@@ -70,6 +70,11 @@ const DARK_OVERRIDE_ALLOWLIST = new Set([
   '--io-text-on-primary',
   // Active button group uses white text on primary bg — correct in both themes
   '--io-button-group-active-color',
+  // Avatar text on coloured bg — white is correct in both light and dark themes
+  '--io-avatar-text-blue',
+  '--io-avatar-text-orange',
+  '--io-avatar-text-green',
+  '--io-avatar-text-purple',
 ]);
 
 /**

@@ -13,7 +13,9 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
+  'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
+  'io-breadcrumb': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbElement>, HTMLIoBreadcrumbElement> & Partial<StencilJSX.IoBreadcrumb>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
@@ -25,6 +27,7 @@ declare module 'react' {
   'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptgroupElement>, HTMLIoOptgroupElement> & Partial<StencilJSX.IoOptgroup>;
   'io-option': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptionElement>, HTMLIoOptionElement> & Partial<StencilJSX.IoOption>;
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
+  'io-progress': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoProgressElement>, HTMLIoProgressElement> & Partial<StencilJSX.IoProgress>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;
   'io-skeleton': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSkeletonElement>, HTMLIoSkeletonElement> & Partial<StencilJSX.IoSkeleton>;

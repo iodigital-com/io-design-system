@@ -43,7 +43,7 @@ export class IoTag {
   @Prop({ reflect: true }) color: IoTagColor = 'default';
 
   /** Accessible label for the tag content — used to build the remove button's aria-label.
-   *  Required when `removable` is true so screen readers announce "Remove [label]" instead of "Remove". */
+   *  Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove". */
   @Prop() label = '';
 
   // ── Events ────────────────────────────────────────────────────

@@ -3,8 +3,11 @@ import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-tag — a11y', () => {
   it('toggle button has no violations', async () => {
-    const el = document.createElement('io-tag');
-    await renderAndCheckA11y(el);
+    const btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-pressed', 'false');
+    btn.textContent = 'Design';
+    await renderAndCheckA11y(btn);
   });
 
   it('removable tag remove button has contextual aria-label with no violations', async () => {

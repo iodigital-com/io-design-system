@@ -22,7 +22,7 @@ export default function IoStepperExamplesPage() {
         />
         <ComponentStory
           story={stepperStoryStatuses}
-          previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>
 
@@ -34,7 +34,7 @@ export default function IoStepperExamplesPage() {
         />
         <ComponentStory
           story={stepperStoryHorizontal}
-          previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>
 
@@ -58,7 +58,7 @@ export default function IoStepperExamplesPage() {
         />
         <ComponentStory
           story={stepperStoryFiveSteps}
-          previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>
 

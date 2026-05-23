@@ -1,13 +1,7 @@
 'use client';
 
-import type { Metadata } from 'next';
-
 import { SectionHeader, InlineCode, ApiTable } from '@/components/api/ApiPrimitives';
 import { PageHeader } from '@/components/layout/PageHeader';
-
-// Metadata cannot be exported from 'use client' pages — kept here as reference.
-// Add to a parent layout.tsx if SSR metadata is required.
-// export const metadata: Metadata = { ... };
 
 // ── Public CSS API data ────────────────────────────────────────────────────────
 

@@ -189,6 +189,7 @@ export function getTagStyles(): string {
       border: 1px solid var(--io-border);
       overflow: hidden;
       transition: border-color var(--io-motion-fast), background-color var(--io-motion-fast);
+      min-height: var(--io-touch-target-min);
     }
 
     .tag-group--selected {
@@ -217,6 +218,8 @@ export function getTagStyles(): string {
       justify-content: center;
       color: var(--io-text-secondary);
       transition: color var(--io-motion-fast), border-left-color var(--io-motion-fast);
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
     }
 
     .tag__remove--sm { padding: 0 var(--io-space-2); }

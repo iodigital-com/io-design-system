@@ -126,8 +126,8 @@ import { IoInput } from '@io-digital/components-vue';
 
 const email = ref('');
 
-function onEmailChange(event: CustomEvent<{ value: string }>) {
-  email.value = event.detail.value;
+function onEmailChange(event: CustomEvent<string>) {
+  email.value = event.detail;
 }
 </script>
 
@@ -141,9 +141,10 @@ function onEmailChange(event: CustomEvent<{ value: string }>) {
   <p>Current value: {{ email }}</p>
 </template>`}</CodeBlock>
         <Note>
-          io components dispatch events with the <code>io-</code> prefix (e.g. <code>io-change</code>,{' '}
-          <code>io-focus</code>, <code>io-blur</code>). Check the individual component&apos;s documentation for
-          the full event list.
+          io components dispatch named Stencil custom events (e.g. <code>change</code>,{' '}
+          <code>focus</code>, <code>blur</code>) — these are <code>CustomEvent</code> instances
+          with a typed <code>detail</code> payload. Check each component&apos;s API docs for the exact
+          event name and detail shape.
         </Note>
       </Section>
 
@@ -212,8 +213,8 @@ describe('MyComponent', () => {
     // Dispatch a CustomEvent directly on the stubbed element
     const input = wrapper.find('io-input-stub');
     input.element.dispatchEvent(
-      new CustomEvent('io-change', {
-        detail: { value: 'test@example.com' },
+      new CustomEvent('change', {
+        detail: 'test@example.com',
         bubbles: true,
       })
     );

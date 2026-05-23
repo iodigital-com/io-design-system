@@ -42,6 +42,10 @@ export class IoTag {
   /** Background colour of the unselected state */
   @Prop({ reflect: true }) color: IoTagColor = 'default';
 
+  /** Accessible label for the tag content — used to build the remove button's aria-label.
+   *  Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove". */
+  @Prop() label = '';
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the tag is toggled. Payload is the new selected value. */
@@ -74,7 +78,7 @@ export class IoTag {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { selected, removable, disabled, size, color } = this;
+    const { selected, removable, disabled, size, color, label } = this;
     const tagClass = getTagClassName(size, color, selected, disabled);
 
     if (removable) {
@@ -95,7 +99,7 @@ export class IoTag {
             </button>
             <button
               class={`tag tag--${size} tag--${color} tag__remove tag__remove--${size}${selected ? ' tag--selected' : ''}${disabled ? ' tag--disabled' : ''}`}
-              aria-label="Remove"
+              aria-label={label ? `Remove ${label}` : 'Remove'}
               disabled={disabled}
               onClick={this.handleRemove}
             >

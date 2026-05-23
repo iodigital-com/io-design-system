@@ -83,16 +83,16 @@ export class IoAccordion {
 
   componentDidLoad() {
     this.groupParent = this.el.parentElement;
-    this.groupParent?.addEventListener('io-accordion-group-open', this.handleGroupOpen);
+    this.groupParent?.addEventListener('accordion-group-open', this.handleGroupOpen);
   }
 
   disconnectedCallback() {
-    this.groupParent?.removeEventListener('io-accordion-group-open', this.handleGroupOpen);
+    this.groupParent?.removeEventListener('accordion-group-open', this.handleGroupOpen);
     this.groupParent = null;
   }
 
   /**
-   * Handles the `io-accordion-group-open` coordination event.
+   * Handles the `accordion-group-open` coordination event.
    * When `allowMultiple=false`, closes self if another accordion in the same
    * parent group opened.
    */
@@ -116,7 +116,7 @@ export class IoAccordion {
     // that have `allowMultiple=false`.
     if (this.open) {
       this.el.dispatchEvent(
-        new CustomEvent('io-accordion-group-open', {
+        new CustomEvent('accordion-group-open', {
           bubbles: true,
           detail: { source: this.el },
         }),

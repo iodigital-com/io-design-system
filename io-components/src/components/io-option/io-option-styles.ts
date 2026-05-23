@@ -20,7 +20,7 @@ export function getOptionStyles(): string {
 
     .option--focused,
     .option:hover {
-      background-color: var(--io-color-grey-1);
+      background-color: var(--io-option-hover-bg);
     }
 
     .option--selected {

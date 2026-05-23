@@ -330,6 +330,12 @@
   --io-combobox-z:               var(--io-z-dropdown);
 
   --io-color-white-alpha-30:     rgba(255, 255, 255, 0.3);
+
+  /* Elevated surface — floating overlays (select dropdown, combobox, tooltip) */
+  --io-surface-elevated:         var(--io-color-white);
+  /* Option / combobox row hover — also used in io-select shadow list */
+  --io-option-hover-bg:          var(--io-color-grey-1);
+
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:            1.5px;
   --io-radio-border-error-width:      2px;
@@ -397,6 +403,8 @@
   --io-accordion-icon-horizontal-collapsed-side: 50%;
 
   /* Dark theme source values */
+  --io-color-dark-primary:       #4d4dff;    /* WCAG AA blue on dark bg — contrast 3.4:1 vs #181818 */
+  --io-color-dark-focus-inner:   #ff9eb5;    /* Focus ring inner on dark surfaces — 9.5:1 vs #181818 */
   --io-color-dark-bg-base:       #181818;
   --io-color-dark-bg-surface:    #222222;
   --io-color-dark-bg-raised:     #2a2a2a;
@@ -513,6 +521,27 @@
   --io-color-warning:            var(--io-color-dark-warning);
   --io-color-info:               var(--io-color-dark-info);
   --io-playground-dot-color:     var(--io-color-dark-playground-dot);
+
+  /* Semantic tokens */
+  --io-text-disabled:            var(--io-color-dark-text-muted);
+  --io-state-disabled-bg:        rgba(255, 255, 255, 0.08);
+
+  /* Component tokens that use light-only primitives */
+  --io-color-primary:            var(--io-color-dark-primary);
+  --io-focus-inner:              var(--io-color-dark-focus-inner);
+  --io-focus-outer:              rgba(77, 77, 255, 0.25);
+  --io-surface-elevated:         var(--io-color-dark-bg-raised);
+  --io-option-hover-bg:          var(--io-color-dark-bg-hover);
+  --io-button-group-bg:          var(--io-color-dark-bg-surface);
+  --io-button-group-color:       var(--io-color-dark-text-primary);
+  --io-button-group-border-color: var(--io-color-dark-border);
+  --io-skeleton-bg:              linear-gradient(
+    90deg,
+    var(--io-color-dark-bg-raised) 25%,
+    var(--io-color-dark-bg-hover) 50%,
+    var(--io-color-dark-bg-raised) 75%
+  );
+
   color-scheme: dark;
 }
 

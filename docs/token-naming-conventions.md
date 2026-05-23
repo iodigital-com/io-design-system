@@ -43,11 +43,30 @@ This document defines canonical naming and alias rules between token paths in `d
 - Every allowlist entry must include file path, literal, rationale, and `reviewAfter` date.
 - Exceptions are temporary and must be reviewed or removed by the specified date.
 
-## Dark Theme Token Model (#110)
+## Dark Theme Token Model (#110, #175)
 
 - Dark theme source values are documented in `docs/tokens.json` under `color.dark.*`.
-- Runtime variables in `io-components/src/global/app.css` expose those values as `--io-color-dark-*` variables.
+- Runtime variables in `io-components/src/global/app.css` expose those values as `--io-color-dark-*` variables in `:root`.
 - `[data-theme="dark"]` semantic aliases (`--io-bg-*`, `--io-text-*`, `--io-border-*`, `--io-accent*`) must resolve via `var(--io-color-dark-*)` references, not raw literals.
+
+### Component token dark override pattern
+
+When a component-level token in `:root` resolves to a light-only primitive (e.g. `--io-color-white`, `--io-color-grey-*`), add a `[data-theme="dark"]` override that points to the appropriate dark primitive:
+
+```css
+/* :root — component-level token with light-mode default */
+--io-surface-elevated: var(--io-color-white);
+
+/* [data-theme="dark"] — override pointing to dark primitive */
+[data-theme="dark"] {
+  --io-surface-elevated: var(--io-color-dark-bg-raised);
+}
+```
+
+Rules:
+- Declare all new `--io-color-dark-*` source values in `:root` **before** the `[data-theme="dark"]` block — never as the first declaration inside the block.
+- Every component token that uses a light-only primitive must have a dark override. Enforced by `npm run dark-mode-tokens:check`.
+- Component `-styles.ts` files should reference semantic tokens (`var(--io-option-hover-bg)`) rather than primitives (`var(--io-color-grey-1)`) so that theme overrides propagate through Shadow DOM automatically.
 
 ## Runtime Reconciliation Scope (#111)
 

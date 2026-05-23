@@ -40,6 +40,7 @@ export const sitemap: NavSection[] = [
       { label: 'Components Ready', href: '/developing/components-ready' },
       { label: 'Component Status', href: '/developing/component-status' },
       { label: 'Customisation', href: '/developing/customisation' },
+      { label: 'Theming', href: '/developing/theming' },
       { label: 'Token Usage', href: '/developing/tokens' },
       { label: 'Stories', href: '/developing/stories' },
       { label: 'Migration Guide', href: '/developing/migration' },

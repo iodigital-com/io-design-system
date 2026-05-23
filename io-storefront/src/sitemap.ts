@@ -130,6 +130,14 @@ export const sitemap: NavSection[] = [
         related: ['io-accordion', 'io-tabs', 'io-badge'],
       },
       {
+        label: 'Drawer',
+        href: '/components/io-drawer/configurator',
+        status: 'beta',
+        slug: 'io-drawer',
+        description: 'Slide-out overlay panel attached to a screen edge. Supports left, right, and bottom placements with four size presets. Built on the native dialog element.',
+        related: ['io-modal', 'io-button', 'io-tabs'],
+      },
+      {
         label: 'Checkbox',
         href: '/components/io-checkbox/configurator',
         status: 'stable',

@@ -6,17 +6,21 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
+import { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
+import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
+import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSkeletonVariant } from "./components/io-skeleton/types";
@@ -27,17 +31,21 @@ import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
+export { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
+export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
+export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSkeletonVariant } from "./components/io-skeleton/types";
@@ -89,6 +97,47 @@ export namespace Components {
         "open": boolean;
     }
     /**
+     * io-avatar
+     * =========
+     * Displays a user avatar with three progressive fallbacks:
+     *  1. Image (when `src` is provided and loads successfully)
+     *  2. Initials (when `name` is provided)
+     *  3. Generic person icon (when neither is available)
+     * @example <io-avatar src="/jane.jpg" alt="Jane Doe" name="Jane Doe" size="md" />
+     * <io-avatar name="Jane Doe" color="blue" shape="circle" />
+     * <io-avatar size="lg" />
+     */
+    interface IoAvatar {
+        /**
+          * Accessible alt text for the image. Pass an empty string for decorative avatars.
+          * @default ''
+         */
+        "alt": string;
+        /**
+          * Background colour applied to the initials / icon fallback.
+          * @default 'grey'
+         */
+        "color": IoAvatarColor;
+        /**
+          * Full name used to derive initials ("Jane Doe" → "JD").
+         */
+        "name": string | undefined;
+        /**
+          * Shape of the avatar container.
+          * @default 'circle'
+         */
+        "shape": IoAvatarShape;
+        /**
+          * Visual size of the avatar.
+          * @default 'md'
+         */
+        "size": IoAvatarSize;
+        /**
+          * Image URL. When loading fails the component falls back to initials or icon.
+         */
+        "src": string | undefined;
+    }
+    /**
      * io-badge
      * =========
      * Small label/tag for categorizing content or showing status.
@@ -107,6 +156,29 @@ export namespace Components {
           * @default 'blue'
          */
         "variant": IoBadgeVariant;
+    }
+    /**
+     * io-breadcrumb
+     * =============
+     * Breadcrumb navigation for hierarchical orientation.
+     * Accepts items as a JSON string. The last item is the current page.
+     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     */
+    interface IoBreadcrumb {
+        /**
+          * JSON string of IoBreadcrumbItem[]. Last item is current page (no href).
+          * @default '[]'
+         */
+        "items": string;
+        /**
+          * Maximum visible items before collapsing middle items.
+         */
+        "maxVisible": number | undefined;
+        /**
+          * Separator style between breadcrumb items.
+          * @default 'chevron'
+         */
+        "separator": IoBreadcrumbSeparator;
     }
     /**
      * io-button
@@ -363,6 +435,63 @@ export namespace Components {
           * @default 'horizontal'
          */
         "orientation": IoDividerOrientation;
+    }
+    /**
+     * io-drawer
+     * =========
+     * Accessible slide-out drawer overlay built on the native <dialog> element.
+     * The browser handles focus trapping, ESC key, and role="dialog".
+     * @example <io-drawer heading="Settings" placement="right">
+     *   <p>Drawer body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     *   <io-button slot="footer">Save</io-button>
+     * </io-drawer>
+     * <script>
+     *   const drawer = document.querySelector('io-drawer');
+     *   document.getElementById('open-btn').addEventListener('click', () => { drawer.show(); });
+     *   drawer.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoDrawer {
+        /**
+          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.
+          * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
+         */
+        "close": () => Promise<void>;
+        /**
+          * Accessible label for the close button
+          * @default 'Close drawer'
+         */
+        "closeLabel": string;
+        /**
+          * Close the drawer when the backdrop is clicked
+          * @default true
+         */
+        "closeOnBackdrop": boolean;
+        /**
+          * Heading text displayed in the drawer header
+         */
+        "heading"?: string;
+        /**
+          * Controls drawer visibility; synced to showModal/close
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Which edge the drawer attaches to
+          * @default 'right'
+         */
+        "placement": IoDrawerPlacement;
+        /**
+          * Programmatically show (open) the drawer. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop.
+          * @example   const drawer = document.querySelector('io-drawer');   drawer.show();
+         */
+        "show": () => Promise<void>;
+        /**
+          * Width preset (left/right) or height preset (bottom)
+          * @default 'md'
+         */
+        "size": IoDrawerSize;
     }
     /**
      * io-input
@@ -658,6 +787,46 @@ export namespace Components {
           * @default 1
          */
         "totalPages": number;
+    }
+    /**
+     * io-progress
+     * ===========
+     * Linear progress bar for determinate loading states.
+     * Use for file uploads, multi-step forms, and wizard flows.
+     * @example <io-progress value="60"></io-progress>
+     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
+     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     */
+    interface IoProgress {
+        /**
+          * When true, the fill width transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
+          * @default true
+         */
+        "animated": boolean;
+        /**
+          * Colour variant for the progress fill. Reflected as an attribute.
+          * @default 'blue'
+         */
+        "color": IoProgressColor;
+        /**
+          * Accessible label set as aria-label on the host element.
+         */
+        "label": string | undefined;
+        /**
+          * When true, renders a visible percentage label below the track.
+          * @default false
+         */
+        "showLabel": boolean;
+        /**
+          * Track height variant. Reflected as an attribute.
+          * @default 'md'
+         */
+        "size": IoProgressSize;
+        /**
+          * Progress value from 0 to 100 (clamped automatically).
+          * @default 0
+         */
+        "value": number;
     }
     /**
      * io-radio
@@ -1126,6 +1295,10 @@ export interface IoCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoCheckboxElement;
 }
+export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoDrawerElement;
+}
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoInputElement;
@@ -1197,6 +1370,23 @@ declare global {
         new (): HTMLIoAccordionElement;
     };
     /**
+     * io-avatar
+     * =========
+     * Displays a user avatar with three progressive fallbacks:
+     *  1. Image (when `src` is provided and loads successfully)
+     *  2. Initials (when `name` is provided)
+     *  3. Generic person icon (when neither is available)
+     * @example <io-avatar src="/jane.jpg" alt="Jane Doe" name="Jane Doe" size="md" />
+     * <io-avatar name="Jane Doe" color="blue" shape="circle" />
+     * <io-avatar size="lg" />
+     */
+    interface HTMLIoAvatarElement extends Components.IoAvatar, HTMLStencilElement {
+    }
+    var HTMLIoAvatarElement: {
+        prototype: HTMLIoAvatarElement;
+        new (): HTMLIoAvatarElement;
+    };
+    /**
      * io-badge
      * =========
      * Small label/tag for categorizing content or showing status.
@@ -1209,6 +1399,19 @@ declare global {
     var HTMLIoBadgeElement: {
         prototype: HTMLIoBadgeElement;
         new (): HTMLIoBadgeElement;
+    };
+    /**
+     * io-breadcrumb
+     * =============
+     * Breadcrumb navigation for hierarchical orientation.
+     * Accepts items as a JSON string. The last item is the current page.
+     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     */
+    interface HTMLIoBreadcrumbElement extends Components.IoBreadcrumb, HTMLStencilElement {
+    }
+    var HTMLIoBreadcrumbElement: {
+        prototype: HTMLIoBreadcrumbElement;
+        new (): HTMLIoBreadcrumbElement;
     };
     interface HTMLIoButtonElementEventMap {
         "click": MouseEvent;
@@ -1339,6 +1542,39 @@ declare global {
     var HTMLIoDividerElement: {
         prototype: HTMLIoDividerElement;
         new (): HTMLIoDividerElement;
+    };
+    interface HTMLIoDrawerElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-drawer
+     * =========
+     * Accessible slide-out drawer overlay built on the native <dialog> element.
+     * The browser handles focus trapping, ESC key, and role="dialog".
+     * @example <io-drawer heading="Settings" placement="right">
+     *   <p>Drawer body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     *   <io-button slot="footer">Save</io-button>
+     * </io-drawer>
+     * <script>
+     *   const drawer = document.querySelector('io-drawer');
+     *   document.getElementById('open-btn').addEventListener('click', () => { drawer.show(); });
+     *   drawer.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface HTMLIoDrawerElement extends Components.IoDrawer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoDrawerElementEventMap>(type: K, listener: (this: HTMLIoDrawerElement, ev: IoDrawerCustomEvent<HTMLIoDrawerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoDrawerElementEventMap>(type: K, listener: (this: HTMLIoDrawerElement, ev: IoDrawerCustomEvent<HTMLIoDrawerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoDrawerElement: {
+        prototype: HTMLIoDrawerElement;
+        new (): HTMLIoDrawerElement;
     };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
@@ -1495,6 +1731,21 @@ declare global {
     var HTMLIoPaginationElement: {
         prototype: HTMLIoPaginationElement;
         new (): HTMLIoPaginationElement;
+    };
+    /**
+     * io-progress
+     * ===========
+     * Linear progress bar for determinate loading states.
+     * Use for file uploads, multi-step forms, and wizard flows.
+     * @example <io-progress value="60"></io-progress>
+     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
+     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     */
+    interface HTMLIoProgressElement extends Components.IoProgress, HTMLStencilElement {
+    }
+    var HTMLIoProgressElement: {
+        prototype: HTMLIoProgressElement;
+        new (): HTMLIoProgressElement;
     };
     interface HTMLIoRadioElementEventMap {
         "change": IoRadioChangeDetail;
@@ -1750,18 +2001,22 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "io-accordion": HTMLIoAccordionElement;
+        "io-avatar": HTMLIoAvatarElement;
         "io-badge": HTMLIoBadgeElement;
+        "io-breadcrumb": HTMLIoBreadcrumbElement;
         "io-button": HTMLIoButtonElement;
         "io-button-group": HTMLIoButtonGroupElement;
         "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
         "io-divider": HTMLIoDividerElement;
+        "io-drawer": HTMLIoDrawerElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
         "io-optgroup": HTMLIoOptgroupElement;
         "io-option": HTMLIoOptionElement;
         "io-pagination": HTMLIoPaginationElement;
+        "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-select": HTMLIoSelectElement;
         "io-skeleton": HTMLIoSkeletonElement;
@@ -1822,6 +2077,47 @@ declare namespace LocalJSX {
         "open"?: boolean;
     }
     /**
+     * io-avatar
+     * =========
+     * Displays a user avatar with three progressive fallbacks:
+     *  1. Image (when `src` is provided and loads successfully)
+     *  2. Initials (when `name` is provided)
+     *  3. Generic person icon (when neither is available)
+     * @example <io-avatar src="/jane.jpg" alt="Jane Doe" name="Jane Doe" size="md" />
+     * <io-avatar name="Jane Doe" color="blue" shape="circle" />
+     * <io-avatar size="lg" />
+     */
+    interface IoAvatar {
+        /**
+          * Accessible alt text for the image. Pass an empty string for decorative avatars.
+          * @default ''
+         */
+        "alt"?: string;
+        /**
+          * Background colour applied to the initials / icon fallback.
+          * @default 'grey'
+         */
+        "color"?: IoAvatarColor;
+        /**
+          * Full name used to derive initials ("Jane Doe" → "JD").
+         */
+        "name"?: string | undefined;
+        /**
+          * Shape of the avatar container.
+          * @default 'circle'
+         */
+        "shape"?: IoAvatarShape;
+        /**
+          * Visual size of the avatar.
+          * @default 'md'
+         */
+        "size"?: IoAvatarSize;
+        /**
+          * Image URL. When loading fails the component falls back to initials or icon.
+         */
+        "src"?: string | undefined;
+    }
+    /**
      * io-badge
      * =========
      * Small label/tag for categorizing content or showing status.
@@ -1840,6 +2136,29 @@ declare namespace LocalJSX {
           * @default 'blue'
          */
         "variant"?: IoBadgeVariant;
+    }
+    /**
+     * io-breadcrumb
+     * =============
+     * Breadcrumb navigation for hierarchical orientation.
+     * Accepts items as a JSON string. The last item is the current page.
+     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     */
+    interface IoBreadcrumb {
+        /**
+          * JSON string of IoBreadcrumbItem[]. Last item is current page (no href).
+          * @default '[]'
+         */
+        "items"?: string;
+        /**
+          * Maximum visible items before collapsing middle items.
+         */
+        "maxVisible"?: number | undefined;
+        /**
+          * Separator style between breadcrumb items.
+          * @default 'chevron'
+         */
+        "separator"?: IoBreadcrumbSeparator;
     }
     /**
      * io-button
@@ -2100,6 +2419,57 @@ declare namespace LocalJSX {
           * @default 'horizontal'
          */
         "orientation"?: IoDividerOrientation;
+    }
+    /**
+     * io-drawer
+     * =========
+     * Accessible slide-out drawer overlay built on the native <dialog> element.
+     * The browser handles focus trapping, ESC key, and role="dialog".
+     * @example <io-drawer heading="Settings" placement="right">
+     *   <p>Drawer body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     *   <io-button slot="footer">Save</io-button>
+     * </io-drawer>
+     * <script>
+     *   const drawer = document.querySelector('io-drawer');
+     *   document.getElementById('open-btn').addEventListener('click', () => { drawer.show(); });
+     *   drawer.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoDrawer {
+        /**
+          * Accessible label for the close button
+          * @default 'Close drawer'
+         */
+        "closeLabel"?: string;
+        /**
+          * Close the drawer when the backdrop is clicked
+          * @default true
+         */
+        "closeOnBackdrop"?: boolean;
+        /**
+          * Heading text displayed in the drawer header
+         */
+        "heading"?: string;
+        /**
+          * Emitted after the drawer closes (any close path: button, backdrop, ESC)
+         */
+        "onDismiss"?: (event: IoDrawerCustomEvent<void>) => void;
+        /**
+          * Controls drawer visibility; synced to showModal/close
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Which edge the drawer attaches to
+          * @default 'right'
+         */
+        "placement"?: IoDrawerPlacement;
+        /**
+          * Width preset (left/right) or height preset (bottom)
+          * @default 'md'
+         */
+        "size"?: IoDrawerSize;
     }
     /**
      * io-input
@@ -2396,6 +2766,46 @@ declare namespace LocalJSX {
           * @default 1
          */
         "totalPages"?: number;
+    }
+    /**
+     * io-progress
+     * ===========
+     * Linear progress bar for determinate loading states.
+     * Use for file uploads, multi-step forms, and wizard flows.
+     * @example <io-progress value="60"></io-progress>
+     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
+     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     */
+    interface IoProgress {
+        /**
+          * When true, the fill width transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
+          * @default true
+         */
+        "animated"?: boolean;
+        /**
+          * Colour variant for the progress fill. Reflected as an attribute.
+          * @default 'blue'
+         */
+        "color"?: IoProgressColor;
+        /**
+          * Accessible label set as aria-label on the host element.
+         */
+        "label"?: string | undefined;
+        /**
+          * When true, renders a visible percentage label below the track.
+          * @default false
+         */
+        "showLabel"?: boolean;
+        /**
+          * Track height variant. Reflected as an attribute.
+          * @default 'md'
+         */
+        "size"?: IoProgressSize;
+        /**
+          * Progress value from 0 to 100 (clamped automatically).
+          * @default 0
+         */
+        "value"?: number;
     }
     /**
      * io-radio
@@ -2872,9 +3282,22 @@ declare namespace LocalJSX {
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
     }
+    interface IoAvatarAttributes {
+        "src": string | undefined;
+        "alt": string;
+        "name": string | undefined;
+        "size": IoAvatarSize;
+        "color": IoAvatarColor;
+        "shape": IoAvatarShape;
+    }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
         "size": IoBadgeSize;
+    }
+    interface IoBreadcrumbAttributes {
+        "items": string;
+        "separator": IoBreadcrumbSeparator;
+        "maxVisible": number | undefined;
     }
     interface IoButtonAttributes {
         "variant": IoButtonVariant;
@@ -2922,6 +3345,14 @@ declare namespace LocalJSX {
     interface IoDividerAttributes {
         "orientation": IoDividerOrientation;
         "label": string | undefined;
+    }
+    interface IoDrawerAttributes {
+        "open": boolean;
+        "placement": IoDrawerPlacement;
+        "size": IoDrawerSize;
+        "heading": string;
+        "closeOnBackdrop": boolean;
+        "closeLabel": string;
     }
     interface IoInputAttributes {
         "label": string;
@@ -2977,6 +3408,14 @@ declare namespace LocalJSX {
         "totalPages": number;
         "prevLabel": string;
         "nextLabel": string;
+    }
+    interface IoProgressAttributes {
+        "value": number;
+        "color": IoProgressColor;
+        "size": IoProgressSize;
+        "animated": boolean;
+        "label": string | undefined;
+        "showLabel": boolean;
     }
     interface IoRadioAttributes {
         "label": string;
@@ -3058,18 +3497,22 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
+        "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
+        "io-breadcrumb": Omit<IoBreadcrumb, keyof IoBreadcrumbAttributes> & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes]?: IoBreadcrumb[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `attr:${K}`]?: IoBreadcrumbAttributes[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `prop:${K}`]?: IoBreadcrumb[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
+        "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
         "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
         "io-option": Omit<IoOption, keyof IoOptionAttributes> & { [K in keyof IoOption & keyof IoOptionAttributes]?: IoOption[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `attr:${K}`]?: IoOptionAttributes[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `prop:${K}`]?: IoOption[K] } & OneOf<"label", IoOption["label"], IoOptionAttributes["label"]>;
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
+        "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-skeleton": Omit<IoSkeleton, keyof IoSkeletonAttributes> & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes]?: IoSkeleton[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `attr:${K}`]?: IoSkeletonAttributes[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `prop:${K}`]?: IoSkeleton[K] };
@@ -3096,6 +3539,18 @@ declare module "@stencil/core" {
              */
             "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;
             /**
+             * io-avatar
+             * =========
+             * Displays a user avatar with three progressive fallbacks:
+             *  1. Image (when `src` is provided and loads successfully)
+             *  2. Initials (when `name` is provided)
+             *  3. Generic person icon (when neither is available)
+             * @example <io-avatar src="/jane.jpg" alt="Jane Doe" name="Jane Doe" size="md" />
+             * <io-avatar name="Jane Doe" color="blue" shape="circle" />
+             * <io-avatar size="lg" />
+             */
+            "io-avatar": LocalJSX.IntrinsicElements["io-avatar"] & JSXBase.HTMLAttributes<HTMLIoAvatarElement>;
+            /**
              * io-badge
              * =========
              * Small label/tag for categorizing content or showing status.
@@ -3104,6 +3559,14 @@ declare module "@stencil/core" {
              * <io-badge variant="error">Error</io-badge>
              */
             "io-badge": LocalJSX.IntrinsicElements["io-badge"] & JSXBase.HTMLAttributes<HTMLIoBadgeElement>;
+            /**
+             * io-breadcrumb
+             * =============
+             * Breadcrumb navigation for hierarchical orientation.
+             * Accepts items as a JSON string. The last item is the current page.
+             * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+             */
+            "io-breadcrumb": LocalJSX.IntrinsicElements["io-breadcrumb"] & JSXBase.HTMLAttributes<HTMLIoBreadcrumbElement>;
             /**
              * io-button
              * ==========
@@ -3165,6 +3628,23 @@ declare module "@stencil/core" {
              * <io-divider label="or" />
              */
             "io-divider": LocalJSX.IntrinsicElements["io-divider"] & JSXBase.HTMLAttributes<HTMLIoDividerElement>;
+            /**
+             * io-drawer
+             * =========
+             * Accessible slide-out drawer overlay built on the native <dialog> element.
+             * The browser handles focus trapping, ESC key, and role="dialog".
+             * @example <io-drawer heading="Settings" placement="right">
+             *   <p>Drawer body content here.</p>
+             *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+             *   <io-button slot="footer">Save</io-button>
+             * </io-drawer>
+             * <script>
+             *   const drawer = document.querySelector('io-drawer');
+             *   document.getElementById('open-btn').addEventListener('click', () => { drawer.show(); });
+             *   drawer.addEventListener('dismiss', () => console.log('dismissed'));
+             * </script>
+             */
+            "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
             /**
              * io-input
              * =========
@@ -3233,6 +3713,16 @@ declare module "@stencil/core" {
              * <io-pagination page="5" total-pages="12" />
              */
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
+            /**
+             * io-progress
+             * ===========
+             * Linear progress bar for determinate loading states.
+             * Use for file uploads, multi-step forms, and wizard flows.
+             * @example <io-progress value="60"></io-progress>
+             * <io-progress value="75" color="success" size="lg" show-label></io-progress>
+             * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+             */
+            "io-progress": LocalJSX.IntrinsicElements["io-progress"] & JSXBase.HTMLAttributes<HTMLIoProgressElement>;
             /**
              * io-radio
              * =========

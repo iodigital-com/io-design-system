@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { ConfiguratorControls } from './ConfiguratorControls';
 import { Playground } from './Playground';
@@ -16,36 +17,119 @@ import { generateReactMarkup } from '@/utils/generator/generateReactMarkup';
 import { generateVueMarkup } from '@/utils/generator/generateVueMarkup';
 import { createElements } from '@/utils/generator/generator';
 
+const RESET_DELAY_MS = 2000;
 
 type ConfiguratorProps = {
   tagName: HTMLTagOrComponent;
   story: Story<HTMLTagOrComponent>;
   propDefinitions: PropDefinition[];
-  /** Extra class names forwarded to the Playground preview wrapper. */
   previewClassName?: string;
-  /** Inline styles merged into the Playground preview wrapper — use to override background for components that need a plain stage. */
   previewStyle?: React.CSSProperties;
 };
 
-/**
- * Configurator — stateful interactive demo.
- *
- *  - Holds `exampleState` (current prop values)
- *  - Re-runs `story.generator(exampleState)` on every change
- *  - Passes the result to `createElements()` for the live preview
- *  - Passes the result to `generateHtmlMarkup()` for the code block
- */
-export function Configurator({ story, propDefinitions, previewClassName, previewStyle }: ConfiguratorProps) {
-  const [exampleState, setExampleState] = useState<StoryState<HTMLTagOrComponent>>(
-    story.state ?? {},
+function getDefaultValue(def: PropDefinition): unknown {
+  if (def.defaultValue !== undefined) return def.defaultValue;
+  if (def.type === 'boolean') return false;
+  if (def.type === 'number') return 0;
+  if (def.type === 'select') return def.options[0];
+  return '';
+}
+
+function parseParamValue(def: PropDefinition, raw: string): unknown {
+  if (def.type === 'boolean') return raw === 'true';
+  if (def.type === 'number') {
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : getDefaultValue(def);
+  }
+  if (def.type === 'select') {
+    return def.options.includes(raw) ? raw : getDefaultValue(def);
+  }
+  return raw;
+}
+
+function buildInitialState(
+  story: Story<HTMLTagOrComponent>,
+  propDefinitions: PropDefinition[],
+  searchParams: URLSearchParams,
+): StoryState<HTMLTagOrComponent> {
+  const base = story.state ?? {};
+  const baseProps = base.properties ?? {};
+  const merged: Record<string, unknown> = { ...baseProps };
+
+  for (const def of propDefinitions) {
+    const raw = searchParams.get(def.name);
+    if (raw === null) continue;
+    merged[def.name] = parseParamValue(def, raw);
+  }
+
+  return { ...base, properties: merged };
+}
+
+function buildSearchParams(
+  properties: Partial<Record<string, unknown>>,
+  propDefinitions: PropDefinition[],
+): string {
+  const params = new URLSearchParams();
+  for (const def of propDefinitions) {
+    const value = properties[def.name];
+    if (value === undefined) continue;
+    const defaultVal = getDefaultValue(def);
+    const strValue = String(value);
+    const strDefault = String(defaultVal);
+    if (strValue !== strDefault) {
+      params.set(def.name, strValue);
+    }
+  }
+  const qs = params.toString();
+  return qs ? `?${qs}` : '';
+}
+
+function CopyLinkIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
   );
-  const [exampleElement, setExampleElement] = useState<ReactNode>(
-    createElements(story.generator(story.state), setExampleState),
+}
+
+function CheckIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
   );
+}
+
+function fallbackCopy(text: string) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+}
+
+function ConfiguratorInner({ story, propDefinitions, previewClassName, previewStyle }: ConfiguratorProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [exampleState, setExampleState] = useState<StoryState<HTMLTagOrComponent>>(() =>
+    buildInitialState(story, propDefinitions, searchParams),
+  );
+
+  const [exampleElement, setExampleElement] = useState<ReactNode>(() =>
+    createElements(story.generator(exampleState), setExampleState),
+  );
+
   const [frameworkCode, setFrameworkCode] = useState<FrameworkCode>(() => {
-    if (typeof story.frameworkCode === 'function') return story.frameworkCode(story.state);
+    if (typeof story.frameworkCode === 'function') return story.frameworkCode(exampleState);
     if (story.frameworkCode) return story.frameworkCode;
-    const g = story.generator(story.state);
+    const g = story.generator(exampleState);
     return {
       html: generateHtmlMarkup(g),
       react: generateReactMarkup(g),
@@ -53,6 +137,25 @@ export function Configurator({ story, propDefinitions, previewClassName, preview
       vue: generateVueMarkup(g),
     };
   });
+
+  const [copied, setCopied] = useState(false);
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const syncUrl = useCallback(
+    (properties: Partial<Record<string, unknown>>) => {
+      const qs = buildSearchParams(properties, propDefinitions);
+      window.history.replaceState(null, '', `${pathname}${qs}`);
+    },
+    [pathname, propDefinitions],
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: state change drives re-render
   useEffect(() => {
@@ -70,10 +173,57 @@ export function Configurator({ story, propDefinitions, previewClassName, preview
         vue: generateVueMarkup(generated),
       });
     }
+    syncUrl(exampleState.properties ?? {});
   }, [exampleState]);
+
+  const handleCopyLink = async () => {
+    const url = window.location.href;
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        fallbackCopy(url);
+      }
+      setCopied(true);
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current);
+      }
+      resetTimeoutRef.current = setTimeout(() => {
+        setCopied(false);
+      }, RESET_DELAY_MS);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <div>
+      <div
+        className="flex items-center justify-end mb-2"
+      >
+        <button
+          type="button"
+          onClick={handleCopyLink}
+          className="inline-flex items-center gap-1.5 rounded-md cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--io-border-focus)]"
+          style={{
+            padding: '4px 10px',
+            fontSize: '11px',
+            fontWeight: 500,
+            border: '1px solid var(--io-border)',
+            borderRadius: '6px',
+            color: copied ? 'var(--io-color-primary)' : 'var(--io-text-secondary)',
+            background: copied ? 'var(--io-accent-bg)' : 'transparent',
+            borderColor: copied ? 'var(--io-color-primary)' : 'var(--io-border)',
+          }}
+          aria-label="Copy link to this configuration"
+        >
+          {copied ? <CheckIcon /> : <CopyLinkIcon />}
+          <span>{copied ? 'Copied!' : 'Copy link'}</span>
+        </button>
+        <span className="sr-only" aria-live="polite">
+          {copied ? 'Link copied!' : ''}
+        </span>
+      </div>
       <Playground frameworkCode={frameworkCode} previewClassName={previewClassName} previewStyle={previewStyle}>{exampleElement}</Playground>
       <ConfiguratorControls
         propDefinitions={propDefinitions}
@@ -81,5 +231,13 @@ export function Configurator({ story, propDefinitions, previewClassName, preview
         setStoryState={setExampleState}
       />
     </div>
+  );
+}
+
+export function Configurator(props: ConfiguratorProps) {
+  return (
+    <Suspense>
+      <ConfiguratorInner {...props} />
+    </Suspense>
   );
 }

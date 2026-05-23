@@ -56,7 +56,7 @@ export class IoBreadcrumb {
     );
   }
 
-  private renderCollapsedItems(parsedItems: IoBreadcrumbItem[], visible: IoBreadcrumbItem[]) {
+  private renderCollapsedItems(visible: IoBreadcrumbItem[]) {
     const [first, last] = visible;
     return [
       <li key="first">
@@ -103,7 +103,7 @@ export class IoBreadcrumb {
     const { visible, hasCollapsed } = getVisibleItems(parsedItems, this.maxVisible, this.expanded);
 
     const listItems = hasCollapsed
-      ? this.renderCollapsedItems(parsedItems, visible)
+      ? this.renderCollapsedItems(visible)
       : this.renderFullItems(parsedItems);
 
     return (

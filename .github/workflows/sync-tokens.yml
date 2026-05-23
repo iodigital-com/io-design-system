@@ -1,0 +1,294 @@
+name: Figma Token Sync
+
+# Triggered manually from the Actions tab, or via repository_dispatch from
+# an external CI step (e.g. a Figma Tokens plugin webhook or Style Dictionary CI).
+#
+# Manual dispatch accepts an optional branch_name input.  When called via
+# repository_dispatch the client payload may supply the same field.
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: >
+          Branch to create / push token changes to.
+          Defaults to chore/tokens-sync-<YYYYMMDD>.
+        required: false
+        default: ''
+
+  repository_dispatch:
+    types: [tokens-sync]
+
+concurrency:
+  group: tokens-sync
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # 1. Validate existing tokens against all governance scripts.
+  #    This job must pass before a PR branch is opened.
+  # ────────────────────────────────────────────────────────────────────────────
+  validate:
+    name: Validate tokens
+    runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.resolve_branch.outputs.branch_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── Resolve branch name ─────────────────────────────────────────────────
+      - name: Resolve target branch name
+        id: resolve_branch
+        run: |
+          # Prefer explicit input, then client_payload, then date-based default.
+          INPUT_BRANCH="${{ github.event.inputs.branch_name }}"
+          PAYLOAD_BRANCH="${{ github.event.client_payload.branch_name }}"
+          DATE_BRANCH="chore/tokens-sync-$(date +%Y%m%d)"
+
+          BRANCH="${INPUT_BRANCH:-${PAYLOAD_BRANCH:-$DATE_BRANCH}}"
+          echo "branch_name=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "Resolved branch: $BRANCH"
+
+      # ── Run every governance check individually for clear failure attribution ─
+      - name: Token naming conventions
+        run: node scripts/check-token-cssvar-naming.cjs
+
+      - name: Token runtime reconciliation
+        run: node scripts/check-token-runtime-reconciliation.cjs
+
+      - name: Token doc coverage
+        run: node scripts/check-token-doc-coverage.cjs
+
+      - name: Style-literal allowlist (no hardcoded values)
+        run: node scripts/check-style-literals.cjs
+
+      - name: Storefront status governance
+        run: node scripts/check-storefront-status-governance.cjs
+
+      - name: Copilot agent drift
+        run: node scripts/check-copilot-agent-drift.cjs
+
+      - name: Agency governance
+        run: node scripts/agency-validate-governance.cjs
+
+      - name: Dark-mode token completeness
+        run: node scripts/check-dark-mode-tokens.cjs
+
+      - name: Public CSS API surface
+        run: node scripts/check-public-css-api.cjs
+
+      - name: Events guard (no io-prefixed event names)
+        run: node scripts/check-no-io-prefixed-events.cjs
+
+      # ── Summarise governance results in the Actions summary ─────────────────
+      - name: Write governance summary
+        if: always()
+        run: |
+          {
+            echo "## Token governance results"
+            echo ""
+            echo "| Check | Status |"
+            echo "|-------|--------|"
+            echo "| Token naming conventions | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+            echo "| Token runtime reconciliation | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+            echo "| Token doc coverage | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+            echo "| Style-literal allowlist | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+            echo "| Dark-mode token completeness | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+            echo "| Public CSS API surface | ${{ job.status == 'success' && 'passed' || 'see step log' }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 2. Build gate — ensure the component build still passes with current tokens.
+  #    Depends on validate passing to avoid redundant build on bad tokens.
+  # ────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build components
+    runs-on: ubuntu-latest
+    needs: [validate]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build components and wrappers
+        run: npm run build
+
+      - name: Sync Stencil assets
+        run: node scripts/sync-stencil-assets.cjs
+
+      - name: Verify storefront type sync is up to date
+        run: node scripts/sync-stencil-assets.cjs --check
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 3. Open (or update) a PR for the token changes.
+  #    Only runs when validate + build both pass.
+  #
+  #    Skeleton behaviour:
+  #      - Checks out the resolved branch (creates it from HEAD if absent).
+  #      - Opens/updates a PR against main.
+  #      - A real Figma integration would push token file changes here before
+  #        the pr-create step; see docs/token-pipeline.md for extension points.
+  # ────────────────────────────────────────────────────────────────────────────
+  create-pr:
+    name: Open token-sync PR
+    runs-on: ubuntu-latest
+    needs: [validate, build]
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # ── Configure git identity for automated commits ────────────────────────
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # ── Create or reset the sync branch ────────────────────────────────────
+      - name: Create or update sync branch
+        id: branch
+        env:
+          BRANCH: ${{ needs.validate.outputs.branch_name }}
+        run: |
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null 2>&1; then
+            git checkout "$BRANCH"
+            git pull --rebase origin "$BRANCH"
+            echo "status=existing" >> "$GITHUB_OUTPUT"
+          else
+            git checkout -b "$BRANCH"
+            echo "status=created" >> "$GITHUB_OUTPUT"
+          fi
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      # ── Placeholder: apply token changes ────────────────────────────────────
+      # In a real Figma integration this step would be replaced by one of:
+      #   a) Style Dictionary transform of a tokens.json exported from Figma Tokens
+      #   b) Token Studio / Supernova CLI export step
+      #   c) A custom script that downloads token files from Figma's REST API
+      #
+      # For now we create a timestamped marker file that records the sync run
+      # so the PR has a meaningful diff and the governance checks can be verified.
+      - name: Record sync run marker
+        run: |
+          SYNC_TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          SYNC_BRANCH="${{ steps.branch.outputs.branch }}"
+          cat > docs/last-token-sync.json <<EOF
+          {
+            "syncedAt": "$SYNC_TS",
+            "triggeredBy": "${{ github.event_name }}",
+            "branch": "$SYNC_BRANCH",
+            "runId": "${{ github.run_id }}",
+            "note": "Placeholder marker — replace with real Figma export step. See docs/token-pipeline.md."
+          }
+          EOF
+
+      # ── Commit marker (only if there is a diff) ─────────────────────────────
+      - name: Commit sync marker
+        id: commit
+        run: |
+          git add docs/last-token-sync.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore(tokens): sync run $(date +%Y%m%d) [skip ci]"
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Push sync branch ────────────────────────────────────────────────────
+      - name: Push sync branch
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: git push --set-upstream origin "$BRANCH"
+
+      # ── Open or update the PR ───────────────────────────────────────────────
+      - name: Open or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: |
+          EXISTING_PR=$(gh pr list \
+            --head "$BRANCH" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already open — adding comment."
+            gh pr comment "$EXISTING_PR" \
+              --body "Token sync re-run on \`$(date +%Y-%m-%d)\` (run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})). All governance checks passed."
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore(tokens): Figma token sync $(date +%Y-%m-%d)" \
+              --body "$(cat <<'PREOF'
+## Token sync
+
+This PR was opened automatically by the **Figma Token Sync** workflow ([docs/token-pipeline.md](docs/token-pipeline.md)).
+
+### What changed
+
+> Replace this section with a summary generated by Style Dictionary or your token tooling once a real Figma integration is wired in.
+>
+> Until then this PR carries a `docs/last-token-sync.json` marker that records the sync run metadata.
+
+### Governance checks
+
+All of the following passed before this PR was opened:
+
+- Token naming conventions (`check-token-cssvar-naming.cjs`)
+- Token runtime reconciliation (`check-token-runtime-reconciliation.cjs`)
+- Token doc coverage (`check-token-doc-coverage.cjs`)
+- Style-literal allowlist (`check-style-literals.cjs`)
+- Dark-mode token completeness (`check-dark-mode-tokens.cjs`)
+- Public CSS API surface (`check-public-css-api.cjs`)
+- Events guard (`check-no-io-prefixed-events.cjs`)
+- Agency governance (`agency-validate-governance.cjs`)
+
+### Review checklist
+
+- [ ] Token values are correct and match the Figma source of truth
+- [ ] No existing semantic token aliases are broken
+- [ ] `docs/token-runtime-reconciliation.json` updated if new tokens were added
+- [ ] Dark-mode overrides added for any new semantic tokens referencing light-only primitives
+- [ ] Changeset created if any published package changed (`npm run changeset:add`)
+
+### Reviewer
+
+Token PRs must be reviewed and approved by a **Design Ops** owner or a **@io-design-system/maintainers** member before merge.
+PREOF
+)"
+          fi

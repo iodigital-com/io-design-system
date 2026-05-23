@@ -73,6 +73,16 @@ Every component lives at `io-components/src/components/io-{name}/`:
 - New design values: add to `app.css` first, then reference via `var(--io-*)`.
 - Import styles from `-styles.ts`; never write CSS inline in `.tsx`.
 
+**CSS Custom Property API classification:**
+- **`public-api`** — Component-specific tokens such as `--io-button-spinner-duration`, `--io-skeleton-bg`, `--io-tabs-indicator-color`. These are explicit override points for consumers. Any change to them is a **breaking change** (requires a semver major bump).
+- **`internal`** — Global primitive and semantic tokens such as `--io-color-primary`, `--io-space-4`, `--io-motion-base`. Components consume these but they are NOT component override points. Consumers may still override them globally, but that is a design-system-wide change, not a component API contract.
+- The full classification catalogue is in `docs/public-css-api.json` and is validated automatically:
+  ```bash
+  npm run check:public-css-api   # standalone
+  npm run governance:check       # includes this check
+  ```
+- When adding a new component token, add it to `docs/public-css-api.json` with `"classification": "public-api"` or `"internal"` as appropriate.
+
 **Shadow DOM:** All components use `shadow: { delegatesFocus: true }`. CSS custom properties are the only styling API that crosses the boundary.
 
 **Focus rings:** Use `var(--io-focus-ring-active)` — never `var(--io-shadow-focus-ring)` directly. The `initFocusVisible()` utility in `src/global/app.ts` sets this custom property based on keyboard vs. pointer input modality.

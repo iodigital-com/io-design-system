@@ -39,6 +39,7 @@ export const sitemap: NavSection[] = [
       { label: 'Vue', href: '/developing/vue' },
       { label: 'Components Ready', href: '/developing/components-ready' },
       { label: 'Component Status', href: '/developing/component-status' },
+      { label: 'Customisation', href: '/developing/customisation' },
       { label: 'Token Usage', href: '/developing/tokens' },
     ],
   },

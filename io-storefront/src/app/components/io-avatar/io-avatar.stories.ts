@@ -77,19 +77,19 @@ export const avatarStoryShapes: Story<'io-avatar'> = {
 export const avatarPropDefinitions: PropDefinition[] = [
   {
     name: 'src',
-    type: 'text',
+    type: 'string',
     defaultValue: '',
     description: 'Image URL. When loading fails the component falls back to initials or the person icon.',
   },
   {
     name: 'alt',
-    type: 'text',
+    type: 'string',
     defaultValue: '',
     description: 'Accessible alt text for the image. Pass an empty string for decorative avatars.',
   },
   {
     name: 'name',
-    type: 'text',
+    type: 'string',
     defaultValue: '',
     description: 'Full name used to derive initials ("Jane Doe" → "JD").',
   },

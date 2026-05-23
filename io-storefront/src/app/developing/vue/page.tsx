@@ -141,8 +141,8 @@ function onEmailChange(event: CustomEvent<{ value: string }>) {
   <p>Current value: {{ email }}</p>
 </template>`}</CodeBlock>
         <Note>
-          io components dispatch events with the <code>io-</code> prefix (e.g. <code>io-change</code>,{' '}
-          <code>io-focus</code>, <code>io-blur</code>). Check the individual component&apos;s documentation for
+          io components dispatch standard DOM events (e.g. <code>change</code>,{' '}
+          <code>focus</code>, <code>blur</code>). Check the individual component&apos;s documentation for
           the full event list.
         </Note>
       </Section>
@@ -212,7 +212,7 @@ describe('MyComponent', () => {
     // Dispatch a CustomEvent directly on the stubbed element
     const input = wrapper.find('io-input-stub');
     input.element.dispatchEvent(
-      new CustomEvent('io-change', {
+      new CustomEvent('change', {
         detail: { value: 'test@example.com' },
         bubbles: true,
       })

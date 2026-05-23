@@ -37,7 +37,7 @@ describe('io-accordion — allowMultiple: componentDidLoad listener', () => {
     const component = makeComponent({}, parent);
     component.componentDidLoad();
     expect(parent.addEventListener).toHaveBeenCalledWith(
-      'io-accordion-group-open',
+      'accordion-group-open',
       expect.any(Function),
     );
   });
@@ -57,7 +57,7 @@ describe('io-accordion — allowMultiple: disconnectedCallback', () => {
     component.componentDidLoad();
     component.disconnectedCallback();
     expect(parent.removeEventListener).toHaveBeenCalledWith(
-      'io-accordion-group-open',
+      'accordion-group-open',
       expect.any(Function),
     );
   });
@@ -101,7 +101,7 @@ describe('io-accordion — allowMultiple: handleGroupOpen', () => {
   });
 
   function fireGroupOpen(source: HTMLElement) {
-    const event = new CustomEvent('io-accordion-group-open', {
+    const event = new CustomEvent('accordion-group-open', {
       detail: { source },
     });
     (component as any).handleGroupOpen(event);
@@ -157,12 +157,12 @@ describe('io-accordion — allowMultiple: toggleSingle dispatch', () => {
     component.componentWillLoad();
   });
 
-  it('dispatches io-accordion-group-open when opening regardless of allowMultiple', () => {
+  it('dispatches accordion-group-open when opening regardless of allowMultiple', () => {
     // Dispatch is unconditional on open — receivers decide based on their own allowMultiple.
     (component as any).toggleSingle();
     expect(dispatchSpy).toHaveBeenCalledOnce();
     const event: CustomEvent = dispatchSpy.mock.calls[0][0];
-    expect(event.type).toBe('io-accordion-group-open');
+    expect(event.type).toBe('accordion-group-open');
     expect(event.bubbles).toBe(true);
     expect(event.detail.source).toBe((component as any).el);
   });
@@ -172,7 +172,7 @@ describe('io-accordion — allowMultiple: toggleSingle dispatch', () => {
     (component as any).toggleSingle();
     expect(dispatchSpy).toHaveBeenCalledOnce();
     const event: CustomEvent = dispatchSpy.mock.calls[0][0];
-    expect(event.type).toBe('io-accordion-group-open');
+    expect(event.type).toBe('accordion-group-open');
   });
 
   it('does not dispatch when closing (open goes false)', () => {

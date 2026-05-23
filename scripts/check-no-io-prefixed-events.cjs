@@ -34,6 +34,10 @@ const decoratorPattern = /@Event\([^)]*\)\s*(ioInput|ioChange|ioFocus|ioBlur|ioO
 const emitPattern = /\bthis\.(ioInput|ioChange|ioFocus|ioBlur|ioOpen|ioClose|ioClick|ioToggle|ioRemove|ioToastDismiss)\.emit\b/g;
 const angularBindingPattern = /\((ioInput|ioChange|ioFocus|ioBlur|ioOpen|ioClose|ioClick|ioToggle|ioRemove|ioToastDismiss)\)=/g;
 const vueBindingPattern = /@io-(input|change|focus|blur|open|close|click|toggle|remove|toast-dismiss)\b/g;
+// Catches CustomEvent instantiation with an io-* prefixed name, e.g.
+// new CustomEvent('io-accordion-group-open', ...) — these are not caught by the
+// Stencil @Event decorator pattern above but are still forbidden by the naming rule.
+const customEventKebabPattern = /new CustomEvent\s*\(\s*['"`]io-[a-z][a-z0-9-]*['"`]/g;
 
 const skipDirs = new Set(['node_modules', '.git', 'dist', 'coverage', '.next', 'www']);
 
@@ -68,6 +72,7 @@ function findMatches(relPath) {
     ['legacy emitter call', emitPattern],
     ['legacy Angular binding', angularBindingPattern],
     ['legacy Vue binding', vueBindingPattern],
+    ['io-prefixed CustomEvent name', customEventKebabPattern],
   ];
 
   for (const [label, regex] of checks) {

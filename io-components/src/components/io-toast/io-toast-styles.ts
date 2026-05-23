@@ -3,19 +3,68 @@ export function getToastStyles(): string {
     :host {
       display: block;
       position: fixed;
-      bottom: var(--io-space-6);
-      right: var(--io-space-6);
       z-index: var(--io-z-toast);
       width: var(--io-toast-max-width);
       max-width: calc(100vw - 2 * var(--io-space-6));
+
+      /* Default: bottom-end */
+      bottom: var(--io-space-6);
+      right: var(--io-space-6);
     }
+
+    /* ── Position variants ──────────────────────────────────── */
+
+    :host([data-position="top-start"]) {
+      top: var(--io-space-6);
+      left: var(--io-space-6);
+      bottom: auto;
+      right: auto;
+    }
+
+    :host([data-position="top-center"]) {
+      top: var(--io-space-6);
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: auto;
+      right: auto;
+    }
+
+    :host([data-position="top-end"]) {
+      top: var(--io-space-6);
+      right: var(--io-space-6);
+      bottom: auto;
+      left: auto;
+    }
+
+    :host([data-position="bottom-start"]) {
+      bottom: var(--io-space-6);
+      left: var(--io-space-6);
+      right: auto;
+    }
+
+    :host([data-position="bottom-center"]) {
+      bottom: var(--io-space-6);
+      left: 50%;
+      transform: translateX(-50%);
+      right: auto;
+    }
+
+    :host([data-position="bottom-end"]) {
+      bottom: var(--io-space-6);
+      right: var(--io-space-6);
+      left: auto;
+    }
+
+    /* ── Mobile override — full-width strip at the bottom ───── */
 
     @media (max-width: 480px) {
       :host {
-        left: var(--io-space-4);
-        right: var(--io-space-4);
-        width: auto;
-        bottom: var(--io-space-4);
+        left: var(--io-space-4) !important;
+        right: var(--io-space-4) !important;
+        bottom: var(--io-space-4) !important;
+        top: auto !important;
+        width: auto !important;
+        transform: none !important;
       }
     }
   `;

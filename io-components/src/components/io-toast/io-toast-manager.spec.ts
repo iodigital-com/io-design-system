@@ -138,4 +138,22 @@ describe('IoToastManagerClass — dismiss', () => {
     vi.advanceTimersByTime(60000);
     expect(manager.getCurrent()).not.toBeNull();
   });
+
+  it('does not auto-dismiss when persistent: true', () => {
+    manager.addToast({ text: 'Must close', persistent: true });
+    vi.advanceTimersByTime(60000);
+    expect(manager.getCurrent()).not.toBeNull();
+  });
+
+  it('does not auto-dismiss error-variant toasts', () => {
+    manager.addToast({ text: 'Error occurred', variant: 'error' });
+    vi.advanceTimersByTime(60000);
+    expect(manager.getCurrent()).not.toBeNull();
+  });
+
+  it('auto-dismisses non-error toasts after default duration', () => {
+    manager.addToast({ text: 'Info', variant: 'info' });
+    vi.advanceTimersByTime(6000);
+    expect(manager.getCurrent()).toBeNull();
+  });
 });

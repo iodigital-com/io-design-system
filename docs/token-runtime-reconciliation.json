@@ -2040,6 +2040,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-tabs-icon-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Size for icon children inside tab buttons. References --io-icon-size-sm."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-icon-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Gap between icon and label inside tab buttons. References --io-space-1."
+    },
+    {
       "runtimeCssVar": "--io-text-disabled",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

@@ -140,6 +140,21 @@ export class IoTabs {
       btn.setAttribute('role', 'tab');
       btn.setAttribute('aria-selected', String(isActive));
       btn.setAttribute('tabindex', String(isActive ? 0 : -1));
+
+      // Icon-only tabs: preserve the author-supplied aria-label (already set by consumer).
+      // Tabs with badge children: strip badge text so screen readers don't announce counts
+      // as part of the tab name. Consumers mark badge elements with data-slot="badge".
+      const badgeEl = btn.querySelector('[data-slot="badge"]');
+      if (badgeEl) {
+        const visibleText = Array.from(btn.childNodes)
+          .filter((node) => node !== badgeEl)
+          .map((node) => node.textContent ?? '')
+          .join('')
+          .trim();
+        if (visibleText && !btn.hasAttribute('aria-label')) {
+          btn.setAttribute('aria-label', visibleText);
+        }
+      }
     });
   }
 

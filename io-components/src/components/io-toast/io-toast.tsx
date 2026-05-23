@@ -1,10 +1,10 @@
-import { Component, Element, State, Method, Host, h } from '@stencil/core';
+import { Component, Element, Prop, State, Method, Host, h } from '@stencil/core';
 
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';
-import { getToastItemVariant } from './io-toast-utils';
+import { getToastItemVariant, isToastPersistent } from './io-toast-utils';
 
-import type { IoToastMessage, IoToastEntry } from './types';
+import type { IoToastMessage, IoToastEntry, IoToastPosition } from './types';
 
 /**
  * io-toast
@@ -32,6 +32,12 @@ import type { IoToastMessage, IoToastEntry } from './types';
 })
 export class IoToast {
   @Element() el!: HTMLElement;
+
+  /**
+   * Where on screen the toast stack appears.
+   * @default 'bottom-end'
+   */
+  @Prop() position: IoToastPosition = 'bottom-end';
 
   @State() private currentMsg: IoToastEntry | null = null;
 
@@ -62,8 +68,17 @@ export class IoToast {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
+    const persistent = this.currentMsg ? isToastPersistent(this.currentMsg) : false;
+    const liveRole = persistent ? 'alertdialog' : 'status';
+    const liveValue = persistent ? 'assertive' : 'polite';
+
     return (
-      <Host role="status" aria-live="polite" aria-atomic="true">
+      <Host
+        role={liveRole}
+        aria-live={liveValue}
+        aria-atomic="true"
+        data-position={this.position}
+      >
         <style>{getToastStyles()}</style>
         {this.currentMsg && (
           <io-toast-item

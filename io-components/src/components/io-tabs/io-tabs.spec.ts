@@ -144,4 +144,49 @@ describe('io-tabs — listener teardown', () => {
   });
 });
 
+describe('io-tabs — badge aria-label stripping', () => {
+  it('sets aria-label to visible text when button contains a badge element', () => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+
+    const label = document.createTextNode('Overview');
+    const badge = document.createElement('span');
+    badge.setAttribute('data-slot', 'badge');
+    badge.textContent = '3';
+    btn.appendChild(label);
+    btn.appendChild(badge);
+
+    const component = makeComponent([btn]);
+    (component as any).syncFromSlot();
+
+    // aria-label should be the visible text without the badge count
+    expect(btn.getAttribute('aria-label')).toBe('Overview');
+  });
+
+  it('does not override an existing aria-label on badge buttons', () => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Inbox messages');
+
+    const badge = document.createElement('span');
+    badge.setAttribute('data-slot', 'badge');
+    badge.textContent = '5';
+    btn.textContent = 'Inbox';
+    btn.appendChild(badge);
+
+    const component = makeComponent([btn]);
+    (component as any).syncFromSlot();
+
+    expect(btn.getAttribute('aria-label')).toBe('Inbox messages');
+  });
+
+  it('does not set aria-label when there is no badge element', () => {
+    const btn = makeButton('No badge');
+    const component = makeComponent([btn]);
+    (component as any).syncFromSlot();
+
+    expect(btn.hasAttribute('aria-label')).toBe(false);
+  });
+});
+
 

@@ -15,3 +15,8 @@ export function createToastEntry(message: IoToastMessage, id: number): IoToastEn
 export function getToastItemVariant(entry: IoToastEntry): IoToastVariant {
   return entry.variant ?? 'neutral';
 }
+
+/** Error-variant toasts and explicitly persistent toasts never auto-dismiss. */
+export function isToastPersistent(entry: IoToastEntry): boolean {
+  return entry.persistent === true || entry.variant === 'error';
+}

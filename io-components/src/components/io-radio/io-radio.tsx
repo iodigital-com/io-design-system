@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
@@ -80,17 +80,43 @@ export class IoRadio {
     return this.internals?.reportValidity?.() ?? true;
   }
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultChecked = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveRadioId(this.name, this.fallbackId);
+    this.defaultChecked = this.checked;
     this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.checked = this.defaultChecked;
+    this.syncFormValue();
+
+    // Mutual exclusion: if this radio resets to checked, deselect same-name siblings
+    // to prevent multiple radios in the same group being checked after a form reset
+    if (this.defaultChecked && this.name) {
+      const name = this.name;
+      document.querySelectorAll('io-radio').forEach((sibling) => {
+        if (sibling !== this.el) {
+          const s = sibling as HTMLElement & { name?: string; checked: boolean };
+          if (s.name === name && s.checked) {
+            s.checked = false;
+          }
+        }
+      });
+    }
   }
 
   @Watch('checked')
@@ -123,11 +149,14 @@ export class IoRadio {
         : false;
       if (!groupSatisfied) {
         this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+        this.faceInvalid = true;
       } else {
         this.internals?.setValidity?.({});
+        this.faceInvalid = false;
       }
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -182,7 +211,7 @@ export class IoRadio {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={error ? 'true' : undefined}
+                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
 
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
@@ -83,16 +83,29 @@ export class IoCheckbox {
     return this.internals?.reportValidity?.() ?? true;
   }
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultChecked = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveCheckboxId(this.name, this.fallbackId);
+    this.defaultChecked = this.checked;
+    this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.checked = this.defaultChecked;
+    this.indeterminate = false;
     this.syncFormValue();
   }
 
@@ -116,8 +129,10 @@ export class IoCheckbox {
     this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -159,7 +174,7 @@ export class IoCheckbox {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={error ? 'true' : undefined}
+                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={error && errorMessage ? errorId : undefined}
                 onChange={this.handleChange}
               />

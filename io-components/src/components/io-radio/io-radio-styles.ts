@@ -90,9 +90,16 @@ export function getRadioStyles(): string {
       }
     }
 
-    /* Error border */
+    /* Error border — 2px width satisfies WCAG 1.4.1 (non-color indicator) */
     .radio-wrapper--error .radio-custom:not(.radio-custom--checked) {
       border-color: var(--io-border-error);
+      border-width: 2px;
+    }
+
+    /* FACE :invalid pseudo-class — browser sets this via setValidity({ valueMissing }) */
+    :host(:invalid) .radio-custom:not(.radio-custom--checked) {
+      border-color: var(--io-border-error);
+      border-width: 2px;
     }
 
     /* Focus ring on native input → show on custom visual */

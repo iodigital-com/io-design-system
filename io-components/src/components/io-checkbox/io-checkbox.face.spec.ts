@@ -87,4 +87,44 @@ describe('io-checkbox — FACE', () => {
     (component as any).internals = undefined;
     expect(await component.reportValidity()).toBe(true);
   });
+
+  it('syncFormValue sets faceInvalid=true when required and unchecked', () => {
+    (component as any).internals = makeInternals();
+    component.required = true;
+    component.checked = false;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
+  it('syncFormValue sets faceInvalid=false when required and checked', () => {
+    (component as any).internals = makeInternals();
+    component.required = true;
+    component.checked = true;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('formResetCallback resets to defaultChecked=false and clears formValue', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.checked = true;
+    (component as any).formResetCallback();
+    expect(component.checked).toBe(false);
+    expect(internals.setFormValue).toHaveBeenLastCalledWith(null);
+  });
+
+  it('formResetCallback restores defaultChecked=true when initially checked', () => {
+    const c = new IoCheckbox();
+    (c as any).el = document.createElement('io-checkbox');
+    (c as any).label = 'Accept';
+    c.value = 'yes';
+    c.checked = true;
+    (c as any).componentWillLoad();
+    const internals = makeInternals();
+    (c as any).internals = internals;
+    c.checked = false;
+    (c as any).formResetCallback();
+    expect(c.checked).toBe(true);
+    expect(internals.setFormValue).toHaveBeenLastCalledWith('yes');
+  });
 });

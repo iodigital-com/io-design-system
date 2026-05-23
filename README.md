@@ -330,6 +330,32 @@ Every component change should preserve:
 4. Contrast compliance.
 5. Reduced motion compatibility where relevant.
 
+## Opening an Issue
+
+Use the structured issue templates to route your request correctly:
+
+| What you need | Template to use |
+|---|---|
+| Something is broken (wrong behaviour, crash, visual regression, a11y failure) | **Bug Report** |
+| Propose a new component, prop, token, or storefront section | **Feature Request** |
+| Ask how to use a component or token correctly | **Implementation Question** |
+
+Create a new issue at: [github.com/iodigital-com/io-design-system/issues/new/choose](https://github.com/iodigital-com/io-design-system/issues/new/choose)
+
+Blank / freeform issues are disabled — all issues must use a template so we can triage efficiently.
+
+### Choosing the right scope
+
+| Area | Scope label |
+|---|---|
+| Web component source code | `io-component` |
+| Documentation storefront | `io-storefront` |
+| Design tokens / CSS custom properties | `tokens` |
+| React / Vue / Angular wrapper package | `wrappers` |
+| Governance scripts or CI | `chore` |
+
+---
+
 ## Contributing Workflow
 
 For full details, see CONTRIBUTING.md. High-level path:

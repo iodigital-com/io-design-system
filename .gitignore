@@ -51,4 +51,6 @@ firebase-debug.log
 .github/*
 !.github/workflows/
 !.github/workflows/*.yml
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE/*.yml
 .vscode/

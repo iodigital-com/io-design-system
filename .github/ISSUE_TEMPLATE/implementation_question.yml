@@ -1,0 +1,43 @@
+name: Implementation Question
+description: Ask about how to use a component, token, or API correctly.
+title: "question({scope}): {short description}"
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Not every question is a bug or feature. Use this template if you need guidance on how to use the design system correctly.
+
+        > **Tip:** Check the [storefront documentation](https://io-design-system.iodigital.com) and [CONTRIBUTING.md](../CONTRIBUTING.md) first.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Topic area
+      options:
+        - Component usage
+        - Token usage / theming
+        - Framework wrapper (React / Vue / Angular)
+        - Accessibility / WCAG compliance
+        - Governance or quality gates
+        - Contributing / development workflow
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: Describe what you are trying to do and what you have already tried.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / code snippet
+      description: Share relevant code if it helps explain the question.
+      render: html
+    validations:
+      required: false

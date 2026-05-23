@@ -14,6 +14,7 @@ export type IoTagNames =
   | 'io-carousel'
   | 'io-checkbox'
   | 'io-divider'
+  | 'io-drawer'
   | 'io-input'
   | 'io-link'
   | 'io-modal'

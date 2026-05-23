@@ -8,6 +8,10 @@ function updateFile(relativePath, replacements) {
   let content = fs.readFileSync(filePath, 'utf8');
 
   replacements.forEach(({ from, to, label }) => {
+    // Idempotent behavior: if the target patch is already present, skip.
+    if (content.includes(to)) {
+      return;
+    }
     if (!content.includes(from)) {
       throw new Error(`Pattern not found for ${label} in ${relativePath}`);
     }

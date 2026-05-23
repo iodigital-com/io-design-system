@@ -1,0 +1,278 @@
+name: Release Packages
+
+on:
+  push:
+    tags:
+      - release/components/v*
+      - release/components-react/v*
+      - release/components-vue/v*
+      - release/components-angular/v*
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to publish
+        type: choice
+        required: true
+        default: all
+        options:
+          - all
+          - components
+          - components-react
+          - components-vue
+          - components-angular
+      dry_run:
+        description: Dry run only
+        type: boolean
+        required: true
+        default: true
+      confirm:
+        description: Type PUBLISH to continue
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-packages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    name: Resolve release targets
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.resolve.outputs.matrix }}
+      tag_version: ${{ steps.resolve.outputs.tag_version }}
+      dry_run: ${{ steps.resolve.outputs.dry_run }}
+    steps:
+      - name: Validate manual confirmation
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if [ "${{ inputs.confirm }}" != "PUBLISH" ]; then
+            echo "Manual release blocked. confirm must equal PUBLISH."
+            exit 1
+          fi
+
+      - name: Enforce main branch for manual release
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if [ "${{ github.ref_name }}" != "main" ]; then
+            echo "Manual release blocked. Run workflow from main branch only."
+            exit 1
+          fi
+
+      - name: Enforce protected main for manual publish
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run == false
+        run: |
+          if [ "${{ github.ref_protected }}" != "true" ]; then
+            echo "Manual publish blocked. Run from a protected branch only."
+            exit 1
+          fi
+
+      - name: Enforce protected tag for tag-triggered release
+        if: github.event_name == 'push'
+        run: |
+          if [ "${{ github.ref_protected }}" != "true" ]; then
+            echo "Tag-triggered release blocked. Protect the matching release tag pattern before publishing."
+            exit 1
+          fi
+
+      - id: resolve
+        name: Build package matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            ref="${GITHUB_REF_NAME}"
+            case "$ref" in
+              release/components/v*)
+                matrix='[{"workspace":"@io-digital/components","path":"io-components"}]'
+                ;;
+              release/components-react/v*)
+                matrix='[{"workspace":"@io-digital/components-react","path":"io-components-react"}]'
+                ;;
+              release/components-vue/v*)
+                matrix='[{"workspace":"@io-digital/components-vue","path":"io-components-vue"}]'
+                ;;
+              release/components-angular/v*)
+                matrix='[{"workspace":"@io-digital/components-angular","path":"io-components-angular"}]'
+                ;;
+              *)
+                echo "Unsupported tag format: $ref"
+                exit 1
+                ;;
+            esac
+
+            tag_version="${ref##*/v}"
+            if ! [[ "$tag_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
+              echo "Invalid release tag version: $tag_version"
+              echo "Expected SemVer (e.g. 1.2.3, 1.2.3-rc.1, 1.2.3+build.1)."
+              exit 1
+            fi
+            echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+            echo "tag_version=$tag_version" >> "$GITHUB_OUTPUT"
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "${{ inputs.package }}" in
+            all)
+              matrix='[
+                {"workspace":"@io-digital/components","path":"io-components"},
+                {"workspace":"@io-digital/components-react","path":"io-components-react"},
+                {"workspace":"@io-digital/components-vue","path":"io-components-vue"},
+                {"workspace":"@io-digital/components-angular","path":"io-components-angular"}
+              ]'
+              ;;
+            components)
+              matrix='[{"workspace":"@io-digital/components","path":"io-components"}]'
+              ;;
+            components-react)
+              matrix='[{"workspace":"@io-digital/components-react","path":"io-components-react"}]'
+              ;;
+            components-vue)
+              matrix='[{"workspace":"@io-digital/components-vue","path":"io-components-vue"}]'
+              ;;
+            components-angular)
+              matrix='[{"workspace":"@io-digital/components-angular","path":"io-components-angular"}]'
+              ;;
+            *)
+              echo "Unknown package input: ${{ inputs.package }}"
+              exit 1
+              ;;
+          esac
+
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "tag_version=" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${{ inputs.dry_run }}" >> "$GITHUB_OUTPUT"
+
+  quality-gates:
+    name: Quality gates
+    runs-on: ubuntu-latest
+    needs: resolve
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Ensure tag release commit is on main
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Tagged commit is not reachable from origin/main."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full quality gates
+        run: npm run build:quality-gates
+
+  publish:
+    name: Publish package(s)
+    runs-on: ubuntu-latest
+    needs: [resolve, quality-gates]
+    environment: github-packages-publish
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.resolve.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: "@io-digital"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: |
+          npm run build:components
+          npm run build:wrappers
+
+      - name: Validate package version for tag releases
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./${{ matrix.path }}/package.json').version")"
+          if [ -n "${{ needs.resolve.outputs.tag_version }}" ] && [ "$version" != "${{ needs.resolve.outputs.tag_version }}" ]; then
+            echo "Version mismatch for ${{ matrix.workspace }}: package.json=$version tag=${{ needs.resolve.outputs.tag_version }}"
+            exit 1
+          fi
+          pkg_name="$(node -p "require('./${{ matrix.path }}/package.json').name")"
+          if [ "$pkg_name" != "${{ matrix.workspace }}" ]; then
+            echo "Package identity mismatch: matrix=${{ matrix.workspace }} package.json=$pkg_name"
+            exit 1
+          fi
+          echo "PACKAGE_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Check whether version already exists
+        id: exists
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          output_file="$(mktemp)"
+          if npm view "${{ matrix.workspace }}@${PACKAGE_VERSION}" version --registry https://npm.pkg.github.com > "$output_file" 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          elif grep -q "E404" "$output_file"; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          else
+            cat "$output_file"
+            echo "Failed to verify existing version for ${{ matrix.workspace }}@${PACKAGE_VERSION}."
+            exit 1
+          fi
+
+      - name: Block non-dry-run publish when version already exists
+        if: steps.exists.outputs.exists == 'true' && needs.resolve.outputs.dry_run == 'false'
+        shell: bash
+        run: |
+          echo "Publish blocked: ${{ matrix.workspace }}@${PACKAGE_VERSION} already exists."
+          echo "Bump package version before retrying publish."
+          exit 1
+
+      - name: Publish
+        if: steps.exists.outputs.exists == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ needs.resolve.outputs.dry_run }}" = "true" ]; then
+            npm publish --workspace "${{ matrix.workspace }}" --registry https://npm.pkg.github.com --dry-run
+          else
+            npm publish --workspace "${{ matrix.workspace }}" --registry https://npm.pkg.github.com
+          fi
+
+      - name: Release summary
+        shell: bash
+        run: |
+          if [ "${{ steps.exists.outputs.exists }}" = "true" ]; then
+            echo "Skipped ${{ matrix.workspace }}@${PACKAGE_VERSION} (already published)." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ needs.resolve.outputs.dry_run }}" = "true" ]; then
+            echo "Dry run completed for ${{ matrix.workspace }}@${PACKAGE_VERSION}." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Published ${{ matrix.workspace }}@${PACKAGE_VERSION}." >> "$GITHUB_STEP_SUMMARY"
+          fi

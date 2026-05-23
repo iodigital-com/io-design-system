@@ -648,12 +648,28 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-color-dark-info",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Dark-mode info colour token — added Wave H."
+    },
+    {
       "runtimeCssVar": "--io-color-dark-playground-dot",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-success",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Dark-mode success colour token — added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-dark-text-muted",
@@ -678,6 +694,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-dark-warning",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Dark-mode warning colour token — added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-error",
@@ -774,6 +798,22 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-color-info",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Info colour token — added Wave H."
+    },
+    {
+      "runtimeCssVar": "--io-color-info-soft",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Soft info colour token (rgba, 10% opacity) — added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-lavendel",

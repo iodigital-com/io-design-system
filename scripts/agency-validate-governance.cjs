@@ -257,8 +257,8 @@ requireFile("docs/storefront-status-governance.md");
 requireFile("docs/component-stability-recommendations.md");
 
 // Deprecated paths must be removed
+// Note: .claude/ is excluded — it is the Claude Code CLI tooling directory (images, worktrees, settings).
 requirePathAbsent(".agent");
-requirePathAbsent(".claude");
 requirePathAbsent(".codex");
 requirePathAbsent(".gemini");
 requirePathAbsent("CLAUDE.md");
@@ -314,7 +314,6 @@ requireText("docs/agency-agents/README.md", [
   "npm run agents:install:claude",
   "npm run agents:sync:copilot",
   "npm run agents:sync:copilot-extended",
-  "CI is intentionally disabled",
 ]);
 
 requireText("AGENTS.md", [

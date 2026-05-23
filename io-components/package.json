@@ -4,7 +4,8 @@
   "description": "io Digital Design System — Framework-agnostic Web Components built with Stencil.js",
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
     "dist/",
@@ -25,15 +26,16 @@
       "import": "./dist-custom-elements/index.js"
     },
     "./styles": {
-      "import": "./dist/styles/index.js"
+      "types": "./dist/types/styles/index.d.ts",
+      "import": "./dist/collection/styles/index.js"
     },
     "./utils/tooltip-init": {
-      "types": "./src/utils/tooltip-init.ts",
-      "import": "./src/utils/tooltip-init.ts"
+      "types": "./dist/types/utils/tooltip-init.d.ts",
+      "import": "./dist/collection/utils/tooltip-init.js"
     },
     "./utils/focus-visible": {
-      "types": "./src/utils/focus-visible.ts",
-      "import": "./src/utils/focus-visible.ts"
+      "types": "./dist/types/utils/focus-visible.d.ts",
+      "import": "./dist/collection/utils/focus-visible.js"
     }
   },
   "types": "dist/types/index.d.ts",

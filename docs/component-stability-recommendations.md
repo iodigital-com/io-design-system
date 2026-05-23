@@ -26,7 +26,7 @@ Additional targeted evidence:
 
 | Component | Current Status | Evidence Collected | Recommendation | Rationale |
 |---|---|---|---|---|
-| `io-pagination` | `beta` | Expanded event, boundary, range/ellipsis, aria, and invalid-prop coverage in component specs | **Promote candidate** (eligible for `stable`) | Behavior and accessibility expectations are now explicitly asserted with guard coverage and passing gates |
+| `io-pagination` | `stable` ✅ (promoted) | Expanded event, boundary, range/ellipsis, aria, and invalid-prop coverage in component specs | **Promoted to `stable`** | Promotion executed — status updated in `io-storefront/src/sitemap.ts` |
 | `io-carousel` | `beta` | Expanded navigation/rewind/sync tests and keyboard button contract coverage; explicit accessibility strategy documented | **Hold at beta** | Drag remains pointer-only by deliberate decision (Option B). Button navigation is accessible, but drag parity is intentionally deferred |
 | `io-accordion` | `beta` | Existing baseline tests and status governance alignment checks | **Hold at beta** | No dedicated promotion-readiness expansion was completed in this batch; keep status until follow-up validation closes |
 

@@ -103,7 +103,8 @@ The gate verifies:
 
 ## CI Status
 
-CI is intentionally disabled in this migration phase. Run local quality gates before contributing:
+CI is active — the `pr.yml` workflow enforces all quality gates on every PR targeting `main`.
+Run local quality gates before contributing:
 
 ```bash
 npm run governance:check

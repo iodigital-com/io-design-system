@@ -1,0 +1,76 @@
+/*
+ * Brand Override Example — io Design System
+ * ==========================================
+ * White-label consumers can override io Design System tokens using the
+ * CSS @layer architecture introduced in io-components.css.
+ *
+ * How it works
+ * ------------
+ * io-components.css declares: @layer io, brand;
+ *
+ * This establishes layer priority: brand > io. Rules inside @layer brand
+ * automatically win over rules inside @layer io, without needing !important.
+ *
+ * Usage
+ * -----
+ * 1. Import io-components.css first (Stencil output, or the package dist).
+ * 2. Import this file (or your own brand stylesheet) after it.
+ * 3. All brand-layer overrides will take precedence over io-layer defaults.
+ *
+ * Next.js example:
+ *   // app/layout.tsx
+ *   import '@io-digital/components/dist/io-components/io-components.css';
+ *   import './brand-overrides.css'; // your brand layer file
+ *
+ * Vanilla HTML example:
+ *   <link rel="stylesheet" href="io-components.css" />
+ *   <link rel="stylesheet" href="brand-overrides.css" />
+ *
+ * Angular example:
+ *   // angular.json > projects > architect > build > styles
+ *   "styles": [
+ *     "node_modules/@io-digital/components/dist/io-components/io-components.css",
+ *     "src/brand-overrides.css"
+ *   ]
+ *
+ * Which tokens are safe to override
+ * ----------------------------------
+ * SAFE — brand primitive tokens (the ones below):
+ *   --io-color-primary, --io-color-primary-hover, --io-color-primary-active
+ *   --io-color-primary-muted, --io-color-primary-bg
+ *   --io-font-primary
+ *   --io-border-radius-sm, --io-border-radius-md, --io-border-radius-lg
+ *   --io-border-radius-xl, --io-border-radius-pill
+ *
+ * CAUTION — semantic tokens (changing these affects the entire system):
+ *   --io-text-primary, --io-bg-page, --io-border, --io-accent
+ *
+ * AVOID — component-internal tokens are implementation details:
+ *   --io-color-dark-*, --io-skeleton-bg, --io-combobox-z, etc.
+ *   These are not part of the public API and may change without a semver bump.
+ *
+ * See /developing/customisation for the full public CSS API reference.
+ */
+
+@layer brand {
+  :root {
+    /* ── Primary brand colour ───────────────────────────────── */
+    /* Replace with your brand's primary interactive colour.     */
+    /* Ensure sufficient contrast (WCAG AA: ≥4.5:1 on white).   */
+    --io-color-primary:        #E20074;   /* example: Magenta brand */
+    --io-color-primary-hover:  #B8005D;
+    --io-color-primary-active: #8C0048;
+    --io-color-primary-muted:  rgba(226, 0, 116, 0.12);
+    --io-color-primary-bg:     rgba(226, 0, 116, 0.06);
+
+    /* ── Brand typeface ─────────────────────────────────────── */
+    /* Replace with your brand's primary font family.            */
+    /* Load the font before applying it (Google Fonts, etc.).    */
+    --io-font-primary:         'Your Brand Font', sans-serif;
+
+    /* ── Border radius ──────────────────────────────────────── */
+    /* Adjust corner radii to match your brand's shape language. */
+    /* --io-border-radius-sm: 9px;    default                   */
+    /* --io-border-radius-pill: 9999px; default                 */
+  }
+}

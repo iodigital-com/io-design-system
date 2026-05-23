@@ -42,6 +42,7 @@ declare module 'react' {
   'io-toast': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastElement>, HTMLIoToastElement> & Partial<StencilJSX.IoToast>;
   'io-toast-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastItemElement>, HTMLIoToastItemElement> & Partial<StencilJSX.IoToastItem>;
   'io-tooltip': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTooltipElement>, HTMLIoTooltipElement> & Partial<StencilJSX.IoTooltip>;
+  'io-wordmark': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoWordmarkElement>, HTMLIoWordmarkElement> & Partial<StencilJSX.IoWordmark>;
     }
   }
 }

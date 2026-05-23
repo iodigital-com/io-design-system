@@ -15,6 +15,7 @@ import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
@@ -25,11 +26,13 @@ import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSkeletonVariant } from "./components/io-skeleton/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
+import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
+import { IoWordmarkSize } from "./components/io-wordmark/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
@@ -40,6 +43,7 @@ export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
@@ -50,11 +54,13 @@ export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSkeletonVariant } from "./components/io-skeleton/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
+export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
+export { IoWordmarkSize } from "./components/io-wordmark/types";
 export namespace Components {
     /**
      * io-accordion
@@ -492,6 +498,56 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoDrawerSize;
+    }
+    /**
+     * io-file-upload
+     * ==============
+     * Accessible file upload control with drag-and-drop zone,
+     * click-to-browse, file type/size validation, and a removable file list.
+     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
+     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
+     */
+    interface IoFileUpload {
+        /**
+          * Accepted MIME types or file extensions, comma-separated. Defaults to all files.
+          * @default '*'
+         */
+        "accept": string;
+        /**
+          * Disables all interactions
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Puts the component in error state
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown when error is true
+         */
+        "errorMessage": string | undefined;
+        /**
+          * Optional hint text shown below the drop zone
+         */
+        "helperText": string | undefined;
+        /**
+          * Visible label for the drop zone — also the accessible name
+         */
+        "label": string;
+        /**
+          * Maximum file size in bytes. Undefined means no limit.
+         */
+        "maxFileSize": number | undefined;
+        /**
+          * Allow multiple file selection
+          * @default false
+         */
+        "multiple": boolean;
+        /**
+          * Form field name
+         */
+        "name": string | undefined;
     }
     /**
      * io-input
@@ -1053,6 +1109,69 @@ export namespace Components {
         "size": IoSpinnerSize;
     }
     /**
+     * io-step
+     * =======
+     * Individual step item within an io-stepper container.
+     * Renders as an <li> with a circle indicator (number or checkmark), a visible
+     * label, a connector line, and a screen-reader-only full description.
+     * The `index`, `total`, and `orientation` props are set programmatically by
+     * the parent io-stepper — you do not need to set them manually.
+     * @example <io-step label="Account" status="complete"></io-step>
+     * <io-step label="Details" status="current"></io-step>
+     * <io-step label="Review" status="upcoming"></io-step>
+     */
+    interface IoStep {
+        /**
+          * 1-based position of this step in the sequence. Set automatically by the parent io-stepper.
+          * @default 0
+         */
+        "index": number;
+        /**
+          * Visible text label for this step. Required.
+         */
+        "label": string;
+        /**
+          * Orientation inherited from the parent io-stepper. Set automatically by the parent io-stepper.
+          * @default 'horizontal'
+         */
+        "orientation": IoStepperOrientation;
+        /**
+          * Completion status — set automatically by io-stepper or manually.
+          * @default 'upcoming'
+         */
+        "status": IoStepStatus;
+        /**
+          * Total number of steps. Set automatically by the parent io-stepper.
+          * @default 0
+         */
+        "total": number;
+    }
+    /**
+     * io-stepper
+     * ==========
+     * Multi-step process indicator container.
+     * Renders as <nav aria-label="Progress"> containing an <ol> of io-step children.
+     * The `current` prop drives which step is marked as active; all steps before it
+     * are marked complete and all after are marked upcoming.
+     * @example <io-stepper current="2">
+     *   <io-step label="Account"></io-step>
+     *   <io-step label="Details"></io-step>
+     *   <io-step label="Review"></io-step>
+     * </io-stepper>
+     */
+    interface IoStepper {
+        /**
+          * 1-based index of the current active step.
+          * @default 1
+         */
+        "current": number;
+        /**
+          * Layout direction of the stepper.
+          * @default 'horizontal'
+         */
+        "orientation": IoStepperOrientation;
+    }
+    /**
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
@@ -1274,6 +1393,33 @@ export namespace Components {
          */
         "placement": IoTooltipPlacement;
     }
+    /**
+     * io-wordmark
+     * ===========
+     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
+     * "digital" in the current text colour, using the primary font at a
+     * token-driven size.
+     * @example <io-wordmark />
+     * <io-wordmark size="lg" />
+     * <io-wordmark mono />
+     */
+    interface IoWordmark {
+        /**
+          * Accessible label for the wordmark image
+          * @default 'io Digital'
+         */
+        "ariaLabel": string;
+        /**
+          * Monochrome mode — both "io" and "digital" use current text colour
+          * @default false
+         */
+        "mono": boolean;
+        /**
+          * Size scale controlling the overall font-size of the wordmark
+          * @default 'md'
+         */
+        "size": IoWordmarkSize;
+    }
 }
 export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1298,6 +1444,10 @@ export interface IoCheckboxCustomEvent<T> extends CustomEvent<T> {
 export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
+}
+export interface IoFileUploadCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoFileUploadElement;
 }
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1576,6 +1726,32 @@ declare global {
         prototype: HTMLIoDrawerElement;
         new (): HTMLIoDrawerElement;
     };
+    interface HTMLIoFileUploadElementEventMap {
+        "fileSelect": IoFileSelectDetail;
+        "fileReject": IoFileRejectDetail;
+    }
+    /**
+     * io-file-upload
+     * ==============
+     * Accessible file upload control with drag-and-drop zone,
+     * click-to-browse, file type/size validation, and a removable file list.
+     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
+     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
+     */
+    interface HTMLIoFileUploadElement extends Components.IoFileUpload, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoFileUploadElementEventMap>(type: K, listener: (this: HTMLIoFileUploadElement, ev: IoFileUploadCustomEvent<HTMLIoFileUploadElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoFileUploadElementEventMap>(type: K, listener: (this: HTMLIoFileUploadElement, ev: IoFileUploadCustomEvent<HTMLIoFileUploadElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoFileUploadElement: {
+        prototype: HTMLIoFileUploadElement;
+        new (): HTMLIoFileUploadElement;
+    };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
         "change": string;
@@ -1848,6 +2024,43 @@ declare global {
         prototype: HTMLIoSpinnerElement;
         new (): HTMLIoSpinnerElement;
     };
+    /**
+     * io-step
+     * =======
+     * Individual step item within an io-stepper container.
+     * Renders as an <li> with a circle indicator (number or checkmark), a visible
+     * label, a connector line, and a screen-reader-only full description.
+     * The `index`, `total`, and `orientation` props are set programmatically by
+     * the parent io-stepper — you do not need to set them manually.
+     * @example <io-step label="Account" status="complete"></io-step>
+     * <io-step label="Details" status="current"></io-step>
+     * <io-step label="Review" status="upcoming"></io-step>
+     */
+    interface HTMLIoStepElement extends Components.IoStep, HTMLStencilElement {
+    }
+    var HTMLIoStepElement: {
+        prototype: HTMLIoStepElement;
+        new (): HTMLIoStepElement;
+    };
+    /**
+     * io-stepper
+     * ==========
+     * Multi-step process indicator container.
+     * Renders as <nav aria-label="Progress"> containing an <ol> of io-step children.
+     * The `current` prop drives which step is marked as active; all steps before it
+     * are marked complete and all after are marked upcoming.
+     * @example <io-stepper current="2">
+     *   <io-step label="Account"></io-step>
+     *   <io-step label="Details"></io-step>
+     *   <io-step label="Review"></io-step>
+     * </io-stepper>
+     */
+    interface HTMLIoStepperElement extends Components.IoStepper, HTMLStencilElement {
+    }
+    var HTMLIoStepperElement: {
+        prototype: HTMLIoStepperElement;
+        new (): HTMLIoStepperElement;
+    };
     interface HTMLIoTabsElementEventMap {
         "update": IoTabsUpdateDetail;
     }
@@ -1999,6 +2212,22 @@ declare global {
         prototype: HTMLIoTooltipElement;
         new (): HTMLIoTooltipElement;
     };
+    /**
+     * io-wordmark
+     * ===========
+     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
+     * "digital" in the current text colour, using the primary font at a
+     * token-driven size.
+     * @example <io-wordmark />
+     * <io-wordmark size="lg" />
+     * <io-wordmark mono />
+     */
+    interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
+    }
+    var HTMLIoWordmarkElement: {
+        prototype: HTMLIoWordmarkElement;
+        new (): HTMLIoWordmarkElement;
+    };
     interface HTMLElementTagNameMap {
         "io-accordion": HTMLIoAccordionElement;
         "io-avatar": HTMLIoAvatarElement;
@@ -2010,6 +2239,7 @@ declare global {
         "io-checkbox": HTMLIoCheckboxElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
+        "io-file-upload": HTMLIoFileUploadElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -2021,12 +2251,15 @@ declare global {
         "io-select": HTMLIoSelectElement;
         "io-skeleton": HTMLIoSkeletonElement;
         "io-spinner": HTMLIoSpinnerElement;
+        "io-step": HTMLIoStepElement;
+        "io-stepper": HTMLIoStepperElement;
         "io-tabs": HTMLIoTabsElement;
         "io-tag": HTMLIoTagElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
         "io-toast-item": HTMLIoToastItemElement;
         "io-tooltip": HTMLIoTooltipElement;
+        "io-wordmark": HTMLIoWordmarkElement;
     }
 }
 declare namespace LocalJSX {
@@ -2470,6 +2703,64 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoDrawerSize;
+    }
+    /**
+     * io-file-upload
+     * ==============
+     * Accessible file upload control with drag-and-drop zone,
+     * click-to-browse, file type/size validation, and a removable file list.
+     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
+     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
+     */
+    interface IoFileUpload {
+        /**
+          * Accepted MIME types or file extensions, comma-separated. Defaults to all files.
+          * @default '*'
+         */
+        "accept"?: string;
+        /**
+          * Disables all interactions
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Puts the component in error state
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown when error is true
+         */
+        "errorMessage"?: string | undefined;
+        /**
+          * Optional hint text shown below the drop zone
+         */
+        "helperText"?: string | undefined;
+        /**
+          * Visible label for the drop zone — also the accessible name
+         */
+        "label": string;
+        /**
+          * Maximum file size in bytes. Undefined means no limit.
+         */
+        "maxFileSize"?: number | undefined;
+        /**
+          * Allow multiple file selection
+          * @default false
+         */
+        "multiple"?: boolean;
+        /**
+          * Form field name
+         */
+        "name"?: string | undefined;
+        /**
+          * Emitted for each rejected file with the reason
+         */
+        "onFileReject"?: (event: IoFileUploadCustomEvent<IoFileRejectDetail>) => void;
+        /**
+          * Emitted when valid files are selected or dropped
+         */
+        "onFileSelect"?: (event: IoFileUploadCustomEvent<IoFileSelectDetail>) => void;
     }
     /**
      * io-input
@@ -3032,6 +3323,69 @@ declare namespace LocalJSX {
         "size"?: IoSpinnerSize;
     }
     /**
+     * io-step
+     * =======
+     * Individual step item within an io-stepper container.
+     * Renders as an <li> with a circle indicator (number or checkmark), a visible
+     * label, a connector line, and a screen-reader-only full description.
+     * The `index`, `total`, and `orientation` props are set programmatically by
+     * the parent io-stepper — you do not need to set them manually.
+     * @example <io-step label="Account" status="complete"></io-step>
+     * <io-step label="Details" status="current"></io-step>
+     * <io-step label="Review" status="upcoming"></io-step>
+     */
+    interface IoStep {
+        /**
+          * 1-based position of this step in the sequence. Set automatically by the parent io-stepper.
+          * @default 0
+         */
+        "index"?: number;
+        /**
+          * Visible text label for this step. Required.
+         */
+        "label": string;
+        /**
+          * Orientation inherited from the parent io-stepper. Set automatically by the parent io-stepper.
+          * @default 'horizontal'
+         */
+        "orientation"?: IoStepperOrientation;
+        /**
+          * Completion status — set automatically by io-stepper or manually.
+          * @default 'upcoming'
+         */
+        "status"?: IoStepStatus;
+        /**
+          * Total number of steps. Set automatically by the parent io-stepper.
+          * @default 0
+         */
+        "total"?: number;
+    }
+    /**
+     * io-stepper
+     * ==========
+     * Multi-step process indicator container.
+     * Renders as <nav aria-label="Progress"> containing an <ol> of io-step children.
+     * The `current` prop drives which step is marked as active; all steps before it
+     * are marked complete and all after are marked upcoming.
+     * @example <io-stepper current="2">
+     *   <io-step label="Account"></io-step>
+     *   <io-step label="Details"></io-step>
+     *   <io-step label="Review"></io-step>
+     * </io-stepper>
+     */
+    interface IoStepper {
+        /**
+          * 1-based index of the current active step.
+          * @default 1
+         */
+        "current"?: number;
+        /**
+          * Layout direction of the stepper.
+          * @default 'horizontal'
+         */
+        "orientation"?: IoStepperOrientation;
+    }
+    /**
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
@@ -3273,6 +3627,33 @@ declare namespace LocalJSX {
          */
         "placement"?: IoTooltipPlacement;
     }
+    /**
+     * io-wordmark
+     * ===========
+     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
+     * "digital" in the current text colour, using the primary font at a
+     * token-driven size.
+     * @example <io-wordmark />
+     * <io-wordmark size="lg" />
+     * <io-wordmark mono />
+     */
+    interface IoWordmark {
+        /**
+          * Accessible label for the wordmark image
+          * @default 'io Digital'
+         */
+        "ariaLabel"?: string;
+        /**
+          * Monochrome mode — both "io" and "digital" use current text colour
+          * @default false
+         */
+        "mono"?: boolean;
+        /**
+          * Size scale controlling the overall font-size of the wordmark
+          * @default 'md'
+         */
+        "size"?: IoWordmarkSize;
+    }
 
     interface IoAccordionAttributes {
         "open": boolean;
@@ -3353,6 +3734,17 @@ declare namespace LocalJSX {
         "heading": string;
         "closeOnBackdrop": boolean;
         "closeLabel": string;
+    }
+    interface IoFileUploadAttributes {
+        "label": string;
+        "accept": string;
+        "multiple": boolean;
+        "maxFileSize": number | undefined;
+        "disabled": boolean;
+        "helperText": string | undefined;
+        "error": boolean;
+        "errorMessage": string | undefined;
+        "name": string | undefined;
     }
     interface IoInputAttributes {
         "label": string;
@@ -3455,6 +3847,17 @@ declare namespace LocalJSX {
         "color": IoSpinnerColor;
         "label": string;
     }
+    interface IoStepAttributes {
+        "label": string;
+        "status": IoStepStatus;
+        "index": number;
+        "total": number;
+        "orientation": IoStepperOrientation;
+    }
+    interface IoStepperAttributes {
+        "current": number;
+        "orientation": IoStepperOrientation;
+    }
     interface IoTabsAttributes {
         "activeTabIndex": number;
         "label": string;
@@ -3494,6 +3897,11 @@ declare namespace LocalJSX {
         "content": string;
         "placement": IoTooltipPlacement;
     }
+    interface IoWordmarkAttributes {
+        "size": IoWordmarkSize;
+        "mono": boolean;
+        "ariaLabel": string;
+    }
 
     interface IntrinsicElements {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
@@ -3506,6 +3914,7 @@ declare namespace LocalJSX {
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
+        "io-file-upload": Omit<IoFileUpload, keyof IoFileUploadAttributes> & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes]?: IoFileUpload[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `attr:${K}`]?: IoFileUploadAttributes[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `prop:${K}`]?: IoFileUpload[K] } & OneOf<"label", IoFileUpload["label"], IoFileUploadAttributes["label"]>;
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -3517,12 +3926,15 @@ declare namespace LocalJSX {
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-skeleton": Omit<IoSkeleton, keyof IoSkeletonAttributes> & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes]?: IoSkeleton[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `attr:${K}`]?: IoSkeletonAttributes[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `prop:${K}`]?: IoSkeleton[K] };
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
+        "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
+        "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
         "io-toast-item": Omit<IoToastItem, keyof IoToastItemAttributes> & { [K in keyof IoToastItem & keyof IoToastItemAttributes]?: IoToastItem[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `attr:${K}`]?: IoToastItemAttributes[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `prop:${K}`]?: IoToastItem[K] };
         "io-tooltip": Omit<IoTooltip, keyof IoTooltipAttributes> & { [K in keyof IoTooltip & keyof IoTooltipAttributes]?: IoTooltip[K] } & { [K in keyof IoTooltip & keyof IoTooltipAttributes as `attr:${K}`]?: IoTooltipAttributes[K] } & { [K in keyof IoTooltip & keyof IoTooltipAttributes as `prop:${K}`]?: IoTooltip[K] };
+        "io-wordmark": Omit<IoWordmark, keyof IoWordmarkAttributes> & { [K in keyof IoWordmark & keyof IoWordmarkAttributes]?: IoWordmark[K] } & { [K in keyof IoWordmark & keyof IoWordmarkAttributes as `attr:${K}`]?: IoWordmarkAttributes[K] } & { [K in keyof IoWordmark & keyof IoWordmarkAttributes as `prop:${K}`]?: IoWordmark[K] };
     }
 }
 export { LocalJSX as JSX };
@@ -3645,6 +4057,15 @@ declare module "@stencil/core" {
              * </script>
              */
             "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
+            /**
+             * io-file-upload
+             * ==============
+             * Accessible file upload control with drag-and-drop zone,
+             * click-to-browse, file type/size validation, and a removable file list.
+             * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
+             * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
+             */
+            "io-file-upload": LocalJSX.IntrinsicElements["io-file-upload"] & JSXBase.HTMLAttributes<HTMLIoFileUploadElement>;
             /**
              * io-input
              * =========
@@ -3781,6 +4202,33 @@ declare module "@stencil/core" {
              */
             "io-spinner": LocalJSX.IntrinsicElements["io-spinner"] & JSXBase.HTMLAttributes<HTMLIoSpinnerElement>;
             /**
+             * io-step
+             * =======
+             * Individual step item within an io-stepper container.
+             * Renders as an <li> with a circle indicator (number or checkmark), a visible
+             * label, a connector line, and a screen-reader-only full description.
+             * The `index`, `total`, and `orientation` props are set programmatically by
+             * the parent io-stepper — you do not need to set them manually.
+             * @example <io-step label="Account" status="complete"></io-step>
+             * <io-step label="Details" status="current"></io-step>
+             * <io-step label="Review" status="upcoming"></io-step>
+             */
+            "io-step": LocalJSX.IntrinsicElements["io-step"] & JSXBase.HTMLAttributes<HTMLIoStepElement>;
+            /**
+             * io-stepper
+             * ==========
+             * Multi-step process indicator container.
+             * Renders as <nav aria-label="Progress"> containing an <ol> of io-step children.
+             * The `current` prop drives which step is marked as active; all steps before it
+             * are marked complete and all after are marked upcoming.
+             * @example <io-stepper current="2">
+             *   <io-step label="Account"></io-step>
+             *   <io-step label="Details"></io-step>
+             *   <io-step label="Review"></io-step>
+             * </io-stepper>
+             */
+            "io-stepper": LocalJSX.IntrinsicElements["io-stepper"] & JSXBase.HTMLAttributes<HTMLIoStepperElement>;
+            /**
              * io-tabs
              * ========
              * Slot-based controlled tabs-bar navigation with full keyboard support.
@@ -3853,6 +4301,17 @@ declare module "@stencil/core" {
              * </io-tooltip>
              */
             "io-tooltip": LocalJSX.IntrinsicElements["io-tooltip"] & JSXBase.HTMLAttributes<HTMLIoTooltipElement>;
+            /**
+             * io-wordmark
+             * ===========
+             * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
+             * "digital" in the current text colour, using the primary font at a
+             * token-driven size.
+             * @example <io-wordmark />
+             * <io-wordmark size="lg" />
+             * <io-wordmark mono />
+             */
+            "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }
     }
 }

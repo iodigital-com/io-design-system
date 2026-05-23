@@ -276,6 +276,14 @@ export const sitemap: NavSection[] = [
         description: 'Surfaces brief contextual help on hover or focus. Positioned automatically to stay within the viewport.',
         related: ['io-link', 'io-button', 'io-badge'],
       },
+      {
+        label: 'Wordmark',
+        href: '/components/io-wordmark/configurator',
+        status: 'beta',
+        slug: 'io-wordmark',
+        description: 'Brand wordmark rendering "io" in brand blue and "digital" in text colour. Token-driven sizes: sm, md, lg, xl.',
+        related: ['io-avatar', 'io-badge', 'io-link'],
+      },
     ],
   },
   {

@@ -356,6 +356,92 @@ Use [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope
 
 Example: `feat(io-button): add xl size variant`
 
+## SSR/SSG Compatibility
+
+### Why components need `'use client'`
+
+Stencil web components rely on browser globals (`window`, `document`, `HTMLElement`,
+`customElements`) at module evaluation time. These do not exist in the Node.js environment
+that Next.js uses during static-site generation (`npm run build:storefront`). Any file that
+imports from `@io-digital/components` at the JS module level — or calls Web APIs at the top
+level — will crash the Next.js build with `ReferenceError: window is not defined`.
+
+### How the storefront avoids this
+
+The storefront (`io-storefront/`) loads Stencil components via a `<script>` tag:
+
+```tsx
+// io-storefront/src/app/layout.tsx
+<Script src="/stencil/io-components.esm.js" type="module" strategy="beforeInteractive" />
+```
+
+This means the Stencil bundle is **never imported as an ES module** by storefront pages.
+Component tags (`<io-button>`, etc.) are used as JSX custom elements, which the TypeScript
+compiler treats as unknown elements resolved through `custom-elements.d.ts` (type-only, no
+runtime import).
+
+### Static export — no runtime Node.js server
+
+`io-storefront/next.config.ts` sets `output: 'export'`. The built site is 100% static HTML.
+There is no Next.js Node.js server at runtime — SSR errors only occur at **build time**
+during static page generation, not at request time.
+
+### Rules for safe Web Component usage
+
+| Rule | Reason |
+|---|---|
+| Every page/component that references `window`, `document`, `navigator`, or any DOM API **must** begin with `'use client';` | Marks the file as a React Client Component — Next.js only evaluates it in the browser |
+| Never import from `@io-digital/components` (the Stencil package) in a Server Component | The Stencil package imports DOM APIs at the top level |
+| `custom-elements.d.ts` type imports are safe anywhere | They are erased at compile time; no runtime impact |
+| Utility functions that touch the DOM must guard with `if (typeof document === 'undefined') return;` | Prevents crashes when the module is evaluated in Node.js during static generation |
+
+### The `dynamic()` pattern for any direct Stencil ES imports
+
+If a future page needs to import a value (not just types) from `@io-digital/components`
+inside a Server Component, wrap it with Next.js `dynamic()` and `ssr: false`:
+
+```tsx
+// Correct: lazily imported, browser-only
+import dynamic from 'next/dynamic';
+
+const IoButtonConfigurator = dynamic(
+  () => import('./IoButtonConfigurator'),
+  { ssr: false }
+);
+```
+
+Any component file referenced by `dynamic(..., { ssr: false })` must itself start with
+`'use client';` to prevent accidental server-side evaluation.
+
+### How `StencilInit` bridges hydration timing
+
+`io-storefront/src/components/layout/StencilInit.tsx` is the only storefront file that
+imports a runtime value from `@io-digital/components`:
+
+```ts
+import { initTooltipAttribute } from '@io-digital/components/utils/tooltip-init';
+```
+
+This is safe because:
+
+1. The file starts with `'use client';`.
+2. `initTooltipAttribute` guards with `if (typeof document === 'undefined') return;`.
+3. It is only called inside `useEffect(() => { ... }, [])` — client-side only.
+
+### Activating the Stencil hydrate output target (future)
+
+When the storefront migrates from static export to Next.js hybrid SSR (e.g. to use
+React Server Components with server-rendered Stencil HTML), activate the
+`dist-hydrate-script` output target in `io-components/stencil.config.ts`:
+
+1. Uncomment the `dist-hydrate-script` block in `stencil.config.ts`.
+2. Run `npm run build:components` to generate `io-components/dist/hydrate/index.js`.
+3. In server-side pages, use `renderToString` from `@io-digital/components/hydrate`
+   to pre-render component HTML before sending to the client.
+
+The commented-out target block and full activation instructions are in
+`io-components/stencil.config.ts` (TARGET 3 comment block).
+
 ## Do Not Commit
 
 The following are local-only and must never be committed:

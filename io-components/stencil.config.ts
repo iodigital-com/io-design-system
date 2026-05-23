@@ -80,7 +80,35 @@ export const config: Config = {
     },
 
     /**
-     * TARGET 3: www
+     * TARGET 3: dist-hydrate-script (future SSR/SSG)
+     * ─────────────────────────────────────────────────
+     * SSR/SSG support via Stencil's hydrate package.
+     *
+     * When enabled this target produces a Node.js-compatible hydrate bundle at
+     * `dist/hydrate/index.js`. Consuming apps can call renderToString() from
+     * `@io-digital/components/hydrate` to pre-render component HTML server-side.
+     *
+     * CURRENT STATUS: commented-out.
+     * The storefront uses `output: 'export'` (100% static HTML, no Node.js server
+     * at runtime). Build-time SSR errors are the only concern, and all storefront
+     * pages that touch DOM APIs already carry `'use client';`. There is no active
+     * need for runtime hydration today.
+     *
+     * TO ACTIVATE (when migrating to Next.js hybrid SSR):
+     *   1. Uncomment the config object below.
+     *   2. Run `npm run build:components` → generates `dist/hydrate/`.
+     *   3. In server-side Next.js pages, import renderToString() from the hydrate
+     *      bundle to pre-render web component HTML before sending to the client.
+     *   See AGENTS.md § "SSR/SSG Compatibility" for the full activation guide.
+     *
+     * {
+     *   type: 'dist-hydrate-script',
+     *   dir: './dist/hydrate',
+     * },
+     */
+
+    /**
+     * TARGET 4: www
      * ─────────────
      * Local development server output. Stencil serves this at http://localhost:3333.
      */

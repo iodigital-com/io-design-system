@@ -17,7 +17,23 @@
  *
  * ⚠️  GOVERNANCE: Never hardcode hex values in component styles.
  *     Always use var(--io-*) to reference these tokens.
+ *
+ * CSS Layer Architecture
+ * ----------------------
+ * All :root token declarations and [data-theme] overrides are wrapped in
+ * @layer io. This allows white-label consumers to declare a @layer brand { }
+ * block after importing io-components.css — brand-layer rules win over
+ * io-layer rules without needing !important.
+ *
+ * See docs/brand-override-example.css for a complete override example.
  */
+
+/* ============================================================
+   CSS Layer Declaration
+   ============================================================ */
+@layer io, brand;
+
+@layer io {
 
 /* ============================================================
    1. BRAND COLOR PALETTE — Primitive values
@@ -481,6 +497,34 @@
 }
 
 /* ============================================================
+   GRADIENT TOKENS
+   Brand gradient primitives for surfaces and hero sections.
+   Usage: background: var(--io-gradient-brand-primary);
+   ============================================================ */
+
+:root {
+  /* ── Brand gradients ──────────────────────────────────── */
+  --io-gradient-brand-primary:   linear-gradient(135deg, var(--io-color-primary) 0%, var(--io-color-primary-hover) 100%);
+  --io-gradient-brand-warm:      linear-gradient(135deg, var(--io-color-orange) 0%, var(--io-color-yellow) 100%);
+  --io-gradient-brand-cool:      linear-gradient(135deg, var(--io-color-lavendel) 0%, var(--io-color-primary-muted) 100%);
+
+  /* ── Surface gradients ──────────────────────────────── */
+  --io-gradient-surface-hero:    linear-gradient(180deg, var(--io-color-primary) 0%, var(--io-color-primary-active) 100%);
+  --io-gradient-surface-subtle:  linear-gradient(180deg, var(--io-color-grey-1) 0%, var(--io-color-grey-2) 100%);
+  --io-gradient-surface-warm:    linear-gradient(180deg, var(--io-color-off-white) 0%, var(--io-color-beige) 100%);
+
+  /* ── Overlay gradients ──────────────────────────────── */
+  --io-gradient-overlay-bottom:  linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.60) 100%);
+  --io-gradient-overlay-top:     linear-gradient(to top, transparent 40%, rgba(0, 0, 0, 0.60) 100%);
+  --io-gradient-overlay-scrim:   linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.45) 100%);
+
+  /* ── Semantic aliases ───────────────────────────────── */
+  --io-gradient-hero:            var(--io-gradient-surface-hero);
+  --io-gradient-card-overlay:    var(--io-gradient-overlay-bottom);
+  --io-gradient-cta:             var(--io-gradient-brand-primary);
+}
+
+/* ============================================================
     Global Attribute Tooltip Overlay
     ============================================================ */
 
@@ -580,6 +624,8 @@
 [data-theme="light"] {
   color-scheme: light;
 }
+
+} /* end @layer io */
 
 /* ============================================================
    GLOBAL RENDERING

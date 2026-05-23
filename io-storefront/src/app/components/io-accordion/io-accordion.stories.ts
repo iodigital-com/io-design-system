@@ -165,6 +165,7 @@ export const accordionStory: Story<'io-accordion'> = {
       open: false,
       heading: 'Some Heading',
       'heading-tag': 'h3',
+      size: 'md',
       disabled: false,
       'default-expanded': false,
       'allow-multiple': false,
@@ -180,6 +181,7 @@ export const accordionStory: Story<'io-accordion'> = {
         tag: 'io-accordion' as const,
         properties: {
           open: (properties?.open as boolean) ?? false,
+          size: (properties?.size as string) ?? 'md',
           disabled: (properties?.disabled as boolean) ?? false,
           'default-expanded': (properties?.['default-expanded'] as boolean) ?? false,
           'allow-multiple': (properties?.['allow-multiple'] as boolean) ?? false,
@@ -344,10 +346,75 @@ export const accordionStoryGroupMultiOpen: Story<'io-accordion'> = {
   ],
 };
 
+
+export const accordionStorySizeSm: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Small accordion', 'heading-tag': 'h3', size: 'sm' } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Small accordion', 'heading-tag': 'h3', size: 'sm' },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['Compact size — reduced trigger padding and smaller heading font.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStorySizeMd: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Medium accordion (default)', 'heading-tag': 'h3', size: 'md' } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Medium accordion (default)', 'heading-tag': 'h3', size: 'md' },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['Default size — standard trigger padding and heading font.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStorySizeLg: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Large accordion', 'heading-tag': 'h3', size: 'lg' } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Large accordion', 'heading-tag': 'h3', size: 'lg' },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['Comfortable size — generous trigger padding and larger heading font.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false },
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
   { name: 'heading-tag', type: 'select', defaultValue: 'h3', options: ['h2', 'h3', 'h4', 'h5', 'h6'] },
+  {
+    name: 'size',
+    type: 'select',
+    defaultValue: 'md',
+    options: ['sm', 'md', 'lg'],
+    description: 'Controls trigger padding and heading font size. sm = compact, md = default, lg = comfortable.',
+  },
   { name: 'disabled', type: 'boolean', defaultValue: false },
   {
     name: 'default-expanded',

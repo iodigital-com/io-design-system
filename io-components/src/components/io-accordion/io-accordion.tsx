@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil
 import { getAccordionStyles } from './io-accordion-styles';
 import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
-import type { IoAccordionHeadingTag, IoAccordionUpdateDetail } from './types';
+import type { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
 
 /**
  * io-accordion
@@ -34,6 +34,9 @@ export class IoAccordion {
 
   /** Semantic heading tag wrapping the trigger button */
   @Prop({ attribute: 'heading-tag' }) headingTag: IoAccordionHeadingTag = 'h3';
+
+  /** Size preset — controls trigger padding and title font size */
+  @Prop({ reflect: true }) size: IoAccordionSize = 'md';
 
   /** Prevents interaction and applies reduced-opacity styling */
   @Prop({ reflect: true }) disabled = false;

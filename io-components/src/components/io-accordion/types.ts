@@ -6,3 +6,6 @@ export interface IoAccordionUpdateDetail {
 
 /** Allowed heading tag names */
 export type IoAccordionHeadingTag = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+/** Size preset — controls trigger padding and title font size */
+export type IoAccordionSize = 'sm' | 'md' | 'lg';

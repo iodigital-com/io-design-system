@@ -29,6 +29,53 @@ describe('io-accordion — default props', () => {
   it('defaults allowMultiple to false', () => {
     expect(component.allowMultiple).toBe(false);
   });
+
+  it('defaults size to md', () => {
+    expect(component.size).toBe('md');
+  });
+});
+
+describe('io-accordion — size prop', () => {
+  it('accepts size sm', () => {
+    const component = new IoAccordion();
+    component.size = 'sm';
+    expect(component.size).toBe('sm');
+  });
+
+  it('accepts size md', () => {
+    const component = new IoAccordion();
+    component.size = 'md';
+    expect(component.size).toBe('md');
+  });
+
+  it('accepts size lg', () => {
+    const component = new IoAccordion();
+    component.size = 'lg';
+    expect(component.size).toBe('lg');
+  });
+
+  it('size CSS includes sm host selector with compact padding token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([size="sm"])');
+    expect(styles).toContain('var(--io-space-3)');
+  });
+
+  it('size CSS includes md host selector with default padding token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([size="md"])');
+    expect(styles).toContain('var(--io-space-6)');
+  });
+
+  it('size CSS includes lg host selector with comfortable padding token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([size="lg"])');
+    expect(styles).toContain('var(--io-space-8)');
+  });
+
+  it('size CSS uses font-size tokens for each size variant', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-font-size-xl)');
+  });
 });
 
 describe('io-accordion — toggling', () => {

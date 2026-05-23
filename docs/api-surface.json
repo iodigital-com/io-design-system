@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-23T07:59:53.783Z",
+  "generated": "2026-05-23T23:11:09.508Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -9,17 +9,39 @@
         "disabled": "boolean",
         "heading": "string",
         "headingTag": "IoAccordionHeadingTag",
-        "open": "boolean"
+        "open": "boolean",
+        "size": "IoAccordionSize"
       },
       "methods": {},
       "events": {
         "update": "IoAccordionUpdateDetail"
       }
     },
+    "io-avatar": {
+      "props": {
+        "alt": "string",
+        "color": "IoAvatarColor",
+        "name": "string | undefined",
+        "shape": "IoAvatarShape",
+        "size": "IoAvatarSize",
+        "src": "string | undefined"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-badge": {
       "props": {
         "size": "IoBadgeSize",
         "variant": "IoBadgeVariant"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-breadcrumb": {
+      "props": {
+        "items": "string",
+        "maxVisible": "number | undefined",
+        "separator": "IoBreadcrumbSeparator"
       },
       "methods": {},
       "events": {}
@@ -97,10 +119,69 @@
         "change": "IoCheckboxChangeDetail"
       }
     },
+    "io-checkbox-group": {
+      "props": {
+        "disabled": "boolean",
+        "helperText": "string",
+        "invalid": "boolean",
+        "label": "string",
+        "name": "string",
+        "required": "boolean"
+      },
+      "methods": {},
+      "events": {
+        "change": "IoCheckboxGroupChangeDetail"
+      }
+    },
     "io-divider": {
       "props": {
         "label": "string | undefined",
         "orientation": "IoDividerOrientation"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-drawer": {
+      "props": {
+        "closeLabel": "string",
+        "closeOnBackdrop": "boolean",
+        "open": "boolean",
+        "placement": "IoDrawerPlacement",
+        "size": "IoDrawerSize"
+      },
+      "methods": {
+        "close": "() => Promise<void>",
+        "show": "() => Promise<void>"
+      },
+      "events": {
+        "dismiss": "void"
+      }
+    },
+    "io-file-upload": {
+      "props": {
+        "accept": "string",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "maxFileSize": "number | undefined",
+        "multiple": "boolean",
+        "name": "string | undefined"
+      },
+      "methods": {},
+      "events": {
+        "fileReject": "IoFileRejectDetail",
+        "fileSelect": "IoFileSelectDetail"
+      }
+    },
+    "io-form-field": {
+      "props": {
+        "errorText": "string",
+        "helperText": "string",
+        "invalid": "boolean",
+        "label": "string",
+        "required": "boolean"
       },
       "methods": {},
       "events": {}
@@ -204,6 +285,18 @@
         "change": "IoPaginationChangeDetail"
       }
     },
+    "io-progress": {
+      "props": {
+        "animated": "boolean",
+        "color": "IoProgressColor",
+        "label": "string | undefined",
+        "showLabel": "boolean",
+        "size": "IoProgressSize",
+        "value": "number"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-radio": {
       "props": {
         "checked": "boolean",
@@ -223,6 +316,21 @@
       },
       "events": {
         "change": "IoRadioChangeDetail"
+      }
+    },
+    "io-radio-group": {
+      "props": {
+        "disabled": "boolean",
+        "helperText": "string",
+        "invalid": "boolean",
+        "label": "string",
+        "name": "string",
+        "required": "boolean",
+        "value": "string"
+      },
+      "methods": {},
+      "events": {
+        "change": "IoRadioGroupChangeDetail"
       }
     },
     "io-select": {
@@ -252,11 +360,74 @@
         "focus": "FocusEvent"
       }
     },
+    "io-skeleton": {
+      "props": {
+        "animated": "boolean",
+        "label": "string",
+        "variant": "IoSkeletonVariant"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-spinner": {
       "props": {
         "color": "IoSpinnerColor",
         "label": "string",
         "size": "IoSpinnerSize"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-step": {
+      "props": {
+        "index": "number",
+        "label": "string",
+        "orientation": "IoStepperOrientation",
+        "status": "IoStepStatus",
+        "total": "number"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-stepper": {
+      "props": {
+        "current": "number",
+        "orientation": "IoStepperOrientation"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-table": {
+      "props": {
+        "caption": "string",
+        "captionHidden": "boolean",
+        "columns": "Array<{ key: string; label: string; sortable?: boolean }>",
+        "rows": "Record<string, unknown>[]",
+        "selectable": "boolean",
+        "size": "IoTableSize",
+        "sortable": "boolean",
+        "sortDirection": "IoTableSortDirection",
+        "sortKey": "string",
+        "sticky": "boolean"
+      },
+      "methods": {},
+      "events": {
+        "rowSelect": "{ selectedRows: Record<string, unknown>[] }",
+        "sort": "{ key: string"
+      }
+    },
+    "io-table-column": {
+      "props": {
+        "colKey": "string",
+        "label": "string",
+        "sortable": "boolean"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-table-row": {
+      "props": {
+        "data": "Record<string, unknown> | string"
       },
       "methods": {},
       "events": {}
@@ -274,6 +445,7 @@
       "props": {
         "color": "IoTagColor",
         "disabled": "boolean",
+        "label": "string",
         "removable": "boolean",
         "selected": "boolean",
         "size": "IoTagSize"
@@ -314,7 +486,9 @@
       }
     },
     "io-toast": {
-      "props": {},
+      "props": {
+        "position": "IoToastPosition"
+      },
       "methods": {
         "addToast": "(message: IoToastMessage) => Promise<void>"
       },
@@ -334,6 +508,15 @@
       "props": {
         "content": "string",
         "placement": "IoTooltipPlacement"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-wordmark": {
+      "props": {
+        "ariaLabel": "string",
+        "mono": "boolean",
+        "size": "IoWordmarkSize"
       },
       "methods": {},
       "events": {}

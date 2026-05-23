@@ -34,6 +34,13 @@ export default function IoAccordionApiPage() {
               <span key="description">HTML heading element wrapping the trigger button.</span>,
             ],
             [
+              <span key="property"><InlineCode>size</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">size</InlineCode>,
+              <InlineCode key="type">'sm' | 'md' | 'lg'</InlineCode>,
+              <InlineCode key="default">'md'</InlineCode>,
+              <span key="description">Size preset controlling trigger padding and heading font size. <InlineCode>sm</InlineCode> = compact, <InlineCode>md</InlineCode> = default, <InlineCode>lg</InlineCode> = comfortable. Reflects to attribute.</span>,
+            ],
+            [
               <span key="property"><InlineCode>open</InlineCode><ReflectBadge /></span>,
               <InlineCode key="attribute">open</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,

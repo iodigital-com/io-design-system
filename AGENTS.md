@@ -61,6 +61,8 @@ Every component lives at `io-components/src/components/io-{name}/`:
 | `io-{name}.spec.ts` | Default props / render tests |
 | `io-{name}.click.spec.ts` | Event-emission tests |
 | `io-{name}.disabled.spec.ts` | Disabled-state tests |
+| `io-{name}.a11y.spec.ts` | axe-core WCAG AA smoke tests (all interactive components) |
+| `io-{name}.face.spec.ts` | FACE / ElementInternals unit tests (form-field components only) |
 
 ## Conventions
 
@@ -89,8 +91,72 @@ Every component lives at `io-components/src/components/io-{name}/`:
 **Tests (Vitest + jsdom):**
 - `vi.mock()` must be at the top level of the spec file, not inside `beforeEach`.
 - Every component requires: render test, event-emission test, disabled-state test.
+- Every **interactive** component requires an `io-{name}.a11y.spec.ts` using `renderAndCheckA11y` from `tests/unit/helpers/axe.ts`.
+- Every **form-field** component (`io-input`, `io-textarea`, `io-checkbox`, `io-radio`, `io-select`) requires an `io-{name}.face.spec.ts` covering `syncFormValue`, `checkValidity`, and `reportValidity`.
 - WCAG AA minimum: 4.5:1 text contrast, 3:1 UI component contrast.
 - Interactive elements: 44 × 44 px minimum touch target.
+
+**Slot change detection:** Wire `onSlotchange` directly on each `<slot>` element — do NOT use `@Listen('slotchange')` on the host. The `slotchange` event is not composed and will not bubble past the Shadow DOM boundary.
+
+**WCAG 1.4.11 (non-text contrast):** Use `var(--io-border-interactive)` (#767676, 4.57:1 vs white) for checkbox/radio border, select option checkbox, and any UI component border that must pass non-text contrast. Do not use `--io-border` or `--io-border-hover` for these — those tokens are for decorative use only.
+
+## Form-Associated Custom Elements (FACE)
+
+Form-field components (`io-input`, `io-textarea`, `io-checkbox`, `io-radio`, `io-select`) participate in native HTML forms via the [ElementInternals API](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals).
+
+**Required setup in every form-field component:**
+
+```ts
+@Component({ tag: 'io-foo', shadow: { delegatesFocus: true }, formAssociated: true })
+export class IoFoo {
+  @AttachInternals() internals!: ElementInternals;
+
+  private syncFormValue() {
+    this.internals?.setFormValue?.(this.value ?? '');
+    // Derive validity from the native element when the shadow root is available.
+    // This covers maxLength/tooLong, min/max/step, typeMismatch, etc. automatically.
+    const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (native) {
+      if (!native.checkValidity()) {
+        this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+      } else {
+        this.internals?.setValidity?.({});
+      }
+    } else if (this.required && !this.value) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+    } else {
+      this.internals?.setValidity?.({});
+    }
+  }
+}
+```
+
+**Critical rules:**
+- Use **double optional chaining** everywhere: `this.internals?.setFormValue?.()` and `this.el?.shadowRoot?.querySelector(...)`. jsdom's `attachInternals()` returns a partial object (not null) so a single `?.` on the object does NOT guard method calls. `this.el` is undefined in unit tests that instantiate via `new IoFoo()`.
+- Add `@Watch` for every prop that affects validity: `value`, `required`, `maxLength` (and `min`/`max`/`step` when applicable).
+- Derive validity from the **native element's `validity` object** (not manual mapping). The fallback (required-only) only runs when the shadow root doesn't exist yet.
+- **Radio groups:** `required` is satisfied when any sibling with the same `name` is checked — not just this radio. Query `document.querySelectorAll('io-radio')` to find checked siblings before setting `valueMissing`.
+- In `.face.spec.ts`, assign `(component as any).internals = makeInternals()` manually in `beforeEach` — `@AttachInternals` is a Stencil decorator that doesn't run in unit test instantiation.
+
+## Accessibility Testing
+
+Every interactive component must have an `io-{name}.a11y.spec.ts`:
+
+```ts
+import { describe, it } from 'vitest';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+
+describe('io-foo — a11y', () => {
+  it('has no violations with label', async () => {
+    const el = document.createElement('io-foo');
+    (el as any).label = 'Label';
+    await renderAndCheckA11y(el);
+  });
+});
+```
+
+- `toHaveNoViolations` is registered globally via `tests/unit/config/vitest.setup.ts`.
+- axe in jsdom validates ARIA roles, attributes, and DOM structure. CSS contrast checks require Lighthouse (`npm run lighthouse:ci`).
 
 ## Adding a New Component
 
@@ -121,6 +187,18 @@ npm run build:storefront
 ```
 
 Or run all in sequence: `npm run build:quality-gates`
+
+## Changesets
+
+Every PR that changes user-facing behaviour in a published package must include a changeset:
+
+```bash
+npm run changeset:add   # Interactive: select packages + bump level + summary
+```
+
+Bump levels: `patch` for bug/a11y/token fixes; `minor` for new props, slots, methods, events; `major` for breaking changes.
+
+The `.changeset/*.md` file must be committed alongside the code. On merge to `main`, `release.yml` opens a Release PR aggregating all changesets; when that PR merges, packages publish to npm with provenance attestation.
 
 ## AI Agents (Claude)
 

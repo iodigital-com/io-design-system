@@ -61,7 +61,8 @@ export function AutoCodeHighlight() {
 
       const hljs = hljsModule.default;
 
-      const preBlocks = Array.from(document.querySelectorAll('pre')) as HTMLPreElement[];
+      const root = document.getElementById('main-content') ?? document.body;
+      const preBlocks = Array.from(root.querySelectorAll('pre')) as HTMLPreElement[];
 
       preBlocks.forEach((pre) => {
         if (pre.className.includes('react-syntax-highlighter')) {
@@ -103,7 +104,7 @@ export function AutoCodeHighlight() {
           const languageClass = result.language ? `language-${result.language}` : 'language-plaintext';
           codeEl.className = '';
           codeEl.classList.add('hljs', languageClass);
-          codeEl.innerHTML = result.value;
+          codeEl.replaceChildren(document.createRange().createContextualFragment(result.value));
           pre.dataset.ioHighlighted = 'true';
           pre.dataset.ioHighlightSignature = signature;
         } catch {
@@ -122,10 +123,11 @@ export function AutoCodeHighlight() {
       scheduleHighlight(highlight);
     });
 
-    observer.observe(document.body, {
+    // Scope observation to #main-content to avoid firing on sidebar/nav mutations.
+    const observerRoot = document.getElementById('main-content') ?? document.body;
+    observer.observe(observerRoot, {
       childList: true,
       subtree: true,
-      characterData: true,
       attributes: true,
       attributeFilter: ['data-language', 'class'],
     });

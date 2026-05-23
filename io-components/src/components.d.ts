@@ -13,6 +13,7 @@ import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoB
 import { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
@@ -23,6 +24,7 @@ import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
+import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSkeletonVariant } from "./components/io-skeleton/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
@@ -42,6 +44,7 @@ export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoB
 export { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
@@ -52,6 +55,7 @@ export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
+export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSkeletonVariant } from "./components/io-skeleton/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
@@ -423,6 +427,48 @@ export namespace Components {
         "value": string;
     }
     /**
+     * io-checkbox-group
+     * ==================
+     * Wraps io-checkbox items in a semantic fieldset/legend and automatically
+     * propagates the `name` and `disabled` props to all slotted children.
+     * Emits change with the array of all currently checked values.
+     * @example <io-checkbox-group label="Preferred notifications" name="notifications">
+     *   <io-checkbox label="Email" value="email" />
+     *   <io-checkbox label="SMS" value="sms" />
+     *   <io-checkbox label="Push" value="push" />
+     * </io-checkbox-group>
+     */
+    interface IoCheckboxGroup {
+        /**
+          * Disables the entire group
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Helper text shown below the legend
+          * @default ''
+         */
+        "helperText": string;
+        /**
+          * Marks the group as invalid
+          * @default false
+         */
+        "invalid": boolean;
+        /**
+          * Legend text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Name propagated to all slotted io-checkbox children
+         */
+        "name": string;
+        /**
+          * Marks the group as required
+          * @default false
+         */
+        "required": boolean;
+    }
+    /**
      * io-divider
      * ==========
      * Visual separator between sections of content.
@@ -550,6 +596,46 @@ export namespace Components {
           * Form field name
          */
         "name": string | undefined;
+    }
+    /**
+     * io-form-field
+     * ==============
+     * Auto-wires label + input + helper-text accessibility attributes.
+     * Wraps a single io-input, io-select, io-textarea, io-checkbox, or io-radio
+     * and generates a unique ID to link the label via htmlFor/id, and sets
+     * aria-describedby / aria-invalid on the slotted element.
+     * @example <io-form-field label="Email address" helper-text="We will never share your email.">
+     *   <io-input name="email" type="email" />
+     * </io-form-field>
+     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     *   <io-input name="username" />
+     * </io-form-field>
+     */
+    interface IoFormField {
+        /**
+          * Validation error text shown when invalid is true
+          * @default ''
+         */
+        "errorText": string;
+        /**
+          * Helper/description text shown below the control
+          * @default ''
+         */
+        "helperText": string;
+        /**
+          * Marks the field as invalid — shows errorText and sets aria-invalid on the child
+          * @default false
+         */
+        "invalid": boolean;
+        /**
+          * Label text shown above the slotted input
+         */
+        "label": string;
+        /**
+          * Marks the label as required (adds asterisk)
+          * @default false
+         */
+        "required": boolean;
     }
     /**
      * io-input
@@ -946,6 +1032,51 @@ export namespace Components {
         "setFocus": (options?: FocusOptions) => Promise<void>;
         /**
           * Value submitted with the form
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * io-radio-group
+     * ===============
+     * Wraps io-radio buttons in a semantic fieldset/legend and automatically
+     * propagates the `name` prop and `checked` state to all slotted children.
+     * @example <io-radio-group label="Preferred contact" name="contact" value="email">
+     *   <io-radio label="Email" value="email" />
+     *   <io-radio label="Phone" value="phone" />
+     * </io-radio-group>
+     */
+    interface IoRadioGroup {
+        /**
+          * Disables the entire group
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Helper text shown below the legend
+          * @default ''
+         */
+        "helperText": string;
+        /**
+          * Marks the group as invalid
+          * @default false
+         */
+        "invalid": boolean;
+        /**
+          * Legend text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Name propagated to all slotted io-radio children
+         */
+        "name": string;
+        /**
+          * Marks the group as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Currently selected value
           * @default ''
          */
         "value": string;
@@ -1549,6 +1680,10 @@ export interface IoCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoCheckboxElement;
 }
+export interface IoCheckboxGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoCheckboxGroupElement;
+}
 export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
@@ -1580,6 +1715,10 @@ export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoRadioElement;
+}
+export interface IoRadioGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoRadioGroupElement;
 }
 export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1788,6 +1927,35 @@ declare global {
         prototype: HTMLIoCheckboxElement;
         new (): HTMLIoCheckboxElement;
     };
+    interface HTMLIoCheckboxGroupElementEventMap {
+        "change": IoCheckboxGroupChangeDetail;
+    }
+    /**
+     * io-checkbox-group
+     * ==================
+     * Wraps io-checkbox items in a semantic fieldset/legend and automatically
+     * propagates the `name` and `disabled` props to all slotted children.
+     * Emits change with the array of all currently checked values.
+     * @example <io-checkbox-group label="Preferred notifications" name="notifications">
+     *   <io-checkbox label="Email" value="email" />
+     *   <io-checkbox label="SMS" value="sms" />
+     *   <io-checkbox label="Push" value="push" />
+     * </io-checkbox-group>
+     */
+    interface HTMLIoCheckboxGroupElement extends Components.IoCheckboxGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoCheckboxGroupElementEventMap>(type: K, listener: (this: HTMLIoCheckboxGroupElement, ev: IoCheckboxGroupCustomEvent<HTMLIoCheckboxGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoCheckboxGroupElementEventMap>(type: K, listener: (this: HTMLIoCheckboxGroupElement, ev: IoCheckboxGroupCustomEvent<HTMLIoCheckboxGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoCheckboxGroupElement: {
+        prototype: HTMLIoCheckboxGroupElement;
+        new (): HTMLIoCheckboxGroupElement;
+    };
     /**
      * io-divider
      * ==========
@@ -1863,6 +2031,26 @@ declare global {
     var HTMLIoFileUploadElement: {
         prototype: HTMLIoFileUploadElement;
         new (): HTMLIoFileUploadElement;
+    };
+    /**
+     * io-form-field
+     * ==============
+     * Auto-wires label + input + helper-text accessibility attributes.
+     * Wraps a single io-input, io-select, io-textarea, io-checkbox, or io-radio
+     * and generates a unique ID to link the label via htmlFor/id, and sets
+     * aria-describedby / aria-invalid on the slotted element.
+     * @example <io-form-field label="Email address" helper-text="We will never share your email.">
+     *   <io-input name="email" type="email" />
+     * </io-form-field>
+     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     *   <io-input name="username" />
+     * </io-form-field>
+     */
+    interface HTMLIoFormFieldElement extends Components.IoFormField, HTMLStencilElement {
+    }
+    var HTMLIoFormFieldElement: {
+        prototype: HTMLIoFormFieldElement;
+        new (): HTMLIoFormFieldElement;
     };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
@@ -2060,6 +2248,33 @@ declare global {
     var HTMLIoRadioElement: {
         prototype: HTMLIoRadioElement;
         new (): HTMLIoRadioElement;
+    };
+    interface HTMLIoRadioGroupElementEventMap {
+        "change": IoRadioGroupChangeDetail;
+    }
+    /**
+     * io-radio-group
+     * ===============
+     * Wraps io-radio buttons in a semantic fieldset/legend and automatically
+     * propagates the `name` prop and `checked` state to all slotted children.
+     * @example <io-radio-group label="Preferred contact" name="contact" value="email">
+     *   <io-radio label="Email" value="email" />
+     *   <io-radio label="Phone" value="phone" />
+     * </io-radio-group>
+     */
+    interface HTMLIoRadioGroupElement extends Components.IoRadioGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoRadioGroupElementEventMap>(type: K, listener: (this: HTMLIoRadioGroupElement, ev: IoRadioGroupCustomEvent<HTMLIoRadioGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoRadioGroupElementEventMap>(type: K, listener: (this: HTMLIoRadioGroupElement, ev: IoRadioGroupCustomEvent<HTMLIoRadioGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoRadioGroupElement: {
+        prototype: HTMLIoRadioGroupElement;
+        new (): HTMLIoRadioGroupElement;
     };
     interface HTMLIoSelectElementEventMap {
         "change": string | string[];
@@ -2411,9 +2626,11 @@ declare global {
         "io-button-group": HTMLIoButtonGroupElement;
         "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
+        "io-checkbox-group": HTMLIoCheckboxGroupElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
         "io-file-upload": HTMLIoFileUploadElement;
+        "io-form-field": HTMLIoFormFieldElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -2422,6 +2639,7 @@ declare global {
         "io-pagination": HTMLIoPaginationElement;
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
+        "io-radio-group": HTMLIoRadioGroupElement;
         "io-select": HTMLIoSelectElement;
         "io-skeleton": HTMLIoSkeletonElement;
         "io-spinner": HTMLIoSpinnerElement;
@@ -2809,6 +3027,52 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * io-checkbox-group
+     * ==================
+     * Wraps io-checkbox items in a semantic fieldset/legend and automatically
+     * propagates the `name` and `disabled` props to all slotted children.
+     * Emits change with the array of all currently checked values.
+     * @example <io-checkbox-group label="Preferred notifications" name="notifications">
+     *   <io-checkbox label="Email" value="email" />
+     *   <io-checkbox label="SMS" value="sms" />
+     *   <io-checkbox label="Push" value="push" />
+     * </io-checkbox-group>
+     */
+    interface IoCheckboxGroup {
+        /**
+          * Disables the entire group
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Helper text shown below the legend
+          * @default ''
+         */
+        "helperText"?: string;
+        /**
+          * Marks the group as invalid
+          * @default false
+         */
+        "invalid"?: boolean;
+        /**
+          * Legend text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Name propagated to all slotted io-checkbox children
+         */
+        "name": string;
+        /**
+          * Fires when any checkbox in the group changes, with all checked values
+         */
+        "onChange"?: (event: IoCheckboxGroupCustomEvent<IoCheckboxGroupChangeDetail>) => void;
+        /**
+          * Marks the group as required
+          * @default false
+         */
+        "required"?: boolean;
+    }
+    /**
      * io-divider
      * ==========
      * Visual separator between sections of content.
@@ -2938,6 +3202,46 @@ declare namespace LocalJSX {
           * Emitted when valid files are selected or dropped
          */
         "onFileSelect"?: (event: IoFileUploadCustomEvent<IoFileSelectDetail>) => void;
+    }
+    /**
+     * io-form-field
+     * ==============
+     * Auto-wires label + input + helper-text accessibility attributes.
+     * Wraps a single io-input, io-select, io-textarea, io-checkbox, or io-radio
+     * and generates a unique ID to link the label via htmlFor/id, and sets
+     * aria-describedby / aria-invalid on the slotted element.
+     * @example <io-form-field label="Email address" helper-text="We will never share your email.">
+     *   <io-input name="email" type="email" />
+     * </io-form-field>
+     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     *   <io-input name="username" />
+     * </io-form-field>
+     */
+    interface IoFormField {
+        /**
+          * Validation error text shown when invalid is true
+          * @default ''
+         */
+        "errorText"?: string;
+        /**
+          * Helper/description text shown below the control
+          * @default ''
+         */
+        "helperText"?: string;
+        /**
+          * Marks the field as invalid — shows errorText and sets aria-invalid on the child
+          * @default false
+         */
+        "invalid"?: boolean;
+        /**
+          * Label text shown above the slotted input
+         */
+        "label": string;
+        /**
+          * Marks the label as required (adds asterisk)
+          * @default false
+         */
+        "required"?: boolean;
     }
     /**
      * io-input
@@ -3331,6 +3635,55 @@ declare namespace LocalJSX {
         "required"?: boolean;
         /**
           * Value submitted with the form
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * io-radio-group
+     * ===============
+     * Wraps io-radio buttons in a semantic fieldset/legend and automatically
+     * propagates the `name` prop and `checked` state to all slotted children.
+     * @example <io-radio-group label="Preferred contact" name="contact" value="email">
+     *   <io-radio label="Email" value="email" />
+     *   <io-radio label="Phone" value="phone" />
+     * </io-radio-group>
+     */
+    interface IoRadioGroup {
+        /**
+          * Disables the entire group
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Helper text shown below the legend
+          * @default ''
+         */
+        "helperText"?: string;
+        /**
+          * Marks the group as invalid
+          * @default false
+         */
+        "invalid"?: boolean;
+        /**
+          * Legend text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Name propagated to all slotted io-radio children
+         */
+        "name": string;
+        /**
+          * Fires when a radio in the group is selected
+         */
+        "onChange"?: (event: IoRadioGroupCustomEvent<IoRadioGroupChangeDetail>) => void;
+        /**
+          * Marks the group as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Currently selected value
           * @default ''
          */
         "value"?: string;
@@ -4014,6 +4367,14 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string | undefined;
     }
+    interface IoCheckboxGroupAttributes {
+        "label": string;
+        "name": string;
+        "required": boolean;
+        "disabled": boolean;
+        "invalid": boolean;
+        "helperText": string;
+    }
     interface IoDividerAttributes {
         "orientation": IoDividerOrientation;
         "label": string | undefined;
@@ -4036,6 +4397,13 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "name": string | undefined;
+    }
+    interface IoFormFieldAttributes {
+        "label": string;
+        "helperText": string;
+        "errorText": string;
+        "invalid": boolean;
+        "required": boolean;
     }
     interface IoInputAttributes {
         "label": string;
@@ -4110,6 +4478,15 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
+    }
+    interface IoRadioGroupAttributes {
+        "label": string;
+        "name": string;
+        "value": string;
+        "required": boolean;
+        "disabled": boolean;
+        "invalid": boolean;
+        "helperText": string;
     }
     interface IoSelectAttributes {
         "label": string;
@@ -4221,9 +4598,11 @@ declare namespace LocalJSX {
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
+        "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]> & OneOf<"name", IoCheckboxGroup["name"], IoCheckboxGroupAttributes["name"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-file-upload": Omit<IoFileUpload, keyof IoFileUploadAttributes> & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes]?: IoFileUpload[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `attr:${K}`]?: IoFileUploadAttributes[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `prop:${K}`]?: IoFileUpload[K] } & OneOf<"label", IoFileUpload["label"], IoFileUploadAttributes["label"]>;
+        "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -4232,6 +4611,7 @@ declare namespace LocalJSX {
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
+        "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-skeleton": Omit<IoSkeleton, keyof IoSkeletonAttributes> & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes]?: IoSkeleton[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `attr:${K}`]?: IoSkeletonAttributes[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `prop:${K}`]?: IoSkeleton[K] };
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
@@ -4341,6 +4721,19 @@ declare module "@stencil/core" {
              */
             "io-checkbox": LocalJSX.IntrinsicElements["io-checkbox"] & JSXBase.HTMLAttributes<HTMLIoCheckboxElement>;
             /**
+             * io-checkbox-group
+             * ==================
+             * Wraps io-checkbox items in a semantic fieldset/legend and automatically
+             * propagates the `name` and `disabled` props to all slotted children.
+             * Emits change with the array of all currently checked values.
+             * @example <io-checkbox-group label="Preferred notifications" name="notifications">
+             *   <io-checkbox label="Email" value="email" />
+             *   <io-checkbox label="SMS" value="sms" />
+             *   <io-checkbox label="Push" value="push" />
+             * </io-checkbox-group>
+             */
+            "io-checkbox-group": LocalJSX.IntrinsicElements["io-checkbox-group"] & JSXBase.HTMLAttributes<HTMLIoCheckboxGroupElement>;
+            /**
              * io-divider
              * ==========
              * Visual separator between sections of content.
@@ -4378,6 +4771,21 @@ declare module "@stencil/core" {
              * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
              */
             "io-file-upload": LocalJSX.IntrinsicElements["io-file-upload"] & JSXBase.HTMLAttributes<HTMLIoFileUploadElement>;
+            /**
+             * io-form-field
+             * ==============
+             * Auto-wires label + input + helper-text accessibility attributes.
+             * Wraps a single io-input, io-select, io-textarea, io-checkbox, or io-radio
+             * and generates a unique ID to link the label via htmlFor/id, and sets
+             * aria-describedby / aria-invalid on the slotted element.
+             * @example <io-form-field label="Email address" helper-text="We will never share your email.">
+             *   <io-input name="email" type="email" />
+             * </io-form-field>
+             * <io-form-field label="Username" invalid error-text="Username is taken.">
+             *   <io-input name="username" />
+             * </io-form-field>
+             */
+            "io-form-field": LocalJSX.IntrinsicElements["io-form-field"] & JSXBase.HTMLAttributes<HTMLIoFormFieldElement>;
             /**
              * io-input
              * =========
@@ -4466,6 +4874,17 @@ declare module "@stencil/core" {
              * <io-radio label="Required" name="req" required error error-message="Please select an option" />
              */
             "io-radio": LocalJSX.IntrinsicElements["io-radio"] & JSXBase.HTMLAttributes<HTMLIoRadioElement>;
+            /**
+             * io-radio-group
+             * ===============
+             * Wraps io-radio buttons in a semantic fieldset/legend and automatically
+             * propagates the `name` prop and `checked` state to all slotted children.
+             * @example <io-radio-group label="Preferred contact" name="contact" value="email">
+             *   <io-radio label="Email" value="email" />
+             *   <io-radio label="Phone" value="phone" />
+             * </io-radio-group>
+             */
+            "io-radio-group": LocalJSX.IntrinsicElements["io-radio-group"] & JSXBase.HTMLAttributes<HTMLIoRadioGroupElement>;
             /**
              * io-select
              * ==========

@@ -57,6 +57,7 @@ export const sitemap: NavSection[] = [
       { label: 'Borders', href: '/styles/borders' },
       { label: 'Icons', href: '/styles/icons' },
       { label: 'Elevation', href: '/styles/elevation' },
+      { label: 'Token Explorer', href: '/styles/tokens' },
     ],
   },
   {
@@ -72,12 +73,28 @@ export const sitemap: NavSection[] = [
         related: ['io-tabs', 'io-modal', 'io-button'],
       },
       {
+        label: 'Avatar',
+        href: '/components/io-avatar/configurator',
+        status: 'beta',
+        slug: 'io-avatar',
+        description: 'User avatar with image, initials, and icon fallback. Supports five sizes, five colour variants, and circle or square shapes.',
+        related: ['io-badge', 'io-skeleton'],
+      },
+      {
         label: 'Badge',
         href: '/components/io-badge/configurator',
         status: 'beta',
         slug: 'io-badge',
         description: "Labels status, counts, and categories inline. Nine variants map directly to io Digital's semantic and brand colour palette.",
         related: ['io-tag', 'io-toast', 'io-tooltip'],
+      },
+      {
+        label: 'Breadcrumb',
+        href: '/components/io-breadcrumb/configurator',
+        status: 'beta',
+        slug: 'io-breadcrumb',
+        description: 'Breadcrumb navigation for hierarchical orientation. Supports chevron and slash separators, and collapses long paths behind an expand button.',
+        related: ['io-link', 'io-pagination'],
       },
       {
         label: 'Button',
@@ -150,6 +167,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-pagination',
         description: 'Circular page controls with outlined numbers, active page in brand blue, and beige nav arrows.',
         related: ['io-button', 'io-select', 'io-spinner'],
+      },
+      {
+        label: 'Progress',
+        href: '/components/io-progress/configurator',
+        status: 'beta',
+        slug: 'io-progress',
+        description: 'Linear progress bar. Use for file uploads, multi-step forms, and wizard flows. Supports five colour variants and three track sizes.',
+        related: ['io-spinner', 'io-skeleton'],
       },
       {
         label: 'Radio',

@@ -1,5 +1,12 @@
 # @io-digital/components-vue
 
+## 3.0.0
+
+### Patch Changes
+
+- Updated dependencies [477e2b5]
+  - @io-digital/components@1.2.0
+
 ## 2.0.0
 
 ### Minor Changes

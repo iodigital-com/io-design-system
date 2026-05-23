@@ -23,18 +23,13 @@ export default function IoBreadcrumbAccessibilityPage() {
             },
             {
               attribute: 'aria-current="page"',
-              value: 'On the last item',
-              description: 'Indicates that this item represents the current page. Screen readers announce the item with "current" or similar language. The last item is always rendered as a <span>, never a link.',
+              value: 'On the last io-breadcrumb-item span',
+              description: 'Indicates that this item represents the current page. Screen readers announce the item with "current" or similar language. The last item is always rendered as a span, never a link.',
             },
             {
               attribute: 'aria-hidden="true"',
-              value: 'On separators',
-              description: 'Separators (chevron SVG or slash text) are decorative — they are hidden from the accessibility tree so screen readers do not announce them between each item label.',
-            },
-            {
-              attribute: 'aria-label="Show full breadcrumb path"',
-              value: 'On the expand button',
-              description: 'Provides an accessible name for the … expand button when the breadcrumb is collapsed. Without this label, the button would be announced as "…" which is not meaningful.',
+              value: 'On .breadcrumb__separator spans',
+              description: 'Separators are decorative — they are hidden from the accessibility tree so screen readers do not announce them between each item label.',
             },
           ]}
         />
@@ -69,19 +64,19 @@ export default function IoBreadcrumbAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="The nav has an accessible name (aria-label). The expand button has an accessible label. The current page item has aria-current='page'. All interactive elements have programmatically determinable names."
+            note="The nav has an accessible name (aria-label). The current page item has aria-current='page'. All interactive elements (links) have programmatically determinable names from their slot content."
           />
           <ComplianceCard
             criterion="2.1.1"
             level="A"
             title="Keyboard"
-            note="All links and the expand button are reachable and activatable by keyboard. Tab navigates forward through items; Shift+Tab navigates backward. Enter activates links and the expand button."
+            note="All links are natively keyboard reachable and activatable. Tab navigates forward through items; Shift+Tab navigates backward. Enter activates links."
           />
           <ComplianceCard
             criterion="1.4.3"
             level="AA"
             title="Contrast (Minimum)"
-            note="Link text uses --io-color-primary (Energetic Blue). Current page and separator text uses --io-text-secondary. Both meet the 4.5:1 contrast ratio requirement against standard page backgrounds."
+            note="Link text uses --io-color-primary (Energetic Blue). Current page text uses --io-text-secondary. Both meet the 4.5:1 contrast ratio requirement against standard page backgrounds."
           />
         </div>
       </section>
@@ -93,13 +88,13 @@ export default function IoBreadcrumbAccessibilityPage() {
           description="Guidelines for building inclusive breadcrumb navigation across all surfaces and assistive technologies."
         />
         <RuleCard label="Always mark the current page item">
-          Omit the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>href</code> on the last item so it renders with <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-current=&quot;page&quot;</code>. Linking the current page creates a confusing experience for keyboard and screen reader users.
+          Either set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>current</code> on the last <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-breadcrumb-item</code>, or omit it — the parent automatically infers it. This ensures <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-current=&quot;page&quot;</code> is always present.
         </RuleCard>
         <RuleCard label="Use descriptive item labels">
-          Item labels should match the destination page&apos;s <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<title>'}</code> or <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<h1>'}</code>. Avoid abbreviations or internal codes that are not meaningful to users.
+          Slot text should match the destination page&apos;s <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<title>'}</code> or <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<h1>'}</code>. Avoid abbreviations or internal codes that are not meaningful to users.
         </RuleCard>
-        <RuleCard label="Ensure the expand button is keyboard accessible">
-          The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>…</code> button is a native <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<button>'}</code> element and receives focus naturally. Do not suppress its focus styles — the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>--io-focus-inner</code> ring is visible in both light and dark modes.
+        <RuleCard label="Ensure links are keyboard accessible">
+          Links inside <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-breadcrumb-item</code> receive focus naturally. Do not suppress focus styles — the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>--io-focus-inner</code> ring is applied on <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>:focus-visible</code>.
         </RuleCard>
       </section>
 

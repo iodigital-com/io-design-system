@@ -100,8 +100,16 @@ export const sitemap: NavSection[] = [
         href: '/components/io-breadcrumb/configurator',
         status: 'beta',
         slug: 'io-breadcrumb',
-        description: 'Breadcrumb navigation for hierarchical orientation. Supports chevron and slash separators, and collapses long paths behind an expand button.',
-        related: ['io-link', 'io-pagination'],
+        description: 'Breadcrumb navigation for hierarchical orientation. Uses declarative slot-based io-breadcrumb-item sub-components.',
+        related: ['io-breadcrumb-item', 'io-link', 'io-pagination'],
+      },
+      {
+        label: 'Breadcrumb Item',
+        href: '/components/io-breadcrumb-item/examples',
+        status: 'beta',
+        slug: 'io-breadcrumb-item',
+        description: 'Individual breadcrumb item sub-component used inside io-breadcrumb. Renders as a link when href is provided, or as a span with aria-current when current.',
+        related: ['io-breadcrumb', 'io-link'],
       },
       {
         label: 'Button',

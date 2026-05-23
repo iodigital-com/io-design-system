@@ -8,6 +8,33 @@ export default function IoBreadcrumbUsagePage() {
   return (
     <div className="space-y-16">
 
+      {/* ── Migration note ───────────────────────────────────────── */}
+      <section id="migration" className="space-y-6">
+        <SectionHeader
+          title="Wave XI migration: slot-based API"
+          description="io-breadcrumb was migrated from a JSON string prop API to a declarative slot-based sub-component API in Wave XI (issue #320)."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Before (deprecated — items prop removed)">
+            <C>{`<io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Current"}]'></io-breadcrumb>`}</C>
+          </RuleCard>
+          <RuleCard label="After (current API)">
+            <C>{`<io-breadcrumb>`}</C>
+            <br />
+            <C>{`  <io-breadcrumb-item href="/">Home</io-breadcrumb-item>`}</C>
+            <br />
+            <C>{`  <io-breadcrumb-item current>Current</io-breadcrumb-item>`}</C>
+            <br />
+            <C>{`</io-breadcrumb>`}</C>
+          </RuleCard>
+          <RuleCard label="What changed">
+            The <C>items</C>, <C>separator</C>, and <C>maxVisible</C> props have been removed. Content is now declarative.
+            Separators are injected automatically. The separator character can be customized via the{' '}
+            <C>--io-breadcrumb-separator</C> CSS custom property.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── When to use ──────────────────────────────────────────── */}
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
@@ -21,13 +48,10 @@ export default function IoBreadcrumbUsagePage() {
               Use breadcrumbs on pages that are 2+ levels deep in a hierarchy — product category pages, documentation subsections, or settings sub-pages.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Set the last item as the current page — omit its <C>href</C> so it renders as a non-interactive <C>{'<span aria-current="page">'}</C>.
+              Set <C>current</C> on the last <C>io-breadcrumb-item</C>, or omit it — <C>io-breadcrumb</C> infers it automatically on the last slotted item.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <C>maxVisible</C> to collapse very deep paths (5+ items) so the breadcrumb does not overwhelm narrow viewports.
-            </DoOrDontCard>
-            <DoOrDontCard type="do">
-              Choose the separator that matches your site&apos;s visual language — chevron for modern UI, slash for documentation or file paths.
+              Add <C>href</C> to every item except the current page so users can navigate back through the hierarchy.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -36,7 +60,8 @@ export default function IoBreadcrumbUsagePage() {
               Use breadcrumbs on top-level pages — a single-item breadcrumb adds noise with no navigational value.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Give the last item an <C>href</C> — the current page should never be a link. Screen readers rely on <C>aria-current=&quot;page&quot;</C> to identify the active location.
+              Set <C>href</C> on the current page item — the current page should never be a link. Screen readers rely on{' '}
+              <C>aria-current=&quot;page&quot;</C> to identify the active location.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Use breadcrumbs as the primary navigation — they supplement the main nav; they do not replace it.
@@ -48,57 +73,23 @@ export default function IoBreadcrumbUsagePage() {
         </div>
       </section>
 
-      {/* ── Items API ────────────────────────────────────────────── */}
-      <section id="items-api" className="space-y-6">
-        <SectionHeader
-          title="Items API"
-          description="Items are passed as a JSON string because Stencil cannot accept complex object arrays as HTML attributes directly."
-        />
-        <div className="space-y-3">
-          <RuleCard label="Last item is the current page">
-            The last item in the array is always treated as the current page. Omit its <C>href</C> — the component renders it as <C>{'<span aria-current="page">'}</C> instead of a link.
-          </RuleCard>
-          <RuleCard label="JSON string prop">
-            Pass items via the <C>items</C> attribute as a serialised JSON string:{' '}
-            <C>{`items='[{"label":"Home","href":"/"},{"label":"Current"}]'`}</C>. In JavaScript, use <C>JSON.stringify()</C> before setting the property.
-          </RuleCard>
-          <RuleCard label="Items without href render as plain text">
-            Non-last items without an <C>href</C> render as <C>{'<span>'}</C> rather than a link — useful for unlinked intermediate levels.
-          </RuleCard>
-        </div>
-      </section>
-
-      {/* ── Separator choice ─────────────────────────────────────── */}
+      {/* ── Separator customization ──────────────────────────────── */}
       <section id="separator" className="space-y-6">
         <SectionHeader
-          title="Separator choice"
-          description="The separator prop controls the visual divider between items. Both options are aria-hidden so assistive technologies do not announce them."
+          title="Separator customization"
+          description="The separator between items defaults to '/' and can be overridden with a CSS custom property."
         />
         <div className="space-y-3">
-          <RuleCard label="chevron (default) — Modern UI">
-            A small right-pointing SVG chevron. Use in application interfaces, dashboards, and e-commerce sites for a clean, icon-based visual language.
+          <RuleCard label="CSS custom property">
+            Override the separator character by setting <C>--io-breadcrumb-separator</C> on the <C>io-breadcrumb</C> element or any ancestor.
+            Example: <C>{`io-breadcrumb { --io-breadcrumb-separator: '›'; }`}</C>
           </RuleCard>
-          <RuleCard label="slash — Documentation and file paths">
-            A plain <C>/</C> character. Use in documentation sites, developer tools, and file-browser contexts where the path metaphor is explicit.
+          <RuleCard label="Separators are aria-hidden">
+            Separator spans have <C>aria-hidden="true"</C> — they are decorative and are not announced by screen readers.
           </RuleCard>
-        </div>
-      </section>
-
-      {/* ── maxVisible collapsing ────────────────────────────────── */}
-      <section id="max-visible" className="space-y-6">
-        <SectionHeader
-          title="Collapsing long paths"
-          description="Use maxVisible to hide middle items behind an expand button when the hierarchy is deeper than the viewport comfortably supports."
-        />
-        <div className="space-y-3">
-          <RuleCard label="Always preserves first and last items">
-            When collapsed, the first item (typically &ldquo;Home&rdquo;) and the current page are always visible. Middle items are replaced by a <C>…</C> expand button.
-          </RuleCard>
-          <RuleCard label="Expand is one-way">
-            Clicking <C>…</C> reveals the full path permanently for that page visit — there is no collapse-again action. Once expanded, the full breadcrumb stays visible.
-          </RuleCard>
-          <RuleCard label="Changing items resets collapse state">
-            If the <C>items</C> prop changes (e.g. navigation to a new page), the collapse state resets to collapsed automatically via the <C>@Watch(&apos;items&apos;)</C> hook.
+          <RuleCard label="Separators are auto-managed">
+            You do not need to add, remove, or update separators manually. The <C>slotchange</C> handler in{' '}
+            <C>io-breadcrumb</C> inserts them automatically each time children change.
           </RuleCard>
         </div>
       </section>

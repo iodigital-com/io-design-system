@@ -1,6 +1,6 @@
 'use client';
 
-import { breadcrumbStoryDefault, breadcrumbStorySlash, breadcrumbStoryCollapsed } from '../io-breadcrumb.stories';
+import { breadcrumbStoryDefault, breadcrumbStorySlash, breadcrumbStoryLong } from '../io-breadcrumb.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import { ComponentStory } from '@/components/playground/ComponentStory';
@@ -10,8 +10,8 @@ export default function IoBreadcrumbExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader
-          title="Chevron separator"
-          description="Default breadcrumb with chevron separators between items."
+          title="Basic breadcrumb"
+          description="Three items: two links and a current page item. Separators are inserted automatically by io-breadcrumb."
         />
         <ComponentStory
           story={breadcrumbStoryDefault}
@@ -21,8 +21,8 @@ export default function IoBreadcrumbExamplesPage() {
 
       <section>
         <ExamplesSectionHeader
-          title="Slash separator"
-          description="Breadcrumb using slash (/) as the separator between items."
+          title="Custom separator via CSS"
+          description="Override the separator character using --io-breadcrumb-separator CSS custom property."
         />
         <ComponentStory
           story={breadcrumbStorySlash}
@@ -32,11 +32,11 @@ export default function IoBreadcrumbExamplesPage() {
 
       <section>
         <ExamplesSectionHeader
-          title="Collapsed (maxVisible)"
-          description="Long paths collapse middle items behind an expand button to save space."
+          title="Deep hierarchy"
+          description="Five items showing a deeper navigation path. The last item is automatically marked as the current page."
         />
         <ComponentStory
-          story={breadcrumbStoryCollapsed}
+          story={breadcrumbStoryLong}
           previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>

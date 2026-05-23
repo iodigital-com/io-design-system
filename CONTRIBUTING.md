@@ -483,6 +483,82 @@ CI runs automatically on every PR to `main` via `.github/workflows/pr.yml`.
 
 ---
 
+## Token pipeline
+
+Design tokens flow from Figma into source code through the **Figma Token Sync** workflow (`.github/workflows/sync-tokens.yml`). This section explains how the pipeline works and how to interact with it.
+
+### How tokens are managed
+
+All design tokens live in `io-components/src/global/app.css` as CSS custom properties on `:root`. The three-tier hierarchy (Brand primitives → Semantic aliases → Component tokens) is enforced by the governance scripts listed below.
+
+Token values originate in Figma. When a design decision changes, a Design Ops team member exports the updated token file and triggers the sync workflow. The workflow validates the new tokens against all governance rules before opening a pull request against `main`.
+
+### Manually triggering the sync workflow
+
+You can trigger the pipeline from the Actions tab without writing any code:
+
+1. Navigate to **Actions → Figma Token Sync** in the GitHub repository.
+2. Click **Run workflow**.
+3. Optionally enter a custom `branch_name` (e.g. `chore/tokens-sync-my-feature`). Leave blank to auto-generate a `chore/tokens-sync-<YYYYMMDD>` branch.
+4. Click **Run workflow** to start.
+
+The workflow can also be triggered via `repository_dispatch` from an external CI step:
+
+```bash
+gh api repos/{owner}/{repo}/dispatches \
+  --method POST \
+  --field event_type=tokens-sync \
+  --field client_payload='{"branch_name":"chore/tokens-sync-my-feature"}'
+```
+
+### What the workflow does
+
+The workflow runs three jobs in sequence:
+
+| Job | Purpose | Blocks PR if it fails? |
+|-----|---------|----------------------|
+| `validate` | Runs all governance scripts against the current token definitions | Yes |
+| `build` | Builds components and verifies Stencil asset sync is up to date | Yes |
+| `create-pr` | Opens (or updates) a PR from the sync branch to `main` | N/A |
+
+The `validate` job runs these scripts individually so failures are clearly attributed:
+
+```bash
+node scripts/check-token-cssvar-naming.cjs        # naming conventions
+node scripts/check-token-runtime-reconciliation.cjs  # reconciliation table
+node scripts/check-token-doc-coverage.cjs         # docs coverage
+node scripts/check-style-literals.cjs            # no hardcoded values
+node scripts/check-storefront-status-governance.cjs  # component status model
+node scripts/check-dark-mode-tokens.cjs          # dark-mode completeness
+node scripts/check-public-css-api.cjs            # public CSS API surface
+node scripts/check-no-io-prefixed-events.cjs     # events guard
+node scripts/agency-validate-governance.cjs      # agency governance
+```
+
+A failing governance check stops the pipeline — no PR is opened until all checks pass.
+
+### Running governance checks locally before triggering the sync
+
+```bash
+npm run governance:check   # runs all of the above in sequence
+npm run events:guard       # separate events guard step
+```
+
+### Who reviews and approves token PRs
+
+Token PRs must be reviewed and approved by:
+
+- A **Design Ops** owner, OR
+- A member of the **@io-design-system/maintainers** team
+
+Because token changes can affect every component simultaneously, at least one reviewer must have verified the changes against the Figma source of truth before approving.
+
+### Architecture documentation
+
+See [docs/token-pipeline.md](docs/token-pipeline.md) for the full pipeline architecture, extension points, and guidance on wiring up a real Figma integration.
+
+---
+
 ## Release process (Changesets)
 
 This repo uses [Changesets](https://github.com/changesets/changesets) for automated multi-package versioning and changelog generation.

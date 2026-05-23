@@ -256,7 +256,7 @@ export function getSelectStyles(): string {
 
     .combobox-option--focused,
     .combobox-option:hover {
-      background-color: var(--io-color-grey-1);
+      background-color: var(--io-option-hover-bg);
     }
 
     .combobox-option--selected {

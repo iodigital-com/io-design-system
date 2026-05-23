@@ -7,6 +7,7 @@
 export type IoTagNames =
   | 'io-accordion'
   | 'io-badge'
+  | 'io-breadcrumb'
   | 'io-button'
   | 'io-button-group'
   | 'io-carousel'
@@ -18,6 +19,7 @@ export type IoTagNames =
   | 'io-optgroup'
   | 'io-option'
   | 'io-pagination'
+  | 'io-progress'
   | 'io-radio'
   | 'io-select'
   | 'io-skeleton'

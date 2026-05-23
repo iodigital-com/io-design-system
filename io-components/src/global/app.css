@@ -397,6 +397,18 @@
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 
+  /* Avatar */
+  --io-avatar-bg-blue:           var(--io-color-primary);
+  --io-avatar-bg-orange:         var(--io-color-orange);
+  --io-avatar-bg-green:          #1a7a4a;
+  --io-avatar-bg-purple:         #6b3fa0;
+  --io-avatar-bg-grey:           var(--io-color-grey-3);
+  --io-avatar-text-blue:         #ffffff;
+  --io-avatar-text-orange:       #ffffff;
+  --io-avatar-text-green:        #ffffff;
+  --io-avatar-text-purple:       #ffffff;
+  --io-avatar-text-grey:         var(--io-color-grey-6);
+
   /* Accordion */
   --io-accordion-max-height:     600px;
   --io-accordion-icon-bar-thickness: 8%;
@@ -440,7 +452,18 @@
   --io-skeleton-border-radius-rounded: var(--io-border-radius-md);   /* rounded variant (card level) */
 
   /* ============================================================
-     13. STOREFRONT SHELL SEMANTIC ALIASES
+     13. PROGRESS BAR
+     ============================================================ */
+
+  --io-progress-track-bg:        var(--io-color-grey-2);
+  --io-progress-fill-blue:       var(--io-color-primary);
+  --io-progress-fill-orange:     var(--io-color-orange);
+  --io-progress-fill-success:    #1a7a4a;
+  --io-progress-fill-warning:    #b85c00;
+  --io-progress-fill-error:      var(--io-color-error, #c0392b);
+
+  /* ============================================================
+     14. STOREFRONT SHELL SEMANTIC ALIASES
          Used by Canvas, Navigation, Playground, CodeBlock.
          Override in [data-theme="dark"] below for dark mode.
      ============================================================ */
@@ -545,6 +568,11 @@
     var(--io-color-dark-bg-hover) 50%,
     var(--io-color-dark-bg-raised) 75%
   );
+  --io-progress-track-bg:        var(--io-color-dark-bg-raised);
+
+  /* Avatar — grey variant needs dark-surface bg + light text */
+  --io-avatar-bg-grey:           var(--io-color-dark-bg-raised);
+  --io-avatar-text-grey:         var(--io-color-dark-text-primary);
 
   color-scheme: dark;
 }

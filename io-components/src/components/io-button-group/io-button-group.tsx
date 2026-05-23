@@ -3,7 +3,7 @@ import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } 
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
-import type { IoButtonGroupItem, IoButtonGroupChangeDetail } from './types';
+import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupSize } from './types';
 
 /**
  * io-button-group
@@ -28,7 +28,7 @@ import type { IoButtonGroupItem, IoButtonGroupChangeDetail } from './types';
 export class IoButtonGroup {
   @Element() el!: HTMLElement;
 
-  // ── Props ─────────────────────────────────────────────────────
+  // ── Props ─────────────────────────────────────────────
 
   /**
    * Exclusive (single-select) mode.
@@ -50,22 +50,28 @@ export class IoButtonGroup {
   /** Accessible label for the group container (aria-label) */
   @Prop() label: string | undefined;
 
-  // ── Events ────────────────────────────────────────────────────
+  /**
+   * Size preset propagated to all slotted io-button children.
+   * 'sm' | 'md' (default) | 'lg'
+   */
+  @Prop({ reflect: true }) size: IoButtonGroupSize = 'md';
+
+  // ── Events ────────────────────────────────────────────
 
   /** Fires when the selection changes. Detail contains the new value or value array. */
   @Event() change!: EventEmitter<IoButtonGroupChangeDetail>;
 
-  // ── State ─────────────────────────────────────────────────────
+  // ── State ─────────────────────────────────────────────
 
   @State() private items: IoButtonGroupItem[] = [];
   @State() private focusIndex = 0;
 
-  // ── Private ───────────────────────────────────────────────────
+  // ── Private ───────────────────────────────────────────
 
   private buttonRefs: Map<number, HTMLButtonElement> = new Map();
   private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  // ── Lifecycle ─────────────────────────────────────────────────
+  // ── Lifecycle ───────────────────────────────────────────
 
   componentDidLoad() {
     this.items = parseButtonGroupItems(this.el);
@@ -82,6 +88,9 @@ export class IoButtonGroup {
         this.initFocusIndex();
       }, 0);
     }
+
+    // Propagate initial size to already-slotted children
+    this.propagateSize();
   }
 
   disconnectedCallback() {
@@ -115,6 +124,11 @@ export class IoButtonGroup {
     this.initFocusIndex();
   }
 
+  @Watch('size')
+  onSizeChange() {
+    this.propagateSize();
+  }
+
   // ── Private helpers ───────────────────────────────────────────
 
   private getActiveValues(): string[] {
@@ -143,6 +157,15 @@ export class IoButtonGroup {
     // Prefer the first active enabled item
     const active = enabled.find(({ item }) => this.isActive(item.value));
     this.focusIndex = active ? active.index : enabled[0].index;
+  }
+
+  private propagateSize() {
+    const slot = this.el.shadowRoot?.querySelector('slot');
+    if (!slot) return;
+    (slot as HTMLSlotElement)
+      .assignedElements({ flatten: true })
+      .filter(el => el.tagName === 'IO-BUTTON')
+      .forEach(btn => ((btn as any).size = this.size));
   }
 
   private handleItemClick(index: number) {
@@ -208,7 +231,7 @@ export class IoButtonGroup {
     }
   }
 
-  // ── Render ───────────────────────────────────────────────────
+  // ── Render ───────────────────────────────────────────
 
   render() {
     const { exclusive, disabled, label, items, focusIndex } = this;
@@ -224,7 +247,7 @@ export class IoButtonGroup {
           via querySelectorAll and then re-rendered as internal shadow buttons.
           ::slotted(*) { display: none } in the shadow styles hides the originals.
         */}
-        <slot />
+        <slot onSlotchange={() => this.propagateSize()} />
         <div
           class="group"
           role={exclusive ? 'radiogroup' : 'group'}

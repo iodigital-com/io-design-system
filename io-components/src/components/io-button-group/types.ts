@@ -1,3 +1,6 @@
+/** Size preset for the button group — propagated to all slotted io-button children. */
+export type IoButtonGroupSize = 'sm' | 'md' | 'lg';
+
 /** A single option within the button group. */
 export interface IoButtonGroupItem {
   /** Unique identifier — matched against the group's value prop. */

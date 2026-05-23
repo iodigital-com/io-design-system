@@ -54,4 +54,16 @@ describe('io-checkbox — a11y (ARIA patterns)', () => {
     `;
     await renderAndCheckA11y(el);
   });
+
+  it('checkbox with helper text linked via aria-describedby has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div>
+        <input type="checkbox" id="cb5" aria-describedby="cb5-helper" />
+        <label for="cb5">Accept terms</label>
+        <p id="cb5-helper">You can unsubscribe at any time.</p>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

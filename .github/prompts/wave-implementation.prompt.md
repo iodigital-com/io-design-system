@@ -325,6 +325,18 @@ gh pr create \
   --body-file /tmp/pr-body-{NUMBER}.md
 ```
 
+After the PR is created, capture the PR number and request Copilot code review. Copilot reviews automatically on push in this repo, but request it explicitly to guarantee it runs:
+
+```bash
+PR_NUMBER=$(gh pr view --repo iodigital-com/io-design-system --json number -q .number)
+
+# Request Copilot as reviewer
+gh api \
+  --method POST \
+  "repos/iodigital-com/io-design-system/pulls/${PR_NUMBER}/requested_reviewers" \
+  -f "reviewers[]=copilot"
+```
+
 ---
 
 ## PHASE 8 — SELF-REVIEW
@@ -370,23 +382,83 @@ SELF-REVIEW FINDINGS
 
 ## PHASE 9 — REVIEW-FIX LOOP
 
-Merge all findings from:
-- Self-review (Phase 8)
-- Agent outputs (Phase 0)
+Merge findings from **all three sources** before fixing anything. Do not start fixing until you have read all three.
 
-For every finding:
-1. Classify: **must-fix** (correctness/a11y/AC gap/governance) or **nice-to-have** (style/refactor)
-2. Fix all **must-fix** items immediately
-3. Document **nice-to-have** items as follow-up GitHub issues — do not block merge
+| Source | How to fetch |
+|---|---|
+| Self-review | Phase 8 findings |
+| Agent outputs | Phase 0 findings |
+| **Copilot code review** | See fetch commands below — **mandatory** |
 
-After fixing:
+### Step 9a — Wait for and fetch Copilot findings
+
+Wait for the Copilot code review CI check to complete:
+
+```bash
+gh pr checks ${PR_NUMBER} --repo iodigital-com/io-design-system --watch
+```
+
+Then fetch all Copilot review comments:
+
+```bash
+# High-level verdict and summary comments
+gh pr view ${PR_NUMBER} --repo iodigital-com/io-design-system --json reviews \
+  --jq '.reviews[] | select(.author.login | ascii_downcase | test("copilot")) | {state, body}'
+
+# Inline file-level comments (specific line findings)
+gh api "repos/iodigital-com/io-design-system/pulls/${PR_NUMBER}/comments" \
+  --jq '[.[] | select(.user.login | ascii_downcase | test("copilot")) | {path, line, body, id}]'
+```
+
+Read every Copilot finding in full. Do not skip any.
+
+### Step 9b — Classify all findings
+
+For every finding from all three sources, classify:
+
+| Category | Disposition |
+|---|---|
+| Correctness bug, broken contract, wrong API | **must-fix** — fix before merge |
+| Accessibility or WCAG violation | **must-fix** — fix before merge |
+| Missing `@Watch`, wrong optional-chaining, governance gap | **must-fix** — fix before merge |
+| Security issue (XSS, injection, leaking internals) | **must-fix** — fix before merge |
+| Style preference, speculative refactor, cosmetic suggestion | **defer** — create follow-up issue, do not block merge |
+
+### Step 9c — Fix all must-fix items
+
+Work through every **must-fix** finding. After each fix batch:
+
 ```bash
 git add {specific files}
-git commit -m "fix({scope}): address review findings"
+git commit -m "fix({scope}): address Copilot/review findings — {brief description}"
 git push origin {BRANCH}
 ```
 
-Re-run Phase 6 after every fix batch.
+Re-run Phase 6 (full quality gate) after every push.
+
+### Step 9d — Respond to Copilot inline comments
+
+After pushing, reply to every Copilot inline comment to confirm resolution. Use the comment ID from Step 9a:
+
+```bash
+gh api "repos/iodigital-com/io-design-system/pulls/comments/{COMMENT_ID}/replies" \
+  --method POST \
+  -f body="Fixed in {COMMIT_SHA}: {one-line explanation of what was changed and why}"
+```
+
+For deferred findings, reply with the follow-up issue link:
+
+```bash
+-f body="Deferred to #{ISSUE_NUMBER} — not blocking this PR."
+```
+
+### Step 9e — Repeat until clean
+
+Re-fetch Copilot comments after each push to confirm no new findings were introduced. If Copilot re-reviews and raises new issues, repeat Steps 9b–9d.
+
+Do not advance to Phase 10 until:
+- All **must-fix** findings from all three sources are resolved
+- All Copilot inline comments have a reply
 
 ---
 
@@ -395,7 +467,9 @@ Re-run Phase 6 after every fix batch.
 **Merge confidence checklist — all must be YES:**
 
 - [ ] Every AC from the issue is implemented and evidenced
-- [ ] All review findings addressed or explicitly deferred to a new issue
+- [ ] All self-review findings (Phase 8) addressed or deferred with issue link
+- [ ] All Copilot inline comments have a reply (fixed or deferred with issue link)
+- [ ] All agent findings (Phase 0) addressed or deferred with issue link
 - [ ] All 6 quality gates pass (governance, events:guard, build, test, type-check, build:storefront)
 - [ ] Token reconciliation updated (if applicable)
 - [ ] API snapshot updated (if applicable)

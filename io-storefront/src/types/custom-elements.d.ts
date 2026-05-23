@@ -34,6 +34,8 @@ declare module 'react' {
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;
   'io-skeleton': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSkeletonElement>, HTMLIoSkeletonElement> & Partial<StencilJSX.IoSkeleton>;
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
+  'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;
+  'io-stepper': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepperElement>, HTMLIoStepperElement> & Partial<StencilJSX.IoStepper>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;

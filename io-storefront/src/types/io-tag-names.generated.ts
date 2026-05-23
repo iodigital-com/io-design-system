@@ -27,6 +27,8 @@ export type IoTagNames =
   | 'io-select'
   | 'io-skeleton'
   | 'io-spinner'
+  | 'io-step'
+  | 'io-stepper'
   | 'io-tabs'
   | 'io-tag'
   | 'io-textarea'

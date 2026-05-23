@@ -149,4 +149,34 @@ describe('io-radio — FACE', () => {
     expect(c.checked).toBe(true);
     expect(internals.setFormValue).toHaveBeenLastCalledWith('a');
   });
+
+  it('formResetCallback deselects same-name sibling when defaultChecked=true', () => {
+    // Set up the radio that will reset to checked
+    const radioA = new IoRadio();
+    const elA = document.createElement('io-radio');
+    (radioA as any).el = elA;
+    (radioA as any).label = 'Option A';
+    radioA.value = 'a';
+    radioA.checked = true;
+    (radioA as any).name = 'choice';
+    (radioA as any).componentWillLoad();
+    (radioA as any).internals = makeInternals();
+    document.body.appendChild(elA);
+
+    // A sibling that is currently checked (user had selected it)
+    const sibling = document.createElement('io-radio') as HTMLElement & { name: string; checked: boolean };
+    sibling.name = 'choice';
+    sibling.checked = true;
+    document.body.appendChild(sibling);
+
+    // Simulate reset — radioA.defaultChecked=true, so it re-checks itself and deselects the sibling
+    radioA.checked = false;
+    (radioA as any).formResetCallback();
+
+    expect(radioA.checked).toBe(true);
+    expect(sibling.checked).toBe(false);
+
+    document.body.removeChild(elA);
+    document.body.removeChild(sibling);
+  });
 });

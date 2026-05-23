@@ -488,6 +488,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-checkbox-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
+    },
+    {
       "runtimeCssVar": "--io-checkbox-icon-size",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -1670,6 +1678,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-radio-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
     },
     {
       "runtimeCssVar": "--io-radio-dot-size",

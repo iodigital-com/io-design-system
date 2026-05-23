@@ -158,11 +158,13 @@ export class IoCheckbox {
     const { label, name, value, checked, indeterminate, required, disabled, error, errorMessage, helperText } = this;
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
+    const faceErrorId = `${inputId}-face-error`;
+    const showFaceError = this.faceInvalid && !error;
 
     return (
       <Host>
         <style>{getCheckboxStyles()}</style>
-        <div class={getCheckboxWrapperClass(disabled, error)}>
+        <div class={getCheckboxWrapperClass(disabled, error || this.faceInvalid)}>
           <label class="checkbox-label" htmlFor={inputId}>
             <span class="checkbox-control">
               <input
@@ -175,7 +177,7 @@ export class IoCheckbox {
                 disabled={disabled}
                 required={required}
                 aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
-                aria-describedby={error && errorMessage ? errorId : undefined}
+                aria-describedby={error && errorMessage ? errorId : (showFaceError ? faceErrorId : undefined)}
                 onChange={this.handleChange}
               />
               <span
@@ -209,7 +211,12 @@ export class IoCheckbox {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && <p class="checkbox-helper">{helperText}</p>}
+        {showFaceError && (
+          <p id={faceErrorId} class="checkbox-error" role="alert">
+            Please check this box
+          </p>
+        )}
+        {!error && !this.faceInvalid && helperText && <p class="checkbox-helper">{helperText}</p>}
       </Host>
     );
   }

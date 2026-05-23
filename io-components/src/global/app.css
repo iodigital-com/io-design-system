@@ -317,8 +317,9 @@
   --io-checkbox-size:            1rem;
   --io-checkbox-radius:          2px;
   --io-form-checkbox-border-radius: var(--io-checkbox-radius);
-  --io-checkbox-border-width:    1.5px;
-  --io-checkbox-icon-size:       10px;
+  --io-checkbox-border-width:         1.5px;
+  --io-checkbox-border-error-width:   2px;
+  --io-checkbox-icon-size:            10px;
   --io-select-padding-right:     1.6rem;
   --io-select-chevron-offset-y:  2px;
 
@@ -330,8 +331,9 @@
 
   --io-color-white-alpha-30:     rgba(255, 255, 255, 0.3);
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
-  --io-radio-border-width:       1.5px;
-  --io-radio-dot-size:           8px;        /* inner filled dot when checked */
+  --io-radio-border-width:            1.5px;
+  --io-radio-border-error-width:      2px;
+  --io-radio-dot-size:                8px;        /* inner filled dot when checked */
   --io-tabs-track-color:         var(--io-border);
   --io-tabs-indicator-color:     var(--io-color-primary);
 

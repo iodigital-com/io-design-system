@@ -104,15 +104,18 @@ export class IoRadio {
     this.checked = this.defaultChecked;
     this.syncFormValue();
 
-    // Mutual exclusion: if this radio resets to checked, deselect same-name siblings
-    // to prevent multiple radios in the same group being checked after a form reset
-    if (this.defaultChecked && this.name) {
+    if (this.name) {
       const name = this.name;
       document.querySelectorAll('io-radio').forEach((sibling) => {
         if (sibling !== this.el) {
           const s = sibling as HTMLElement & { name?: string; checked: boolean };
-          if (s.name === name && s.checked) {
-            s.checked = false;
+          if (s.name === name) {
+            if (this.defaultChecked && s.checked) {
+              // Deselect competing checked radio before re-syncing its validity
+              s.checked = false;
+            }
+            // Re-evaluate group validity so stale faceInvalid is cleared on all siblings
+            (s as any).syncFormValue?.();
           }
         }
       });
@@ -192,14 +195,20 @@ export class IoRadio {
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
-    const describedBy = [!error && helperText ? helperId : null, error && errorMessage ? errorId : null]
+    const faceErrorId = `${inputId}-face-error`;
+    const showFaceError = this.faceInvalid && !error;
+    const describedBy = [
+      !error && !showFaceError && helperText ? helperId : null,
+      error && errorMessage ? errorId : null,
+      showFaceError ? faceErrorId : null,
+    ]
       .filter((value): value is string => Boolean(value))
       .join(' ');
 
     return (
       <Host>
         <style>{getRadioStyles()}</style>
-        <div class={getRadioWrapperClass(disabled, error)}>
+        <div class={getRadioWrapperClass(disabled, error || this.faceInvalid)}>
           <label class="radio-label" htmlFor={inputId}>
             <span class="radio-control">
               <input
@@ -237,7 +246,12 @@ export class IoRadio {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && (
+        {showFaceError && (
+          <p id={faceErrorId} class="radio-error" role="alert">
+            Please select an option
+          </p>
+        )}
+        {!error && !this.faceInvalid && helperText && (
           <p id={helperId} class="radio-helper">
             {helperText}
           </p>

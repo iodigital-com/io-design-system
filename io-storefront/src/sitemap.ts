@@ -85,7 +85,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-avatar',
         description: 'User avatar with image, initials, and icon fallback. Supports five sizes, five colour variants, and circle or square shapes.',
-        related: ['io-badge', 'io-skeleton'],
+        related: ['io-badge', 'io-spinner'],
       },
       {
         label: 'Badge',
@@ -205,7 +205,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-progress',
         description: 'Linear progress bar. Use for file uploads, multi-step forms, and wizard flows. Supports five colour variants and three track sizes.',
-        related: ['io-spinner', 'io-skeleton'],
+        related: ['io-spinner', 'io-toast'],
       },
       {
         label: 'Radio',
@@ -230,14 +230,6 @@ export const sitemap: NavSection[] = [
         slug: 'io-select',
         description: 'Dropdown selection with a built-in label, placeholder, and error state. Pass options as an array of value/label objects.',
         related: ['io-input', 'io-radio', 'io-checkbox'],
-      },
-      {
-        label: 'Skeleton',
-        href: '/components/io-skeleton/configurator',
-        status: 'beta',
-        slug: 'io-skeleton',
-        description: 'Animated loading placeholder. Use while async content loads to communicate activity without a spinner. Supports text, circular, rectangular, and rounded shape variants.',
-        related: ['io-spinner', 'io-toast'],
       },
       {
         label: 'Spinner',

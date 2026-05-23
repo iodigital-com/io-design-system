@@ -1,15 +1,13 @@
 ---
-"@io-digital/components": minor
+"@io-digital/components": patch
 ---
 
-feat(io-skeleton): new component — animated loading placeholder
+chore(io-skeleton): remove io-skeleton component
 
-Adds `io-skeleton`, an animated shimmer placeholder for use while async content loads.
+Removes `io-skeleton` from `@io-digital/components`. Product pages implement their own skeleton layouts using standard HTML and CSS — a dedicated component is unnecessary.
 
-- 4 shape variants: `text`, `circular`, `rectangular`, `rounded`
-- Configurable `width`, `height`, `animated`, and `label` props
-- `role="img"` + `aria-label` semantics — avoids live region noise in list contexts
-- `prefers-reduced-motion` handled automatically via CSS media query
-- Token-driven: `--io-skeleton-bg`, `--io-skeleton-duration`, `--io-skeleton-border-radius-text`, `--io-skeleton-border-radius-rounded`
-- Dark mode override for `--io-skeleton-bg` via `[data-theme="dark"]`
-- Full storefront pages: configurator, examples, usage, accessibility, API
+- Deleted `io-skeleton` Stencil component and all associated files
+- Removed `--io-skeleton-*` CSS tokens and `@keyframes io-skeleton-pulse` from global tokens
+- Removed `getSkeletonStyle` utility from `@io-digital/components/styles`
+- Removed storefront pages (configurator, examples, usage, accessibility, API)
+- Updated governance docs, public CSS API registry, and reconciliation manifests

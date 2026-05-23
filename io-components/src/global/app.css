@@ -457,22 +457,7 @@
   --io-color-dark-playground-dot: rgba(255, 255, 255, 0.06);
 
   /* ============================================================
-     12. SKELETON LOADING
-     ============================================================ */
-
-  --io-skeleton-duration:        1.5s;
-  --io-skeleton-bg:              linear-gradient(
-    90deg,
-    var(--io-color-grey-2) 25%,
-    var(--io-color-grey-1) 50%,
-    var(--io-color-grey-2) 75%
-  );
-  --io-skeleton-bg-size:         200% 100%;
-  --io-skeleton-border-radius-text:    var(--io-border-radius-xs);   /* text variant pill-ish line */
-  --io-skeleton-border-radius-rounded: var(--io-border-radius-md);   /* rounded variant (card level) */
-
-  /* ============================================================
-     13. PROGRESS BAR
+     12. PROGRESS BAR
      ============================================================ */
 
   --io-progress-track-bg:        var(--io-color-grey-2);
@@ -610,12 +595,6 @@
   --io-button-group-bg:          var(--io-color-dark-bg-surface);
   --io-button-group-color:       var(--io-color-dark-text-primary);
   --io-button-group-border-color: var(--io-color-dark-border);
-  --io-skeleton-bg:              linear-gradient(
-    90deg,
-    var(--io-color-dark-bg-raised) 25%,
-    var(--io-color-dark-bg-hover) 50%,
-    var(--io-color-dark-bg-raised) 75%
-  );
   --io-progress-track-bg:        var(--io-color-dark-bg-raised);
 
   /* Avatar — grey variant needs dark-surface bg + light text */
@@ -665,12 +644,6 @@
   --io-button-group-bg:          var(--io-color-white);
   --io-button-group-color:       var(--io-color-grey-6);
   --io-button-group-border-color: var(--io-color-grey-2);
-  --io-skeleton-bg:              linear-gradient(
-    90deg,
-    var(--io-color-grey-2) 25%,
-    var(--io-color-grey-1) 50%,
-    var(--io-color-grey-2) 75%
-  );
   --io-progress-track-bg:        var(--io-color-grey-2);
 
   /* Avatar — grey variant: light surface + dark text */
@@ -706,11 +679,6 @@ body {
 /* ============================================================
    ANIMATIONS
    ============================================================ */
-
-@keyframes io-skeleton-pulse {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
 
 /* ============================================================
    BASE RESET

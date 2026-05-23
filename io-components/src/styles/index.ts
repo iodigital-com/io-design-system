@@ -192,19 +192,3 @@ export function gridStyle(columns = 12, gap = '24px') {
   } as const;
 }
 
-// ─── Skeleton ─────────────────────────────────────────────────────────────────
-
-/**
- * Returns inline styles for a skeleton loading placeholder.
- */
-export function getSkeletonStyle(width = '100%', height = '1rem') {
-  return {
-    width,
-    height,
-    borderRadius: 'var(--io-border-radius-sm)',
-    background: 'var(--io-color-grey-2)',
-    backgroundImage: 'var(--io-skeleton-bg)',
-    backgroundSize: 'var(--io-skeleton-bg-size)',
-    animation: `io-skeleton-pulse var(--io-skeleton-duration) var(--io-motion-easing-standard) infinite`,
-  } as const;
-}

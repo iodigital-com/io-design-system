@@ -27,7 +27,6 @@ export type IoTagNames =
   | 'io-radio'
   | 'io-radio-group'
   | 'io-select'
-  | 'io-skeleton'
   | 'io-spinner'
   | 'io-step'
   | 'io-stepper'

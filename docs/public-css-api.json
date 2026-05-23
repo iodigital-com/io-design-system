@@ -738,36 +738,6 @@
     "description": "Global elevated surface color. Overridden in dark mode."
   },
   {
-    "cssVar": "--io-skeleton-bg",
-    "classification": "public-api",
-    "component": "io-skeleton",
-    "description": "Background shimmer gradient of the skeleton. Overridden in dark mode. Override to match your brand shimmer color."
-  },
-  {
-    "cssVar": "--io-skeleton-bg-size",
-    "classification": "public-api",
-    "component": "io-skeleton",
-    "description": "Background size for the shimmer animation gradient sweep."
-  },
-  {
-    "cssVar": "--io-skeleton-border-radius-rounded",
-    "classification": "public-api",
-    "component": "io-skeleton",
-    "description": "Border radius of the rounded rectangle skeleton variant."
-  },
-  {
-    "cssVar": "--io-skeleton-border-radius-text",
-    "classification": "public-api",
-    "component": "io-skeleton",
-    "description": "Border radius of the text line skeleton variant."
-  },
-  {
-    "cssVar": "--io-skeleton-duration",
-    "classification": "public-api",
-    "component": "io-skeleton",
-    "description": "Duration of one full shimmer animation cycle. Override to speed up or slow down the pulse."
-  },
-  {
     "cssVar": "--io-tabs-icon-gap",
     "classification": "public-api",
     "component": "io-tabs",

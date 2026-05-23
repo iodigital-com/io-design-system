@@ -46,7 +46,7 @@
  *   --io-text-primary, --io-bg-page, --io-border, --io-accent
  *
  * AVOID — component-internal tokens are implementation details:
- *   --io-color-dark-*, --io-skeleton-bg, --io-combobox-z, etc.
+ *   --io-color-dark-*, --io-combobox-z, etc.
  *   These are not part of the public API and may change without a semver bump.
  *
  * See /developing/customisation for the full public CSS API reference.

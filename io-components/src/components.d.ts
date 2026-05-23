@@ -25,7 +25,6 @@ import { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 import { IoSelectSize } from "./components/io-select/types";
-import { IoSkeletonVariant } from "./components/io-skeleton/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoTableSize, IoTableSortDirection } from "./components/io-table/types";
@@ -55,7 +54,6 @@ export { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 export { IoSelectSize } from "./components/io-select/types";
-export { IoSkeletonVariant } from "./components/io-skeleton/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoTableSize, IoTableSortDirection } from "./components/io-table/types";
@@ -1126,49 +1124,6 @@ export namespace Components {
         "value": string;
     }
     /**
-     * io-skeleton
-     * ===========
-     * Animated placeholder that represents loading content.
-     * Use while async data is being fetched to communicate activity
-     * without resorting to a spinner or blank region.
-     * Wrap multiple skeletons in a container with `aria-busy="true"` + `aria-label`
-     * to communicate the loading state to screen readers as a unit.
-     * @example <io-skeleton variant="text" width="200px"></io-skeleton>
-     * <io-skeleton variant="circular" width="40px" height="40px"></io-skeleton>
-     * <io-skeleton variant="rectangular" width="100%" height="120px"></io-skeleton>
-     * <!-- Composition: card skeleton -->
-     * <div aria-busy="true" aria-label="Loading article">
-     *   <io-skeleton variant="rectangular" height="160px"></io-skeleton>
-     *   <io-skeleton variant="text" width="60%"></io-skeleton>
-     *   <io-skeleton variant="text" width="80%"></io-skeleton>
-     * </div>
-     */
-    interface IoSkeleton {
-        /**
-          * When false the shimmer animation is disabled. Prefer the `prefers-reduced-motion` media query for system-level control.
-          * @default true
-         */
-        "animated": boolean;
-        /**
-          * CSS height value applied as an inline style. Defaults to the variant's CSS height when not provided.
-         */
-        "height"?: string;
-        /**
-          * Accessible label announced by screen readers.
-          * @default 'Loading'
-         */
-        "label": string;
-        /**
-          * Shape preset for the skeleton placeholder.
-          * @default 'text'
-         */
-        "variant": IoSkeletonVariant;
-        /**
-          * CSS width value applied as an inline style. Defaults to the variant's CSS width when not provided.
-         */
-        "width"?: string;
-    }
-    /**
      * io-spinner
      * ==========
      * Animated loading indicator. Pure CSS — no JS animation.
@@ -2236,30 +2191,6 @@ declare global {
         new (): HTMLIoSelectElement;
     };
     /**
-     * io-skeleton
-     * ===========
-     * Animated placeholder that represents loading content.
-     * Use while async data is being fetched to communicate activity
-     * without resorting to a spinner or blank region.
-     * Wrap multiple skeletons in a container with `aria-busy="true"` + `aria-label`
-     * to communicate the loading state to screen readers as a unit.
-     * @example <io-skeleton variant="text" width="200px"></io-skeleton>
-     * <io-skeleton variant="circular" width="40px" height="40px"></io-skeleton>
-     * <io-skeleton variant="rectangular" width="100%" height="120px"></io-skeleton>
-     * <!-- Composition: card skeleton -->
-     * <div aria-busy="true" aria-label="Loading article">
-     *   <io-skeleton variant="rectangular" height="160px"></io-skeleton>
-     *   <io-skeleton variant="text" width="60%"></io-skeleton>
-     *   <io-skeleton variant="text" width="80%"></io-skeleton>
-     * </div>
-     */
-    interface HTMLIoSkeletonElement extends Components.IoSkeleton, HTMLStencilElement {
-    }
-    var HTMLIoSkeletonElement: {
-        prototype: HTMLIoSkeletonElement;
-        new (): HTMLIoSkeletonElement;
-    };
-    /**
      * io-spinner
      * ==========
      * Animated loading indicator. Pure CSS — no JS animation.
@@ -2563,7 +2494,6 @@ declare global {
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
         "io-select": HTMLIoSelectElement;
-        "io-skeleton": HTMLIoSkeletonElement;
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
         "io-stepper": HTMLIoStepperElement;
@@ -3653,49 +3583,6 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
-     * io-skeleton
-     * ===========
-     * Animated placeholder that represents loading content.
-     * Use while async data is being fetched to communicate activity
-     * without resorting to a spinner or blank region.
-     * Wrap multiple skeletons in a container with `aria-busy="true"` + `aria-label`
-     * to communicate the loading state to screen readers as a unit.
-     * @example <io-skeleton variant="text" width="200px"></io-skeleton>
-     * <io-skeleton variant="circular" width="40px" height="40px"></io-skeleton>
-     * <io-skeleton variant="rectangular" width="100%" height="120px"></io-skeleton>
-     * <!-- Composition: card skeleton -->
-     * <div aria-busy="true" aria-label="Loading article">
-     *   <io-skeleton variant="rectangular" height="160px"></io-skeleton>
-     *   <io-skeleton variant="text" width="60%"></io-skeleton>
-     *   <io-skeleton variant="text" width="80%"></io-skeleton>
-     * </div>
-     */
-    interface IoSkeleton {
-        /**
-          * When false the shimmer animation is disabled. Prefer the `prefers-reduced-motion` media query for system-level control.
-          * @default true
-         */
-        "animated"?: boolean;
-        /**
-          * CSS height value applied as an inline style. Defaults to the variant's CSS height when not provided.
-         */
-        "height"?: string;
-        /**
-          * Accessible label announced by screen readers.
-          * @default 'Loading'
-         */
-        "label"?: string;
-        /**
-          * Shape preset for the skeleton placeholder.
-          * @default 'text'
-         */
-        "variant"?: IoSkeletonVariant;
-        /**
-          * CSS width value applied as an inline style. Defaults to the variant's CSS width when not provided.
-         */
-        "width"?: string;
-    }
-    /**
      * io-spinner
      * ==========
      * Animated loading indicator. Pure CSS — no JS animation.
@@ -4362,13 +4249,6 @@ declare namespace LocalJSX {
         "multiple": boolean;
         "filter": boolean;
     }
-    interface IoSkeletonAttributes {
-        "variant": IoSkeletonVariant;
-        "width": string;
-        "height": string;
-        "animated": boolean;
-        "label": string;
-    }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;
         "color": IoSpinnerColor;
@@ -4471,7 +4351,6 @@ declare namespace LocalJSX {
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
-        "io-skeleton": Omit<IoSkeleton, keyof IoSkeletonAttributes> & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes]?: IoSkeleton[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `attr:${K}`]?: IoSkeletonAttributes[K] } & { [K in keyof IoSkeleton & keyof IoSkeletonAttributes as `prop:${K}`]?: IoSkeleton[K] };
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
         "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
@@ -4752,25 +4631,6 @@ declare module "@stencil/core" {
              * </io-select>
              */
             "io-select": LocalJSX.IntrinsicElements["io-select"] & JSXBase.HTMLAttributes<HTMLIoSelectElement>;
-            /**
-             * io-skeleton
-             * ===========
-             * Animated placeholder that represents loading content.
-             * Use while async data is being fetched to communicate activity
-             * without resorting to a spinner or blank region.
-             * Wrap multiple skeletons in a container with `aria-busy="true"` + `aria-label`
-             * to communicate the loading state to screen readers as a unit.
-             * @example <io-skeleton variant="text" width="200px"></io-skeleton>
-             * <io-skeleton variant="circular" width="40px" height="40px"></io-skeleton>
-             * <io-skeleton variant="rectangular" width="100%" height="120px"></io-skeleton>
-             * <!-- Composition: card skeleton -->
-             * <div aria-busy="true" aria-label="Loading article">
-             *   <io-skeleton variant="rectangular" height="160px"></io-skeleton>
-             *   <io-skeleton variant="text" width="60%"></io-skeleton>
-             *   <io-skeleton variant="text" width="80%"></io-skeleton>
-             * </div>
-             */
-            "io-skeleton": LocalJSX.IntrinsicElements["io-skeleton"] & JSXBase.HTMLAttributes<HTMLIoSkeletonElement>;
             /**
              * io-spinner
              * ==========

@@ -138,6 +138,111 @@ export class IoFoo {
 - **Radio groups:** `required` is satisfied when any sibling with the same `name` is checked — not just this radio. Query `document.querySelectorAll('io-radio')` to find checked siblings before setting `valueMissing`.
 - In `.face.spec.ts`, assign `(component as any).internals = makeInternals()` manually in `beforeEach` — `@AttachInternals` is a Stencil decorator that doesn't run in unit test instantiation.
 
+**Form reset support (`formResetCallback`):**
+
+Every form-field component must implement `formResetCallback()` to restore the field to its initial value when the parent `<form>` is reset. Key rules:
+
+```ts
+private defaultChecked = false;  // capture in componentWillLoad()
+
+componentWillLoad() {
+  this.defaultChecked = this.checked;
+  this.syncFormValue();
+}
+
+// Plain method — NOT @Method(), NOT async
+formResetCallback() {
+  this.checked = this.defaultChecked;
+  this.syncFormValue();
+}
+```
+
+- `formResetCallback` is a **browser lifecycle method** — it must be a **plain synchronous method**, never decorated with `@Method()` and never `async`.
+- Capture `defaultChecked` / `defaultValue` in `componentWillLoad()`, not in the constructor.
+- Call `syncFormValue()` after restoring so FACE validity is re-evaluated immediately.
+
+**Radio group reset ordering:** The browser fires `formResetCallback` in DOM order. An unchecked radio that fires early will call `syncFormValue()` and find no checked sibling (because the checked sibling hasn't reset yet), incorrectly setting `faceInvalid=true`. Fix: after restoring own state, loop over same-name siblings and call `syncFormValue()` on each to re-evaluate group validity:
+
+```ts
+formResetCallback() {
+  this.checked = this.defaultChecked;
+  this.syncFormValue();
+  if (this.name) {
+    const name = this.name;
+    document.querySelectorAll('io-radio').forEach((sibling) => {
+      if (sibling !== this.el) {
+        const s = sibling as HTMLElement & { name?: string; checked: boolean };
+        if (s.name === name) {
+          if (this.defaultChecked && s.checked) s.checked = false;  // mutual exclusion
+          (s as any).syncFormValue?.();  // re-evaluate group validity
+        }
+      }
+    });
+  }
+}
+```
+
+**FACE invalidity state (`faceInvalid`):**
+
+Add `@State() faceInvalid = false` to every form-field component. This reactive state mirrors the FACE invalidity so the component re-renders when form validation state changes — required for WCAG 4.1.3.
+
+```ts
+@State() faceInvalid = false;
+
+private syncFormValue() {
+  this.internals?.setFormValue?.(this.checked ? this.value : null);
+  if (this.required && !this.checked) {
+    this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
+    this.faceInvalid = true;
+  } else {
+    this.internals?.setValidity?.({});
+    this.faceInvalid = false;
+  }
+}
+```
+
+**FACE error message in render (WCAG 3.3.1):**
+
+When `faceInvalid=true` and the `error` prop is false, render a visible error message with `role="alert"` and wire it to `aria-describedby`. Setting only `aria-invalid="true"` without an accessible description violates WCAG 3.3.1 Error Identification.
+
+```tsx
+const showFaceError = this.faceInvalid && !error;
+const faceErrorId = `${inputId}-face-error`;
+
+<input
+  aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
+  aria-describedby={/* include faceErrorId when showFaceError */}
+/>
+
+{showFaceError && (
+  <p id={faceErrorId} class="checkbox-error" role="alert">
+    Please check this box
+  </p>
+)}
+```
+
+**WCAG 1.4.1 — Error border non-color indicator:**
+
+Error states that change only `border-color` violate WCAG 1.4.1 (use of color). Always pair `border-color` with an increased `border-width` via a component-scoped token:
+
+```css
+/* app.css */
+--io-checkbox-border-error-width: 2px;
+--io-radio-border-error-width: 2px;
+
+/* component -styles.ts */
+.checkbox-wrapper--error .checkbox-custom:not(.checkbox-custom--checked) {
+  border-color: var(--io-border-error);
+  border-width: var(--io-checkbox-border-error-width);
+}
+:host(:invalid) .checkbox-custom:not(.checkbox-custom--checked) {
+  border-color: var(--io-border-error);
+  border-width: var(--io-checkbox-border-error-width);
+}
+```
+
+Token naming: `--io-{component}-border-error-width`. Register every new token in `docs/token-runtime-reconciliation.json`.
+
 ## Accessibility Testing
 
 Every interactive component must have an `io-{name}.a11y.spec.ts`:

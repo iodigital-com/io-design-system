@@ -624,7 +624,7 @@ npm run governance:check 2>&1 | tail -5
 | # | Title | Priority | Status |
 |---|---|---|---|
 | #175 | feat(tokens): dark mode token overrides across all 18 components | P1 | Ready |
-| #228 | fix(io-checkbox/io-radio): complete FACE — form reset + :invalid support | P1 | ✅ Unblocked (Wave I FACE merged) |
+| #228 | fix(io-checkbox/io-radio): complete FACE — form reset + :invalid support | P1 | ✅ MERGED (#290, 2026-05-23) |
 | #195 | feat(io-toast): position prop (6 positions) + persistent variant | P2 | Ready |
 | #199 | feat(io-tabs): icon slot and badge slot for io-tab-item | P2 | Ready |
 

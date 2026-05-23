@@ -2,15 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Navigation } from './Navigation';
+import { ThemeToggle } from './ThemeToggle';
 
 import { SearchPalette } from '@/components/SearchPalette';
 import { useSidebar } from '@/context/SidebarContext';
-import { useStorefrontTheme } from '@/hooks/useStorefrontTheme';
-
-const THEMES = ['light', 'dark', 'auto'] as const;
 
 function MenuIcon() {
   return (
@@ -56,33 +54,6 @@ function GithubIcon() {
   );
 }
 
-function SunIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  );
-}
-
-function AutoIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  );
-}
-
 function SlidersIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -95,12 +66,6 @@ function SlidersIcon() {
     </svg>
   );
 }
-
-const THEME_ICONS: Record<typeof THEMES[number], ReactElement> = {
-  light: <SunIcon />,
-  dark: <MoonIcon />,
-  auto: <AutoIcon />,
-};
 
 const FOCUSABLE_SELECTORS = [
   'a[href]',
@@ -132,7 +97,6 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
  */
 export function Canvas({ children }: { children: ReactNode }) {
   const { isSidebarStartOpen, setSidebarStartOpen, isSidebarEndOpen, setSidebarEndOpen } = useSidebar();
-  const { theme, setTheme } = useStorefrontTheme();
   const pathname = usePathname();
   const mainRef = useRef<HTMLElement>(null);
   const sidebarStartRef = useRef<HTMLElement>(null);
@@ -346,19 +310,9 @@ export function Canvas({ children }: { children: ReactNode }) {
           </span>
         </button>
 
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          {/* Theme picker — single cycle button */}
-          <button
-            onClick={() => {
-              const idx = THEMES.indexOf(theme);
-              setTheme(THEMES[(idx + 1) % THEMES.length]);
-            }}
-            title={`Theme: ${theme} (click to change)`}
-            aria-label={`Current theme: ${theme}. Click to cycle theme.`}
-            className="p-2 rounded-md text-[var(--io-text-primary)] bg-[var(--io-bg-raised)] hover:bg-[var(--io-bg-hover)] io-decorative-transition transition-colors duration-[var(--io-duration-fast)] cursor-pointer"
-          >
-            {THEME_ICONS[theme]}
-          </button>
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Theme picker — segmented 3-button control */}
+          <ThemeToggle />
 
           {/* GitHub link */}
           <a

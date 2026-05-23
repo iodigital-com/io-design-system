@@ -4,6 +4,7 @@ import { h } from '@stencil/core';
 import { IoToast } from './io-toast';
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';
+import { isToastPersistent } from './io-toast-utils';
 
 describe('io-toast — registration', () => {
   let component: IoToast;
@@ -61,6 +62,38 @@ describe('io-toast — registration', () => {
   });
 });
 
+describe('io-toast — position prop', () => {
+  it('defaults to bottom-end', () => {
+    const component = new IoToast();
+    expect(component.position).toBe('bottom-end');
+  });
+
+  it('accepts all 6 position values', () => {
+    const positions = ['top-start', 'top-center', 'top-end', 'bottom-start', 'bottom-center', 'bottom-end'] as const;
+    for (const pos of positions) {
+      const component = new IoToast();
+      component.position = pos;
+      expect(component.position).toBe(pos);
+    }
+  });
+});
+
+describe('io-toast — persistent/error ARIA', () => {
+  it('isToastPersistent returns true when persistent: true', () => {
+    expect(isToastPersistent({ id: 1, text: 'X', persistent: true, variant: 'neutral' })).toBe(true);
+  });
+
+  it('isToastPersistent returns true for error variant', () => {
+    expect(isToastPersistent({ id: 1, text: 'X', variant: 'error' })).toBe(true);
+  });
+
+  it('isToastPersistent returns false for non-error, non-persistent toast', () => {
+    expect(isToastPersistent({ id: 1, text: 'X', variant: 'success' })).toBe(false);
+    expect(isToastPersistent({ id: 2, text: 'X', variant: 'info' })).toBe(false);
+    expect(isToastPersistent({ id: 3, text: 'X' })).toBe(false);
+  });
+});
+
 describe('io-toast — style contracts', () => {
   it('uses a literal breakpoint for media queries', () => {
     const styles = getToastStyles();
@@ -70,5 +103,15 @@ describe('io-toast — style contracts', () => {
   it('does not use var() inside media query conditions', () => {
     const styles = getToastStyles();
     expect(styles).not.toContain('@media (max-width: var(');
+  });
+
+  it('declares all 6 position data-attribute selectors', () => {
+    const styles = getToastStyles();
+    expect(styles).toContain('[data-position="top-start"]');
+    expect(styles).toContain('[data-position="top-center"]');
+    expect(styles).toContain('[data-position="top-end"]');
+    expect(styles).toContain('[data-position="bottom-start"]');
+    expect(styles).toContain('[data-position="bottom-center"]');
+    expect(styles).toContain('[data-position="bottom-end"]');
   });
 });

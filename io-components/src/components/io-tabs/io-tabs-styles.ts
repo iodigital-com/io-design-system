@@ -38,6 +38,7 @@ export function getTabsStyles(): string {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      gap: var(--io-tabs-icon-gap) !important;
       padding: var(--io-space-3) var(--io-space-4) !important;
       font-family: var(--io-font-primary) !important;
       font-size: var(--io-font-size-sm) !important;

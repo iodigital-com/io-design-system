@@ -23,7 +23,7 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
-import { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
+import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
@@ -43,7 +43,7 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
-export { IoToastMessage, IoToastVariant } from "./components/io-toast/types";
+export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export namespace Components {
     /**
@@ -1013,6 +1013,11 @@ export namespace Components {
           * Enqueue a toast notification
          */
         "addToast": (message: IoToastMessage) => Promise<void>;
+        /**
+          * Where on screen the toast stack appears.
+          * @default 'bottom-end'
+         */
+        "position": IoToastPosition;
     }
     /**
      * io-toast-item
@@ -2694,6 +2699,11 @@ declare namespace LocalJSX {
      * </script>
      */
     interface IoToast {
+        /**
+          * Where on screen the toast stack appears.
+          * @default 'bottom-end'
+         */
+        "position"?: IoToastPosition;
     }
     /**
      * io-toast-item
@@ -2914,6 +2924,9 @@ declare namespace LocalJSX {
         "autocomplete": string | undefined;
         "resize": IoTextareaResize;
     }
+    interface IoToastAttributes {
+        "position": IoToastPosition;
+    }
     interface IoToastItemAttributes {
         "text": string;
         "variant": IoToastVariant;
@@ -2943,7 +2956,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
-        "io-toast": IoToast;
+        "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
         "io-toast-item": Omit<IoToastItem, keyof IoToastItemAttributes> & { [K in keyof IoToastItem & keyof IoToastItemAttributes]?: IoToastItem[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `attr:${K}`]?: IoToastItemAttributes[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `prop:${K}`]?: IoToastItem[K] };
         "io-tooltip": Omit<IoTooltip, keyof IoTooltipAttributes> & { [K in keyof IoTooltip & keyof IoTooltipAttributes]?: IoTooltip[K] } & { [K in keyof IoTooltip & keyof IoTooltipAttributes as `attr:${K}`]?: IoTooltipAttributes[K] } & { [K in keyof IoTooltip & keyof IoTooltipAttributes as `prop:${K}`]?: IoTooltip[K] };
     }

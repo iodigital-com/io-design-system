@@ -1,4 +1,4 @@
-import { createToastEntry, hasToastText } from './io-toast-utils';
+import { createToastEntry, hasToastText, isToastPersistent } from './io-toast-utils';
 
 import type { IoToastMessage, IoToastEntry } from './types';
 
@@ -93,6 +93,7 @@ export class IoToastManagerClass {
   }
 
   private scheduleTimer(entry: IoToastEntry): void {
+    if (isToastPersistent(entry)) return;
     const duration = entry.duration ?? DEFAULT_DURATION;
     if (duration > 0) {
       this.timerId = setTimeout(() => this.dismiss(), duration);

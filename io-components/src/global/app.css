@@ -342,6 +342,8 @@
   --io-radio-dot-size:                8px;        /* inner filled dot when checked */
   --io-tabs-track-color:         var(--io-border);
   --io-tabs-indicator-color:     var(--io-color-primary);
+  --io-tabs-icon-size:           var(--io-icon-size-sm);  /* 16px — icon child inside tab button */
+  --io-tabs-icon-gap:            var(--io-space-1);       /* 4px — gap between icon and label */
 
   /* Modal */
   --io-modal-width-sm:           400px;

@@ -85,9 +85,16 @@ export function getCheckboxStyles(): string {
       }
     }
 
-    /* Error border */
+    /* Error border — 2px width satisfies WCAG 1.4.1 (non-color indicator) */
     .checkbox-wrapper--error .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
       border-color: var(--io-border-error);
+      border-width: var(--io-checkbox-border-error-width);
+    }
+
+    /* FACE :invalid pseudo-class — browser sets this via setValidity({ valueMissing }) */
+    :host(:invalid) .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
+      border-color: var(--io-border-error);
+      border-width: var(--io-checkbox-border-error-width);
     }
 
     /* Focus ring on native input → show on custom visual */

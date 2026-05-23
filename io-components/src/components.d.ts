@@ -886,6 +886,11 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Accessible label for the tag content — used to build the remove button's aria-label. Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove".
+          * @default ''
+         */
+        "label": string;
+        /**
           * Renders a remove (×) button alongside the tag
           * @default false
          */
@@ -2550,6 +2555,11 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Accessible label for the tag content — used to build the remove button's aria-label. Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove".
+          * @default ''
+         */
+        "label"?: string;
+        /**
           * Fires when the remove button is clicked (removable only).
          */
         "onRemove"?: (event: IoTagCustomEvent<void>) => void;
@@ -2886,6 +2896,7 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "size": IoTagSize;
         "color": IoTagColor;
+        "label": string;
     }
     interface IoTextareaAttributes {
         "label": string;

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
 
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
@@ -83,16 +83,29 @@ export class IoCheckbox {
     return this.internals?.reportValidity?.() ?? true;
   }
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultChecked = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveCheckboxId(this.name, this.fallbackId);
+    this.defaultChecked = this.checked;
+    this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.checked = this.defaultChecked;
+    this.indeterminate = false;
     this.syncFormValue();
   }
 
@@ -116,8 +129,10 @@ export class IoCheckbox {
     this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -143,11 +158,13 @@ export class IoCheckbox {
     const { label, name, value, checked, indeterminate, required, disabled, error, errorMessage, helperText } = this;
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
+    const faceErrorId = `${inputId}-face-error`;
+    const showFaceError = this.faceInvalid && !error;
 
     return (
       <Host>
         <style>{getCheckboxStyles()}</style>
-        <div class={getCheckboxWrapperClass(disabled, error)}>
+        <div class={getCheckboxWrapperClass(disabled, error || this.faceInvalid)}>
           <label class="checkbox-label" htmlFor={inputId}>
             <span class="checkbox-control">
               <input
@@ -159,8 +176,8 @@ export class IoCheckbox {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={error ? 'true' : undefined}
-                aria-describedby={error && errorMessage ? errorId : undefined}
+                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
+                aria-describedby={error && errorMessage ? errorId : (showFaceError ? faceErrorId : undefined)}
                 onChange={this.handleChange}
               />
               <span
@@ -194,7 +211,12 @@ export class IoCheckbox {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && <p class="checkbox-helper">{helperText}</p>}
+        {showFaceError && (
+          <p id={faceErrorId} class="checkbox-error" role="alert">
+            Please check this box
+          </p>
+        )}
+        {!error && !this.faceInvalid && helperText && <p class="checkbox-helper">{helperText}</p>}
       </Host>
     );
   }

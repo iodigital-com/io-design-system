@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
@@ -80,17 +80,46 @@ export class IoRadio {
     return this.internals?.reportValidity?.() ?? true;
   }
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultChecked = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveRadioId(this.name, this.fallbackId);
+    this.defaultChecked = this.checked;
     this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.checked = this.defaultChecked;
+    this.syncFormValue();
+
+    if (this.name) {
+      const name = this.name;
+      document.querySelectorAll('io-radio').forEach((sibling) => {
+        if (sibling !== this.el) {
+          const s = sibling as HTMLElement & { name?: string; checked: boolean };
+          if (s.name === name) {
+            if (this.defaultChecked && s.checked) {
+              // Deselect competing checked radio before re-syncing its validity
+              s.checked = false;
+            }
+            // Re-evaluate group validity so stale faceInvalid is cleared on all siblings
+            (s as any).syncFormValue?.();
+          }
+        }
+      });
+    }
   }
 
   @Watch('checked')
@@ -123,11 +152,14 @@ export class IoRadio {
         : false;
       if (!groupSatisfied) {
         this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+        this.faceInvalid = true;
       } else {
         this.internals?.setValidity?.({});
+        this.faceInvalid = false;
       }
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -163,14 +195,20 @@ export class IoRadio {
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
-    const describedBy = [!error && helperText ? helperId : null, error && errorMessage ? errorId : null]
+    const faceErrorId = `${inputId}-face-error`;
+    const showFaceError = this.faceInvalid && !error;
+    const describedBy = [
+      !error && !showFaceError && helperText ? helperId : null,
+      error && errorMessage ? errorId : null,
+      showFaceError ? faceErrorId : null,
+    ]
       .filter((value): value is string => Boolean(value))
       .join(' ');
 
     return (
       <Host>
         <style>{getRadioStyles()}</style>
-        <div class={getRadioWrapperClass(disabled, error)}>
+        <div class={getRadioWrapperClass(disabled, error || this.faceInvalid)}>
           <label class="radio-label" htmlFor={inputId}>
             <span class="radio-control">
               <input
@@ -182,7 +220,7 @@ export class IoRadio {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={error ? 'true' : undefined}
+                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />
@@ -208,7 +246,12 @@ export class IoRadio {
             {errorMessage}
           </p>
         )}
-        {!error && helperText && (
+        {showFaceError && (
+          <p id={faceErrorId} class="radio-error" role="alert">
+            Please select an option
+          </p>
+        )}
+        {!error && !this.faceInvalid && helperText && (
           <p id={helperId} class="radio-helper">
             {helperText}
           </p>

@@ -1,6 +1,9 @@
+import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 import { IoButtonGroup } from './io-button-group';
+
+import type { IoButtonGroupItem } from './types';
 
 function makeComponent(overrides: Partial<IoButtonGroup> = {}): IoButtonGroup {
   const comp = new IoButtonGroup();
@@ -215,5 +218,137 @@ describe('io-button-group — disconnectedCallback', () => {
 
     // Should not throw
     expect(() => comp.disconnectedCallback()).not.toThrow();
+  });
+});
+
+// ── Render-path tests (vi.mocked(h).mock.calls) ───────────────────────────────
+
+const RENDER_ITEMS: IoButtonGroupItem[] = [
+  { value: 'a', label: 'A' },
+  { value: 'b', label: 'B' },
+  { value: 'c', label: 'C' },
+];
+
+function makeRenderComp(overrides: Partial<IoButtonGroup> = {}): IoButtonGroup {
+  const comp = new IoButtonGroup();
+  (comp as any).el = document.createElement('io-button-group');
+  (comp as any).change = { emit: vi.fn() };
+  (comp as any).items = [...RENDER_ITEMS];
+  Object.assign(comp, overrides);
+  return comp;
+}
+
+function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {
+  return vi
+    .mocked(h)
+    .mock.calls.filter((args) => args[0] === tag)
+    .map((args) => args[1] as Record<string, unknown> | undefined);
+}
+
+describe('io-button-group render — exclusive mode (radiogroup)', () => {
+  beforeEach(() => {
+    const comp = makeRenderComp({ exclusive: true, value: 'b' });
+    vi.mocked(h).mockClear();
+    comp.render();
+  });
+
+  it('group container has role="radiogroup"', () => {
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'radiogroup');
+    expect(divProps).toBeDefined();
+  });
+
+  it('buttons have role="radio"', () => {
+    const buttons = hCallsForTag('button');
+    expect(buttons.every((p) => p?.['role'] === 'radio')).toBe(true);
+  });
+
+  it('active item has aria-checked="true"', () => {
+    const buttons = hCallsForTag('button');
+    const activeBtn = buttons.find((p) => p?.['aria-checked'] === 'true');
+    expect(activeBtn).toBeDefined();
+  });
+
+  it('inactive items have aria-checked="false"', () => {
+    const buttons = hCallsForTag('button');
+    const inactive = buttons.filter((p) => p?.['aria-checked'] === 'false');
+    expect(inactive).toHaveLength(2);
+  });
+
+  it('active item gets tabIndex=0 (roving tabindex)', () => {
+    const buttons = hCallsForTag('button');
+    const focused = buttons.find((p) => p?.['tabIndex'] === 0);
+    expect(focused).toBeDefined();
+  });
+
+  it('inactive items get tabIndex=-1', () => {
+    const buttons = hCallsForTag('button');
+    const blurred = buttons.filter((p) => p?.['tabIndex'] === -1);
+    expect(blurred).toHaveLength(2);
+  });
+});
+
+describe('io-button-group render — multi-select mode (group)', () => {
+  beforeEach(() => {
+    const comp = makeRenderComp({ exclusive: false, value: ['a', 'c'] });
+    vi.mocked(h).mockClear();
+    comp.render();
+  });
+
+  it('group container has role="group"', () => {
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group');
+    expect(divProps).toBeDefined();
+  });
+
+  it('buttons have role="checkbox"', () => {
+    const buttons = hCallsForTag('button');
+    expect(buttons.every((p) => p?.['role'] === 'checkbox')).toBe(true);
+  });
+
+  it('both active items have aria-checked="true"', () => {
+    const buttons = hCallsForTag('button');
+    const active = buttons.filter((p) => p?.['aria-checked'] === 'true');
+    expect(active).toHaveLength(2);
+  });
+});
+
+describe('io-button-group render — label prop', () => {
+  it('sets aria-label on the group container when label is provided', () => {
+    const comp = makeRenderComp({ label: 'View period' });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
+    expect(divProps?.['aria-label']).toBe('View period');
+  });
+
+  it('omits aria-label when label prop is undefined', () => {
+    const comp = makeRenderComp({ label: undefined });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
+    expect(divProps?.['aria-label']).toBeUndefined();
+  });
+});
+
+describe('io-button-group render — group disabled', () => {
+  beforeEach(() => {
+    const comp = makeRenderComp({ disabled: true, value: '' });
+    vi.mocked(h).mockClear();
+    comp.render();
+  });
+
+  it('group container gets aria-disabled="true"', () => {
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
+    expect(divProps?.['aria-disabled']).toBe('true');
+  });
+
+  it('all buttons get the disabled attribute', () => {
+    const buttons = hCallsForTag('button');
+    expect(buttons.every((p) => p?.['disabled'] === true)).toBe(true);
+  });
+
+  it('no button gets tabIndex=0 when all are disabled (none in tab order)', () => {
+    const buttons = hCallsForTag('button');
+    const focused = buttons.filter((p) => p?.['tabIndex'] === 0);
+    expect(focused).toHaveLength(0);
   });
 });

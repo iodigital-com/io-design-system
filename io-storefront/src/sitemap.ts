@@ -42,6 +42,7 @@ export const sitemap: NavSection[] = [
       { label: 'Customisation', href: '/developing/customisation' },
       { label: 'Token Usage', href: '/developing/tokens' },
       { label: 'Stories', href: '/developing/stories' },
+      { label: 'Migration Guide', href: '/developing/migration' },
     ],
   },
   {

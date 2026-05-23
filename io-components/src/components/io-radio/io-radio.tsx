@@ -108,14 +108,14 @@ export class IoRadio {
       const name = this.name;
       document.querySelectorAll('io-radio').forEach((sibling) => {
         if (sibling !== this.el) {
-          const s = sibling as HTMLElement & { name?: string; checked: boolean };
+          const s = sibling as HTMLElement & { name?: string; checked: boolean; syncFormValue?: () => void };
           if (s.name === name) {
             if (this.defaultChecked && s.checked) {
               // Deselect competing checked radio before re-syncing its validity
               s.checked = false;
             }
             // Re-evaluate group validity so stale faceInvalid is cleared on all siblings
-            (s as any).syncFormValue?.();
+            s.syncFormValue?.();
           }
         }
       });

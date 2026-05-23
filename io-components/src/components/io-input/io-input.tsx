@@ -27,9 +27,13 @@ export class IoInput {
 
   private fallbackId!: string;
   private inputId!: string;
+  private defaultValue = '';
 
   @State() private hasPrefix = false;
   @State() private hasSuffix = false;
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -90,6 +94,13 @@ export class IoInput {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.inputId = resolveInputId(this.name, this.fallbackId);
+    this.defaultValue = this.value ?? '';
+    this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.faceInvalid = false;
     this.syncFormValue();
   }
 
@@ -117,13 +128,17 @@ export class IoInput {
     if (nativeInput) {
       if (!nativeInput.checkValidity()) {
         this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+        this.faceInvalid = true;
       } else {
         this.internals?.setValidity?.({});
+        this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -199,14 +214,15 @@ export class IoInput {
     const { label, type, name, value, placeholder, required, readonly, disabled, error, errorMessage, helperText, maxLength, min, max, step, autocomplete, size, hasPrefix, hasSuffix } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
+    const showError = error || this.faceInvalid;
     const describedBy = [
-      error && errorMessage ? errorId : '',
-      !error && helperText ? helperId : '',
+      showError && errorMessage ? errorId : '',
+      !showError && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const wrapperClass = [
       'input-wrapper',
-      error ? 'input-wrapper--error' : '',
+      showError ? 'input-wrapper--error' : '',
       disabled ? 'input-wrapper--disabled' : '',
       readonly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
@@ -242,7 +258,7 @@ export class IoInput {
               max={max}
               step={step}
               autocomplete={autocomplete}
-              aria-invalid={error ? 'true' : undefined}
+              aria-invalid={showError ? 'true' : undefined}
               aria-readonly={readonly ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
@@ -253,7 +269,7 @@ export class IoInput {
             <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
               <slot name="suffix" onSlotchange={this.handleSlotChange} />
             </span>
-            {error && (
+            {showError && (
               <div class="input-error-icon" aria-hidden="true">
                 <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z" fill="currentColor" />
@@ -268,10 +284,10 @@ export class IoInput {
             {required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {error && errorMessage && (
+        {showError && errorMessage && (
           <p id={errorId} class="input-error" role="alert">{errorMessage}</p>
         )}
-        {!error && helperText && (
+        {!showError && helperText && (
           <p id={helperId} class="input-helper">{helperText}</p>
         )}
       </Host>

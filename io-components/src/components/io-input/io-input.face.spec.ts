@@ -90,4 +90,47 @@ describe('io-input — FACE', () => {
     (component as any).internals = undefined;
     expect(await component.reportValidity()).toBe(true);
   });
+
+  describe('formResetCallback', () => {
+    it('resets value to the default value captured in componentWillLoad()', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'changed';
+      component.formResetCallback();
+      // defaultValue was '' when componentWillLoad() ran in beforeEach
+      expect(component.value).toBe('');
+    });
+
+    it('clears faceInvalid on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      expect((component as any).faceInvalid).toBe(false);
+    });
+
+    it('calls setFormValue with the reset value', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'changed';
+      component.formResetCallback();
+      expect(internals.setFormValue).toHaveBeenLastCalledWith('');
+    });
+
+    it('does not throw when internals is unavailable (no form parent)', () => {
+      (component as any).internals = undefined;
+      expect(() => component.formResetCallback()).not.toThrow();
+    });
+
+    it('preserves a non-empty default value on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      // Simulate a component initialized with value='pre-filled'
+      component.value = 'pre-filled';
+      (component as any).defaultValue = 'pre-filled';
+      component.value = 'changed-by-user';
+      component.formResetCallback();
+      expect(component.value).toBe('pre-filled');
+    });
+  });
 });

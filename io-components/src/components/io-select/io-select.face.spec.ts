@@ -101,4 +101,65 @@ describe('io-select — FACE', () => {
     (component as any).internals = undefined;
     expect(await component.reportValidity()).toBe(true);
   });
+
+  describe('formResetCallback', () => {
+    it('resets single-mode value to the default value captured in componentWillLoad()', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'be';
+      component.formResetCallback();
+      // defaultValue was '' when componentWillLoad() ran in beforeEach
+      expect(component.value).toBe('');
+    });
+
+    it('clears faceInvalid on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      expect((component as any).faceInvalid).toBe(false);
+    });
+
+    it('calls setFormValue with the reset value (single mode)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'be';
+      component.formResetCallback();
+      expect(internals.setFormValue).toHaveBeenLastCalledWith('');
+    });
+
+    it('does not throw when internals is unavailable (no form parent)', () => {
+      (component as any).internals = undefined;
+      expect(() => component.formResetCallback()).not.toThrow();
+    });
+
+    it('resets multiple-mode selectedValues to empty when defaultSelectedValues was empty', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).multiple = true;
+      (component as any).selectedValues = ['nl', 'be'];
+      component.formResetCallback();
+      expect((component as any).selectedValues).toEqual([]);
+    });
+
+    it('resets multiple-mode selectedValues to default snapshot', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).multiple = true;
+      // Simulate a component initialized with pre-selected values
+      (component as any).defaultSelectedValues = ['nl'];
+      (component as any).selectedValues = ['nl', 'be'];
+      component.formResetCallback();
+      expect((component as any).selectedValues).toEqual(['nl']);
+    });
+
+    it('preserves a non-empty default value on reset (single mode)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).defaultValue = 'nl';
+      component.value = 'be';
+      component.formResetCallback();
+      expect(component.value).toBe('nl');
+    });
+  });
 });

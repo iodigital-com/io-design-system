@@ -16,7 +16,6 @@ import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-import { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalSize } from "./components/io-modal/types";
@@ -47,7 +46,6 @@ export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-export { IoFileRejectDetail, IoFileSelectDetail } from "./components/io-file-upload/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalSize } from "./components/io-modal/types";
@@ -546,56 +544,6 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoDrawerSize;
-    }
-    /**
-     * io-file-upload
-     * ==============
-     * Accessible file upload control with drag-and-drop zone,
-     * click-to-browse, file type/size validation, and a removable file list.
-     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
-     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
-     */
-    interface IoFileUpload {
-        /**
-          * Accepted MIME types or file extensions, comma-separated. Defaults to all files.
-          * @default '*'
-         */
-        "accept": string;
-        /**
-          * Disables all interactions
-          * @default false
-         */
-        "disabled": boolean;
-        /**
-          * Puts the component in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown when error is true
-         */
-        "errorMessage": string | undefined;
-        /**
-          * Optional hint text shown below the drop zone
-         */
-        "helperText": string | undefined;
-        /**
-          * Visible label for the drop zone — also the accessible name
-         */
-        "label": string;
-        /**
-          * Maximum file size in bytes. Undefined means no limit.
-         */
-        "maxFileSize": number | undefined;
-        /**
-          * Allow multiple file selection
-          * @default false
-         */
-        "multiple": boolean;
-        /**
-          * Form field name
-         */
-        "name": string | undefined;
     }
     /**
      * io-form-field
@@ -1688,10 +1636,6 @@ export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
 }
-export interface IoFileUploadCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLIoFileUploadElement;
-}
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoInputElement;
@@ -2005,32 +1949,6 @@ declare global {
     var HTMLIoDrawerElement: {
         prototype: HTMLIoDrawerElement;
         new (): HTMLIoDrawerElement;
-    };
-    interface HTMLIoFileUploadElementEventMap {
-        "fileSelect": IoFileSelectDetail;
-        "fileReject": IoFileRejectDetail;
-    }
-    /**
-     * io-file-upload
-     * ==============
-     * Accessible file upload control with drag-and-drop zone,
-     * click-to-browse, file type/size validation, and a removable file list.
-     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
-     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
-     */
-    interface HTMLIoFileUploadElement extends Components.IoFileUpload, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoFileUploadElementEventMap>(type: K, listener: (this: HTMLIoFileUploadElement, ev: IoFileUploadCustomEvent<HTMLIoFileUploadElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoFileUploadElementEventMap>(type: K, listener: (this: HTMLIoFileUploadElement, ev: IoFileUploadCustomEvent<HTMLIoFileUploadElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoFileUploadElement: {
-        prototype: HTMLIoFileUploadElement;
-        new (): HTMLIoFileUploadElement;
     };
     /**
      * io-form-field
@@ -2629,7 +2547,6 @@ declare global {
         "io-checkbox-group": HTMLIoCheckboxGroupElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
-        "io-file-upload": HTMLIoFileUploadElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
@@ -3144,64 +3061,6 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoDrawerSize;
-    }
-    /**
-     * io-file-upload
-     * ==============
-     * Accessible file upload control with drag-and-drop zone,
-     * click-to-browse, file type/size validation, and a removable file list.
-     * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
-     * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
-     */
-    interface IoFileUpload {
-        /**
-          * Accepted MIME types or file extensions, comma-separated. Defaults to all files.
-          * @default '*'
-         */
-        "accept"?: string;
-        /**
-          * Disables all interactions
-          * @default false
-         */
-        "disabled"?: boolean;
-        /**
-          * Puts the component in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown when error is true
-         */
-        "errorMessage"?: string | undefined;
-        /**
-          * Optional hint text shown below the drop zone
-         */
-        "helperText"?: string | undefined;
-        /**
-          * Visible label for the drop zone — also the accessible name
-         */
-        "label": string;
-        /**
-          * Maximum file size in bytes. Undefined means no limit.
-         */
-        "maxFileSize"?: number | undefined;
-        /**
-          * Allow multiple file selection
-          * @default false
-         */
-        "multiple"?: boolean;
-        /**
-          * Form field name
-         */
-        "name"?: string | undefined;
-        /**
-          * Emitted for each rejected file with the reason
-         */
-        "onFileReject"?: (event: IoFileUploadCustomEvent<IoFileRejectDetail>) => void;
-        /**
-          * Emitted when valid files are selected or dropped
-         */
-        "onFileSelect"?: (event: IoFileUploadCustomEvent<IoFileSelectDetail>) => void;
     }
     /**
      * io-form-field
@@ -4387,17 +4246,6 @@ declare namespace LocalJSX {
         "closeOnBackdrop": boolean;
         "closeLabel": string;
     }
-    interface IoFileUploadAttributes {
-        "label": string;
-        "accept": string;
-        "multiple": boolean;
-        "maxFileSize": number | undefined;
-        "disabled": boolean;
-        "helperText": string | undefined;
-        "error": boolean;
-        "errorMessage": string | undefined;
-        "name": string | undefined;
-    }
     interface IoFormFieldAttributes {
         "label": string;
         "helperText": string;
@@ -4601,7 +4449,6 @@ declare namespace LocalJSX {
         "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]> & OneOf<"name", IoCheckboxGroup["name"], IoCheckboxGroupAttributes["name"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
-        "io-file-upload": Omit<IoFileUpload, keyof IoFileUploadAttributes> & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes]?: IoFileUpload[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `attr:${K}`]?: IoFileUploadAttributes[K] } & { [K in keyof IoFileUpload & keyof IoFileUploadAttributes as `prop:${K}`]?: IoFileUpload[K] } & OneOf<"label", IoFileUpload["label"], IoFileUploadAttributes["label"]>;
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
@@ -4762,15 +4609,6 @@ declare module "@stencil/core" {
              * </script>
              */
             "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
-            /**
-             * io-file-upload
-             * ==============
-             * Accessible file upload control with drag-and-drop zone,
-             * click-to-browse, file type/size validation, and a removable file list.
-             * @example <io-file-upload label="Upload documents" accept=".pdf,.docx" multiple />
-             * <io-file-upload label="Profile photo" accept="image/*" max-file-size="2097152" />
-             */
-            "io-file-upload": LocalJSX.IntrinsicElements["io-file-upload"] & JSXBase.HTMLAttributes<HTMLIoFileUploadElement>;
             /**
              * io-form-field
              * ==============

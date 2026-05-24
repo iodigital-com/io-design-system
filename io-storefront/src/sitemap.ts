@@ -160,14 +160,6 @@ export const sitemap: NavSection[] = [
         related: ['io-checkbox', 'io-radio-group', 'io-form-field'],
       },
       {
-        label: 'File Upload',
-        href: '/components/io-file-upload/configurator',
-        status: 'beta',
-        slug: 'io-file-upload',
-        description: 'Drag-and-drop or click-to-browse file input with type/size validation, accessible live announcements, and a removable file list.',
-        related: ['io-button', 'io-progress', 'io-input'],
-      },
-      {
         label: 'Form Field',
         href: '/components/io-form-field/configurator',
         status: 'beta',

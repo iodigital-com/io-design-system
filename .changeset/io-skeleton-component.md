@@ -6,6 +6,8 @@ chore(io-skeleton): remove io-skeleton component
 
 Removes `io-skeleton` from `@io-digital/components`. Product pages implement their own skeleton layouts using standard HTML and CSS — a dedicated component is unnecessary.
 
+Note: `io-skeleton` was in beta status. Beta components do not carry semver guarantees — removal is treated as a patch-level change per project policy.
+
 - Deleted `io-skeleton` Stencil component and all associated files
 - Removed `--io-skeleton-*` CSS tokens and `@keyframes io-skeleton-pulse` from global tokens
 - Removed `getSkeletonStyle` utility from `@io-digital/components/styles`

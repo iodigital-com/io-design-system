@@ -2,6 +2,8 @@ import type { FrameworkCode } from '@/models/framework';
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
+type IoAccordionSize = 'sm' | 'md' | 'lg';
+
 export const accordionSingleOpenCode: FrameworkCode = {
   html: `<div class="accordion-group" data-accordion-group>
   <io-accordion heading="Audits & research" open>
@@ -181,7 +183,7 @@ export const accordionStory: Story<'io-accordion'> = {
         tag: 'io-accordion' as const,
         properties: {
           open: (properties?.open as boolean) ?? false,
-          size: (properties?.size as string) ?? 'md',
+          size: (properties?.size as IoAccordionSize) ?? 'md',
           disabled: (properties?.disabled as boolean) ?? false,
           'default-expanded': (properties?.['default-expanded'] as boolean) ?? false,
           'allow-multiple': (properties?.['allow-multiple'] as boolean) ?? false,

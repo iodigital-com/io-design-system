@@ -74,6 +74,8 @@ describe('io-accordion — size prop', () => {
 
   it('size CSS uses font-size tokens for each size variant', () => {
     const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-font-size-base)');
+    expect(styles).toContain('var(--io-font-size-lg)');
     expect(styles).toContain('var(--io-font-size-xl)');
   });
 });

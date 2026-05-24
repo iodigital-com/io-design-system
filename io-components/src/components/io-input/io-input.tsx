@@ -100,8 +100,8 @@ export class IoInput {
 
   formResetCallback() {
     this.value = this.defaultValue;
-    this.faceInvalid = false;
     this.syncFormValue();
+    this.faceInvalid = false;
   }
 
   @Watch('value')
@@ -116,6 +116,21 @@ export class IoInput {
 
   @Watch('maxLength')
   onMaxLengthChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('min')
+  onMinChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('max')
+  onMaxChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('step')
+  onStepChange() {
     this.syncFormValue();
   }
 

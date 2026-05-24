@@ -167,8 +167,8 @@ export class IoSelect {
     } else {
       this.value = this.defaultValue;
     }
-    this.faceInvalid = false;
     this.syncFormValue();
+    this.faceInvalid = false;
   }
 
   @Watch('value')

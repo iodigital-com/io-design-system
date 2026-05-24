@@ -132,5 +132,17 @@ describe('io-input — FACE', () => {
       component.formResetCallback();
       expect(component.value).toBe('pre-filled');
     });
+
+    it('clears faceInvalid after reset even when field is required and default is empty', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      // defaultValue remains '' (set by componentWillLoad in beforeEach)
+      component.value = 'something';
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      // faceInvalid must be false after reset — matches native form reset UX
+      expect((component as any).faceInvalid).toBe(false);
+    });
   });
 });

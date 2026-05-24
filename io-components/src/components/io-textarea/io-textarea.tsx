@@ -131,8 +131,8 @@ export class IoTextarea {
 
   formResetCallback() {
     this.value = this.defaultValue;
-    this.faceInvalid = false;
     this.syncFormValue();
+    this.faceInvalid = false;
   }
 
   @Watch('value')

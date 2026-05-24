@@ -117,5 +117,15 @@ describe('io-textarea — FACE', () => {
       component.formResetCallback();
       expect(component.value).toBe('initial');
     });
+
+    it('clears faceInvalid after reset even when field is required and default is empty', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      component.value = 'something';
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      expect((component as any).faceInvalid).toBe(false);
+    });
   });
 });

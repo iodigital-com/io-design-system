@@ -89,13 +89,6 @@ const PUBLIC_API_GROUPS: Record<string, { cssVar: string; description: string }[
     { cssVar: '--io-option-hover-bg', description: 'Background color of a hovered or keyboard-focused option. Overridden in dark mode.' },
     { cssVar: '--io-field-focus-offset-y', description: 'Negative top margin applied when a field is focused to compensate for border-width growth.' },
   ],
-  'io-skeleton': [
-    { cssVar: '--io-skeleton-bg', description: 'Background shimmer gradient of the skeleton. Overridden in dark mode. Override to match your brand shimmer color.' },
-    { cssVar: '--io-skeleton-bg-size', description: 'Background size for the shimmer animation gradient sweep.' },
-    { cssVar: '--io-skeleton-duration', description: 'Duration of one full shimmer animation cycle. Override to speed up or slow down the pulse.' },
-    { cssVar: '--io-skeleton-border-radius-text', description: 'Border radius of the text line skeleton variant.' },
-    { cssVar: '--io-skeleton-border-radius-rounded', description: 'Border radius of the rounded rectangle skeleton variant.' },
-  ],
   'io-tabs': [
     { cssVar: '--io-tabs-track-color', description: 'Color of the inactive track border below the tab list. Override to match your surface.' },
     { cssVar: '--io-tabs-indicator-color', description: 'Color of the active tab bottom-border indicator. Override to apply a custom brand accent.' },
@@ -117,14 +110,8 @@ const PUBLIC_API_GROUPS: Record<string, { cssVar: string; description: string }[
 
 export default function CustomisationPage() {
   const overrideExample = `/* Override a public CSS API token at host level */
-io-skeleton {
-  --io-skeleton-duration: 0.8s;      /* faster shimmer */
-  --io-skeleton-bg: linear-gradient(
-    90deg,
-    #f0e6ff 25%,
-    #d8baff 50%,
-    #f0e6ff 75%
-  );
+io-spinner {
+  --io-spinner-color: var(--io-color-primary);
 }
 
 /* Override scoped to a specific page section */
@@ -161,9 +148,9 @@ io-skeleton {
             </p>
             <p className="text-sm leading-6" style={{ color: 'var(--io-text-secondary)' }}>
               Component-specific tokens such as{' '}
-              <InlineCode>--io-skeleton-duration</InlineCode>,{' '}
-              <InlineCode>--io-modal-width-md</InlineCode>, or{' '}
-              <InlineCode>--io-tabs-indicator-color</InlineCode>.
+              <InlineCode>--io-modal-width-md</InlineCode>,{' '}
+              <InlineCode>--io-tabs-indicator-color</InlineCode>, or{' '}
+              <InlineCode>--io-button-spinner-duration</InlineCode>.
               These are the component{"'"}s override surface — they exist to be overridden. Any removal
               or rename is a <strong style={{ color: 'var(--io-text-primary)' }}>breaking change</strong>{' '}
               that requires a semver major bump.

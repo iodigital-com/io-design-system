@@ -154,7 +154,7 @@ export default function IoSpinnerExamplesPage() {
 
       <section>
         <SectionHeader
-          title="Spinner vs Skeleton — when to use which"
+          title="Spinner vs skeleton layout — when to use which"
           description="Choose the right loading indicator based on what the user is waiting for."
         />
         <div className="space-y-3">
@@ -164,11 +164,10 @@ export default function IoSpinnerExamplesPage() {
             next. Keep spinner visibility short — if loading takes more than a few seconds, prefer a
             skeleton or progress bar.
           </RuleCard>
-          <RuleCard label="Use io-skeleton for content with a known layout">
+          <RuleCard label="Use a skeleton layout for content with a known shape">
             When loading an article, a card grid, or a profile page — content whose shape you
-            already know — skeleton placeholders reduce perceived wait time by anchoring the user to
-            the incoming layout. Use <C>io-skeleton</C> with matching <C>variant</C>,{' '}
-            <C>width</C>, and <C>height</C> props to mirror the final content shape.
+            already know — implement skeleton placeholders in your own layout to reduce perceived
+            wait time by anchoring the user to the incoming content structure.
           </RuleCard>
         </div>
       </section>

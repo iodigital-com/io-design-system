@@ -2542,6 +2542,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Fill colour for io-progress color=error variant. Aliases --io-color-error with #c0392b fallback."
+    },
+    {
+      "runtimeCssVar": "--io-table-row-selected-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Background colour of a selected io-table-body-row. Aliases --io-color-primary-muted in light mode; --io-color-dark-accent-bg in dark mode."
     }
   ]
 }

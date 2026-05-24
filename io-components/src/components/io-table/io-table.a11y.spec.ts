@@ -112,12 +112,11 @@ describe('io-table — a11y (ARIA patterns)', () => {
 
     const tbody = document.createElement('tbody');
     const dataRow = document.createElement('tr');
-    dataRow.setAttribute('aria-selected', 'false');
 
     const selectTd = document.createElement('td');
     const rowCheckbox = document.createElement('input');
     rowCheckbox.type = 'checkbox';
-    rowCheckbox.setAttribute('aria-label', 'Select row 1');
+    rowCheckbox.setAttribute('aria-label', 'Select Alice');
     selectTd.appendChild(rowCheckbox);
     dataRow.appendChild(selectTd);
 
@@ -126,6 +125,98 @@ describe('io-table — a11y (ARIA patterns)', () => {
     dataRow.appendChild(nameTd);
 
     tbody.appendChild(dataRow);
+    table.appendChild(tbody);
+
+    await renderAndCheckA11y(table);
+  });
+
+  it('sortable-but-unsorted column header with aria-sort="none" has no violations', async () => {
+    const table = document.createElement('table');
+
+    const caption = document.createElement('caption');
+    caption.textContent = 'Unsorted table';
+    table.appendChild(caption);
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+
+    const th = document.createElement('th');
+    th.scope = 'col';
+    th.setAttribute('aria-sort', 'none');
+    th.setAttribute('tabindex', '0');
+    th.textContent = 'Name';
+    headerRow.appendChild(th);
+
+    const th2 = document.createElement('th');
+    th2.scope = 'col';
+    th2.textContent = 'Role';
+    headerRow.appendChild(th2);
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    const dataRow = document.createElement('tr');
+
+    ['Alice', 'Admin'].forEach((val) => {
+      const td = document.createElement('td');
+      td.textContent = val;
+      dataRow.appendChild(td);
+    });
+
+    tbody.appendChild(dataRow);
+    table.appendChild(tbody);
+
+    await renderAndCheckA11y(table);
+  });
+
+  it('select-all checkbox in indeterminate state has no violations', async () => {
+    const table = document.createElement('table');
+
+    const caption = document.createElement('caption');
+    caption.textContent = 'Partially selected table';
+    table.appendChild(caption);
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+
+    const selectTh = document.createElement('th');
+    selectTh.scope = 'col';
+    const selectAllCheckbox = document.createElement('input');
+    selectAllCheckbox.type = 'checkbox';
+    selectAllCheckbox.setAttribute('aria-label', 'Select all rows');
+    // indeterminate is set via DOM property (not attr) — axe sees the native state
+    selectAllCheckbox.indeterminate = true;
+    selectTh.appendChild(selectAllCheckbox);
+    headerRow.appendChild(selectTh);
+
+    const nameTh = document.createElement('th');
+    nameTh.scope = 'col';
+    nameTh.textContent = 'Name';
+    headerRow.appendChild(nameTh);
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    [['Alice', true], ['Bob', false]].forEach(([name, selected]) => {
+      const row = document.createElement('tr');
+      const selectTd = document.createElement('td');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.setAttribute('aria-label', 'Select row');
+      checkbox.checked = selected as boolean;
+      selectTd.appendChild(checkbox);
+      row.appendChild(selectTd);
+
+      const nameTd = document.createElement('td');
+      nameTd.textContent = name as string;
+      row.appendChild(nameTd);
+
+      tbody.appendChild(row);
+    });
+
     table.appendChild(tbody);
 
     await renderAndCheckA11y(table);

@@ -376,11 +376,11 @@ describe('io-button-group — size prop', () => {
     const btn2 = document.createElement('io-button') as any;
 
     const slotStub = {
-      assignedElements: (_opts?: AssignedElementsOptions) => [btn1, btn2],
+      assignedElements: () => [btn1, btn2],
     } as unknown as HTMLSlotElement;
 
     const shadowRootStub = {
-      querySelector: (_sel: string) => slotStub,
+      querySelector: () => slotStub,
     } as unknown as ShadowRoot;
 
     Object.defineProperty((comp as any).el, 'shadowRoot', {
@@ -401,11 +401,11 @@ describe('io-button-group — size prop', () => {
     const btn = document.createElement('io-button') as any;
 
     const slotStub = {
-      assignedElements: (_opts?: AssignedElementsOptions) => [div, btn],
+      assignedElements: () => [div, btn],
     } as unknown as HTMLSlotElement;
 
     const shadowRootStub = {
-      querySelector: (_sel: string) => slotStub,
+      querySelector: () => slotStub,
     } as unknown as ShadowRoot;
 
     Object.defineProperty((comp as any).el, 'shadowRoot', {
@@ -431,7 +431,7 @@ describe('io-button-group — size prop', () => {
     const comp = makeComponent();
 
     const shadowRootStub = {
-      querySelector: (_sel: string) => null,
+      querySelector: () => null,
     } as unknown as ShadowRoot;
 
     Object.defineProperty((comp as any).el, 'shadowRoot', {

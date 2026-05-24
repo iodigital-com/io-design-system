@@ -67,7 +67,6 @@ export const drawerStory: Story<'io-drawer'> = {
 };
 
 export const drawerPropDefinitions: PropDefinition[] = [
-  { name: 'open', type: 'boolean', defaultValue: false, group: 'State' },
   { name: 'heading', type: 'string', defaultValue: 'Drawer heading', group: 'Content' },
   { name: 'placement', type: 'select', options: ['left', 'right', 'bottom'], defaultValue: 'right', group: 'Appearance' },
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg', 'full'], defaultValue: 'md', group: 'Appearance' },

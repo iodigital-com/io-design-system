@@ -19,8 +19,12 @@ describe('io-checkbox-group — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not invalid by default', () => {
-    expect(component.invalid).toBe(false);
+  it('is not in error state by default', () => {
+    expect(component.error).toBe(false);
+  });
+
+  it('has undefined errorMessage by default', () => {
+    expect(component.errorMessage).toBeUndefined();
   });
 
   it('has empty helperText by default', () => {

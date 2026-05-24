@@ -1,89 +1,58 @@
-import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
-const defaultItems = JSON.stringify([
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Digital Strategy' },
-]);
-
-const slashItems = JSON.stringify([
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Team' },
-]);
-
-const collapsedItems = JSON.stringify([
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Digital', href: '/digital' },
-  { label: 'Strategy', href: '/strategy' },
-  { label: 'Consulting' },
-]);
+// ── Stories ──────────────────────────────────────────────────────────────────
+// All stories use the declarative slot-based API (Wave XI).
+// Use io-breadcrumb-item sub-components as direct children.
 
 export const breadcrumbStoryDefault: Story<'io-breadcrumb'> = {
   state: {
-    properties: {
-      items: defaultItems,
-      separator: 'chevron',
-    },
+    properties: {},
   },
-  generator: ({ properties } = {}) => [
+  generator: () => [
     {
       tag: 'io-breadcrumb' as const,
-      properties: {
-        items: defaultItems,
-        separator: 'chevron',
-        ...properties,
-      },
+      properties: {},
+      children: [
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/services' }, children: ['Services'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Digital Strategy'] },
+      ],
     },
   ],
 };
 
 export const breadcrumbStorySlash: Story<'io-breadcrumb'> = {
   state: {
-    properties: {
-      items: slashItems,
-      separator: 'slash',
-    },
+    properties: {},
   },
   generator: () => [
     {
       tag: 'io-breadcrumb' as const,
-      properties: {
-        items: slashItems,
-        separator: 'slash',
-      },
+      properties: {},
+      children: [
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/about' }, children: ['About'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Team'] },
+      ],
     },
   ],
 };
 
-export const breadcrumbStoryCollapsed: Story<'io-breadcrumb'> = {
+export const breadcrumbStoryLong: Story<'io-breadcrumb'> = {
   state: {
-    properties: {
-      items: collapsedItems,
-      separator: 'chevron',
-      'max-visible': 3,
-    },
+    properties: {},
   },
   generator: () => [
     {
       tag: 'io-breadcrumb' as const,
-      properties: {
-        items: collapsedItems,
-        separator: 'chevron',
-        'max-visible': 3,
-      },
+      properties: {},
+      children: [
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/services' }, children: ['Services'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/services/digital' }, children: ['Digital'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/services/digital/strategy' }, children: ['Strategy'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Consulting'] },
+      ],
     },
   ],
 };
-
-export const breadcrumbPropDefinitions: PropDefinition[] = [
-  {
-    name: 'separator',
-    type: 'select',
-    options: ['chevron', 'slash'],
-    defaultValue: 'chevron',
-    description: 'Style of separator rendered between breadcrumb items.',
-  },
-];

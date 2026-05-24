@@ -15,7 +15,7 @@ import { getFormFieldStyles } from './io-form-field-styles';
  *   <io-input name="email" type="email" />
  * </io-form-field>
  *
- * <io-form-field label="Username" invalid error-text="Username is taken.">
+ * <io-form-field label="Username" error error-message="Username is taken.">
  *   <io-input name="username" />
  * </io-form-field>
  */
@@ -34,11 +34,11 @@ export class IoFormField {
   /** Helper/description text shown below the control */
   @Prop() helperText = '';
 
-  /** Validation error text shown when invalid is true */
-  @Prop() errorText = '';
+  /** Validation error message shown when error is true */
+  @Prop() errorMessage = '';
 
-  /** Marks the field as invalid — shows errorText and sets aria-invalid on the child */
-  @Prop({ reflect: true }) invalid = false;
+  /** Marks the field as in error state — shows errorMessage and sets aria-invalid on the child */
+  @Prop({ reflect: true }) error = false;
 
   /** Marks the label as required (adds asterisk) */
   @Prop() required = false;
@@ -62,8 +62,8 @@ export class IoFormField {
     this.syncChildAttributes();
   }
 
-  @Watch('invalid')
-  onInvalidChange() {
+  @Watch('error')
+  onErrorChange() {
     this.syncChildAttributes();
   }
 
@@ -72,8 +72,8 @@ export class IoFormField {
     this.syncChildAttributes();
   }
 
-  @Watch('errorText')
-  onErrorTextChange() {
+  @Watch('errorMessage')
+  onErrorMessageChange() {
     this.syncChildAttributes();
   }
 
@@ -101,7 +101,7 @@ export class IoFormField {
     }
 
     // Set aria-invalid
-    if (this.invalid) {
+    if (this.error) {
       child.setAttribute('aria-invalid', 'true');
     } else {
       child.removeAttribute('aria-invalid');
@@ -110,15 +110,15 @@ export class IoFormField {
 
   private buildDescribedBy(): string {
     const ids: string[] = [];
-    if (!this.invalid && this.helperText) ids.push(this.helperId);
-    if (this.invalid && this.errorText) ids.push(this.errorId);
+    if (!this.error && this.helperText) ids.push(this.helperId);
+    if (this.error && this.errorMessage) ids.push(this.errorId);
     return ids.join(' ');
   }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, helperText, errorText, invalid, required } = this;
+    const { label, helperText, errorMessage, error, required } = this;
     const labelClass = required ? 'form-field__label form-field__label--required' : 'form-field__label';
 
     return (
@@ -131,14 +131,14 @@ export class IoFormField {
           <div class="form-field__control">
             <slot />
           </div>
-          {!invalid && helperText && (
+          {!error && helperText && (
             <span id={this.helperId} class="form-field__helper">
               {helperText}
             </span>
           )}
-          {invalid && errorText && (
+          {error && errorMessage && (
             <span id={this.errorId} class="form-field__error" aria-live="polite">
-              {errorText}
+              {errorMessage}
             </span>
           )}
         </div>

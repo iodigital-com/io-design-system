@@ -21,7 +21,7 @@ export default function IoBreadcrumbLayout({ children }: { children: ReactNode }
     <div>
       <PageHeader
         title="Breadcrumb"
-        description="Breadcrumb navigation for hierarchical orientation. Supports chevron and slash separators, and collapses long paths behind an expand button."
+        description="Breadcrumb navigation for hierarchical orientation. Uses declarative slot-based io-breadcrumb-item sub-components with automatic separator insertion."
         tabs={TABS}
         category="Component"
         status={status}

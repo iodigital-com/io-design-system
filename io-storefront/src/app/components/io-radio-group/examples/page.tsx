@@ -5,6 +5,7 @@ import {
   radioGroupStoryPreselected,
   radioGroupStoryWithHelper,
   radioGroupStoryDisabled,
+  radioGroupStoryError,
 } from '../io-radio-group.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -40,6 +41,14 @@ export default function IoRadioGroupExamplesPage() {
           description="Setting disabled on the group disables all child radios."
         />
         <ComponentStory story={radioGroupStoryDisabled} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Error state"
+          description="Set error and errorMessage to show group-level validation feedback."
+        />
+        <ComponentStory story={radioGroupStoryError} />
       </section>
     </div>
   );

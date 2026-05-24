@@ -47,6 +47,23 @@ export default function IoCheckboxGroupAccessibilityPage() {
               ),
               description: 'The native disabled attribute on the fieldset makes the entire group inert. Screen readers announce each option as unavailable.',
             },
+            {
+              attribute: 'aria-invalid',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
+                  {' '}when error
+                </span>
+              ),
+              description: 'Set on the fieldset when the error prop is true. Screen readers announce the group as invalid.',
+            },
+            {
+              attribute: 'aria-describedby',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Error element id</span>
+              ),
+              description: 'When error and errorMessage are both set, the fieldset is linked to the error paragraph via aria-describedby. Screen readers announce the error message after the group label.',
+            },
           ]}
         />
       </section>
@@ -76,6 +93,12 @@ export default function IoCheckboxGroupAccessibilityPage() {
             note="Each child io-checkbox uses the double-ring focus pattern. Focus is clearly visible on the active checkbox."
           />
           <ComplianceCard
+            criterion="3.3.1"
+            level="A"
+            title="Error Identification"
+            note="When error=true and errorMessage is set, the error is rendered with role='alert' and linked to the fieldset via aria-describedby so screen readers announce it."
+          />
+          <ComplianceCard
             criterion="3.3.2"
             level="A"
             title="Labels or Instructions"
@@ -97,6 +120,9 @@ export default function IoCheckboxGroupAccessibilityPage() {
         </RuleCard>
         <RuleCard label="Provide meaningful group instructions with helperText">
           When a minimum or maximum number of selections is required, communicate this via <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code> — for example &ldquo;Select at least one option&rdquo;. This text is visually and semantically part of the group fieldset.
+        </RuleCard>
+        <RuleCard label="Always pair error with errorMessage">
+          Setting <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> without <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code> marks the group as invalid but gives screen reader users no explanation. Always provide a meaningful error message.
         </RuleCard>
       </section>
 

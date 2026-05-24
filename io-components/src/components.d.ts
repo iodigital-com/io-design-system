@@ -8,7 +8,6 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-import { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -37,7 +36,6 @@ import { IoWordmarkSize } from "./components/io-wordmark/types";
 export { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-export { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -174,24 +172,39 @@ export namespace Components {
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
-     * Accepts items as a JSON string. The last item is the current page.
-     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
+     * Separators are inserted programmatically between slotted items via slotchange.
+     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * @example <io-breadcrumb>
+     *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface IoBreadcrumb {
+    }
+    /**
+     * io-breadcrumb-item
+     * ==================
+     * Individual breadcrumb item used as a child of io-breadcrumb.
+     * Renders as an <li> containing either an <a> (when href is set and current is false)
+     * or a <span> (when no href or when current is true).
+     * The parent io-breadcrumb automatically sets current=true on the last item
+     * if no item has current set explicitly.
+     * @example <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     */
+    interface IoBreadcrumbItem {
         /**
-          * JSON string of IoBreadcrumbItem[]. Last item is current page (no href).
-          * @default '[]'
+          * Whether this item represents the current page. Adds aria-current="page".
+          * @default false
          */
-        "items": string;
+        "current": boolean;
         /**
-          * Maximum visible items before collapsing middle items.
+          * URL this breadcrumb item links to. When omitted the item renders as plain text.
          */
-        "maxVisible": number | undefined;
-        /**
-          * Separator style between breadcrumb items.
-          * @default 'chevron'
-         */
-        "separator": IoBreadcrumbSeparator;
+        "href"?: string;
     }
     /**
      * io-button
@@ -451,15 +464,19 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Puts the group in error state
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown below the group when error is true
+         */
+        "errorMessage": string | undefined;
+        /**
           * Helper text shown below the legend
           * @default ''
          */
         "helperText": string;
-        /**
-          * Marks the group as invalid
-          * @default false
-         */
-        "invalid": boolean;
         /**
           * Legend text — required for accessibility
          */
@@ -563,26 +580,26 @@ export namespace Components {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     * <io-form-field label="Username" error error-message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
     interface IoFormField {
         /**
-          * Validation error text shown when invalid is true
+          * Marks the field as in error state — shows errorMessage and sets aria-invalid on the child
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Validation error message shown when error is true
           * @default ''
          */
-        "errorText": string;
+        "errorMessage": string;
         /**
           * Helper/description text shown below the control
           * @default ''
          */
         "helperText": string;
-        /**
-          * Marks the field as invalid — shows errorText and sets aria-invalid on the child
-          * @default false
-         */
-        "invalid": boolean;
         /**
           * Label text shown above the slotted input
          */
@@ -1009,15 +1026,19 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Puts the group in error state
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown below the group when error is true
+         */
+        "errorMessage": string | undefined;
+        /**
           * Helper text shown below the legend
           * @default ''
          */
         "helperText": string;
-        /**
-          * Marks the group as invalid
-          * @default false
-         */
-        "invalid": boolean;
         /**
           * Legend text — required for accessibility
          */
@@ -1714,14 +1735,38 @@ declare global {
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
-     * Accepts items as a JSON string. The last item is the current page.
-     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
+     * Separators are inserted programmatically between slotted items via slotchange.
+     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * @example <io-breadcrumb>
+     *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface HTMLIoBreadcrumbElement extends Components.IoBreadcrumb, HTMLStencilElement {
     }
     var HTMLIoBreadcrumbElement: {
         prototype: HTMLIoBreadcrumbElement;
         new (): HTMLIoBreadcrumbElement;
+    };
+    /**
+     * io-breadcrumb-item
+     * ==================
+     * Individual breadcrumb item used as a child of io-breadcrumb.
+     * Renders as an <li> containing either an <a> (when href is set and current is false)
+     * or a <span> (when no href or when current is true).
+     * The parent io-breadcrumb automatically sets current=true on the last item
+     * if no item has current set explicitly.
+     * @example <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     */
+    interface HTMLIoBreadcrumbItemElement extends Components.IoBreadcrumbItem, HTMLStencilElement {
+    }
+    var HTMLIoBreadcrumbItemElement: {
+        prototype: HTMLIoBreadcrumbItemElement;
+        new (): HTMLIoBreadcrumbItemElement;
     };
     interface HTMLIoButtonElementEventMap {
         "click": MouseEvent;
@@ -1925,7 +1970,7 @@ declare global {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     * <io-form-field label="Username" error error-message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
@@ -2481,6 +2526,7 @@ declare global {
         "io-avatar": HTMLIoAvatarElement;
         "io-badge": HTMLIoBadgeElement;
         "io-breadcrumb": HTMLIoBreadcrumbElement;
+        "io-breadcrumb-item": HTMLIoBreadcrumbItemElement;
         "io-button": HTMLIoButtonElement;
         "io-button-group": HTMLIoButtonGroupElement;
         "io-carousel": HTMLIoCarouselElement;
@@ -2631,24 +2677,39 @@ declare namespace LocalJSX {
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
-     * Accepts items as a JSON string. The last item is the current page.
-     * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+     * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
+     * Separators are inserted programmatically between slotted items via slotchange.
+     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * @example <io-breadcrumb>
+     *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface IoBreadcrumb {
+    }
+    /**
+     * io-breadcrumb-item
+     * ==================
+     * Individual breadcrumb item used as a child of io-breadcrumb.
+     * Renders as an <li> containing either an <a> (when href is set and current is false)
+     * or a <span> (when no href or when current is true).
+     * The parent io-breadcrumb automatically sets current=true on the last item
+     * if no item has current set explicitly.
+     * @example <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     */
+    interface IoBreadcrumbItem {
         /**
-          * JSON string of IoBreadcrumbItem[]. Last item is current page (no href).
-          * @default '[]'
+          * Whether this item represents the current page. Adds aria-current="page".
+          * @default false
          */
-        "items"?: string;
+        "current"?: boolean;
         /**
-          * Maximum visible items before collapsing middle items.
+          * URL this breadcrumb item links to. When omitted the item renders as plain text.
          */
-        "maxVisible"?: number | undefined;
-        /**
-          * Separator style between breadcrumb items.
-          * @default 'chevron'
-         */
-        "separator"?: IoBreadcrumbSeparator;
+        "href"?: string;
     }
     /**
      * io-button
@@ -2912,15 +2973,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Puts the group in error state
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown below the group when error is true
+         */
+        "errorMessage"?: string | undefined;
+        /**
           * Helper text shown below the legend
           * @default ''
          */
         "helperText"?: string;
-        /**
-          * Marks the group as invalid
-          * @default false
-         */
-        "invalid"?: boolean;
         /**
           * Legend text — required for accessibility
          */
@@ -3022,26 +3087,26 @@ declare namespace LocalJSX {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" invalid error-text="Username is taken.">
+     * <io-form-field label="Username" error error-message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
     interface IoFormField {
         /**
-          * Validation error text shown when invalid is true
+          * Marks the field as in error state — shows errorMessage and sets aria-invalid on the child
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Validation error message shown when error is true
           * @default ''
          */
-        "errorText"?: string;
+        "errorMessage"?: string;
         /**
           * Helper/description text shown below the control
           * @default ''
          */
         "helperText"?: string;
-        /**
-          * Marks the field as invalid — shows errorText and sets aria-invalid on the child
-          * @default false
-         */
-        "invalid"?: boolean;
         /**
           * Label text shown above the slotted input
          */
@@ -3465,15 +3530,19 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Puts the group in error state
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown below the group when error is true
+         */
+        "errorMessage"?: string | undefined;
+        /**
           * Helper text shown below the legend
           * @default ''
          */
         "helperText"?: string;
-        /**
-          * Marks the group as invalid
-          * @default false
-         */
-        "invalid"?: boolean;
         /**
           * Legend text — required for accessibility
          */
@@ -4086,10 +4155,9 @@ declare namespace LocalJSX {
         "variant": IoBadgeVariant;
         "size": IoBadgeSize;
     }
-    interface IoBreadcrumbAttributes {
-        "items": string;
-        "separator": IoBreadcrumbSeparator;
-        "maxVisible": number | undefined;
+    interface IoBreadcrumbItemAttributes {
+        "href": string;
+        "current": boolean;
     }
     interface IoButtonAttributes {
         "variant": IoButtonVariant;
@@ -4140,7 +4208,8 @@ declare namespace LocalJSX {
         "name": string;
         "required": boolean;
         "disabled": boolean;
-        "invalid": boolean;
+        "error": boolean;
+        "errorMessage": string | undefined;
         "helperText": string;
     }
     interface IoDividerAttributes {
@@ -4158,8 +4227,8 @@ declare namespace LocalJSX {
     interface IoFormFieldAttributes {
         "label": string;
         "helperText": string;
-        "errorText": string;
-        "invalid": boolean;
+        "errorMessage": string;
+        "error": boolean;
         "required": boolean;
     }
     interface IoInputAttributes {
@@ -4242,7 +4311,8 @@ declare namespace LocalJSX {
         "value": string;
         "required": boolean;
         "disabled": boolean;
-        "invalid": boolean;
+        "error": boolean;
+        "errorMessage": string | undefined;
         "helperText": string;
     }
     interface IoSelectAttributes {
@@ -4343,7 +4413,8 @@ declare namespace LocalJSX {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
         "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
-        "io-breadcrumb": Omit<IoBreadcrumb, keyof IoBreadcrumbAttributes> & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes]?: IoBreadcrumb[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `attr:${K}`]?: IoBreadcrumbAttributes[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `prop:${K}`]?: IoBreadcrumb[K] };
+        "io-breadcrumb": IoBreadcrumb;
+        "io-breadcrumb-item": Omit<IoBreadcrumbItem, keyof IoBreadcrumbItemAttributes> & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes]?: IoBreadcrumbItem[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `attr:${K}`]?: IoBreadcrumbItemAttributes[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `prop:${K}`]?: IoBreadcrumbItem[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
@@ -4415,10 +4486,29 @@ declare module "@stencil/core" {
              * io-breadcrumb
              * =============
              * Breadcrumb navigation for hierarchical orientation.
-             * Accepts items as a JSON string. The last item is the current page.
-             * @example <io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Services","href":"/services"},{"label":"Digital Strategy"}]'></io-breadcrumb>
+             * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
+             * Separators are inserted programmatically between slotted items via slotchange.
+             * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+             * @example <io-breadcrumb>
+             *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+             *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+             *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+             * </io-breadcrumb>
              */
             "io-breadcrumb": LocalJSX.IntrinsicElements["io-breadcrumb"] & JSXBase.HTMLAttributes<HTMLIoBreadcrumbElement>;
+            /**
+             * io-breadcrumb-item
+             * ==================
+             * Individual breadcrumb item used as a child of io-breadcrumb.
+             * Renders as an <li> containing either an <a> (when href is set and current is false)
+             * or a <span> (when no href or when current is true).
+             * The parent io-breadcrumb automatically sets current=true on the last item
+             * if no item has current set explicitly.
+             * @example <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+             * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+             * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+             */
+            "io-breadcrumb-item": LocalJSX.IntrinsicElements["io-breadcrumb-item"] & JSXBase.HTMLAttributes<HTMLIoBreadcrumbItemElement>;
             /**
              * io-button
              * ==========
@@ -4520,7 +4610,7 @@ declare module "@stencil/core" {
              * @example <io-form-field label="Email address" helper-text="We will never share your email.">
              *   <io-input name="email" type="email" />
              * </io-form-field>
-             * <io-form-field label="Username" invalid error-text="Username is taken.">
+             * <io-form-field label="Username" error error-message="Username is taken.">
              *   <io-input name="username" />
              * </io-form-field>
              */

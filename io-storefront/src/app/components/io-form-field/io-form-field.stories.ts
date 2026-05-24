@@ -6,8 +6,8 @@ export const formFieldStory: Story<'io-form-field'> = {
     properties: {
       label: 'Email address',
       helperText: '',
-      errorText: '',
-      invalid: false,
+      errorMessage: '',
+      error: false,
       required: false,
     },
   },
@@ -56,7 +56,7 @@ export const formFieldStoryInvalid: Story<'io-form-field'> = {
   generator: () => [
     {
       tag: 'io-form-field' as const,
-      properties: { label: 'Username', invalid: true, errorText: 'This username is already taken.' },
+      properties: { label: 'Username', error: true, errorMessage: 'This username is already taken.' },
       children: [
         { tag: 'io-input' as const, properties: { name: 'username', type: 'text' } },
       ],
@@ -88,19 +88,19 @@ export const formFieldPropDefinitions: PropDefinition[] = [
     name: 'helperText',
     type: 'string',
     defaultValue: '',
-    description: 'Supporting guidance shown below the control when not in an invalid state.',
+    description: 'Supporting guidance shown below the control when not in an error state.',
   },
   {
-    name: 'errorText',
+    name: 'errorMessage',
     type: 'string',
     defaultValue: '',
-    description: 'Validation error message shown when invalid is true.',
+    description: 'Validation error message shown when error is true.',
   },
   {
-    name: 'invalid',
+    name: 'error',
     type: 'boolean',
     defaultValue: false,
-    description: 'Marks the field as invalid. Shows errorText and sets aria-invalid on the child.',
+    description: 'Marks the field as in error state. Shows errorMessage and sets aria-invalid on the child.',
   },
   {
     name: 'required',

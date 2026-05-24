@@ -11,7 +11,11 @@
     "rootDir": "src",
     "strict": false,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@io-digital/components": ["../io-components/dist/types/components.d.ts"],
+      "@io-digital/components/loader": ["../io-components/dist/loader/index.d.ts"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "../io-components/dist/types/components.d.ts"]
 }

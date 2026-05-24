@@ -40,11 +40,18 @@ export class IoRadioGroup {
   /** Disables the entire group */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Marks the group as invalid */
-  @Prop({ reflect: true }) invalid = false;
+  /** Puts the group in error state */
+  @Prop({ reflect: true }) error = false;
+
+  /** Error message shown below the group when error is true */
+  @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
   @Prop() helperText = '';
+
+  // ── Private ───────────────────────────────────────────────────
+
+  private errorId!: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -52,6 +59,11 @@ export class IoRadioGroup {
   @Event() change!: EventEmitter<IoRadioGroupChangeDetail>;
 
   // ── Lifecycle ─────────────────────────────────────────────────
+
+  componentWillLoad() {
+    const suffix = Math.random().toString(36).slice(2);
+    this.errorId = `io-rg-error-${suffix}`;
+  }
 
   componentDidLoad() {
     this.syncChildren();
@@ -106,12 +118,19 @@ export class IoRadioGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText } = this;
+    const { label, disabled, helperText, error, errorMessage } = this;
+    const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
+    const describedBy = error && errorMessage ? this.errorId : undefined;
 
     return (
       <Host>
         <style>{getRadioGroupStyles()}</style>
-        <fieldset class="radio-group" disabled={disabled}>
+        <fieldset
+          class={fieldsetClass}
+          disabled={disabled}
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={describedBy}
+        >
           <legend class="radio-group__legend">{label}</legend>
           {helperText && (
             <span class="radio-group__helper">{helperText}</span>
@@ -120,6 +139,11 @@ export class IoRadioGroup {
             <slot onSlotchange={this.syncChildren} />
           </div>
         </fieldset>
+        {error && errorMessage && (
+          <p id={this.errorId} class="radio-group__error" aria-live="polite">
+            {errorMessage}
+          </p>
+        )}
       </Host>
     );
   }

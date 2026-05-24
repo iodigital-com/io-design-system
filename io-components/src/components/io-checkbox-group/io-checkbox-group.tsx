@@ -39,11 +39,18 @@ export class IoCheckboxGroup {
   /** Disables the entire group */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Marks the group as invalid */
-  @Prop({ reflect: true }) invalid = false;
+  /** Puts the group in error state */
+  @Prop({ reflect: true }) error = false;
+
+  /** Error message shown below the group when error is true */
+  @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
   @Prop() helperText = '';
+
+  // ── Private ───────────────────────────────────────────────────
+
+  private errorId!: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -51,6 +58,11 @@ export class IoCheckboxGroup {
   @Event() change!: EventEmitter<IoCheckboxGroupChangeDetail>;
 
   // ── Lifecycle ─────────────────────────────────────────────────
+
+  componentWillLoad() {
+    const suffix = Math.random().toString(36).slice(2);
+    this.errorId = `io-cg-error-${suffix}`;
+  }
 
   componentDidLoad() {
     this.syncChildren();
@@ -107,12 +119,19 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText } = this;
+    const { label, disabled, helperText, error, errorMessage } = this;
+    const fieldsetClass = error ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
+    const describedBy = error && errorMessage ? this.errorId : undefined;
 
     return (
       <Host>
         <style>{getCheckboxGroupStyles()}</style>
-        <fieldset class="checkbox-group" disabled={disabled}>
+        <fieldset
+          class={fieldsetClass}
+          disabled={disabled}
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={describedBy}
+        >
           <legend class="checkbox-group__legend">{label}</legend>
           {helperText && (
             <span class="checkbox-group__helper">{helperText}</span>
@@ -121,6 +140,11 @@ export class IoCheckboxGroup {
             <slot onSlotchange={this.syncChildren} />
           </div>
         </fieldset>
+        {error && errorMessage && (
+          <p id={this.errorId} class="checkbox-group__error" aria-live="polite">
+            {errorMessage}
+          </p>
+        )}
       </Host>
     );
   }

@@ -96,6 +96,13 @@ Every component lives at `io-components/src/components/io-{name}/`:
 - Framework wrappers: `Io{Name}` (PascalCase)
 - Type unions: `Io{Name}{Prop}` (e.g. `IoButtonVariant`)
 
+**Error prop standard (all form components):**
+- `@Prop({ reflect: true }) error = false;` — puts the field/group in error state (replaces `invalid`)
+- `@Prop() errorMessage: string | undefined;` — error text shown when `error=true` (replaces `errorText`)
+- Render pattern: `{error && errorMessage && <p id={errorId} class="...-error" role="alert">{errorMessage}</p>}`
+- `aria-describedby` on the control/fieldset must point to `errorId` when `error && errorMessage`
+- `error=true` + empty/undefined `errorMessage` → error styling applies but NO error text element in DOM
+
 **TypeScript:** strict mode. `@ts-expect-error` is not permitted as a workaround — add correct types to `custom-elements.d.ts` instead.
 
 **Tests (Vitest + jsdom):**

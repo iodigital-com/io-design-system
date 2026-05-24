@@ -5,6 +5,7 @@ import {
   checkboxGroupStoryPreChecked,
   checkboxGroupStoryWithHelper,
   checkboxGroupStoryDisabled,
+  checkboxGroupStoryError,
 } from '../io-checkbox-group.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -40,6 +41,14 @@ export default function IoCheckboxGroupExamplesPage() {
           description="Setting disabled on the group disables all child checkboxes."
         />
         <ComponentStory story={checkboxGroupStoryDisabled} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Error state"
+          description="Set error and errorMessage to show group-level validation feedback."
+        />
+        <ComponentStory story={checkboxGroupStoryError} />
       </section>
     </div>
   );

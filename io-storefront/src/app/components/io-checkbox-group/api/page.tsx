@@ -50,10 +50,16 @@ export default function IoCheckboxGroupApiPage() {
               'Disables the entire group. Propagated to all child io-checkbox elements. The native fieldset disabled attribute is set.',
             ],
             [
-              <span key="n"><InlineCode>invalid</InlineCode><ReflectBadge /></span>,
+              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Marks the group as invalid.',
+              'Puts the group in error state. Apply errorMessage alongside this to provide accessible error feedback.',
+            ],
+            [
+              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
             ],
           ]}
         />

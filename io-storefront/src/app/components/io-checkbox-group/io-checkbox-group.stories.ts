@@ -8,7 +8,8 @@ export const checkboxGroupStory: Story<'io-checkbox-group'> = {
       name: 'notifications',
       required: false,
       disabled: false,
-      invalid: false,
+      error: false,
+      errorMessage: '',
       helperText: '',
     },
   },
@@ -75,6 +76,26 @@ export const checkboxGroupStoryWithHelper: Story<'io-checkbox-group'> = {
   ],
 };
 
+export const checkboxGroupStoryError: Story<'io-checkbox-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-checkbox-group' as const,
+      properties: {
+        label: 'Notification channels',
+        name: 'notifications-error',
+        error: true,
+        errorMessage: 'Please select at least one notification channel.',
+      },
+      children: [
+        { tag: 'io-checkbox' as const, properties: { label: 'Email', value: 'email' } },
+        { tag: 'io-checkbox' as const, properties: { label: 'SMS', value: 'sms' } },
+        { tag: 'io-checkbox' as const, properties: { label: 'Push', value: 'push' } },
+      ],
+    },
+  ],
+};
+
 export const checkboxGroupStoryDisabled: Story<'io-checkbox-group'> = {
   state: { properties: {} },
   generator: () => [
@@ -121,9 +142,15 @@ export const checkboxGroupPropDefinitions: PropDefinition[] = [
     description: 'Disables the entire group and all child checkboxes.',
   },
   {
-    name: 'invalid',
+    name: 'error',
     type: 'boolean',
     defaultValue: false,
-    description: 'Marks the group as invalid.',
+    description: 'Puts the group in error state.',
+  },
+  {
+    name: 'errorMessage',
+    type: 'string',
+    defaultValue: '',
+    description: 'Error message shown below the group when error is true.',
   },
 ];

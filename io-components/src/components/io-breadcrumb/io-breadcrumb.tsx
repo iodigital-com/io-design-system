@@ -45,8 +45,9 @@ export class IoBreadcrumb {
       }
 
       // Set current=true on last item if none has it explicitly
-      if (i === items.length - 1 && !items.some(it => (it as any).current === true)) {
-        (item as any).current = true;
+      type BreadcrumbItem = Element & { current: boolean };
+      if (i === items.length - 1 && !items.some(it => (it as BreadcrumbItem).current === true)) {
+        (item as BreadcrumbItem).current = true;
       }
     });
   };

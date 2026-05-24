@@ -154,7 +154,7 @@ export default function IoCarouselApiPage() {
 <script>
   document.querySelector('io-carousel')
     .addEventListener('update', (e) => {
-      console.log('Active slide:', e.detail.activeIndex);
+      // e.detail.activeIndex — update your UI state here
     });
 </script>`}
         </CodeNote>
@@ -166,7 +166,7 @@ function ProductGallery() {
 
   const handleUpdate = useCallback(
     (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
-      console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+      // e.detail.activeIndex — update your UI state here
     },
     [],
   );
@@ -207,8 +207,8 @@ import { IoCarousel } from '@io-digital/components-angular';
   \`,
 })
 export class ProductGalleryComponent {
-  onUpdate(e: CustomEvent<{ activeIndex: number; totalSlides: number }>) {
-    console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+  onUpdate(_e: CustomEvent<{ activeIndex: number; totalSlides: number }>) {
+    // _e.detail.activeIndex — update your component state here
   }
 }`}
         </CodeNote>
@@ -226,8 +226,8 @@ export class ProductGalleryComponent {
 </template>
 
 <script setup lang="ts">
-const onUpdate = (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
-  console.log('Slide', e.detail.activeIndex + 1, 'of', e.detail.totalSlides);
+const onUpdate = (_e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
+  // _e.detail.activeIndex — update your UI state here
 };
 </script>`}
         </CodeNote>

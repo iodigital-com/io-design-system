@@ -23,10 +23,15 @@ export default function IoTableUsagePage() {
               Add a caption that describes the table&apos;s content clearly — it is required for screen reader users.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use sortable columns when there is a meaningful order — alphabetically, by date, or by numeric value.
+              Add <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sortable</code> to{' '}
+              <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-head-cell</code>{' '}
+              only on columns where ordering provides genuine value.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use the selectable prop when users need to act on multiple rows at once (bulk delete, bulk export).
+              Add <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>selectable</code> to{' '}
+              <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-head-row</code> and{' '}
+              <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-body-row</code>{' '}
+              when users need to act on multiple rows at once.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -47,192 +52,239 @@ export default function IoTableUsagePage() {
         </div>
       </section>
 
+      {/* ── Basic usage ──────────────────────────────────────── */}
+      <section id="basic-usage" className="space-y-6">
+        <SectionHeader
+          title="Basic usage"
+          description="Compose io-table using its slot-based sub-components. Each sub-component maps directly to a semantic table element."
+        />
+        <CodeTabs
+          tabs={[
+            {
+              label: 'HTML',
+              code: `<io-table caption="Team members">
+  <io-table-head>
+    <io-table-head-row>
+      <io-table-head-cell>Name</io-table-head-cell>
+      <io-table-head-cell>Role</io-table-head-cell>
+      <io-table-head-cell>Status</io-table-head-cell>
+    </io-table-head-row>
+  </io-table-head>
+  <io-table-body>
+    <io-table-body-row>
+      <io-table-body-cell>Alice Müller</io-table-body-cell>
+      <io-table-body-cell>Admin</io-table-body-cell>
+      <io-table-body-cell>Active</io-table-body-cell>
+    </io-table-body-row>
+    <io-table-body-row>
+      <io-table-body-cell>Bob Janssen</io-table-body-cell>
+      <io-table-body-cell>Editor</io-table-body-cell>
+      <io-table-body-cell>Active</io-table-body-cell>
+    </io-table-body-row>
+  </io-table-body>
+</io-table>`,
+            },
+            {
+              label: 'React',
+              code: `export function TeamTable() {
+  return (
+    <io-table caption="Team members">
+      <io-table-head>
+        <io-table-head-row>
+          <io-table-head-cell>Name</io-table-head-cell>
+          <io-table-head-cell>Role</io-table-head-cell>
+          <io-table-head-cell>Status</io-table-head-cell>
+        </io-table-head-row>
+      </io-table-head>
+      <io-table-body>
+        <io-table-body-row>
+          <io-table-body-cell>Alice Müller</io-table-body-cell>
+          <io-table-body-cell>Admin</io-table-body-cell>
+          <io-table-body-cell>Active</io-table-body-cell>
+        </io-table-body-row>
+      </io-table-body>
+    </io-table>
+  );
+}`,
+            },
+            {
+              label: 'Angular',
+              code: `@Component({
+  selector: 'app-team-table',
+  template: \`
+    <io-table caption="Team members">
+      <io-table-head>
+        <io-table-head-row>
+          <io-table-head-cell>Name</io-table-head-cell>
+          <io-table-head-cell>Role</io-table-head-cell>
+          <io-table-head-cell>Status</io-table-head-cell>
+        </io-table-head-row>
+      </io-table-head>
+      <io-table-body>
+        <io-table-body-row *ngFor="let row of rows">
+          <io-table-body-cell>{{ row.name }}</io-table-body-cell>
+          <io-table-body-cell>{{ row.role }}</io-table-body-cell>
+          <io-table-body-cell>{{ row.status }}</io-table-body-cell>
+        </io-table-body-row>
+      </io-table-body>
+    </io-table>
+  \`,
+})
+export class TeamTableComponent {
+  rows = [
+    { name: 'Alice Müller', role: 'Admin', status: 'Active' },
+    { name: 'Bob Janssen', role: 'Editor', status: 'Active' },
+  ];
+}`,
+            },
+            {
+              label: 'Vue',
+              code: `<template>
+  <io-table caption="Team members">
+    <io-table-head>
+      <io-table-head-row>
+        <io-table-head-cell>Name</io-table-head-cell>
+        <io-table-head-cell>Role</io-table-head-cell>
+        <io-table-head-cell>Status</io-table-head-cell>
+      </io-table-head-row>
+    </io-table-head>
+    <io-table-body>
+      <io-table-body-row v-for="row in rows" :key="row.name">
+        <io-table-body-cell>{{ row.name }}</io-table-body-cell>
+        <io-table-body-cell>{{ row.role }}</io-table-body-cell>
+        <io-table-body-cell>{{ row.status }}</io-table-body-cell>
+      </io-table-body-row>
+    </io-table-body>
+  </io-table>
+</template>
+
+<script setup>
+const rows = [
+  { name: 'Alice Müller', role: 'Admin', status: 'Active' },
+  { name: 'Bob Janssen', role: 'Editor', status: 'Active' },
+];
+</script>`,
+            },
+          ]}
+        />
+      </section>
+
       {/* ── Sorting ──────────────────────────────────────────── */}
       <section id="sorting" className="space-y-6">
         <SectionHeader
           title="Sorting"
-          description="The table emits an sort event — your code controls the actual sorted order."
+          description="Add sortable to io-table-head-cell columns. Each cell emits a sort event — your code controls the actual sorted order."
         />
         <RuleCard label="Consumer-controlled sort">
-          io-table emits <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sort</code>{' '}
-          with the column key and new direction. Update the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>rows</code>,{' '}
-          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sortKey</code>, and{' '}
-          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sortDirection</code> props
-          from your component state. This design keeps the table a pure presenter.
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-head-cell</code>{' '}
+          emits <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sort</code>{' '}
+          with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'{ key, direction }'}</code>.
+          Update the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>sort-direction</code>{' '}
+          prop and re-render the slotted rows sorted. The cell is a pure presenter.
         </RuleCard>
         <CodeTabs
           tabs={[
             {
               label: 'HTML',
-              code: `<io-table id="my-table" caption="Users" sortable></io-table>
+              code: `<io-table id="my-table" caption="Users">
+  <io-table-head>
+    <io-table-head-row>
+      <io-table-head-cell id="th-name" sortable sort-key="name">Name</io-table-head-cell>
+      <io-table-head-cell id="th-role" sortable sort-key="role">Role</io-table-head-cell>
+    </io-table-head-row>
+  </io-table-head>
+  <io-table-body id="tbody"></io-table-body>
+</io-table>
 
 <script>
-  const table = document.getElementById('my-table');
   let rows = [
     { name: 'Alice', role: 'Admin' },
-    { name: 'Bob', role: 'Editor' },
+    { name: 'Bob',   role: 'Editor' },
   ];
   let sortKey = '';
   let sortDir = 'none';
 
-  function render() {
-    table.columns = [
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'role', label: 'Role', sortable: true },
-    ];
-    table.rows = rows;
-    table.sortKey = sortKey;
-    table.sortDirection = sortDir;
+  function renderRows() {
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+    rows.forEach(row => {
+      const tr = document.createElement('io-table-body-row');
+      ['name', 'role'].forEach(key => {
+        const td = document.createElement('io-table-body-cell');
+        td.textContent = row[key];
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
   }
 
-  table.addEventListener('sort', (e) => {
-    sortKey = e.detail.key;
-    sortDir = e.detail.direction;
-    rows = [...rows].sort((a, b) => {
-      const aVal = String(a[sortKey]);
-      const bVal = String(b[sortKey]);
-      return sortDir === 'ascending'
-        ? aVal.localeCompare(bVal)
-        : bVal.localeCompare(aVal);
+  document.querySelectorAll('io-table-head-cell').forEach(th => {
+    th.addEventListener('sort', (e) => {
+      sortKey = e.detail.key;
+      sortDir = e.detail.direction;
+      document.querySelectorAll('io-table-head-cell').forEach(c => {
+        c.sortDirection = c.sortKey === sortKey ? sortDir : 'none';
+      });
+      rows = [...rows].sort((a, b) => {
+        const av = String(a[sortKey]), bv = String(b[sortKey]);
+        return sortDir === 'ascending' ? av.localeCompare(bv) : bv.localeCompare(av);
+      });
+      renderRows();
     });
-    render();
   });
 
-  render();
+  renderRows();
 </script>`,
             },
             {
               label: 'React',
               code: `import { useState, useCallback } from 'react';
 
-const COLUMNS = [
-  { key: 'name', label: 'Name', sortable: true },
-  { key: 'role', label: 'Role', sortable: true },
-];
-
 const INITIAL_ROWS = [
   { name: 'Alice', role: 'Admin' },
   { name: 'Bob', role: 'Editor' },
 ];
 
-export function UsersTable() {
-  const [rows, setRows] = useState(INITIAL_ROWS);
-  const [sortKey, setSortKey] = useState('');
-  const [sortDirection, setSortDirection] = useState('none');
+export function SortableTable() {
+  const [rows, setRows]           = useState(INITIAL_ROWS);
+  const [sortKey, setSortKey]     = useState('');
+  const [sortDir, setSortDir]     = useState('none');
 
-  const handleSort = useCallback((e) => {
-    const { key, direction } = e.detail;
+  const handleSort = useCallback((key: string) => (e: CustomEvent) => {
+    const { direction } = e.detail;
     setSortKey(key);
-    setSortDirection(direction);
-    setRows((prev) =>
+    setSortDir(direction);
+    setRows(prev =>
       [...prev].sort((a, b) => {
-        const aVal = String(a[key]);
-        const bVal = String(b[key]);
-        return direction === 'ascending'
-          ? aVal.localeCompare(bVal)
-          : bVal.localeCompare(aVal);
+        const av = String(a[key]), bv = String(b[key]);
+        return direction === 'ascending' ? av.localeCompare(bv) : bv.localeCompare(av);
       }),
     );
   }, []);
 
   return (
-    <io-table
-      caption="Users"
-      sortable
-      columns={COLUMNS}
-      rows={rows}
-      sortKey={sortKey}
-      sortDirection={sortDirection}
-      onSort={handleSort}
-    />
+    <io-table caption="Users">
+      <io-table-head>
+        <io-table-head-row>
+          <io-table-head-cell sortable sort-key="name"
+            sort-direction={sortKey === 'name' ? sortDir : 'none'}
+            onSort={handleSort('name')}>Name</io-table-head-cell>
+          <io-table-head-cell sortable sort-key="role"
+            sort-direction={sortKey === 'role' ? sortDir : 'none'}
+            onSort={handleSort('role')}>Role</io-table-head-cell>
+        </io-table-head-row>
+      </io-table-head>
+      <io-table-body>
+        {rows.map(row => (
+          <io-table-body-row key={row.name}>
+            <io-table-body-cell>{row.name}</io-table-body-cell>
+            <io-table-body-cell>{row.role}</io-table-body-cell>
+          </io-table-body-row>
+        ))}
+      </io-table-body>
+    </io-table>
   );
 }`,
-            },
-            {
-              label: 'Angular',
-              code: `import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-users-table',
-  template: \`
-    <io-table
-      caption="Users"
-      [sortable]="true"
-      [columns]="columns"
-      [rows]="rows"
-      [sortKey]="sortKey"
-      [sortDirection]="sortDirection"
-      (sort)="handleSort($event)"
-    ></io-table>
-  \`,
-})
-export class UsersTableComponent {
-  columns = [
-    { key: 'name', label: 'Name', sortable: true },
-    { key: 'role', label: 'Role', sortable: true },
-  ];
-  rows = [
-    { name: 'Alice', role: 'Admin' },
-    { name: 'Bob', role: 'Editor' },
-  ];
-  sortKey = '';
-  sortDirection = 'none';
-
-  handleSort(event: CustomEvent) {
-    const { key, direction } = event.detail;
-    this.sortKey = key;
-    this.sortDirection = direction;
-    this.rows = [...this.rows].sort((a, b) => {
-      const aVal = String(a[key]);
-      const bVal = String(b[key]);
-      return direction === 'ascending'
-        ? aVal.localeCompare(bVal)
-        : bVal.localeCompare(aVal);
-    });
-  }
-}`,
-            },
-            {
-              label: 'Vue',
-              code: `<template>
-  <io-table
-    caption="Users"
-    :sortable="true"
-    :columns="columns"
-    :rows="rows"
-    :sort-key="sortKey"
-    :sort-direction="sortDirection"
-    @io-sort="handleSort"
-  />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-
-const columns = [
-  { key: 'name', label: 'Name', sortable: true },
-  { key: 'role', label: 'Role', sortable: true },
-];
-const rows = ref([
-  { name: 'Alice', role: 'Admin' },
-  { name: 'Bob', role: 'Editor' },
-]);
-const sortKey = ref('');
-const sortDirection = ref('none');
-
-function handleSort(event) {
-  const { key, direction } = event.detail;
-  sortKey.value = key;
-  sortDirection.value = direction;
-  rows.value = [...rows.value].sort((a, b) => {
-    const aVal = String(a[key]);
-    const bVal = String(b[key]);
-    return direction === 'ascending'
-      ? aVal.localeCompare(bVal)
-      : bVal.localeCompare(aVal);
-  });
-}
-</script>`,
             },
           ]}
         />
@@ -242,15 +294,22 @@ function handleSort(event) {
       <section id="selection" className="space-y-6">
         <SectionHeader
           title="Row selection"
-          description="Use selectable when users need to act on multiple rows — bulk delete, export, or batch update."
+          description="Add selectable to io-table-head-row and each io-table-body-row to enable checkbox selection."
         />
-        <RuleCard label="rowSelect event">
-          When any checkbox is toggled, io-table emits <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>rowSelect</code>{' '}
-          with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'{ selectedRows: Record<string, unknown>[] }'}</code>{' '}
-          — an array of the currently selected row objects. Use this to drive your bulk-action UI.
+        <RuleCard label="select and selectAll events">
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-body-row</code>{' '}
+          emits <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>select</code>{' '}
+          with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'{ selected: boolean }'}</code>.{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-table-head-row</code>{' '}
+          emits <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>selectAll</code>{' '}
+          with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'{ checked: boolean }'}</code>.
+          Drive <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>selected</code>,{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>select-all-checked</code>, and{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>select-all-indeterminate</code>{' '}
+          from your state.
         </RuleCard>
         <RuleCard label="Pair with a bulk-actions bar">
-          Show a contextual action bar (delete, export) only when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>selectedRows.length {'>'} 0</code>.
+          Show a contextual action bar (delete, export) only when the selected row count is greater than zero.
           Announce the count to screen readers with an <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-live</code> region.
         </RuleCard>
       </section>

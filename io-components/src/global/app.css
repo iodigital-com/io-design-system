@@ -483,6 +483,9 @@
   --io-touch-target-min-size:    44px;
   --io-font-family-base:         var(--io-font-primary);
   --io-font-weight-semibold:     600;
+
+  /* ── Table ───────────────────────────────────────────── */
+  --io-table-row-selected-bg:    var(--io-color-primary-muted);
 }
 
 /* ============================================================
@@ -511,6 +514,174 @@
   --io-gradient-hero:            var(--io-gradient-surface-hero);
   --io-gradient-card-overlay:    var(--io-gradient-overlay-bottom);
   --io-gradient-cta:             var(--io-gradient-brand-primary);
+}
+
+/* ============================================================
+   io-table sub-component host layout reset
+   Sub-components use shadow: false and render structural table HTML
+   (<thead>, <tbody>, <tr>, <th>, <td>) in the light DOM.
+   display: contents removes the custom-element host box from the
+   layout/formatting context so the browser sees a flat table DOM.
+   ============================================================ */
+
+io-table-head,
+io-table-head-row,
+io-table-head-cell,
+io-table-body,
+io-table-body-row,
+io-table-body-cell {
+  display: contents;
+}
+
+/* ============================================================
+   io-table sub-component visual styles
+   These live here (not in a shadow stylesheet) because the
+   sub-components use shadow: false — their elements are in the
+   light DOM and must be styled by the document stylesheet.
+   ============================================================ */
+
+/* ── Base cell styles ──────────────────────────────────────── */
+
+io-table-head-cell th,
+io-table-body-cell td {
+  padding: var(--io-space-3, 12px) var(--io-space-4, 16px);
+  text-align: left;
+  border-bottom: 1px solid var(--io-border);
+  vertical-align: middle;
+}
+
+/* ── Header cell ───────────────────────────────────────────── */
+
+io-table-head-cell th {
+  background: var(--io-bg-surface);
+  font-weight: var(--io-font-weight-semibold);
+  color: var(--io-text-secondary);
+  white-space: nowrap;
+}
+
+/* ── Sticky header ─────────────────────────────────────────── */
+
+io-table[sticky] io-table-head-cell th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+@media (forced-colors: active) {
+  io-table[sticky] io-table-head-cell th {
+    background: Canvas;
+    border-bottom: 2px solid ButtonText;
+  }
+}
+
+/* ── Sortable header ───────────────────────────────────────── */
+
+io-table-head-cell th.th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+io-table-head-cell th.th--sortable:hover {
+  color: var(--io-text-primary, #242424);
+}
+
+io-table-head-cell th.th--sortable:focus-visible {
+  outline: none;
+  box-shadow: var(--io-focus-ring-active);
+}
+
+.th__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--io-space-2, 8px);
+}
+
+/* ── Sort icon ─────────────────────────────────────────────── */
+
+.sort-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+io-table-head-cell th.th--sortable:hover .sort-icon,
+io-table-head-cell th.th--sort-active .sort-icon {
+  opacity: 1;
+}
+
+io-table-head-cell th.th--sort-desc .sort-icon {
+  transform: rotate(180deg);
+}
+
+/* ── Body row ──────────────────────────────────────────────── */
+
+io-table-body-row tr {
+  transition: background-color 150ms ease;
+}
+
+io-table-body-row tr:hover {
+  background: var(--io-bg-raised);
+}
+
+io-table-body-row[selected] tr {
+  background: var(--io-table-row-selected-bg);
+}
+
+/* ── Checkbox cells ────────────────────────────────────────── */
+
+io-table-head-row .th--checkbox,
+io-table-body-row .td--checkbox {
+  width: var(--io-touch-target-min, 44px);
+  padding-right: 0;
+}
+
+io-table-head-row .th--checkbox input[type="checkbox"],
+io-table-body-row .td--checkbox input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--io-color-primary);
+}
+
+io-table-head-row .th--checkbox input[type="checkbox"]:focus-visible,
+io-table-body-row .td--checkbox input[type="checkbox"]:focus-visible {
+  outline: none;
+  box-shadow: var(--io-focus-ring-active);
+}
+
+@media (forced-colors: active) {
+  io-table-head-row .th--checkbox input[type="checkbox"]:focus-visible,
+  io-table-body-row .td--checkbox input[type="checkbox"]:focus-visible {
+    outline: 2px solid ButtonText;
+    outline-offset: 2px;
+  }
+}
+
+/* ── Size density ──────────────────────────────────────────── */
+
+io-table[size="sm"] io-table-head-cell th,
+io-table[size="sm"] io-table-body-cell td {
+  padding: var(--io-space-2, 8px) var(--io-space-3, 12px);
+  font-size: var(--io-font-size-xs, 12px);
+}
+
+io-table[size="lg"] io-table-head-cell th,
+io-table[size="lg"] io-table-body-cell td {
+  padding: var(--io-space-4, 16px) var(--io-space-6, 24px);
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  io-table-body-row tr,
+  .sort-icon {
+    transition: none;
+  }
 }
 
 /* ============================================================
@@ -596,6 +767,7 @@
   --io-button-group-color:       var(--io-color-dark-text-primary);
   --io-button-group-border-color: var(--io-color-dark-border);
   --io-progress-track-bg:        var(--io-color-dark-bg-raised);
+  --io-table-row-selected-bg:    var(--io-color-dark-accent-bg);
 
   /* Avatar — grey variant needs dark-surface bg + light text */
   --io-avatar-bg-grey:           var(--io-color-dark-bg-raised);

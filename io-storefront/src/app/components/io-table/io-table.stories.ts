@@ -1,28 +1,76 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
+import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
 
-const DEMO_COLUMNS = [
-  { key: 'name', label: 'Name', sortable: true },
-  { key: 'role', label: 'Role', sortable: true },
-  { key: 'status', label: 'Status' },
-];
+// ---------------------------------------------------------------------------
+// Demo data
+// ---------------------------------------------------------------------------
+
+const HEAD_LABELS = ['Name', 'Role', 'Status'];
+const HEAD_KEYS = ['name', 'role', 'status'] as const;
 
 const DEMO_ROWS = [
-  { name: 'Alice Müller', role: 'Admin', status: 'Active' },
-  { name: 'Bob Janssen', role: 'Editor', status: 'Active' },
-  { name: 'Charlie Bakker', role: 'Viewer', status: 'Inactive' },
+  ['Alice Müller', 'Admin', 'Active'],
+  ['Bob Janssen', 'Editor', 'Active'],
+  ['Charlie Bakker', 'Viewer', 'Inactive'],
 ];
 
-/**
- * Main configurator story for io-table.
- */
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function buildHead(
+  labels: string[],
+  keys: string[] = [],
+  sortable = false,
+  selectable = false,
+): ElementConfig<HTMLTagOrComponent> {
+  const cells: ElementConfig<HTMLTagOrComponent>[] = labels.map((label, i) => ({
+    tag: 'io-table-head-cell' as const,
+    properties: sortable && keys[i] ? { sortable: true, sortKey: keys[i] } : {},
+    children: [label],
+  }));
+
+  return {
+    tag: 'io-table-head' as const,
+    children: [
+      {
+        tag: 'io-table-head-row' as const,
+        properties: selectable ? { selectable: true } : {},
+        children: cells,
+      },
+    ],
+  };
+}
+
+function buildBody(
+  rows: string[][],
+  selectable = false,
+): ElementConfig<HTMLTagOrComponent> {
+  const bodyRows: ElementConfig<HTMLTagOrComponent>[] = rows.map((cells) => ({
+    tag: 'io-table-body-row' as const,
+    properties: selectable ? { selectable: true } : {},
+    children: cells.map((value) => ({
+      tag: 'io-table-body-cell' as const,
+      children: [value],
+    })),
+  }));
+
+  return {
+    tag: 'io-table-body' as const,
+    children: bodyRows,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Configurator story
+// ---------------------------------------------------------------------------
+
 export const tableStory: Story<'io-table'> = {
   state: {
     properties: {
       caption: 'Team members',
       captionHidden: false,
-      sortable: false,
-      selectable: false,
       sticky: false,
       size: 'md',
     },
@@ -33,11 +81,15 @@ export const tableStory: Story<'io-table'> = {
       {
         tag: 'io-table' as const,
         properties: {
-          ...attrs,
-          columns: DEMO_COLUMNS,
-          rows: DEMO_ROWS,
+          caption: attrs.caption ?? 'Team members',
+          captionHidden: attrs.captionHidden ?? false,
+          sticky: attrs.sticky ?? false,
+          size: attrs.size ?? 'md',
         },
-        children: [],
+        children: [
+          buildHead(HEAD_LABELS, [...HEAD_KEYS]),
+          buildBody(DEMO_ROWS),
+        ],
       },
     ];
   },
@@ -55,16 +107,6 @@ export const tablePropDefinitions: PropDefinition[] = [
     defaultValue: false,
   },
   {
-    name: 'sortable',
-    type: 'boolean',
-    defaultValue: false,
-  },
-  {
-    name: 'selectable',
-    type: 'boolean',
-    defaultValue: false,
-  },
-  {
     name: 'sticky',
     type: 'boolean',
     defaultValue: false,
@@ -77,89 +119,75 @@ export const tablePropDefinitions: PropDefinition[] = [
   },
 ];
 
-/** Basic table story */
+// ---------------------------------------------------------------------------
+// Named stories
+// ---------------------------------------------------------------------------
+
 export const tableStoryBasic: Story<'io-table'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-table' as const,
-      properties: {
-        caption: 'Team members',
-        columns: DEMO_COLUMNS,
-        rows: DEMO_ROWS,
-      },
-      children: [],
+      properties: { caption: 'Team members' },
+      children: [
+        buildHead(HEAD_LABELS),
+        buildBody(DEMO_ROWS),
+      ],
     },
   ],
 };
 
-/** Sortable table story */
 export const tableStorySortable: Story<'io-table'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-table' as const,
-      properties: {
-        caption: 'Sortable team members',
-        sortable: true,
-        columns: DEMO_COLUMNS,
-        rows: DEMO_ROWS,
-      },
-      children: [],
+      properties: { caption: 'Sortable team members' },
+      children: [
+        buildHead(HEAD_LABELS, [...HEAD_KEYS], true),
+        buildBody(DEMO_ROWS),
+      ],
     },
   ],
 };
 
-/** Selectable table story */
 export const tableStorySelectable: Story<'io-table'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-table' as const,
-      properties: {
-        caption: 'Selectable team members',
-        selectable: true,
-        columns: DEMO_COLUMNS,
-        rows: DEMO_ROWS,
-      },
-      children: [],
+      properties: { caption: 'Selectable team members' },
+      children: [
+        buildHead(HEAD_LABELS, [], false, true),
+        buildBody(DEMO_ROWS, true),
+      ],
     },
   ],
 };
 
-/** Full featured table story */
 export const tableStoryFull: Story<'io-table'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-table' as const,
-      properties: {
-        caption: 'Full featured table',
-        sortable: true,
-        selectable: true,
-        columns: DEMO_COLUMNS,
-        rows: DEMO_ROWS,
-      },
-      children: [],
+      properties: { caption: 'Full featured table' },
+      children: [
+        buildHead(HEAD_LABELS, [...HEAD_KEYS], true, true),
+        buildBody(DEMO_ROWS, true),
+      ],
     },
   ],
 };
 
-/** Size variants */
 export const tableStorySizes: Story<'io-table'> = {
   state: { properties: {} },
   generator: () =>
     (['sm', 'md', 'lg'] as const).map((size) => ({
       tag: 'io-table' as const,
-      properties: {
-        caption: `Size: ${size}`,
-        size,
-        columns: [
-          { key: 'name', label: 'Name' },
-          { key: 'role', label: 'Role' },
-        ],
-        rows: [{ name: 'Alice', role: 'Admin' }],
-      },
-      children: [],
+      properties: { caption: `Size: ${size}`, size },
+      children: [
+        buildHead(['Name', 'Role']),
+        buildBody([['Alice', 'Admin']]),
+      ],
     })),
 };

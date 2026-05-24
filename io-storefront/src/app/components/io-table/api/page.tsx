@@ -6,17 +6,17 @@ export default function IoTableApiPage() {
   return (
     <div className="space-y-16">
 
-      {/* ── Properties ───────────────────────────────────────────── */}
-      <section id="properties" className="space-y-4">
+      {/* ── io-table Properties ──────────────────────────────────── */}
+      <section id="io-table-properties" className="space-y-4">
         <SectionHeader
-          title="Properties"
-          description="All @Prop() declarations on the io-table Stencil component."
+          title="io-table — Properties"
+          description="Props on the root io-table container. Sub-component props are documented separately below."
         />
         <ApiTable
           columns={[
             { label: 'Name', width: '180px' },
-            { label: 'Type', width: '280px' },
-            { label: 'Default', width: '120px' },
+            { label: 'Type', width: '260px' },
+            { label: 'Default', width: '100px' },
             { label: 'Description' },
           ]}
           rows={[
@@ -33,46 +33,10 @@ export default function IoTableApiPage() {
               'Visually hides the caption using a .sr-only CSS class while keeping it announced by screen readers.',
             ],
             [
-              <InlineCode key="n">columns</InlineCode>,
-              <InlineCode key="t">{'Array<{ key: string; label: string; sortable?: boolean }>'}</InlineCode>,
-              <InlineCode key="d">[]</InlineCode>,
-              'Column definitions. Each item maps a data key to a header label. Set sortable on individual columns to override the global sortable prop.',
-            ],
-            [
-              <InlineCode key="n">rows</InlineCode>,
-              <InlineCode key="t">{'Record<string, unknown>[]'}</InlineCode>,
-              <InlineCode key="d">[]</InlineCode>,
-              'Row data objects. Each key should correspond to a column key. Values are rendered as strings via String(value).',
-            ],
-            [
-              <InlineCode key="n">sortable</InlineCode>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Enables sorting on all columns globally. Individual columns can further override with their own sortable prop.',
-            ],
-            [
-              <InlineCode key="n">selectable</InlineCode>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Prepends a checkbox column to every row, plus a select-all checkbox in the header.',
-            ],
-            [
               <span key="n"><InlineCode>sticky</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Applies position: sticky; top: 0 to the thead, so the column headers remain visible while scrolling long tables.',
-            ],
-            [
-              <InlineCode key="n">sortKey</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
-              <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Key of the currently sorted column. Update this from your sort handler to control the active sort indicator.',
-            ],
-            [
-              <InlineCode key="n">sortDirection</InlineCode>,
-              <InlineCode key="t">&apos;ascending&apos; | &apos;descending&apos; | &apos;none&apos;</InlineCode>,
-              <InlineCode key="d">&apos;none&apos;</InlineCode>,
-              'Current sort direction. Update from your sort handler alongside sortKey.',
+              'Applies position: sticky; top: 0 to all th elements inside io-table-head-cell, so column headers remain visible while scrolling long tables.',
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
@@ -84,48 +48,190 @@ export default function IoTableApiPage() {
         />
       </section>
 
-      {/* ── Events ───────────────────────────────────────────────── */}
-      <section id="events" className="space-y-4">
+      {/* ── io-table-head-cell Properties ────────────────────────── */}
+      <section id="io-table-head-cell-properties" className="space-y-4">
         <SectionHeader
-          title="Events"
-          description="Custom events emitted by io-table. Listen via addEventListener or framework event binding."
+          title="io-table-head-cell — Properties"
+          description="Renders a <th scope='col'>. Set sortable to enable click-to-sort."
         />
         <ApiTable
           columns={[
-            { label: 'Event', width: '160px' },
-            { label: 'Detail type', width: '320px' },
+            { label: 'Name', width: '180px' },
+            { label: 'Type', width: '260px' },
+            { label: 'Default', width: '100px' },
             { label: 'Description' },
           ]}
           rows={[
             [
-              <InlineCode key="n">sort</InlineCode>,
-              <InlineCode key="t">{'{ key: string; direction: \'ascending\' | \'descending\' }'}</InlineCode>,
-              'Fired when a sortable column header is clicked or activated via Enter/Space. The consumer is responsible for sorting the rows array and feeding the result back via the rows prop.',
+              <InlineCode key="n">sortable</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Enables click-to-sort on this column header. Adds a sort icon and keyboard activation.',
             ],
             [
-              <InlineCode key="n">rowSelect</InlineCode>,
-              <InlineCode key="t">{'{ selectedRows: Record<string, unknown>[] }'}</InlineCode>,
-              'Fired when any row checkbox or the select-all checkbox changes. The detail contains all currently selected row objects.',
+              <InlineCode key="n">sortDirection</InlineCode>,
+              <InlineCode key="t">&apos;ascending&apos; | &apos;descending&apos; | &apos;none&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Consumer-controlled sort direction for this column. Update in response to the sort event.',
+            ],
+            [
+              <InlineCode key="n">sortKey</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Identifier passed back in the sort event detail. Use it to know which column was sorted.',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── io-table-head-row Properties ─────────────────────────── */}
+      <section id="io-table-head-row-properties" className="space-y-4">
+        <SectionHeader
+          title="io-table-head-row — Properties"
+          description="Renders a <tr> in the thead. Set selectable to prepend a select-all checkbox."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '220px' },
+            { label: 'Type', width: '200px' },
+            { label: 'Default', width: '100px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">selectable</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Renders a select-all checkbox <th> before the slotted head cells.',
+            ],
+            [
+              <InlineCode key="n">selectAllChecked</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Controlled checked state of the select-all checkbox.',
+            ],
+            [
+              <InlineCode key="n">selectAllIndeterminate</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Renders the checkbox in an indeterminate state when true and selectAllChecked is false. Communicates partial selection to screen readers via aria-checked="mixed".',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── io-table-body-row Properties ─────────────────────────── */}
+      <section id="io-table-body-row-properties" className="space-y-4">
+        <SectionHeader
+          title="io-table-body-row — Properties"
+          description="Renders a <tr> in the tbody. Set selectable to prepend a per-row selection checkbox."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '180px' },
+            { label: 'Type', width: '200px' },
+            { label: 'Default', width: '100px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <span key="n"><InlineCode>selectable</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Renders a selection checkbox <td> before the slotted body cells.',
+            ],
+            [
+              <span key="n"><InlineCode>selected</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Controlled selected state of this row. Drives the checkbox checked state and the row highlight background.',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── io-table-body-cell Properties ────────────────────────── */}
+      <section id="io-table-body-cell-properties" className="space-y-4">
+        <SectionHeader
+          title="io-table-body-cell — Properties"
+          description="Renders a <td>. Accepts optional colspan and rowspan for merged cells."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '180px' },
+            { label: 'Type', width: '200px' },
+            { label: 'Default', width: '100px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">colspan</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">—</InlineCode>,
+              'Maps to the native colSpan attribute. Merges the cell across the specified number of columns.',
+            ],
+            [
+              <InlineCode key="n">rowspan</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">—</InlineCode>,
+              'Maps to the native rowSpan attribute. Merges the cell across the specified number of rows.',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── Events ───────────────────────────────────────────────── */}
+      <section id="events" className="space-y-4">
+        <SectionHeader
+          title="Events"
+          description="Custom events emitted by io-table sub-components. Listen via addEventListener or framework event binding."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Component', width: '200px' },
+            { label: 'Event', width: '140px' },
+            { label: 'Detail type', width: '300px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="c">io-table-head-cell</InlineCode>,
+              <InlineCode key="n">sort</InlineCode>,
+              <InlineCode key="t">{'{ key: string; direction: \'ascending\' | \'descending\' }'}</InlineCode>,
+              'Fired when a sortable column header is clicked or activated via Enter/Space.',
+            ],
+            [
+              <InlineCode key="c">io-table-head-row</InlineCode>,
+              <InlineCode key="n">selectAll</InlineCode>,
+              <InlineCode key="t">{'{ checked: boolean }'}</InlineCode>,
+              'Fired when the select-all checkbox changes.',
+            ],
+            [
+              <InlineCode key="c">io-table-body-row</InlineCode>,
+              <InlineCode key="n">select</InlineCode>,
+              <InlineCode key="t">{'{ selected: boolean }'}</InlineCode>,
+              'Fired when a row\'s selection checkbox changes.',
             ],
           ]}
         />
         <CodeNote label="Usage">
 {`// Vanilla JS
-const table = document.querySelector('io-table');
+const headRow = document.querySelector('io-table-head-row');
+headRow.addEventListener('selectAll', (e) => {
+  console.log(e.detail); // { checked: true }
+});
 
-table.addEventListener('sort', (e) => {
+const headCell = document.querySelector('io-table-head-cell');
+headCell.addEventListener('sort', (e) => {
   console.log(e.detail); // { key: 'name', direction: 'ascending' }
 });
 
-table.addEventListener('rowSelect', (e) => {
-  console.log(e.detail.selectedRows); // Array of selected row objects
-});
-
-// React
-<io-table
-  onSort={(e) => handleSort(e.detail)}
-  onRowSelect={(e) => handleSelect(e.detail.selectedRows)}
-/>`}
+const bodyRows = document.querySelectorAll('io-table-body-row');
+bodyRows.forEach((row, i) => {
+  row.addEventListener('select', (e) => {
+    console.log(i, e.detail); // { selected: true }
+  });
+});`}
         </CodeNote>
       </section>
 
@@ -133,7 +239,7 @@ table.addEventListener('rowSelect', (e) => {
       <section id="css-custom-properties" className="space-y-4">
         <SectionHeader
           title="CSS Custom Properties"
-          description="Design tokens used internally. Override on the host element or any ancestor."
+          description="Design tokens used by the table sub-components. Override on io-table or any ancestor."
         />
         <ApiTable
           columns={[
@@ -142,16 +248,20 @@ table.addEventListener('rowSelect', (e) => {
           ]}
           rows={[
             [
+              <InlineCode key="n">--io-table-row-selected-bg</InlineCode>,
+              'Background colour of a selected body row. Defaults to --io-color-primary-muted (light) / --io-color-dark-accent-bg (dark).',
+            ],
+            [
               <InlineCode key="n">--io-border</InlineCode>,
-              'Row separator border colour. Defaults to the global border token.',
+              'Row separator border colour.',
             ],
             [
               <InlineCode key="n">--io-bg-surface</InlineCode>,
-              'Header background colour. Defaults to the global surface background token.',
+              'Header background colour.',
             ],
             [
               <InlineCode key="n">--io-bg-raised</InlineCode>,
-              'Row hover background colour. Defaults to the global raised background token.',
+              'Row hover background colour.',
             ],
             [
               <InlineCode key="n">--io-text-primary</InlineCode>,
@@ -163,7 +273,7 @@ table.addEventListener('rowSelect', (e) => {
             ],
             [
               <InlineCode key="n">--io-color-primary</InlineCode>,
-              'Selected row background tint and checkbox accent colour.',
+              'Checkbox accent colour.',
             ],
             [
               <InlineCode key="n">--io-font-size-sm</InlineCode>,

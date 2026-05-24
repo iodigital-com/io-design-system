@@ -39,8 +39,12 @@ declare module 'react' {
   'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;
   'io-stepper': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepperElement>, HTMLIoStepperElement> & Partial<StencilJSX.IoStepper>;
   'io-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableElement>, HTMLIoTableElement> & Partial<StencilJSX.IoTable>;
-  'io-table-column': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableColumnElement>, HTMLIoTableColumnElement> & Partial<StencilJSX.IoTableColumn>;
-  'io-table-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableRowElement>, HTMLIoTableRowElement> & Partial<StencilJSX.IoTableRow>;
+  'io-table-body': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyElement>, HTMLIoTableBodyElement> & Partial<StencilJSX.IoTableBody>;
+  'io-table-body-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyCellElement>, HTMLIoTableBodyCellElement> & Partial<StencilJSX.IoTableBodyCell>;
+  'io-table-body-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyRowElement>, HTMLIoTableBodyRowElement> & Partial<StencilJSX.IoTableBodyRow>;
+  'io-table-head': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadElement>, HTMLIoTableHeadElement> & Partial<StencilJSX.IoTableHead>;
+  'io-table-head-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadCellElement>, HTMLIoTableHeadCellElement> & Partial<StencilJSX.IoTableHeadCell>;
+  'io-table-head-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadRowElement>, HTMLIoTableHeadRowElement> & Partial<StencilJSX.IoTableHeadRow>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;

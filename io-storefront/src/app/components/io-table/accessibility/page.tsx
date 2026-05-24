@@ -55,10 +55,10 @@ export default function IoTableAccessibilityPage() {
               attribute: 'aria-sort',
               value: (
                 <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>
-                  ascending | descending
+                  none | ascending | descending
                 </code>
               ),
-              description: 'Applied to the currently sorted column header. Screen readers announce "sorted ascending" or "sorted descending" when focus reaches the header.',
+              description: 'Applied to every sortable io-table-head-cell header. "none" indicates sortable but currently unsorted — screen readers announce this so users know the column can be sorted. "ascending"/"descending" announce the active sort direction.',
             },
             {
               attribute: 'scope="col"',
@@ -70,13 +70,13 @@ export default function IoTableAccessibilityPage() {
               description: 'Applied to every <th> element. Associates the header with its column so screen readers correctly announce header + cell value pairs.',
             },
             {
-              attribute: 'aria-selected',
+              attribute: 'aria-checked (row checkbox)',
               value: (
                 <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>
                   true | false (selectable only)
                 </code>
               ),
-              description: 'Applied to every <tr> when selectable is true. Communicates the checked state of each row to screen readers independently of the checkbox.',
+              description: 'The native checkbox inside io-table-body-row communicates its checked state. The selected prop drives both the visual highlight and the checkbox checked attribute.',
             },
             {
               attribute: 'aria-label (checkboxes)',
@@ -84,7 +84,7 @@ export default function IoTableAccessibilityPage() {
                 <span style={{ color: 'var(--io-text-secondary)' }}>
                   <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;Select all rows&quot;</code>
                   {' / '}
-                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;Select row N&quot;</code>
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;Select row&quot;</code>
                 </span>
               ),
               description: 'Descriptive labels on the select-all and per-row checkboxes. Without these labels the checkboxes would have no accessible name.',

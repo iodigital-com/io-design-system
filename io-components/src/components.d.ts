@@ -26,7 +26,7 @@ import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
-import { IoTableSize, IoTableSortDirection } from "./components/io-table/types";
+import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
@@ -54,7 +54,7 @@ export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
-export { IoTableSize, IoTableSortDirection } from "./components/io-table/types";
+export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
@@ -1241,14 +1241,27 @@ export namespace Components {
     /**
      * io-table
      * =========
-     * Accessible data table with optional sortable columns and row selection.
-     * Supports a JavaScript data API (rows prop) for programmatic use, and
-     * emits sort / select events for consumer-controlled updates.
-     * @example <io-table caption="Users" sortable selectable></io-table>
+     * Accessible data table with a declarative slot-based API.
+     * Compose with io-table-head, io-table-head-row, io-table-head-cell,
+     * io-table-body, io-table-body-row, and io-table-body-cell.
+     * @example <io-table caption="Users" sticky size="md">
+     *   <io-table-head>
+     *     <io-table-head-row>
+     *       <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     *       <io-table-head-cell>Role</io-table-head-cell>
+     *     </io-table-head-row>
+     *   </io-table-head>
+     *   <io-table-body>
+     *     <io-table-body-row>
+     *       <io-table-body-cell>Alice</io-table-body-cell>
+     *       <io-table-body-cell>Admin</io-table-body-cell>
+     *     </io-table-body-row>
+     *   </io-table-body>
+     * </io-table>
      */
     interface IoTable {
         /**
-          * Visible table caption — shown above the table and announced by screen readers.
+          * Visible table caption — required for accessibility.
           * @default ''
          */
         "caption": string;
@@ -1258,40 +1271,10 @@ export namespace Components {
          */
         "captionHidden": boolean;
         /**
-          * Column definitions. Each item has a `key` (data key), `label` (header text), and an optional `sortable` boolean to allow per-column sort control.
-          * @default []
-         */
-        "columns": Array<{ key: string; label: string; sortable?: boolean }>;
-        /**
-          * Row data objects. Each key maps to a column's `key` prop.
-          * @default []
-         */
-        "rows": Record<string, unknown>[];
-        /**
-          * Adds a checkbox column for row selection.
-          * @default false
-         */
-        "selectable": boolean;
-        /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
          */
         "size": IoTableSize;
-        /**
-          * Current sort direction. Controlled from outside via sort event handler.
-          * @default 'none'
-         */
-        "sortDirection": IoTableSortDirection;
-        /**
-          * Currently sorted column key. Controlled from outside via sort event handler.
-          * @default ''
-         */
-        "sortKey": string;
-        /**
-          * Enables sortable columns globally. Individual columns can also override.
-          * @default false
-         */
-        "sortable": boolean;
         /**
           * Makes the header row sticky (position: sticky; top: 0).
           * @default false
@@ -1299,50 +1282,109 @@ export namespace Components {
         "sticky": boolean;
     }
     /**
-     * io-table-column
-     * ================
-     * Declarative column definition for io-table. Used as a slotted child
-     * when authoring columns in HTML rather than via the `columns` prop.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `key`, `label`, and `sortable` props via DOM queries
-     * in the slotchange handler to build the column configuration.
-     * @example <io-table>
-     *   <io-table-column key="name" label="Name"></io-table-column>
-     *   <io-table-column key="email" label="Email" sortable></io-table-column>
-     * </io-table>
+     * io-table-body
+     * ==============
+     * Renders a <tbody> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body>
+     *   <io-table-body-row>...</io-table-body-row>
+     * </io-table-body>
      */
-    interface IoTableColumn {
+    interface IoTableBody {
+    }
+    /**
+     * io-table-body-cell
+     * ====================
+     * Renders a <td> element inside an io-table-body-row.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-cell colspan="2">Alice</io-table-body-cell>
+     */
+    interface IoTableBodyCell {
+        "colspan": number | undefined;
+        "rowspan": number | undefined;
+    }
+    /**
+     * io-table-body-row
+     * ====================
+     * Renders a <tr> inside io-table-body, with an optional row-selection checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-row selectable selected>
+     *   <io-table-body-cell>Alice</io-table-body-cell>
+     * </io-table-body-row>
+     */
+    interface IoTableBodyRow {
         /**
-          * Data key to read from each row object.
+          * Renders the row-selection checkbox cell.
+          * @default false
          */
-        "colKey": string;
+        "selectable": boolean;
         /**
-          * Column header label text.
+          * Controlled selection state of this row.
+          * @default false
          */
-        "label": string;
+        "selected": boolean;
+    }
+    /**
+     * io-table-head
+     * ==============
+     * Renders a <thead> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head>
+     *   <io-table-head-row>...</io-table-head-row>
+     * </io-table-head>
+     */
+    interface IoTableHead {
+    }
+    /**
+     * io-table-head-cell
+     * ====================
+     * Renders a <th scope="col"> inside io-table-head-row.
+     * When sortable, the header activates a sort cycle and emits a `sort` event.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     */
+    interface IoTableHeadCell {
         /**
-          * Enables sorting for this column. Overrides the parent's global `sortable` prop.
+          * Current sort direction for this column. Consumer-controlled — update in response to the `sort` event.
+          * @default 'none'
+         */
+        "sortDirection": IoTableSortDirection;
+        /**
+          * Identifier passed back in the `sort` event detail.
+          * @default ''
+         */
+        "sortKey": string;
+        /**
+          * Enables click-to-sort on this column.
           * @default false
          */
         "sortable": boolean;
     }
     /**
-     * io-table-row
-     * =============
-     * Optional explicit row element for io-table. Can be used to pass
-     * structured row data declaratively in HTML.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `data` prop via DOM queries in the slotchange handler.
-     * @example <io-table>
-     *   <io-table-row data='{"name":"Alice","role":"Admin"}'></io-table-row>
-     * </io-table>
+     * io-table-head-row
+     * ==================
+     * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     *   <io-table-head-cell>Name</io-table-head-cell>
+     * </io-table-head-row>
      */
-    interface IoTableRow {
+    interface IoTableHeadRow {
         /**
-          * Row data as a JSON string (for HTML attribute use) or a plain object (for JavaScript property assignment).
-          * @default {}
+          * Controlled checked state of the select-all checkbox.
+          * @default false
          */
-        "data": Record<string, unknown> | string;
+        "selectAllChecked": boolean;
+        /**
+          * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
+          * @default false
+         */
+        "selectAllIndeterminate": boolean;
+        /**
+          * Renders the select-all checkbox header cell.
+          * @default false
+         */
+        "selectable": boolean;
     }
     /**
      * io-tabs
@@ -1654,9 +1696,17 @@ export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoSelectElement;
 }
-export interface IoTableCustomEvent<T> extends CustomEvent<T> {
+export interface IoTableBodyRowCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLIoTableElement;
+    target: HTMLIoTableBodyRowElement;
+}
+export interface IoTableHeadCellCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTableHeadCellElement;
+}
+export interface IoTableHeadRowCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTableHeadRowElement;
 }
 export interface IoTabsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2292,67 +2342,152 @@ declare global {
         prototype: HTMLIoStepperElement;
         new (): HTMLIoStepperElement;
     };
-    interface HTMLIoTableElementEventMap {
-        "sort": { key: string; direction: IoTableSortDirection };
-        "rowSelect": { selectedRows: Record<string, unknown>[] };
-    }
     /**
      * io-table
      * =========
-     * Accessible data table with optional sortable columns and row selection.
-     * Supports a JavaScript data API (rows prop) for programmatic use, and
-     * emits sort / select events for consumer-controlled updates.
-     * @example <io-table caption="Users" sortable selectable></io-table>
+     * Accessible data table with a declarative slot-based API.
+     * Compose with io-table-head, io-table-head-row, io-table-head-cell,
+     * io-table-body, io-table-body-row, and io-table-body-cell.
+     * @example <io-table caption="Users" sticky size="md">
+     *   <io-table-head>
+     *     <io-table-head-row>
+     *       <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     *       <io-table-head-cell>Role</io-table-head-cell>
+     *     </io-table-head-row>
+     *   </io-table-head>
+     *   <io-table-body>
+     *     <io-table-body-row>
+     *       <io-table-body-cell>Alice</io-table-body-cell>
+     *       <io-table-body-cell>Admin</io-table-body-cell>
+     *     </io-table-body-row>
+     *   </io-table-body>
+     * </io-table>
      */
     interface HTMLIoTableElement extends Components.IoTable, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoTableElementEventMap>(type: K, listener: (this: HTMLIoTableElement, ev: IoTableCustomEvent<HTMLIoTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoTableElementEventMap>(type: K, listener: (this: HTMLIoTableElement, ev: IoTableCustomEvent<HTMLIoTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoTableElement: {
         prototype: HTMLIoTableElement;
         new (): HTMLIoTableElement;
     };
     /**
-     * io-table-column
-     * ================
-     * Declarative column definition for io-table. Used as a slotted child
-     * when authoring columns in HTML rather than via the `columns` prop.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `key`, `label`, and `sortable` props via DOM queries
-     * in the slotchange handler to build the column configuration.
-     * @example <io-table>
-     *   <io-table-column key="name" label="Name"></io-table-column>
-     *   <io-table-column key="email" label="Email" sortable></io-table-column>
-     * </io-table>
+     * io-table-body
+     * ==============
+     * Renders a <tbody> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body>
+     *   <io-table-body-row>...</io-table-body-row>
+     * </io-table-body>
      */
-    interface HTMLIoTableColumnElement extends Components.IoTableColumn, HTMLStencilElement {
+    interface HTMLIoTableBodyElement extends Components.IoTableBody, HTMLStencilElement {
     }
-    var HTMLIoTableColumnElement: {
-        prototype: HTMLIoTableColumnElement;
-        new (): HTMLIoTableColumnElement;
+    var HTMLIoTableBodyElement: {
+        prototype: HTMLIoTableBodyElement;
+        new (): HTMLIoTableBodyElement;
     };
     /**
-     * io-table-row
-     * =============
-     * Optional explicit row element for io-table. Can be used to pass
-     * structured row data declaratively in HTML.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `data` prop via DOM queries in the slotchange handler.
-     * @example <io-table>
-     *   <io-table-row data='{"name":"Alice","role":"Admin"}'></io-table-row>
-     * </io-table>
+     * io-table-body-cell
+     * ====================
+     * Renders a <td> element inside an io-table-body-row.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-cell colspan="2">Alice</io-table-body-cell>
      */
-    interface HTMLIoTableRowElement extends Components.IoTableRow, HTMLStencilElement {
+    interface HTMLIoTableBodyCellElement extends Components.IoTableBodyCell, HTMLStencilElement {
     }
-    var HTMLIoTableRowElement: {
-        prototype: HTMLIoTableRowElement;
-        new (): HTMLIoTableRowElement;
+    var HTMLIoTableBodyCellElement: {
+        prototype: HTMLIoTableBodyCellElement;
+        new (): HTMLIoTableBodyCellElement;
+    };
+    interface HTMLIoTableBodyRowElementEventMap {
+        "select": IoTableBodyRowSelectDetail;
+    }
+    /**
+     * io-table-body-row
+     * ====================
+     * Renders a <tr> inside io-table-body, with an optional row-selection checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-row selectable selected>
+     *   <io-table-body-cell>Alice</io-table-body-cell>
+     * </io-table-body-row>
+     */
+    interface HTMLIoTableBodyRowElement extends Components.IoTableBodyRow, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTableBodyRowElementEventMap>(type: K, listener: (this: HTMLIoTableBodyRowElement, ev: IoTableBodyRowCustomEvent<HTMLIoTableBodyRowElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTableBodyRowElementEventMap>(type: K, listener: (this: HTMLIoTableBodyRowElement, ev: IoTableBodyRowCustomEvent<HTMLIoTableBodyRowElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTableBodyRowElement: {
+        prototype: HTMLIoTableBodyRowElement;
+        new (): HTMLIoTableBodyRowElement;
+    };
+    /**
+     * io-table-head
+     * ==============
+     * Renders a <thead> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head>
+     *   <io-table-head-row>...</io-table-head-row>
+     * </io-table-head>
+     */
+    interface HTMLIoTableHeadElement extends Components.IoTableHead, HTMLStencilElement {
+    }
+    var HTMLIoTableHeadElement: {
+        prototype: HTMLIoTableHeadElement;
+        new (): HTMLIoTableHeadElement;
+    };
+    interface HTMLIoTableHeadCellElementEventMap {
+        "sort": IoTableSortDetail;
+    }
+    /**
+     * io-table-head-cell
+     * ====================
+     * Renders a <th scope="col"> inside io-table-head-row.
+     * When sortable, the header activates a sort cycle and emits a `sort` event.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     */
+    interface HTMLIoTableHeadCellElement extends Components.IoTableHeadCell, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTableHeadCellElementEventMap>(type: K, listener: (this: HTMLIoTableHeadCellElement, ev: IoTableHeadCellCustomEvent<HTMLIoTableHeadCellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTableHeadCellElementEventMap>(type: K, listener: (this: HTMLIoTableHeadCellElement, ev: IoTableHeadCellCustomEvent<HTMLIoTableHeadCellElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTableHeadCellElement: {
+        prototype: HTMLIoTableHeadCellElement;
+        new (): HTMLIoTableHeadCellElement;
+    };
+    interface HTMLIoTableHeadRowElementEventMap {
+        "selectAll": IoTableHeadRowSelectAllDetail;
+    }
+    /**
+     * io-table-head-row
+     * ==================
+     * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     *   <io-table-head-cell>Name</io-table-head-cell>
+     * </io-table-head-row>
+     */
+    interface HTMLIoTableHeadRowElement extends Components.IoTableHeadRow, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTableHeadRowElementEventMap>(type: K, listener: (this: HTMLIoTableHeadRowElement, ev: IoTableHeadRowCustomEvent<HTMLIoTableHeadRowElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTableHeadRowElementEventMap>(type: K, listener: (this: HTMLIoTableHeadRowElement, ev: IoTableHeadRowCustomEvent<HTMLIoTableHeadRowElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTableHeadRowElement: {
+        prototype: HTMLIoTableHeadRowElement;
+        new (): HTMLIoTableHeadRowElement;
     };
     interface HTMLIoTabsElementEventMap {
         "update": IoTabsUpdateDetail;
@@ -2549,8 +2684,12 @@ declare global {
         "io-step": HTMLIoStepElement;
         "io-stepper": HTMLIoStepperElement;
         "io-table": HTMLIoTableElement;
-        "io-table-column": HTMLIoTableColumnElement;
-        "io-table-row": HTMLIoTableRowElement;
+        "io-table-body": HTMLIoTableBodyElement;
+        "io-table-body-cell": HTMLIoTableBodyCellElement;
+        "io-table-body-row": HTMLIoTableBodyRowElement;
+        "io-table-head": HTMLIoTableHeadElement;
+        "io-table-head-cell": HTMLIoTableHeadCellElement;
+        "io-table-head-row": HTMLIoTableHeadRowElement;
         "io-tabs": HTMLIoTabsElement;
         "io-tag": HTMLIoTagElement;
         "io-textarea": HTMLIoTextareaElement;
@@ -3753,14 +3892,27 @@ declare namespace LocalJSX {
     /**
      * io-table
      * =========
-     * Accessible data table with optional sortable columns and row selection.
-     * Supports a JavaScript data API (rows prop) for programmatic use, and
-     * emits sort / select events for consumer-controlled updates.
-     * @example <io-table caption="Users" sortable selectable></io-table>
+     * Accessible data table with a declarative slot-based API.
+     * Compose with io-table-head, io-table-head-row, io-table-head-cell,
+     * io-table-body, io-table-body-row, and io-table-body-cell.
+     * @example <io-table caption="Users" sticky size="md">
+     *   <io-table-head>
+     *     <io-table-head-row>
+     *       <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     *       <io-table-head-cell>Role</io-table-head-cell>
+     *     </io-table-head-row>
+     *   </io-table-head>
+     *   <io-table-body>
+     *     <io-table-body-row>
+     *       <io-table-body-cell>Alice</io-table-body-cell>
+     *       <io-table-body-cell>Admin</io-table-body-cell>
+     *     </io-table-body-row>
+     *   </io-table-body>
+     * </io-table>
      */
     interface IoTable {
         /**
-          * Visible table caption — shown above the table and announced by screen readers.
+          * Visible table caption — required for accessibility.
           * @default ''
          */
         "caption"?: string;
@@ -3770,48 +3922,10 @@ declare namespace LocalJSX {
          */
         "captionHidden"?: boolean;
         /**
-          * Column definitions. Each item has a `key` (data key), `label` (header text), and an optional `sortable` boolean to allow per-column sort control.
-          * @default []
-         */
-        "columns"?: Array<{ key: string; label: string; sortable?: boolean }>;
-        /**
-          * Emitted when rows are selected or deselected via the checkbox column. Detail contains all currently selected row objects.
-         */
-        "onRowSelect"?: (event: IoTableCustomEvent<{ selectedRows: Record<string, unknown>[] }>) => void;
-        /**
-          * Emitted when a sortable column header is clicked or activated via keyboard. The consumer is responsible for updating `sortKey` and `sortDirection` props.
-         */
-        "onSort"?: (event: IoTableCustomEvent<{ key: string; direction: IoTableSortDirection }>) => void;
-        /**
-          * Row data objects. Each key maps to a column's `key` prop.
-          * @default []
-         */
-        "rows"?: Record<string, unknown>[];
-        /**
-          * Adds a checkbox column for row selection.
-          * @default false
-         */
-        "selectable"?: boolean;
-        /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
          */
         "size"?: IoTableSize;
-        /**
-          * Current sort direction. Controlled from outside via sort event handler.
-          * @default 'none'
-         */
-        "sortDirection"?: IoTableSortDirection;
-        /**
-          * Currently sorted column key. Controlled from outside via sort event handler.
-          * @default ''
-         */
-        "sortKey"?: string;
-        /**
-          * Enables sortable columns globally. Individual columns can also override.
-          * @default false
-         */
-        "sortable"?: boolean;
         /**
           * Makes the header row sticky (position: sticky; top: 0).
           * @default false
@@ -3819,50 +3933,121 @@ declare namespace LocalJSX {
         "sticky"?: boolean;
     }
     /**
-     * io-table-column
-     * ================
-     * Declarative column definition for io-table. Used as a slotted child
-     * when authoring columns in HTML rather than via the `columns` prop.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `key`, `label`, and `sortable` props via DOM queries
-     * in the slotchange handler to build the column configuration.
-     * @example <io-table>
-     *   <io-table-column key="name" label="Name"></io-table-column>
-     *   <io-table-column key="email" label="Email" sortable></io-table-column>
-     * </io-table>
+     * io-table-body
+     * ==============
+     * Renders a <tbody> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body>
+     *   <io-table-body-row>...</io-table-body-row>
+     * </io-table-body>
      */
-    interface IoTableColumn {
+    interface IoTableBody {
+    }
+    /**
+     * io-table-body-cell
+     * ====================
+     * Renders a <td> element inside an io-table-body-row.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-cell colspan="2">Alice</io-table-body-cell>
+     */
+    interface IoTableBodyCell {
+        "colspan"?: number | undefined;
+        "rowspan"?: number | undefined;
+    }
+    /**
+     * io-table-body-row
+     * ====================
+     * Renders a <tr> inside io-table-body, with an optional row-selection checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-body-row selectable selected>
+     *   <io-table-body-cell>Alice</io-table-body-cell>
+     * </io-table-body-row>
+     */
+    interface IoTableBodyRow {
         /**
-          * Data key to read from each row object.
+          * Emitted when the row checkbox changes.
          */
-        "colKey": string;
+        "onSelect"?: (event: IoTableBodyRowCustomEvent<IoTableBodyRowSelectDetail>) => void;
         /**
-          * Column header label text.
+          * Renders the row-selection checkbox cell.
+          * @default false
          */
-        "label": string;
+        "selectable"?: boolean;
         /**
-          * Enables sorting for this column. Overrides the parent's global `sortable` prop.
+          * Controlled selection state of this row.
+          * @default false
+         */
+        "selected"?: boolean;
+    }
+    /**
+     * io-table-head
+     * ==============
+     * Renders a <thead> element inside an io-table.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head>
+     *   <io-table-head-row>...</io-table-head-row>
+     * </io-table-head>
+     */
+    interface IoTableHead {
+    }
+    /**
+     * io-table-head-cell
+     * ====================
+     * Renders a <th scope="col"> inside io-table-head-row.
+     * When sortable, the header activates a sort cycle and emits a `sort` event.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     */
+    interface IoTableHeadCell {
+        /**
+          * Emitted when a sortable column header is activated.
+         */
+        "onSort"?: (event: IoTableHeadCellCustomEvent<IoTableSortDetail>) => void;
+        /**
+          * Current sort direction for this column. Consumer-controlled — update in response to the `sort` event.
+          * @default 'none'
+         */
+        "sortDirection"?: IoTableSortDirection;
+        /**
+          * Identifier passed back in the `sort` event detail.
+          * @default ''
+         */
+        "sortKey"?: string;
+        /**
+          * Enables click-to-sort on this column.
           * @default false
          */
         "sortable"?: boolean;
     }
     /**
-     * io-table-row
-     * =============
-     * Optional explicit row element for io-table. Can be used to pass
-     * structured row data declaratively in HTML.
-     * This is an internal helper component — it renders nothing visible itself.
-     * io-table reads its `data` prop via DOM queries in the slotchange handler.
-     * @example <io-table>
-     *   <io-table-row data='{"name":"Alice","role":"Admin"}'></io-table-row>
-     * </io-table>
+     * io-table-head-row
+     * ==================
+     * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
+     * Uses shadow: false so the table formatting context is preserved.
+     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     *   <io-table-head-cell>Name</io-table-head-cell>
+     * </io-table-head-row>
      */
-    interface IoTableRow {
+    interface IoTableHeadRow {
         /**
-          * Row data as a JSON string (for HTML attribute use) or a plain object (for JavaScript property assignment).
-          * @default {}
+          * Emitted when the select-all checkbox changes.
          */
-        "data"?: Record<string, unknown> | string;
+        "onSelectAll"?: (event: IoTableHeadRowCustomEvent<IoTableHeadRowSelectAllDetail>) => void;
+        /**
+          * Controlled checked state of the select-all checkbox.
+          * @default false
+         */
+        "selectAllChecked"?: boolean;
+        /**
+          * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
+          * @default false
+         */
+        "selectAllIndeterminate"?: boolean;
+        /**
+          * Renders the select-all checkbox header cell.
+          * @default false
+         */
+        "selectable"?: boolean;
     }
     /**
      * io-tabs
@@ -4349,20 +4534,26 @@ declare namespace LocalJSX {
     interface IoTableAttributes {
         "caption": string;
         "captionHidden": boolean;
-        "sortable": boolean;
-        "selectable": boolean;
         "sticky": boolean;
-        "sortKey": string;
-        "sortDirection": IoTableSortDirection;
         "size": IoTableSize;
     }
-    interface IoTableColumnAttributes {
-        "colKey": string;
-        "label": string;
-        "sortable": boolean;
+    interface IoTableBodyCellAttributes {
+        "colspan": number | undefined;
+        "rowspan": number | undefined;
     }
-    interface IoTableRowAttributes {
-        "data": Record<string, unknown> | string;
+    interface IoTableBodyRowAttributes {
+        "selectable": boolean;
+        "selected": boolean;
+    }
+    interface IoTableHeadCellAttributes {
+        "sortable": boolean;
+        "sortDirection": IoTableSortDirection;
+        "sortKey": string;
+    }
+    interface IoTableHeadRowAttributes {
+        "selectable": boolean;
+        "selectAllChecked": boolean;
+        "selectAllIndeterminate": boolean;
     }
     interface IoTabsAttributes {
         "activeTabIndex": number;
@@ -4437,8 +4628,12 @@ declare namespace LocalJSX {
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
         "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
         "io-table": Omit<IoTable, keyof IoTableAttributes> & { [K in keyof IoTable & keyof IoTableAttributes]?: IoTable[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `attr:${K}`]?: IoTableAttributes[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `prop:${K}`]?: IoTable[K] };
-        "io-table-column": Omit<IoTableColumn, keyof IoTableColumnAttributes> & { [K in keyof IoTableColumn & keyof IoTableColumnAttributes]?: IoTableColumn[K] } & { [K in keyof IoTableColumn & keyof IoTableColumnAttributes as `attr:${K}`]?: IoTableColumnAttributes[K] } & { [K in keyof IoTableColumn & keyof IoTableColumnAttributes as `prop:${K}`]?: IoTableColumn[K] } & OneOf<"colKey", IoTableColumn["colKey"], IoTableColumnAttributes["colKey"]> & OneOf<"label", IoTableColumn["label"], IoTableColumnAttributes["label"]>;
-        "io-table-row": Omit<IoTableRow, keyof IoTableRowAttributes> & { [K in keyof IoTableRow & keyof IoTableRowAttributes]?: IoTableRow[K] } & { [K in keyof IoTableRow & keyof IoTableRowAttributes as `attr:${K}`]?: IoTableRowAttributes[K] } & { [K in keyof IoTableRow & keyof IoTableRowAttributes as `prop:${K}`]?: IoTableRow[K] };
+        "io-table-body": IoTableBody;
+        "io-table-body-cell": Omit<IoTableBodyCell, keyof IoTableBodyCellAttributes> & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes]?: IoTableBodyCell[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `attr:${K}`]?: IoTableBodyCellAttributes[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `prop:${K}`]?: IoTableBodyCell[K] };
+        "io-table-body-row": Omit<IoTableBodyRow, keyof IoTableBodyRowAttributes> & { [K in keyof IoTableBodyRow & keyof IoTableBodyRowAttributes]?: IoTableBodyRow[K] } & { [K in keyof IoTableBodyRow & keyof IoTableBodyRowAttributes as `attr:${K}`]?: IoTableBodyRowAttributes[K] } & { [K in keyof IoTableBodyRow & keyof IoTableBodyRowAttributes as `prop:${K}`]?: IoTableBodyRow[K] };
+        "io-table-head": IoTableHead;
+        "io-table-head-cell": Omit<IoTableHeadCell, keyof IoTableHeadCellAttributes> & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes]?: IoTableHeadCell[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `attr:${K}`]?: IoTableHeadCellAttributes[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `prop:${K}`]?: IoTableHeadCell[K] };
+        "io-table-head-row": Omit<IoTableHeadRow, keyof IoTableHeadRowAttributes> & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes]?: IoTableHeadRow[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `attr:${K}`]?: IoTableHeadRowAttributes[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `prop:${K}`]?: IoTableHeadRow[K] };
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
@@ -4772,38 +4967,82 @@ declare module "@stencil/core" {
             /**
              * io-table
              * =========
-             * Accessible data table with optional sortable columns and row selection.
-             * Supports a JavaScript data API (rows prop) for programmatic use, and
-             * emits sort / select events for consumer-controlled updates.
-             * @example <io-table caption="Users" sortable selectable></io-table>
+             * Accessible data table with a declarative slot-based API.
+             * Compose with io-table-head, io-table-head-row, io-table-head-cell,
+             * io-table-body, io-table-body-row, and io-table-body-cell.
+             * @example <io-table caption="Users" sticky size="md">
+             *   <io-table-head>
+             *     <io-table-head-row>
+             *       <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+             *       <io-table-head-cell>Role</io-table-head-cell>
+             *     </io-table-head-row>
+             *   </io-table-head>
+             *   <io-table-body>
+             *     <io-table-body-row>
+             *       <io-table-body-cell>Alice</io-table-body-cell>
+             *       <io-table-body-cell>Admin</io-table-body-cell>
+             *     </io-table-body-row>
+             *   </io-table-body>
+             * </io-table>
              */
             "io-table": LocalJSX.IntrinsicElements["io-table"] & JSXBase.HTMLAttributes<HTMLIoTableElement>;
             /**
-             * io-table-column
-             * ================
-             * Declarative column definition for io-table. Used as a slotted child
-             * when authoring columns in HTML rather than via the `columns` prop.
-             * This is an internal helper component — it renders nothing visible itself.
-             * io-table reads its `key`, `label`, and `sortable` props via DOM queries
-             * in the slotchange handler to build the column configuration.
-             * @example <io-table>
-             *   <io-table-column key="name" label="Name"></io-table-column>
-             *   <io-table-column key="email" label="Email" sortable></io-table-column>
-             * </io-table>
+             * io-table-body
+             * ==============
+             * Renders a <tbody> element inside an io-table.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-body>
+             *   <io-table-body-row>...</io-table-body-row>
+             * </io-table-body>
              */
-            "io-table-column": LocalJSX.IntrinsicElements["io-table-column"] & JSXBase.HTMLAttributes<HTMLIoTableColumnElement>;
+            "io-table-body": LocalJSX.IntrinsicElements["io-table-body"] & JSXBase.HTMLAttributes<HTMLIoTableBodyElement>;
             /**
-             * io-table-row
-             * =============
-             * Optional explicit row element for io-table. Can be used to pass
-             * structured row data declaratively in HTML.
-             * This is an internal helper component — it renders nothing visible itself.
-             * io-table reads its `data` prop via DOM queries in the slotchange handler.
-             * @example <io-table>
-             *   <io-table-row data='{"name":"Alice","role":"Admin"}'></io-table-row>
-             * </io-table>
+             * io-table-body-cell
+             * ====================
+             * Renders a <td> element inside an io-table-body-row.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-body-cell colspan="2">Alice</io-table-body-cell>
              */
-            "io-table-row": LocalJSX.IntrinsicElements["io-table-row"] & JSXBase.HTMLAttributes<HTMLIoTableRowElement>;
+            "io-table-body-cell": LocalJSX.IntrinsicElements["io-table-body-cell"] & JSXBase.HTMLAttributes<HTMLIoTableBodyCellElement>;
+            /**
+             * io-table-body-row
+             * ====================
+             * Renders a <tr> inside io-table-body, with an optional row-selection checkbox.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-body-row selectable selected>
+             *   <io-table-body-cell>Alice</io-table-body-cell>
+             * </io-table-body-row>
+             */
+            "io-table-body-row": LocalJSX.IntrinsicElements["io-table-body-row"] & JSXBase.HTMLAttributes<HTMLIoTableBodyRowElement>;
+            /**
+             * io-table-head
+             * ==============
+             * Renders a <thead> element inside an io-table.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-head>
+             *   <io-table-head-row>...</io-table-head-row>
+             * </io-table-head>
+             */
+            "io-table-head": LocalJSX.IntrinsicElements["io-table-head"] & JSXBase.HTMLAttributes<HTMLIoTableHeadElement>;
+            /**
+             * io-table-head-cell
+             * ====================
+             * Renders a <th scope="col"> inside io-table-head-row.
+             * When sortable, the header activates a sort cycle and emits a `sort` event.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+             */
+            "io-table-head-cell": LocalJSX.IntrinsicElements["io-table-head-cell"] & JSXBase.HTMLAttributes<HTMLIoTableHeadCellElement>;
+            /**
+             * io-table-head-row
+             * ==================
+             * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
+             * Uses shadow: false so the table formatting context is preserved.
+             * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+             *   <io-table-head-cell>Name</io-table-head-cell>
+             * </io-table-head-row>
+             */
+            "io-table-head-row": LocalJSX.IntrinsicElements["io-table-head-row"] & JSXBase.HTMLAttributes<HTMLIoTableHeadRowElement>;
             /**
              * io-tabs
              * ========

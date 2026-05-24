@@ -10,7 +10,7 @@ import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-import { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
+import { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -39,7 +39,7 @@ export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-export { IoButtonGroupChangeDetail } from "./components/io-button-group/types";
+export { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -307,6 +307,11 @@ export namespace Components {
           * Accessible label for the group container (aria-label)
          */
         "label": string | undefined;
+        /**
+          * Size preset propagated to all slotted io-button children. 'sm' | 'md' (default) | 'lg'
+          * @default 'md'
+         */
+        "size": IoButtonGroupSize;
         /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
@@ -2764,6 +2769,11 @@ declare namespace LocalJSX {
          */
         "onChange"?: (event: IoButtonGroupCustomEvent<IoButtonGroupChangeDetail>) => void;
         /**
+          * Size preset propagated to all slotted io-button children. 'sm' | 'md' (default) | 'lg'
+          * @default 'md'
+         */
+        "size"?: IoButtonGroupSize;
+        /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
          */
@@ -4103,6 +4113,7 @@ declare namespace LocalJSX {
         "value": string | string[];
         "disabled": boolean;
         "label": string | undefined;
+        "size": IoButtonGroupSize;
     }
     interface IoCarouselAttributes {
         "prevLabel": string;

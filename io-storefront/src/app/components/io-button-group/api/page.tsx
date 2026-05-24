@@ -68,6 +68,22 @@ export default function IoButtonGroupApiPage() {
                 Strongly recommended — without it, assistive technologies cannot identify the group purpose.
               </span>,
             ],
+            [
+              <span key="n">
+                <InlineCode>size</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">IoButtonGroupSize</InlineCode>,
+              <InlineCode key="d">&apos;md&apos;</InlineCode>,
+              <span key="desc">
+                Size preset propagated to all slotted <InlineCode>io-button</InlineCode> children.
+                Accepts <InlineCode>&apos;sm&apos;</InlineCode>, <InlineCode>&apos;md&apos;</InlineCode> (default), or{' '}
+                <InlineCode>&apos;lg&apos;</InlineCode>. The value is reflected to the host attribute and forwarded
+                via the <InlineCode>slotchange</InlineCode> event and{' '}
+                <InlineCode>@Watch(&apos;size&apos;)</InlineCode> so both initial render and dynamic changes
+                propagate correctly.
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -206,6 +222,32 @@ function WeekdayFilter() {
           {' '}All interactions are driven by the <InlineCode>value</InlineCode> prop and the{' '}
           <InlineCode>change</InlineCode> event.
         </EmptyNote>
+      </section>
+
+      {/* ── Types ────────────────────────────────────────────────────────── */}
+      <section id="types" className="space-y-4">
+        <SectionHeader
+          title="Types"
+          description="TypeScript type aliases exported from the io-button-group package."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '220px' },
+            { label: 'Definition', width: '260px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">IoButtonGroupSize</InlineCode>,
+              <InlineCode key="d">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,
+              <span key="desc">
+                Size preset for the button group. Intentionally excludes <InlineCode>&apos;xl&apos;</InlineCode>{' '}
+                (available on standalone <InlineCode>io-button</InlineCode>) because an extra-large segmented
+                control is rarely appropriate for UI toolbars or filter groups.
+              </span>,
+            ],
+          ]}
+        />
       </section>
 
     </div>

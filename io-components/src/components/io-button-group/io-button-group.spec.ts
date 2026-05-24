@@ -352,3 +352,93 @@ describe('io-button-group render — group disabled', () => {
     expect(focused).toHaveLength(0);
   });
 });
+
+describe('io-button-group — size prop', () => {
+  it('size defaults to "md"', () => {
+    const comp = makeComponent();
+    expect(comp.size).toBe('md');
+  });
+
+  it('size prop can be set to "sm"', () => {
+    const comp = makeComponent({ size: 'sm' } as any);
+    expect(comp.size).toBe('sm');
+  });
+
+  it('size prop can be set to "lg"', () => {
+    const comp = makeComponent({ size: 'lg' } as any);
+    expect(comp.size).toBe('lg');
+  });
+
+  it('propagateSize sets size on all IO-BUTTON assignedElements', () => {
+    const comp = makeComponent({ size: 'sm' } as any);
+
+    const btn1 = document.createElement('io-button') as any;
+    const btn2 = document.createElement('io-button') as any;
+
+    const slotStub = {
+      assignedElements: () => [btn1, btn2],
+    } as unknown as HTMLSlotElement;
+
+    const shadowRootStub = {
+      querySelector: () => slotStub,
+    } as unknown as ShadowRoot;
+
+    Object.defineProperty((comp as any).el, 'shadowRoot', {
+      get: () => shadowRootStub,
+      configurable: true,
+    });
+
+    (comp as any).propagateSize();
+
+    expect(btn1.size).toBe('sm');
+    expect(btn2.size).toBe('sm');
+  });
+
+  it('propagateSize skips non-IO-BUTTON elements without error', () => {
+    const comp = makeComponent({ size: 'lg' } as any);
+
+    const div = document.createElement('div') as any;
+    const btn = document.createElement('io-button') as any;
+
+    const slotStub = {
+      assignedElements: () => [div, btn],
+    } as unknown as HTMLSlotElement;
+
+    const shadowRootStub = {
+      querySelector: () => slotStub,
+    } as unknown as ShadowRoot;
+
+    Object.defineProperty((comp as any).el, 'shadowRoot', {
+      get: () => shadowRootStub,
+      configurable: true,
+    });
+
+    expect(() => (comp as any).propagateSize()).not.toThrow();
+    expect((div as any).size).toBeUndefined();
+    expect(btn.size).toBe('lg');
+  });
+
+  it('onSizeChange calls propagateSize', () => {
+    const comp = makeComponent({ size: 'sm' } as any);
+    const spy = vi.spyOn(comp as any, 'propagateSize');
+
+    (comp as any).onSizeChange();
+
+    expect(spy).toHaveBeenCalledOnce();
+  });
+
+  it('propagateSize is a no-op when shadowRoot has no slot', () => {
+    const comp = makeComponent();
+
+    const shadowRootStub = {
+      querySelector: () => null,
+    } as unknown as ShadowRoot;
+
+    Object.defineProperty((comp as any).el, 'shadowRoot', {
+      get: () => shadowRootStub,
+      configurable: true,
+    });
+
+    expect(() => (comp as any).propagateSize()).not.toThrow();
+  });
+});

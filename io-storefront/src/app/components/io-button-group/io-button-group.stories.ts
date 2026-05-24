@@ -19,6 +19,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
       value: '',
       disabled: false,
       label: 'View period',
+      size: 'md',
     },
   },
   generator: ({ properties } = {}) => [
@@ -29,6 +30,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         value: properties?.value as string ?? '',
         disabled: properties?.disabled as boolean ?? false,
         label: properties?.label as string ?? 'View period',
+        size: (properties?.size as 'sm' | 'md' | 'lg') ?? 'md',
       },
       children: [
         createButtonGroupItem('day', 'Day'),
@@ -108,6 +110,51 @@ export const buttonGroupStoryItemDisabled: Story<'io-button-group'> = {
   ],
 };
 
+export const buttonGroupStorySizeSm: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'week', size: 'sm', label: 'View period (sm)' },
+      children: [
+        createButtonGroupItem('day', 'Day'),
+        createButtonGroupItem('week', 'Week'),
+        createButtonGroupItem('month', 'Month'),
+      ],
+    },
+  ],
+};
+
+export const buttonGroupStorySizeMd: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'week', size: 'md', label: 'View period (md — default)' },
+      children: [
+        createButtonGroupItem('day', 'Day'),
+        createButtonGroupItem('week', 'Week'),
+        createButtonGroupItem('month', 'Month'),
+      ],
+    },
+  ],
+};
+
+export const buttonGroupStorySizeLg: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'week', size: 'lg', label: 'View period (lg)' },
+      children: [
+        createButtonGroupItem('day', 'Day'),
+        createButtonGroupItem('week', 'Week'),
+        createButtonGroupItem('month', 'Month'),
+      ],
+    },
+  ],
+};
+
 export const buttonGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'exclusive',
@@ -129,5 +176,11 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: '',
+  },
+  {
+    name: 'size',
+    type: 'string',
+    defaultValue: 'md',
+    description: "Size preset propagated to all slotted io-button children. One of 'sm' | 'md' | 'lg'.",
   },
 ];

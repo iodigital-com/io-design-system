@@ -87,6 +87,9 @@ export class IoSelect {
 
   // ── State ─────────────────────────────────────────────────────
 
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   /** Parsed option groups — drives rendering in both modes */
   @State() private groups: IoSelectOptionGroup[] = [];
 
@@ -140,6 +143,8 @@ export class IoSelect {
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultValue = '';
+  private defaultSelectedValues: string[] = [];
   private triggerEl?: HTMLButtonElement;
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
@@ -151,7 +156,19 @@ export class IoSelect {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSelectId(this.name, this.fallbackId);
+    this.defaultValue = this.value ?? '';
+    this.defaultSelectedValues = [...this.selectedValues];
     this.syncFormValue();
+  }
+
+  formResetCallback() {
+    if (this.multiple) {
+      this.selectedValues = [...this.defaultSelectedValues];
+    } else {
+      this.value = this.defaultValue;
+    }
+    this.syncFormValue();
+    this.faceInvalid = false;
   }
 
   @Watch('value')
@@ -190,8 +207,10 @@ export class IoSelect {
     }
     if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -528,12 +547,13 @@ export class IoSelect {
 
   private renderNativeSelect() {
     const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, size, groups } = this;
+    const showError = error || this.faceInvalid;
     const selectId = this.fieldId;
     const errorId = `${selectId}-error`;
     const helperId = `${selectId}-helper`;
     const describedBy = [
-      error && errorMessage ? errorId : '',
-      !error && helperText ? helperId : '',
+      showError && errorMessage ? errorId : '',
+      !showError && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
@@ -543,14 +563,14 @@ export class IoSelect {
             and rendered as internal <option>/<optgroup> elements. The originals are
             visually hidden so the native select controls the displayed value. */}
         <slot />
-        <div class={getSelectWrapperClass(error, disabled)}>
+        <div class={getSelectWrapperClass(showError, disabled)}>
           <select
             id={selectId}
             class={`select-field select-field--${size}`}
             name={name}
             disabled={disabled}
             required={required}
-            aria-invalid={error ? 'true' : undefined}
+            aria-invalid={showError ? 'true' : undefined}
             aria-describedby={describedBy}
             onChange={this.handleChange}
             onFocus={this.handleFocus}
@@ -587,14 +607,15 @@ export class IoSelect {
             </svg>
           </span>
         </div>
-        {error && errorMessage && <p id={`${selectId}-error`} class="select-error" role="alert">{errorMessage}</p>}
-        {!error && helperText && <p id={`${selectId}-helper`} class="select-helper">{helperText}</p>}
+        {showError && errorMessage && <p id={`${selectId}-error`} class="select-error" role="alert">{errorMessage}</p>}
+        {!showError && helperText && <p id={`${selectId}-helper`} class="select-helper">{helperText}</p>}
       </Host>
     );
   }
 
   private renderCombobox() {
     const { label, required, disabled, error, errorMessage, helperText, size, isOpen, activeIndex, filterQuery } = this;
+    const showError = error || this.faceInvalid;
     const selectId = this.fieldId;
     const labelId = `${selectId}-label`;
     const triggerId = `${selectId}-trigger`;
@@ -603,8 +624,8 @@ export class IoSelect {
     const helperId = `${selectId}-helper`;
 
     const describedBy = [
-      error && errorMessage ? errorId : '',
-      !error && helperText ? helperId : '',
+      showError && errorMessage ? errorId : '',
+      !showError && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const activeOptId = activeIndex >= 0 ? getComboboxOptionId(listboxId, activeIndex) : undefined;
@@ -616,7 +637,7 @@ export class IoSelect {
         {/* Hidden slot — io-option/io-optgroup children are parsed and rendered
             as internal listbox items. The originals are visually hidden. */}
         <slot />
-        <div class={getComboboxWrapperClass(error, disabled)}>
+        <div class={getComboboxWrapperClass(showError, disabled)}>
           <label id={labelId} class="select-label" aria-hidden="true">
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
@@ -634,7 +655,7 @@ export class IoSelect {
             aria-controls={listboxId}
             aria-activedescendant={activeOptId}
             aria-required={required ? 'true' : undefined}
-            aria-invalid={error ? 'true' : undefined}
+            aria-invalid={showError ? 'true' : undefined}
             aria-describedby={describedBy}
             disabled={disabled}
             onClick={this.handleTriggerClick}
@@ -685,8 +706,8 @@ export class IoSelect {
           </div>
         </div>
 
-        {error && errorMessage && <p id={errorId} class="select-error" role="alert">{errorMessage}</p>}
-        {!error && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
+        {showError && errorMessage && <p id={errorId} class="select-error" role="alert">{errorMessage}</p>}
+        {!showError && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
       </Host>
     );
   }

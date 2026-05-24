@@ -76,4 +76,56 @@ describe('io-textarea — FACE', () => {
     (component as any).internals = undefined;
     expect(await component.reportValidity()).toBe(true);
   });
+
+  describe('formResetCallback', () => {
+    it('resets value to the default value captured in componentWillLoad()', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'changed text';
+      component.formResetCallback();
+      // defaultValue was '' when componentWillLoad() ran in beforeEach
+      expect(component.value).toBe('');
+    });
+
+    it('clears faceInvalid on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      expect((component as any).faceInvalid).toBe(false);
+    });
+
+    it('calls setFormValue with the reset value', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'changed text';
+      component.formResetCallback();
+      expect(internals.setFormValue).toHaveBeenLastCalledWith('');
+    });
+
+    it('does not throw when internals is unavailable (no form parent)', () => {
+      (component as any).internals = undefined;
+      expect(() => component.formResetCallback()).not.toThrow();
+    });
+
+    it('preserves a non-empty default value on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'initial';
+      (component as any).defaultValue = 'initial';
+      component.value = 'user-typed';
+      component.formResetCallback();
+      expect(component.value).toBe('initial');
+    });
+
+    it('clears faceInvalid after reset even when field is required and default is empty', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      component.value = 'something';
+      (component as any).faceInvalid = true;
+      component.formResetCallback();
+      expect((component as any).faceInvalid).toBe(false);
+    });
+  });
 });

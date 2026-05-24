@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Watch, AttachInternals, h } from '@stencil/core';
 
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
@@ -109,17 +109,30 @@ export class IoTextarea {
     return this.internals?.reportValidity?.() ?? true;
   }
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  @State() faceInvalid = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
+  private defaultValue = '';
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveTextareaId(this.name, this.fallbackId);
+    this.defaultValue = this.value ?? '';
     this.syncFormValue();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.syncFormValue();
+    this.faceInvalid = false;
   }
 
   @Watch('value')
@@ -146,13 +159,17 @@ export class IoTextarea {
     if (nativeTextarea) {
       if (!nativeTextarea.checkValidity()) {
         this.internals?.setValidity?.(nativeTextarea.validity, nativeTextarea.validationMessage, nativeTextarea);
+        this.faceInvalid = true;
       } else {
         this.internals?.setValidity?.({});
+        this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -193,15 +210,16 @@ export class IoTextarea {
     const errorId = `${textareaId}-error`;
     const helperId = `${textareaId}-helper`;
 
+    const showError = error || this.faceInvalid;
     const describedBy = [
-      error && errorMessage ? errorId : '',
-      !error && helperText ? helperId : '',
+      showError && errorMessage ? errorId : '',
+      !showError && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host>
         <style>{getTextareaStyles()}</style>
-        <div class={getTextareaWrapperClass(error, disabled)}>
+        <div class={getTextareaWrapperClass(showError, disabled)}>
           <textarea
             id={textareaId}
             class={getTextareaFieldClass(resize, size)}
@@ -213,7 +231,7 @@ export class IoTextarea {
             maxLength={maxLength}
             rows={rows}
             autocomplete={autocomplete}
-            aria-invalid={error ? 'true' : undefined}
+            aria-invalid={showError ? 'true' : undefined}
             aria-describedby={describedBy}
             onInput={this.handleInput}
             onChange={this.handleChange}
@@ -229,12 +247,12 @@ export class IoTextarea {
             )}
           </label>
         </div>
-        {error && errorMessage && (
+        {showError && errorMessage && (
           <p id={errorId} class="textarea-error" role="alert">
             {errorMessage}
           </p>
         )}
-        {!error && helperText && (
+        {!showError && helperText && (
           <p id={helperId} class="textarea-helper">{helperText}</p>
         )}
       </Host>

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-accordion — render snapshots > renders allow-multiple state (attribute reflected, markup unchanged) 1`] = `
-<io-accordion allow-multiple class="hydrated">
+<io-accordion allow-multiple size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="accordion">
       <div class="accordion-item accordion-item--first">
@@ -27,7 +27,7 @@ exports[`io-accordion — render snapshots > renders allow-multiple state (attri
 `;
 
 exports[`io-accordion — render snapshots > renders default state 1`] = `
-<io-accordion class="hydrated">
+<io-accordion size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="accordion">
       <div class="accordion-item accordion-item--first">
@@ -53,7 +53,7 @@ exports[`io-accordion — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-accordion — render snapshots > renders defaultExpanded (results in open panel, no extra attribute since not reflected) 1`] = `
-<io-accordion default-expanded open class="hydrated">
+<io-accordion default-expanded open size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="accordion">
       <div class="accordion-item accordion-item--first accordion-item--open">
@@ -79,7 +79,7 @@ exports[`io-accordion — render snapshots > renders defaultExpanded (results in
 `;
 
 exports[`io-accordion — render snapshots > renders disabled state 1`] = `
-<io-accordion disabled class="hydrated">
+<io-accordion size="md" disabled class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="accordion">
       <div class="accordion-item accordion-item--first accordion-item--disabled">
@@ -105,7 +105,7 @@ exports[`io-accordion — render snapshots > renders disabled state 1`] = `
 `;
 
 exports[`io-accordion — render snapshots > renders open state 1`] = `
-<io-accordion open class="hydrated">
+<io-accordion open size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="accordion">
       <div class="accordion-item accordion-item--first accordion-item--open">

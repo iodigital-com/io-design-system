@@ -56,6 +56,9 @@ export default function IoAccordionUsagePage() {
           <RuleCard label="allow-multiple — group coordination">
             By default (<C>allow-multiple=false</C>), opening one accordion automatically closes sibling accordions in the same parent element. Set <C>allow-multiple=true</C> to opt a specific accordion out of this coordination and allow it to stay open regardless of what its siblings do. All sibling accordions in a &ldquo;multi-open&rdquo; group should have <C>allow-multiple=true</C>.
           </RuleCard>
+          <RuleCard label="Size">
+            Use the <C>size</C> prop to adjust trigger padding and heading font size. <C>sm</C> is compact for dense layouts, <C>md</C> (default) suits most use cases, and <C>lg</C> is comfortable for prominent marketing sections.
+          </RuleCard>
           <RuleCard label="Animation">
             Panel height animates from 0 to full via max-height transition; icon rotates from + to -.
           </RuleCard>

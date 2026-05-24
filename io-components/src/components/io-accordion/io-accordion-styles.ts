@@ -150,6 +150,38 @@ export function getAccordionStyles(): string {
       color: var(--io-text-primary);
     }
 
+    /* ── Size variants ──────────────────────────────────── */
+
+    /* sm — compact: tighter padding, smaller title font */
+    :host([size="sm"]) .accordion-trigger {
+      padding-top: var(--io-space-3);
+      padding-bottom: var(--io-space-3);
+    }
+
+    :host([size="sm"]) .accordion-title {
+      font-size: var(--io-font-size-base);
+    }
+
+    /* md — default (explicitly restated so overriding parent density is clean) */
+    :host([size="md"]) .accordion-trigger {
+      padding-top: var(--io-space-6);
+      padding-bottom: var(--io-space-6);
+    }
+
+    :host([size="md"]) .accordion-title {
+      font-size: var(--io-font-size-lg);
+    }
+
+    /* lg — comfortable: generous padding, larger title font */
+    :host([size="lg"]) .accordion-trigger {
+      padding-top: var(--io-space-8);
+      padding-bottom: var(--io-space-8);
+    }
+
+    :host([size="lg"]) .accordion-title {
+      font-size: var(--io-font-size-xl);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .accordion-title,
       .accordion-icon,

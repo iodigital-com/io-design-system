@@ -9,6 +9,9 @@ import {
   accordionStoryGroupMultiOpen,
   accordionStoryOpen,
   accordionStorySlottedHeading,
+  accordionStorySizeLg,
+  accordionStorySizeMd,
+  accordionStorySizeSm,
 } from '../io-accordion.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -122,6 +125,27 @@ export default function IoAccordionExamplesPage() {
           description="Use default-expanded to expand a panel on first render without setting open externally. The prop has no effect after initial mount."
         />
         <ComponentStory story={accordionStoryDefaultExpanded} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Size sm"
+          description="Use size='sm' for compact layouts where vertical space is limited."
+        />
+        <ComponentStory story={accordionStorySizeSm} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Size md (default)"
+          description="The default size. Use when no explicit size is specified."
+        />
+        <ComponentStory story={accordionStorySizeMd} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Size lg"
+          description="Use size='lg' for marketing pages or hero-area accordions where a more prominent trigger is appropriate."
+        />
+        <ComponentStory story={accordionStorySizeLg} />
       </section>
       <section>
         <ExamplesSectionHeader

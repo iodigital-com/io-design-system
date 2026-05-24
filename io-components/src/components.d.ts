@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
@@ -35,7 +35,7 @@ import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkSize } from "./components/io-wordmark/types";
-export { IoAccordionHeadingTag, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBreadcrumbSeparator } from "./components/io-breadcrumb/types";
@@ -105,6 +105,11 @@ export namespace Components {
           * @default false
          */
         "open": boolean;
+        /**
+          * Size preset — controls trigger padding and title font size
+          * @default 'md'
+         */
+        "size": IoAccordionSize;
     }
     /**
      * io-avatar
@@ -2620,6 +2625,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "open"?: boolean;
+        /**
+          * Size preset — controls trigger padding and title font size
+          * @default 'md'
+         */
+        "size"?: IoAccordionSize;
     }
     /**
      * io-avatar
@@ -4162,6 +4172,7 @@ declare namespace LocalJSX {
         "open": boolean;
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
+        "size": IoAccordionSize;
         "disabled": boolean;
         "defaultExpanded": boolean;
         "allowMultiple": boolean;

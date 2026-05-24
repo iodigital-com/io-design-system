@@ -112,4 +112,24 @@ describe('io-drawer — click handling', () => {
     (component as any).onOpenChange(true);
     expect(emit).not.toHaveBeenCalled();
   });
+
+  it('cancels existing animations before showModal so slide-in replays on re-open', () => {
+    component.open = false;
+    const cancelSpy = vi.fn();
+    const mockAnimation = { cancel: cancelSpy };
+    const mockDialog = {
+      open: false,
+      showModal: vi.fn(),
+      close: vi.fn(),
+      getAnimations: vi.fn().mockReturnValue([mockAnimation]),
+    };
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    (component as any).onOpenChange(true);
+
+    expect(mockDialog.getAnimations).toHaveBeenCalled();
+    expect(cancelSpy).toHaveBeenCalled();
+    expect(mockDialog.showModal).toHaveBeenCalled();
+  });
 });

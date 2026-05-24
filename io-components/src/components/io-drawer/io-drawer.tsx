@@ -113,7 +113,7 @@ export class IoDrawer {
       if (!dialog.open) {
         // Restart the slide-in CSS animation on every open so subsequent opens
         // animate correctly (not just the first one after mount).
-        dialog.getAnimations().forEach((a) => a.cancel());
+        dialog.getAnimations?.().forEach((a) => a.cancel());
         void (dialog as HTMLElement).offsetWidth; // force reflow
         dialog.showModal();
       }

@@ -165,7 +165,7 @@ export class IoButtonGroup {
     (slot as HTMLSlotElement)
       .assignedElements({ flatten: true })
       .filter(el => el.tagName === 'IO-BUTTON')
-      .forEach(btn => ((btn as Element & { size: string }).size = this.size));
+      .forEach(btn => ((btn as Element & { size: IoButtonGroupSize }).size = this.size));
   }
 
   private handleItemClick(index: number) {

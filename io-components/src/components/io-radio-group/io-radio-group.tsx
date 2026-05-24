@@ -140,7 +140,7 @@ export class IoRadioGroup {
           </div>
         </fieldset>
         {error && errorMessage && (
-          <p id={this.errorId} class="radio-group__error" role="alert">
+          <p id={this.errorId} class="radio-group__error" aria-live="polite">
             {errorMessage}
           </p>
         )}

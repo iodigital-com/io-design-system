@@ -141,7 +141,7 @@ export class IoCheckboxGroup {
           </div>
         </fieldset>
         {error && errorMessage && (
-          <p id={this.errorId} class="checkbox-group__error" role="alert">
+          <p id={this.errorId} class="checkbox-group__error" aria-live="polite">
             {errorMessage}
           </p>
         )}

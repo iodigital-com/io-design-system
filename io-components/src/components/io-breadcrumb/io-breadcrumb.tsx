@@ -2,6 +2,8 @@ import { Component, Element, Host, h } from '@stencil/core';
 
 import { getBreadcrumbStyles } from './io-breadcrumb-styles';
 
+type BreadcrumbItem = Element & { current: boolean };
+
 /**
  * io-breadcrumb
  * =============
@@ -45,7 +47,6 @@ export class IoBreadcrumb {
       }
 
       // Set current=true on last item if none has it explicitly
-      type BreadcrumbItem = Element & { current: boolean };
       if (i === items.length - 1 && !items.some(it => (it as BreadcrumbItem).current === true)) {
         (item as BreadcrumbItem).current = true;
       }

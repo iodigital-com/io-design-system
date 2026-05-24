@@ -58,6 +58,12 @@ export function getRadioGroupStyles(): string {
       gap: var(--io-space-1, 4px);
     }
 
+    /* ── Error state ────────────────────────────────────────── */
+
+    .radio-group--error .radio-group__legend {
+      color: var(--io-color-error);
+    }
+
     /* ── Error message ──────────────────────────────────────── */
 
     .radio-group__error {

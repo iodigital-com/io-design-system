@@ -58,6 +58,12 @@ export function getCheckboxGroupStyles(): string {
       gap: var(--io-space-1, 4px);
     }
 
+    /* ── Error state ────────────────────────────────────────── */
+
+    .checkbox-group--error .checkbox-group__legend {
+      color: var(--io-color-error);
+    }
+
     /* ── Error message ──────────────────────────────────────── */
 
     .checkbox-group__error {

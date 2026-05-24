@@ -112,12 +112,11 @@ describe('io-table — a11y (ARIA patterns)', () => {
 
     const tbody = document.createElement('tbody');
     const dataRow = document.createElement('tr');
-    dataRow.setAttribute('aria-selected', 'false');
 
     const selectTd = document.createElement('td');
     const rowCheckbox = document.createElement('input');
     rowCheckbox.type = 'checkbox';
-    rowCheckbox.setAttribute('aria-label', 'Select row 1');
+    rowCheckbox.setAttribute('aria-label', 'Select Alice');
     selectTd.appendChild(rowCheckbox);
     dataRow.appendChild(selectTd);
 

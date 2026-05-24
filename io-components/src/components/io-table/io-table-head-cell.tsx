@@ -39,7 +39,9 @@ export class IoTableHeadCell {
   // ── Private helpers ───────────────────────────────────────────
 
   private nextDirection(): IoTableSortDirection {
-    return this.sortDirection === 'ascending' ? 'descending' : 'ascending';
+    if (this.sortDirection === 'none') return 'ascending';
+    if (this.sortDirection === 'ascending') return 'descending';
+    return 'none';
   }
 
   private handleSort = (): void => {

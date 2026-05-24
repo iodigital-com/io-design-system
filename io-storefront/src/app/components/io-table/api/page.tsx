@@ -146,6 +146,12 @@ export default function IoTableApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Controlled selected state of this row. Drives the checkbox checked state and the row highlight background.',
             ],
+            [
+              <InlineCode key="n">rowLabel</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;row&apos;</InlineCode>,
+              'Accessible label used in the checkbox aria-label: "Select {rowLabel}". Set to the row\'s primary identifier (e.g. the person\'s name) so each checkbox has a unique, descriptive label for screen reader users.',
+            ],
           ]}
         />
       </section>

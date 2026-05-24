@@ -59,7 +59,9 @@ export class IoTable {
 
   render() {
     const { caption, captionHidden } = this;
-    const captionText = caption || 'Table';
+    // Only label the scroll region when the caption is visually hidden — otherwise the
+    // caption already names the table and labelling the region too would be redundant.
+    const regionLabel = (captionHidden || !caption) ? (caption || undefined) : undefined;
     const captionClass = !caption || captionHidden ? 'sr-only' : undefined;
 
     return (
@@ -68,10 +70,10 @@ export class IoTable {
         <div
           class="table-wrapper"
           role="region"
-          aria-label={caption || undefined}
+          aria-label={regionLabel}
         >
           <table>
-            <caption class={captionClass}>{captionText}</caption>
+            <caption class={captionClass}>{caption}</caption>
             <slot />
           </table>
         </div>

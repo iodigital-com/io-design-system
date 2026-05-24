@@ -17,6 +17,10 @@ describe('io-table-body-row — default props', () => {
   it('has selected false by default', () => {
     expect(component.selected).toBe(false);
   });
+
+  it('has rowLabel "row" by default', () => {
+    expect(component.rowLabel).toBe('row');
+  });
 });
 
 describe('io-table-body-row — render', () => {

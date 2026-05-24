@@ -24,6 +24,9 @@ export class IoTableBodyRow {
   /** Controlled selection state of this row. */
   @Prop({ reflect: true }) selected: boolean = false;
 
+  /** Accessible label for the row selection checkbox. Should describe the row (e.g. the row's primary identifier). */
+  @Prop() rowLabel: string = 'row';
+
   /** Emitted when the row checkbox changes. */
   @Event() select!: EventEmitter<IoTableBodyRowSelectDetail>;
 
@@ -40,7 +43,7 @@ export class IoTableBodyRow {
             <td class="td--checkbox">
               <input
                 type="checkbox"
-                aria-label="Select row"
+                aria-label={`Select ${this.rowLabel}`}
                 checked={this.selected}
                 onChange={this.handleSelect}
               />

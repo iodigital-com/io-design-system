@@ -80,9 +80,9 @@ describe('io-table-head-cell — sort direction cycling', () => {
     expect(emitMock).toHaveBeenCalledWith({ key: 'name', direction: 'descending' });
   });
 
-  it('emits ascending direction when current is descending', () => {
+  it('emits none direction when current is descending (3-way cycle)', () => {
     component.sortDirection = 'descending';
     (component as any).handleSort();
-    expect(emitMock).toHaveBeenCalledWith({ key: 'name', direction: 'ascending' });
+    expect(emitMock).toHaveBeenCalledWith({ key: 'name', direction: 'none' });
   });
 });

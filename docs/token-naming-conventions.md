@@ -68,6 +68,41 @@ Rules:
 - Every component token that uses a light-only primitive must have a dark override. Enforced by `npm run dark-mode-tokens:check`.
 - Component `-styles.ts` files should reference semantic tokens (`var(--io-option-hover-bg)`) rather than primitives (`var(--io-color-grey-1)`) so that theme overrides propagate through Shadow DOM automatically.
 
+## Locked-Theme Selectors (#369)
+
+The `[data-theme="only-dark"]` and `[data-theme="only-light"]` attribute-value selectors pin any element subtree to a specific theme regardless of the page-level `[data-theme]` on `<html>`.
+
+### How it works
+
+Both selectors appear in `@layer io` after the standard `[data-theme="dark"]` and `[data-theme="light"]` blocks. They have identical specificity (single attribute-value selector = `[0,1,0]`) but win by source order.
+
+### Usage
+
+```html
+<!-- Pin a sidebar to always dark -->
+<nav data-theme="only-dark">…</nav>
+
+<!-- Pin a data card to always light -->
+<div data-theme="only-light">…</div>
+```
+
+### Cascade priority
+
+```
+@layer io  [data-theme="dark"]       ← lower (standard page theme)
+@layer io  [data-theme="only-dark"]  ← higher (locked — wins by source order)
+@layer brand                         ← highest (brand overrides always win)
+```
+
+Brand overrides inside `@layer brand` still override locked-theme selectors because layer order trumps source order within the overall cascade.
+
+### Token coverage
+
+`[data-theme="only-dark"]` mirrors all token overrides declared in `[data-theme="dark"]`.
+`[data-theme="only-light"]` mirrors all token overrides declared in `[data-theme="light"]`.
+
+No new `--io-*` CSS custom property names are introduced — both selectors reuse existing variable names, so no reconciliation row additions are required in `docs/token-runtime-reconciliation.json`.
+
 ## Runtime Reconciliation Scope (#111)
 
 - Machine-readable source of truth for runtime variable reconciliation is `docs/token-runtime-reconciliation.json`.

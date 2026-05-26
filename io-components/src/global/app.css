@@ -893,6 +893,98 @@ io-table[size="lg"] io-table-body-cell td {
   --io-spacing-component-x: var(--io-space-4, 16px);
 }
 
+/* ============================================================
+   LOCKED-THEME SELECTORS — [data-theme="only-dark|only-light"]
+   Pin a subtree to a specific theme regardless of the
+   page-level [data-theme="dark"|"light"] on <html>.
+
+   Usage:
+     <section data-theme="only-dark">  — always renders in dark mode
+     <div data-theme="only-light">     — always renders in light mode
+
+   These selectors appear after [data-theme="dark|light"] in
+   source order so they win the cascade at equal specificity
+   (both are single attribute-value selectors = [0,1,0]).
+   Both work on any element, not just <html>.
+   Children inherit overridden tokens via normal CSS inheritance.
+   ============================================================ */
+
+[data-theme="only-dark"] {
+  --io-bg-base:                  var(--io-color-dark-bg-base);
+  --io-bg-page:                  var(--io-color-dark-bg-base);
+  --io-bg-surface:               var(--io-color-dark-bg-surface);
+  --io-bg-raised:                var(--io-color-dark-bg-raised);
+  --io-bg-hover:                 var(--io-color-dark-bg-hover);
+  --io-bg-card:                  var(--io-color-dark-bg-surface);
+  --io-text-primary:             var(--io-color-dark-text-primary);
+  --io-text-secondary:           var(--io-color-dark-text-secondary);
+  --io-text-muted:               var(--io-color-dark-text-muted);
+  --io-border:                   var(--io-color-dark-border);
+  --io-border-hover:             var(--io-color-dark-border-hover);
+  --io-accent-bg:                var(--io-color-dark-accent-bg);
+  --io-accent-text:              var(--io-color-dark-accent);
+  --io-accent:                   var(--io-color-dark-accent);
+  --io-color-error:              var(--io-color-dark-error);
+  --io-color-success:            var(--io-color-dark-success);
+  --io-color-warning:            var(--io-color-dark-warning);
+  --io-color-info:               var(--io-color-dark-info);
+  --io-playground-dot-color:     var(--io-color-dark-playground-dot);
+  --io-text-disabled:            var(--io-color-dark-text-muted);
+  --io-state-disabled-bg:        rgba(255, 255, 255, 0.08);
+  --io-color-primary:            var(--io-color-dark-primary);
+  --io-focus-inner:              var(--io-color-dark-focus-inner);
+  --io-focus-outer:              rgba(77, 77, 255, 0.25);
+  --io-surface-elevated:         var(--io-color-dark-bg-raised);
+  --io-option-hover-bg:          var(--io-color-dark-bg-hover);
+  --io-button-group-bg:          var(--io-color-dark-bg-surface);
+  --io-button-group-color:       var(--io-color-dark-text-primary);
+  --io-button-group-border-color: var(--io-color-dark-border);
+  --io-progress-track-bg:        var(--io-color-dark-bg-raised);
+  --io-table-row-selected-bg:    var(--io-color-dark-accent-bg);
+  --io-avatar-bg-grey:           var(--io-color-dark-bg-raised);
+  --io-avatar-text-grey:         var(--io-color-dark-text-primary);
+
+  color-scheme: dark;
+}
+
+[data-theme="only-light"] {
+  color-scheme: light;
+
+  --io-bg-base:                  var(--io-color-white);
+  --io-bg-page:                  var(--io-color-white);
+  --io-bg-surface:               var(--io-color-grey-1);
+  --io-bg-raised:                var(--io-color-grey-1);
+  --io-bg-hover:                 var(--io-color-grey-2);
+  --io-bg-card:                  var(--io-color-white);
+  --io-bg-overlay:               rgba(0, 0, 0, 0.5);
+  --io-text-primary:             var(--io-color-grey-6);
+  --io-text-secondary:           var(--io-color-grey-4);
+  --io-text-muted:               var(--io-color-grey-3);
+  --io-text-disabled:            var(--io-color-grey-3);
+  --io-border:                   var(--io-color-grey-2);
+  --io-border-hover:             var(--io-color-grey-3);
+  --io-accent:                   var(--io-color-primary);
+  --io-accent-text:              var(--io-color-primary);
+  --io-accent-bg:                var(--io-color-primary-bg);
+  --io-color-error:              #c0392b;
+  --io-color-success:            #1a7a4a;
+  --io-color-warning:            #ffa100;
+  --io-color-info:               #1565c0;
+  --io-playground-dot-color:     rgba(0, 0, 0, 0.06);
+  --io-state-disabled-bg:        var(--io-color-grey-3);
+  --io-color-primary:            #0000D2;
+  --io-focus-inner:              #7D0034;
+  --io-focus-outer:              #FFE4EE;
+  --io-surface-elevated:         var(--io-color-white);
+  --io-option-hover-bg:          var(--io-color-grey-1);
+  --io-button-group-bg:          var(--io-color-white);
+  --io-button-group-color:       var(--io-color-grey-6);
+  --io-button-group-border-color: var(--io-color-grey-2);
+  --io-progress-track-bg:        var(--io-color-grey-2);
+  --io-avatar-bg-grey:           var(--io-color-grey-3);
+  --io-avatar-text-grey:         var(--io-color-grey-6);
+}
+
 } /* end @layer io */
 
 /* ============================================================

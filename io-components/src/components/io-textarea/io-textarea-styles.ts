@@ -104,8 +104,16 @@ export function getTextareaStyles(): string {
       box-shadow: none;
     }
 
-    .textarea-wrapper--error .textarea-field {
+    .textarea-wrapper--state-error .textarea-field {
       border-bottom-color: var(--io-border-error);
+    }
+
+    .textarea-wrapper--state-success .textarea-field {
+      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .textarea-wrapper--state-warning .textarea-field {
+      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     /* Resize variants */
@@ -113,12 +121,23 @@ export function getTextareaStyles(): string {
     .textarea-field--resize-vertical { resize: vertical; }
     .textarea-field--resize-auto     { resize: none; overflow: hidden; }
 
-    /* ── Helper / error ─────────────────────────────────── */
+    /* ── Helper / state messages ─────────────────────────── */
 
-    .textarea-error {
+    .textarea-message {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
-      color: var(--io-color-error);
+    }
+
+    .textarea-message--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .textarea-message--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .textarea-message--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .textarea-helper {

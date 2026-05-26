@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoTextareaResize, IoTextareaSize } from './types';
 
 /**
@@ -45,11 +46,11 @@ export class IoTextarea {
   /** Disables the textarea */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Puts the textarea in error state */
-  @Prop({ reflect: true }) error = false;
+  /** Validation state — controls border color, icon, and message color */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Error message shown below */
-  @Prop() errorMessage: string | undefined;
+  /** Validation message shown below (used for error, success, and warning states) */
+  @Prop() message = '';
 
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
@@ -205,21 +206,25 @@ export class IoTextarea {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, maxLength, rows, autocomplete, resize, size } = this;
+    const { label, name, value, placeholder, required, disabled, state, message, helperText, maxLength, rows, autocomplete, resize, size } = this;
     const textareaId = this.fieldId;
-    const errorId = `${textareaId}-error`;
+    const messageId = `${textareaId}-message`;
     const helperId = `${textareaId}-helper`;
 
-    const showError = error || this.faceInvalid;
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const hasState = showError || showSuccess || showWarning;
+
     const describedBy = [
-      showError && errorMessage ? errorId : '',
-      !showError && helperText ? helperId : '',
+      hasState && message ? messageId : '',
+      !hasState && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host>
         <style>{getTextareaStyles()}</style>
-        <div class={getTextareaWrapperClass(showError, disabled)}>
+        <div class={getTextareaWrapperClass(showError, showSuccess, showWarning, disabled)}>
           <textarea
             id={textareaId}
             class={getTextareaFieldClass(resize, size)}
@@ -247,12 +252,12 @@ export class IoTextarea {
             )}
           </label>
         </div>
-        {showError && errorMessage && (
-          <p id={errorId} class="textarea-error" role="alert">
-            {errorMessage}
+        {hasState && message && (
+          <p id={messageId} class={`textarea-message textarea-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">
+            {message}
           </p>
         )}
-        {!showError && helperText && (
+        {!hasState && helperText && (
           <p id={helperId} class="textarea-helper">{helperText}</p>
         )}
       </Host>

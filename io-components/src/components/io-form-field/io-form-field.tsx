@@ -1,5 +1,7 @@
 import { Component, Prop, Element, Host, Watch, h } from '@stencil/core';
 
+import type { IoFieldState } from '../../utils/field-state';
+
 import { getFormFieldStyles } from './io-form-field-styles';
 
 /**
@@ -15,7 +17,7 @@ import { getFormFieldStyles } from './io-form-field-styles';
  *   <io-input name="email" type="email" />
  * </io-form-field>
  *
- * <io-form-field label="Username" error error-message="Username is taken.">
+ * <io-form-field label="Username" state="error" message="Username is taken.">
  *   <io-input name="username" />
  * </io-form-field>
  */
@@ -34,11 +36,11 @@ export class IoFormField {
   /** Helper/description text shown below the control */
   @Prop() helperText = '';
 
-  /** Validation error message shown when error is true */
-  @Prop() errorMessage = '';
+  /** Validation message shown when state is not 'none' */
+  @Prop() message = '';
 
-  /** Marks the field as in error state — shows errorMessage and sets aria-invalid on the child */
-  @Prop({ reflect: true }) error = false;
+  /** Validation state — propagates to child via aria-invalid and controls message display */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
 
   /** Marks the label as required (adds asterisk) */
   @Prop() required = false;
@@ -62,8 +64,8 @@ export class IoFormField {
     this.syncChildAttributes();
   }
 
-  @Watch('error')
-  onErrorChange() {
+  @Watch('state')
+  onStateChange() {
     this.syncChildAttributes();
   }
 
@@ -72,8 +74,8 @@ export class IoFormField {
     this.syncChildAttributes();
   }
 
-  @Watch('errorMessage')
-  onErrorMessageChange() {
+  @Watch('message')
+  onMessageChange() {
     this.syncChildAttributes();
   }
 
@@ -100,8 +102,8 @@ export class IoFormField {
       child.removeAttribute('aria-describedby');
     }
 
-    // Set aria-invalid
-    if (this.error) {
+    // Set aria-invalid when state is error
+    if (this.state === 'error') {
       child.setAttribute('aria-invalid', 'true');
     } else {
       child.removeAttribute('aria-invalid');
@@ -110,16 +112,18 @@ export class IoFormField {
 
   private buildDescribedBy(): string {
     const ids: string[] = [];
-    if (!this.error && this.helperText) ids.push(this.helperId);
-    if (this.error && this.errorMessage) ids.push(this.errorId);
+    const hasState = this.state !== 'none';
+    if (!hasState && this.helperText) ids.push(this.helperId);
+    if (hasState && this.message) ids.push(this.errorId);
     return ids.join(' ');
   }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, helperText, errorMessage, error, required } = this;
+    const { label, helperText, message, state, required } = this;
     const labelClass = required ? 'form-field__label form-field__label--required' : 'form-field__label';
+    const hasState = state !== 'none';
 
     return (
       <Host>
@@ -131,14 +135,14 @@ export class IoFormField {
           <div class="form-field__control">
             <slot />
           </div>
-          {!error && helperText && (
+          {!hasState && helperText && (
             <span id={this.helperId} class="form-field__helper">
               {helperText}
             </span>
           )}
-          {error && errorMessage && (
-            <span id={this.errorId} class="form-field__error" aria-live="polite">
-              {errorMessage}
+          {hasState && message && (
+            <span id={this.errorId} class={`form-field__message form-field__message--${state}`} aria-live="polite">
+              {message}
             </span>
           )}
         </div>

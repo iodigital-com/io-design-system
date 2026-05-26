@@ -41,7 +41,7 @@ export function getFormFieldStyles(): string {
       display: block;
     }
 
-    /* ── Helper / error messages ────────────────────────────── */
+    /* ── Helper / message ────────────────────────────── */
 
     .form-field__helper {
       display: block;
@@ -51,12 +51,23 @@ export function getFormFieldStyles(): string {
       line-height: var(--io-line-height-normal);
     }
 
-    .form-field__error {
+    .form-field__message {
       display: block;
       margin-top: var(--io-space-1, 4px);
       font-size: var(--io-font-size-xs, 12px);
-      color: var(--io-color-error, #D32F2F);
       line-height: var(--io-line-height-normal);
+    }
+
+    .form-field__message--error {
+      color: var(--io-color-state-error, var(--io-color-error, #D32F2F));
+    }
+
+    .form-field__message--success {
+      color: var(--io-color-state-success, #1a7f4b);
+    }
+
+    .form-field__message--warning {
+      color: var(--io-color-state-warning, #c47f0a);
     }
   `;
 }

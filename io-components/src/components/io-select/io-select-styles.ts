@@ -94,8 +94,16 @@ export function getSelectStyles(): string {
       box-shadow: none;
     }
 
-    .select-wrapper--error .select-field {
+    .select-wrapper--state-error .select-field {
       border-bottom-color: var(--io-border-error);
+    }
+
+    .select-wrapper--state-success .select-field {
+      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .select-wrapper--state-warning .select-field {
+      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     /* Chevron icon */
@@ -109,12 +117,23 @@ export function getSelectStyles(): string {
       align-items: center;
     }
 
-    /* ── Helper / error ─────────────────────────────────── */
+    /* ── Helper / state messages ────────────────────────── */
 
-    .select-error {
+    .select-message {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
-      color: var(--io-color-error);
+    }
+
+    .select-message--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .select-message--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .select-message--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .select-helper {
@@ -159,6 +178,18 @@ export function getSelectStyles(): string {
 
     .combobox-trigger[aria-expanded="true"] {
       border-bottom-width: var(--io-input-border-width-focus);
+    }
+
+    .select-wrapper--state-error .combobox-trigger {
+      border-bottom-color: var(--io-border-error);
+    }
+
+    .select-wrapper--state-success .combobox-trigger {
+      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .select-wrapper--state-warning .combobox-trigger {
+      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .combobox-trigger__text {

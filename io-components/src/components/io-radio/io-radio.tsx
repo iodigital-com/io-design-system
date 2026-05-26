@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoRadioChangeDetail } from './types';
 
 /**
@@ -14,7 +15,7 @@ import type { IoRadioChangeDetail } from './types';
  * @example
  * <io-radio label="Option A" name="choice" value="a" />
  * <io-radio label="Option B" name="choice" value="b" checked />
- * <io-radio label="Required" name="req" required error error-message="Please select an option" />
+ * <io-radio label="Required" name="req" required state="error" message="Please select an option" />
  */
 @Component({
   tag: 'io-radio',
@@ -45,11 +46,11 @@ export class IoRadio {
   /** Disables the radio button */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Puts the radio in error state */
-  @Prop({ reflect: true }) error = false;
+  /** Validation state — controls border color and message color */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Error message shown below the radio */
-  @Prop() errorMessage: string | undefined;
+  /** Validation message shown below the radio (used for error, success, and warning states) */
+  @Prop() message = '';
 
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
@@ -82,7 +83,7 @@ export class IoRadio {
 
   // ── State ─────────────────────────────────────────────────────
 
-  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  /** Tracks FACE form validation invalidity so aria-invalid reflects both state prop and form state */
   @State() faceInvalid = false;
 
   // ── Private ───────────────────────────────────────────────────
@@ -191,24 +192,30 @@ export class IoRadio {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, error, errorMessage, helperText } = this;
+    const { label, name, value, checked, required, disabled, state, message, helperText } = this;
     const inputId = this.fieldId;
-    const errorId = `${inputId}-error`;
+    const messageId = `${inputId}-message`;
     const helperId = `${inputId}-helper`;
     const faceErrorId = `${inputId}-face-error`;
-    const showFaceError = this.faceInvalid && !error;
+
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const hasState = showError || showSuccess || showWarning;
+    const showFaceError = this.faceInvalid && state !== 'error';
+
     const describedBy = [
-      !error && !showFaceError && helperText ? helperId : null,
-      error && errorMessage ? errorId : null,
+      !hasState && !showFaceError && helperText ? helperId : null,
+      hasState && message ? messageId : null,
       showFaceError ? faceErrorId : null,
     ]
-      .filter((value): value is string => Boolean(value))
+      .filter((id): id is string => Boolean(id))
       .join(' ');
 
     return (
       <Host>
         <style>{getRadioStyles()}</style>
-        <div class={getRadioWrapperClass(disabled, error || this.faceInvalid)}>
+        <div class={getRadioWrapperClass(disabled, showError, showSuccess, showWarning)}>
           <label class="radio-label" htmlFor={inputId}>
             <span class="radio-control">
               <input
@@ -220,14 +227,11 @@ export class IoRadio {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
+                aria-invalid={showError ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />
-              <span
-                class={getRadioCustomClass(checked)}
-                aria-hidden="true"
-              >
+              <span class={getRadioCustomClass(checked)} aria-hidden="true">
                 <span class="radio-dot" />
               </span>
             </span>
@@ -241,17 +245,17 @@ export class IoRadio {
             </span>
           </label>
         </div>
-        {error && errorMessage && (
-          <p id={errorId} class="radio-error" role="alert">
-            {errorMessage}
+        {hasState && message && (
+          <p id={messageId} class={`radio-message radio-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">
+            {message}
           </p>
         )}
         {showFaceError && (
-          <p id={faceErrorId} class="radio-error" role="alert">
+          <p id={faceErrorId} class="radio-message radio-message--error" role="alert">
             Please select an option
           </p>
         )}
-        {!error && !this.faceInvalid && helperText && (
+        {!hasState && !this.faceInvalid && helperText && (
           <p id={helperId} class="radio-helper">
             {helperText}
           </p>

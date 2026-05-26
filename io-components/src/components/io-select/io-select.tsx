@@ -12,6 +12,7 @@ import {
   parseSelectContent,
 } from './io-select-utils';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types';
 
 /**
@@ -67,11 +68,11 @@ export class IoSelect {
   /** Disables the select */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Puts the select in error state */
-  @Prop({ reflect: true }) error = false;
+  /** Validation state — controls border color, icon, and message color */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Error message shown below */
-  @Prop() errorMessage: string | undefined;
+  /** Validation message shown below (used for error, success, and warning states) */
+  @Prop() message = '';
 
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
@@ -546,14 +547,17 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, error, errorMessage, helperText, size, groups } = this;
-    const showError = error || this.faceInvalid;
+    const { label, name, value, placeholder, required, disabled, state, message, helperText, size, groups } = this;
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
-    const errorId = `${selectId}-error`;
+    const messageId = `${selectId}-message`;
     const helperId = `${selectId}-helper`;
     const describedBy = [
-      showError && errorMessage ? errorId : '',
-      !showError && helperText ? helperId : '',
+      hasState && message ? messageId : '',
+      !hasState && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
@@ -563,7 +567,7 @@ export class IoSelect {
             and rendered as internal <option>/<optgroup> elements. The originals are
             visually hidden so the native select controls the displayed value. */}
         <slot />
-        <div class={getSelectWrapperClass(showError, disabled)}>
+        <div class={getSelectWrapperClass(showError, showSuccess, showWarning, disabled)}>
           <select
             id={selectId}
             class={`select-field select-field--${size}`}
@@ -607,25 +611,28 @@ export class IoSelect {
             </svg>
           </span>
         </div>
-        {showError && errorMessage && <p id={`${selectId}-error`} class="select-error" role="alert">{errorMessage}</p>}
-        {!showError && helperText && <p id={`${selectId}-helper`} class="select-helper">{helperText}</p>}
+        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">{message}</p>}
+        {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
       </Host>
     );
   }
 
   private renderCombobox() {
-    const { label, required, disabled, error, errorMessage, helperText, size, isOpen, activeIndex, filterQuery } = this;
-    const showError = error || this.faceInvalid;
+    const { label, required, disabled, state, message, helperText, size, isOpen, activeIndex, filterQuery } = this;
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
     const labelId = `${selectId}-label`;
     const triggerId = `${selectId}-trigger`;
     const listboxId = `${selectId}-listbox`;
-    const errorId = `${selectId}-error`;
+    const messageId = `${selectId}-message`;
     const helperId = `${selectId}-helper`;
 
     const describedBy = [
-      showError && errorMessage ? errorId : '',
-      !showError && helperText ? helperId : '',
+      hasState && message ? messageId : '',
+      !hasState && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const activeOptId = activeIndex >= 0 ? getComboboxOptionId(listboxId, activeIndex) : undefined;
@@ -637,7 +644,7 @@ export class IoSelect {
         {/* Hidden slot — io-option/io-optgroup children are parsed and rendered
             as internal listbox items. The originals are visually hidden. */}
         <slot />
-        <div class={getComboboxWrapperClass(showError, disabled)}>
+        <div class={getComboboxWrapperClass(showError, showSuccess, showWarning, disabled)}>
           <label id={labelId} class="select-label" aria-hidden="true">
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
@@ -706,8 +713,8 @@ export class IoSelect {
           </div>
         </div>
 
-        {showError && errorMessage && <p id={errorId} class="select-error" role="alert">{errorMessage}</p>}
-        {!showError && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
+        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">{message}</p>}
+        {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
       </Host>
     );
   }

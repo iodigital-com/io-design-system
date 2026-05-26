@@ -123,24 +123,54 @@ export function getInputStyles(): string {
       box-shadow: none;
     }
 
-    .input-wrapper--error .input-field {
+    .input-wrapper--state-error .input-field {
       border-bottom-color: var(--io-border-error);
     }
 
-    .input-error-icon {
+    .input-wrapper--state-success .input-field {
+      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .input-wrapper--state-warning .input-field {
+      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+    }
+
+    .input-state-icon {
       position: absolute;
       bottom: var(--io-space-4);
       right: 0;
       pointer-events: none;
-      color: var(--io-color-error);
       display: flex;
       align-items: center;
     }
 
-    .input-error {
+    .input-state-icon--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .input-state-icon--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .input-state-icon--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+    }
+
+    .input-message {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
-      color: var(--io-color-error);
+    }
+
+    .input-message--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .input-message--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .input-message--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .input-helper {

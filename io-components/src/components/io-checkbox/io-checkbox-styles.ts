@@ -86,8 +86,18 @@ export function getCheckboxStyles(): string {
     }
 
     /* Error border — 2px width satisfies WCAG 1.4.1 (non-color indicator) */
-    .checkbox-wrapper--error .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
+    .checkbox-wrapper--state-error .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
       border-color: var(--io-border-error);
+      border-width: var(--io-checkbox-border-error-width);
+    }
+
+    .checkbox-wrapper--state-success .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
+      border-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-width: var(--io-checkbox-border-error-width);
+    }
+
+    .checkbox-wrapper--state-warning .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
+      border-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
       border-width: var(--io-checkbox-border-error-width);
     }
 
@@ -114,12 +124,23 @@ export function getCheckboxStyles(): string {
       color: var(--io-color-error);
     }
 
-    /* ── Helper / error messages ────────────────────────── */
+    /* ── Helper / state messages ────────────────────────── */
 
-    .checkbox-error {
+    .checkbox-message {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
-      color: var(--io-color-error);
+    }
+
+    .checkbox-message--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .checkbox-message--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .checkbox-message--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .checkbox-helper {

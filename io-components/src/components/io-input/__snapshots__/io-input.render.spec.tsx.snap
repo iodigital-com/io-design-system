@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-input — render snapshots > renders default state 1`] = `
-<io-input size="md" class="hydrated">
+<io-input size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
       <div class="input-field-row">
@@ -22,7 +22,7 @@ exports[`io-input — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-input — render snapshots > renders disabled state 1`] = `
-<io-input size="md" disabled class="hydrated">
+<io-input size="md" disabled state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper input-wrapper--disabled">
       <div class="input-field-row">
@@ -63,7 +63,7 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-input size="md" class="hydrated">
+    <io-input size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
       <div class="input-field-row">
@@ -81,7 +81,7 @@ MockHTMLElement {
     </div>
   </mock:shadow-root>
 </io-input>,
-    <io-input size="md" class="hydrated">
+    <io-input size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
       <div class="input-field-row">
@@ -99,7 +99,7 @@ MockHTMLElement {
     </div>
   </mock:shadow-root>
 </io-input>,
-    <io-input size="md" class="hydrated">
+    <io-input size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="input-wrapper">
       <div class="input-field-row">

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-radio — render snapshots > renders checked state 1`] = `
-<io-radio checked class="hydrated">
+<io-radio checked state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="radio-wrapper">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
@@ -21,7 +21,7 @@ exports[`io-radio — render snapshots > renders checked state 1`] = `
 `;
 
 exports[`io-radio — render snapshots > renders default state 1`] = `
-<io-radio class="hydrated">
+<io-radio state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="radio-wrapper">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
@@ -41,7 +41,7 @@ exports[`io-radio — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-radio — render snapshots > renders disabled state 1`] = `
-<io-radio disabled class="hydrated">
+<io-radio disabled state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="radio-wrapper radio-wrapper--disabled">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">

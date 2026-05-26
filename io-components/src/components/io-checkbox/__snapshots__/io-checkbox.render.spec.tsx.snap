@@ -21,7 +21,7 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-checkbox checked class="hydrated">
+    <io-checkbox checked state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
@@ -40,7 +40,7 @@ MockHTMLElement {
     </div>
   </mock:shadow-root>
 </io-checkbox>,
-    <io-checkbox class="hydrated">
+    <io-checkbox state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
@@ -1222,7 +1222,7 @@ MockHTMLElement {
 `;
 
 exports[`io-checkbox — render snapshots > renders default state 1`] = `
-<io-checkbox class="hydrated">
+<io-checkbox state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
@@ -1240,7 +1240,7 @@ exports[`io-checkbox — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
-<io-checkbox disabled class="hydrated">
+<io-checkbox disabled state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="checkbox-wrapper checkbox-wrapper--disabled">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">

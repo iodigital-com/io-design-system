@@ -22,9 +22,9 @@ export function getBreadcrumbStyles(): string {
     .breadcrumb__separator {
       display: inline-flex;
       align-items: center;
-      padding: 0 var(--io-space-1, 4px);
-      color: var(--io-color-grey-4, #767676);
-      font-size: var(--io-font-size-sm, 14px);
+      padding: 0 var(--io-space-1);
+      color: var(--io-color-grey-4);
+      font-size: var(--io-font-size-sm);
       user-select: none;
     }
 

@@ -34,7 +34,7 @@ describe('io-avatar — default props', () => {
   });
 
   it('imgError is false by default', () => {
-    expect((c as any).imgError).toBe(false);
+    expect((c as unknown as { imgError: boolean }).imgError).toBe(false);
   });
 
   it('renders without throwing with no props', () => {

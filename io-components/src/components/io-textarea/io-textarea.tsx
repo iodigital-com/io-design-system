@@ -5,7 +5,9 @@ import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } fro
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoTextareaResize, IoTextareaSize } from './types';
+import type { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from './types';
+
+let idCounter = 0;
 
 /**
  * io-textarea
@@ -16,7 +18,7 @@ import type { IoTextareaResize, IoTextareaSize } from './types';
  * @example
  * <io-textarea label="Message" rows={4} />
  * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
- * <io-textarea label="Comments" error error-message="This field is required" />
+ * <io-textarea label="Comments" state="error" message="This field is required" />
  */
 @Component({
   tag: 'io-textarea',
@@ -47,17 +49,23 @@ export class IoTextarea {
   /** Disables the textarea */
   @Prop({ reflect: true }) disabled = false;
 
+  /** Makes the field read-only — value is not editable but the field stays in tab order */
+  @Prop({ reflect: true }) readOnly = false;
+
   /** Validation state — controls border color, icon, and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
 
   /** Validation message shown below (used for error, success, and warning states) */
   @Prop() message = '';
 
-  /** Helper text shown below (replaced by error when error=true) */
+  /** Helper text shown below (replaced by message when state is set) */
   @Prop() helperText: string | undefined;
 
   /** Maximum number of characters */
   @Prop() maxLength: number | undefined;
+
+  /** Minimum number of characters; wired to native minlength and FACE tooShort validity */
+  @Prop() minLength: number | undefined;
 
   /** Visible rows (controls initial height) */
   @Prop() rows = 4;
@@ -75,6 +83,21 @@ export class IoTextarea {
    * - 'auto':     textarea grows automatically with content
    */
   @Prop() resize: IoTextareaResize = 'vertical';
+
+  /** Native spellcheck attribute — passed through as-is */
+  @Prop() spellCheck: boolean | undefined;
+
+  /** Shows an inline spinner and disables the field while true */
+  @Prop() loading = false;
+
+  /** Shows {currentLength} / {maxLength} character counter below the field */
+  @Prop() counter = false;
+
+  /** Associates this element with a form by id */
+  @Prop() form: string | undefined;
+
+  /** Controls how newlines are submitted — maps to native wrap attribute */
+  @Prop() wrap: IoTextareaWrap | undefined;
 
   /**
    * Custom ARIA attributes to inject onto the native `<textarea>` element.
@@ -130,6 +153,7 @@ export class IoTextarea {
 
   private fallbackId!: string;
   private fieldId!: string;
+  private counterId!: string;
   private defaultValue = '';
   private nativeTextareaEl?: HTMLTextAreaElement;
 
@@ -138,6 +162,7 @@ export class IoTextarea {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveTextareaId(this.name, this.fallbackId);
+    this.counterId = `io-textarea-counter-${++idCounter}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
   }
@@ -163,6 +188,11 @@ export class IoTextarea {
     this.syncFormValue();
   }
 
+  @Watch('minLength')
+  onMinLengthChange() {
+    this.syncFormValue();
+  }
+
   @Watch('aria')
   onAriaChange() {
     applyAriaProp(this.aria, this.nativeTextareaEl ?? null);
@@ -171,7 +201,7 @@ export class IoTextarea {
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     // Derive validity from the native <textarea> when available so constraints like
-    // maxLength (tooLong) are reflected automatically — matches native behaviour.
+    // maxLength (tooLong), minLength (tooShort) are reflected automatically.
     // Falls back to required-only check before the shadow root exists.
     const nativeTextarea = this.el?.shadowRoot?.querySelector<HTMLTextAreaElement>('textarea');
     if (nativeTextarea) {
@@ -194,7 +224,7 @@ export class IoTextarea {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     const textarea = ev.target as HTMLTextAreaElement;
     this.value = textarea.value;
     this.input.emit(ev);
@@ -206,28 +236,51 @@ export class IoTextarea {
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     this.change.emit((ev.target as HTMLTextAreaElement).value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     this.blur.emit(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, placeholder, required, disabled, state, message, helperText, maxLength, rows, autocomplete, resize, size } = this;
+    const {
+      label,
+      name,
+      value,
+      placeholder,
+      required,
+      disabled,
+      readOnly,
+      state,
+      message,
+      helperText,
+      maxLength,
+      minLength,
+      rows,
+      autocomplete,
+      resize,
+      size,
+      spellCheck,
+      loading,
+      counter,
+      form,
+      wrap,
+    } = this;
     const textareaId = this.fieldId;
     const messageId = `${textareaId}-message`;
     const helperId = `${textareaId}-helper`;
 
+    const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
@@ -238,10 +291,13 @@ export class IoTextarea {
       !hasState && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
+    const showCounter = counter && maxLength != null;
+    const currentLength = (value ?? '').length;
+
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getTextareaStyles()}</style>
-        <div class={getTextareaWrapperClass(showError, showSuccess, showWarning, disabled)}>
+        <div class={getTextareaWrapperClass(showError, showSuccess, showWarning, isDisabled, readOnly)}>
           <textarea
             id={textareaId}
             class={getTextareaFieldClass(resize, size)}
@@ -253,11 +309,17 @@ export class IoTextarea {
             placeholder={placeholder ?? ' '}
             value={value}
             required={required}
-            disabled={disabled}
+            disabled={isDisabled}
+            readOnly={readOnly}
             maxLength={maxLength}
+            minLength={minLength}
             rows={rows}
             autocomplete={autocomplete}
+            spellcheck={spellCheck}
+            form={form}
+            wrap={wrap}
             aria-invalid={showError ? 'true' : undefined}
+            aria-readonly={readOnly ? 'true' : undefined}
             aria-describedby={describedBy}
             onInput={this.handleInput}
             onChange={this.handleChange}
@@ -272,14 +334,22 @@ export class IoTextarea {
               </span>
             )}
           </label>
+          {loading && (
+            <div class="textarea-wrapper__loading" aria-hidden="true">
+              <io-spinner size="sm" />
+            </div>
+          )}
         </div>
         {hasState && message && (
           <p id={messageId} class={`textarea-message textarea-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
             {message}
           </p>
         )}
-        {!hasState && helperText && (
-          <p id={helperId} class="textarea-helper">{helperText}</p>
+        {!hasState && helperText && <p id={helperId} class="textarea-helper">{helperText}</p>}
+        {showCounter && (
+          <div id={this.counterId} class="textarea-counter" aria-hidden="true">
+            {currentLength} / {maxLength}
+          </div>
         )}
       </Host>
     );

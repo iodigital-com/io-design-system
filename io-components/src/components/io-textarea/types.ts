@@ -6,3 +6,6 @@ export type IoTextareaResize =
 
 /** Visual size scale aligned with io-button sizing tokens */
 export type IoTextareaSize = 'sm' | 'md' | 'lg';
+
+/** Native wrap attribute for textarea — controls how newlines are submitted */
+export type IoTextareaWrap = 'soft' | 'hard' | 'off';

@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTextarea } from './io-textarea';
 
@@ -42,12 +43,40 @@ describe('io-textarea — default props', () => {
     expect(component.state).toBe('none');
   });
 
+  it('is not readOnly by default', () => {
+    expect(component.readOnly).toBe(false);
+  });
+
   it('has no placeholder by default', () => {
     expect(component.placeholder).toBeUndefined();
   });
 
   it('has no maxLength by default', () => {
     expect(component.maxLength).toBeUndefined();
+  });
+
+  it('has no minLength by default', () => {
+    expect(component.minLength).toBeUndefined();
+  });
+
+  it('has loading=false by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('has counter=false by default', () => {
+    expect(component.counter).toBe(false);
+  });
+
+  it('has spellCheck=undefined by default', () => {
+    expect(component.spellCheck).toBeUndefined();
+  });
+
+  it('has form=undefined by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
+  it('has wrap=undefined by default', () => {
+    expect(component.wrap).toBeUndefined();
   });
 
   it('setFocus resolves without throwing', async () => {
@@ -80,5 +109,158 @@ describe('io-textarea — default props', () => {
     (component as any).label = 'Notes';
     (component as any).componentWillLoad();
     expect(() => (component as any).render()).not.toThrow();
+  });
+});
+
+describe('io-textarea — new props (#362)', () => {
+  let component: IoTextarea;
+
+  beforeEach(() => {
+    component = new IoTextarea();
+    (component as any).el = document.createElement('io-textarea');
+    (component as any).label = 'Notes';
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+  });
+
+  it('passes minLength to native textarea via render', () => {
+    (component as any).componentWillLoad();
+    component.minLength = 10;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const textareaCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'textarea');
+    const textareaProps = (textareaCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(textareaProps['minLength']).toBe(10);
+  });
+
+  it('passes spellCheck to native textarea via render', () => {
+    (component as any).componentWillLoad();
+    component.spellCheck = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const textareaCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'textarea');
+    const textareaProps = (textareaCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(textareaProps['spellcheck']).toBe(true);
+  });
+
+  it('passes form to native textarea via render', () => {
+    (component as any).componentWillLoad();
+    component.form = 'search-form';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const textareaCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'textarea');
+    const textareaProps = (textareaCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(textareaProps['form']).toBe('search-form');
+  });
+
+  it('passes wrap to native textarea via render', () => {
+    (component as any).componentWillLoad();
+    component.wrap = 'hard';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const textareaCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'textarea');
+    const textareaProps = (textareaCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(textareaProps['wrap']).toBe('hard');
+  });
+
+  it('passes readOnly to native textarea and sets aria-readonly', () => {
+    (component as any).componentWillLoad();
+    component.readOnly = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const textareaCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'textarea');
+    const textareaProps = (textareaCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(textareaProps['readOnly']).toBe(true);
+    expect(textareaProps['aria-readonly']).toBe('true');
+  });
+
+  it('renders counter div when counter=true and maxLength is set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 200;
+    component.value = 'hello world';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const divCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === 'div' && (call[1] as Record<string, unknown>)?.['class'] === 'textarea-counter',
+    );
+    expect(divCalls.length).toBe(1);
+  });
+
+  it('does not render counter when counter=true but maxLength is not set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const divCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === 'div' && (call[1] as Record<string, unknown>)?.['class'] === 'textarea-counter',
+    );
+    expect(divCalls.length).toBe(0);
+  });
+
+  it('renders io-spinner when loading=true', () => {
+    (component as any).componentWillLoad();
+    component.loading = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const spinnerCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'io-spinner');
+    expect(spinnerCall).toBeDefined();
+  });
+
+  it('sets aria-busy on host when loading=true', () => {
+    (component as any).componentWillLoad();
+    component.loading = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    // In the Stencil unit-test mock, Host resolves to undefined,
+    // so the h() call for <Host> has undefined as its first argument.
+    const hostCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] == null && (call[1] as Record<string, unknown>)?.['aria-busy'] !== undefined,
+    );
+    const hostProps = (hostCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(hostProps['aria-busy']).toBe('true');
+  });
+
+  it('does not emit events when loading=true', () => {
+    component.loading = true;
+
+    const inputEv = new Event('input') as InputEvent;
+    Object.defineProperty(inputEv, 'target', { value: { value: 'x' } });
+    (component as any).handleInput(inputEv);
+    expect((component as any).input.emit).not.toHaveBeenCalled();
+
+    const changeEv = new Event('change');
+    Object.defineProperty(changeEv, 'target', { value: { value: 'x' } });
+    (component as any).handleChange(changeEv);
+    expect((component as any).change.emit).not.toHaveBeenCalled();
+  });
+
+  it('generates stable counterId in componentWillLoad', () => {
+    (component as any).componentWillLoad();
+    const id1 = (component as any).counterId;
+    expect(id1).toMatch(/^io-textarea-counter-\d+$/);
+
+    component.render();
+    expect((component as any).counterId).toBe(id1);
   });
 });

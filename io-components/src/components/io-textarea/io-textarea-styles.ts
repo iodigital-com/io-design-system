@@ -4,7 +4,7 @@
  * Returns a <style> string for the textarea component's Shadow DOM.
  * ALL values reference var(--io-*) custom properties — never hardcoded.
  *
- * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
+ * GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
 export function getTextareaStyles(): string {
@@ -23,6 +23,22 @@ export function getTextareaStyles(): string {
 
     .textarea-wrapper--disabled {
       opacity: var(--io-state-disabled-opacity);
+      pointer-events: none;
+    }
+
+    /* Readonly: full opacity, still tabbable, cursor indicates non-editable */
+    .textarea-wrapper--readonly .textarea-field {
+      cursor: default;
+      border-bottom-style: dashed;
+    }
+
+    /* Loading spinner positioned in bottom-right of wrapper */
+    .textarea-wrapper__loading {
+      position: absolute;
+      bottom: var(--io-space-2);
+      right: 0;
+      display: flex;
+      align-items: center;
       pointer-events: none;
     }
 
@@ -144,6 +160,14 @@ export function getTextareaStyles(): string {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .textarea-counter {
+      display: flex;
+      justify-content: flex-end;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin-top: var(--io-space-1);
     }
 
     @media (prefers-reduced-motion: reduce) {

@@ -1,7 +1,7 @@
 /**
  * io-pin-code — keyboard navigation, auto-advance, paste, and change/complete events
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoPinCode } from './io-pin-code';
 

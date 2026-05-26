@@ -5,8 +5,8 @@
  */
 
 export type IoTagNames =
-  | 'io-alert'
   | 'io-accordion'
+  | 'io-alert'
   | 'io-avatar'
   | 'io-badge'
   | 'io-breadcrumb'

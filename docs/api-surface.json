@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-26T16:38:43.280Z",
+  "generated": "2026-05-26T16:54:19.421Z",
   "components": {
     "io-accordion": {
       "props": {

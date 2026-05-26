@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoCarousel } from './io-carousel';
 
@@ -348,14 +348,14 @@ describe('io-carousel — onMouseDown', () => {
   });
 
   it('stores startX as pageX minus track.offsetLeft', () => {
-    const { c, track } = makeCarousel([], { scrollLeft: 0 });
+    const { c } = makeCarousel([], { scrollLeft: 0 });
     // offsetLeft is 0 from makeTrack
     (c as any).onMouseDown({ pageX: 250 } as MouseEvent);
     expect((c as any).startX).toBe(250);
   });
 
   it('stores current track.scrollLeft into this.scrollLeft', () => {
-    const { c, track } = makeCarousel([], { scrollLeft: 175 });
+    const { c } = makeCarousel([], { scrollLeft: 175 });
     (c as any).onMouseDown({ pageX: 0 } as MouseEvent);
     expect((c as any).scrollLeft).toBe(175);
   });
@@ -391,7 +391,7 @@ describe('io-carousel — onMouseMove', () => {
   });
 
   it('calls ev.preventDefault when dragging with valid track', () => {
-    const { c, track } = makeCarousel([], { scrollLeft: 0 });
+    const { c } = makeCarousel([], { scrollLeft: 0 });
     (c as any).isDragging = true;
     (c as any).startX = 100;
     (c as any).scrollLeft = 200;
@@ -572,7 +572,7 @@ describe('io-carousel — getSlideLeft', () => {
 
   it('returns scrollLeft + (slideRect.left - trackRect.left)', () => {
     const slide = makeSlide(400);
-    const { c, track } = makeCarousel([slide], { scrollLeft: 100 });
+    const { c } = makeCarousel([slide], { scrollLeft: 100 });
     // trackRect.left = 0 (getBoundingClientRect mock), slideRect.left = 400
     // result = 100 + (400 - 0) = 500
     expect((c as any).getSlideLeft(0)).toBe(500);

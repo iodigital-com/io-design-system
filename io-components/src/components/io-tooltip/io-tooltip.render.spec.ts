@@ -304,7 +304,7 @@ describe('io-tooltip — syncTriggerAttributes()', () => {
 
 describe('io-tooltip — @Watch handler delegation', () => {
   it('onContentChange() calls syncTriggerAttributes', () => {
-    const { c, trigger } = makeTooltip();
+    const { c } = makeTooltip();
     (c as any).syncTriggerAttributes(); // prime trigger reference
     const syncSpy = vi.spyOn(c as any, 'syncTriggerAttributes');
 
@@ -454,7 +454,7 @@ describe('io-tooltip — full lifecycle integration', () => {
 
     const observe = observeMock;
     const disconnect = disconnectMock;
-    function FakeMutationObserver(_cb: MutationCallback) {
+    function FakeMutationObserver(_ignored: MutationCallback) {
       return { observe, disconnect };
     }
     global.MutationObserver = FakeMutationObserver as unknown as typeof MutationObserver;

@@ -245,7 +245,7 @@ describe('io-select — moveActive: wrap-around', () => {
     (c as any).activeIndex = 0;
     (c as any).moveActive(-1);
     // wraps to last non-disabled = index 1 (Beta), skipping index 2 (Gamma=disabled)
-    const lastEnabled = OPTIONS.length - 1; // index 2 is disabled, so it wraps to 1
+    // index 2 is disabled, so it wraps to 1
     // actually index 2 is disabled, wrap goes to 2 then back-1 to 1
     expect((c as any).activeIndex).toBeLessThan(OPTIONS.length);
   });

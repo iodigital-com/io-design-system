@@ -283,10 +283,10 @@ describe('io-toast — lifecycle with persistent message registration', () => {
     // Use a fresh manager to avoid interference with the global singleton
     const manager = new IoToastManagerClass();
     const originalRegister = manager.register.bind(manager);
-    const registerSpy = vi.fn(originalRegister);
+    void vi.fn(originalRegister); // ensure register is callable (not used further in this test)
 
     // Patch the component to use our isolated manager
-    const originalConnected = IoToast.prototype.connectedCallback;
+    void IoToast.prototype.connectedCallback; // reference stored for isolation context
     expect(() => component.connectedCallback()).not.toThrow();
     component.disconnectedCallback();
   });

@@ -2782,6 +2782,78 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-backdrop",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) — Drawer backdrop overlay color."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) — Drawer width small=320px."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) — Drawer width medium=480px."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) — Drawer width large=640px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) — Wordmark font-size small."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) — Wordmark font-size medium=20px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) — Wordmark font-size large=28px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) — Wordmark font-size xl=40px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-letter-spacing",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) — Wordmark letter-spacing=-0.01em."
     }
   ]
 }

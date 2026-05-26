@@ -3,6 +3,7 @@ import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
 type IoAccordionSize = 'sm' | 'md' | 'lg';
+type IoAccordionBackground = 'transparent' | 'surface' | 'canvas';
 
 export const accordionSingleOpenCode: FrameworkCode = {
   html: `<div class="accordion-group" data-accordion-group>
@@ -171,6 +172,8 @@ export const accordionStory: Story<'io-accordion'> = {
       disabled: false,
       'default-expanded': false,
       'allow-multiple': false,
+      background: 'transparent',
+      sticky: false,
       'use-heading-slot': false,
     },
   },
@@ -187,6 +190,8 @@ export const accordionStory: Story<'io-accordion'> = {
           disabled: (properties?.disabled as boolean) ?? false,
           'default-expanded': (properties?.['default-expanded'] as boolean) ?? false,
           'allow-multiple': (properties?.['allow-multiple'] as boolean) ?? false,
+          background: (properties?.background as IoAccordionBackground) ?? 'transparent',
+          sticky: (properties?.sticky as boolean) ?? false,
           ...(useHeadingSlot
             ? {}
             : {
@@ -406,6 +411,70 @@ export const accordionStorySizeLg: Story<'io-accordion'> = {
   ],
 };
 
+export const accordionStorySurfaceBackground: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Surface background', background: 'surface', open: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Surface background', background: 'surface', open: true },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['This accordion uses the surface background fill — suitable for card or nested layouts.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStoryCanvasBackground: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Canvas background', background: 'canvas', open: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Canvas background', background: 'canvas', open: true },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['This accordion uses the canvas (page-level) background fill.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStoryStickyWithSurface: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Sticky header (surface)', background: 'surface', sticky: true, open: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: {
+        heading: 'Sticky header (surface)',
+        background: 'surface',
+        sticky: true,
+        open: true,
+        style: 'max-height: 120px; overflow-y: auto;',
+      },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        { tag: 'p' as const, children: ['Line 1 — scroll down to see the header stick.'] },
+        { tag: 'p' as const, children: ['Line 2 — more content to enable scrolling.'] },
+        { tag: 'p' as const, children: ['Line 3 — more content to enable scrolling.'] },
+        { tag: 'p' as const, children: ['Line 4 — more content to enable scrolling.'] },
+        { tag: 'p' as const, children: ['Line 5 — header should remain visible above.'] },
+      ],
+    },
+  ],
+};
+
 export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false },
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
@@ -429,6 +498,19 @@ export const accordionPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Set to true to opt out of single-open group coordination. Siblings with allow-multiple=false will auto-close when another opens.',
+  },
+  {
+    name: 'background',
+    type: 'select',
+    defaultValue: 'transparent',
+    options: ['transparent', 'surface', 'canvas'],
+    description: 'Background fill for the accordion host. transparent = no fill, surface = var(--io-bg-surface), canvas = var(--io-bg-page).',
+  },
+  {
+    name: 'sticky',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, the accordion trigger becomes position: sticky. Meaningful only with background="surface" or background="canvas".',
   },
   {
     name: 'use-heading-slot',

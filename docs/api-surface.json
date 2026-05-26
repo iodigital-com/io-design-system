@@ -5,12 +5,14 @@
     "io-accordion": {
       "props": {
         "allowMultiple": "boolean",
+        "background": "IoAccordionBackground",
         "defaultExpanded": "boolean",
         "disabled": "boolean",
         "heading": "string",
         "headingTag": "IoAccordionHeadingTag",
         "open": "boolean",
-        "size": "IoAccordionSize"
+        "size": "IoAccordionSize",
+        "sticky": "boolean"
       },
       "methods": {},
       "events": {

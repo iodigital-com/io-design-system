@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil
 import { getAccordionStyles } from './io-accordion-styles';
 import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
-import type { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
+import type { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
 
 /**
  * io-accordion
@@ -40,6 +40,24 @@ export class IoAccordion {
 
   /** Prevents interaction and applies reduced-opacity styling */
   @Prop({ reflect: true }) disabled = false;
+
+  /**
+   * Background fill variant for the accordion host element.
+   * - `transparent` (default): no background fill
+   * - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts
+   * - `canvas`: `var(--io-bg-page)` — page-level fill
+   */
+  @Prop({ reflect: true }) background: IoAccordionBackground = 'transparent';
+
+  /**
+   * When `true`, the accordion trigger becomes `position: sticky; top: 0`
+   * so it remains visible while scrolling through long expanded content.
+   *
+   * Note: `sticky` is only meaningful when `background` is `surface` or `canvas`.
+   * Using `sticky=true` with `background="transparent"` will log a development
+   * warning because a transparent sticky header causes content to bleed through.
+   */
+  @Prop({ reflect: true }) sticky = false;
 
   /**
    * Expands this panel on the very first render.
@@ -81,6 +99,13 @@ export class IoAccordion {
     this.baseId = getAccordionBaseId(this.el.id);
     if (this.defaultExpanded && !this.open) {
       this.open = true;
+    }
+    if (this.sticky && this.background === 'transparent') {
+      console.warn(
+        '[io-accordion] sticky=true with background="transparent" is not meaningful. ' +
+          'The sticky trigger will have no background, causing content to bleed through. ' +
+          'Set background="surface" or background="canvas" to use sticky correctly.',
+      );
     }
   }
 

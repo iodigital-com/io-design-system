@@ -152,6 +152,7 @@
     },
     "io-drawer": {
       "props": {
+        "background": "IoDrawerBackground",
         "closeLabel": "string",
         "closeOnBackdrop": "boolean",
         "open": "boolean",
@@ -163,7 +164,9 @@
         "show": "() => Promise<void>"
       },
       "events": {
-        "dismiss": "void"
+        "dismiss": "void",
+        "motionHiddenEnd": "void",
+        "motionVisibleEnd": "void"
       }
     },
     "io-form-field": {
@@ -237,6 +240,7 @@
     },
     "io-modal": {
       "props": {
+        "background": "IoModalBackground",
         "closeOnBackdrop": "boolean",
         "open": "boolean",
         "size": "IoModalSize"
@@ -246,7 +250,9 @@
         "show": "() => Promise<void>"
       },
       "events": {
-        "dismiss": "void"
+        "dismiss": "void",
+        "motionHiddenEnd": "void",
+        "motionVisibleEnd": "void"
       }
     },
     "io-optgroup": {

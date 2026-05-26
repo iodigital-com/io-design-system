@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoDrawer } from './io-drawer';
 import { getDrawerStyles } from './io-drawer-styles';
+import type { IoDrawerBackground } from './types';
 
 describe('io-drawer — default props', () => {
   let component: IoDrawer;
@@ -10,6 +11,8 @@ describe('io-drawer — default props', () => {
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
   });
 
@@ -143,6 +146,51 @@ describe('io-drawer — bottom sheet rendering', () => {
   });
 });
 
+describe('io-drawer — background prop', () => {
+  let component: IoDrawer;
+
+  beforeEach(() => {
+    component = new IoDrawer();
+    (component as any).el = document.createElement('io-drawer');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  it('defaults to canvas background', () => {
+    expect(component.background).toBe('canvas');
+  });
+
+  it('accepts surface background', () => {
+    component.background = 'surface' as IoDrawerBackground;
+    expect(component.background).toBe('surface');
+  });
+
+  it('accepts elevated background', () => {
+    component.background = 'elevated' as IoDrawerBackground;
+    expect(component.background).toBe('elevated');
+  });
+
+  it('styles contain canvas background token', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('drawer--bg-canvas');
+    expect(styles).toContain('var(--io-bg-page)');
+  });
+
+  it('styles contain surface background token', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('drawer--bg-surface');
+    expect(styles).toContain('var(--io-bg-surface)');
+  });
+
+  it('styles contain elevated background token with shadow', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('drawer--bg-elevated');
+    expect(styles).toContain('var(--io-bg-raised)');
+  });
+});
+
 describe('io-drawer — show/close methods', () => {
   let component: IoDrawer;
   let dialogEl: HTMLDialogElement;
@@ -151,6 +199,8 @@ describe('io-drawer — show/close methods', () => {
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
 
     dialogEl = document.createElement('div') as unknown as HTMLDialogElement;

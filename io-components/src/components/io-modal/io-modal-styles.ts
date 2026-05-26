@@ -17,6 +17,21 @@ export function getModalStyles(): string {
       animation: io-modal-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
+    /* ── Background variants ─────────────────────────────────── */
+
+    dialog.modal--bg-canvas {
+      background: var(--io-bg-page);
+    }
+
+    dialog.modal--bg-surface {
+      background: var(--io-bg-surface);
+    }
+
+    dialog.modal--bg-elevated {
+      background: var(--io-bg-raised);
+      box-shadow: var(--io-shadow-xl);
+    }
+
     dialog[open] {
       display: flex;
       flex-direction: column;

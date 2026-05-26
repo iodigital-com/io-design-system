@@ -1381,7 +1381,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) \u2014 Fluid display font size 2xl: clamp(2rem, 2.5vw + 1.5rem, 3rem). Responsive scaling between ~320px and ~1440px viewports."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 2xl: clamp(2rem, 2.5vw + 1.5rem, 3rem). Responsive scaling between ~320px (min 32px) and ~960px (max 48px) viewports."
     },
     {
       "runtimeCssVar": "--io-font-size-display-3xl",
@@ -1389,7 +1389,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) \u2014 Fluid display font size 3xl: clamp(2.5rem, 3vw + 1.5rem, 4rem). Responsive scaling; crossover from min at ~289px viewport width."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 3xl: clamp(2.5rem, 3vw + 1.5rem, 4rem). Responsive scaling; crossover from min at ~533px, reaches max 64px at ~1333px viewport width."
     },
     {
       "runtimeCssVar": "--io-font-size-display-4xl",
@@ -1397,7 +1397,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) \u2014 Fluid display font size 4xl: clamp(3rem, 4vw + 2rem, 5rem). Responsive scaling between ~320px and ~1440px viewports."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 4xl: clamp(3rem, 4vw + 2rem, 5rem). Responsive scaling between ~400px (min 48px) and ~1200px (max 80px) viewports."
     },
     {
       "runtimeCssVar": "--io-font-size-lg",

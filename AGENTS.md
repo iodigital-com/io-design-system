@@ -449,6 +449,34 @@ React Server Components with server-rendered Stencil HTML), activate the
 The commented-out target block and full activation instructions are in
 `io-components/stencil.config.ts` (TARGET 3 comment block).
 
+## Component Stability (Wave XI)
+
+### New Beta Components Added in Wave XI
+
+The following components were introduced in Wave XI and are currently at `beta` stability. They follow all standard conventions (token-first styling, Shadow DOM with `delegatesFocus`, FACE pattern where applicable, full spec file layout).
+
+| Component | Description | FACE |
+|---|---|---|
+| `io-alert` | Inline notification with 4 severity variants (info/success/warning/error), optional heading, dismissible button | No |
+| `io-multi-select` | Multi-value select with chips, FACE form association, search filter, ARIA combobox | Yes |
+| `io-pin-code` | PIN/OTP entry with keyboard navigation, paste distribution, password masking | Yes |
+| `io-popover` | Click-triggered floating panel using Popover API + dialog role | No |
+| `io-scroller` | Scrollable container with edge fade indicators | No |
+| `io-switch` | FACE toggle with `role=switch` and keyboard navigation | Yes |
+| `io-tabs-bar` | Standalone navigation bar (decoupled from `io-tabs` panels) | No |
+| `io-text` | Body copy component with token-driven font size/weight/color | No |
+| `io-heading` | Heading component with decoupled visual size from semantic tag level | No |
+
+All new beta components:
+
+- Follow the component file layout defined in [Component File Layout](#component-file-layout)
+- Use token-first styling (`var(--io-*)` — no hardcoded hex/px/radii)
+- Use Shadow DOM with `delegatesFocus: true`
+- Apply the [FACE pattern](#form-associated-custom-elements-face) where applicable (`io-multi-select`, `io-pin-code`, `io-switch`)
+- Include at minimum `.spec.ts` and `.a11y.spec.ts`; form components include `.face.spec.ts`
+
+Promotion to `stable` requires production hardening and is tracked in `docs/component-stability-recommendations.md`.
+
 ## Do Not Commit
 
 The following are local-only and must never be committed:

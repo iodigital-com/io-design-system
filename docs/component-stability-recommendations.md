@@ -42,6 +42,15 @@ Additional targeted evidence:
 | `io-stepper` | `stable` ✅ (promoted) | `io-stepper.spec.ts`, `io-stepper.a11y.spec.ts`; `--io-stepper-circle-size`, `--io-stepper-connector-thickness`, `--io-stepper-connector-offset` tokens added to `app.css`; hardcoded `2rem`/`1rem`/`2px` values replaced in PR #393 | **Promoted to `stable`** | All spec files complete, styles fully tokenised, no open critical bugs |
 | `io-table` | `stable` ✅ (promoted) | `io-table.spec.ts` plus sub-component specs (`io-table-head-cell`, `io-table-head-row`, `io-table-body-row` each have `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`); `io-table.click.spec.ts` added in PR #388 documenting delegation pattern; styles token-only | **Promoted to `stable`** | All spec files complete, delegation-pattern documented, styles fully tokenised, no open critical bugs |
 | `io-wordmark` | `stable` ✅ (promoted) | `io-wordmark.spec.ts`, `io-wordmark.a11y.spec.ts`; `--io-wordmark-size-md/lg/xl` and `--io-wordmark-letter-spacing` tokens added to `app.css`; bare `px`/`em` values replaced in `io-wordmark-styles.ts` in PR #389 | **Promoted to `stable`** | All spec files complete, styles fully tokenised, no open critical bugs |
+| `io-alert` | `beta` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts` suite complete; 4 variants; dismissible button event | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-multi-select` | `beta` | Full FACE suite: `.spec.ts`, `.click.spec.ts`, `.disabled.spec.ts`, `.a11y.spec.ts`, `.face.spec.ts`; filter mode; chip removal | **Hold at beta** | New in Wave XI; complex interaction model; needs field use |
+| `io-pin-code` | `beta` | Full FACE suite; keyboard nav; paste distribution; password masking | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-popover` | `beta` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`, utils spec; Popover API + dialog role | **Hold at beta** | New in Wave XI; Popover API still gaining browser support |
+| `io-scroller` | `beta` | `.spec.ts`, `.a11y.spec.ts`; edge fade indicators | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-switch` | `beta` | Full FACE suite; role=switch; keyboard nav | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-tabs-bar` | `beta` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`; standalone navigation | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-text` | `beta` | `.spec.ts`, `.a11y.spec.ts`; token-driven typography | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-heading` | `beta` | `.spec.ts`, `.a11y.spec.ts`; decoupled visual/semantic size | **Hold at beta** | New in Wave XI; needs production hardening |
 
 ## Notes
 

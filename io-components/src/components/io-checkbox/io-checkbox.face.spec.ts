@@ -104,6 +104,15 @@ describe('io-checkbox — FACE', () => {
     expect((component as any).faceInvalid).toBe(false);
   });
 
+  it('form prop is undefined by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
+  it('form prop accepts a string value for out-of-DOM form association', () => {
+    component.form = 'my-form';
+    expect(component.form).toBe('my-form');
+  });
+
   it('formResetCallback resets to defaultChecked=false and clears formValue', () => {
     const internals = makeInternals();
     (component as any).internals = internals;

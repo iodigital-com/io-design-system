@@ -99,6 +99,9 @@ export class IoSelect {
    */
   @Prop() aria?: Record<string, string>;
 
+  /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
+  @Prop({ reflect: true }) form?: string;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
@@ -567,7 +570,7 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, state, message, helperText, size, groups } = this;
+    const { label, name, value, placeholder, required, disabled, state, message, helperText, size, groups, form } = this;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
@@ -598,6 +601,7 @@ export class IoSelect {
             name={name}
             disabled={disabled}
             required={required}
+            form={form}
             aria-invalid={showError ? 'true' : undefined}
             aria-describedby={describedBy}
             onChange={this.handleChange}

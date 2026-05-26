@@ -49,6 +49,10 @@ describe('io-select — default props', () => {
     expect(component.message).toBe('');
   });
 
+  it('has no form prop by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
   it('setFocus resolves without throwing', async () => {
     const select = document.createElement('select');
     select.focus = vi.fn();

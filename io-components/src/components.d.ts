@@ -425,6 +425,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
+         */
+        "form"?: string;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -1047,6 +1051,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
+         */
+        "form"?: string;
+        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -1178,6 +1186,10 @@ export namespace Components {
           * @default false
          */
         "filter": boolean;
+        /**
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
+         */
+        "form"?: string;
         /**
           * Helper text shown below (replaced by error when error=true)
          */
@@ -3293,7 +3305,7 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
          */
         "form"?: string;
         /**
@@ -3906,7 +3918,7 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
          */
         "form"?: string;
         /**
@@ -4038,7 +4050,7 @@ declare namespace LocalJSX {
          */
         "filter"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
          */
         "form"?: string;
         /**
@@ -4779,6 +4791,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "form": string;
     }
     interface IoCheckboxGroupAttributes {
         "label": string;
@@ -4888,6 +4901,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "form": string;
     }
     interface IoRadioGroupAttributes {
         "label": string;
@@ -4913,6 +4927,7 @@ declare namespace LocalJSX {
         "custom": boolean;
         "multiple": boolean;
         "filter": boolean;
+        "form": string;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;

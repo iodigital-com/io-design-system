@@ -21,6 +21,7 @@ import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
+import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -51,6 +52,7 @@ export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
+export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -993,6 +995,72 @@ export namespace Components {
         "totalPages": number;
     }
     /**
+     * io-pin-code
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label": string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length": IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message": string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name": string | undefined;
+        /**
+          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Programmatically focus the first empty slot (or the last slot if complete)
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state": IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type": IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
      * io-progress
      * ===========
      * Linear progress bar for determinate loading states.
@@ -1867,6 +1935,10 @@ export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPaginationElement;
 }
+export interface IoPinCodeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoPinCodeElement;
+}
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoRadioElement;
@@ -2381,6 +2453,33 @@ declare global {
     var HTMLIoPaginationElement: {
         prototype: HTMLIoPaginationElement;
         new (): HTMLIoPaginationElement;
+    };
+    interface HTMLIoPinCodeElementEventMap {
+        "change": IoPinCodeChangeDetail;
+    }
+    /**
+     * io-pin-code
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoPinCodeElement: {
+        prototype: HTMLIoPinCodeElement;
+        new (): HTMLIoPinCodeElement;
     };
     /**
      * io-progress
@@ -2913,6 +3012,7 @@ declare global {
         "io-optgroup": HTMLIoOptgroupElement;
         "io-option": HTMLIoOptionElement;
         "io-pagination": HTMLIoPaginationElement;
+        "io-pin-code": HTMLIoPinCodeElement;
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
@@ -3884,6 +3984,68 @@ declare namespace LocalJSX {
           * @default 1
          */
         "totalPages"?: number;
+    }
+    /**
+     * io-pin-code
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label"?: string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length"?: IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message"?: string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name"?: string | undefined;
+        /**
+          * Fires on every digit change with current value and completion status
+         */
+        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state"?: IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type"?: IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value"?: string;
     }
     /**
      * io-progress
@@ -4912,6 +5074,17 @@ declare namespace LocalJSX {
         "prevLabel": string;
         "nextLabel": string;
     }
+    interface IoPinCodeAttributes {
+        "label": string | undefined;
+        "length": IoPinCodeLength;
+        "type": IoPinCodeType;
+        "value": string;
+        "name": string | undefined;
+        "required": boolean;
+        "disabled": boolean;
+        "state": IoPinCodeState;
+        "message": string | undefined;
+    }
     interface IoProgressAttributes {
         "value": number;
         "color": IoProgressColor;
@@ -5076,6 +5249,7 @@ declare namespace LocalJSX {
         "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
         "io-option": Omit<IoOption, keyof IoOptionAttributes> & { [K in keyof IoOption & keyof IoOptionAttributes]?: IoOption[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `attr:${K}`]?: IoOptionAttributes[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `prop:${K}`]?: IoOption[K] } & OneOf<"label", IoOption["label"], IoOptionAttributes["label"]>;
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
+        "io-pin-code": Omit<IoPinCode, keyof IoPinCodeAttributes> & { [K in keyof IoPinCode & keyof IoPinCodeAttributes]?: IoPinCode[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `attr:${K}`]?: IoPinCodeAttributes[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `prop:${K}`]?: IoPinCode[K] };
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
@@ -5340,6 +5514,17 @@ declare module "@stencil/core" {
              * <io-pagination page="5" total-pages="12" />
              */
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
+            /**
+             * io-pin-code
+             * ===========
+             * Multi-slot PIN / OTP entry component with keyboard navigation,
+             * auto-advance, backspace-to-previous, and clipboard paste support.
+             * Participates in native HTML forms via the FACE (Form-Associated
+             * Custom Elements) API.
+             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+             * <io-pin-code label="OTP Code" length="6" type="password" required />
+             */
+            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
             /**
              * io-progress
              * ===========

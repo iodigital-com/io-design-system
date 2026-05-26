@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-modal — render snapshots > renders default state 1`] = `
-<io-modal size="md" class="hydrated">
+<io-modal size="md" background="canvas" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <dialog class="modal--md" aria-labelledby="io-modal-heading-4fzzzxjylrx">
+    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx">
       <div class="modal__header">
         <slot name="header">
           <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
@@ -50,9 +50,9 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-modal size="sm" class="hydrated">
+    <io-modal size="sm" background="canvas" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <dialog class="modal--sm" aria-labelledby="io-modal-heading-4fzzzxjylrx">
+    <dialog class="modal--sm modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx">
       <div class="modal__header">
         <slot name="header">
           <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
@@ -76,9 +76,9 @@ MockHTMLElement {
   </mock:shadow-root>
   Small body
 </io-modal>,
-    <io-modal size="md" class="hydrated">
+    <io-modal size="md" background="canvas" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <dialog class="modal--md" aria-labelledby="io-modal-heading-4fzzzxjylrx">
+    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx">
       <div class="modal__header">
         <slot name="header">
           <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
@@ -102,9 +102,9 @@ MockHTMLElement {
   </mock:shadow-root>
   Medium body
 </io-modal>,
-    <io-modal size="lg" class="hydrated">
+    <io-modal size="lg" background="canvas" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <dialog class="modal--lg" aria-labelledby="io-modal-heading-4fzzzxjylrx">
+    <dialog class="modal--lg modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx">
       <div class="modal__header">
         <slot name="header">
           <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
@@ -1291,9 +1291,9 @@ MockHTMLElement {
 `;
 
 exports[`io-modal — render snapshots > renders slotted footer actions 1`] = `
-<io-modal size="md" class="hydrated">
+<io-modal size="md" background="canvas" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <dialog class="modal--md" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-describedby="io-modal-heading-4fzzzxjylrx-description">
+    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-describedby="io-modal-heading-4fzzzxjylrx-description">
       <div class="modal__header">
         <slot name="header">
           <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">

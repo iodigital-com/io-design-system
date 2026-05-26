@@ -4,7 +4,7 @@ import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
-import type { IoModalSize } from './types';
+import type { IoModalBackground, IoModalSize } from './types';
 
 /**
  * io-modal
@@ -38,6 +38,7 @@ export class IoModal {
   private focusTrigger?: Element; // Track element that opened modal for focus restoration
   private inertElements: Element[] = []; // Track elements with inert applied
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
+  private transitionEndHandler?: (ev: TransitionEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -66,10 +67,24 @@ export class IoModal {
    */
   @Prop() aria?: Record<string, string>;
 
+  /**
+   * Background surface level for the modal panel.
+   * - canvas:   var(--io-bg-page) — default page background
+   * - surface:  var(--io-bg-surface) — slightly elevated surface
+   * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+   */
+  @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
+
+  /** Emitted after the open animation/transition has completed (transitionend on the dialog panel) */
+  @Event({ eventName: 'motionVisibleEnd' }) motionVisibleEndEvent!: EventEmitter<void>;
+
+  /** Emitted after the close animation/transition has completed (transitionend on the dialog panel) */
+  @Event({ eventName: 'motionHiddenEnd' }) motionHiddenEndEvent!: EventEmitter<void>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -111,6 +126,7 @@ export class IoModal {
   }
 
   componentDidLoad() {
+    this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
       this.dialogEl.showModal();
@@ -122,6 +138,7 @@ export class IoModal {
   disconnectedCallback() {
     this.clearFocusTrap();
     this.removeBackgroundInert();
+    this.detachTransitionEndListener();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -137,14 +154,14 @@ export class IoModal {
     if (newVal) {
       // Track the currently focused element (trigger button) for restoration on close
       this.focusTrigger = document.activeElement as Element;
-      
+
       if (!this.dialogEl.open) {
         this.dialogEl.showModal();
       }
-      
+
       // Apply inert to background elements to prevent screen reader navigation
       this.applyBackgroundInert();
-      
+
       // Set up focus trap for keyboard navigation
       this.setupFocusTrap();
     } else {
@@ -153,15 +170,15 @@ export class IoModal {
       }
 
       this.clearFocusTrap();
-      
+
       // Remove inert from background elements
       this.removeBackgroundInert();
-      
+
       // Restore focus to trigger element
       if (this.focusTrigger && this.focusTrigger instanceof HTMLElement) {
         this.focusTrigger.focus();
       }
-      
+
       this.dismissEvent.emit();
     }
   }
@@ -169,15 +186,37 @@ export class IoModal {
   // ── Private Helpers ───────────────────────────────────────────
 
   /**
+   * Attach a transitionend listener to the dialog element so we can emit
+   * motionVisibleEnd / motionHiddenEnd after CSS transitions complete.
+   */
+  private attachTransitionEndListener() {
+    if (!this.dialogEl) return;
+    this.transitionEndHandler = () => {
+      if (this.open) {
+        this.motionVisibleEndEvent.emit();
+      } else {
+        this.motionHiddenEndEvent.emit();
+      }
+    };
+    this.dialogEl.addEventListener('transitionend', this.transitionEndHandler);
+  }
+
+  private detachTransitionEndListener() {
+    if (!this.dialogEl || !this.transitionEndHandler) return;
+    this.dialogEl.removeEventListener('transitionend', this.transitionEndHandler);
+    this.transitionEndHandler = undefined;
+  }
+
+  /**
    * Apply inert attribute to sibling and parent elements when modal opens.
    * This prevents screen reader users from navigating outside the modal.
    */
   private applyBackgroundInert() {
     if (!this.el || !this.el.parentElement) return;
-    
+
     const parent = this.el.parentElement;
     const siblings = Array.from(parent.children).filter((child) => child !== this.el);
-    
+
     siblings.forEach((sibling) => {
       if (!(sibling as HTMLElement).hasAttribute('inert')) {
         (sibling as HTMLElement).setAttribute('inert', '');
@@ -204,16 +243,16 @@ export class IoModal {
     if (!this.dialogEl) return;
 
     this.clearFocusTrap();
-    
+
     // Get all focusable elements within the modal (in shadow DOM and slots)
     const focusableSelector =
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
     const focusableElements = Array.from(
       this.dialogEl.querySelectorAll(focusableSelector)
     ) as HTMLElement[];
-    
+
     if (focusableElements.length === 0) return;
-    
+
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -228,12 +267,12 @@ export class IoModal {
     if (firstElement === lastElement) {
       return;
     }
-    
+
     const handleKeyDown = (ev: KeyboardEvent) => {
       if (ev.key !== 'Tab') return;
-      
+
       const activeElement = this.dialogEl?.ownerDocument?.activeElement;
-      
+
       // Shift+Tab on first element → focus last element
       if (ev.shiftKey && activeElement === firstElement) {
         ev.preventDefault();
@@ -279,7 +318,7 @@ export class IoModal {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { size, heading, headingId, description } = this;
+    const { size, background, heading, headingId, description } = this;
     const closeIcon = getModalCloseIcon();
     const descriptionId = description ? `${headingId}-description` : undefined;
 
@@ -291,7 +330,7 @@ export class IoModal {
             this.dialogEl = el;
             applyAriaProp(this.aria, el ?? null);
           }}
-          class={`modal--${size}`}
+          class={`modal--${size} modal--bg-${background}`}
           aria-labelledby={heading ? headingId : undefined}
           aria-describedby={descriptionId}
           onClick={this.handleDialogClick}

@@ -15,10 +15,10 @@ import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-import { IoModalSize } from "./components/io-modal/types";
+import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
@@ -46,10 +46,10 @@ export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-export { IoModalSize } from "./components/io-modal/types";
+export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
@@ -577,6 +577,11 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
+          * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background": IoDrawerBackground;
+        /**
           * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.  For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
          */
@@ -861,6 +866,11 @@ export namespace Components {
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
         "aria"?: Record<string, string>;
+        /**
+          * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background": IoModalBackground;
         /**
           * Programmatically close the modal. No-op if already closed. Equivalent to setting `open = false`. Emits the `dismiss` event.
           * @example   const modal = document.querySelector('io-modal');   modal.close();
@@ -2222,6 +2232,8 @@ declare global {
     };
     interface HTMLIoDrawerElementEventMap {
         "dismiss": void;
+        "motionVisibleEnd": void;
+        "motionHiddenEnd": void;
     }
     /**
      * io-drawer
@@ -2336,6 +2348,8 @@ declare global {
     };
     interface HTMLIoModalElementEventMap {
         "dismiss": void;
+        "motionVisibleEnd": void;
+        "motionHiddenEnd": void;
     }
     /**
      * io-modal
@@ -3540,6 +3554,11 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
+          * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background"?: IoDrawerBackground;
+        /**
           * Accessible label for the close button
           * @default 'Close drawer'
          */
@@ -3557,6 +3576,14 @@ declare namespace LocalJSX {
           * Emitted after the drawer closes (any close path: button, backdrop, ESC)
          */
         "onDismiss"?: (event: IoDrawerCustomEvent<void>) => void;
+        /**
+          * Emitted after the close animation/transition has completed (transitionend on the drawer panel)
+         */
+        "onMotionHiddenEnd"?: (event: IoDrawerCustomEvent<void>) => void;
+        /**
+          * Emitted after the open animation/transition has completed (transitionend on the drawer panel)
+         */
+        "onMotionVisibleEnd"?: (event: IoDrawerCustomEvent<void>) => void;
         /**
           * Controls drawer visibility; synced to showModal/close
           * @default false
@@ -3814,6 +3841,11 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
+          * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background"?: IoModalBackground;
+        /**
           * Close the modal when the backdrop is clicked
           * @default true
          */
@@ -3830,6 +3862,14 @@ declare namespace LocalJSX {
           * Emitted after the modal closes (any close path: user-initiated or programmatic)
          */
         "onDismiss"?: (event: IoModalCustomEvent<void>) => void;
+        /**
+          * Emitted after the close animation/transition has completed (transitionend on the dialog panel)
+         */
+        "onMotionHiddenEnd"?: (event: IoModalCustomEvent<void>) => void;
+        /**
+          * Emitted after the open animation/transition has completed (transitionend on the dialog panel)
+         */
+        "onMotionVisibleEnd"?: (event: IoModalCustomEvent<void>) => void;
         /**
           * Controls dialog visibility; synced to showModal/close
           * @default false
@@ -4949,6 +4989,7 @@ declare namespace LocalJSX {
         "heading": string;
         "closeOnBackdrop": boolean;
         "closeLabel": string;
+        "background": IoDrawerBackground;
     }
     interface IoFormFieldAttributes {
         "label": string;
@@ -4998,6 +5039,7 @@ declare namespace LocalJSX {
         "size": IoModalSize;
         "closeOnBackdrop": boolean;
         "description": string;
+        "background": IoModalBackground;
     }
     interface IoOptgroupAttributes {
         "label": string;

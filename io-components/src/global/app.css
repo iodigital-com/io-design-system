@@ -442,6 +442,14 @@
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 
+  /* ── Pin Code ────────────────────────────────────────── */
+  --io-pin-code-slot-size:               3rem;
+  --io-pin-code-slot-radius:             var(--io-border-radius-sm);
+  --io-pin-code-slot-border-width:       1.5px;
+  --io-pin-code-slot-border-error-width: 2px;
+  --io-pin-code-gap:                     var(--io-space-2);
+  --io-pin-code-font-size:               var(--io-font-size-xl);
+
   /* Avatar */
   --io-avatar-bg-blue:           var(--io-color-primary);
   --io-avatar-bg-orange:         var(--io-color-orange);

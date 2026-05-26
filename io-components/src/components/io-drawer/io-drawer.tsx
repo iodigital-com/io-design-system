@@ -4,7 +4,7 @@ import { getDrawerStyles } from './io-drawer-styles';
 import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon, isBackdropClick } from './io-drawer-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
-import type { IoDrawerPlacement, IoDrawerSize } from './types';
+import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 
 const SWIPE_CLOSE_THRESHOLD = 80;
 
@@ -40,6 +40,7 @@ export class IoDrawer {
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
+  private transitionEndHandler?: (ev: TransitionEvent) => void;
 
   // ── Touch / swipe state ────────────────────────────────────────
   private touchStartY = 0;
@@ -77,10 +78,24 @@ export class IoDrawer {
    */
   @Prop() aria?: Record<string, string>;
 
+  /**
+   * Background surface level for the drawer panel.
+   * - canvas:   var(--io-bg-page) — default page background
+   * - surface:  var(--io-bg-surface) — slightly elevated surface
+   * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+   */
+  @Prop({ reflect: true }) background: IoDrawerBackground = 'canvas';
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Emitted after the drawer closes (any close path: button, backdrop, ESC) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
+
+  /** Emitted after the open animation/transition has completed (transitionend on the drawer panel) */
+  @Event({ eventName: 'motionVisibleEnd' }) motionVisibleEndEvent!: EventEmitter<void>;
+
+  /** Emitted after the close animation/transition has completed (transitionend on the drawer panel) */
+  @Event({ eventName: 'motionHiddenEnd' }) motionHiddenEndEvent!: EventEmitter<void>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -129,9 +144,14 @@ export class IoDrawer {
   }
 
   componentDidLoad() {
+    this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.dialogEl.showModal();
     }
+  }
+
+  disconnectedCallback() {
+    this.detachTransitionEndListener();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -159,6 +179,30 @@ export class IoDrawer {
       }
       this.dismissEvent.emit();
     }
+  }
+
+  // ── Private Helpers ───────────────────────────────────────────
+
+  /**
+   * Attach a transitionend listener to the dialog element so we can emit
+   * motionVisibleEnd / motionHiddenEnd after CSS transitions complete.
+   */
+  private attachTransitionEndListener() {
+    if (!this.dialogEl) return;
+    this.transitionEndHandler = () => {
+      if (this.open) {
+        this.motionVisibleEndEvent.emit();
+      } else {
+        this.motionHiddenEndEvent.emit();
+      }
+    };
+    this.dialogEl.addEventListener('transitionend', this.transitionEndHandler);
+  }
+
+  private detachTransitionEndListener() {
+    if (!this.dialogEl || !this.transitionEndHandler) return;
+    this.dialogEl.removeEventListener('transitionend', this.transitionEndHandler);
+    this.transitionEndHandler = undefined;
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -236,12 +280,12 @@ export class IoDrawer {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { placement, size, heading, headingId } = this;
+    const { placement, size, background, heading, headingId } = this;
     const closeIcon = getDrawerCloseIcon();
     const isBottomSheet = placement === 'bottom';
     const drawerClass = isBottomSheet
-      ? `${getDrawerClass(placement, size)} drawer--sheet`
-      : getDrawerClass(placement, size);
+      ? `${getDrawerClass(placement, size)} drawer--sheet drawer--bg-${background}`
+      : `${getDrawerClass(placement, size)} drawer--bg-${background}`;
 
     return (
       <Host>

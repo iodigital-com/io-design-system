@@ -18,6 +18,21 @@ export function getDrawerStyles(): string {
       position: fixed;
     }
 
+    /* ── Background variants ─────────────────────────────────── */
+
+    dialog.drawer--bg-canvas {
+      background: var(--io-bg-page);
+    }
+
+    dialog.drawer--bg-surface {
+      background: var(--io-bg-surface);
+    }
+
+    dialog.drawer--bg-elevated {
+      background: var(--io-bg-raised);
+      box-shadow: var(--io-shadow-xl);
+    }
+
     dialog:not([open]) {
       display: none;
     }

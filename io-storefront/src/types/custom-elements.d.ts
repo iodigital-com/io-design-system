@@ -26,6 +26,7 @@ declare module 'react' {
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
+  'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { tag?: string; size?: string; weight?: string; align?: string; color?: string; ellipsis?: boolean };
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
@@ -52,6 +53,7 @@ declare module 'react' {
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tabs-bar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsBarElement>, HTMLIoTabsBarElement> & Partial<StencilJSX.IoTabsBar>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
+  'io-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { tag?: string; size?: string; weight?: string; align?: string; color?: string; ellipsis?: boolean };
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;
   'io-toast': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastElement>, HTMLIoToastElement> & Partial<StencilJSX.IoToast>;
   'io-toast-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastItemElement>, HTMLIoToastItemElement> & Partial<StencilJSX.IoToastItem>;

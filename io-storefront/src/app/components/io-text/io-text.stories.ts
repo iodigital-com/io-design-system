@@ -1,0 +1,85 @@
+import type { PropDefinition } from '@/models/propDefinition';
+import type { Story } from '@/models/story';
+
+export const textStory: Story<'io-text'> = {
+  state: {
+    properties: {
+      tag: 'p',
+      size: 'base',
+      weight: 'regular',
+      align: 'start',
+      color: 'primary',
+    },
+  },
+  generator: ({ properties } = {}) => [
+    {
+      tag: 'io-text' as const,
+      properties: properties ?? {},
+      children: ['The quick brown fox jumps over the lazy dog.'],
+    },
+  ],
+};
+
+export const textStorySizes: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['xs', 'sm', 'base', 'lg', 'xl'] as const).map((size) => ({
+      tag: 'io-text' as const,
+      properties: { size, tag: 'p', weight: 'regular', color: 'primary' },
+      children: [`Size: ${size} — The quick brown fox jumps over the lazy dog.`],
+    })),
+};
+
+export const textStoryColors: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error'] as const).map((color) => ({
+      tag: 'io-text' as const,
+      properties: { color, tag: 'p', size: 'base', weight: 'regular' },
+      children: [`Color: ${color}`],
+    })),
+};
+
+export const textPropDefinitions: PropDefinition[] = [
+  {
+    name: 'tag',
+    type: 'select',
+    options: ['p', 'span', 'div', 'blockquote', 'time'],
+    defaultValue: 'p',
+    description: 'Semantic HTML element to render.',
+  },
+  {
+    name: 'size',
+    type: 'select',
+    options: ['xs', 'sm', 'base', 'lg', 'xl'],
+    defaultValue: 'base',
+    description: 'Font size using --io-font-size-* tokens.',
+  },
+  {
+    name: 'weight',
+    type: 'select',
+    options: ['regular', 'medium', 'semibold', 'bold'],
+    defaultValue: 'regular',
+    description: 'Font weight using --io-font-weight-* tokens.',
+  },
+  {
+    name: 'align',
+    type: 'select',
+    options: ['start', 'center', 'end', 'inherit'],
+    defaultValue: 'start',
+    description: 'Text alignment.',
+  },
+  {
+    name: 'color',
+    type: 'select',
+    options: ['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'inherit'],
+    defaultValue: 'primary',
+    description: 'Text color using semantic --io-text-* tokens.',
+  },
+  {
+    name: 'ellipsis',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, truncates text with an ellipsis on a single line.',
+  },
+];

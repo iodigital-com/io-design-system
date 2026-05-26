@@ -184,6 +184,14 @@ export const sitemap: NavSection[] = [
         related: ['io-input', 'io-radio-group', 'io-checkbox-group'],
       },
       {
+        label: 'Heading',
+        href: '/components/io-heading/configurator',
+        status: 'beta',
+        slug: 'io-heading',
+        description: 'Light DOM typography primitive for headings. Renders h1–h6 with token-driven font size, weight, color, and alignment. Visual size is independent from semantic heading level.',
+        related: ['io-text', 'io-link', 'io-badge'],
+      },
+      {
         label: 'Input',
         href: '/components/io-input/configurator',
         status: 'beta',
@@ -318,6 +326,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-tag',
         description: 'Toggleable filter chip or removable label. Renders as a button with aria-pressed — emits toggle and remove.',
         related: ['io-badge', 'io-checkbox', 'io-tabs'],
+      },
+      {
+        label: 'Text',
+        href: '/components/io-text/configurator',
+        status: 'beta',
+        slug: 'io-text',
+        description: 'Light DOM typography primitive for body copy. Renders semantic HTML (p, span, div, blockquote, time) with token-driven font size, weight, color, and alignment.',
+        related: ['io-heading', 'io-link', 'io-badge'],
       },
       {
         label: 'Textarea',

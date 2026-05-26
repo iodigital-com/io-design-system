@@ -196,10 +196,24 @@ export function getInputStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
+    .input-error--hidden {
+      display: none;
+    }
+
     .input-helper {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .input-helper--hidden {
+      display: none;
+    }
+
+    .input-label__slot--hidden,
+    .input-message__slot--hidden,
+    .input-description__slot--hidden {
+      display: none;
     }
 
     .input-counter {

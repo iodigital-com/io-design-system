@@ -37,6 +37,9 @@ export class IoInput {
 
   @State() private hasPrefix = false;
   @State() private hasSuffix = false;
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
 
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
@@ -215,6 +218,21 @@ export class IoInput {
     if (slot.name === 'suffix') this.hasSuffix = hasNodes;
   }
 
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
+
   @Watch('name')
   nameChanged(newName: string | undefined) {
     this.inputId = resolveInputId(newName, this.fallbackId);
@@ -277,7 +295,7 @@ export class IoInput {
   };
 
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;
@@ -285,11 +303,11 @@ export class IoInput {
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
-
-    const messageId = errorId;
+    const showMessage = showError && (hasMessageSlot || message);
+    const showDescription = !showError && (hasDescriptionSlot || helperText);
     const describedBy = [
-      hasState && message ? messageId : '',
-      !hasState && helperText ? helperId : '',
+      showMessage ? errorId : '',
+      showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const showCounter = counter && maxLength != null;
@@ -391,19 +409,33 @@ export class IoInput {
           {/* Label sits outside the row so it can use absolute positioning
               within the wrapper for the floating-label effect */}
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label'}>
-            {label}
-            {required && (
-              <span class="input-required" aria-hidden="true">
-                {' *'}
+            <span class={hasLabelSlot ? 'input-label__slot' : 'input-label__slot input-label__slot--hidden'}>
+              <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+            </span>
+            {!hasLabelSlot && (
+              <span>
+                {label}
+                {required && <span class="input-required" aria-hidden="true"> *</span>}
               </span>
             )}
+            {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {hasState && message && (
-          <p id={messageId} class={`input-message input-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>
+        {showError && (
+          <p id={errorId} class={`input-error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
         )}
-        {!hasState && helperText && (
-          <p id={helperId} class="input-helper">{helperText}</p>
+        {!showError && (
+          <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
+          </p>
         )}
         {showCounter && (
           <div id={this.counterId} class="input-counter" aria-hidden="true">

@@ -152,6 +152,10 @@ export class IoTextarea {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -227,6 +231,21 @@ export class IoTextarea {
     }
   }
 
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleInput = (ev: InputEvent) => {
@@ -282,6 +301,9 @@ export class IoTextarea {
       form,
       wrap,
       hideLabel,
+      hasLabelSlot,
+      hasDescriptionSlot,
+      hasMessageSlot,
     } = this;
     const textareaId = this.fieldId;
     const messageId = `${textareaId}-message`;
@@ -292,10 +314,11 @@ export class IoTextarea {
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
-
+    const showMessage = showError && (hasMessageSlot || message);
+    const showDescription = !showError && (hasDescriptionSlot || helperText);
     const describedBy = [
-      hasState && message ? messageId : '',
-      !hasState && helperText ? helperId : '',
+      showMessage ? messageId : '',
+      showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const showCounter = counter && maxLength != null;
@@ -334,12 +357,16 @@ export class IoTextarea {
             onBlur={this.handleBlur}
           />
           <label htmlFor={textareaId} class={hideLabel ? 'textarea-label textarea-label--sr-only' : 'textarea-label'}>
-            {label}
-            {required && (
-              <span class="textarea-required" aria-hidden="true">
-                {' *'}
+            <span class={hasLabelSlot ? 'textarea-label__slot' : 'textarea-label__slot textarea-label__slot--hidden'}>
+              <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+            </span>
+            {!hasLabelSlot && (
+              <span>
+                {label}
+                {required && <span class="textarea-required" aria-hidden="true">{' *'}</span>}
               </span>
             )}
+            {hasLabelSlot && required && <span class="textarea-required" aria-hidden="true">{' *'}</span>}
           </label>
           {loading && (
             <div class="textarea-wrapper__loading" aria-hidden="true">
@@ -347,12 +374,27 @@ export class IoTextarea {
             </div>
           )}
         </div>
-        {hasState && message && (
-          <p id={messageId} class={`textarea-message textarea-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
+        {showError && (
+          <p id={messageId} class={`textarea-message textarea-message--error${showMessage ? '' : ' textarea-message--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'textarea-message__slot' : 'textarea-message__slot textarea-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {(showSuccess || showWarning) && message && (
+          <p id={messageId} class={`textarea-message textarea-message--${showSuccess ? 'success' : 'warning'}`} role="status">
             {message}
           </p>
         )}
-        {!hasState && helperText && <p id={helperId} class="textarea-helper">{helperText}</p>}
+        {!hasState && !this.faceInvalid && (
+          <p id={helperId} class={`textarea-helper${showDescription ? '' : ' textarea-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'textarea-description__slot' : 'textarea-description__slot textarea-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
+          </p>
+        )}
         {showCounter && (
           <div id={this.counterId} class="textarea-counter" aria-hidden="true">
             {currentLength} / {maxLength}

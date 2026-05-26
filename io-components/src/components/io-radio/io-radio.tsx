@@ -95,6 +95,10 @@ export class IoRadio {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both state prop and form state */
   @State() faceInvalid = false;
 
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -176,6 +180,21 @@ export class IoRadio {
     }
   }
 
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
@@ -204,7 +223,7 @@ export class IoRadio {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, loading, state, message, helperText, form, hideLabel } = this;
+    const { label, name, value, checked, required, disabled, loading, state, message, helperText, form, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
@@ -216,10 +235,11 @@ export class IoRadio {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
     const showFaceError = this.faceInvalid && state !== 'error';
+    const showMessage = showError && (hasMessageSlot || message);
 
     const describedBy = [
-      !hasState && !showFaceError && helperText ? helperId : null,
-      hasState && message ? messageId : null,
+      !hasState && !showFaceError && (hasDescriptionSlot || helperText) ? helperId : null,
+      hasState && (hasMessageSlot || message) ? messageId : null,
       showFaceError ? faceErrorId : null,
     ]
       .filter((id): id is string => Boolean(id))
@@ -256,7 +276,10 @@ export class IoRadio {
               </span>
             )}
             <span class={hideLabel ? 'radio-text radio-text--sr-only' : 'radio-text'}>
-              {label}
+              <span class={hasLabelSlot ? 'radio-label__slot' : 'radio-label__slot radio-label__slot--hidden'}>
+                <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+              </span>
+              {!hasLabelSlot && label}
               {required && (
                 <span class="radio-required" aria-hidden="true">
                   {' *'}
@@ -265,8 +288,16 @@ export class IoRadio {
             </span>
           </label>
         </div>
-        {hasState && message && (
-          <p id={messageId} class={`radio-message radio-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
+        {showError && (
+          <p id={messageId} class={`radio-message radio-message--error${showMessage ? '' : ' radio-message--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'radio-message__slot' : 'radio-message__slot radio-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {(showSuccess || showWarning) && message && (
+          <p id={messageId} class={`radio-message radio-message--${showSuccess ? 'success' : 'warning'}`} role="status">
             {message}
           </p>
         )}
@@ -275,9 +306,12 @@ export class IoRadio {
             Please select an option
           </p>
         )}
-        {!hasState && !this.faceInvalid && helperText && (
-          <p id={helperId} class="radio-helper">
-            {helperText}
+        {!hasState && !this.faceInvalid && (
+          <p id={helperId} class={`radio-helper${hasDescriptionSlot || helperText ? '' : ' radio-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'radio-description__slot' : 'radio-description__slot radio-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
           </p>
         )}
       </Host>

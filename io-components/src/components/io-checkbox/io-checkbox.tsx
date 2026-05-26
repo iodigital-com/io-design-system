@@ -98,6 +98,10 @@ export class IoCheckbox {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -155,6 +159,21 @@ export class IoCheckbox {
     if (input) input.indeterminate = this.indeterminate;
   }
 
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
@@ -168,7 +187,7 @@ export class IoCheckbox {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, indeterminate, required, disabled, loading, state, message, helperText, form, hideLabel } = this;
+    const { label, name, value, checked, indeterminate, required, disabled, loading, state, message, helperText, form, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
@@ -180,10 +199,11 @@ export class IoCheckbox {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
     const showFaceError = this.faceInvalid && state !== 'error';
+    const showMessage = showError && (hasMessageSlot || message);
 
     const describedBy = [
-      !hasState && !showFaceError && helperText ? helperId : null,
-      hasState && message ? messageId : null,
+      !hasState && !showFaceError && (hasDescriptionSlot || helperText) ? helperId : null,
+      hasState && (hasMessageSlot || message) ? messageId : null,
       showFaceError ? faceErrorId : null,
     ]
       .filter((id): id is string => Boolean(id))
@@ -232,7 +252,10 @@ export class IoCheckbox {
               </span>
             )}
             <span class={hideLabel ? 'checkbox-text checkbox-text--sr-only' : 'checkbox-text'}>
-              {label}
+              <span class={hasLabelSlot ? 'checkbox-label__slot' : 'checkbox-label__slot checkbox-label__slot--hidden'}>
+                <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+              </span>
+              {!hasLabelSlot && label}
               {required && (
                 <span class="checkbox-required" aria-hidden="true">
                   {' *'}
@@ -241,8 +264,16 @@ export class IoCheckbox {
             </span>
           </label>
         </div>
-        {hasState && message && (
-          <p id={messageId} class={`checkbox-message checkbox-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
+        {showError && (
+          <p id={messageId} class={`checkbox-message checkbox-message--error${showMessage ? '' : ' checkbox-message--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'checkbox-message__slot' : 'checkbox-message__slot checkbox-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {(showSuccess || showWarning) && message && (
+          <p id={messageId} class={`checkbox-message checkbox-message--${showSuccess ? 'success' : 'warning'}`} role="status">
             {message}
           </p>
         )}
@@ -251,9 +282,12 @@ export class IoCheckbox {
             Please check this box
           </p>
         )}
-        {!hasState && !this.faceInvalid && helperText && (
-          <p id={helperId} class="checkbox-helper">
-            {helperText}
+        {!hasState && !this.faceInvalid && (
+          <p id={helperId} class={`checkbox-helper${hasDescriptionSlot || helperText ? '' : ' checkbox-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'checkbox-description__slot' : 'checkbox-description__slot checkbox-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
           </p>
         )}
       </Host>

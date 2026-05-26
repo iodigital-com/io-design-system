@@ -169,10 +169,24 @@ export function getTextareaStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
+    .textarea-error--hidden {
+      display: none;
+    }
+
     .textarea-helper {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .textarea-helper--hidden {
+      display: none;
+    }
+
+    .textarea-label__slot--hidden,
+    .textarea-message__slot--hidden,
+    .textarea-description__slot--hidden {
+      display: none;
     }
 
     .textarea-counter {

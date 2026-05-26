@@ -133,6 +133,26 @@ export default function IoRadioUsagePage() {
         </div>
       </section>
 
+
+      {/* ── Rich content via named slots ─────────────────────────── */}
+      <section id="named-slots" className="space-y-6">
+        <SectionHeader
+          title="Rich content via named slots"
+          description="Use named slots to embed rich HTML inside the label, description, or message areas. Slot content overrides the corresponding prop when provided."
+        />
+        <div className="space-y-3">
+          <RuleCard label="label slot — icons and badges in labels">
+            Place an icon or &ldquo;recommended&rdquo; badge next to the radio label using the <C>label</C> slot. Always wrap decorative icons in <C>aria-hidden=&quot;true&quot;</C>.
+          </RuleCard>
+          <RuleCard label="description slot — links in helper text">
+            Use the <C>description</C> slot when the helper text needs a link — for example, linking to a pricing page from a billing option label.
+          </RuleCard>
+          <RuleCard label="message slot — rich error messages">
+            Use the <C>message</C> slot when the error explanation needs a link or formatted code. The slot retains <C>role=&quot;alert&quot;</C>.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

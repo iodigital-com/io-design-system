@@ -170,10 +170,24 @@ export function getCheckboxStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
+    .checkbox-error--hidden {
+      display: none;
+    }
+
     .checkbox-helper {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .checkbox-helper--hidden {
+      display: none;
+    }
+
+    .checkbox-label__slot--hidden,
+    .checkbox-message__slot--hidden,
+    .checkbox-description__slot--hidden {
+      display: none;
     }
 
     @media (prefers-reduced-motion: reduce) {

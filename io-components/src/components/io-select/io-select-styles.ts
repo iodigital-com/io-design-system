@@ -160,10 +160,24 @@ export function getSelectStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
+    .select-error--hidden {
+      display: none;
+    }
+
     .select-helper {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .select-helper--hidden {
+      display: none;
+    }
+
+    .select-label__slot--hidden,
+    .select-message__slot--hidden,
+    .select-description__slot--hidden {
+      display: none;
     }
 
     /* ── Combobox (custom mode) ──────────────────────────── */

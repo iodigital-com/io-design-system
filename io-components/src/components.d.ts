@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAlertVariant } from "./components/io-alert/types";
 import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAlertVariant } from "./components/io-alert/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -41,8 +41,8 @@ import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/i
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkSize } from "./components/io-wordmark/types";
-export { IoAlertVariant } from "./components/io-alert/types";
 export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAlertVariant } from "./components/io-alert/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -489,6 +489,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
@@ -1256,6 +1261,11 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
          */
@@ -1429,6 +1439,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -3876,6 +3891,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
          */
@@ -4641,6 +4661,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
          */
@@ -4810,6 +4835,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -5652,6 +5682,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5787,6 +5818,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5819,6 +5851,7 @@ declare namespace LocalJSX {
         "custom": boolean;
         "multiple": boolean;
         "filter": boolean;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }

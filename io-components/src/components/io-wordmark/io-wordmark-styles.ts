@@ -12,7 +12,7 @@ export function getWordmarkStyles(): string {
       font-weight: 700;
       line-height: 1;
       white-space: nowrap;
-      letter-spacing: -0.01em;
+      letter-spacing: var(--io-wordmark-letter-spacing);
     }
 
     /* Size scale */

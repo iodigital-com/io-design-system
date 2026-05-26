@@ -15,9 +15,16 @@ export function getDrawerStyles(): string {
       overflow-y: auto;
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
+      position: fixed;
+    }
+
+    dialog:not([open]) {
+      display: none;
+    }
+
+    dialog[open] {
       display: flex;
       flex-direction: column;
-      position: fixed;
     }
 
     dialog::backdrop {

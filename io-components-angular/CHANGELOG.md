@@ -1,5 +1,28 @@
 # @io-digital/components-angular
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [b137696]
+- Updated dependencies [562ec5c]
+- Updated dependencies [64d8ab5]
+- Updated dependencies [360cc93]
+- Updated dependencies [7094392]
+- Updated dependencies [19f89ab]
+- Updated dependencies [cab5c52]
+- Updated dependencies [cab5c52]
+- Updated dependencies [31ab2a3]
+- Updated dependencies [5574cdd]
+- Updated dependencies [cab5c52]
+- Updated dependencies [74bb10f]
+- Updated dependencies [6a16027]
+- Updated dependencies [1166ab5]
+- Updated dependencies [b137696]
+- Updated dependencies [8663948]
+- Updated dependencies [e2000a1]
+  - @io-digital/components@1.3.0
+
 ## 3.0.0
 
 ### Patch Changes

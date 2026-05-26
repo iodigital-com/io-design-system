@@ -9,8 +9,8 @@ import type { IoTabsUpdateDetail } from './types';
  * io-tabs
  * ========
  * Slot-based controlled tabs-bar navigation with full keyboard support.
- * Aligns with the Porsche Tabs Bar API: place <button> children inside the
- * component and control the active tab via activeTabIndex + the update event.
+ * Place <button> children inside the component and control the active tab
+ * via activeTabIndex + the update event.
  *
  * Manages roving tabindex (only the active tab is in the tab order).
  * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
@@ -32,7 +32,7 @@ export class IoTabs {
 
   // ── Props ─────────────────────────────────────────────────────
 
-  /** 0-based index of the active tab (controlled, like Porsche Tabs Bar). */
+  /** 0-based index of the active tab (controlled). */
   @Prop({ mutable: true, reflect: true }) activeTabIndex = 0;
 
   /** Optional accessible label for the tablist region. */

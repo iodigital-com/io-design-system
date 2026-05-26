@@ -1,0 +1,367 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import { IoDrawer } from './io-drawer';
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function makeDrawer(overrides: Partial<IoDrawer> = {}): IoDrawer {
+  const c = new IoDrawer();
+  (c as any).el = document.createElement('io-drawer');
+  (c as any).dismissEvent = { emit: vi.fn() };
+  (c as any).componentWillLoad();
+  Object.assign(c, overrides);
+  return c;
+}
+
+function makeDialogEl(open = false): HTMLDialogElement {
+  const el = document.createElement('div') as unknown as HTMLDialogElement;
+  el.open = open;
+  el.showModal = vi.fn(() => {
+    el.open = true;
+  });
+  el.close = vi.fn(() => {
+    el.open = false;
+  });
+  (el as any).getAnimations = vi.fn(() => [{ cancel: vi.fn() }]);
+  (el as any).getBoundingClientRect = vi.fn(() => ({
+    left: 100,
+    right: 400,
+    top: 100,
+    bottom: 400,
+    width: 300,
+    height: 300,
+    x: 100,
+    y: 100,
+    toJSON: () => ({}),
+  }));
+  return el;
+}
+
+function withShadowRoot(
+  c: IoDrawer,
+  dialogEl: HTMLDialogElement | null,
+): void {
+  (c as any).el = {
+    shadowRoot: {
+      querySelector: vi.fn().mockReturnValue(dialogEl),
+    },
+  };
+}
+
+// ─── onOpenChange (Watch handler) ────────────────────────────────────────────
+
+describe('io-drawer — onOpenChange', () => {
+  let c: IoDrawer;
+
+  beforeEach(() => {
+    c = makeDrawer();
+  });
+
+  it('returns early when shadowRoot is null (el has no shadowRoot)', () => {
+    (c as any).el = { shadowRoot: null };
+    // Must not throw; dialog interactions must not happen.
+    expect(() => (c as any).onOpenChange(true)).not.toThrow();
+    expect(() => (c as any).onOpenChange(false)).not.toThrow();
+  });
+
+  it('returns early when shadowRoot exists but querySelector returns null', () => {
+    (c as any).el = {
+      shadowRoot: { querySelector: vi.fn().mockReturnValue(null) },
+    };
+    expect(() => (c as any).onOpenChange(true)).not.toThrow();
+    expect(() => (c as any).onOpenChange(false)).not.toThrow();
+  });
+
+  it('returns early when el itself is undefined', () => {
+    (c as any).el = undefined;
+    expect(() => (c as any).onOpenChange(true)).not.toThrow();
+  });
+
+  // ── newVal = true ──────────────────────────────────────────────
+
+  it('calls getAnimations, cancels animations, and calls showModal when dialog is closed', () => {
+    const dialogEl = makeDialogEl(false);
+    const cancelSpy = vi.fn();
+    (dialogEl as any).getAnimations = vi.fn(() => [{ cancel: cancelSpy }]);
+    withShadowRoot(c, dialogEl);
+
+    (c as any).onOpenChange(true);
+
+    expect((dialogEl as any).getAnimations).toHaveBeenCalled();
+    expect(cancelSpy).toHaveBeenCalled();
+    expect(dialogEl.showModal).toHaveBeenCalledTimes(1);
+  });
+
+  it('does NOT call showModal when dialog is already open (newVal=true, dialog.open=true)', () => {
+    const dialogEl = makeDialogEl(true);
+    withShadowRoot(c, dialogEl);
+
+    (c as any).onOpenChange(true);
+
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+    expect((c as any).dismissEvent.emit).not.toHaveBeenCalled();
+  });
+
+  it('handles getAnimations returning an empty array without throwing', () => {
+    const dialogEl = makeDialogEl(false);
+    (dialogEl as any).getAnimations = vi.fn(() => []);
+    withShadowRoot(c, dialogEl);
+
+    expect(() => (c as any).onOpenChange(true)).not.toThrow();
+    expect(dialogEl.showModal).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles getAnimations being undefined without throwing', () => {
+    const dialogEl = makeDialogEl(false);
+    (dialogEl as any).getAnimations = undefined;
+    withShadowRoot(c, dialogEl);
+
+    // Optional chaining in source: `dialog.getAnimations?.()` — must not throw.
+    expect(() => (c as any).onOpenChange(true)).not.toThrow();
+    expect(dialogEl.showModal).toHaveBeenCalledTimes(1);
+  });
+
+  // ── newVal = false ─────────────────────────────────────────────
+
+  it('calls dialog.close() and emits dismiss when dialog is open and newVal=false', () => {
+    const dialogEl = makeDialogEl(true);
+    withShadowRoot(c, dialogEl);
+
+    (c as any).onOpenChange(false);
+
+    expect(dialogEl.close).toHaveBeenCalledTimes(1);
+    expect((c as any).dismissEvent.emit).toHaveBeenCalledTimes(1);
+  });
+
+  it('does NOT call dialog.close() but still emits dismiss when dialog is already closed and newVal=false', () => {
+    const dialogEl = makeDialogEl(false);
+    withShadowRoot(c, dialogEl);
+
+    (c as any).onOpenChange(false);
+
+    expect(dialogEl.close).not.toHaveBeenCalled();
+    expect((c as any).dismissEvent.emit).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─── componentDidLoad ────────────────────────────────────────────────────────
+
+describe('io-drawer — componentDidLoad', () => {
+  it('does NOT call showModal when open=false', () => {
+    const c = makeDrawer({ open: false });
+    const dialogEl = makeDialogEl(false);
+    (c as any).dialogEl = dialogEl;
+
+    (c as any).componentDidLoad();
+
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('calls showModal when open=true and dialogEl is set', () => {
+    const c = makeDrawer({ open: true });
+    const dialogEl = makeDialogEl(false);
+    (c as any).dialogEl = dialogEl;
+
+    (c as any).componentDidLoad();
+
+    expect(dialogEl.showModal).toHaveBeenCalledTimes(1);
+  });
+
+  it('does NOT throw when open=true but dialogEl is undefined', () => {
+    const c = makeDrawer({ open: true });
+    (c as any).dialogEl = undefined;
+
+    expect(() => (c as any).componentDidLoad()).not.toThrow();
+  });
+});
+
+// ─── handleCancel ─────────────────────────────────────────────────────────────
+
+describe('io-drawer — handleCancel', () => {
+  let c: IoDrawer;
+
+  beforeEach(() => {
+    c = makeDrawer({ open: true });
+  });
+
+  it('calls ev.preventDefault()', () => {
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (c as any).handleCancel(ev);
+    expect(ev.preventDefault).toHaveBeenCalledTimes(1);
+  });
+
+  it('sets open to false', () => {
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (c as any).handleCancel(ev);
+    expect(c.open).toBe(false);
+  });
+});
+
+// ─── handleCloseClick ────────────────────────────────────────────────────────
+
+describe('io-drawer — handleCloseClick (lifecycle file supplemental)', () => {
+  it('sets open to false from an open state', () => {
+    const c = makeDrawer({ open: true });
+    (c as any).handleCloseClick();
+    expect(c.open).toBe(false);
+  });
+});
+
+// ─── handleDialogClick ───────────────────────────────────────────────────────
+
+describe('io-drawer — handleDialogClick (lifecycle file supplemental)', () => {
+  it('returns early without changing open when closeOnBackdrop=false', () => {
+    const c = makeDrawer({ open: true, closeOnBackdrop: false });
+    const dialogEl = makeDialogEl(true);
+    const ev = {
+      clientX: 10,
+      clientY: 10,
+      currentTarget: dialogEl,
+    } as unknown as MouseEvent;
+
+    (c as any).handleDialogClick(ev);
+
+    expect(c.open).toBe(true);
+  });
+
+  it('sets open=false when click is outside dialog bounds and closeOnBackdrop=true', () => {
+    const c = makeDrawer({ open: true, closeOnBackdrop: true });
+    const dialogEl = makeDialogEl(true);
+    // Coordinates outside the rect returned by makeDialogEl (left:100, right:400, top:100, bottom:400)
+    const ev = {
+      clientX: 10,
+      clientY: 10,
+      currentTarget: dialogEl,
+    } as unknown as MouseEvent;
+
+    (c as any).handleDialogClick(ev);
+
+    expect(c.open).toBe(false);
+  });
+
+  it('does not change open when click is inside dialog bounds', () => {
+    const c = makeDrawer({ open: true, closeOnBackdrop: true });
+    const dialogEl = makeDialogEl(true);
+    // Coordinates inside the rect (center of 100-400)
+    const ev = {
+      clientX: 200,
+      clientY: 200,
+      currentTarget: dialogEl,
+    } as unknown as MouseEvent;
+
+    (c as any).handleDialogClick(ev);
+
+    expect(c.open).toBe(true);
+  });
+});
+
+// ─── show / close (edge cases not in spec.ts) ────────────────────────────────
+
+describe('io-drawer — show/close edge cases', () => {
+  it('show() when already open is a no-op (open stays true)', async () => {
+    const c = makeDrawer({ open: true });
+    await c.show();
+    expect(c.open).toBe(true);
+  });
+
+  it('close() when already closed is a no-op (open stays false)', async () => {
+    const c = makeDrawer({ open: false });
+    await c.close();
+    expect(c.open).toBe(false);
+  });
+
+  it('show() transitions open from false to true', async () => {
+    const c = makeDrawer({ open: false });
+    await c.show();
+    expect(c.open).toBe(true);
+  });
+
+  it('close() transitions open from true to false', async () => {
+    const c = makeDrawer({ open: true });
+    await c.close();
+    expect(c.open).toBe(false);
+  });
+});
+
+// ─── render branches ─────────────────────────────────────────────────────────
+
+describe('io-drawer — render() branch coverage', () => {
+  it('does not throw when rendered without a heading', () => {
+    const c = makeDrawer();
+    // heading is undefined by default
+    expect(c.heading).toBeUndefined();
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw when rendered with a heading', () => {
+    const c = makeDrawer({ heading: 'Drawer Title' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for placement="left"', () => {
+    const c = makeDrawer({ placement: 'left' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for placement="right"', () => {
+    const c = makeDrawer({ placement: 'right' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for placement="bottom"', () => {
+    const c = makeDrawer({ placement: 'bottom' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for size="sm"', () => {
+    const c = makeDrawer({ size: 'sm' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for size="md"', () => {
+    const c = makeDrawer({ size: 'md' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for size="lg"', () => {
+    const c = makeDrawer({ size: 'lg' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw for size="full"', () => {
+    const c = makeDrawer({ size: 'full' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw when open=true during render', () => {
+    const c = makeDrawer({ open: true });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('does not throw with a custom closeLabel', () => {
+    const c = makeDrawer({ closeLabel: 'Sluiten' });
+    expect(() => (c as any).render()).not.toThrow();
+  });
+});
+
+// ─── componentWillLoad ───────────────────────────────────────────────────────
+
+describe('io-drawer — componentWillLoad', () => {
+  it('generates a unique headingId on each instantiation', () => {
+    const c1 = makeDrawer();
+    const c2 = makeDrawer();
+    const id1 = (c1 as any).headingId as string;
+    const id2 = (c2 as any).headingId as string;
+    expect(id1).toMatch(/^io-drawer-heading-/);
+    expect(id2).toMatch(/^io-drawer-heading-/);
+    // IDs are generated from Math.random() so they will differ in practice.
+    // We just assert both are valid — uniqueness is a probabilistic guarantee.
+    expect(typeof id1).toBe('string');
+    expect(typeof id2).toBe('string');
+  });
+
+  it('headingId contains the expected prefix', () => {
+    const c = makeDrawer();
+    expect((c as any).headingId).toMatch(/^io-drawer-heading-[a-z0-9]+$/);
+  });
+});

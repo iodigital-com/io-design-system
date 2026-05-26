@@ -87,6 +87,16 @@ describe('io-table-head-row — componentDidRender', () => {
     expect(checkbox.indeterminate).toBe(true);
   });
 
+  it('is a no-op when selectable is true but no matching checkbox in DOM', () => {
+    const component = new IoTableHeadRow();
+    (component as any).selectAll = { emit: vi.fn() };
+    component.selectable = true;
+    component.selectAllIndeterminate = true;
+    // el has no .th--checkbox input[type="checkbox"] descendant
+    (component as any).el = document.createElement('tr');
+    expect(() => component.componentDidRender()).not.toThrow();
+  });
+
   it('clears indeterminate when selectAllChecked is true', () => {
     const component = new IoTableHeadRow();
     (component as any).selectAll = { emit: vi.fn() };

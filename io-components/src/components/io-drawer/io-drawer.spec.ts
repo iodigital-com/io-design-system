@@ -62,6 +62,22 @@ describe('io-drawer — render contract', () => {
     const styles: string = getDrawerStyles();
     expect(styles).toContain('--io-backdrop');
   });
+
+  it('dialog[open] applies display flex so layout only activates when native open attribute is present', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('dialog[open]');
+    const openIdx = styles.indexOf('dialog[open]');
+    const openBlock = styles.slice(openIdx, openIdx + 80);
+    expect(openBlock).toContain('display: flex');
+  });
+
+  it('dialog:not([open]) display none prevents drawer from being visible when closed (regression: #336 incomplete fix)', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('dialog:not([open])');
+    const hiddenIdx = styles.indexOf('dialog:not([open])');
+    const hiddenBlock = styles.slice(hiddenIdx, hiddenIdx + 60);
+    expect(hiddenBlock).toContain('display: none');
+  });
 });
 
 describe('io-drawer — show/close methods', () => {

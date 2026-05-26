@@ -1314,6 +1314,11 @@ export namespace Components {
      */
     interface IoTableBodyRow {
         /**
+          * Accessible label for the row selection checkbox. Should describe the row (e.g. the row's primary identifier).
+          * @default 'row'
+         */
+        "rowLabel": string;
+        /**
           * Renders the row-selection checkbox cell.
           * @default false
          */
@@ -1390,7 +1395,7 @@ export namespace Components {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * Place <button> children inside the
      * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
@@ -1403,7 +1408,7 @@ export namespace Components {
      */
     interface IoTabs {
         /**
-          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * 0-based index of the active tab (controlled).
           * @default 0
          */
         "activeTabIndex": number;
@@ -2496,7 +2501,7 @@ declare global {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * Place <button> children inside the
      * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
@@ -3969,6 +3974,11 @@ declare namespace LocalJSX {
          */
         "onSelect"?: (event: IoTableBodyRowCustomEvent<IoTableBodyRowSelectDetail>) => void;
         /**
+          * Accessible label for the row selection checkbox. Should describe the row (e.g. the row's primary identifier).
+          * @default 'row'
+         */
+        "rowLabel"?: string;
+        /**
           * Renders the row-selection checkbox cell.
           * @default false
          */
@@ -4053,7 +4063,7 @@ declare namespace LocalJSX {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+     * Place <button> children inside the
      * component and control the active tab via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
@@ -4066,7 +4076,7 @@ declare namespace LocalJSX {
      */
     interface IoTabs {
         /**
-          * 0-based index of the active tab (controlled, like Porsche Tabs Bar).
+          * 0-based index of the active tab (controlled).
           * @default 0
          */
         "activeTabIndex"?: number;
@@ -4544,6 +4554,7 @@ declare namespace LocalJSX {
     interface IoTableBodyRowAttributes {
         "selectable": boolean;
         "selected": boolean;
+        "rowLabel": string;
     }
     interface IoTableHeadCellAttributes {
         "sortable": boolean;
@@ -5047,7 +5058,7 @@ declare module "@stencil/core" {
              * io-tabs
              * ========
              * Slot-based controlled tabs-bar navigation with full keyboard support.
-             * Aligns with the Porsche Tabs Bar API: place <button> children inside the
+             * Place <button> children inside the
              * component and control the active tab via activeTabIndex + the update event.
              * Manages roving tabindex (only the active tab is in the tab order).
              * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.

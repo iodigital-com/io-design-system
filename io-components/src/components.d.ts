@@ -488,6 +488,11 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
          */
@@ -1129,69 +1134,8 @@ export namespace Components {
           * @default ''
          */
         "value": string;
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Check validity without showing browser validation UI. Returns true if valid.
-         */
-        "checkValidity": () => Promise<boolean>;
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled": boolean;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label": string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length": IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message": string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name": string | undefined;
-        /**
-          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
-         */
-        "reportValidity": () => Promise<boolean>;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required": boolean;
-        /**
-          * Programmatically focus the first empty slot (or the last slot if complete)
-         */
-        "setFocus": (options?: FocusOptions) => Promise<void>;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state": IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type": IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value": string;
-=======
+    }
+    /**
      * io-popover
      * ==========
      * Click-triggered floating content panel with accessible dialog semantics.
@@ -1304,6 +1248,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
@@ -1478,6 +1427,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -2225,6 +2179,7 @@ export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
 export interface IoPinCodeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPinCodeElement;
+}
 export interface IoPopoverCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPopoverElement;
@@ -2808,20 +2763,14 @@ declare global {
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
         removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-=======
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoPinCodeElement: {
+        prototype: HTMLIoPinCodeElement;
+        new (): HTMLIoPinCodeElement;
+    };
     interface HTMLIoPopoverElementEventMap {
         "dismiss": void;
     }
@@ -2846,9 +2795,6 @@ declare global {
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLIoPinCodeElement: {
-        prototype: HTMLIoPinCodeElement;
-        new (): HTMLIoPinCodeElement;
     var HTMLIoPopoverElement: {
         prototype: HTMLIoPopoverElement;
         new (): HTMLIoPopoverElement;
@@ -3889,6 +3835,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
          */
@@ -4533,65 +4484,8 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label"?: string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length"?: IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message"?: string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name"?: string | undefined;
-        /**
-          * Fires on every digit change with current value and completion status
-         */
-        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required"?: boolean;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state"?: IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type"?: IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value"?: string;
-=======
+    }
+    /**
      * io-popover
      * ==========
      * Click-triggered floating content panel with accessible dialog semantics.
@@ -4704,6 +4598,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
@@ -4874,6 +4773,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -5674,6 +5578,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5782,6 +5687,7 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "state": IoPinCodeState;
         "message": string | undefined;
+    }
     interface IoPopoverAttributes {
         "placement": IoPopoverPlacement;
         "open": boolean;
@@ -5806,6 +5712,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5838,6 +5745,7 @@ declare namespace LocalJSX {
         "custom": boolean;
         "multiple": boolean;
         "filter": boolean;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -6278,15 +6186,7 @@ declare module "@stencil/core" {
              * <io-pin-code label="OTP Code" length="6" type="password" required />
              */
             "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
-             * Multi-slot PIN / OTP entry component with keyboard navigation,
-             * auto-advance, backspace-to-previous, and clipboard paste support.
-             * Participates in native HTML forms via the FACE (Form-Associated
-             * Custom Elements) API.
-             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-             * <io-pin-code label="OTP Code" length="6" type="password" required />
-             */
-            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
-=======
+            /**
              * io-popover
              * ==========
              * Click-triggered floating content panel with accessible dialog semantics.

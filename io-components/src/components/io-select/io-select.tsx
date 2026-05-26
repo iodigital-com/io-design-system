@@ -105,6 +105,9 @@ export class IoSelect {
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
@@ -180,6 +183,9 @@ export class IoSelect {
     this.defaultValue = this.value ?? '';
     this.defaultSelectedValues = [...this.selectedValues];
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-select] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -573,7 +579,7 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form } = this;
+    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form, hideLabel } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
@@ -633,7 +639,7 @@ export class IoSelect {
                 ))
             )}
           </select>
-          <label htmlFor={selectId} class="select-label">
+          <label htmlFor={selectId} class={hideLabel ? 'select-label select-label--sr-only' : 'select-label'}>
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
           </label>
@@ -656,7 +662,7 @@ export class IoSelect {
   }
 
   private renderCombobox() {
-    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery } = this;
+    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery, hideLabel } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
@@ -684,7 +690,7 @@ export class IoSelect {
             as internal listbox items. The originals are visually hidden. */}
         <slot />
         <div class={getComboboxWrapperClass(showError, showSuccess, showWarning, isDisabled, loading)}>
-          <label id={labelId} class="select-label" aria-hidden="true">
+          <label id={labelId} class={hideLabel ? 'select-label select-label--sr-only' : 'select-label'} aria-hidden="true">
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
           </label>

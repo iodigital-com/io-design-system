@@ -441,6 +441,11 @@ export namespace Components {
          */
         "helperText": string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Indeterminate state — renders a dash instead of a checkmark
           * @default false
          */
@@ -712,6 +717,11 @@ export namespace Components {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
         /**
           * Label text — required for accessibility
          */
@@ -1160,6 +1170,11 @@ export namespace Components {
          */
         "helperText": string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -1328,6 +1343,11 @@ export namespace Components {
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
         /**
           * Label text — required for accessibility
          */
@@ -1825,6 +1845,11 @@ export namespace Components {
           * Helper text shown below (replaced by message when state is set)
          */
         "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
         /**
           * Label text — required for accessibility
          */
@@ -3615,6 +3640,11 @@ declare namespace LocalJSX {
          */
         "helperText"?: string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Indeterminate state — renders a dash instead of a checkmark
           * @default false
          */
@@ -3884,6 +3914,11 @@ declare namespace LocalJSX {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
         /**
           * Label text — required for accessibility
          */
@@ -4333,6 +4368,11 @@ declare namespace LocalJSX {
          */
         "helperText"?: string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -4497,6 +4537,11 @@ declare namespace LocalJSX {
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
         /**
           * Label text — required for accessibility
          */
@@ -5019,6 +5064,11 @@ declare namespace LocalJSX {
          */
         "helperText"?: string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -5292,6 +5342,7 @@ declare namespace LocalJSX {
         "message": string;
         "helperText": string | undefined;
         "form": string;
+        "hideLabel": boolean;
     }
     interface IoCheckboxGroupAttributes {
         "label": string;
@@ -5347,6 +5398,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "counter": boolean;
         "form": string | undefined;
+        "hideLabel": boolean;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -5417,6 +5469,7 @@ declare namespace LocalJSX {
         "message": string;
         "helperText": string | undefined;
         "form": string;
+        "hideLabel": boolean;
     }
     interface IoRadioGroupAttributes {
         "label": string;
@@ -5448,6 +5501,7 @@ declare namespace LocalJSX {
         "multiple": boolean;
         "filter": boolean;
         "form": string;
+        "hideLabel": boolean;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;
@@ -5533,6 +5587,7 @@ declare namespace LocalJSX {
         "rows": number;
         "size": IoTextareaSize;
         "autocomplete": string | undefined;
+        "hideLabel": boolean;
         "resize": IoTextareaResize;
         "spellCheck": boolean | undefined;
         "loading": boolean;

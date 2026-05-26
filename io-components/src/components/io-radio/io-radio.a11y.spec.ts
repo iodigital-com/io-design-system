@@ -60,4 +60,20 @@ describe('io-radio — a11y (ARIA patterns)', () => {
     `;
     await renderAndCheckA11y(el);
   });
+
+  it('radio with visually hidden label (sr-only) has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <fieldset>
+        <legend>Payment method</legend>
+        <div>
+          <input type="radio" id="r3" name="pay" value="card" />
+          <label for="r3" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0">
+            Credit Card
+          </label>
+        </div>
+      </fieldset>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

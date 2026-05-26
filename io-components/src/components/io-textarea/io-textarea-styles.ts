@@ -61,6 +61,19 @@ export function getTextareaStyles(): string {
       font-size: var(--io-label-font-size-float);
     }
 
+    /* Visually hide label while keeping it accessible to screen readers */
+    .textarea-label--sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
     .textarea-required {
       color: var(--io-color-error);
     }

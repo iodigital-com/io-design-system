@@ -110,6 +110,9 @@ export class IoInput {
   /** Associates this element with a form by id — passed to the native input */
   @Prop() form: string | undefined;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
   /**
    * Custom ARIA attributes to inject onto the native `<input>` element.
    * Keys may omit or include the `aria-` prefix — both forms are accepted.
@@ -131,6 +134,9 @@ export class IoInput {
     this.counterId = `io-input-counter-${++idCounter}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -271,7 +277,7 @@ export class IoInput {
   };
 
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;
@@ -384,7 +390,7 @@ export class IoInput {
           </div>
           {/* Label sits outside the row so it can use absolute positioning
               within the wrapper for the floating-label effect */}
-          <label htmlFor={inputId} class="input-label">
+          <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label'}>
             {label}
             {required && (
               <span class="input-required" aria-hidden="true">

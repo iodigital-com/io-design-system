@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -35,7 +35,7 @@ import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkSize } from "./components/io-wordmark/types";
-export { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -81,6 +81,11 @@ export namespace Components {
          */
         "allowMultiple": boolean;
         /**
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * @default 'transparent'
+         */
+        "background": IoAccordionBackground;
+        /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
          */
@@ -110,6 +115,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoAccordionSize;
+        /**
+          * When `true`, the accordion trigger becomes `position: sticky; top: 0` so it remains visible while scrolling through long expanded content.  Note: `sticky` is only meaningful when `background` is `surface` or `canvas`. Using `sticky=true` with `background="transparent"` will log a development warning because a transparent sticky header causes content to bleed through.
+          * @default false
+         */
+        "sticky": boolean;
     }
     /**
      * io-avatar
@@ -533,6 +543,9 @@ export namespace Components {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -551,7 +564,7 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.
+          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.  For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
          */
         "close": () => Promise<void>;
@@ -580,7 +593,7 @@ export namespace Components {
          */
         "placement": IoDrawerPlacement;
         /**
-          * Programmatically show (open) the drawer. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop.
+          * Programmatically show (open) the drawer. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop.  For bottom-sheet placement, attaches swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.show();
          */
         "show": () => Promise<void>;
@@ -662,11 +675,6 @@ export namespace Components {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText": string | undefined;
-        /**
-          * Visually hides the label while keeping it accessible to screen readers
-          * @default false
-         */
-        "hideLabel": boolean;
         /**
           * Label text — required for accessibility
          */
@@ -2074,6 +2082,9 @@ declare global {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -2844,6 +2855,11 @@ declare namespace LocalJSX {
          */
         "allowMultiple"?: boolean;
         /**
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * @default 'transparent'
+         */
+        "background"?: IoAccordionBackground;
+        /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
          */
@@ -2877,6 +2893,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoAccordionSize;
+        /**
+          * When `true`, the accordion trigger becomes `position: sticky; top: 0` so it remains visible while scrolling through long expanded content.  Note: `sticky` is only meaningful when `background` is `surface` or `canvas`. Using `sticky=true` with `background="transparent"` will log a development warning because a transparent sticky header causes content to bleed through.
+          * @default false
+         */
+        "sticky"?: boolean;
     }
     /**
      * io-avatar
@@ -3308,6 +3329,9 @@ declare namespace LocalJSX {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -3431,11 +3455,6 @@ declare namespace LocalJSX {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText"?: string | undefined;
-        /**
-          * Visually hides the label while keeping it accessible to screen readers
-          * @default false
-         */
-        "hideLabel"?: boolean;
         /**
           * Label text — required for accessibility
          */
@@ -4537,6 +4556,8 @@ declare namespace LocalJSX {
         "headingTag": IoAccordionHeadingTag;
         "size": IoAccordionSize;
         "disabled": boolean;
+        "background": IoAccordionBackground;
+        "sticky": boolean;
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
     }
@@ -4579,6 +4600,7 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "label": string | undefined;
         "size": IoButtonGroupSize;
+        "direction": IoButtonGroupDirection;
     }
     interface IoCarouselAttributes {
         "prevLabel": string;
@@ -4646,7 +4668,6 @@ declare namespace LocalJSX {
         "max": string;
         "step": string;
         "autocomplete": string | undefined;
-        "hideLabel": boolean;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -5002,6 +5023,9 @@ declare module "@stencil/core" {
              * =========
              * Accessible slide-out drawer overlay built on the native <dialog> element.
              * The browser handles focus trapping, ESC key, and role="dialog".
+             * When placement="bottom" the drawer renders as a mobile-optimised bottom
+             * sheet with a drag handle affordance. Swiping the handle downward by more
+             * than 80 px dismisses the drawer.
              * @example <io-drawer heading="Settings" placement="right">
              *   <p>Drawer body content here.</p>
              *   <io-button slot="footer" variant="ghost">Cancel</io-button>

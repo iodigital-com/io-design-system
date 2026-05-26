@@ -6,7 +6,7 @@
  * These tests verify that the component's DOM structure supports correct click
  * behaviour: link items are clickable, current items are not links.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoBreadcrumb } from './io-breadcrumb';
 

@@ -10,6 +10,11 @@ import { beforeEach, describe, it, expect } from 'vitest';
 
 import { IoAvatar } from './io-avatar';
 
+interface IoAvatarInternal {
+  imgError: boolean;
+  onSrcChange(): void;
+}
+
 describe('io-avatar — click behaviour', () => {
   let component: IoAvatar;
 
@@ -48,11 +53,11 @@ describe('io-avatar — click behaviour', () => {
 
   it('imgError state is reset when src changes after an error', () => {
     component.src = 'https://example.com/bad.jpg';
-    (component as any).imgError = true;
+    (component as unknown as IoAvatarInternal).imgError = true;
 
     component.src = 'https://example.com/good.jpg';
-    (component as any).onSrcChange();
+    (component as unknown as IoAvatarInternal).onSrcChange();
 
-    expect((component as any).imgError).toBe(false);
+    expect((component as unknown as IoAvatarInternal).imgError).toBe(false);
   });
 });

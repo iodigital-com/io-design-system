@@ -170,7 +170,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Form Field',
         href: '/components/io-form-field/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-form-field',
         description: 'Auto-wires label, helper text, and error text accessibility attributes (for/id/aria-describedby/aria-invalid) for any slotted form control.',
         related: ['io-input', 'io-radio-group', 'io-checkbox-group'],

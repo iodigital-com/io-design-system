@@ -87,7 +87,7 @@ describe('io-input — named slots (label, description, message)', () => {
   it('renders description paragraph when description slot is occupied', () => {
     (component as any).hasDescriptionSlot = true;
     component.helperText = undefined;
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -102,7 +102,7 @@ describe('io-input — named slots (label, description, message)', () => {
   it('hides description paragraph when neither slot nor helperText is present', () => {
     (component as any).hasDescriptionSlot = false;
     component.helperText = undefined;
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -128,9 +128,9 @@ describe('io-input — named slots (label, description, message)', () => {
   });
 
   it('renders message paragraph when message slot is occupied and error is true', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = true;
-    component.errorMessage = undefined;
+    component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -145,9 +145,9 @@ describe('io-input — named slots (label, description, message)', () => {
   });
 
   it('hides error paragraph when error is true but no slot or errorMessage', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = false;
-    component.errorMessage = undefined;
+    component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -173,7 +173,7 @@ describe('io-input — named slots (label, description, message)', () => {
   it('renders helperText prop when no description slot and no error', () => {
     (component as any).hasDescriptionSlot = false;
     component.helperText = 'Enter a valid email';
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -186,9 +186,9 @@ describe('io-input — named slots (label, description, message)', () => {
   });
 
   it('renders errorMessage prop when no message slot and error is true', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = false;
-    component.errorMessage = 'Enter a valid email address';
+    component.message = 'Enter a valid email address';
     vi.mocked(h).mockClear();
     component.render();
 

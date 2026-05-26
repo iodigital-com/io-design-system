@@ -84,7 +84,7 @@ describe('io-radio — named slots (label, description, message)', () => {
   it('renders description paragraph when description slot is occupied', () => {
     (component as any).hasDescriptionSlot = true;
     component.helperText = undefined;
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -99,7 +99,7 @@ describe('io-radio — named slots (label, description, message)', () => {
   it('hides description paragraph when neither slot nor helperText is present', () => {
     (component as any).hasDescriptionSlot = false;
     component.helperText = undefined;
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -125,31 +125,31 @@ describe('io-radio — named slots (label, description, message)', () => {
   });
 
   it('renders message paragraph when message slot is occupied and error is true', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = true;
-    component.errorMessage = undefined;
+    component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-error'),
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-message'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
     const nonHiddenCalls = pCalls.filter(
-      (call) => !String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-error--hidden'),
+      (call) => !String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-message--hidden'),
     );
     expect(nonHiddenCalls.length).toBeGreaterThan(0);
   });
 
   it('hides error paragraph when error is true but no slot or errorMessage', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = false;
-    component.errorMessage = undefined;
+    component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-error--hidden'),
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-message--hidden'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
   });
@@ -170,7 +170,7 @@ describe('io-radio — named slots (label, description, message)', () => {
   it('renders helperText prop when no description slot and no error', () => {
     (component as any).hasDescriptionSlot = false;
     component.helperText = 'Select one option';
-    component.error = false;
+    component.state = 'none';
     vi.mocked(h).mockClear();
     component.render();
 
@@ -183,14 +183,14 @@ describe('io-radio — named slots (label, description, message)', () => {
   });
 
   it('renders errorMessage prop when no message slot and error is true', () => {
-    component.error = true;
+    component.state = 'error';
     (component as any).hasMessageSlot = false;
-    component.errorMessage = 'Selection required';
+    component.message = 'Selection required';
     vi.mocked(h).mockClear();
     component.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-error'),
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('radio-message'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
     const nonHiddenCalls = pCalls.filter(

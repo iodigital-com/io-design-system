@@ -24,6 +24,7 @@ import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -54,6 +55,7 @@ export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -961,8 +963,17 @@ export namespace Components {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface IoPagination {
         /**
@@ -976,12 +987,20 @@ export namespace Components {
          */
         "page": number;
         /**
+          * Items shown per page (Pattern B). Provide together with `totalItems` to let the component compute `totalPages`. Values <= 0 are treated as 1 to avoid division by zero.
+         */
+        "perPage"?: number;
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
         "prevLabel": string;
         /**
-          * Total number of pages
+          * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
+         */
+        "totalItems"?: number;
+        /**
+          * Total number of pages (Pattern A). Ignored when both `totalItems` and `perPage` are supplied.
           * @default 1
          */
         "totalPages": number;
@@ -1143,6 +1162,39 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface IoScroller {
+        /**
+          * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
+         */
+        "label": string | undefined;
+        /**
+          * Scroll axis. `horizontal` — content overflows left/right. `vertical`   — content overflows top/bottom. Reflected as an attribute.
+          * @default 'horizontal'
+         */
+        "orientation": IoScrollerOrientation;
+        /**
+          * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
+          * @default false
+         */
+        "showScrollbar": boolean;
     }
     /**
      * io-select
@@ -1593,7 +1645,7 @@ export namespace Components {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface IoTextarea {
         /**
@@ -2363,8 +2415,17 @@ declare global {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface HTMLIoPaginationElement extends Components.IoPagination, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoPaginationElementEventMap>(type: K, listener: (this: HTMLIoPaginationElement, ev: IoPaginationCustomEvent<HTMLIoPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2447,6 +2508,29 @@ declare global {
     var HTMLIoRadioGroupElement: {
         prototype: HTMLIoRadioGroupElement;
         new (): HTMLIoRadioGroupElement;
+    };
+    /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface HTMLIoScrollerElement extends Components.IoScroller, HTMLStencilElement {
+    }
+    var HTMLIoScrollerElement: {
+        prototype: HTMLIoScrollerElement;
+        new (): HTMLIoScrollerElement;
     };
     interface HTMLIoSelectElementEventMap {
         "change": string | string[];
@@ -2793,7 +2877,7 @@ declare global {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface HTMLIoTextareaElement extends Components.IoTextarea, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTextareaElementEventMap>(type: K, listener: (this: HTMLIoTextareaElement, ev: IoTextareaCustomEvent<HTMLIoTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2914,6 +2998,7 @@ declare global {
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
+        "io-scroller": HTMLIoScrollerElement;
         "io-select": HTMLIoSelectElement;
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
@@ -3828,8 +3913,17 @@ declare namespace LocalJSX {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface IoPagination {
         /**
@@ -3847,12 +3941,20 @@ declare namespace LocalJSX {
          */
         "page"?: number;
         /**
+          * Items shown per page (Pattern B). Provide together with `totalItems` to let the component compute `totalPages`. Values <= 0 are treated as 1 to avoid division by zero.
+         */
+        "perPage"?: number;
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
         "prevLabel"?: string;
         /**
-          * Total number of pages
+          * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
+         */
+        "totalItems"?: number;
+        /**
+          * Total number of pages (Pattern A). Ignored when both `totalItems` and `perPage` are supplied.
           * @default 1
          */
         "totalPages"?: number;
@@ -4010,6 +4112,39 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface IoScroller {
+        /**
+          * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
+         */
+        "label"?: string | undefined;
+        /**
+          * Scroll axis. `horizontal` — content overflows left/right. `vertical`   — content overflows top/bottom. Reflected as an attribute.
+          * @default 'horizontal'
+         */
+        "orientation"?: IoScrollerOrientation;
+        /**
+          * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
+          * @default false
+         */
+        "showScrollbar"?: boolean;
     }
     /**
      * io-select
@@ -4488,7 +4623,7 @@ declare namespace LocalJSX {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface IoTextarea {
         /**
@@ -4515,7 +4650,7 @@ declare namespace LocalJSX {
          */
         "form"?: string | undefined;
         /**
-          * Helper text shown below (replaced by error when error=true)
+          * Helper text shown below (replaced by message when state is set)
          */
         "helperText"?: string | undefined;
         /**
@@ -4880,6 +5015,8 @@ declare namespace LocalJSX {
     interface IoPaginationAttributes {
         "page": number;
         "totalPages": number;
+        "totalItems": number;
+        "perPage": number;
         "prevLabel": string;
         "nextLabel": string;
     }
@@ -4912,6 +5049,11 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
+    }
+    interface IoScrollerAttributes {
+        "orientation": IoScrollerOrientation;
+        "showScrollbar": boolean;
+        "label": string | undefined;
     }
     interface IoSelectAttributes {
         "label": string;
@@ -5052,6 +5194,7 @@ declare namespace LocalJSX {
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
+        "io-scroller": Omit<IoScroller, keyof IoScrollerAttributes> & { [K in keyof IoScroller & keyof IoScrollerAttributes]?: IoScroller[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `attr:${K}`]?: IoScrollerAttributes[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `prop:${K}`]?: IoScroller[K] };
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
@@ -5309,8 +5452,17 @@ declare module "@stencil/core" {
              * Circular page controls — outlined page numbers, active page in brand blue,
              * beige prev/next arrow buttons. Automatically generates ellipsis for large
              * page counts.
-             * @example <io-pagination page="1" total-pages="10" />
-             * <io-pagination page="5" total-pages="12" />
+             * **Pattern A — explicit page count:**
+             * ```html
+             * <io-pagination page="1" total-pages="10" />
+             * ```
+             * **Pattern B — data-driven (preferred for API integrations):**
+             * ```html
+             * <io-pagination page="1" total-items="95" per-page="10" />
+             * ```
+             * When `totalItems` and `perPage` are both provided, the component derives
+             * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+             * precedence over any explicit `totalPages` prop.
              */
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
             /**
@@ -5344,6 +5496,24 @@ declare module "@stencil/core" {
              * </io-radio-group>
              */
             "io-radio-group": LocalJSX.IntrinsicElements["io-radio-group"] & JSXBase.HTMLAttributes<HTMLIoRadioGroupElement>;
+            /**
+             * io-scroller
+             * ===========
+             * Horizontally or vertically scrollable content wrapper with gradient fade
+             * indicators at each edge. Fade appears when there is scrollable content in
+             * that direction and hides automatically when scrolled to the edge.
+             * Uses IntersectionObserver on sentinel elements at the start and end of the
+             * scroll content to detect edge proximity without polling scroll position.
+             * @example <io-scroller>
+             *   <io-button>Tab 1</io-button>
+             *   <io-button>Tab 2</io-button>
+             *   <!-- …more buttons… -->
+             * </io-scroller>
+             * @example <io-scroller orientation="vertical" label="Navigation links">
+             *   <nav><!-- long list of links --></nav>
+             * </io-scroller>
+             */
+            "io-scroller": LocalJSX.IntrinsicElements["io-scroller"] & JSXBase.HTMLAttributes<HTMLIoScrollerElement>;
             /**
              * io-select
              * ==========
@@ -5533,7 +5703,7 @@ declare module "@stencil/core" {
              * Uses a full border (not underline-only) for better spatial clarity.
              * @example <io-textarea label="Message" rows={4} />
              * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-             * <io-textarea label="Comments" error error-message="This field is required" />
+             * <io-textarea label="Comments" state="error" message="This field is required" />
              */
             "io-textarea": LocalJSX.IntrinsicElements["io-textarea"] & JSXBase.HTMLAttributes<HTMLIoTextareaElement>;
             /**

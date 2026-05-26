@@ -850,5 +850,17 @@
     "classification": "public-api",
     "component": "io-radio",
     "description": "Width and height of the radio control area."
+  },
+  {
+    "cssVar": "--io-scroller-fade-color",
+    "classification": "public-api",
+    "component": "io-scroller",
+    "description": "The opaque colour used at the outer edge of the gradient fade overlay. Defaults to var(--io-bg-page). Override when the scroller sits on a surface other than the page background."
+  },
+  {
+    "cssVar": "--io-scroller-fade-size",
+    "classification": "public-api",
+    "component": "io-scroller",
+    "description": "Width (horizontal) or height (vertical) of the gradient fade overlay. Defaults to var(--io-space-6, 24px)."
   }
 ]

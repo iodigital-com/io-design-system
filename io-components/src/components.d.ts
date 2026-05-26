@@ -1267,38 +1267,7 @@ export namespace Components {
     }
     /**
      * io-popover
-     * ==========
-     * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
-     * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
-     * </io-popover>
-     */
-    interface IoPopover {
-        /**
-          * Close the popover when clicking outside the panel
-          * @default true
-         */
-        "closeOnClickOutside": boolean;
-        /**
-          * Accessible label for the popover dialog
-         */
-        "label"?: string;
-        /**
-          * Whether the popover is currently open
-          * @default false
-         */
-        "open": boolean;
-        /**
-          * Preferred placement of the popover panel relative to the trigger
-          * @default 'bottom'
-         */
-        "placement": IoPopoverPlacement;
-    }
-    /**
-     * io-progress
+     * ===     * io-progress
      * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
@@ -3021,30 +2990,7 @@ declare global {
     }
     /**
      * io-popover
-     * ==========
-     * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
-     * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
-     * </io-popover>
-     */
-    interface HTMLIoPopoverElement extends Components.IoPopover, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoPopoverElement: {
-        prototype: HTMLIoPopoverElement;
-        new (): HTMLIoPopoverElement;
-    };
-    /**
+     * ===    /**
      * io-progress
      * ===========
      * Linear progress bar for determinate loading states.
@@ -4875,42 +4821,7 @@ declare namespace LocalJSX {
     }
     /**
      * io-popover
-     * ==========
-     * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
-     * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
-     * </io-popover>
-     */
-    interface IoPopover {
-        /**
-          * Close the popover when clicking outside the panel
-          * @default true
-         */
-        "closeOnClickOutside"?: boolean;
-        /**
-          * Accessible label for the popover dialog
-         */
-        "label"?: string;
-        /**
-          * Emitted when the popover closes (Escape key or outside click)
-         */
-        "onDismiss"?: (event: IoPopoverCustomEvent<void>) => void;
-        /**
-          * Whether the popover is currently open
-          * @default false
-         */
-        "open"?: boolean;
-        /**
-          * Preferred placement of the popover panel relative to the trigger
-          * @default 'bottom'
-         */
-        "placement"?: IoPopoverPlacement;
-    }
-    /**
-     * io-progress
+     * ===     * io-progress
      * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
@@ -6700,18 +6611,7 @@ declare module "@stencil/core" {
             "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
             /**
              * io-popover
-             * ==========
-             * Click-triggered floating content panel with accessible dialog semantics.
-             * Uses the native Popover API (`popover="auto"`) where available, falling back
-             * to manual absolute positioning. No runtime positioning library required.
-             * @example <io-popover label="Quick actions" placement="bottom">
-             *   <io-button slot="trigger">Open</io-button>
-             *   <p>Popover body content.</p>
-             * </io-popover>
-             */
-            "io-popover": LocalJSX.IntrinsicElements["io-popover"] & JSXBase.HTMLAttributes<HTMLIoPopoverElement>;
-            /**
-             * io-progress
+             * ===             * io-progress
              * ===========
              * Linear progress bar for determinate loading states.
              * Use for file uploads, multi-step forms, and wizard flows.

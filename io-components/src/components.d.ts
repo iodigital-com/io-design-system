@@ -20,9 +20,9 @@ import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
-import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -54,9 +54,9 @@ export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
-export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -953,6 +953,88 @@ export namespace Components {
         "size": IoModalSize;
     }
     /**
+     * io-multi-select
+     * ===============
+     * Dedicated multi-value select component with removable chips, optional
+     * search filter, and full ARIA combobox / listbox pattern.
+     * Options are defined as slotted `<io-option>` (or `<io-optgroup>`) children.
+     * FACE-enabled: participates in native HTML forms via ElementInternals.
+     * @example <io-multi-select name="countries" label="Countries">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     *   <io-option value="de" label="Germany"></io-option>
+     * </io-multi-select>
+     * @deprecated io-select[multiple] — use io-multi-select instead.
+     * Migration: replace `<io-select multiple custom label="…">` with
+     * `<io-multi-select label="…">` and the same child io-option elements.
+     */
+    interface IoMultiSelect {
+        /**
+          * Returns true when the field value satisfies all constraints.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables the multi-select.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Dropdown opening direction. - 'auto' uses floating-ui to compute the best position. - 'up' / 'down' pin the dropdown above or below the trigger.
+          * @default 'auto'
+         */
+        "dropdownDirection": IoMultiSelectDirection;
+        /**
+          * When true, shows a search input inside the dropdown to filter options.
+          * @default false
+         */
+        "filter": boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Maximum number of selected labels to show before switching to "{N} selected".
+          * @default 3
+         */
+        "maxDisplay": number;
+        /**
+          * Message text shown below the trigger (error or helper).
+         */
+        "message": string | undefined;
+        /**
+          * HTML name attribute (required for form submission)
+         */
+        "name": string;
+        /**
+          * Placeholder shown in the trigger when nothing is selected.
+          * @default 'Select options'
+         */
+        "placeholder": string;
+        /**
+          * Triggers browser validation UI and returns validity state.
+         */
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the field as required.
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Programmatically moves focus to the trigger button.
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message
+          * @default 'none'
+         */
+        "state": IoMultiSelectState;
+        /**
+          * Currently selected values. Mutable — updated internally on user selection.
+          * @default []
+         */
+        "value": string[];
+    }
+    /**
      * io-optgroup
      * ============
      * Groups related io-option elements inside a custom io-select combobox.
@@ -1061,72 +1143,6 @@ export namespace Components {
           * @default 1
          */
         "totalPages": number;
-    }
-    /**
-     * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Check validity without showing browser validation UI. Returns true if valid.
-         */
-        "checkValidity": () => Promise<boolean>;
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled": boolean;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label": string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length": IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message": string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name": string | undefined;
-        /**
-          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
-         */
-        "reportValidity": () => Promise<boolean>;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required": boolean;
-        /**
-          * Programmatically focus the first empty slot (or the last slot if complete)
-         */
-        "setFocus": (options?: FocusOptions) => Promise<void>;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state": IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type": IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value": string;
     }
     /**
      * io-progress
@@ -1340,6 +1356,10 @@ export namespace Components {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
+     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
+     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * optional search filter, and full FACE form participation.
+     * The single-select native and custom modes are NOT deprecated.
      */
     interface IoSelect {
         /**
@@ -2119,6 +2139,10 @@ export interface IoModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoModalElement;
 }
+export interface IoMultiSelectCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoMultiSelectElement;
+}
 export interface IoOptionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoOptionElement;
@@ -2126,10 +2150,6 @@ export interface IoOptionCustomEvent<T> extends CustomEvent<T> {
 export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPaginationElement;
-}
-export interface IoPinCodeCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLIoPinCodeElement;
 }
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2618,6 +2638,39 @@ declare global {
         prototype: HTMLIoModalElement;
         new (): HTMLIoModalElement;
     };
+    interface HTMLIoMultiSelectElementEventMap {
+        "change": IoMultiSelectChangeDetail;
+    }
+    /**
+     * io-multi-select
+     * ===============
+     * Dedicated multi-value select component with removable chips, optional
+     * search filter, and full ARIA combobox / listbox pattern.
+     * Options are defined as slotted `<io-option>` (or `<io-optgroup>`) children.
+     * FACE-enabled: participates in native HTML forms via ElementInternals.
+     * @example <io-multi-select name="countries" label="Countries">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     *   <io-option value="de" label="Germany"></io-option>
+     * </io-multi-select>
+     * @deprecated io-select[multiple] — use io-multi-select instead.
+     * Migration: replace `<io-select multiple custom label="…">` with
+     * `<io-multi-select label="…">` and the same child io-option elements.
+     */
+    interface HTMLIoMultiSelectElement extends Components.IoMultiSelect, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoMultiSelectElementEventMap>(type: K, listener: (this: HTMLIoMultiSelectElement, ev: IoMultiSelectCustomEvent<HTMLIoMultiSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoMultiSelectElementEventMap>(type: K, listener: (this: HTMLIoMultiSelectElement, ev: IoMultiSelectCustomEvent<HTMLIoMultiSelectElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoMultiSelectElement: {
+        prototype: HTMLIoMultiSelectElement;
+        new (): HTMLIoMultiSelectElement;
+    };
     /**
      * io-optgroup
      * ============
@@ -2690,33 +2743,6 @@ declare global {
     var HTMLIoPaginationElement: {
         prototype: HTMLIoPaginationElement;
         new (): HTMLIoPaginationElement;
-    };
-    interface HTMLIoPinCodeElementEventMap {
-        "change": IoPinCodeChangeDetail;
-    }
-    /**
-     * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoPinCodeElement: {
-        prototype: HTMLIoPinCodeElement;
-        new (): HTMLIoPinCodeElement;
     };
     /**
      * io-progress
@@ -2830,6 +2856,10 @@ declare global {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
+     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
+     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * optional search filter, and full FACE form participation.
+     * The single-select native and custom modes are NOT deprecated.
      */
     interface HTMLIoSelectElement extends Components.IoSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoSelectElementEventMap>(type: K, listener: (this: HTMLIoSelectElement, ev: IoSelectCustomEvent<HTMLIoSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3296,10 +3326,10 @@ declare global {
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
+        "io-multi-select": HTMLIoMultiSelectElement;
         "io-optgroup": HTMLIoOptgroupElement;
         "io-option": HTMLIoOptionElement;
         "io-pagination": HTMLIoPaginationElement;
-        "io-pin-code": HTMLIoPinCodeElement;
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
@@ -4219,6 +4249,84 @@ declare namespace LocalJSX {
         "size"?: IoModalSize;
     }
     /**
+     * io-multi-select
+     * ===============
+     * Dedicated multi-value select component with removable chips, optional
+     * search filter, and full ARIA combobox / listbox pattern.
+     * Options are defined as slotted `<io-option>` (or `<io-optgroup>`) children.
+     * FACE-enabled: participates in native HTML forms via ElementInternals.
+     * @example <io-multi-select name="countries" label="Countries">
+     *   <io-option value="nl" label="Netherlands"></io-option>
+     *   <io-option value="be" label="Belgium"></io-option>
+     *   <io-option value="de" label="Germany"></io-option>
+     * </io-multi-select>
+     * @deprecated io-select[multiple] — use io-multi-select instead.
+     * Migration: replace `<io-select multiple custom label="…">` with
+     * `<io-multi-select label="…">` and the same child io-option elements.
+     */
+    interface IoMultiSelect {
+        /**
+          * Disables the multi-select.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Dropdown opening direction. - 'auto' uses floating-ui to compute the best position. - 'up' / 'down' pin the dropdown above or below the trigger.
+          * @default 'auto'
+         */
+        "dropdownDirection"?: IoMultiSelectDirection;
+        /**
+          * When true, shows a search input inside the dropdown to filter options.
+          * @default false
+         */
+        "filter"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Maximum number of selected labels to show before switching to "{N} selected".
+          * @default 3
+         */
+        "maxDisplay"?: number;
+        /**
+          * Message text shown below the trigger (error or helper).
+         */
+        "message"?: string | undefined;
+        /**
+          * HTML name attribute (required for form submission)
+         */
+        "name": string;
+        /**
+          * Fires when the selection changes. Detail: `{ value: string[], name: string }`
+         */
+        "onChange"?: (event: IoMultiSelectCustomEvent<IoMultiSelectChangeDetail>) => void;
+        /**
+          * Placeholder shown in the trigger when nothing is selected.
+          * @default 'Select options'
+         */
+        "placeholder"?: string;
+        /**
+          * Marks the field as required.
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message
+          * @default 'none'
+         */
+        "state"?: IoMultiSelectState;
+        /**
+          * Currently selected values. Mutable — updated internally on user selection.
+          * @default []
+         */
+        "value"?: string[];
+    }
+    /**
      * io-optgroup
      * ============
      * Groups related io-option elements inside a custom io-select combobox.
@@ -4335,68 +4443,6 @@ declare namespace LocalJSX {
           * @default 1
          */
         "totalPages"?: number;
-    }
-    /**
-     * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label"?: string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length"?: IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message"?: string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name"?: string | undefined;
-        /**
-          * Fires on every digit change with current value and completion status
-         */
-        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required"?: boolean;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state"?: IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type"?: IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value"?: string;
     }
     /**
      * io-progress
@@ -4606,6 +4652,10 @@ declare namespace LocalJSX {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
+     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
+     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * optional search filter, and full FACE form participation.
+     * The single-select native and custom modes are NOT deprecated.
      */
     interface IoSelect {
         /**
@@ -5522,6 +5572,18 @@ declare namespace LocalJSX {
         "description": string;
         "background": IoModalBackground;
     }
+    interface IoMultiSelectAttributes {
+        "label": string;
+        "name": string;
+        "placeholder": string;
+        "required": boolean;
+        "disabled": boolean;
+        "state": IoMultiSelectState;
+        "message": string | undefined;
+        "filter": boolean;
+        "dropdownDirection": IoMultiSelectDirection;
+        "maxDisplay": number;
+    }
     interface IoOptgroupAttributes {
         "label": string;
         "disabled": boolean;
@@ -5542,17 +5604,6 @@ declare namespace LocalJSX {
         "perPage": number;
         "prevLabel": string;
         "nextLabel": string;
-    }
-    interface IoPinCodeAttributes {
-        "label": string | undefined;
-        "length": IoPinCodeLength;
-        "type": IoPinCodeType;
-        "value": string;
-        "name": string | undefined;
-        "required": boolean;
-        "disabled": boolean;
-        "state": IoPinCodeState;
-        "message": string | undefined;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -5737,10 +5788,10 @@ declare namespace LocalJSX {
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
+        "io-multi-select": Omit<IoMultiSelect, keyof IoMultiSelectAttributes> & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes]?: IoMultiSelect[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `attr:${K}`]?: IoMultiSelectAttributes[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `prop:${K}`]?: IoMultiSelect[K] } & OneOf<"label", IoMultiSelect["label"], IoMultiSelectAttributes["label"]> & OneOf<"name", IoMultiSelect["name"], IoMultiSelectAttributes["name"]>;
         "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
         "io-option": Omit<IoOption, keyof IoOptionAttributes> & { [K in keyof IoOption & keyof IoOptionAttributes]?: IoOption[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `attr:${K}`]?: IoOptionAttributes[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `prop:${K}`]?: IoOption[K] } & OneOf<"label", IoOption["label"], IoOptionAttributes["label"]>;
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
-        "io-pin-code": Omit<IoPinCode, keyof IoPinCodeAttributes> & { [K in keyof IoPinCode & keyof IoPinCodeAttributes]?: IoPinCode[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `attr:${K}`]?: IoPinCodeAttributes[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `prop:${K}`]?: IoPinCode[K] };
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
@@ -5997,6 +6048,23 @@ declare module "@stencil/core" {
              */
             "io-modal": LocalJSX.IntrinsicElements["io-modal"] & JSXBase.HTMLAttributes<HTMLIoModalElement>;
             /**
+             * io-multi-select
+             * ===============
+             * Dedicated multi-value select component with removable chips, optional
+             * search filter, and full ARIA combobox / listbox pattern.
+             * Options are defined as slotted `<io-option>` (or `<io-optgroup>`) children.
+             * FACE-enabled: participates in native HTML forms via ElementInternals.
+             * @example <io-multi-select name="countries" label="Countries">
+             *   <io-option value="nl" label="Netherlands"></io-option>
+             *   <io-option value="be" label="Belgium"></io-option>
+             *   <io-option value="de" label="Germany"></io-option>
+             * </io-multi-select>
+             * @deprecated io-select[multiple] — use io-multi-select instead.
+             * Migration: replace `<io-select multiple custom label="…">` with
+             * `<io-multi-select label="…">` and the same child io-option elements.
+             */
+            "io-multi-select": LocalJSX.IntrinsicElements["io-multi-select"] & JSXBase.HTMLAttributes<HTMLIoMultiSelectElement>;
+            /**
              * io-optgroup
              * ============
              * Groups related io-option elements inside a custom io-select combobox.
@@ -6032,17 +6100,6 @@ declare module "@stencil/core" {
              * precedence over any explicit `totalPages` prop.
              */
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
-            /**
-             * io-pin-code
-             * ===========
-             * Multi-slot PIN / OTP entry component with keyboard navigation,
-             * auto-advance, backspace-to-previous, and clipboard paste support.
-             * Participates in native HTML forms via the FACE (Form-Associated
-             * Custom Elements) API.
-             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-             * <io-pin-code label="OTP Code" length="6" type="password" required />
-             */
-            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
             /**
              * io-progress
              * ===========
@@ -6108,6 +6165,10 @@ declare module "@stencil/core" {
              *     <io-option value="alice" label="Alice Smith"></io-option>
              *   </io-optgroup>
              * </io-select>
+             * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
+             * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+             * optional search filter, and full FACE form participation.
+             * The single-select native and custom modes are NOT deprecated.
              */
             "io-select": LocalJSX.IntrinsicElements["io-select"] & JSXBase.HTMLAttributes<HTMLIoSelectElement>;
             /**

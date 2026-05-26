@@ -381,6 +381,15 @@
   /* Option / combobox row hover — also used in io-select shadow list */
   --io-option-hover-bg:          var(--io-color-grey-1);
 
+  /* ── Switch (toggle) component tokens ─────────────────────── */
+  --io-switch-track-width:       2.75rem;    /* 44px — pill track width */
+  --io-switch-track-height:      1.5rem;     /* 24px — pill track height */
+  --io-switch-track-radius:      9999px;     /* fully rounded pill */
+  --io-switch-thumb-size:        1.25rem;    /* 20px — circular thumb diameter */
+  --io-switch-thumb-radius:      9999px;     /* fully rounded thumb */
+  --io-switch-thumb-offset-off:  2px;        /* thumb left offset when unchecked */
+  --io-switch-thumb-offset-on:   calc(var(--io-switch-track-width) - var(--io-switch-thumb-size) - 2px); /* thumb offset when checked */
+
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:            1.5px;
   --io-radio-border-error-width:      2px;

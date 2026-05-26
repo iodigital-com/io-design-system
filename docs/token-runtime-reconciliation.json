@@ -2160,6 +2160,62 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-switch-track-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch track width token. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch track height token. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch track border-radius token. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch thumb diameter token. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch thumb border-radius token. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-offset-off",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch thumb translateX offset when unchecked. Added in Wave XI PR #342."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-offset-on",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-switch thumb translateX offset when checked. Computed from track width and thumb size. Added in Wave XI PR #342."
+    },
+    {
       "runtimeCssVar": "--io-section-spacing-desktop",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

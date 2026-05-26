@@ -39,6 +39,7 @@ declare module 'react' {
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
   'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;
   'io-stepper': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepperElement>, HTMLIoStepperElement> & Partial<StencilJSX.IoStepper>;
+  'io-switch': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSwitchElement>, HTMLIoSwitchElement> & Partial<StencilJSX.IoSwitch>;
   'io-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableElement>, HTMLIoTableElement> & Partial<StencilJSX.IoTable>;
   'io-table-body': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyElement>, HTMLIoTableBodyElement> & Partial<StencilJSX.IoTableBody>;
   'io-table-body-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyCellElement>, HTMLIoTableBodyCellElement> & Partial<StencilJSX.IoTableBodyCell>;

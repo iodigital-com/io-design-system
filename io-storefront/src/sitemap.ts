@@ -232,6 +232,14 @@ export const sitemap: NavSection[] = [
         related: ['io-input', 'io-form-field'],
       },
       {
+        label: 'Popover',
+        href: '/components/io-popover/configurator',
+        status: 'beta',
+        slug: 'io-popover',
+        description: 'Click-triggered floating content panel with accessible dialog semantics. Uses the native Popover API where available with a manual positioning fallback.',
+        related: ['io-tooltip', 'io-modal', 'io-drawer'],
+      },
+      {
         label: 'Progress',
         href: '/components/io-progress/configurator',
         status: 'stable',

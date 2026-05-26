@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-23T23:11:09.508Z",
+  "generated": "2026-05-26T13:30:37.011Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -38,10 +38,13 @@
       "events": {}
     },
     "io-breadcrumb": {
+      "props": {},
+      "methods": {},
+      "events": {}
+    },
+    "io-breadcrumb-item": {
       "props": {
-        "items": "string",
-        "maxVisible": "number | undefined",
-        "separator": "IoBreadcrumbSeparator"
+        "current": "boolean"
       },
       "methods": {},
       "events": {}
@@ -76,6 +79,7 @@
         "disabled": "boolean",
         "exclusive": "boolean",
         "label": "string | undefined",
+        "size": "IoButtonGroupSize",
         "value": "string | string[]"
       },
       "methods": {},
@@ -122,8 +126,9 @@
     "io-checkbox-group": {
       "props": {
         "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
         "helperText": "string",
-        "invalid": "boolean",
         "label": "string",
         "name": "string",
         "required": "boolean"
@@ -157,29 +162,11 @@
         "dismiss": "void"
       }
     },
-    "io-file-upload": {
-      "props": {
-        "accept": "string",
-        "disabled": "boolean",
-        "error": "boolean",
-        "errorMessage": "string | undefined",
-        "helperText": "string | undefined",
-        "label": "string",
-        "maxFileSize": "number | undefined",
-        "multiple": "boolean",
-        "name": "string | undefined"
-      },
-      "methods": {},
-      "events": {
-        "fileReject": "IoFileRejectDetail",
-        "fileSelect": "IoFileSelectDetail"
-      }
-    },
     "io-form-field": {
       "props": {
-        "errorText": "string",
+        "error": "boolean",
+        "errorMessage": "string",
         "helperText": "string",
-        "invalid": "boolean",
         "label": "string",
         "required": "boolean"
       },
@@ -321,8 +308,9 @@
     "io-radio-group": {
       "props": {
         "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
         "helperText": "string",
-        "invalid": "boolean",
         "label": "string",
         "name": "string",
         "required": "boolean",
@@ -360,15 +348,6 @@
         "focus": "FocusEvent"
       }
     },
-    "io-skeleton": {
-      "props": {
-        "animated": "boolean",
-        "label": "string",
-        "variant": "IoSkeletonVariant"
-      },
-      "methods": {},
-      "events": {}
-    },
     "io-spinner": {
       "props": {
         "color": "IoSpinnerColor",
@@ -401,36 +380,62 @@
       "props": {
         "caption": "string",
         "captionHidden": "boolean",
-        "columns": "Array<{ key: string; label: string; sortable?: boolean }>",
-        "rows": "Record<string, unknown>[]",
-        "selectable": "boolean",
         "size": "IoTableSize",
-        "sortable": "boolean",
-        "sortDirection": "IoTableSortDirection",
-        "sortKey": "string",
         "sticky": "boolean"
       },
       "methods": {},
+      "events": {}
+    },
+    "io-table-body": {
+      "props": {},
+      "methods": {},
+      "events": {}
+    },
+    "io-table-body-cell": {
+      "props": {
+        "colspan": "number | undefined",
+        "rowspan": "number | undefined"
+      },
+      "methods": {},
+      "events": {}
+    },
+    "io-table-body-row": {
+      "props": {
+        "rowLabel": "string",
+        "selectable": "boolean",
+        "selected": "boolean"
+      },
+      "methods": {},
       "events": {
-        "rowSelect": "{ selectedRows: Record<string, unknown>[] }",
-        "sort": "{ key: string"
+        "select": "IoTableBodyRowSelectDetail"
       }
     },
-    "io-table-column": {
-      "props": {
-        "colKey": "string",
-        "label": "string",
-        "sortable": "boolean"
-      },
+    "io-table-head": {
+      "props": {},
       "methods": {},
       "events": {}
     },
-    "io-table-row": {
+    "io-table-head-cell": {
       "props": {
-        "data": "Record<string, unknown> | string"
+        "sortable": "boolean",
+        "sortDirection": "IoTableSortDirection",
+        "sortKey": "string"
       },
       "methods": {},
-      "events": {}
+      "events": {
+        "sort": "IoTableSortDetail"
+      }
+    },
+    "io-table-head-row": {
+      "props": {
+        "selectable": "boolean",
+        "selectAllChecked": "boolean",
+        "selectAllIndeterminate": "boolean"
+      },
+      "methods": {},
+      "events": {
+        "selectAll": "IoTableHeadRowSelectAllDetail"
+      }
     },
     "io-tabs": {
       "props": {

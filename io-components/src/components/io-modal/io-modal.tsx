@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h }
 
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoModalSize } from './types';
 
@@ -54,6 +55,16 @@ export class IoModal {
 
   /** Description text for accessibility (used in aria-describedby) */
   @Prop() description?: string;
+
+  /**
+   * Custom ARIA attributes to inject onto the native `<dialog>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-owns="step-panel" on the native <dialog>
+   * <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
+   */
+  @Prop() aria?: Record<string, string>;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -114,6 +125,11 @@ export class IoModal {
   }
 
   // ── Watchers ──────────────────────────────────────────────────
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.dialogEl ?? null);
+  }
 
   @Watch('open')
   openChanged(newVal: boolean) {
@@ -271,7 +287,10 @@ export class IoModal {
       <Host>
         <style>{getModalStyles()}</style>
         <dialog
-          ref={(el) => (this.dialogEl = el as HTMLDialogElement)}
+          ref={(el?: HTMLDialogElement) => {
+            this.dialogEl = el;
+            applyAriaProp(this.aria, el ?? null);
+          }}
           class={`modal--${size}`}
           aria-labelledby={heading ? headingId : undefined}
           aria-describedby={descriptionId}

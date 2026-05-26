@@ -11,6 +11,7 @@ import {
   getComboboxOptionClass,
   parseSelectContent,
 } from './io-select-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types';
 
@@ -85,6 +86,18 @@ export class IoSelect {
   /** Adds a search input inside the dropdown (custom mode only) */
   @Prop() filter = false;
 
+  /**
+   * Custom ARIA attributes to inject onto the trigger element.
+   * In native mode, applies to the `<select>` element.
+   * In custom (combobox) mode, applies to the `<button>` trigger.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-controls="description-panel" on the native <select>
+   * <io-select .aria={{ controls: 'description-panel' }} label="Role" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
@@ -145,6 +158,7 @@ export class IoSelect {
   private fieldId!: string;
   private defaultValue = '';
   private defaultSelectedValues: string[] = [];
+  private nativeSelectEl?: HTMLSelectElement;
   private triggerEl?: HTMLButtonElement;
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
@@ -189,6 +203,12 @@ export class IoSelect {
   @Watch('required')
   onRequiredChange() {
     this.syncFormValue();
+  }
+
+  @Watch('aria')
+  onAriaChange() {
+    const target = this.custom ? (this.triggerEl ?? null) : (this.nativeSelectEl ?? null);
+    applyAriaProp(this.aria, target);
   }
 
   private syncFormValue() {
@@ -567,6 +587,10 @@ export class IoSelect {
           <select
             id={selectId}
             class={`select-field select-field--${size}`}
+            ref={(el?: HTMLSelectElement) => {
+              this.nativeSelectEl = el;
+              applyAriaProp(this.aria, el ?? null);
+            }}
             name={name}
             disabled={disabled}
             required={required}
@@ -646,7 +670,10 @@ export class IoSelect {
           <button
             type="button"
             id={triggerId}
-            ref={el => { this.triggerEl = el as HTMLButtonElement; }}
+            ref={(el?: HTMLButtonElement) => {
+              this.triggerEl = el;
+              applyAriaProp(this.aria, el ?? null);
+            }}
             class={`combobox-trigger combobox-trigger--${size}`}
             role="combobox"
             aria-haspopup="listbox"

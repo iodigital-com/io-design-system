@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoTextareaResize, IoTextareaSize } from './types';
 
@@ -74,6 +75,16 @@ export class IoTextarea {
    */
   @Prop() resize: IoTextareaResize = 'vertical';
 
+  /**
+   * Custom ARIA attributes to inject onto the native `<textarea>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-errormessage="error-hint-id" on the native <textarea>
+   * <io-textarea .aria={{ errormessage: 'error-hint-id' }} label="Bio" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on every keystroke — raw InputEvent */
@@ -119,6 +130,7 @@ export class IoTextarea {
   private fallbackId!: string;
   private fieldId!: string;
   private defaultValue = '';
+  private nativeTextareaEl?: HTMLTextAreaElement;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -148,6 +160,11 @@ export class IoTextarea {
   @Watch('maxLength')
   onMaxLengthChange() {
     this.syncFormValue();
+  }
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.nativeTextareaEl ?? null);
   }
 
   private syncFormValue() {
@@ -223,6 +240,10 @@ export class IoTextarea {
           <textarea
             id={textareaId}
             class={getTextareaFieldClass(resize, size)}
+            ref={(el?: HTMLTextAreaElement) => {
+              this.nativeTextareaEl = el;
+              applyAriaProp(this.aria, el ?? null);
+            }}
             name={name}
             placeholder={placeholder ?? ' '}
             value={value}

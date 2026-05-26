@@ -31,7 +31,7 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@io-digital/components": "^2.1.0",
+    "@io-digital/components": "^2.1.1",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },

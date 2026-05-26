@@ -73,6 +73,9 @@ export const tableStory: Story<'io-table'> = {
       captionHidden: false,
       sticky: false,
       size: 'md',
+      striped: false,
+      bordered: false,
+      compact: false,
     },
   },
   generator: ({ properties } = {}) => {
@@ -85,6 +88,9 @@ export const tableStory: Story<'io-table'> = {
           captionHidden: attrs.captionHidden ?? false,
           sticky: attrs.sticky ?? false,
           size: attrs.size ?? 'md',
+          striped: attrs.striped ?? false,
+          bordered: attrs.bordered ?? false,
+          compact: attrs.compact ?? false,
         },
         children: [
           buildHead(HEAD_LABELS, [...HEAD_KEYS]),
@@ -116,6 +122,24 @@ export const tablePropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['sm', 'md', 'lg'],
     defaultValue: 'md',
+  },
+  {
+    name: 'striped',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Adds alternating row background colours for improved row scanning.',
+  },
+  {
+    name: 'bordered',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Adds visible borders between all cells and rows.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces row padding to display more rows in the same vertical space.',
   },
 ];
 

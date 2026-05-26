@@ -47,6 +47,15 @@ export class IoTable {
   /** Size preset — controls row/cell padding density. */
   @Prop({ reflect: true }) size: IoTableSize = 'md';
 
+  /** Adds alternating row background colours for improved row scanning. */
+  @Prop({ reflect: true }) striped: boolean = false;
+
+  /** Adds visible borders between cells and rows. */
+  @Prop({ reflect: true }) bordered: boolean = false;
+
+  /** Reduces row padding to display more rows in the same vertical space. */
+  @Prop({ reflect: true }) compact: boolean = false;
+
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {

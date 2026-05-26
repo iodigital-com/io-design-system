@@ -179,7 +179,7 @@ export function getMultiSelectStyles(): string {
 
     .multi-select-dropdown {
       display: none;
-      position: absolute;
+      position: fixed;
       z-index: var(--io-combobox-z);
       background: var(--io-surface-elevated, var(--io-color-white));
       border: var(--io-input-border-width) solid var(--io-border);

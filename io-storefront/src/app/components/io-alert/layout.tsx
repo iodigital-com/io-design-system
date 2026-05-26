@@ -8,6 +8,10 @@ import { getComponentStatusBySlug } from '@/sitemap';
 
 const TABS: PageTab[] = [
   { label: 'Configurator', href: '/components/io-alert/configurator' },
+  { label: 'Examples', href: '/components/io-alert/examples' },
+  { label: 'Usage', href: '/components/io-alert/usage' },
+  { label: 'Accessibility', href: '/components/io-alert/accessibility' },
+  { label: 'API', href: '/components/io-alert/api' },
 ];
 
 export default function IoAlertLayout({ children }: { children: ReactNode }) {

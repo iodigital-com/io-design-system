@@ -27,6 +27,7 @@ export type IoTagNames =
   | 'io-progress'
   | 'io-radio'
   | 'io-radio-group'
+  | 'io-scroller'
   | 'io-select'
   | 'io-spinner'
   | 'io-step'

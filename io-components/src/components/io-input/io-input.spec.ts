@@ -3,6 +3,182 @@ import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 
+describe('io-input — new props (#347)', () => {
+  let component: IoInput;
+
+  beforeEach(() => {
+    component = new IoInput();
+    (component as any).el = document.createElement('io-input');
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+  });
+
+  it('has loading=false by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('has counter=false by default', () => {
+    expect(component.counter).toBe(false);
+  });
+
+  it('has minLength=undefined by default', () => {
+    expect(component.minLength).toBeUndefined();
+  });
+
+  it('has spellCheck=undefined by default', () => {
+    expect(component.spellCheck).toBeUndefined();
+  });
+
+  it('has autoComplete=undefined by default', () => {
+    expect(component.autoComplete).toBeUndefined();
+  });
+
+  it('has form=undefined by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
+  it('passes minLength to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.minLength = 3;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['minLength']).toBe(3);
+  });
+
+  it('passes spellCheck to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.spellCheck = false;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['spellcheck']).toBe(false);
+  });
+
+  it('passes autoComplete to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.autoComplete = 'email';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['autocomplete']).toBe('email');
+  });
+
+  it('passes form to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.form = 'my-form';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['form']).toBe('my-form');
+  });
+
+  it('renders counter div when counter=true and maxLength is set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 100;
+    component.value = 'hello';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const divCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === 'div' && (call[1] as Record<string, unknown>)?.['class'] === 'input-counter',
+    );
+    expect(divCalls.length).toBe(1);
+  });
+
+  it('does not render counter when counter=true but maxLength is not set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const divCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === 'div' && (call[1] as Record<string, unknown>)?.['class'] === 'input-counter',
+    );
+    expect(divCalls.length).toBe(0);
+  });
+
+  it('renders io-spinner when loading=true', () => {
+    (component as any).componentWillLoad();
+    component.loading = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const spinnerCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'io-spinner');
+    expect(spinnerCall).toBeDefined();
+  });
+
+  it('sets aria-busy on host when loading=true', () => {
+    (component as any).componentWillLoad();
+    component.loading = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    // In the Stencil unit-test mock, Host resolves to undefined,
+    // so the h() call for <Host> has undefined as its first argument.
+    const hostCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] == null && (call[1] as Record<string, unknown>)?.['aria-busy'] !== undefined,
+    );
+    const hostProps = (hostCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(hostProps['aria-busy']).toBe('true');
+  });
+
+  it('does not set aria-busy when loading=false', () => {
+    (component as any).componentWillLoad();
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    // No Host call should have aria-busy='true'
+    const busyCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] == null && (call[1] as Record<string, unknown>)?.['aria-busy'] === 'true',
+    );
+    expect(busyCall).toBeUndefined();
+  });
+
+  it('does not emit events when loading=true', () => {
+    component.loading = true;
+
+    const inputEv = new Event('input') as InputEvent;
+    Object.defineProperty(inputEv, 'target', { value: { value: 'x' } });
+    (component as any).handleInput(inputEv);
+    expect((component as any).input.emit).not.toHaveBeenCalled();
+
+    const changeEv = new Event('change');
+    Object.defineProperty(changeEv, 'target', { value: { value: 'x' } });
+    (component as any).handleChange(changeEv);
+    expect((component as any).change.emit).not.toHaveBeenCalled();
+  });
+
+  it('generates stable counterId in componentWillLoad', () => {
+    (component as any).componentWillLoad();
+    const id1 = (component as any).counterId;
+    expect(id1).toMatch(/^io-input-counter-\d+$/);
+
+    component.render();
+    expect((component as any).counterId).toBe(id1);
+  });
+});
+
 describe('io-input — stable id linkage', () => {
   let component: IoInput;
 

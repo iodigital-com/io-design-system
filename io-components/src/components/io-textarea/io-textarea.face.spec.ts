@@ -91,6 +91,39 @@ describe('io-textarea — FACE', () => {
     expect((component as any).faceInvalid).toBe(true);
   });
 
+  describe('minLength / tooShort validity', () => {
+    it('onMinLengthChange triggers syncFormValue', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.minLength = 5;
+      (component as any).onMinLengthChange();
+      // setFormValue is called by syncFormValue — confirms the watch fires correctly
+      expect(internals.setFormValue).toHaveBeenCalled();
+    });
+
+    it('syncFormValue sets valueMissing when required and value is empty (fallback — no shadow root)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      component.minLength = 5;
+      component.value = '';
+      (component as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith(
+        { valueMissing: true },
+        'Please fill in this field',
+      );
+    });
+
+    it('syncFormValue clears validity when minLength is satisfied (fallback — no shadow root)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.minLength = 3;
+      component.value = 'hello world';
+      (component as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith({});
+    });
+  });
+
   describe('formResetCallback', () => {
     it('resets value to the default value captured in componentWillLoad()', () => {
       const internals = makeInternals();

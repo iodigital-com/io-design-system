@@ -179,6 +179,20 @@ export function getInputStyles(): string {
       color: var(--io-text-secondary);
     }
 
+    .input-counter {
+      display: flex;
+      justify-content: flex-end;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin-top: var(--io-space-1);
+    }
+
+    .input-wrapper__loading {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .input-field,
       .input-label { transition: none; }

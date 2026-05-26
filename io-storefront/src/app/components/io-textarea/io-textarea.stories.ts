@@ -11,6 +11,9 @@ export const textareaStory: Story<'io-textarea'> = {
       resize: 'vertical',
       disabled: false,
       required: false,
+      readOnly: false,
+      loading: false,
+      counter: false,
       state: 'none',
       message: '',
       helperText: '',
@@ -27,8 +30,11 @@ export const textareaStory: Story<'io-textarea'> = {
         resize: (properties?.resize as string) ?? 'vertical',
         disabled: (properties?.disabled as boolean) ?? false,
         required: (properties?.required as boolean) ?? false,
-        error: (properties?.error as boolean) ?? false,
-        errorMessage: (properties?.errorMessage as string) || undefined,
+        readOnly: (properties?.readOnly as boolean) ?? false,
+        loading: (properties?.loading as boolean) ?? false,
+        counter: (properties?.counter as boolean) ?? false,
+        state: (properties?.state as string) ?? 'none',
+        message: (properties?.message as string) || undefined,
         helperText: (properties?.helperText as string) || undefined,
       },
     },
@@ -76,8 +82,8 @@ export const textareaStoryError: Story<'io-textarea'> = {
       tag: 'io-textarea' as const,
       properties: {
         label: 'Message',
-        error: true,
-        errorMessage: 'This field is required',
+        state: 'error',
+        message: 'This field is required',
         rows: 4,
       },
     },
@@ -100,6 +106,36 @@ export const textareaStorySizes: Story<'io-textarea'> = {
     { tag: 'io-textarea' as const, properties: { label: 'Small', size: 'sm', rows: 3, placeholder: 'Compact notes' } },
     { tag: 'io-textarea' as const, properties: { label: 'Medium', size: 'md', rows: 3, placeholder: 'Default notes' } },
     { tag: 'io-textarea' as const, properties: { label: 'Large', size: 'lg', rows: 3, placeholder: 'Prominent notes' } },
+  ],
+};
+
+export const textareaStoryReadOnly: Story<'io-textarea'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-textarea' as const,
+      properties: { label: 'Terms & Conditions', readOnly: true, rows: 4, value: 'These terms are read-only and cannot be changed.' },
+    },
+  ],
+};
+
+export const textareaStoryLoading: Story<'io-textarea'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-textarea' as const,
+      properties: { label: 'Generating…', loading: true, rows: 4, placeholder: 'AI response will appear here' },
+    },
+  ],
+};
+
+export const textareaStoryCounter: Story<'io-textarea'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-textarea' as const,
+      properties: { label: 'Bio', counter: true, maxLength: 200, rows: 4, placeholder: 'Tell us about yourself' },
+    },
   ],
 };
 
@@ -135,6 +171,49 @@ export const textareaPropDefinitions: PropDefinition[] = [
     options: ['none', 'vertical', 'auto'],
     defaultValue: 'vertical',
     description: 'Controls whether and how the textarea can be resized.',
+  },
+  {
+    name: 'readOnly',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Prevents editing while keeping the field focusable and selectable.',
+  },
+  {
+    name: 'minLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Minimum character count for native constraint validation.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a spinner and disables events while an async operation is in progress.',
+  },
+  {
+    name: 'counter',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Displays a character count below the field when maxLength is set.',
+  },
+  {
+    name: 'spellCheck',
+    type: 'boolean',
+    defaultValue: undefined,
+    description: 'Enables or disables browser spell-check on the textarea.',
+  },
+  {
+    name: 'form',
+    type: 'string',
+    defaultValue: undefined,
+    description: 'Associates the textarea with a form element by its id (for out-of-DOM usage).',
+  },
+  {
+    name: 'wrap',
+    type: 'select',
+    options: ['soft', 'hard', 'off'],
+    defaultValue: undefined,
+    description: 'Controls how line breaks are submitted with form data.',
   },
   {
     name: 'disabled',

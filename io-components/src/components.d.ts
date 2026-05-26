@@ -30,7 +30,7 @@ import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/type
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
-import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
+import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkSize } from "./components/io-wordmark/types";
@@ -59,7 +59,7 @@ export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/type
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
-export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
+export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoWordmarkSize } from "./components/io-wordmark/types";
@@ -651,7 +651,11 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
+         */
+        "autoComplete": string | undefined;
+        /**
+          * Autocomplete attribute (legacy — prefer autoComplete)
          */
         "autocomplete": string | undefined;
         /**
@@ -659,10 +663,19 @@ export namespace Components {
          */
         "checkValidity": () => Promise<boolean>;
         /**
+          * Shows {currentLength} / {maxLength} character counter below the field
+          * @default false
+         */
+        "counter": boolean;
+        /**
           * Disables the input
           * @default false
          */
         "disabled": boolean;
+        /**
+          * Associates this element with a form by id — passed to the native input
+         */
+        "form": string | undefined;
         /**
           * Helper text shown below the input (replaces error when no error)
          */
@@ -671,6 +684,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows an inline spinner and disables the field while true
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Native maximum value (date/time/number)
          */
@@ -688,6 +706,10 @@ export namespace Components {
           * Native minimum value (date/time/number)
          */
         "min": string | number | undefined;
+        /**
+          * Minimum number of characters; wired to native minlength and FACE tooShort validity
+         */
+        "minLength": number | undefined;
         /**
           * Input name
          */
@@ -716,6 +738,10 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoInputSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck": boolean | undefined;
         /**
           * Validation state — controls border color, icon, and message color
           * @default 'none'
@@ -1526,18 +1552,32 @@ export namespace Components {
          */
         "checkValidity": () => Promise<boolean>;
         /**
+          * Shows {currentLength} / {maxLength} character counter below the field
+          * @default false
+         */
+        "counter": boolean;
+        /**
           * Disables the textarea
           * @default false
          */
         "disabled": boolean;
         /**
-          * Helper text shown below (replaced by error when error=true)
+          * Associates this element with a form by id
+         */
+        "form": string | undefined;
+        /**
+          * Helper text shown below (replaced by message when state is set)
          */
         "helperText": string | undefined;
         /**
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows an inline spinner and disables the field while true
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Maximum number of characters
          */
@@ -1548,6 +1588,10 @@ export namespace Components {
          */
         "message": string;
         /**
+          * Minimum number of characters; wired to native minlength and FACE tooShort validity
+         */
+        "minLength": number | undefined;
+        /**
           * Textarea name
          */
         "name": string | undefined;
@@ -1555,6 +1599,11 @@ export namespace Components {
           * Placeholder text shown when empty
          */
         "placeholder": string | undefined;
+        /**
+          * Makes the field read-only — value is not editable but the field stays in tab order
+          * @default false
+         */
+        "readOnly": boolean;
         /**
           * Check validity and show browser validation UI if invalid. Returns true if valid.
          */
@@ -1584,6 +1633,10 @@ export namespace Components {
          */
         "size": IoTextareaSize;
         /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck": boolean | undefined;
+        /**
           * Validation state — controls border color, icon, and message color
           * @default 'none'
          */
@@ -1593,6 +1646,10 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+        /**
+          * Controls how newlines are submitted — maps to native wrap attribute
+         */
+        "wrap": IoTextareaWrap | undefined;
     }
     /**
      * io-toast
@@ -3371,18 +3428,27 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
+         */
+        "autoComplete"?: string | undefined;
+        /**
+          * Autocomplete attribute (legacy — prefer autoComplete)
          */
         "autocomplete"?: string | undefined;
+        /**
+          * Shows {currentLength} / {maxLength} character counter below the field
+          * @default false
+         */
+        "counter"?: boolean;
         /**
           * Disables the input
           * @default false
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this element with a form by id — passed to the native input
          */
-        "form"?: string;
+        "form"?: string | undefined;
         /**
           * Helper text shown below the input (replaces error when no error)
          */
@@ -3391,6 +3457,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows an inline spinner and disables the field while true
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Native maximum value (date/time/number)
          */
@@ -3408,6 +3479,10 @@ declare namespace LocalJSX {
           * Native minimum value (date/time/number)
          */
         "min"?: string | number | undefined;
+        /**
+          * Minimum number of characters; wired to native minlength and FACE tooShort validity
+         */
+        "minLength"?: number | undefined;
         /**
           * Input name
          */
@@ -3435,6 +3510,10 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoInputSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck"?: boolean | undefined;
         /**
           * Validation state — controls border color, icon, and message color
           * @default 'none'
@@ -4271,14 +4350,19 @@ declare namespace LocalJSX {
          */
         "autocomplete"?: string | undefined;
         /**
+          * Shows {currentLength} / {maxLength} character counter below the field
+          * @default false
+         */
+        "counter"?: boolean;
+        /**
           * Disables the textarea
           * @default false
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this element with a form by id
          */
-        "form"?: string;
+        "form"?: string | undefined;
         /**
           * Helper text shown below (replaced by error when error=true)
          */
@@ -4288,6 +4372,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows an inline spinner and disables the field while true
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Maximum number of characters
          */
         "maxLength"?: number | undefined;
@@ -4296,6 +4385,10 @@ declare namespace LocalJSX {
           * @default ''
          */
         "message"?: string;
+        /**
+          * Minimum number of characters; wired to native minlength and FACE tooShort validity
+         */
+        "minLength"?: number | undefined;
         /**
           * Textarea name
          */
@@ -4321,6 +4414,11 @@ declare namespace LocalJSX {
          */
         "placeholder"?: string | undefined;
         /**
+          * Makes the field read-only — value is not editable but the field stays in tab order
+          * @default false
+         */
+        "readOnly"?: boolean;
+        /**
           * Marks the field as required
           * @default false
          */
@@ -4341,6 +4439,10 @@ declare namespace LocalJSX {
          */
         "size"?: IoTextareaSize;
         /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck"?: boolean | undefined;
+        /**
           * Validation state — controls border color, icon, and message color
           * @default 'none'
          */
@@ -4350,6 +4452,10 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+        /**
+          * Controls how newlines are submitted — maps to native wrap attribute
+         */
+        "wrap"?: IoTextareaWrap | undefined;
     }
     /**
      * io-toast
@@ -4575,10 +4681,16 @@ declare namespace LocalJSX {
         "message": string;
         "helperText": string | undefined;
         "maxLength": number | undefined;
+        "minLength": number | undefined;
         "min": string;
         "max": string;
         "step": string;
         "autocomplete": string | undefined;
+        "autoComplete": string | undefined;
+        "spellCheck": boolean | undefined;
+        "loading": boolean;
+        "counter": boolean;
+        "form": string | undefined;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -4720,14 +4832,21 @@ declare namespace LocalJSX {
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
+        "readOnly": boolean;
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
         "maxLength": number | undefined;
+        "minLength": number | undefined;
         "rows": number;
         "size": IoTextareaSize;
         "autocomplete": string | undefined;
         "resize": IoTextareaResize;
+        "spellCheck": boolean | undefined;
+        "loading": boolean;
+        "counter": boolean;
+        "form": string | undefined;
+        "wrap": IoTextareaWrap | undefined;
     }
     interface IoToastAttributes {
         "position": IoToastPosition;

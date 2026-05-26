@@ -15,13 +15,14 @@ export function resolveTextareaId(name: string | undefined, fallbackId: string):
     : `io-textarea-${fallbackId}`;
 }
 
-export function getTextareaWrapperClass(error: boolean, success: boolean, warning: boolean, disabled: boolean): string {
+export function getTextareaWrapperClass(error: boolean, success: boolean, warning: boolean, disabled: boolean, readOnly = false): string {
   return [
     'textarea-wrapper',
     error ? 'textarea-wrapper--state-error' : '',
     success ? 'textarea-wrapper--state-success' : '',
     warning ? 'textarea-wrapper--state-warning' : '',
     disabled ? 'textarea-wrapper--disabled' : '',
+    readOnly ? 'textarea-wrapper--readonly' : '',
   ]
     .filter(Boolean)
     .join(' ');

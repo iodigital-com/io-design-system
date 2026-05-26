@@ -11,6 +11,8 @@ export const inputStory: Story<'io-input'> = {
       max: '',
       step: '',
       disabled: false,
+      loading: false,
+      counter: false,
       state: 'none',
       message: '',
       helperText: '',
@@ -82,6 +84,26 @@ export const inputStoryConstraints: Story<'io-input'> = {
   ],
 };
 
+export const inputStoryLoading: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-input' as const,
+      properties: { label: 'Searching…', type: 'search', loading: true, placeholder: 'Type to search' },
+    },
+  ],
+};
+
+export const inputStoryCounter: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-input' as const,
+      properties: { label: 'Bio', counter: true, maxLength: 100, placeholder: 'Tell us about yourself' },
+    },
+  ],
+};
+
 export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
@@ -120,6 +142,42 @@ export const inputPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Step value forwarded to the native input (number/date/time).',
+  },
+  {
+    name: 'minLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Minimum character count for native constraint validation.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a spinner and disables events while an async operation is in progress.',
+  },
+  {
+    name: 'counter',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Displays a character count below the field when maxLength is set.',
+  },
+  {
+    name: 'autoComplete',
+    type: 'string',
+    defaultValue: undefined,
+    description: 'Maps to the native autocomplete attribute for browser autofill hints.',
+  },
+  {
+    name: 'spellCheck',
+    type: 'boolean',
+    defaultValue: undefined,
+    description: 'Enables or disables browser spell-check on the input.',
+  },
+  {
+    name: 'form',
+    type: 'string',
+    defaultValue: undefined,
+    description: 'Associates the input with a form element by its id (for out-of-DOM usage).',
   },
   {
     name: 'disabled',

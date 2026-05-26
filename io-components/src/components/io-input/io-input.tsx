@@ -7,6 +7,8 @@ import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize } from './types';
 
+let idCounter = 0;
+
 /**
  * io-input
  * =========
@@ -29,6 +31,7 @@ export class IoInput {
 
   private fallbackId!: string;
   private inputId!: string;
+  private counterId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
 
@@ -77,6 +80,9 @@ export class IoInput {
   /** Max length */
   @Prop() maxLength: number | undefined;
 
+  /** Minimum number of characters; wired to native minlength and FACE tooShort validity */
+  @Prop() minLength: number | undefined;
+
   /** Native minimum value (date/time/number) */
   @Prop() min: string | number | undefined;
 
@@ -86,8 +92,23 @@ export class IoInput {
   /** Native step value (date/time/number) */
   @Prop() step: string | number | undefined;
 
-  /** Autocomplete attribute */
+  /** Autocomplete attribute (legacy — prefer autoComplete) */
   @Prop() autocomplete: string | undefined;
+
+  /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off') */
+  @Prop() autoComplete: string | undefined;
+
+  /** Native spellcheck attribute — passed through as-is */
+  @Prop() spellCheck: boolean | undefined;
+
+  /** Shows an inline spinner and disables the field while true */
+  @Prop() loading = false;
+
+  /** Shows {currentLength} / {maxLength} character counter below the field */
+  @Prop() counter = false;
+
+  /** Associates this element with a form by id — passed to the native input */
+  @Prop() form: string | undefined;
 
   /**
    * Custom ARIA attributes to inject onto the native `<input>` element.
@@ -107,6 +128,7 @@ export class IoInput {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.inputId = resolveInputId(this.name, this.fallbackId);
+    this.counterId = `io-input-counter-${++idCounter}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
   }
@@ -129,6 +151,11 @@ export class IoInput {
 
   @Watch('maxLength')
   onMaxLengthChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('minLength')
+  onMinLengthChange() {
     this.syncFormValue();
   }
 
@@ -155,7 +182,7 @@ export class IoInput {
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     // Derive validity from the native <input> when available so constraints like
-    // maxLength, min, max, step, and typeMismatch are reflected automatically.
+    // maxLength, minLength, min, max, step, and typeMismatch are reflected automatically.
     // Falls back to required-only check before the shadow root exists.
     const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
     if (nativeInput) {
@@ -215,7 +242,7 @@ export class IoInput {
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled) {
+    if (this.disabled || this.loading) {
       return;
     }
     this.value = (ev.target as HTMLInputElement).value;
@@ -223,30 +250,31 @@ export class IoInput {
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) {
+    if (this.disabled || this.loading) {
       return;
     }
     this.change.emit((ev.target as HTMLInputElement).value);
   };
 
   private handleFocus = (ev: FocusEvent) => {
-    if (this.disabled) {
+    if (this.disabled || this.loading) {
       return;
     }
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
-    if (this.disabled) {
+    if (this.disabled || this.loading) {
       return;
     }
     this.blur.emit(ev);
   };
 
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, min, max, step, autocomplete, size, hasPrefix, hasSuffix } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
+    const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
@@ -258,27 +286,34 @@ export class IoInput {
       !hasState && helperText ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
+    const showCounter = counter && maxLength != null;
+    const currentLength = (value ?? '').length;
+
     const wrapperClass = [
       'input-wrapper',
       showError ? 'input-wrapper--state-error' : '',
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
-      disabled ? 'input-wrapper--disabled' : '',
+      isDisabled ? 'input-wrapper--disabled' : '',
       readonly ? 'input-wrapper--readonly' : '',
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     const fieldClass = [
       'input-field',
       `input-field--${size}`,
       hasPrefix ? 'input-field--has-prefix' : '',
       hasSuffix ? 'input-field--has-suffix' : '',
-    ].filter(Boolean).join(' ');
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getInputStyles()}</style>
         <div class={wrapperClass}>
-          {/* Flex row: prefix slot, input, suffix slot, state icon */}
+          {/* Flex row: prefix slot, input, suffix slot / loading spinner, state icon */}
           <div class="input-field-row">
             <span class={`input-slot input-slot--prefix${hasPrefix ? '' : ' input-slot--hidden'}`}>
               <slot name="prefix" onSlotchange={this.handleSlotChange} />
@@ -296,12 +331,15 @@ export class IoInput {
               placeholder={placeholder ?? ' '}
               required={required}
               readOnly={readonly}
-              disabled={disabled}
+              disabled={isDisabled}
               maxLength={maxLength}
+              minLength={minLength}
               min={min}
               max={max}
               step={step}
-              autocomplete={autocomplete}
+              autocomplete={autoComplete ?? autocomplete}
+              spellcheck={spellCheck}
+              form={form}
               aria-invalid={showError ? 'true' : undefined}
               aria-readonly={readonly ? 'true' : undefined}
               aria-describedby={describedBy}
@@ -310,13 +348,22 @@ export class IoInput {
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
             />
-            <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
-              <slot name="suffix" onSlotchange={this.handleSlotChange} />
-            </span>
+            {loading ? (
+              <div class="input-wrapper__loading" aria-hidden="true">
+                <io-spinner size="sm" />
+              </div>
+            ) : (
+              <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
+                <slot name="suffix" onSlotchange={this.handleSlotChange} />
+              </span>
+            )}
             {showError && (
               <div class="input-state-icon input-state-icon--error" aria-hidden="true">
                 <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z" fill="currentColor" />
+                  <path
+                    d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z"
+                    fill="currentColor"
+                  />
                 </svg>
               </div>
             )}
@@ -339,7 +386,11 @@ export class IoInput {
               within the wrapper for the floating-label effect */}
           <label htmlFor={inputId} class="input-label">
             {label}
-            {required && <span class="input-required" aria-hidden="true"> *</span>}
+            {required && (
+              <span class="input-required" aria-hidden="true">
+                {' *'}
+              </span>
+            )}
           </label>
         </div>
         {hasState && message && (
@@ -347,6 +398,11 @@ export class IoInput {
         )}
         {!hasState && helperText && (
           <p id={helperId} class="input-helper">{helperText}</p>
+        )}
+        {showCounter && (
+          <div id={this.counterId} class="input-counter" aria-hidden="true">
+            {currentLength} / {maxLength}
+          </div>
         )}
       </Host>
     );

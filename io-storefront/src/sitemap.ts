@@ -232,6 +232,14 @@ export const sitemap: NavSection[] = [
         related: ['io-radio', 'io-checkbox-group', 'io-form-field'],
       },
       {
+        label: 'Scroller',
+        href: '/components/io-scroller/configurator',
+        status: 'beta',
+        slug: 'io-scroller',
+        description: 'Scrollable content wrapper with gradient fade indicators at each edge. Use for tab bars, chip groups, image strips, and any overflowing content.',
+        related: ['io-tabs', 'io-button-group', 'io-carousel'],
+      },
+      {
         label: 'Select',
         href: '/components/io-select/configurator',
         status: 'stable',

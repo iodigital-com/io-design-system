@@ -24,6 +24,7 @@ import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -54,6 +55,7 @@ export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -1135,6 +1137,39 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface IoScroller {
+        /**
+          * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
+         */
+        "label": string | undefined;
+        /**
+          * Scroll axis. `horizontal` — content overflows left/right. `vertical`   — content overflows top/bottom. Reflected as an attribute.
+          * @default 'horizontal'
+         */
+        "orientation": IoScrollerOrientation;
+        /**
+          * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
+          * @default false
+         */
+        "showScrollbar": boolean;
     }
     /**
      * io-select
@@ -2436,6 +2471,29 @@ declare global {
         prototype: HTMLIoRadioGroupElement;
         new (): HTMLIoRadioGroupElement;
     };
+    /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface HTMLIoScrollerElement extends Components.IoScroller, HTMLStencilElement {
+    }
+    var HTMLIoScrollerElement: {
+        prototype: HTMLIoScrollerElement;
+        new (): HTMLIoScrollerElement;
+    };
     interface HTMLIoSelectElementEventMap {
         "change": string | string[];
         "focus": FocusEvent;
@@ -2902,6 +2960,7 @@ declare global {
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
+        "io-scroller": HTMLIoScrollerElement;
         "io-select": HTMLIoSelectElement;
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
@@ -4000,6 +4059,39 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * io-scroller
+     * ===========
+     * Horizontally or vertically scrollable content wrapper with gradient fade
+     * indicators at each edge. Fade appears when there is scrollable content in
+     * that direction and hides automatically when scrolled to the edge.
+     * Uses IntersectionObserver on sentinel elements at the start and end of the
+     * scroll content to detect edge proximity without polling scroll position.
+     * @example <io-scroller>
+     *   <io-button>Tab 1</io-button>
+     *   <io-button>Tab 2</io-button>
+     *   <!-- …more buttons… -->
+     * </io-scroller>
+     * @example <io-scroller orientation="vertical" label="Navigation links">
+     *   <nav><!-- long list of links --></nav>
+     * </io-scroller>
+     */
+    interface IoScroller {
+        /**
+          * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
+         */
+        "label"?: string | undefined;
+        /**
+          * Scroll axis. `horizontal` — content overflows left/right. `vertical`   — content overflows top/bottom. Reflected as an attribute.
+          * @default 'horizontal'
+         */
+        "orientation"?: IoScrollerOrientation;
+        /**
+          * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
+          * @default false
+         */
+        "showScrollbar"?: boolean;
+    }
+    /**
      * io-select
      * ==========
      * Styled native select with floating label — companion to io-input.
@@ -4899,6 +4991,11 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string;
     }
+    interface IoScrollerAttributes {
+        "orientation": IoScrollerOrientation;
+        "showScrollbar": boolean;
+        "label": string | undefined;
+    }
     interface IoSelectAttributes {
         "label": string;
         "name": string | undefined;
@@ -5037,6 +5134,7 @@ declare namespace LocalJSX {
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
+        "io-scroller": Omit<IoScroller, keyof IoScrollerAttributes> & { [K in keyof IoScroller & keyof IoScrollerAttributes]?: IoScroller[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `attr:${K}`]?: IoScrollerAttributes[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `prop:${K}`]?: IoScroller[K] };
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
@@ -5329,6 +5427,24 @@ declare module "@stencil/core" {
              * </io-radio-group>
              */
             "io-radio-group": LocalJSX.IntrinsicElements["io-radio-group"] & JSXBase.HTMLAttributes<HTMLIoRadioGroupElement>;
+            /**
+             * io-scroller
+             * ===========
+             * Horizontally or vertically scrollable content wrapper with gradient fade
+             * indicators at each edge. Fade appears when there is scrollable content in
+             * that direction and hides automatically when scrolled to the edge.
+             * Uses IntersectionObserver on sentinel elements at the start and end of the
+             * scroll content to detect edge proximity without polling scroll position.
+             * @example <io-scroller>
+             *   <io-button>Tab 1</io-button>
+             *   <io-button>Tab 2</io-button>
+             *   <!-- …more buttons… -->
+             * </io-scroller>
+             * @example <io-scroller orientation="vertical" label="Navigation links">
+             *   <nav><!-- long list of links --></nav>
+             * </io-scroller>
+             */
+            "io-scroller": LocalJSX.IntrinsicElements["io-scroller"] & JSXBase.HTMLAttributes<HTMLIoScrollerElement>;
             /**
              * io-select
              * ==========

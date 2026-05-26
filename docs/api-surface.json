@@ -335,6 +335,15 @@
         "change": "IoRadioGroupChangeDetail"
       }
     },
+    "io-scroller": {
+      "props": {
+        "label": "string | undefined",
+        "orientation": "IoScrollerOrientation",
+        "showScrollbar": "boolean"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-select": {
       "props": {
         "custom": "boolean",

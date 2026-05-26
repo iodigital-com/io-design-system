@@ -27,6 +27,56 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [2.1.0] — 2026-05-26 (Wave XI)
+
+Wave XI: nine new beta components, fifteen stable promotions, and comprehensive API additions.
+
+### Added — New Components
+
+- **`io-alert`** — Inline notification banner with 4 severity variants (info/success/warning/error), optional bold heading, and dismissible button that emits a `dismiss` event. Ships with ARIA live region semantics (`role="alert"` / `role="status"` by variant).
+- **`io-multi-select`** — Multi-value select with removable chip display, FACE form association, search/filter mode, and ARIA combobox + `aria-multiselectable="true"` pattern. Deprecates `io-select[multiple]` with migration guidance.
+- **`io-pin-code`** — PIN/OTP entry component with FACE form association, auto-advance keyboard navigation, paste distribution across cells, and password-masking mode.
+- **`io-popover`** — Click-triggered floating content panel built on the native Popover API + `<dialog>` role fallback. Supports `auto` and `manual` dismiss modes with `placement` positioning.
+- **`io-scroller`** — Scrollable container with configurable edge fade indicators. Public CSS custom properties: `--io-scroller-fade-color` and `--io-scroller-fade-size`.
+- **`io-switch`** — FACE toggle/switch component with `role="switch"`, keyboard Space/Enter activation, and `checked` + `disabled` props.
+- **`io-tabs-bar`** — Standalone tabs navigation bar decoupled from `io-tabs` panels. Renders a `role="tablist"` with `aria-controls` pointing to external panel IDs.
+- **`io-text`** — Body copy component rendering `p`, `span`, `div`, `blockquote`, or `time` with token-driven font size (`xs`–`xl`), weight, color, alignment, and optional ellipsis truncation.
+- **`io-heading`** — Heading component rendering `h1`–`h6` with token-driven visual size (`sm`–`4xl`) fully decoupled from semantic heading level.
+
+### Added — Props & Slots
+
+- `hideLabel: boolean` — Added to `io-input`, `io-textarea`, `io-select`, `io-checkbox`, `io-radio`. Visually hides the label using `sr-only` while preserving screen-reader accessibility.
+- Named slots (`label`, `description`, `message`) — Added to all five form-field components for rich HTML content in labels and messages.
+- `form` prop — Added to `io-checkbox`, `io-radio`, `io-select` for out-of-DOM form association.
+- `loading` prop — Added to `io-input`, `io-textarea`, `io-select`, `io-checkbox`, `io-radio`.
+- `background` and `motion` props — Added to `io-modal` and `io-drawer`.
+- `sticky` and `background` props — Added to `io-accordion`.
+- `aria` prop — Added to `io-button`, `io-input`, `io-textarea`, `io-select`, `io-modal`, `io-drawer` for custom ARIA attribute injection.
+- Named slots (`heading`, `description`, `controls`) — Added to `io-carousel`.
+- `totalItems` and `perPage` props — Added to `io-pagination`.
+- RTL support — Added to all layout components via logical properties.
+- `direction` prop — Added to `io-button-group`.
+- `color` prop — Added to `io-divider`.
+- `href`, `target`, `rel` props — Added to `io-wordmark` for logo-as-link pattern.
+
+### Changed — Stable Promotions
+
+Promoted from `beta` to `stable`: `io-accordion`, `io-avatar`, `io-badge`, `io-breadcrumb`, `io-breadcrumb-item`, `io-button-group`, `io-checkbox-group`, `io-divider`, `io-drawer`, `io-form-field`, `io-progress`, `io-radio-group`, `io-stepper`, `io-table`, `io-wordmark`.
+
+### Changed — BREAKING
+
+- **State/message API**: `error: boolean` + `errorMessage: string` replaced by `state: IoFieldState` + `message: string` across `io-input`, `io-textarea`, `io-select`, `io-checkbox`, `io-radio`, `io-form-field`. Requires migration — see migration guide in `io-components/CHANGELOG.md#200`.
+
+### Infrastructure
+
+- CSS `@layer` architecture for brand overrides and theming
+- Component density system: `compact` / `default` / `comfortable`
+- Gradient token system
+- Stencil SSR/SSG hydrate output target
+- Figma-to-token CI sync workflow
+
+---
+
 ## [0.1.0] — 2026-05-01
 
 Wave-C/D: three new components, io-select combobox mode, and storefront accessibility improvements.

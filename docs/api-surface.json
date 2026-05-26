@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-26T13:30:37.011Z",
+  "generated": "2026-05-26T16:38:43.280Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -17,6 +17,16 @@
       "methods": {},
       "events": {
         "update": "IoAccordionUpdateDetail"
+      }
+    },
+    "io-alert": {
+      "props": {
+        "dismissible": "boolean",
+        "variant": "IoAlertVariant"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
       }
     },
     "io-avatar": {
@@ -108,13 +118,13 @@
       "props": {
         "checked": "boolean",
         "disabled": "boolean",
-        "error": "boolean",
-        "errorMessage": "string | undefined",
         "helperText": "string | undefined",
         "indeterminate": "boolean",
         "label": "string",
+        "message": "string",
         "name": "string | undefined",
         "required": "boolean",
+        "state": "IoFieldState",
         "value": "string"
       },
       "methods": {
@@ -171,11 +181,11 @@
     },
     "io-form-field": {
       "props": {
-        "error": "boolean",
-        "errorMessage": "string",
         "helperText": "string",
         "label": "string",
-        "required": "boolean"
+        "message": "string",
+        "required": "boolean",
+        "state": "IoFieldState"
       },
       "methods": {},
       "events": {}
@@ -308,12 +318,12 @@
       "props": {
         "checked": "boolean",
         "disabled": "boolean",
-        "error": "boolean",
-        "errorMessage": "string | undefined",
         "helperText": "string | undefined",
         "label": "string",
+        "message": "string",
         "name": "string | undefined",
         "required": "boolean",
+        "state": "IoFieldState",
         "value": "string"
       },
       "methods": {
@@ -354,16 +364,16 @@
       "props": {
         "custom": "boolean",
         "disabled": "boolean",
-        "error": "boolean",
-        "errorMessage": "string | undefined",
         "filter": "boolean",
         "helperText": "string | undefined",
         "label": "string",
+        "message": "string",
         "multiple": "boolean",
         "name": "string | undefined",
         "placeholder": "string | undefined",
         "required": "boolean",
         "size": "IoSelectSize",
+        "state": "IoFieldState",
         "value": "string"
       },
       "methods": {

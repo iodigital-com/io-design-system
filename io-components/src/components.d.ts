@@ -75,29 +75,6 @@ export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoWordmarkSize } from "./components/io-wordmark/types";
 export namespace Components {
     /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification with four severity variants.
-     * @example <io-alert variant="info">Session expires soon.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">File exceeds 10 MB.</io-alert>
-     */
-    interface IoAlert {
-        /**
-          * When true, renders a dismiss button that emits the dismiss event
-          * @default false
-         */
-        "dismissible": boolean;
-        /**
-          * Optional bold heading rendered above the slotted content
-         */
-        "heading": string | undefined;
-        /**
-          * Severity variant — controls icon, colour, and aria-live politeness
-          * @default 'info'
-         */
-        "variant": IoAlertVariant;
-    }
-    /**
      * io-accordion
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
@@ -151,6 +128,35 @@ export namespace Components {
           * @default false
          */
         "sticky": boolean;
+    }
+    /**
+     * io-alert
+     * =========
+     * Non-interactive inline notification component with four severity variants.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
+     * so we only set aria-live and aria-atomic for non-error variants.
+     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
+     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
+     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
+     */
+    interface IoAlert {
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event on click
+          * @default false
+         */
+        "dismissible": boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant": IoAlertVariant;
     }
     /**
      * io-avatar
@@ -2042,13 +2048,13 @@ export namespace Components {
         "target"?: string;
     }
 }
-export interface IoAlertCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLIoAlertElement;
-}
 export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoAccordionElement;
+}
+export interface IoAlertCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoAlertElement;
 }
 export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2147,30 +2153,6 @@ export interface IoToastItemCustomEvent<T> extends CustomEvent<T> {
     target: HTMLIoToastItemElement;
 }
 declare global {
-    interface HTMLIoAlertElementEventMap {
-        "dismiss": void;
-    }
-    /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification with four severity variants.
-     * @example <io-alert variant="info">Session expires soon.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">File exceeds 10 MB.</io-alert>
-     */
-    interface HTMLIoAlertElement extends Components.IoAlert, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoAlertElement: {
-        prototype: HTMLIoAlertElement;
-        new (): HTMLIoAlertElement;
-    };
     interface HTMLIoAccordionElementEventMap {
         "update": IoAccordionUpdateDetail;
     }
@@ -2195,6 +2177,36 @@ declare global {
     var HTMLIoAccordionElement: {
         prototype: HTMLIoAccordionElement;
         new (): HTMLIoAccordionElement;
+    };
+    interface HTMLIoAlertElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-alert
+     * =========
+     * Non-interactive inline notification component with four severity variants.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
+     * so we only set aria-live and aria-atomic for non-error variants.
+     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
+     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
+     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
+     */
+    interface HTMLIoAlertElement extends Components.IoAlert, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoAlertElement: {
+        prototype: HTMLIoAlertElement;
+        new (): HTMLIoAlertElement;
     };
     /**
      * io-avatar
@@ -3238,8 +3250,8 @@ declare global {
         new (): HTMLIoWordmarkElement;
     };
     interface HTMLElementTagNameMap {
-        "io-alert": HTMLIoAlertElement;
         "io-accordion": HTMLIoAccordionElement;
+        "io-alert": HTMLIoAlertElement;
         "io-avatar": HTMLIoAvatarElement;
         "io-badge": HTMLIoBadgeElement;
         "io-breadcrumb": HTMLIoBreadcrumbElement;
@@ -3288,33 +3300,6 @@ declare global {
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
-    /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification with four severity variants.
-     * @example <io-alert variant="info">Session expires soon.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">File exceeds 10 MB.</io-alert>
-     */
-    interface IoAlert {
-        /**
-          * When true, renders a dismiss button that emits the dismiss event
-          * @default false
-         */
-        "dismissible"?: boolean;
-        /**
-          * Optional bold heading rendered above the slotted content
-         */
-        "heading"?: string;
-        /**
-          * Emitted when the dismiss button is clicked
-         */
-        "onDismiss"?: (event: IoAlertCustomEvent<void>) => void;
-        /**
-          * Severity variant — controls icon, colour, and aria-live politeness
-          * @default 'info'
-         */
-        "variant"?: IoAlertVariant;
-    }
     /**
      * io-accordion
      * =============
@@ -3373,6 +3358,39 @@ declare namespace LocalJSX {
           * @default false
          */
         "sticky"?: boolean;
+    }
+    /**
+     * io-alert
+     * =========
+     * Non-interactive inline notification component with four severity variants.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
+     * so we only set aria-live and aria-atomic for non-error variants.
+     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
+     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
+     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
+     */
+    interface IoAlert {
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event on click
+          * @default false
+         */
+        "dismissible"?: boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the dismiss button is clicked
+         */
+        "onDismiss"?: (event: IoAlertCustomEvent<void>) => void;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant"?: IoAlertVariant;
     }
     /**
      * io-avatar
@@ -5295,9 +5313,6 @@ declare namespace LocalJSX {
         "target"?: string;
     }
 
-    interface IoAlertAttributes {
-        "variant": IoAlertVariant;
-    }
     interface IoAccordionAttributes {
         "open": boolean;
         "heading": string;
@@ -5308,6 +5323,11 @@ declare namespace LocalJSX {
         "sticky": boolean;
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
+    }
+    interface IoAlertAttributes {
+        "variant": IoAlertVariant;
+        "heading": string;
+        "dismissible": boolean;
     }
     interface IoAvatarAttributes {
         "src": string | undefined;
@@ -5639,8 +5659,8 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
-        "io-alert": Omit<IoAlert, keyof IoAlertAttributes> & { [K in keyof IoAlert & keyof IoAlertAttributes]?: IoAlert[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `attr:${K}`]?: IoAlertAttributes[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `prop:${K}`]?: IoAlert[K] };
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
+        "io-alert": Omit<IoAlert, keyof IoAlertAttributes> & { [K in keyof IoAlert & keyof IoAlertAttributes]?: IoAlert[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `attr:${K}`]?: IoAlertAttributes[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `prop:${K}`]?: IoAlert[K] };
         "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-breadcrumb": IoBreadcrumb;
@@ -5691,14 +5711,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             /**
-             * io-alert
-             * =========
-             * Non-interactive inline notification with four severity variants.
-             * @example <io-alert variant="info">Session expires soon.</io-alert>
-             * <io-alert variant="error" heading="Upload failed">File exceeds 10 MB.</io-alert>
-             */
-            "io-alert": LocalJSX.IntrinsicElements["io-alert"] & JSXBase.HTMLAttributes<HTMLIoAlertElement>;
-            /**
              * io-accordion
              * =============
              * Collapsible sections with animated +/− icon and title indent animation.
@@ -5707,6 +5719,20 @@ declare module "@stencil/core" {
              * @example <io-accordion></io-accordion>
              */
             "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;
+            /**
+             * io-alert
+             * =========
+             * Non-interactive inline notification component with four severity variants.
+             * ARIA live region strategy:
+             *   - error variant:     role="alert" (implicit aria-live="assertive")
+             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+             * Setting aria-live on a role="alert" element is redundant and ignored by AT,
+             * so we only set aria-live and aria-atomic for non-error variants.
+             * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
+             * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
+             * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
+             */
+            "io-alert": LocalJSX.IntrinsicElements["io-alert"] & JSXBase.HTMLAttributes<HTMLIoAlertElement>;
             /**
              * io-avatar
              * =========

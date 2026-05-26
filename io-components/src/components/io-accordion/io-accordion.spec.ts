@@ -132,3 +132,122 @@ describe('io-accordion — lifecycle', () => {
     expect(styles).toContain('max-height: var(--io-accordion-max-height, 600px);');
   });
 });
+
+describe('io-accordion — background prop', () => {
+  it('defaults background to transparent', () => {
+    const component = new IoAccordion();
+    expect(component.background).toBe('transparent');
+  });
+
+  it('accepts background value surface', () => {
+    const component = new IoAccordion();
+    component.background = 'surface';
+    expect(component.background).toBe('surface');
+  });
+
+  it('accepts background value canvas', () => {
+    const component = new IoAccordion();
+    component.background = 'canvas';
+    expect(component.background).toBe('canvas');
+  });
+
+  it('accepts background value transparent', () => {
+    const component = new IoAccordion();
+    component.background = 'transparent';
+    expect(component.background).toBe('transparent');
+  });
+
+  it('CSS includes :host([background="surface"]) with --io-bg-surface token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([background="surface"])');
+    expect(styles).toContain('var(--io-bg-surface)');
+  });
+
+  it('CSS includes :host([background="canvas"]) with --io-bg-page token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([background="canvas"])');
+    expect(styles).toContain('var(--io-bg-page)');
+  });
+
+  it('CSS includes :host([background="transparent"]) with transparent value', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([background="transparent"])');
+    expect(styles).toContain('background-color: transparent');
+  });
+});
+
+describe('io-accordion — sticky prop', () => {
+  it('defaults sticky to false', () => {
+    const component = new IoAccordion();
+    expect(component.sticky).toBe(false);
+  });
+
+  it('accepts sticky=true', () => {
+    const component = new IoAccordion();
+    component.sticky = true;
+    expect(component.sticky).toBe(true);
+  });
+
+  it('CSS includes :host([sticky]) with position sticky on accordion-heading', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([sticky]) .accordion-heading');
+    expect(styles).toContain('position: sticky');
+    expect(styles).toContain('top: 0');
+  });
+
+  it('CSS uses --io-z-sticky token for z-index on sticky heading', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('z-index: var(--io-z-sticky)');
+  });
+
+  it('sticky heading inherits background-color from host', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('background-color: inherit');
+  });
+
+  it('logs a warning when sticky=true and background="transparent"', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const component = new IoAccordion();
+    component.sticky = true;
+    component.background = 'transparent';
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
+    component.componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('[io-accordion] sticky=true with background="transparent"'),
+    );
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when sticky=true and background="surface"', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const component = new IoAccordion();
+    component.sticky = true;
+    component.background = 'surface';
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
+    component.componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when sticky=true and background="canvas"', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const component = new IoAccordion();
+    component.sticky = true;
+    component.background = 'canvas';
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
+    component.componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when sticky=false regardless of background', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const component = new IoAccordion();
+    component.sticky = false;
+    component.background = 'transparent';
+    (component as any).el = { id: '', dispatchEvent: vi.fn() };
+    component.componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});

@@ -200,5 +200,37 @@ export function getAccordionStyles(): string {
         transform: none;
       }
     }
+
+    /* ── Background variants ─────────────────────────────── */
+
+    :host([background="surface"]) {
+      background-color: var(--io-bg-surface);
+    }
+
+    :host([background="canvas"]) {
+      background-color: var(--io-bg-page);
+    }
+
+    /* transparent is the default — no fill needed */
+    :host([background="transparent"]) {
+      background-color: transparent;
+    }
+
+    /* ── Sticky trigger ──────────────────────────────────── */
+
+    /*
+     * Sticky is only meaningful when background is surface or canvas.
+     * The :host([sticky]) selector applies only when the reflected
+     * boolean attribute is present.
+     *
+     * The accordion-heading wraps the trigger button; both need to be
+     * sticky to ensure the full header row sticks together.
+     */
+    :host([sticky]) .accordion-heading {
+      position: sticky;
+      top: 0;
+      z-index: var(--io-z-sticky);
+      background-color: inherit;
+    }
   `;
 }

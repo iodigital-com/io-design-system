@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   accordionSingleOpenCode,
   accordionStory,
+  accordionStoryCanvasBackground,
   accordionStoryDefaultExpanded,
   accordionStoryGroupMultiOpen,
   accordionStoryOpen,
@@ -12,6 +13,8 @@ import {
   accordionStorySizeLg,
   accordionStorySizeMd,
   accordionStorySizeSm,
+  accordionStoryStickyWithSurface,
+  accordionStorySurfaceBackground,
 } from '../io-accordion.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -146,6 +149,27 @@ export default function IoAccordionExamplesPage() {
           description="Use size='lg' for marketing pages or hero-area accordions where a more prominent trigger is appropriate."
         />
         <ComponentStory story={accordionStorySizeLg} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Background: surface"
+          description="Use background='surface' to apply a subtle fill (--io-bg-surface) — useful in card-based or nested layouts."
+        />
+        <ComponentStory story={accordionStorySurfaceBackground} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Background: canvas"
+          description="Use background='canvas' to apply a page-level fill (--io-bg-page) — matches the overall page background."
+        />
+        <ComponentStory story={accordionStoryCanvasBackground} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Sticky header with surface background"
+          description="Combine sticky=true with background='surface' or 'canvas' to keep the trigger visible while scrolling through long expanded content."
+        />
+        <ComponentStory story={accordionStoryStickyWithSurface} />
       </section>
       <section>
         <ExamplesSectionHeader

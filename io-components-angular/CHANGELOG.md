@@ -1,5 +1,12 @@
 # @io-digital/components-angular
 
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [33baa52]
+  - @io-digital/components@2.1.0
+
 ## 5.0.0
 
 ### Major Changes

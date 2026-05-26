@@ -74,4 +74,22 @@ describe('io-button-group — a11y', () => {
 
     await renderAndCheckA11y(group);
   });
+
+  it('column direction exclusive (radiogroup) has no violations', async () => {
+    const el = makeRadioGroup('Actions', [
+      { label: 'Edit', checked: true },
+      { label: 'Delete', checked: false },
+      { label: 'Archive', checked: false },
+    ]);
+    await renderAndCheckA11y(el);
+  });
+
+  it('column direction multi-select (group) has no violations', async () => {
+    const el = makeCheckboxGroup('Permissions', [
+      { label: 'Read', checked: true },
+      { label: 'Write', checked: true },
+      { label: 'Admin', checked: false },
+    ]);
+    await renderAndCheckA11y(el);
+  });
 });

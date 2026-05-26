@@ -10,6 +10,8 @@ import {
   buttonGroupStorySizeSm,
   buttonGroupStorySizeMd,
   buttonGroupStorySizeLg,
+  buttonGroupStoryDirectionRow,
+  buttonGroupStoryDirectionColumn,
 } from '../io-button-group.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -172,6 +174,25 @@ export default function IoButtonGroupExamplesPage() {
           to propagate a larger size to all slotted <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-button</code> children.
         </p>
         <ComponentStory story={buttonGroupStorySizeLg} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="Direction: row (default)" />
+        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+          The default direction. Buttons are arranged horizontally left-to-right. Equivalent to omitting the{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>direction</code> attribute.
+        </p>
+        <ComponentStory story={buttonGroupStoryDirectionRow} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="Direction: column" />
+        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>direction=&quot;column&quot;</code>{' '}
+          to stack buttons vertically. Useful for sidebars, action menus, and mobile-first layouts where
+          a horizontal arrangement would overflow. Border-radius adapts so the group still looks connected.
+        </p>
+        <ComponentStory story={buttonGroupStoryDirectionColumn} />
       </section>
     </div>
   );

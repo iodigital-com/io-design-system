@@ -1,6 +1,9 @@
 /** Size preset for the button group — propagated to all slotted io-button children. */
 export type IoButtonGroupSize = 'sm' | 'md' | 'lg';
 
+/** Layout direction for the button group. 'row' stacks buttons horizontally (default); 'column' stacks them vertically. */
+export type IoButtonGroupDirection = 'row' | 'column';
+
 /** A single option within the button group. */
 export interface IoButtonGroupItem {
   /** Unique identifier — matched against the group's value prop. */

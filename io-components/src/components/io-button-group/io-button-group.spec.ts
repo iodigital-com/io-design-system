@@ -442,3 +442,34 @@ describe('io-button-group — size prop', () => {
     expect(() => (comp as any).propagateSize()).not.toThrow();
   });
 });
+
+describe('io-button-group — direction prop', () => {
+  it('direction defaults to "row"', () => {
+    const comp = makeComponent();
+    expect(comp.direction).toBe('row');
+  });
+
+  it('direction prop can be set to "column"', () => {
+    const comp = makeComponent({ direction: 'column' } as any);
+    expect(comp.direction).toBe('column');
+  });
+
+  it('direction prop can be set to "row"', () => {
+    const comp = makeComponent({ direction: 'row' } as any);
+    expect(comp.direction).toBe('row');
+  });
+});
+
+describe('io-button-group render — direction prop', () => {
+  it('renders with default direction "row" without errors', () => {
+    const comp = makeRenderComp({ direction: 'row' } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
+  });
+
+  it('renders with direction "column" without errors', () => {
+    const comp = makeRenderComp({ direction: 'column' } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
+  });
+});

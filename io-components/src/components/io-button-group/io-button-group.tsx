@@ -3,7 +3,7 @@ import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } 
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
-import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupSize } from './types';
+import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from './types';
 
 /**
  * io-button-group
@@ -55,6 +55,13 @@ export class IoButtonGroup {
    * 'sm' | 'md' (default) | 'lg'
    */
   @Prop({ reflect: true }) size: IoButtonGroupSize = 'md';
+
+  /**
+   * Layout direction for the button group.
+   * 'row' (default) lays buttons out horizontally.
+   * 'column' stacks buttons vertically, full-width.
+   */
+  @Prop({ reflect: true }) direction: IoButtonGroupDirection = 'row';
 
   // ── Events ────────────────────────────────────────────
 

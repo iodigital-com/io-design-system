@@ -9,7 +9,7 @@ import { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from 
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-import { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
+import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -37,7 +37,7 @@ export { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from 
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-export { IoButtonGroupChangeDetail, IoButtonGroupSize } from "./components/io-button-group/types";
+export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -306,6 +306,11 @@ export namespace Components {
      * </io-button-group>
      */
     interface IoButtonGroup {
+        /**
+          * Layout direction for the button group. 'row' (default) lays buttons out horizontally. 'column' stacks buttons vertically, full-width.
+          * @default 'row'
+         */
+        "direction": IoButtonGroupDirection;
         /**
           * Disables all buttons in the group
           * @default false
@@ -2955,6 +2960,11 @@ declare namespace LocalJSX {
      * </io-button-group>
      */
     interface IoButtonGroup {
+        /**
+          * Layout direction for the button group. 'row' (default) lays buttons out horizontally. 'column' stacks buttons vertically, full-width.
+          * @default 'row'
+         */
+        "direction"?: IoButtonGroupDirection;
         /**
           * Disables all buttons in the group
           * @default false

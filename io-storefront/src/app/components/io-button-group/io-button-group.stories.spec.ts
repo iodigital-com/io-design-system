@@ -116,6 +116,11 @@ describe('io-button-group storefront stories', () => {
         buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, direction: 'column' } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-button-group as root element', () => {
+      const els = buttonGroupStory.generator?.(buttonGroupStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-button-group');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

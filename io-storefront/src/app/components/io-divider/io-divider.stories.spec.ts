@@ -83,6 +83,13 @@ describe('io-divider storefront stories', () => {
     it('frameworkCode does not throw with default state', () => {
       expect(() => (dividerStory as { frameworkCode?: (state?: unknown) => unknown }).frameworkCode?.(dividerStory.state)).not.toThrow();
     });
+
+    it('configurator story produces io-divider as root element', () => {
+      const els = dividerStory.generator?.(dividerStory.state) ?? [];
+      const wrapper = els[0] as { tag: string; children?: unknown[] };
+      const divider = wrapper.children?.find((el) => (el as { tag: string }).tag === 'io-divider');
+      expect(divider).toBeDefined();
+    });
   });
 
   describe('dividerPropDefinitions', () => {

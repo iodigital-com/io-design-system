@@ -74,6 +74,11 @@ describe('io-alert storefront stories', () => {
         alertStory.generator?.({ properties: { ...alertStory.state.properties, dismissible: false } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-alert as root element', () => {
+      const els = alertStory.generator?.(alertStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-alert');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

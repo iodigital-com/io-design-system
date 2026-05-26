@@ -142,6 +142,11 @@ describe('io-avatar storefront stories', () => {
         avatarStory.generator?.({ properties: { ...avatarStory.state.properties, name: 'Jane Doe' } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-avatar as root element', () => {
+      const els = avatarStory.generator?.(avatarStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-avatar');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

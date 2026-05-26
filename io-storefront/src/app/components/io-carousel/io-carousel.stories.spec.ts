@@ -84,6 +84,11 @@ describe('io-carousel storefront stories', () => {
         carouselStory.generator?.({ properties: { ...carouselStory.state.properties, activeSlideIndex: 2 } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-carousel as root element', () => {
+      const els = carouselStory.generator?.(carouselStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-carousel');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

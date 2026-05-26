@@ -125,6 +125,11 @@ describe('io-checkbox-group storefront stories', () => {
         }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-checkbox-group as root element', () => {
+      const els = checkboxGroupStory.generator?.(checkboxGroupStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-checkbox-group');
+    });
   });
 
   describe('checkboxGroupPropDefinitions', () => {

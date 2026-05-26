@@ -148,6 +148,11 @@ describe('io-accordion storefront stories', () => {
         accordionStory.generator?.({ properties: { ...accordionStory.state.properties, sticky: true } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-accordion as root element', () => {
+      const els = accordionStory.generator?.(accordionStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-accordion');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

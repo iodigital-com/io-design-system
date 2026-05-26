@@ -66,6 +66,12 @@ describe('io-modal storefront stories', () => {
         modalStory.generator?.({ properties: { ...modalStory.state.properties, closeOnBackdrop: false } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-modal as root element', () => {
+      const els = modalStory.generator?.(modalStory.state) ?? [];
+      const modal = els.find((el) => (el as { tag: string }).tag === 'io-modal');
+      expect(modal).toBeDefined();
+    });
   });
 
   describe('modalPropDefinitions', () => {

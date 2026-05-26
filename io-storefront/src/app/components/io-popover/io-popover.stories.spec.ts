@@ -60,6 +60,11 @@ describe('popoverStory (configurator)', () => {
   it.each(['top', 'bottom', 'left', 'right', 'auto'])('does not throw for placement=%s', (placement) => {
     expect(() => popoverStory.generator?.({ properties: { placement } })).not.toThrow();
   });
+
+  it('configurator story produces io-popover as root element', () => {
+    const els = popoverStory.generator?.(popoverStory.state) ?? [];
+    expect((els[0] as { tag: string }).tag).toBe('io-popover');
+  });
 });
 
 describe('popoverStoryBottom', () => {

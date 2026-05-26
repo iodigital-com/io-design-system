@@ -74,6 +74,11 @@ describe('io-heading storefront stories', () => {
         ).not.toThrow();
       }
     });
+
+    it('configurator story produces io-heading as root element', () => {
+      const els = headingStory.generator?.(headingStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-heading');
+    });
   });
 
   describe('headingPropDefinitions', () => {

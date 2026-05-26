@@ -82,6 +82,11 @@ describe('io-input storefront stories', () => {
         inputStory.generator?.({ properties: { ...inputStory.state.properties, counter: true } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-input as root element', () => {
+      const els = inputStory.generator?.(inputStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-input');
+    });
   });
 
   describe('inputPropDefinitions', () => {

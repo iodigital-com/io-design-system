@@ -84,6 +84,12 @@ describe('io-drawer storefront stories', () => {
         drawerStory.generator?.({ properties: { ...drawerStory.state.properties, open: true } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-drawer as root element', () => {
+      const els = drawerStory.generator?.(drawerStory.state) ?? [];
+      const drawer = els.find((el) => (el as { tag: string }).tag === 'io-drawer');
+      expect(drawer).toBeDefined();
+    });
   });
 
   describe('drawerPropDefinitions', () => {

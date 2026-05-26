@@ -78,6 +78,11 @@ describe('io-link storefront stories', () => {
         linkStory.generator?.({ properties: { ...linkStory.state.properties, disabled: true } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-link as root element', () => {
+      const els = linkStory.generator?.(linkStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-link');
+    });
   });
 
   describe('linkPropDefinitions', () => {

@@ -97,6 +97,11 @@ describe('io-badge storefront stories', () => {
         badgeStory.generator?.({ properties: { ...badgeStory.state.properties, size: 'md' } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-badge as root element', () => {
+      const els = badgeStory.generator?.(badgeStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-badge');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

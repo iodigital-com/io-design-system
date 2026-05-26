@@ -130,6 +130,11 @@ describe('io-checkbox storefront stories', () => {
         checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, helperText: 'Optional supporting text' } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-checkbox as root element', () => {
+      const els = checkboxStory.generator?.(checkboxStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-checkbox');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

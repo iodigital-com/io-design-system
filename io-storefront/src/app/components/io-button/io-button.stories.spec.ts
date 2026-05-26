@@ -211,6 +211,11 @@ describe('io-button storefront stories', () => {
         buttonStory.generator?.({ properties: { ...buttonStory.state.properties, label: 'Submit' } }),
       ).not.toThrow();
     });
+
+    it('configurator story produces io-button as root element', () => {
+      const els = buttonStory.generator?.(buttonStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-button');
+    });
   });
 
   // ── PropDefinitions ─────────────────────────────────────────────────────

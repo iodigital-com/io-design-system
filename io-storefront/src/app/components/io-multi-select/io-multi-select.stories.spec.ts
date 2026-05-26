@@ -71,6 +71,11 @@ describe('io-multi-select storefront stories', () => {
         multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, filter: true } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-multi-select as root element', () => {
+      const els = multiSelectStory.generator?.(multiSelectStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-multi-select');
+    });
   });
 
   describe('multiSelectPropDefinitions', () => {

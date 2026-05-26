@@ -52,6 +52,11 @@ describe('io-pagination storefront stories', () => {
         paginationStory.generator?.({ properties: { page: 7, totalPages: 20 } })
       ).not.toThrow();
     });
+
+    it('configurator story produces io-pagination as root element', () => {
+      const els = paginationStory.generator?.(paginationStory.state) ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-pagination');
+    });
   });
 
   describe('paginationPropDefinitions', () => {

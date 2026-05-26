@@ -40,6 +40,27 @@ export default function IoBreadcrumbExamplesPage() {
           previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="RTL layout"
+          description="In a right-to-left context the separator is mirrored and items flow right-to-left. Wrap the page or section with dir=&quot;rtl&quot; to activate."
+        />
+        <div
+          dir="rtl"
+          className="p-4 sm:p-8 rounded-lg border border-[var(--io-border)]"
+          style={{ backgroundColor: 'var(--io-bg-raised)' }}
+        >
+          <io-breadcrumb>
+            <io-breadcrumb-item href="/">الرئيسية</io-breadcrumb-item>
+            <io-breadcrumb-item href="/services">الخدمات</io-breadcrumb-item>
+            <io-breadcrumb-item current>الاستراتيجية الرقمية</io-breadcrumb-item>
+          </io-breadcrumb>
+        </div>
+        <p className="text-xs mt-2" style={{ color: 'var(--io-text-muted)' }}>
+          dir=&quot;rtl&quot; · separator mirrored via scaleX(-1) · items flow right-to-left
+        </p>
+      </section>
     </div>
   );
 }

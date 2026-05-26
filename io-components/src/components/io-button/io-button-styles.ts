@@ -442,5 +442,41 @@ export function getButtonStyles(): string {
         animation: none;
       }
     }
+
+    /* ============================================================
+       RTL SUPPORT
+       Targets components inside a [dir="rtl"] ancestor.
+       Uses :host-context([dir="rtl"]) to traverse the Shadow DOM
+       boundary and reach ancestor dir attributes.
+       ============================================================ */
+
+    /* forward arrow: points left in RTL */
+    :host-context([dir="rtl"]) .btn__arrow:not(.btn__arrow--back):not(.btn__arrow--down) {
+      transform: scaleX(-1);
+    }
+
+    /* back arrow: points right in RTL — match LTR transform order, apply scaleX after rotation */
+    :host-context([dir="rtl"]) .btn__arrow--back {
+      transform: rotate(180deg) scaleX(-1);
+    }
+
+    /* Hover animation: reverse shift direction in RTL */
+    @media (hover: hover) and (pointer: fine) {
+      /* forward: slide left in RTL (negate translateX) */
+      :host-context([dir="rtl"]) .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow:not(.btn__arrow--back):not(.btn__arrow--down) {
+        transform: scaleX(-1) translateX(var(--io-button-arrow-shift-forward));
+      }
+
+      /* back: slide right in RTL — match transform axis ordering with LTR */
+      :host-context([dir="rtl"]) .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow--back {
+        transform: rotate(180deg) scaleX(-1) translateX(var(--io-button-arrow-shift-forward));
+      }
+    }
+
+    /* Link underline: anchor from right edge in RTL */
+    :host-context([dir="rtl"]) .btn--link::after {
+      left: auto;
+      right: 0;
+    }
   `;
 }

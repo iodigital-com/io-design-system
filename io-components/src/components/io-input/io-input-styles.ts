@@ -153,5 +153,36 @@ export function getInputStyles(): string {
       .input-field,
       .input-label { transition: none; }
     }
+
+    /* ── RTL support ─────────────────────────────────────────── */
+
+    /* Mirror the label anchor: left → right in RTL */
+    :host-context([dir="rtl"]) .input-label {
+      left: auto;
+      right: 0;
+    }
+
+    /* Swap prefix padding to right side in RTL (prefix renders on right) */
+    :host-context([dir="rtl"]) .input-field--has-prefix {
+      padding-left: 0;
+      padding-right: var(--io-space-2);
+    }
+
+    /* Swap suffix padding to left side in RTL (suffix renders on left) */
+    :host-context([dir="rtl"]) .input-field--has-suffix {
+      padding-right: 0;
+      padding-left: var(--io-space-2);
+    }
+
+    /* Mirror error icon position: right → left in RTL */
+    :host-context([dir="rtl"]) .input-error-icon {
+      right: auto;
+      left: 0;
+    }
+
+    /* Reverse the flex row so prefix/suffix slots visually swap positions — inherit direction from host context */
+    :host-context([dir="rtl"]) .input-field-row {
+      direction: inherit;
+    }
   `;
 }

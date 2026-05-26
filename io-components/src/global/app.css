@@ -98,6 +98,15 @@
      These are NOT primitive palette values — see docs/token-naming-conventions.md. */
   --io-color-semantic-red:       var(--io-color-error-dark);
   --io-color-system-interactive-blue: var(--io-color-system-blue);
+  /* State aliases — semantic convenience tokens for component error/validation states */
+  --io-color-state-error:        var(--io-color-error);
+  --io-color-state-error-soft:   var(--io-color-error-soft);
+  --io-color-state-info:         var(--io-color-info);
+  --io-color-state-info-soft:    var(--io-color-info-soft);
+  --io-color-state-success:      var(--io-color-success);
+  --io-color-state-success-soft: var(--io-color-success-soft);
+  --io-color-state-warning:      var(--io-color-warning);
+  --io-color-state-warning-soft: var(--io-color-warning-soft);
 
   /* ── Focus Ring (double-ring a11y pattern) ──────────────── */
   --io-focus-inner:              #7D0034;
@@ -132,6 +141,7 @@
   --io-border-interactive:       #767676;
   --io-border-focus:             var(--io-color-primary);
   --io-border-error:             var(--io-color-error);
+  --io-border-radius-2xs:        2px;
   --io-border-radius-xs:         4px;
   --io-border-radius-sm:         9px;
   --io-border-radius-md:         12px;
@@ -162,6 +172,11 @@
   --io-font-size-5xl:            2.25rem;    /* 36px */
   --io-font-size-6xl:            3rem;       /* 48px */
   --io-font-size-7xl:            4rem;       /* 64px */
+
+  /* Fluid display typography — responsive scaling via CSS clamp() */
+  --io-font-size-display-2xl:    clamp(2rem, 2.5vw + 1.5rem, 3rem);    /* 32px → 48px */
+  --io-font-size-display-3xl:    clamp(2.5rem, 3vw + 1.5rem, 4rem);    /* 40px → 64px */
+  --io-font-size-display-4xl:    clamp(3rem, 4vw + 2rem, 5rem);        /* 48px → 80px */
 
   --io-font-weight-extra-light:  200;
   --io-font-weight-light:        300;
@@ -219,6 +234,11 @@
   --io-space-36:                 9rem;       /* 144px */
   --io-space-40:                 10rem;      /* 160px — section spacing desktop */
 
+  /* Fluid spacing — responsive scaling via CSS clamp() */
+  --io-space-fluid-sm:           clamp(0.5rem, 1vw + 0.25rem, 1rem);       /*  8px → 16px */
+  --io-space-fluid-md:           clamp(1rem, 2vw + 0.5rem, 2rem);          /* 16px → 32px */
+  --io-space-fluid-lg:           clamp(1.5rem, 3vw + 0.75rem, 3rem);       /* 24px → 48px */
+
   /* ============================================================
      5. SHADOWS & ELEVATION
      ============================================================ */
@@ -245,6 +265,7 @@
   --io-motion-fast:              200ms ease;
   --io-motion-base:              300ms ease;
   --io-motion-slow:              500ms ease-in-out;
+  --io-motion-extra-slow:        1200ms ease-in-out;
   --io-motion-easing-standard:   ease;
   --io-button-spinner-duration:  600ms;
   --io-toast-item-enter-duration: 250ms;

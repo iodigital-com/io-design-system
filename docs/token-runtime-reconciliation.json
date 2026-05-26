@@ -152,6 +152,110 @@
       "notes": "Avatar text token: purple variant uses white (#ffffff)."
     },
     {
+      "runtimeCssVar": "--io-avatar-border-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar border-radius: 50% (circular)"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font size token lg=16px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font size token md=14px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font size token sm=12px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font size token xl=20px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-size-xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font size token xs=10px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-font-weight",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar font weight: var(--io-font-weight-semibold, 600)"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-icon-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar icon size: 60% of container"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar size token lg=48px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar size token md=40px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar size token sm=32px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar size token xl=64px"
+    },
+    {
+      "runtimeCssVar": "--io-avatar-size-xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) — Avatar size token xs=24px"
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

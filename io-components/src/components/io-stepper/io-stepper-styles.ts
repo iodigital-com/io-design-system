@@ -75,10 +75,10 @@ export function getStepStyles(): string {
     /* ── Step circle ────────────────────────────────────── */
 
     .step__circle {
-      width: var(--io-stepper-circle-size, 2rem);
-      height: var(--io-stepper-circle-size, 2rem);
+      width: var(--io-stepper-circle-size);
+      height: var(--io-stepper-circle-size);
       border-radius: var(--io-border-radius-full, 9999px);
-      border: 2px solid var(--io-border, #e5e5e5);
+      border: var(--io-stepper-circle-border-width) solid var(--io-border, #e5e5e5);
       background: var(--io-bg-base, #fff);
       color: var(--io-text-secondary, #666);
       display: flex;
@@ -163,12 +163,12 @@ export function getStepStyles(): string {
 
     .step__connector {
       flex: 1;
-      height: var(--io-stepper-connector-width, 2px);
+      height: var(--io-stepper-connector-width);
       background: var(--io-border, #e5e5e5);
       transition: background-color var(--io-motion-base, 300ms ease);
       min-width: var(--io-space-6, 24px);
       align-self: flex-start;
-      margin-top: var(--io-stepper-connector-offset, 1rem); /* vertically center connector with circle */
+      margin-top: var(--io-stepper-connector-offset); /* vertically center connector with circle */
     }
 
     .step--complete .step__connector {
@@ -198,12 +198,12 @@ export function getStepStyles(): string {
     }
 
     :host([data-orientation="vertical"]) .step__connector {
-      width: var(--io-stepper-connector-width, 2px);
+      width: var(--io-stepper-connector-width);
       height: var(--io-space-6, 24px);
       min-width: unset;
       min-height: var(--io-space-4, 16px);
       margin-top: 0;
-      margin-left: var(--io-stepper-connector-offset, 1rem); /* align with center of circle */
+      margin-left: var(--io-stepper-connector-offset); /* align with center of circle */
       align-self: auto;
     }
 

@@ -20,7 +20,7 @@ export const scrollerStory: Story<'io-scroller'> = {
         tag: 'io-scroller' as const,
         properties: {
           orientation,
-          'show-scrollbar': (properties?.showScrollbar as boolean) === true,
+          showScrollbar: (properties?.showScrollbar as boolean) === true,
           ...(isVertical ? { style: 'height: 160px; display: block;' } : {}),
           ...(properties?.label ? { label: properties.label as string } : {}),
         },

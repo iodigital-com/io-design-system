@@ -39,16 +39,16 @@ export default function IoAlertAccessibilityPage() {
             {
               attribute: 'role',
               value: 'status / alert',
-              description: 'info and success variants use role="status" (polite). warning and error variants use role="alert" (assertive). Assertive live regions interrupt the current reading flow — use error sparingly.',
+              description: 'info, success, and warning variants use role="status" (polite). Only the error variant uses role="alert" (assertive). Assertive live regions interrupt the current reading flow — use error sparingly.',
             },
             {
               attribute: 'aria-live',
               value: 'polite / assertive',
-              description: 'Derived from the variant. info/success = polite (waits for current speech to finish). warning/error = assertive (interrupts immediately).',
+              description: 'Derived from the variant. info/success/warning = polite (waits for current speech to finish). error only = assertive (interrupts immediately).',
             },
             {
               attribute: 'aria-label on dismiss button',
-              value: '"Dismiss alert"',
+              value: '"Dismiss notification"',
               description: 'The dismiss × button has an accessible label that identifies its purpose to screen reader users.',
             },
           ]}
@@ -77,7 +77,7 @@ export default function IoAlertAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="The dismiss button exposes role=button and aria-label. The live region container exposes the appropriate role. All ARIA attributes are set during componentWillLoad."
+            note="The dismiss button exposes role=button and aria-label. The live region container exposes the appropriate role. All ARIA attributes are declared inline in render()."
           />
           <ComplianceCard
             criterion="1.4.11"
@@ -100,10 +100,15 @@ export default function IoAlertAccessibilityPage() {
           description="Guidelines for inclusive alert usage across all surfaces and assistive technologies."
         />
         <RuleCard label="Use assertive live regions sparingly">
-          The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>warning</code> variants
-          use <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>role=&quot;alert&quot;</code>{' '}
-          which interrupts screen reader speech. Only inject these alerts when the message requires immediate attention.
+          The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> variant
+          uses <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>role=&quot;alert&quot;</code>{' '}
+          which interrupts screen reader speech. All other variants ({' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>info</code>,{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>success</code>,{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>warning</code>
+          ) use{' '}
+          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>role=&quot;status&quot;</code>{' '}
+          (polite). Only inject error alerts when the message requires immediate attention.
           Injecting multiple assertive alerts in rapid succession creates a poor screen reader experience.
         </RuleCard>
         <RuleCard label="Do not hide alerts with CSS alone">

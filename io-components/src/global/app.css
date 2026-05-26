@@ -770,6 +770,8 @@ io-table[bordered] io-table-body-cell td {
 }
 
 /* ── Compact ───────────────────────────────────────────────── */
+/* compact intentionally appears after size-density rules — equal specificity
+   means source order wins, so compact always overrides size padding. */
 
 io-table[compact] io-table-head-cell th,
 io-table[compact] io-table-body-cell td {
@@ -954,7 +956,7 @@ io-table[compact] io-table-body-cell td {
 
 [data-density="comfortable"] {
   --io-spacing-component-y: var(--io-space-3, 12px);
-  --io-spacing-component-x: var(--io-space-4, 16px);
+  --io-spacing-component-x: var(--io-space-8, 32px);
 }
 
 /* ============================================================

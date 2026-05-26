@@ -455,9 +455,9 @@ export function getButtonStyles(): string {
       transform: scaleX(-1);
     }
 
-    /* back arrow: points right in RTL — cancel the LTR rotate(180deg) and mirror */
+    /* back arrow: points right in RTL — match LTR transform order, apply scaleX after rotation */
     :host-context([dir="rtl"]) .btn__arrow--back {
-      transform: scaleX(-1) rotate(180deg);
+      transform: rotate(180deg) scaleX(-1);
     }
 
     /* Hover animation: reverse shift direction in RTL */
@@ -467,9 +467,9 @@ export function getButtonStyles(): string {
         transform: scaleX(-1) translateX(var(--io-button-arrow-shift-forward));
       }
 
-      /* back: slide right in RTL */
+      /* back: slide right in RTL — match transform axis ordering with LTR */
       :host-context([dir="rtl"]) .btn:hover:not(.btn--disabled):not(.btn--loading) .btn__arrow--back {
-        transform: scaleX(-1) rotate(180deg) translateX(var(--io-button-arrow-shift-forward));
+        transform: rotate(180deg) scaleX(-1) translateX(var(--io-button-arrow-shift-forward));
       }
     }
 

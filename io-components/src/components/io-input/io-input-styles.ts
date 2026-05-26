@@ -180,9 +180,9 @@ export function getInputStyles(): string {
       left: 0;
     }
 
-    /* Reverse the flex row so prefix/suffix slots visually swap positions */
+    /* Reverse the flex row so prefix/suffix slots visually swap positions — inherit direction from host context */
     :host-context([dir="rtl"]) .input-field-row {
-      direction: rtl;
+      direction: inherit;
     }
   `;
 }

@@ -44,11 +44,12 @@ describe('io-input — RTL styles', () => {
     expect(errorIconRule).toContain('right: auto');
   });
 
-  it('sets direction: rtl on the input-field-row in RTL context', () => {
+  it('sets direction: inherit on the input-field-row in RTL context — avoids breaking nested LTR resets', () => {
     const styles = getInputStyles();
     expect(styles).toContain(':host-context([dir="rtl"]) .input-field-row');
     const rowRule = styles.split(':host-context([dir="rtl"]) .input-field-row')[1];
-    expect(rowRule).toContain('direction: rtl');
+    // direction: inherit propagates from the :host-context ancestor; hardcoding rtl would break nested LTR resets
+    expect(rowRule).toContain('direction: inherit');
   });
 });
 

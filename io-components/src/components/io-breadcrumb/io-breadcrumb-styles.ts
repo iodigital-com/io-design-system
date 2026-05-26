@@ -44,9 +44,9 @@ export function getBreadcrumbStyles(): string {
       transform: scaleX(-1);
     }
 
-    /* Reverse the breadcrumb flow visually in RTL */
+    /* Reverse the breadcrumb flow visually in RTL — inherit direction from host context */
     :host-context([dir="rtl"]) ol {
-      direction: rtl;
+      direction: inherit;
     }
   `;
 }

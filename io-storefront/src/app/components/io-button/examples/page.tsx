@@ -115,6 +115,27 @@ export default function IoButtonExamplesPage() {
         </StageLabel>
       </section>
 
+      {/* ── RTL layout ───────────────────────────────────────── */}
+      <section>
+        <ExamplesSectionHeader
+          title="RTL layout"
+          description="In a right-to-left context the forward arrow mirrors to point left and the back arrow points right. Wrap the page or section with dir=&quot;rtl&quot; to activate."
+        />
+        <div
+          dir="rtl"
+          className="p-4 sm:p-8 flex flex-wrap gap-3 items-center rounded-lg border border-[var(--io-border)]"
+          style={{ backgroundColor: 'var(--io-bg-raised)' }}
+        >
+          <io-button variant="solid" color="blue" arrow="forward">قدم</io-button>
+          <io-button variant="solid" color="blue" arrow="back">عودة</io-button>
+          <io-button variant="ghost" color="blue" arrow="forward">اقرأ المزيد</io-button>
+          <io-button variant="solid" color="orange" arrow="forward">اكتشف</io-button>
+        </div>
+        <StageLabel>
+          dir=&quot;rtl&quot; · forward arrow mirrors left · back arrow mirrors right · translateX animates inward
+        </StageLabel>
+      </section>
+
     </div>
   );
 }

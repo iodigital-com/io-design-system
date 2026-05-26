@@ -17,9 +17,11 @@ describe('io-button — RTL styles', () => {
     expect(styles).toContain('transform: scaleX(-1)');
   });
 
-  it('includes back arrow RTL rule with scaleX(-1) and rotate(180deg)', () => {
+  it('includes back arrow RTL rule with rotate(180deg) then scaleX(-1) — matching LTR axis order', () => {
     const styles = getButtonStyles();
-    expect(styles).toContain('scaleX(-1) rotate(180deg)');
+    // Correct order: rotate first so scaleX and translateX operate on the post-rotation axis,
+    // matching the LTR rule: rotate(180deg) translateX(...)
+    expect(styles).toContain('rotate(180deg) scaleX(-1)');
   });
 
   it('includes RTL hover rule for forward arrow', () => {

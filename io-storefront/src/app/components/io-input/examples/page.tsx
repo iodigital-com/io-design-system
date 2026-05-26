@@ -44,6 +44,25 @@ export default function IoInputExamplesPage() {
         <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={inputStoryDisabled} />
       </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="RTL layout"
+          description="In a right-to-left context the label anchors from the right edge and prefix/suffix slots swap sides. Wrap the page or section with dir=&quot;rtl&quot; to activate."
+        />
+        <div
+          dir="rtl"
+          className="p-4 sm:p-8 flex flex-col gap-6 rounded-lg border border-[var(--io-border)]"
+          style={{ backgroundColor: 'var(--io-bg-raised)' }}
+        >
+          <io-input label="الاسم الكامل" placeholder="أدخل اسمك" />
+          <io-input label="البريد الإلكتروني" type="email" placeholder="example@domain.com" />
+          <io-input label="رقم الهاتف" type="tel" error error-message="رقم هاتف غير صالح" />
+        </div>
+        <p className="text-xs mt-2" style={{ color: 'var(--io-text-muted)' }}>
+          dir=&quot;rtl&quot; · label anchors right · error icon mirrors to left · prefix/suffix slots swap
+        </p>
+      </section>
     </div>
   );
 }

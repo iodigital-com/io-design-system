@@ -19,11 +19,12 @@ describe('io-breadcrumb — RTL styles', () => {
     expect(separatorRule).toContain('transform: scaleX(-1)');
   });
 
-  it('sets direction: rtl on the ol element in RTL context', () => {
+  it('sets direction: inherit on the ol element in RTL context — avoids breaking nested LTR resets', () => {
     const styles = getBreadcrumbStyles();
     expect(styles).toContain(':host-context([dir="rtl"]) ol');
     const olRule = styles.split(':host-context([dir="rtl"]) ol')[1];
-    expect(olRule).toContain('direction: rtl');
+    // direction: inherit propagates from the :host-context ancestor; hardcoding rtl would break nested LTR resets
+    expect(olRule).toContain('direction: inherit');
   });
 });
 

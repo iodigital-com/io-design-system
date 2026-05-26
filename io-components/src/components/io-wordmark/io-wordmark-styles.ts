@@ -17,23 +17,19 @@ export function getWordmarkStyles(): string {
 
     /* Size scale */
     .wordmark--sm {
-      --io-wordmark-font-size: var(--io-font-size-sm, 14px);
-      font-size: var(--io-wordmark-font-size);
+      font-size: var(--io-wordmark-font-size-sm, var(--io-font-size-sm, 14px));
     }
 
     .wordmark--md {
-      --io-wordmark-font-size: 20px;
-      font-size: var(--io-wordmark-font-size);
+      font-size: var(--io-wordmark-font-size-md);
     }
 
     .wordmark--lg {
-      --io-wordmark-font-size: 28px;
-      font-size: var(--io-wordmark-font-size);
+      font-size: var(--io-wordmark-font-size-lg);
     }
 
     .wordmark--xl {
-      --io-wordmark-font-size: 40px;
-      font-size: var(--io-wordmark-font-size);
+      font-size: var(--io-wordmark-font-size-xl);
     }
 
     /* Colour parts */

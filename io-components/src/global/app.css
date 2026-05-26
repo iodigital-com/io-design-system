@@ -820,6 +820,12 @@ io-table[size="lg"] io-table-body-cell td {
   --io-color-info:               var(--io-color-dark-info);
   --io-playground-dot-color:     var(--io-color-dark-playground-dot);
 
+  /* Alert soft backgrounds — darker/less-saturated for dark surfaces */
+  --io-color-error-soft:         rgba(255, 124, 124, 0.15);   /* --io-color-dark-error @ 15% */
+  --io-color-success-soft:       rgba(74, 222, 128, 0.15);    /* --io-color-dark-success @ 15% */
+  --io-color-warning-soft:       rgba(255, 161, 0, 0.15);     /* --io-color-dark-warning @ 15% */
+  --io-color-info-soft:          rgba(100, 181, 246, 0.15);   /* --io-color-dark-info @ 15% */
+
   /* Semantic tokens */
   --io-text-disabled:            var(--io-color-dark-text-muted);
   --io-state-disabled-bg:        rgba(255, 255, 255, 0.08);

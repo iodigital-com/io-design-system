@@ -13,6 +13,7 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
+  'io-alert': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAlertElement>, HTMLIoAlertElement> & Partial<StencilJSX.IoAlert>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
   'io-breadcrumb': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbElement>, HTMLIoBreadcrumbElement> & Partial<StencilJSX.IoBreadcrumb>;

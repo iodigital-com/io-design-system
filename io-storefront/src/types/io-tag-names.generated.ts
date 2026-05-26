@@ -32,6 +32,7 @@ export type IoTagNames =
   | 'io-spinner'
   | 'io-step'
   | 'io-stepper'
+  | 'io-switch'
   | 'io-table'
   | 'io-table-body'
   | 'io-table-body-cell'

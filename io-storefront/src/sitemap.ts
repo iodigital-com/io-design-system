@@ -264,6 +264,14 @@ export const sitemap: NavSection[] = [
         related: ['io-progress', 'io-button', 'io-modal'],
       },
       {
+        label: 'Switch',
+        href: '/components/io-switch/configurator',
+        status: 'beta',
+        slug: 'io-switch',
+        description: 'Toggle switch for binary on/off settings. FACE form-associated component with role=switch and full keyboard navigation.',
+        related: ['io-checkbox', 'io-radio', 'io-form-field'],
+      },
+      {
         label: 'Table',
         href: '/components/io-table/configurator',
         status: 'stable',

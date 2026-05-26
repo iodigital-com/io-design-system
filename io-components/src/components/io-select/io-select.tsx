@@ -603,7 +603,6 @@ export class IoSelect {
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
     const messageId = `${selectId}-message`;
     const helperId = `${selectId}-helper`;
@@ -713,7 +712,6 @@ export class IoSelect {
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
     const labelId = `${selectId}-label`;
     const triggerId = `${selectId}-trigger`;

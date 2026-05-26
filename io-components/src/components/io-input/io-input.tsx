@@ -302,7 +302,6 @@ export class IoInput {
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const hasState = showError || showSuccess || showWarning;
     const showMessage = showError && (hasMessageSlot || message);
     const showDescription = !showError && (hasDescriptionSlot || helperText);
     const describedBy = [

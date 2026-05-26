@@ -72,6 +72,14 @@ export const sitemap: NavSection[] = [
     items: [
       { label: 'Introduction', href: '/components' },
       {
+        label: 'Alert',
+        href: '/components/io-alert/configurator',
+        status: 'beta',
+        slug: 'io-alert',
+        description: 'Inline notification for info, success, warning, and error states. Supports an optional heading, dismissible button, and screen-reader-friendly aria-live announcements.',
+        related: ['io-toast', 'io-badge', 'io-modal'],
+      },
+      {
         label: 'Accordion',
         href: '/components/io-accordion/configurator',
         status: 'stable',

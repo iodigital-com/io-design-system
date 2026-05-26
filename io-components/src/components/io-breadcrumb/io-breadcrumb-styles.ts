@@ -35,5 +35,18 @@ export function getBreadcrumbStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       * { transition: none; }
     }
+
+    /* ── RTL support ─────────────────────────────────────────── */
+
+    /* Flip directional separators (e.g. › chevron) in RTL context.
+       Uses :host-context([dir="rtl"]) to traverse the Shadow DOM boundary. */
+    :host-context([dir="rtl"]) .breadcrumb__separator {
+      transform: scaleX(-1);
+    }
+
+    /* Reverse the breadcrumb flow visually in RTL */
+    :host-context([dir="rtl"]) ol {
+      direction: rtl;
+    }
   `;
 }

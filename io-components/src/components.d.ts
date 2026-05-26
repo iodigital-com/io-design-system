@@ -14,7 +14,7 @@ import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
-import { IoDividerOrientation } from "./components/io-divider/types";
+import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -43,7 +43,7 @@ export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
-export { IoDividerOrientation } from "./components/io-divider/types";
+export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -514,8 +514,15 @@ export namespace Components {
      * @example <io-divider />
      * <io-divider orientation="vertical" />
      * <io-divider label="or" />
+     * <io-divider color="subtle" />
+     * <io-divider color="strong" />
      */
     interface IoDivider {
+        /**
+          * Color contrast level for the divider line. - `subtle`  — 50% opacity of the standard border color; very light separation. - `default` — `var(--io-border)` (standard decorative border token; current behavior). - `strong`  — `var(--io-border-hover)` (more prominent separation).  Dark mode: all variants resolve automatically via existing semantic tokens.
+          * @default 'default'
+         */
+        "color": IoDividerColor;
         /**
           * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
          */
@@ -1661,26 +1668,42 @@ export namespace Components {
      * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
      * "digital" in the current text colour, using the primary font at a
      * token-driven size.
+     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
+     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
      * @example <io-wordmark />
      * <io-wordmark size="lg" />
      * <io-wordmark mono />
+     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
+     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface IoWordmark {
         /**
-          * Accessible label for the wordmark image
+          * Accessible label applied to the root element (or the `<a>` when href is set). Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel": string;
+        /**
+          * When provided, the wordmark renders as an `<a>` element with this href. Common use case: logo linking back to the homepage.
+         */
+        "href"?: string;
         /**
           * Monochrome mode — both "io" and "digital" use current text colour
           * @default false
          */
         "mono": boolean;
         /**
+          * Link relationship (`noopener noreferrer`, etc.). Only applied when `href` is set.
+         */
+        "rel"?: string;
+        /**
           * Size scale controlling the overall font-size of the wordmark
           * @default 'md'
          */
         "size": IoWordmarkSize;
+        /**
+          * Browsing context for the link (`_self`, `_blank`, etc.). Only applied when `href` is set.
+         */
+        "target"?: string;
     }
 }
 export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
@@ -2017,6 +2040,8 @@ declare global {
      * @example <io-divider />
      * <io-divider orientation="vertical" />
      * <io-divider label="or" />
+     * <io-divider color="subtle" />
+     * <io-divider color="strong" />
      */
     interface HTMLIoDividerElement extends Components.IoDivider, HTMLStencilElement {
     }
@@ -2693,9 +2718,13 @@ declare global {
      * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
      * "digital" in the current text colour, using the primary font at a
      * token-driven size.
+     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
+     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
      * @example <io-wordmark />
      * <io-wordmark size="lg" />
      * <io-wordmark mono />
+     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
+     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
     }
@@ -3211,8 +3240,15 @@ declare namespace LocalJSX {
      * @example <io-divider />
      * <io-divider orientation="vertical" />
      * <io-divider label="or" />
+     * <io-divider color="subtle" />
+     * <io-divider color="strong" />
      */
     interface IoDivider {
+        /**
+          * Color contrast level for the divider line. - `subtle`  — 50% opacity of the standard border color; very light separation. - `default` — `var(--io-border)` (standard decorative border token; current behavior). - `strong`  — `var(--io-border-hover)` (more prominent separation).  Dark mode: all variants resolve automatically via existing semantic tokens.
+          * @default 'default'
+         */
+        "color"?: IoDividerColor;
         /**
           * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
          */
@@ -4389,26 +4425,42 @@ declare namespace LocalJSX {
      * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
      * "digital" in the current text colour, using the primary font at a
      * token-driven size.
+     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
+     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
      * @example <io-wordmark />
      * <io-wordmark size="lg" />
      * <io-wordmark mono />
+     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
+     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface IoWordmark {
         /**
-          * Accessible label for the wordmark image
+          * Accessible label applied to the root element (or the `<a>` when href is set). Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel"?: string;
+        /**
+          * When provided, the wordmark renders as an `<a>` element with this href. Common use case: logo linking back to the homepage.
+         */
+        "href"?: string;
         /**
           * Monochrome mode — both "io" and "digital" use current text colour
           * @default false
          */
         "mono"?: boolean;
         /**
+          * Link relationship (`noopener noreferrer`, etc.). Only applied when `href` is set.
+         */
+        "rel"?: string;
+        /**
           * Size scale controlling the overall font-size of the wordmark
           * @default 'md'
          */
         "size"?: IoWordmarkSize;
+        /**
+          * Browsing context for the link (`_self`, `_blank`, etc.). Only applied when `href` is set.
+         */
+        "target"?: string;
     }
 
     interface IoAccordionAttributes {
@@ -4491,6 +4543,7 @@ declare namespace LocalJSX {
     }
     interface IoDividerAttributes {
         "orientation": IoDividerOrientation;
+        "color": IoDividerColor;
         "label": string | undefined;
     }
     interface IoDrawerAttributes {
@@ -4691,6 +4744,9 @@ declare namespace LocalJSX {
         "size": IoWordmarkSize;
         "mono": boolean;
         "ariaLabel": string;
+        "href": string;
+        "target": string;
+        "rel": string;
     }
 
     interface IntrinsicElements {
@@ -4869,6 +4925,8 @@ declare module "@stencil/core" {
              * @example <io-divider />
              * <io-divider orientation="vertical" />
              * <io-divider label="or" />
+             * <io-divider color="subtle" />
+             * <io-divider color="strong" />
              */
             "io-divider": LocalJSX.IntrinsicElements["io-divider"] & JSXBase.HTMLAttributes<HTMLIoDividerElement>;
             /**
@@ -5215,9 +5273,13 @@ declare module "@stencil/core" {
              * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
              * "digital" in the current text colour, using the primary font at a
              * token-driven size.
+             * When `href` is set, the wordmark renders inside an `<a>` element, enabling
+             * logo-as-home-link navigation patterns without shadow-DOM focus issues.
              * @example <io-wordmark />
              * <io-wordmark size="lg" />
              * <io-wordmark mono />
+             * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
+             * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
              */
             "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }

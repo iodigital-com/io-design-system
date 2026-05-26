@@ -141,6 +141,7 @@
     },
     "io-divider": {
       "props": {
+        "color": "IoDividerColor",
         "label": "string | undefined",
         "orientation": "IoDividerOrientation"
       },
@@ -521,8 +522,11 @@
     "io-wordmark": {
       "props": {
         "ariaLabel": "string",
+        "href": "string",
         "mono": "boolean",
-        "size": "IoWordmarkSize"
+        "rel": "string",
+        "size": "IoWordmarkSize",
+        "target": "string"
       },
       "methods": {},
       "events": {}

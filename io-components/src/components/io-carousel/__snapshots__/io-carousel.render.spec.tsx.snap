@@ -7,6 +7,14 @@ exports[`io-carousel — render snapshots > renders configured navigation state 
       <span aria-live="polite" aria-atomic="true" class="sr-only">
         Slide 1 of 0
       </span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -21,6 +29,9 @@ exports[`io-carousel — render snapshots > renders configured navigation state 
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>
@@ -41,6 +52,14 @@ exports[`io-carousel — render snapshots > renders default state 1`] = `
   <mock:shadow-root shadowrootdelegatesfocus>
     <div role="region" aria-label="Carousel" aria-roledescription="carousel">
       <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -55,6 +74,9 @@ exports[`io-carousel — render snapshots > renders default state 1`] = `
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>
@@ -72,6 +94,14 @@ exports[`io-carousel — render snapshots > renders with controls slot 1`] = `
   <mock:shadow-root shadowrootdelegatesfocus>
     <div role="region" aria-label="Carousel" aria-roledescription="carousel">
       <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -86,6 +116,9 @@ exports[`io-carousel — render snapshots > renders with controls slot 1`] = `
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>
@@ -108,6 +141,14 @@ exports[`io-carousel — render snapshots > renders with description slot 1`] = 
   <mock:shadow-root shadowrootdelegatesfocus>
     <div role="region" aria-label="Carousel" aria-roledescription="carousel">
       <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -122,6 +163,9 @@ exports[`io-carousel — render snapshots > renders with description slot 1`] = 
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>
@@ -142,6 +186,14 @@ exports[`io-carousel — render snapshots > renders with heading and description
   <mock:shadow-root shadowrootdelegatesfocus>
     <div role="region" aria-label="Carousel" aria-roledescription="carousel">
       <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -156,6 +208,9 @@ exports[`io-carousel — render snapshots > renders with heading and description
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>
@@ -179,6 +234,14 @@ exports[`io-carousel — render snapshots > renders with heading slot 1`] = `
   <mock:shadow-root shadowrootdelegatesfocus>
     <div role="region" aria-label="Carousel" aria-roledescription="carousel">
       <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div class="carousel-header carousel-header--hidden">
+        <div id="io-carousel-heading-4fzzzxj" class="carousel-heading carousel-heading--hidden">
+          <slot name="heading"></slot>
+        </div>
+        <div class="carousel-description carousel-description--hidden">
+          <slot name="description"></slot>
+        </div>
+      </div>
       <div class="carousel-wrap">
         <div class="carousel-track">
           <slot></slot>
@@ -193,6 +256,9 @@ exports[`io-carousel — render snapshots > renders with heading slot 1`] = `
             <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor"></path>
           </svg>
         </button>
+        <div class="carousel-controls carousel-controls--hidden">
+          <slot name="controls"></slot>
+        </div>
       </div>
     </div>
   </mock:shadow-root>

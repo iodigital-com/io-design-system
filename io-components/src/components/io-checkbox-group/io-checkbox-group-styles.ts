@@ -32,11 +32,11 @@ export function getCheckboxGroupStyles(): string {
 
     .checkbox-group__legend {
       display: block;
-      font-size: var(--io-font-size-sm, 14px);
-      font-weight: var(--io-font-weight-medium, 500);
+      font-size: var(--io-font-size-sm);
+      font-weight: var(--io-font-weight-medium);
       color: var(--io-text-primary);
       line-height: var(--io-line-height-normal);
-      margin-bottom: var(--io-space-1, 4px);
+      margin-bottom: var(--io-space-1);
       padding: 0;
     }
 
@@ -44,10 +44,10 @@ export function getCheckboxGroupStyles(): string {
 
     .checkbox-group__helper {
       display: block;
-      font-size: var(--io-font-size-xs, 12px);
+      font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
       line-height: var(--io-line-height-normal);
-      margin-bottom: var(--io-space-2, 8px);
+      margin-bottom: var(--io-space-2);
     }
 
     /* ── Options container ──────────────────────────────────── */
@@ -55,7 +55,7 @@ export function getCheckboxGroupStyles(): string {
     .checkbox-group__options {
       display: flex;
       flex-direction: column;
-      gap: var(--io-space-1, 4px);
+      gap: var(--io-space-1);
     }
 
     /* ── Error state ────────────────────────────────────────── */
@@ -68,10 +68,10 @@ export function getCheckboxGroupStyles(): string {
 
     .checkbox-group__error {
       display: block;
-      font-size: var(--io-font-size-xs, 12px);
+      font-size: var(--io-font-size-xs);
       color: var(--io-color-error);
       line-height: var(--io-line-height-normal);
-      margin-top: var(--io-space-1, 4px);
+      margin-top: var(--io-space-1);
     }
   `;
 }

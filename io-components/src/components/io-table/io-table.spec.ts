@@ -62,6 +62,12 @@ describe('io-table — render', () => {
     component.size = 'lg';
     expect(() => component.render()).not.toThrow();
   });
+
+  it('renders without throwing when captionHidden is false', () => {
+    component.caption = 'Users';
+    component.captionHidden = false;
+    expect(() => component.render()).not.toThrow();
+  });
 });
 
 describe('io-table — componentWillLoad', () => {

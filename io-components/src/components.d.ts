@@ -1789,6 +1789,11 @@ export namespace Components {
      */
     interface IoTable {
         /**
+          * Adds visible borders between cells and rows.
+          * @default false
+         */
+        "bordered": boolean;
+        /**
           * Visible table caption — required for accessibility.
           * @default ''
          */
@@ -1799,6 +1804,11 @@ export namespace Components {
          */
         "captionHidden": boolean;
         /**
+          * Reduces row padding to display more rows in the same vertical space.
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
          */
@@ -1808,6 +1818,11 @@ export namespace Components {
           * @default false
          */
         "sticky": boolean;
+        /**
+          * Adds alternating row background colours for improved row scanning.
+          * @default false
+         */
+        "striped": boolean;
     }
     /**
      * io-table-body
@@ -5378,6 +5393,11 @@ declare namespace LocalJSX {
      */
     interface IoTable {
         /**
+          * Adds visible borders between cells and rows.
+          * @default false
+         */
+        "bordered"?: boolean;
+        /**
           * Visible table caption — required for accessibility.
           * @default ''
          */
@@ -5388,6 +5408,11 @@ declare namespace LocalJSX {
          */
         "captionHidden"?: boolean;
         /**
+          * Reduces row padding to display more rows in the same vertical space.
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
          */
@@ -5397,6 +5422,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "sticky"?: boolean;
+        /**
+          * Adds alternating row background colours for improved row scanning.
+          * @default false
+         */
+        "striped"?: boolean;
     }
     /**
      * io-table-body
@@ -6220,6 +6250,9 @@ declare namespace LocalJSX {
         "captionHidden": boolean;
         "sticky": boolean;
         "size": IoTableSize;
+        "striped": boolean;
+        "bordered": boolean;
+        "compact": boolean;
     }
     interface IoTableBodyCellAttributes {
         "colspan": number | undefined;

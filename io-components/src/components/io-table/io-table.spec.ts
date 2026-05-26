@@ -70,6 +70,41 @@ describe('io-table — render', () => {
   });
 });
 
+describe('io-table — striped / bordered / compact props', () => {
+  let component: IoTable;
+
+  beforeEach(() => {
+    component = new IoTable();
+  });
+
+  it('has striped false by default', () => {
+    expect(component.striped).toBe(false);
+  });
+
+  it('has bordered false by default', () => {
+    expect(component.bordered).toBe(false);
+  });
+
+  it('has compact false by default', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('renders with striped=true without throwing', () => {
+    component.striped = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with bordered=true without throwing', () => {
+    component.bordered = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with compact=true without throwing', () => {
+    component.compact = true;
+    expect(() => component.render()).not.toThrow();
+  });
+});
+
 describe('io-table — componentWillLoad', () => {
   it('warns when caption is empty', () => {
     const component = new IoTable();

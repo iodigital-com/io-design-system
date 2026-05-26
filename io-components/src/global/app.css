@@ -213,7 +213,7 @@
 
   /* ── Component Density ─────────────────────────────────── */
   --io-spacing-component-y: var(--io-space-2, 8px);   /* default vertical padding */
-  --io-spacing-component-x: var(--io-space-3, 12px);  /* default horizontal padding */
+  --io-spacing-component-x: var(--io-space-6, 24px);  /* default horizontal padding */
 
   /* ============================================================
      4. SPACING (4px base scale)
@@ -752,6 +752,31 @@ io-table[size="lg"] io-table-body-cell td {
   padding: var(--io-space-4, 16px) var(--io-space-6, 24px);
 }
 
+/* ── Striped rows ──────────────────────────────────────────── */
+
+io-table[striped] io-table-body-row:nth-child(even) tr {
+  background: var(--io-bg-raised);
+}
+
+io-table[striped] io-table-body-row:nth-child(even)[selected] tr {
+  background: var(--io-table-row-selected-bg);
+}
+
+/* ── Bordered ──────────────────────────────────────────────── */
+
+io-table[bordered] io-table-head-cell th,
+io-table[bordered] io-table-body-cell td {
+  border: 1px solid var(--io-border);
+}
+
+/* ── Compact ───────────────────────────────────────────────── */
+
+io-table[compact] io-table-head-cell th,
+io-table[compact] io-table-body-cell td {
+  padding: var(--io-space-1, 4px) var(--io-space-2, 8px);
+  font-size: var(--io-font-size-xs, 12px);
+}
+
 /* ── Reduced motion ────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -907,10 +932,10 @@ io-table[size="lg"] io-table-body-cell td {
   --io-avatar-bg-grey:           var(--io-color-grey-3);
   --io-avatar-text-grey:         var(--io-color-grey-6);
 
-  /* io-drawer */
-  --io-drawer-width-sm:          320px;
-  --io-drawer-width-md:          480px;
-  --io-drawer-width-lg:          640px;
+  /* io-drawer — percentage-based widths scale with viewport */
+  --io-drawer-width-sm:          clamp(280px, 30vw, 420px);
+  --io-drawer-width-md:          clamp(360px, 45vw, 600px);
+  --io-drawer-width-lg:          clamp(480px, 60vw, 800px);
   --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
 
   /* io-wordmark */

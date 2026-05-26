@@ -294,7 +294,7 @@ export class IoMultiSelect {
     const { x, y } = await computePosition(this.triggerEl, this.dropdownEl, {
       middleware: getMultiSelectMiddleware(),
       placement,
-      strategy: 'absolute',
+      strategy: 'fixed',
     });
 
     Object.assign(this.dropdownEl.style, {

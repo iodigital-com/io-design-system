@@ -98,7 +98,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Badge',
         href: '/components/io-badge/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-badge',
         description: "Labels status, counts, and categories inline. Nine variants map directly to io Digital's semantic and brand colour palette.",
         related: ['io-tag', 'io-toast', 'io-tooltip'],
@@ -109,15 +109,7 @@ export const sitemap: NavSection[] = [
         status: 'stable',
         slug: 'io-breadcrumb',
         description: 'Breadcrumb navigation for hierarchical orientation. Uses declarative slot-based io-breadcrumb-item sub-components.',
-        related: ['io-breadcrumb-item', 'io-link', 'io-pagination'],
-      },
-      {
-        label: 'Breadcrumb Item',
-        href: '/components/io-breadcrumb-item/examples',
-        status: 'stable',
-        slug: 'io-breadcrumb-item',
-        description: 'Individual breadcrumb item sub-component used inside io-breadcrumb. Renders as a link when href is provided, or as a span with aria-current when current.',
-        related: ['io-breadcrumb', 'io-link'],
+        related: ['io-link', 'io-pagination'],
       },
       {
         label: 'Button',
@@ -173,15 +165,7 @@ export const sitemap: NavSection[] = [
         status: 'stable',
         slug: 'io-checkbox-group',
         description: 'Wraps io-checkbox items in a semantic fieldset with a shared legend, name propagation, and a group-level change event.',
-        related: ['io-checkbox', 'io-radio-group', 'io-form-field'],
-      },
-      {
-        label: 'Form Field',
-        href: '/components/io-form-field/configurator',
-        status: 'stable',
-        slug: 'io-form-field',
-        description: 'Auto-wires label, helper text, and error text accessibility attributes (for/id/aria-describedby/aria-invalid) for any slotted form control.',
-        related: ['io-input', 'io-radio-group', 'io-checkbox-group'],
+        related: ['io-checkbox', 'io-radio-group'],
       },
       {
         label: 'Heading',
@@ -194,7 +178,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Input',
         href: '/components/io-input/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-input',
         description: 'Single-line text entry. Built-in label, helper text, character count, and error state. Underline-only design.',
         related: ['io-textarea', 'io-select', 'io-checkbox'],
@@ -221,7 +205,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-multi-select',
         description: 'Slot-based multi-select dropdown with removable value chips, optional search filter, and FACE form participation.',
-        related: ['io-select', 'io-form-field', 'io-checkbox-group'],
+        related: ['io-select', 'io-checkbox-group'],
       },
       {
         label: 'Pagination',
@@ -237,7 +221,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-pin-code',
         description: 'Secure PIN or OTP entry field. N digit slots with auto-advance, paste distribution, and optional password masking. FACE form-associated.',
-        related: ['io-input', 'io-form-field'],
+        related: ['io-input'],
       },
       {
         label: 'Popover',
@@ -269,7 +253,7 @@ export const sitemap: NavSection[] = [
         status: 'stable',
         slug: 'io-radio-group',
         description: 'Wraps io-radio buttons in a semantic fieldset with a shared legend, name and value propagation, and a group-level change event.',
-        related: ['io-radio', 'io-checkbox-group', 'io-form-field'],
+        related: ['io-radio', 'io-checkbox-group'],
       },
       {
         label: 'Scroller',
@@ -309,7 +293,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-switch',
         description: 'Toggle switch for binary on/off settings. FACE form-associated component with role=switch and full keyboard navigation.',
-        related: ['io-checkbox', 'io-radio', 'io-form-field'],
+        related: ['io-checkbox', 'io-radio'],
       },
       {
         label: 'Table',
@@ -374,14 +358,6 @@ export const sitemap: NavSection[] = [
         slug: 'io-tooltip',
         description: 'Surfaces brief contextual help on hover or focus. Positioned automatically to stay within the viewport.',
         related: ['io-link', 'io-button', 'io-badge'],
-      },
-      {
-        label: 'Wordmark',
-        href: '/components/io-wordmark/configurator',
-        status: 'stable',
-        slug: 'io-wordmark',
-        description: 'Brand wordmark rendering "io" in brand blue and "digital" in text colour. Token-driven sizes: sm, md, lg, xl.',
-        related: ['io-avatar', 'io-badge', 'io-link'],
       },
     ],
   },

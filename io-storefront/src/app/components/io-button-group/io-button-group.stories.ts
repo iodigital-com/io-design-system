@@ -211,13 +211,15 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
   },
   {
     name: 'size',
-    type: 'string',
+    type: 'select',
+    options: ['sm', 'md', 'lg'],
     defaultValue: 'md',
-    description: "Size preset propagated to all slotted io-button children. One of 'sm' | 'md' | 'lg'.",
+    description: "Size preset propagated to all slotted io-button children.",
   },
   {
     name: 'direction',
-    type: 'string',
+    type: 'select',
+    options: ['row', 'column'],
     defaultValue: 'row',
     description: "Layout direction for the button group. 'row' lays buttons out horizontally (default); 'column' stacks them vertically.",
   },

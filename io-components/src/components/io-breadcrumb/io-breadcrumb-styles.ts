@@ -16,13 +16,13 @@ export function getBreadcrumbStyles(): string {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0;
+      gap: var(--io-space-1);
     }
 
     .breadcrumb__separator {
       display: inline-flex;
       align-items: center;
-      padding: 0 var(--io-space-1);
+      padding: 0 var(--io-space-2);
       color: var(--io-color-grey-4);
       font-size: var(--io-font-size-sm);
       user-select: none;

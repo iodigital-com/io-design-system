@@ -34,10 +34,18 @@ MockHTMLElement {
           </span>
         </span>
         <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Checked
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-checkbox>,
     <io-checkbox state="none" class="hydrated">
@@ -53,10 +61,18 @@ MockHTMLElement {
           </span>
         </span>
         <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Indeterminate
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-checkbox>,
   ],
@@ -1231,10 +1247,18 @@ exports[`io-checkbox — render snapshots > renders default state 1`] = `
           <span class="checkbox-custom" aria-hidden="true"></span>
         </span>
         <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Accept terms
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-checkbox>
 `;
@@ -1249,11 +1273,17 @@ exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
           <span class="checkbox-custom" aria-hidden="true"></span>
         </span>
         <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Disabled
         </span>
       </label>
     </div>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
       Unavailable
     </p>
   </mock:shadow-root>

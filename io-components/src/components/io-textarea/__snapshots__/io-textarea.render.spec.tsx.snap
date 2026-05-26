@@ -6,9 +6,19 @@ exports[`io-textarea — render snapshots > renders default state 1`] = `
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder="Write here" value rows="4"></textarea>
       <label for="io-textarea-4fzzzxjylrx" class="textarea-label">
-        Message
+        <span class="textarea-label__slot textarea-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Message
+        </span>
       </label>
     </div>
+    <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
+      <span class="textarea-description__slot textarea-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-textarea>
 `;
@@ -19,9 +29,19 @@ exports[`io-textarea — render snapshots > renders disabled state 1`] = `
     <div class="textarea-wrapper textarea-wrapper--disabled">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder=" " value="Read only" disabled rows="4"></textarea>
       <label for="io-textarea-4fzzzxjylrx" class="textarea-label">
-        Disabled
+        <span class="textarea-label__slot textarea-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Disabled
+        </span>
       </label>
     </div>
+    <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
+      <span class="textarea-description__slot textarea-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-textarea>
 `;
@@ -52,9 +72,19 @@ MockHTMLElement {
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-none textarea-field--md" placeholder=" " value rows="4"></textarea>
       <label for="io-textarea-4fzzzxjylrx" class="textarea-label">
-        None
+        <span class="textarea-label__slot textarea-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          None
+        </span>
       </label>
     </div>
+    <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
+      <span class="textarea-description__slot textarea-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-textarea>,
     <io-textarea state="none" size="md" class="hydrated">
@@ -62,9 +92,19 @@ MockHTMLElement {
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder=" " value rows="4"></textarea>
       <label for="io-textarea-4fzzzxjylrx" class="textarea-label">
-        Vertical
+        <span class="textarea-label__slot textarea-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Vertical
+        </span>
       </label>
     </div>
+    <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
+      <span class="textarea-description__slot textarea-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-textarea>,
     <io-textarea state="none" size="md" class="hydrated">
@@ -72,9 +112,19 @@ MockHTMLElement {
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-auto textarea-field--md" placeholder=" " value rows="4"></textarea>
       <label for="io-textarea-4fzzzxjylrx" class="textarea-label">
-        Auto
+        <span class="textarea-label__slot textarea-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Auto
+        </span>
       </label>
     </div>
+    <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
+      <span class="textarea-description__slot textarea-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-textarea>,
   ],

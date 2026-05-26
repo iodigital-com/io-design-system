@@ -486,6 +486,11 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
          */
@@ -1210,6 +1215,11 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
          */
@@ -1383,6 +1393,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -3753,6 +3768,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Validation message shown below the checkbox (used for error, success, and warning states)
           * @default ''
          */
@@ -4476,6 +4496,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner replacing the radio control and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Validation message shown below the radio (used for error, success, and warning states)
           * @default ''
          */
@@ -4645,6 +4670,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner replacing the chevron and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Validation message shown below (used for error, success, and warning states)
           * @default ''
@@ -5445,6 +5475,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5572,6 +5603,7 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "message": string;
         "helperText": string | undefined;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }
@@ -5604,6 +5636,7 @@ declare namespace LocalJSX {
         "custom": boolean;
         "multiple": boolean;
         "filter": boolean;
+        "loading": boolean;
         "form": string;
         "hideLabel": boolean;
     }

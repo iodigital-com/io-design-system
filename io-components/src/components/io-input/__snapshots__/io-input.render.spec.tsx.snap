@@ -14,9 +14,19 @@ exports[`io-input — render snapshots > renders default state 1`] = `
         </span>
       </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
-        Email
+        <span class="input-label__slot input-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Email
+        </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
+      <span class="input-description__slot input-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-input>
 `;
@@ -35,9 +45,19 @@ exports[`io-input — render snapshots > renders disabled state 1`] = `
         </span>
       </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
-        Disabled
+        <span class="input-label__slot input-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Disabled
+        </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
+      <span class="input-description__slot input-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-input>
 `;
@@ -76,9 +96,19 @@ MockHTMLElement {
         </span>
       </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
-        Email
+        <span class="input-label__slot input-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Email
+        </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
+      <span class="input-description__slot input-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-input>,
     <io-input size="md" state="none" class="hydrated">
@@ -94,9 +124,19 @@ MockHTMLElement {
         </span>
       </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
-        Search
+        <span class="input-label__slot input-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Search
+        </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
+      <span class="input-description__slot input-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-input>,
     <io-input size="md" state="none" class="hydrated">
@@ -112,9 +152,19 @@ MockHTMLElement {
         </span>
       </div>
       <label for="io-input-4fzzzxjylrx" class="input-label">
-        Telephone
+        <span class="input-label__slot input-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Telephone
+        </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
+      <span class="input-description__slot input-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-input>,
   ],

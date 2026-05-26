@@ -23,6 +23,7 @@ export type IoTagNames =
   | 'io-input'
   | 'io-link'
   | 'io-modal'
+  | 'io-multi-select'
   | 'io-optgroup'
   | 'io-option'
   | 'io-pagination'

@@ -528,6 +528,17 @@
   --io-progress-fill-error:      var(--io-color-error, #c0392b);
 
   /* ============================================================
+     13. PIN CODE
+     ============================================================ */
+
+  --io-pin-code-slot-size:              3rem;
+  --io-pin-code-slot-radius:            var(--io-border-radius-sm);
+  --io-pin-code-slot-border-width:      1.5px;
+  --io-pin-code-slot-border-error-width: 2px;
+  --io-pin-code-gap:                    var(--io-space-2);
+  --io-pin-code-font-size:              var(--io-font-size-xl);
+
+  /* ============================================================
      14. STOREFRONT SHELL SEMANTIC ALIASES
          Used by Canvas, Navigation, Playground, CodeBlock.
          Override in [data-theme="dark"] below for dark mode.

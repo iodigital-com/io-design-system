@@ -84,7 +84,7 @@ describe('io-radio-group — watcher methods', () => {
 
 describe('io-radio-group — handleRadioChange edge cases', () => {
   it('uses empty string when radio.value is undefined', () => {
-    const { c, host } = makeComponent();
+    const { c } = makeComponent();
     (c as any).componentWillLoad();
     const emitFn = vi.fn();
     (c as any).change = { emit: emitFn };

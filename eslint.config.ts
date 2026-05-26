@@ -58,7 +58,7 @@ export default tseslint.config(
     },
     rules: {
       ...jsxA11yRecommendedWarn,
-      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^h$' }],
+      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^h$', argsIgnorePattern: '^_' }],
       // Ban console.log/debug/info (debug spam); allow console.warn/error for diagnostic messaging
       'no-console': ['error', { allow: ['warn', 'error'] }],
     },
@@ -73,11 +73,13 @@ export default tseslint.config(
   },
   // Test/spec files: `any` is often necessary for mocking; relax the strict rule.
   // ban-ts-comment is also relaxed here (test scaffolding may need @ts-ignore in jsdom context).
+  // argsIgnorePattern: _-prefixed params are intentional stubs in mock/fake functions.
   {
     files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^h$', argsIgnorePattern: '^_' }],
     },
   },
   {

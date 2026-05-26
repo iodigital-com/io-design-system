@@ -34,4 +34,13 @@ describe('io-checkbox — disabled', () => {
     component.indeterminate = true;
     expect(component.indeterminate).toBe(true);
   });
+
+  it('is not loading by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('reflects loading prop when set to true', () => {
+    component.loading = true;
+    expect(component.loading).toBe(true);
+  });
 });

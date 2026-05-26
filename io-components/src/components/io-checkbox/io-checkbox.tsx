@@ -58,6 +58,9 @@ export class IoCheckbox {
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
 
+  /** Shows a loading spinner replacing the checkbox control and disables interaction */
+  @Prop({ reflect: true }) loading = false;
+
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
@@ -149,7 +152,7 @@ export class IoCheckbox {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.indeterminate = false;
@@ -159,7 +162,8 @@ export class IoCheckbox {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, indeterminate, required, disabled, state, message, helperText, form } = this;
+    const { label, name, value, checked, indeterminate, required, disabled, loading, state, message, helperText, form } = this;
+    const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
     const helperId = `${inputId}-helper`;
@@ -180,41 +184,47 @@ export class IoCheckbox {
       .join(' ');
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getCheckboxStyles()}</style>
-        <div class={getCheckboxWrapperClass(disabled, showError, showSuccess, showWarning)}>
+        <div class={getCheckboxWrapperClass(isDisabled, showError, showSuccess, showWarning, loading)}>
           <label class="checkbox-label" htmlFor={inputId}>
-            <span class="checkbox-control">
-              <input
-                id={inputId}
-                class="checkbox-native"
-                type="checkbox"
-                name={name}
-                value={value}
-                checked={checked}
-                disabled={disabled}
-                required={required}
-                form={form}
-                aria-invalid={showError ? 'true' : undefined}
-                aria-describedby={describedBy || undefined}
-                onChange={this.handleChange}
-              />
-              <span
-                class={getCheckboxCustomClass(checked, indeterminate)}
-                aria-hidden="true"
-              >
-                {checked && !indeterminate && (
-                  <svg class="checkbox-icon" viewBox="0 0 10 8" fill="none" aria-hidden="true">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                )}
-                {indeterminate && (
-                  <svg class="checkbox-icon" viewBox="0 0 10 2" fill="none" aria-hidden="true">
-                    <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                  </svg>
-                )}
+            {loading ? (
+              <span class="checkbox-control checkbox-control--loading" aria-hidden="true">
+                <io-spinner size="sm" />
               </span>
-            </span>
+            ) : (
+              <span class="checkbox-control">
+                <input
+                  id={inputId}
+                  class="checkbox-native"
+                  type="checkbox"
+                  name={name}
+                  value={value}
+                  checked={checked}
+                  disabled={isDisabled}
+                  required={required}
+                  form={form}
+                  aria-invalid={showError ? 'true' : undefined}
+                  aria-describedby={describedBy || undefined}
+                  onChange={this.handleChange}
+                />
+                <span
+                  class={getCheckboxCustomClass(checked, indeterminate)}
+                  aria-hidden="true"
+                >
+                  {checked && !indeterminate && (
+                    <svg class="checkbox-icon" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  )}
+                  {indeterminate && (
+                    <svg class="checkbox-icon" viewBox="0 0 10 2" fill="none" aria-hidden="true">
+                      <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                  )}
+                </span>
+              </span>
+            )}
             <span class="checkbox-text">
               {label}
               {required && (

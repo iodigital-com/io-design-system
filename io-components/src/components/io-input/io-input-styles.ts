@@ -16,6 +16,16 @@ export function getInputStyles(): string {
       pointer-events: none;
     }
 
+    .input-wrapper--loading {
+      pointer-events: none;
+    }
+
+    /* Loading spinner slot — replaces suffix slot content */
+    .input-slot--loading {
+      display: flex;
+      align-items: center;
+    }
+
     /* Readonly: full opacity, still tabbable, cursor indicates non-editable */
     .input-wrapper--readonly .input-field {
       cursor: default;

@@ -65,4 +65,15 @@ describe('io-input - disabled behavior', () => {
     expect(focus).toHaveBeenCalledOnce();
     expect(focus).toHaveBeenCalledWith({ preventScroll: true });
   });
+
+  it('is not loading by default', () => {
+    const fresh = new IoInput();
+    expect(fresh.loading).toBe(false);
+  });
+
+  it('reflects loading prop when set to true', () => {
+    const fresh = new IoInput();
+    fresh.loading = true;
+    expect(fresh.loading).toBe(true);
+  });
 });

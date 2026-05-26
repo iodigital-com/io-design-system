@@ -42,4 +42,13 @@ describe('io-textarea — disabled', () => {
     component.rows = 8;
     expect(component.rows).toBe(8);
   });
+
+  it('is not loading by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('reflects loading prop when set to true', () => {
+    component.loading = true;
+    expect(component.loading).toBe(true);
+  });
 });

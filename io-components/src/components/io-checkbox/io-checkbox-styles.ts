@@ -19,6 +19,20 @@ export function getCheckboxStyles(): string {
       pointer-events: none;
     }
 
+    .checkbox-wrapper--loading {
+      pointer-events: none;
+    }
+
+    /* Loading: spinner replaces the checkbox control visual */
+    .checkbox-control--loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--io-checkbox-size);
+      height: var(--io-checkbox-size);
+      flex-shrink: 0;
+    }
+
     /* ── Label row ──────────────────────────────────────── */
 
     .checkbox-label {

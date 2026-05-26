@@ -296,3 +296,137 @@ describe('io-carousel — scrollBehavior (prefers-reduced-motion)', () => {
     expect((component as any).scrollBehavior).toBe('auto');
   });
 });
+
+describe('io-carousel — named slot state defaults', () => {
+  let component: IoCarousel;
+
+  beforeEach(() => {
+    component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+  });
+
+  it('hasHeadingSlot defaults to false', () => {
+    expect((component as any).hasHeadingSlot).toBe(false);
+  });
+
+  it('hasDescriptionSlot defaults to false', () => {
+    expect((component as any).hasDescriptionSlot).toBe(false);
+  });
+
+  it('hasControlsSlot defaults to false', () => {
+    expect((component as any).hasControlsSlot).toBe(false);
+  });
+});
+
+describe('io-carousel — handleHeadingSlotChange', () => {
+  it('sets hasHeadingSlot true when heading slot has assigned elements', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+
+    const element = document.createElement('h2');
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [element] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleHeadingSlotChange(event);
+
+    expect((component as any).hasHeadingSlot).toBe(true);
+  });
+
+  it('sets hasHeadingSlot false when heading slot is emptied', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    (component as any).hasHeadingSlot = true;
+
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleHeadingSlotChange(event);
+
+    expect((component as any).hasHeadingSlot).toBe(false);
+  });
+});
+
+describe('io-carousel — handleDescriptionSlotChange', () => {
+  it('sets hasDescriptionSlot true when description slot has assigned elements', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+
+    const element = document.createElement('p');
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [element] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleDescriptionSlotChange(event);
+
+    expect((component as any).hasDescriptionSlot).toBe(true);
+  });
+
+  it('sets hasDescriptionSlot false when description slot is emptied', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    (component as any).hasDescriptionSlot = true;
+
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleDescriptionSlotChange(event);
+
+    expect((component as any).hasDescriptionSlot).toBe(false);
+  });
+});
+
+describe('io-carousel — handleControlsSlotChange', () => {
+  it('sets hasControlsSlot true when controls slot has assigned elements', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+
+    const element = document.createElement('div');
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [element] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleControlsSlotChange(event);
+
+    expect((component as any).hasControlsSlot).toBe(true);
+  });
+
+  it('sets hasControlsSlot false when controls slot is emptied', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    (component as any).hasControlsSlot = true;
+
+    const slot = document.createElement('slot');
+    Object.defineProperty(slot, 'assignedElements', { value: () => [] });
+
+    const event = { target: slot } as unknown as Event;
+    (component as any).handleControlsSlotChange(event);
+
+    expect((component as any).hasControlsSlot).toBe(false);
+  });
+});
+
+describe('io-carousel — componentWillLoad headingId', () => {
+  it('generates a non-empty headingId in componentWillLoad', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+
+    component.componentWillLoad();
+
+    expect((component as any).headingId).toMatch(/^io-carousel-heading-[a-z0-9]+$/);
+  });
+
+  it('generates unique headingIds across instances', () => {
+    const a = new IoCarousel();
+    const b = new IoCarousel();
+    (a as any).el = { shadowRoot: null };
+    (b as any).el = { shadowRoot: null };
+
+    a.componentWillLoad();
+    b.componentWillLoad();
+
+    expect((a as any).headingId).not.toBe((b as any).headingId);
+  });
+});

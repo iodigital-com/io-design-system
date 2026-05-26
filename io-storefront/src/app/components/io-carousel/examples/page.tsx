@@ -212,6 +212,126 @@ const testimonialCarouselStory: Story<'io-carousel'> = {
   ],
 };
 
+const headingDescriptionCarouselStory: Story<'io-carousel'> = {
+  state: { properties: { slidesPerPage: 1, rewind: false, activeSlideIndex: 0 } },
+  generator: () => [
+    {
+      tag: 'io-carousel' as const,
+      properties: { slidesPerPage: 1, rewind: false, activeSlideIndex: 0 },
+      children: [
+        {
+          tag: 'h2' as const,
+          properties: {
+            slot: 'heading',
+            style: {
+              margin: 0,
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              color: 'var(--io-text-primary)',
+            },
+          },
+          children: ['Featured Products'],
+        },
+        {
+          tag: 'p' as const,
+          properties: {
+            slot: 'description',
+            style: {
+              margin: 0,
+              fontSize: '0.9375rem',
+              color: 'var(--io-text-secondary)',
+            },
+          },
+          children: ['Browse our latest collection. The heading slot establishes aria-labelledby on the carousel region.'],
+        },
+        productCard('Merino Wool Sweater', '€ 89,00', 'Clothing'),
+        productCard('Leather Crossbody Bag', '€ 129,00', 'Accessories'),
+        productCard('Running Shoes Pro', '€ 149,00', 'Footwear'),
+        productCard('Polarised Sunglasses', '€ 74,00', 'Accessories'),
+      ],
+    },
+  ],
+};
+
+const controlsSlotCarouselStory: Story<'io-carousel'> = {
+  state: { properties: { slidesPerPage: 1, rewind: false, activeSlideIndex: 0 } },
+  generator: () => [
+    {
+      tag: 'io-carousel' as const,
+      properties: { slidesPerPage: 1, rewind: false, activeSlideIndex: 0 },
+      children: [
+        {
+          tag: 'div' as const,
+          properties: {
+            slot: 'controls',
+            style: {
+              display: 'flex',
+              gap: 'var(--io-space-2)',
+              alignItems: 'center',
+            },
+          },
+          children: [
+            {
+              tag: 'span' as const,
+              properties: {
+                style: {
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: 'var(--io-border-radius-pill)',
+                  background: 'var(--io-color-primary)',
+                  display: 'inline-block',
+                },
+              },
+              children: [],
+            },
+            {
+              tag: 'span' as const,
+              properties: {
+                style: {
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: 'var(--io-border-radius-pill)',
+                  background: 'var(--io-border)',
+                  display: 'inline-block',
+                },
+              },
+              children: [],
+            },
+            {
+              tag: 'span' as const,
+              properties: {
+                style: {
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: 'var(--io-border-radius-pill)',
+                  background: 'var(--io-border)',
+                  display: 'inline-block',
+                },
+              },
+              children: [],
+            },
+          ],
+        },
+        testimonialCard(
+          'The team delivered a design system that scaled across 12 product teams without friction.',
+          'Sarah de Vries',
+          'Head of Product, FinTech Co.',
+        ),
+        testimonialCard(
+          'Shipping velocity doubled once we adopted the shared component library.',
+          'Marco Janssen',
+          'Engineering Lead, Scale-up NL',
+        ),
+        testimonialCard(
+          'Accessibility was built in from day one — not bolted on.',
+          'Aisha Okonkwo',
+          'Digital Director, Healthcare Group',
+        ),
+      ],
+    },
+  ],
+};
+
 export default function IoCarouselExamplesPage() {
   return (
     <div className="space-y-10">
@@ -245,6 +365,22 @@ export default function IoCarouselExamplesPage() {
           description="Quote-based content with rewind=true so navigation wraps from the last slide back to the first, creating a seamless looping experience."
         />
         <ComponentStory story={testimonialCarouselStory} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="With heading and description slots"
+          description="The heading slot establishes an accessible label for the carousel region via aria-labelledby. The description slot provides supporting context rendered above the slide track. Both slot containers are hidden via CSS class when empty — no layout impact when unused."
+        />
+        <ComponentStory story={headingDescriptionCarouselStory} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="With controls slot"
+          description="The controls slot renders inside the carousel wrap, adjacent to the Prev/Next navigation buttons. Use it for pagination dots, thumbnail strips, or other custom indicators. The container is hidden when the slot is empty."
+        />
+        <ComponentStory story={controlsSlotCarouselStory} />
       </section>
 
       <section>

@@ -135,5 +135,46 @@ export function getCarouselStyles(): string {
       .carousel-track { scroll-behavior: auto; }
       .carousel-btn { transition: none; }
     }
+
+    /* ── Heading and description slots ─────────────────── */
+
+    .carousel-header {
+      margin-bottom: var(--io-space-4);
+    }
+
+    .carousel-header--hidden {
+      display: none;
+    }
+
+    .carousel-heading {
+      font-family: var(--io-font-primary);
+      color: var(--io-text-primary);
+    }
+
+    .carousel-heading--hidden {
+      display: none;
+    }
+
+    .carousel-description {
+      margin-top: var(--io-space-2);
+      font-family: var(--io-font-primary);
+      color: var(--io-text-secondary);
+    }
+
+    .carousel-description--hidden {
+      display: none;
+    }
+
+    /* ── Controls slot ──────────────────────────────────── */
+
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--io-space-4);
+    }
+
+    .carousel-controls--hidden {
+      display: none;
+    }
   `;
 }

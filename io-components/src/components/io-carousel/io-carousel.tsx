@@ -15,9 +15,18 @@ import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
  * dictate slide structure. Put any HTML you need inside.
  *
  * @slot - Default slot for slide content (cards, images, etc.)
+ * @slot heading - Optional heading rendered above the slide track. When present,
+ *   `aria-labelledby` on the carousel region points to this element instead of
+ *   using the `label` prop. Falls back to `label` prop when slot is empty.
+ * @slot description - Optional description rendered below the heading and above
+ *   the slide track.
+ * @slot controls - Optional slot rendered adjacent to the Prev/Next navigation
+ *   buttons. Use for pagination dots, thumbnails, or other custom indicators.
  *
  * @example
  * <io-carousel>
+ *   <h2 slot="heading">Featured Articles</h2>
+ *   <p slot="description">Browse our latest content.</p>
  *   <div class="card">Slide 1</div>
  *   <div class="card">Slide 2</div>
  *   <div class="card">Slide 3</div>
@@ -38,7 +47,11 @@ export class IoCarousel {
   /** Accessible label for the next button */
   @Prop() nextLabel = 'Next';
 
-  /** Accessible label for the carousel region. Required for screen reader context. */
+  /**
+   * Accessible label for the carousel region. Used as `aria-label` when no
+   * `heading` slot content is present. When the `heading` slot is occupied,
+   * `aria-labelledby` is used instead and this prop is ignored.
+   */
   @Prop() label = 'Carousel';
 
   /** Number of slides to move per navigation step; use auto for slide-by-slide. */
@@ -57,6 +70,9 @@ export class IoCarousel {
 
   @State() private isDragging = false;
   @State() private slideAnnouncement = '';
+  @State() private hasHeadingSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasControlsSlot = false;
 
   // ── Private fields ────────────────────────────────────────────
 
@@ -66,6 +82,26 @@ export class IoCarousel {
    * smooth-scroll animations (e.g. rewind from last to first slide).
    */
   private _internalScroll = false;
+
+  /** Stable ID for the heading element — used in aria-labelledby. */
+  private headingId = '';
+
+  // ── Slot-change handlers ──────────────────────────────────────
+
+  private handleHeadingSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+    this.hasHeadingSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleControlsSlotChange = (event: Event) => {
+    const slot = event.target as HTMLSlotElement;
+    this.hasControlsSlot = slot.assignedElements().length > 0;
+  };
 
   // ── Drag helpers ──────────────────────────────────────────────
 
@@ -274,6 +310,10 @@ export class IoCarousel {
     this.scrollToIndex(normalized, 'auto');
   }
 
+  componentWillLoad() {
+    this.headingId = `io-carousel-heading-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
   componentDidLoad() {
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
@@ -282,7 +322,17 @@ export class IoCarousel {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { prevLabel, nextLabel, isDragging, label, slideAnnouncement } = this;
+    const {
+      prevLabel,
+      nextLabel,
+      isDragging,
+      label,
+      slideAnnouncement,
+      hasHeadingSlot,
+      hasDescriptionSlot,
+      hasControlsSlot,
+      headingId,
+    } = this;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -295,10 +345,21 @@ export class IoCarousel {
         <style>{getCarouselStyles()}</style>
         <div
           role="region"
-          aria-label={label}
+          aria-label={hasHeadingSlot ? undefined : label}
+          aria-labelledby={hasHeadingSlot ? headingId : undefined}
           aria-roledescription="carousel"
         >
           <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
+
+          <div class={{ 'carousel-header': true, 'carousel-header--hidden': !hasHeadingSlot && !hasDescriptionSlot }}>
+            <div id={headingId} class={{ 'carousel-heading': true, 'carousel-heading--hidden': !hasHeadingSlot }}>
+              <slot name="heading" onSlotchange={this.handleHeadingSlotChange} />
+            </div>
+            <div class={{ 'carousel-description': true, 'carousel-description--hidden': !hasDescriptionSlot }}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </div>
+          </div>
+
           <div class="carousel-wrap">
             <div
               class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
@@ -314,6 +375,10 @@ export class IoCarousel {
             <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
               {arrowSvg}
             </button>
+
+            <div class={{ 'carousel-controls': true, 'carousel-controls--hidden': !hasControlsSlot }}>
+              <slot name="controls" onSlotchange={this.handleControlsSlotChange} />
+            </div>
           </div>
         </div>
       </Host>

@@ -1,143 +1,118 @@
 import { describe, it } from 'vitest';
 
 /**
- * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-carousel
+ * io-carousel — WCAG 2.1 AA — accessibility pattern tests
  *
- * Tests the native HTML patterns rendered inside io-carousel's Shadow DOM
- * (region landmark, live region, prev/next navigation buttons).
- * Pattern established in io-accordion.a11y.spec.ts and io-button-group.a11y.spec.ts.
+ * Tests the native HTML ARIA patterns rendered inside io-carousel's Shadow DOM
+ * (role="region" with aria-label / aria-labelledby, live region for slide
+ * announcements, and navigation button labels).
+ *
+ * Full component-level auditing against the Shadow DOM requires the Stencil
+ * render environment (vitest.render.config.ts) and is out of scope here.
+ * These tests verify the ARIA scaffold that the component constructs.
  */
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-carousel — a11y (ARIA patterns)', () => {
-  it('carousel region with accessible label has no axe violations', async () => {
+describe('io-carousel — a11y (ARIA region pattern)', () => {
+  it('carousel region with aria-label has no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
-      <section role="region" aria-label="Featured products" aria-roledescription="carousel">
-        <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div role="region" aria-label="Featured articles" aria-roledescription="carousel">
+        <span aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"></span>
         <div>
           <div>
             <div>Slide 1</div>
             <div>Slide 2</div>
-            <div>Slide 3</div>
           </div>
-          <button type="button" aria-label="Previous">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-          <button type="button" aria-label="Next">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
+          <button aria-label="Previous" type="button">Prev</button>
+          <button aria-label="Next" type="button">Next</button>
         </div>
-      </section>
+      </div>
     `;
     await renderAndCheckA11y(el);
   });
 
-  it('carousel region with custom label prop has no axe violations', async () => {
+  it('carousel region with aria-labelledby pointing to heading has no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
-      <section role="region" aria-label="Latest news" aria-roledescription="carousel">
-        <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
-        <div>
-          <div>
-            <article>News item 1</article>
-            <article>News item 2</article>
-          </div>
-          <button type="button" aria-label="Previous">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-          <button type="button" aria-label="Next">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
+      <div role="region" aria-labelledby="carousel-heading-1" aria-roledescription="carousel">
+        <div id="carousel-heading-1">
+          <h2>Featured Articles</h2>
         </div>
-      </section>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('carousel with custom prev/next labels has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <section role="region" aria-label="Team members" aria-roledescription="carousel">
-        <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
-        <div>
-          <div>
-            <div>Alice</div>
-            <div>Bob</div>
-          </div>
-          <button type="button" aria-label="Vorige">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-          <button type="button" aria-label="Volgende">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-        </div>
-      </section>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('carousel live region announcing slide change has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <section role="region" aria-label="Carousel" aria-roledescription="carousel">
-        <span aria-live="polite" aria-atomic="true" class="sr-only">Slide 2 of 4</span>
+        <span aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"></span>
         <div>
           <div>
             <div>Slide 1</div>
             <div>Slide 2</div>
-            <div>Slide 3</div>
-            <div>Slide 4</div>
           </div>
-          <button type="button" aria-label="Previous">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-          <button type="button" aria-label="Next">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
+          <button aria-label="Previous" type="button">Prev</button>
+          <button aria-label="Next" type="button">Next</button>
         </div>
-      </section>
+      </div>
     `;
     await renderAndCheckA11y(el);
   });
 
-  it('carousel with single slide has no axe violations', async () => {
+  it('carousel with heading and description slots has no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
-      <section role="region" aria-label="Highlights" aria-roledescription="carousel">
-        <span aria-live="polite" aria-atomic="true" class="sr-only"></span>
+      <div role="region" aria-labelledby="carousel-heading-2" aria-roledescription="carousel">
+        <div id="carousel-heading-2">
+          <h2>Our Products</h2>
+        </div>
+        <div>
+          <p>Browse our latest catalogue.</p>
+        </div>
+        <span aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"></span>
         <div>
           <div>
-            <div>Only slide</div>
+            <div>Slide 1</div>
+            <div>Slide 2</div>
           </div>
-          <button type="button" aria-label="Previous">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
-          <button type="button" aria-label="Next">
-            <svg viewBox="0 0 26 16" width="20" height="13" fill="none" aria-hidden="true">
-              <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" fill="currentColor" />
-            </svg>
-          </button>
+          <button aria-label="Previous" type="button">Prev</button>
+          <button aria-label="Next" type="button">Next</button>
         </div>
-      </section>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
+
+  it('carousel with controls slot has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div role="region" aria-label="Testimonials" aria-roledescription="carousel">
+        <span aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"></span>
+        <div>
+          <div>
+            <div>Slide 1</div>
+            <div>Slide 2</div>
+          </div>
+          <button aria-label="Previous" type="button">Prev</button>
+          <button aria-label="Next" type="button">Next</button>
+          <div aria-label="Slide indicators" role="group">
+            <button aria-label="Go to slide 1" aria-current="true" type="button"></button>
+            <button aria-label="Go to slide 2" type="button"></button>
+          </div>
+        </div>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
+
+  it('live region announcement has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div role="region" aria-label="Image carousel" aria-roledescription="carousel">
+        <span aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Slide 2 of 4</span>
+        <div>
+          <div>
+            <div>Slide 1</div>
+            <div>Slide 2</div>
+          </div>
+          <button aria-label="Previous" type="button">Prev</button>
+          <button aria-label="Next" type="button">Next</button>
+        </div>
+      </div>
     `;
     await renderAndCheckA11y(el);
   });

@@ -328,10 +328,6 @@ export class IoTextarea {
             aria-invalid={showError ? 'true' : undefined}
             aria-readonly={readOnly ? 'true' : undefined}
             aria-describedby={describedBy}
-            ref={(el?: HTMLTextAreaElement) => {
-              this.nativeTextareaEl = el;
-              applyAriaProp(this.aria, el ?? null);
-            }}
             onInput={this.handleInput}
             onChange={this.handleChange}
             onFocus={this.handleFocus}

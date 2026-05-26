@@ -175,10 +175,24 @@ export function getRadioStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
+    .radio-error--hidden {
+      display: none;
+    }
+
     .radio-helper {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
       color: var(--io-text-secondary);
+    }
+
+    .radio-helper--hidden {
+      display: none;
+    }
+
+    .radio-label__slot--hidden,
+    .radio-message__slot--hidden,
+    .radio-description__slot--hidden {
+      display: none;
     }
 
     @media (prefers-reduced-motion: reduce) {

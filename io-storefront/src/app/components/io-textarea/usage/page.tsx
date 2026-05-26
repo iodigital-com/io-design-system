@@ -130,6 +130,26 @@ export default function IoTextareaUsagePage() {
         </div>
       </section>
 
+
+      {/* ── Rich content via named slots ─────────────────────────── */}
+      <section id="named-slots" className="space-y-6">
+        <SectionHeader
+          title="Rich content via named slots"
+          description="Use named slots to embed rich HTML inside the label, description, or message areas. Slot content overrides the corresponding prop when provided."
+        />
+        <div className="space-y-3">
+          <RuleCard label="label slot — icons and badges next to the label">
+            Embed an icon or &ldquo;required&rdquo; badge in the textarea label via the <C>label</C> slot. Decorative icons must be <C>aria-hidden=&quot;true&quot;</C>.
+          </RuleCard>
+          <RuleCard label="description slot — linked helper text">
+            Use the <C>description</C> slot to add a link inside the helper text — for example, linking to formatting guidelines or character count documentation.
+          </RuleCard>
+          <RuleCard label="message slot — rich error messages">
+            Use the <C>message</C> slot when the error needs a link or formatted text. The container retains <C>role=&quot;alert&quot;</C> so screen readers announce the message on change.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

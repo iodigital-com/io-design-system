@@ -20,7 +20,12 @@ exports[`io-select — render snapshots > renders default state 1`] = `
         </option>
       </select>
       <label for="io-select-4fzzzxjylrx" class="select-label">
-        Country
+        <span class="select-label__slot select-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Country
+        </span>
       </label>
       <span class="select-chevron" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -28,6 +33,11 @@ exports[`io-select — render snapshots > renders default state 1`] = `
         </svg>
       </span>
     </div>
+    <p id="io-select-4fzzzxjylrx-helper" class="select-helper select-helper--hidden">
+      <span class="select-description__slot select-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
   <io-option role="option" aria-selected="false" class="hydrated">
     <mock:shadow-root>
@@ -76,7 +86,12 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
         </option>
       </select>
       <label for="io-select-4fzzzxjylrx" class="select-label">
-        Country
+        <span class="select-label__slot select-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Country
+        </span>
       </label>
       <span class="select-chevron" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -84,6 +99,11 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
         </svg>
       </span>
     </div>
+    <p id="io-select-4fzzzxjylrx-helper" class="select-helper select-helper--hidden">
+      <span class="select-description__slot select-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
   <io-option role="option" aria-selected="false" class="hydrated">
     <mock:shadow-root>
@@ -132,7 +152,12 @@ exports[`io-select — render snapshots > renders selected value state 1`] = `
         </option>
       </select>
       <label for="io-select-4fzzzxjylrx" class="select-label">
-        Country
+        <span class="select-label__slot select-label__slot--hidden">
+          <slot name="label"></slot>
+        </span>
+        <span>
+          Country
+        </span>
       </label>
       <span class="select-chevron" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -140,6 +165,11 @@ exports[`io-select — render snapshots > renders selected value state 1`] = `
         </svg>
       </span>
     </div>
+    <p id="io-select-4fzzzxjylrx-helper" class="select-helper select-helper--hidden">
+      <span class="select-description__slot select-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
   <io-option role="option" aria-selected="false" class="hydrated">
     <mock:shadow-root>

@@ -95,6 +95,26 @@ export default function IoCheckboxUsagePage() {
         </div>
       </section>
 
+
+      {/* ── Rich content via named slots ─────────────────────────── */}
+      <section id="named-slots" className="space-y-6">
+        <SectionHeader
+          title="Rich content via named slots"
+          description="Use named slots to embed rich HTML inside the label, description, or message areas. Slot content overrides the corresponding prop when provided."
+        />
+        <div className="space-y-3">
+          <RuleCard label="label slot — icons and badges in labels">
+            Place an icon or &ldquo;optional&rdquo; badge next to the checkbox label using the <C>label</C> slot. Always wrap decorative icons in <C>aria-hidden=&quot;true&quot;</C>.
+          </RuleCard>
+          <RuleCard label="description slot — links in helper text">
+            Use the <C>description</C> slot when the helper text needs a link — for example, linking to a privacy policy: <C>&ldquo;I agree to the privacy policy&rdquo;</C> where &ldquo;privacy policy&rdquo; is a hyperlink.
+          </RuleCard>
+          <RuleCard label="message slot — rich error messages">
+            Use the <C>message</C> slot when the error explanation needs a link or formatted code. The slot retains <C>role=&quot;alert&quot;</C>.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

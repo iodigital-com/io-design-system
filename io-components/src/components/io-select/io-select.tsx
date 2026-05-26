@@ -118,6 +118,10 @@ export class IoSelect {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
+
   /** Parsed option groups — drives rendering in both modes */
   @State() private groups: IoSelectOptionGroup[] = [];
 
@@ -396,6 +400,21 @@ export class IoSelect {
     }
   }
 
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers (native mode) ────────────────────────────────────
 
   private handleChange = (ev: Event) => {
@@ -584,18 +603,19 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form, hideLabel } = this;
+    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
     const messageId = `${selectId}-message`;
     const helperId = `${selectId}-helper`;
+    const showMessage = showError && (hasMessageSlot || message);
+    const showDescription = !showError && (hasDescriptionSlot || helperText);
     const describedBy = [
-      hasState && message ? messageId : '',
-      !hasState && helperText ? helperId : '',
+      showMessage ? messageId : '',
+      showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
@@ -645,8 +665,16 @@ export class IoSelect {
             )}
           </select>
           <label htmlFor={selectId} class={hideLabel ? 'select-label select-label--sr-only' : 'select-label'}>
-            {label}
-            {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+            <span class={hasLabelSlot ? 'select-label__slot' : 'select-label__slot select-label__slot--hidden'}>
+              <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+            </span>
+            {!hasLabelSlot && (
+              <span>
+                {label}
+                {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+              </span>
+            )}
+            {hasLabelSlot && required && <span class="select-required" aria-hidden="true">{' *'}</span>}
           </label>
           {loading ? (
             <span class="select-chevron select-loading-indicator" aria-hidden="true">
@@ -660,19 +688,35 @@ export class IoSelect {
             </span>
           )}
         </div>
-        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>}
-        {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
+        {showError && (
+          <p id={messageId} class={`select-message select-message--error${showMessage ? '' : ' select-message--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'select-message__slot' : 'select-message__slot select-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {(showSuccess || showWarning) && message && (
+          <p id={messageId} class={`select-message select-message--${showSuccess ? 'success' : 'warning'}`} role="status">{message}</p>
+        )}
+        {!showError && (
+          <p id={helperId} class={`select-helper${showDescription ? '' : ' select-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'select-description__slot' : 'select-description__slot select-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
+          </p>
+        )}
       </Host>
     );
   }
 
   private renderCombobox() {
-    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery, hideLabel } = this;
+    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const hasState = showError || showSuccess || showWarning;
     const selectId = this.fieldId;
     const labelId = `${selectId}-label`;
     const triggerId = `${selectId}-trigger`;
@@ -680,9 +724,11 @@ export class IoSelect {
     const messageId = `${selectId}-message`;
     const helperId = `${selectId}-helper`;
 
+    const showMessage = showError && (hasMessageSlot || message);
+    const showDescription = !showError && (hasDescriptionSlot || helperText);
     const describedBy = [
-      hasState && message ? messageId : '',
-      !hasState && helperText ? helperId : '',
+      showMessage ? messageId : '',
+      showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const activeOptId = activeIndex >= 0 ? getComboboxOptionId(listboxId, activeIndex) : undefined;
@@ -696,8 +742,16 @@ export class IoSelect {
         <slot />
         <div class={getComboboxWrapperClass(showError, showSuccess, showWarning, isDisabled, loading)}>
           <label id={labelId} class={hideLabel ? 'select-label select-label--sr-only' : 'select-label'} aria-hidden="true">
-            {label}
-            {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+            <span class={hasLabelSlot ? 'select-label__slot' : 'select-label__slot select-label__slot--hidden'}>
+              <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+            </span>
+            {!hasLabelSlot && (
+              <span>
+                {label}
+                {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+              </span>
+            )}
+            {hasLabelSlot && required && <span class="select-required" aria-hidden="true">{' *'}</span>}
           </label>
 
           <button
@@ -772,8 +826,25 @@ export class IoSelect {
           </div>
         </div>
 
-        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>}
-        {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
+        {showError && (
+          <p id={messageId} class={`select-message select-message--error${showMessage ? '' : ' select-message--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'select-message__slot' : 'select-message__slot select-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {(showSuccess || showWarning) && message && (
+          <p id={messageId} class={`select-message select-message--${showSuccess ? 'success' : 'warning'}`} role="status">{message}</p>
+        )}
+        {!showError && (
+          <p id={helperId} class={`select-helper${showDescription ? '' : ' select-helper--hidden'}`}>
+            <span class={hasDescriptionSlot ? 'select-description__slot' : 'select-description__slot select-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
+          </p>
+        )}
       </Host>
     );
   }

@@ -12,10 +12,18 @@ exports[`io-radio — render snapshots > renders checked state 1`] = `
           </span>
         </span>
         <span class="radio-text">
+          <span class="radio-label__slot radio-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Selected
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
+      <span class="radio-description__slot radio-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-radio>
 `;
@@ -32,10 +40,18 @@ exports[`io-radio — render snapshots > renders default state 1`] = `
           </span>
         </span>
         <span class="radio-text">
+          <span class="radio-label__slot radio-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Option A
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
+      <span class="radio-description__slot radio-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-radio>
 `;
@@ -52,10 +68,18 @@ exports[`io-radio — render snapshots > renders disabled state 1`] = `
           </span>
         </span>
         <span class="radio-text">
+          <span class="radio-label__slot radio-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
           Disabled
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
+      <span class="radio-description__slot radio-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
   </mock:shadow-root>
 </io-radio>
 `;

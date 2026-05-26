@@ -2885,7 +2885,55 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#384) \u2014 Connector height/width=2px."
+      "notes": "Wave XI (#384) — Connector height/width=2px."
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-font-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — font size for digit glyphs inside each pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — gap between pin-code input slots"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — border width of a pin-code slot in error state"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-border-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — default border width of a pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — border radius of each pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI — width and height of each pin-code slot"
     }
   ]
 }

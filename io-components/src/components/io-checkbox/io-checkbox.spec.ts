@@ -43,6 +43,10 @@ describe('io-checkbox — default props', () => {
     expect(component.helperText).toBeUndefined();
   });
 
+  it('has no form prop by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
   it('setFocus resolves without throwing', async () => {
     const input = document.createElement('input');
     input.focus = vi.fn();

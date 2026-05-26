@@ -55,6 +55,9 @@ export class IoRadio {
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
 
+  /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
+  @Prop({ reflect: true }) form?: string;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
@@ -192,7 +195,7 @@ export class IoRadio {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, state, message, helperText } = this;
+    const { label, name, value, checked, required, disabled, state, message, helperText, form } = this;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
     const helperId = `${inputId}-helper`;
@@ -227,6 +230,7 @@ export class IoRadio {
                 checked={checked}
                 disabled={disabled}
                 required={required}
+                form={form}
                 aria-invalid={showError ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}

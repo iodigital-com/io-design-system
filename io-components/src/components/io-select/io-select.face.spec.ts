@@ -116,6 +116,15 @@ describe('io-select — FACE', () => {
     expect((component as any).faceInvalid).toBe(true);
   });
 
+  it('form prop is undefined by default', () => {
+    expect(component.form).toBeUndefined();
+  });
+
+  it('form prop accepts a string value for out-of-DOM form association', () => {
+    component.form = 'my-form';
+    expect(component.form).toBe('my-form');
+  });
+
   describe('formResetCallback', () => {
     it('resets single-mode value to the default value captured in componentWillLoad()', () => {
       const internals = makeInternals();

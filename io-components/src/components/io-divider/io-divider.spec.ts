@@ -19,6 +19,10 @@ describe('io-divider — default props', () => {
   it('label defaults to undefined', () => {
     expect(comp.label).toBeUndefined();
   });
+
+  it('color defaults to "default"', () => {
+    expect(comp.color).toBe('default');
+  });
 });
 
 describe('io-divider — style tokens', () => {
@@ -232,5 +236,55 @@ describe('io-divider render — labeled', () => {
   it('does NOT render an <hr> when label is set', () => {
     makeComp({ label: 'or' }).render();
     expect(hCallsForTag('hr')).toHaveLength(0);
+  });
+});
+
+// ── Color prop tests ──────────────────────────────────────────────────────────
+
+describe('io-divider — color prop', () => {
+  it('defaults to "default"', () => {
+    const comp = makeComp();
+    expect(comp.color).toBe('default');
+  });
+
+  it('can be set to "subtle"', () => {
+    const comp = makeComp({ color: 'subtle' } as Partial<IoDivider>);
+    expect(comp.color).toBe('subtle');
+  });
+
+  it('can be set to "strong"', () => {
+    const comp = makeComp({ color: 'strong' } as Partial<IoDivider>);
+    expect(comp.color).toBe('strong');
+  });
+
+  it('renders without throwing for each color variant', () => {
+    const colors = ['subtle', 'default', 'strong'] as const;
+    for (const color of colors) {
+      const comp = makeComp({ color } as Partial<IoDivider>);
+      expect(() => comp.render()).not.toThrow();
+    }
+  });
+
+  it('styles include :host([color="subtle"]) rule using --io-border-rgb token', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain(':host([color="subtle"])');
+    expect(styles).toContain('rgba(var(--io-border-rgb), 0.5)');
+  });
+
+  it('styles include :host([color="strong"]) rule using --io-border-hover token', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain(':host([color="strong"])');
+    expect(styles).toContain('var(--io-border-hover)');
+  });
+
+  it('styles include :host([color="default"]) rule using --io-divider-color token', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain(':host([color="default"])');
+    expect(styles).toContain('var(--io-divider-color)');
+  });
+
+  it('styles contain no hardcoded hex values in color variant rules (token-first governance)', () => {
+    const styles = getDividerStyles();
+    expect(styles).not.toMatch(/#[0-9a-fA-F]{3,6}\b/);
   });
 });

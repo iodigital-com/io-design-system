@@ -5,6 +5,21 @@ export function getWordmarkStyles(): string {
       font-family: var(--io-font-primary, 'Manrope', sans-serif);
     }
 
+    /* ── Link wrapper (rendered when href is set) ───────────── */
+
+    .wordmark-link {
+      display: inline-flex;
+      text-decoration: none;
+      color: inherit;
+      border-radius: var(--io-border-radius-xs);
+      outline-offset: 2px;
+    }
+
+    .wordmark-link:focus-visible {
+      outline: 2px solid var(--io-border-focus);
+      outline-offset: 2px;
+    }
+
     .wordmark {
       display: inline-flex;
       align-items: baseline;

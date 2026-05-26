@@ -136,6 +136,10 @@
   /* Borders */
   --io-border:                   var(--io-color-grey-2);
   --io-border-hover:             var(--io-color-grey-3);
+  /* RGB components of --io-border for alpha-opacity variants
+     (e.g. rgba(var(--io-border-rgb), 0.5)).
+     Must be overridden alongside --io-border in [data-theme="dark"]. */
+  --io-border-rgb:               235, 235, 235;
   /* WCAG 1.4.11: UI component boundaries require ≥3:1 contrast.
      #767676 = 4.57:1 vs white, 3.88:1 vs dark-bg (#181818) — passes both themes. */
   --io-border-interactive:       #767676;
@@ -789,6 +793,7 @@ io-table[size="lg"] io-table-body-cell td {
   --io-text-muted:               var(--io-color-dark-text-muted);
   --io-border:                   var(--io-color-dark-border);
   --io-border-hover:             var(--io-color-dark-border-hover);
+  --io-border-rgb:               51, 51, 51;
   --io-accent-bg:                var(--io-color-dark-accent-bg);
   --io-accent-text:              var(--io-color-dark-accent);
   --io-accent:                   var(--io-color-dark-accent);
@@ -840,6 +845,7 @@ io-table[size="lg"] io-table-body-cell td {
   --io-text-disabled:            var(--io-color-grey-3);
   --io-border:                   var(--io-color-grey-2);
   --io-border-hover:             var(--io-color-grey-3);
+  --io-border-rgb:               235, 235, 235;
   --io-accent:                   var(--io-color-primary);
   --io-accent-text:              var(--io-color-primary);
   --io-accent-bg:                var(--io-color-primary-bg);

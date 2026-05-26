@@ -6,15 +6,24 @@ export const wordmarkStory: Story<'io-wordmark'> = {
     properties: {
       size: 'md',
       mono: false,
+      href: '',
+      target: '',
+      rel: '',
     },
   },
-  generator: ({ properties } = {}) => [
-    {
-      tag: 'io-wordmark' as const,
-      properties: properties ?? {},
-      children: [],
-    },
-  ],
+  generator: ({ properties } = {}) => {
+    // Strip empty-string falsy props so the component doesn't receive href=""
+    const filteredProps = Object.fromEntries(
+      Object.entries(properties ?? {}).filter(([, v]) => v !== '' && v !== undefined),
+    );
+    return [
+      {
+        tag: 'io-wordmark' as const,
+        properties: filteredProps,
+        children: [],
+      },
+    ];
+  },
 };
 
 export const wordmarkStorySizes: Story<'io-wordmark'> = {
@@ -56,5 +65,25 @@ export const wordmarkPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Monochrome mode — both "io" and "digital" use the current text colour.',
+  },
+  {
+    name: 'href',
+    type: 'string',
+    defaultValue: '',
+    description:
+      'When provided, the wordmark renders as an <a> element. Common use case: logo linking back to the homepage. Leave empty for a static presentational wordmark.',
+  },
+  {
+    name: 'target',
+    type: 'string',
+    defaultValue: '',
+    description: 'Browsing context for the link (e.g. "_blank"). Only applies when href is set.',
+  },
+  {
+    name: 'rel',
+    type: 'string',
+    defaultValue: '',
+    description:
+      'Link relationship (e.g. "noopener noreferrer"). Only applies when href is set.',
   },
 ];

@@ -2,7 +2,7 @@ import { Component, Prop, Host, h } from '@stencil/core';
 
 import { getDividerStyles } from './io-divider-styles';
 
-import type { IoDividerOrientation } from './types';
+import type { IoDividerColor, IoDividerOrientation } from './types';
 
 /**
  * io-divider
@@ -17,6 +17,8 @@ import type { IoDividerOrientation } from './types';
  * <io-divider />
  * <io-divider orientation="vertical" />
  * <io-divider label="or" />
+ * <io-divider color="subtle" />
+ * <io-divider color="strong" />
  */
 @Component({
   tag: 'io-divider',
@@ -31,6 +33,16 @@ export class IoDivider {
    * `vertical` renders a vertical line (useful in flex row containers).
    */
   @Prop({ reflect: true }) orientation: IoDividerOrientation = 'horizontal';
+
+  /**
+   * Color contrast level for the divider line.
+   * - `subtle`  — 50% opacity of the standard border color; very light separation.
+   * - `default` — `var(--io-border)` (standard decorative border token; current behavior).
+   * - `strong`  — `var(--io-border-hover)` (more prominent separation).
+   *
+   * Dark mode: all variants resolve automatically via existing semantic tokens.
+   */
+  @Prop({ reflect: true }) color: IoDividerColor = 'default';
 
   /**
    * Optional label centered within the divider line.

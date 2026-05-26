@@ -6,6 +6,11 @@
  *
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or sizes here.
  *     Add new tokens to src/global/app.css first, then reference them.
+ *
+ * Color variants map to border tokens:
+ *   subtle  → rgba(var(--io-border-rgb), 0.5)  — 50% opacity of the standard border
+ *   default → var(--io-divider-color)           — resolves to var(--io-border)
+ *   strong  → var(--io-border-hover)            — more prominent separation
  */
 export function getDividerStyles(): string {
   return `
@@ -18,11 +23,26 @@ export function getDividerStyles(): string {
       align-self: stretch;
     }
 
+    /* ── Color variants ─────────────────────────────────────── */
+
+    :host([color="subtle"]) {
+      --io-divider-color-resolved: rgba(var(--io-border-rgb), 0.5);
+    }
+
+    :host([color="strong"]) {
+      --io-divider-color-resolved: var(--io-border-hover);
+    }
+
+    :host([color="default"]),
+    :host {
+      --io-divider-color-resolved: var(--io-divider-color);
+    }
+
     /* ── Horizontal divider (default) ───────────────────────── */
 
     .divider {
       border: none;
-      border-top: var(--io-divider-thickness) solid var(--io-divider-color);
+      border-top: var(--io-divider-thickness) solid var(--io-divider-color-resolved);
       margin: 0;
       width: 100%;
     }
@@ -31,7 +51,7 @@ export function getDividerStyles(): string {
 
     .divider--vertical {
       border: none;
-      border-left: var(--io-divider-thickness) solid var(--io-divider-color);
+      border-left: var(--io-divider-thickness) solid var(--io-divider-color-resolved);
       height: 100%;
       width: 0;
       align-self: stretch;
@@ -51,7 +71,7 @@ export function getDividerStyles(): string {
       flex: 1;
       display: block;
       height: var(--io-divider-thickness);
-      background: var(--io-divider-color);
+      background: var(--io-divider-color-resolved);
     }
 
     .divider__label {

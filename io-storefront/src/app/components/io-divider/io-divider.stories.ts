@@ -57,17 +57,20 @@ export const dividerStory: Story<'io-divider'> = {
   state: {
     properties: {
       orientation: 'horizontal',
+      color: 'default',
       label: '',
     },
   },
   generator: ({ properties } = {}) => {
     const orientation = (properties?.orientation as string) ?? 'horizontal';
+    const color = (properties?.color as string) ?? 'default';
     const label = properties?.label as string | undefined;
 
     const dividerNode = {
       tag: 'io-divider' as const,
       properties: {
         orientation: orientation as 'horizontal' | 'vertical',
+        color: color as 'subtle' | 'default' | 'strong',
         ...(label ? { label } : {}),
       },
     };
@@ -118,9 +121,11 @@ export const dividerStory: Story<'io-divider'> = {
   },
   frameworkCode: ({ properties } = {}) => {
     const orientation = (properties?.orientation as string) ?? 'horizontal';
+    const color = (properties?.color as string) ?? 'default';
     const label = properties?.label as string | undefined;
     const attrs = [
       orientation !== 'horizontal' ? `orientation="${orientation}"` : null,
+      color !== 'default' ? `color="${color}"` : null,
       label ? `label="${label}"` : null,
     ]
       .filter(Boolean)
@@ -128,6 +133,7 @@ export const dividerStory: Story<'io-divider'> = {
     const htmlTag = `<io-divider${attrs ? ` ${attrs}` : ''}></io-divider>`;
     const reactProps = [
       orientation !== 'horizontal' ? `orientation="${orientation}"` : null,
+      color !== 'default' ? `color="${color}"` : null,
       label ? `label="${label}"` : null,
     ]
       .filter(Boolean)
@@ -223,6 +229,14 @@ export const dividerPropDefinitions: PropDefinition[] = [
     defaultValue: 'horizontal',
     description:
       'Visual and ARIA orientation. "horizontal" renders an <hr>; "vertical" renders a div[role=separator]. Has no visual effect when label is set — label always produces a horizontal flex layout.',
+  },
+  {
+    name: 'color',
+    type: 'select',
+    options: ['subtle', 'default', 'strong'],
+    defaultValue: 'default',
+    description:
+      'Color contrast level of the divider line. "subtle" renders at 50% opacity of --io-border (very light); "default" uses --io-border (standard); "strong" uses --io-border-hover (more prominent). All variants adapt automatically to dark mode.',
   },
   {
     name: 'label',

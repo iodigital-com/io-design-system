@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoCheckboxChangeDetail } from './types';
 
 /**
@@ -48,11 +49,11 @@ export class IoCheckbox {
   /** Disables the checkbox */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Puts the checkbox in error state */
-  @Prop({ reflect: true }) error = false;
+  /** Validation state — controls border color and message color */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Error message shown below the checkbox */
-  @Prop() errorMessage: string | undefined;
+  /** Validation message shown below the checkbox (used for error, success, and warning states) */
+  @Prop() message = '';
 
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
@@ -155,15 +156,21 @@ export class IoCheckbox {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, indeterminate, required, disabled, error, errorMessage, helperText } = this;
+    const { label, name, value, checked, indeterminate, required, disabled, state, message, helperText } = this;
     const inputId = this.fieldId;
-    const errorId = `${inputId}-error`;
+    const messageId = `${inputId}-message`;
     const helperId = `${inputId}-helper`;
     const faceErrorId = `${inputId}-face-error`;
-    const showFaceError = this.faceInvalid && !error;
+
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const hasState = showError || showSuccess || showWarning;
+    const showFaceError = this.faceInvalid && state !== 'error';
+
     const describedBy = [
-      !error && !showFaceError && helperText ? helperId : null,
-      error && errorMessage ? errorId : null,
+      !hasState && !showFaceError && helperText ? helperId : null,
+      hasState && message ? messageId : null,
       showFaceError ? faceErrorId : null,
     ]
       .filter((id): id is string => Boolean(id))
@@ -172,7 +179,7 @@ export class IoCheckbox {
     return (
       <Host>
         <style>{getCheckboxStyles()}</style>
-        <div class={getCheckboxWrapperClass(disabled, error || this.faceInvalid)}>
+        <div class={getCheckboxWrapperClass(disabled, showError, showSuccess, showWarning)}>
           <label class="checkbox-label" htmlFor={inputId}>
             <span class="checkbox-control">
               <input
@@ -184,7 +191,7 @@ export class IoCheckbox {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
+                aria-invalid={showError ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
               />
@@ -214,17 +221,17 @@ export class IoCheckbox {
             </span>
           </label>
         </div>
-        {error && errorMessage && (
-          <p id={errorId} class="checkbox-error" role="alert">
-            {errorMessage}
+        {hasState && message && (
+          <p id={messageId} class={`checkbox-message checkbox-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
+            {message}
           </p>
         )}
         {showFaceError && (
-          <p id={faceErrorId} class="checkbox-error" role="alert">
+          <p id={faceErrorId} class="checkbox-message checkbox-message--error" role="alert">
             Please check this box
           </p>
         )}
-        {!error && !this.faceInvalid && helperText && (
+        {!hasState && !this.faceInvalid && helperText && (
           <p id={helperId} class="checkbox-helper">
             {helperText}
           </p>

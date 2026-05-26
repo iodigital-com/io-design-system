@@ -118,7 +118,7 @@ export default function IoTextareaAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error text renders with role='alert'. The visual indicator (red border, red label) is always paired with descriptive text."
+            note="When state='error' and message is set, the message text renders with role='alert'. The visual indicator (red border, red label) is always paired with descriptive text."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -135,7 +135,7 @@ export default function IoTextareaAccessibilityPage() {
           title="Best practices"
           description="Guidelines for building accessible multi-line text experiences with io-textarea."
         />
-        <RuleCard label="Always pair error with errorMessage">
+        <RuleCard label="Always pair state with message">
           Setting{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code>{' '}
           without{' '}

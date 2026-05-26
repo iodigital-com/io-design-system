@@ -65,7 +65,7 @@ export default function IoCheckboxUsagePage() {
             Set <C>indeterminate=true</C>. The custom visual shows a dash. Used for &ldquo;Select all&rdquo; parent checkboxes when only some children are checked. The native indeterminate property is set via componentDidRender.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=true</C> and provide an <C>errorMessage</C>. The checkbox border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
+            Set <C>state=&quot;error&quot;</C> and provide a <C>message</C>. The checkbox border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The entire component renders at reduced opacity. Pointer events are blocked and the native input is disabled.

@@ -21,7 +21,7 @@ export default function IoFormFieldUsagePage() {
               Always provide a <C>label</C> prop. It is the accessible name for the slotted control.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Pair <C>error</C> with <C>errorMessage</C> to give specific, actionable feedback after validation fails.
+              Pair <C>state</C> with <C>message</C> to give specific, actionable feedback after validation fails.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use <C>helperText</C> for format hints or constraints before the user starts interacting.
@@ -55,7 +55,7 @@ export default function IoFormFieldUsagePage() {
             When <C>helperText</C> is set and <C>error</C> is false, the helper text is shown below the control and linked via <C>aria-describedby</C>.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            When <C>error</C> is true and <C>errorMessage</C> is set, the error message replaces the helper text. The slotted control receives <C>aria-invalid=&quot;true&quot;</C> automatically.
+            When <C>state</C> is <C>&quot;error&quot;</C> and <C>message</C> is set, the error message replaces the helper text. The slotted control receives <C>aria-invalid=&quot;true&quot;</C> automatically.
           </RuleCard>
         </div>
       </section>

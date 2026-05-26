@@ -27,16 +27,16 @@ describe('io-checkbox — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
+  it('has state=none by default', () => {
+    expect(component.state).toBe('none');
   });
 
   it('has empty value by default', () => {
     expect(component.value).toBe('');
   });
 
-  it('has no errorMessage by default', () => {
-    expect(component.errorMessage).toBeUndefined();
+  it('has empty message by default', () => {
+    expect(component.message).toBe('');
   });
 
   it('has no helperText by default', () => {
@@ -49,5 +49,29 @@ describe('io-checkbox — default props', () => {
     const shadowRoot = { querySelector: vi.fn().mockReturnValue(input) };
     (component as any).el = { shadowRoot };
     await expect(component.setFocus()).resolves.toBeUndefined();
+  });
+
+  it('applies state-success class when state is success', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).label = 'Accept terms';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('applies state-warning class when state is warning', () => {
+    component.state = 'warning';
+    component.message = 'Check this field';
+    (component as any).label = 'Accept terms';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('message paragraph uses role=status for success state', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).label = 'Accept terms';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
   });
 });

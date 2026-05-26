@@ -100,7 +100,7 @@ export default function IoTextareaUsagePage() {
             On focus, the border changes to the accent colour and the label animates to the floating position. Once text is typed, the label stays floating after blur.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=true</C> and provide <C>errorMessage</C>. The border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C>.
+            Set <C>state=&quot;error&quot;</C> and provide <C>message</C>. The border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C>.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The field renders at 40% opacity and pointer events are blocked.

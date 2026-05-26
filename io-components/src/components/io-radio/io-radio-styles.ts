@@ -91,8 +91,18 @@ export function getRadioStyles(): string {
     }
 
     /* Error border — 2px width satisfies WCAG 1.4.1 (non-color indicator) */
-    .radio-wrapper--error .radio-custom:not(.radio-custom--checked) {
+    .radio-wrapper--state-error .radio-custom:not(.radio-custom--checked) {
       border-color: var(--io-border-error);
+      border-width: var(--io-radio-border-error-width);
+    }
+
+    .radio-wrapper--state-success .radio-custom:not(.radio-custom--checked) {
+      border-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-width: var(--io-radio-border-error-width);
+    }
+
+    .radio-wrapper--state-warning .radio-custom:not(.radio-custom--checked) {
+      border-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
       border-width: var(--io-radio-border-error-width);
     }
 
@@ -119,12 +129,23 @@ export function getRadioStyles(): string {
       color: var(--io-color-error);
     }
 
-    /* ── Helper / error messages ────────────────────────── */
+    /* ── Helper / state messages ────────────────────────── */
 
-    .radio-error {
+    .radio-message {
       margin: var(--io-space-1) 0 0;
       font-size: var(--io-font-size-xs);
-      color: var(--io-color-error);
+    }
+
+    .radio-message--error {
+      color: var(--io-color-state-error, var(--io-color-error));
+    }
+
+    .radio-message--success {
+      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+    }
+
+    .radio-message--warning {
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
     .radio-helper {

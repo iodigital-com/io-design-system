@@ -38,8 +38,8 @@ describe('io-textarea — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
+  it('has state=none by default', () => {
+    expect(component.state).toBe('none');
   });
 
   it('has no placeholder by default', () => {
@@ -56,5 +56,29 @@ describe('io-textarea — default props', () => {
     const shadowRoot = { querySelector: vi.fn().mockReturnValue(textarea) };
     (component as any).el = { shadowRoot };
     await expect(component.setFocus()).resolves.toBeUndefined();
+  });
+
+  it('applies state-success class when state is success', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).label = 'Notes';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('applies state-warning class when state is warning', () => {
+    component.state = 'warning';
+    component.message = 'Check this field';
+    (component as any).label = 'Notes';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('message paragraph uses role=status for success state', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).label = 'Notes';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
   });
 });

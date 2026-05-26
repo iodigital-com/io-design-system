@@ -19,11 +19,11 @@ describe('io-form-field — lifecycle methods', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('onErrorChange calls syncChildAttributes', () => {
+  it('onStateChange calls syncChildAttributes', () => {
     const { c } = makeComponent();
     (c as any).componentWillLoad();
     const spy = vi.spyOn(c as any, 'syncChildAttributes');
-    (c as any).onErrorChange();
+    (c as any).onStateChange();
     expect(spy).toHaveBeenCalled();
   });
 
@@ -35,11 +35,11 @@ describe('io-form-field — lifecycle methods', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('onErrorMessageChange calls syncChildAttributes', () => {
+  it('onMessageChange calls syncChildAttributes', () => {
     const { c } = makeComponent();
     (c as any).componentWillLoad();
     const spy = vi.spyOn(c as any, 'syncChildAttributes');
-    (c as any).onErrorMessageChange();
+    (c as any).onMessageChange();
     expect(spy).toHaveBeenCalled();
   });
 });
@@ -51,9 +51,9 @@ describe('io-form-field — syncChildAttributes: describedBy branches', () => {
     const child = document.createElement('io-input');
     child.setAttribute('aria-describedby', 'old-id');
     host.appendChild(child);
-    c.error = false;
+    c.state = 'none';
     c.helperText = '';
-    c.errorMessage = '';
+    c.message = '';
     (c as any).syncChildAttributes();
     expect(child.getAttribute('aria-describedby')).toBeNull();
   });
@@ -74,17 +74,17 @@ describe('io-form-field — render() branch coverage', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('render() with error=true and errorMessage does not throw', () => {
+  it('render() with state=error and message does not throw', () => {
     const { c } = makeComponent();
-    c.error = true;
-    c.errorMessage = 'Required field';
+    c.state = 'error';
+    c.message = 'Required field';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
   });
 
   it('render() with helperText and no error does not throw', () => {
     const { c } = makeComponent();
-    c.error = false;
+    c.state = 'none';
     c.helperText = 'This is a hint';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();

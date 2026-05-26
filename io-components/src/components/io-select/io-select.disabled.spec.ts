@@ -22,9 +22,9 @@ describe('io-select — disabled', () => {
     expect(component.disabled).toBe(true);
   });
 
-  it('reflects error prop when set to true', () => {
-    component.error = true;
-    expect(component.error).toBe(true);
+  it('reflects state prop when set to error', () => {
+    component.state = 'error';
+    expect(component.state).toBe('error');
   });
 
   it('required prop defaults to false', () => {

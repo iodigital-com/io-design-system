@@ -6,9 +6,9 @@
  *     onMaxChange / onStepChange watch handlers
  *   - syncFormValue path that uses the native <input>.validity object
  *     (the shadow-root branch, not the jsdom fallback)
- *   - render() class-name branches for error, disabled, readonly,
+ *   - render() class-name branches for state, disabled, readonly,
  *     hasPrefix, hasSuffix, faceInvalid, showError, helperText,
- *     errorMessage, required, maxLength
+ *     message, required, maxLength
  *   - nameChanged() watch handler
  *   - render() does not throw for every key prop combination
  */
@@ -187,18 +187,18 @@ describe('io-input — render() wrapper class branches', () => {
     expect(() => c.render()).not.toThrow();
   });
 
-  it('applies input-wrapper--error class when error=true', () => {
-    c.error = true;
+  it('applies input-wrapper--state-error class when state=error', () => {
+    c.state = 'error';
     vi.mocked(h).mockClear();
     c.render();
 
     const wrapperCall = vi.mocked(h).mock.calls.find(
       (call) => typeof call[1]?.class === 'string' && (call[1].class as string).startsWith('input-wrapper'),
     );
-    expect((wrapperCall?.[1]?.class as string)).toContain('input-wrapper--error');
+    expect((wrapperCall?.[1]?.class as string)).toContain('input-wrapper--state-error');
   });
 
-  it('applies input-wrapper--error class when faceInvalid=true', () => {
+  it('applies input-wrapper--state-error class when faceInvalid=true', () => {
     (c as any).faceInvalid = true;
     vi.mocked(h).mockClear();
     c.render();
@@ -206,11 +206,11 @@ describe('io-input — render() wrapper class branches', () => {
     const wrapperCall = vi.mocked(h).mock.calls.find(
       (call) => typeof call[1]?.class === 'string' && (call[1].class as string).startsWith('input-wrapper'),
     );
-    expect((wrapperCall?.[1]?.class as string)).toContain('input-wrapper--error');
+    expect((wrapperCall?.[1]?.class as string)).toContain('input-wrapper--state-error');
   });
 
-  it('does not apply input-wrapper--error when error=false and faceInvalid=false', () => {
-    c.error = false;
+  it('does not apply input-wrapper--state-error when state=none and faceInvalid=false', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
     vi.mocked(h).mockClear();
     c.render();
@@ -218,7 +218,7 @@ describe('io-input — render() wrapper class branches', () => {
     const wrapperCall = vi.mocked(h).mock.calls.find(
       (call) => typeof call[1]?.class === 'string' && (call[1].class as string).startsWith('input-wrapper'),
     );
-    expect((wrapperCall?.[1]?.class as string)).not.toContain('input-wrapper--error');
+    expect((wrapperCall?.[1]?.class as string)).not.toContain('input-wrapper--state-error');
   });
 
   it('applies input-wrapper--disabled class when disabled=true', () => {
@@ -254,8 +254,8 @@ describe('io-input — render() wrapper class branches', () => {
     expect((wrapperCall?.[1]?.class as string)).toContain('input-wrapper--readonly');
   });
 
-  it('combines error, disabled, and readonly wrapper classes simultaneously', () => {
-    c.error = true;
+  it('combines state-error, disabled, and readonly wrapper classes simultaneously', () => {
+    c.state = 'error';
     c.disabled = true;
     c.readonly = true;
     vi.mocked(h).mockClear();
@@ -265,7 +265,7 @@ describe('io-input — render() wrapper class branches', () => {
       (call) => typeof call[1]?.class === 'string' && (call[1].class as string).startsWith('input-wrapper'),
     );
     const cls = wrapperCall?.[1]?.class as string;
-    expect(cls).toContain('input-wrapper--error');
+    expect(cls).toContain('input-wrapper--state-error');
     expect(cls).toContain('input-wrapper--disabled');
     expect(cls).toContain('input-wrapper--readonly');
   });
@@ -332,8 +332,8 @@ describe('io-input — render() aria and native input attributes', () => {
     c = makeInput();
   });
 
-  it('sets aria-invalid="true" when error=true', () => {
-    c.error = true;
+  it('sets aria-invalid="true" when state=error', () => {
+    c.state = 'error';
     vi.mocked(h).mockClear();
     c.render();
 
@@ -350,8 +350,8 @@ describe('io-input — render() aria and native input attributes', () => {
     expect(inputCall?.[1]?.['aria-invalid']).toBe('true');
   });
 
-  it('does not set aria-invalid when no error state', () => {
-    c.error = false;
+  it('does not set aria-invalid when state=none', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
     vi.mocked(h).mockClear();
     c.render();
@@ -442,9 +442,9 @@ describe('io-input — render() aria-describedby computation', () => {
     c = makeInput();
   });
 
-  it('sets aria-describedby to errorId when error=true and errorMessage is present', () => {
-    c.error = true;
-    c.errorMessage = 'This field is required';
+  it('sets aria-describedby to messageId when state=error and message is present', () => {
+    c.state = 'error';
+    c.message = 'This field is required';
     vi.mocked(h).mockClear();
     c.render();
 
@@ -453,9 +453,9 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(describedBy).toContain('-error');
   });
 
-  it('does not set aria-describedby when error=true but errorMessage is absent', () => {
-    c.error = true;
-    c.errorMessage = undefined;
+  it('does not set aria-describedby when state=error but message is absent', () => {
+    c.state = 'error';
+    c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
@@ -463,8 +463,8 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(inputCall?.[1]?.['aria-describedby']).toBeUndefined();
   });
 
-  it('sets aria-describedby to helperId when no error and helperText is present', () => {
-    c.error = false;
+  it('sets aria-describedby to helperId when state=none and helperText is present', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = 'Enter your work email';
     vi.mocked(h).mockClear();
@@ -475,8 +475,8 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(describedBy).toContain('-helper');
   });
 
-  it('does not set aria-describedby when no error and no helperText', () => {
-    c.error = false;
+  it('does not set aria-describedby when state=none and no helperText', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = undefined;
     vi.mocked(h).mockClear();
@@ -486,10 +486,10 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(inputCall?.[1]?.['aria-describedby']).toBeUndefined();
   });
 
-  it('does not use helperId when error is active even if helperText is set', () => {
-    c.error = true;
+  it('does not use helperId when state=error even if helperText is set', () => {
+    c.state = 'error';
     c.helperText = 'Helper text';
-    c.errorMessage = 'Error occurred';
+    c.message = 'Error occurred';
     vi.mocked(h).mockClear();
     c.render();
 
@@ -550,46 +550,46 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c = makeInput();
   });
 
-  it('renders error paragraph when showError=true and errorMessage is set', () => {
-    c.error = true;
-    c.errorMessage = 'Something went wrong';
+  it('renders message paragraph when state=error and message is set', () => {
+    c.state = 'error';
+    c.message = 'Something went wrong';
     vi.mocked(h).mockClear();
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && call[1]?.class === 'input-error',
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
     expect(errorPara).toBeDefined();
     expect(errorPara?.[1]?.['role']).toBe('alert');
   });
 
-  it('does not render error paragraph when error=false', () => {
-    c.error = false;
+  it('does not render error paragraph when state=none', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
-    c.errorMessage = 'Something went wrong';
+    c.message = 'Something went wrong';
     vi.mocked(h).mockClear();
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && call[1]?.class === 'input-error',
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
     expect(errorPara).toBeUndefined();
   });
 
-  it('does not render error paragraph when error=true but errorMessage is absent', () => {
-    c.error = true;
-    c.errorMessage = undefined;
+  it('does not render error paragraph when state=error but message is absent', () => {
+    c.state = 'error';
+    c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && call[1]?.class === 'input-error',
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
     expect(errorPara).toBeUndefined();
   });
 
   it('renders helper paragraph when showError=false and helperText is set', () => {
-    c.error = false;
+    c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = 'Enter your company email';
     vi.mocked(h).mockClear();
@@ -601,8 +601,8 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeDefined();
   });
 
-  it('does not render helper paragraph when error is active', () => {
-    c.error = true;
+  it('does not render helper paragraph when state=error', () => {
+    c.state = 'error';
     c.helperText = 'Enter your company email';
     vi.mocked(h).mockClear();
     c.render();
@@ -614,7 +614,7 @@ describe('io-input — render() error and helper text paragraphs', () => {
   });
 
   it('does not render helper paragraph when helperText is absent', () => {
-    c.error = false;
+    c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = undefined;
     vi.mocked(h).mockClear();
@@ -626,14 +626,14 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeUndefined();
   });
 
-  it('renders error paragraph when faceInvalid=true and errorMessage is set', () => {
+  it('renders error paragraph when faceInvalid=true and message is set', () => {
     (c as any).faceInvalid = true;
-    c.errorMessage = 'Field is invalid';
+    c.message = 'Field is invalid';
     vi.mocked(h).mockClear();
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && call[1]?.class === 'input-error',
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
     expect(errorPara).toBeDefined();
   });
@@ -648,26 +648,26 @@ describe('io-input — render() error icon div', () => {
     c = makeInput();
   });
 
-  it('renders the error icon div when showError=true', () => {
-    c.error = true;
+  it('renders the state icon div when state=error', () => {
+    c.state = 'error';
     vi.mocked(h).mockClear();
     c.render();
 
     const iconDiv = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'div' && call[1]?.class === 'input-error-icon',
+      (call) => call[0] === 'div' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-state-icon'),
     );
     expect(iconDiv).toBeDefined();
     expect(iconDiv?.[1]?.['aria-hidden']).toBe('true');
   });
 
-  it('does not render the error icon div when showError=false', () => {
-    c.error = false;
+  it('does not render the state icon div when state=none', () => {
+    c.state = 'none';
     (c as any).faceInvalid = false;
     vi.mocked(h).mockClear();
     c.render();
 
     const iconDiv = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'div' && call[1]?.class === 'input-error-icon',
+      (call) => call[0] === 'div' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-state-icon'),
     );
     expect(iconDiv).toBeUndefined();
   });
@@ -735,10 +735,10 @@ describe('io-input — render() prefix/suffix slot visibility classes', () => {
 
 describe('io-input — render() does not throw for prop combinations', () => {
   it.each([
-    { label: 'error + msg', error: true, errorMessage: 'Oops', helperText: undefined },
-    { label: 'faceInvalid + msg', faceInvalid: true, errorMessage: 'Bad', helperText: undefined },
-    { label: 'helperText only', error: false, faceInvalid: false, helperText: 'Help' },
-    { label: 'both helper and error msg, error active', error: true, errorMessage: 'E', helperText: 'H' },
+    { label: 'error + msg', state: 'error' as const, message: 'Oops', helperText: undefined },
+    { label: 'faceInvalid + msg', faceInvalid: true, message: 'Bad', helperText: undefined },
+    { label: 'helperText only', state: 'none' as const, faceInvalid: false, helperText: 'Help' },
+    { label: 'both helper and error msg, error active', state: 'error' as const, message: 'E', helperText: 'H' },
     { label: 'readonly', readonly: true },
     { label: 'disabled', disabled: true },
     { label: 'required', required: true },
@@ -751,12 +751,12 @@ describe('io-input — render() does not throw for prop combinations', () => {
     { label: 'type=password', type: 'password' as const },
     { label: 'type=number', type: 'number' as const },
     { label: 'type=search', type: 'search' as const },
-    { label: 'all slots active', _hasPrefix: true, _hasSuffix: true, error: true, errorMessage: 'X', required: true },
+    { label: 'all slots active', _hasPrefix: true, _hasSuffix: true, state: 'error' as const, message: 'X', required: true },
   ])('does not throw: $label', (props) => {
     const c = makeInput();
-    if (props.error !== undefined) c.error = props.error as boolean;
+    if ((props as any).state !== undefined) c.state = (props as any).state;
     if ((props as any).faceInvalid !== undefined) (c as any).faceInvalid = (props as any).faceInvalid;
-    if (props.errorMessage !== undefined) c.errorMessage = props.errorMessage as string;
+    if ((props as any).message !== undefined) c.message = (props as any).message as string;
     if (props.helperText !== undefined) c.helperText = props.helperText as string;
     if ((props as any).readonly !== undefined) c.readonly = (props as any).readonly;
     if ((props as any).disabled !== undefined) c.disabled = (props as any).disabled;

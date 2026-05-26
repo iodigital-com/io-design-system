@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-select — render snapshots > renders default state 1`] = `
-<io-select size="md" class="hydrated">
+<io-select size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <slot></slot>
     <div class="select-wrapper">
@@ -60,7 +60,7 @@ exports[`io-select — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-select — render snapshots > renders disabled state 1`] = `
-<io-select size="md" disabled class="hydrated">
+<io-select size="md" disabled state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <slot></slot>
     <div class="select-wrapper select-wrapper--disabled">
@@ -116,7 +116,7 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
 `;
 
 exports[`io-select — render snapshots > renders selected value state 1`] = `
-<io-select size="md" class="hydrated">
+<io-select size="md" state="none" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <slot></slot>
     <div class="select-wrapper">

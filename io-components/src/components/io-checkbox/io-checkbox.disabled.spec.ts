@@ -20,9 +20,9 @@ describe('io-checkbox — disabled', () => {
     expect(component.disabled).toBe(true);
   });
 
-  it('reflects error prop when set to true', () => {
-    component.error = true;
-    expect(component.error).toBe(true);
+  it('reflects state prop when set to error', () => {
+    component.state = 'error';
+    expect(component.state).toBe('error');
   });
 
   it('sets checked prop when checked changes', () => {

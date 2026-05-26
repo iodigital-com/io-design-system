@@ -17,8 +17,14 @@ export function resolveSelectId(name: string | undefined, fallbackId: string): s
     : `io-select-${fallbackId}`;
 }
 
-export function getSelectWrapperClass(error: boolean, disabled: boolean): string {
-  return ['select-wrapper', error ? 'select-wrapper--error' : '', disabled ? 'select-wrapper--disabled' : '']
+export function getSelectWrapperClass(error: boolean, success: boolean, warning: boolean, disabled: boolean): string {
+  return [
+    'select-wrapper',
+    error ? 'select-wrapper--state-error' : '',
+    success ? 'select-wrapper--state-success' : '',
+    warning ? 'select-wrapper--state-warning' : '',
+    disabled ? 'select-wrapper--disabled' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 }
@@ -31,8 +37,15 @@ export function getComboboxOptionId(listboxId: string, index: number): string {
   return `${listboxId}-option-${index}`;
 }
 
-export function getComboboxWrapperClass(error: boolean, disabled: boolean): string {
-  return ['select-wrapper', 'select-wrapper--custom', error ? 'select-wrapper--error' : '', disabled ? 'select-wrapper--disabled' : '']
+export function getComboboxWrapperClass(error: boolean, success: boolean, warning: boolean, disabled: boolean): string {
+  return [
+    'select-wrapper',
+    'select-wrapper--custom',
+    error ? 'select-wrapper--state-error' : '',
+    success ? 'select-wrapper--state-success' : '',
+    warning ? 'select-wrapper--state-warning' : '',
+    disabled ? 'select-wrapper--disabled' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 }

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-textarea — render snapshots > renders default state 1`] = `
-<io-textarea size="md" class="hydrated">
+<io-textarea state="none" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder="Write here" value rows="4"></textarea>
@@ -14,7 +14,7 @@ exports[`io-textarea — render snapshots > renders default state 1`] = `
 `;
 
 exports[`io-textarea — render snapshots > renders disabled state 1`] = `
-<io-textarea disabled size="md" class="hydrated">
+<io-textarea disabled state="none" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="textarea-wrapper textarea-wrapper--disabled">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder=" " value="Read only" disabled rows="4"></textarea>
@@ -47,7 +47,7 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-textarea size="md" class="hydrated">
+    <io-textarea state="none" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-none textarea-field--md" placeholder=" " value rows="4"></textarea>
@@ -57,7 +57,7 @@ MockHTMLElement {
     </div>
   </mock:shadow-root>
 </io-textarea>,
-    <io-textarea size="md" class="hydrated">
+    <io-textarea state="none" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-vertical textarea-field--md" placeholder=" " value rows="4"></textarea>
@@ -67,7 +67,7 @@ MockHTMLElement {
     </div>
   </mock:shadow-root>
 </io-textarea>,
-    <io-textarea size="md" class="hydrated">
+    <io-textarea state="none" size="md" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="textarea-wrapper">
       <textarea id="io-textarea-4fzzzxjylrx" class="textarea-field textarea-field--resize-auto textarea-field--md" placeholder=" " value rows="4"></textarea>

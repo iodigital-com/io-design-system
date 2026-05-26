@@ -13,8 +13,14 @@ export function resolveCheckboxId(name: string | undefined, fallbackId: string):
     : `io-checkbox-${fallbackId}`;
 }
 
-export function getCheckboxWrapperClass(disabled: boolean, error: boolean): string {
-  return ['checkbox-wrapper', disabled ? 'checkbox-wrapper--disabled' : '', error ? 'checkbox-wrapper--error' : '']
+export function getCheckboxWrapperClass(disabled: boolean, error: boolean, success: boolean, warning: boolean): string {
+  return [
+    'checkbox-wrapper',
+    disabled ? 'checkbox-wrapper--disabled' : '',
+    error ? 'checkbox-wrapper--state-error' : '',
+    success ? 'checkbox-wrapper--state-success' : '',
+    warning ? 'checkbox-wrapper--state-warning' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 }

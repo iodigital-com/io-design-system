@@ -11,6 +11,7 @@ import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerOrientation } from "./components/io-divider/types";
@@ -39,6 +40,7 @@ export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerOrientation } from "./components/io-divider/types";
@@ -411,15 +413,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the checkbox in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown below the checkbox
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -432,6 +425,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Validation message shown below the checkbox (used for error, success, and warning states)
+          * @default ''
+         */
+        "message": string;
         /**
           * Input name
          */
@@ -449,6 +447,11 @@ export namespace Components {
           * Programmatically move focus to the checkbox
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Validation state — controls border color and message color
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Value submitted with the form
           * @default ''
@@ -595,21 +598,11 @@ export namespace Components {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" error error-message="Username is taken.">
+     * <io-form-field label="Username" state="error" message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
     interface IoFormField {
-        /**
-          * Marks the field as in error state — shows errorMessage and sets aria-invalid on the child
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Validation error message shown when error is true
-          * @default ''
-         */
-        "errorMessage": string;
         /**
           * Helper/description text shown below the control
           * @default ''
@@ -620,10 +613,20 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Validation message shown when state is not 'none'
+          * @default ''
+         */
+        "message": string;
+        /**
           * Marks the label as required (adds asterisk)
           * @default false
          */
         "required": boolean;
+        /**
+          * Validation state — propagates to child via aria-invalid and controls message display
+          * @default 'none'
+         */
+        "state": IoFieldState;
     }
     /**
      * io-input
@@ -654,15 +657,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the input in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown below the input
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText": string | undefined;
@@ -678,6 +672,11 @@ export namespace Components {
           * Max length
          */
         "maxLength": number | undefined;
+        /**
+          * Validation message shown below the input (used for error, success, and warning states)
+          * @default ''
+         */
+        "message": string;
         /**
           * Native minimum value (date/time/number)
          */
@@ -710,6 +709,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoInputSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Native step value (date/time/number)
          */
@@ -977,7 +981,7 @@ export namespace Components {
      * Use multiple io-radio components with the same `name` to form a radio group.
      * @example <io-radio label="Option A" name="choice" value="a" />
      * <io-radio label="Option B" name="choice" value="b" checked />
-     * <io-radio label="Required" name="req" required error error-message="Please select an option" />
+     * <io-radio label="Required" name="req" required state="error" message="Please select an option" />
      */
     interface IoRadio {
         /**
@@ -995,15 +999,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the radio in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown below the radio
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -1011,6 +1006,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Validation message shown below the radio (used for error, success, and warning states)
+          * @default ''
+         */
+        "message": string;
         /**
           * Input name — share across radio group
          */
@@ -1028,6 +1028,11 @@ export namespace Components {
           * Programmatically move focus to the radio
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Validation state — controls border color and message color
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Value submitted with the form
           * @default ''
@@ -1121,15 +1126,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the select in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown below
-         */
-        "errorMessage": string | undefined;
-        /**
           * Adds a search input inside the dropdown (custom mode only)
           * @default false
          */
@@ -1142,6 +1138,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Validation message shown below (used for error, success, and warning states)
+          * @default ''
+         */
+        "message": string;
         /**
           * Multi-value selection (custom mode only)
           * @default false
@@ -1173,6 +1174,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoSelectSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Selected value (single mode)
           * @default ''
@@ -1518,15 +1524,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the textarea in error state
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * Error message shown below
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below (replaced by error when error=true)
          */
         "helperText": string | undefined;
@@ -1538,6 +1535,11 @@ export namespace Components {
           * Maximum number of characters
          */
         "maxLength": number | undefined;
+        /**
+          * Validation message shown below (used for error, success, and warning states)
+          * @default ''
+         */
+        "message": string;
         /**
           * Textarea name
          */
@@ -1574,6 +1576,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoTextareaSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Current value
           * @default ''
@@ -2060,7 +2067,7 @@ declare global {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" error error-message="Username is taken.">
+     * <io-form-field label="Username" state="error" message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
@@ -2251,7 +2258,7 @@ declare global {
      * Use multiple io-radio components with the same `name` to form a radio group.
      * @example <io-radio label="Option A" name="choice" value="a" />
      * <io-radio label="Option B" name="choice" value="b" checked />
-     * <io-radio label="Required" name="req" required error error-message="Please select an option" />
+     * <io-radio label="Required" name="req" required state="error" message="Please select an option" />
      */
     interface HTMLIoRadioElement extends Components.IoRadio, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoRadioElementEventMap>(type: K, listener: (this: HTMLIoRadioElement, ev: IoRadioCustomEvent<HTMLIoRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3099,15 +3106,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the checkbox in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown below the checkbox
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -3125,6 +3123,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Validation message shown below the checkbox (used for error, success, and warning states)
+          * @default ''
+         */
+        "message"?: string;
+        /**
           * Input name
          */
         "name"?: string | undefined;
@@ -3137,6 +3140,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state — controls border color and message color
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Value submitted with the form
           * @default ''
@@ -3281,21 +3289,11 @@ declare namespace LocalJSX {
      * @example <io-form-field label="Email address" helper-text="We will never share your email.">
      *   <io-input name="email" type="email" />
      * </io-form-field>
-     * <io-form-field label="Username" error error-message="Username is taken.">
+     * <io-form-field label="Username" state="error" message="Username is taken.">
      *   <io-input name="username" />
      * </io-form-field>
      */
     interface IoFormField {
-        /**
-          * Marks the field as in error state — shows errorMessage and sets aria-invalid on the child
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Validation error message shown when error is true
-          * @default ''
-         */
-        "errorMessage"?: string;
         /**
           * Helper/description text shown below the control
           * @default ''
@@ -3306,10 +3304,20 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Validation message shown when state is not 'none'
+          * @default ''
+         */
+        "message"?: string;
+        /**
           * Marks the label as required (adds asterisk)
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state — propagates to child via aria-invalid and controls message display
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
     }
     /**
      * io-input
@@ -3336,15 +3344,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the input in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown below the input
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -3364,6 +3363,11 @@ declare namespace LocalJSX {
           * Max length
          */
         "maxLength"?: number | undefined;
+        /**
+          * Validation message shown below the input (used for error, success, and warning states)
+          * @default ''
+         */
+        "message"?: string;
         /**
           * Native minimum value (date/time/number)
          */
@@ -3395,6 +3399,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoInputSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Native step value (date/time/number)
          */
@@ -3664,7 +3673,7 @@ declare namespace LocalJSX {
      * Use multiple io-radio components with the same `name` to form a radio group.
      * @example <io-radio label="Option A" name="choice" value="a" />
      * <io-radio label="Option B" name="choice" value="b" checked />
-     * <io-radio label="Required" name="req" required error error-message="Please select an option" />
+     * <io-radio label="Required" name="req" required state="error" message="Please select an option" />
      */
     interface IoRadio {
         /**
@@ -3678,15 +3687,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the radio in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown below the radio
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -3698,6 +3698,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Validation message shown below the radio (used for error, success, and warning states)
+          * @default ''
+         */
+        "message"?: string;
         /**
           * Input name — share across radio group
          */
@@ -3711,6 +3716,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state — controls border color and message color
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Value submitted with the form
           * @default ''
@@ -3804,15 +3814,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the select in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown below
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * Adds a search input inside the dropdown (custom mode only)
           * @default false
          */
@@ -3829,6 +3830,11 @@ declare namespace LocalJSX {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Validation message shown below (used for error, success, and warning states)
+          * @default ''
+         */
+        "message"?: string;
         /**
           * Multi-value selection (custom mode only)
           * @default false
@@ -3864,6 +3870,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoSelectSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Selected value (single mode)
           * @default ''
@@ -4229,15 +4240,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the textarea in error state
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * Error message shown below
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -4253,6 +4255,11 @@ declare namespace LocalJSX {
           * Maximum number of characters
          */
         "maxLength"?: number | undefined;
+        /**
+          * Validation message shown below (used for error, success, and warning states)
+          * @default ''
+         */
+        "message"?: string;
         /**
           * Textarea name
          */
@@ -4297,6 +4304,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoTextareaSize;
+        /**
+          * Validation state — controls border color, icon, and message color
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Current value
           * @default ''
@@ -4464,8 +4476,8 @@ declare namespace LocalJSX {
         "indeterminate": boolean;
         "required": boolean;
         "disabled": boolean;
-        "error": boolean;
-        "errorMessage": string | undefined;
+        "state": IoFieldState;
+        "message": string;
         "helperText": string | undefined;
     }
     interface IoCheckboxGroupAttributes {
@@ -4492,8 +4504,8 @@ declare namespace LocalJSX {
     interface IoFormFieldAttributes {
         "label": string;
         "helperText": string;
-        "errorMessage": string;
-        "error": boolean;
+        "message": string;
+        "state": IoFieldState;
         "required": boolean;
     }
     interface IoInputAttributes {
@@ -4506,8 +4518,8 @@ declare namespace LocalJSX {
         "required": boolean;
         "readonly": boolean;
         "disabled": boolean;
-        "error": boolean;
-        "errorMessage": string | undefined;
+        "state": IoFieldState;
+        "message": string;
         "helperText": string | undefined;
         "maxLength": number | undefined;
         "min": string;
@@ -4566,8 +4578,8 @@ declare namespace LocalJSX {
         "checked": boolean;
         "required": boolean;
         "disabled": boolean;
-        "error": boolean;
-        "errorMessage": string | undefined;
+        "state": IoFieldState;
+        "message": string;
         "helperText": string | undefined;
     }
     interface IoRadioGroupAttributes {
@@ -4588,8 +4600,8 @@ declare namespace LocalJSX {
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
-        "error": boolean;
-        "errorMessage": string | undefined;
+        "state": IoFieldState;
+        "message": string;
         "helperText": string | undefined;
         "custom": boolean;
         "multiple": boolean;
@@ -4655,8 +4667,8 @@ declare namespace LocalJSX {
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
-        "error": boolean;
-        "errorMessage": string | undefined;
+        "state": IoFieldState;
+        "message": string;
         "helperText": string | undefined;
         "maxLength": number | undefined;
         "rows": number;
@@ -4886,7 +4898,7 @@ declare module "@stencil/core" {
              * @example <io-form-field label="Email address" helper-text="We will never share your email.">
              *   <io-input name="email" type="email" />
              * </io-form-field>
-             * <io-form-field label="Username" error error-message="Username is taken.">
+             * <io-form-field label="Username" state="error" message="Username is taken.">
              *   <io-input name="username" />
              * </io-form-field>
              */
@@ -4976,7 +4988,7 @@ declare module "@stencil/core" {
              * Use multiple io-radio components with the same `name` to form a radio group.
              * @example <io-radio label="Option A" name="choice" value="a" />
              * <io-radio label="Option B" name="choice" value="b" checked />
-             * <io-radio label="Required" name="req" required error error-message="Please select an option" />
+             * <io-radio label="Required" name="req" required state="error" message="Please select an option" />
              */
             "io-radio": LocalJSX.IntrinsicElements["io-radio"] & JSXBase.HTMLAttributes<HTMLIoRadioElement>;
             /**

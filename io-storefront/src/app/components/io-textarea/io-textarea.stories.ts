@@ -11,8 +11,8 @@ export const textareaStory: Story<'io-textarea'> = {
       resize: 'vertical',
       disabled: false,
       required: false,
-      error: false,
-      errorMessage: '',
+      state: 'none',
+      message: '',
       helperText: '',
     },
   },
@@ -67,8 +67,8 @@ export const textareaStoryError: Story<'io-textarea'> = {
   state: {
     properties: {
       label: 'Message',
-      error: true,
-      errorMessage: 'This field is required',
+      state: 'error',
+      message: 'This field is required',
     },
   },
   generator: () => [
@@ -149,13 +149,14 @@ export const textareaPropDefinitions: PropDefinition[] = [
     description: 'Marks the field as required for form submission.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Applies the invalid visual state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border color and message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
     description: 'Shows validation feedback below the textarea.',

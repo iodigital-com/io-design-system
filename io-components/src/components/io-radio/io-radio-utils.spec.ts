@@ -48,20 +48,28 @@ describe('resolveRadioId', () => {
 });
 
 describe('getRadioWrapperClass', () => {
-  it('returns only base class when neither disabled nor error', () => {
-    expect(getRadioWrapperClass(false, false)).toBe('radio-wrapper');
+  it('returns only base class when no state and not disabled', () => {
+    expect(getRadioWrapperClass(false, false, false, false)).toBe('radio-wrapper');
   });
 
   it('includes disabled modifier when disabled is true', () => {
-    expect(getRadioWrapperClass(true, false)).toBe('radio-wrapper radio-wrapper--disabled');
+    expect(getRadioWrapperClass(true, false, false, false)).toBe('radio-wrapper radio-wrapper--disabled');
   });
 
-  it('includes error modifier when error is true', () => {
-    expect(getRadioWrapperClass(false, true)).toBe('radio-wrapper radio-wrapper--error');
+  it('includes state-error modifier when error is true', () => {
+    expect(getRadioWrapperClass(false, true, false, false)).toBe('radio-wrapper radio-wrapper--state-error');
   });
 
-  it('includes both modifiers when disabled and error are true', () => {
-    expect(getRadioWrapperClass(true, true)).toBe('radio-wrapper radio-wrapper--disabled radio-wrapper--error');
+  it('includes state-success modifier when success is true', () => {
+    expect(getRadioWrapperClass(false, false, true, false)).toBe('radio-wrapper radio-wrapper--state-success');
+  });
+
+  it('includes state-warning modifier when warning is true', () => {
+    expect(getRadioWrapperClass(false, false, false, true)).toBe('radio-wrapper radio-wrapper--state-warning');
+  });
+
+  it('includes both disabled and state-error modifiers when both are true', () => {
+    expect(getRadioWrapperClass(true, true, false, false)).toBe('radio-wrapper radio-wrapper--disabled radio-wrapper--state-error');
   });
 });
 

@@ -193,16 +193,16 @@ describe('io-textarea — render() branch coverage', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('render() with error=true and errorMessage does not throw', () => {
+  it('render() with state=error and message does not throw', () => {
     const c = makeTextarea();
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error';
+    c.message = 'Required';
     expect(() => (c as any).render()).not.toThrow();
   });
 
   it('render() with helperText and no error does not throw', () => {
     const c = makeTextarea();
-    c.error = false;
+    c.state = 'none';
     c.helperText = 'Up to 500 characters';
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -219,10 +219,10 @@ describe('io-textarea — render() branch coverage', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('render() with showError true from faceInvalid and errorMessage does not throw', () => {
+  it('render() with showError true from faceInvalid and message does not throw', () => {
     const c = makeTextarea();
     (c as any).faceInvalid = true;
-    c.errorMessage = 'Please fill in this field';
+    c.message = 'Please fill in this field';
     expect(() => (c as any).render()).not.toThrow();
   });
 

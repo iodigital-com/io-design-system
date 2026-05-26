@@ -8,8 +8,8 @@ export const radioStory: Story<'io-radio'> = {
       checked: false,
       required: false,
       disabled: false,
-      error: false,
-      errorMessage: '',
+      state: 'none',
+      message: '',
       helperText: '',
     },
   },
@@ -67,8 +67,8 @@ export const radioStoryError: Story<'io-radio'> = {
   state: {
     properties: {
       label: 'I agree to the terms',
-      error: true,
-      errorMessage: 'Please select an option to continue',
+      state: 'error',
+      message: 'Please select an option to continue',
     },
   },
   generator: () => [
@@ -133,13 +133,14 @@ export const radioPropDefinitions: PropDefinition[] = [
     description: 'Prevents selecting and focusing this option.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Applies the invalid visual state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border color and message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
     description: 'Shows validation feedback below the radio field.',

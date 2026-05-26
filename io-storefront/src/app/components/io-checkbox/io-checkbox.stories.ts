@@ -9,8 +9,8 @@ export const checkboxStory: Story<'io-checkbox'> = {
       indeterminate: false,
       required: false,
       disabled: false,
-      error: false,
-      errorMessage: '',
+      state: 'none',
+      message: '',
       helperText: '',
     },
   },
@@ -65,8 +65,8 @@ export const checkboxStoryError: Story<'io-checkbox'> = {
   state: {
     properties: {
       label: 'Accept terms and conditions',
-      error: true,
-      errorMessage: 'This field is required',
+      state: 'error',
+      message: 'This field is required',
     },
   },
   generator: () => [
@@ -127,13 +127,14 @@ export const checkboxPropDefinitions: PropDefinition[] = [
     description: 'Prevents toggling and focus interactions.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Applies the invalid visual state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border color and message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
     description: 'Shows validation feedback below the checkbox.',

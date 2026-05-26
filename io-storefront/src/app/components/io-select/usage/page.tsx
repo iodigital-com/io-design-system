@@ -103,7 +103,7 @@ export default function IoSelectUsagePage() {
             When the select gains focus or a value is selected, the border expands to 5px in the accent colour and the label animates to the floating position.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=true</C> and provide <C>errorMessage</C>. The border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C>.
+            Set <C>state=&quot;error&quot;</C> and provide <C>message</C>. The border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C>.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The entire component renders at 40% opacity and pointer events are blocked.

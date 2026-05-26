@@ -17,7 +17,7 @@ export function getWordmarkStyles(): string {
 
     /* Size scale */
     .wordmark--sm {
-      font-size: var(--io-wordmark-font-size-sm, var(--io-font-size-sm, 14px));
+      font-size: var(--io-wordmark-font-size-sm);
     }
 
     .wordmark--md {

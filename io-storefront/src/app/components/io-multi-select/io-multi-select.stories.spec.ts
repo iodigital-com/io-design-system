@@ -29,46 +29,46 @@ describe('io-multi-select storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(multiSelectStory.state.properties).toBeDefined();
+      expect(multiSelectStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof multiSelectStory.state.properties).toBe('object');
+      expect(typeof multiSelectStory.state?.properties).toBe('object');
     });
 
     it('generator with state=none does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, state: 'none' } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, state: 'none' } })
       ).not.toThrow();
     });
 
     it('generator with state=error does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, state: 'error' } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, state: 'error' } })
       ).not.toThrow();
     });
 
     it('generator with state=success does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, state: 'success' } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, state: 'success' } })
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, disabled: true } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, disabled: true } })
       ).not.toThrow();
     });
 
     it('generator with required=true does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, required: true } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, required: true } })
       ).not.toThrow();
     });
 
     it('generator with filter=true does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state.properties, filter: true } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, filter: true } })
       ).not.toThrow();
     });
 
@@ -97,8 +97,8 @@ describe('io-multi-select storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of multiSelectPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -116,9 +116,9 @@ describe('io-multi-select storefront stories', () => {
     it('state select options include none, error, and success', () => {
       const stateDef = multiSelectPropDefinitions.find((d) => d.name === 'state');
       expect(stateDef).toBeDefined();
-      expect(stateDef!.options).toContain('none');
-      expect(stateDef!.options).toContain('error');
-      expect(stateDef!.options).toContain('success');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('none');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('error');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('success');
     });
   });
 

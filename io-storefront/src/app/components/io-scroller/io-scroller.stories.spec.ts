@@ -154,7 +154,7 @@ describe('scrollerPropDefinitions', () => {
   it('select entries have options', () => {
     scrollerPropDefinitions
       .filter(def => def.type === 'select')
-      .forEach(def => expect((def.options as string[]).length).toBeGreaterThan(0));
+      .forEach(def => expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0));
   });
 
   it('every entry has defaultValue defined', () => {
@@ -168,6 +168,6 @@ describe('scrollerPropDefinitions', () => {
 
   it('orientation options are horizontal and vertical', () => {
     const orientation = scrollerPropDefinitions.find(def => def.name === 'orientation');
-    expect(orientation?.options).toEqual(expect.arrayContaining(['horizontal', 'vertical']));
+    expect(((orientation as unknown as { options: string[] } | undefined))?.options).toEqual(expect.arrayContaining(['horizontal', 'vertical']));
   });
 });

@@ -31,97 +31,97 @@ describe('io-checkbox-group storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(checkboxGroupStory.state.properties).toBeDefined();
+      expect(checkboxGroupStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof checkboxGroupStory.state.properties).toBe('object');
+      expect(typeof checkboxGroupStory.state?.properties).toBe('object');
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, disabled: true } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, disabled: true } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=false does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, disabled: false } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, disabled: false } }),
       ).not.toThrow();
     });
 
     it('generator with error=true does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, error: true } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, error: true } }),
       ).not.toThrow();
     });
 
     it('generator with error=false does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, error: false } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, error: false } }),
       ).not.toThrow();
     });
 
     it('generator with required=true does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, required: true } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, required: true } }),
       ).not.toThrow();
     });
 
     it('generator with required=false does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, required: false } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, required: false } }),
       ).not.toThrow();
     });
 
     it('generator with empty label does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, label: '' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, label: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty label does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, label: 'Preferences' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, label: 'Preferences' } }),
       ).not.toThrow();
     });
 
     it('generator with empty name does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, name: '' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, name: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty name does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, name: 'prefs' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, name: 'prefs' } }),
       ).not.toThrow();
     });
 
     it('generator with empty helperText does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, helperText: '' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, helperText: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty helperText does not throw', () => {
       expect(() =>
         checkboxGroupStory.generator?.({
-          properties: { ...checkboxGroupStory.state.properties, helperText: 'Select all that apply.' },
+          properties: { ...checkboxGroupStory.state?.properties, helperText: 'Select all that apply.' },
         }),
       ).not.toThrow();
     });
 
     it('generator with empty errorMessage does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state.properties, errorMessage: '' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, errorMessage: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty errorMessage does not throw', () => {
       expect(() =>
         checkboxGroupStory.generator?.({
-          properties: { ...checkboxGroupStory.state.properties, errorMessage: 'Please select at least one option.' },
+          properties: { ...checkboxGroupStory.state?.properties, errorMessage: 'Please select at least one option.' },
         }),
       ).not.toThrow();
     });
@@ -151,8 +151,8 @@ describe('io-checkbox-group storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of checkboxGroupPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

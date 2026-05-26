@@ -28,7 +28,7 @@ describe('io-wordmark storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(wordmarkStory.state.properties).toBeDefined();
+      expect(wordmarkStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-wordmark tag', () => {
@@ -74,11 +74,11 @@ describe('io-wordmark storefront stories', () => {
     });
 
     it('state.properties includes size', () => {
-      expect((wordmarkStory.state.properties as Record<string, unknown>).size).toBeDefined();
+      expect((wordmarkStory.state?.properties as Record<string, unknown>).size).toBeDefined();
     });
 
     it('state.properties includes mono', () => {
-      expect((wordmarkStory.state.properties as Record<string, unknown>).mono).toBeDefined();
+      expect((wordmarkStory.state?.properties as Record<string, unknown>).mono).toBeDefined();
     });
   });
 
@@ -101,7 +101,7 @@ describe('io-wordmark storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of wordmarkPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -120,10 +120,10 @@ describe('io-wordmark storefront stories', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'size');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('sm');
-      expect(def!.options).toContain('md');
-      expect(def!.options).toContain('lg');
-      expect(def!.options).toContain('xl');
+      expect(((def as unknown as { options: string[] })).options).toContain('sm');
+      expect(((def as unknown as { options: string[] })).options).toContain('md');
+      expect(((def as unknown as { options: string[] })).options).toContain('lg');
+      expect(((def as unknown as { options: string[] })).options).toContain('xl');
       expect(def!.defaultValue).toBe('md');
     });
 

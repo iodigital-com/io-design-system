@@ -29,72 +29,72 @@ describe('io-badge storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(badgeStory.state.properties).toBeDefined();
+      expect(badgeStory.state?.properties).toBeDefined();
     });
 
     it('generator with variant=beige does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'beige' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'beige' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=blue does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'blue' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'blue' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=dark does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'dark' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'dark' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=orange does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'orange' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'orange' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=rouge does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'rouge' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'rouge' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=success does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'success' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'success' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=warning does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'warning' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'warning' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=error does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'error' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'error' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=outline does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, variant: 'outline' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'outline' } }),
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, size: 'sm' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, size: 'sm' } }),
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state.properties, size: 'md' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, size: 'md' } }),
       ).not.toThrow();
     });
 
@@ -124,8 +124,8 @@ describe('io-badge storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of badgePropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

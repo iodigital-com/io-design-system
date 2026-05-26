@@ -34,7 +34,7 @@ describe('io-textarea storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(textareaStory.state.properties).toBeDefined();
+      expect(textareaStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-textarea tag', () => {
@@ -68,23 +68,23 @@ describe('io-textarea storefront stories', () => {
     });
 
     it('state.properties includes label', () => {
-      expect((textareaStory.state.properties as Record<string, unknown>).label).toBeDefined();
+      expect((textareaStory.state?.properties as Record<string, unknown>).label).toBeDefined();
     });
 
     it('state.properties includes size', () => {
-      expect((textareaStory.state.properties as Record<string, unknown>).size).toBeDefined();
+      expect((textareaStory.state?.properties as Record<string, unknown>).size).toBeDefined();
     });
 
     it('state.properties includes rows', () => {
-      expect((textareaStory.state.properties as Record<string, unknown>).rows).toBeDefined();
+      expect((textareaStory.state?.properties as Record<string, unknown>).rows).toBeDefined();
     });
 
     it('state.properties includes resize', () => {
-      expect((textareaStory.state.properties as Record<string, unknown>).resize).toBeDefined();
+      expect((textareaStory.state?.properties as Record<string, unknown>).resize).toBeDefined();
     });
 
     it('state.properties includes readOnly', () => {
-      expect((textareaStory.state.properties as Record<string, unknown>).readOnly).toBeDefined();
+      expect((textareaStory.state?.properties as Record<string, unknown>).readOnly).toBeDefined();
     });
   });
 
@@ -107,7 +107,7 @@ describe('io-textarea storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of textareaPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -131,9 +131,9 @@ describe('io-textarea storefront stories', () => {
       const def = textareaPropDefinitions.find((d) => d.name === 'size');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('sm');
-      expect(def!.options).toContain('md');
-      expect(def!.options).toContain('lg');
+      expect(((def as unknown as { options: string[] })).options).toContain('sm');
+      expect(((def as unknown as { options: string[] })).options).toContain('md');
+      expect(((def as unknown as { options: string[] })).options).toContain('lg');
       expect(def!.defaultValue).toBe('md');
     });
 
@@ -147,9 +147,9 @@ describe('io-textarea storefront stories', () => {
       const def = textareaPropDefinitions.find((d) => d.name === 'resize');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('none');
-      expect(def!.options).toContain('vertical');
-      expect(def!.options).toContain('auto');
+      expect(((def as unknown as { options: string[] })).options).toContain('none');
+      expect(((def as unknown as { options: string[] })).options).toContain('vertical');
+      expect(((def as unknown as { options: string[] })).options).toContain('auto');
       expect(def!.defaultValue).toBe('vertical');
     });
 
@@ -181,10 +181,10 @@ describe('io-textarea storefront stories', () => {
       const def = textareaPropDefinitions.find((d) => d.name === 'state');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('none');
-      expect(def!.options).toContain('error');
-      expect(def!.options).toContain('success');
-      expect(def!.options).toContain('warning');
+      expect(((def as unknown as { options: string[] })).options).toContain('none');
+      expect(((def as unknown as { options: string[] })).options).toContain('error');
+      expect(((def as unknown as { options: string[] })).options).toContain('success');
+      expect(((def as unknown as { options: string[] })).options).toContain('warning');
       expect(def!.defaultValue).toBe('none');
     });
 
@@ -192,9 +192,9 @@ describe('io-textarea storefront stories', () => {
       const def = textareaPropDefinitions.find((d) => d.name === 'wrap');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('soft');
-      expect(def!.options).toContain('hard');
-      expect(def!.options).toContain('off');
+      expect(((def as unknown as { options: string[] })).options).toContain('soft');
+      expect(((def as unknown as { options: string[] })).options).toContain('hard');
+      expect(((def as unknown as { options: string[] })).options).toContain('off');
     });
   });
 

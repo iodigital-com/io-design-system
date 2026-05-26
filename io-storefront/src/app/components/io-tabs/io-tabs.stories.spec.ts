@@ -29,7 +29,7 @@ describe('io-tabs storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(tabsStory.state.properties).toBeDefined();
+      expect(tabsStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-tabs tag', () => {
@@ -58,13 +58,13 @@ describe('io-tabs storefront stories', () => {
 
     it('onUpdate event targets io-tabs with activeTabIndex prop', () => {
       const els = tabsStory.generator?.(tabsStory.state) ?? [];
-      const first = els[0] as { events: { onUpdate: Record<string, unknown> } };
+      const first = els[0] as unknown as { events: { onUpdate: Record<string, unknown> } };
       expect(first.events.onUpdate.target).toBe('io-tabs');
       expect(first.events.onUpdate.prop).toBe('activeTabIndex');
     });
 
     it('state.properties includes activeTabIndex', () => {
-      expect((tabsStory.state.properties as Record<string, unknown>).activeTabIndex).toBeDefined();
+      expect((tabsStory.state?.properties as Record<string, unknown>).activeTabIndex).toBeDefined();
     });
 
     it('element has children (tab buttons)', () => {
@@ -94,7 +94,7 @@ describe('io-tabs storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of tabsPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

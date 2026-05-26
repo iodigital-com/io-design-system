@@ -37,7 +37,7 @@ describe('io-select storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(selectStory.state.properties).toBeDefined();
+      expect(selectStory.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-select', () => {
@@ -118,7 +118,7 @@ describe('io-select storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of selectPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -147,12 +147,12 @@ describe('io-select storefront stories', () => {
 
     it('size prop has sm, md, lg options', () => {
       const sizeDef = selectPropDefinitions.find((d) => d.name === 'size');
-      expect(sizeDef?.options).toEqual(expect.arrayContaining(['sm', 'md', 'lg']));
+      expect(((sizeDef as unknown as { options: string[] } | undefined))?.options).toEqual(expect.arrayContaining(['sm', 'md', 'lg']));
     });
 
     it('calling generator with each select option does not throw', () => {
       for (const def of selectPropDefinitions.filter((d) => d.type === 'select')) {
-        for (const option of def.options as string[]) {
+        for (const option of (def as unknown as { options: string[] }).options) {
           expect(() =>
             selectStory.generator?.({ properties: { [def.name]: option } }),
           ).not.toThrow();
@@ -171,7 +171,7 @@ describe('io-select storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(selectStoryDefault.state.properties).toBeDefined();
+      expect(selectStoryDefault.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-select', () => {

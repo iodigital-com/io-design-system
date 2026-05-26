@@ -157,7 +157,7 @@ describe('popoverPropDefinitions', () => {
   it('select entries have options', () => {
     popoverPropDefinitions
       .filter(def => def.type === 'select')
-      .forEach(def => expect((def.options as string[]).length).toBeGreaterThan(0));
+      .forEach(def => expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0));
   });
 
   it('every entry has defaultValue defined', () => {
@@ -171,6 +171,6 @@ describe('popoverPropDefinitions', () => {
 
   it('placement options include all four directions plus auto', () => {
     const placement = popoverPropDefinitions.find(def => def.name === 'placement');
-    expect(placement?.options).toEqual(expect.arrayContaining(['top', 'bottom', 'left', 'right', 'auto']));
+    expect(((placement as unknown as { options: string[] } | undefined))?.options).toEqual(expect.arrayContaining(['top', 'bottom', 'left', 'right', 'auto']));
   });
 });

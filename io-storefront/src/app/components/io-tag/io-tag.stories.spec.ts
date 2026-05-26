@@ -31,7 +31,7 @@ describe('io-tag storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(tagStory.state.properties).toBeDefined();
+      expect(tagStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-tag tag', () => {
@@ -71,11 +71,11 @@ describe('io-tag storefront stories', () => {
     });
 
     it('state.properties includes selected', () => {
-      expect((tagStory.state.properties as Record<string, unknown>).selected).toBeDefined();
+      expect((tagStory.state?.properties as Record<string, unknown>).selected).toBeDefined();
     });
 
     it('state.properties includes color', () => {
-      expect((tagStory.state.properties as Record<string, unknown>).color).toBeDefined();
+      expect((tagStory.state?.properties as Record<string, unknown>).color).toBeDefined();
     });
 
     it('element has children', () => {
@@ -104,7 +104,7 @@ describe('io-tag storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of tagPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -142,8 +142,8 @@ describe('io-tag storefront stories', () => {
       const def = tagPropDefinitions.find((d) => d.name === 'size');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('sm');
-      expect(def!.options).toContain('md');
+      expect(((def as unknown as { options: string[] })).options).toContain('sm');
+      expect(((def as unknown as { options: string[] })).options).toContain('md');
       expect(def!.defaultValue).toBe('md');
     });
 
@@ -151,9 +151,9 @@ describe('io-tag storefront stories', () => {
       const def = tagPropDefinitions.find((d) => d.name === 'color');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('default');
-      expect(def!.options).toContain('blue');
-      expect(def!.options).toContain('beige');
+      expect(((def as unknown as { options: string[] })).options).toContain('default');
+      expect(((def as unknown as { options: string[] })).options).toContain('blue');
+      expect(((def as unknown as { options: string[] })).options).toContain('beige');
       expect(def!.defaultValue).toBe('default');
     });
   });

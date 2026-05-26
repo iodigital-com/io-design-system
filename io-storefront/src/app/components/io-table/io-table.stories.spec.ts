@@ -31,7 +31,7 @@ describe('io-table storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(tableStory.state.properties).toBeDefined();
+      expect(tableStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-table tag', () => {
@@ -72,19 +72,19 @@ describe('io-table storefront stories', () => {
     });
 
     it('state.properties includes caption', () => {
-      expect((tableStory.state.properties as Record<string, unknown>).caption).toBeDefined();
+      expect((tableStory.state?.properties as Record<string, unknown>).caption).toBeDefined();
     });
 
     it('state.properties includes size', () => {
-      expect((tableStory.state.properties as Record<string, unknown>).size).toBeDefined();
+      expect((tableStory.state?.properties as Record<string, unknown>).size).toBeDefined();
     });
 
     it('state.properties includes captionHidden', () => {
-      expect((tableStory.state.properties as Record<string, unknown>).captionHidden).toBeDefined();
+      expect((tableStory.state?.properties as Record<string, unknown>).captionHidden).toBeDefined();
     });
 
     it('state.properties includes sticky', () => {
-      expect((tableStory.state.properties as Record<string, unknown>).sticky).toBeDefined();
+      expect((tableStory.state?.properties as Record<string, unknown>).sticky).toBeDefined();
     });
   });
 
@@ -107,7 +107,7 @@ describe('io-table storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of tablePropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -144,9 +144,9 @@ describe('io-table storefront stories', () => {
       const def = tablePropDefinitions.find((d) => d.name === 'size');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('sm');
-      expect(def!.options).toContain('md');
-      expect(def!.options).toContain('lg');
+      expect(((def as unknown as { options: string[] })).options).toContain('sm');
+      expect(((def as unknown as { options: string[] })).options).toContain('md');
+      expect(((def as unknown as { options: string[] })).options).toContain('lg');
     });
 
     it('size defaults to md', () => {

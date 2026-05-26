@@ -32,102 +32,102 @@ describe('io-checkbox storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(checkboxStory.state.properties).toBeDefined();
+      expect(checkboxStory.state?.properties).toBeDefined();
     });
 
     it('generator with checked=true does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, checked: true } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, checked: true } }),
       ).not.toThrow();
     });
 
     it('generator with checked=false does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, checked: false } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, checked: false } }),
       ).not.toThrow();
     });
 
     it('generator with indeterminate=true does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, indeterminate: true } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, indeterminate: true } }),
       ).not.toThrow();
     });
 
     it('generator with indeterminate=false does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, indeterminate: false } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, indeterminate: false } }),
       ).not.toThrow();
     });
 
     it('generator with required=true does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, required: true } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, required: true } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, disabled: true } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, disabled: true } }),
       ).not.toThrow();
     });
 
     it('generator with state=none does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, state: 'none' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, state: 'none' } }),
       ).not.toThrow();
     });
 
     it('generator with state=error does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, state: 'error' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, state: 'error' } }),
       ).not.toThrow();
     });
 
     it('generator with state=success does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, state: 'success' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, state: 'success' } }),
       ).not.toThrow();
     });
 
     it('generator with state=warning does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, state: 'warning' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, state: 'warning' } }),
       ).not.toThrow();
     });
 
     it('generator with empty label does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, label: '' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, label: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty label does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, label: 'I agree to the terms' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, label: 'I agree to the terms' } }),
       ).not.toThrow();
     });
 
     it('generator with empty message does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, message: '' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, message: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty message does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, message: 'This field is required' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, message: 'This field is required' } }),
       ).not.toThrow();
     });
 
     it('generator with empty helperText does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, helperText: '' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, helperText: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty helperText does not throw', () => {
       expect(() =>
-        checkboxStory.generator?.({ properties: { ...checkboxStory.state.properties, helperText: 'Optional supporting text' } }),
+        checkboxStory.generator?.({ properties: { ...checkboxStory.state?.properties, helperText: 'Optional supporting text' } }),
       ).not.toThrow();
     });
 
@@ -157,8 +157,8 @@ describe('io-checkbox storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of checkboxPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -177,10 +177,10 @@ describe('io-checkbox storefront stories', () => {
     it('state definition includes none, error, success, warning options', () => {
       const stateDef = checkboxPropDefinitions.find((d) => d.name === 'state');
       expect(stateDef).toBeDefined();
-      expect(stateDef!.options).toContain('none');
-      expect(stateDef!.options).toContain('error');
-      expect(stateDef!.options).toContain('success');
-      expect(stateDef!.options).toContain('warning');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('none');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('error');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('success');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('warning');
     });
   });
 

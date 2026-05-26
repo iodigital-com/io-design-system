@@ -34,17 +34,17 @@ describe('io-input storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(inputStory.state.properties).toBeDefined();
+      expect(inputStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof inputStory.state.properties).toBe('object');
+      expect(typeof inputStory.state?.properties).toBe('object');
     });
 
     it('generator with each type option does not throw', () => {
       for (const type of ['text', 'email', 'password', 'number', 'tel', 'url', 'date', 'time']) {
         expect(() =>
-          inputStory.generator?.({ properties: { ...inputStory.state.properties, type } })
+          inputStory.generator?.({ properties: { ...inputStory.state?.properties, type } })
         ).not.toThrow();
       }
     });
@@ -52,7 +52,7 @@ describe('io-input storefront stories', () => {
     it('generator with each size option does not throw', () => {
       for (const size of ['sm', 'md', 'lg']) {
         expect(() =>
-          inputStory.generator?.({ properties: { ...inputStory.state.properties, size } })
+          inputStory.generator?.({ properties: { ...inputStory.state?.properties, size } })
         ).not.toThrow();
       }
     });
@@ -60,26 +60,26 @@ describe('io-input storefront stories', () => {
     it('generator with each state option does not throw', () => {
       for (const state of ['none', 'error', 'success', 'warning']) {
         expect(() =>
-          inputStory.generator?.({ properties: { ...inputStory.state.properties, state } })
+          inputStory.generator?.({ properties: { ...inputStory.state?.properties, state } })
         ).not.toThrow();
       }
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        inputStory.generator?.({ properties: { ...inputStory.state.properties, disabled: true } })
+        inputStory.generator?.({ properties: { ...inputStory.state?.properties, disabled: true } })
       ).not.toThrow();
     });
 
     it('generator with loading=true does not throw', () => {
       expect(() =>
-        inputStory.generator?.({ properties: { ...inputStory.state.properties, loading: true } })
+        inputStory.generator?.({ properties: { ...inputStory.state?.properties, loading: true } })
       ).not.toThrow();
     });
 
     it('generator with counter=true does not throw', () => {
       expect(() =>
-        inputStory.generator?.({ properties: { ...inputStory.state.properties, counter: true } })
+        inputStory.generator?.({ properties: { ...inputStory.state?.properties, counter: true } })
       ).not.toThrow();
     });
 
@@ -108,8 +108,8 @@ describe('io-input storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of inputPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -122,25 +122,25 @@ describe('io-input storefront stories', () => {
       const typeDef = inputPropDefinitions.find((d) => d.name === 'type');
       expect(typeDef).toBeDefined();
       for (const t of ['text', 'email', 'password', 'number']) {
-        expect(typeDef!.options).toContain(t);
+        expect(((typeDef as unknown as { options: string[] })).options).toContain(t);
       }
     });
 
     it('size select options include sm, md, and lg', () => {
       const sizeDef = inputPropDefinitions.find((d) => d.name === 'size');
       expect(sizeDef).toBeDefined();
-      expect(sizeDef!.options).toContain('sm');
-      expect(sizeDef!.options).toContain('md');
-      expect(sizeDef!.options).toContain('lg');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('sm');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('md');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('lg');
     });
 
     it('state select options include none, error, success, and warning', () => {
       const stateDef = inputPropDefinitions.find((d) => d.name === 'state');
       expect(stateDef).toBeDefined();
-      expect(stateDef!.options).toContain('none');
-      expect(stateDef!.options).toContain('error');
-      expect(stateDef!.options).toContain('success');
-      expect(stateDef!.options).toContain('warning');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('none');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('error');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('success');
+      expect(((stateDef as unknown as { options: string[] })).options).toContain('warning');
     });
   });
 

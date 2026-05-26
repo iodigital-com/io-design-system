@@ -32,7 +32,7 @@ describe('io-pin-code storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(pinCodeStory.state.properties).toBeDefined();
+      expect(pinCodeStory.state?.properties).toBeDefined();
     });
 
     it('generator forwards label from properties', () => {
@@ -93,7 +93,7 @@ describe('io-pin-code storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of pinCodePropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -121,7 +121,7 @@ describe('io-pin-code storefront stories', () => {
 
     it('calling generator with each select option does not throw', () => {
       for (const def of pinCodePropDefinitions.filter((d) => d.type === 'select')) {
-        for (const option of def.options as string[]) {
+        for (const option of (def as unknown as { options: string[] }).options) {
           expect(() =>
             pinCodeStory.generator?.({ properties: { [def.name]: option } }),
           ).not.toThrow();

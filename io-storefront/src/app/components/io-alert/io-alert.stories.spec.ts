@@ -24,54 +24,54 @@ describe('io-alert storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(alertStory.state.properties).toBeDefined();
+      expect(alertStory.state?.properties).toBeDefined();
     });
 
     it('generator with variant=info does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, variant: 'info' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, variant: 'info' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=success does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, variant: 'success' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, variant: 'success' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=warning does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, variant: 'warning' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, variant: 'warning' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=error does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, variant: 'error' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, variant: 'error' } }),
       ).not.toThrow();
     });
 
     it('generator with empty heading does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, heading: '' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, heading: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty heading does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, heading: 'Session warning' } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, heading: 'Session warning' } }),
       ).not.toThrow();
     });
 
     it('generator with dismissible=true does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, dismissible: true } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, dismissible: true } }),
       ).not.toThrow();
     });
 
     it('generator with dismissible=false does not throw', () => {
       expect(() =>
-        alertStory.generator?.({ properties: { ...alertStory.state.properties, dismissible: false } }),
+        alertStory.generator?.({ properties: { ...alertStory.state?.properties, dismissible: false } }),
       ).not.toThrow();
     });
 
@@ -101,8 +101,8 @@ describe('io-alert storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of alertPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -121,10 +121,10 @@ describe('io-alert storefront stories', () => {
     it('variant definition includes info, success, warning, error options', () => {
       const variantDef = alertPropDefinitions.find((d) => d.name === 'variant');
       expect(variantDef).toBeDefined();
-      expect(variantDef!.options).toContain('info');
-      expect(variantDef!.options).toContain('success');
-      expect(variantDef!.options).toContain('warning');
-      expect(variantDef!.options).toContain('error');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('info');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('success');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('warning');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('error');
     });
   });
 });

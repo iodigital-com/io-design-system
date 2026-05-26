@@ -28,7 +28,7 @@ describe('io-text storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(textStory.state.properties).toBeDefined();
+      expect(textStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-text tag', () => {
@@ -55,23 +55,23 @@ describe('io-text storefront stories', () => {
     });
 
     it('state.properties includes tag', () => {
-      expect((textStory.state.properties as Record<string, unknown>).tag).toBeDefined();
+      expect((textStory.state?.properties as Record<string, unknown>).tag).toBeDefined();
     });
 
     it('state.properties includes size', () => {
-      expect((textStory.state.properties as Record<string, unknown>).size).toBeDefined();
+      expect((textStory.state?.properties as Record<string, unknown>).size).toBeDefined();
     });
 
     it('state.properties includes weight', () => {
-      expect((textStory.state.properties as Record<string, unknown>).weight).toBeDefined();
+      expect((textStory.state?.properties as Record<string, unknown>).weight).toBeDefined();
     });
 
     it('state.properties includes color', () => {
-      expect((textStory.state.properties as Record<string, unknown>).color).toBeDefined();
+      expect((textStory.state?.properties as Record<string, unknown>).color).toBeDefined();
     });
 
     it('state.properties includes align', () => {
-      expect((textStory.state.properties as Record<string, unknown>).align).toBeDefined();
+      expect((textStory.state?.properties as Record<string, unknown>).align).toBeDefined();
     });
   });
 
@@ -94,7 +94,7 @@ describe('io-text storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of textPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -113,8 +113,8 @@ describe('io-text storefront stories', () => {
       const def = textPropDefinitions.find((d) => d.name === 'tag');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('p');
-      expect(def!.options).toContain('span');
+      expect(((def as unknown as { options: string[] })).options).toContain('p');
+      expect(((def as unknown as { options: string[] })).options).toContain('span');
       expect(def!.defaultValue).toBe('p');
     });
 
@@ -122,11 +122,11 @@ describe('io-text storefront stories', () => {
       const def = textPropDefinitions.find((d) => d.name === 'size');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('xs');
-      expect(def!.options).toContain('sm');
-      expect(def!.options).toContain('base');
-      expect(def!.options).toContain('lg');
-      expect(def!.options).toContain('xl');
+      expect(((def as unknown as { options: string[] })).options).toContain('xs');
+      expect(((def as unknown as { options: string[] })).options).toContain('sm');
+      expect(((def as unknown as { options: string[] })).options).toContain('base');
+      expect(((def as unknown as { options: string[] })).options).toContain('lg');
+      expect(((def as unknown as { options: string[] })).options).toContain('xl');
       expect(def!.defaultValue).toBe('base');
     });
 
@@ -134,8 +134,8 @@ describe('io-text storefront stories', () => {
       const def = textPropDefinitions.find((d) => d.name === 'weight');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('regular');
-      expect(def!.options).toContain('bold');
+      expect(((def as unknown as { options: string[] })).options).toContain('regular');
+      expect(((def as unknown as { options: string[] })).options).toContain('bold');
       expect(def!.defaultValue).toBe('regular');
     });
 
@@ -143,18 +143,18 @@ describe('io-text storefront stories', () => {
       const def = textPropDefinitions.find((d) => d.name === 'align');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('start');
-      expect(def!.options).toContain('center');
-      expect(def!.options).toContain('end');
+      expect(((def as unknown as { options: string[] })).options).toContain('start');
+      expect(((def as unknown as { options: string[] })).options).toContain('center');
+      expect(((def as unknown as { options: string[] })).options).toContain('end');
     });
 
     it('includes color select with semantic color options', () => {
       const def = textPropDefinitions.find((d) => d.name === 'color');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('primary');
-      expect(def!.options).toContain('secondary');
-      expect(def!.options).toContain('error');
+      expect(((def as unknown as { options: string[] })).options).toContain('primary');
+      expect(((def as unknown as { options: string[] })).options).toContain('secondary');
+      expect(((def as unknown as { options: string[] })).options).toContain('error');
       expect(def!.defaultValue).toBe('primary');
     });
 

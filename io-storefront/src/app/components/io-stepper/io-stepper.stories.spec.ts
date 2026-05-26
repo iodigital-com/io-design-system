@@ -32,7 +32,7 @@ describe('io-stepper storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(stepperStory.state.properties).toBeDefined();
+      expect(stepperStory.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-stepper', () => {
@@ -106,7 +106,7 @@ describe('io-stepper storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of stepperPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -129,12 +129,12 @@ describe('io-stepper storefront stories', () => {
 
     it('orientation prop has horizontal and vertical options', () => {
       const orientationDef = stepperPropDefinitions.find((d) => d.name === 'orientation');
-      expect(orientationDef?.options).toEqual(expect.arrayContaining(['horizontal', 'vertical']));
+      expect(((orientationDef as unknown as { options: string[] } | undefined))?.options).toEqual(expect.arrayContaining(['horizontal', 'vertical']));
     });
 
     it('calling generator with each select option does not throw', () => {
       for (const def of stepperPropDefinitions.filter((d) => d.type === 'select')) {
-        for (const option of def.options as string[]) {
+        for (const option of (def as unknown as { options: string[] }).options) {
           expect(() =>
             stepperStory.generator?.({ properties: { [def.name]: option } }),
           ).not.toThrow();
@@ -153,7 +153,7 @@ describe('io-stepper storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(stepperStoryHorizontal.state.properties).toBeDefined();
+      expect(stepperStoryHorizontal.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-stepper', () => {

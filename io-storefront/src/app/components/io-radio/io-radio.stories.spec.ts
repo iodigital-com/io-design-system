@@ -33,7 +33,7 @@ describe('io-radio storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(radioStory.state.properties).toBeDefined();
+      expect(radioStory.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-radio', () => {
@@ -88,7 +88,7 @@ describe('io-radio storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of radioPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -116,7 +116,7 @@ describe('io-radio storefront stories', () => {
 
     it('calling generator with each select option does not throw', () => {
       for (const def of radioPropDefinitions.filter((d) => d.type === 'select')) {
-        for (const option of def.options as string[]) {
+        for (const option of (def as unknown as { options: string[] }).options) {
           expect(() =>
             radioStory.generator?.({ properties: { [def.name]: option } }),
           ).not.toThrow();
@@ -135,7 +135,7 @@ describe('io-radio storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(radioStoryDefault.state.properties).toBeDefined();
+      expect(radioStoryDefault.state?.properties).toBeDefined();
     });
 
     it('first element has tag io-radio', () => {

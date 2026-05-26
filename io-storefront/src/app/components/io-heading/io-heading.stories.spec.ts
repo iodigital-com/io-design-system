@@ -28,17 +28,17 @@ describe('io-heading storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(headingStory.state.properties).toBeDefined();
+      expect(headingStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof headingStory.state.properties).toBe('object');
+      expect(typeof headingStory.state?.properties).toBe('object');
     });
 
     it('generator with each tag option does not throw', () => {
       for (const tagVal of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
         expect(() =>
-          headingStory.generator?.({ properties: { ...headingStory.state.properties, tag: tagVal } })
+          headingStory.generator?.({ properties: { ...headingStory.state?.properties, tag: tagVal } })
         ).not.toThrow();
       }
     });
@@ -46,7 +46,7 @@ describe('io-heading storefront stories', () => {
     it('generator with each size option does not throw', () => {
       for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
         expect(() =>
-          headingStory.generator?.({ properties: { ...headingStory.state.properties, size } })
+          headingStory.generator?.({ properties: { ...headingStory.state?.properties, size } })
         ).not.toThrow();
       }
     });
@@ -54,7 +54,7 @@ describe('io-heading storefront stories', () => {
     it('generator with each weight option does not throw', () => {
       for (const weight of ['regular', 'semibold', 'bold']) {
         expect(() =>
-          headingStory.generator?.({ properties: { ...headingStory.state.properties, weight } })
+          headingStory.generator?.({ properties: { ...headingStory.state?.properties, weight } })
         ).not.toThrow();
       }
     });
@@ -62,7 +62,7 @@ describe('io-heading storefront stories', () => {
     it('generator with each align option does not throw', () => {
       for (const align of ['start', 'center', 'end', 'inherit']) {
         expect(() =>
-          headingStory.generator?.({ properties: { ...headingStory.state.properties, align } })
+          headingStory.generator?.({ properties: { ...headingStory.state?.properties, align } })
         ).not.toThrow();
       }
     });
@@ -70,7 +70,7 @@ describe('io-heading storefront stories', () => {
     it('generator with each color option does not throw', () => {
       for (const color of ['primary', 'secondary', 'inherit']) {
         expect(() =>
-          headingStory.generator?.({ properties: { ...headingStory.state.properties, color } })
+          headingStory.generator?.({ properties: { ...headingStory.state?.properties, color } })
         ).not.toThrow();
       }
     });
@@ -100,8 +100,8 @@ describe('io-heading storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of headingPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -120,7 +120,7 @@ describe('io-heading storefront stories', () => {
       const tagDef = headingPropDefinitions.find((d) => d.name === 'tag');
       expect(tagDef).toBeDefined();
       for (const level of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
-        expect(tagDef!.options).toContain(level);
+        expect(((tagDef as unknown as { options: string[] })).options).toContain(level);
       }
     });
 
@@ -128,7 +128,7 @@ describe('io-heading storefront stories', () => {
       const sizeDef = headingPropDefinitions.find((d) => d.name === 'size');
       expect(sizeDef).toBeDefined();
       for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
-        expect(sizeDef!.options).toContain(size);
+        expect(((sizeDef as unknown as { options: string[] })).options).toContain(size);
       }
     });
   });

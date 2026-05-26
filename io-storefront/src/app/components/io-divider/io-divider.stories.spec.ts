@@ -29,22 +29,22 @@ describe('io-divider storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(dividerStory.state.properties).toBeDefined();
+      expect(dividerStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof dividerStory.state.properties).toBe('object');
+      expect(typeof dividerStory.state?.properties).toBe('object');
     });
 
     it('generator with orientation=vertical does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, orientation: 'vertical' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, orientation: 'vertical' } })
       ).not.toThrow();
     });
 
     it('generator with orientation=vertical returns non-empty array', () => {
       const els = dividerStory.generator?.({
-        properties: { ...dividerStory.state.properties, orientation: 'vertical' },
+        properties: { ...dividerStory.state?.properties, orientation: 'vertical' },
       });
       expect(Array.isArray(els)).toBe(true);
       expect(els!.length).toBeGreaterThan(0);
@@ -52,31 +52,31 @@ describe('io-divider storefront stories', () => {
 
     it('generator with orientation=horizontal does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, orientation: 'horizontal' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, orientation: 'horizontal' } })
       ).not.toThrow();
     });
 
     it('generator with a label does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, label: 'or' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, label: 'or' } })
       ).not.toThrow();
     });
 
     it('generator with color=subtle does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, color: 'subtle' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, color: 'subtle' } })
       ).not.toThrow();
     });
 
     it('generator with color=strong does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, color: 'strong' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, color: 'strong' } })
       ).not.toThrow();
     });
 
     it('generator with color=default does not throw', () => {
       expect(() =>
-        dividerStory.generator?.({ properties: { ...dividerStory.state.properties, color: 'default' } })
+        dividerStory.generator?.({ properties: { ...dividerStory.state?.properties, color: 'default' } })
       ).not.toThrow();
     });
 
@@ -111,8 +111,8 @@ describe('io-divider storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of dividerPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -130,9 +130,9 @@ describe('io-divider storefront stories', () => {
     it('color select options include subtle, default, and strong', () => {
       const colorDef = dividerPropDefinitions.find((d) => d.name === 'color');
       expect(colorDef).toBeDefined();
-      expect(colorDef!.options).toContain('subtle');
-      expect(colorDef!.options).toContain('default');
-      expect(colorDef!.options).toContain('strong');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('subtle');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('default');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('strong');
     });
   });
 

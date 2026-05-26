@@ -32,114 +32,114 @@ describe('io-avatar storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(avatarStory.state.properties).toBeDefined();
+      expect(avatarStory.state?.properties).toBeDefined();
     });
 
     it('generator with size=xs does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, size: 'xs' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, size: 'xs' } }),
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, size: 'sm' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, size: 'sm' } }),
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, size: 'md' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, size: 'md' } }),
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, size: 'lg' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, size: 'lg' } }),
       ).not.toThrow();
     });
 
     it('generator with size=xl does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, size: 'xl' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, size: 'xl' } }),
       ).not.toThrow();
     });
 
     it('generator with color=blue does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, color: 'blue' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, color: 'blue' } }),
       ).not.toThrow();
     });
 
     it('generator with color=orange does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, color: 'orange' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, color: 'orange' } }),
       ).not.toThrow();
     });
 
     it('generator with color=green does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, color: 'green' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, color: 'green' } }),
       ).not.toThrow();
     });
 
     it('generator with color=purple does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, color: 'purple' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, color: 'purple' } }),
       ).not.toThrow();
     });
 
     it('generator with color=grey does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, color: 'grey' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, color: 'grey' } }),
       ).not.toThrow();
     });
 
     it('generator with shape=circle does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, shape: 'circle' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, shape: 'circle' } }),
       ).not.toThrow();
     });
 
     it('generator with shape=square does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, shape: 'square' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, shape: 'square' } }),
       ).not.toThrow();
     });
 
     it('generator with empty src does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, src: '' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, src: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty src does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, src: 'https://example.com/avatar.jpg' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, src: 'https://example.com/avatar.jpg' } }),
       ).not.toThrow();
     });
 
     it('generator with empty alt does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, alt: '' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, alt: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty alt does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, alt: 'Jane Doe' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, alt: 'Jane Doe' } }),
       ).not.toThrow();
     });
 
     it('generator with empty name does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, name: '' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, name: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty name does not throw', () => {
       expect(() =>
-        avatarStory.generator?.({ properties: { ...avatarStory.state.properties, name: 'Jane Doe' } }),
+        avatarStory.generator?.({ properties: { ...avatarStory.state?.properties, name: 'Jane Doe' } }),
       ).not.toThrow();
     });
 
@@ -169,8 +169,8 @@ describe('io-avatar storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of avatarPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

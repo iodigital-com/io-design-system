@@ -31,7 +31,7 @@ describe('io-toast storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(toastStory.state.properties).toBeDefined();
+      expect(toastStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-toast-item tag', () => {
@@ -59,11 +59,11 @@ describe('io-toast storefront stories', () => {
     });
 
     it('state.properties includes variant', () => {
-      expect((toastStory.state.properties as Record<string, unknown>).variant).toBeDefined();
+      expect((toastStory.state?.properties as Record<string, unknown>).variant).toBeDefined();
     });
 
     it('state.properties includes text', () => {
-      expect((toastStory.state.properties as Record<string, unknown>).text).toBeDefined();
+      expect((toastStory.state?.properties as Record<string, unknown>).text).toBeDefined();
     });
   });
 
@@ -86,7 +86,7 @@ describe('io-toast storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of toastPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -111,11 +111,11 @@ describe('io-toast storefront stories', () => {
       const def = toastPropDefinitions.find((d) => d.name === 'variant');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('neutral');
-      expect(def!.options).toContain('success');
-      expect(def!.options).toContain('error');
-      expect(def!.options).toContain('warning');
-      expect(def!.options).toContain('info');
+      expect(((def as unknown as { options: string[] })).options).toContain('neutral');
+      expect(((def as unknown as { options: string[] })).options).toContain('success');
+      expect(((def as unknown as { options: string[] })).options).toContain('error');
+      expect(((def as unknown as { options: string[] })).options).toContain('warning');
+      expect(((def as unknown as { options: string[] })).options).toContain('info');
       expect(def!.defaultValue).toBe('neutral');
     });
   });

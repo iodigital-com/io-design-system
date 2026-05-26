@@ -28,11 +28,11 @@ describe('io-pagination storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(paginationStory.state.properties).toBeDefined();
+      expect(paginationStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof paginationStory.state.properties).toBe('object');
+      expect(typeof paginationStory.state?.properties).toBe('object');
     });
 
     it('generator with page=1 does not throw', () => {
@@ -78,8 +78,8 @@ describe('io-pagination storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of paginationPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

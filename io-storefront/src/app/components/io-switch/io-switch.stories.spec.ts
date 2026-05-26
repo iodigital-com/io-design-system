@@ -31,7 +31,7 @@ describe('io-switch storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(switchStory.state.properties).toBeDefined();
+      expect(switchStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-switch tag', () => {
@@ -59,11 +59,11 @@ describe('io-switch storefront stories', () => {
     });
 
     it('state.properties includes label', () => {
-      expect((switchStory.state.properties as Record<string, unknown>).label).toBeDefined();
+      expect((switchStory.state?.properties as Record<string, unknown>).label).toBeDefined();
     });
 
     it('state.properties includes checked', () => {
-      expect((switchStory.state.properties as Record<string, unknown>).checked).toBeDefined();
+      expect((switchStory.state?.properties as Record<string, unknown>).checked).toBeDefined();
     });
   });
 
@@ -86,7 +86,7 @@ describe('io-switch storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of switchPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -144,7 +144,7 @@ describe('io-switch storefront stories', () => {
     });
 
     it('state.properties has label', () => {
-      expect((switchStoryDefault.state.properties as Record<string, unknown>).label).toBeDefined();
+      expect((switchStoryDefault.state?.properties as Record<string, unknown>).label).toBeDefined();
     });
   });
 

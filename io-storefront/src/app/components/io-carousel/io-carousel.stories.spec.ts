@@ -28,60 +28,60 @@ describe('io-carousel storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(carouselStory.state.properties).toBeDefined();
+      expect(carouselStory.state?.properties).toBeDefined();
     });
 
     it('generator with slidesPerPage=1 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, slidesPerPage: '1' } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, slidesPerPage: '1' } }),
       ).not.toThrow();
     });
 
     it('generator with slidesPerPage=2 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, slidesPerPage: '2' } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, slidesPerPage: '2' } }),
       ).not.toThrow();
     });
 
     it('generator with slidesPerPage=3 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, slidesPerPage: '3' } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, slidesPerPage: '3' } }),
       ).not.toThrow();
     });
 
     it('generator with slidesPerPage=4 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, slidesPerPage: '4' } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, slidesPerPage: '4' } }),
       ).not.toThrow();
     });
 
     it('generator with slidesPerPage=auto does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, slidesPerPage: 'auto' } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, slidesPerPage: 'auto' } }),
       ).not.toThrow();
     });
 
     it('generator with rewind=true does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, rewind: true } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, rewind: true } }),
       ).not.toThrow();
     });
 
     it('generator with rewind=false does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, rewind: false } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, rewind: false } }),
       ).not.toThrow();
     });
 
     it('generator with activeSlideIndex=0 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, activeSlideIndex: 0 } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, activeSlideIndex: 0 } }),
       ).not.toThrow();
     });
 
     it('generator with activeSlideIndex=2 does not throw', () => {
       expect(() =>
-        carouselStory.generator?.({ properties: { ...carouselStory.state.properties, activeSlideIndex: 2 } }),
+        carouselStory.generator?.({ properties: { ...carouselStory.state?.properties, activeSlideIndex: 2 } }),
       ).not.toThrow();
     });
 
@@ -111,8 +111,8 @@ describe('io-carousel storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of carouselPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -131,7 +131,7 @@ describe('io-carousel storefront stories', () => {
     it('slidesPerPage definition includes auto option', () => {
       const slidesPerPageDef = carouselPropDefinitions.find((d) => d.name === 'slidesPerPage');
       expect(slidesPerPageDef).toBeDefined();
-      expect(slidesPerPageDef!.options).toContain('auto');
+      expect(((slidesPerPageDef as unknown as { options: string[] })).options).toContain('auto');
     });
   });
 

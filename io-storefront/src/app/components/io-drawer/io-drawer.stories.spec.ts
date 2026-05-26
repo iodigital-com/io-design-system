@@ -30,58 +30,58 @@ describe('io-drawer storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(drawerStory.state.properties).toBeDefined();
+      expect(drawerStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof drawerStory.state.properties).toBe('object');
+      expect(typeof drawerStory.state?.properties).toBe('object');
     });
 
     it('generator with placement=left does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, placement: 'left' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, placement: 'left' } })
       ).not.toThrow();
     });
 
     it('generator with placement=right does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, placement: 'right' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, placement: 'right' } })
       ).not.toThrow();
     });
 
     it('generator with placement=bottom does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, placement: 'bottom' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, placement: 'bottom' } })
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, size: 'sm' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, size: 'sm' } })
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, size: 'md' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, size: 'md' } })
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, size: 'lg' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, size: 'lg' } })
       ).not.toThrow();
     });
 
     it('generator with size=full does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, size: 'full' } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, size: 'full' } })
       ).not.toThrow();
     });
 
     it('generator with open=true does not throw', () => {
       expect(() =>
-        drawerStory.generator?.({ properties: { ...drawerStory.state.properties, open: true } })
+        drawerStory.generator?.({ properties: { ...drawerStory.state?.properties, open: true } })
       ).not.toThrow();
     });
 
@@ -111,8 +111,8 @@ describe('io-drawer storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of drawerPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -130,18 +130,18 @@ describe('io-drawer storefront stories', () => {
     it('placement select options include left, right, and bottom', () => {
       const placementDef = drawerPropDefinitions.find((d) => d.name === 'placement');
       expect(placementDef).toBeDefined();
-      expect(placementDef!.options).toContain('left');
-      expect(placementDef!.options).toContain('right');
-      expect(placementDef!.options).toContain('bottom');
+      expect(((placementDef as unknown as { options: string[] })).options).toContain('left');
+      expect(((placementDef as unknown as { options: string[] })).options).toContain('right');
+      expect(((placementDef as unknown as { options: string[] })).options).toContain('bottom');
     });
 
     it('size select options include sm, md, lg, and full', () => {
       const sizeDef = drawerPropDefinitions.find((d) => d.name === 'size');
       expect(sizeDef).toBeDefined();
-      expect(sizeDef!.options).toContain('sm');
-      expect(sizeDef!.options).toContain('md');
-      expect(sizeDef!.options).toContain('lg');
-      expect(sizeDef!.options).toContain('full');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('sm');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('md');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('lg');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('full');
     });
   });
 

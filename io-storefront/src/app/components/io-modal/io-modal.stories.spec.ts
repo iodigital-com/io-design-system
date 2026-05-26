@@ -30,40 +30,40 @@ describe('io-modal storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(modalStory.state.properties).toBeDefined();
+      expect(modalStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof modalStory.state.properties).toBe('object');
+      expect(typeof modalStory.state?.properties).toBe('object');
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        modalStory.generator?.({ properties: { ...modalStory.state.properties, size: 'sm' } })
+        modalStory.generator?.({ properties: { ...modalStory.state?.properties, size: 'sm' } })
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        modalStory.generator?.({ properties: { ...modalStory.state.properties, size: 'md' } })
+        modalStory.generator?.({ properties: { ...modalStory.state?.properties, size: 'md' } })
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        modalStory.generator?.({ properties: { ...modalStory.state.properties, size: 'lg' } })
+        modalStory.generator?.({ properties: { ...modalStory.state?.properties, size: 'lg' } })
       ).not.toThrow();
     });
 
     it('generator with open=true does not throw', () => {
       expect(() =>
-        modalStory.generator?.({ properties: { ...modalStory.state.properties, open: true } })
+        modalStory.generator?.({ properties: { ...modalStory.state?.properties, open: true } })
       ).not.toThrow();
     });
 
     it('generator with closeOnBackdrop=false does not throw', () => {
       expect(() =>
-        modalStory.generator?.({ properties: { ...modalStory.state.properties, closeOnBackdrop: false } })
+        modalStory.generator?.({ properties: { ...modalStory.state?.properties, closeOnBackdrop: false } })
       ).not.toThrow();
     });
 
@@ -93,8 +93,8 @@ describe('io-modal storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of modalPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -112,9 +112,9 @@ describe('io-modal storefront stories', () => {
     it('size select options include sm, md, and lg', () => {
       const sizeDef = modalPropDefinitions.find((d) => d.name === 'size');
       expect(sizeDef).toBeDefined();
-      expect(sizeDef!.options).toContain('sm');
-      expect(sizeDef!.options).toContain('md');
-      expect(sizeDef!.options).toContain('lg');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('sm');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('md');
+      expect(((sizeDef as unknown as { options: string[] })).options).toContain('lg');
     });
   });
 

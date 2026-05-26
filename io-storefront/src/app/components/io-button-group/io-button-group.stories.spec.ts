@@ -36,84 +36,84 @@ describe('io-button-group storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(buttonGroupStory.state.properties).toBeDefined();
+      expect(buttonGroupStory.state?.properties).toBeDefined();
     });
 
     it('generator with exclusive=true does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, exclusive: true } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, exclusive: true } }),
       ).not.toThrow();
     });
 
     it('generator with exclusive=false does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, exclusive: false } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, exclusive: false } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, disabled: true } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, disabled: true } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=false does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, disabled: false } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, disabled: false } }),
       ).not.toThrow();
     });
 
     it('generator with empty value does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, value: '' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, value: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty value does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, value: 'day' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, value: 'day' } }),
       ).not.toThrow();
     });
 
     it('generator with empty label does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, label: '' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, label: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty label does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, label: 'View period' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, label: 'View period' } }),
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, size: 'sm' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, size: 'sm' } }),
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, size: 'md' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, size: 'md' } }),
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, size: 'lg' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, size: 'lg' } }),
       ).not.toThrow();
     });
 
     it('generator with direction=row does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, direction: 'row' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, direction: 'row' } }),
       ).not.toThrow();
     });
 
     it('generator with direction=column does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state.properties, direction: 'column' } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, direction: 'column' } }),
       ).not.toThrow();
     });
 
@@ -143,8 +143,8 @@ describe('io-button-group storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of buttonGroupPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

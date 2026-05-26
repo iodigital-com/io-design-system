@@ -31,7 +31,7 @@ describe('io-tooltip storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(tooltipStory.state.properties).toBeDefined();
+      expect(tooltipStory.state?.properties).toBeDefined();
     });
 
     it('generator produces io-button as host element', () => {
@@ -71,11 +71,11 @@ describe('io-tooltip storefront stories', () => {
     });
 
     it('state.properties includes content', () => {
-      expect((tooltipStory.state.properties as Record<string, unknown>).content).toBeDefined();
+      expect((tooltipStory.state?.properties as Record<string, unknown>).content).toBeDefined();
     });
 
     it('state.properties includes placement', () => {
-      expect((tooltipStory.state.properties as Record<string, unknown>).placement).toBeDefined();
+      expect((tooltipStory.state?.properties as Record<string, unknown>).placement).toBeDefined();
     });
   });
 
@@ -98,7 +98,7 @@ describe('io-tooltip storefront stories', () => {
 
     it('select definitions have options', () => {
       for (const def of tooltipPropDefinitions.filter((d) => d.type === 'select')) {
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -124,10 +124,10 @@ describe('io-tooltip storefront stories', () => {
       const def = tooltipPropDefinitions.find((d) => d.name === 'placement');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(def!.options).toContain('top');
-      expect(def!.options).toContain('bottom');
-      expect(def!.options).toContain('left');
-      expect(def!.options).toContain('right');
+      expect(((def as unknown as { options: string[] })).options).toContain('top');
+      expect(((def as unknown as { options: string[] })).options).toContain('bottom');
+      expect(((def as unknown as { options: string[] })).options).toContain('left');
+      expect(((def as unknown as { options: string[] })).options).toContain('right');
       expect(def!.defaultValue).toBe('top');
     });
   });

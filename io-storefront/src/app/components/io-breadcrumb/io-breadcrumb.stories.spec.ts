@@ -32,7 +32,7 @@ describe('io-breadcrumb storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(breadcrumbStoryDefault.state.properties).toBeDefined();
+      expect(breadcrumbStoryDefault.state?.properties).toBeDefined();
     });
   });
 

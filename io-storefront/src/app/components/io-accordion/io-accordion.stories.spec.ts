@@ -38,114 +38,114 @@ describe('io-accordion storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(accordionStory.state.properties).toBeDefined();
+      expect(accordionStory.state?.properties).toBeDefined();
     });
 
     it('generator with open=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, open: true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, open: true } }),
       ).not.toThrow();
     });
 
     it('generator with open=false does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, open: false } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, open: false } }),
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, size: 'sm' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, size: 'sm' } }),
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, size: 'md' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, size: 'md' } }),
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, size: 'lg' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, size: 'lg' } }),
       ).not.toThrow();
     });
 
     it('generator with heading-tag=h2 does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'heading-tag': 'h2' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'heading-tag': 'h2' } }),
       ).not.toThrow();
     });
 
     it('generator with heading-tag=h6 does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'heading-tag': 'h6' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'heading-tag': 'h6' } }),
       ).not.toThrow();
     });
 
     it('generator with background=transparent does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, background: 'transparent' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, background: 'transparent' } }),
       ).not.toThrow();
     });
 
     it('generator with background=surface does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, background: 'surface' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, background: 'surface' } }),
       ).not.toThrow();
     });
 
     it('generator with background=canvas does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, background: 'canvas' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, background: 'canvas' } }),
       ).not.toThrow();
     });
 
     it('generator with use-heading-slot=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'use-heading-slot': true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'use-heading-slot': true } }),
       ).not.toThrow();
     });
 
     it('generator with use-heading-slot=false does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'use-heading-slot': false } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'use-heading-slot': false } }),
       ).not.toThrow();
     });
 
     it('generator with empty heading string does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, heading: '' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, heading: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty heading string does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, heading: 'Custom Heading' } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, heading: 'Custom Heading' } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, disabled: true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, disabled: true } }),
       ).not.toThrow();
     });
 
     it('generator with default-expanded=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'default-expanded': true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'default-expanded': true } }),
       ).not.toThrow();
     });
 
     it('generator with allow-multiple=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, 'allow-multiple': true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, 'allow-multiple': true } }),
       ).not.toThrow();
     });
 
     it('generator with sticky=true does not throw', () => {
       expect(() =>
-        accordionStory.generator?.({ properties: { ...accordionStory.state.properties, sticky: true } }),
+        accordionStory.generator?.({ properties: { ...accordionStory.state?.properties, sticky: true } }),
       ).not.toThrow();
     });
 
@@ -175,8 +175,8 @@ describe('io-accordion storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of accordionPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

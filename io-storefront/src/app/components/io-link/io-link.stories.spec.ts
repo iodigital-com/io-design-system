@@ -30,52 +30,52 @@ describe('io-link storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(linkStory.state.properties).toBeDefined();
+      expect(linkStory.state?.properties).toBeDefined();
     });
 
     it('state.properties is an object', () => {
-      expect(typeof linkStory.state.properties).toBe('object');
+      expect(typeof linkStory.state?.properties).toBe('object');
     });
 
     it('generator with variant=standalone does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, variant: 'standalone' } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, variant: 'standalone' } })
       ).not.toThrow();
     });
 
     it('generator with variant=inline does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, variant: 'inline' } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, variant: 'inline' } })
       ).not.toThrow();
     });
 
     it('generator with color=blue does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, color: 'blue' } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, color: 'blue' } })
       ).not.toThrow();
     });
 
     it('generator with color=black does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, color: 'black' } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, color: 'black' } })
       ).not.toThrow();
     });
 
     it('generator with color=white does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, color: 'white' } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, color: 'white' } })
       ).not.toThrow();
     });
 
     it('generator with external=true does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, external: true } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, external: true } })
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        linkStory.generator?.({ properties: { ...linkStory.state.properties, disabled: true } })
+        linkStory.generator?.({ properties: { ...linkStory.state?.properties, disabled: true } })
       ).not.toThrow();
     });
 
@@ -104,8 +104,8 @@ describe('io-link storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of linkPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 
@@ -123,16 +123,16 @@ describe('io-link storefront stories', () => {
     it('variant select options include standalone and inline', () => {
       const variantDef = linkPropDefinitions.find((d) => d.name === 'variant');
       expect(variantDef).toBeDefined();
-      expect(variantDef!.options).toContain('standalone');
-      expect(variantDef!.options).toContain('inline');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('standalone');
+      expect(((variantDef as unknown as { options: string[] })).options).toContain('inline');
     });
 
     it('color select options include blue, black, and white', () => {
       const colorDef = linkPropDefinitions.find((d) => d.name === 'color');
       expect(colorDef).toBeDefined();
-      expect(colorDef!.options).toContain('blue');
-      expect(colorDef!.options).toContain('black');
-      expect(colorDef!.options).toContain('white');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('blue');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('black');
+      expect(((colorDef as unknown as { options: string[] })).options).toContain('white');
     });
   });
 

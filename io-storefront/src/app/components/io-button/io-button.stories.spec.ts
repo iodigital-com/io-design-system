@@ -35,180 +35,180 @@ describe('io-button storefront stories', () => {
     });
 
     it('state.properties is defined', () => {
-      expect(buttonStory.state.properties).toBeDefined();
+      expect(buttonStory.state?.properties).toBeDefined();
     });
 
     it('generator with variant=solid does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, variant: 'solid' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, variant: 'solid' } }),
       ).not.toThrow();
     });
 
     it('generator with variant=ghost does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, variant: 'ghost' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, variant: 'ghost' } }),
       ).not.toThrow();
     });
 
     it('generator with color=blue does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'blue' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'blue' } }),
       ).not.toThrow();
     });
 
     it('generator with color=white does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'white' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'white' } }),
       ).not.toThrow();
     });
 
     it('generator with color=black does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'black' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'black' } }),
       ).not.toThrow();
     });
 
     it('generator with color=antraciet does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'antraciet' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'antraciet' } }),
       ).not.toThrow();
     });
 
     it('generator with color=orange does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'orange' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'orange' } }),
       ).not.toThrow();
     });
 
     it('generator with color=pink does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'pink' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'pink' } }),
       ).not.toThrow();
     });
 
     it('generator with color=rouge does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'rouge' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'rouge' } }),
       ).not.toThrow();
     });
 
     it('generator with color=yellow does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'yellow' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'yellow' } }),
       ).not.toThrow();
     });
 
     it('generator with color=beige does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'beige' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'beige' } }),
       ).not.toThrow();
     });
 
     it('generator with color=grey does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, color: 'grey' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, color: 'grey' } }),
       ).not.toThrow();
     });
 
     it('generator with size=sm does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, size: 'sm' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, size: 'sm' } }),
       ).not.toThrow();
     });
 
     it('generator with size=md does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, size: 'md' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, size: 'md' } }),
       ).not.toThrow();
     });
 
     it('generator with size=lg does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, size: 'lg' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, size: 'lg' } }),
       ).not.toThrow();
     });
 
     it('generator with size=xl does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, size: 'xl' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, size: 'xl' } }),
       ).not.toThrow();
     });
 
     it('generator with arrow=none does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrow: 'none' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrow: 'none' } }),
       ).not.toThrow();
     });
 
     it('generator with arrow=forward does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrow: 'forward' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrow: 'forward' } }),
       ).not.toThrow();
     });
 
     it('generator with arrow=back does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrow: 'back' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrow: 'back' } }),
       ).not.toThrow();
     });
 
     it('generator with arrow=down does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrow: 'down' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrow: 'down' } }),
       ).not.toThrow();
     });
 
     it('generator with arrowPlacement=right does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrowPlacement: 'right' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrowPlacement: 'right' } }),
       ).not.toThrow();
     });
 
     it('generator with arrowPlacement=left does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, arrowPlacement: 'left' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, arrowPlacement: 'left' } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=true does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, disabled: true } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, disabled: true } }),
       ).not.toThrow();
     });
 
     it('generator with disabled=false does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, disabled: false } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, disabled: false } }),
       ).not.toThrow();
     });
 
     it('generator with loading=true does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, loading: true } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, loading: true } }),
       ).not.toThrow();
     });
 
     it('generator with fullWidth=true does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, fullWidth: true } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, fullWidth: true } }),
       ).not.toThrow();
     });
 
     it('generator with iconOnly=true does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, iconOnly: true } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, iconOnly: true } }),
       ).not.toThrow();
     });
 
     it('generator with empty label does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, label: '' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, label: '' } }),
       ).not.toThrow();
     });
 
     it('generator with non-empty label does not throw', () => {
       expect(() =>
-        buttonStory.generator?.({ properties: { ...buttonStory.state.properties, label: 'Submit' } }),
+        buttonStory.generator?.({ properties: { ...buttonStory.state?.properties, label: 'Submit' } }),
       ).not.toThrow();
     });
 
@@ -238,8 +238,8 @@ describe('io-button storefront stories', () => {
 
     it('select definitions have options with at least one entry', () => {
       for (const def of buttonPropDefinitions.filter((d) => d.type === 'select')) {
-        expect(def.options).toBeDefined();
-        expect((def.options as string[]).length).toBeGreaterThan(0);
+        expect((def as unknown as { options: string[] }).options).toBeDefined();
+        expect(((def as unknown as { options: string[] }).options).length).toBeGreaterThan(0);
       }
     });
 

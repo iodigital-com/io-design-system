@@ -74,8 +74,8 @@ describe('io-input — stable id linkage', () => {
   });
 
   it('keeps aria-describedby target stable for error state across rerenders', () => {
-    component.error = true;
-    component.errorMessage = 'Required field';
+    component.state = 'error';
+    component.message = 'Required field';
     (component as any).componentWillLoad();
 
     const firstIds = (component as any).getInputIds();

@@ -196,8 +196,8 @@ describe('io-radio — render() branch coverage', () => {
     (c as any).change = { emit: vi.fn() };
     (c as any).internals = makeInternals();
     (c as any).label = 'Option A';
-    c.error = true;
-    c.errorMessage = 'Select one';
+    c.state = 'error';
+    c.message = 'Select one';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -221,7 +221,7 @@ describe('io-radio — render() branch coverage', () => {
     (c as any).label = 'Option A';
     c.required = true;
     c.checked = false;
-    c.error = false;
+    c.state = 'none';
     (c as any).componentWillLoad();
     (c as any).faceInvalid = true;
     expect(() => (c as any).render()).not.toThrow();

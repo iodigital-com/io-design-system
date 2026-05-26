@@ -350,8 +350,8 @@ describe('io-select — render() branch coverage', () => {
   it('render() with error=true and errorMessage does not throw', () => {
     const c = makeSelect();
     c.custom = false;
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error';
+    c.message = 'Required';
     expect(() => (c as any).render()).not.toThrow();
   });
 

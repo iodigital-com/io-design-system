@@ -7,10 +7,10 @@
  *
  * Branches targeted:
  *   renderNativeSelect:
- *     - showError derived from error=true, faceInvalid=true, or neither
- *     - errorMessage present vs absent
+ *     - showError derived from state=error, faceInvalid=true, or neither
+ *     - message present vs absent
  *     - helperText present vs absent
- *     - describedBy built from errorId, helperId, or undefined
+ *     - describedBy built from messageId, helperId, or undefined
  *     - placeholder present vs absent
  *     - required=true (renders asterisk span)
  *     - groups with label (renders <optgroup>) vs without label (flat options)
@@ -24,8 +24,8 @@
  *     - activeIndex = -1 → activeOptId undefined
  *     - multiple=true (aria-multiselectable, checkbox rendering)
  *     - displayValue present vs empty (placeholder span branch)
- *     - showError from error / faceInvalid / neither
- *     - errorMessage + helperText in combobox
+ *     - showError from state=error / faceInvalid / neither
+ *     - message + helperText in combobox
  *     - required=true in combobox
  *     - disabled=true in combobox
  *     - opts.length === 0 → "No options" empty state
@@ -146,16 +146,16 @@ function makeSelect(overrides: Partial<{ custom: boolean; multiple: boolean; fil
 // ── renderNativeSelect branches ───────────────────────────────────────────────
 
 describe('io-select renderNativeSelect — showError branches', () => {
-  it('renders without error when error=false and faceInvalid=false', () => {
+  it('renders without error when state=none and faceInvalid=false', () => {
     const c = makeSelect();
-    c.error = false;
+    c.state = 'none';
     (c as any).faceInvalid = false;
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders with showError=true when error=true', () => {
+  it('renders with showError=true when state=error', () => {
     const c = makeSelect();
-    c.error = true;
+    c.state = 'error';
     expect(() => (c as any).render()).not.toThrow();
   });
 
@@ -165,38 +165,38 @@ describe('io-select renderNativeSelect — showError branches', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders error paragraph when error=true and errorMessage is set', () => {
+  it('renders message paragraph when state=error and message is set', () => {
     const c = makeSelect();
-    c.error = true;
-    c.errorMessage = 'This field is required';
+    c.state = 'error';
+    c.message = 'This field is required';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders error paragraph when faceInvalid=true and errorMessage is set', () => {
+  it('renders error paragraph when faceInvalid=true and message is set', () => {
     const c = makeSelect();
     (c as any).faceInvalid = true;
-    c.errorMessage = 'Please select';
+    c.message = 'Please select';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('does not render error paragraph when error=true but errorMessage is absent', () => {
+  it('does not render error paragraph when state=error but message is absent', () => {
     const c = makeSelect();
-    c.error = true;
-    c.errorMessage = undefined;
+    c.state = 'error';
+    c.message = '';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders helper paragraph when no error and helperText is set', () => {
+  it('renders helper paragraph when state=none and helperText is set', () => {
     const c = makeSelect();
-    c.error = false;
+    c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = 'Pick a country from the list';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('suppresses helper paragraph when showError=true even if helperText is set', () => {
+  it('suppresses helper paragraph when state=error even if helperText is set', () => {
     const c = makeSelect();
-    c.error = true;
+    c.state = 'error';
     c.helperText = 'Pick a country';
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -228,10 +228,10 @@ describe('io-select renderNativeSelect — showError branches', () => {
 });
 
 describe('io-select renderNativeSelect — describedBy computation', () => {
-  it('produces errorId in describedBy when showError and errorMessage present', () => {
+  it('produces messageId in describedBy when state=error and message present', () => {
     const c = makeSelect();
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error';
+    c.message = 'Required';
     // describedBy should be computed without throwing
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -242,9 +242,9 @@ describe('io-select renderNativeSelect — describedBy computation', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('producdes undefined describedBy when neither errorMessage nor helperText', () => {
+  it('produces undefined describedBy when neither message nor helperText', () => {
     const c = makeSelect();
-    c.errorMessage = undefined;
+    c.message = '';
     c.helperText = undefined;
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -424,17 +424,17 @@ describe('io-select renderCombobox — filter input rendering', () => {
 });
 
 describe('io-select renderCombobox — error and helper text', () => {
-  it('renders error paragraph in combobox mode when error=true and errorMessage set', () => {
+  it('renders error paragraph in combobox mode when state=error and message set', () => {
     const c = makeSelect({ custom: true });
-    c.error = true;
-    c.errorMessage = 'Required field';
+    c.state = 'error';
+    c.message = 'Required field';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders error paragraph in combobox mode when faceInvalid=true and errorMessage set', () => {
+  it('renders error paragraph in combobox mode when faceInvalid=true and message set', () => {
     const c = makeSelect({ custom: true });
     (c as any).faceInvalid = true;
-    c.errorMessage = 'Form invalid';
+    c.message = 'Form invalid';
     expect(() => (c as any).render()).not.toThrow();
   });
 
@@ -444,16 +444,16 @@ describe('io-select renderCombobox — error and helper text', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('suppresses helper paragraph in combobox mode when showError=true', () => {
+  it('suppresses helper paragraph in combobox mode when state=error', () => {
     const c = makeSelect({ custom: true });
-    c.error = true;
+    c.state = 'error';
     c.helperText = 'Should be hidden';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders combobox with no describedBy when neither errorMessage nor helperText', () => {
+  it('renders combobox with no describedBy when neither message nor helperText', () => {
     const c = makeSelect({ custom: true });
-    c.errorMessage = undefined;
+    c.message = '';
     c.helperText = undefined;
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -1246,18 +1246,18 @@ describe('io-select componentDidLoad', () => {
 // ── Full render combinations ──────────────────────────────────────────────────
 
 describe('io-select full render combinations', () => {
-  it('native: error + errorMessage + helperText (error wins)', () => {
+  it('native: state=error + message + helperText (error wins)', () => {
     const c = makeSelect();
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error';
+    c.message = 'Required';
     c.helperText = 'Hint';
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('native: faceInvalid + errorMessage', () => {
+  it('native: faceInvalid + message', () => {
     const c = makeSelect();
     (c as any).faceInvalid = true;
-    c.errorMessage = 'Form error';
+    c.message = 'Form error';
     expect(() => (c as any).render()).not.toThrow();
   });
 
@@ -1273,8 +1273,8 @@ describe('io-select full render combinations', () => {
     const c = makeSelect({ custom: true, filter: true, multiple: true });
     (c as any).isOpen = true;
     (c as any).activeIndex = 0;
-    c.error = true;
-    c.errorMessage = 'Pick at least one';
+    c.state = 'error';
+    c.message = 'Pick at least one';
     expect(() => (c as any).render()).not.toThrow();
   });
 
@@ -1289,7 +1289,7 @@ describe('io-select full render combinations', () => {
   it('combobox: helperText shown when not in error state', () => {
     const c = makeSelect({ custom: true });
     c.helperText = 'Search or pick';
-    c.error = false;
+    c.state = 'none';
     (c as any).faceInvalid = false;
     expect(() => (c as any).render()).not.toThrow();
   });

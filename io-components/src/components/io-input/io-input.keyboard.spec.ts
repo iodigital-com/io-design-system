@@ -14,7 +14,7 @@ describe('io-input — keyboard / focus lifecycle', () => {
     (component as any).inputId = 'test-id';
     component.label = 'Test input';
     component.disabled = false;
-    component.error = false;
+    component.state = 'none';
 
     focusEmitMock = vi.fn();
     blurEmitMock = vi.fn();
@@ -49,13 +49,13 @@ describe('io-input — keyboard / focus lifecycle', () => {
   });
 
   it('render with error=true and errorMessage does not throw', () => {
-    component.error = true;
-    component.errorMessage = 'Required';
+    component.state = 'error';
+    component.message = 'Required';
     expect(() => component.render()).not.toThrow();
   });
 
   it('render with error=false and helperText does not throw', () => {
-    component.error = false;
+    component.state = 'none';
     component.helperText = 'Helper';
     expect(() => component.render()).not.toThrow();
   });

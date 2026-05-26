@@ -37,16 +37,16 @@ describe('io-select — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
+  it('has state=none by default', () => {
+    expect(component.state).toBe('none');
   });
 
   it('has no placeholder by default', () => {
     expect(component.placeholder).toBeUndefined();
   });
 
-  it('has no errorMessage by default', () => {
-    expect(component.errorMessage).toBeUndefined();
+  it('has empty message by default', () => {
+    expect(component.message).toBe('');
   });
 
   it('setFocus resolves without throwing', async () => {

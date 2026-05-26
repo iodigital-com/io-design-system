@@ -194,8 +194,8 @@ describe('io-checkbox — render() branch coverage', () => {
     (c as any).change = { emit: vi.fn() };
     (c as any).internals = makeInternals();
     (c as any).label = 'Accept';
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error';
+    c.message = 'Required';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -206,7 +206,7 @@ describe('io-checkbox — render() branch coverage', () => {
     (c as any).change = { emit: vi.fn() };
     (c as any).internals = makeInternals();
     (c as any).label = 'Accept';
-    c.error = false;
+    c.state = 'none';
     c.helperText = 'Optional';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
@@ -231,7 +231,7 @@ describe('io-checkbox — render() branch coverage', () => {
     (c as any).label = 'Accept';
     c.required = true;
     c.checked = false;
-    c.error = false;
+    c.state = 'none';
     (c as any).componentWillLoad();
     (c as any).faceInvalid = true;
     expect(() => (c as any).render()).not.toThrow();

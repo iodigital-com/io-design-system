@@ -29,19 +29,19 @@ export default function IoFormFieldApiPage() {
               <InlineCode key="n">helperText</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Supporting guidance shown below the control when error is false. Hidden when error is true.',
+              'Supporting guidance shown below the control when state is none. Hidden when any validation state is active.',
             ],
             [
-              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Validation error message shown below the control when error is true. Rendered with aria-live="polite".',
+              'Validation message shown below the control when state is not none. Rendered with aria-live="polite".',
             ],
             [
-              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Marks the field as in error state. Shows errorMessage, hides helperText, and sets aria-invalid="true" on the slotted control.',
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state. Propagates aria-invalid to the slotted control and controls message display.',
             ],
             [
               <InlineCode key="n">required</InlineCode>,
@@ -75,7 +75,7 @@ export default function IoFormFieldApiPage() {
   <io-input name="email" type="email"></io-input>
 </io-form-field>
 
-<io-form-field label="Username" error error-message="This username is already taken.">
+<io-form-field label="Username" state="error" message="This username is already taken.">
   <io-input name="username" type="text"></io-input>
 </io-form-field>`}
         </CodeNote>

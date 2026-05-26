@@ -133,7 +133,7 @@ export default function IoRadioAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error paragraph is rendered with role='alert'. The visual indicator (red border, red label) is always paired with descriptive text."
+            note="When state='error' and message is set, the message paragraph is rendered with role='alert'. The visual indicator (red border, red label) is always paired with descriptive text."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -166,7 +166,7 @@ export default function IoRadioAccessibilityPage() {
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>{' '}
           on every io-radio in the group, or place a single error message on the last item only. Applying error to a subset of options is misleading — the error belongs to the group, not an individual radio.
         </RuleCard>
-        <RuleCard label="Always pair error with errorMessage">
+        <RuleCard label="Always pair state with message">
           Setting{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code>{' '}
           without{' '}

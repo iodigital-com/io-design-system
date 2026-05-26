@@ -11,8 +11,8 @@ export const inputStory: Story<'io-input'> = {
       max: '',
       step: '',
       disabled: false,
-      error: false,
-      errorMessage: '',
+      state: 'none',
+      message: '',
       helperText: '',
     },
   },
@@ -32,11 +32,11 @@ export const inputStoryDefault: Story<'io-input'> = {
 };
 
 export const inputStoryError: Story<'io-input'> = {
-  state: { properties: { label: 'Email address', type: 'email', error: true, errorMessage: 'Please enter a valid email' } },
+  state: { properties: { label: 'Email address', type: 'email', state: 'error', message: 'Please enter a valid email' } },
   generator: () => [
     {
       tag: 'io-input' as const,
-      properties: { label: 'Email address', type: 'email', error: true, errorMessage: 'Please enter a valid email' },
+      properties: { label: 'Email address', type: 'email', state: 'error', message: 'Please enter a valid email' },
     },
   ],
 };
@@ -128,13 +128,14 @@ export const inputPropDefinitions: PropDefinition[] = [
     description: 'Prevents editing and focus interactions.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Applies the invalid visual state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border color, icon, and message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
     description: 'Shows validation feedback below the field.',

@@ -80,7 +80,7 @@ export default function IoInputAccessibilityPage() {
               value: (
                 <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Error element id</span>
               ),
-              description: 'When error and errorMessage are both set, the error paragraph is linked to the input via aria-describedby. Combined with role="alert" on the error element, the message is announced immediately when it appears.',
+              description: 'When state=error and message are both set, the error paragraph is linked to the input via aria-describedby. Combined with role="alert" on the error element, the message is announced immediately when it appears.',
             },
             {
               attribute: 'aria-required',
@@ -122,7 +122,7 @@ export default function IoInputAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error text is rendered with role='alert' so it is announced immediately by screen readers. The visual indicator (red border, red label) is always paired with a text description."
+            note="When state='error' and message is set, the message text is rendered with role='alert' so it is announced immediately by screen readers. The visual indicator (red border, red label) is always paired with a text description."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -139,7 +139,7 @@ export default function IoInputAccessibilityPage() {
           title="Best practices"
           description="Guidelines for building accessible form experiences with io-input."
         />
-        <RuleCard label="Always pair error with errorMessage">
+        <RuleCard label="Always pair state with message">
           Setting <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> without{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>{' '}
           shows a red border with no explanation. Screen reader users receive no feedback at all. Always provide a specific, actionable message alongside the error state.

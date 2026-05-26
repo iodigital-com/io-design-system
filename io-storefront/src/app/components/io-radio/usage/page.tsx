@@ -103,7 +103,7 @@ export default function IoRadioUsagePage() {
             Set <C>checked=true</C>. The custom visual fills with the accent colour and displays a filled dot. Only one radio in a group should carry checked=true at any time.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=true</C> and provide an <C>errorMessage</C>. The radio border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
+            Set <C>state=&quot;error&quot;</C> and provide a <C>message</C>. The radio border and label turn red. The error message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The entire component renders at reduced opacity. Pointer events are blocked and the native input is disabled.

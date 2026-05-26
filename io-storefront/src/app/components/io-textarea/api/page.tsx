@@ -93,22 +93,22 @@ export default function IoTextareaApiPage() {
               'Disables the textarea. Renders at 40% opacity and blocks all pointer events.',
             ],
             [
-              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Puts the textarea in error state. The border and floating label change to the error colour. Sets aria-invalid="true".',
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state. Controls border colour, icon, and message colour.',
             ],
             [
-              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Error message shown below the textarea when error is true. Rendered with role="alert" and linked via aria-describedby.',
+              'Validation message shown below the textarea when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
               <InlineCode key="n">helperText</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Helper text shown below the textarea when error is false. Hidden when the error state is active.',
+              'Helper text shown below the textarea when state is none. Hidden when any validation state is active.',
             ],
           ]}
         />
@@ -207,7 +207,7 @@ document.querySelector('io-textarea')
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>placeholder</code>,{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>.
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>.
         </EmptyNote>
       </section>
 

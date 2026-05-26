@@ -27,7 +27,7 @@ export default function IoInputUsagePage() {
               Use <C>helperText</C> for format hints or constraints before the user starts typing (e.g. &ldquo;Include country code&rdquo;, &ldquo;Max 12 characters&rdquo;).
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Pair <C>error</C> with <C>errorMessage</C> to give specific, actionable feedback after validation fails.
+              Pair <C>state</C> with <C>message</C> to give specific, actionable feedback after validation fails.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -127,7 +127,7 @@ export default function IoInputUsagePage() {
             When the field receives focus, the border expands to 5px and changes to the accent colour (io brand interaction). The label animates up and reduces in size. Once a value is typed, the label stays floating even after blur.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=&quot;true&quot;</C> and provide an <C>errorMessage</C>. The border turns red, the floating label turns red, and the error message appears below with <C>role=&quot;alert&quot;</C> so screen readers announce it immediately. <C>helperText</C> is hidden when in error state.
+            Set <C>state=&quot;error&quot;</C> and provide a <C>message</C>. The border turns red, the floating label turns red, and the error message appears below with <C>role=&quot;alert&quot;</C> so screen readers announce it immediately. <C>helperText</C> is hidden when in error state.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=&quot;true&quot;</C>. The entire field renders at 40% opacity and pointer events are blocked. Use when the field is conditionally unavailable — for example, a secondary field that only activates after a primary selection is made.

@@ -25,7 +25,7 @@ export default function IoFormFieldAccessibilityPage() {
               value: (
                 <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Helper or error element id</span>
               ),
-              description: 'When helperText or errorMessage is visible, its id is set on the slotted control via aria-describedby. Screen readers announce the description after the field label.',
+              description: 'When helperText or message is visible, its id is set on the slotted control via aria-describedby. Screen readers announce the description after the field label.',
             },
             {
               attribute: 'aria-invalid',
@@ -67,7 +67,7 @@ export default function IoFormFieldAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error is rendered with aria-live='polite' and linked to the control so screen readers announce it immediately."
+            note="When state='error' and message is set, the message is rendered with aria-live='polite' and linked to the control so screen readers announce it immediately."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -83,7 +83,7 @@ export default function IoFormFieldAccessibilityPage() {
           title="Best practices"
           description="Guidelines for building accessible form experiences with io-form-field."
         />
-        <RuleCard label="Always pair error with errorMessage">
+        <RuleCard label="Always pair state with message">
           Setting <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> without{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>{' '}
           sets aria-invalid on the control but provides no text explanation. Screen reader users will know the field is invalid but not why.

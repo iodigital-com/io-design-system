@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -29,12 +29,13 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkSize } from "./components/io-wordmark/types";
-export { IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
@@ -58,6 +59,7 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
@@ -78,6 +80,11 @@ export namespace Components {
           * @default false
          */
         "allowMultiple": boolean;
+        /**
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * @default 'transparent'
+         */
+        "background": IoAccordionBackground;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -108,6 +115,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoAccordionSize;
+        /**
+          * When `true`, the accordion trigger becomes `position: sticky; top: 0` so it remains visible while scrolling through long expanded content.  Note: `sticky` is only meaningful when `background` is `surface` or `canvas`. Using `sticky=true` with `background="transparent"` will log a development warning because a transparent sticky header causes content to bleed through.
+          * @default false
+         */
+        "sticky": boolean;
     }
     /**
      * io-avatar
@@ -538,6 +550,9 @@ export namespace Components {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -556,7 +571,7 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.
+          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.  For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
          */
         "close": () => Promise<void>;
@@ -585,7 +600,7 @@ export namespace Components {
          */
         "placement": IoDrawerPlacement;
         /**
-          * Programmatically show (open) the drawer. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop.
+          * Programmatically show (open) the drawer. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop.  For bottom-sheet placement, attaches swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.show();
          */
         "show": () => Promise<void>;
@@ -1487,6 +1502,37 @@ export namespace Components {
         "label"?: string;
     }
     /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface IoTabsBar {
+        /**
+          * 0-based index of the active tab (controlled).
+          * @default 0
+         */
+        "activeTabIndex": number;
+        /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+    }
+    /**
      * io-tag
      * =======
      * Interactive toggle chip / filter pill.
@@ -1839,6 +1885,10 @@ export interface IoTabsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoTabsElement;
 }
+export interface IoTabsBarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTabsBarElement;
+}
 export interface IoTagCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoTagElement;
@@ -2114,6 +2164,9 @@ declare global {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -2650,6 +2703,43 @@ declare global {
         prototype: HTMLIoTabsElement;
         new (): HTMLIoTabsElement;
     };
+    interface HTMLIoTabsBarElementEventMap {
+        "update": IoTabsBarUpdateDetail;
+    }
+    /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface HTMLIoTabsBarElement extends Components.IoTabsBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTabsBarElementEventMap>(type: K, listener: (this: HTMLIoTabsBarElement, ev: IoTabsBarCustomEvent<HTMLIoTabsBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTabsBarElementEventMap>(type: K, listener: (this: HTMLIoTabsBarElement, ev: IoTabsBarCustomEvent<HTMLIoTabsBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTabsBarElement: {
+        prototype: HTMLIoTabsBarElement;
+        new (): HTMLIoTabsBarElement;
+    };
     interface HTMLIoTagElementEventMap {
         "toggle": boolean;
         "remove": void;
@@ -2824,6 +2914,7 @@ declare global {
         "io-table-head-cell": HTMLIoTableHeadCellElement;
         "io-table-head-row": HTMLIoTableHeadRowElement;
         "io-tabs": HTMLIoTabsElement;
+        "io-tabs-bar": HTMLIoTabsBarElement;
         "io-tag": HTMLIoTagElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
@@ -2849,6 +2940,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "allowMultiple"?: boolean;
+        /**
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * @default 'transparent'
+         */
+        "background"?: IoAccordionBackground;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -2883,6 +2979,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoAccordionSize;
+        /**
+          * When `true`, the accordion trigger becomes `position: sticky; top: 0` so it remains visible while scrolling through long expanded content.  Note: `sticky` is only meaningful when `background` is `surface` or `canvas`. Using `sticky=true` with `background="transparent"` will log a development warning because a transparent sticky header causes content to bleed through.
+          * @default false
+         */
+        "sticky"?: boolean;
     }
     /**
      * io-avatar
@@ -3321,6 +3422,9 @@ declare namespace LocalJSX {
      * =========
      * Accessible slide-out drawer overlay built on the native <dialog> element.
      * The browser handles focus trapping, ESC key, and role="dialog".
+     * When placement="bottom" the drawer renders as a mobile-optimised bottom
+     * sheet with a drag handle affordance. Swiping the handle downward by more
+     * than 80 px dismisses the drawer.
      * @example <io-drawer heading="Settings" placement="right">
      *   <p>Drawer body content here.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -4281,6 +4385,41 @@ declare namespace LocalJSX {
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
     }
     /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface IoTabsBar {
+        /**
+          * 0-based index of the active tab (controlled).
+          * @default 0
+         */
+        "activeTabIndex"?: number;
+        /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+        /**
+          * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
+         */
+        "onUpdate"?: (event: IoTabsBarCustomEvent<IoTabsBarUpdateDetail>) => void;
+    }
+    /**
      * io-tag
      * =======
      * Interactive toggle chip / filter pill.
@@ -4575,6 +4714,8 @@ declare namespace LocalJSX {
         "headingTag": IoAccordionHeadingTag;
         "size": IoAccordionSize;
         "disabled": boolean;
+        "background": IoAccordionBackground;
+        "sticky": boolean;
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
     }
@@ -4617,6 +4758,7 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "label": string | undefined;
         "size": IoButtonGroupSize;
+        "direction": IoButtonGroupDirection;
     }
     interface IoCarouselAttributes {
         "prevLabel": string;
@@ -4817,6 +4959,10 @@ declare namespace LocalJSX {
         "activeTabIndex": number;
         "label": string;
     }
+    interface IoTabsBarAttributes {
+        "activeTabIndex": number;
+        "label": string;
+    }
     interface IoTagAttributes {
         "selected": boolean;
         "removable": boolean;
@@ -4903,6 +5049,7 @@ declare namespace LocalJSX {
         "io-table-head-cell": Omit<IoTableHeadCell, keyof IoTableHeadCellAttributes> & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes]?: IoTableHeadCell[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `attr:${K}`]?: IoTableHeadCellAttributes[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `prop:${K}`]?: IoTableHeadCell[K] };
         "io-table-head-row": Omit<IoTableHeadRow, keyof IoTableHeadRowAttributes> & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes]?: IoTableHeadRow[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `attr:${K}`]?: IoTableHeadRowAttributes[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `prop:${K}`]?: IoTableHeadRow[K] };
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
+        "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
@@ -5053,6 +5200,9 @@ declare module "@stencil/core" {
              * =========
              * Accessible slide-out drawer overlay built on the native <dialog> element.
              * The browser handles focus trapping, ESC key, and role="dialog".
+             * When placement="bottom" the drawer renders as a mobile-optimised bottom
+             * sheet with a drag handle affordance. Swiping the handle downward by more
+             * than 80 px dismisses the drawer.
              * @example <io-drawer heading="Settings" placement="right">
              *   <p>Drawer body content here.</p>
              *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -5329,6 +5479,27 @@ declare module "@stencil/core" {
              * </io-tabs>
              */
             "io-tabs": LocalJSX.IntrinsicElements["io-tabs"] & JSXBase.HTMLAttributes<HTMLIoTabsElement>;
+            /**
+             * io-tabs-bar
+             * ===========
+             * Standalone decorative tab navigation bar — no panel management.
+             * Use this component when the tab content is managed externally by a router
+             * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+             * panel switching. The consumer owns route/content transitions; io-tabs-bar
+             * provides the visual tab strip with active indicator, keyboard navigation,
+             * and ARIA tablist semantics.
+             * Place <button> children inside the component. The component applies
+             * role="tab", aria-selected, and tabindex automatically. Control the
+             * active tab via the activeTabIndex prop and respond to the update event.
+             * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+             * Disabled buttons (via the HTML disabled attribute) are skipped.
+             * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+             *   <button type="button">Overview</button>
+             *   <button type="button">Details</button>
+             *   <button type="button" disabled>Settings</button>
+             * </io-tabs-bar>
+             */
+            "io-tabs-bar": LocalJSX.IntrinsicElements["io-tabs-bar"] & JSXBase.HTMLAttributes<HTMLIoTabsBarElement>;
             /**
              * io-tag
              * =======

@@ -186,6 +186,7 @@
         "disabled": "boolean",
         "form": "string | undefined",
         "helperText": "string | undefined",
+        "hideLabel": "boolean",
         "label": "string",
         "loading": "boolean",
         "max": "string | number | undefined",
@@ -455,6 +456,15 @@
       "methods": {},
       "events": {
         "update": "IoTabsUpdateDetail"
+      }
+    },
+    "io-tabs-bar": {
+      "props": {
+        "activeTabIndex": "number"
+      },
+      "methods": {},
+      "events": {
+        "update": "IoTabsBarUpdateDetail"
       }
     },
     "io-tag": {

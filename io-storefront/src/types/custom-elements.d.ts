@@ -46,6 +46,7 @@ declare module 'react' {
   'io-table-head-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadCellElement>, HTMLIoTableHeadCellElement> & Partial<StencilJSX.IoTableHeadCell>;
   'io-table-head-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadRowElement>, HTMLIoTableHeadRowElement> & Partial<StencilJSX.IoTableHeadRow>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
+  'io-tabs-bar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsBarElement>, HTMLIoTabsBarElement> & Partial<StencilJSX.IoTabsBar>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;
   'io-toast': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastElement>, HTMLIoToastElement> & Partial<StencilJSX.IoToast>;

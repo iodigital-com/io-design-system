@@ -39,6 +39,7 @@ export type IoTagNames =
   | 'io-table-head-cell'
   | 'io-table-head-row'
   | 'io-tabs'
+  | 'io-tabs-bar'
   | 'io-tag'
   | 'io-textarea'
   | 'io-toast'

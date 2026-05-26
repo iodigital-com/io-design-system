@@ -218,6 +218,11 @@ export namespace Components {
      */
     interface IoButton {
         /**
+          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="panel-id" on the inner <button> <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Direction of the optional animated arrow icon. Omit to hide the arrow.
          */
         "arrow": IoButtonArrow | undefined;
@@ -536,6 +541,11 @@ export namespace Components {
      */
     interface IoDrawer {
         /**
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
          */
@@ -625,6 +635,11 @@ export namespace Components {
      * <io-input label="Search" type="search" placeholder="Search..." />
      */
     interface IoInput {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="suggestions-list" on the native <input> <io-input .aria={{ controls: 'suggestions-list', autocomplete: 'list' }} label="Search" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Autocomplete attribute
          */
@@ -783,6 +798,11 @@ export namespace Components {
      * </script>
      */
     interface IoModal {
+        /**
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
+         */
+        "aria"?: Record<string, string>;
         /**
           * Programmatically close the modal. No-op if already closed. Equivalent to setting `open = false`. Emits the `dismiss` event.
           * @example   const modal = document.querySelector('io-modal');   modal.close();
@@ -1081,6 +1101,11 @@ export namespace Components {
      * </io-select>
      */
     interface IoSelect {
+        /**
+          * Custom ARIA attributes to inject onto the trigger element. In native mode, applies to the `<select>` element. In custom (combobox) mode, applies to the `<button>` trigger. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="description-panel" on the native <select> <io-select .aria={{ controls: 'description-panel' }} label="Role" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Check validity without showing browser validation UI. Returns true if valid.
          */
@@ -1400,8 +1425,8 @@ export namespace Components {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Place <button> children inside the
-     * component and control the active tab via activeTabIndex + the update event.
+     * Place <button> children inside the component and control the active tab
+     * via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
      * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
@@ -1474,6 +1499,11 @@ export namespace Components {
      * <io-textarea label="Comments" error error-message="This field is required" />
      */
     interface IoTextarea {
+        /**
+          * Custom ARIA attributes to inject onto the native `<textarea>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-errormessage="error-hint-id" on the native <textarea> <io-textarea .aria={{ errormessage: 'error-hint-id' }} label="Bio" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Autocomplete attribute
          */
@@ -2506,8 +2536,8 @@ declare global {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Place <button> children inside the
-     * component and control the active tab via activeTabIndex + the update event.
+     * Place <button> children inside the component and control the active tab
+     * via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
      * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
@@ -2872,6 +2902,11 @@ declare namespace LocalJSX {
      */
     interface IoButton {
         /**
+          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="panel-id" on the inner <button> <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Direction of the optional animated arrow icon. Omit to hide the arrow.
          */
         "arrow"?: IoButtonArrow | undefined;
@@ -3198,6 +3233,11 @@ declare namespace LocalJSX {
      */
     interface IoDrawer {
         /**
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Accessible label for the close button
           * @default 'Close drawer'
          */
@@ -3281,6 +3321,11 @@ declare namespace LocalJSX {
      * <io-input label="Search" type="search" placeholder="Search..." />
      */
     interface IoInput {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="suggestions-list" on the native <input> <io-input .aria={{ controls: 'suggestions-list', autocomplete: 'list' }} label="Search" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Autocomplete attribute
          */
@@ -3438,6 +3483,11 @@ declare namespace LocalJSX {
      * </script>
      */
     interface IoModal {
+        /**
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
+         */
+        "aria"?: Record<string, string>;
         /**
           * Close the modal when the backdrop is clicked
           * @default true
@@ -3738,6 +3788,11 @@ declare namespace LocalJSX {
      * </io-select>
      */
     interface IoSelect {
+        /**
+          * Custom ARIA attributes to inject onto the trigger element. In native mode, applies to the `<select>` element. In custom (combobox) mode, applies to the `<button>` trigger. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="description-panel" on the native <select> <io-select .aria={{ controls: 'description-panel' }} label="Role" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Switches to ARIA combobox/listbox implementation
           * @default false
@@ -4073,8 +4128,8 @@ declare namespace LocalJSX {
      * io-tabs
      * ========
      * Slot-based controlled tabs-bar navigation with full keyboard support.
-     * Place <button> children inside the
-     * component and control the active tab via activeTabIndex + the update event.
+     * Place <button> children inside the component and control the active tab
+     * via activeTabIndex + the update event.
      * Manages roving tabindex (only the active tab is in the tab order).
      * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
      * Disabled buttons (via the HTML disabled attribute) are skipped automatically.
@@ -4159,6 +4214,11 @@ declare namespace LocalJSX {
      * <io-textarea label="Comments" error error-message="This field is required" />
      */
     interface IoTextarea {
+        /**
+          * Custom ARIA attributes to inject onto the native `<textarea>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-errormessage="error-hint-id" on the native <textarea> <io-textarea .aria={{ errormessage: 'error-hint-id' }} label="Bio" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Autocomplete attribute
          */
@@ -5068,8 +5128,8 @@ declare module "@stencil/core" {
              * io-tabs
              * ========
              * Slot-based controlled tabs-bar navigation with full keyboard support.
-             * Place <button> children inside the
-             * component and control the active tab via activeTabIndex + the update event.
+             * Place <button> children inside the component and control the active tab
+             * via activeTabIndex + the update event.
              * Manages roving tabindex (only the active tab is in the tab order).
              * Arrow Left/Right move focus; Enter/Space activate. Home/End jump to edges.
              * Disabled buttons (via the HTML disabled attribute) are skipped automatically.

@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h }
 
 import { getDrawerStyles } from './io-drawer-styles';
 import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon, isBackdropClick } from './io-drawer-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoDrawerPlacement, IoDrawerSize } from './types';
 
@@ -54,6 +55,16 @@ export class IoDrawer {
   /** Accessible label for the close button */
   @Prop() closeLabel = 'Close drawer';
 
+  /**
+   * Custom ARIA attributes to inject onto the native `<dialog>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-controls="main-content" on the native <dialog>
+   * <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+   */
+  @Prop() aria?: Record<string, string>;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Emitted after the drawer closes (any close path: button, backdrop, ESC) */
@@ -104,6 +115,11 @@ export class IoDrawer {
   }
 
   // ── Watchers ──────────────────────────────────────────────────
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.dialogEl ?? null);
+  }
 
   @Watch('open')
   onOpenChange(newVal: boolean) {
@@ -157,7 +173,10 @@ export class IoDrawer {
       <Host>
         <style>{getDrawerStyles()}</style>
         <dialog
-          ref={(el) => (this.dialogEl = el as HTMLDialogElement)}
+          ref={(el?: HTMLDialogElement) => {
+            this.dialogEl = el;
+            applyAriaProp(this.aria, el ?? null);
+          }}
           class={drawerClass}
           aria-labelledby={heading ? headingId : undefined}
           onClick={this.handleDialogClick}

@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoInputType, IoInputSize } from './types';
 
@@ -28,6 +29,7 @@ export class IoInput {
   private fallbackId!: string;
   private inputId!: string;
   private defaultValue = '';
+  private nativeInputEl?: HTMLInputElement;
 
   @State() private hasPrefix = false;
   @State() private hasSuffix = false;
@@ -86,6 +88,16 @@ export class IoInput {
   /** Autocomplete attribute */
   @Prop() autocomplete: string | undefined;
 
+  /**
+   * Custom ARIA attributes to inject onto the native `<input>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-controls="suggestions-list" on the native <input>
+   * <io-input .aria={{ controls: 'suggestions-list', autocomplete: 'list' }} label="Search" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -132,6 +144,11 @@ export class IoInput {
   @Watch('step')
   onStepChange() {
     this.syncFormValue();
+  }
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.nativeInputEl ?? null);
   }
 
   private syncFormValue() {
@@ -261,6 +278,10 @@ export class IoInput {
             <input
               id={inputId}
               class={fieldClass}
+              ref={(el?: HTMLInputElement) => {
+                this.nativeInputEl = el;
+                applyAriaProp(this.aria, el ?? null);
+              }}
               type={type}
               name={name}
               value={value}

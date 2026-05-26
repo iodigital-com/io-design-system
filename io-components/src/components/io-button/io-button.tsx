@@ -1,7 +1,8 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
 
@@ -72,7 +73,18 @@ export class IoButton {
   /** Side on which the arrow is rendered. Defaults to 'right'. */
   @Prop({ reflect: true }) arrowPlacement: IoButtonArrowPlacement = 'right';
 
+  /**
+   * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * // Sets aria-controls="panel-id" on the inner <button>
+   * <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+   */
+  @Prop() aria?: Record<string, string>;
+
   private hasWarnedIconOnlyLabel = false;
+  private btnEl?: HTMLElement;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -89,6 +101,13 @@ export class IoButton {
   async setFocus(options?: FocusOptions): Promise<void> {
     const inner = this.el.shadowRoot?.querySelector<HTMLElement>('.btn');
     inner?.focus(options);
+  }
+
+  // ── Watchers ─────────────────────────────────────────────────
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.btnEl ?? null);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -144,6 +163,10 @@ export class IoButton {
 
     const innerProps: Record<string, unknown> = {
       class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
+      ref: (el?: HTMLElement) => {
+        this.btnEl = el;
+        applyAriaProp(this.aria, el ?? null);
+      },
       onClick: this.handleClick,
       onKeyDown: this.handleKeyDown,
       ...ariaAttrs,

@@ -130,5 +130,49 @@ export function getButtonGroupStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .group-btn { transition: none; }
     }
+
+    /* ── Column (vertical) direction ────────────────────── */
+
+    :host([direction="column"]) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    :host([direction="column"]) .group {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    :host([direction="column"]) .group-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Border collapse — adjacent buttons share a single top/bottom border */
+    :host([direction="column"]) .group-btn + .group-btn {
+      margin-left: 0;
+      margin-top: calc(-1 * var(--io-button-group-border-width));
+    }
+
+    /* Corner radius — top corners for first, bottom corners for last */
+    :host([direction="column"]) .group-btn:first-of-type {
+      border-radius:
+        var(--io-button-group-border-radius)
+        var(--io-button-group-border-radius)
+        0
+        0;
+    }
+
+    :host([direction="column"]) .group-btn:last-of-type {
+      border-radius:
+        0
+        0
+        var(--io-button-group-border-radius)
+        var(--io-button-group-border-radius);
+    }
+
+    :host([direction="column"]) .group-btn:only-of-type {
+      border-radius: var(--io-button-group-border-radius);
+    }
   `;
 }

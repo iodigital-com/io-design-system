@@ -73,9 +73,11 @@
     },
     "io-button-group": {
       "props": {
+        "direction": "IoButtonGroupDirection",
         "disabled": "boolean",
         "exclusive": "boolean",
         "label": "string | undefined",
+        "size": "IoButtonGroupSize",
         "value": "string | string[]"
       },
       "methods": {},

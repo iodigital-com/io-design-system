@@ -20,6 +20,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
       disabled: false,
       label: 'View period',
       size: 'md',
+      direction: 'row',
     },
   },
   generator: ({ properties } = {}) => [
@@ -31,6 +32,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         disabled: properties?.disabled as boolean ?? false,
         label: properties?.label as string ?? 'View period',
         size: (properties?.size as 'sm' | 'md' | 'lg') ?? 'md',
+        direction: (properties?.direction as 'row' | 'column') ?? 'row',
       },
       children: [
         createButtonGroupItem('day', 'Day'),
@@ -155,6 +157,36 @@ export const buttonGroupStorySizeLg: Story<'io-button-group'> = {
   ],
 };
 
+export const buttonGroupStoryDirectionRow: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'week', direction: 'row', label: 'View period (row — default)' },
+      children: [
+        createButtonGroupItem('day', 'Day'),
+        createButtonGroupItem('week', 'Week'),
+        createButtonGroupItem('month', 'Month'),
+      ],
+    },
+  ],
+};
+
+export const buttonGroupStoryDirectionColumn: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'edit', direction: 'column', label: 'Actions' },
+      children: [
+        createButtonGroupItem('edit', 'Edit'),
+        createButtonGroupItem('duplicate', 'Duplicate'),
+        createButtonGroupItem('archive', 'Archive'),
+      ],
+    },
+  ],
+};
+
 export const buttonGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'exclusive',
@@ -182,5 +214,11 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: 'md',
     description: "Size preset propagated to all slotted io-button children. One of 'sm' | 'md' | 'lg'.",
+  },
+  {
+    name: 'direction',
+    type: 'string',
+    defaultValue: 'row',
+    description: "Layout direction for the button group. 'row' lays buttons out horizontally (default); 'column' stacks them vertically.",
   },
 ];

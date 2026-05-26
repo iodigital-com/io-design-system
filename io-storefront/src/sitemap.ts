@@ -74,7 +74,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Accordion',
         href: '/components/io-accordion/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-accordion',
         description: 'Collapsible content sections with animated plus/minus icon and keyboard navigation.',
         related: ['io-tabs', 'io-modal', 'io-button'],
@@ -122,7 +122,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Button Group',
         href: '/components/io-button-group/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-button-group',
         description: 'Segmented single or multi-select control. Renders a horizontal button strip with shared borders, active state in brand blue, and full radiogroup/checkbox ARIA semantics.',
         related: ['io-button', 'io-tabs', 'io-checkbox'],
@@ -138,7 +138,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Divider',
         href: '/components/io-divider/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-divider',
         description: 'Token-based visual separator between sections of content. Supports horizontal and vertical orientations, plus a labeled variant for "or" / "and" patterns.',
         related: ['io-accordion', 'io-tabs', 'io-badge'],
@@ -210,7 +210,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Progress',
         href: '/components/io-progress/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-progress',
         description: 'Linear progress bar. Use for file uploads, multi-step forms, and wizard flows. Supports five colour variants and three track sizes.',
         related: ['io-spinner', 'io-toast'],

@@ -557,7 +557,7 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error'),
     );
     expect(errorPara).toBeDefined();
     expect(errorPara?.[1]?.['role']).toBe('alert');
@@ -571,7 +571,7 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error'),
     );
     expect(errorPara).toBeUndefined();
   });
@@ -583,7 +583,7 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error'),
     );
     expect(errorPara).toBeUndefined();
   });
@@ -633,7 +633,7 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error'),
     );
     expect(errorPara).toBeDefined();
   });

@@ -28,7 +28,7 @@ export const alertPropDefinitions: PropDefinition[] = [
   },
   {
     name: 'heading',
-    type: 'text',
+    type: 'string',
     defaultValue: '',
     description: 'Optional bold heading rendered above the slotted content.',
   },

@@ -6,11 +6,17 @@ import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoDrawerPlacement, IoDrawerSize } from './types';
 
+const SWIPE_CLOSE_THRESHOLD = 80;
+
 /**
  * io-drawer
  * =========
  * Accessible slide-out drawer overlay built on the native <dialog> element.
  * The browser handles focus trapping, ESC key, and role="dialog".
+ *
+ * When placement="bottom" the drawer renders as a mobile-optimised bottom
+ * sheet with a drag handle affordance. Swiping the handle downward by more
+ * than 80 px dismisses the drawer.
  *
  * @example
  * <io-drawer heading="Settings" placement="right">
@@ -34,6 +40,12 @@ export class IoDrawer {
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
+
+  // ── Touch / swipe state ────────────────────────────────────────
+  private touchStartY = 0;
+  private boundHandleTouchStart?: (ev: TouchEvent) => void;
+  private boundHandleTouchMove?: (ev: TouchEvent) => void;
+  private boundHandleTouchEnd?: (ev: TouchEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -78,6 +90,8 @@ export class IoDrawer {
    * Named `show()` to mirror the native <dialog> API and avoid a
    * TypeScript duplicate-identifier conflict with the `open` boolean prop.
    *
+   * For bottom-sheet placement, attaches swipe-to-dismiss touch listeners.
+   *
    * @example
    *   const drawer = document.querySelector('io-drawer');
    *   drawer.show();
@@ -86,11 +100,16 @@ export class IoDrawer {
   async show(): Promise<void> {
     if (this.open) return;
     this.open = true;
+    if (this.placement === 'bottom') {
+      this.attachSwipeListeners();
+    }
   }
 
   /**
    * Programmatically close the drawer. No-op if already closed.
    * Emits the `dismiss` event.
+   *
+   * For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
    *
    * @example
    *   const drawer = document.querySelector('io-drawer');
@@ -100,6 +119,7 @@ export class IoDrawer {
   async close(): Promise<void> {
     if (!this.open) return;
     this.open = false;
+    this.removeSwipeListeners();
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────
@@ -162,12 +182,66 @@ export class IoDrawer {
     this.open = false;
   };
 
+  // ── Swipe-to-dismiss (bottom sheet only) ──────────────────────
+
+  private attachSwipeListeners(): void {
+    const handle = this.el?.shadowRoot?.querySelector<HTMLElement>('.drawer__handle');
+    if (!handle) return;
+
+    this.boundHandleTouchStart = this.handleTouchStart.bind(this);
+    this.boundHandleTouchMove = this.handleTouchMove.bind(this);
+    this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
+
+    handle.addEventListener('touchstart', this.boundHandleTouchStart, { passive: true });
+    handle.addEventListener('touchmove', this.boundHandleTouchMove, { passive: true });
+    handle.addEventListener('touchend', this.boundHandleTouchEnd, { passive: true });
+  }
+
+  private removeSwipeListeners(): void {
+    const handle = this.el?.shadowRoot?.querySelector<HTMLElement>('.drawer__handle');
+    if (!handle) return;
+
+    if (this.boundHandleTouchStart) {
+      handle.removeEventListener('touchstart', this.boundHandleTouchStart);
+    }
+    if (this.boundHandleTouchMove) {
+      handle.removeEventListener('touchmove', this.boundHandleTouchMove);
+    }
+    if (this.boundHandleTouchEnd) {
+      handle.removeEventListener('touchend', this.boundHandleTouchEnd);
+    }
+
+    this.boundHandleTouchStart = undefined;
+    this.boundHandleTouchMove = undefined;
+    this.boundHandleTouchEnd = undefined;
+  }
+
+  private handleTouchStart(ev: TouchEvent): void {
+    this.touchStartY = ev.touches[0]?.clientY ?? 0;
+  }
+
+  private handleTouchMove(_ev: TouchEvent): void {
+    // No-op: reserved for future visual drag feedback
+  }
+
+  private handleTouchEnd(ev: TouchEvent): void {
+    const endY = ev.changedTouches[0]?.clientY ?? 0;
+    const deltaY = endY - this.touchStartY;
+    if (deltaY >= SWIPE_CLOSE_THRESHOLD) {
+      this.open = false;
+      this.removeSwipeListeners();
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
     const { placement, size, heading, headingId } = this;
     const closeIcon = getDrawerCloseIcon();
-    const drawerClass = getDrawerClass(placement, size);
+    const isBottomSheet = placement === 'bottom';
+    const drawerClass = isBottomSheet
+      ? `${getDrawerClass(placement, size)} drawer--sheet`
+      : getDrawerClass(placement, size);
 
     return (
       <Host>
@@ -182,6 +256,7 @@ export class IoDrawer {
           onClick={this.handleDialogClick}
           onCancel={this.handleCancel}
         >
+          {isBottomSheet && <div class="drawer__handle" aria-hidden="true" />}
           <div class="drawer__header">
             {heading && (
               <h2 id={headingId} class="drawer__heading">

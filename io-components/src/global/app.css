@@ -524,6 +524,12 @@
   --io-font-family-base:         var(--io-font-primary);
   --io-font-weight-semibold:     600;
 
+  /* ── Stepper ─────────────────────────────────────────── */
+  --io-stepper-circle-size:         2rem;       /* 32px — step circle diameter */
+  --io-stepper-circle-border-width: 2px;        /* step circle border thickness */
+  --io-stepper-connector-offset:    1rem;       /* 16px — aligns connector to circle centre */
+  --io-stepper-connector-width:     2px;        /* horizontal connector height / vertical connector width */
+
   /* ── Table ───────────────────────────────────────────── */
   --io-table-row-selected-bg:    var(--io-color-primary-muted);
 }

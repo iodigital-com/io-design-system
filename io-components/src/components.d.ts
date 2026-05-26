@@ -959,8 +959,17 @@ export namespace Components {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface IoPagination {
         /**
@@ -974,12 +983,20 @@ export namespace Components {
          */
         "page": number;
         /**
+          * Items shown per page (Pattern B). Provide together with `totalItems` to let the component compute `totalPages`. Values <= 0 are treated as 1 to avoid division by zero.
+         */
+        "perPage"?: number;
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
         "prevLabel": string;
         /**
-          * Total number of pages
+          * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
+         */
+        "totalItems"?: number;
+        /**
+          * Total number of pages (Pattern A). Ignored when both `totalItems` and `perPage` are supplied.
           * @default 1
          */
         "totalPages": number;
@@ -1616,7 +1633,7 @@ export namespace Components {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface IoTextarea {
         /**
@@ -2386,8 +2403,17 @@ declare global {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface HTMLIoPaginationElement extends Components.IoPagination, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoPaginationElementEventMap>(type: K, listener: (this: HTMLIoPaginationElement, ev: IoPaginationCustomEvent<HTMLIoPaginationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -2839,7 +2865,7 @@ declare global {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface HTMLIoTextareaElement extends Components.IoTextarea, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTextareaElementEventMap>(type: K, listener: (this: HTMLIoTextareaElement, ev: IoTextareaCustomEvent<HTMLIoTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3875,8 +3901,17 @@ declare namespace LocalJSX {
      * Circular page controls — outlined page numbers, active page in brand blue,
      * beige prev/next arrow buttons. Automatically generates ellipsis for large
      * page counts.
-     * @example <io-pagination page="1" total-pages="10" />
-     * <io-pagination page="5" total-pages="12" />
+     * **Pattern A — explicit page count:**
+     * ```html
+     * <io-pagination page="1" total-pages="10" />
+     * ```
+     * **Pattern B — data-driven (preferred for API integrations):**
+     * ```html
+     * <io-pagination page="1" total-items="95" per-page="10" />
+     * ```
+     * When `totalItems` and `perPage` are both provided, the component derives
+     * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+     * precedence over any explicit `totalPages` prop.
      */
     interface IoPagination {
         /**
@@ -3894,12 +3929,20 @@ declare namespace LocalJSX {
          */
         "page"?: number;
         /**
+          * Items shown per page (Pattern B). Provide together with `totalItems` to let the component compute `totalPages`. Values <= 0 are treated as 1 to avoid division by zero.
+         */
+        "perPage"?: number;
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
         "prevLabel"?: string;
         /**
-          * Total number of pages
+          * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
+         */
+        "totalItems"?: number;
+        /**
+          * Total number of pages (Pattern A). Ignored when both `totalItems` and `perPage` are supplied.
           * @default 1
          */
         "totalPages"?: number;
@@ -4568,7 +4611,7 @@ declare namespace LocalJSX {
      * Uses a full border (not underline-only) for better spatial clarity.
      * @example <io-textarea label="Message" rows={4} />
      * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-     * <io-textarea label="Comments" error error-message="This field is required" />
+     * <io-textarea label="Comments" state="error" message="This field is required" />
      */
     interface IoTextarea {
         /**
@@ -4595,7 +4638,7 @@ declare namespace LocalJSX {
          */
         "form"?: string | undefined;
         /**
-          * Helper text shown below (replaced by error when error=true)
+          * Helper text shown below (replaced by message when state is set)
          */
         "helperText"?: string | undefined;
         /**
@@ -4959,6 +5002,8 @@ declare namespace LocalJSX {
     interface IoPaginationAttributes {
         "page": number;
         "totalPages": number;
+        "totalItems": number;
+        "perPage": number;
         "prevLabel": string;
         "nextLabel": string;
     }
@@ -5392,8 +5437,17 @@ declare module "@stencil/core" {
              * Circular page controls — outlined page numbers, active page in brand blue,
              * beige prev/next arrow buttons. Automatically generates ellipsis for large
              * page counts.
-             * @example <io-pagination page="1" total-pages="10" />
-             * <io-pagination page="5" total-pages="12" />
+             * **Pattern A — explicit page count:**
+             * ```html
+             * <io-pagination page="1" total-pages="10" />
+             * ```
+             * **Pattern B — data-driven (preferred for API integrations):**
+             * ```html
+             * <io-pagination page="1" total-items="95" per-page="10" />
+             * ```
+             * When `totalItems` and `perPage` are both provided, the component derives
+             * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+             * precedence over any explicit `totalPages` prop.
              */
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
             /**
@@ -5634,7 +5688,7 @@ declare module "@stencil/core" {
              * Uses a full border (not underline-only) for better spatial clarity.
              * @example <io-textarea label="Message" rows={4} />
              * <io-textarea label="Bio" resize="auto" placeholder="Tell us about yourself..." />
-             * <io-textarea label="Comments" error error-message="This field is required" />
+             * <io-textarea label="Comments" state="error" message="This field is required" />
              */
             "io-textarea": LocalJSX.IntrinsicElements["io-textarea"] & JSXBase.HTMLAttributes<HTMLIoTextareaElement>;
             /**

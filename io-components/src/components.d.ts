@@ -17,6 +17,7 @@ import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -37,6 +38,7 @@ import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
+import { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -53,6 +55,7 @@ export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -73,6 +76,7 @@ export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
+export { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -711,6 +715,48 @@ export namespace Components {
           * @default 'none'
          */
         "state": IoFieldState;
+    }
+    /**
+     * io-heading
+     * ==========
+     * Light DOM typography primitive for headings.
+     * Renders h1–h6 with token-driven font size, weight, color, and alignment.
+     * The `tag` prop is required for correct document outline semantics.
+     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
+     * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     */
+    interface IoHeading {
+        /**
+          * Text alignment
+          * @default 'start'
+         */
+        "align": IoHeadingAlign;
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color": IoHeadingColor;
+        /**
+          * Single-line truncation with text-overflow: ellipsis
+          * @default false
+         */
+        "ellipsis": boolean;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default '2xl'
+         */
+        "size": IoHeadingSize;
+        /**
+          * Semantic HTML heading tag — required for correct document outline
+         */
+        "tag": IoHeadingTag | undefined;
+        /**
+          * Font weight using --io-font-weight-* tokens
+          * @default 'semibold'
+         */
+        "weight": IoHeadingWeight;
     }
     /**
      * io-input
@@ -1973,6 +2019,48 @@ export namespace Components {
         "size": IoTagSize;
     }
     /**
+     * io-text
+     * =======
+     * Light DOM typography primitive for body text.
+     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
+     * font size, weight, color, and alignment.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-text size="base" weight="regular">Body paragraph</io-text>
+     * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     */
+    interface IoText {
+        /**
+          * Text alignment
+          * @default 'start'
+         */
+        "align": IoTextAlign;
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color": IoTextColor;
+        /**
+          * Single-line truncation with text-overflow: ellipsis
+          * @default false
+         */
+        "ellipsis": boolean;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default 'base'
+         */
+        "size": IoTextSize;
+        /**
+          * HTML tag to render
+          * @default 'p'
+         */
+        "tag": IoTextTag;
+        /**
+          * Font weight using --io-font-weight-* tokens
+          * @default 'regular'
+         */
+        "weight": IoTextWeight;
+    }
+    /**
      * io-textarea
      * ============
      * Multi-line text input with label, helper text, and error state.
@@ -2668,6 +2756,23 @@ declare global {
     var HTMLIoFormFieldElement: {
         prototype: HTMLIoFormFieldElement;
         new (): HTMLIoFormFieldElement;
+    };
+    /**
+     * io-heading
+     * ==========
+     * Light DOM typography primitive for headings.
+     * Renders h1–h6 with token-driven font size, weight, color, and alignment.
+     * The `tag` prop is required for correct document outline semantics.
+     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
+     * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     */
+    interface HTMLIoHeadingElement extends Components.IoHeading, HTMLStencilElement {
+    }
+    var HTMLIoHeadingElement: {
+        prototype: HTMLIoHeadingElement;
+        new (): HTMLIoHeadingElement;
     };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
@@ -3377,6 +3482,22 @@ declare global {
         prototype: HTMLIoTagElement;
         new (): HTMLIoTagElement;
     };
+    /**
+     * io-text
+     * =======
+     * Light DOM typography primitive for body text.
+     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
+     * font size, weight, color, and alignment.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-text size="base" weight="regular">Body paragraph</io-text>
+     * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     */
+    interface HTMLIoTextElement extends Components.IoText, HTMLStencilElement {
+    }
+    var HTMLIoTextElement: {
+        prototype: HTMLIoTextElement;
+        new (): HTMLIoTextElement;
+    };
     interface HTMLIoTextareaElementEventMap {
         "input": InputEvent;
         "change": string;
@@ -3503,6 +3624,7 @@ declare global {
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
         "io-form-field": HTMLIoFormFieldElement;
+        "io-heading": HTMLIoHeadingElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -3531,6 +3653,7 @@ declare global {
         "io-tabs": HTMLIoTabsElement;
         "io-tabs-bar": HTMLIoTabsBarElement;
         "io-tag": HTMLIoTagElement;
+        "io-text": HTMLIoTextElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
         "io-toast-item": HTMLIoToastItemElement;
@@ -4188,6 +4311,48 @@ declare namespace LocalJSX {
           * @default 'none'
          */
         "state"?: IoFieldState;
+    }
+    /**
+     * io-heading
+     * ==========
+     * Light DOM typography primitive for headings.
+     * Renders h1–h6 with token-driven font size, weight, color, and alignment.
+     * The `tag` prop is required for correct document outline semantics.
+     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
+     * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     */
+    interface IoHeading {
+        /**
+          * Text alignment
+          * @default 'start'
+         */
+        "align"?: IoHeadingAlign;
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color"?: IoHeadingColor;
+        /**
+          * Single-line truncation with text-overflow: ellipsis
+          * @default false
+         */
+        "ellipsis"?: boolean;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default '2xl'
+         */
+        "size"?: IoHeadingSize;
+        /**
+          * Semantic HTML heading tag — required for correct document outline
+         */
+        "tag"?: IoHeadingTag | undefined;
+        /**
+          * Font weight using --io-font-weight-* tokens
+          * @default 'semibold'
+         */
+        "weight"?: IoHeadingWeight;
     }
     /**
      * io-input
@@ -5471,6 +5636,48 @@ declare namespace LocalJSX {
         "size"?: IoTagSize;
     }
     /**
+     * io-text
+     * =======
+     * Light DOM typography primitive for body text.
+     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
+     * font size, weight, color, and alignment.
+     * Uses light DOM intentionally — typography must be stylable from outside.
+     * @example <io-text size="base" weight="regular">Body paragraph</io-text>
+     * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     */
+    interface IoText {
+        /**
+          * Text alignment
+          * @default 'start'
+         */
+        "align"?: IoTextAlign;
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color"?: IoTextColor;
+        /**
+          * Single-line truncation with text-overflow: ellipsis
+          * @default false
+         */
+        "ellipsis"?: boolean;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default 'base'
+         */
+        "size"?: IoTextSize;
+        /**
+          * HTML tag to render
+          * @default 'p'
+         */
+        "tag"?: IoTextTag;
+        /**
+          * Font weight using --io-font-weight-* tokens
+          * @default 'regular'
+         */
+        "weight"?: IoTextWeight;
+    }
+    /**
      * io-textarea
      * ============
      * Multi-line text input with label, helper text, and error state.
@@ -5824,6 +6031,14 @@ declare namespace LocalJSX {
         "state": IoFieldState;
         "required": boolean;
     }
+    interface IoHeadingAttributes {
+        "tag": IoHeadingTag | undefined;
+        "size": IoHeadingSize;
+        "weight": IoHeadingWeight;
+        "align": IoHeadingAlign;
+        "color": IoHeadingColor;
+        "ellipsis": boolean;
+    }
     interface IoInputAttributes {
         "label": string;
         "type": IoInputType;
@@ -6041,6 +6256,14 @@ declare namespace LocalJSX {
         "color": IoTagColor;
         "label": string;
     }
+    interface IoTextAttributes {
+        "tag": IoTextTag;
+        "size": IoTextSize;
+        "weight": IoTextWeight;
+        "align": IoTextAlign;
+        "color": IoTextColor;
+        "ellipsis": boolean;
+    }
     interface IoTextareaAttributes {
         "label": string;
         "name": string | undefined;
@@ -6100,6 +6323,7 @@ declare namespace LocalJSX {
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
+        "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -6128,6 +6352,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
+        "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
         "io-toast-item": Omit<IoToastItem, keyof IoToastItemAttributes> & { [K in keyof IoToastItem & keyof IoToastItemAttributes]?: IoToastItem[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `attr:${K}`]?: IoToastItemAttributes[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `prop:${K}`]?: IoToastItem[K] };
@@ -6323,6 +6548,18 @@ declare module "@stencil/core" {
              * </io-form-field>
              */
             "io-form-field": LocalJSX.IntrinsicElements["io-form-field"] & JSXBase.HTMLAttributes<HTMLIoFormFieldElement>;
+            /**
+             * io-heading
+             * ==========
+             * Light DOM typography primitive for headings.
+             * Renders h1–h6 with token-driven font size, weight, color, and alignment.
+             * The `tag` prop is required for correct document outline semantics.
+             * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+             * Uses light DOM intentionally — typography must be stylable from outside.
+             * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
+             * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+             */
+            "io-heading": LocalJSX.IntrinsicElements["io-heading"] & JSXBase.HTMLAttributes<HTMLIoHeadingElement>;
             /**
              * io-input
              * =========
@@ -6685,6 +6922,17 @@ declare module "@stencil/core" {
              * <io-tag removable>React</io-tag>
              */
             "io-tag": LocalJSX.IntrinsicElements["io-tag"] & JSXBase.HTMLAttributes<HTMLIoTagElement>;
+            /**
+             * io-text
+             * =======
+             * Light DOM typography primitive for body text.
+             * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
+             * font size, weight, color, and alignment.
+             * Uses light DOM intentionally — typography must be stylable from outside.
+             * @example <io-text size="base" weight="regular">Body paragraph</io-text>
+             * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+             */
+            "io-text": LocalJSX.IntrinsicElements["io-text"] & JSXBase.HTMLAttributes<HTMLIoTextElement>;
             /**
              * io-textarea
              * ============

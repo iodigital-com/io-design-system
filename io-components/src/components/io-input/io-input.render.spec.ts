@@ -576,16 +576,16 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(errorPara).toBeUndefined();
   });
 
-  it('does not render error paragraph when state=error but message is absent', () => {
+  it('renders error paragraph as hidden when state=error but message is absent', () => {
     c.state = 'error';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
     const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error'),
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error--hidden'),
     );
-    expect(errorPara).toBeUndefined();
+    expect(errorPara).toBeDefined();
   });
 
   it('renders helper paragraph when showError=false and helperText is set', () => {

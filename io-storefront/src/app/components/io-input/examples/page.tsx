@@ -57,7 +57,7 @@ export default function IoInputExamplesPage() {
         >
           <io-input label="الاسم الكامل" placeholder="أدخل اسمك" />
           <io-input label="البريد الإلكتروني" type="email" placeholder="example@domain.com" />
-          <io-input label="رقم الهاتف" type="tel" error error-message="رقم هاتف غير صالح" />
+          <io-input label="رقم الهاتف" type="tel" state="error" message="رقم هاتف غير صالح" />
         </div>
         <p className="text-xs mt-2" style={{ color: 'var(--io-text-muted)' }}>
           dir=&quot;rtl&quot; · label anchors right · error icon mirrors to left · prefix/suffix slots swap

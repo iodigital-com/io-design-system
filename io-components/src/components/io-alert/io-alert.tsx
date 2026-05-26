@@ -7,7 +7,12 @@ import type { IoAlertVariant } from './types';
  * io-alert
  * =========
  * Non-interactive inline notification component with four severity variants.
- * Uses role="alert" with aria-live for screen reader announcement.
+ *
+ * ARIA live region strategy:
+ *   - error variant:     role="alert" (implicit aria-live="assertive")
+ *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+ * Setting aria-live on a role="alert" element is redundant and ignored by AT,
+ * so we only set aria-live and aria-atomic for non-error variants.
  *
  * @example
  * <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
@@ -16,7 +21,7 @@ import type { IoAlertVariant } from './types';
  */
 @Component({
   tag: 'io-alert',
-  shadow: { delegatesFocus: false },
+  shadow: { delegatesFocus: true },
 })
 export class IoAlert {
   /** Severity variant — controls icon, colour, and aria-live politeness */
@@ -37,13 +42,14 @@ export class IoAlert {
 
   render() {
     return (
-      <Host>
+      <Host
+        role={this.variant === 'error' ? 'alert' : 'status'}
+        aria-live={this.variant === 'error' ? undefined : 'polite'}
+        aria-atomic={this.variant === 'error' ? undefined : 'true'}
+      >
         <style>{getAlertStyles()}</style>
         <div
           class={`alert alert--${this.variant}`}
-          role="alert"
-          aria-live={this.variant === 'error' ? 'assertive' : 'polite'}
-          aria-atomic="true"
         >
           <span class="alert__icon" aria-hidden="true">
             {this.variant === 'info' && (

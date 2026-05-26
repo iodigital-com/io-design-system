@@ -1,28 +1,58 @@
+/**
+ * io-alert — WCAG AA accessibility pattern tests
+ *
+ * Tests the ARIA patterns used by io-alert's rendered output:
+ *   - Non-error variants: role="status" + aria-live="polite" + aria-atomic="true"
+ *   - Error variant:      role="alert"  (implicit assertive; no explicit aria-live)
+ *
+ * role="alert" + aria-live on the same element conflicts — AT uses role semantics
+ * and ignores the redundant aria-live attribute — so we never combine them.
+ *
+ * Full component-level axe auditing against the Shadow DOM requires the Stencil
+ * render environment and is out of scope for unit tests.
+ */
 import { describe, it } from 'vitest';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-alert — a11y', () => {
-  it('info alert has no violations', async () => {
+describe('io-alert — a11y (ARIA patterns)', () => {
+  it('info alert (role=status, aria-live=polite) has no violations', async () => {
     const el = document.createElement('div');
-    el.setAttribute('role', 'alert');
+    el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     el.setAttribute('aria-atomic', 'true');
     el.textContent = 'Your session expires in 5 minutes.';
     await renderAndCheckA11y(el);
   });
 
-  it('error alert uses aria-live=assertive and has no violations', async () => {
+  it('success alert (role=status, aria-live=polite) has no violations', async () => {
+    const el = document.createElement('div');
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+    el.textContent = 'Changes saved successfully.';
+    await renderAndCheckA11y(el);
+  });
+
+  it('warning alert (role=status, aria-live=polite) has no violations', async () => {
+    const el = document.createElement('div');
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+    el.textContent = 'Your subscription expires in 3 days.';
+    await renderAndCheckA11y(el);
+  });
+
+  it('error alert (role=alert, no explicit aria-live) has no violations', async () => {
+    // role="alert" carries implicit aria-live="assertive" — do NOT add aria-live
     const el = document.createElement('div');
     el.setAttribute('role', 'alert');
-    el.setAttribute('aria-live', 'assertive');
-    el.setAttribute('aria-atomic', 'true');
     el.textContent = 'Upload failed. The file exceeds 10 MB.';
     await renderAndCheckA11y(el);
   });
 
-  it('alert with heading has no violations', async () => {
+  it('alert with optional heading has no violations', async () => {
     const el = document.createElement('div');
-    el.setAttribute('role', 'alert');
+    el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     el.setAttribute('aria-atomic', 'true');
 
@@ -37,14 +67,12 @@ describe('io-alert — a11y', () => {
     await renderAndCheckA11y(el);
   });
 
-  it('dismissible alert with accessible button has no violations', async () => {
-    const wrapper = document.createElement('div');
-
-    const alertEl = document.createElement('div');
-    alertEl.setAttribute('role', 'alert');
-    alertEl.setAttribute('aria-live', 'polite');
-    alertEl.setAttribute('aria-atomic', 'true');
-    alertEl.textContent = 'Item added to cart.';
+  it('dismissible alert with accessible dismiss button has no violations', async () => {
+    const el = document.createElement('div');
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-atomic', 'true');
+    el.textContent = 'Item added to cart.';
 
     const dismissBtn = document.createElement('button');
     dismissBtn.setAttribute('type', 'button');
@@ -56,7 +84,8 @@ describe('io-alert — a11y', () => {
     svg.setAttribute('height', '16');
     dismissBtn.appendChild(svg);
 
-    wrapper.appendChild(alertEl);
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(el);
     wrapper.appendChild(dismissBtn);
     await renderAndCheckA11y(wrapper);
   });

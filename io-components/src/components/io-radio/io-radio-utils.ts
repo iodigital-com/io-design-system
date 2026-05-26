@@ -13,13 +13,14 @@ export function resolveRadioId(name: string | undefined, fallbackId: string): st
     : `io-radio-${fallbackId}`;
 }
 
-export function getRadioWrapperClass(disabled: boolean, error: boolean, success: boolean, warning: boolean): string {
+export function getRadioWrapperClass(disabled: boolean, error: boolean, success: boolean, warning: boolean, loading = false): string {
   return [
     'radio-wrapper',
     disabled ? 'radio-wrapper--disabled' : '',
     error ? 'radio-wrapper--state-error' : '',
     success ? 'radio-wrapper--state-success' : '',
     warning ? 'radio-wrapper--state-warning' : '',
+    loading ? 'radio-wrapper--loading' : '',
   ]
     .filter(Boolean)
     .join(' ');

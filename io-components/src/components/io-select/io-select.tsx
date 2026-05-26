@@ -99,6 +99,9 @@ export class IoSelect {
    */
   @Prop() aria?: Record<string, string>;
 
+  /** Shows a loading spinner replacing the chevron and disables interaction */
+  @Prop({ reflect: true }) loading = false;
+
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
@@ -570,7 +573,8 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, state, message, helperText, size, groups, form } = this;
+    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form } = this;
+    const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
@@ -584,13 +588,13 @@ export class IoSelect {
     ].filter(Boolean).join(' ') || undefined;
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getSelectStyles()}</style>
         {/* Hidden slot — io-option/io-optgroup children are parsed in componentDidLoad
             and rendered as internal <option>/<optgroup> elements. The originals are
             visually hidden so the native select controls the displayed value. */}
         <slot />
-        <div class={getSelectWrapperClass(showError, showSuccess, showWarning, disabled)}>
+        <div class={getSelectWrapperClass(showError, showSuccess, showWarning, isDisabled, loading)}>
           <select
             id={selectId}
             class={`select-field select-field--${size}`}
@@ -599,7 +603,7 @@ export class IoSelect {
               applyAriaProp(this.aria, el ?? null);
             }}
             name={name}
-            disabled={disabled}
+            disabled={isDisabled}
             required={required}
             form={form}
             aria-invalid={showError ? 'true' : undefined}
@@ -633,11 +637,17 @@ export class IoSelect {
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
           </label>
-          <span class="select-chevron" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
+          {loading ? (
+            <span class="select-chevron select-loading-indicator" aria-hidden="true">
+              <io-spinner size="sm" />
+            </span>
+          ) : (
+            <span class="select-chevron" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          )}
         </div>
         {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>}
         {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
@@ -646,7 +656,8 @@ export class IoSelect {
   }
 
   private renderCombobox() {
-    const { label, required, disabled, state, message, helperText, size, isOpen, activeIndex, filterQuery } = this;
+    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery } = this;
+    const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
@@ -667,12 +678,12 @@ export class IoSelect {
     const opts = this.filteredOptions;
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getSelectStyles()}</style>
         {/* Hidden slot — io-option/io-optgroup children are parsed and rendered
             as internal listbox items. The originals are visually hidden. */}
         <slot />
-        <div class={getComboboxWrapperClass(showError, showSuccess, showWarning, disabled)}>
+        <div class={getComboboxWrapperClass(showError, showSuccess, showWarning, isDisabled, loading)}>
           <label id={labelId} class="select-label" aria-hidden="true">
             {label}
             {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
@@ -695,16 +706,22 @@ export class IoSelect {
             aria-required={required ? 'true' : undefined}
             aria-invalid={showError ? 'true' : undefined}
             aria-describedby={describedBy}
-            disabled={disabled}
+            disabled={isDisabled}
             onClick={this.handleTriggerClick}
             onKeyDown={this.handleTriggerKeyDown}
           >
             <span class="combobox-trigger__text">{this.displayValue || <span class="combobox-trigger__placeholder">{this.placeholder}</span>}</span>
-            <span class="combobox-trigger__chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
+            {loading ? (
+              <span class="combobox-trigger__chevron select-loading-indicator" aria-hidden="true">
+                <io-spinner size="sm" />
+              </span>
+            ) : (
+              <span class="combobox-trigger__chevron" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            )}
           </button>
 
           <div

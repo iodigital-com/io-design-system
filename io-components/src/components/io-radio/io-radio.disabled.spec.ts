@@ -24,4 +24,15 @@ describe('io-radio — disabled state', () => {
     expect(component.disabled).toBe(true);
     expect(emitMock).not.toHaveBeenCalled();
   });
+
+  it('is not loading by default', () => {
+    const fresh = new IoRadio();
+    expect(fresh.loading).toBe(false);
+  });
+
+  it('reflects loading prop when set to true', () => {
+    const fresh = new IoRadio();
+    fresh.loading = true;
+    expect(fresh.loading).toBe(true);
+  });
 });

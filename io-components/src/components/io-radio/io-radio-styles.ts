@@ -19,6 +19,20 @@ export function getRadioStyles(): string {
       pointer-events: none;
     }
 
+    .radio-wrapper--loading {
+      pointer-events: none;
+    }
+
+    /* Loading: spinner replaces the radio control visual */
+    .radio-control--loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--io-radio-size);
+      height: var(--io-radio-size);
+      flex-shrink: 0;
+    }
+
     /* ── Label row ──────────────────────────────────────── */
 
     .radio-label {

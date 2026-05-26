@@ -30,4 +30,13 @@ describe('io-select — disabled', () => {
   it('required prop defaults to false', () => {
     expect(component.required).toBe(false);
   });
+
+  it('is not loading by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('reflects loading prop when set to true', () => {
+    component.loading = true;
+    expect(component.loading).toBe(true);
+  });
 });

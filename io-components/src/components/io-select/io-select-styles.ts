@@ -32,6 +32,17 @@ export function getSelectStyles(): string {
       pointer-events: none;
     }
 
+    .select-wrapper--loading {
+      pointer-events: none;
+    }
+
+    /* Loading spinner replaces the chevron */
+    .select-loading-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     /* Label: absolutely positioned in the padding-top area */
     .select-label {
       position: absolute;

@@ -55,6 +55,9 @@ export class IoRadio {
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
 
+  /** Shows a loading spinner replacing the radio control and disables interaction */
+  @Prop({ reflect: true }) loading = false;
+
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
@@ -170,7 +173,7 @@ export class IoRadio {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });
@@ -195,7 +198,8 @@ export class IoRadio {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, state, message, helperText, form } = this;
+    const { label, name, value, checked, required, disabled, loading, state, message, helperText, form } = this;
+    const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
     const helperId = `${inputId}-helper`;
@@ -216,29 +220,35 @@ export class IoRadio {
       .join(' ');
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getRadioStyles()}</style>
-        <div class={getRadioWrapperClass(disabled, showError, showSuccess, showWarning)}>
+        <div class={getRadioWrapperClass(isDisabled, showError, showSuccess, showWarning, loading)}>
           <label class="radio-label" htmlFor={inputId}>
-            <span class="radio-control">
-              <input
-                id={inputId}
-                class="radio-native"
-                type="radio"
-                name={name}
-                value={value}
-                checked={checked}
-                disabled={disabled}
-                required={required}
-                form={form}
-                aria-invalid={showError ? 'true' : undefined}
-                aria-describedby={describedBy || undefined}
-                onChange={this.handleChange}
-              />
-              <span class={getRadioCustomClass(checked)} aria-hidden="true">
-                <span class="radio-dot" />
+            {loading ? (
+              <span class="radio-control radio-control--loading" aria-hidden="true">
+                <io-spinner size="sm" />
               </span>
-            </span>
+            ) : (
+              <span class="radio-control">
+                <input
+                  id={inputId}
+                  class="radio-native"
+                  type="radio"
+                  name={name}
+                  value={value}
+                  checked={checked}
+                  disabled={isDisabled}
+                  required={required}
+                  form={form}
+                  aria-invalid={showError ? 'true' : undefined}
+                  aria-describedby={describedBy || undefined}
+                  onChange={this.handleChange}
+                />
+                <span class={getRadioCustomClass(checked)} aria-hidden="true">
+                  <span class="radio-dot" />
+                </span>
+              </span>
+            )}
             <span class="radio-text">
               {label}
               {required && (

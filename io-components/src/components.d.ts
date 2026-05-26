@@ -369,6 +369,8 @@ export namespace Components {
      * Inner content is projected via the default slot — the carousel does not
      * dictate slide structure. Put any HTML you need inside.
      * @example <io-carousel>
+     *   <h2 slot="heading">Featured Articles</h2>
+     *   <p slot="description">Browse our latest content.</p>
      *   <div class="card">Slide 1</div>
      *   <div class="card">Slide 2</div>
      *   <div class="card">Slide 3</div>
@@ -381,7 +383,7 @@ export namespace Components {
          */
         "activeSlideIndex": number;
         /**
-          * Accessible label for the carousel region. Required for screen reader context.
+          * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
          */
         "label": string;
@@ -2279,6 +2281,8 @@ declare global {
      * Inner content is projected via the default slot — the carousel does not
      * dictate slide structure. Put any HTML you need inside.
      * @example <io-carousel>
+     *   <h2 slot="heading">Featured Articles</h2>
+     *   <p slot="description">Browse our latest content.</p>
      *   <div class="card">Slide 1</div>
      *   <div class="card">Slide 2</div>
      *   <div class="card">Slide 3</div>
@@ -3539,6 +3543,8 @@ declare namespace LocalJSX {
      * Inner content is projected via the default slot — the carousel does not
      * dictate slide structure. Put any HTML you need inside.
      * @example <io-carousel>
+     *   <h2 slot="heading">Featured Articles</h2>
+     *   <p slot="description">Browse our latest content.</p>
      *   <div class="card">Slide 1</div>
      *   <div class="card">Slide 2</div>
      *   <div class="card">Slide 3</div>
@@ -3551,7 +3557,7 @@ declare namespace LocalJSX {
          */
         "activeSlideIndex"?: number;
         /**
-          * Accessible label for the carousel region. Required for screen reader context.
+          * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
          */
         "label"?: string;
@@ -5695,6 +5701,8 @@ declare module "@stencil/core" {
              * Inner content is projected via the default slot — the carousel does not
              * dictate slide structure. Put any HTML you need inside.
              * @example <io-carousel>
+             *   <h2 slot="heading">Featured Articles</h2>
+             *   <p slot="description">Browse our latest content.</p>
              *   <div class="card">Slide 1</div>
              *   <div class="card">Slide 2</div>
              *   <div class="card">Slide 3</div>

@@ -34,6 +34,7 @@ declare module 'react' {
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
   'io-pin-code': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPinCodeElement>, HTMLIoPinCodeElement> & Partial<StencilJSX.IoPinCode>;
   'io-popover': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { placement?: string; open?: boolean; 'close-on-click-outside'?: boolean; label?: string };
+  'io-popover': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPopoverElement>, HTMLIoPopoverElement> & Partial<StencilJSX.IoPopover>;
   'io-progress': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoProgressElement>, HTMLIoProgressElement> & Partial<StencilJSX.IoProgress>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-radio-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioGroupElement>, HTMLIoRadioGroupElement> & Partial<StencilJSX.IoRadioGroup>;

@@ -23,6 +23,7 @@ import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
+import { IoPopoverPlacement } from "./components/io-popover/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -57,6 +58,7 @@ export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
+export { IoPopoverPlacement } from "./components/io-popover/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
@@ -1127,6 +1129,99 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label": string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length": IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message": string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name": string | undefined;
+        /**
+          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Programmatically focus the first empty slot (or the last slot if complete)
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state": IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type": IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value": string;
+=======
+     * io-popover
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface IoPopover {
+        /**
+          * Close the popover when clicking outside the panel
+          * @default true
+         */
+        "closeOnClickOutside": boolean;
+        /**
+          * Accessible label for the popover dialog
+         */
+        "label"?: string;
+        /**
+          * Whether the popover is currently open
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Preferred placement of the popover panel relative to the trigger
+          * @default 'bottom'
+         */
+        "placement": IoPopoverPlacement;
     }
     /**
      * io-progress
@@ -2130,6 +2225,9 @@ export interface IoPaginationCustomEvent<T> extends CustomEvent<T> {
 export interface IoPinCodeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPinCodeElement;
+export interface IoPopoverCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoPopoverElement;
 }
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2710,6 +2808,40 @@ declare global {
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
         removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+=======
+    interface HTMLIoPopoverElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-popover
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface HTMLIoPopoverElement extends Components.IoPopover, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
@@ -2717,6 +2849,9 @@ declare global {
     var HTMLIoPinCodeElement: {
         prototype: HTMLIoPinCodeElement;
         new (): HTMLIoPinCodeElement;
+    var HTMLIoPopoverElement: {
+        prototype: HTMLIoPopoverElement;
+        new (): HTMLIoPopoverElement;
     };
     /**
      * io-progress
@@ -3300,6 +3435,7 @@ declare global {
         "io-option": HTMLIoOptionElement;
         "io-pagination": HTMLIoPaginationElement;
         "io-pin-code": HTMLIoPinCodeElement;
+        "io-popover": HTMLIoPopoverElement;
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
@@ -4397,6 +4533,99 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label"?: string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length"?: IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message"?: string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name"?: string | undefined;
+        /**
+          * Fires on every digit change with current value and completion status
+         */
+        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state"?: IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type"?: IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value"?: string;
+=======
+     * io-popover
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface IoPopover {
+        /**
+          * Close the popover when clicking outside the panel
+          * @default true
+         */
+        "closeOnClickOutside"?: boolean;
+        /**
+          * Accessible label for the popover dialog
+         */
+        "label"?: string;
+        /**
+          * Emitted when the popover closes (Escape key or outside click)
+         */
+        "onDismiss"?: (event: IoPopoverCustomEvent<void>) => void;
+        /**
+          * Whether the popover is currently open
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Preferred placement of the popover panel relative to the trigger
+          * @default 'bottom'
+         */
+        "placement"?: IoPopoverPlacement;
     }
     /**
      * io-progress
@@ -5553,6 +5782,11 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "state": IoPinCodeState;
         "message": string | undefined;
+    interface IoPopoverAttributes {
+        "placement": IoPopoverPlacement;
+        "open": boolean;
+        "closeOnClickOutside": boolean;
+        "label": string;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -5741,6 +5975,7 @@ declare namespace LocalJSX {
         "io-option": Omit<IoOption, keyof IoOptionAttributes> & { [K in keyof IoOption & keyof IoOptionAttributes]?: IoOption[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `attr:${K}`]?: IoOptionAttributes[K] } & { [K in keyof IoOption & keyof IoOptionAttributes as `prop:${K}`]?: IoOption[K] } & OneOf<"label", IoOption["label"], IoOptionAttributes["label"]>;
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
         "io-pin-code": Omit<IoPinCode, keyof IoPinCodeAttributes> & { [K in keyof IoPinCode & keyof IoPinCodeAttributes]?: IoPinCode[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `attr:${K}`]?: IoPinCodeAttributes[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `prop:${K}`]?: IoPinCode[K] };
+        "io-popover": Omit<IoPopover, keyof IoPopoverAttributes> & { [K in keyof IoPopover & keyof IoPopoverAttributes]?: IoPopover[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `attr:${K}`]?: IoPopoverAttributes[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `prop:${K}`]?: IoPopover[K] };
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
@@ -6043,6 +6278,26 @@ declare module "@stencil/core" {
              * <io-pin-code label="OTP Code" length="6" type="password" required />
              */
             "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
+             * Multi-slot PIN / OTP entry component with keyboard navigation,
+             * auto-advance, backspace-to-previous, and clipboard paste support.
+             * Participates in native HTML forms via the FACE (Form-Associated
+             * Custom Elements) API.
+             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+             * <io-pin-code label="OTP Code" length="6" type="password" required />
+             */
+            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
+=======
+             * io-popover
+             * ==========
+             * Click-triggered floating content panel with accessible dialog semantics.
+             * Uses the native Popover API (`popover="auto"`) where available, falling back
+             * to manual absolute positioning. No runtime positioning library required.
+             * @example <io-popover label="Quick actions" placement="bottom">
+             *   <io-button slot="trigger">Open</io-button>
+             *   <p>Popover body content.</p>
+             * </io-popover>
+             */
+            "io-popover": LocalJSX.IntrinsicElements["io-popover"] & JSXBase.HTMLAttributes<HTMLIoPopoverElement>;
             /**
              * io-progress
              * ===========

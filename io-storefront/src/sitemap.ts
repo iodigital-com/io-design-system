@@ -208,6 +208,14 @@ export const sitemap: NavSection[] = [
         related: ['io-button', 'io-select', 'io-spinner'],
       },
       {
+        label: 'Pin Code',
+        href: '/components/io-pin-code/configurator',
+        status: 'beta',
+        slug: 'io-pin-code',
+        description: 'Secure PIN or OTP entry field. N digit slots with auto-advance, paste distribution, and optional password masking. FACE form-associated.',
+        related: ['io-input', 'io-form-field'],
+      },
+      {
         label: 'Progress',
         href: '/components/io-progress/configurator',
         status: 'stable',

@@ -1,0 +1,126 @@
+import type { PropDefinition } from '@/models/propDefinition';
+import type { Story } from '@/models/story';
+
+const DEFAULT_CHILDREN = [
+  { tag: 'io-option' as const, properties: { value: 'nl', label: 'Netherlands' } },
+  { tag: 'io-option' as const, properties: { value: 'be', label: 'Belgium' } },
+  { tag: 'io-option' as const, properties: { value: 'de', label: 'Germany' } },
+  { tag: 'io-option' as const, properties: { value: 'fr', label: 'France' } },
+  { tag: 'io-option' as const, properties: { value: 'es', label: 'Spain' } },
+  { tag: 'io-option' as const, properties: { value: 'it', label: 'Italy' } },
+  { tag: 'io-option' as const, properties: { value: 'se', label: 'Sweden', disabled: true } },
+];
+
+export const multiSelectStory: Story<'io-multi-select'> = {
+  state: {
+    properties: {
+      label: 'Countries',
+      placeholder: 'Select countries',
+      disabled: false,
+      required: false,
+      state: 'none',
+      message: '',
+      filter: false,
+    },
+  },
+  generator: ({ properties } = {}) => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: {
+        name: 'countries',
+        label: (properties?.label as string) ?? 'Countries',
+        placeholder: (properties?.placeholder as string) || undefined,
+        disabled: (properties?.disabled as boolean) ?? false,
+        required: (properties?.required as boolean) ?? false,
+        state: (properties?.state as string) ?? 'none',
+        message: (properties?.message as string) || undefined,
+        filter: (properties?.filter as boolean) ?? false,
+      },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryDefault: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries' } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries' },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryWithFilter: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries', filter: true } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries', filter: true, placeholder: 'Search countries' },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryError: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries', state: 'error', message: 'Please select at least one country' } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: {
+        name: 'countries',
+        label: 'Countries',
+        state: 'error',
+        message: 'Please select at least one country',
+      },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectPropDefinitions: PropDefinition[] = [
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: 'Countries',
+    description: 'Sets the field label shown above the trigger.',
+  },
+  {
+    name: 'placeholder',
+    type: 'string',
+    defaultValue: 'Select options',
+    description: 'Displays hint text when no values are selected.',
+  },
+  {
+    name: 'disabled',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Prevents opening and changing the selection.',
+  },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the field as required for form submission.',
+  },
+  {
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success'],
+    defaultValue: 'none',
+    description: 'Visual and semantic validation state.',
+  },
+  {
+    name: 'message',
+    type: 'string',
+    defaultValue: '',
+    description: 'Message text shown below the trigger (error, success, or helper).',
+  },
+  {
+    name: 'filter',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a search input inside the dropdown to filter options by label.',
+  },
+];

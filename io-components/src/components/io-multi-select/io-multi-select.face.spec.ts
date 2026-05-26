@@ -1,0 +1,156 @@
+/**
+ * io-multi-select — FACE (Form-Associated Custom Elements) unit tests
+ *
+ * Verifies: syncFormValue, checkValidity, reportValidity, formResetCallback.
+ * io-multi-select uses FormData to submit multiple values under the same name.
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+import { IoMultiSelect } from './io-multi-select';
+
+function makeInternals() {
+  return {
+    setFormValue: vi.fn(),
+    setValidity: vi.fn(),
+    checkValidity: vi.fn().mockReturnValue(true),
+    reportValidity: vi.fn().mockReturnValue(true),
+  };
+}
+
+describe('io-multi-select — FACE', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    component.name = 'countries';
+    (component as any).componentWillLoad();
+  });
+
+  it('syncFormValue sets null when no values are selected', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.value = [];
+    (component as any).syncFormValue();
+    expect(internals.setFormValue).toHaveBeenCalledWith(null);
+  });
+
+  it('syncFormValue sets null when name is empty', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.name = '';
+    component.value = ['nl'];
+    (component as any).syncFormValue();
+    expect(internals.setFormValue).toHaveBeenCalledWith(null);
+  });
+
+  it('syncFormValue sets FormData with all selected values', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.value = ['nl', 'be'];
+    (component as any).syncFormValue();
+
+    const callArg = internals.setFormValue.mock.calls[0][0];
+    expect(callArg).toBeInstanceOf(FormData);
+    expect(callArg.getAll('countries')).toEqual(['nl', 'be']);
+  });
+
+  it('syncFormValue sets valueMissing when required and no values selected', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = [];
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { valueMissing: true },
+      'Please select at least one option',
+    );
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
+  it('syncFormValue clears validity when required and values are selected', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = ['nl'];
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith({});
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('syncFormValue clears validity when not required and empty', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = false;
+    component.value = [];
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith({});
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('checkValidity delegates to internals', async () => {
+    const internals = makeInternals();
+    internals.checkValidity.mockReturnValue(false);
+    (component as any).internals = internals;
+    expect(await component.checkValidity()).toBe(false);
+  });
+
+  it('checkValidity returns true when internals unavailable', async () => {
+    (component as any).internals = undefined;
+    expect(await component.checkValidity()).toBe(true);
+  });
+
+  it('reportValidity delegates to internals', async () => {
+    const internals = makeInternals();
+    internals.reportValidity.mockReturnValue(false);
+    (component as any).internals = internals;
+    expect(await component.reportValidity()).toBe(false);
+  });
+
+  it('reportValidity returns true when internals unavailable', async () => {
+    (component as any).internals = undefined;
+    expect(await component.reportValidity()).toBe(true);
+  });
+
+  it('formResetCallback restores value to default and clears faceInvalid', () => {
+    component.value = ['nl', 'be'];
+    (component as any).defaultValue = ['nl'];
+    (component as any).faceInvalid = true;
+    (component as any).formResetCallback();
+    expect(component.value).toEqual(['nl']);
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('formResetCallback restores to empty array when default was empty', () => {
+    component.value = ['nl'];
+    (component as any).defaultValue = [];
+    (component as any).formResetCallback();
+    expect(component.value).toEqual([]);
+  });
+
+  it('syncFormValue does not throw when internals is undefined (double optional chaining)', () => {
+    (component as any).internals = undefined;
+    component.value = ['nl'];
+    expect(() => (component as any).syncFormValue()).not.toThrow();
+  });
+
+  it('onValueChange calls syncFormValue', () => {
+    const spy = vi.spyOn(component as any, 'syncFormValue');
+    (component as any).onValueChange();
+    expect(spy).toHaveBeenCalledOnce();
+  });
+
+  it('onRequiredChange calls syncFormValue', () => {
+    const spy = vi.spyOn(component as any, 'syncFormValue');
+    (component as any).onRequiredChange();
+    expect(spy).toHaveBeenCalledOnce();
+  });
+
+  it('onNameChange updates fieldId and calls syncFormValue', () => {
+    const spy = vi.spyOn(component as any, 'syncFormValue');
+    component.name = 'newname';
+    (component as any).onNameChange();
+    expect((component as any).fieldId).toContain('io-multi-select-newname-');
+    expect(spy).toHaveBeenCalledOnce();
+  });
+});

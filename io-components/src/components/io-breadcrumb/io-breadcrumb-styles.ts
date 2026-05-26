@@ -23,7 +23,7 @@ export function getBreadcrumbStyles(): string {
       display: inline-flex;
       align-items: center;
       padding: 0 var(--io-space-1, 4px);
-      color: var(--io-color-grey-4, #767676);
+      color: var(--io-color-grey-4);
       font-size: var(--io-font-size-sm, 14px);
       user-select: none;
     }

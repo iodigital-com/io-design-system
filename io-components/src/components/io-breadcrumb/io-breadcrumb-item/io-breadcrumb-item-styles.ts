@@ -16,7 +16,7 @@ export function getBreadcrumbItemStyles(): string {
       color: var(--io-color-primary);
       text-decoration: none;
       font-size: var(--io-font-size-sm, 14px);
-      font-weight: 400;
+      font-weight: var(--io-font-weight-regular, 400);
       font-family: var(--io-font-primary);
     }
 
@@ -27,7 +27,7 @@ export function getBreadcrumbItemStyles(): string {
     a:focus-visible {
       outline: 2px solid var(--io-focus-inner);
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: var(--io-border-radius-2xs);
     }
 
     span {

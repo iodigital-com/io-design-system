@@ -1201,74 +1201,7 @@ export namespace Components {
     }
     /**
      * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Check validity without showing browser validation UI. Returns true if valid.
-         */
-        "checkValidity": () => Promise<boolean>;
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled": boolean;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label": string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length": IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message": string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name": string | undefined;
-        /**
-          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
-         */
-        "reportValidity": () => Promise<boolean>;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required": boolean;
-        /**
-          * Programmatically focus the first empty slot (or the last slot if complete)
-         */
-        "setFocus": (options?: FocusOptions) => Promise<void>;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state": IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type": IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value": string;
-    }
-    /**
-     * io-popover
-     * ===     * io-progress
-     * ===========
+     * ====     * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
      * @example <io-progress value="60"></io-progress>
@@ -2963,32 +2896,7 @@ declare global {
     }
     /**
      * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoPinCodeElement: {
-        prototype: HTMLIoPinCodeElement;
-        new (): HTMLIoPinCodeElement;
-    };
-    interface HTMLIoPopoverElementEventMap {
-        "dismiss": void;
-    }
-    /**
+     * ====    /**
      * io-popover
      * ===    /**
      * io-progress
@@ -4759,70 +4667,7 @@ declare namespace LocalJSX {
     }
     /**
      * io-pin-code
-     * ===========
-     * Multi-slot PIN / OTP entry component with keyboard navigation,
-     * auto-advance, backspace-to-previous, and clipboard paste support.
-     * Participates in native HTML forms via the FACE (Form-Associated
-     * Custom Elements) API.
-     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-     * <io-pin-code label="OTP Code" length="6" type="password" required />
-     */
-    interface IoPinCode {
-        /**
-          * Disables all inputs
-          * @default false
-         */
-        "disabled"?: boolean;
-        /**
-          * The `id` of a `<form>` element to associate this element with.
-         */
-        "form"?: string;
-        /**
-          * Accessible label displayed above the PIN slots
-         */
-        "label"?: string | undefined;
-        /**
-          * Number of digit slots
-          * @default 4
-         */
-        "length"?: IoPinCodeLength;
-        /**
-          * Helper / validation message displayed below the slots
-         */
-        "message"?: string | undefined;
-        /**
-          * HTML form field name
-         */
-        "name"?: string | undefined;
-        /**
-          * Fires on every digit change with current value and completion status
-         */
-        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
-        /**
-          * Marks the field as required
-          * @default false
-         */
-        "required"?: boolean;
-        /**
-          * Visual validation state — aligns with other io form-field components
-          * @default 'none'
-         */
-        "state"?: IoPinCodeState;
-        /**
-          * Input display mode: 'number' shows digits, 'password' masks them
-          * @default 'number'
-         */
-        "type"?: IoPinCodeType;
-        /**
-          * Current PIN value — all filled digits concatenated
-          * @default ''
-         */
-        "value"?: string;
-    }
-    /**
-     * io-popover
-     * ===     * io-progress
-     * ===========
+     * ====     * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
      * @example <io-progress value="60"></io-progress>
@@ -6600,19 +6445,7 @@ declare module "@stencil/core" {
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
             /**
              * io-pin-code
-             * ===========
-             * Multi-slot PIN / OTP entry component with keyboard navigation,
-             * auto-advance, backspace-to-previous, and clipboard paste support.
-             * Participates in native HTML forms via the FACE (Form-Associated
-             * Custom Elements) API.
-             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
-             * <io-pin-code label="OTP Code" length="6" type="password" required />
-             */
-            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
-            /**
-             * io-popover
-             * ===             * io-progress
-             * ===========
+             * ====             * ===========
              * Linear progress bar for determinate loading states.
              * Use for file uploads, multi-step forms, and wizard flows.
              * @example <io-progress value="60"></io-progress>

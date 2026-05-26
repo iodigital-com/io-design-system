@@ -108,6 +108,39 @@ export default function IoTabsUsagePage() {
         </div>
       </section>
 
+      {/* ── io-tabs vs io-tabs-bar ───────────────────────────────────────── */}
+      <section id="vs-io-tabs-bar" className="space-y-6">
+        <SectionHeader
+          title="io-tabs vs io-tabs-bar"
+          description="The design system ships two tab components. Choose the one that matches where your content lives — on the page or in a URL router."
+        />
+        <div className="space-y-3">
+          <RuleCard label="io-tabs: slot-based panel management">
+            <C>io-tabs</C> is a complete tab widget. You slot button labels and panel content directly
+            into the component. Stencil manages which panel is visible based on the active tab.
+            Use this when all content lives on the same page and you do not want your router involved.
+          </RuleCard>
+          <RuleCard label="io-tabs-bar: navigation strip only">
+            <C>io-tabs-bar</C> renders only the visual tab bar. It emits an <C>update</C> event
+            when the user clicks a tab, and your application (or router) is responsible for rendering
+            the corresponding panel. Use this when each tab corresponds to a URL route — for example,
+            Next.js App Router, React Router, or Angular Router.
+          </RuleCard>
+          <RuleCard label="Quick decision guide">
+            Content lives entirely on one page with no URL change? → <C>io-tabs</C>.{' '}
+            Each tab maps to a different URL or route segment? → <C>io-tabs-bar</C>.{' '}
+            See the{' '}
+            <a
+              href="/components/io-tabs-bar/usage"
+              style={{ color: 'var(--io-color-primary)', textDecoration: 'underline' }}
+            >
+              io-tabs-bar usage page
+            </a>{' '}
+            for routing patterns and examples.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── Content guidelines ───────────────────────────────────────────── */}
       <section id="content-guidelines" className="space-y-6">
         <SectionHeader

@@ -79,6 +79,16 @@ export default function IoTabsBarUsagePage() {
             <C>update</C> event. Migrating between them requires only changing the tag name and
             removing panel markup.
           </RuleCard>
+          <RuleCard label="Not sure which to use?">
+            See the{' '}
+            <a
+              href="/components/io-tabs/usage#vs-io-tabs-bar"
+              style={{ color: 'var(--io-color-primary)', textDecoration: 'underline' }}
+            >
+              io-tabs usage page
+            </a>{' '}
+            for a side-by-side decision guide.
+          </RuleCard>
         </div>
       </section>
 

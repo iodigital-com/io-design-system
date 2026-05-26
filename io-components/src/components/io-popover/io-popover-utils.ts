@@ -15,8 +15,8 @@ export function supportsPopoverApi(el: HTMLElement): boolean {
 }
 
 /**
- * Computes the absolute position for the fallback positioning strategy.
- * Returns top/left values in pixels, derived from the trigger's bounding rect.
+ * Computes viewport-relative coordinates for the fallback fixed-position panel.
+ * getBoundingClientRect() already returns viewport coords — do NOT add scrollY/scrollX.
  */
 export function computeFallbackPosition(
   triggerRect: DOMRect,
@@ -30,23 +30,23 @@ export function computeFallbackPosition(
   switch (resolvedPlacement) {
     case 'top':
       return {
-        top: triggerRect.top + window.scrollY - panelHeight - gap,
-        left: triggerRect.left + window.scrollX + triggerRect.width / 2 - panelWidth / 2,
+        top: triggerRect.top - panelHeight - gap,
+        left: triggerRect.left + triggerRect.width / 2 - panelWidth / 2,
       };
     case 'bottom':
       return {
-        top: triggerRect.bottom + window.scrollY + gap,
-        left: triggerRect.left + window.scrollX + triggerRect.width / 2 - panelWidth / 2,
+        top: triggerRect.bottom + gap,
+        left: triggerRect.left + triggerRect.width / 2 - panelWidth / 2,
       };
     case 'left':
       return {
-        top: triggerRect.top + window.scrollY + triggerRect.height / 2 - panelHeight / 2,
-        left: triggerRect.left + window.scrollX - panelWidth - gap,
+        top: triggerRect.top + triggerRect.height / 2 - panelHeight / 2,
+        left: triggerRect.left - panelWidth - gap,
       };
     case 'right':
       return {
-        top: triggerRect.top + window.scrollY + triggerRect.height / 2 - panelHeight / 2,
-        left: triggerRect.right + window.scrollX + gap,
+        top: triggerRect.top + triggerRect.height / 2 - panelHeight / 2,
+        left: triggerRect.right + gap,
       };
   }
 }

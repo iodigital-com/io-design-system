@@ -1,5 +1,252 @@
 # @io-digital/components
 
+## 2.0.0
+
+### Major Changes
+
+- b8b0289: **BREAKING CHANGE**: Migrate form-field validation from `error: boolean` + `errorMessage: string` to `state: IoFieldState` + `message: string` across 6 form-field components (io-input, io-textarea, io-select, io-checkbox, io-radio, io-form-field).
+
+  ### Migration guide
+
+  Replace:
+
+  ```html
+  <io-input error error-message="Required" />
+  <io-select error error-message="Please select" />
+  <io-textarea error error-message="Required" />
+  <io-checkbox error error-message="Required" />
+  <io-radio error error-message="Please select" />
+  <io-form-field error error-message="Invalid" />
+  ```
+
+  With:
+
+  ```html
+  <io-input state="error" message="Required" />
+  <io-select state="error" message="Please select" />
+  <io-textarea state="error" message="Required" />
+  <io-checkbox state="error" message="Required" />
+  <io-radio state="error" message="Please select" />
+  <io-form-field state="error" message="Invalid" />
+  ```
+
+  The new `state` prop also accepts `"success"` and `"warning"` values for richer validation feedback.
+
+### Minor Changes
+
+- b98110b: feat(io-accordion): add sticky and background props
+
+  - `background: 'transparent' | 'surface' | 'canvas'` prop (default `transparent`) — applies `var(--io-bg-surface)` or `var(--io-bg-page)` fill to the accordion host element
+  - `sticky: boolean` prop (default `false`) — when `true`, the accordion trigger becomes `position: sticky; top: 0` using `var(--io-z-sticky)` to stay visible while scrolling through long expanded content
+  - Dev warning when `sticky=true` with `background="transparent"` since a transparent sticky header causes content bleed-through
+  - Both props use `@Prop({ reflect: true })` so they drive `:host([prop])` CSS selectors
+
+- 6bd52a4: feat(components): add `aria` prop for custom ARIA attribute injection
+
+  Adds `aria?: Record<string, string>` prop to `io-button`, `io-input`, `io-textarea`, `io-select`, `io-modal`, and `io-drawer`.
+
+  - Keys may omit or include the `aria-` prefix — both forms normalised: `{ controls: 'panel' }` → `aria-controls="panel"`
+  - Keys with `aria-` prefix pass through as-is: `{ 'aria-controls': 'panel' }` → `aria-controls="panel"`
+  - Unknown keys are logged as `console.warn` in non-production environments
+  - Applied via `@Watch('aria')` handler — no wasted render cycles
+  - On `io-select`: applies to `<select>` in native mode, to `<button>` trigger in custom combobox mode
+  - On `io-modal` and `io-drawer`: applies to the native `<dialog>` element
+  - Shared implementation via `applyAriaProp` utility in `src/utils/aria-prop.ts`
+
+- f85a80d: feat(io-carousel): add heading, description, and controls named slots
+
+  - `heading` slot — rendered above the slide track; when occupied, the carousel region switches from `aria-label` to `aria-labelledby` pointing to a stable generated ID, preserving the semantic label relationship
+  - `description` slot — rendered below the heading and above the slide track; hidden via CSS class (NOT `:empty`) when no slot content is assigned
+  - `controls` slot — rendered inside `.carousel-wrap` adjacent to the navigation buttons; intended for pagination dots, thumbnails, or other custom indicators
+  - Each slot is detected via `onSlotchange` wired directly on `<slot name="...">` (NOT `@Listen('slotchange')`)
+  - Slot occupancy tracked by `@State() hasHeadingSlot`, `hasDescriptionSlot`, `hasControlsSlot` — containers hidden via CSS modifier classes, not `:empty`
+  - `headingId` generated in `componentWillLoad()` for stable `aria-labelledby` binding
+  - `label` prop remains supported; used as `aria-label` when the heading slot is empty
+
+- 948b5f6: feat(io-divider): add `color` prop (`subtle` | `default` | `strong`) for three-tier contrast levels using design tokens; `subtle` uses `rgba(--io-border-rgb, 0.5)`, `default` maps to `--io-border`, `strong` maps to `--io-border-hover`
+
+  feat(io-wordmark): add `href`, `target`, `rel` props for logo-as-link pattern; when `href` is set the wordmark renders as an `<a>` element with `aria-label` and focus-visible ring; `delegatesFocus: true` set unconditionally
+
+  Closes #359, Closes #367
+
+- 23f145f: feat(io-drawer): add bottom-sheet behavior for placement=bottom
+
+  When `placement="bottom"`, the drawer now renders as a mobile-optimised bottom
+  sheet:
+
+  - Drag handle bar rendered at the top of the panel (32px × 4px, 2px border-radius,
+    `var(--io-border-hover)` color) with `aria-hidden="true"`
+  - `max-height: 85vh` constraint so the panel does not full-screen
+  - Top corners rounded with `var(--io-border-radius-lg) var(--io-border-radius-lg) 0 0`
+  - Swipe-down gesture on the handle closes the drawer (threshold: 80px downward
+    movement via `touchstart`/`touchmove`/`touchend`)
+  - Touch listeners are attached in `show()` and removed in `close()` — not in
+    `connectedCallback` — so they only fire while the drawer is open
+  - `closeOnBackdrop` remains fully functional in sheet mode
+  - No behavioural changes to `left`, `right`, or `top` placement
+
+- 1f5f215: feat(io-checkbox,io-radio,io-select): add form prop for out-of-DOM form association
+
+  Adds a `form?: string` prop to io-checkbox, io-radio, and io-select. Setting `form` to the ID of a `<form>` element allows the field to participate in form submission and validation even when it lives outside the form's DOM subtree — matching native HTML `<input form="...">` behaviour.
+
+- ab8a49f: feat(forms): add hideLabel prop to visually hide labels while preserving accessibility
+
+  - `hideLabel: boolean` prop (default `false`) added to `io-input`, `io-textarea`, `io-select`, `io-checkbox`, and `io-radio`
+  - When `hideLabel=true`, the label text is rendered but visually hidden using the sr-only technique (`position: absolute; width: 1px; height: 1px; ...`)
+  - Screen readers and assistive technologies continue to read the label — no accessibility regression
+  - Dev console warning emitted when `hideLabel=true` and `label` is an empty string, prompting developers to always supply a meaningful accessible label
+  - `label` prop remains required for accessibility on all components
+  - Uses `@Prop({ reflect: true })` so `:host([hide-label])` CSS selectors are available for external styling
+
+- 2442aa0: feat(io-input): add `minLength`, `spellCheck`, `autoComplete`, `loading`, `counter`, `form` props; `loading` shows an `io-spinner` and suppresses `input`/`change` events; `counter` renders a live character count when `maxLength` is set; `minLength` wired to FACE validity via `@Watch`
+
+  feat(io-textarea): add `readOnly`, `minLength`, `spellCheck`, `loading`, `counter`, `form`, `wrap` props; `readOnly` maps to native `readonly` + `aria-readonly="true"` + dashed-border visual state; all other props mirror io-input semantics; `wrap` forwarded as native `wrap` attribute
+
+  Closes #347, Closes #362
+
+- 69770f2: feat(io-alert): add io-alert component with info/success/warning/error variants, optional heading, and dismissible button
+- 1a4d170: feat(io-button-group): add direction prop (row|column) for vertical layout support
+- a7bea5d: feat(io-form-field): add IoFormFieldSlotName union type + promote to stable
+- 6cc5ad3: feat(io-multi-select): new multi-select dropdown component with removable chips, FACE form participation, search filter, and ARIA combobox/listbox pattern
+- a40c393: feat(io-pin-code): new PIN/OTP entry component with FACE form-association, keyboard navigation, paste distribution, and password masking
+- 975d787: feat(io-popover): implement click-triggered floating content panel (#345)
+
+  Adds the io-popover web component — a click-triggered floating panel with
+  accessible dialog semantics (role="dialog", aria-modal="true").
+
+  Features:
+
+  - placement prop: 'top' | 'bottom' | 'left' | 'right' | 'auto' (default 'bottom')
+  - open prop: mutable, reflects to attribute
+  - closeOnClickOutside prop (default true)
+  - label prop: accessible name via aria-labelledby
+  - dismiss event: emitted on Escape key or outside click
+  - trigger named slot: activating element with auto-managed aria-expanded
+  - default slot: popover panel body content
+  - Native Popover API (showPopover/hidePopover) with manual fallback positioning
+  - Focus management: first focusable element on open, trigger on close
+  - Token-first styling: --io-z-dropdown, --io-shadow-md, --io-border-radius-md, --io-bg-surface
+  - Full storefront pages: configurator, examples, usage, accessibility, API
+
+- 75803fd: feat(io-scroller): new scrollable container component with edge fade indicators
+
+  - New `io-scroller` component under `io-components/src/components/io-scroller/`
+  - Shadow DOM with `delegatesFocus: true`
+  - Props: `orientation: 'horizontal' | 'vertical'` (default `'horizontal'`), `showScrollbar: boolean` (default `false`), `label: string | undefined`
+  - Gradient fade indicators appear at each edge when scrollable content exists in that direction; hide automatically when scrolled to the edge
+  - `IntersectionObserver` on sentinel elements for efficient edge detection with scroll event listener fallback
+  - WCAG 2.1 AA: `role="region"` with `aria-label` on the scroll container; keyboard focusable with `tabindex="0"`
+  - Respects `prefers-reduced-motion` — sets `scroll-behavior: auto` when reduced motion is preferred
+  - Two public CSS custom properties: `--io-scroller-fade-color` (defaults to `var(--io-bg-page)`) and `--io-scroller-fade-size` (defaults to `var(--io-space-6, 24px)`)
+  - Full storefront documentation: configurator, examples, usage, accessibility, and API pages
+
+- 0e54181: feat(io-switch): FACE toggle/switch component with role=switch and keyboard nav (#342)
+
+  Adds the `io-switch` web component — a form-associated toggle switch with:
+
+  - `role="switch"` on the interactive element with `aria-checked` state
+  - FACE pattern: `formAssociated: true`, double optional-chaining on all `internals` calls
+  - `formResetCallback()` restores initial checked state
+  - `syncFormValue()` submits value when on, null when off
+  - Required validity via `setValidity({ valueMissing: true })`
+  - Space toggles; Enter not intercepted (preserves form submit)
+  - Token-driven pill track + animated thumb with `var(--io-motion-fast)` transition
+  - Error state: track uses `var(--io-color-error)` when `error=true` or `faceInvalid=true`
+  - Focus ring via `var(--io-focus-ring-active)` on track
+  - New CSS tokens: `--io-switch-track-width/height/radius`, `--io-switch-thumb-size/radius/offset-off/offset-on`
+
+- 6b211e4: feat(io-tabs-bar): new standalone tab navigation bar component (#365)
+
+  New `io-tabs-bar` component for router-driven tab navigation patterns:
+
+  - Renders a `role="tablist"` tab strip with the same visual style as `io-tabs`
+  - Props: `activeTabIndex` (mutable, reflect, default `0`) and `label` (aria-label for the tablist)
+  - Event: `update` emitting `{ activeTabIndex: number }` — identical API to `io-tabs`
+  - Default slot accepts `<button>` elements; component applies `role="tab"`, `aria-selected`, and roving `tabindex` automatically
+  - Full keyboard navigation: Arrow Left/Right (with wrap), Home, End, Enter, Space; disabled buttons skipped
+  - Shadow DOM with `delegatesFocus: true`
+  - No panel management — consumers own content via their router outlet
+  - WCAG 2.1 AA compliant; axe-core smoke tested
+  - Registered in `IoTagNames`, `components.d.ts`, and `sitemap.ts`
+  - All 5 storefront pages: Configurator, Examples, Usage, Accessibility, API
+
+- a5897bf: feat(io-text, io-heading): add typography primitive components (#346)
+
+  Adds two new light DOM typography primitives:
+
+  - **io-text**: Body copy component rendering `p`, `span`, `div`, `blockquote`, or `time` with token-driven font size (`xs`–`xl`), weight (`regular`–`bold`), color (8 semantic values), alignment, and optional single-line ellipsis truncation.
+
+  - **io-heading**: Heading component rendering `h1`–`h6` with token-driven font size (`sm`–`4xl`), weight (`regular`/`semibold`/`bold`), color (`primary`/`secondary`/`inherit`), alignment, and optional ellipsis. Visual size is fully decoupled from semantic heading level. Logs a dev warning and falls back to `h2` if the required `tag` prop is omitted.
+
+  Both components use **light DOM** (no Shadow DOM) intentionally — typography primitives must be fully stylable from outside.
+
+- e1d51e9: feat(form-fields): add loading prop to io-input, io-textarea, io-select, io-checkbox, io-radio (#353)
+
+  When `loading=true`:
+
+  - The field is disabled for interaction (`isDisabled = disabled || loading`)
+  - A spinner (`<io-spinner size="sm">`) is shown in a component-specific position
+  - `aria-busy="true"` is set on the host element
+  - The wrapper gets a `*--loading` modifier class (`pointer-events: none`)
+
+  Spinner placement per component:
+
+  - `io-input`: replaces the suffix slot
+  - `io-textarea`: absolute-positioned at top-right of the field
+  - `io-select`: replaces the chevron icon (both native and combobox modes)
+  - `io-checkbox`: replaces the checkbox control
+  - `io-radio`: replaces the radio control
+
+- 002632e: feat(tokens): add [data-theme="only-dark"] and [data-theme="only-light"] locked-theme CSS selectors
+
+  - `[data-theme="only-dark"]` — applies all dark-mode token overrides to any element subtree regardless of the page-level `[data-theme]`
+  - `[data-theme="only-light"]` — applies all light-mode token values to any element subtree regardless of page theme
+  - Both selectors cascade to all children (same inheritance as standard `[data-theme="dark"]`)
+  - Both selectors work on any element, not just `<html>`
+  - Positioned after `[data-theme="dark|light"]` in source order so they win the cascade at equal specificity without needing `!important`
+  - No new `--io-*` token names introduced — selectors reuse existing variable names
+  - Documented in `docs/token-naming-conventions.md` under the Locked-Theme Selectors section
+  - Storefront theming page (`/developing/theming`) updated with live demo and code example
+
+- 0fa9232: feat(io-modal,io-drawer): add background prop and motion lifecycle events (#357)
+
+  - Adds `background: 'canvas' | 'surface' | 'elevated'` prop to `io-modal` and `io-drawer` (default `'canvas'`). Maps to `--io-bg-page`, `--io-bg-surface`, and `--io-bg-raised` tokens respectively.
+  - Adds `motionVisibleEnd` event emitted after the open animation/transition completes (`transitionend` on the panel element).
+  - Adds `motionHiddenEnd` event emitted after the close animation/transition completes.
+  - Transition listener is attached in `componentDidLoad` and cleaned up in `disconnectedCallback`.
+
+- b21d1db: feat(io-pagination): add totalItems and perPage props for data-driven page count derivation
+
+  - `totalItems?: number` prop — total number of items in the dataset
+  - `perPage?: number` prop — items shown per page
+  - When both `totalItems` and `perPage` are provided, the component derives `totalPages` internally via `Math.ceil(totalItems / perPage)`, eliminating boilerplate arithmetic in consumers
+  - `totalItems + perPage` (Pattern B) takes precedence over an explicit `totalPages` prop (Pattern A) when both are set
+  - `totalPages` prop remains fully supported for backward compatibility — no breaking change
+  - Edge cases guarded: `totalItems = 0` → 1 page; `perPage <= 0` treated as 1 to prevent division by zero
+  - Dev warning logged when only one of `totalItems` / `perPage` is provided (incomplete Pattern B)
+  - `@Watch('totalItems')` and `@Watch('perPage')` clamp the current page when the computed total shrinks
+  - `types.ts` updated with `IoPaginationPageCountInput` JSDoc showing both API patterns
+  - Storefront API page updated with both patterns shown in properties table and code examples
+
+- adca2e7: feat(a11y): add RTL support to io-button, io-breadcrumb, and io-input
+
+  - `io-button`: arrow icons (`forward`, `back`) flip direction in RTL via `:host-context([dir="rtl"])` + `scaleX(-1)`; hover animation shift direction reverses; link variant underline anchors from the right edge
+  - `io-breadcrumb`: separator glyph (e.g. `›` chevron) mirrors via `scaleX(-1)` in RTL; `ol` element gets `direction: rtl` for correct visual order
+  - `io-input`: label anchor mirrors from `left: 0` to `right: 0` in RTL; prefix/suffix slot padding swaps sides; error icon mirrors from right to left; `input-field-row` gets `direction: rtl` so prefix/suffix positions swap automatically
+  - All RTL rules use `:host-context([dir="rtl"])` to traverse the Shadow DOM boundary and respond to `dir="rtl"` on any ancestor element
+
+### Patch Changes
+
+- 5b2747b: chore(io-drawer, io-wordmark): tokenize hardcoded styles and promote to stable
+
+  - io-drawer: replace hardcoded 320px/480px/640px widths with `--io-drawer-width-sm/md/lg` tokens; replace raw `rgba(0,0,0,0.5)` backdrop with `--io-drawer-backdrop` token; promote sitemap status to stable
+  - io-wordmark: replace hardcoded 20px/28px/40px font sizes with `--io-wordmark-font-size-md/lg/xl` tokens; replace hardcoded `-0.01em` letter-spacing with `--io-wordmark-letter-spacing` token; promote sitemap status to stable
+
+  Closes #381
+  Closes #386
+
+- 2806c50: chore(io-avatar): replace hardcoded px sizes, font-weight, and border-radius with --io-avatar-\* CSS custom properties. Adds 13 new tokens to app.css (size scale xs–xl, font-size scale xs–xl, font-weight, border-radius, icon-size). Adds io-avatar.click.spec.ts and io-avatar.disabled.spec.ts. Unblocks beta→stable promotion (#376).
+
 ## 1.3.0
 
 ### Minor Changes

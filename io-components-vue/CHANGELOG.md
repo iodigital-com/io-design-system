@@ -1,5 +1,73 @@
 # @io-digital/components-vue
 
+## 5.0.0
+
+### Major Changes
+
+- b8b0289: **BREAKING CHANGE**: Migrate form-field validation from `error: boolean` + `errorMessage: string` to `state: IoFieldState` + `message: string` across 6 form-field components (io-input, io-textarea, io-select, io-checkbox, io-radio, io-form-field).
+
+  ### Migration guide
+
+  Replace:
+
+  ```html
+  <io-input error error-message="Required" />
+  <io-select error error-message="Please select" />
+  <io-textarea error error-message="Required" />
+  <io-checkbox error error-message="Required" />
+  <io-radio error error-message="Please select" />
+  <io-form-field error error-message="Invalid" />
+  ```
+
+  With:
+
+  ```html
+  <io-input state="error" message="Required" />
+  <io-select state="error" message="Please select" />
+  <io-textarea state="error" message="Required" />
+  <io-checkbox state="error" message="Required" />
+  <io-radio state="error" message="Please select" />
+  <io-form-field state="error" message="Invalid" />
+  ```
+
+  The new `state` prop also accepts `"success"` and `"warning"` values for richer validation feedback.
+
+### Minor Changes
+
+- 1f5f215: feat(io-checkbox,io-radio,io-select): add form prop for out-of-DOM form association
+
+  Adds a `form?: string` prop to io-checkbox, io-radio, and io-select. Setting `form` to the ID of a `<form>` element allows the field to participate in form submission and validation even when it lives outside the form's DOM subtree — matching native HTML `<input form="...">` behaviour.
+
+### Patch Changes
+
+- Updated dependencies [b98110b]
+- Updated dependencies [6bd52a4]
+- Updated dependencies [f85a80d]
+- Updated dependencies [948b5f6]
+- Updated dependencies [23f145f]
+- Updated dependencies [5b2747b]
+- Updated dependencies [1f5f215]
+- Updated dependencies [ab8a49f]
+- Updated dependencies [2442aa0]
+- Updated dependencies [69770f2]
+- Updated dependencies [2806c50]
+- Updated dependencies [1a4d170]
+- Updated dependencies [a7bea5d]
+- Updated dependencies [6cc5ad3]
+- Updated dependencies [a40c393]
+- Updated dependencies [975d787]
+- Updated dependencies [75803fd]
+- Updated dependencies [0e54181]
+- Updated dependencies [6b211e4]
+- Updated dependencies [a5897bf]
+- Updated dependencies [e1d51e9]
+- Updated dependencies [002632e]
+- Updated dependencies [0fa9232]
+- Updated dependencies [b21d1db]
+- Updated dependencies [adca2e7]
+- Updated dependencies [b8b0289]
+  - @io-digital/components@2.0.0
+
 ## 4.0.0
 
 ### Patch Changes

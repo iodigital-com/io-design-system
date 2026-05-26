@@ -28,7 +28,7 @@ export function getDrawerStyles(): string {
     }
 
     dialog::backdrop {
-      background: var(--io-backdrop, rgba(0, 0, 0, 0.5));
+      background: var(--io-backdrop, var(--io-drawer-backdrop));
     }
 
     /* ── Placement: right (default) ──────────────────────────── */
@@ -43,9 +43,9 @@ export function getDrawerStyles(): string {
       animation: drawer-in-right var(--io-motion-base) both;
     }
 
-    dialog.drawer--right.drawer--sm { width: 320px; height: 100%; }
-    dialog.drawer--right.drawer--md { width: 480px; height: 100%; }
-    dialog.drawer--right.drawer--lg { width: 640px; height: 100%; }
+    dialog.drawer--right.drawer--sm { width: var(--io-drawer-width-sm); height: 100%; }
+    dialog.drawer--right.drawer--md { width: var(--io-drawer-width-md); height: 100%; }
+    dialog.drawer--right.drawer--lg { width: var(--io-drawer-width-lg); height: 100%; }
     dialog.drawer--right.drawer--full { width: 100vw; height: 100vh; }
 
     /* ── Placement: left ─────────────────────────────────────── */
@@ -60,9 +60,9 @@ export function getDrawerStyles(): string {
       animation: drawer-in-left var(--io-motion-base) both;
     }
 
-    dialog.drawer--left.drawer--sm { width: 320px; height: 100%; }
-    dialog.drawer--left.drawer--md { width: 480px; height: 100%; }
-    dialog.drawer--left.drawer--lg { width: 640px; height: 100%; }
+    dialog.drawer--left.drawer--sm { width: var(--io-drawer-width-sm); height: 100%; }
+    dialog.drawer--left.drawer--md { width: var(--io-drawer-width-md); height: 100%; }
+    dialog.drawer--left.drawer--lg { width: var(--io-drawer-width-lg); height: 100%; }
     dialog.drawer--left.drawer--full { width: 100vw; height: 100vh; }
 
     /* ── Placement: bottom ───────────────────────────────────── */

@@ -146,7 +146,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Drawer',
         href: '/components/io-drawer/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-drawer',
         description: 'Slide-out overlay panel attached to a screen edge. Supports left, right, and bottom placements with four size presets. Built on the native dialog element.',
         related: ['io-modal', 'io-button', 'io-tabs'],
@@ -306,7 +306,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Wordmark',
         href: '/components/io-wordmark/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-wordmark',
         description: 'Brand wordmark rendering "io" in brand blue and "digital" in text colour. Token-driven sizes: sm, md, lg, xl.',
         related: ['io-avatar', 'io-badge', 'io-link'],

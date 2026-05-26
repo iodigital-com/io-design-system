@@ -861,6 +861,19 @@ io-table[size="lg"] io-table-body-cell td {
   /* Avatar — grey variant: light surface + dark text */
   --io-avatar-bg-grey:           var(--io-color-grey-3);
   --io-avatar-text-grey:         var(--io-color-grey-6);
+
+  /* io-drawer */
+  --io-drawer-width-sm:          320px;
+  --io-drawer-width-md:          480px;
+  --io-drawer-width-lg:          640px;
+  --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
+
+  /* io-wordmark */
+  --io-wordmark-font-size-sm:    var(--io-font-size-sm);
+  --io-wordmark-font-size-md:    20px;
+  --io-wordmark-font-size-lg:    28px;
+  --io-wordmark-font-size-xl:    40px;
+  --io-wordmark-letter-spacing:  -0.01em;
 }
 
 /* ── Density overrides ─────────────────────────────────────────────────── */

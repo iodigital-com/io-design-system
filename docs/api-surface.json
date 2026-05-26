@@ -183,6 +183,7 @@
         "error": "boolean",
         "errorMessage": "string | undefined",
         "helperText": "string | undefined",
+        "hideLabel": "boolean",
         "label": "string",
         "max": "string | number | undefined",
         "maxLength": "number | undefined",
@@ -447,6 +448,15 @@
       "methods": {},
       "events": {
         "update": "IoTabsUpdateDetail"
+      }
+    },
+    "io-tabs-bar": {
+      "props": {
+        "activeTabIndex": "number"
+      },
+      "methods": {},
+      "events": {
+        "update": "IoTabsBarUpdateDetail"
       }
     },
     "io-tag": {

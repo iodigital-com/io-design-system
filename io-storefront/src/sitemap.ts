@@ -272,6 +272,14 @@ export const sitemap: NavSection[] = [
         related: ['io-button', 'io-tag', 'io-tooltip'],
       },
       {
+        label: 'Tabs Bar',
+        href: '/components/io-tabs-bar/configurator',
+        status: 'beta',
+        slug: 'io-tabs-bar',
+        description: 'Standalone tab navigation bar without panel management. Use with router-driven applications where tab content is controlled by URL navigation.',
+        related: ['io-tabs', 'io-button', 'io-link'],
+      },
+      {
         label: 'Tag',
         href: '/components/io-tag/configurator',
         status: 'stable',

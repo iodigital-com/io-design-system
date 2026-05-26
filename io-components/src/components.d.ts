@@ -29,6 +29,7 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
@@ -58,6 +59,7 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextareaResize, IoTextareaSize } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
@@ -660,6 +662,11 @@ export namespace Components {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
         /**
           * Label text — required for accessibility
          */
@@ -1454,6 +1461,37 @@ export namespace Components {
         "label"?: string;
     }
     /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface IoTabsBar {
+        /**
+          * 0-based index of the active tab (controlled).
+          * @default 0
+         */
+        "activeTabIndex": number;
+        /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+    }
+    /**
      * io-tag
      * =======
      * Interactive toggle chip / filter pill.
@@ -1758,6 +1796,10 @@ export interface IoTableHeadRowCustomEvent<T> extends CustomEvent<T> {
 export interface IoTabsCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoTabsElement;
+}
+export interface IoTabsBarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTabsBarElement;
 }
 export interface IoTagCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2568,6 +2610,43 @@ declare global {
         prototype: HTMLIoTabsElement;
         new (): HTMLIoTabsElement;
     };
+    interface HTMLIoTabsBarElementEventMap {
+        "update": IoTabsBarUpdateDetail;
+    }
+    /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface HTMLIoTabsBarElement extends Components.IoTabsBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTabsBarElementEventMap>(type: K, listener: (this: HTMLIoTabsBarElement, ev: IoTabsBarCustomEvent<HTMLIoTabsBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTabsBarElementEventMap>(type: K, listener: (this: HTMLIoTabsBarElement, ev: IoTabsBarCustomEvent<HTMLIoTabsBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTabsBarElement: {
+        prototype: HTMLIoTabsBarElement;
+        new (): HTMLIoTabsBarElement;
+    };
     interface HTMLIoTagElementEventMap {
         "toggle": boolean;
         "remove": void;
@@ -2738,6 +2817,7 @@ declare global {
         "io-table-head-cell": HTMLIoTableHeadCellElement;
         "io-table-head-row": HTMLIoTableHeadRowElement;
         "io-tabs": HTMLIoTabsElement;
+        "io-tabs-bar": HTMLIoTabsBarElement;
         "io-tag": HTMLIoTagElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
@@ -3351,6 +3431,11 @@ declare namespace LocalJSX {
           * Helper text shown below the input (replaces error when no error)
          */
         "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
         /**
           * Label text — required for accessibility
          */
@@ -4166,6 +4251,41 @@ declare namespace LocalJSX {
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
     }
     /**
+     * io-tabs-bar
+     * ===========
+     * Standalone decorative tab navigation bar — no panel management.
+     * Use this component when the tab content is managed externally by a router
+     * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+     * panel switching. The consumer owns route/content transitions; io-tabs-bar
+     * provides the visual tab strip with active indicator, keyboard navigation,
+     * and ARIA tablist semantics.
+     * Place <button> children inside the component. The component applies
+     * role="tab", aria-selected, and tabindex automatically. Control the
+     * active tab via the activeTabIndex prop and respond to the update event.
+     * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+     * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+     *   <button type="button">Overview</button>
+     *   <button type="button">Details</button>
+     *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     */
+    interface IoTabsBar {
+        /**
+          * 0-based index of the active tab (controlled).
+          * @default 0
+         */
+        "activeTabIndex"?: number;
+        /**
+          * Optional accessible label for the tablist region.
+         */
+        "label"?: string;
+        /**
+          * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
+         */
+        "onUpdate"?: (event: IoTabsBarCustomEvent<IoTabsBarUpdateDetail>) => void;
+    }
+    /**
      * io-tag
      * =======
      * Interactive toggle chip / filter pill.
@@ -4526,6 +4646,7 @@ declare namespace LocalJSX {
         "max": string;
         "step": string;
         "autocomplete": string | undefined;
+        "hideLabel": boolean;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -4652,6 +4773,10 @@ declare namespace LocalJSX {
         "activeTabIndex": number;
         "label": string;
     }
+    interface IoTabsBarAttributes {
+        "activeTabIndex": number;
+        "label": string;
+    }
     interface IoTagAttributes {
         "selected": boolean;
         "removable": boolean;
@@ -4728,6 +4853,7 @@ declare namespace LocalJSX {
         "io-table-head-cell": Omit<IoTableHeadCell, keyof IoTableHeadCellAttributes> & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes]?: IoTableHeadCell[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `attr:${K}`]?: IoTableHeadCellAttributes[K] } & { [K in keyof IoTableHeadCell & keyof IoTableHeadCellAttributes as `prop:${K}`]?: IoTableHeadCell[K] };
         "io-table-head-row": Omit<IoTableHeadRow, keyof IoTableHeadRowAttributes> & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes]?: IoTableHeadRow[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `attr:${K}`]?: IoTableHeadRowAttributes[K] } & { [K in keyof IoTableHeadRow & keyof IoTableHeadRowAttributes as `prop:${K}`]?: IoTableHeadRow[K] };
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
+        "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
@@ -5152,6 +5278,27 @@ declare module "@stencil/core" {
              * </io-tabs>
              */
             "io-tabs": LocalJSX.IntrinsicElements["io-tabs"] & JSXBase.HTMLAttributes<HTMLIoTabsElement>;
+            /**
+             * io-tabs-bar
+             * ===========
+             * Standalone decorative tab navigation bar — no panel management.
+             * Use this component when the tab content is managed externally by a router
+             * (e.g. Next.js App Router, Angular Router) rather than through slot-based
+             * panel switching. The consumer owns route/content transitions; io-tabs-bar
+             * provides the visual tab strip with active indicator, keyboard navigation,
+             * and ARIA tablist semantics.
+             * Place <button> children inside the component. The component applies
+             * role="tab", aria-selected, and tabindex automatically. Control the
+             * active tab via the activeTabIndex prop and respond to the update event.
+             * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
+             * Disabled buttons (via the HTML disabled attribute) are skipped.
+             * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
+             *   <button type="button">Overview</button>
+             *   <button type="button">Details</button>
+             *   <button type="button" disabled>Settings</button>
+             * </io-tabs-bar>
+             */
+            "io-tabs-bar": LocalJSX.IntrinsicElements["io-tabs-bar"] & JSXBase.HTMLAttributes<HTMLIoTabsBarElement>;
             /**
              * io-tag
              * =======

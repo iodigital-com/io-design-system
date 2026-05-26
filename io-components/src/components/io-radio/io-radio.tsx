@@ -61,6 +61,9 @@ export class IoRadio {
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
@@ -105,6 +108,9 @@ export class IoRadio {
     this.fieldId = resolveRadioId(this.name, this.fallbackId);
     this.defaultChecked = this.checked;
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-radio] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -198,7 +204,7 @@ export class IoRadio {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, loading, state, message, helperText, form } = this;
+    const { label, name, value, checked, required, disabled, loading, state, message, helperText, form, hideLabel } = this;
     const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
@@ -249,7 +255,7 @@ export class IoRadio {
                 </span>
               </span>
             )}
-            <span class="radio-text">
+            <span class={hideLabel ? 'radio-text radio-text--sr-only' : 'radio-text'}>
               {label}
               {required && (
                 <span class="radio-required" aria-hidden="true">

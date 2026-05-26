@@ -66,4 +66,17 @@ describe('io-checkbox — a11y (ARIA patterns)', () => {
     `;
     await renderAndCheckA11y(el);
   });
+
+  it('checkbox with visually hidden label (sr-only) has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div>
+        <input type="checkbox" id="cb6" />
+        <label for="cb6" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0">
+          Accept terms
+        </label>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

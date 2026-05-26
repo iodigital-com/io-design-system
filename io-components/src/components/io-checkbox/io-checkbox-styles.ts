@@ -134,6 +134,19 @@ export function getCheckboxStyles(): string {
       line-height: var(--io-line-height-normal);
     }
 
+    /* Visually hide label text while keeping it accessible to screen readers */
+    .checkbox-text--sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
     .checkbox-required {
       color: var(--io-color-error);
     }

@@ -64,6 +64,9 @@ export class IoCheckbox {
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
   @Prop({ reflect: true }) form?: string;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
@@ -108,6 +111,9 @@ export class IoCheckbox {
     this.fieldId = resolveCheckboxId(this.name, this.fallbackId);
     this.defaultChecked = this.checked;
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-checkbox] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -162,7 +168,7 @@ export class IoCheckbox {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, indeterminate, required, disabled, loading, state, message, helperText, form } = this;
+    const { label, name, value, checked, indeterminate, required, disabled, loading, state, message, helperText, form, hideLabel } = this;
     const isDisabled = disabled || loading;
     const inputId = this.fieldId;
     const messageId = `${inputId}-message`;
@@ -225,7 +231,7 @@ export class IoCheckbox {
                 </span>
               </span>
             )}
-            <span class="checkbox-text">
+            <span class={hideLabel ? 'checkbox-text checkbox-text--sr-only' : 'checkbox-text'}>
               {label}
               {required && (
                 <span class="checkbox-required" aria-hidden="true">

@@ -76,6 +76,9 @@ export class IoTextarea {
   /** Autocomplete attribute */
   @Prop() autocomplete: string | undefined;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
   /**
    * Resize behaviour.
    * - 'none':     not resizable
@@ -165,6 +168,9 @@ export class IoTextarea {
     this.counterId = `io-textarea-counter-${++idCounter}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-textarea] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -275,6 +281,7 @@ export class IoTextarea {
       counter,
       form,
       wrap,
+      hideLabel,
     } = this;
     const textareaId = this.fieldId;
     const messageId = `${textareaId}-message`;
@@ -321,12 +328,16 @@ export class IoTextarea {
             aria-invalid={showError ? 'true' : undefined}
             aria-readonly={readOnly ? 'true' : undefined}
             aria-describedby={describedBy}
+            ref={(el?: HTMLTextAreaElement) => {
+              this.nativeTextareaEl = el;
+              applyAriaProp(this.aria, el ?? null);
+            }}
             onInput={this.handleInput}
             onChange={this.handleChange}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
           />
-          <label htmlFor={textareaId} class="textarea-label">
+          <label htmlFor={textareaId} class={hideLabel ? 'textarea-label textarea-label--sr-only' : 'textarea-label'}>
             {label}
             {required && (
               <span class="textarea-required" aria-hidden="true">

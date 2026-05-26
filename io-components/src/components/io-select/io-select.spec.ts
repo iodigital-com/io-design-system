@@ -1,6 +1,44 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoSelect } from './io-select';
+
+describe('io-select — hideLabel prop', () => {
+  let component: IoSelect;
+
+  beforeEach(() => {
+    component = new IoSelect();
+    (component as any).el = document.createElement('io-select');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('defaults hideLabel to false', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('accepts hideLabel=true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+
+  it('warns when hideLabel=true and label is empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = '';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledWith('[io-select] hideLabel=true requires a non-empty label for accessibility.');
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = 'Country';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
 
 describe('io-select — default props', () => {
   let component: IoSelect;

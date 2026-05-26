@@ -3,7 +3,7 @@ import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 
-describe('io-input — new props (#347)', () => {
+describe('io-input — new props (#347 / hideLabel)', () => {
   let component: IoInput;
 
   beforeEach(() => {
@@ -13,6 +13,7 @@ describe('io-input — new props (#347)', () => {
     (component as any).change = { emit: vi.fn() };
     (component as any).focus = { emit: vi.fn() };
     (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
   });
 
   it('has loading=false by default', () => {
@@ -176,6 +177,33 @@ describe('io-input — new props (#347)', () => {
 
     component.render();
     expect((component as any).counterId).toBe(id1);
+  });
+
+  it('defaults hideLabel to false', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('accepts hideLabel=true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+
+  it('warns when hideLabel=true and label is empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = '';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledWith('[io-input] hideLabel=true requires a non-empty label for accessibility.');
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = 'Search';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 });
 

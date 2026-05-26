@@ -1,6 +1,44 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoRadio } from './io-radio';
+
+describe('io-radio — hideLabel prop', () => {
+  let component: IoRadio;
+
+  beforeEach(() => {
+    component = new IoRadio();
+    (component as any).el = document.createElement('io-radio');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('defaults hideLabel to false', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('accepts hideLabel=true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+
+  it('warns when hideLabel=true and label is empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = '';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledWith('[io-radio] hideLabel=true requires a non-empty label for accessibility.');
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = 'Option A';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
 
 describe('io-radio — default props', () => {
   let component: IoRadio;

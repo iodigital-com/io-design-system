@@ -3,6 +3,43 @@ import { h } from '@stencil/core';
 
 import { IoTextarea } from './io-textarea';
 
+describe('io-textarea — hideLabel prop', () => {
+  let component: IoTextarea;
+
+  beforeEach(() => {
+    component = new IoTextarea();
+    (component as any).el = document.createElement('io-textarea');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+  });
+
+  it('defaults hideLabel to false', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('accepts hideLabel=true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+
+  it('warns when hideLabel=true and label is empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = '';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledWith('[io-textarea] hideLabel=true requires a non-empty label for accessibility.');
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    component.label = 'Message';
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
+
 describe('io-textarea — default props', () => {
   let component: IoTextarea;
 

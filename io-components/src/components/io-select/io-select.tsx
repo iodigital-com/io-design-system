@@ -36,6 +36,11 @@ import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types'
  *     <io-option value="alice" label="Alice Smith"></io-option>
  *   </io-optgroup>
  * </io-select>
+ *
+ * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
+ *   Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+ *   optional search filter, and full FACE form participation.
+ *   The single-select native and custom modes are NOT deprecated.
  */
 @Component({
   tag: 'io-select',

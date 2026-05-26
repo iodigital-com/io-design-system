@@ -35,8 +35,10 @@ const LAYER_DECLARATION = `/* io-components.css declares layer order at the top:
     /* ...all other tokens */
   }
 
-  [data-theme="dark"] { /* dark overrides */ }
-  [data-theme="light"] { color-scheme: light; }
+  [data-theme="dark"]       { /* dark overrides */ }
+  [data-theme="light"]      { color-scheme: light; }
+  [data-theme="only-dark"]  { /* locked dark — wins over page dark/light */ }
+  [data-theme="only-light"] { /* locked light — wins over page dark/light */ }
 }`;
 
 const BRAND_OVERRIDE_CSS = `/* brand-overrides.css — import AFTER io-components.css */
@@ -228,6 +230,107 @@ export default function ThemingPage() {
         </p>
       </section>
 
+      {/* Locked-theme selectors */}
+      <section id="locked-theme" className="space-y-6">
+        <SectionHeader
+          title="Locked-theme selectors"
+          description="Pin any element subtree to always-dark or always-light regardless of the page-level theme. Useful for preview panels, side navigation, or demo cards that must stay in a specific theme."
+        />
+        <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
+          Apply <InlineCode>data-theme=&quot;only-dark&quot;</InlineCode> or{' '}
+          <InlineCode>data-theme=&quot;only-light&quot;</InlineCode> to any element. The attribute-value
+          selector appears after <InlineCode>[data-theme=&quot;dark|light&quot;]</InlineCode> in the
+          stylesheet, so it wins the cascade at equal specificity — no <InlineCode>!important</InlineCode>{' '}
+          needed. All descendant elements inherit the overridden tokens via normal CSS custom
+          property inheritance.
+        </p>
+        <CodeNote label="HTML">{`<!-- Page is in dark mode, but this panel stays light -->
+<html data-theme="dark">
+  <body>
+    <!-- ... dark page content ... -->
+
+    <aside data-theme="only-light">
+      <!-- Always renders with light-mode tokens -->
+      <io-button>Light panel button</io-button>
+    </aside>
+
+    <!-- Always-dark preview card even when page is light -->
+    <div data-theme="only-dark" class="preview-card">
+      <io-badge>Dark preview</io-badge>
+    </div>
+  </body>
+</html>`}</CodeNote>
+
+        {/* Live demo */}
+        <div className="space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--io-text-muted)' }}>
+            Live demo — both panels below are theme-locked regardless of the storefront toggle
+          </p>
+          <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
+            {/* Always-dark panel */}
+            <div
+              data-theme="only-dark"
+              className="rounded-xl p-6 space-y-3"
+              style={{
+                background: 'var(--io-bg-surface)',
+                border: '1px solid var(--io-border)',
+              }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--io-text-muted)' }}>
+                data-theme=&quot;only-dark&quot;
+              </p>
+              <p className="text-sm font-medium" style={{ color: 'var(--io-text-primary)' }}>
+                Always dark
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
+                This subtree always renders dark-mode tokens regardless of page theme. Ideal for
+                always-dark navigation bars and preview panels.
+              </p>
+              <div
+                className="rounded px-3 py-1 text-xs font-medium inline-block"
+                style={{ background: 'var(--io-accent-bg)', color: 'var(--io-accent-text)' }}
+              >
+                --io-bg-surface: var(--io-color-dark-bg-surface)
+              </div>
+            </div>
+
+            {/* Always-light panel */}
+            <div
+              data-theme="only-light"
+              className="rounded-xl p-6 space-y-3"
+              style={{
+                background: 'var(--io-bg-surface)',
+                border: '1px solid var(--io-border)',
+              }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--io-text-muted)' }}>
+                data-theme=&quot;only-light&quot;
+              </p>
+              <p className="text-sm font-medium" style={{ color: 'var(--io-text-primary)' }}>
+                Always light
+              </p>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
+                This subtree always renders light-mode tokens regardless of page theme. Ideal for
+                white data panels and cards on dark-background pages.
+              </p>
+              <div
+                className="rounded px-3 py-1 text-xs font-medium inline-block"
+                style={{ background: 'var(--io-accent-bg)', color: 'var(--io-accent-text)' }}
+              >
+                --io-bg-surface: var(--io-color-grey-1)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <InfoCallout>
+          The locked-theme selectors reuse existing <InlineCode>--io-color-dark-*</InlineCode>{' '}
+          source primitives — they introduce no new token names. They are inside{' '}
+          <InlineCode>@layer io</InlineCode>, so brand overrides in{' '}
+          <InlineCode>@layer brand</InlineCode> still win if needed.
+        </InfoCallout>
+      </section>
+
       {/* Tokens to avoid */}
       <section id="avoid-tokens" className="space-y-6">
         <SectionHeader
@@ -239,7 +342,7 @@ export default function ThemingPage() {
             <strong style={{ color: 'var(--io-text-primary)' }}>Dark source primitives</strong> —{' '}
             <InlineCode>--io-color-dark-*</InlineCode> tokens feed the dark-mode token resolution chain.
             Override the semantic tokens instead (e.g. <InlineCode>--io-color-primary</InlineCode>
-            inside <InlineCode>[data-theme="dark"]</InlineCode>).
+            inside <InlineCode>[data-theme=&quot;dark&quot;]</InlineCode>).
           </li>
           <li>
             <strong style={{ color: 'var(--io-text-primary)' }}>Component layout tokens</strong> —{' '}

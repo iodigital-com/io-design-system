@@ -163,3 +163,150 @@ describe('io-pagination — invalid prop guards', () => {
     expect((component as any).liveMessage).toBe('Page 4 of 8');
   });
 });
+
+describe('io-pagination — totalItems and perPage props', () => {
+  let component: IoPagination;
+
+  beforeEach(() => {
+    component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('computes totalPages from totalItems and perPage', () => {
+    component.totalItems = 95;
+    component.perPage = 10;
+
+    expect(component.computedTotalPages).toBe(10);
+  });
+
+  it('uses exact division without rounding up when evenly divisible', () => {
+    component.totalItems = 100;
+    component.perPage = 10;
+
+    expect(component.computedTotalPages).toBe(10);
+  });
+
+  it('rounds up when items do not divide evenly', () => {
+    component.totalItems = 101;
+    component.perPage = 10;
+
+    expect(component.computedTotalPages).toBe(11);
+  });
+
+  it('falls back to totalPages when totalItems and perPage are not provided', () => {
+    component.totalPages = 7;
+
+    expect(component.computedTotalPages).toBe(7);
+  });
+
+  it('falls back to totalPages when only totalItems is provided (incomplete Pattern B)', () => {
+    component.totalPages = 5;
+    component.totalItems = 50;
+    // perPage not set — incomplete Pattern B, should fall through to totalPages
+
+    expect(component.computedTotalPages).toBe(5);
+  });
+
+  it('falls back to totalPages when only perPage is provided (incomplete Pattern B)', () => {
+    component.totalPages = 5;
+    component.perPage = 10;
+    // totalItems not set — incomplete Pattern B, should fall through to totalPages
+
+    expect(component.computedTotalPages).toBe(5);
+  });
+
+  it('totalItems + perPage takes precedence over explicit totalPages', () => {
+    component.totalPages = 3;
+    component.totalItems = 50;
+    component.perPage = 5;
+
+    expect(component.computedTotalPages).toBe(10);
+  });
+
+  it('handles totalItems = 0 by returning 1 page', () => {
+    component.totalItems = 0;
+    component.perPage = 10;
+
+    expect(component.computedTotalPages).toBe(1);
+  });
+
+  it('treats perPage = 0 as 1 to avoid division by zero', () => {
+    component.totalItems = 50;
+    component.perPage = 0;
+
+    expect(component.computedTotalPages).toBe(50);
+  });
+
+  it('treats negative perPage as 1 to avoid division by zero', () => {
+    component.totalItems = 50;
+    component.perPage = -5;
+
+    expect(component.computedTotalPages).toBe(50);
+  });
+
+  it('handles perPage = 1 edge case (each item on its own page)', () => {
+    component.totalItems = 50;
+    component.perPage = 1;
+
+    expect(component.computedTotalPages).toBe(50);
+  });
+
+  it('normalises page correctly during componentWillLoad with data-driven props', () => {
+    component.totalItems = 30;
+    component.perPage = 10;
+    component.page = 5;
+
+    component.componentWillLoad();
+
+    // computed total = 3, page 5 > 3 → clamped to 3
+    expect(component.page).toBe(3);
+  });
+
+  it('does not mutate totalPages when data-driven props are active', () => {
+    component.totalItems = 30;
+    component.perPage = 10;
+    component.totalPages = 99;
+
+    component.componentWillLoad();
+
+    // explicit totalPages should be untouched — data-driven governs the effective total
+    expect(component.totalPages).toBe(99);
+    expect(component.computedTotalPages).toBe(3);
+  });
+
+  it('clamps page when totalItems changes and computed total shrinks', () => {
+    component.totalItems = 100;
+    component.perPage = 10;
+    component.page = 10;
+    component.componentWillLoad();
+
+    // Dataset shrinks
+    component.totalItems = 20;
+    (component as any).onTotalItemsChange();
+
+    expect(component.page).toBe(2);
+  });
+
+  it('clamps page when perPage changes and computed total shrinks', () => {
+    component.totalItems = 50;
+    component.perPage = 5;
+    component.page = 10;
+    component.componentWillLoad();
+
+    // Larger page size means fewer pages
+    component.perPage = 25;
+    (component as any).onPerPageChange();
+
+    expect(component.page).toBe(2);
+  });
+
+  it('live message uses computedTotalPages after page navigation', () => {
+    component.totalItems = 50;
+    component.perPage = 10;
+    component.totalPages = 99; // should be ignored
+
+    (component as any).onPageChange(3);
+
+    expect((component as any).liveMessage).toBe('Page 3 of 5');
+  });
+});

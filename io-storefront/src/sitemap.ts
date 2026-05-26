@@ -82,7 +82,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Avatar',
         href: '/components/io-avatar/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-avatar',
         description: 'User avatar with image, initials, and icon fallback. Supports five sizes, five colour variants, and circle or square shapes.',
         related: ['io-badge', 'io-spinner'],
@@ -98,7 +98,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Breadcrumb',
         href: '/components/io-breadcrumb/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-breadcrumb',
         description: 'Breadcrumb navigation for hierarchical orientation. Uses declarative slot-based io-breadcrumb-item sub-components.',
         related: ['io-breadcrumb-item', 'io-link', 'io-pagination'],
@@ -106,7 +106,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Breadcrumb Item',
         href: '/components/io-breadcrumb-item/examples',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-breadcrumb-item',
         description: 'Individual breadcrumb item sub-component used inside io-breadcrumb. Renders as a link when href is provided, or as a span with aria-current when current.',
         related: ['io-breadcrumb', 'io-link'],
@@ -162,7 +162,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Checkbox Group',
         href: '/components/io-checkbox-group/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-checkbox-group',
         description: 'Wraps io-checkbox items in a semantic fieldset with a shared legend, name propagation, and a group-level change event.',
         related: ['io-checkbox', 'io-radio-group', 'io-form-field'],
@@ -226,7 +226,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Radio Group',
         href: '/components/io-radio-group/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-radio-group',
         description: 'Wraps io-radio buttons in a semantic fieldset with a shared legend, name and value propagation, and a group-level change event.',
         related: ['io-radio', 'io-checkbox-group', 'io-form-field'],
@@ -258,7 +258,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Stepper',
         href: '/components/io-stepper/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-stepper',
         description: 'Guides users through a multi-step process. Shows progress at a glance with complete, current, and upcoming states in horizontal or vertical orientation.',
         related: ['io-progress', 'io-button', 'io-modal'],
@@ -266,7 +266,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Table',
         href: '/components/io-table/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-table',
         description: 'Accessible data table with optional sortable columns and row selection. Supports sticky headers, selectable rows, and a JavaScript data API.',
         related: ['io-checkbox', 'io-pagination', 'io-spinner'],

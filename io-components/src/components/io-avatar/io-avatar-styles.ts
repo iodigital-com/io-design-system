@@ -12,7 +12,7 @@ export function getAvatarStyles(): string {
       justify-content: center;
       overflow: hidden;
       font-family: var(--io-font-primary);
-      font-weight: 600;
+      font-weight: var(--io-avatar-font-weight);
       user-select: none;
       line-height: 1;
     }
@@ -20,39 +20,39 @@ export function getAvatarStyles(): string {
     /* ── Size variants ── */
 
     .avatar--xs {
-      width: 24px;
-      height: 24px;
-      font-size: 10px;
+      width: var(--io-avatar-size-xs);
+      height: var(--io-avatar-size-xs);
+      font-size: var(--io-avatar-font-size-xs);
     }
 
     .avatar--sm {
-      width: 32px;
-      height: 32px;
-      font-size: 12px;
+      width: var(--io-avatar-size-sm);
+      height: var(--io-avatar-size-sm);
+      font-size: var(--io-avatar-font-size-sm);
     }
 
     .avatar--md {
-      width: 40px;
-      height: 40px;
-      font-size: 14px;
+      width: var(--io-avatar-size-md);
+      height: var(--io-avatar-size-md);
+      font-size: var(--io-avatar-font-size-md);
     }
 
     .avatar--lg {
-      width: 48px;
-      height: 48px;
-      font-size: 16px;
+      width: var(--io-avatar-size-lg);
+      height: var(--io-avatar-size-lg);
+      font-size: var(--io-avatar-font-size-lg);
     }
 
     .avatar--xl {
-      width: 64px;
-      height: 64px;
-      font-size: 20px;
+      width: var(--io-avatar-size-xl);
+      height: var(--io-avatar-size-xl);
+      font-size: var(--io-avatar-font-size-xl);
     }
 
     /* ── Shape variants ── */
 
     .avatar--circle {
-      border-radius: 50%;
+      border-radius: var(--io-avatar-border-radius);
     }
 
     .avatar--square {
@@ -98,8 +98,8 @@ export function getAvatarStyles(): string {
     /* ── Person icon (no src, no name) ── */
 
     .avatar-icon {
-      width: 60%;
-      height: 60%;
+      width: var(--io-avatar-icon-size);
+      height: var(--io-avatar-icon-size);
       color: var(--io-text-secondary);
     }
   `;

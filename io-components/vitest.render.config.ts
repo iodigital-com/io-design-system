@@ -8,7 +8,7 @@ export default defineVitestConfig({
     root: path.resolve(__dirname),
     environment: 'stencil',
     setupFiles: ['tests/render/vitest.setup.ts'],
-    include: ['src/**/*.render.spec.ts', 'src/**/*.render.spec.tsx'],
+    include: ['src/**/*.render.spec.tsx'],
     exclude: ['dist', 'node_modules', 'www', '**/*.e2e.ts'],
     globals: true,
     clearMocks: true,

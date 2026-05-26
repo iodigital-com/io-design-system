@@ -1,5 +1,11 @@
 # @io-digital/components
 
+## 2.1.1
+
+### Patch Changes
+
+- Wave XII UI audit fixes: io-button md padding (density token), io-breadcrumb spacing, io-multi-select fixed dropdown positioning, io-table striped/bordered/compact props, io-popover viewport coordinate fix, density token hierarchy (compact<default<comfortable).
+
 ## 2.1.0
 
 ### Minor Changes

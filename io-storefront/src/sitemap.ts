@@ -212,8 +212,8 @@ export const sitemap: NavSection[] = [
         href: '/components/io-multi-select/configurator',
         status: 'beta',
         slug: 'io-multi-select',
-        description: 'Multi-value dropdown with chip display, search filtering, select-all, and FACE form participation.',
-        related: ['io-select', 'io-checkbox', 'io-form-field'],
+        description: 'Slot-based multi-select dropdown with removable value chips, optional search filter, and FACE form participation.',
+        related: ['io-select', 'io-form-field', 'io-checkbox-group'],
       },
       {
         label: 'Pagination',

@@ -208,6 +208,14 @@
       "notes": "Wave XI (#376) — Avatar font weight: var(--io-font-weight-semibold, 600)"
     },
     {
+      "runtimeCssVar": "--io-avatar-icon-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#376) \u2014 Avatar icon size: 60% of container"
+    },
+    {
       "runtimeCssVar": "--io-avatar-size-lg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

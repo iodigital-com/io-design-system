@@ -28,6 +28,7 @@ import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
+import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
@@ -59,6 +60,7 @@ export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
+export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
@@ -1397,6 +1399,70 @@ export namespace Components {
         "orientation": IoStepperOrientation;
     }
     /**
+     * io-switch
+     * =========
+     * Toggle/switch form-associated component with role="switch" and keyboard navigation.
+     * Mirrors io-checkbox FACE internals — same formAssociated pattern.
+     * @example <io-switch label="Enable notifications" name="notifications" />
+     * <io-switch label="Dark mode" checked />
+     * <io-switch label="Required setting" required error error-message="This field is required" />
+     */
+    interface IoSwitch {
+        /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Checked/toggled state
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * Disables the switch
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Puts the switch in error state
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown below the switch
+         */
+        "errorMessage": string | undefined;
+        /**
+          * Helper text shown below (replaced by error when error=true)
+         */
+        "helperText": string | undefined;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Input name
+         */
+        "name": string | undefined;
+        /**
+          * Check validity and show browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Programmatically move focus to the switch
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Value submitted with the form
+          * @default 'on'
+         */
+        "value": string;
+    }
+    /**
      * io-table
      * =========
      * Accessible data table with a declarative slot-based API.
@@ -1942,6 +2008,10 @@ export interface IoRadioGroupCustomEvent<T> extends CustomEvent<T> {
 export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoSelectElement;
+}
+export interface IoSwitchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoSwitchElement;
 }
 export interface IoTableBodyRowCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2634,6 +2704,32 @@ declare global {
         prototype: HTMLIoStepperElement;
         new (): HTMLIoStepperElement;
     };
+    interface HTMLIoSwitchElementEventMap {
+        "change": IoSwitchChangeDetail;
+    }
+    /**
+     * io-switch
+     * =========
+     * Toggle/switch form-associated component with role="switch" and keyboard navigation.
+     * Mirrors io-checkbox FACE internals — same formAssociated pattern.
+     * @example <io-switch label="Enable notifications" name="notifications" />
+     * <io-switch label="Dark mode" checked />
+     * <io-switch label="Required setting" required error error-message="This field is required" />
+     */
+    interface HTMLIoSwitchElement extends Components.IoSwitch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoSwitchElementEventMap>(type: K, listener: (this: HTMLIoSwitchElement, ev: IoSwitchCustomEvent<HTMLIoSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoSwitchElementEventMap>(type: K, listener: (this: HTMLIoSwitchElement, ev: IoSwitchCustomEvent<HTMLIoSwitchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoSwitchElement: {
+        prototype: HTMLIoSwitchElement;
+        new (): HTMLIoSwitchElement;
+    };
     /**
      * io-table
      * =========
@@ -3017,6 +3113,7 @@ declare global {
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
         "io-stepper": HTMLIoStepperElement;
+        "io-switch": HTMLIoSwitchElement;
         "io-table": HTMLIoTableElement;
         "io-table-body": HTMLIoTableBodyElement;
         "io-table-body-cell": HTMLIoTableBodyCellElement;
@@ -4377,6 +4474,66 @@ declare namespace LocalJSX {
         "orientation"?: IoStepperOrientation;
     }
     /**
+     * io-switch
+     * =========
+     * Toggle/switch form-associated component with role="switch" and keyboard navigation.
+     * Mirrors io-checkbox FACE internals — same formAssociated pattern.
+     * @example <io-switch label="Enable notifications" name="notifications" />
+     * <io-switch label="Dark mode" checked />
+     * <io-switch label="Required setting" required error error-message="This field is required" />
+     */
+    interface IoSwitch {
+        /**
+          * Checked/toggled state
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * Disables the switch
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Puts the switch in error state
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown below the switch
+         */
+        "errorMessage"?: string | undefined;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Helper text shown below (replaced by error when error=true)
+         */
+        "helperText"?: string | undefined;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Input name
+         */
+        "name"?: string | undefined;
+        /**
+          * Fires when the switch state changes
+         */
+        "onChange"?: (event: IoSwitchCustomEvent<IoSwitchChangeDetail>) => void;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Value submitted with the form
+          * @default 'on'
+         */
+        "value"?: string;
+    }
+    /**
      * io-table
      * =========
      * Accessible data table with a declarative slot-based API.
@@ -5129,6 +5286,17 @@ declare namespace LocalJSX {
         "current": number;
         "orientation": IoStepperOrientation;
     }
+    interface IoSwitchAttributes {
+        "label": string;
+        "name": string | undefined;
+        "value": string;
+        "checked": boolean;
+        "required": boolean;
+        "disabled": boolean;
+        "error": boolean;
+        "errorMessage": string | undefined;
+        "helperText": string | undefined;
+    }
     interface IoTableAttributes {
         "caption": string;
         "captionHidden": boolean;
@@ -5241,6 +5409,7 @@ declare namespace LocalJSX {
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
         "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
+        "io-switch": Omit<IoSwitch, keyof IoSwitchAttributes> & { [K in keyof IoSwitch & keyof IoSwitchAttributes]?: IoSwitch[K] } & { [K in keyof IoSwitch & keyof IoSwitchAttributes as `attr:${K}`]?: IoSwitchAttributes[K] } & { [K in keyof IoSwitch & keyof IoSwitchAttributes as `prop:${K}`]?: IoSwitch[K] } & OneOf<"label", IoSwitch["label"], IoSwitchAttributes["label"]>;
         "io-table": Omit<IoTable, keyof IoTableAttributes> & { [K in keyof IoTable & keyof IoTableAttributes]?: IoTable[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `attr:${K}`]?: IoTableAttributes[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `prop:${K}`]?: IoTable[K] };
         "io-table-body": IoTableBody;
         "io-table-body-cell": Omit<IoTableBodyCell, keyof IoTableBodyCellAttributes> & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes]?: IoTableBodyCell[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `attr:${K}`]?: IoTableBodyCellAttributes[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `prop:${K}`]?: IoTableBodyCell[K] };
@@ -5611,6 +5780,16 @@ declare module "@stencil/core" {
              * </io-stepper>
              */
             "io-stepper": LocalJSX.IntrinsicElements["io-stepper"] & JSXBase.HTMLAttributes<HTMLIoStepperElement>;
+            /**
+             * io-switch
+             * =========
+             * Toggle/switch form-associated component with role="switch" and keyboard navigation.
+             * Mirrors io-checkbox FACE internals — same formAssociated pattern.
+             * @example <io-switch label="Enable notifications" name="notifications" />
+             * <io-switch label="Dark mode" checked />
+             * <io-switch label="Required setting" required error error-message="This field is required" />
+             */
+            "io-switch": LocalJSX.IntrinsicElements["io-switch"] & JSXBase.HTMLAttributes<HTMLIoSwitchElement>;
             /**
              * io-table
              * =========

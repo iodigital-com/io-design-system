@@ -208,6 +208,14 @@ export const sitemap: NavSection[] = [
         related: ['io-button', 'io-toast', 'io-tabs'],
       },
       {
+        label: 'Multi Select',
+        href: '/components/io-multi-select/configurator',
+        status: 'beta',
+        slug: 'io-multi-select',
+        description: 'Multi-value dropdown with chip display, search filtering, select-all, and FACE form participation.',
+        related: ['io-select', 'io-checkbox', 'io-form-field'],
+      },
+      {
         label: 'Pagination',
         href: '/components/io-pagination/configurator',
         status: 'stable',

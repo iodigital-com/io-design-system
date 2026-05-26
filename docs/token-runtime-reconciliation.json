@@ -1389,7 +1389,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) \u2014 Fluid display font size 3xl: clamp(2.5rem, 3vw + 2rem, 4rem). Responsive scaling between ~320px and ~1440px viewports."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 3xl: clamp(2.5rem, 3vw + 1.5rem, 4rem). Responsive scaling; crossover from min at ~289px viewport width."
     },
     {
       "runtimeCssVar": "--io-font-size-display-4xl",

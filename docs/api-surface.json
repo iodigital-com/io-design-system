@@ -276,7 +276,9 @@
       "props": {
         "nextLabel": "string",
         "page": "number",
+        "perPage": "number",
         "prevLabel": "string",
+        "totalItems": "number",
         "totalPages": "number"
       },
       "methods": {},

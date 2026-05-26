@@ -12,9 +12,18 @@ import type { IoPaginationChangeDetail } from './types';
  * beige prev/next arrow buttons. Automatically generates ellipsis for large
  * page counts.
  *
- * @example
+ * **Pattern A — explicit page count:**
+ * ```html
  * <io-pagination page="1" total-pages="10" />
- * <io-pagination page="5" total-pages="12" />
+ * ```
+ *
+ * **Pattern B — data-driven (preferred for API integrations):**
+ * ```html
+ * <io-pagination page="1" total-items="95" per-page="10" />
+ * ```
+ * When `totalItems` and `perPage` are both provided, the component derives
+ * `totalPages` internally via `Math.ceil(totalItems / perPage)`, taking
+ * precedence over any explicit `totalPages` prop.
  */
 @Component({
   tag: 'io-pagination',
@@ -28,8 +37,25 @@ export class IoPagination {
   /** Current 1-based active page number */
   @Prop({ mutable: true, reflect: true }) page = 1;
 
-  /** Total number of pages */
+  /**
+   * Total number of pages (Pattern A).
+   * Ignored when both `totalItems` and `perPage` are supplied.
+   */
   @Prop({ mutable: true, reflect: true }) totalPages = 1;
+
+  /**
+   * Total number of items in the dataset (Pattern B).
+   * Provide together with `perPage` to let the component compute `totalPages`.
+   * Takes precedence over an explicit `totalPages` prop when both are set.
+   */
+  @Prop() totalItems?: number;
+
+  /**
+   * Items shown per page (Pattern B).
+   * Provide together with `totalItems` to let the component compute `totalPages`.
+   * Values <= 0 are treated as 1 to avoid division by zero.
+   */
+  @Prop() perPage?: number;
 
   /** Visually label the prev button (used by aria-label) */
   @Prop() prevLabel = 'Previous page';
@@ -51,6 +77,20 @@ export class IoPagination {
 
   private navId!: string;
 
+  /**
+   * Resolves the effective total page count.
+   *
+   * Precedence: `totalItems + perPage` (Pattern B) > explicit `totalPages` (Pattern A).
+   * Falls back to the `totalPages` prop when Pattern B props are absent.
+   */
+  get computedTotalPages(): number {
+    if (this.totalItems != null && this.perPage != null) {
+      const safePerPage = this.perPage > 0 ? this.perPage : 1;
+      return this.totalItems === 0 ? 1 : Math.ceil(this.totalItems / safePerPage);
+    }
+    return this.totalPages;
+  }
+
   private normalizeTotalPages(totalPages: number): number {
     const parsed = Number(totalPages);
     if (!Number.isFinite(parsed)) return 1;
@@ -65,13 +105,28 @@ export class IoPagination {
 
   componentWillLoad() {
     this.navId = createPaginationNavId(Math.random().toString(36).slice(2));
-    const normalizedTotalPages = this.normalizeTotalPages(this.totalPages);
-    this.totalPages = normalizedTotalPages;
-    this.page = this.normalizePage(this.page, normalizedTotalPages);
+
+    const hasDataDrivenProps = this.totalItems != null && this.perPage != null;
+    const hasOnlyOneDataProp = (this.totalItems != null) !== (this.perPage != null);
+
+    if (hasOnlyOneDataProp) {
+      console.warn('[io-pagination] Provide either totalPages OR both totalItems and perPage. Falling back to totalPages.');
+    }
+
+    const effectiveTotal = this.computedTotalPages;
+
+    if (!hasDataDrivenProps) {
+      this.totalPages = this.normalizeTotalPages(effectiveTotal);
+    }
+
+    this.page = this.normalizePage(this.page, hasDataDrivenProps ? effectiveTotal : this.totalPages);
   }
 
   @Watch('totalPages')
   onTotalPagesChange(newValue: number) {
+    // Skip normalization when data-driven props govern the total page count
+    if (this.totalItems != null && this.perPage != null) return;
+
     const normalizedTotalPages = this.normalizeTotalPages(newValue);
 
     if (normalizedTotalPages !== newValue) {
@@ -85,15 +140,31 @@ export class IoPagination {
     }
   }
 
+  @Watch('totalItems')
+  onTotalItemsChange() {
+    const normalizedPage = this.normalizePage(this.page, this.computedTotalPages);
+    if (normalizedPage !== this.page) {
+      this.page = normalizedPage;
+    }
+  }
+
+  @Watch('perPage')
+  onPerPageChange() {
+    const normalizedPage = this.normalizePage(this.page, this.computedTotalPages);
+    if (normalizedPage !== this.page) {
+      this.page = normalizedPage;
+    }
+  }
+
   @Watch('page')
   onPageChange(newValue: number) {
-    const normalizedPage = this.normalizePage(newValue, this.normalizeTotalPages(this.totalPages));
+    const normalizedPage = this.normalizePage(newValue, this.normalizeTotalPages(this.computedTotalPages));
     if (normalizedPage !== newValue) {
       this.page = normalizedPage;
       return;
     }
 
-    this.liveMessage = `Page ${normalizedPage} of ${this.totalPages}`;
+    this.liveMessage = `Page ${normalizedPage} of ${this.computedTotalPages}`;
   }
 
   // ── Private helpers ───────────────────────────────────────────
@@ -104,16 +175,18 @@ export class IoPagination {
   }
 
   private go(page: number) {
-    if (!canNavigateToPage(page, this.totalPages, this.page)) return;
+    const totalPages = this.computedTotalPages;
+    if (!canNavigateToPage(page, totalPages, this.page)) return;
     this.page = page;
-    this.liveMessage = `Page ${page} of ${this.totalPages}`;
+    this.liveMessage = `Page ${page} of ${totalPages}`;
     this.change.emit({ page });
   }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { page, totalPages, prevLabel, nextLabel, navId } = this;
+    const { page, prevLabel, nextLabel, navId } = this;
+    const totalPages = this.computedTotalPages;
     const pages = this.pageRange(page, totalPages);
 
     const arrowLeft = (

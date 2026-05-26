@@ -15,7 +15,7 @@ export default function IoPaginationApiPage() {
           columns={[
             { label: 'Property', width: '170px' },
             { label: 'Attribute', width: '170px' },
-            { label: 'Type', width: '140px' },
+            { label: 'Type', width: '180px' },
             { label: 'Default', width: '140px' },
             { label: 'Description' },
           ]}
@@ -32,7 +32,31 @@ export default function IoPaginationApiPage() {
               <InlineCode key="attribute">total-pages</InlineCode>,
               <InlineCode key="type">number</InlineCode>,
               <InlineCode key="default">1</InlineCode>,
-              <span key="description">Total number of pages. Mutable — normalised internally if a non-finite or negative value is supplied.</span>,
+              <span key="description">
+                Total number of pages (Pattern A). Mutable — normalised internally if a non-finite or negative value is supplied.
+                Ignored when both <InlineCode>totalItems</InlineCode> and <InlineCode>perPage</InlineCode> are provided.
+              </span>,
+            ],
+            [
+              <InlineCode key="property">totalItems</InlineCode>,
+              <InlineCode key="attribute">total-items</InlineCode>,
+              <InlineCode key="type">number | undefined</InlineCode>,
+              <InlineCode key="default">—</InlineCode>,
+              <span key="description">
+                Total number of items in the dataset (Pattern B). Provide together with <InlineCode>perPage</InlineCode> to
+                let the component derive <InlineCode>totalPages</InlineCode> via <InlineCode>Math.ceil(totalItems / perPage)</InlineCode>.
+                Takes precedence over an explicit <InlineCode>totalPages</InlineCode> prop when both patterns are set.
+              </span>,
+            ],
+            [
+              <InlineCode key="property">perPage</InlineCode>,
+              <InlineCode key="attribute">per-page</InlineCode>,
+              <InlineCode key="type">number | undefined</InlineCode>,
+              <InlineCode key="default">—</InlineCode>,
+              <span key="description">
+                Items shown per page (Pattern B). Provide together with <InlineCode>totalItems</InlineCode> to
+                let the component derive the page count. Values &le; 0 are treated as 1 to avoid division by zero.
+              </span>,
             ],
             [
               <InlineCode key="property">prevLabel</InlineCode>,
@@ -87,10 +111,25 @@ export default function IoPaginationApiPage() {
       <section id="code-examples" className="space-y-4">
         <SectionHeader
           title="Code examples"
-          description="Framework integration snippets for io-pagination."
+          description="Framework integration snippets for io-pagination. Pattern A uses an explicit page count; Pattern B derives it from item count and page size."
         />
+
+        <p className="text-sm font-medium" style={{ color: 'var(--io-text-secondary)' }}>Pattern A — explicit page count</p>
         <CodeNote label="HTML">
 {`<io-pagination page="1" total-pages="10"></io-pagination>
+
+<script>
+  document.querySelector('io-pagination')
+    .addEventListener('change', (e) => {
+      console.log('Page:', e.detail.page);
+    });
+</script>`}
+        </CodeNote>
+
+        <p className="text-sm font-medium mt-6" style={{ color: 'var(--io-text-secondary)' }}>Pattern B — data-driven (totalItems + perPage)</p>
+        <CodeNote label="HTML">
+{`<!-- 95 items, 10 per page → component derives totalPages = 10 -->
+<io-pagination page="1" total-items="95" per-page="10"></io-pagination>
 
 <script>
   document.querySelector('io-pagination')
@@ -115,7 +154,8 @@ function App() {
     return () => el.removeEventListener('change', handler);
   }, []);
 
-  return <io-pagination ref={paginationRef} page={page} total-pages={10} />;
+  // 95 items, 10 per page → component derives totalPages = 10
+  return <io-pagination ref={paginationRef} page={page} total-items={95} per-page={10} />;
 }`}
         </CodeNote>
         <CodeNote label="Angular">
@@ -130,7 +170,8 @@ import { IoPagination } from '@io-digital/components-angular';
   template: \`
     <io-pagination
       [page]="page()"
-      [totalPages]="10"
+      [totalItems]="95"
+      [perPage]="10"
       (change)="onPageChange($event)"
     />
   \`,
@@ -145,9 +186,11 @@ export class AppComponent {
         </CodeNote>
         <CodeNote label="Vue">
 {`<template>
+  <!-- 95 items, 10 per page → component derives totalPages = 10 -->
   <io-pagination
     :page="page"
-    :total-pages="10"
+    :total-items="95"
+    :per-page="10"
     @change="onPageChange"
   />
 </template>

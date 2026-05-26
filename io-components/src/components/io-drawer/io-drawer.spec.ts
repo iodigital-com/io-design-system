@@ -80,6 +80,69 @@ describe('io-drawer — render contract', () => {
   });
 });
 
+describe('io-drawer — bottom sheet styles', () => {
+  it('styles contain drawer--sheet class rule with border-radius-lg', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('drawer--sheet');
+    const sheetIdx = styles.indexOf('drawer--sheet');
+    const sheetBlock = styles.slice(sheetIdx, sheetIdx + 200);
+    expect(sheetBlock).toContain('--io-border-radius-lg');
+  });
+
+  it('styles contain max-height: 85vh for bottom sheet', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('max-height: 85vh');
+  });
+
+  it('styles contain .drawer__handle rule', () => {
+    const styles: string = getDrawerStyles();
+    expect(styles).toContain('.drawer__handle');
+  });
+
+  it('drag handle uses --io-border-hover token for background-color', () => {
+    const styles: string = getDrawerStyles();
+    const handleIdx = styles.indexOf('.drawer__handle');
+    const handleBlock = styles.slice(handleIdx, handleIdx + 200);
+    expect(handleBlock).toContain('--io-border-hover');
+  });
+
+  it('drag handle dimensions are 32px wide and 4px tall', () => {
+    const styles: string = getDrawerStyles();
+    const handleIdx = styles.indexOf('.drawer__handle');
+    const handleBlock = styles.slice(handleIdx, handleIdx + 200);
+    expect(handleBlock).toContain('width: 32px');
+    expect(handleBlock).toContain('height: 4px');
+  });
+
+  it('drag handle uses border-radius: 2px per ACs', () => {
+    const styles: string = getDrawerStyles();
+    const handleIdx = styles.indexOf('.drawer__handle');
+    const handleBlock = styles.slice(handleIdx, handleIdx + 200);
+    expect(handleBlock).toContain('border-radius: 2px');
+  });
+});
+
+describe('io-drawer — bottom sheet rendering', () => {
+  let component: IoDrawer;
+
+  beforeEach(() => {
+    component = new IoDrawer();
+    (component as any).el = document.createElement('io-drawer');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  it('render does not throw for bottom placement', () => {
+    component.placement = 'bottom';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw for non-bottom placement (no handle rendered)', () => {
+    component.placement = 'right';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+});
+
 describe('io-drawer — show/close methods', () => {
   let component: IoDrawer;
   let dialogEl: HTMLDialogElement;

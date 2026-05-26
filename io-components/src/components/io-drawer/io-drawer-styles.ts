@@ -83,6 +83,37 @@ export function getDrawerStyles(): string {
     dialog.drawer--bottom.drawer--lg { height: 66vh; }
     dialog.drawer--bottom.drawer--full { height: 100vh; width: 100vw; }
 
+    /* ── Bottom sheet variant ────────────────────────────────── */
+
+    dialog.drawer--bottom.drawer--sheet {
+      border-radius: var(--io-border-radius-lg) var(--io-border-radius-lg) 0 0;
+      max-height: 85vh;
+      height: auto;
+    }
+
+    dialog.drawer--bottom.drawer--sheet.drawer--sm,
+    dialog.drawer--bottom.drawer--sheet.drawer--md,
+    dialog.drawer--bottom.drawer--sheet.drawer--lg {
+      height: auto;
+    }
+
+    /* ── Drag handle ─────────────────────────────────────────── */
+
+    .drawer__handle {
+      width: 32px;
+      height: 4px;
+      background-color: var(--io-border-hover);
+      border-radius: 2px;
+      margin: var(--io-space-2) auto;
+      flex-shrink: 0;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .drawer__handle:active {
+      cursor: grabbing;
+    }
+
     /* ── Header ──────────────────────────────────────────────── */
 
     .drawer__header {

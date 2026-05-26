@@ -33,6 +33,7 @@ declare module 'react' {
   'io-option': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptionElement>, HTMLIoOptionElement> & Partial<StencilJSX.IoOption>;
   'io-pagination': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPaginationElement>, HTMLIoPaginationElement> & Partial<StencilJSX.IoPagination>;
   'io-pin-code': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoPinCodeElement>, HTMLIoPinCodeElement> & Partial<StencilJSX.IoPinCode>;
+  'io-popover': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { placement?: string; open?: boolean; 'close-on-click-outside'?: boolean; label?: string };
   'io-progress': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoProgressElement>, HTMLIoProgressElement> & Partial<StencilJSX.IoProgress>;
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-radio-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioGroupElement>, HTMLIoRadioGroupElement> & Partial<StencilJSX.IoRadioGroup>;

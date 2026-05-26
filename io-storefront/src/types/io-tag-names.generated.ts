@@ -26,6 +26,7 @@ export type IoTagNames =
   | 'io-option'
   | 'io-pagination'
   | 'io-pin-code'
+  | 'io-popover'
   | 'io-progress'
   | 'io-radio'
   | 'io-radio-group'

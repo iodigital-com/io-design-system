@@ -56,20 +56,28 @@ describe('resolveSelectId', () => {
 });
 
 describe('getSelectWrapperClass', () => {
-  it('returns only base class when neither error nor disabled', () => {
-    expect(getSelectWrapperClass(false, false)).toBe('select-wrapper');
+  it('returns only base class when no state and not disabled', () => {
+    expect(getSelectWrapperClass(false, false, false, false)).toBe('select-wrapper');
   });
 
-  it('includes error modifier when error is true', () => {
-    expect(getSelectWrapperClass(true, false)).toBe('select-wrapper select-wrapper--error');
+  it('includes state-error modifier when error is true', () => {
+    expect(getSelectWrapperClass(true, false, false, false)).toBe('select-wrapper select-wrapper--state-error');
+  });
+
+  it('includes state-success modifier when success is true', () => {
+    expect(getSelectWrapperClass(false, true, false, false)).toBe('select-wrapper select-wrapper--state-success');
+  });
+
+  it('includes state-warning modifier when warning is true', () => {
+    expect(getSelectWrapperClass(false, false, true, false)).toBe('select-wrapper select-wrapper--state-warning');
   });
 
   it('includes disabled modifier when disabled is true', () => {
-    expect(getSelectWrapperClass(false, true)).toBe('select-wrapper select-wrapper--disabled');
+    expect(getSelectWrapperClass(false, false, false, true)).toBe('select-wrapper select-wrapper--disabled');
   });
 
-  it('includes both modifiers when error and disabled are true', () => {
-    expect(getSelectWrapperClass(true, true)).toBe('select-wrapper select-wrapper--error select-wrapper--disabled');
+  it('includes both state-error and disabled modifiers when both are true', () => {
+    expect(getSelectWrapperClass(true, false, false, true)).toBe('select-wrapper select-wrapper--state-error select-wrapper--disabled');
   });
 });
 
@@ -92,20 +100,28 @@ describe('getComboboxOptionId', () => {
 });
 
 describe('getComboboxWrapperClass', () => {
-  it('returns base classes when neither error nor disabled', () => {
-    expect(getComboboxWrapperClass(false, false)).toBe('select-wrapper select-wrapper--custom');
+  it('returns base classes when no state and not disabled', () => {
+    expect(getComboboxWrapperClass(false, false, false, false)).toBe('select-wrapper select-wrapper--custom');
   });
 
-  it('includes error modifier when error is true', () => {
-    expect(getComboboxWrapperClass(true, false)).toBe('select-wrapper select-wrapper--custom select-wrapper--error');
+  it('includes state-error modifier when error is true', () => {
+    expect(getComboboxWrapperClass(true, false, false, false)).toBe('select-wrapper select-wrapper--custom select-wrapper--state-error');
+  });
+
+  it('includes state-success modifier when success is true', () => {
+    expect(getComboboxWrapperClass(false, true, false, false)).toBe('select-wrapper select-wrapper--custom select-wrapper--state-success');
+  });
+
+  it('includes state-warning modifier when warning is true', () => {
+    expect(getComboboxWrapperClass(false, false, true, false)).toBe('select-wrapper select-wrapper--custom select-wrapper--state-warning');
   });
 
   it('includes disabled modifier when disabled is true', () => {
-    expect(getComboboxWrapperClass(false, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--disabled');
+    expect(getComboboxWrapperClass(false, false, false, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--disabled');
   });
 
-  it('includes both modifiers when error and disabled are true', () => {
-    expect(getComboboxWrapperClass(true, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--error select-wrapper--disabled');
+  it('includes both state-error and disabled modifiers when both are true', () => {
+    expect(getComboboxWrapperClass(true, false, false, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--state-error select-wrapper--disabled');
   });
 });
 

@@ -246,7 +246,7 @@ export class IoRadio {
           </label>
         </div>
         {hasState && message && (
-          <p id={messageId} class={`radio-message radio-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">
+          <p id={messageId} class={`radio-message radio-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
             {message}
           </p>
         )}

@@ -253,7 +253,7 @@ export class IoTextarea {
           </label>
         </div>
         {hasState && message && (
-          <p id={messageId} class={`textarea-message textarea-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">
+          <p id={messageId} class={`textarea-message textarea-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
             {message}
           </p>
         )}

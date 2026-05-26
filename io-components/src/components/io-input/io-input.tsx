@@ -322,7 +322,7 @@ export class IoInput {
           </label>
         </div>
         {hasState && message && (
-          <p id={messageId} class={`input-message input-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">{message}</p>
+          <p id={messageId} class={`input-message input-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>
         )}
         {!hasState && helperText && (
           <p id={helperId} class="input-helper">{helperText}</p>

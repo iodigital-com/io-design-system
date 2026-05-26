@@ -67,7 +67,7 @@ export function getFormFieldStyles(): string {
     }
 
     .form-field__message--warning {
-      color: var(--io-color-state-warning, #c47f0a);
+      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
   `;
 }

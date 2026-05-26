@@ -47,21 +47,29 @@ describe('resolveTextareaId', () => {
 });
 
 describe('getTextareaWrapperClass', () => {
-  it('returns base class when not in error and not disabled', () => {
-    expect(getTextareaWrapperClass(false, false)).toBe('textarea-wrapper');
+  it('returns base class when no state and not disabled', () => {
+    expect(getTextareaWrapperClass(false, false, false, false)).toBe('textarea-wrapper');
   });
 
-  it('adds error modifier when error=true', () => {
-    expect(getTextareaWrapperClass(true, false)).toBe('textarea-wrapper textarea-wrapper--error');
+  it('adds state-error modifier when error=true', () => {
+    expect(getTextareaWrapperClass(true, false, false, false)).toBe('textarea-wrapper textarea-wrapper--state-error');
+  });
+
+  it('adds state-success modifier when success=true', () => {
+    expect(getTextareaWrapperClass(false, true, false, false)).toBe('textarea-wrapper textarea-wrapper--state-success');
+  });
+
+  it('adds state-warning modifier when warning=true', () => {
+    expect(getTextareaWrapperClass(false, false, true, false)).toBe('textarea-wrapper textarea-wrapper--state-warning');
   });
 
   it('adds disabled modifier when disabled=true', () => {
-    expect(getTextareaWrapperClass(false, true)).toBe('textarea-wrapper textarea-wrapper--disabled');
+    expect(getTextareaWrapperClass(false, false, false, true)).toBe('textarea-wrapper textarea-wrapper--disabled');
   });
 
-  it('adds both error and disabled modifiers when both are true', () => {
-    const cls = getTextareaWrapperClass(true, true);
-    expect(cls).toContain('textarea-wrapper--error');
+  it('adds both state-error and disabled modifiers when both are true', () => {
+    const cls = getTextareaWrapperClass(true, false, false, true);
+    expect(cls).toContain('textarea-wrapper--state-error');
     expect(cls).toContain('textarea-wrapper--disabled');
   });
 });

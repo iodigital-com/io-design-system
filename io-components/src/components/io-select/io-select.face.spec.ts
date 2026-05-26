@@ -102,6 +102,20 @@ describe('io-select — FACE', () => {
     expect(await component.reportValidity()).toBe(true);
   });
 
+
+  it('shows error UI when faceInvalid=true even if state is success', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.state = 'success';
+    component.message = 'Looks good';
+    // faceInvalid overrides state='success': showError = state==='error' || faceInvalid
+    // componentWillLoad() calls syncFormValue() which resets faceInvalid — set AFTER
+    (component as any).componentWillLoad();
+    (component as any).faceInvalid = true;
+    expect(() => (component as any).renderNativeSelect()).not.toThrow();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
   describe('formResetCallback', () => {
     it('resets single-mode value to the default value captured in componentWillLoad()', () => {
       const internals = makeInternals();

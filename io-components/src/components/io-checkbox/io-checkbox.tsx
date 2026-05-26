@@ -222,7 +222,7 @@ export class IoCheckbox {
           </label>
         </div>
         {hasState && message && (
-          <p id={messageId} class={`checkbox-message checkbox-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">
+          <p id={messageId} class={`checkbox-message checkbox-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>
             {message}
           </p>
         )}

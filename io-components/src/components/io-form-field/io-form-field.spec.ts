@@ -38,7 +38,7 @@ describe('io-form-field — default props', () => {
     component.helperText = 'Some help';
     component.state = 'none';
     (component as any).helperId = 'io-ff-helper-abc';
-    (component as any).errorId = 'io-ff-error-abc';
+    (component as any).messageId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
     expect(result).toBe('io-ff-helper-abc');
   });
@@ -47,7 +47,7 @@ describe('io-form-field — default props', () => {
     component.message = 'Something went wrong';
     component.state = 'error';
     (component as any).helperId = 'io-ff-helper-abc';
-    (component as any).errorId = 'io-ff-error-abc';
+    (component as any).messageId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
     expect(result).toBe('io-ff-error-abc');
   });
@@ -57,10 +57,45 @@ describe('io-form-field — default props', () => {
     component.message = '';
     component.state = 'none';
     (component as any).helperId = 'io-ff-helper-abc';
-    (component as any).errorId = 'io-ff-error-abc';
+    (component as any).messageId = 'io-ff-error-abc';
     const result = (component as any).buildDescribedBy();
     expect(result).toBe('');
   });
+
+  it('applies state-success class when state is success', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).label = 'Email';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('applies state-warning class when state is warning', () => {
+    component.state = 'warning';
+    component.message = 'Check this field';
+    (component as any).label = 'Email';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('buildDescribedBy returns message ID when state is success and message is set', () => {
+    component.message = 'Looks good';
+    component.state = 'success';
+    (component as any).helperId = 'io-ff-helper-abc';
+    (component as any).messageId = 'io-ff-error-abc';
+    const result = (component as any).buildDescribedBy();
+    expect(result).toBe('io-ff-error-abc');
+  });
+
+  it('buildDescribedBy returns message ID when state is warning and message is set', () => {
+    component.message = 'Check this field';
+    component.state = 'warning';
+    (component as any).helperId = 'io-ff-helper-abc';
+    (component as any).messageId = 'io-ff-error-abc';
+    const result = (component as any).buildDescribedBy();
+    expect(result).toBe('io-ff-error-abc');
+  });
+
 });
 
 describe('io-form-field — syncChildAttributes', () => {
@@ -72,7 +107,7 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).el = host;
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
-    (component as any).errorId = 'test-error';
+    (component as any).messageId = 'test-error';
     component.state = 'error';
     component.message = 'Error occurred';
     component.helperText = '';
@@ -93,7 +128,7 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).el = host;
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
-    (component as any).errorId = 'test-error';
+    (component as any).messageId = 'test-error';
     component.state = 'none';
     component.helperText = '';
     component.message = '';
@@ -111,7 +146,7 @@ describe('io-form-field — syncChildAttributes', () => {
     (component as any).el = host;
     (component as any).inputId = 'test-id';
     (component as any).helperId = 'test-helper';
-    (component as any).errorId = 'test-error';
+    (component as any).messageId = 'test-error';
     component.state = 'none';
     component.helperText = 'Helpful hint';
     component.message = '';

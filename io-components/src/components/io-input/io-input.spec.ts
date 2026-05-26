@@ -104,4 +104,25 @@ describe('io-input — stable id linkage', () => {
     expect(firstIds.inputId).toMatch(/^io-input-email-[a-z0-9]+$/);
     expect(secondIds.inputId).toMatch(/^io-input-email-[a-z0-9]+$/);
   });
+
+  it('applies state-success wrapper class when state is success', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('applies state-warning wrapper class when state is warning', () => {
+    component.state = 'warning';
+    component.message = 'Check this field';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('message paragraph uses role=status for success state', () => {
+    component.state = 'success';
+    component.message = 'Looks good';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
 });

@@ -49,7 +49,7 @@ export class IoFormField {
 
   private inputId!: string;
   private helperId!: string;
-  private errorId!: string;
+  private messageId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -57,7 +57,7 @@ export class IoFormField {
     const suffix = Math.random().toString(36).slice(2);
     this.inputId = `io-ff-${suffix}`;
     this.helperId = `io-ff-helper-${suffix}`;
-    this.errorId = `io-ff-error-${suffix}`;
+    this.messageId = `io-ff-error-${suffix}`;
   }
 
   componentDidLoad() {
@@ -114,7 +114,7 @@ export class IoFormField {
     const ids: string[] = [];
     const hasState = this.state !== 'none';
     if (!hasState && this.helperText) ids.push(this.helperId);
-    if (hasState && this.message) ids.push(this.errorId);
+    if (hasState && this.message) ids.push(this.messageId);
     return ids.join(' ');
   }
 
@@ -141,7 +141,7 @@ export class IoFormField {
             </span>
           )}
           {hasState && message && (
-            <span id={this.errorId} class={`form-field__message form-field__message--${state}`} aria-live="polite">
+            <span id={this.messageId} class={`form-field__message form-field__message--${state}`} aria-live="polite">
               {message}
             </span>
           )}

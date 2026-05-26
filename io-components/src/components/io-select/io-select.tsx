@@ -611,7 +611,7 @@ export class IoSelect {
             </svg>
           </span>
         </div>
-        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">{message}</p>}
+        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>}
         {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
       </Host>
     );
@@ -713,7 +713,7 @@ export class IoSelect {
           </div>
         </div>
 
-        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role="alert">{message}</p>}
+        {hasState && message && <p id={messageId} class={`select-message select-message--${showError ? 'error' : showSuccess ? 'success' : 'warning'}`} role={showError ? 'alert' : 'status'}>{message}</p>}
         {!hasState && helperText && <p id={helperId} class="select-helper">{helperText}</p>}
       </Host>
     );

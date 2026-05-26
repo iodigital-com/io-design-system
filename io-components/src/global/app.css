@@ -464,10 +464,9 @@
   --io-avatar-font-size-lg:      16px;
   --io-avatar-font-size-xl:      20px;
 
-  /* Avatar typography, shape & icon */
+  /* Avatar typography & shape */
   --io-avatar-font-weight:       var(--io-font-weight-semibold, 600);
   --io-avatar-border-radius:     50%;
-  --io-avatar-icon-size:         60%;
 
   /* Accordion */
   --io-accordion-max-height:     600px;

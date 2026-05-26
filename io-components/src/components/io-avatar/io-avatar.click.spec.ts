@@ -45,4 +45,14 @@ describe('io-avatar — click behaviour', () => {
 
     expect(eventKeys).toHaveLength(0);
   });
+
+  it('imgError state is reset when src changes after an error', () => {
+    component.src = 'https://example.com/bad.jpg';
+    (component as any).imgError = true;
+
+    component.src = 'https://example.com/good.jpg';
+    (component as any).onSrcChange();
+
+    expect((component as any).imgError).toBe(false);
+  });
 });

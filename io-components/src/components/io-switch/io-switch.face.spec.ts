@@ -113,6 +113,20 @@ describe('io-switch — FACE', () => {
     expect((component as any).faceInvalid).toBe(false);
   });
 
+  it('formResetCallback clears faceInvalid before syncFormValue (#453)', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    // Mark as invalid first (simulates a previous required+unchecked state)
+    (component as any).faceInvalid = true;
+    const callOrder: string[] = [];
+    internals.setFormValue.mockImplementation(() => {
+      callOrder.push(`faceInvalid:${(component as any).faceInvalid}`);
+    });
+    (component as any).formResetCallback();
+    // faceInvalid must be false at the time setFormValue is called
+    expect(callOrder).toContain('faceInvalid:false');
+  });
+
   it('formResetCallback resets to defaultChecked=false and clears formValue', () => {
     const internals = makeInternals();
     (component as any).internals = internals;

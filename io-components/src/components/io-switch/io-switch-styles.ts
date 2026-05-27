@@ -88,7 +88,7 @@ export function getSwitchStyles(): string {
       background-color: var(--io-color-white);
       transition: transform var(--io-motion-fast);
       pointer-events: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      box-shadow: var(--io-switch-thumb-shadow);
     }
 
     .switch-track--checked .switch-thumb {

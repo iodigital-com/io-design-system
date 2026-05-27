@@ -452,6 +452,10 @@
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 
+  /* Multi-Select */
+  --io-multi-select-chip-height:    24px;  /* height of selected-value chips */
+  --io-multi-select-chip-max-width: 160px; /* max width of selected-value chips before truncation */
+
   /* ── Pin Code ────────────────────────────────────────── */
   --io-pin-code-slot-size:               3rem;
   --io-pin-code-slot-radius:             var(--io-border-radius-sm);

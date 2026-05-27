@@ -40,6 +40,43 @@ export const headingStoryLevels: Story<'io-heading'> = {
     })),
 };
 
+export const headingStoryWeights: Story<'io-heading'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['regular', 'semibold', 'bold'] as const).map((weight) => ({
+      tag: 'io-heading' as const,
+      properties: { weight, tag: 'h2', size: '2xl', color: 'primary' },
+      children: [`Weight: ${weight} — Heading text example`],
+    })),
+};
+
+export const headingStoryAlign: Story<'io-heading'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['start', 'center', 'end'] as const).map((align) => ({
+      tag: 'io-heading' as const,
+      properties: { align, tag: 'h2', size: '2xl', weight: 'semibold', color: 'primary' },
+      children: [`Align: ${align} — Heading text example`],
+    })),
+};
+
+export const headingStoryEllipsis: Story<'io-heading'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'div' as const,
+      properties: { style: { width: '320px' } },
+      children: [
+        {
+          tag: 'io-heading' as const,
+          properties: { ellipsis: true, tag: 'h2', size: '2xl', weight: 'semibold', color: 'primary' },
+          children: ['Ellipsis enabled: The quick brown fox jumps over the lazy dog and keeps going past the container edge.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const headingPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',

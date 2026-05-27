@@ -123,4 +123,17 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Shows a search input inside the dropdown to filter options by label.',
   },
+  {
+    name: 'dropdownDirection',
+    type: 'select',
+    options: ['auto', 'down', 'up'],
+    defaultValue: 'auto',
+    description: 'Direction the dropdown opens: auto (viewport-aware), down, or up.',
+  },
+  {
+    name: 'maxDisplay',
+    type: 'number',
+    defaultValue: 3,
+    description: 'Max number of selected chips shown before a "+N more" overflow indicator.',
+  },
 ];

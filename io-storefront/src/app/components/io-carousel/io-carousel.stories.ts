@@ -176,4 +176,22 @@ export const carouselPropDefinitions: PropDefinition[] = [
     defaultValue: 0,
     description: 'Zero-based active slide index.',
   },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: 'Carousel',
+    description: 'Accessible aria-label for the carousel region. Override with a descriptive value such as "Product gallery".',
+  },
+  {
+    name: 'prevLabel',
+    type: 'string',
+    defaultValue: 'Previous',
+    description: 'Accessible label for the previous-slide button. Override for localisation.',
+  },
+  {
+    name: 'nextLabel',
+    type: 'string',
+    defaultValue: 'Next',
+    description: 'Accessible label for the next-slide button. Override for localisation.',
+  },
 ];

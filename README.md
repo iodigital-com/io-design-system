@@ -28,7 +28,7 @@ This repository is responsible for all of the following:
 
 ## Component Catalog
 
-Current component set (22):
+Current component set (37):
 
 - io-accordion
 - io-badge

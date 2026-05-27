@@ -9,19 +9,19 @@
     "cssVar": "--io-accordion-icon-bar-thickness",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Thickness of the +/− icon bars. Override to adjust the visual weight of the toggle icon."
+    "description": "Thickness of the +/\u2212 icon bars. Override to adjust the visual weight of the toggle icon."
   },
   {
     "cssVar": "--io-accordion-icon-bar-inset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Inset distance of the +/− icon bars from the edge of the icon container."
+    "description": "Inset distance of the +/\u2212 icon bars from the edge of the icon container."
   },
   {
     "cssVar": "--io-accordion-icon-bar-axis-offset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Axis offset that centres the vertical/horizontal bars of the +/− icon."
+    "description": "Axis offset that centres the vertical/horizontal bars of the +/\u2212 icon."
   },
   {
     "cssVar": "--io-accordion-icon-horizontal-collapsed-side",
@@ -33,7 +33,7 @@
     "cssVar": "--io-color-primary",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Global primary brand color. Used for the +/− icon fill."
+    "description": "Global primary brand color. Used for the +/\u2212 icon fill."
   },
   {
     "cssVar": "--io-focus-ring-active",
@@ -862,5 +862,89 @@
     "classification": "public-api",
     "component": "io-scroller",
     "description": "Width (horizontal) or height (vertical) of the gradient fade overlay. Defaults to var(--io-space-6, 24px)."
+  },
+  {
+    "cssVar": "--io-switch-track-width",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Width of the switch track pill. Defaults to 2.75rem (44px)."
+  },
+  {
+    "cssVar": "--io-switch-track-height",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Height of the switch track pill. Defaults to 1.5rem (24px)."
+  },
+  {
+    "cssVar": "--io-switch-track-radius",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Border-radius of the switch track. Defaults to 9999px (fully rounded pill)."
+  },
+  {
+    "cssVar": "--io-switch-thumb-size",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Width and height of the circular thumb. Defaults to 1.25rem (20px)."
+  },
+  {
+    "cssVar": "--io-switch-thumb-radius",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Border-radius of the thumb. Defaults to 9999px (fully rounded circle)."
+  },
+  {
+    "cssVar": "--io-switch-thumb-offset-off",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Horizontal translateX offset of the thumb when the switch is unchecked. Defaults to 2px."
+  },
+  {
+    "cssVar": "--io-switch-thumb-offset-on",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Horizontal translateX offset of the thumb when the switch is checked. Defaults to track-width minus thumb-size minus 2px."
+  },
+  {
+    "cssVar": "--io-pin-code-slot-size",
+    "classification": "public-api",
+    "component": "io-pin-code",
+    "description": "Width and height of each digit input slot. Defaults to 3rem."
+  },
+  {
+    "cssVar": "--io-pin-code-slot-radius",
+    "classification": "public-api",
+    "component": "io-pin-code",
+    "description": "Border-radius of each digit input slot. Defaults to var(--io-border-radius-sm)."
+  },
+  {
+    "cssVar": "--io-pin-code-slot-border-width",
+    "classification": "public-api",
+    "component": "io-pin-code",
+    "description": "Border width of unfocused digit slots. Defaults to 1.5px."
+  },
+  {
+    "cssVar": "--io-pin-code-gap",
+    "classification": "public-api",
+    "component": "io-pin-code",
+    "description": "Gap between digit input slots. Defaults to var(--io-space-2)."
+  },
+  {
+    "cssVar": "--io-pin-code-font-size",
+    "classification": "public-api",
+    "component": "io-pin-code",
+    "description": "Font size of the digit character inside each slot. Defaults to var(--io-font-size-xl)."
+  },
+  {
+    "cssVar": "--io-multi-select-chip-height",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Height of the selected-value chips displayed in the trigger. Defaults to 24px."
+  },
+  {
+    "cssVar": "--io-multi-select-chip-max-width",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Maximum width of a selected-value chip before text is truncated. Defaults to 160px."
   }
 ]

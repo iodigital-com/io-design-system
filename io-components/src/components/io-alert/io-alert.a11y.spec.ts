@@ -13,6 +13,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+import { getAlertStyles } from './io-alert-styles';
 
 describe('io-alert — a11y (ARIA patterns)', () => {
   it('info alert (role=status, aria-live=polite) has no violations', async () => {
@@ -90,13 +91,9 @@ describe('io-alert — a11y (ARIA patterns)', () => {
     await renderAndCheckA11y(wrapper);
   });
 
-  it('dismiss button meets 44×44px minimum touch target (WCAG 2.5.8)', () => {
-    const btn = document.createElement('button');
-    btn.style.minWidth = '44px';
-    btn.style.minHeight = '44px';
-    const minW = parseInt(btn.style.minWidth, 10);
-    const minH = parseInt(btn.style.minHeight, 10);
-    expect(minW).toBeGreaterThanOrEqual(44);
-    expect(minH).toBeGreaterThanOrEqual(44);
+  it('dismiss button touch target uses var(--io-touch-target-min) token (WCAG 2.5.8)', () => {
+    const styles = getAlertStyles();
+    expect(styles).toContain('min-width: var(--io-touch-target-min)');
+    expect(styles).toContain('min-height: var(--io-touch-target-min)');
   });
 });

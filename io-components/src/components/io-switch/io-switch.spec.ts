@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoSwitch } from './io-switch';
+import { getSwitchStyles } from './io-switch-styles';
 
 describe('io-switch — default props', () => {
   let component: IoSwitch;
@@ -55,5 +56,30 @@ describe('io-switch — default props', () => {
   it('setFocus handles missing el gracefully', async () => {
     (component as any).el = null;
     await expect(component.setFocus()).resolves.toBeUndefined();
+  });
+});
+
+describe('io-switch — regression guards (Wave J)', () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  it('does not emit console.warn when label is omitted (#460)', () => {
+    const c = new IoSwitch();
+    (c as any).el = document.createElement('io-switch');
+    (c as any).componentWillLoad?.();
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it('thumb shadow uses var(--io-switch-thumb-shadow) token, not hardcoded value (#452)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('box-shadow: var(--io-switch-thumb-shadow)');
+    expect(styles).not.toMatch(/box-shadow:\s*0\s+1px/);
   });
 });

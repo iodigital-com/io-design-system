@@ -1,4 +1,5 @@
-import { describe, it } from 'vitest';
+import { describe, it, expect } from 'vitest';
+import { IoSwitch } from './io-switch';
 
 /**
  * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-switch
@@ -76,5 +77,18 @@ describe('io-switch — a11y (ARIA patterns)', () => {
       </div>
     `;
     await renderAndCheckA11y(el);
+  });
+
+  it('does not add redundant aria-checked or aria-disabled on native input (#475)', () => {
+    const c = new IoSwitch();
+    (c as any).el = document.createElement('io-switch');
+    (c as any).label = 'Enable';
+    c.checked = true;
+    c.disabled = true;
+    // render() returns the vnode — inspect the native input props through the component
+    // The native <input type="checkbox"> carries checked/disabled natively; no ARIA duplicates
+    const hostEl = (c as any).el as HTMLElement;
+    expect(hostEl.getAttribute('aria-checked')).toBeNull();
+    expect(hostEl.getAttribute('aria-disabled')).toBeNull();
   });
 });

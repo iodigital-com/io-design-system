@@ -236,6 +236,16 @@ describe('io-tabs-bar — keyboard navigation', () => {
       expect(ev.preventDefault).not.toHaveBeenCalled();
     });
 
+    it('does nothing when all buttons are disabled', () => {
+      btn0.disabled = true;
+      btn1.disabled = true;
+      btn2.disabled = true;
+      const ev = makeKeyEvent('ArrowRight');
+
+      expect(() => (component as any).handleKeyDown(ev, 0)).not.toThrow();
+      expect(ev.preventDefault).not.toHaveBeenCalled();
+    });
+
     it('unrecognised key does not call preventDefault or focus any button', () => {
       const ev = makeKeyEvent('Tab');
       (component as any).handleKeyDown(ev, 0);

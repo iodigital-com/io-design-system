@@ -499,6 +499,9 @@ describe('io-carousel — componentDidLoad', () => {
   });
 
   it('does not set slideAnnouncement when there are no slides', () => {
+    // Two guards keep slideAnnouncement empty here:
+    // 1. setActiveIndex(0, false) is a no-op (already at index 0, totalSlides=0)
+    // 2. componentDidLoad's seeding block checks totalSlides > 0 before writing
     const { c } = makeCarousel([]);
     c.componentDidLoad();
 

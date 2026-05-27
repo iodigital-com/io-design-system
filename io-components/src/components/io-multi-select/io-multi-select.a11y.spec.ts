@@ -5,7 +5,8 @@
  * Checks role structure, aria-multiselectable, aria-expanded, aria-selected,
  * and associated form field semantics.
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoMultiSelect } from './io-multi-select';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
@@ -252,28 +253,49 @@ describe('io-multi-select — a11y (ARIA patterns)', () => {
 });
 
 describe('io-multi-select — Clear-all aria-label (component-level)', () => {
-  it('aria-label interpolates label prop: "Clear all {label} selections"', () => {
+  function makeInternals() {
+    return {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      reportValidity: vi.fn(),
+      checkValidity: vi.fn(),
+    };
+  }
+
+  function renderClearAllAriaLabel(label: string | undefined): string | undefined {
     const c = new IoMultiSelect();
-    c.label = 'Countries';
+    c.label = label as string;
+    // value must be non-empty so the clear-all button branch is rendered
+    c.value = ['Netherlands'];
     (c as any).el = document.createElement('io-multi-select');
+    (c as any).internals = makeInternals();
     (c as any).componentWillLoad();
 
-    const expected = `Clear all ${c.label} selections`;
-    expect(expected).toBe('Clear all Countries selections');
-    expect(expected).not.toContain('undefined');
-    expect(expected).not.toMatch(/\s{2,}/);
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    c.render();
+
+    // find the h('button', {class: 'multi-select-clear-btn', 'aria-label': '...'}) call
+    const clearBtnCall = hMock.mock.calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.class === 'multi-select-clear-btn',
+    );
+    return clearBtnCall?.[1]?.['aria-label'] as string | undefined;
+  }
+
+  it('aria-label interpolates label prop: "Clear all {label} selections"', () => {
+    const ariaLabel = renderClearAllAriaLabel('Countries');
+    expect(ariaLabel).toBe('Clear all Countries selections');
+    expect(ariaLabel).not.toContain('undefined');
+    expect(ariaLabel).not.toMatch(/\s{2,}/);
   });
 
   it('aria-label degrades to "Clear all undefined selections" when label is omitted — documents the gap', () => {
-    const c = new IoMultiSelect();
-    // label! is TypeScript-non-null-asserted but not enforced at runtime
-    c.label = undefined as unknown as string;
-    (c as any).el = document.createElement('io-multi-select');
-    (c as any).componentWillLoad();
-
-    const degraded = `Clear all ${c.label} selections`;
-    // This assertion documents the current behaviour: no runtime guard exists.
+    // label! is TypeScript-non-null-asserted but not enforced at runtime.
+    // This test documents the current behaviour: no runtime guard exists.
     // A future guard (console.error + fallback) should update this test.
-    expect(degraded).toBe('Clear all undefined selections');
+    const ariaLabel = renderClearAllAriaLabel(undefined);
+    expect(ariaLabel).toBe('Clear all undefined selections');
   });
 });

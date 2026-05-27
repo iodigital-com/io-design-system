@@ -99,8 +99,10 @@ describe('io-switch — a11y (ARIA patterns)', () => {
     hMock.mockClear();
     c.render();
 
-    // Find the h('input', attrs) call
-    const inputCall = hMock.mock.calls.find(([tag]) => tag === 'input');
+    // Find the h('input', attrs) call — discriminate on type to survive future render changes
+    const inputCall = hMock.mock.calls.find(
+      ([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.type === 'checkbox',
+    );
     expect(inputCall).toBeDefined();
     const attrs = inputCall![1] as Record<string, unknown>;
 

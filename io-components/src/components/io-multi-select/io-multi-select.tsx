@@ -463,7 +463,6 @@ export class IoMultiSelect {
         role="option"
         aria-selected={String(isSelected)}
         aria-disabled={opt.disabled ? 'true' : undefined}
-        aria-checked={String(isSelected)}
         class={getMultiSelectOptionClass(isSelected, opt.disabled ?? false, isFocused)}
         onClick={opt.disabled ? undefined : () => this.toggleOption(opt)}
       >
@@ -504,10 +503,12 @@ export class IoMultiSelect {
         });
         items.push(
           <li role="presentation" class="multi-select-group">
-            <span id={groupId} class="multi-select-group__label" aria-hidden="true">
+            <span id={groupId} class="multi-select-group__label">
               {group.label}
             </span>
-            {groupItems}
+            <ul role="group" aria-labelledby={groupId} class="multi-select-group__list">
+              {groupItems}
+            </ul>
           </li>,
         );
       } else {
@@ -581,7 +582,7 @@ export class IoMultiSelect {
 
         <div class={wrapperClass}>
           {/* Label */}
-          <label id={labelId} class="multi-select-label" aria-hidden="true">
+          <label id={labelId} class="multi-select-label">
             {label}
             {required && (
               <span class="multi-select-required" aria-hidden="true">
@@ -719,6 +720,7 @@ export class IoMultiSelect {
                 <button
                   type="button"
                   class="multi-select-clear-btn"
+                  aria-label={`Clear all ${this.label} selections`}
                   onClick={() => this.clearAll()}
                 >
                   Clear all

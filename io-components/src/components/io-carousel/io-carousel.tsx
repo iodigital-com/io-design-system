@@ -317,6 +317,10 @@ export class IoCarousel {
   componentDidLoad() {
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
+    // Seed live region so AT users know the initial slide position on mount.
+    if (this.totalSlides > 0) {
+      this.slideAnnouncement = `Slide ${this.activeSlideIndex + 1} of ${this.totalSlides}`;
+    }
   }
 
   // ── Render ───────────────────────────────────────────────────

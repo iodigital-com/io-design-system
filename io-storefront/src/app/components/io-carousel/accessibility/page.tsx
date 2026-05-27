@@ -65,7 +65,8 @@ export default function IoCarouselAccessibilityPage() {
             criterion="2.1.1"
             level="A"
             title="Keyboard"
-              note="Prev/Next buttons are keyboard-operable. Interactive slotted content is Tab-reachable. Drag-to-scroll is pointer-only (see known limitation below)."
+            status="partial"
+              note="Prev/Next buttons are keyboard-operable. Interactive slotted content is Tab-reachable. Drag-to-scroll is pointer-only — keyboard users navigate via Prev/Next controls only (see known limitation below)."
           />
           <ComplianceCard
             criterion="2.4.7"

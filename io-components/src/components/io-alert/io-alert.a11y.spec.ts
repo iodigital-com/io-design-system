@@ -11,8 +11,9 @@
  * Full component-level axe auditing against the Shadow DOM requires the Stencil
  * render environment and is out of scope for unit tests.
  */
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
+import { getAlertStyles } from './io-alert-styles';
 
 describe('io-alert — a11y (ARIA patterns)', () => {
   it('info alert (role=status, aria-live=polite) has no violations', async () => {
@@ -88,5 +89,11 @@ describe('io-alert — a11y (ARIA patterns)', () => {
     wrapper.appendChild(el);
     wrapper.appendChild(dismissBtn);
     await renderAndCheckA11y(wrapper);
+  });
+
+  it('dismiss button touch target uses var(--io-touch-target-min) token (WCAG 2.5.8)', () => {
+    const styles = getAlertStyles();
+    expect(styles).toContain('min-width: var(--io-touch-target-min)');
+    expect(styles).toContain('min-height: var(--io-touch-target-min)');
   });
 });

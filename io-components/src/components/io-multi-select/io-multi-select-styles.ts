@@ -289,6 +289,14 @@ export function getMultiSelectStyles(): string {
       color: var(--io-color-white, #fff);
     }
 
+    /* ── Group ───────────────────────────────────────────────── */
+
+    .multi-select-group__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
     /* ── Group heading ─────────────────────────────────────────── */
 
     .multi-select-group__label {

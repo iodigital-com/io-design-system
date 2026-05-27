@@ -5,7 +5,7 @@
  * Checks role structure, aria-multiselectable, aria-expanded, aria-selected,
  * and associated form field semantics.
  */
-import { describe, it } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
@@ -166,7 +166,7 @@ describe('io-multi-select — a11y (ARIA patterns)', () => {
     await renderAndCheckA11y(el);
   });
 
-  it('combobox with grouped options has no axe violations', async () => {
+  it('grouped options use role=presentation outer li + ul[role=group] inner list — no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
       <div>
@@ -183,8 +183,8 @@ describe('io-multi-select — a11y (ARIA patterns)', () => {
         </button>
         <ul id="ms-listbox-7" role="listbox" aria-labelledby="ms-label-7" aria-multiselectable="true">
           <li role="presentation">
-            <span aria-hidden="true">Leadership</span>
-            <ul role="group" aria-labelledby="group-label-7">
+            <span id="ms-group-7">Leadership</span>
+            <ul role="group" aria-labelledby="ms-group-7">
               <li role="option" aria-selected="false">Alice</li>
               <li role="option" aria-selected="false">Bob</li>
             </ul>
@@ -192,6 +192,39 @@ describe('io-multi-select — a11y (ARIA patterns)', () => {
         </ul>
       </div>
     `;
+    await renderAndCheckA11y(el);
+  });
+
+  it('grouped options group label is not aria-hidden — group name is exposed to accessibility tree', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <ul role="listbox" aria-label="Countries" aria-multiselectable="true">
+        <li role="presentation">
+          <span id="eu-group">Europe</span>
+          <ul role="group" aria-labelledby="eu-group">
+            <li role="option" aria-selected="false">Netherlands</li>
+            <li role="option" aria-selected="false">Belgium</li>
+          </ul>
+        </li>
+      </ul>
+    `;
+    const groupLabel = el.querySelector('span[id="eu-group"]') as HTMLElement;
+    expect(groupLabel.getAttribute('aria-hidden')).toBeNull();
+    await renderAndCheckA11y(el);
+  });
+
+  it('role=option items do not carry aria-checked — aria-selected is the correct attribute', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <ul role="listbox" aria-label="Countries" aria-multiselectable="true">
+        <li role="option" aria-selected="true">Netherlands</li>
+        <li role="option" aria-selected="false">Belgium</li>
+      </ul>
+    `;
+    const options = el.querySelectorAll('[role="option"]');
+    options.forEach(opt => {
+      expect(opt.getAttribute('aria-checked')).toBeNull();
+    });
     await renderAndCheckA11y(el);
   });
 

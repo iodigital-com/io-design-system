@@ -33,8 +33,22 @@ export class IoAlert {
   /** When true, renders a dismiss button that emits the `dismiss` event on click */
   @Prop() dismissible = false;
 
+  /**
+   * Accessible label for the dismiss button. Override this when multiple
+   * alerts appear on the same page so each button has a unique name.
+   * Defaults to "Dismiss {heading}" when heading is set, otherwise
+   * "Dismiss {variant} notification".
+   */
+  @Prop() dismissLabel?: string;
+
   /** Emitted when the dismiss button is clicked */
   @Event() dismiss!: EventEmitter<void>;
+
+  private get resolvedDismissLabel(): string {
+    if (this.dismissLabel) return this.dismissLabel;
+    if (this.heading) return `Dismiss "${this.heading}"`;
+    return `Dismiss ${this.variant} notification`;
+  }
 
   private handleDismiss = () => {
     this.dismiss.emit();
@@ -90,7 +104,7 @@ export class IoAlert {
             <button
               type="button"
               class="alert__dismiss"
-              aria-label="Dismiss notification"
+              aria-label={this.resolvedDismissLabel}
               onClick={this.handleDismiss}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

@@ -97,3 +97,40 @@ describe('io-alert — default props and render contract', () => {
     }
   });
 });
+
+describe('io-alert — dismissLabel (unique accessible name for dismiss button)', () => {
+  it('has undefined dismissLabel by default', () => {
+    const component = new IoAlert();
+    expect(component.dismissLabel).toBeUndefined();
+  });
+
+  it('resolves to "Dismiss {variant} notification" when no heading or dismissLabel', () => {
+    const variants = ['info', 'success', 'warning', 'error'] as const;
+    for (const variant of variants) {
+      const component = new IoAlert();
+      component.variant = variant;
+      expect((component as any).resolvedDismissLabel).toBe(`Dismiss ${variant} notification`);
+    }
+  });
+
+  it('includes the heading in the label when heading is set', () => {
+    const component = new IoAlert();
+    component.heading = 'Upload failed';
+    expect((component as any).resolvedDismissLabel).toBe('Dismiss "Upload failed"');
+  });
+
+  it('uses custom dismissLabel when explicitly provided (overrides all auto-logic)', () => {
+    const component = new IoAlert();
+    component.variant = 'error';
+    component.heading = 'Upload failed';
+    component.dismissLabel = 'Close error banner';
+    expect((component as any).resolvedDismissLabel).toBe('Close error banner');
+  });
+
+  it('heading label takes precedence over variant-only label', () => {
+    const component = new IoAlert();
+    component.variant = 'info';
+    component.heading = 'Session expiring';
+    expect((component as any).resolvedDismissLabel).toBe('Dismiss "Session expiring"');
+  });
+});

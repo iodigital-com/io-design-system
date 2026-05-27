@@ -43,12 +43,12 @@ describe('io-heading — tag fallback and dev warning', () => {
    */
   const OUTER = 1;
 
-  it('logs a warning when tag is not provided', () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+  it('logs an error when tag is not provided (in componentWillLoad, not render)', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const component = new IoHeading();
-    component.render();
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('[io-heading]'));
-    warnSpy.mockRestore();
+    (component as any).componentWillLoad();
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('[io-heading]'));
+    errorSpy.mockRestore();
   });
 
   it('calls h() with "h2" as fallback when tag is not provided', () => {

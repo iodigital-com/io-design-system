@@ -106,7 +106,7 @@ export class IoCarousel {
   // ── Drag helpers ──────────────────────────────────────────────
 
   private startX = 0;
-  private scrollLeft = 0;
+  private dragStartScrollLeft = 0;
 
   private get track(): HTMLElement | null {
     return this.el.shadowRoot?.querySelector<HTMLElement>('.carousel-track') ?? null;
@@ -269,7 +269,7 @@ export class IoCarousel {
     if (!track) return;
     this.isDragging = true;
     this.startX = ev.pageX - track.offsetLeft;
-    this.scrollLeft = track.scrollLeft;
+    this.dragStartScrollLeft = track.scrollLeft;
   };
 
   @Listen('mouseup', { target: 'window' })
@@ -284,7 +284,7 @@ export class IoCarousel {
     if (!track) return;
     ev.preventDefault();
     const x = ev.pageX - track.offsetLeft;
-    track.scrollLeft = this.scrollLeft - (x - this.startX);
+    track.scrollLeft = this.dragStartScrollLeft - (x - this.startX);
   }
 
   @Listen('resize', { target: 'window' })

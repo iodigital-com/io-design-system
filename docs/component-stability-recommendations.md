@@ -48,7 +48,7 @@ Additional targeted evidence:
 | `io-popover` | `beta` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`, utils spec; Popover API + dialog role | **Hold at beta** | New in Wave XI; Popover API still gaining browser support |
 | `io-scroller` | `beta` | `.spec.ts`, `.a11y.spec.ts`; edge fade indicators | **Hold at beta** | New in Wave XI; needs production hardening |
 | `io-switch` | `beta` | Full FACE suite; role=switch; keyboard nav | **Hold at beta** | New in Wave XI; needs production hardening |
-| `io-tabs-bar` | `beta` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`; standalone navigation | **Hold at beta** | New in Wave XI; needs production hardening |
+| `io-tabs-bar` | `stable` | `.spec.ts`, `.click.spec.ts`, `.a11y.spec.ts`; standalone navigation | **Promote to stable** | Wave J audit: no P0/P1 blockers found; click.spec added (#474); aria-controls requirement documented (#478); all quality gates pass |
 | `io-text` | `beta` | `.spec.ts`, `.a11y.spec.ts`; token-driven typography | **Hold at beta** | New in Wave XI; needs production hardening |
 | `io-heading` | `beta` | `.spec.ts`, `.a11y.spec.ts`; decoupled visual/semantic size | **Hold at beta** | New in Wave XI; needs production hardening |
 

@@ -3054,6 +3054,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Wave XI (#342) — Switch thumb offset when checked=calc(track-width - thumb-size - 2px)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-shadow",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave J (#452) — Switch thumb elevation shadow; replaces hardcoded rgba value."
     }
   ]
 }

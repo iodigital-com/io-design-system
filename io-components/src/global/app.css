@@ -389,6 +389,7 @@
   --io-switch-thumb-radius:      9999px;     /* fully rounded thumb */
   --io-switch-thumb-offset-off:  2px;        /* thumb left offset when unchecked */
   --io-switch-thumb-offset-on:   calc(var(--io-switch-track-width) - var(--io-switch-thumb-size) - 2px); /* thumb offset when checked */
+  --io-switch-thumb-shadow:      0 1px 3px rgba(0, 0, 0, 0.2); /* thumb elevation shadow */
 
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:            1.5px;

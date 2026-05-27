@@ -94,9 +94,6 @@ export class IoSwitch {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    if (!this.label) {
-      console.warn('[io-switch] The "label" prop is required for accessibility. Please provide a label.');
-    }
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSwitchId(this.name, this.fallbackId);
     this.defaultChecked = this.checked;
@@ -105,6 +102,7 @@ export class IoSwitch {
 
   formResetCallback() {
     this.checked = this.defaultChecked;
+    this.faceInvalid = false;
     this.syncFormValue();
   }
 
@@ -177,8 +175,6 @@ export class IoSwitch {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-checked={checked ? 'true' : 'false'}
-                aria-disabled={disabled ? 'true' : undefined}
                 aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}

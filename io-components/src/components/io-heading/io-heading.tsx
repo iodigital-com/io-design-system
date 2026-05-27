@@ -34,7 +34,7 @@ const HEADING_SIZE_TOKEN_MAP: Record<IoHeadingSize, string> = {
 })
 export class IoHeading {
   /** Semantic HTML heading tag — required for correct document outline */
-  @Prop({ reflect: true }) tag!: IoHeadingTag;
+  @Prop({ reflect: true }) tag: IoHeadingTag | undefined;
 
   /** Font size using --io-font-size-* tokens */
   @Prop({ reflect: true }) size: IoHeadingSize = '2xl';

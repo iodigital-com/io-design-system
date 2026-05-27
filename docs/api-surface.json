@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-26T16:54:19.421Z",
+  "generated": "2026-05-27T08:44:15.214Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -122,6 +122,7 @@
         "hideLabel": "boolean",
         "indeterminate": "boolean",
         "label": "string",
+        "loading": "boolean",
         "message": "string",
         "name": "string | undefined",
         "required": "boolean",
@@ -191,11 +192,22 @@
       "methods": {},
       "events": {}
     },
+    "io-heading": {
+      "props": {
+        "align": "IoHeadingAlign",
+        "color": "IoHeadingColor",
+        "ellipsis": "boolean",
+        "size": "IoHeadingSize",
+        "tag": "IoHeadingTag | undefined",
+        "weight": "IoHeadingWeight"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-input": {
       "props": {
-        "aria": "Record<string, string>",
-        "autoComplete": "string | undefined",
         "autocomplete": "string | undefined",
+        "autoComplete": "string | undefined",
         "counter": "boolean",
         "disabled": "boolean",
         "form": "string | undefined",
@@ -266,6 +278,29 @@
         "motionVisibleEnd": "void"
       }
     },
+    "io-multi-select": {
+      "props": {
+        "disabled": "boolean",
+        "dropdownDirection": "IoMultiSelectDirection",
+        "filter": "boolean",
+        "label": "string",
+        "maxDisplay": "number",
+        "message": "string | undefined",
+        "name": "string",
+        "placeholder": "string",
+        "required": "boolean",
+        "state": "IoMultiSelectState",
+        "value": "string[]"
+      },
+      "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "change": "IoMultiSelectChangeDetail"
+      }
+    },
     "io-optgroup": {
       "props": {
         "disabled": "boolean",
@@ -293,14 +328,44 @@
       "props": {
         "nextLabel": "string",
         "page": "number",
-        "perPage": "number",
         "prevLabel": "string",
-        "totalItems": "number",
         "totalPages": "number"
       },
       "methods": {},
       "events": {
         "change": "IoPaginationChangeDetail"
+      }
+    },
+    "io-pin-code": {
+      "props": {
+        "disabled": "boolean",
+        "label": "string | undefined",
+        "length": "IoPinCodeLength",
+        "message": "string | undefined",
+        "name": "string | undefined",
+        "required": "boolean",
+        "state": "IoPinCodeState",
+        "type": "IoPinCodeType",
+        "value": "string"
+      },
+      "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "change": "IoPinCodeChangeDetail"
+      }
+    },
+    "io-popover": {
+      "props": {
+        "closeOnClickOutside": "boolean",
+        "open": "boolean",
+        "placement": "IoPopoverPlacement"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
       }
     },
     "io-progress": {
@@ -322,6 +387,7 @@
         "helperText": "string | undefined",
         "hideLabel": "boolean",
         "label": "string",
+        "loading": "boolean",
         "message": "string",
         "name": "string | undefined",
         "required": "boolean",
@@ -370,6 +436,7 @@
         "helperText": "string | undefined",
         "hideLabel": "boolean",
         "label": "string",
+        "loading": "boolean",
         "message": "string",
         "multiple": "boolean",
         "name": "string | undefined",
@@ -418,12 +485,36 @@
       "methods": {},
       "events": {}
     },
+    "io-switch": {
+      "props": {
+        "checked": "boolean",
+        "disabled": "boolean",
+        "error": "boolean",
+        "errorMessage": "string | undefined",
+        "helperText": "string | undefined",
+        "label": "string",
+        "name": "string | undefined",
+        "required": "boolean",
+        "value": "string"
+      },
+      "methods": {
+        "checkValidity": "() => Promise<boolean>",
+        "reportValidity": "() => Promise<boolean>",
+        "setFocus": "(options?: FocusOptions) => Promise<void>"
+      },
+      "events": {
+        "change": "IoSwitchChangeDetail"
+      }
+    },
     "io-table": {
       "props": {
+        "bordered": "boolean",
         "caption": "string",
         "captionHidden": "boolean",
+        "compact": "boolean",
         "size": "IoTableSize",
-        "sticky": "boolean"
+        "sticky": "boolean",
+        "striped": "boolean"
       },
       "methods": {},
       "events": {}
@@ -512,9 +603,20 @@
         "toggle": "boolean"
       }
     },
+    "io-text": {
+      "props": {
+        "align": "IoTextAlign",
+        "color": "IoTextColor",
+        "ellipsis": "boolean",
+        "size": "IoTextSize",
+        "tag": "IoTextTag",
+        "weight": "IoTextWeight"
+      },
+      "methods": {},
+      "events": {}
+    },
     "io-textarea": {
       "props": {
-        "aria": "Record<string, string>",
         "autocomplete": "string | undefined",
         "counter": "boolean",
         "disabled": "boolean",
@@ -580,11 +682,8 @@
     "io-wordmark": {
       "props": {
         "ariaLabel": "string",
-        "href": "string",
         "mono": "boolean",
-        "rel": "string",
-        "size": "IoWordmarkSize",
-        "target": "string"
+        "size": "IoWordmarkSize"
       },
       "methods": {},
       "events": {}

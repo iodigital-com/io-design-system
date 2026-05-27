@@ -1,9 +1,23 @@
 import type { IoPopoverPlacement } from './types';
 
 const POPOVER_LABEL_ID_PREFIX = 'io-popover-label-';
+const POPOVER_PANEL_ID_PREFIX = 'io-popover-panel-';
+
+const FOCUSABLE_SELECTORS = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ');
 
 export function createPopoverLabelId(randomValue: string): string {
   return `${POPOVER_LABEL_ID_PREFIX}${randomValue}`;
+}
+
+export function createPopoverPanelId(randomValue: string): string {
+  return `${POPOVER_PANEL_ID_PREFIX}${randomValue}`;
 }
 
 /**
@@ -55,14 +69,25 @@ export function computeFallbackPosition(
  * Returns the first focusable element inside the given container, or null.
  */
 export function getFirstFocusable(container: HTMLElement | ShadowRoot): HTMLElement | null {
-  const selectors = [
-    'a[href]',
-    'button:not([disabled])',
-    'input:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    '[tabindex]:not([tabindex="-1"])',
-  ].join(', ');
+  return (container.querySelector(FOCUSABLE_SELECTORS) as HTMLElement | null);
+}
 
-  return (container.querySelector(selectors) as HTMLElement | null);
+/**
+ * Returns all focusable elements inside a popover panel, including both
+ * shadow DOM elements and slotted light DOM elements.
+ */
+export function getPanelFocusableElements(panelEl: HTMLElement): HTMLElement[] {
+  const shadowFocusable = Array.from(panelEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
+
+  const slot = panelEl.querySelector('slot:not([name])') as HTMLSlotElement | null;
+  const slottedFocusable = slot
+    ? Array.from(slot.assignedElements({ flatten: true })).flatMap(el => {
+        const matches: HTMLElement[] = [];
+        if ((el as HTMLElement).matches(FOCUSABLE_SELECTORS)) matches.push(el as HTMLElement);
+        matches.push(...Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)));
+        return matches;
+      })
+    : [];
+
+  return [...shadowFocusable, ...slottedFocusable];
 }

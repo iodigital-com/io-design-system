@@ -14,8 +14,10 @@ import {
 import { getPopoverStyles } from './io-popover-styles';
 import {
   createPopoverLabelId,
+  createPopoverPanelId,
   computeFallbackPosition,
   getFirstFocusable,
+  getPanelFocusableElements,
   supportsPopoverApi,
 } from './io-popover-utils';
 import type { IoPopoverPlacement } from './types';
@@ -43,8 +45,10 @@ export class IoPopover {
 
   private panelEl?: HTMLDivElement;
   private labelId!: string;
+  private panelId!: string;
   private triggerEl?: HTMLElement | null;
   private useNativePopover = false;
+  private focusTrapHandler?: (ev: KeyboardEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -72,7 +76,12 @@ export class IoPopover {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.labelId = createPopoverLabelId(Math.random().toString(36).slice(2));
+    const seed = Math.random().toString(36).slice(2);
+    this.labelId = createPopoverLabelId(seed);
+    this.panelId = createPopoverPanelId(seed);
+    if (!this.label) {
+      console.error('[io-popover] `label` prop is required for accessible dialog naming (WCAG 4.1.2).');
+    }
   }
 
   componentDidLoad() {
@@ -82,6 +91,7 @@ export class IoPopover {
 
     if (this.triggerEl) {
       this.triggerEl.setAttribute('aria-expanded', String(this.open));
+      this.triggerEl.setAttribute('aria-controls', this.panelId);
     }
 
     if (this.panelEl) {
@@ -148,6 +158,8 @@ export class IoPopover {
       this.applyFallbackOpen();
     }
 
+    this.attachFocusTrap();
+
     requestAnimationFrame(() => {
       const shadow = this.el?.shadowRoot;
       if (!shadow) return;
@@ -157,6 +169,7 @@ export class IoPopover {
   }
 
   private applyClosedState() {
+    this.detachFocusTrap();
     if (!this.panelEl) return;
 
     if (this.useNativePopover) {
@@ -224,6 +237,34 @@ export class IoPopover {
     this.panelEl.style.left = `${left}px`;
   }
 
+  private attachFocusTrap() {
+    if (!this.panelEl) return;
+    this.focusTrapHandler = (ev: KeyboardEvent) => {
+      if (ev.key !== 'Tab') return;
+      const focusable = getPanelFocusableElements(this.panelEl!);
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = (this.el.shadowRoot?.activeElement ?? document.activeElement) as HTMLElement | null;
+
+      if (ev.shiftKey && active === first) {
+        ev.preventDefault();
+        last.focus();
+      } else if (!ev.shiftKey && active === last) {
+        ev.preventDefault();
+        first.focus();
+      }
+    };
+    this.panelEl.addEventListener('keydown', this.focusTrapHandler);
+  }
+
+  private detachFocusTrap() {
+    if (!this.panelEl || !this.focusTrapHandler) return;
+    this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
+    this.focusTrapHandler = undefined;
+  }
+
   private close() {
     this.open = false;
     this.dismissEvent.emit();
@@ -241,10 +282,11 @@ export class IoPopover {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, labelId, open, panelStyle } = this;
+    const { label, labelId, panelId, open, panelStyle } = this;
     const ariaHidden = open ? undefined : 'true';
 
     const panelProps: Record<string, unknown> = {
+      id: panelId,
       role: 'dialog',
       'aria-modal': 'true',
       'aria-labelledby': label ? labelId : undefined,

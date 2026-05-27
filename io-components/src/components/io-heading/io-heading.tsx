@@ -51,12 +51,14 @@ export class IoHeading {
   /** Single-line truncation with text-overflow: ellipsis */
   @Prop({ reflect: true }) ellipsis = false;
 
-  private resolveTag(): IoHeadingTag {
+  componentWillLoad() {
     if (!this.tag) {
-      console.warn('[io-heading] The `tag` prop is required for correct document outline semantics. Falling back to "h2".');
-      return 'h2';
+      console.error('[io-heading] `tag` prop is required for correct document outline semantics (WCAG 1.3.1). Falling back to "h2".');
     }
-    return this.tag;
+  }
+
+  private resolveTag(): IoHeadingTag {
+    return this.tag ?? 'h2';
   }
 
   private resolveColor(): string {

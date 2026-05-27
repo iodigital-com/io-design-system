@@ -63,7 +63,7 @@ export function getAlertStyles(): string {
       cursor: pointer;
       color: inherit;
       opacity: 0.7;
-      transition: opacity 0.15s ease, background-color 0.15s ease;
+      transition: opacity var(--io-motion-fast), background-color var(--io-motion-fast);
       margin-top: -2px;
     }
 
@@ -73,8 +73,8 @@ export function getAlertStyles(): string {
     }
 
     .alert__dismiss:focus-visible {
-      outline: 2px solid var(--io-focus-inner);
-      outline-offset: 2px;
+      box-shadow: var(--io-focus-ring-active);
+      outline: none;
     }
 
     .alert__dismiss svg {

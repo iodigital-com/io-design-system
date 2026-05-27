@@ -457,4 +457,48 @@ describe('tooltip-attribute', () => {
       // listenersBound remains false — the win flag stopped initialisation
     });
   });
+
+  describe('setDescribedBy — backup attr already set (false branch)', () => {
+    it('does not overwrite backup attr when tooltip is shown a second time while visible', async () => {
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'My tip');
+      btn.setAttribute('aria-describedby', 'existing-id');
+      document.body.appendChild(btn);
+
+      // First show: sets backup attr to 'existing-id' and adds tooltip id
+      btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await flushAsyncTooltipShow();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible')).toBe('true');
+
+      // Hide the tooltip so we can show it again
+      btn.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+
+      // Restore describedby to 'existing-id' and manually set the backup attr to simulate
+      // a second tooltip show where the backup attr is already present
+      btn.setAttribute('aria-describedby', 'existing-id');
+      btn.setAttribute('data-io-tt-prev-describedby', 'existing-id');
+
+      // Second show: backup attr is already set — should NOT overwrite it
+      btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await flushAsyncTooltipShow();
+
+      // Backup attr must remain 'existing-id' (not overwritten)
+      expect(btn.getAttribute('data-io-tt-prev-describedby')).toBe('existing-id');
+    });
+  });
+
+  describe('findTooltipTrigger — non-Element target (document dispatch)', () => {
+    it('does not show tooltip when pointerover fires with a non-Element target', async () => {
+      // Dispatch pointerover directly on document — ev.target will be document (not an Element)
+      document.dispatchEvent(new PointerEvent('pointerover', { bubbles: false }));
+      await flushAsyncTooltipShow();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      // Tooltip must not become visible because findTooltipTrigger returns null
+      // Overlay may not exist yet (lazy creation) or exists without data-visible
+      expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
+    });
+  });
 });

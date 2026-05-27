@@ -233,3 +233,42 @@ describe('io-drawer — show/close methods', () => {
     expect(component.open).toBe(false);
   });
 });
+
+// ── removeSwipeListeners ───────────────────────────────────────────────────────
+
+describe('io-drawer — removeSwipeListeners', () => {
+  it('calls removeEventListener for each bound touch handler and clears them', () => {
+    const component = new IoDrawer();
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+
+    const handle = document.createElement('div');
+    handle.className = 'drawer__handle';
+    const removeEventListenerSpy = vi.spyOn(handle, 'removeEventListener');
+
+    const shadowRoot = {
+      querySelector: vi.fn(() => handle),
+    };
+    const el = document.createElement('io-drawer');
+    Object.defineProperty(el, 'shadowRoot', { get: () => shadowRoot });
+    (component as any).el = el;
+
+    const stubStart = vi.fn();
+    const stubMove = vi.fn();
+    const stubEnd = vi.fn();
+    (component as any).boundHandleTouchStart = stubStart;
+    (component as any).boundHandleTouchMove = stubMove;
+    (component as any).boundHandleTouchEnd = stubEnd;
+
+    (component as any).removeSwipeListeners();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchstart', stubStart);
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchmove', stubMove);
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('touchend', stubEnd);
+
+    expect((component as any).boundHandleTouchStart).toBeUndefined();
+    expect((component as any).boundHandleTouchMove).toBeUndefined();
+    expect((component as any).boundHandleTouchEnd).toBeUndefined();
+  });
+});

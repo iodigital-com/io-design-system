@@ -64,5 +64,20 @@ describe('io-tabs — click handling', () => {
     expect(updateEmitMock).toHaveBeenNthCalledWith(1, { activeTabIndex: 1 });
     expect(updateEmitMock).toHaveBeenNthCalledWith(2, { activeTabIndex: 0 });
   });
+
+  it('invokes the stored clickHandler closure created by setupListeners', () => {
+    (component as any).clickHandlers = new Map();
+    (component as any).keyHandlers = new Map();
+    (component as any).setupListeners();
+
+    const clickHandler = (component as any).clickHandlers.get(btn1);
+    expect(clickHandler).toBeDefined();
+
+    // Invoke the closure — should behave exactly as calling handleTabClick(1)
+    clickHandler();
+
+    expect(component.activeTabIndex).toBe(1);
+    expect(updateEmitMock).toHaveBeenCalledWith({ activeTabIndex: 1 });
+  });
 });
 

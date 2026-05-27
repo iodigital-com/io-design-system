@@ -36,6 +36,10 @@ describe('io-link-utils', () => {
       expect(resolveLinkRel('noreferrer', '_blank', false)).toBe('noopener noreferrer');
     });
 
+    it('returns rel unchanged when both noopener and noreferrer are already present', () => {
+      expect(resolveLinkRel('noopener noreferrer', '_blank', false)).toBe('noopener noreferrer');
+    });
+
     it('uses external=true shorthand for target="_blank" with security', () => {
       expect(resolveLinkRel(undefined, undefined, true)).toBe('noopener noreferrer');
       expect(resolveLinkRel('nofollow', undefined, true)).toBe('noopener noreferrer nofollow');

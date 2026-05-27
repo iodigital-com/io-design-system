@@ -29,6 +29,14 @@ describe('io-carousel-utils', () => {
     expect(getCarouselTargetIndex(4, 2, 5, false, 'next')).toBe(4);
   });
 
+  it('returns 0 when prev direction wraps below 0 with rewind=false (line 34 false branch)', () => {
+    expect(getCarouselTargetIndex(0, 1, 5, false, 'prev')).toBe(0);
+  });
+
+  it('returns rawTarget when prev direction does not underflow (line 37 branch)', () => {
+    expect(getCarouselTargetIndex(2, 1, 5, false, 'prev')).toBe(1);
+  });
+
   it('detects target scroll threshold and fallback distance', () => {
     expect(shouldUseTargetScroll(10, 9)).toBe(false);
     expect(shouldUseTargetScroll(12, 9)).toBe(true);

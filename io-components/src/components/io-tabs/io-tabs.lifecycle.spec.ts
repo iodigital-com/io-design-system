@@ -156,3 +156,24 @@ describe('io-tabs — onActiveTabIndexChange', () => {
     expect(c.activeTabIndex).toBe(0);
   });
 });
+
+// ── normalizeActiveTabIndex — all-disabled fallback ───────────────────────────
+
+describe('io-tabs — normalizeActiveTabIndex all-disabled', () => {
+  it('returns 0 when all buttons are disabled (no firstEnabled)', () => {
+    const c = makeTabs();
+
+    const makeDisabledBtn = (label: string): HTMLButtonElement => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = label;
+      btn.disabled = true;
+      btn.focus = vi.fn();
+      return btn;
+    };
+
+    (c as any).buttons = [makeDisabledBtn('A'), makeDisabledBtn('B')];
+    const result = (c as any).normalizeActiveTabIndex(0);
+    expect(result).toBe(0);
+  });
+});

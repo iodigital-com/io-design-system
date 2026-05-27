@@ -176,6 +176,29 @@ describe('io-tabs-bar — update event', () => {
   });
 });
 
+// ── setupListeners clickHandler closure ───────────────────────────────────────
+
+describe('io-tabs-bar — setupListeners clickHandler closure', () => {
+  it('invokes the stored clickHandler closure built by setupListeners', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B');
+    const component = makeComponent([btn1, btn2]);
+    (component as any).clickHandlers = new Map();
+    (component as any).keyHandlers = new Map();
+    (component as any).buttons = [btn1, btn2];
+    component.activeTabIndex = 0;
+    (component as any).setupListeners();
+
+    const clickHandler = (component as any).clickHandlers.get(btn2);
+    expect(clickHandler).toBeDefined();
+
+    // Invoking the closure must trigger handleTabClick(1)
+    clickHandler();
+
+    expect((component as any).update.emit).toHaveBeenCalledWith({ activeTabIndex: 1 });
+  });
+});
+
 // ── Listener teardown ─────────────────────────────────────────────────────────
 
 describe('io-tabs-bar — listener teardown', () => {
@@ -312,6 +335,54 @@ describe('io-tabs-bar — keyboard navigation', () => {
 
     expect(focusSpy).toHaveBeenCalled();
   });
+
+  it('falls back to last enabled tab on ArrowLeft when focused tab is disabled (currentEnabledIndex < 0)', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B', true); // disabled — has focus but not in enabled list
+    const btn3 = makeButton('C');
+    const focusSpy = vi.spyOn(btn3, 'focus');
+    const component = makeComponent([btn1, btn2, btn3]);
+    (component as any).syncFromSlot();
+
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true });
+    Object.defineProperty(ev, 'preventDefault', { value: vi.fn() });
+    // Call with index=1 (disabled btn2) → currentEnabledIndex = -1 → fallback branch
+    (component as any).handleKeyDown(ev, 1);
+
+    // ArrowLeft with currentEnabledIndex < 0 → fallbackIndex = enabled.length - 1 = 1 (btn3)
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('falls back to first enabled tab on ArrowRight when focused tab is disabled (currentEnabledIndex < 0)', () => {
+    const btn1 = makeButton('A', true); // disabled — has focus
+    const btn2 = makeButton('B');
+    const btn3 = makeButton('C');
+    const focusSpy = vi.spyOn(btn2, 'focus');
+    const component = makeComponent([btn1, btn2, btn3]);
+    (component as any).syncFromSlot();
+
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true });
+    Object.defineProperty(ev, 'preventDefault', { value: vi.fn() });
+    (component as any).handleKeyDown(ev, 0);
+
+    // ArrowRight with currentEnabledIndex < 0 → fallbackIndex = 0 → btn2 (first enabled)
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('does nothing for non-navigation key when focused tab is disabled (currentEnabledIndex < 0)', () => {
+    const btn1 = makeButton('A', true); // disabled — has focus
+    const btn2 = makeButton('B');
+    const component = makeComponent([btn1, btn2]);
+    (component as any).syncFromSlot();
+
+    const ev = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+    const preventDefaultSpy = vi.fn();
+    Object.defineProperty(ev, 'preventDefault', { value: preventDefaultSpy });
+    (component as any).handleKeyDown(ev, 0);
+
+    // fallbackIndex is null for 'Tab' key → should not call preventDefault
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+  });
 });
 
 // ── Utility functions ─────────────────────────────────────────────────────────
@@ -371,3 +442,13 @@ describe('getNextEnabledIndex', () => {
     expect(getNextEnabledIndex('End', 0, 3)).toBe(2);
   });
 });
+
+// ── normalizeActiveTabIndex — all-disabled fallback ───────────────────────────
+
+describe('normalizeActiveTabIndex — all buttons disabled', () => {
+  it('returns 0 when all buttons are disabled (no firstEnabled found)', () => {
+    const buttons = [makeButton('A', true), makeButton('B', true), makeButton('C', true)];
+    expect(normalizeActiveTabIndex(0, buttons)).toBe(0);
+  });
+});
+

@@ -770,3 +770,33 @@ describe('io-input — render() does not throw for prop combinations', () => {
     expect(() => c.render()).not.toThrow();
   });
 });
+
+// ── render() — nativeInputEl ref callback ────────────────────────────────────
+
+describe('io-input — render() nativeInputEl ref callback', () => {
+  it('assigns element to nativeInputEl when ref is invoked', () => {
+    const c = makeInput();
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    expect(inputCall).toBeDefined();
+
+    const refFn = inputCall![1].ref as (el: HTMLInputElement | undefined) => void;
+    const mockEl = document.createElement('input');
+    refFn(mockEl);
+    expect((c as any).nativeInputEl).toBe(mockEl);
+  });
+
+  it('clears nativeInputEl when ref is invoked with undefined', () => {
+    const c = makeInput();
+    (c as any).nativeInputEl = document.createElement('input');
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const refFn = inputCall![1].ref as (el: HTMLInputElement | undefined) => void;
+    refFn(undefined);
+    expect((c as any).nativeInputEl).toBeUndefined();
+  });
+});

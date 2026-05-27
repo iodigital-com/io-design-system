@@ -190,6 +190,34 @@ describe('io-tooltip — restoreTriggerAttributes()', () => {
     expect(trigger.hasAttribute('data-io-tooltip-placement-prev-had')).toBe(false);
     expect(trigger.hasAttribute('data-io-tooltip-placement-prev-value')).toBe(false);
   });
+
+  it('uses empty string via ?? when PREV_TOOLTIP_VALUE_ATTR is absent (hadTooltip=true)', () => {
+    const { c } = makeTooltip();
+    const trigger = document.createElement('button');
+    // Set "had" flag but omit the value attribute so getAttribute returns null → ?? '' kicks in
+    trigger.setAttribute('data-io-tooltip-prev-had', '1');
+    trigger.setAttribute('data-io-tooltip-placement-prev-had', '0');
+    // Intentionally NOT setting data-io-tooltip-prev-value or data-io-tooltip-placement-prev-value
+
+    (c as any).restoreTriggerAttributes(trigger);
+
+    // getAttribute returned null → ?? '' → setAttribute('io-tooltip', '')
+    expect(trigger.getAttribute('io-tooltip')).toBe('');
+    expect(trigger.hasAttribute('io-tooltip-placement')).toBe(false);
+  });
+
+  it('uses empty string via ?? when PREV_PLACEMENT_VALUE_ATTR is absent (hadPlacement=true)', () => {
+    const { c } = makeTooltip();
+    const trigger = document.createElement('button');
+    trigger.setAttribute('data-io-tooltip-prev-had', '0');
+    trigger.setAttribute('data-io-tooltip-placement-prev-had', '1');
+    // Intentionally NOT setting data-io-tooltip-placement-prev-value
+
+    (c as any).restoreTriggerAttributes(trigger);
+
+    expect(trigger.hasAttribute('io-tooltip')).toBe(false);
+    expect(trigger.getAttribute('io-tooltip-placement')).toBe('');
+  });
 });
 
 // ── clearTriggerAttributes ────────────────────────────────────────────────────

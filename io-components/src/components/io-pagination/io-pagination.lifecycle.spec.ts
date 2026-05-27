@@ -360,6 +360,54 @@ describe('io-pagination — render() branches', () => {
   });
 });
 
+// ── componentWillLoad — hasOnlyOneDataProp warning (line 113) ────────────────
+
+describe('io-pagination — componentWillLoad hasOnlyOneDataProp warning', () => {
+  it('logs a console.warn when only totalItems is provided without perPage', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const c = new IoPagination();
+    (c as any).change = { emit: vi.fn() };
+    c.totalItems = 50;
+    // perPage is intentionally left undefined
+    c.componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledOnce();
+    expect(warnSpy.mock.calls[0][0]).toContain('[io-pagination]');
+    warnSpy.mockRestore();
+  });
+
+  it('logs a console.warn when only perPage is provided without totalItems', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const c = new IoPagination();
+    (c as any).change = { emit: vi.fn() };
+    c.perPage = 10;
+    // totalItems is intentionally left undefined
+    c.componentWillLoad();
+    expect(warnSpy).toHaveBeenCalledOnce();
+    expect(warnSpy.mock.calls[0][0]).toContain('totalPages');
+    warnSpy.mockRestore();
+  });
+
+  it('does NOT warn when both totalItems and perPage are provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const c = new IoPagination();
+    (c as any).change = { emit: vi.fn() };
+    c.totalItems = 50;
+    c.perPage = 10;
+    c.componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
+  it('does NOT warn when neither totalItems nor perPage are provided', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const c = new IoPagination();
+    (c as any).change = { emit: vi.fn() };
+    c.componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
+
 // ── componentWillLoad normalization ──────────────────────────────────────────
 
 describe('io-pagination — componentWillLoad normalization', () => {

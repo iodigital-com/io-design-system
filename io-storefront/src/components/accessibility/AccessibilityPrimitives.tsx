@@ -147,17 +147,40 @@ export function AriaTable({ rows }: { rows: AriaRow[] }) {
 
 export type Level = 'A' | 'AA' | 'AAA';
 
+const COMPLIANCE_STATUS_STYLES = {
+  pass: {
+    label: 'Pass',
+    textClass: 'text-io-color-success',
+    bg: 'color-mix(in srgb, var(--io-color-success) 12%, transparent)',
+  },
+  partial: {
+    label: 'Partial',
+    textClass: 'text-io-color-warning',
+    bg: 'color-mix(in srgb, var(--io-color-warning) 12%, transparent)',
+  },
+  fail: {
+    label: 'Fail',
+    textClass: 'text-io-color-error',
+    bg: 'color-mix(in srgb, var(--io-color-error) 12%, transparent)',
+  },
+} as const;
+
+type ComplianceStatus = keyof typeof COMPLIANCE_STATUS_STYLES;
+
 export function ComplianceCard({
   criterion,
   level,
   title,
   note,
+  status = 'pass',
 }: {
   criterion: string;
   level: Level;
   title: string;
   note: string;
+  status?: ComplianceStatus;
 }) {
+  const { label, textClass, bg } = COMPLIANCE_STATUS_STYLES[status];
   return (
     <div
       className="p-5 rounded-lg flex flex-col gap-3"
@@ -179,10 +202,10 @@ export function ComplianceCard({
           </span>
         </div>
         <span
-          className="text-[11px] font-semibold px-2.5 py-1 rounded-full text-io-color-success"
-          style={{ background: 'color-mix(in srgb, var(--io-color-success) 12%, transparent)' }}
+          className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${textClass}`}
+          style={{ background: bg }}
         >
-          Pass
+          {label}
         </span>
       </div>
       <div>

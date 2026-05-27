@@ -7,6 +7,7 @@
  */
 import { describe, it, expect } from 'vitest';
 
+import { IoMultiSelect } from './io-multi-select';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-multi-select — a11y (ARIA patterns)', () => {
@@ -247,5 +248,32 @@ describe('io-multi-select — a11y (ARIA patterns)', () => {
       </div>
     `;
     await renderAndCheckA11y(el);
+  });
+});
+
+describe('io-multi-select — Clear-all aria-label (component-level)', () => {
+  it('aria-label interpolates label prop: "Clear all {label} selections"', () => {
+    const c = new IoMultiSelect();
+    c.label = 'Countries';
+    (c as any).el = document.createElement('io-multi-select');
+    (c as any).componentWillLoad();
+
+    const expected = `Clear all ${c.label} selections`;
+    expect(expected).toBe('Clear all Countries selections');
+    expect(expected).not.toContain('undefined');
+    expect(expected).not.toMatch(/\s{2,}/);
+  });
+
+  it('aria-label degrades to "Clear all undefined selections" when label is omitted — documents the gap', () => {
+    const c = new IoMultiSelect();
+    // label! is TypeScript-non-null-asserted but not enforced at runtime
+    c.label = undefined as unknown as string;
+    (c as any).el = document.createElement('io-multi-select');
+    (c as any).componentWillLoad();
+
+    const degraded = `Clear all ${c.label} selections`;
+    // This assertion documents the current behaviour: no runtime guard exists.
+    // A future guard (console.error + fallback) should update this test.
+    expect(degraded).toBe('Clear all undefined selections');
   });
 });

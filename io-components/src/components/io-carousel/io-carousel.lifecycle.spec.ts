@@ -487,6 +487,33 @@ describe('io-carousel — componentDidLoad', () => {
     // scrollToIndex(2, 'auto') → getSlideLeft(2) = 0 + (600-0) = 600
     expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 600, behavior: 'auto' });
   });
+
+  it('seeds slideAnnouncement with "Slide 1 of N" for AT users on mount', () => {
+    const slides = [makeSlide(0), makeSlide(300), makeSlide(600)];
+    const { c } = makeCarousel(slides);
+    c.activeSlideIndex = 0;
+
+    c.componentDidLoad();
+
+    expect((c as any).slideAnnouncement).toBe('Slide 1 of 3');
+  });
+
+  it('does not set slideAnnouncement when there are no slides', () => {
+    const { c } = makeCarousel([]);
+    c.componentDidLoad();
+
+    expect((c as any).slideAnnouncement).toBe('');
+  });
+
+  it('seeds slideAnnouncement based on activeSlideIndex when index > 0', () => {
+    const slides = [makeSlide(0), makeSlide(300), makeSlide(600)];
+    const { c } = makeCarousel(slides);
+    c.activeSlideIndex = 2;
+
+    c.componentDidLoad();
+
+    expect((c as any).slideAnnouncement).toBe('Slide 3 of 3');
+  });
 });
 
 // ── render ────────────────────────────────────────────────────────────────────

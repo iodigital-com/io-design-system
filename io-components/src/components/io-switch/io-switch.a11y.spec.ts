@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { IoSwitch } from './io-switch';
+import { h } from '@stencil/core';
 
 /**
  * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-switch
@@ -79,16 +80,36 @@ describe('io-switch — a11y (ARIA patterns)', () => {
     await renderAndCheckA11y(el);
   });
 
-  it('does not add redundant aria-checked or aria-disabled on native input (#475)', () => {
+  it('render() does not emit aria-checked or aria-disabled on the input — role=switch carries semantics (#475)', () => {
     const c = new IoSwitch();
     (c as any).el = document.createElement('io-switch');
-    (c as any).label = 'Enable';
+    (c as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      reportValidity: vi.fn(),
+      checkValidity: vi.fn(),
+    };
+    c.label = 'Enable notifications';
     c.checked = true;
-    c.disabled = true;
-    // render() returns the vnode — inspect the native input props through the component
-    // The native <input type="checkbox"> carries checked/disabled natively; no ARIA duplicates
-    const hostEl = (c as any).el as HTMLElement;
-    expect(hostEl.getAttribute('aria-checked')).toBeNull();
-    expect(hostEl.getAttribute('aria-disabled')).toBeNull();
+    c.disabled = false;
+    (c as any).componentWillLoad();
+
+    // h is mocked (vi.fn()) in this test env — capture its call args to find the input call
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    c.render();
+
+    // Find the h('input', attrs) call
+    const inputCall = hMock.mock.calls.find(([tag]) => tag === 'input');
+    expect(inputCall).toBeDefined();
+    const attrs = inputCall![1] as Record<string, unknown>;
+
+    // input carries role="switch" (native semantics handle aria-checked)
+    expect(attrs.role).toBe('switch');
+    // aria-checked and aria-disabled must NOT be on the input (#475)
+    expect(attrs['aria-checked']).toBeUndefined();
+    expect(attrs['aria-disabled']).toBeUndefined();
+    // native checked prop is used instead
+    expect(attrs.checked).toBe(true);
   });
 });

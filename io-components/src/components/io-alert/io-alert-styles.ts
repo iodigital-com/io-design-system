@@ -54,6 +54,8 @@ export function getAlertStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
+      width: var(--io-touch-target-min);
+      height: var(--io-touch-target-min);
       min-width: var(--io-touch-target-min);
       min-height: var(--io-touch-target-min);
       padding: 0;

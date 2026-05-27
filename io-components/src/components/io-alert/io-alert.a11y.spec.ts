@@ -91,8 +91,10 @@ describe('io-alert — a11y (ARIA patterns)', () => {
     await renderAndCheckA11y(wrapper);
   });
 
-  it('dismiss button touch target uses var(--io-touch-target-min) token (WCAG 2.5.8)', () => {
+  it('dismiss button touch target uses var(--io-touch-target-min) token for width and height (WCAG 2.5.8)', () => {
     const styles = getAlertStyles();
+    expect(styles).toContain('width: var(--io-touch-target-min)');
+    expect(styles).toContain('height: var(--io-touch-target-min)');
     expect(styles).toContain('min-width: var(--io-touch-target-min)');
     expect(styles).toContain('min-height: var(--io-touch-target-min)');
   });

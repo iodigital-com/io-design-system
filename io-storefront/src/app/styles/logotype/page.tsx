@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-
 import LogotypePageContent from './LogotypePageContent';
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Logotype — io Design System',

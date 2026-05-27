@@ -614,7 +614,6 @@ export default function LogotypePageContent() {
               className="flex items-center justify-center py-10 rounded-lg"
               style={{ background: 'var(--io-color-grey-1, #f7f7f7)', border: '1px solid var(--io-border)' }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/brand/mark/Part-of-iO_black.svg"
                 alt="Part of iO"
@@ -629,7 +628,6 @@ export default function LogotypePageContent() {
               className="flex items-center justify-center py-10 rounded-lg"
               style={{ background: 'var(--io-color-grey-6, #242424)', border: '1px solid var(--io-border)' }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/brand/mark/Part-of-iO_white.svg"
                 alt="Part of iO"

@@ -225,4 +225,50 @@ describe('io-text — h() call arguments (style computation)', () => {
       expect(tagArg).toBe(tag);
     }
   });
+
+  it('passes dateTime attribute when tag="time" and datetime is set', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.tag = 'time';
+    component.datetime = '2024-12-25';
+    component.render();
+    const [, propsArg] = hMock.mock.calls[OUTER];
+    expect((propsArg as any).dateTime).toBe('2024-12-25');
+  });
+
+  it('does not pass dateTime attribute when tag is not "time"', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.tag = 'p';
+    component.datetime = '2024-12-25';
+    component.render();
+    const [, propsArg] = hMock.mock.calls[OUTER];
+    expect((propsArg as any).dateTime).toBeUndefined();
+  });
+
+  it('does not pass dateTime attribute when datetime is not set even if tag="time"', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.tag = 'time';
+    component.render();
+    const [, propsArg] = hMock.mock.calls[OUTER];
+    expect((propsArg as any).dateTime).toBeUndefined();
+  });
+});
+
+describe('io-text — datetime prop', () => {
+  it('has undefined datetime by default', () => {
+    const component = new IoText();
+    expect(component.datetime).toBeUndefined();
+  });
+
+  it('renders without throwing when datetime is set and tag is "time"', () => {
+    const component = new IoText();
+    component.tag = 'time';
+    component.datetime = '2024-12-25T00:00:00Z';
+    expect(() => component.render()).not.toThrow();
+  });
 });

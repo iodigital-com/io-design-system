@@ -39,6 +39,15 @@ export class IoText {
   /** Single-line truncation with text-overflow: ellipsis */
   @Prop({ reflect: true }) ellipsis = false;
 
+  /**
+   * Machine-readable date/time value for `tag="time"` — maps to the HTML
+   * `datetime` attribute. Required by WCAG 1.3.1 / HTML spec when the text
+   * content alone does not express a machine-parseable date.
+   *
+   * @example <io-text tag="time" datetime="2024-12-25">Christmas Day</io-text>
+   */
+  @Prop() datetime?: string;
+
   private resolveColor(): string {
     switch (this.color) {
       case 'success':
@@ -70,8 +79,10 @@ export class IoText {
       style['whiteSpace'] = 'nowrap';
     }
 
+    const extraAttrs = this.tag === 'time' && this.datetime ? { dateTime: this.datetime } : {};
+
     return (
-      <Tag style={style}>
+      <Tag style={style} {...extraAttrs}>
         <slot />
       </Tag>
     );

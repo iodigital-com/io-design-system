@@ -5,7 +5,7 @@ export function getWordmarkStyles(): string {
       font-family: var(--io-font-primary, 'Manrope', sans-serif);
     }
 
-    /* ── Link wrapper (rendered when href is set) ───────────── */
+    /* ── variant='text' — link wrapper (rendered when href is set) ── */
 
     .wordmark-link {
       display: inline-flex;
@@ -20,6 +20,8 @@ export function getWordmarkStyles(): string {
       outline-offset: 2px;
     }
 
+    /* ── variant='text' — typographic wordmark ────────────────────── */
+
     .wordmark {
       display: inline-flex;
       align-items: baseline;
@@ -30,36 +32,66 @@ export function getWordmarkStyles(): string {
       letter-spacing: var(--io-wordmark-letter-spacing);
     }
 
-    /* Size scale */
-    .wordmark--sm {
-      font-size: var(--io-wordmark-font-size-sm);
+    .wordmark--sm { font-size: var(--io-wordmark-font-size-sm); }
+    .wordmark--md { font-size: var(--io-wordmark-font-size-md); }
+    .wordmark--lg { font-size: var(--io-wordmark-font-size-lg); }
+    .wordmark--xl { font-size: var(--io-wordmark-font-size-xl); }
+
+    /* Default: "io" in brand blue, "digital" in currentColor */
+    .wordmark__io    { color: var(--io-color-primary, #0000D2); }
+    .wordmark__digital { color: currentColor; }
+
+    /* color='black' on text variant */
+    :host([variant="text"][color="black"]) .wordmark__io,
+    :host([variant="text"][color="black"]) .wordmark__digital { color: var(--io-color-grey-6, #242424); }
+
+    /* color='white' on text variant */
+    :host([variant="text"][color="white"]) .wordmark__io,
+    :host([variant="text"][color="white"]) .wordmark__digital { color: var(--io-color-white, #ffffff); }
+
+    /* mono mode — both parts use currentColor (backwards-compat, text only) */
+    :host([mono]) .wordmark__io { color: currentColor; }
+
+    /* ── variant='mark' — geometric iO mark SVG ──────────────────── */
+
+    .mark-svg {
+      display: block;
+      height: var(--io-wordmark-mark-height-md);
+      width: auto;
     }
 
-    .wordmark--md {
-      font-size: var(--io-wordmark-font-size-md);
+    .mark-svg--sm { height: var(--io-wordmark-mark-height-sm); }
+    .mark-svg--md { height: var(--io-wordmark-mark-height-md); }
+    .mark-svg--lg { height: var(--io-wordmark-mark-height-lg); }
+    .mark-svg--xl { height: var(--io-wordmark-mark-height-xl); }
+
+    /* ── variant='lockup' — full brand SVG (mark + text) ─────────── */
+
+    .lockup-svg {
+      display: block;
+      height: var(--io-wordmark-lockup-height-md);
+      width: auto;
     }
 
-    .wordmark--lg {
-      font-size: var(--io-wordmark-font-size-lg);
-    }
+    .lockup-svg--sm { height: var(--io-wordmark-lockup-height-sm); }
+    .lockup-svg--md { height: var(--io-wordmark-lockup-height-md); }
+    .lockup-svg--lg { height: var(--io-wordmark-lockup-height-lg); }
+    .lockup-svg--xl { height: var(--io-wordmark-lockup-height-xl); }
 
-    .wordmark--xl {
-      font-size: var(--io-wordmark-font-size-xl);
-    }
+    /* ── Color tokens for mark + lockup (drives SVG fill via currentColor) */
 
-    /* Colour parts */
-    .wordmark__io {
-      color: var(--io-color-primary, #0000D2);
-    }
+    :host([variant="mark"][color="blue"]),
+    :host([variant="lockup"][color="blue"])  { color: var(--io-color-primary, #0000D2); }
 
-    .wordmark__digital {
-      color: currentColor;
-    }
+    :host([variant="mark"][color="black"]),
+    :host([variant="lockup"][color="black"]) { color: var(--io-color-grey-6, #242424); }
 
-    /* Mono mode — both parts use current text colour */
-    :host([mono]) .wordmark__io {
-      color: currentColor;
-    }
+    :host([variant="mark"][color="white"]),
+    :host([variant="lockup"][color="white"]) { color: var(--io-color-white, #ffffff); }
+
+    /* beige: mark only (not a supported lockup colour, but rendered visibly as fallback) */
+    :host([variant="mark"][color="beige"]),
+    :host([variant="lockup"][color="beige"]) { color: var(--io-color-beige, #DCCFC2); }
 
     @media (prefers-reduced-motion: reduce) {
       .wordmark { transition: none; }

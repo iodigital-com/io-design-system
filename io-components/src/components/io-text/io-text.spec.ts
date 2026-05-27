@@ -143,7 +143,7 @@ describe('io-text — h() call arguments (style computation)', () => {
     component.color = 'success';
     component.render();
     const [, styleArg] = hMock.mock.calls[OUTER];
-    expect((styleArg as any).style.color).toBe('var(--io-color-success, #059669)');
+    expect((styleArg as any).style.color).toBe('var(--io-color-success)');
   });
 
   it('passes warning color token', () => {
@@ -153,7 +153,7 @@ describe('io-text — h() call arguments (style computation)', () => {
     component.color = 'warning';
     component.render();
     const [, styleArg] = hMock.mock.calls[OUTER];
-    expect((styleArg as any).style.color).toBe('var(--io-color-warning, #d97706)');
+    expect((styleArg as any).style.color).toBe('var(--io-color-warning)');
   });
 
   it('passes error color token', () => {

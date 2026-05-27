@@ -42,9 +42,9 @@ export class IoText {
   private resolveColor(): string {
     switch (this.color) {
       case 'success':
-        return 'var(--io-color-success, #059669)';
+        return 'var(--io-color-success)';
       case 'warning':
-        return 'var(--io-color-warning, #d97706)';
+        return 'var(--io-color-warning)';
       case 'error':
         return 'var(--io-color-error)';
       case 'inherit':

@@ -149,7 +149,7 @@ export function getMultiSelectStyles(): string {
     }
 
     .multi-select-wrapper--success .multi-select-trigger {
-      border-bottom-color: var(--io-color-success, #059669);
+      border-bottom-color: var(--io-color-success);
     }
 
     .multi-select-trigger__text {
@@ -286,7 +286,7 @@ export function getMultiSelectStyles(): string {
     .multi-select-option--selected .multi-select-option__checkbox {
       background-color: var(--io-color-primary);
       border-color: var(--io-color-primary);
-      color: var(--io-color-white, #fff);
+      color: var(--io-color-white);
     }
 
     /* ── Group ───────────────────────────────────────────────── */
@@ -351,7 +351,7 @@ export function getMultiSelectStyles(): string {
     }
 
     .multi-select-message--success {
-      color: var(--io-color-success, #059669);
+      color: var(--io-color-success);
     }
 
     /* ── Reduced-motion overrides ──────────────────────────────── */

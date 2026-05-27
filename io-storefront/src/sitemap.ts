@@ -359,6 +359,14 @@ export const sitemap: NavSection[] = [
         description: 'Surfaces brief contextual help on hover or focus. Positioned automatically to stay within the viewport.',
         related: ['io-link', 'io-button', 'io-badge'],
       },
+      {
+        label: 'Wordmark',
+        href: '/components/io-wordmark/configurator',
+        status: 'stable',
+        slug: 'io-wordmark',
+        description: 'Official iO Digital brand component. Three variants — typographic text wordmark, geometric iO mark SVG, and full official brand lockup SVG. Four colour options and four size steps.',
+        related: ['io-avatar', 'io-badge'],
+      },
     ],
   },
   {

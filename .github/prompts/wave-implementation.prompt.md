@@ -157,6 +157,41 @@ For io-input, io-textarea, io-select, io-checkbox, io-radio:
 - `@AttachInternals() internals!: ElementInternals`
 - **Double optional-chain ALL `internals` method calls**: `this.internals?.setFormValue?.()` — jsdom returns a partial `ElementInternals` with methods as `undefined`; single `?.` on the object does NOT prevent the call and throws
 - In tests: `el.internals = { setFormValue: vi.fn(), setValidity: vi.fn(), ... }` assigned manually in `beforeEach`
+- **`@State() faceInvalid = false`** must be declared on every FACE component — this reactive state enables re-render when validity changes, required for WCAG 4.1.3
+- **`formResetCallback()` must set `this.faceInvalid = false` BEFORE calling `this.syncFormValue()`** — skipping this leaves stale error state visible after `form.reset()` when the restored default value is valid
+- **`formResetCallback` must be a plain synchronous method** — never decorated with `@Method()`, never `async`; it is a browser lifecycle hook invoked by the browser, not a Stencil public method
+
+### Dialog focus trap (for `role="dialog"` + `aria-modal="true"` components)
+
+Any component that sets `role="dialog"` and `aria-modal="true"` **must** implement Tab/Shift+Tab focus containment:
+
+```ts
+private handlePanelKeyDown = (ev: KeyboardEvent) => {
+  if (ev.key !== 'Tab') return;
+  const shadow = this.el?.shadowRoot;
+  if (!shadow) return;
+  const panel = shadow.querySelector<HTMLElement>('.popover__panel'); // adjust selector per component
+  if (!panel) return;
+  const focusableSelector =
+    'a[href], button:not([disabled]), input:not([disabled]), ' +
+    'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const focusable = Array.from(panel.querySelectorAll<HTMLElement>(focusableSelector))
+    .filter(el => !el.closest('[aria-hidden="true"]'));
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = shadow.activeElement as HTMLElement | null;
+  if (ev.shiftKey) {
+    if (active === first) { ev.preventDefault(); last.focus(); }
+  } else {
+    if (active === last) { ev.preventDefault(); first.focus(); }
+  }
+};
+```
+
+Attach via `onKeyDown={this.handlePanelKeyDown}` on the panel element in `render()`. **Not** via `@Listen('keydown', { target: 'window' })` — that handler is for Escape key only and must remain separate.
+
+WCAG criteria requiring focus trap: **2.1.1 Keyboard** (A) + **4.1.2 Name, Role, Value** (A — `aria-modal="true"` asserts containment not implemented).
 
 ### Wrapper packages
 
@@ -578,6 +613,426 @@ npm run governance:check 2>&1 | tail -5
 
 ---
 
+## PHASE 12 — POST-MERGE RELEASE
+
+Run this phase immediately after Phase 11 sync is complete. It is conditional:
+
+- **Always run:** Steps 1 and 4 (Changesets status check + storefront deploy).
+- **Run only when this PR included a changeset:** Steps 2 and 3 (Release PR verification).
+- **Run after the Release PR is merged by the repo owner:** Steps 5 and 6 (publish verification + smoke test).
+- **Run after Issue #276 is implemented:** Step 7 (GitHub Packages mirror).
+
+---
+
+### Step 1 — Check Changesets release workflow
+
+`release.yml` triggers automatically on every push to `main`. Check its outcome:
+
+```bash
+# List the most recent release.yml runs
+gh run list --repo iodigital-com/io-design-system \
+  --workflow release.yml --limit 5 \
+  --json status,conclusion,displayTitle,createdAt \
+  --jq '.[] | {conclusion, displayTitle, createdAt}'
+```
+
+Two outcomes:
+
+| Outcome | Meaning | What to do |
+|---|---|---|
+| A **"chore(release): version packages"** PR was opened or updated | Changesets found pending entries. Normal. | Verify the Release PR version bumps (Step 2), then notify the repo owner to merge it when ready. |
+| The release workflow **published packages directly** | The Release PR was already open and was just merged. | Skip to Step 5 (verify publish). |
+
+Check whether a Release PR is currently open:
+
+```bash
+gh pr list --repo iodigital-com/io-design-system \
+  --search "chore(release): version packages in:title" \
+  --json number,title,state \
+  --jq '.[] | {number, title, state}'
+```
+
+---
+
+### Step 2 — Add a changeset (if omitted during development)
+
+> Skip this step if you ran `npm run changeset:add` during Phase 4–6 and the changeset file is already merged with this PR.
+
+A changeset is required whenever a PR changes user-facing behaviour in a published package (`@io-digital/components`, `@io-digital/components-react`, `@io-digital/components-vue`, `@io-digital/components-angular`). If the PR had no changeset, add one to `main` now:
+
+```bash
+git checkout main && git pull origin main
+
+npm run changeset:add
+```
+
+Select the packages that changed. Bump level guide:
+
+| Change type | Bump level |
+|---|---|
+| Bug fix, a11y fix, token fix, internal refactor | `patch` |
+| New prop, slot, method, event, or new component | `minor` |
+| Removed/renamed prop, event, or method; incompatible API change | `major` |
+
+After completing the interactive prompt, commit and push:
+
+```bash
+git add .changeset/
+git commit -m "chore(changeset): add release entry for #{ISSUE_NUMBER}"
+git push origin main
+```
+
+This re-triggers `release.yml` and updates the open Release PR.
+
+---
+
+### Step 3 — Verify Release PR version bumps
+
+Fetch the Release PR and confirm that every bumped package and version is expected:
+
+```bash
+RELEASE_PR=$(gh pr list --repo iodigital-com/io-design-system \
+  --search "chore(release): version packages in:title" \
+  --json number -q '.[0].number')
+
+echo "Release PR: #${RELEASE_PR}"
+
+# Preview which packages will be bumped and to which version
+npm run changeset:status 2>&1 | tail -30
+
+# Review the diff in the Release PR
+gh pr diff ${RELEASE_PR} --repo iodigital-com/io-design-system | \
+  grep -E "^\+.*\"version\"" | head -10
+```
+
+Confirm:
+- Only packages that changed in this wave are bumped.
+- `@io-digital/storefront` is **not** in the changeset (it is ignored in `.changeset/config.json`).
+- The bump level matches the change type (patch for fixes, minor for new API surface, major for breaking).
+
+⚠️ **Do NOT merge the Release PR yourself.** Leave that to the repo owner. Your job is to verify correctness and notify.
+
+```bash
+gh pr comment ${RELEASE_PR} \
+  --repo iodigital-com/io-design-system \
+  --body "Version bumps verified for wave {N} / PR #{ISSUE_PR_NUMBER}. Correct bump levels confirmed. Ready to merge when repo owner approves."
+```
+
+---
+
+### Step 4 — Deploy storefront to Firebase Hosting
+
+Run this step independently of package releases. Deploy whenever `main` has storefront or component source changes. The storefront is a static Next.js export deployed to Firebase project `io-design-system-showcase`.
+
+**Build the release-quality storefront** (builds components → syncs Stencil assets → builds Next.js static export):
+
+```bash
+cd <repo-root>
+npm run build:storefront:release 2>&1 | tail -30
+```
+
+**Verify the output is complete before deploying:**
+
+```bash
+# These files must exist — if any are missing, the build failed
+test -f io-storefront/out/index.html \
+  && test -d io-storefront/out/_next \
+  && test -f io-storefront/out/stencil/io-components.esm.js \
+  && echo "✅ Build output verified" \
+  || echo "❌ Build output incomplete — fix build errors before deploying"
+```
+
+**Deploy to Firebase Hosting** (run from the `io-storefront/` directory where `.firebaserc` and `firebase.json` live):
+
+```bash
+cd io-storefront
+firebase deploy --only hosting
+```
+
+If Firebase CLI is not authenticated, authenticate first:
+
+```bash
+# Interactive login (for local dev)
+firebase login
+
+# Or for headless/CI environments
+firebase login --no-localhost
+```
+
+**Verify the live site** after deploy completes:
+
+```bash
+# Firebase Hosting preview URL (always available)
+open https://io-design-system-showcase.web.app
+
+# Custom domain (once DNS mapping is active)
+open https://io-design-system.iodigital.com
+```
+
+Confirm: the deployed site renders the correct component version number in the footer or component API pages. If a new component was added this wave, navigate to its storefront page to confirm it renders.
+
+#### CI automation for storefront deploy
+
+To automate storefront deploys after merge to `main`, create `.github/workflows/deploy-storefront.yml`. This requires the `FIREBASE_SERVICE_ACCOUNT_IO_DESIGN_SYSTEM_SHOWCASE` secret configured in GitHub repo settings (Settings → Secrets → Actions → New repository secret, value from: Firebase Console → Project Settings → Service accounts → Generate new private key).
+
+```yaml
+name: Deploy Storefront
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'io-storefront/**'
+      - 'io-components/src/**'
+      - 'scripts/sync-stencil-assets.cjs'
+      - 'scripts/sync-stencil-types.cjs'
+
+concurrency:
+  group: deploy-storefront
+  cancel-in-progress: true   # newest main push wins; abort stale in-flight deploys
+
+jobs:
+  deploy:
+    name: Build and deploy storefront
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # for provenance / OIDC if needed later
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build storefront (components + asset sync + Next.js static export)
+        run: npm run build:storefront:release
+
+      - name: Verify build output
+        run: |
+          test -f io-storefront/out/index.html \
+            && test -f io-storefront/out/stencil/io-components.esm.js \
+            || { echo "Build output missing"; exit 1; }
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IO_DESIGN_SYSTEM_SHOWCASE }}
+          projectId: io-design-system-showcase
+          entryPoint: ./io-storefront
+          channelId: live
+```
+
+---
+
+### Step 5 — Verify package publish (post Release PR merge)
+
+After the repo owner merges the Release PR, `release.yml` runs `npx changeset publish`, which publishes all bumped packages to the GitHub Packages registry (`https://npm.pkg.github.com`).
+
+Verify the release workflow succeeded:
+
+```bash
+# Wait for and watch the release.yml run triggered by the Release PR merge
+gh run list --repo iodigital-com/io-design-system \
+  --workflow release.yml --limit 3 \
+  --json status,conclusion,displayTitle,createdAt \
+  --jq '.[] | {conclusion, displayTitle, createdAt}'
+```
+
+Confirm each bumped package is live. Replace `x.y.z` with the version from the Release PR:
+
+```bash
+RELEASED_VERSION="x.y.z"   # e.g. 2.1.2
+
+for pkg in \
+  "@io-digital/components" \
+  "@io-digital/components-react" \
+  "@io-digital/components-vue" \
+  "@io-digital/components-angular"; do
+  result=$(npm view "${pkg}@${RELEASED_VERSION}" version \
+    --registry https://npm.pkg.github.com 2>/dev/null)
+  if [ "$result" = "$RELEASED_VERSION" ]; then
+    echo "✅ ${pkg}@${RELEASED_VERSION}"
+  else
+    echo "❌ ${pkg}@${RELEASED_VERSION} — NOT FOUND (got: ${result:-empty})"
+  fi
+done
+```
+
+---
+
+### Step 6 — Smoke-test the published package
+
+Install the just-published `@io-digital/components` in a clean temporary directory to verify the package is complete and importable:
+
+```bash
+RELEASED_VERSION="x.y.z"   # replace with the released version
+
+SMOKE_DIR=$(mktemp -d)
+cd "${SMOKE_DIR}"
+npm init -y
+
+# Configure @io-digital scoped registry to GitHub Packages
+cat > .npmrc << 'EOF'
+@io-digital:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+EOF
+
+# Install the just-published core package
+npm install "@io-digital/components@${RELEASED_VERSION}"
+
+# Verify key exports and version integrity
+node -e "
+const loaderPath  = require.resolve('@io-digital/components/loader');
+const mainPath    = require.resolve('@io-digital/components');
+const pkgJson     = require('@io-digital/components/package.json');
+const expected    = '${RELEASED_VERSION}';
+
+console.log('✅ Main entry:  ', mainPath);
+console.log('✅ Loader entry:', loaderPath);
+
+if (pkgJson.version === expected) {
+  console.log('✅ Version:     ', pkgJson.version);
+} else {
+  console.error('❌ Version mismatch: got', pkgJson.version, 'expected', expected);
+  process.exit(1);
+}
+"
+
+# Clean up
+cd - && rm -rf "${SMOKE_DIR}"
+```
+
+---
+
+### Step 7 — Mirror to GitHub Packages (Issue #276 dual-registry)
+
+> **Prerequisite — Issue #276 must be implemented first.** Skip this step until the dual-registry configuration is in place. See "Issue #276 implementation notes" below for exact changes required.
+
+After the primary publish to npmjs.com succeeds (Step 5), push the release tags that trigger `release-packages.yml` to mirror to GitHub Packages. Only push tags for packages that were actually bumped in this release:
+
+```bash
+RELEASED_VERSION="x.y.z"   # replace with the released version
+
+# Check which packages were bumped in this release
+npm run changeset:status 2>&1
+
+# Push the release tags for each bumped package.
+# release-packages.yml fires on push of: release/components/v*, release/components-react/v*, etc.
+# These tags must target a protected main-branch commit; the workflow enforces this.
+
+git tag "release/components/v${RELEASED_VERSION}"
+git push origin "release/components/v${RELEASED_VERSION}"
+
+# Repeat for each other bumped package:
+git tag "release/components-react/v${RELEASED_VERSION}"
+git push origin "release/components-react/v${RELEASED_VERSION}"
+
+git tag "release/components-vue/v${RELEASED_VERSION}"
+git push origin "release/components-vue/v${RELEASED_VERSION}"
+
+git tag "release/components-angular/v${RELEASED_VERSION}"
+git push origin "release/components-angular/v${RELEASED_VERSION}"
+```
+
+Verify `release-packages.yml` ran and the packages are on GitHub Packages:
+
+```bash
+gh run list --repo iodigital-com/io-design-system \
+  --workflow release-packages.yml --limit 8 \
+  --json status,conclusion,displayTitle \
+  --jq '.[] | {conclusion, displayTitle}'
+```
+
+---
+
+### Issue #276 implementation notes — chore(publishing): dual-registry config
+
+These are the exact changes needed to implement Issue #276. Do not apply them until the issue is being actioned.
+
+#### 1. `.npmrc` (repo root) — add auth token entries for both registries
+
+```
+# .npmrc
+# @io-digital packages: npm for consumers; GitHub Packages as mirror
+@io-digital:registry=https://registry.npmjs.org
+//registry.npmjs.org/:_authToken=${NPM_TOKEN}
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+Note: changing `@io-digital:registry` from `npm.pkg.github.com` to `registry.npmjs.org` means consumers who install via npm no longer need a GitHub token. This is the desired end state.
+
+#### 2. `publishConfig` in all four package.json files — point primary to npmjs.com
+
+Change in `io-components/package.json`, `io-components-react/package.json`, `io-components-vue/package.json`, `io-components-angular/package.json`:
+
+```json
+"publishConfig": {
+  "access": "public",
+  "registry": "https://registry.npmjs.org",
+  "provenance": true
+}
+```
+
+#### 3. `.github/workflows/release.yml` — point Changesets to npmjs.com
+
+Replace the `setup-node` registry-url and `NODE_AUTH_TOKEN`:
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: '20'
+    cache: 'npm'
+    registry-url: 'https://registry.npmjs.org'   # changed from npm.pkg.github.com
+    scope: '@io-digital'
+
+- name: Create Release PR or publish
+  uses: changesets/action@v1
+  with:
+    publish: npx changeset publish
+    version: npm run changeset:version
+    title: 'chore(release): version packages'
+    commit: 'chore(release): version packages'
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # changed from secrets.GITHUB_TOKEN
+```
+
+The `release-packages.yml` workflow (GitHub Packages mirror via tags) stays unchanged — it already uses `NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}` pointing to `npm.pkg.github.com`.
+
+#### 4. GitHub Actions secrets required
+
+| Secret name | Where to get it | Purpose |
+|---|---|---|
+| `NPM_TOKEN` | npmjs.com → Account → Access Tokens → Generate New Token → Automation | Publishes to npmjs.com from `release.yml` |
+| `GITHUB_TOKEN` | Auto-provided by GitHub Actions | Already configured; used by `release-packages.yml` for GitHub Packages |
+
+Add `NPM_TOKEN` at: GitHub repo → Settings → Secrets and variables → Actions → New repository secret.
+
+---
+
+### Phase 12 checklist
+
+- [ ] `release.yml` outcome confirmed — Release PR opened or packages already published
+- [ ] Changeset committed to `main` (if PR had user-facing changes and none was added during dev)
+- [ ] `npm run changeset:status` — version bumps verified correct; no unexpected packages bumped
+- [ ] Release PR comment posted notifying repo owner it is ready for merge
+- [ ] `npm run build:storefront:release` — completed with no errors
+- [ ] `io-storefront/out/index.html` and `io-storefront/out/stencil/io-components.esm.js` exist
+- [ ] Storefront deployed: `cd io-storefront && firebase deploy --only hosting`
+- [ ] Live site verified at `https://io-design-system-showcase.web.app`
+- [ ] (Post Release PR merge) All bumped packages verified on GitHub Packages registry
+- [ ] (Post Release PR merge) Smoke test passed for `@io-digital/components`
+- [ ] (Post Issue #276) `release-packages.yml` tags pushed; GitHub Packages mirror verified
+
+---
+
 ## WAVE PHASING REFERENCE
 
 ### Release Roadmap
@@ -585,7 +1040,7 @@ npm run governance:check 2>&1 | tail -5
 | Wave | GitHub Label | Description | Status | Gate |
 |------|-------------|-------------|--------|------|
 | **Wave I** | `wave-i` | FACE forms, io-modal methods, io-input slots, axe-core a11y, Changesets | ✅ **MERGED** (#264, 2026-05-23) | — |
-| **Wave J** | `wave-j` | Audit remediation — CI health, security, token gaps, git hygiene | 🔴 **Active** — P1s before next feature PR | Immediate |
+| **Wave J** | `wave-j` | Audit remediation — 41 issues: CI health, P1 token+FACE bugs, a11y, docs, tests, stable promotions | 🔴 **Active** — 24-PR sprint, J-01 CI gate first | Immediate |
 | **Wave II** | `wave-ii` | Dark mode tokens, io-toast positions, io-tabs slots, FACE reset/:invalid | 🟡 **Unblocked** (Wave I merged); #228 unblocked | After J P1s |
 | **Wave III** | `wave-iii` | Docs: CSS overrides API, token explorer, CONTRIBUTING.md, wrapper READMEs | 🟢 **Parallel-safe** | Any time |
 | **Wave IV** | `wave-iv` | New components: io-skeleton, io-progress, io-breadcrumb, io-avatar | 🟡 **Unblocked** (Wave I merged) | After J P1s |
@@ -722,149 +1177,61 @@ npm run governance:check 2>&1 | tail -5
 
 ---
 
-### Wave J — Audit Remediation (2026-05-22)
+### Wave J — Audit Remediation (2026-05-27 Updated)
 
-**GitHub label:** `wave-j`
-**Source:** Full-depth end-to-end audit 2026-05-22 — [docs/audit-report-2026-05-22.md](../../docs/audit-report-2026-05-22.md)
-**Post-audit readiness score:** 7.5 / 10
+**GitHub label:** `wave-j`  
+**Source:** Full-depth end-to-end audit 2026-05-27 — 41 open issues  
+**Post-audit readiness score:** 7.5 / 10  
 
----
+> **Authoritative sprint plan:** see [WAVE J — SPRINT PLAN (2026-05-27 audit)](#wave-j--sprint-plan-2026-05-27-audit) for the full 41-issue tracker, 24-PR batching table, merge sequence, and exit criteria.
 
-#### P1 — Fix before next PR to main
+#### All Wave J Issues (41 total)
 
-| # | Title | Type | Effort | Status |
+| # | Title | Type | Effort | Priority |
 |---|---|---|---|---|
-| #272 | chore(git): untrack `.claude/` CLI tooling artifacts from git history | chore | XS | Open |
-| #273 | chore(api-surface): update io-select snapshot — options prop removed in PR #226 | chore | S | Open |
-| #265 | fix(governance): block io-* custom events from bypassing events guard | fix | S | Open |
-| #266 | security(storefront): remove global innerHTML sink from AutoCodeHighlight | security | S | Open |
-| ~~#267~~ | ~~chore(deps): refresh storefront dependency tree — vulnerable next/fast-uri chain~~ | chore | — | ✅ **Resolved in Wave I** (npm audit fix bumped next→16.2.6, fast-uri→3.1.2) — close this issue |
-| #268 | fix(accessibility): make io-tag remove control contextual and 44px minimum | fix | S | Open |
+| #455 | fix(ci): type-check crashes on stale `.next/types` | fix | XS | 🔴 P0 — CI blocker |
+| #265 | fix(governance): block io-* events from events guard bypass | fix | XS | 🔴 P1 |
+| #268 | fix(a11y): io-tag remove control contextual + 44px target | fix | S | 🔴 P1 |
+| #272 | chore(git): untrack `.claude/` from git history | chore | XS | 🔴 P1 |
+| #452 | fix(io-switch): thumb shadow uses hardcoded value not token | fix | S | 🔴 P1 |
+| #453 | fix(io-switch): formResetCallback does not clear faceInvalid | fix | XS | 🔴 P1 |
+| #454 | fix: hardcoded hex fallbacks in io-multi-select + io-text var() | fix | S | 🔴 P1 |
+| #456 | fix(io-heading): console.warn fires on every render cycle | fix | XS | 🟡 P2 |
+| #457 | chore(io-heading): tag prop — keep optional at beta, defer required to stable | chore | XS | 🟡 P2 |
+| #458 | fix(io-alert): focus ring uses outline not box-shadow | fix | XS | 🟡 P2 |
+| #459 | fix(io-alert): transition uses hardcoded 0.15s ease | fix | XS | 🟡 P2 |
+| #460 | fix(io-switch): remove extraneous componentWillLoad console.warn | fix | XS | 🟡 P2 |
+| #461 | design-gate: io-pin-code — should `warning` stay in variant API? | design | — | 💬 Gate A |
+| #462 | fix(io-popover): label required + componentWillLoad warning | fix | S | 🟡 P2 |
+| #463 | fix(io-carousel): rename private `scrollLeft` — shadows HTMLElement | fix | XS | 🟡 P2 |
+| #464 | design-gate: align error/errorMessage API across beta components | design | M | 💬 Gate B |
+| #465 | docs(api-surface.json): add 6 Wave XI beta components | docs | S | 🟡 P2 |
+| #466 | docs(public-css-api.json): register missing beta component tokens | docs | S | 🟡 P2 |
+| #467 | docs: component count shows 22/19 should be 37 | docs | XS | 🟡 P2 |
+| #468 | docs: stability doc claims io-form-field pages exist (false) | docs | XS | 🟡 P2 |
+| #469 | docs(io-carousel): storefront API page missing slot docs | docs | S | 🟡 P2 |
+| #470 | docs(storefront): configurator propDefinitions missing for 3 components | docs | S | 🟡 P2 |
+| #471 | docs(io-text/io-heading): examples pages sparse | docs | S | 🟡 P2 |
+| #472 | docs(io-pin-code): usage page incomplete + wrong primitive import | docs | M | 🟡 P2 |
+| #269 | test(io-button-group): render + disabled-state coverage | test | S | 🟡 P2 |
+| #274 | test(io-divider): click + disabled-state spec coverage | test | XS | 🟡 P2 |
+| #275 | chore: delete app.json Expo artifact | chore | XS | 🟡 P2 |
+| #276 | chore(publishing): GitHub Packages .npmrc config | chore | S | 🟡 P2 |
+| #278 | chore(storefront): next-env.d.ts + pin Next.js version | chore | XS | 🟡 P2 |
+| #473 | a11y(io-alert): dismiss button accessible name not unique | a11y | XS | 🟡 P3 |
+| #474 | test(io-tabs-bar): event tests in wrong spec file | test | XS | 🟡 P3 |
+| #475 | a11y(io-switch): redundant aria-checked on host | a11y | XS | 🟡 P3 |
+| #476 | a11y(io-multi-select): "Clear all" name not unique per instance | a11y | XS | 🟡 P3 |
+| #477 | docs(io-text): missing datetime prop WCAG note | docs | S | 🟡 P3 |
+| #478 | docs(io-tabs-bar): aria-controls compliance not documented | docs | XS | 🟡 P3 |
+| #479 | docs(io-popover): dismiss event JSDoc missing | docs | XS | 🟡 P3 |
+| #480 | chore: close resolved issues #266 #267 #273 | chore | XS | 🟡 P3 |
+| #481 | chore: promote io-tabs-bar to stable | chore | XS | 🟡 P3 |
+| #483 | fix(io-popover): focus trap — Tab escapes open dialog (WCAG 2.1.1) | fix | S | 🔴 P2 (blocks stable) |
+| #484 | fix(io-multi-select): grouped options role=group+aria-labelledby (WCAG 1.3.1) | fix | M | 🔴 P2 (blocks stable) |
+| #271 | feat(theme): light/dark theme switching + full palette | feat | L | 🔵 Deferred / Wave K |
 
-#### P2 — Next sprint
-
-| # | Title | Type | Effort |
-|---|---|---|---|
-| #269 | test(io-button-group): add render and disabled-state coverage | test | S |
-| #271 | feat(theme): implement light/dark theme switching with full light mode palette | feat | L |
-| #274 | test(io-divider): add click and disabled-state spec coverage | test | XS |
-| #275 | chore(repo): remove app.json Expo artifact from repo root | chore | XS |
-| #276 | chore(publishing): commit GitHub Packages registry config + .npmrc docs | chore | S |
-| #277 | chore(tokens): audit 20-token gap (app.css 301 vs reconciliation table 281) | chore | M |
-| #278 | chore(storefront): evaluate next-env.d.ts and pin Next.js to stable | chore | XS |
-
-#### P3 — Backlog / post Wave I
-
-| # | Title | Type | Effort |
-|---|---|---|---|
-| #270 | docs(home): update component count copy on storefront homepage | docs | XS |
-
----
-
-#### Wave J Sprint Plan
-
-**PR J-1 — Git + API hygiene** `chore/wave-j/issue-272-273-275`
-Zero runtime logic. Pure cleanup. ~1h.
-
-| # | Title | Effort |
-|---|---|---|
-| #272 | Untrack `.claude/` from git history | XS |
-| #273 | Update io-select api-surface snapshot | S |
-| #275 | Delete app.json Expo artifact | XS |
-
-**Steps for #272:**
-```bash
-git rm --cached .claude/scheduled_tasks.lock
-git rm --cached ".claude/worktrees/agent-a5795f59"
-git rm --cached ".claude/worktrees/agent-a953aeca"
-```
-
-**Steps for #273:**
-```bash
-npm run build:components
-npm run api:snapshot
-git add docs/api-surface.json
-```
-
----
-
-**PR J-2 — Security** `security/wave-j/issue-266`
-#267 resolved in Wave I (npm audit fix). #266 is the remaining security item.
-
-| # | Title | Effort |
-|---|---|---|
-| #266 | Remove innerHTML sink from AutoCodeHighlight | S |
-
----
-
-**PR J-3 — Governance + a11y fixes** `fix/wave-j/issue-265-268`
-Both are component/governance fixes.
-
-| # | Title | Effort |
-|---|---|---|
-| #265 | Block io-* events bypassing events guard | S |
-| #268 | io-tag remove control: contextual + 44px touch target | S |
-
----
-
-**PR J-4 — Test coverage** `test/wave-j/issue-269-274`
-Both are test-only PRs with no runtime impact.
-
-| # | Title | Effort |
-|---|---|---|
-| #269 | io-button-group: render + disabled-state specs | S |
-| #274 | io-divider: click + disabled-state specs | XS |
-
----
-
-**PR J-5 — Publishing + token hygiene** `chore/wave-j/issue-276-277-278`
-
-| # | Title | Effort |
-|---|---|---|
-| #276 | Commit GitHub Packages config + .npmrc docs | S |
-| #277 | Audit 20-token gap | M |
-| #278 | Evaluate next-env.d.ts + pin Next.js version | XS |
-
----
-
-**PR J-6 — Docs** `docs/wave-j/issue-270`
-Tiny content update — can batch with any other docs PR.
-
-| # | Title | Effort |
-|---|---|---|
-| #270 | Update component count copy on storefront homepage | XS |
-
----
-
-**PR J-7 — Theme system (standalone)** `feat/wave-j/issue-271`
-⚠️ Large multi-file change — implement standalone, never batch.
-
-| # | Title | Effort |
-|---|---|---|
-| #271 | Light/dark theme switching with full light mode color palette | L |
-
-> **Note:** Consider sequencing this after Wave II (#175 dark mode tokens) for consistency.
-
----
-
-#### Wave J Branch Naming
-
-```bash
-# P1 — fix before next PR to main
-chore/wave-j/issue-272-273-275       # PR J-1: git + API hygiene
-security/wave-j/issue-266-267        # PR J-2: security hardening
-fix/wave-j/issue-265-268             # PR J-3: governance + a11y fixes
-
-# P2 — next sprint
-test/wave-j/issue-269-274            # PR J-4: test coverage
-chore/wave-j/issue-276-277-278       # PR J-5: publishing + token hygiene
-
-# P3 — backlog
-docs/wave-j/issue-270                # PR J-6: homepage copy
-
-# Standalone (large)
-feat/wave-j/issue-271                # PR J-7: theme system (design review first)
-```
+> ~~#266 #267 #273 #277~~ — all resolved/closed. Do not reopen.
 
 ---
 
@@ -899,8 +1266,9 @@ Examples:
 feat/wave-i/issue-164                 # io-modal show/close methods
 feat/wave-iv/issue-171                # io-skeleton component (standalone)
 fix/wave-ii/issue-175                 # dark mode tokens
-chore/wave-j/issue-272-273-275        # git hygiene batch
-security/wave-j/issue-266-267         # security fixes batch
+fix/wave-j/issue-455                  # CI gate unblock (P0 — merge first)
+fix/wave-j/issue-452-453-460          # io-switch P1 batch
+fix/wave-j/issue-462-483              # io-popover label + focus trap
 test/wave-j/issue-269-274             # test coverage batch
 ```
 
@@ -956,3 +1324,177 @@ api-contract ──────────────────────�
 ```
 
 All 7 jobs must be green before merge.
+
+---
+
+## WAVE J — SPRINT PLAN (2026-05-27 audit)
+
+> Use this section when implementing Wave J issues. Reference it to determine correct branch name, which issues to batch, and which gates must resolve before a PR can start.
+
+### Step 0 — Verify untracked issues already filed
+
+The following issues were created on 2026-05-27 during the agent audit phase. **Do not re-create them.**
+
+| Scope | Title | GitHub # |
+|-------|-------|----------|
+| io-popover focus trap | fix(io-popover): missing focus trap — Tab escapes open dialog (WCAG 2.1.1) | **#483** |
+| io-multi-select grouped options | fix(io-multi-select): grouped options use role=presentation — replace with role=group + aria-labelledby (WCAG 1.3.1) | **#484** |
+
+Verify both issues are open before proceeding:
+
+```bash
+gh issue view 483 --repo iodigital-com/io-design-system --json state -q .state
+gh issue view 484 --repo iodigital-com/io-design-system --json state -q .state
+```
+
+---
+
+### Design Decision Gates (async — resolve before Phase 4 PRs)
+
+These are not PRs. They produce a written decision recorded in `docs/DECISIONS.md` and the issue comment.
+
+**Gate A — Issue #461: Should `'warning'` remain in `io-pin-code` variant API?**
+
+Resolution process:
+1. Lead maintainer: does any storefront example or documented use case require `'warning'` as a distinct state separate from `error`?
+2. Check `io-pin-code.tsx` for any `'warning'`-specific rendering branch.
+3. Options: (a) Keep — add explicit JSDoc semantics; (b) Remove before API lock; (c) Rename to `'caution'`.
+4. Record outcome in `docs/DECISIONS.md` → `## Wave J — io-pin-code warning state`.
+5. Close #461 with `resolution/accepted` or `resolution/wont-fix`.
+
+Unblocks: Gate B and PR J-11.
+
+**Gate B — Issue #464: Align `error`/`errorMessage` prop API**
+
+Resolution process (depends on Gate A):
+1. Reference AGENTS.md standard: `@Prop({ reflect: true }) error = false` + `@Prop() errorMessage: string | undefined`.
+2. Diff `io-pin-code.tsx` and `io-multi-select.tsx` current props against the standard.
+3. If Gate A kept `'warning'`, decide whether `error` stays `boolean` or becomes a union.
+4. Map exact prop rename/add/remove operations for each component.
+5. Record in `docs/DECISIONS.md` and close #464 after J-11 merges.
+
+---
+
+### PR Batching Table
+
+| PR | Branch | Issues | Description | Effort | Phase | Gates / Merge Dependencies |
+|----|--------|--------|-------------|--------|-------|---------------------------|
+| **J-01** | `fix/wave-j/issue-455` | #455 | ci: fix stale `.next/types` breaking type-check quality gate | XS | **0 — merge first** | None. Must merge before CI run results are trustworthy. |
+| **J-02** | `fix/wave-j/issue-265` | #265 | governance: block `io-*` event names from `events:guard` bypass | XS | **0** | Independent; parallel with J-01. |
+| **J-03** | `chore/wave-j/issue-272` | #272 | git: untrack `.claude/` + `.gitignore` entry | XS | **0** | Independent; `git rm --cached` only. |
+| **J-04** | `fix/wave-j/issue-452-453-460` | #452, #453, #460 | io-switch: token thumb shadow + FACE reset clears `faceInvalid` + remove `componentWillLoad` warn | S | **1** | J-01 CI green. `#452` → `io-switch-styles.ts`; `#453`+`#460` → `io-switch.tsx` — no same-file conflict. |
+| **J-05** | `fix/wave-j/issue-454` | #454 | io-multi-select + io-text: remove hardcoded hex fallbacks in `var()` | S | **1** | J-01. Two different style files — no conflict. |
+| **J-06** | `fix/wave-j/issue-268` | #268 | a11y(io-tag): contextual remove-button label + 44 × 44 px touch target | S | **1** | J-01. Standalone component. |
+| **J-07** | `fix/wave-j/issue-456-457` | #456, #457 | io-heading: fix render-cycle `console.warn` + make `tag` required pre-stable | S | **2** | J-01. `#457` is a breaking change — run `npm run api:snapshot` after. Same component, non-overlapping lines. |
+| **J-08** | `fix/wave-j/issue-458-459` | #458, #459 | io-alert: focus ring `outline` → `box-shadow` + `0.15s ease` → `var(--io-motion-fast)` | XS | **2** | J-01. Both changes in `io-alert-styles.ts` only. |
+| **J-09** | `fix/wave-j/issue-462` | #462 | io-popover: `componentWillLoad` runtime warning when `label` missing (WCAG 4.1.2) | XS | **2** | J-01. Standalone; companion to J-12. |
+| **J-10** | `fix/wave-j/issue-463` | #463 | io-carousel: rename private `scrollLeft` field — shadows `HTMLElement.scrollLeft` | XS | **2** | J-01. Single-file rename in `io-carousel.tsx`. |
+| **J-11** | `fix/wave-j/issue-464-476-484` | #464, #476, #484 | io-pin-code + io-multi-select: align error/errorMessage API + "Clear all" unique name + grouped options `role="group"+aria-labelledby` | M | **4 — post-Gate B** | Gate A + Gate B resolved. Bundles #476 and #484 (both inside `io-multi-select.tsx`). Run `npm run api:snapshot`. |
+| **J-12** | `fix/wave-j/issue-483` | #483 | io-popover: Tab/Shift-Tab focus trap while open (see focus trap pattern in Phase 4) | S | **4** | J-09 merged (label warning lands first). Standalone — too significant to bundle with #462. |
+| **J-13** | `docs/wave-j/issue-465-466` | #465, #466 | docs: add 6 beta components to `api-surface.json` + missing tokens in `public-css-api.json` | S | **5** | J-04, J-05, J-07, J-08, J-11 all merged (API surface stable). |
+| **J-14** | `docs/wave-j/issue-467-468` | #467, #468 | docs: component count 22/19 → 37 in README + `page.tsx` + fix false io-form-field storefront claim | XS | **5** | J-11 merged (count correct once io-pin-code API is stable). |
+| **J-15** | `docs/wave-j/issue-469-470` | #469, #470 | docs: io-carousel API page slot docs + configurator `propDefinitions` for 3 beta components | S | **5** | J-10, J-11. |
+| **J-16** | `docs/wave-j/issue-471-472` | #471, #472 | docs: io-text + io-heading examples (≥ 3 each) + io-pin-code usage page + correct primitive import | M | **5** | J-07 (io-heading `tag` required), J-11 (io-pin-code API stable). |
+| **J-17** | `test/wave-j/issue-269-274` | #269, #274 | tests: io-button-group render + disabled-state + io-divider click + disabled-state specs | S | **3** | J-01. No component changes — safe to run in parallel with Phase 2. |
+| **J-18** | `fix/wave-j/issue-473` | #473 | a11y(io-alert): unique accessible name on dismiss button | XS | **3** | J-08 merged first (same `io-alert.tsx` file). |
+| **J-19** | `fix/wave-j/issue-475` | #475 | a11y(io-switch): remove redundant `aria-checked` (`role=switch` carries it natively) | XS | **3** | J-04 merged first (same `io-switch.tsx` file). |
+| **J-20** | `test/wave-j/issue-474-481` | #474, #481 | io-tabs-bar: add `click.spec.ts` + promote to stable + update `component-stability-recommendations.md` | S | **3** | J-01. Tests must pass before `stable` label applies. |
+| **J-21** | `docs/wave-j/issue-477-479` | #477, #478, #479 | docs: io-text `datetime` WCAG note + io-tabs-bar `aria-controls` consumer doc + io-popover dismiss JSDoc | S | **6** | J-09 (popover), J-20 (tabs-bar stable). |
+| **J-22** | `chore/wave-j/issue-275-276` | #275, #276 | chore: delete `app.json` Expo artifact + GitHub Packages `publishConfig` + `.npmrc` | XS | **Any** | Independent. |
+| **J-23** | `chore/wave-j/issue-480` | #480 | chore: close resolved issues #266, #267, #273 via `gh issue close`; verify #277 + #278 already closed | XS | **Any** | No code changes. #277 + #278 were closed before this audit — confirm via `gh issue view 277 278`. |
+| **J-24** | `feat/wave-j/issue-271` | #271 | feat(theme): full light/dark mode palette + theme-switching | L | **Deferred** | All others merged. Recommend Wave K Issue 1 or standalone sprint. Must be explicitly scoped — not silently carried over. |
+
+---
+
+### Merge Sequence
+
+```
+Phase 0 — prerequisites (J-01, J-02, J-03 in parallel)
+  J-01 ── CI unblock
+  J-02 ── Events guard
+  J-03 ── Git hygiene
+
+Phase 1 — P1 bugs (after J-01; J-04/J-05/J-06 in parallel)
+  J-01 ──> J-04, J-05, J-06
+
+Phase 2 — P2 component fixes (after J-01; J-07/J-08/J-09/J-10 in parallel)
+  J-01 ──> J-07, J-08, J-09, J-10
+  J-01 ──> J-17              (tests, no component dep)
+  J-01 ──> J-20              (tabs-bar, no component dep)
+  J-08 ──> J-18              (io-alert same file)
+  J-04 ──> J-19              (io-switch same file)
+
+Phase 2 (async, not code)
+  resolve Gate A (#461) ──> resolve Gate B (#464)
+
+Phase 4 — post-design-gate
+  Gate B  ──> J-11           (io-pin-code + io-multi-select error API)
+  J-09    ──> J-12           (io-popover focus trap #483)
+
+Phase 5 — docs (wait for API surface stable)
+  J-04, J-05, J-07, J-08, J-11 ──> J-13
+  J-11                           ──> J-14
+  J-10, J-11                     ──> J-15
+  J-07, J-11                     ──> J-16
+
+Phase 6 — remaining docs
+  J-09, J-20 ──> J-21
+
+Phase 7 — chores (any time)
+  J-22, J-23
+
+Phase 8 — deferred (all others → J-24 or Wave K)
+```
+
+---
+
+### Wave J Exit Criteria
+
+**P1 — all must be green:**
+- [ ] `npm run build:quality-gates` passes on `main` with no type-check failures (J-01)
+- [ ] `npm run events:guard` catches `io-`-prefixed event names in CI (J-02)
+- [ ] `.claude/` untracked and in `.gitignore` (J-03)
+- [ ] `io-switch` thumb shadow uses `var(--io-*)`, `formResetCallback` resets `faceInvalid`, no `componentWillLoad` warn (J-04)
+- [ ] `io-multi-select` and `io-text` have zero hardcoded hex in `var()` fallback positions (J-05)
+- [ ] `io-tag` remove button: contextual accessible name + 44 × 44 px touch target (J-06)
+
+**Design decisions:**
+- [ ] #461 closed with outcome in `docs/DECISIONS.md`
+- [ ] #464 closed with prop alignment plan in `docs/DECISIONS.md`
+
+**P2 components:**
+- [ ] `io-heading`: `tag` required; no render-cycle warn (J-07)
+- [ ] `io-alert`: focus ring is `box-shadow`; transition token (J-08)
+- [ ] `io-popover`: runtime warning when `label` absent; Tab/Shift-Tab trapped while open (J-09, J-12)
+- [ ] `io-carousel`: private field no longer shadows `HTMLElement.scrollLeft` (J-10)
+- [ ] `io-pin-code` + `io-multi-select`: `error`/`errorMessage` aligned; grouped options `role="option"`; "Clear all" unique name (J-11)
+
+**Documentation:**
+- [ ] `docs/api-surface.json`: all 6 Wave XI beta components present (J-13)
+- [ ] `docs/public-css-api.json`: `io-switch`, `io-pin-code`, `io-multi-select` tokens registered (J-13)
+- [ ] README + storefront `page.tsx` show component count 37 (J-14)
+- [ ] `component-stability-recommendations.md` no longer claims io-form-field storefront pages exist (J-14)
+- [ ] `io-carousel` storefront API page documents all slots (J-15)
+- [ ] Configurator `propDefinitions` complete for 3 beta components (J-15)
+- [ ] `io-text` + `io-heading` examples: ≥ 3 examples each (J-16)
+- [ ] `io-pin-code` usage page accurate + correct primitive import (J-16)
+- [ ] `io-text` storefront: `datetime` prop for `tag="time"` WCAG note (J-21)
+- [ ] `io-tabs-bar`: `aria-controls` consumer compliance documented (J-21)
+- [ ] `io-popover` dismiss event JSDoc: trigger-click-to-close path documented (J-21)
+
+**Tests + a11y:**
+- [ ] `io-button-group`: render + disabled-state specs (J-17)
+- [ ] `io-divider`: click + disabled-state specs (J-17)
+- [ ] `io-alert` dismiss button: unique accessible name (J-18)
+- [ ] `io-switch`: no redundant `aria-checked` (J-19)
+- [ ] `io-tabs-bar`: `click.spec.ts` exists + promoted to `stable` (J-20)
+
+**Chores:**
+- [ ] `app.json` deleted (J-22)
+- [ ] GitHub Packages `publishConfig` + `.npmrc` committed (J-22)
+- [ ] Issues #266, #267, #273 confirmed closed + #277 + #278 verified closed on GitHub (J-23)
+- [ ] `#483` (io-popover focus trap) and `#484` (io-multi-select grouped options ARIA) filed and tracked — verify both are open with `gh issue list --state open --repo iodigital-com/io-design-system --label wave-j`
+
+**J-24 disposition (mandatory, one of two states):**
+- [ ] #271 completed as Wave J extended sprint, OR
+- [ ] #271 explicitly scoped as Wave K Issue 1 with rationale in `docs/DECISIONS.md`

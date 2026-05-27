@@ -42,7 +42,7 @@ import { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from ".
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
-import { IoWordmarkSize } from "./components/io-wordmark/types";
+import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAlertVariant } from "./components/io-alert/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
@@ -80,7 +80,7 @@ export { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from ".
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
-export { IoWordmarkSize } from "./components/io-wordmark/types";
+export { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export namespace Components {
     /**
      * io-accordion
@@ -1201,7 +1201,105 @@ export namespace Components {
     }
     /**
      * io-pin-code
-     * ====     * ===========
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Check validity without showing browser validation UI. Returns true if valid.
+         */
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label": string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length": IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message": string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name": string | undefined;
+        /**
+          * Check validity and trigger browser validation UI if invalid. Returns true if valid.
+         */
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Programmatically focus the first empty slot (or the last slot if complete)
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state": IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type": IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * io-popover
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface IoPopover {
+        /**
+          * Close the popover when clicking outside the panel
+          * @default true
+         */
+        "closeOnClickOutside": boolean;
+        /**
+          * Accessible label for the popover dialog
+         */
+        "label"?: string;
+        /**
+          * Whether the popover is currently open
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Preferred placement of the popover panel relative to the trigger
+          * @default 'bottom'
+         */
+        "placement": IoPopoverPlacement;
+    }
+    /**
+     * io-progress
+     * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
      * @example <io-progress value="60"></io-progress>
@@ -2176,45 +2274,58 @@ export namespace Components {
     /**
      * io-wordmark
      * ===========
-     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
-     * "digital" in the current text colour, using the primary font at a
-     * token-driven size.
-     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
-     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
+     * Reusable iO brand identity component with three variants:
+     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
+     *                       Supports size scale, color, mono mode, and href link.
+     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     *                       Supports size scale and all four color values (incl. beige).
+     * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
+     *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
-     * <io-wordmark size="lg" />
+     * <io-wordmark variant="mark" color="blue" size="lg" />
+     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark size="lg" color="black" />
      * <io-wordmark mono />
      * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
-     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface IoWordmark {
         /**
-          * Accessible label applied to the root element (or the `<a>` when href is set). Defaults to "io Digital".
+          * Accessible label for the host element (or the <a> when href is set). Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel": string;
         /**
-          * When provided, the wordmark renders as an `<a>` element with this href. Common use case: logo linking back to the homepage.
+          * Colour applied to the wordmark. For 'text': controls the "io" part colour (blue = brand blue, others = solid fill). For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
+          * @default 'blue'
+         */
+        "color": IoWordmarkColor;
+        /**
+          * When provided on variant='text', the wordmark renders as an <a> element. Common use case: logo linking back to the homepage.
          */
         "href"?: string;
         /**
-          * Monochrome mode — both "io" and "digital" use current text colour
+          * Monochrome mode — both "io" and "digital" use the current text colour. Only applies to variant='text'. Kept for backwards compatibility.
           * @default false
          */
         "mono": boolean;
         /**
-          * Link relationship (`noopener noreferrer`, etc.). Only applied when `href` is set.
+          * Link relationship ('noopener noreferrer', etc.). Only applied when href is set on variant='text'.
          */
         "rel"?: string;
         /**
-          * Size scale controlling the overall font-size of the wordmark
+          * Size scale — controls font-size (text) or SVG height (mark/lockup)
           * @default 'md'
          */
         "size": IoWordmarkSize;
         /**
-          * Browsing context for the link (`_self`, `_blank`, etc.). Only applied when `href` is set.
+          * Browsing context for the link ('_self', '_blank', etc.). Only applied when href is set on variant='text'.
          */
         "target"?: string;
+        /**
+          * Which visual representation to render. - 'text'   → typographic web-font wordmark (default, backwards-compatible) - 'mark'   → geometric iO mark SVG - 'lockup' → full official brand lockup SVG (mark + text)
+          * @default 'text'
+         */
+        "variant": IoWordmarkVariant;
     }
 }
 export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
@@ -2896,9 +3007,57 @@ declare global {
     }
     /**
      * io-pin-code
-     * ====    /**
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface HTMLIoPinCodeElement extends Components.IoPinCode, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPinCodeElementEventMap>(type: K, listener: (this: HTMLIoPinCodeElement, ev: IoPinCodeCustomEvent<HTMLIoPinCodeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoPinCodeElement: {
+        prototype: HTMLIoPinCodeElement;
+        new (): HTMLIoPinCodeElement;
+    };
+    interface HTMLIoPopoverElementEventMap {
+        "dismiss": void;
+    }
+    /**
      * io-popover
-     * ===    /**
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface HTMLIoPopoverElement extends Components.IoPopover, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoPopoverElementEventMap>(type: K, listener: (this: HTMLIoPopoverElement, ev: IoPopoverCustomEvent<HTMLIoPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoPopoverElement: {
+        prototype: HTMLIoPopoverElement;
+        new (): HTMLIoPopoverElement;
+    };
+    /**
      * io-progress
      * ===========
      * Linear progress bar for determinate loading states.
@@ -3461,16 +3620,19 @@ declare global {
     /**
      * io-wordmark
      * ===========
-     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
-     * "digital" in the current text colour, using the primary font at a
-     * token-driven size.
-     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
-     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
+     * Reusable iO brand identity component with three variants:
+     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
+     *                       Supports size scale, color, mono mode, and href link.
+     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     *                       Supports size scale and all four color values (incl. beige).
+     * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
+     *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
-     * <io-wordmark size="lg" />
+     * <io-wordmark variant="mark" color="blue" size="lg" />
+     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark size="lg" color="black" />
      * <io-wordmark mono />
      * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
-     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
     }
@@ -4667,7 +4829,105 @@ declare namespace LocalJSX {
     }
     /**
      * io-pin-code
-     * ====     * ===========
+     * ===========
+     * Multi-slot PIN / OTP entry component with keyboard navigation,
+     * auto-advance, backspace-to-previous, and clipboard paste support.
+     * Participates in native HTML forms via the FACE (Form-Associated
+     * Custom Elements) API.
+     * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+     * <io-pin-code label="OTP Code" length="6" type="password" required />
+     */
+    interface IoPinCode {
+        /**
+          * Disables all inputs
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Accessible label displayed above the PIN slots
+         */
+        "label"?: string | undefined;
+        /**
+          * Number of digit slots
+          * @default 4
+         */
+        "length"?: IoPinCodeLength;
+        /**
+          * Helper / validation message displayed below the slots
+         */
+        "message"?: string | undefined;
+        /**
+          * HTML form field name
+         */
+        "name"?: string | undefined;
+        /**
+          * Fires on every digit change with current value and completion status
+         */
+        "onChange"?: (event: IoPinCodeCustomEvent<IoPinCodeChangeDetail>) => void;
+        /**
+          * Marks the field as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Visual validation state — aligns with other io form-field components
+          * @default 'none'
+         */
+        "state"?: IoPinCodeState;
+        /**
+          * Input display mode: 'number' shows digits, 'password' masks them
+          * @default 'number'
+         */
+        "type"?: IoPinCodeType;
+        /**
+          * Current PIN value — all filled digits concatenated
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * io-popover
+     * ==========
+     * Click-triggered floating content panel with accessible dialog semantics.
+     * Uses the native Popover API (`popover="auto"`) where available, falling back
+     * to manual absolute positioning. No runtime positioning library required.
+     * @example <io-popover label="Quick actions" placement="bottom">
+     *   <io-button slot="trigger">Open</io-button>
+     *   <p>Popover body content.</p>
+     * </io-popover>
+     */
+    interface IoPopover {
+        /**
+          * Close the popover when clicking outside the panel
+          * @default true
+         */
+        "closeOnClickOutside"?: boolean;
+        /**
+          * Accessible label for the popover dialog
+         */
+        "label"?: string;
+        /**
+          * Emitted when the popover closes (Escape key or outside click)
+         */
+        "onDismiss"?: (event: IoPopoverCustomEvent<void>) => void;
+        /**
+          * Whether the popover is currently open
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Preferred placement of the popover panel relative to the trigger
+          * @default 'bottom'
+         */
+        "placement"?: IoPopoverPlacement;
+    }
+    /**
+     * io-progress
+     * ===========
      * Linear progress bar for determinate loading states.
      * Use for file uploads, multi-step forms, and wizard flows.
      * @example <io-progress value="60"></io-progress>
@@ -5666,45 +5926,58 @@ declare namespace LocalJSX {
     /**
      * io-wordmark
      * ===========
-     * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
-     * "digital" in the current text colour, using the primary font at a
-     * token-driven size.
-     * When `href` is set, the wordmark renders inside an `<a>` element, enabling
-     * logo-as-home-link navigation patterns without shadow-DOM focus issues.
+     * Reusable iO brand identity component with three variants:
+     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
+     *                       Supports size scale, color, mono mode, and href link.
+     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     *                       Supports size scale and all four color values (incl. beige).
+     * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
+     *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
-     * <io-wordmark size="lg" />
+     * <io-wordmark variant="mark" color="blue" size="lg" />
+     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark size="lg" color="black" />
      * <io-wordmark mono />
      * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
-     * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
      */
     interface IoWordmark {
         /**
-          * Accessible label applied to the root element (or the `<a>` when href is set). Defaults to "io Digital".
+          * Accessible label for the host element (or the <a> when href is set). Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel"?: string;
         /**
-          * When provided, the wordmark renders as an `<a>` element with this href. Common use case: logo linking back to the homepage.
+          * Colour applied to the wordmark. For 'text': controls the "io" part colour (blue = brand blue, others = solid fill). For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
+          * @default 'blue'
+         */
+        "color"?: IoWordmarkColor;
+        /**
+          * When provided on variant='text', the wordmark renders as an <a> element. Common use case: logo linking back to the homepage.
          */
         "href"?: string;
         /**
-          * Monochrome mode — both "io" and "digital" use current text colour
+          * Monochrome mode — both "io" and "digital" use the current text colour. Only applies to variant='text'. Kept for backwards compatibility.
           * @default false
          */
         "mono"?: boolean;
         /**
-          * Link relationship (`noopener noreferrer`, etc.). Only applied when `href` is set.
+          * Link relationship ('noopener noreferrer', etc.). Only applied when href is set on variant='text'.
          */
         "rel"?: string;
         /**
-          * Size scale controlling the overall font-size of the wordmark
+          * Size scale — controls font-size (text) or SVG height (mark/lockup)
           * @default 'md'
          */
         "size"?: IoWordmarkSize;
         /**
-          * Browsing context for the link (`_self`, `_blank`, etc.). Only applied when `href` is set.
+          * Browsing context for the link ('_self', '_blank', etc.). Only applied when href is set on variant='text'.
          */
         "target"?: string;
+        /**
+          * Which visual representation to render. - 'text'   → typographic web-font wordmark (default, backwards-compatible) - 'mark'   → geometric iO mark SVG - 'lockup' → full official brand lockup SVG (mark + text)
+          * @default 'text'
+         */
+        "variant"?: IoWordmarkVariant;
     }
 
     interface IoAccordionAttributes {
@@ -6089,6 +6362,8 @@ declare namespace LocalJSX {
         "placement": IoTooltipPlacement;
     }
     interface IoWordmarkAttributes {
+        "variant": IoWordmarkVariant;
+        "color": IoWordmarkColor;
         "size": IoWordmarkSize;
         "mono": boolean;
         "ariaLabel": string;
@@ -6445,7 +6720,30 @@ declare module "@stencil/core" {
             "io-pagination": LocalJSX.IntrinsicElements["io-pagination"] & JSXBase.HTMLAttributes<HTMLIoPaginationElement>;
             /**
              * io-pin-code
-             * ====             * ===========
+             * ===========
+             * Multi-slot PIN / OTP entry component with keyboard navigation,
+             * auto-advance, backspace-to-previous, and clipboard paste support.
+             * Participates in native HTML forms via the FACE (Form-Associated
+             * Custom Elements) API.
+             * @example <io-pin-code label="Enter PIN" name="pin" length="4" />
+             * <io-pin-code label="OTP Code" length="6" type="password" required />
+             */
+            "io-pin-code": LocalJSX.IntrinsicElements["io-pin-code"] & JSXBase.HTMLAttributes<HTMLIoPinCodeElement>;
+            /**
+             * io-popover
+             * ==========
+             * Click-triggered floating content panel with accessible dialog semantics.
+             * Uses the native Popover API (`popover="auto"`) where available, falling back
+             * to manual absolute positioning. No runtime positioning library required.
+             * @example <io-popover label="Quick actions" placement="bottom">
+             *   <io-button slot="trigger">Open</io-button>
+             *   <p>Popover body content.</p>
+             * </io-popover>
+             */
+            "io-popover": LocalJSX.IntrinsicElements["io-popover"] & JSXBase.HTMLAttributes<HTMLIoPopoverElement>;
+            /**
+             * io-progress
+             * ===========
              * Linear progress bar for determinate loading states.
              * Use for file uploads, multi-step forms, and wizard flows.
              * @example <io-progress value="60"></io-progress>
@@ -6748,16 +7046,19 @@ declare module "@stencil/core" {
             /**
              * io-wordmark
              * ===========
-             * Reusable "io Digital" brand wordmark. Renders "io" in brand blue and
-             * "digital" in the current text colour, using the primary font at a
-             * token-driven size.
-             * When `href` is set, the wordmark renders inside an `<a>` element, enabling
-             * logo-as-home-link navigation patterns without shadow-DOM focus issues.
+             * Reusable iO brand identity component with three variants:
+             * - variant="text"    — Typographic "io digital" using bold Manrope (default).
+             *                       Supports size scale, color, mono mode, and href link.
+             * - variant="mark"    — The official geometric iO mark SVG (i + O).
+             *                       Supports size scale and all four color values (incl. beige).
+             * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
+             *                       Supports size scale and blue/black/white color values.
              * @example <io-wordmark />
-             * <io-wordmark size="lg" />
+             * <io-wordmark variant="mark" color="blue" size="lg" />
+             * <io-wordmark variant="lockup" color="black" size="md" />
+             * <io-wordmark size="lg" color="black" />
              * <io-wordmark mono />
              * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
-             * <io-wordmark href="https://iodigital.com" target="_blank" rel="noopener noreferrer" />
              */
             "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }

@@ -3,66 +3,78 @@ import { h } from '@stencil/core';
 
 import { IoWordmark } from './io-wordmark';
 
-describe('io-wordmark - default props and render contract', () => {
-  it('has md as the default size', () => {
-    const component = new IoWordmark();
-    expect(component.size).toBe('md');
+// ── Default props ──────────────────────────────────────────────────────────────
+
+describe('io-wordmark — default props', () => {
+  it('has "text" as the default variant', () => {
+    expect(new IoWordmark().variant).toBe('text');
+  });
+
+  it('has "blue" as the default color', () => {
+    expect(new IoWordmark().color).toBe('blue');
+  });
+
+  it('has "md" as the default size', () => {
+    expect(new IoWordmark().size).toBe('md');
   });
 
   it('has false as the default mono value', () => {
-    const component = new IoWordmark();
-    expect(component.mono).toBe(false);
+    expect(new IoWordmark().mono).toBe(false);
   });
 
   it('has "io Digital" as the default ariaLabel', () => {
-    const component = new IoWordmark();
-    expect(component.ariaLabel).toBe('io Digital');
+    expect(new IoWordmark().ariaLabel).toBe('io Digital');
   });
 
   it('href defaults to undefined', () => {
-    const component = new IoWordmark();
-    expect(component.href).toBeUndefined();
+    expect(new IoWordmark().href).toBeUndefined();
   });
 
   it('target defaults to undefined', () => {
-    const component = new IoWordmark();
-    expect(component.target).toBeUndefined();
+    expect(new IoWordmark().target).toBeUndefined();
   });
 
   it('rel defaults to undefined', () => {
-    const component = new IoWordmark();
-    expect(component.rel).toBeUndefined();
+    expect(new IoWordmark().rel).toBeUndefined();
   });
+});
 
+// ── variant='text' ─────────────────────────────────────────────────────────────
+
+describe('io-wordmark — variant="text" render contract', () => {
   it('renders without throwing for each supported size', () => {
-    const sizes = ['sm', 'md', 'lg', 'xl'] as const;
-
-    for (const size of sizes) {
-      const component = new IoWordmark();
-      component.size = size;
-      expect(() => component.render()).not.toThrow();
+    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
+      const c = new IoWordmark();
+      c.size = size;
+      expect(() => c.render()).not.toThrow();
     }
   });
 
   it('renders without throwing in mono mode', () => {
-    const component = new IoWordmark();
-    component.mono = true;
-    expect(() => component.render()).not.toThrow();
+    const c = new IoWordmark();
+    c.mono = true;
+    expect(() => c.render()).not.toThrow();
   });
 
   it('renders without throwing with custom ariaLabel', () => {
-    const component = new IoWordmark();
-    component.ariaLabel = 'iO Digital wordmark';
-    expect(() => component.render()).not.toThrow();
+    const c = new IoWordmark();
+    c.ariaLabel = 'iO Digital wordmark';
+    expect(() => c.render()).not.toThrow();
+  });
+
+  it('renders without throwing for each color value', () => {
+    for (const color of ['blue', 'black', 'white'] as const) {
+      const c = new IoWordmark();
+      c.color = color;
+      expect(() => c.render()).not.toThrow();
+    }
   });
 });
 
-// ── href / link rendering tests ───────────────────────────────────────────────
+// ── variant='text' href / link rendering ──────────────────────────────────────
 
 function makeWordmark(overrides: Partial<IoWordmark> = {}): IoWordmark {
-  const component = new IoWordmark();
-  Object.assign(component, overrides);
-  return component;
+  return Object.assign(new IoWordmark(), overrides);
 }
 
 function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {
@@ -72,10 +84,8 @@ function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {
     .map((args) => args[1] as Record<string, unknown> | undefined);
 }
 
-describe('io-wordmark — render without href (static presentational)', () => {
-  beforeEach(() => {
-    vi.mocked(h).mockClear();
-  });
+describe('io-wordmark — variant="text" without href (static)', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
 
   it('renders without throwing when href is not set', () => {
     expect(() => makeWordmark().render()).not.toThrow();
@@ -87,18 +97,12 @@ describe('io-wordmark — render without href (static presentational)', () => {
   });
 });
 
-describe('io-wordmark — render with href (link mode)', () => {
-  beforeEach(() => {
-    vi.mocked(h).mockClear();
-  });
+describe('io-wordmark — variant="text" with href (link mode)', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
 
   it('renders an <a> element when href is set', () => {
     makeWordmark({ href: '/' }).render();
     expect(hCallsForTag('a').length).toBeGreaterThan(0);
-  });
-
-  it('renders without throwing when href is set', () => {
-    expect(() => makeWordmark({ href: '/' }).render()).not.toThrow();
   });
 
   it('passes href to the <a> element', () => {
@@ -131,15 +135,54 @@ describe('io-wordmark — render with href (link mode)', () => {
     expect(anchor?.['aria-label']).toBe('io Digital');
   });
 
-  it('does NOT render an <a> element when href is not set', () => {
+  it('does NOT render an <a> element when href is not set even if target is set', () => {
     makeWordmark({ target: '_blank' }).render();
     expect(hCallsForTag('a')).toHaveLength(0);
   });
 
-  it('renders without throwing for all supported size + href combinations', () => {
-    const sizes = ['sm', 'md', 'lg', 'xl'] as const;
-    for (const size of sizes) {
+  it('renders without throwing for all size + href combinations', () => {
+    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
       expect(() => makeWordmark({ href: '/', size }).render()).not.toThrow();
+    }
+  });
+});
+
+// ── variant='mark' ─────────────────────────────────────────────────────────────
+
+describe('io-wordmark — variant="mark" render contract', () => {
+  it('renders without throwing', () => {
+    expect(() => makeWordmark({ variant: 'mark' }).render()).not.toThrow();
+  });
+
+  it('renders without throwing for each supported size', () => {
+    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
+      expect(() => makeWordmark({ variant: 'mark', size }).render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for each supported color', () => {
+    for (const color of ['blue', 'black', 'white', 'beige'] as const) {
+      expect(() => makeWordmark({ variant: 'mark', color }).render()).not.toThrow();
+    }
+  });
+});
+
+// ── variant='lockup' ───────────────────────────────────────────────────────────
+
+describe('io-wordmark — variant="lockup" render contract', () => {
+  it('renders without throwing', () => {
+    expect(() => makeWordmark({ variant: 'lockup' }).render()).not.toThrow();
+  });
+
+  it('renders without throwing for each supported size', () => {
+    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
+      expect(() => makeWordmark({ variant: 'lockup', size }).render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for each supported color', () => {
+    for (const color of ['blue', 'black', 'white'] as const) {
+      expect(() => makeWordmark({ variant: 'lockup', color }).render()).not.toThrow();
     }
   });
 });

@@ -940,12 +940,24 @@ io-table[compact] io-table-body-cell td {
   --io-drawer-width-lg:          clamp(480px, 60vw, 800px);
   --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
 
-  /* io-wordmark */
-  --io-wordmark-font-size-sm:    var(--io-font-size-sm);
-  --io-wordmark-font-size-md:    20px;
-  --io-wordmark-font-size-lg:    28px;
-  --io-wordmark-font-size-xl:    40px;
-  --io-wordmark-letter-spacing:  -0.01em;
+  /* io-wordmark — text variant */
+  --io-wordmark-font-size-sm:         var(--io-font-size-sm);
+  --io-wordmark-font-size-md:         20px;
+  --io-wordmark-font-size-lg:         28px;
+  --io-wordmark-font-size-xl:         40px;
+  --io-wordmark-letter-spacing:       -0.01em;
+
+  /* io-wordmark — mark variant heights (viewBox 0 0 881 599, aspect ~1.47:1) */
+  --io-wordmark-mark-height-sm:       16px;
+  --io-wordmark-mark-height-md:       24px;
+  --io-wordmark-mark-height-lg:       36px;
+  --io-wordmark-mark-height-xl:       56px;
+
+  /* io-wordmark — lockup variant heights (viewBox 0 0 1500 1500) */
+  --io-wordmark-lockup-height-sm:     48px;
+  --io-wordmark-lockup-height-md:     80px;
+  --io-wordmark-lockup-height-lg:    120px;
+  --io-wordmark-lockup-height-xl:    168px;
 }
 
 /* ── Density overrides ─────────────────────────────────────────────────── */

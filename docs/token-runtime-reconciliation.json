@@ -2856,6 +2856,70 @@
       "notes": "Wave XI (#386) — Wordmark letter-spacing=-0.01em."
     },
     {
+      "runtimeCssVar": "--io-wordmark-mark-height-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark mark variant SVG height sm=16px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark mark variant SVG height md=24px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark mark variant SVG height lg=36px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark mark variant SVG height xl=56px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark lockup variant SVG height sm=48px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark lockup variant SVG height md=80px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark lockup variant SVG height lg=120px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII — io-wordmark lockup variant SVG height xl=168px."
+    },
+    {
       "runtimeCssVar": "--io-stepper-circle-size",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

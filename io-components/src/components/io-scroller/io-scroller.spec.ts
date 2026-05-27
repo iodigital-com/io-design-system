@@ -104,52 +104,32 @@ describe('io-scroller — orientation variants', () => {
 
 describe('io-scroller — utils: getScrollerClass', () => {
   it('returns base scroller class for horizontal orientation', () => {
-    const cls = getScrollerClass('horizontal', false, true, true);
+    const cls = getScrollerClass('horizontal', false);
     expect(cls).toContain('scroller');
     expect(cls).toContain('scroller--horizontal');
   });
 
   it('returns vertical orientation class', () => {
-    const cls = getScrollerClass('vertical', false, true, true);
+    const cls = getScrollerClass('vertical', false);
     expect(cls).toContain('scroller--vertical');
   });
 
   it('includes hide-scrollbar class when showScrollbar is false', () => {
-    const cls = getScrollerClass('horizontal', false, true, true);
+    const cls = getScrollerClass('horizontal', false);
     expect(cls).toContain('scroller--hide-scrollbar');
     expect(cls).not.toContain('scroller--show-scrollbar');
   });
 
   it('includes show-scrollbar class when showScrollbar is true', () => {
-    const cls = getScrollerClass('horizontal', true, true, true);
+    const cls = getScrollerClass('horizontal', true);
     expect(cls).toContain('scroller--show-scrollbar');
     expect(cls).not.toContain('scroller--hide-scrollbar');
   });
 
-  it('includes fade-start class when NOT at start', () => {
-    const cls = getScrollerClass('horizontal', false, false, true);
-    expect(cls).toContain('scroller--fade-start');
-  });
-
-  it('does not include fade-start class when at start', () => {
-    const cls = getScrollerClass('horizontal', false, true, true);
+  it('does not include dead fade-start/fade-end classes', () => {
+    const cls = getScrollerClass('horizontal', false);
     expect(cls).not.toContain('scroller--fade-start');
-  });
-
-  it('includes fade-end class when NOT at end', () => {
-    const cls = getScrollerClass('horizontal', false, true, false);
-    expect(cls).toContain('scroller--fade-end');
-  });
-
-  it('does not include fade-end class when at end', () => {
-    const cls = getScrollerClass('horizontal', false, true, true);
     expect(cls).not.toContain('scroller--fade-end');
-  });
-
-  it('includes both fade classes when not at either edge', () => {
-    const cls = getScrollerClass('horizontal', false, false, false);
-    expect(cls).toContain('scroller--fade-start');
-    expect(cls).toContain('scroller--fade-end');
   });
 });
 

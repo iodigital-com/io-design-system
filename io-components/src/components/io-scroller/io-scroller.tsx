@@ -176,12 +176,7 @@ export class IoScroller {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const scrollerClass = getScrollerClass(
-      this.orientation,
-      this.showScrollbar,
-      this.atStart,
-      this.atEnd,
-    );
+    const scrollerClass = getScrollerClass(this.orientation, this.showScrollbar);
 
     const regionLabel = this.label ?? `Scrollable ${this.orientation} region`;
 

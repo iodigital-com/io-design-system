@@ -7,7 +7,7 @@ dist-custom-elements/
 loader/
 www/
 hydrate/
-io-components/.stencil/*
+io-components/.stencil/
 
 # Next.js
 .next/
@@ -28,6 +28,7 @@ design-system/
 prompts/
 issues/
 .claude/
+.claire/
 
 # OS
 .DS_Store

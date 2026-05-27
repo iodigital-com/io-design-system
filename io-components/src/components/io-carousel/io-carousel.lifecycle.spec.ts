@@ -354,10 +354,10 @@ describe('io-carousel — onMouseDown', () => {
     expect((c as any).startX).toBe(250);
   });
 
-  it('stores current track.scrollLeft into this.scrollLeft', () => {
+  it('stores current track.scrollLeft into this.dragStartScrollLeft', () => {
     const { c } = makeCarousel([], { scrollLeft: 175 });
     (c as any).onMouseDown({ pageX: 0 } as MouseEvent);
-    expect((c as any).scrollLeft).toBe(175);
+    expect((c as any).dragStartScrollLeft).toBe(175);
   });
 
   it('stores correct startX when offsetLeft is non-zero', () => {
@@ -394,7 +394,7 @@ describe('io-carousel — onMouseMove', () => {
     const { c } = makeCarousel([], { scrollLeft: 0 });
     (c as any).isDragging = true;
     (c as any).startX = 100;
-    (c as any).scrollLeft = 200;
+    (c as any).dragStartScrollLeft = 200;
     const preventDefault = vi.fn();
     const ev = { pageX: 110, preventDefault } as unknown as MouseEvent;
     (c as any).onMouseMove(ev);
@@ -405,7 +405,7 @@ describe('io-carousel — onMouseMove', () => {
     const { c, track } = makeCarousel([], { scrollLeft: 0 });
     (c as any).isDragging = true;
     (c as any).startX = 100; // initial x relative to track
-    (c as any).scrollLeft = 200; // captured scrollLeft at drag start
+    (c as any).dragStartScrollLeft = 200; // captured scrollLeft at drag start
     // pageX=110, offsetLeft=0 → x=110; delta = x - startX = 110 - 100 = 10
     // new scrollLeft = scrollLeft - delta = 200 - 10 = 190
     const ev = { pageX: 110, preventDefault: vi.fn() } as unknown as MouseEvent;
@@ -417,7 +417,7 @@ describe('io-carousel — onMouseMove', () => {
     const { c, track } = makeCarousel([], { scrollLeft: 0 });
     (c as any).isDragging = true;
     (c as any).startX = 100;
-    (c as any).scrollLeft = 500;
+    (c as any).dragStartScrollLeft = 500;
     // pageX=80 → x=80, delta = 80-100 = -20, new scrollLeft = 500-(-20) = 520
     const ev = { pageX: 80, preventDefault: vi.fn() } as unknown as MouseEvent;
     (c as any).onMouseMove(ev);

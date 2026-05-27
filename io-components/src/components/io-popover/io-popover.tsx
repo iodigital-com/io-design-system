@@ -239,6 +239,7 @@ export class IoPopover {
 
   private attachFocusTrap() {
     if (!this.panelEl) return;
+    this.detachFocusTrap();
     this.focusTrapHandler = (ev: KeyboardEvent) => {
       if (ev.key !== 'Tab') return;
       const focusable = getPanelFocusableElements(this.panelEl!);
@@ -246,7 +247,8 @@ export class IoPopover {
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      const active = (this.el.shadowRoot?.activeElement ?? document.activeElement) as HTMLElement | null;
+      // Use document.activeElement — works for both Shadow DOM and slotted light DOM children
+      const active = document.activeElement as HTMLElement | null;
 
       if (ev.shiftKey && active === first) {
         ev.preventDefault();

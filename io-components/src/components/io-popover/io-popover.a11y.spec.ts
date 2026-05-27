@@ -83,17 +83,14 @@ describe('io-popover — a11y', () => {
 
   it('trigger has aria-controls linking to panel id', async () => {
     const wrapper = document.createElement('div');
-    const triggerId = 'popover-trigger-ctrl';
-    const panelId = 'popover-panel-ctrl';
 
     const trigger = document.createElement('button');
-    trigger.id = triggerId;
     trigger.textContent = 'Open';
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.setAttribute('aria-controls', panelId);
+    trigger.setAttribute('aria-controls', 'popover-panel-ctrl');
 
     const panel = document.createElement('div');
-    panel.id = panelId;
+    panel.id = 'popover-panel-ctrl';
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'true');
     panel.setAttribute('aria-label', 'Popover');
@@ -104,8 +101,29 @@ describe('io-popover — a11y', () => {
     wrapper.appendChild(trigger);
     wrapper.appendChild(panel);
 
-    expect(trigger.getAttribute('aria-controls')).toBe(panelId);
     await renderAndCheckA11y(wrapper);
+  });
+
+  it('componentDidLoad wires aria-controls on trigger to the generated panelId', () => {
+    const component = new IoPopover();
+
+    const mockTrigger = document.createElement('button');
+    mockTrigger.textContent = 'Open popover';
+
+    const mockSlot = { assignedElements: vi.fn().mockReturnValue([mockTrigger]) };
+    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
+
+    (component as any).el = { shadowRoot: mockShadowRoot };
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).panelEl = document.createElement('div');
+    (component as any).componentWillLoad();
+
+    const panelId = (component as any).panelId as string;
+    expect(panelId).toMatch(/^io-popover-panel-/);
+
+    (component as any).componentDidLoad();
+
+    expect(mockTrigger.getAttribute('aria-controls')).toBe(panelId);
   });
 });
 

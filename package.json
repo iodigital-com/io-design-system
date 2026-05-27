@@ -79,5 +79,8 @@
   },
   "simple-git-hooks": {
     "commit-msg": "npx commitlint --edit $1"
+  },
+  "overrides": {
+    "tmp": "^0.2.6"
   }
 }

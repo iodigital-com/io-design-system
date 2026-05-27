@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { h } from '@stencil/core';
+import { h, Host } from '@stencil/core';
 
 import { IoWordmark } from './io-wordmark';
 
@@ -84,6 +84,13 @@ function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {
     .map((args) => args[1] as Record<string, unknown> | undefined);
 }
 
+function hostCalls(): Array<Record<string, unknown> | undefined> {
+  return vi
+    .mocked(h)
+    .mock.calls.filter((args) => args[0] === Host)
+    .map((args) => args[1] as Record<string, unknown> | undefined);
+}
+
 describe('io-wordmark — variant="text" without href (static)', () => {
   beforeEach(() => { vi.mocked(h).mockClear(); });
 
@@ -95,10 +102,28 @@ describe('io-wordmark — variant="text" without href (static)', () => {
     makeWordmark().render();
     expect(hCallsForTag('a')).toHaveLength(0);
   });
+
+  it('Host has role="img" when href is not set', () => {
+    makeWordmark().render();
+    const [host] = hostCalls();
+    expect(host?.['role']).toBe('img');
+  });
+
+  it('Host has default aria-label when href is not set', () => {
+    makeWordmark().render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('io Digital');
+  });
 });
 
 describe('io-wordmark — variant="text" with href (link mode)', () => {
   beforeEach(() => { vi.mocked(h).mockClear(); });
+
+  it('Host has NO role="img" when href is set (label moves to <a>)', () => {
+    makeWordmark({ href: '/' }).render();
+    const [host] = hostCalls();
+    expect(host?.['role']).toBeUndefined();
+  });
 
   it('renders an <a> element when href is set', () => {
     makeWordmark({ href: '/' }).render();
@@ -145,11 +170,31 @@ describe('io-wordmark — variant="text" with href (link mode)', () => {
       expect(() => makeWordmark({ href: '/', size }).render()).not.toThrow();
     }
   });
+
+  it('auto-adds rel="noopener noreferrer" when target="_blank" and no rel is set', () => {
+    makeWordmark({ href: 'https://iodigital.com', target: '_blank' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['rel']).toBe('noopener noreferrer');
+  });
+
+  it('preserves explicit rel when target="_blank" and rel is provided', () => {
+    makeWordmark({ href: 'https://iodigital.com', target: '_blank', rel: 'noopener' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['rel']).toBe('noopener');
+  });
+
+  it('does not set rel when target is not "_blank" and no rel is provided', () => {
+    makeWordmark({ href: '/' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['rel']).toBeUndefined();
+  });
 });
 
 // ── variant='mark' ─────────────────────────────────────────────────────────────
 
 describe('io-wordmark — variant="mark" render contract', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
   it('renders without throwing', () => {
     expect(() => makeWordmark({ variant: 'mark' }).render()).not.toThrow();
   });
@@ -165,11 +210,31 @@ describe('io-wordmark — variant="mark" render contract', () => {
       expect(() => makeWordmark({ variant: 'mark', color }).render()).not.toThrow();
     }
   });
+
+  it('Host has role="img"', () => {
+    makeWordmark({ variant: 'mark' }).render();
+    const [host] = hostCalls();
+    expect(host?.['role']).toBe('img');
+  });
+
+  it('Host has default aria-label', () => {
+    makeWordmark({ variant: 'mark' }).render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('io Digital');
+  });
+
+  it('Host has custom aria-label when ariaLabel is set', () => {
+    makeWordmark({ variant: 'mark', ariaLabel: 'iO brand mark' }).render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('iO brand mark');
+  });
 });
 
 // ── variant='lockup' ───────────────────────────────────────────────────────────
 
 describe('io-wordmark — variant="lockup" render contract', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
   it('renders without throwing', () => {
     expect(() => makeWordmark({ variant: 'lockup' }).render()).not.toThrow();
   });
@@ -184,5 +249,23 @@ describe('io-wordmark — variant="lockup" render contract', () => {
     for (const color of ['blue', 'black', 'white'] as const) {
       expect(() => makeWordmark({ variant: 'lockup', color }).render()).not.toThrow();
     }
+  });
+
+  it('Host has role="img"', () => {
+    makeWordmark({ variant: 'lockup' }).render();
+    const [host] = hostCalls();
+    expect(host?.['role']).toBe('img');
+  });
+
+  it('Host has default aria-label', () => {
+    makeWordmark({ variant: 'lockup' }).render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('io Digital');
+  });
+
+  it('Host has custom aria-label when ariaLabel is set', () => {
+    makeWordmark({ variant: 'lockup', ariaLabel: 'iO Digital brand lockup' }).render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('iO Digital brand lockup');
   });
 });

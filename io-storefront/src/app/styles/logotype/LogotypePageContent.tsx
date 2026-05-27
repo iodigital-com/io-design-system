@@ -597,8 +597,7 @@ export default function LogotypePageContent() {
           Background: <code style={{ fontSize: '0.85em' }}>var(--io-color-primary)</code>{' '}
           (#0000D2). Foreground:{' '}
           <code style={{ fontSize: '0.85em' }}>color=&quot;white&quot;</code>. Use a perfect
-          circle, never a rounded square. For a ready-made asset, use{' '}
-          <code style={{ fontSize: '0.85em' }}>/brand/mark/iO_Avatar.svg</code>.
+          circle, never a rounded square.
         </RuleCard>
       </section>
 

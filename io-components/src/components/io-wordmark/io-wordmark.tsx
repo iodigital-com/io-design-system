@@ -60,7 +60,7 @@ export class IoWordmark {
    * Accessible label for the host element (or the <a> when href is set).
    * Defaults to "io Digital".
    */
-  @Prop() ariaLabel: string = 'io Digital';
+  @Prop({ attribute: 'aria-label' }) ariaLabel: string = 'io Digital';
 
   /**
    * When provided on variant='text', the wordmark renders as an <a> element.
@@ -146,13 +146,15 @@ export class IoWordmark {
     );
 
     if (isLink) {
+      const resolvedRel = rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
+
       return (
         <Host>
           <style>{getWordmarkStyles()}</style>
           <a
             href={href}
             target={target}
-            rel={rel}
+            rel={resolvedRel}
             aria-label={ariaLabel}
             class="wordmark-link"
             part="link"

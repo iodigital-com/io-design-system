@@ -67,6 +67,7 @@ export const wordmarkStoryLockupSizes: Story<'io-wordmark'> = {
 
 // ── Colour stories ────────────────────────────────────────────────────────────
 
+// beige excluded here — it is only valid on variant="mark" (see wordmarkStoryMarkColors)
 export const wordmarkStoryColors: Story<'io-wordmark'> = {
   state: { properties: {} },
   generator: () =>

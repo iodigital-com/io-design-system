@@ -77,6 +77,27 @@ export default function IoCarouselApiPage() {
                 Give children an explicit width for consistent card sizing.
               </span>,
             ],
+            [
+              <InlineCode key="slot">heading</InlineCode>,
+              <span key="desc">
+                Optional heading rendered above the slide track. When this slot is occupied, <InlineCode>aria-labelledby</InlineCode> is
+                used on the carousel region instead of <InlineCode>aria-label</InlineCode> — the <InlineCode>label</InlineCode> prop is
+                ignored. Use a semantic heading element (e.g. <InlineCode>{'<h2 slot="heading">'}</InlineCode>).
+              </span>,
+            ],
+            [
+              <InlineCode key="slot">description</InlineCode>,
+              <span key="desc">
+                Optional descriptive text rendered below the heading and above the slide track. Hidden entirely when the slot is empty.
+              </span>,
+            ],
+            [
+              <InlineCode key="slot">controls</InlineCode>,
+              <span key="desc">
+                Optional slot rendered adjacent to the prev/next navigation buttons. Use for pagination dots, thumbnails, or
+                other custom indicators. Hidden entirely when the slot is empty.
+              </span>,
+            ],
           ]}
         />
       </section>

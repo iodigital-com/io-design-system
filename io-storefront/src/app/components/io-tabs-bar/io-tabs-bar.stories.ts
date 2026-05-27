@@ -86,4 +86,10 @@ export const tabsBarPropDefinitions: PropDefinition[] = [
     type: 'number',
     defaultValue: DEFAULT_ACTIVE_TAB_INDEX,
   },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible aria-label for the tablist region — set when the surrounding context does not already label the navigation.',
+  },
 ];

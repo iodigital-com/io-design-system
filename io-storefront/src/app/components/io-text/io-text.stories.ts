@@ -40,6 +40,43 @@ export const textStoryColors: Story<'io-text'> = {
     })),
 };
 
+export const textStoryWeights: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['regular', 'medium', 'semibold', 'bold'] as const).map((weight) => ({
+      tag: 'io-text' as const,
+      properties: { weight, tag: 'p', size: 'base', color: 'primary' },
+      children: [`Weight: ${weight} — The quick brown fox jumps over the lazy dog.`],
+    })),
+};
+
+export const textStoryAlign: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['start', 'center', 'end'] as const).map((align) => ({
+      tag: 'io-text' as const,
+      properties: { align, tag: 'p', size: 'base', weight: 'regular', color: 'primary' },
+      children: [`Align: ${align} — The quick brown fox jumps over the lazy dog.`],
+    })),
+};
+
+export const textStoryEllipsis: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'div' as const,
+      properties: { style: { width: '320px' } },
+      children: [
+        {
+          tag: 'io-text' as const,
+          properties: { ellipsis: true, tag: 'p', size: 'base', weight: 'regular', color: 'primary' },
+          children: ['Ellipsis enabled: The quick brown fox jumps over the lazy dog and keeps going past the container edge.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const textPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',

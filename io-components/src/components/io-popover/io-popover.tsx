@@ -70,7 +70,7 @@ export class IoPopover {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Emitted when the popover closes (Escape key or outside click) */
+  /** Emitted when the popover closes — Escape key, outside click, or trigger re-click while open */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   // ── Lifecycle ─────────────────────────────────────────────────

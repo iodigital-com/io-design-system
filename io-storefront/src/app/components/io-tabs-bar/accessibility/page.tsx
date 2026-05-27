@@ -166,23 +166,23 @@ export default function IoTabsBarAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="Each trigger has role=tab and selected state via aria-selected. Consumers may add aria-controls to link tabs to their router-rendered panels."
+            note="Each trigger has role=tab and selected state via aria-selected. Consumers MUST add aria-controls on each tab button to reference its panel's id — this is a WCAG 4.1.2 compliance requirement, not a best practice. See the consumer requirements section below."
           />
         </div>
       </section>
 
-      {/* ── Best practices ───────────────────────────────────────────────── */}
+      {/* ── Consumer compliance requirements ─────────────────────────────── */}
       <section id="best-practices" className="space-y-4">
         <SectionHeader
-          title="Best practices"
-          description="Guidelines for building accessible router-driven tab interfaces with io-tabs-bar."
+          title="Consumer compliance requirements"
+          description="io-tabs-bar manages the tablist role and keyboard navigation. The following wiring is the consumer's responsibility and is required for WCAG 4.1.2 compliance — not optional best practices."
         />
-        <RuleCard label="Provide aria-controls on each tab button">
-          When the panel is rendered in the DOM (even if via a router outlet), link each tab button
-          to its panel via{' '}
+        <RuleCard label="aria-controls is required (WCAG 4.1.2)">
+          Every tab button must reference its panel via{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-controls="panel-id"</code>{' '}
-          on the slotted button. This creates the full tablist/tabpanel relationship expected by
-          ARIA.
+          and the panel must carry a matching{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>id</code>{' '}
+          attribute. This programmatic association is mandated by the WAI-ARIA tabs pattern and WCAG 4.1.2 — omitting it leaves screen reader users without a way to navigate from a tab to its panel.
         </RuleCard>
         <RuleCard label="Apply role=tabpanel to each panel element">
           Each panel element must carry{' '}

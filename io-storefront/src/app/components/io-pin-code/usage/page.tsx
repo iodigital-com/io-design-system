@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, RuleCard } from '../../../../components/accessibility/AccessibilityPrimitives';
+import { SectionHeader, RuleCard } from '../../../../components/usage/UsagePrimitives';
 
 export default function IoPinCodeUsagePage() {
   return (
@@ -34,6 +34,78 @@ export default function IoPinCodeUsagePage() {
         </RuleCard>
         <RuleCard label="Free-form text entry">
           io-pin-code is not a general text input. Use io-input or io-textarea for prose entry.
+        </RuleCard>
+      </section>
+
+      <section id="type-prop" className="space-y-6">
+        <SectionHeader
+          title="type prop"
+          description="Controls how digits are rendered — visible or masked."
+        />
+        <RuleCard label='type="number" (default)'>
+          Digits are displayed as plain text. Suitable for PINs where the user can see what they are entering,
+          or in environments where shoulder-surfing is not a concern.
+        </RuleCard>
+        <RuleCard label='type="password"'>
+          Digits are masked immediately after entry. Use for PINs on shared screens or high-security flows.
+          Note: the underlying input type remains <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>text</code> with
+          {' '}<code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>inputMode="numeric"</code>{' '}
+          to retain the numeric keyboard on mobile while masking the display.
+        </RuleCard>
+      </section>
+
+      <section id="state-prop" className="space-y-6">
+        <SectionHeader
+          title="state prop"
+          description="Visual validation feedback matching the other io form-field components."
+        />
+        <RuleCard label='state="none" (default)'>
+          No validation styling. Suitable for unevaluated or neutral fields.
+        </RuleCard>
+        <RuleCard label='state="error"'>
+          Slot borders turn red. Pair with a message prop to explain the error (e.g. &quot;Invalid code. Please try again.&quot;).
+        </RuleCard>
+        <RuleCard label='state="success"'>
+          Slot borders turn green. Use after successful server-side validation to confirm the code was accepted.
+        </RuleCard>
+        <RuleCard label='state="warning"'>
+          Slot borders turn amber. Use for caution states such as &quot;Only 1 attempt remaining&quot;.
+        </RuleCard>
+      </section>
+
+      <section id="auto-advance" className="space-y-6">
+        <SectionHeader
+          title="Auto-advance behaviour"
+          description="io-pin-code moves focus automatically as the user types or deletes."
+        />
+        <RuleCard label="Forward on digit entry">
+          After a digit is entered in a slot, focus moves to the next empty slot automatically. No extra
+          interaction is required from the user.
+        </RuleCard>
+        <RuleCard label="Backward on Backspace">
+          Pressing Backspace on an empty slot deletes the previous digit and moves focus back one slot.
+          Pressing Backspace on a filled slot clears that slot without moving focus.
+        </RuleCard>
+        <RuleCard label="Programmatic focus via focusFirst()">
+          Call the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>focusFirst()</code> method
+          to programmatically focus the first empty slot (or the last slot if all are filled). Useful after
+          displaying an error state to bring the user back to the input.
+        </RuleCard>
+      </section>
+
+      <section id="paste-handling" className="space-y-6">
+        <SectionHeader
+          title="Paste handling"
+          description="Users can paste a full PIN code into any slot."
+        />
+        <RuleCard label="Full-code paste">
+          Pasting a string of digits into any slot distributes the digits across all slots starting from
+          the pasted slot. Extra characters are ignored. This matches the expected behaviour for OTP
+          auto-fill from SMS or password managers.
+        </RuleCard>
+        <RuleCard label="autocomplete=one-time-code">
+          io-pin-code sets <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>autocomplete=&quot;one-time-code&quot;</code> on
+          each slot so that operating systems can offer to autofill OTP codes from SMS.
         </RuleCard>
       </section>
 

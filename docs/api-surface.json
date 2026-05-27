@@ -22,6 +22,8 @@
     "io-alert": {
       "props": {
         "dismissible": "boolean",
+        "dismissLabel": "string | undefined",
+        "heading": "string | undefined",
         "variant": "IoAlertVariant"
       },
       "methods": {},
@@ -581,7 +583,8 @@
     },
     "io-tabs-bar": {
       "props": {
-        "activeTabIndex": "number"
+        "activeTabIndex": "number",
+        "label": "string | undefined"
       },
       "methods": {},
       "events": {
@@ -607,6 +610,7 @@
       "props": {
         "align": "IoTextAlign",
         "color": "IoTextColor",
+        "datetime": "string | undefined",
         "ellipsis": "boolean",
         "size": "IoTextSize",
         "tag": "IoTextTag",

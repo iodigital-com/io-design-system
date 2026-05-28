@@ -18,10 +18,7 @@ export default function IoWordmarkUsagePage() {
           <div className="space-y-3">
             <SubsectionTitle>Do</SubsectionTitle>
             <DoOrDontCard type="do">
-              Use <C>variant=&quot;text&quot;</C> for responsive UI contexts — navigation bars, footers, card headers, and inline brand references.
-            </DoOrDontCard>
-            <DoOrDontCard type="do">
-              Use <C>variant=&quot;mark&quot;</C> when only the geometric iO symbol is needed — favicons, avatars, and constrained spaces.
+              Use <C>variant=&quot;mark&quot;</C> (default) when only the geometric iO symbol is needed — favicons, avatars, and constrained spaces.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use <C>variant=&quot;lockup&quot;</C> for hero sections and brand-moment placements that require the official full-lockup SVG.
@@ -29,20 +26,23 @@ export default function IoWordmarkUsagePage() {
             <DoOrDontCard type="do">
               Use <C>color=&quot;white&quot;</C> or <C>color=&quot;black&quot;</C> when the wordmark must appear on a non-white surface.
             </DoOrDontCard>
+            <DoOrDontCard type="do">
+              Always set <C>ariaLabel</C> to a meaningful description when the wordmark is the only brand identifier on the page.
+            </DoOrDontCard>
           </div>
           <div className="space-y-3">
             <SubsectionTitle>Don&apos;t</SubsectionTitle>
             <DoOrDontCard type="dont">
-              Do not use <C>color=&quot;beige&quot;</C> on <C>variant=&quot;text&quot;</C> or <C>variant=&quot;lockup&quot;</C> — beige is only defined for the mark variant.
+              Do not use <C>color=&quot;beige&quot;</C> on <C>variant=&quot;lockup&quot;</C> — beige is only defined for the mark variant.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Do not use hardcoded font sizes in surrounding CSS — use the <C>size</C> prop to stay aligned with the token scale.
+              Do not use hardcoded sizes in surrounding CSS — use the <C>size</C> prop to stay aligned with the token scale.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Do not place the wordmark inside an interactive element without providing appropriate accessible context for the overall control.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Do not alter the text content &ldquo;io digital&rdquo; — the wordmark is a fixed brand asset. It is not a slot-based component.
+              Do not alter the SVG paths or reconstruct the mark from scratch — always use the <C>io-wordmark</C> component.
             </DoOrDontCard>
           </div>
         </div>
@@ -55,12 +55,7 @@ export default function IoWordmarkUsagePage() {
           description="Choose the variant that best matches the visual context and brand requirement."
         />
         <div className="space-y-3">
-          <RuleCard label='variant="text" — Typographic wordmark (default)'>
-            Renders &ldquo;io digital&rdquo; using bold Manrope web font. Token-driven font sizes, supports
-            <C>color</C>, <C>mono</C>, and <C>href</C>. Use in navigation bars, footers, and inline brand contexts
-            where the brand name needs to appear in a typographic form.
-          </RuleCard>
-          <RuleCard label='variant="mark" — Geometric iO mark SVG'>
+          <RuleCard label='variant="mark" — Geometric iO mark SVG (default)'>
             Renders the official geometric iO mark (italic i + circle O) as an inline SVG.
             Supports all four <C>color</C> values including beige. Use when only the symbol is needed:
             favicons, avatar backgrounds, constrained icon slots.
@@ -77,7 +72,7 @@ export default function IoWordmarkUsagePage() {
       <section id="sizes" className="space-y-6">
         <SectionHeader
           title="Sizes"
-          description="The four size steps apply across all variants. For text they control font-size; for mark/lockup they control SVG height."
+          description="The four size steps apply to both variants and control SVG height."
         />
         <div className="space-y-3">
           <RuleCard label="sm — Footer and dense metadata">
@@ -99,43 +94,22 @@ export default function IoWordmarkUsagePage() {
       <section id="colour" className="space-y-6">
         <SectionHeader
           title="Colour"
-          description="Three colours apply to all variants; beige is exclusive to the mark variant."
+          description="Three colours apply to both variants; beige is exclusive to the mark variant."
         />
         <div className="space-y-3">
           <RuleCard label='color="blue" — Energetic Blue (default)'>
-            On <C>variant=&quot;text&quot;</C>, &ldquo;io&rdquo; renders in brand blue and &ldquo;digital&rdquo; inherits the surrounding text colour.
-            On <C>variant=&quot;mark&quot;</C> and <C>variant=&quot;lockup&quot;</C>, the entire SVG fills in brand blue.
-            Use on white or light-neutral surfaces.
+            The entire SVG fills in brand blue via <C>currentColor</C>. Use on white or light-neutral surfaces.
           </RuleCard>
           <RuleCard label='color="black" — Dark neutral'>
             Full wordmark in <C>--io-color-grey-6</C> (#242424). Use on light surfaces where the brand blue
-            would be too prominent or on light-coloured backgrounds.
+            would be too prominent.
           </RuleCard>
           <RuleCard label='color="white" — Reversed'>
             Full wordmark in white. Use on dark, primary-blue, or image backgrounds.
           </RuleCard>
           <RuleCard label='color="beige" — Warm neutral (mark only)'>
             Available on <C>variant=&quot;mark&quot;</C> only. Uses <C>--io-color-beige</C>.
-            Apply on warm-toned or off-white surfaces. Do not use on text or lockup variants.
-          </RuleCard>
-        </div>
-      </section>
-
-      {/* ── Mono mode ────────────────────────────────────────────── */}
-      <section id="mono-mode" className="space-y-6">
-        <SectionHeader
-          title="Mono mode"
-          description='The mono prop applies to variant="text" only. It removes the brand-blue tint from "io", rendering both parts in currentColor.'
-        />
-        <div className="space-y-3">
-          <RuleCard label="Use on coloured backgrounds">
-            When the text wordmark sits on a brand-blue, dark, or image background, set <C>mono</C> to
-            prevent the blue &ldquo;io&rdquo; from becoming invisible or clashing with the surface colour.
-          </RuleCard>
-          <RuleCard label="Prefer color= over mono when the target colour is known">
-            If the surface is always dark, use <C>color=&quot;white&quot;</C> for a predictable result.
-            Use <C>mono=true</C> when the surrounding text colour is dynamic and you want the wordmark to
-            inherit it via <C>currentColor</C>.
+            Apply on warm-toned or off-white surfaces. Do not use on the lockup variant.
           </RuleCard>
         </div>
       </section>

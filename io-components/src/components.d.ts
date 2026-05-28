@@ -2283,56 +2283,34 @@ export namespace Components {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with three variants:
-     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
-     *                       Supports size scale, color, mono mode, and href link.
-     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     * Reusable iO brand identity component with two variants:
+     * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" />
-     * <io-wordmark size="lg" color="black" />
-     * <io-wordmark mono />
-     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
      */
     interface IoWordmark {
         /**
-          * Accessible label for the host element (or the <a> when href is set). Defaults to "io Digital".
+          * Accessible label for the host element. Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel": string;
         /**
-          * Colour applied to the wordmark. For 'text': controls the "io" part colour (blue = brand blue, others = solid fill). For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
+          * Colour applied to the wordmark. For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
           * @default 'blue'
          */
         "color": IoWordmarkColor;
         /**
-          * When provided on variant='text', the wordmark renders as an <a> element. Common use case: logo linking back to the homepage.
-         */
-        "href"?: string;
-        /**
-          * Monochrome mode — both "io" and "digital" use the current text colour. Only applies to variant='text'. Kept for backwards compatibility.
-          * @default false
-         */
-        "mono": boolean;
-        /**
-          * Link relationship ('noopener noreferrer', etc.). Only applied when href is set on variant='text'.
-         */
-        "rel"?: string;
-        /**
-          * Size scale — controls font-size (text) or SVG height (mark/lockup)
+          * Size scale — controls SVG height for mark and lockup variants
           * @default 'md'
          */
         "size": IoWordmarkSize;
         /**
-          * Browsing context for the link ('_self', '_blank', etc.). Only applied when href is set on variant='text'.
-         */
-        "target"?: string;
-        /**
-          * Which visual representation to render. - 'text'   → typographic web-font wordmark (default, backwards-compatible) - 'mark'   → geometric iO mark SVG - 'lockup' → full official brand lockup SVG (mark + text)
-          * @default 'text'
+          * Which visual representation to render. - 'mark'   → geometric iO mark SVG (default) - 'lockup' → full official brand lockup SVG (mark + text)
+          * @default 'mark'
          */
         "variant": IoWordmarkVariant;
     }
@@ -3629,19 +3607,14 @@ declare global {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with three variants:
-     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
-     *                       Supports size scale, color, mono mode, and href link.
-     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     * Reusable iO brand identity component with two variants:
+     * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" />
-     * <io-wordmark size="lg" color="black" />
-     * <io-wordmark mono />
-     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
      */
     interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
     }
@@ -5944,56 +5917,34 @@ declare namespace LocalJSX {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with three variants:
-     * - variant="text"    — Typographic "io digital" using bold Manrope (default).
-     *                       Supports size scale, color, mono mode, and href link.
-     * - variant="mark"    — The official geometric iO mark SVG (i + O).
+     * Reusable iO brand identity component with two variants:
+     * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" />
-     * <io-wordmark size="lg" color="black" />
-     * <io-wordmark mono />
-     * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
      */
     interface IoWordmark {
         /**
-          * Accessible label for the host element (or the <a> when href is set). Defaults to "io Digital".
+          * Accessible label for the host element. Defaults to "io Digital".
           * @default 'io Digital'
          */
         "ariaLabel"?: string;
         /**
-          * Colour applied to the wordmark. For 'text': controls the "io" part colour (blue = brand blue, others = solid fill). For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
+          * Colour applied to the wordmark. For 'mark'/'lockup': drives the SVG fill via CSS currentColor. 'beige' is only valid on variant='mark'.
           * @default 'blue'
          */
         "color"?: IoWordmarkColor;
         /**
-          * When provided on variant='text', the wordmark renders as an <a> element. Common use case: logo linking back to the homepage.
-         */
-        "href"?: string;
-        /**
-          * Monochrome mode — both "io" and "digital" use the current text colour. Only applies to variant='text'. Kept for backwards compatibility.
-          * @default false
-         */
-        "mono"?: boolean;
-        /**
-          * Link relationship ('noopener noreferrer', etc.). Only applied when href is set on variant='text'.
-         */
-        "rel"?: string;
-        /**
-          * Size scale — controls font-size (text) or SVG height (mark/lockup)
+          * Size scale — controls SVG height for mark and lockup variants
           * @default 'md'
          */
         "size"?: IoWordmarkSize;
         /**
-          * Browsing context for the link ('_self', '_blank', etc.). Only applied when href is set on variant='text'.
-         */
-        "target"?: string;
-        /**
-          * Which visual representation to render. - 'text'   → typographic web-font wordmark (default, backwards-compatible) - 'mark'   → geometric iO mark SVG - 'lockup' → full official brand lockup SVG (mark + text)
-          * @default 'text'
+          * Which visual representation to render. - 'mark'   → geometric iO mark SVG (default) - 'lockup' → full official brand lockup SVG (mark + text)
+          * @default 'mark'
          */
         "variant"?: IoWordmarkVariant;
     }
@@ -6385,11 +6336,7 @@ declare namespace LocalJSX {
         "variant": IoWordmarkVariant;
         "color": IoWordmarkColor;
         "size": IoWordmarkSize;
-        "mono": boolean;
         "ariaLabel": string;
-        "href": string;
-        "target": string;
-        "rel": string;
     }
 
     interface IntrinsicElements {
@@ -7066,19 +7013,14 @@ declare module "@stencil/core" {
             /**
              * io-wordmark
              * ===========
-             * Reusable iO brand identity component with three variants:
-             * - variant="text"    — Typographic "io digital" using bold Manrope (default).
-             *                       Supports size scale, color, mono mode, and href link.
-             * - variant="mark"    — The official geometric iO mark SVG (i + O).
+             * Reusable iO brand identity component with two variants:
+             * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
              *                       Supports size scale and all four color values (incl. beige).
              * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
              *                       Supports size scale and blue/black/white color values.
              * @example <io-wordmark />
              * <io-wordmark variant="mark" color="blue" size="lg" />
              * <io-wordmark variant="lockup" color="black" size="md" />
-             * <io-wordmark size="lg" color="black" />
-             * <io-wordmark mono />
-             * <io-wordmark href="/" aria-label="iO Digital — go to homepage" />
              */
             "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }

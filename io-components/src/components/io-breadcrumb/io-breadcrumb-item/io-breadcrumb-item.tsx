@@ -51,6 +51,7 @@ export class IoBreadcrumbItem {
             </span>
           )}
         </li>
+        {!current && <span class="breadcrumb__separator" aria-hidden="true" />}
       </Host>
     );
   }

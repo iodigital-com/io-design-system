@@ -8,29 +8,26 @@ export default function IoBreadcrumbUsagePage() {
   return (
     <div className="space-y-16">
 
-      {/* ── Migration note ───────────────────────────────────────── */}
-      <section id="migration" className="space-y-6">
+      {/* ── Quick start ──────────────────────────────────────────── */}
+      <section id="quick-start" className="space-y-6">
         <SectionHeader
-          title="Wave XI migration: slot-based API"
-          description="io-breadcrumb was migrated from a JSON string prop API to a declarative slot-based sub-component API in Wave XI (issue #320)."
+          title="Quick start"
+          description="Place io-breadcrumb-item sub-components directly inside io-breadcrumb. Separators are rendered automatically."
         />
         <div className="space-y-3">
-          <RuleCard label="Before (deprecated — items prop removed)">
-            <C>{`<io-breadcrumb items='[{"label":"Home","href":"/"},{"label":"Current"}]'></io-breadcrumb>`}</C>
-          </RuleCard>
-          <RuleCard label="After (current API)">
+          <RuleCard label="Basic usage">
             <C>{`<io-breadcrumb>`}</C>
             <br />
             <C>{`  <io-breadcrumb-item href="/">Home</io-breadcrumb-item>`}</C>
             <br />
-            <C>{`  <io-breadcrumb-item current>Current</io-breadcrumb-item>`}</C>
+            <C>{`  <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>`}</C>
+            <br />
+            <C>{`  <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>`}</C>
             <br />
             <C>{`</io-breadcrumb>`}</C>
           </RuleCard>
-          <RuleCard label="What changed">
-            The <C>items</C>, <C>separator</C>, and <C>maxVisible</C> props have been removed. Content is now declarative.
-            Separators are injected automatically. The separator character can be customized via the{' '}
-            <C>--io-breadcrumb-separator</C> CSS custom property.
+          <RuleCard label="Current item">
+            The last item should have the <C>current</C> attribute set. If omitted, <C>io-breadcrumb</C> infers it automatically on the last slotted item.
           </RuleCard>
         </div>
       </section>
@@ -77,19 +74,19 @@ export default function IoBreadcrumbUsagePage() {
       <section id="separator" className="space-y-6">
         <SectionHeader
           title="Separator customization"
-          description="The separator between items defaults to '/' and can be overridden with a CSS custom property."
+          description="The separator between items defaults to '›' and can be overridden with a CSS custom property."
         />
         <div className="space-y-3">
           <RuleCard label="CSS custom property">
             Override the separator character by setting <C>--io-breadcrumb-separator</C> on the <C>io-breadcrumb</C> element or any ancestor.
-            Example: <C>{`io-breadcrumb { --io-breadcrumb-separator: '›'; }`}</C>
+            Example: <C>{`io-breadcrumb { --io-breadcrumb-separator: '/'; }`}</C>
           </RuleCard>
           <RuleCard label="Separators are aria-hidden">
             Separator spans have <C>aria-hidden="true"</C> — they are decorative and are not announced by screen readers.
           </RuleCard>
-          <RuleCard label="Separators are auto-managed">
-            You do not need to add, remove, or update separators manually. The <C>slotchange</C> handler in{' '}
-            <C>io-breadcrumb</C> inserts them automatically each time children change.
+          <RuleCard label="Separators are auto-rendered">
+            You do not need to add separators manually. Each <C>io-breadcrumb-item</C> renders its own separator unless it
+            has the <C>current</C> attribute.
           </RuleCard>
         </div>
       </section>

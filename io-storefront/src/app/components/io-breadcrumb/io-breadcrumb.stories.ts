@@ -1,8 +1,6 @@
 import type { Story } from '@/models/story';
 
 // ── Stories ──────────────────────────────────────────────────────────────────
-// All stories use the declarative slot-based API (Wave XI).
-// Use io-breadcrumb-item sub-components as direct children.
 
 export const breadcrumbStoryDefault: Story<'io-breadcrumb'> = {
   state: {

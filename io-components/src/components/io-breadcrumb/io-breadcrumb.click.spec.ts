@@ -5,18 +5,13 @@
  * by the <a> elements inside io-breadcrumb-item sub-components.
  * These tests verify that the component's DOM structure supports correct click
  * behaviour: link items are clickable, current items are not links.
+ *
+ * Separator click tests live in io-breadcrumb-item specs — each item renders
+ * its own separator span in its shadow DOM.
  */
 import { describe, it, expect, vi } from 'vitest';
 
 import { IoBreadcrumb } from './io-breadcrumb';
-
-function makeComponent() {
-  const c = new IoBreadcrumb();
-  const ol = document.createElement('ol');
-  const shadow = { querySelector: (sel: string) => (sel === 'ol' ? ol : null) };
-  (c as any).el = { shadowRoot: shadow };
-  return { c, ol };
-}
 
 describe('io-breadcrumb — click: link items', () => {
   it('link item anchor is rendered with correct href', () => {
@@ -102,26 +97,7 @@ describe('io-breadcrumb — click: current item is not a link', () => {
 });
 
 describe('io-breadcrumb — click: separator is not interactive', () => {
-  it('separator span is aria-hidden and not clickable as a link', () => {
-    const { c, ol } = makeComponent();
-
-    const item1 = document.createElement('io-breadcrumb-item') as HTMLElement & { current: boolean };
-    const item2 = document.createElement('io-breadcrumb-item') as HTMLElement & { current: boolean };
-    item1.current = false;
-    item2.current = false;
-    ol.appendChild(item1);
-    ol.appendChild(item2);
-
-    (c as any).handleSlotChange();
-
-    const sep = ol.querySelector('.breadcrumb__separator');
-    expect(sep?.getAttribute('aria-hidden')).toBe('true');
-    expect(sep?.tagName.toLowerCase()).toBe('span');
-    // Separator has no href — it is purely visual
-    expect(sep?.hasAttribute('href')).toBe(false);
-  });
-
-  it('clicking separator does not trigger navigation', () => {
+  it('separator span rendered as a bare span is aria-hidden and has no href', () => {
     const sep = document.createElement('span');
     sep.className = 'breadcrumb__separator';
     sep.setAttribute('aria-hidden', 'true');
@@ -130,16 +106,8 @@ describe('io-breadcrumb — click: separator is not interactive', () => {
     sep.addEventListener('click', clickHandler);
     sep.click();
 
-    // Click fires but there is no navigation mechanism
     expect(clickHandler).toHaveBeenCalledOnce();
     expect(sep.hasAttribute('href')).toBe(false);
-  });
-});
-
-describe('io-breadcrumb — click: handleSlotChange is a no-op without shadowRoot', () => {
-  it('does not throw when shadowRoot returns null for ol', () => {
-    const c = new IoBreadcrumb();
-    (c as any).el = { shadowRoot: { querySelector: () => null } };
-    expect(() => (c as any).handleSlotChange()).not.toThrow();
+    expect(sep.tagName.toLowerCase()).toBe('span');
   });
 });

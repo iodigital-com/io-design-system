@@ -30,27 +30,12 @@ export class IoBreadcrumb {
   // ── Slot handling ─────────────────────────────────────────────
 
   private handleSlotChange = () => {
-    const ol = this.el.shadowRoot?.querySelector('ol');
-    if (!ol) return;
+    const items = Array.from(this.el.querySelectorAll('io-breadcrumb-item')) as BreadcrumbItem[];
+    if (!items.length) return;
 
-    // Remove all existing separators before re-inserting to prevent duplicates
-    ol.querySelectorAll('.breadcrumb__separator').forEach(s => s.remove());
-
-    const items = Array.from(ol.querySelectorAll('io-breadcrumb-item'));
-
-    items.forEach((item, i) => {
-      if (i < items.length - 1) {
-        const sep = document.createElement('span');
-        sep.className = 'breadcrumb__separator';
-        sep.setAttribute('aria-hidden', 'true');
-        item.after(sep);
-      }
-
-      // Set current=true on last item if none has it explicitly
-      if (i === items.length - 1 && !items.some(it => (it as BreadcrumbItem).current === true)) {
-        (item as BreadcrumbItem).current = true;
-      }
-    });
+    if (!items.some(it => it.current === true)) {
+      items[items.length - 1].current = true;
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────

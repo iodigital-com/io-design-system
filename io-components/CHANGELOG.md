@@ -1,5 +1,37 @@
 # @iodigital-com/components
 
+## 4.0.0
+
+### Major Changes
+
+- 7926d0b: **io-banner** redesigned as a fixed viewport overlay: `position: fixed`, card-style appearance (white background, 1px colored border, border-radius, drop shadow), and a slide-in entry animation. No more thick left accent border.
+
+  **io-inline-banner renamed to io-inline-notification** (breaking rename): the tag `io-inline-banner` is removed and replaced by `io-inline-notification`. Update all usages — no behaviour change, only the tag name and class name differ.
+
+  **io-inline-notification** also adopts the same card-style design as io-banner (without fixed positioning or shadow).
+
+- 23b1318: **BREAKING:** Removed `io-alert` and replaced it with two purpose-built components.
+
+  - **Removed:** `io-alert` — the single component that mixed page-level and inline use cases
+  - **Added:** `io-banner` — full-width page-level notification strip controlled by an `open` prop. Dismissing automatically sets `open=false`.
+  - **Added:** `io-inline-banner` — inline content-level notification that fits within the document flow. Consumer controls visibility by mounting/unmounting.
+
+  Both new components share the same four severity variants (`info`, `success`, `warning`, `error`), optional `heading`, optional `dismissible` button with auto-resolved `dismissLabel`, and the same ARIA live region strategy as the removed `io-alert`.
+
+  **Migration:**
+
+  - Replace `<io-alert>` with `<io-inline-banner>` for form-level and section-level feedback.
+  - Use `<io-banner open>` for page-wide announcements, maintenance notices, and persistent system messages.
+
+### Patch Changes
+
+- 1a2957c: io-banner: remove empty slot space when no body content is provided; simplify dismiss button to inline icon style (no touch-target padding)
+- 4f58a77: fix(io-breadcrumb): render separator in item shadow DOM, fix broken slotchange query, add chevron default
+
+  The separator was never visible because `handleSlotChange` queried slotted items via the shadow DOM `ol` — slotted (light DOM) children are not reachable that way. Separators are now rendered inside each `io-breadcrumb-item`'s shadow DOM as a `<span class="breadcrumb__separator" aria-hidden="true">` that is hidden when `current=true`. The RTL `scaleX(-1)` flip moves to `io-breadcrumb-item-styles`. Default separator character updated from `/` to `›`; overridable via `--io-breadcrumb-separator`. The storefront configurator and examples pages are centered and scrubbed of pre-release migration notes.
+
+- b70f179: io-inline-notification: remove empty slot space when no body content is provided; simplify dismiss button to inline icon style (no touch-target padding)
+
 ## 3.0.0
 
 ### Major Changes

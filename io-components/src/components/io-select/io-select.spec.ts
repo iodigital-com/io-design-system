@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoSelect } from './io-select';
 
@@ -121,5 +122,62 @@ describe('io-select — default props', () => {
     (component as any).label = 'Country';
     (component as any).componentWillLoad();
     expect(() => (component as any).renderNativeSelect()).not.toThrow();
+  });
+});
+
+// ── SSR lateParseTimeout ───────────────────────────────────────────────────────
+
+describe('io-select — componentDidLoad SSR lateParseTimeout', () => {
+  it('schedules lateParseTimeout when flatOptions is empty but el has children', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    // Add an io-option without a value attribute — parseSelectContent will skip it, leaving flatOptions empty
+    const noValueOpt = document.createElement('io-option');
+    noValueOpt.setAttribute('label', 'No value');
+    el.appendChild(noValueOpt);
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((fn: any) => {
+      fn(); // invoke immediately so the inner re-parse runs
+      return 999 as any;
+    });
+
+    (component as any).componentDidLoad();
+
+    expect(setTimeoutSpy).toHaveBeenCalled();
+    setTimeoutSpy.mockRestore();
+  });
+});
+
+// ── renderComboboxOption onClick invocation ───────────────────────────────────
+
+describe('io-select — renderComboboxOption onClick handler invocation', () => {
+  it('onClick handler calls selectOption when option is not disabled', () => {
+    const component = new IoSelect();
+    (component as any).el = document.createElement('io-select');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).custom = true;
+    component.label = 'Country';
+    (component as any).componentWillLoad();
+
+    const opt = { value: 'nl', label: 'Netherlands', disabled: false };
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).renderComboboxOption(opt, 0);
+
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>]>;
+    const liCall = calls.find(([tag]) => tag === 'li');
+    expect(liCall).toBeDefined();
+
+    const onClick = liCall![1].onClick as (() => void) | undefined;
+    expect(onClick).toBeDefined();
+
+    const selectOptionSpy = vi.spyOn(component as any, 'selectOption').mockImplementation(() => {});
+    onClick!();
+    expect(selectOptionSpy).toHaveBeenCalledWith(opt);
   });
 });

@@ -4,6 +4,7 @@ import {
   createPopoverLabelId,
   computeFallbackPosition,
   getFirstFocusable,
+  getPanelFocusableElements,
 } from './io-popover-utils';
 
 // ── createPopoverLabelId ──────────────────────────────────────────────────────
@@ -114,5 +115,56 @@ describe('getFirstFocusable', () => {
     container.appendChild(disabled);
     container.appendChild(enabled);
     expect(getFirstFocusable(container)).toBe(enabled);
+  });
+});
+
+// ── getPanelFocusableElements ─────────────────────────────────────────────────
+
+describe('getPanelFocusableElements', () => {
+  it('returns focusable elements in shadow DOM (no slot)', () => {
+    const panel = document.createElement('div');
+    const btn = document.createElement('button');
+    btn.textContent = 'Shadow btn';
+    panel.appendChild(btn);
+    const result = getPanelFocusableElements(panel);
+    expect(result).toContain(btn);
+  });
+
+  it('includes slotted element itself when it is directly focusable', () => {
+    const panel = document.createElement('div');
+    const slot = document.createElement('slot') as HTMLSlotElement;
+    const slottedBtn = document.createElement('button');
+    slottedBtn.textContent = 'Slotted';
+    // Mock assignedElements to return the button directly
+    (slot as any).assignedElements = () => [slottedBtn];
+    panel.appendChild(slot);
+
+    const result = getPanelFocusableElements(panel);
+    expect(result).toContain(slottedBtn);
+  });
+
+  it('collects focusable children of non-focusable slotted element (el.matches = false branch)', () => {
+    const panel = document.createElement('div');
+    const slot = document.createElement('slot') as HTMLSlotElement;
+    const slottedDiv = document.createElement('div');
+    const childBtn = document.createElement('button');
+    childBtn.textContent = 'Child';
+    slottedDiv.appendChild(childBtn);
+    // Mock assignedElements to return the non-focusable div
+    (slot as any).assignedElements = () => [slottedDiv];
+    panel.appendChild(slot);
+
+    const result = getPanelFocusableElements(panel);
+    // slottedDiv is not focusable → not in result; childBtn IS focusable → in result
+    expect(result).not.toContain(slottedDiv);
+    expect(result).toContain(childBtn);
+  });
+
+  it('returns empty array when panel has no slot and no focusable elements', () => {
+    const panel = document.createElement('div');
+    const p = document.createElement('p');
+    p.textContent = 'Plain text';
+    panel.appendChild(p);
+    expect(getPanelFocusableElements(panel)).toHaveLength(0);
   });
 });

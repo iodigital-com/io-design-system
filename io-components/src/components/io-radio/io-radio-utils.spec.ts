@@ -71,6 +71,10 @@ describe('getRadioWrapperClass', () => {
   it('includes both disabled and state-error modifiers when both are true', () => {
     expect(getRadioWrapperClass(true, true, false, false)).toBe('radio-wrapper radio-wrapper--disabled radio-wrapper--state-error');
   });
+
+  it('includes loading modifier when loading=true', () => {
+    expect(getRadioWrapperClass(false, false, false, false, true)).toBe('radio-wrapper radio-wrapper--loading');
+  });
 });
 
 describe('getRadioCustomClass', () => {

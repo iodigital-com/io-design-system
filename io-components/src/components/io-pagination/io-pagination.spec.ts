@@ -309,4 +309,46 @@ describe('io-pagination — totalItems and perPage props', () => {
 
     expect((component as any).liveMessage).toBe('Page 3 of 5');
   });
+
+  it('onTotalPagesChange returns early when totalItems and perPage are both set', () => {
+    component.totalItems = 50;
+    component.perPage = 10;
+    component.page = 5;
+    component.totalPages = 5;
+    component.componentWillLoad();
+
+    // Call onTotalPagesChange with a new value — should be a no-op due to early return
+    (component as any).onTotalPagesChange(3);
+
+    // page should NOT be clamped because data-driven props govern the total
+    expect(component.page).toBe(5);
+  });
+
+  it('onTotalItemsChange is a no-op when normalizedPage equals current page', () => {
+    component.totalItems = 50;
+    component.perPage = 10;
+    component.page = 2;
+    component.componentWillLoad();
+
+    // Change totalItems such that computedTotalPages (4) still fits current page (2)
+    component.totalItems = 40;
+    (component as any).onTotalItemsChange();
+
+    expect(component.page).toBe(2);
+  });
+
+  it('onPerPageChange is a no-op when normalizedPage equals current page', () => {
+    component.totalItems = 50;
+    component.perPage = 10;
+    component.page = 2;
+    component.componentWillLoad();
+
+    // Change perPage such that computedTotalPages (5) still fits current page (2)
+    component.perPage = 25;
+    // Reset page back to 2 (componentWillLoad may have changed it)
+    component.page = 2;
+    (component as any).onPerPageChange();
+
+    expect(component.page).toBe(2);
+  });
 });

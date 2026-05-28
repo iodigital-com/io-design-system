@@ -79,6 +79,10 @@ describe('getSelectWrapperClass', () => {
   it('includes both state-error and disabled modifiers when both are true', () => {
     expect(getSelectWrapperClass(true, false, false, true)).toBe('select-wrapper select-wrapper--state-error select-wrapper--disabled');
   });
+
+  it('includes loading modifier when loading=true', () => {
+    expect(getSelectWrapperClass(false, false, false, false, true)).toBe('select-wrapper select-wrapper--loading');
+  });
 });
 
 describe('getComboboxMiddleware', () => {
@@ -122,6 +126,10 @@ describe('getComboboxWrapperClass', () => {
 
   it('includes both state-error and disabled modifiers when both are true', () => {
     expect(getComboboxWrapperClass(true, false, false, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--state-error select-wrapper--disabled');
+  });
+
+  it('includes loading modifier when loading=true', () => {
+    expect(getComboboxWrapperClass(false, false, false, false, true)).toBe('select-wrapper select-wrapper--custom select-wrapper--loading');
   });
 });
 
@@ -275,5 +283,31 @@ describe('parseSelectContent', () => {
     const { groups, flatOptions } = parseSelectContent(host);
     expect(groups).toHaveLength(0);
     expect(flatOptions).toHaveLength(0);
+  });
+
+  it('reads io-option label from JS property when set (not from attribute)', () => {
+    const host = document.createElement('div');
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    (opt as HTMLElement & { label?: unknown }).label = 'Netherlands Prop';
+    host.appendChild(opt);
+    const { flatOptions } = parseSelectContent(host);
+    expect(flatOptions[0].label).toBe('Netherlands Prop');
+  });
+
+  it('reads io-optgroup label and disabled from JS properties when set', () => {
+    const host = document.createElement('div');
+    const group = document.createElement('io-optgroup');
+    (group as HTMLElement & { label?: unknown }).label = 'Prop Group';
+    (group as HTMLElement & { disabled?: unknown }).disabled = true;
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    opt.setAttribute('label', 'Netherlands');
+    group.appendChild(opt);
+    host.appendChild(group);
+    const { groups, flatOptions } = parseSelectContent(host);
+    expect(groups[0].label).toBe('Prop Group');
+    expect(groups[0].disabled).toBe(true);
+    expect(flatOptions[0].disabled).toBe(true);
   });
 });

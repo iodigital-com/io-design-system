@@ -85,6 +85,7 @@ vi.mock('@floating-ui/dom', () => ({
   shift: vi.fn(() => ({ name: 'shift' })),
 }));
 
+import { h } from '@stencil/core';
 import { IoSelect } from './io-select';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -1140,6 +1141,81 @@ describe('io-select moveActive', () => {
     (c as any).moveActive(1);
     // All disabled, so activeIndex should not change
     expect((c as any).activeIndex).toBe(before);
+  });
+});
+
+// ── ref callbacks ─────────────────────────────────────────────────────────────
+
+describe('io-select render() — ref callbacks via h.mock.calls', () => {
+  it('triggerEl ref assigns element when custom=true', () => {
+    const c = makeSelect({ custom: true });
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (c as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+
+    const triggerCall = calls.find(
+      ([tag, attrs]) => tag === 'button' && (attrs as Record<string, unknown>)?.role === 'combobox',
+    );
+    expect(triggerCall).toBeDefined();
+
+    const refFn = triggerCall![1].ref as (el: HTMLButtonElement | undefined) => void;
+    const mockEl = document.createElement('button') as HTMLButtonElement;
+    refFn(mockEl);
+    expect((c as any).triggerEl).toBe(mockEl);
+  });
+
+  it('dropdownEl ref assigns element when custom=true', () => {
+    const c = makeSelect({ custom: true });
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (c as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+
+    const dropdownCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && String(attrs?.class).includes('combobox-dropdown'),
+    );
+    expect(dropdownCall).toBeDefined();
+
+    const refFn = dropdownCall![1].ref as (el: HTMLDivElement) => void;
+    const mockEl = document.createElement('div') as HTMLDivElement;
+    refFn(mockEl);
+    expect((c as any).dropdownEl).toBe(mockEl);
+  });
+
+  it('filterInputEl ref assigns element when custom=true and filter=true', () => {
+    const c = makeSelect({ custom: true, filter: true });
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (c as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+
+    const filterInputCall = calls.find(
+      ([tag, attrs]) =>
+        tag === 'input' && (attrs as Record<string, unknown>)?.['aria-label'] === 'Filter options',
+    );
+    expect(filterInputCall).toBeDefined();
+
+    const refFn = filterInputCall![1].ref as (el: HTMLInputElement) => void;
+    const mockEl = document.createElement('input') as HTMLInputElement;
+    refFn(mockEl);
+    expect((c as any).filterInputEl).toBe(mockEl);
+  });
+
+  it('nativeSelectEl ref assigns element when custom=false', () => {
+    const c = makeSelect({ custom: false });
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (c as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+
+    const selectCall = calls.find(([tag]) => tag === 'select');
+    expect(selectCall).toBeDefined();
+
+    const refFn = selectCall![1].ref as (el: HTMLSelectElement | undefined) => void;
+    const mockEl = document.createElement('select') as HTMLSelectElement;
+    refFn(mockEl);
+    expect((c as any).nativeSelectEl).toBe(mockEl);
   });
 });
 

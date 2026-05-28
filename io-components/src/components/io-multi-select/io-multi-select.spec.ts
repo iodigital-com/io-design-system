@@ -3,6 +3,14 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+vi.mock('@floating-ui/dom', () => ({
+  computePosition: vi.fn().mockResolvedValue({ x: 42, y: 84 }),
+  offset: vi.fn(() => ({ name: 'offset' })),
+  flip: vi.fn(() => ({ name: 'flip' })),
+  shift: vi.fn(() => ({ name: 'shift' })),
+}));
+
+import { computePosition } from '@floating-ui/dom';
 import { IoMultiSelect } from './io-multi-select';
 
 describe('io-multi-select — default props', () => {
@@ -192,5 +200,39 @@ describe('io-multi-select — setFocus', () => {
     (component as any).triggerEl = { focus: focusSpy };
     await component.setFocus();
     expect(focusSpy).toHaveBeenCalled();
+  });
+});
+
+// ── positionDropdown ───────────────────────────────────────────────────────────
+
+describe('io-multi-select — positionDropdown', () => {
+  it('uses top-start placement when dropdownDirection is "up"', async () => {
+    const component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).componentWillLoad();
+
+    const triggerEl = document.createElement('button');
+    triggerEl.getBoundingClientRect = vi.fn(() => ({ width: 200 } as DOMRect));
+    const dropdownEl = document.createElement('div');
+    dropdownEl.style.left = '';
+    dropdownEl.style.top = '';
+    dropdownEl.style.width = '';
+
+    (component as any).triggerEl = triggerEl;
+    (component as any).dropdownEl = dropdownEl;
+    component.dropdownDirection = 'up';
+
+    vi.mocked(computePosition).mockResolvedValueOnce({ x: 10, y: 20, middlewareData: {}, placement: 'top-start' });
+
+    await (component as any).positionDropdown();
+
+    expect(vi.mocked(computePosition)).toHaveBeenCalledWith(
+      triggerEl,
+      dropdownEl,
+      expect.objectContaining({ placement: 'top-start' }),
+    );
+    expect(dropdownEl.style.left).toBe('10px');
+    expect(dropdownEl.style.top).toBe('20px');
+    expect(dropdownEl.style.width).toBe('200px');
   });
 });

@@ -171,6 +171,40 @@ describe('parseMultiSelectContent', () => {
     const result = parseMultiSelectContent(host);
     expect(result.flatOptions).toHaveLength(0);
   });
+
+  it('appends second io-option to existing unnamed group without creating a new group', () => {
+    const host = document.createElement('io-multi-select');
+    const opt1 = document.createElement('io-option');
+    opt1.setAttribute('value', 'nl');
+    opt1.setAttribute('label', 'Netherlands');
+    const opt2 = document.createElement('io-option');
+    opt2.setAttribute('value', 'be');
+    opt2.setAttribute('label', 'Belgium');
+    host.appendChild(opt1);
+    host.appendChild(opt2);
+    const result = parseMultiSelectContent(host);
+    expect(result.flatOptions).toHaveLength(2);
+    // Both options should be in a single unnamed group, not two groups
+    expect(result.groups).toHaveLength(1);
+    expect(result.groups[0].label).toBeUndefined();
+    expect(result.groups[0].options).toHaveLength(2);
+  });
+
+  it('reads io-optgroup label and disabled from JS properties when set', () => {
+    const host = document.createElement('io-multi-select');
+    const group = document.createElement('io-optgroup');
+    (group as HTMLElement & { label?: unknown; disabled?: unknown }).label = 'Prop Label';
+    (group as HTMLElement & { disabled?: unknown }).disabled = true;
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    opt.setAttribute('label', 'Netherlands');
+    group.appendChild(opt);
+    host.appendChild(group);
+    const result = parseMultiSelectContent(host);
+    expect(result.groups[0].label).toBe('Prop Label');
+    expect(result.groups[0].disabled).toBe(true);
+    expect(result.flatOptions[0].disabled).toBe(true);
+  });
 });
 
 // ── getMultiSelectDisplayText ─────────────────────────────────────────────────
@@ -203,7 +237,11 @@ describe('getMultiSelectDisplayText', () => {
     );
   });
 
-  it('falls back to raw value when label not found', () => {
+  it('falls back to raw value when label not found (single item)', () => {
     expect(getMultiSelectDisplayText(['xx'], flatOptions, 3)).toBe('xx');
+  });
+
+  it('falls back to raw value in multi-item comma-join when label not found', () => {
+    expect(getMultiSelectDisplayText(['nl', 'xx'], flatOptions, 3)).toBe('Netherlands, xx');
   });
 });

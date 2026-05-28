@@ -1,6 +1,6 @@
 # @iodigital-com/components-react
 
-## 8.0.0
+## 1.0.0
 
 ### Patch Changes
 

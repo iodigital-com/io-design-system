@@ -1,6 +1,6 @@
 {
   "name": "@iodigital-com/components-angular",
-  "version": "8.0.0",
+  "version": "1.0.0",
   "description": "Angular wrapper package for io Digital Web Components.",
   "homepage": "https://io-design-system.iodigital.com",
   "bugs": {
@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0 <21.0.0",
-    "@iodigital-com/components": "^4.0.0",
+    "@iodigital-com/components": "^1.0.0",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {

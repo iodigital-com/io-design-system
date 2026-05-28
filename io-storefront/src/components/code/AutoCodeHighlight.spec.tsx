@@ -54,6 +54,78 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+describe('AutoCodeHighlight — skip guards', () => {
+  it('skips <pre> blocks with the react-syntax-highlighter class', async () => {
+    const hljs = await import('highlight.js');
+    const spy = vi.spyOn(hljs.default, 'highlightAuto');
+
+    const main = addMainContent();
+    const pre = document.createElement('pre');
+    pre.className = 'react-syntax-highlighter';
+    pre.textContent = 'const x = 1;';
+    main.appendChild(pre);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(pre.dataset.ioHighlighted).toBeUndefined();
+  });
+
+  it('skips <pre> blocks inside data-no-auto-highlight containers', async () => {
+    const hljs = await import('highlight.js');
+    const spy = vi.spyOn(hljs.default, 'highlightAuto');
+
+    const main = addMainContent();
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('data-no-auto-highlight', 'true');
+    const pre = document.createElement('pre');
+    pre.textContent = 'const x = 1;';
+    wrapper.appendChild(pre);
+    main.appendChild(wrapper);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(pre.dataset.ioHighlighted).toBeUndefined();
+  });
+
+  it('skips <pre> blocks whose ioHighlightSignature already matches', async () => {
+    const hljs = await import('highlight.js');
+    const spy = vi.spyOn(hljs.default, 'highlightAuto');
+
+    const main = addMainContent();
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.textContent = 'const x = 1;';
+    pre.appendChild(code);
+    pre.dataset.ioHighlightSignature = 'auto::const x = 1;';
+    main.appendChild(pre);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('normalizes language="html" via data-language to "xml" when calling hljs', async () => {
+    const hljs = await import('highlight.js');
+    const spy = vi.spyOn(hljs.default, 'highlight');
+
+    const main = addMainContent();
+    const pre = document.createElement('pre');
+    pre.setAttribute('data-language', 'html');
+    pre.textContent = '<div>test</div>';
+    main.appendChild(pre);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    expect(spy).toHaveBeenCalledWith('<div>test</div>', { language: 'xml', ignoreIllegals: true });
+  });
+});
+
 describe('AutoCodeHighlight — innerHTML sink', () => {
   it('populates code element via createContextualFragment, not innerHTML', async () => {
     const createRangeSpy = vi.spyOn(document, 'createRange');
@@ -86,6 +158,43 @@ describe('AutoCodeHighlight — innerHTML sink', () => {
     await flushHighlight();
 
     expect(outsidePre.dataset.ioHighlighted).toBeUndefined();
+  });
+
+  it('marks <pre> with only whitespace as highlighted without calling hljs', async () => {
+    const hljs = await import('highlight.js');
+    const spy = vi.spyOn(hljs.default, 'highlightAuto');
+
+    const main = addMainContent();
+    const pre = document.createElement('pre');
+    pre.textContent = '   ';
+    main.appendChild(pre);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    expect(pre.dataset.ioHighlighted).toBe('true');
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('falls back to plain text when hljs throws during highlight', async () => {
+    const hljs = await import('highlight.js');
+    vi.spyOn(hljs.default, 'highlightAuto').mockImplementation(() => {
+      throw new Error('hljs failed');
+    });
+
+    const main = addMainContent();
+    const pre = document.createElement('pre');
+    pre.textContent = 'const x = 1;';
+    main.appendChild(pre);
+
+    render(<AutoCodeHighlight />);
+    await flushHighlight();
+
+    const codeEl = pre.querySelector('code');
+    expect(codeEl).not.toBeNull();
+    expect(codeEl!.classList.contains('language-plaintext')).toBe(true);
+    expect(codeEl!.textContent).toBe('const x = 1;');
+    expect(pre.dataset.ioHighlighted).toBe('true');
   });
 
   it('does not re-highlight blocks with a matching signature (guards against infinite DOM churn)', async () => {

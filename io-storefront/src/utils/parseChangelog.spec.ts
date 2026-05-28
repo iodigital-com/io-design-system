@@ -146,4 +146,45 @@ describe('parseChangelog', () => {
     expect(result[0].sections['Added']).toHaveLength(2);
     expect(result[0].sections['Added']).toEqual(['Fix A', 'Fix A']);
   });
+
+  it('captures standalone bold heading lines as sub-section entries', () => {
+    const raw = `
+## [3.0.0] — 2026-03-01
+
+Release with bold heading.
+
+### Added
+
+**15 Web Components:**
+
+- io-button
+`;
+    const releases = parseChangelog(raw);
+    const v3 = releases.find((r) => r.version === '3.0.0');
+    expect(v3?.sections.Added).toContain('15 Web Components:');
+    expect(v3?.sections.Added).toContain('io-button');
+  });
+
+  it('sorts multiple versioned releases descending when no Unreleased entry exists', () => {
+    const raw = `
+## [1.0.0] — 2026-01-01
+
+First release.
+
+### Added
+
+- io-button
+
+## [2.0.0] — 2026-02-01
+
+Second release.
+
+### Added
+
+- io-badge
+`;
+    const releases = parseChangelog(raw);
+    expect(releases[0].version).toBe('2.0.0');
+    expect(releases[1].version).toBe('1.0.0');
+  });
 });

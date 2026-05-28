@@ -1,5 +1,86 @@
 # @io-digital/components
 
+## 3.0.0
+
+### Major Changes
+
+- f9afc34: **BREAKING**: Remove `variant="text"` from `io-wordmark`.
+
+  The typographic web-font wordmark variant has been removed. The `IoWordmarkVariant` type is now `'mark' | 'lockup'` and the default variant changes from `'text'` to `'mark'`.
+
+  The following props are also removed as they were exclusive to the text variant:
+
+  - `mono`
+  - `href`
+  - `target`
+  - `rel`
+
+  **Migration:**
+
+  | Before                           | After                                                        |
+  | -------------------------------- | ------------------------------------------------------------ |
+  | `<io-wordmark />`                | `<io-wordmark variant="mark" />`                             |
+  | `<io-wordmark variant="text" />` | `<io-wordmark variant="mark" />`                             |
+  | `<io-wordmark href="/" />`       | Use a native `<a>` wrapping `<io-wordmark variant="mark" />` |
+  | `<io-wordmark mono />`           | Use `color="black"` or `color="white"` for consistent colour |
+
+  Use `variant="lockup"` for any placement that requires the official brand name alongside the mark.
+
+### Minor Changes
+
+- 0605dc4: feat(io-wordmark): add variant, color props and official brand SVG assets
+
+  - Adds `variant: 'text' | 'mark' | 'lockup'` prop (default `'text'` — backwards-compatible)
+  - Adds `color: 'blue' | 'black' | 'white' | 'beige'` prop (default `'blue'`)
+  - `variant="mark"` renders the official geometric iO mark SVG (viewBox 0 0 881 599) with `fill="currentColor"`
+  - `variant="lockup"` renders the full iO Digital brand lockup SVG (viewBox 0 0 1500 1500) with `fill="currentColor"`
+  - `variant="text"` preserves existing Manrope web-font wordmark behaviour; `mono` / `href` / `target` / `rel` props still apply
+  - New CSS tokens: `--io-wordmark-mark-height-{sm|md|lg|xl}` and `--io-wordmark-lockup-height-{sm|md|lg|xl}`
+  - New brand token: `--io-color-beige` (#e1cfbf) for mark-only beige colour variant
+  - Brand source assets committed to `brand/mark/` and `brand/wordmark/` (moved from `docs/`)
+  - Static copies in `io-storefront/public/brand/` for Next.js static serving
+
+- 6be0216: feat(io-modal,io-drawer): add background prop and motion lifecycle events (#357)
+
+  - Adds `background: 'canvas' | 'surface' | 'elevated'` prop to `io-modal` and `io-drawer` (default `'canvas'`). Maps to `--io-bg-page`, `--io-bg-surface`, and `--io-bg-raised` tokens respectively.
+  - Adds `motionVisibleEnd` event emitted after the open animation/transition completes (`transitionend` on the panel element).
+  - Adds `motionHiddenEnd` event emitted after the close animation/transition completes.
+  - Transition listener is attached in `componentDidLoad` and cleaned up in `disconnectedCallback`.
+
+- f234ead: chore: promote 9 beta components to stable (Wave XIII)
+
+  Wave XIII audit confirms all quality gates pass and no P0/P1 blockers exist for:
+  io-alert, io-carousel, io-heading, io-multi-select, io-pin-code, io-popover,
+  io-scroller, io-switch, io-text.
+
+  Evidence per component:
+
+  - io-alert: complete spec suite (spec, click, disabled, a11y); all WCAG AA tests pass
+  - io-carousel: complete spec suite + keyboard, lifecycle, render, utils; drag-parity deferred by design
+  - io-heading: spec + a11y; non-interactive component — click/disabled specs do not apply
+  - io-multi-select: complete spec suite (spec, click, disabled, a11y, face); FACE form association verified
+  - io-pin-code: complete spec suite (spec, click, disabled, a11y, face); FACE form association verified
+  - io-popover: spec + click + a11y; no disabled prop exists by design (popover has no disabled state)
+  - io-scroller: spec + a11y; non-interactive container — click/disabled specs do not apply
+  - io-switch: complete spec suite (spec, click, disabled, a11y, face, watch); FACE form association verified
+  - io-text: spec + a11y; non-interactive passive element — click/disabled specs do not apply
+
+  Storefront documentation expanded:
+
+  - io-carousel/usage: added slides-per-page, performance, mobile/touch, keyboard-access sections
+  - io-popover/usage: added placement/positioning, dismiss-behaviour, advanced-patterns sections
+  - io-popover/examples: added actions-menu and close-on-outside-click examples
+  - io-multi-select/examples: added pre-selected, required, maxDisplay, disabled examples
+  - io-heading/usage: added colour, alignment, size-vs-tag sections
+  - io-switch/usage: added form-integration and grouping sections
+
+### Patch Changes
+
+- e7d2b32: chore(io-tabs-bar): promote to stable (#481)
+
+  Wave J audit found no P0/P1 blockers. All quality gates pass. click.spec.ts added (#474),
+  aria-controls documented as WCAG 4.1.2 requirement (#478). Promoting from beta to stable.
+
 ## 2.1.1
 
 ### Patch Changes

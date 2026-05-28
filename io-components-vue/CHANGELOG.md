@@ -1,5 +1,16 @@
 # @io-digital/components-vue
 
+## 7.0.0
+
+### Patch Changes
+
+- Updated dependencies [0605dc4]
+- Updated dependencies [6be0216]
+- Updated dependencies [e7d2b32]
+- Updated dependencies [f234ead]
+- Updated dependencies [f9afc34]
+  - @io-digital/components@3.0.0
+
 ## 6.0.0
 
 ### Patch Changes

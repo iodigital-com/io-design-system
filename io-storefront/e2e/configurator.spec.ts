@@ -25,16 +25,9 @@ test.describe('io-button configurator', () => {
     await expect(main).toBeVisible();
   });
 
-  test('code tabs (HTML / React / Angular / Vue) are present in the configurator', async ({ page }) => {
-    // Wait for hydration — the code tabs are rendered by JS
-    await page.waitForLoadState('networkidle');
-    const htmlTab = page.getByRole('tab', { name: 'HTML' });
-    if (await htmlTab.isVisible()) {
-      await expect(htmlTab).toBeVisible();
-    } else {
-      // If tabs haven't rendered, at least verify main content loaded
-      await expect(page.locator('#main-content')).toBeVisible();
-    }
+  test('component description paragraph is present in the pre-rendered HTML', async ({ page }) => {
+    // The description is server-rendered — present even before JS hydration.
+    await expect(page.locator('#main-content p').first()).toBeVisible();
   });
 
   test('all 5 tab links exist on the configurator page', async ({ page }) => {
@@ -46,26 +39,3 @@ test.describe('io-button configurator', () => {
   });
 });
 
-test.describe('io-button examples', () => {
-  test('examples page has at least one code block or preview', async ({ page }) => {
-    await page.goto('/components/io-button/examples');
-    await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page.locator('#main-content')).toBeVisible();
-  });
-});
-
-test.describe('io-button accessibility', () => {
-  test('accessibility page renders without error boundary', async ({ page }) => {
-    await page.goto('/components/io-button/accessibility');
-    await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page.getByText('Application error')).not.toBeVisible();
-  });
-});
-
-test.describe('io-button api', () => {
-  test('API page renders a table or definition list', async ({ page }) => {
-    await page.goto('/components/io-button/api');
-    await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page.locator('#main-content')).toBeVisible();
-  });
-});

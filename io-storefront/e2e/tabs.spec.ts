@@ -41,9 +41,10 @@ test.describe('io-button tab navigation', () => {
     await expect(page.locator('h1').first()).toBeVisible();
   });
 
-  test('active tab has aria-current="page" or is visually indicated', async ({ page }) => {
-    // The active tab link has aria-current="page" — at least one such link must be visible
-    const configuratorLink = page.locator('a[href="/components/io-button/configurator"][aria-current="page"]').first();
-    await expect(configuratorLink).toBeVisible();
+  test('active tab has aria-current="page"', async ({ page }) => {
+    // The active tab link has aria-current="page" per WCAG 4.1.2.
+    // Two such links exist (breadcrumb + tab nav); .first() resolves to the tab nav link.
+    const activeLink = page.locator('a[href="/components/io-button/configurator"][aria-current="page"]').first();
+    await expect(activeLink).toBeVisible();
   });
 });

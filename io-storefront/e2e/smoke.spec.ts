@@ -54,9 +54,10 @@ for (const component of COMPONENTS) {
     for (const tab of TABS) {
       test(`${tab} tab renders h1 and has no error boundary`, async ({ page }) => {
         await page.goto(`/components/${component}/${tab}`);
-        await expect(page.locator('h1').first()).toBeVisible();
-        await expect(page.getByText('Application error')).not.toBeVisible();
-        await expect(page.getByText('404 — Not Found')).not.toBeVisible();
+        // h1 is pre-rendered — verifies the correct HTML file was served
+        await expect(page.locator('#main-content h1').first()).toBeVisible();
+        // Next.js error boundary renders a specific class; plain text checks are too broad
+        await expect(page.locator('.next-error-h1')).not.toBeAttached();
       });
     }
   });

@@ -53,33 +53,30 @@ export function getInlineNotificationStyles(): string {
       color: var(--io-text-primary);
     }
 
+    .inline-notification__content--empty {
+      display: none;
+    }
+
     .inline-notification__dismiss {
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: var(--io-touch-target-min);
-      height: var(--io-touch-target-min);
-      min-width: var(--io-touch-target-min);
-      min-height: var(--io-touch-target-min);
       padding: 0;
       background: transparent;
       border: none;
-      border-radius: var(--io-border-radius-sm);
       cursor: pointer;
       color: var(--io-text-secondary);
-      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
-      margin-top: -2px; /* optical alignment with icon top edge */
+      transition: color var(--io-motion-fast);
     }
 
     .inline-notification__dismiss:hover {
       color: var(--io-text-primary);
-      background-color: var(--io-state-hover);
     }
 
     .inline-notification__dismiss:focus-visible {
       box-shadow: var(--io-focus-ring-active);
       outline: none;
+      border-radius: var(--io-border-radius-sm);
     }
 
     .inline-notification__dismiss svg {

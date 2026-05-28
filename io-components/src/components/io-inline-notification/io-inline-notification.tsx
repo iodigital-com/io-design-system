@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
 
 import { getInlineNotificationStyles } from './io-inline-notification-styles';
 import type { IoInlineNotificationVariant } from './types';
@@ -45,6 +45,8 @@ export class IoInlineNotification {
 
   /** Emitted when the dismiss button is clicked */
   @Event() dismiss!: EventEmitter<void>;
+
+  @State() private hasContent = false;
 
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
@@ -96,8 +98,11 @@ export class IoInlineNotification {
           </span>
           <div class="inline-notification__body">
             {this.heading && <strong class="inline-notification__heading">{this.heading}</strong>}
-            <div class="inline-notification__content">
-              <slot />
+            <div class={{ 'inline-notification__content': true, 'inline-notification__content--empty': !this.hasContent }}>
+              <slot onSlotchange={(e: Event) => {
+                const slot = e.target as HTMLSlotElement;
+                this.hasContent = slot.assignedNodes({ flatten: true }).length > 0;
+              }} />
             </div>
           </div>
           {this.dismissible && (

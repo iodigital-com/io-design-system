@@ -1,19 +1,11 @@
-export function getBannerStyles(): string {
+export function getInlineNotificationStyles(): string {
   return `
     :host {
       display: block;
       font-family: var(--io-font-primary);
     }
 
-    .banner {
-      position: fixed;
-      top: var(--io-space-4);
-      left: var(--io-space-4);
-      right: var(--io-space-4);
-      margin: 0 auto;
-      max-width: 768px; /* matches --io-breakpoint-md */
-      z-index: var(--io-z-toast);
-
+    .inline-notification {
       display: flex;
       align-items: flex-start;
       gap: var(--io-space-3);
@@ -22,43 +14,28 @@ export function getBannerStyles(): string {
       background: var(--io-bg-card);
       border: 1px solid transparent;
       border-radius: var(--io-border-radius-sm);
-      box-shadow: var(--io-shadow-lg);
 
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
       color: var(--io-text-primary);
-
-      box-sizing: border-box;
-      animation: io-banner-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
-    @keyframes io-banner-in {
-      from {
-        opacity: 0;
-        transform: translateY(calc(-100% - var(--io-space-4)));
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .banner__icon {
+    .inline-notification__icon {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       width: var(--io-icon-size-md);
       height: var(--io-icon-size-md);
-      color: var(--banner-icon-color);
+      color: var(--inline-notification-icon-color);
     }
 
-    .banner__icon svg {
+    .inline-notification__icon svg {
       width: var(--io-icon-size-md);
       height: var(--io-icon-size-md);
     }
 
-    .banner__body {
+    .inline-notification__body {
       flex: 1;
       min-width: 0;
       display: flex;
@@ -66,17 +43,17 @@ export function getBannerStyles(): string {
       gap: var(--io-space-1);
     }
 
-    .banner__heading {
+    .inline-notification__heading {
       display: block;
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);
     }
 
-    .banner__content {
+    .inline-notification__content {
       color: var(--io-text-primary);
     }
 
-    .banner__dismiss {
+    .inline-notification__dismiss {
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -95,48 +72,45 @@ export function getBannerStyles(): string {
       margin-top: -2px; /* optical alignment with icon top edge */
     }
 
-    .banner__dismiss:hover {
+    .inline-notification__dismiss:hover {
       color: var(--io-text-primary);
       background-color: var(--io-state-hover);
     }
 
-    .banner__dismiss:focus-visible {
+    .inline-notification__dismiss:focus-visible {
       box-shadow: var(--io-focus-ring-active);
       outline: none;
     }
 
-    .banner__dismiss svg {
+    .inline-notification__dismiss svg {
       width: var(--io-icon-size-sm);
       height: var(--io-icon-size-sm);
       pointer-events: none;
     }
 
     /* Variants — set border accent + icon color only */
-    .banner--info {
+    .inline-notification--info {
       border-color: var(--io-color-info);
-      --banner-icon-color: var(--io-color-info);
+      --inline-notification-icon-color: var(--io-color-info);
     }
 
-    .banner--success {
+    .inline-notification--success {
       border-color: var(--io-color-success);
-      --banner-icon-color: var(--io-color-success);
+      --inline-notification-icon-color: var(--io-color-success);
     }
 
-    .banner--warning {
+    .inline-notification--warning {
       border-color: var(--io-color-warning);
-      --banner-icon-color: var(--io-color-warning);
+      --inline-notification-icon-color: var(--io-color-warning);
     }
 
-    .banner--error {
+    .inline-notification--error {
       border-color: var(--io-color-error);
-      --banner-icon-color: var(--io-color-error);
+      --inline-notification-icon-color: var(--io-color-error);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .banner {
-        animation: none;
-      }
-      .banner__dismiss {
+      .inline-notification__dismiss {
         transition: none;
       }
     }

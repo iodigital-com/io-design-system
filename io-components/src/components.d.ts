@@ -18,7 +18,7 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
-import { IoInlineBannerVariant } from "./components/io-inline-banner/types";
+import { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -57,7 +57,7 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
-export { IoInlineBannerVariant } from "./components/io-inline-banner/types";
+export { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -773,22 +773,22 @@ export namespace Components {
         "weight": IoHeadingWeight;
     }
     /**
-     * io-inline-banner
-     * ================
+     * io-inline-notification
+     * ======================
      * Inline content-level notification with four severity variants.
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
      *   - error variant:     role="alert" (implicit aria-live="assertive")
      *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
-     * </io-inline-banner>
-     * <io-inline-banner variant="error" dismissible>
+     * </io-inline-notification>
+     * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
-     * </io-inline-banner>
+     * </io-inline-notification>
      */
-    interface IoInlineBanner {
+    interface IoInlineNotification {
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -806,7 +806,7 @@ export namespace Components {
           * Severity variant — controls icon, colour, and aria-live politeness
           * @default 'info'
          */
-        "variant": IoInlineBannerVariant;
+        "variant": IoInlineNotificationVariant;
     }
     /**
      * io-input
@@ -2393,9 +2393,9 @@ export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
 }
-export interface IoInlineBannerCustomEvent<T> extends CustomEvent<T> {
+export interface IoInlineNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLIoInlineBannerElement;
+    target: HTMLIoInlineNotificationElement;
 }
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2842,38 +2842,38 @@ declare global {
         prototype: HTMLIoHeadingElement;
         new (): HTMLIoHeadingElement;
     };
-    interface HTMLIoInlineBannerElementEventMap {
+    interface HTMLIoInlineNotificationElementEventMap {
         "dismiss": void;
     }
     /**
-     * io-inline-banner
-     * ================
+     * io-inline-notification
+     * ======================
      * Inline content-level notification with four severity variants.
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
      *   - error variant:     role="alert" (implicit aria-live="assertive")
      *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
-     * </io-inline-banner>
-     * <io-inline-banner variant="error" dismissible>
+     * </io-inline-notification>
+     * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
-     * </io-inline-banner>
+     * </io-inline-notification>
      */
-    interface HTMLIoInlineBannerElement extends Components.IoInlineBanner, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoInlineBannerElementEventMap>(type: K, listener: (this: HTMLIoInlineBannerElement, ev: IoInlineBannerCustomEvent<HTMLIoInlineBannerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLIoInlineNotificationElement extends Components.IoInlineNotification, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoInlineNotificationElementEventMap>(type: K, listener: (this: HTMLIoInlineNotificationElement, ev: IoInlineNotificationCustomEvent<HTMLIoInlineNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoInlineBannerElementEventMap>(type: K, listener: (this: HTMLIoInlineBannerElement, ev: IoInlineBannerCustomEvent<HTMLIoInlineBannerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoInlineNotificationElementEventMap>(type: K, listener: (this: HTMLIoInlineNotificationElement, ev: IoInlineNotificationCustomEvent<HTMLIoInlineNotificationElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLIoInlineBannerElement: {
-        prototype: HTMLIoInlineBannerElement;
-        new (): HTMLIoInlineBannerElement;
+    var HTMLIoInlineNotificationElement: {
+        prototype: HTMLIoInlineNotificationElement;
+        new (): HTMLIoInlineNotificationElement;
     };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
@@ -3724,7 +3724,7 @@ declare global {
         "io-drawer": HTMLIoDrawerElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-heading": HTMLIoHeadingElement;
-        "io-inline-banner": HTMLIoInlineBannerElement;
+        "io-inline-notification": HTMLIoInlineNotificationElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -4467,22 +4467,22 @@ declare namespace LocalJSX {
         "weight"?: IoHeadingWeight;
     }
     /**
-     * io-inline-banner
-     * ================
+     * io-inline-notification
+     * ======================
      * Inline content-level notification with four severity variants.
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
      *   - error variant:     role="alert" (implicit aria-live="assertive")
      *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
-     * </io-inline-banner>
-     * <io-inline-banner variant="error" dismissible>
+     * </io-inline-notification>
+     * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
-     * </io-inline-banner>
+     * </io-inline-notification>
      */
-    interface IoInlineBanner {
+    interface IoInlineNotification {
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -4499,12 +4499,12 @@ declare namespace LocalJSX {
         /**
           * Emitted when the dismiss button is clicked
          */
-        "onDismiss"?: (event: IoInlineBannerCustomEvent<void>) => void;
+        "onDismiss"?: (event: IoInlineNotificationCustomEvent<void>) => void;
         /**
           * Severity variant — controls icon, colour, and aria-live politeness
           * @default 'info'
          */
-        "variant"?: IoInlineBannerVariant;
+        "variant"?: IoInlineNotificationVariant;
     }
     /**
      * io-input
@@ -6204,8 +6204,8 @@ declare namespace LocalJSX {
         "color": IoHeadingColor;
         "ellipsis": boolean;
     }
-    interface IoInlineBannerAttributes {
-        "variant": IoInlineBannerVariant;
+    interface IoInlineNotificationAttributes {
+        "variant": IoInlineNotificationVariant;
         "heading": string;
         "dismissible": boolean;
         "dismissLabel": string;
@@ -6497,7 +6497,7 @@ declare namespace LocalJSX {
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
-        "io-inline-banner": Omit<IoInlineBanner, keyof IoInlineBannerAttributes> & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes]?: IoInlineBanner[K] } & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes as `attr:${K}`]?: IoInlineBannerAttributes[K] } & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes as `prop:${K}`]?: IoInlineBanner[K] };
+        "io-inline-notification": Omit<IoInlineNotification, keyof IoInlineNotificationAttributes> & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes]?: IoInlineNotification[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `attr:${K}`]?: IoInlineNotificationAttributes[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `prop:${K}`]?: IoInlineNotification[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -6738,22 +6738,22 @@ declare module "@stencil/core" {
              */
             "io-heading": LocalJSX.IntrinsicElements["io-heading"] & JSXBase.HTMLAttributes<HTMLIoHeadingElement>;
             /**
-             * io-inline-banner
-             * ================
+             * io-inline-notification
+             * ======================
              * Inline content-level notification with four severity variants.
              * Sits within the content flow — no open/close state. The consumer
              * controls visibility by mounting or unmounting the element.
              * ARIA live region strategy:
              *   - error variant:     role="alert" (implicit aria-live="assertive")
              *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-             * @example <io-inline-banner variant="warning" heading="Storage limit">
+             * @example <io-inline-notification variant="warning" heading="Storage limit">
              *   You have used 90% of your quota.
-             * </io-inline-banner>
-             * <io-inline-banner variant="error" dismissible>
+             * </io-inline-notification>
+             * <io-inline-notification variant="error" dismissible>
              *   Failed to save. Please try again.
-             * </io-inline-banner>
+             * </io-inline-notification>
              */
-            "io-inline-banner": LocalJSX.IntrinsicElements["io-inline-banner"] & JSXBase.HTMLAttributes<HTMLIoInlineBannerElement>;
+            "io-inline-notification": LocalJSX.IntrinsicElements["io-inline-notification"] & JSXBase.HTMLAttributes<HTMLIoInlineNotificationElement>;
             /**
              * io-input
              * =========

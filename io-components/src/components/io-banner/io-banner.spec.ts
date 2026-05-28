@@ -51,21 +51,22 @@ describe('io-banner — render does not throw per variant', () => {
 });
 
 describe('io-banner — ARIA role mapping', () => {
-  function hostAttrs(c: IoBanner): Record<string, unknown> {
+  // Role is on the inner .banner div (only rendered when open=true) so the live region
+  // only exists while the banner is visible — prevents spurious announcements when closed.
+  function bannerDivAttrs(c: IoBanner): Record<string, unknown> {
     hMock.mockClear();
     (c as any).render();
-    // Host is not exported from the mock → compiles to h(undefined, attrs, ...).
-    // It is the last h() call because JSX is evaluated inside-out.
-    const hostCall = hMock.mock.calls.findLast(
+    const call = hMock.mock.calls.findLast(
       ([, attrs]: [unknown, unknown]) => attrs && typeof attrs === 'object' && 'role' in (attrs as Record<string, unknown>),
     ) as [unknown, Record<string, unknown>] | undefined;
-    return hostCall?.[1] ?? {};
+    return call?.[1] ?? {};
   }
 
   it('uses role="alert" for error variant', () => {
     const c = new IoBanner();
     c.variant = 'error';
-    const attrs = hostAttrs(c);
+    c.open = true;
+    const attrs = bannerDivAttrs(c);
     expect(attrs.role).toBe('alert');
     expect(attrs['aria-live']).toBeUndefined();
     expect(attrs['aria-atomic']).toBeUndefined();
@@ -76,12 +77,21 @@ describe('io-banner — ARIA role mapping', () => {
     (variant) => {
       const c = new IoBanner();
       c.variant = variant;
-      const attrs = hostAttrs(c);
+      c.open = true;
+      const attrs = bannerDivAttrs(c);
       expect(attrs.role).toBe('status');
       expect(attrs['aria-live']).toBe('polite');
       expect(attrs['aria-atomic']).toBe('true');
     },
   );
+
+  it('renders no ARIA role attributes when open=false', () => {
+    const c = new IoBanner();
+    c.variant = 'error';
+    c.open = false;
+    const attrs = bannerDivAttrs(c);
+    expect(attrs.role).toBeUndefined();
+  });
 });
 
 describe('io-banner — dismissLabel resolution', () => {

@@ -2,14 +2,14 @@
 
 import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote } from '@/components/api/ApiPrimitives';
 
-export default function IoInlineBannerApiPage() {
+export default function IoInlineNotificationApiPage() {
   return (
     <div className="space-y-16">
 
       <section id="properties" className="space-y-4">
         <SectionHeader
           title="Properties"
-          description="All @Prop() declarations on the io-inline-banner Stencil component."
+          description="All @Prop() declarations on the io-inline-notification Stencil component."
         />
         <ApiTable
           columns={[
@@ -50,7 +50,7 @@ export default function IoInlineBannerApiPage() {
       <section id="events" className="space-y-4">
         <SectionHeader
           title="Events"
-          description="Custom events emitted by io-inline-banner."
+          description="Custom events emitted by io-inline-notification."
         />
         <ApiTable
           columns={[
@@ -71,7 +71,7 @@ export default function IoInlineBannerApiPage() {
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="Content projected into io-inline-banner via slot."
+          description="Content projected into io-inline-notification via slot."
         />
         <ApiTable
           columns={[
@@ -93,9 +93,9 @@ export default function IoInlineBannerApiPage() {
           description="Token overrides exposed for customisation."
         />
         <EmptyNote>
-          io-inline-banner uses global semantic tokens (<InlineCode>--io-color-info</InlineCode>, <InlineCode>--io-color-success</InlineCode>, etc.)
+          io-inline-notification uses global semantic tokens (<InlineCode>--io-color-info</InlineCode>, <InlineCode>--io-color-success</InlineCode>, etc.)
           inherited from <code className="font-mono text-xs">app.css</code>.
-          Override those root tokens to retheme all inline banner variants simultaneously.
+          Override those root tokens to retheme all inline notification variants simultaneously.
         </EmptyNote>
       </section>
 

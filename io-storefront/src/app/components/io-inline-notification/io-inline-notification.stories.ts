@@ -1,7 +1,7 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
-export const inlineBannerStory: Story<'io-inline-banner'> = {
+export const inlineNotificationStory: Story<'io-inline-notification'> = {
   state: {
     properties: {
       variant: 'info',
@@ -11,14 +11,14 @@ export const inlineBannerStory: Story<'io-inline-banner'> = {
   },
   generator: ({ properties } = {}) => [
     {
-      tag: 'io-inline-banner' as const,
+      tag: 'io-inline-notification' as const,
       properties: properties ?? {},
       children: ['Your session expires in 5 minutes. Save your work to avoid losing changes.'],
     },
   ],
 };
 
-export const inlineBannerPropDefinitions: PropDefinition[] = [
+export const inlineNotificationPropDefinitions: PropDefinition[] = [
   {
     name: 'variant',
     type: 'select',

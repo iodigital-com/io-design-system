@@ -2,14 +2,14 @@
 
 import { AriaTable, ComplianceCard, Kbd, KeyboardTable, RuleCard, SectionHeader } from '@/components/accessibility/AccessibilityPrimitives';
 
-export default function IoInlineBannerAccessibilityPage() {
+export default function IoInlineNotificationAccessibilityPage() {
   return (
     <div className="space-y-16">
 
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="The inline banner body is non-interactive. Only the optional dismiss button is focusable."
+          description="The inline notification body is non-interactive. Only the optional dismiss button is focusable."
         />
         <KeyboardTable
           rows={[
@@ -28,7 +28,7 @@ export default function IoInlineBannerAccessibilityPage() {
       <section id="screen-reader" className="space-y-6">
         <SectionHeader
           title="Screen reader behaviour"
-          description="io-inline-banner uses ARIA live regions to announce content when it appears in the DOM."
+          description="io-inline-notification uses ARIA live regions to announce content when it appears in the DOM."
         />
         <AriaTable
           rows={[
@@ -50,14 +50,14 @@ export default function IoInlineBannerAccessibilityPage() {
           ]}
         />
         <RuleCard label="Mount to announce">
-          Because io-inline-banner has no <code className="font-mono text-xs">open</code> prop, the live region announcement fires naturally on mount. Avoid pre-rendering hidden inline banners — mount them only when they need to be shown.
+          Because io-inline-notification has no <code className="font-mono text-xs">open</code> prop, the live region announcement fires naturally on mount. Avoid pre-rendering hidden inline notifications — mount them only when they need to be shown.
         </RuleCard>
       </section>
 
       <section id="wcag" className="space-y-6">
         <SectionHeader
           title="WCAG 2.2 compliance"
-          description="io-inline-banner targets WCAG 2.2 Level AA."
+          description="io-inline-notification targets WCAG 2.2 Level AA."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ComplianceCard criterion="1.4.3" level="AA" title="Contrast (Minimum)"

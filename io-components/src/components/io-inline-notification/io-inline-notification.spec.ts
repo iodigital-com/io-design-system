@@ -2,19 +2,19 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { h } from '@stencil/core';
 
-import { IoInlineBanner } from './io-inline-banner';
+import { IoInlineNotification } from './io-inline-notification';
 
 const hMock = h as unknown as ReturnType<typeof vi.fn>;
 
-describe('io-inline-banner — default props', () => {
-  let c: IoInlineBanner;
+describe('io-inline-notification — default props', () => {
+  let c: IoInlineNotification;
 
   beforeEach(() => {
-    c = new IoInlineBanner();
+    c = new IoInlineNotification();
   });
 
   it('can be instantiated', () => {
-    expect(c).toBeInstanceOf(IoInlineBanner);
+    expect(c).toBeInstanceOf(IoInlineNotification);
   });
 
   it('defaults variant to info', () => {
@@ -38,16 +38,16 @@ describe('io-inline-banner — default props', () => {
   });
 });
 
-describe('io-inline-banner — render does not throw per variant', () => {
+describe('io-inline-notification — render does not throw per variant', () => {
   it.each(['info', 'success', 'warning', 'error'] as const)('renders %s variant', (variant) => {
-    const c = new IoInlineBanner();
+    const c = new IoInlineNotification();
     c.variant = variant;
     expect(() => (c as any).render()).not.toThrow();
   });
 });
 
-describe('io-inline-banner — ARIA role mapping', () => {
-  function hostAttrs(c: IoInlineBanner): Record<string, unknown> {
+describe('io-inline-notification — ARIA role mapping', () => {
+  function hostAttrs(c: IoInlineNotification): Record<string, unknown> {
     hMock.mockClear();
     (c as any).render();
     const hostCall = hMock.mock.calls.findLast(
@@ -57,7 +57,7 @@ describe('io-inline-banner — ARIA role mapping', () => {
   }
 
   it('uses role="alert" for error variant', () => {
-    const c = new IoInlineBanner();
+    const c = new IoInlineNotification();
     c.variant = 'error';
     const attrs = hostAttrs(c);
     expect(attrs.role).toBe('alert');
@@ -68,7 +68,7 @@ describe('io-inline-banner — ARIA role mapping', () => {
   it.each(['info', 'success', 'warning'] as const)(
     'uses role="status" + aria-live="polite" for %s variant',
     (variant) => {
-      const c = new IoInlineBanner();
+      const c = new IoInlineNotification();
       c.variant = variant;
       const attrs = hostAttrs(c);
       expect(attrs.role).toBe('status');
@@ -78,21 +78,21 @@ describe('io-inline-banner — ARIA role mapping', () => {
   );
 });
 
-describe('io-inline-banner — dismissLabel resolution', () => {
+describe('io-inline-notification — dismissLabel resolution', () => {
   it('uses custom dismissLabel when provided', () => {
-    const c = new IoInlineBanner();
+    const c = new IoInlineNotification();
     c.dismissLabel = 'Close';
     expect((c as any).resolvedDismissLabel).toBe('Close');
   });
 
   it('uses "Dismiss {heading}" when heading is set', () => {
-    const c = new IoInlineBanner();
+    const c = new IoInlineNotification();
     c.heading = 'Upload failed';
     expect((c as any).resolvedDismissLabel).toBe('Dismiss "Upload failed"');
   });
 
   it('falls back to "Dismiss {variant} notification"', () => {
-    const c = new IoInlineBanner();
+    const c = new IoInlineNotification();
     c.variant = 'error';
     expect((c as any).resolvedDismissLabel).toBe('Dismiss error notification');
   });

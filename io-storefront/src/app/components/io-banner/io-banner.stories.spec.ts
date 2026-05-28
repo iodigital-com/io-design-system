@@ -15,20 +15,39 @@ describe('bannerStory — generator', () => {
     expect(nodes!.length).toBeGreaterThan(0);
   });
 
-  it('generates an io-banner element', () => {
+  it('generates a trigger button at index 0', () => {
     const nodes = bannerStory.generator?.();
-    expect(asElement(nodes![0]).tag).toBe('io-banner');
+    expect(asElement(nodes![0]).tag).toBe('io-button');
+  });
+
+  it('generates an io-banner element at index 1', () => {
+    const nodes = bannerStory.generator?.();
+    expect(asElement(nodes![1]).tag).toBe('io-banner');
+  });
+
+  it('trigger button has an onClick event to open the banner', () => {
+    const nodes = bannerStory.generator?.();
+    const btn = asElement(nodes![0]);
+    expect(btn.events?.['onClick']?.prop).toBe('open');
+    expect(btn.events?.['onClick']?.value).toBe(true);
+  });
+
+  it('banner has an onDismiss event to close it', () => {
+    const nodes = bannerStory.generator?.();
+    const banner = asElement(nodes![1]);
+    expect(banner.events?.['onDismiss']?.prop).toBe('open');
+    expect(banner.events?.['onDismiss']?.value).toBe(false);
   });
 
   it('applies properties from state', () => {
     const nodes = bannerStory.generator?.({ properties: { variant: 'error', open: true } });
-    expect((asElement(nodes![0]).properties as Record<string, unknown>).variant).toBe('error');
-    expect((asElement(nodes![0]).properties as Record<string, unknown>).open).toBe(true);
+    expect((asElement(nodes![1]).properties as Record<string, unknown>).variant).toBe('error');
+    expect((asElement(nodes![1]).properties as Record<string, unknown>).open).toBe(true);
   });
 
   it.each(['info', 'success', 'warning', 'error'])('renders variant %s', (variant) => {
     const nodes = bannerStory.generator?.({ properties: { variant, open: true } });
-    expect(asElement(nodes![0]).tag).toBe('io-banner');
+    expect(asElement(nodes![1]).tag).toBe('io-banner');
   });
 
   it('renders with heading', () => {

@@ -74,6 +74,72 @@ export default function IoHeadingUsagePage() {
         </div>
       </section>
 
+      {/* ── Colour ──────────────────────────────────────────────── */}
+      <section id="colour" className="space-y-6">
+        <SectionHeader
+          title="Colour"
+          description="Heading colour is set via the color prop and maps to semantic design tokens."
+        />
+        <div className="space-y-3">
+          <RuleCard label="primary (default)">
+            Maps to <C>var(--io-text-primary)</C>. Use for all standard headings against page, card, and surface backgrounds.
+          </RuleCard>
+          <RuleCard label="secondary">
+            Maps to <C>var(--io-text-secondary)</C>. Use for supporting or subdued headings where primary text would compete with surrounding content.
+          </RuleCard>
+          <RuleCard label="inverse">
+            Maps to <C>var(--io-text-inverse)</C>. Use on dark or brand-coloured backgrounds — hero sections, dark mode cards.
+          </RuleCard>
+          <RuleCard label="brand">
+            Maps to <C>var(--io-color-primary)</C>. Use sparingly for highlighted headings — feature call-outs, marketing sections, or brand accent moments.
+          </RuleCard>
+          <RuleCard label="Automatic contrast">
+            All colour tokens are defined per theme (light and dark). io-heading automatically uses the correct value — do not override colour with hardcoded hex values.
+          </RuleCard>
+        </div>
+      </section>
+
+      {/* ── Alignment ───────────────────────────────────────────── */}
+      <section id="alignment" className="space-y-6">
+        <SectionHeader
+          title="Alignment"
+          description="Text alignment is set via the align prop."
+        />
+        <div className="space-y-3">
+          <RuleCard label="start (default)">
+            Left-aligned in LTR languages. Correct for body-context headings, form sections, and content pages.
+          </RuleCard>
+          <RuleCard label="center">
+            Use for hero headings, modal titles, empty-state headings, and marketing sections where centred layout is intended.
+          </RuleCard>
+          <RuleCard label="end">
+            Right-aligned in LTR. Use for narrow layout contexts such as table column headers in right-aligned numeric columns.
+          </RuleCard>
+          <RuleCard label="RTL support">
+            <C>start</C> and <C>end</C> are logical properties. In right-to-left contexts <C>start</C> aligns right and <C>end</C> aligns left automatically. Prefer <C>start</C> over <C>left</C> for internationalised applications.
+          </RuleCard>
+        </div>
+      </section>
+
+      {/* ── Decoupling size from tag ─────────────────────────────── */}
+      <section id="size-vs-tag" className="space-y-6">
+        <SectionHeader
+          title="Decoupling visual size from semantic tag"
+          description="The most important design pattern for io-heading: the tag prop drives the DOM, the size prop drives the visuals."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Why they are separate">
+            A page may have multiple h3 elements at different visual weights — a compact sidebar h3 and a prominent article-body h3. Setting <C>tag=&quot;h3&quot;</C> on both but different <C>size</C> values keeps the DOM outline correct without sacrificing visual hierarchy.
+          </RuleCard>
+          <RuleCard label="Default size per tag">
+            When <C>size</C> is omitted, io-heading applies a context-appropriate default: h1 → 4xl, h2 → 3xl, h3 → 2xl, h4 → xl, h5 → lg, h6 → md. Override via <C>size</C> whenever the layout requires a different weight.
+          </RuleCard>
+          <RuleCard label="Accessibility invariant">
+            Never use a lower heading level (<C>tag=&quot;h4&quot;</C>) with a large size to simulate the visual appearance of an h1. The DOM order must match the logical document hierarchy for screen reader navigation.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

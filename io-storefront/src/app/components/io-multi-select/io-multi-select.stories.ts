@@ -79,6 +79,50 @@ export const multiSelectStoryError: Story<'io-multi-select'> = {
   ],
 };
 
+export const multiSelectStoryPreselected: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries' } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries', value: 'nl,de' },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryRequired: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries', required: true } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries', required: true, placeholder: 'Select at least one country' },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryMaxDisplay: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries' } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries', value: 'nl,be,de,fr,es', maxDisplay: 2 },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
+export const multiSelectStoryDisabled: Story<'io-multi-select'> = {
+  state: { properties: { label: 'Countries', disabled: true } },
+  generator: () => [
+    {
+      tag: 'io-multi-select' as const,
+      properties: { name: 'countries', label: 'Countries', value: 'nl,be', disabled: true },
+      children: DEFAULT_CHILDREN,
+    },
+  ],
+};
+
 export const multiSelectPropDefinitions: PropDefinition[] = [
   {
     name: 'label',

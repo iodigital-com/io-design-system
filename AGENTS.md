@@ -59,10 +59,12 @@ Every component lives at `io-components/src/components/io-{name}/`:
 | `io-{name}-styles.ts` | `getButtonStyles()` / CSS-in-JS injected into Shadow DOM |
 | `io-{name}-utils.ts` | Pure logic, ARIA builders — unit-tested separately |
 | `io-{name}.spec.ts` | Default props / render tests |
-| `io-{name}.click.spec.ts` | Event-emission tests |
-| `io-{name}.disabled.spec.ts` | Disabled-state tests |
+| `io-{name}.click.spec.ts` | Event-emission tests — **interactive components only** |
+| `io-{name}.disabled.spec.ts` | Disabled-state tests — **interactive components only** |
 | `io-{name}.a11y.spec.ts` | axe-core WCAG AA smoke tests (all interactive components) |
 | `io-{name}.face.spec.ts` | FACE / ElementInternals unit tests (form-field components only) |
+
+**Non-interactive components** (io-text, io-heading, io-scroller) do not have `.click.spec.ts` or `.disabled.spec.ts` — these files are intentionally absent because the components emit no events and have no disabled prop. The `.spec.ts` and `.a11y.spec.ts` files are still required. **io-popover** also has no `disabled` prop by design (the popover state is open/closed, not enabled/disabled), so no `.disabled.spec.ts` is needed.
 
 ## Conventions
 
@@ -451,31 +453,22 @@ The commented-out target block and full activation instructions are in
 
 ## Component Stability (Wave XI → Wave J)
 
-### Beta Components (Wave XI origin)
+### Wave XIII promotions (2026-05-28)
 
-The following components were introduced in Wave XI. `io-tabs-bar` was promoted to **stable** in Wave J after all quality gates passed.
+All 9 components that were introduced in Wave XI as beta have been promoted to **stable** in Wave XIII after audit confirmed no P0/P1 blockers.
 
-| Component | Status | FACE | Notes |
-|---|---|---|---|
-| `io-alert` | beta | No | `dismissLabel` prop added (Wave J) — overrides auto-generated aria-label |
-| `io-multi-select` | beta | Yes | Grouped option ARIA fixed (Wave J): `role=group` + `aria-labelledby` + `aria-selected` |
-| `io-pin-code` | beta | Yes | |
-| `io-popover` | beta | No | Focus trap uses `document.activeElement` (Wave J) — required for slotted light DOM |
-| `io-scroller` | beta | No | Dead fade CSS classes removed from `getScrollerClass()` (Wave J) |
-| `io-switch` | beta | Yes | `--io-switch-thumb-shadow` token; `formResetCallback` clears `faceInvalid` before sync (Wave J) |
-| `io-tabs-bar` | **stable** | No | Promoted Wave J — click.spec + aria-controls documented |
-| `io-text` | beta | No | `datetime` prop added for `<time>` element (Wave J) |
-| `io-heading` | beta | No | `tag: IoHeadingTag \| undefined` — componentWillLoad logs error if omitted (Wave J) |
-
-All beta components:
-
-- Follow the component file layout defined in [Component File Layout](#component-file-layout)
-- Use token-first styling (`var(--io-*)` — no hardcoded hex/px/radii)
-- Use Shadow DOM with `delegatesFocus: true`
-- Apply the [FACE pattern](#form-associated-custom-elements-face) where applicable (`io-multi-select`, `io-pin-code`, `io-switch`)
-- Include at minimum `.spec.ts` and `.a11y.spec.ts`; form components include `.face.spec.ts`
-
-Promotion to `stable` requires production hardening and is tracked in `docs/component-stability-recommendations.md`.
+| Component | FACE | Key notes |
+|---|---|---|
+| `io-alert` | No | `dismissLabel` prop; complete spec suite (spec, click, disabled, a11y) |
+| `io-carousel` | No | Full spec suite + keyboard/lifecycle/render; no snap — scroll is free |
+| `io-heading` | No | Non-interactive — click/disabled specs intentionally absent; spec + a11y required |
+| `io-multi-select` | Yes | Complete spec suite inc. face; `position:fixed` dropdown via floating-ui strategy |
+| `io-pin-code` | Yes | Complete spec suite inc. face; auto-advance + paste distribution |
+| `io-popover` | No | No `disabled` prop by design — click + a11y specs required; focus trap uses `document.activeElement` |
+| `io-scroller` | No | Non-interactive container — click/disabled specs intentionally absent; spec + a11y required |
+| `io-switch` | Yes | Complete spec suite inc. face + watch; `formResetCallback` clears `faceInvalid` before sync |
+| `io-tabs-bar` | No | Promoted Wave J — listed here for completeness |
+| `io-text` | No | Non-interactive passive element — click/disabled specs intentionally absent; spec + a11y required |
 
 ## Do Not Commit
 

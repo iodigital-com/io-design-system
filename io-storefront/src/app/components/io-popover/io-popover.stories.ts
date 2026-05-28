@@ -150,6 +150,59 @@ export const popoverStoryRichContent: Story<'io-popover'> = {
   ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[],
 };
 
+export const popoverStoryCloseOnClickOutsideFalse: Story<'io-popover'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-popover' as const,
+      properties: { placement: 'bottom', label: 'Settings', closeOnClickOutside: false },
+      children: [
+        {
+          tag: 'io-button' as const,
+          properties: { slot: 'trigger', size: 'sm' },
+          children: ['Open settings'],
+        },
+        {
+          tag: 'p' as const,
+          children: ['This panel stays open when you click outside — useful for filter or settings panels.'],
+        },
+      ],
+    },
+  ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[],
+};
+
+export const popoverStoryWithActions: Story<'io-popover'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-popover' as const,
+      properties: { placement: 'bottom', label: 'More actions' },
+      children: [
+        {
+          tag: 'io-button' as const,
+          properties: { slot: 'trigger', size: 'sm', variant: 'ghost' },
+          children: ['Actions'],
+        },
+        {
+          tag: 'io-button' as const,
+          properties: { size: 'sm', variant: 'ghost', style: 'display:block;width:100%;text-align:left' },
+          children: ['Edit item'],
+        },
+        {
+          tag: 'io-button' as const,
+          properties: { size: 'sm', variant: 'ghost', style: 'display:block;width:100%;text-align:left' },
+          children: ['Duplicate'],
+        },
+        {
+          tag: 'io-button' as const,
+          properties: { size: 'sm', variant: 'ghost', color: 'red', style: 'display:block;width:100%;text-align:left' },
+          children: ['Delete'],
+        },
+      ],
+    },
+  ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[],
+};
+
 // ── Prop definitions ──────────────────────────────────────────────────────────
 
 export const popoverPropDefinitions: PropDefinition[] = [

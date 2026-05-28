@@ -92,6 +92,50 @@ export default function IoSwitchUsagePage() {
         </div>
       </section>
 
+      {/* ── Form integration ─────────────────────────────────────── */}
+      <section id="form-integration" className="space-y-6">
+        <SectionHeader
+          title="Form integration"
+          description="io-switch is a form-associated custom element (FACE). It participates in native HTML forms without JavaScript."
+        />
+        <div className="space-y-3">
+          <RuleCard label="name and value">
+            Set the <C>name</C> prop to make the switch participate in form submission. The submitted value is <C>on</C> when checked — matching native checkbox behaviour. Omitting <C>name</C> excludes the switch from form data.
+          </RuleCard>
+          <RuleCard label="required">
+            Set <C>required=&quot;true&quot;</C> to mark the switch as mandatory. The switch must be checked to pass HTML5 constraint validation. Use this for consent checkboxes and mandatory agreements.
+          </RuleCard>
+          <RuleCard label="Validation timing">
+            Do not show errors before the user has interacted with the switch. Trigger validation on form submit or on the explicit <C>change</C> event — not on mount or on every render.
+          </RuleCard>
+          <RuleCard label="formResetCallback">
+            io-switch responds to form reset. When the parent form is reset, the switch reverts to its initial <C>checked</C> value and clears any <C>error</C> state. You do not need to handle form reset manually.
+          </RuleCard>
+        </div>
+      </section>
+
+      {/* ── Grouping switches ────────────────────────────────────── */}
+      <section id="grouping" className="space-y-6">
+        <SectionHeader
+          title="Grouping switches"
+          description="When displaying multiple switches together, follow these layout and accessibility patterns."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Vertical stacking">
+            Stack multiple switches vertically with consistent spacing (<C>var(--io-space-3)</C> between rows). This gives each label enough horizontal reading space and prevents switches from visually merging.
+          </RuleCard>
+          <RuleCard label="Group with a fieldset">
+            Wrap related switches in a <C>{'<fieldset>'}</C> with a <C>{'<legend>'}</C> describing the group (e.g. &ldquo;Notification preferences&rdquo;). This gives screen reader users context for the entire group, not just individual labels.
+          </RuleCard>
+          <RuleCard label="Avoid side-by-side layout">
+            Placing switches side by side without clear visual separation makes it hard for users to associate each label with the correct switch. Stack vertically or use explicit dividers.
+          </RuleCard>
+          <RuleCard label="Independent state">
+            Each io-switch manages its own checked state independently. There is no group-level API — handle group logic (e.g. a &ldquo;Select all&rdquo; control) in your application layer.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

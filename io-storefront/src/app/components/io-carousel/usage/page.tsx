@@ -79,6 +79,78 @@ export default function IoCarouselUsagePage() {
           </RuleCard>
         </div>
       </section>
+
+      <section id="slides-per-page" className="space-y-6">
+        <SectionHeader
+          title="Slides per page"
+          description="Control how many slides are visible and how far the carousel advances per button click."
+        />
+        <div className="space-y-3">
+          <RuleCard label="auto (default)">
+            The component scrolls by roughly 90% of the track width per click. Use this when child widths vary or you want free-form scrolling.
+          </RuleCard>
+          <RuleCard label="Numeric value (1–n)">
+            Set <C>slidesPerPage</C> to an integer to advance exactly that many slides per click. Combine with fixed-width children for a predictable paged experience.
+          </RuleCard>
+          <RuleCard label="Responsive sizing">
+            Apply a CSS class to the carousel host that adjusts child widths at different breakpoints. The carousel does not need to be re-initialised — it recalculates step size on each button click.
+          </RuleCard>
+        </div>
+      </section>
+
+      <section id="performance" className="space-y-6">
+        <SectionHeader
+          title="Performance"
+          description="The carousel renders all slotted children immediately — there is no lazy loading built in."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Limit item count">
+            For best scroll performance keep the item count under 20. If you need to display hundreds of items, implement virtual scrolling outside the carousel and slot only the visible window of items.
+          </RuleCard>
+          <RuleCard label="Optimise images">
+            If items contain images, apply <C>loading=&quot;lazy&quot;</C> on <C>{'<img>'}</C> elements and specify explicit <C>width</C> and <C>height</C> attributes to avoid layout shift as the page loads.
+          </RuleCard>
+          <RuleCard label="Avoid heavy DOM inside slides">
+            Each slotted child is rendered in the light DOM. Avoid placing deeply nested component trees or canvas-heavy visualisations inside slides — they are always mounted, even when scrolled off-screen.
+          </RuleCard>
+        </div>
+      </section>
+
+      <section id="mobile-and-touch" className="space-y-6">
+        <SectionHeader
+          title="Mobile and touch"
+          description="The carousel works on touch devices through native CSS overflow scroll — no custom touch handling is needed."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Touch scrolling">
+            On mobile the track scrolls natively via <C>overflow-x: auto</C> with <C>-webkit-overflow-scrolling: touch</C>. Users can swipe freely.
+          </RuleCard>
+          <RuleCard label="Prev / Next buttons on mobile">
+            The prev and next buttons remain fully functional on touch devices. Consider hiding them on small screens via CSS if the touch swipe behaviour alone is sufficient.
+          </RuleCard>
+          <RuleCard label="Min touch target">
+            Both control buttons meet the WCAG 2.5.8 minimum 24×24px target. The default icon size is 1.25rem inside a 2.5rem button — well within the target.
+          </RuleCard>
+        </div>
+      </section>
+
+      <section id="keyboard-access" className="space-y-6">
+        <SectionHeader
+          title="Keyboard access"
+          description="The carousel itself is not a roving-tabindex widget — keyboard users navigate through slotted content normally."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Tab order">
+            Focus enters the Prev button, advances through all focusable children in DOM order, then exits at the Next button. The carousel does not trap focus.
+          </RuleCard>
+          <RuleCard label="Ensure every slide has a focusable element">
+            If a slide is purely decorative (e.g. an image with no link), add a visually hidden caption or a descriptive <C>aria-label</C> to the containing element so screen reader users are aware of the slide content.
+          </RuleCard>
+          <RuleCard label="Live region announcement">
+            When the user navigates using Prev/Next buttons, the current slide position is announced via an <C>aria-live=&quot;polite&quot;</C> region (e.g. &ldquo;Slide 2 of 5&rdquo;). This is automatic.
+          </RuleCard>
+        </div>
+      </section>
     </div>
   );
 }

@@ -55,3 +55,6 @@ firebase-debug.log
 !.github/ISSUE_TEMPLATE/
 !.github/ISSUE_TEMPLATE/*.yml
 .vscode/
+# Playwright
+test-results/
+playwright-report/

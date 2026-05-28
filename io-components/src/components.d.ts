@@ -152,6 +152,10 @@ export namespace Components {
      */
     interface IoAlert {
         /**
+          * Accessible label for the dismiss button. Override this when multiple alerts appear on the same page so each button has a unique name. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
           * When true, renders a dismiss button that emits the `dismiss` event on click
           * @default false
          */
@@ -2055,6 +2059,11 @@ export namespace Components {
          */
         "color": IoTextColor;
         /**
+          * Machine-readable date/time value for `tag="time"` — maps to the HTML `datetime` attribute. Required by WCAG 1.3.1 / HTML spec when the text content alone does not express a machine-parseable date.
+          * @example <io-text tag="time" datetime="2024-12-25">Christmas Day</io-text>
+         */
+        "datetime"?: string;
+        /**
           * Single-line truncation with text-overflow: ellipsis
           * @default false
          */
@@ -3769,6 +3778,10 @@ declare namespace LocalJSX {
      */
     interface IoAlert {
         /**
+          * Accessible label for the dismiss button. Override this when multiple alerts appear on the same page so each button has a unique name. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
           * When true, renders a dismiss button that emits the `dismiss` event on click
           * @default false
          */
@@ -4911,7 +4924,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Emitted when the popover closes (Escape key or outside click)
+          * Emitted when the popover closes — Escape key, outside click, or trigger re-click while open
          */
         "onDismiss"?: (event: IoPopoverCustomEvent<void>) => void;
         /**
@@ -5703,6 +5716,11 @@ declare namespace LocalJSX {
          */
         "color"?: IoTextColor;
         /**
+          * Machine-readable date/time value for `tag="time"` — maps to the HTML `datetime` attribute. Required by WCAG 1.3.1 / HTML spec when the text content alone does not express a machine-parseable date.
+          * @example <io-text tag="time" datetime="2024-12-25">Christmas Day</io-text>
+         */
+        "datetime"?: string;
+        /**
           * Single-line truncation with text-overflow: ellipsis
           * @default false
          */
@@ -5995,6 +6013,7 @@ declare namespace LocalJSX {
         "variant": IoAlertVariant;
         "heading": string;
         "dismissible": boolean;
+        "dismissLabel": string;
     }
     interface IoAvatarAttributes {
         "src": string | undefined;
@@ -6325,6 +6344,7 @@ declare namespace LocalJSX {
         "align": IoTextAlign;
         "color": IoTextColor;
         "ellipsis": boolean;
+        "datetime": string;
     }
     interface IoTextareaAttributes {
         "label": string;

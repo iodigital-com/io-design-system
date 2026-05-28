@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import axe from 'axe-core';
 
-import { IoBanner } from './io-banner';
 import { getBannerStyles } from './io-banner-styles';
 
 function renderToHTML(props: Partial<IoBanner> = {}): string {
@@ -58,7 +57,6 @@ describe('io-banner — WCAG AA accessibility', () => {
   });
 
   it('dismiss button meets WCAG 2.5.8 minimum touch target', () => {
-    const c = new IoBanner();
     const styles = getBannerStyles();
     expect(styles).toContain('var(--io-touch-target-min)');
     expect(styles).toContain('min-width: var(--io-touch-target-min)');

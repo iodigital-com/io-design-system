@@ -14,8 +14,8 @@ declare module 'react' {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
-  'io-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBannerElement>, HTMLIoBannerElement> & Partial<StencilJSX.IoBanner>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
+  'io-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBannerElement>, HTMLIoBannerElement> & Partial<StencilJSX.IoBanner>;
   'io-breadcrumb': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbElement>, HTMLIoBreadcrumbElement> & Partial<StencilJSX.IoBreadcrumb>;
   'io-breadcrumb-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbItemElement>, HTMLIoBreadcrumbItemElement> & Partial<StencilJSX.IoBreadcrumbItem>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;

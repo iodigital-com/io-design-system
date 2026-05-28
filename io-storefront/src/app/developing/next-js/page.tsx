@@ -48,7 +48,7 @@ export default function DevelopingNextJsPage() {
           className="rounded-lg p-4 text-sm overflow-x-auto"
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
-{`npm install @io-digital/components @io-digital/components-react`}
+{`npm install @iodigital-com/components @iodigital-com/components-react`}
         </pre>
       </section>
 
@@ -70,7 +70,7 @@ export default function DevelopingNextJsPage() {
 'use client';
 
 import { useEffect } from 'react';
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 
 export function IoProvider() {
   useEffect(() => {
@@ -96,7 +96,7 @@ export function IoProvider() {
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
 {`// app/layout.tsx
-import '@io-digital/components/dist/io/io.css';
+import '@iodigital-com/components/dist/io/io.css';
 import { IoProvider } from './io-provider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -129,7 +129,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 {`// app/contact/page.tsx
 'use client';
 
-import { IoButton, IoInput } from '@io-digital/components-react';
+import { IoButton, IoInput } from '@iodigital-com/components-react';
 
 export default function ContactPage() {
   return (
@@ -166,7 +166,7 @@ export default function ContactPage() {
 {`'use client';
 
 import { useState } from 'react';
-import { IoInput, IoButton } from '@io-digital/components-react';
+import { IoInput, IoButton } from '@iodigital-com/components-react';
 
 export function SearchBar() {
   const [query, setQuery] = useState('');
@@ -241,7 +241,7 @@ export function SearchBar() {
               Component renders but is unstyled
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-              Confirm that <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`import '@io-digital/components/dist/io/io.css'`}</code>{' '}
+              Confirm that <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>{`import '@iodigital-com/components/dist/io/io.css'`}</code>{' '}
               is present in your root layout. The stylesheet provides the design tokens that all components depend on.
             </p>
           </div>
@@ -263,7 +263,7 @@ export function SearchBar() {
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
               Use the React wrapper imports from{' '}
-              <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>@io-digital/components-react</code>{' '}
+              <code className="px-1 rounded" style={{ background: 'var(--io-bg-raised)', color: 'var(--io-accent)' }}>@iodigital-com/components-react</code>{' '}
               instead of raw HTML tags. The wrapper package ships full TypeScript definitions for every component prop and event.
             </p>
           </div>

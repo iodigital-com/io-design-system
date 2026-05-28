@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Vue Integration — io Design System',
-  description: 'Use @io-digital/components-vue wrappers for fully typed props and events in Vue 3 Composition API projects.',
+  description: 'Use @iodigital-com/components-vue wrappers for fully typed props and events in Vue 3 Composition API projects.',
 };
 
 function CodeBlock({ children }: { children: string }) {
@@ -55,7 +55,7 @@ export default function DevelopingVuePage() {
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Install the core Web Components package alongside the Vue wrapper. Both are required.
         </p>
-        <CodeBlock>{`npm install @io-digital/components @io-digital/components-vue`}</CodeBlock>
+        <CodeBlock>{`npm install @iodigital-com/components @iodigital-com/components-vue`}</CodeBlock>
       </Section>
 
       <Section title="Register the loader">
@@ -65,7 +65,7 @@ export default function DevelopingVuePage() {
         </p>
         <CodeBlock>{`// main.ts
 import { createApp } from 'vue';
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 import App from './App.vue';
 
 defineCustomElements();
@@ -75,12 +75,12 @@ createApp(App).mount('#app');`}</CodeBlock>
 
       <Section title="First render">
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Import named wrapper components from <code>@io-digital/components-vue</code> and use them inside any SFC.
+          Import named wrapper components from <code>@iodigital-com/components-vue</code> and use them inside any SFC.
           The wrappers handle prop forwarding and DOM event bridging transparently.
         </p>
         <CodeBlock>{`<!-- MyComponent.vue -->
 <script setup lang="ts">
-import { IoButton, IoBadge } from '@io-digital/components-vue';
+import { IoButton, IoBadge } from '@iodigital-com/components-vue';
 </script>
 
 <template>
@@ -98,7 +98,7 @@ import { IoButton, IoBadge } from '@io-digital/components-vue';
         </p>
         <CodeBlock>{`<script setup lang="ts">
 import { ref } from 'vue';
-import { IoButton } from '@io-digital/components-vue';
+import { IoButton } from '@iodigital-com/components-vue';
 
 const loading = ref(false);
 
@@ -122,7 +122,7 @@ function submit() {
         </p>
         <CodeBlock>{`<script setup lang="ts">
 import { ref } from 'vue';
-import { IoInput } from '@io-digital/components-vue';
+import { IoInput } from '@iodigital-com/components-vue';
 
 const email = ref('');
 
@@ -155,7 +155,7 @@ function onEmailChange(event: CustomEvent<string>) {
         </p>
         <CodeBlock>{`<script setup lang="ts">
 import { ref } from 'vue';
-import { IoInput, IoSelect } from '@io-digital/components-vue';
+import { IoInput, IoSelect } from '@iodigital-com/components-vue';
 
 const name = ref('');
 const country = ref('');
@@ -260,7 +260,7 @@ describe('MyComponent', () => {
               TypeScript property errors on wrapper components
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-              The wrappers in <code>@io-digital/components-vue</code> are generated with full TypeScript types.
+              The wrappers in <code>@iodigital-com/components-vue</code> are generated with full TypeScript types.
               Make sure your <code>tsconfig.json</code> includes <code>node_modules/@io-digital</code> in its
               type resolution paths and that you are on Vue 3.4 or later.
             </p>

@@ -658,7 +658,7 @@ gh pr list --repo iodigital-com/io-design-system \
 
 > Skip this step if you ran `npm run changeset:add` during Phase 4–6 and the changeset file is already merged with this PR.
 
-A changeset is required whenever a PR changes user-facing behaviour in a published package (`@io-digital/components`, `@io-digital/components-react`, `@io-digital/components-vue`, `@io-digital/components-angular`). If the PR had no changeset, add one to `main` now:
+A changeset is required whenever a PR changes user-facing behaviour in a published package (`@iodigital-com/components`, `@iodigital-com/components-react`, `@iodigital-com/components-vue`, `@iodigital-com/components-angular`). If the PR had no changeset, add one to `main` now:
 
 ```bash
 git checkout main && git pull origin main
@@ -707,7 +707,7 @@ gh pr diff ${RELEASE_PR} --repo iodigital-com/io-design-system | \
 
 Confirm:
 - Only packages that changed in this wave are bumped.
-- `@io-digital/storefront` is **not** in the changeset (it is ignored in `.changeset/config.json`).
+- `@iodigital-com/storefront` is **not** in the changeset (it is ignored in `.changeset/config.json`).
 - The bump level matches the change type (patch for fixes, minor for new API surface, major for breaking).
 
 ⚠️ **Do NOT merge the Release PR yourself.** Leave that to the repo owner. Your job is to verify correctness and notify.
@@ -851,10 +851,10 @@ Confirm each bumped package is live. Replace `x.y.z` with the version from the R
 RELEASED_VERSION="x.y.z"   # e.g. 2.1.2
 
 for pkg in \
-  "@io-digital/components" \
-  "@io-digital/components-react" \
-  "@io-digital/components-vue" \
-  "@io-digital/components-angular"; do
+  "@iodigital-com/components" \
+  "@iodigital-com/components-react" \
+  "@iodigital-com/components-vue" \
+  "@iodigital-com/components-angular"; do
   result=$(npm view "${pkg}@${RELEASED_VERSION}" version \
     --registry https://npm.pkg.github.com 2>/dev/null)
   if [ "$result" = "$RELEASED_VERSION" ]; then
@@ -869,7 +869,7 @@ done
 
 ### Step 6 — Smoke-test the published package
 
-Install the just-published `@io-digital/components` in a clean temporary directory to verify the package is complete and importable:
+Install the just-published `@iodigital-com/components` in a clean temporary directory to verify the package is complete and importable:
 
 ```bash
 RELEASED_VERSION="x.y.z"   # replace with the released version
@@ -885,13 +885,13 @@ cat > .npmrc << 'EOF'
 EOF
 
 # Install the just-published core package
-npm install "@io-digital/components@${RELEASED_VERSION}"
+npm install "@iodigital-com/components@${RELEASED_VERSION}"
 
 # Verify key exports and version integrity
 node -e "
-const loaderPath  = require.resolve('@io-digital/components/loader');
-const mainPath    = require.resolve('@io-digital/components');
-const pkgJson     = require('@io-digital/components/package.json');
+const loaderPath  = require.resolve('@iodigital-com/components/loader');
+const mainPath    = require.resolve('@iodigital-com/components');
+const pkgJson     = require('@iodigital-com/components/package.json');
 const expected    = '${RELEASED_VERSION}';
 
 console.log('✅ Main entry:  ', mainPath);
@@ -1028,7 +1028,7 @@ Add `NPM_TOKEN` at: GitHub repo → Settings → Secrets and variables → Actio
 - [ ] Storefront deployed: `cd io-storefront && firebase deploy --only hosting`
 - [ ] Live site verified at `https://io-design-system-showcase.web.app`
 - [ ] (Post Release PR merge) All bumped packages verified on GitHub Packages registry
-- [ ] (Post Release PR merge) Smoke test passed for `@io-digital/components`
+- [ ] (Post Release PR merge) Smoke test passed for `@iodigital-com/components`
 - [ ] (Post Issue #276) `release-packages.yml` tags pushed; GitHub Packages mirror verified
 
 ---

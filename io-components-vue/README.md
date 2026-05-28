@@ -1,13 +1,13 @@
-# @io-digital/components-vue
+# @iodigital-com/components-vue
 
 Vue 3 wrapper package for [io Digital Web Components](https://github.com/iodigital-com/io-design-system).
 
-This package provides fully-typed Vue 3 components that wrap the `@io-digital/components` Stencil web components. Each component is a thin Vue binding — props, events (`v-on`), and template refs work exactly as expected in a Vue 3 application.
+This package provides fully-typed Vue 3 components that wrap the `@iodigital-com/components` Stencil web components. Each component is a thin Vue binding — props, events (`v-on`), and template refs work exactly as expected in a Vue 3 application.
 
 ## Installation
 
 ```bash
-npm install @io-digital/components-vue @io-digital/components
+npm install @iodigital-com/components-vue @iodigital-com/components
 ```
 
 Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
@@ -22,22 +22,22 @@ Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
 | Package | Required version |
 |---|---|
 | `vue` | `^3.4.0` |
-| `@io-digital/components` | `^1.2.0` |
+| `@iodigital-com/components` | `^1.2.0` |
 
 ## Quick start
 
-Import the global stylesheet from `@io-digital/components` once in your application entry point:
+Import the global stylesheet from `@iodigital-com/components` once in your application entry point:
 
 ```ts
 // main.ts
-import '@io-digital/components/dist/io-components/io-components.css';
+import '@iodigital-com/components/dist/io-components/io-components.css';
 ```
 
 Then use any component directly in your templates:
 
 ```vue
 <script setup lang="ts">
-import { IoButton, IoInput, IoSelect } from '@io-digital/components-vue';
+import { IoButton, IoInput, IoSelect } from '@iodigital-com/components-vue';
 </script>
 
 <template>
@@ -61,7 +61,7 @@ Custom events are emitted as camelCase `onEventName` props or can be listened to
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IoTabs } from '@io-digital/components-vue';
+import { IoTabs } from '@iodigital-com/components-vue';
 
 const activeTab = ref(0);
 </script>
@@ -84,7 +84,7 @@ Access the underlying web component element via `ref`:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IoModal } from '@io-digital/components-vue';
+import { IoModal } from '@iodigital-com/components-vue';
 
 const modalRef = ref<HTMLIoModalElement | null>(null);
 

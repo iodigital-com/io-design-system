@@ -1,7 +1,7 @@
 /**
  * stencil.config.ts — The Engine Room
  * ====================================
- * Compiler configuration for @io-digital/components.
+ * Compiler configuration for @iodigital-com/components.
  *
  * Output targets:
  *   dist                  → lazy-loaded NPM pkg (bundled apps / vite / webpack)
@@ -10,7 +10,7 @@
  *   www                   → local dev server
  *
  * Framework wrapper packages are generated automatically by the proxy output targets.
- * Each proxy package declares @io-digital/components as a peer dependency and lives in a
+ * Each proxy package declares @iodigital-com/components as a peer dependency and lives in a
  * sibling directory (../io-components-react, etc.).
  */
 
@@ -86,7 +86,7 @@ export const config: Config = {
      *
      * When enabled this target produces a Node.js-compatible hydrate bundle at
      * `dist/hydrate/index.js`. Consuming apps can call renderToString() from
-     * `@io-digital/components/hydrate` to pre-render component HTML server-side.
+     * `@iodigital-com/components/hydrate` to pre-render component HTML server-side.
      *
      * CURRENT STATUS: commented-out.
      * The storefront uses `output: 'export'` (100% static HTML, no Node.js server
@@ -127,7 +127,7 @@ export const config: Config = {
      * Output path: ../io-components-react/src/components.ts
      */
     reactOutputTarget({
-      componentCorePackage: "@io-digital/components",
+      componentCorePackage: "@iodigital-com/components",
       proxiesFile: "../io-components-react/src/components.ts",
       includeDefineCustomElements: true,
     }),
@@ -138,7 +138,7 @@ export const config: Config = {
      * Output path: ../io-components-vue/src/components.ts
      */
     vueOutputTarget({
-      componentCorePackage: "@io-digital/components",
+      componentCorePackage: "@iodigital-com/components",
       proxiesFile: "../io-components-vue/src/components.ts",
     }),
 
@@ -148,7 +148,7 @@ export const config: Config = {
      * Output path: ../io-components-angular/src/directives/proxies.ts
      */
     angularOutputTarget({
-      componentCorePackage: "@io-digital/components",
+      componentCorePackage: "@iodigital-com/components",
       outputType: "component",
       directivesProxyFile:
         "../io-components-angular/src/directives/proxies.ts",

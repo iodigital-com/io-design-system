@@ -330,7 +330,7 @@ export default function FocusPage() {
               language: 'typescript',
               code: `// app.component.ts
 import { Component, OnInit } from '@angular/core';
-import { initFocusVisible } from '@io-digital/components/utils/focus-visible';
+import { initFocusVisible } from '@iodigital-com/components/utils/focus-visible';
 
 @Component({ selector: 'app-root', templateUrl: './app.component.html' })
 export class AppComponent implements OnInit {
@@ -346,7 +346,7 @@ export class AppComponent implements OnInit {
 'use client';
 
 import { useEffect } from 'react';
-import { initFocusVisible } from '@io-digital/components/utils/focus-visible';
+import { initFocusVisible } from '@iodigital-com/components/utils/focus-visible';
 
 export function FocusInit() {
   useEffect(() => {
@@ -360,7 +360,7 @@ export function FocusInit() {
               language: 'html',
               code: `<!-- In your main entry script (vanilla JS / CDN) -->
 <script type="module">
-  import { initFocusVisible } from '@io-digital/components/dist/utils.js';
+  import { initFocusVisible } from '@iodigital-com/components/dist/utils.js';
   initFocusVisible();
 </script>
 

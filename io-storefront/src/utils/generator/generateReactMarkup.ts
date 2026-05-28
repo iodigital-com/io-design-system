@@ -18,7 +18,7 @@ export function generateReactMarkup(
   const ioImports = collectIoComponents(filtered);
   const importLine =
     ioImports.length > 0
-      ? `import { ${ioImports.join(', ')} } from '@io-digital/components-react';`
+      ? `import { ${ioImports.join(', ')} } from '@iodigital-com/components-react';`
       : null;
 
   return [

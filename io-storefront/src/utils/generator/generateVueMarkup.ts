@@ -16,7 +16,7 @@ export function generateVueMarkup(
   const ioImports = collectIoComponents(filtered);
   const scriptBlock =
     ioImports.length > 0
-      ? `<script setup lang="ts">\nimport { ${ioImports.join(', ')} } from '@io-digital/components-vue';\n</script>\n\n`
+      ? `<script setup lang="ts">\nimport { ${ioImports.join(', ')} } from '@iodigital-com/components-vue';\n</script>\n\n`
       : '';
 
   return `${scriptBlock}<template>\n${body}\n</template>`;

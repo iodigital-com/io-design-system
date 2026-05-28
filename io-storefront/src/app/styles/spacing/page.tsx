@@ -349,7 +349,7 @@ export default function SpacingPage() {
             },
             {
               label: 'React',
-              code: `import { space2, space4, space6, space16 } from '@io-digital/components/styles';
+              code: `import { space2, space4, space6, space16 } from '@iodigital-com/components/styles';
 
 /* Use JS exports in CSS-in-JS or inline styles */
 <div style={{ padding: space6, gap: space4 }}>

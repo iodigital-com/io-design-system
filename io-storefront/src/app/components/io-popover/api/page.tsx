@@ -192,7 +192,7 @@ export default function IoPopoverApiPage() {
 </template>
 
 <script setup lang="ts">
-import { IoPopover, IoButton } from '@io-digital/components-vue';
+import { IoPopover, IoButton } from '@iodigital-com/components-vue';
 </script>`}
         </CodeNote>
       </section>

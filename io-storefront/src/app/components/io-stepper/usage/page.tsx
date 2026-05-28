@@ -68,7 +68,7 @@ export default function IoStepperUsagePage() {
             },
             {
               label: 'React',
-              code: `import { IoStepper, IoStep } from '@io-digital/components-react';
+              code: `import { IoStepper, IoStep } from '@iodigital-com/components-react';
 
 <IoStepper current={2} orientation="horizontal">
   <IoStep label="Account" />

@@ -1,5 +1,5 @@
 {
-  "name": "@io-digital/components-vue",
+  "name": "@iodigital-com/components-vue",
   "version": "7.0.0",
   "description": "Vue 3 wrapper package for io Digital Web Components.",
   "homepage": "https://io-design-system.iodigital.com",
@@ -31,11 +31,11 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@io-digital/components": "^3.0.0",
+    "@iodigital-com/components": "^3.0.0",
     "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@io-digital/components": "file:../io-components",
+    "@iodigital-com/components": "file:../io-components",
     "typescript": "^5.7.2",
     "vue": "^3.5.0"
   },

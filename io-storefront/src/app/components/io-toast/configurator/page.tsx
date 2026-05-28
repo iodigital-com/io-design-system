@@ -43,7 +43,7 @@ function App() {
   );
 }`,
     angular: `import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IoToast, IoButton, ToastManager } from '@io-digital/components-angular';
+import { IoToast, IoButton, ToastManager } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',

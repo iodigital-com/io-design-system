@@ -19,7 +19,7 @@ export function generateAngularMarkup(
 
   const lines = ["import { ChangeDetectionStrategy, Component } from '@angular/core';"];
   if (ioImports.length > 0) {
-    lines.push(`import { ${ioImports.join(', ')} } from '@io-digital/components-angular';`);
+    lines.push(`import { ${ioImports.join(', ')} } from '@iodigital-com/components-angular';`);
   }
   lines.push(
     '',

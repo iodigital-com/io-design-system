@@ -1,5 +1,5 @@
 /**
- * @io-digital/components-angular public API
+ * @iodigital-com/components-angular public API
  */
 
 export * from './directives/proxies';

@@ -13,8 +13,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@io-digital/components": ["../io-components/dist/types/components.d.ts"],
-      "@io-digital/components/loader": ["../io-components/dist/loader/index.d.ts"]
+      "@iodigital-com/components": ["../io-components/dist/types/components.d.ts"],
+      "@iodigital-com/components/loader": ["../io-components/dist/loader/index.d.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "../io-components/dist/types/components.d.ts"]

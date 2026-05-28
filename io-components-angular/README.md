@@ -1,13 +1,13 @@
-# @io-digital/components-angular
+# @iodigital-com/components-angular
 
 Angular wrapper package for [io Digital Web Components](https://github.com/iodigital-com/io-design-system).
 
-This package provides fully-typed Angular components and directives that wrap the `@io-digital/components` Stencil web components. Components integrate naturally with Angular's template syntax, reactive forms, and change detection.
+This package provides fully-typed Angular components and directives that wrap the `@iodigital-com/components` Stencil web components. Components integrate naturally with Angular's template syntax, reactive forms, and change detection.
 
 ## Installation
 
 ```bash
-npm install @io-digital/components-angular @io-digital/components
+npm install @iodigital-com/components-angular @iodigital-com/components
 ```
 
 Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
@@ -23,17 +23,17 @@ Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
 |---|---|
 | `@angular/core` | `>=17.0.0 <21.0.0` |
 | `rxjs` | `^7.8.0` |
-| `@io-digital/components` | `^1.2.0` |
+| `@iodigital-com/components` | `^1.2.0` |
 
 ## Setup
 
 ### 1. Add global styles
 
-Import the global stylesheet from `@io-digital/components` in your `angular.json`:
+Import the global stylesheet from `@iodigital-com/components` in your `angular.json`:
 
 ```json
 "styles": [
-  "node_modules/@io-digital/components/dist/io-components/io-components.css",
+  "node_modules/@iodigital-com/components/dist/io-components/io-components.css",
   "src/styles.css"
 ]
 ```
@@ -41,7 +41,7 @@ Import the global stylesheet from `@io-digital/components` in your `angular.json
 Or import it directly in your root stylesheet (`src/styles.css`):
 
 ```css
-@import '@io-digital/components/dist/io-components/io-components.css';
+@import '@iodigital-com/components/dist/io-components/io-components.css';
 ```
 
 ### 2. Enable custom elements schema (standalone components)
@@ -51,7 +51,7 @@ In each standalone component or module that uses io components, add `CUSTOM_ELEM
 ```ts
 // app.component.ts (standalone)
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { IoButtonModule, IoInputModule } from '@io-digital/components-angular';
+import { IoButtonModule, IoInputModule } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',
@@ -72,7 +72,7 @@ export class AppComponent {
 
 ```ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { IoComponentsAngularModule } from '@io-digital/components-angular';
+import { IoComponentsAngularModule } from '@iodigital-com/components-angular';
 
 @NgModule({
   imports: [IoComponentsAngularModule],

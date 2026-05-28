@@ -695,7 +695,7 @@ export default function TypographyPage() {
             },
             {
               label: 'React',
-              code: `import { fontPrimary, fontWeightBold, fontWeightSemibold } from '@io-digital/components/styles';
+              code: `import { fontPrimary, fontWeightBold, fontWeightSemibold } from '@iodigital-com/components/styles';
 
 /* Use JS token exports in CSS-in-JS or inline styles */
 <h1 style={{ fontFamily: fontPrimary, fontWeight: fontWeightBold }}>

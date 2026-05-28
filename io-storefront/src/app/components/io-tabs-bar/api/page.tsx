@@ -159,7 +159,7 @@ function ProductTabBar() {
 // Angular (standalone) with Angular Router
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { IoTabsBar } from '@io-digital/components-angular';
+import { IoTabsBar } from '@iodigital-com/components-angular';
 
 const TAB_ROUTES = ['/products/overview', '/products/details', '/products/settings'];
 

@@ -44,7 +44,7 @@ npm run dev
 
 ```
 io-design-system/
-├── io-components/           # @io-digital/components — core Stencil package
+├── io-components/           # @iodigital-com/components — core Stencil package
 │   ├── src/
 │   │   ├── components/      # One directory per component
 │   │   ├── global/
@@ -59,9 +59,9 @@ io-design-system/
 │       ├── components/      # Shared UI (layout, playground, configurator)
 │       ├── utils/generator/ # Code generation utilities
 │       └── sitemap.ts       # Navigation tree
-├── io-components-react/     # @io-digital/components-react — auto-generated wrappers
-├── io-components-vue/       # @io-digital/components-vue — auto-generated wrappers
-└── io-components-angular/   # @io-digital/components-angular — auto-generated wrappers
+├── io-components-react/     # @iodigital-com/components-react — auto-generated wrappers
+├── io-components-vue/       # @iodigital-com/components-vue — auto-generated wrappers
+└── io-components-angular/   # @iodigital-com/components-angular — auto-generated wrappers
 ```
 
 ---
@@ -565,7 +565,7 @@ This repo uses [Changesets](https://github.com/changesets/changesets) for automa
 
 ### Adding a changeset to your PR
 
-Every PR that changes user-facing behaviour in a published package (`@io-digital/components`, `-react`, `-vue`, `-angular`) must include a changeset entry:
+Every PR that changes user-facing behaviour in a published package (`@iodigital-com/components`, `-react`, `-vue`, `-angular`) must include a changeset entry:
 
 ```bash
 npm run changeset:add

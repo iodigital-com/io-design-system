@@ -229,7 +229,7 @@ export default function IoButtonUsagePage() {
             },
             {
               label: 'React',
-              code: `import { IoButton } from '@io-digital/components-react';
+              code: `import { IoButton } from '@iodigital-com/components-react';
 
 // Internal navigation
 <IoButton href="/pricing" color="blue" variant="solid" arrow="forward">

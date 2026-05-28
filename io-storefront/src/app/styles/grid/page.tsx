@@ -525,7 +525,7 @@ export default function GridPage() {
             },
             {
               label: 'React',
-              code: `import { gridStyle, getMediaQueryMin } from '@io-digital/components/styles';
+              code: `import { gridStyle, getMediaQueryMin } from '@iodigital-com/components/styles';
 
 /* Use gridStyle() helper for inline grid layouts */
 <div style={gridStyle(12, 'var(--io-space-6)')}>

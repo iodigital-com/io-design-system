@@ -18,11 +18,11 @@ This repository is responsible for all of the following:
 
 | Package/Area | Name | Purpose | Published |
 |---|---|---|---|
-| Stencil core | @io-digital/components | Source of truth for all components and tokens | Yes |
-| React wrappers | @io-digital/components-react | Auto-generated React wrappers around core components | Yes |
-| Vue wrappers | @io-digital/components-vue | Auto-generated Vue wrappers around core components | Yes |
-| Angular wrappers | @io-digital/components-angular | Auto-generated Angular wrappers around core components | Yes |
-| Storefront | @io-digital/storefront | Internal docs/playground site | No (private) |
+| Stencil core | @iodigital-com/components | Source of truth for all components and tokens | Yes |
+| React wrappers | @iodigital-com/components-react | Auto-generated React wrappers around core components | Yes |
+| Vue wrappers | @iodigital-com/components-vue | Auto-generated Vue wrappers around core components | Yes |
+| Angular wrappers | @iodigital-com/components-angular | Auto-generated Angular wrappers around core components | Yes |
+| Storefront | @iodigital-com/storefront | Internal docs/playground site | No (private) |
 | Scripts | scripts/ | Governance checks, sync helpers, automation | N/A |
 | Docs artifacts | docs/ | API snapshots, governance docs, token docs | N/A |
 
@@ -226,21 +226,21 @@ always-auth=true
 Install core only (vanilla web components):
 
 ```bash
-npm install @io-digital/components
+npm install @iodigital-com/components
 ```
 
 Install with framework wrappers:
 
 ```bash
-npm install @io-digital/components @io-digital/components-react
-npm install @io-digital/components @io-digital/components-vue
-npm install @io-digital/components @io-digital/components-angular
+npm install @iodigital-com/components @iodigital-com/components-react
+npm install @iodigital-com/components @iodigital-com/components-vue
+npm install @iodigital-com/components @iodigital-com/components-angular
 ```
 
 ### Vanilla usage
 
 ```ts
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 
 defineCustomElements();
 ```
@@ -252,7 +252,7 @@ defineCustomElements();
 ### React usage
 
 ```tsx
-import { IoButton } from '@io-digital/components-react';
+import { IoButton } from '@iodigital-com/components-react';
 
 export function Example() {
   return <IoButton variant="solid" color="blue" size="md">Get started</IoButton>;
@@ -263,7 +263,7 @@ export function Example() {
 
 ```vue
 <script setup lang="ts">
-import { IoButton } from '@io-digital/components-vue';
+import { IoButton } from '@iodigital-com/components-vue';
 </script>
 
 <template>
@@ -275,7 +275,7 @@ import { IoButton } from '@io-digital/components-vue';
 
 ```ts
 import { NgModule } from '@angular/core';
-import { IoComponentsAngularModule } from '@io-digital/components-angular';
+import { IoComponentsAngularModule } from '@iodigital-com/components-angular';
 
 @NgModule({
   imports: [IoComponentsAngularModule],
@@ -445,10 +445,10 @@ If doing a local/manual publish:
 npm ci
 npm run build:quality-gates
 
-npm publish --workspace @io-digital/components --registry https://npm.pkg.github.com
-npm publish --workspace @io-digital/components-react --registry https://npm.pkg.github.com
-npm publish --workspace @io-digital/components-vue --registry https://npm.pkg.github.com
-npm publish --workspace @io-digital/components-angular --registry https://npm.pkg.github.com
+npm publish --workspace @iodigital-com/components --registry https://npm.pkg.github.com
+npm publish --workspace @iodigital-com/components-react --registry https://npm.pkg.github.com
+npm publish --workspace @iodigital-com/components-vue --registry https://npm.pkg.github.com
+npm publish --workspace @iodigital-com/components-angular --registry https://npm.pkg.github.com
 ```
 
 Publish core first, then wrappers.
@@ -483,8 +483,8 @@ Useful checks:
 
 ```bash
 npm config get @io-digital:registry
-npm view @io-digital/components versions --registry https://npm.pkg.github.com
-npm ls @io-digital/components
+npm view @iodigital-com/components versions --registry https://npm.pkg.github.com
+npm ls @iodigital-com/components
 ```
 
 ## Security and Governance Notes
@@ -508,7 +508,7 @@ If you are new to the repo, start with this README, then move to CONTRIBUTING.md
 
 ### Which package should I install first?
 
-Always start with @io-digital/components. If you use a framework, add its wrapper package as well.
+Always start with @iodigital-com/components. If you use a framework, add its wrapper package as well.
 
 ### Is io-storefront published to npm?
 

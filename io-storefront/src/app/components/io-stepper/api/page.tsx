@@ -65,7 +65,7 @@ export default function IoStepperApiPage() {
 </io-stepper>
 
 // React
-import { IoStepper, IoStep } from '@io-digital/components-react';
+import { IoStepper, IoStep } from '@iodigital-com/components-react';
 
 <IoStepper current={2}>
   <IoStep label="Account" />

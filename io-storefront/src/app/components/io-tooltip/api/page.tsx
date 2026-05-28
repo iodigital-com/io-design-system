@@ -102,7 +102,7 @@ function App() {
 
 // Angular (standalone) — bind attributes directly
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IoButton } from '@io-digital/components-angular';
+import { IoButton } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',
@@ -131,7 +131,7 @@ export class AppComponent {}
 </template>
 
 <script setup lang="ts">
-import { IoButton } from '@io-digital/components-vue';
+import { IoButton } from '@iodigital-com/components-vue';
 </script>`}
         </CodeNote>
       </section>

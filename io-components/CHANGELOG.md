@@ -1,4 +1,4 @@
-# @io-digital/components
+# @iodigital-com/components
 
 ## 3.0.0
 
@@ -506,13 +506,13 @@
 - 7094392: fix(io-carousel): change update event from bubbles:false to bubbles:true, composed:true so React/Vue/Angular wrapper listeners receive it reliably
 - 74bb10f: chore(io-skeleton): remove io-skeleton component
 
-  Removes `io-skeleton` from `@io-digital/components`. Product pages implement their own skeleton layouts using standard HTML and CSS — a dedicated component is unnecessary.
+  Removes `io-skeleton` from `@iodigital-com/components`. Product pages implement their own skeleton layouts using standard HTML and CSS — a dedicated component is unnecessary.
 
   Note: `io-skeleton` was in beta status. Beta components do not carry semver guarantees — removal is treated as a patch-level change per project policy.
 
   - Deleted `io-skeleton` Stencil component and all associated files
   - Removed `--io-skeleton-*` CSS tokens and `@keyframes io-skeleton-pulse` from global tokens
-  - Removed `getSkeletonStyle` utility from `@io-digital/components/styles`
+  - Removed `getSkeletonStyle` utility from `@iodigital-com/components/styles`
   - Removed storefront pages (configurator, examples, usage, accessibility, API)
   - Updated governance docs, public CSS API registry, and reconciliation manifests
 

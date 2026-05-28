@@ -29,7 +29,7 @@ npm run build:storefront      # Next.js docs site only
 ## Architecture
 
 ```
-io-components/          @io-digital/components — Stencil core (edit here)
+io-components/          @iodigital-com/components — Stencil core (edit here)
   src/components/       One directory per component (io-button/, io-modal/, …)
   src/global/app.css    Design tokens as CSS custom properties on :root
   src/global/app.ts     Global script — calls initFocusVisible()
@@ -372,7 +372,7 @@ Example: `feat(io-button): add xl size variant`
 Stencil web components rely on browser globals (`window`, `document`, `HTMLElement`,
 `customElements`) at module evaluation time. These do not exist in the Node.js environment
 that Next.js uses during static-site generation (`npm run build:storefront`). Any file that
-imports from `@io-digital/components` at the JS module level — or calls Web APIs at the top
+imports from `@iodigital-com/components` at the JS module level — or calls Web APIs at the top
 level — will crash the Next.js build with `ReferenceError: window is not defined`.
 
 ### How the storefront avoids this
@@ -400,13 +400,13 @@ during static page generation, not at request time.
 | Rule | Reason |
 |---|---|
 | Every page/component that references `window`, `document`, `navigator`, or any DOM API **must** begin with `'use client';` | Marks the file as a React Client Component — Next.js only evaluates it in the browser |
-| Never import from `@io-digital/components` (the Stencil package) in a Server Component | The Stencil package imports DOM APIs at the top level |
+| Never import from `@iodigital-com/components` (the Stencil package) in a Server Component | The Stencil package imports DOM APIs at the top level |
 | `custom-elements.d.ts` type imports are safe anywhere | They are erased at compile time; no runtime impact |
 | Utility functions that touch the DOM must guard with `if (typeof document === 'undefined') return;` | Prevents crashes when the module is evaluated in Node.js during static generation |
 
 ### The `dynamic()` pattern for any direct Stencil ES imports
 
-If a future page needs to import a value (not just types) from `@io-digital/components`
+If a future page needs to import a value (not just types) from `@iodigital-com/components`
 inside a Server Component, wrap it with Next.js `dynamic()` and `ssr: false`:
 
 ```tsx
@@ -425,10 +425,10 @@ Any component file referenced by `dynamic(..., { ssr: false })` must itself star
 ### How `StencilInit` bridges hydration timing
 
 `io-storefront/src/components/layout/StencilInit.tsx` is the only storefront file that
-imports a runtime value from `@io-digital/components`:
+imports a runtime value from `@iodigital-com/components`:
 
 ```ts
-import { initTooltipAttribute } from '@io-digital/components/utils/tooltip-init';
+import { initTooltipAttribute } from '@iodigital-com/components/utils/tooltip-init';
 ```
 
 This is safe because:
@@ -445,7 +445,7 @@ React Server Components with server-rendered Stencil HTML), activate the
 
 1. Uncomment the `dist-hydrate-script` block in `stencil.config.ts`.
 2. Run `npm run build:components` to generate `io-components/dist/hydrate/index.js`.
-3. In server-side pages, use `renderToString` from `@io-digital/components/hydrate`
+3. In server-side pages, use `renderToString` from `@iodigital-com/components/hydrate`
    to pre-render component HTML before sending to the client.
 
 The commented-out target block and full activation instructions are in

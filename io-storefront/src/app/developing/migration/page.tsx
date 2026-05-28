@@ -39,7 +39,7 @@ const TOKEN_REMAP_ROWS: [string, string, string, string][] = [
 ];
 
 const CHECKLIST_ITEMS = [
-  'Install @io-digital/components and import io-components.css in your app entry point',
+  'Install @iodigital-com/components and import io-components.css in your app entry point',
   'Register Web Components once — call defineCustomElements() before mounting your framework',
   'Replace each MUI / Ant Design / Bootstrap component with its io-digital equivalent (see component map above)',
   'Migrate CSS variable references — replace theme tokens with --io-* equivalents (see token remapping)',
@@ -121,7 +121,7 @@ export default function Page() {
 // Alternatively, wrap the defineCustomElements() call in a useEffect
 // so it only runs in the browser:
 import { useEffect } from 'react';
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 
 export function IoProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -146,7 +146,7 @@ export function IoProvider({ children }: { children: React.ReactNode }) {
 </form>`;
 
   const themeSetupCode = `/* 1. Import the io Design System CSS (tokens + component styles) */
-@import '@io-digital/components/dist/io-components/io-components.css';
+@import '@iodigital-com/components/dist/io-components/io-components.css';
 
 /* 2. Remove your old library stylesheet imports, e.g.:
    @import 'bootstrap/dist/css/bootstrap.css';           -- remove
@@ -201,7 +201,7 @@ export function IoProvider({ children }: { children: React.ReactNode }) {
         >
           <p className="text-sm leading-6" style={{ color: 'var(--io-text-secondary)' }}>
             <strong style={{ color: 'var(--io-text-primary)' }}>Regardless of approach:</strong> install{' '}
-            <InlineCode>@io-digital/components</InlineCode> and import the design system stylesheet early. The{' '}
+            <InlineCode>@iodigital-com/components</InlineCode> and import the design system stylesheet early. The{' '}
             <InlineCode>--io-*</InlineCode> tokens will be available immediately without conflicting with your existing library.
           </p>
         </div>
@@ -470,7 +470,7 @@ export function IoProvider({ children }: { children: React.ReactNode }) {
               }}
             >
               {`// global.d.ts — import the io Design System JSX/HTML type augmentation
-import '@io-digital/components';
+import '@iodigital-com/components';
 
 // Or in tsconfig.json compilerOptions.types if a @types package is available`}
             </pre>

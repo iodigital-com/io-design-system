@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Angular Integration — io Design System',
-  description: 'Use @io-digital/components-angular standalone wrappers with OnPush change detection support.',
+  description: 'Use @iodigital-com/components-angular standalone wrappers with OnPush change detection support.',
 };
 
 export default function DevelopingAngularPage() {
@@ -27,7 +27,7 @@ export default function DevelopingAngularPage() {
           className="rounded-lg p-4 text-sm overflow-x-auto"
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
-{`npm install @io-digital/components @io-digital/components-angular`}
+{`npm install @iodigital-com/components @iodigital-com/components-angular`}
         </pre>
       </section>
 
@@ -45,7 +45,7 @@ export default function DevelopingAngularPage() {
         >
 {`// app.component.ts
 import { Component } from '@angular/core';
-import { IoButtonComponent, IoInputComponent } from '@io-digital/components-angular';
+import { IoButtonComponent, IoInputComponent } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',
@@ -94,7 +94,7 @@ export class AppComponent {}`}
         >
 {`// app.component.ts
 import { Component } from '@angular/core';
-import { IoButtonComponent, IoInputComponent } from '@io-digital/components-angular';
+import { IoButtonComponent, IoInputComponent } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',
@@ -161,7 +161,7 @@ export class AppComponent {
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
 {`import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IoButtonComponent } from '@io-digital/components-angular';
+import { IoButtonComponent } from '@iodigital-com/components-angular';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -218,7 +218,7 @@ describe('AppComponent', () => {
               className="rounded-lg p-3 text-sm mt-2 overflow-x-auto"
               style={{ background: 'var(--io-bg-base)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
             >
-{`@import '@io-digital/components/dist/io/io.css';`}
+{`@import '@iodigital-com/components/dist/io/io.css';`}
             </pre>
           </div>
         </div>

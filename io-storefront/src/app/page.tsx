@@ -84,13 +84,13 @@ const STEPS = [
   {
     number: '01',
     title: 'Add the package',
-    code: 'npm install @io-digital/components',
+    code: 'npm install @iodigital-com/components',
   },
   {
     number: '02',
     title: 'Load styles and loader',
-    code: `<link rel="stylesheet" href="node_modules/@io-digital/components/dist/io-components/io-components.css">
-<script type="module" src="node_modules/@io-digital/components/dist/io-components/io-components.esm.js"></script>`,
+    code: `<link rel="stylesheet" href="node_modules/@iodigital-com/components/dist/io-components/io-components.css">
+<script type="module" src="node_modules/@iodigital-com/components/dist/io-components/io-components.esm.js"></script>`,
   },
   {
     number: '03',
@@ -192,7 +192,7 @@ export default function GettingStarted() {
 
           <div className="relative group">
             <CopyButton
-              text="npm install @io-digital/components"
+              text="npm install @iodigital-com/components"
               ariaLabel="Copy quick start install command"
               className="absolute right-3 top-3 z-10"
             />
@@ -200,7 +200,7 @@ export default function GettingStarted() {
               className="rounded-md px-4 py-3 pr-16 text-sm overflow-x-auto"
               style={{ background: 'var(--io-bg-surface)', color: '#d4d4d4' }}
             >
-              <code>npm install @io-digital/components</code>
+              <code>npm install @iodigital-com/components</code>
             </pre>
           </div>
         </div>

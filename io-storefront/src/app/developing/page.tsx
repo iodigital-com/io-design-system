@@ -20,35 +20,35 @@ const FRAMEWORKS: Framework[] = [
     href: '/developing/vanilla-js',
     status: 'available',
     description: 'Load via CDN or npm. No build step required — drop the script tag and use io-* elements directly in any HTML page.',
-    package: '@io-digital/components',
+    package: '@iodigital-com/components',
   },
   {
     name: 'React',
     href: '/developing/react',
     status: 'available',
     description: 'First-class React wrappers with typed props and strongly-typed event bindings for a seamless developer experience.',
-    package: '@io-digital/components-react',
+    package: '@iodigital-com/components-react',
   },
   {
     name: 'Next.js',
     href: '/developing/next-js',
     status: 'available',
     description: 'App Router–compatible setup with dynamic import patterns to keep Web Component hydration safe in server components.',
-    package: '@io-digital/components-react',
+    package: '@iodigital-com/components-react',
   },
   {
     name: 'Angular',
     href: '/developing/angular',
     status: 'available',
     description: 'Angular wrapper components with CUSTOM_ELEMENTS_SCHEMA setup, standalone imports, and full template support.',
-    package: '@io-digital/components-angular',
+    package: '@iodigital-com/components-angular',
   },
   {
     name: 'Vue',
     href: '/developing/vue',
     status: 'available',
     description: 'Vue wrapper components built with defineCustomElement. Works with both Vue 3 and Nuxt composition APIs.',
-    package: '@io-digital/components-vue',
+    package: '@iodigital-com/components-vue',
   },
 ];
 
@@ -234,7 +234,7 @@ export default function DevelopingPage() {
                 fontFamily: 'ui-monospace, "Cascadia Mono", "Fira Code", monospace',
               }}
             >
-              @io-digital/components
+              @iodigital-com/components
             </code>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
               Use this for Vanilla JS, HTML, or any framework not covered by a dedicated wrapper. Ships the Web Component definitions, CSS, and design tokens.
@@ -248,7 +248,7 @@ export default function DevelopingPage() {
               Framework wrappers
             </p>
             <div className="flex flex-wrap gap-2">
-              {['@io-digital/components-react', '@io-digital/components-angular', '@io-digital/components-vue'].map((pkg) => (
+              {['@iodigital-com/components-react', '@iodigital-com/components-angular', '@iodigital-com/components-vue'].map((pkg) => (
                 <code
                   key={pkg}
                   className="text-[11px] px-2 py-1 rounded"

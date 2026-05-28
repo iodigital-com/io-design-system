@@ -9,7 +9,7 @@ import type { Story } from '@/models/story';
 
 const horizontalCode: FrameworkCode = {
   html: `<io-divider></io-divider>`,
-  react: `import { IoDivider } from '@io-digital/components-react';
+  react: `import { IoDivider } from '@iodigital-com/components-react';
 
 export function App() {
   return <IoDivider />;
@@ -22,7 +22,7 @@ export function App() {
 
 const verticalCode: FrameworkCode = {
   html: `<io-divider orientation="vertical"></io-divider>`,
-  react: `import { IoDivider } from '@io-digital/components-react';
+  react: `import { IoDivider } from '@iodigital-com/components-react';
 
 export function App() {
   return <IoDivider orientation="vertical" />;
@@ -35,7 +35,7 @@ export function App() {
 
 const labeledCode: FrameworkCode = {
   html: `<io-divider label="or"></io-divider>`,
-  react: `import { IoDivider } from '@io-digital/components-react';
+  react: `import { IoDivider } from '@iodigital-com/components-react';
 
 export function App() {
   return <IoDivider label="or" />;
@@ -140,7 +140,7 @@ export const dividerStory: Story<'io-divider'> = {
       .join(' ');
     return {
       html: htmlTag,
-      react: `import { IoDivider } from '@io-digital/components-react';\n\nexport function App() {\n  return <IoDivider${reactProps ? ` ${reactProps}` : ''} />;\n}`,
+      react: `import { IoDivider } from '@iodigital-com/components-react';\n\nexport function App() {\n  return <IoDivider${reactProps ? ` ${reactProps}` : ''} />;\n}`,
       angular: htmlTag,
       vue: `<template>\n  <io-divider${attrs ? ` ${attrs}` : ''} />\n</template>`,
     };

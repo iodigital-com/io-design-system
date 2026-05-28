@@ -56,7 +56,7 @@ const BRAND_OVERRIDE_CSS = `/* brand-overrides.css — import AFTER io-component
 }`;
 
 const NEXT_JS_EXAMPLE = `// app/layout.tsx
-import '@io-digital/components/dist/io-components/io-components.css';
+import '@iodigital-com/components/dist/io-components/io-components.css';
 import './brand-overrides.css'; // your @layer brand file
 
 export default function RootLayout({ children }) {
@@ -79,7 +79,7 @@ const ANGULAR_EXAMPLE = `// angular.json — styles array (order matters)
         "build": {
           "options": {
             "styles": [
-              "node_modules/@io-digital/components/dist/io-components/io-components.css",
+              "node_modules/@iodigital-com/components/dist/io-components/io-components.css",
               "src/brand-overrides.css"
             ]
           }

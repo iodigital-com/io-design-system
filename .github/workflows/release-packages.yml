@@ -88,16 +88,16 @@ jobs:
             ref="${GITHUB_REF_NAME}"
             case "$ref" in
               release/components/v*)
-                matrix='[{"workspace":"@io-digital/components","path":"io-components"}]'
+                matrix='[{"workspace":"@iodigital-com/components","path":"io-components"}]'
                 ;;
               release/components-react/v*)
-                matrix='[{"workspace":"@io-digital/components-react","path":"io-components-react"}]'
+                matrix='[{"workspace":"@iodigital-com/components-react","path":"io-components-react"}]'
                 ;;
               release/components-vue/v*)
-                matrix='[{"workspace":"@io-digital/components-vue","path":"io-components-vue"}]'
+                matrix='[{"workspace":"@iodigital-com/components-vue","path":"io-components-vue"}]'
                 ;;
               release/components-angular/v*)
-                matrix='[{"workspace":"@io-digital/components-angular","path":"io-components-angular"}]'
+                matrix='[{"workspace":"@iodigital-com/components-angular","path":"io-components-angular"}]'
                 ;;
               *)
                 echo "Unsupported tag format: $ref"
@@ -120,23 +120,23 @@ jobs:
           case "${{ inputs.package }}" in
             all)
               matrix='[
-                {"workspace":"@io-digital/components","path":"io-components"},
-                {"workspace":"@io-digital/components-react","path":"io-components-react"},
-                {"workspace":"@io-digital/components-vue","path":"io-components-vue"},
-                {"workspace":"@io-digital/components-angular","path":"io-components-angular"}
+                {"workspace":"@iodigital-com/components","path":"io-components"},
+                {"workspace":"@iodigital-com/components-react","path":"io-components-react"},
+                {"workspace":"@iodigital-com/components-vue","path":"io-components-vue"},
+                {"workspace":"@iodigital-com/components-angular","path":"io-components-angular"}
               ]'
               ;;
             components)
-              matrix='[{"workspace":"@io-digital/components","path":"io-components"}]'
+              matrix='[{"workspace":"@iodigital-com/components","path":"io-components"}]'
               ;;
             components-react)
-              matrix='[{"workspace":"@io-digital/components-react","path":"io-components-react"}]'
+              matrix='[{"workspace":"@iodigital-com/components-react","path":"io-components-react"}]'
               ;;
             components-vue)
-              matrix='[{"workspace":"@io-digital/components-vue","path":"io-components-vue"}]'
+              matrix='[{"workspace":"@iodigital-com/components-vue","path":"io-components-vue"}]'
               ;;
             components-angular)
-              matrix='[{"workspace":"@io-digital/components-angular","path":"io-components-angular"}]'
+              matrix='[{"workspace":"@iodigital-com/components-angular","path":"io-components-angular"}]'
               ;;
             *)
               echo "Unknown package input: ${{ inputs.package }}"
@@ -203,7 +203,7 @@ jobs:
           node-version: "20"
           cache: npm
           registry-url: https://npm.pkg.github.com
-          scope: "@io-digital"
+          scope: "@iodigital-com"
 
       - name: Install dependencies
         run: npm ci
@@ -233,7 +233,7 @@ jobs:
         id: exists
         shell: bash
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.ORG_PACKAGES_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           output_file="$(mktemp)"
@@ -258,7 +258,7 @@ jobs:
       - name: Publish
         if: steps.exists.outputs.exists == 'false'
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.ORG_PACKAGES_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ needs.resolve.outputs.dry_run }}" = "true" ]; then
             npm publish --workspace "${{ matrix.workspace }}" --registry https://npm.pkg.github.com --dry-run

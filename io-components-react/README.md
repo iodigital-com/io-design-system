@@ -1,13 +1,13 @@
-# @io-digital/components-react
+# @iodigital-com/components-react
 
 React wrapper package for [io Digital Web Components](https://github.com/iodigital-com/io-design-system).
 
-This package provides fully-typed React components that wrap the `@io-digital/components` Stencil web components. Every component is a thin React binding — props, events, and refs work exactly as you would expect in a React application.
+This package provides fully-typed React components that wrap the `@iodigital-com/components` Stencil web components. Every component is a thin React binding — props, events, and refs work exactly as you would expect in a React application.
 
 ## Installation
 
 ```bash
-npm install @io-digital/components-react @io-digital/components
+npm install @iodigital-com/components-react @iodigital-com/components
 ```
 
 Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
@@ -23,21 +23,21 @@ Configure your `.npmrc` to resolve the `@io-digital` scope from GitHub Packages:
 |---|---|
 | `react` | `>=18.0.0` |
 | `react-dom` | `>=18.0.0` |
-| `@io-digital/components` | `^1.2.0` |
+| `@iodigital-com/components` | `^1.2.0` |
 
 ## Quick start
 
-Import the global stylesheet from `@io-digital/components` once at your application root (e.g. `_app.tsx` or `layout.tsx`):
+Import the global stylesheet from `@iodigital-com/components` once at your application root (e.g. `_app.tsx` or `layout.tsx`):
 
 ```tsx
 // app/layout.tsx (Next.js App Router) or _app.tsx (Pages Router)
-import '@io-digital/components/dist/io-components/io-components.css';
+import '@iodigital-com/components/dist/io-components/io-components.css';
 ```
 
 Then use any component directly:
 
 ```tsx
-import { IoButton, IoInput, IoSelect } from '@io-digital/components-react';
+import { IoButton, IoInput, IoSelect } from '@iodigital-com/components-react';
 
 export default function MyForm() {
   return (
@@ -79,7 +79,7 @@ Access the underlying web component element via `ref`:
 
 ```tsx
 import { useRef } from 'react';
-import { IoModal } from '@io-digital/components-react';
+import { IoModal } from '@iodigital-com/components-react';
 
 export default function Page() {
   const modalRef = useRef<HTMLIoModalElement>(null);
@@ -102,7 +102,7 @@ io components are custom elements — they rely on browser APIs and must be clie
 ```tsx
 'use client';
 
-import { IoButton } from '@io-digital/components-react';
+import { IoButton } from '@iodigital-com/components-react';
 
 export function MyButton() {
   return <IoButton variant="primary">Click me</IoButton>;
@@ -115,7 +115,7 @@ The web component registration happens automatically when the package is importe
 
 - **Server-side rendering**: Custom elements cannot render on the server. Use `'use client'` boundaries in Next.js or `ClientOnly` wrappers in Remix.
 - **Slot-based children**: Some components accept slotted children (e.g. `io-option` inside `io-select`). Pass these as JSX children using the native tag names (`<io-option>`, `<io-optgroup>`).
-- **TypeScript**: Full type definitions are included. If you see unknown element errors, ensure `@io-digital/components` is installed and your `tsconfig.json` includes `"skipLibCheck": false` (or that `custom-elements.d.ts` is included via the types field).
+- **TypeScript**: Full type definitions are included. If you see unknown element errors, ensure `@iodigital-com/components` is installed and your `tsconfig.json` includes `"skipLibCheck": false` (or that `custom-elements.d.ts` is included via the types field).
 
 ## Documentation
 

@@ -146,7 +146,7 @@ function App() {
 
 // Angular (standalone)
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { IoTabs } from '@io-digital/components-angular';
+import { IoTabs } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',

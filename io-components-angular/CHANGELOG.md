@@ -1,4 +1,4 @@
-# @io-digital/components-angular
+# @iodigital-com/components-angular
 
 ## 7.0.0
 
@@ -9,14 +9,14 @@
 - Updated dependencies [e7d2b32]
 - Updated dependencies [f234ead]
 - Updated dependencies [f9afc34]
-  - @io-digital/components@3.0.0
+  - @iodigital-com/components@3.0.0
 
 ## 6.0.0
 
 ### Patch Changes
 
 - Updated dependencies [33baa52]
-  - @io-digital/components@2.1.0
+  - @iodigital-com/components@2.1.0
 
 ## 5.0.0
 
@@ -84,7 +84,7 @@
 - Updated dependencies [b21d1db]
 - Updated dependencies [adca2e7]
 - Updated dependencies [b8b0289]
-  - @io-digital/components@2.0.0
+  - @iodigital-com/components@2.0.0
 
 ## 4.0.0
 
@@ -107,14 +107,14 @@
 - Updated dependencies [b137696]
 - Updated dependencies [8663948]
 - Updated dependencies [e2000a1]
-  - @io-digital/components@1.3.0
+  - @iodigital-com/components@1.3.0
 
 ## 3.0.0
 
 ### Patch Changes
 
 - Updated dependencies [477e2b5]
-  - @io-digital/components@1.2.0
+  - @iodigital-com/components@1.2.0
 
 ## 2.0.0
 
@@ -130,4 +130,4 @@
 ### Patch Changes
 
 - Updated dependencies [d077906]
-  - @io-digital/components@1.1.0
+  - @iodigital-com/components@1.1.0

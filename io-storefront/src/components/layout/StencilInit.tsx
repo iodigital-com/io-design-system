@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { initTooltipAttribute } from '@io-digital/components/utils/tooltip-init';
+import { initTooltipAttribute } from '@iodigital-com/components/utils/tooltip-init';
 
 /**
  * StencilInit — client-side initialisation for Stencil global utilities.

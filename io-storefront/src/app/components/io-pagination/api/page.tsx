@@ -160,7 +160,7 @@ function App() {
         </CodeNote>
         <CodeNote label="Angular">
 {`import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { IoPagination } from '@io-digital/components-angular';
+import { IoPagination } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-root',

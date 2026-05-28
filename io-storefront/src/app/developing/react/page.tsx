@@ -34,7 +34,7 @@ export default function DevelopingReactPage() {
           className="rounded-lg p-4 text-sm overflow-x-auto"
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
-{`npm install @io-digital/components @io-digital/components-react`}
+{`npm install @iodigital-com/components @iodigital-com/components-react`}
         </pre>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           The React wrapper requires React 18 or later as a peer dependency — no extra configuration is needed for Vite,
@@ -58,7 +58,7 @@ export default function DevelopingReactPage() {
 {`// main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 import App from './App';
 
 defineCustomElements();
@@ -77,14 +77,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           Basic usage
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Import wrapper components from <code>@io-digital/components-react</code>. They behave like ordinary React
+          Import wrapper components from <code>@iodigital-com/components-react</code>. They behave like ordinary React
           components — props are typed and work with JSX just as you would expect.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
-{`import { IoButton, IoBadge, IoInput } from '@io-digital/components-react';
+{`import { IoButton, IoBadge, IoInput } from '@iodigital-com/components-react';
 
 export function WelcomeBanner() {
   return (
@@ -116,7 +116,7 @@ export function WelcomeBanner() {
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
 {`import { useState } from 'react';
-import { IoButton, IoInput, IoCheckbox } from '@io-digital/components-react';
+import { IoButton, IoInput, IoCheckbox } from '@iodigital-com/components-react';
 
 export function ContactForm() {
   const [email, setEmail] = useState('');
@@ -235,7 +235,7 @@ export function ContactForm() {
         </p>
         <ul className="text-sm space-y-2 list-disc pl-5" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           <li>
-            Wrap any file that imports from <code>@io-digital/components-react</code> with the{' '}
+            Wrap any file that imports from <code>@iodigital-com/components-react</code> with the{' '}
             <code>'use client'</code> directive (Next.js) or equivalent boundary.
           </li>
           <li>
@@ -251,7 +251,7 @@ import { useEffect } from 'react';
 
 export function ComponentLoader() {
   useEffect(() => {
-    import('@io-digital/components/loader').then(({ defineCustomElements }) => {
+    import('@iodigital-com/components/loader').then(({ defineCustomElements }) => {
       defineCustomElements();
     });
   }, []);
@@ -299,7 +299,7 @@ export function ComponentLoader() {
           style={{ background: 'var(--io-bg-raised)', border: '1px solid var(--io-border)', color: 'var(--io-text-secondary)' }}
         >
 {`// vitest.setup.ts
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 beforeAll(() => defineCustomElements());
 
 // ContactForm.test.tsx
@@ -330,19 +330,19 @@ test('updates email on change', async () => {
           {[
             {
               problem: 'Components render as unknown HTML elements',
-              fix: 'Ensure defineCustomElements() has been called before the first render. Check your entry point (main.tsx / index.tsx) and confirm the import path is @io-digital/components/loader.',
+              fix: 'Ensure defineCustomElements() has been called before the first render. Check your entry point (main.tsx / index.tsx) and confirm the import path is @iodigital-com/components/loader.',
             },
             {
               problem: 'Event handlers never fire',
               fix: 'Verify you are using the on* prop form (e.g. onChange) on the wrapper, not addEventListener on the host element. Also confirm the event name casing matches the Stencil definition.',
             },
             {
-              problem: 'TypeScript cannot find module @io-digital/components-react',
+              problem: 'TypeScript cannot find module @iodigital-com/components-react',
               fix: 'Run npm install to ensure both packages are installed, then check that your tsconfig paths do not exclude node_modules. If using a monorepo, confirm workspace links are resolved.',
             },
             {
               problem: 'Styles do not apply / component looks unstyled',
-              fix: 'Import the global stylesheet once in your entry point: import "@io-digital/components/dist/io/io.css". This file ships the design tokens and base resets.',
+              fix: 'Import the global stylesheet once in your entry point: import "@iodigital-com/components/dist/io/io.css". This file ships the design tokens and base resets.',
             },
             {
               problem: 'hydration mismatch warnings in Next.js',

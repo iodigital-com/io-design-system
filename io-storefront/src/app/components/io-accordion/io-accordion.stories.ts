@@ -33,7 +33,7 @@ export const accordionSingleOpenCode: FrameworkCode = {
   });
 </script>`,
   react: `import React, { useState } from 'react';
-import { IoAccordion } from '@io-digital/components-react';
+import { IoAccordion } from '@iodigital-com/components-react';
 
 const items = [
   {
@@ -74,7 +74,7 @@ export const Example: React.FC = () => {
   );
 };`,
   angular: `import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IoAccordion } from '@io-digital/components-angular';
+import { IoAccordion } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-example',
@@ -120,7 +120,7 @@ export class ExampleComponent {
 }`,
   vue: `<script setup lang="ts">
 import { ref } from 'vue';
-import { IoAccordion } from '@io-digital/components-vue';
+import { IoAccordion } from '@iodigital-com/components-vue';
 
 const items = [
   {

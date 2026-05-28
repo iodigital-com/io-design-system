@@ -97,7 +97,7 @@ export default function DevelopingVanillaJsPage() {
         <h3 className="text-sm font-semibold" style={{ color: 'var(--io-text-primary)' }}>
           Option A — npm (recommended for bundled projects)
         </h3>
-        <CodeBlock>{`npm install @io-digital/components`}</CodeBlock>
+        <CodeBlock>{`npm install @iodigital-com/components`}</CodeBlock>
 
         <h3 className="text-sm font-semibold" style={{ color: 'var(--io-text-primary)' }}>
           Option B — CDN script tag (static pages, no build step)
@@ -105,11 +105,11 @@ export default function DevelopingVanillaJsPage() {
         <CodeBlock>{`<!-- Add inside <head> or at the end of <body> -->
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@io-digital/components@1.0.0/dist/io-components/io-components.esm.js"
+  src="https://cdn.jsdelivr.net/npm/@iodigital-com/components@1.0.0/dist/io-components/io-components.esm.js"
 ></script>`}</CodeBlock>
         <Note>
           <strong style={{ color: 'var(--io-text-primary)' }}>CDN note:</strong> Pin a specific version in production (e.g.{' '}
-          <InlineCode>@io-digital/components@1.0.0/dist/io-components/io-components.esm.js</InlineCode>) to prevent unexpected
+          <InlineCode>@iodigital-com/components@1.0.0/dist/io-components/io-components.esm.js</InlineCode>) to prevent unexpected
           breaking changes from un-pinned <InlineCode>latest</InlineCode> resolutions.
         </Note>
       </section>
@@ -122,7 +122,7 @@ export default function DevelopingVanillaJsPage() {
           registers all <InlineCode>io-*</InlineCode> custom elements and lazy-loads their assets automatically.
         </p>
         <CodeBlock>{`// main.js (your entry point)
-import { defineCustomElements } from '@io-digital/components/loader';
+import { defineCustomElements } from '@iodigital-com/components/loader';
 
 // Register all io-* elements with the browser's Custom Element Registry.
 defineCustomElements();`}</CodeBlock>
@@ -205,7 +205,7 @@ customElements.whenDefined('io-input').then(() => {
         </p>
         <CodeBlock>{`// Only register elements in a browser context.
 if (typeof window !== 'undefined') {
-  import('@io-digital/components/loader').then(({ defineCustomElements }) => {
+  import('@iodigital-com/components/loader').then(({ defineCustomElements }) => {
     defineCustomElements();
   });
 }`}</CodeBlock>

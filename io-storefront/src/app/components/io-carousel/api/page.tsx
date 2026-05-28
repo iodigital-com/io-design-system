@@ -208,7 +208,7 @@ function ProductGallery() {
         </CodeNote>
         <CodeNote label="Angular">
 {`import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IoCarousel } from '@io-digital/components-angular';
+import { IoCarousel } from '@iodigital-com/components-angular';
 
 @Component({
   selector: 'app-product-gallery',

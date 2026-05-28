@@ -72,14 +72,6 @@ export const sitemap: NavSection[] = [
     items: [
       { label: 'Introduction', href: '/components' },
       {
-        label: 'Alert',
-        href: '/components/io-alert/configurator',
-        status: 'stable',
-        slug: 'io-alert',
-        description: 'Inline notification for info, success, warning, and error states. Supports an optional heading, dismissible button, and screen-reader-friendly aria-live announcements.',
-        related: ['io-toast', 'io-badge', 'io-modal'],
-      },
-      {
         label: 'Accordion',
         href: '/components/io-accordion/configurator',
         status: 'stable',
@@ -102,6 +94,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-badge',
         description: "Labels status, counts, and categories inline. Nine variants map directly to io Digital's semantic and brand colour palette.",
         related: ['io-tag', 'io-toast', 'io-tooltip'],
+      },
+      {
+        label: 'Banner',
+        href: '/components/io-banner/configurator',
+        status: 'beta',
+        slug: 'io-banner',
+        description: 'Full-width page-level notification strip with open/close control and four severity variants.',
+        related: ['io-inline-banner', 'io-toast', 'io-modal'],
       },
       {
         label: 'Breadcrumb',
@@ -174,6 +174,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-heading',
         description: 'Light DOM typography primitive for headings. Renders h1–h6 with token-driven font size, weight, color, and alignment. Visual size is independent from semantic heading level.',
         related: ['io-text', 'io-link', 'io-badge'],
+      },
+      {
+        label: 'Inline Banner',
+        href: '/components/io-inline-banner/configurator',
+        status: 'beta',
+        slug: 'io-inline-banner',
+        description: 'Inline content-level notification with four severity variants and optional dismiss.',
+        related: ['io-banner', 'io-toast', 'io-badge'],
       },
       {
         label: 'Input',

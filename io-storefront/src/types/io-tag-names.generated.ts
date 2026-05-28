@@ -6,9 +6,9 @@
 
 export type IoTagNames =
   | 'io-accordion'
-  | 'io-alert'
   | 'io-avatar'
   | 'io-badge'
+  | 'io-banner'
   | 'io-breadcrumb'
   | 'io-breadcrumb-item'
   | 'io-button'
@@ -20,6 +20,7 @@ export type IoTagNames =
   | 'io-drawer'
   | 'io-form-field'
   | 'io-heading'
+  | 'io-inline-banner'
   | 'io-input'
   | 'io-link'
   | 'io-modal'

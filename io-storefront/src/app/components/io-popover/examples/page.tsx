@@ -6,6 +6,8 @@ import {
   popoverStoryLeft,
   popoverStoryRight,
   popoverStoryRichContent,
+  popoverStoryCloseOnClickOutsideFalse,
+  popoverStoryWithActions,
 } from '../io-popover.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -37,6 +39,22 @@ export default function IoPopoverExamplesPage() {
       <section>
         <ExamplesSectionHeader title="Rich content" />
         <ComponentStory story={popoverStoryRichContent} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Actions menu"
+          description="Slot a list of ghost buttons to create a kebab/more-actions menu. Each action closes the popover after executing."
+        />
+        <ComponentStory story={popoverStoryWithActions} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Stays open on outside click"
+          description="Set closeOnClickOutside=false for filter or settings panels that should persist while the user interacts with other parts of the page."
+        />
+        <ComponentStory story={popoverStoryCloseOnClickOutsideFalse} />
       </section>
     </div>
   );

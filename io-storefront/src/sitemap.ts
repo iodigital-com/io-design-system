@@ -74,7 +74,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Alert',
         href: '/components/io-alert/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-alert',
         description: 'Inline notification for info, success, warning, and error states. Supports an optional heading, dismissible button, and screen-reader-friendly aria-live announcements.',
         related: ['io-toast', 'io-badge', 'io-modal'],
@@ -130,7 +130,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Carousel',
         href: '/components/io-carousel/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-carousel',
         description: 'Horizontally scrollable content card slider with drag-to-scroll and prev/next navigation.',
         related: ['io-button', 'io-tag', 'io-badge'],
@@ -170,7 +170,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Heading',
         href: '/components/io-heading/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-heading',
         description: 'Light DOM typography primitive for headings. Renders h1–h6 with token-driven font size, weight, color, and alignment. Visual size is independent from semantic heading level.',
         related: ['io-text', 'io-link', 'io-badge'],
@@ -202,7 +202,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Multi Select',
         href: '/components/io-multi-select/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-multi-select',
         description: 'Slot-based multi-select dropdown with removable value chips, optional search filter, and FACE form participation.',
         related: ['io-select', 'io-checkbox-group'],
@@ -218,7 +218,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Pin Code',
         href: '/components/io-pin-code/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-pin-code',
         description: 'Secure PIN or OTP entry field. N digit slots with auto-advance, paste distribution, and optional password masking. FACE form-associated.',
         related: ['io-input'],
@@ -226,7 +226,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Popover',
         href: '/components/io-popover/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-popover',
         description: 'Click-triggered floating content panel with accessible dialog semantics. Uses the native Popover API where available with a manual positioning fallback.',
         related: ['io-tooltip', 'io-modal', 'io-drawer'],
@@ -258,7 +258,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Scroller',
         href: '/components/io-scroller/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-scroller',
         description: 'Scrollable content wrapper with gradient fade indicators at each edge. Use for tab bars, chip groups, image strips, and any overflowing content.',
         related: ['io-tabs', 'io-button-group', 'io-carousel'],
@@ -290,7 +290,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Switch',
         href: '/components/io-switch/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-switch',
         description: 'Toggle switch for binary on/off settings. FACE form-associated component with role=switch and full keyboard navigation.',
         related: ['io-checkbox', 'io-radio'],
@@ -330,7 +330,7 @@ export const sitemap: NavSection[] = [
       {
         label: 'Text',
         href: '/components/io-text/configurator',
-        status: 'beta',
+        status: 'stable',
         slug: 'io-text',
         description: 'Light DOM typography primitive for body copy. Renders semantic HTML (p, span, div, blockquote, time) with token-driven font size, weight, color, and alignment.',
         related: ['io-heading', 'io-link', 'io-badge'],

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoTabsBar } from './io-tabs-bar';
 import { getTabsBarStyles } from './io-tabs-bar-styles';

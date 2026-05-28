@@ -1,5 +1,16 @@
 # @iodigital-com/components-vue
 
+## 8.0.0
+
+### Patch Changes
+
+- Updated dependencies [1a2957c]
+- Updated dependencies [4f58a77]
+- Updated dependencies [b70f179]
+- Updated dependencies [7926d0b]
+- Updated dependencies [23b1318]
+  - @iodigital-com/components@4.0.0
+
 ## 7.0.0
 
 ### Patch Changes

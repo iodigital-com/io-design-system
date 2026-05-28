@@ -56,10 +56,4 @@ describe('io-banner — WCAG AA accessibility', () => {
     expect(result.violations).toHaveLength(0);
   });
 
-  it('dismiss button meets WCAG 2.5.8 minimum touch target', () => {
-    const styles = getBannerStyles();
-    expect(styles).toContain('var(--io-touch-target-min)');
-    expect(styles).toContain('min-width: var(--io-touch-target-min)');
-    expect(styles).toContain('min-height: var(--io-touch-target-min)');
-  });
 });

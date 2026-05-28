@@ -207,8 +207,10 @@ export namespace Components {
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show and wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     * Role is placed on the conditionally-rendered inner div so the live region only exists
+     * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -2544,8 +2546,10 @@ declare global {
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show and wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     * Role is placed on the conditionally-rendered inner div so the live region only exists
+     * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -3891,8 +3895,10 @@ declare namespace LocalJSX {
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show and wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     * Role is placed on the conditionally-rendered inner div so the live region only exists
+     * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -6575,8 +6581,10 @@ declare module "@stencil/core" {
              * Visibility is controlled by the `open` prop — the host hides itself when open=false.
              * Set open=true to show and wire the dismiss event to set it back to false.
              * ARIA live region strategy:
-             *   - error variant:     role="alert" (implicit aria-live="assertive")
-             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+             *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
+             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+             * Role is placed on the conditionally-rendered inner div so the live region only exists
+             * while the banner is visible — prevents spurious announcements when open=false.
              * @example <io-banner variant="info" open heading="Maintenance scheduled">
              *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
              * </io-banner>

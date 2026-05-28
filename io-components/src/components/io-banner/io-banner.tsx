@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
 
 import { getBannerStyles } from './io-banner-styles';
 import type { IoBannerVariant } from './types';
@@ -52,6 +52,8 @@ export class IoBanner {
   /** Emitted when the dismiss button is clicked */
   @Event() dismiss!: EventEmitter<void>;
 
+  @State() private hasContent = false;
+
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
     if (this.heading) return `Dismiss "${this.heading}"`;
@@ -104,8 +106,11 @@ export class IoBanner {
           </span>
           <div class="banner__body">
             {this.heading && <strong class="banner__heading">{this.heading}</strong>}
-            <div class="banner__content">
-              <slot />
+            <div class={{ 'banner__content': true, 'banner__content--empty': !this.hasContent }}>
+              <slot onSlotchange={(e: Event) => {
+                const slot = e.target as HTMLSlotElement;
+                this.hasContent = slot.assignedNodes({ flatten: true }).length > 0;
+              }} />
             </div>
           </div>
           {this.dismissible && (

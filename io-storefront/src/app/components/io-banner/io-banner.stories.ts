@@ -1,22 +1,42 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
+import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
 
 export const bannerStory: Story<'io-banner'> = {
   state: {
     properties: {
       variant: 'info',
       heading: '',
-      open: true,
+      open: false,
       dismissible: false,
     },
   },
-  generator: ({ properties } = {}) => [
-    {
-      tag: 'io-banner' as const,
-      properties: properties ?? {},
-      children: ['Scheduled maintenance on Saturday 10:00–12:00 UTC. Services may be briefly interrupted.'],
-    },
-  ],
+  generator: ({ properties } = {}) => {
+    const props = (properties ?? {}) as Record<string, unknown>;
+    return [
+      {
+        tag: 'io-button' as const,
+        properties: { variant: 'solid' },
+        children: ['Show banner'],
+        events: {
+          onClick: { target: 'io-banner', prop: 'open', value: true },
+        },
+      },
+      {
+        tag: 'io-banner' as const,
+        properties: {
+          variant: props['variant'] ?? 'info',
+          heading: props['heading'] ?? '',
+          open: props['open'] ?? false,
+          dismissible: props['dismissible'] ?? false,
+        },
+        children: ['Scheduled maintenance on Saturday 10:00–12:00 UTC. Services may be briefly interrupted.'],
+        events: {
+          onDismiss: { target: 'io-banner', prop: 'open', value: false },
+        },
+      },
+    ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
+  },
 };
 
 export const bannerPropDefinitions: PropDefinition[] = [
@@ -36,7 +56,7 @@ export const bannerPropDefinitions: PropDefinition[] = [
   {
     name: 'open',
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: false,
     description: 'Controls banner visibility. Set to true to show, false to hide.',
   },
   {

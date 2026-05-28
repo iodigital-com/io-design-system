@@ -11,7 +11,7 @@ export function getInlineBannerStyles(): string {
       gap: var(--io-space-3);
       padding: var(--io-space-4);
       border-radius: var(--io-border-radius-sm);
-      border-left: 4px solid transparent;
+      border-left: var(--io-space-1) solid transparent;
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
     }
@@ -21,14 +21,13 @@ export function getInlineBannerStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
-      margin-top: 1px;
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
     }
 
     .inline-banner__icon svg {
-      width: 20px;
-      height: 20px;
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
     }
 
     .inline-banner__body {

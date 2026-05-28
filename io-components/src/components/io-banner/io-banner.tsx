@@ -68,7 +68,7 @@ export class IoBanner {
         aria-atomic={this.variant === 'error' ? undefined : 'true'}
       >
         <style>{getBannerStyles()}</style>
-        <div class={`banner banner--${this.variant}`}>
+        {this.open && <div class={`banner banner--${this.variant}`}>
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -117,7 +117,7 @@ export class IoBanner {
               </svg>
             </button>
           )}
-        </div>
+        </div>}
       </Host>
     );
   }

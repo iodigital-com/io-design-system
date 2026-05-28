@@ -1,13 +1,9 @@
 export function getBannerStyles(): string {
   return `
     :host {
-      display: none;
+      display: block;
       font-family: var(--io-font-primary);
       width: 100%;
-    }
-
-    :host([open]) {
-      display: block;
     }
 
     .banner {
@@ -15,7 +11,7 @@ export function getBannerStyles(): string {
       align-items: flex-start;
       gap: var(--io-space-3);
       padding: var(--io-space-4) var(--io-space-4);
-      border-left: 4px solid transparent;
+      border-left: var(--io-space-1) solid transparent;
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
       width: 100%;
@@ -27,14 +23,13 @@ export function getBannerStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
-      margin-top: 1px;
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
     }
 
     .banner__icon svg {
-      width: 20px;
-      height: 20px;
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
     }
 
     .banner__body {

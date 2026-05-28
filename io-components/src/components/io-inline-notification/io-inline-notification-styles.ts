@@ -1,36 +1,41 @@
-export function getInlineBannerStyles(): string {
+export function getInlineNotificationStyles(): string {
   return `
     :host {
       display: block;
       font-family: var(--io-font-primary);
     }
 
-    .inline-banner {
+    .inline-notification {
       display: flex;
       align-items: flex-start;
       gap: var(--io-space-3);
       padding: var(--io-space-4);
+
+      background: var(--io-bg-card);
+      border: 1px solid transparent;
       border-radius: var(--io-border-radius-sm);
-      border-left: var(--io-space-1) solid transparent;
+
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
+      color: var(--io-text-primary);
     }
 
-    .inline-banner__icon {
+    .inline-notification__icon {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       width: var(--io-icon-size-md);
       height: var(--io-icon-size-md);
+      color: var(--inline-notification-icon-color);
     }
 
-    .inline-banner__icon svg {
+    .inline-notification__icon svg {
       width: var(--io-icon-size-md);
       height: var(--io-icon-size-md);
     }
 
-    .inline-banner__body {
+    .inline-notification__body {
       flex: 1;
       min-width: 0;
       display: flex;
@@ -38,17 +43,17 @@ export function getInlineBannerStyles(): string {
       gap: var(--io-space-1);
     }
 
-    .inline-banner__heading {
+    .inline-notification__heading {
       display: block;
       font-weight: var(--io-font-weight-semibold);
-      color: inherit;
+      color: var(--io-text-primary);
     }
 
-    .inline-banner__content {
-      color: inherit;
+    .inline-notification__content {
+      color: var(--io-text-primary);
     }
 
-    .inline-banner__dismiss {
+    .inline-notification__dismiss {
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -60,59 +65,54 @@ export function getInlineBannerStyles(): string {
       padding: 0;
       background: transparent;
       border: none;
+      border-radius: var(--io-border-radius-sm);
       cursor: pointer;
-      color: inherit;
-      opacity: 0.7;
-      transition: opacity var(--io-motion-fast), background-color var(--io-motion-fast);
+      color: var(--io-text-secondary);
+      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
       margin-top: -2px;
     }
 
-    .inline-banner__dismiss:hover {
-      opacity: 1;
-      background-color: color-mix(in srgb, currentColor 10%, transparent);
+    .inline-notification__dismiss:hover {
+      color: var(--io-text-primary);
+      background-color: var(--io-state-hover);
     }
 
-    .inline-banner__dismiss:focus-visible {
+    .inline-notification__dismiss:focus-visible {
       box-shadow: var(--io-focus-ring-active);
       outline: none;
     }
 
-    .inline-banner__dismiss svg {
+    .inline-notification__dismiss svg {
       width: 16px;
       height: 16px;
       pointer-events: none;
     }
 
-    /* Variant: info */
-    .inline-banner--info {
-      background-color: var(--io-color-info-soft);
-      color: var(--io-color-info);
+    /* Variants — set border accent + icon color only */
+    .inline-notification--info {
       border-color: var(--io-color-info);
+      --inline-notification-icon-color: var(--io-color-info);
     }
 
-    /* Variant: success */
-    .inline-banner--success {
-      background-color: var(--io-color-success-soft);
-      color: var(--io-color-success);
+    .inline-notification--success {
       border-color: var(--io-color-success);
+      --inline-notification-icon-color: var(--io-color-success);
     }
 
-    /* Variant: warning */
-    .inline-banner--warning {
-      background-color: var(--io-color-warning-soft);
-      color: var(--io-color-warning);
+    .inline-notification--warning {
       border-color: var(--io-color-warning);
+      --inline-notification-icon-color: var(--io-color-warning);
     }
 
-    /* Variant: error */
-    .inline-banner--error {
-      background-color: var(--io-color-error-soft);
-      color: var(--io-color-error);
+    .inline-notification--error {
       border-color: var(--io-color-error);
+      --inline-notification-icon-color: var(--io-color-error);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .inline-banner__dismiss { transition: none; }
+      .inline-notification__dismiss {
+        transition: none;
+      }
     }
   `;
 }

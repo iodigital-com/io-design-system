@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { h } from '@stencil/core';
 
-import { IoInlineBanner } from './io-inline-banner';
+import { IoInlineNotification } from './io-inline-notification';
 
 const hMock = h as unknown as ReturnType<typeof vi.fn>;
 
@@ -9,11 +9,11 @@ function makeEmitter() {
   return { emit: vi.fn() };
 }
 
-describe('io-inline-banner — dismiss interaction', () => {
-  let c: IoInlineBanner;
+describe('io-inline-notification — dismiss interaction', () => {
+  let c: IoInlineNotification;
 
   beforeEach(() => {
-    c = new IoInlineBanner();
+    c = new IoInlineNotification();
     c.variant = 'info';
     (c as any).dismiss = makeEmitter();
   });
@@ -24,7 +24,7 @@ describe('io-inline-banner — dismiss interaction', () => {
   });
 
   it('does not auto-close — consumer controls visibility', () => {
-    // io-inline-banner has no open prop; dismiss only emits an event
+    // io-inline-notification has no open prop; dismiss only emits an event
     (c as any).handleDismiss();
     expect((c as any).open).toBeUndefined();
   });

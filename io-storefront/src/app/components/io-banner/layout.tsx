@@ -21,7 +21,7 @@ export default function IoBannerLayout({ children }: { children: ReactNode }) {
     <div>
       <PageHeader
         title="Banner"
-        description="Full-width page-level notification strip with open/close control and four severity variants. Use for global feedback, system messages, and persistent announcements."
+        description="Fixed overlay notification that slides in from the top of the viewport. Controls visibility via the open prop and animates in on each mount. Use for global feedback, system messages, and persistent announcements."
         tabs={TABS}
         category="Component"
         status={status}

@@ -27,7 +27,7 @@ declare module 'react' {
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
   'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoHeadingElement>, HTMLIoHeadingElement> & Partial<StencilJSX.IoHeading>;
-  'io-inline-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInlineBannerElement>, HTMLIoInlineBannerElement> & Partial<StencilJSX.IoInlineBanner>;
+  'io-inline-notification': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInlineNotificationElement>, HTMLIoInlineNotificationElement> & Partial<StencilJSX.IoInlineNotification>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;

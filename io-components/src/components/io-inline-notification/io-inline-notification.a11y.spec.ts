@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import axe from 'axe-core';
 
-import { IoInlineBanner } from './io-inline-banner';
-import { getInlineBannerStyles } from './io-inline-banner-styles';
+import { IoInlineNotification } from './io-inline-notification';
+import { getInlineNotificationStyles } from './io-inline-notification-styles';
 
-function renderToHTML(props: Partial<IoInlineBanner> = {}): string {
+function renderToHTML(props: Partial<IoInlineNotification> = {}): string {
   const variant = props.variant ?? 'info';
   const heading = props.heading ? `<strong>${props.heading}</strong>` : '';
   const dismissible = props.dismissible
@@ -14,17 +14,17 @@ function renderToHTML(props: Partial<IoInlineBanner> = {}): string {
   const ariaLive = variant === 'error' ? '' : ' aria-live="polite" aria-atomic="true"';
   return `
     <div>
-      <style>${getInlineBannerStyles()}</style>
-      <div role="${role}"${ariaLive} class="inline-banner inline-banner--${variant}">
+      <style>${getInlineNotificationStyles()}</style>
+      <div role="${role}"${ariaLive} class="inline-notification inline-notification--${variant}">
         <span aria-hidden="true">icon</span>
-        <div class="inline-banner__body">${heading}<div>Notification body</div></div>
+        <div class="inline-notification__body">${heading}<div>Notification body</div></div>
         ${dismissible}
       </div>
     </div>
   `;
 }
 
-describe('io-inline-banner — WCAG AA accessibility', () => {
+describe('io-inline-notification — WCAG AA accessibility', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
@@ -58,7 +58,7 @@ describe('io-inline-banner — WCAG AA accessibility', () => {
   });
 
   it('dismiss button meets WCAG 2.5.8 minimum touch target', () => {
-    const styles = getInlineBannerStyles();
+    const styles = getInlineNotificationStyles();
     expect(styles).toContain('var(--io-touch-target-min)');
     expect(styles).toContain('min-width: var(--io-touch-target-min)');
     expect(styles).toContain('min-height: var(--io-touch-target-min)');

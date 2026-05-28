@@ -1,11 +1,11 @@
 import { Component, Event, EventEmitter, Host, Prop, h } from '@stencil/core';
 
-import { getInlineBannerStyles } from './io-inline-banner-styles';
-import type { IoInlineBannerVariant } from './types';
+import { getInlineNotificationStyles } from './io-inline-notification-styles';
+import type { IoInlineNotificationVariant } from './types';
 
 /**
- * io-inline-banner
- * ================
+ * io-inline-notification
+ * ======================
  * Inline content-level notification with four severity variants.
  * Sits within the content flow — no open/close state. The consumer
  * controls visibility by mounting or unmounting the element.
@@ -15,21 +15,21 @@ import type { IoInlineBannerVariant } from './types';
  *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
  *
  * @example
- * <io-inline-banner variant="warning" heading="Storage limit">
+ * <io-inline-notification variant="warning" heading="Storage limit">
  *   You have used 90% of your quota.
- * </io-inline-banner>
+ * </io-inline-notification>
  *
- * <io-inline-banner variant="error" dismissible>
+ * <io-inline-notification variant="error" dismissible>
  *   Failed to save. Please try again.
- * </io-inline-banner>
+ * </io-inline-notification>
  */
 @Component({
-  tag: 'io-inline-banner',
+  tag: 'io-inline-notification',
   shadow: { delegatesFocus: true },
 })
-export class IoInlineBanner {
+export class IoInlineNotification {
   /** Severity variant — controls icon, colour, and aria-live politeness */
-  @Prop({ reflect: true }) variant: IoInlineBannerVariant = 'info';
+  @Prop({ reflect: true }) variant: IoInlineNotificationVariant = 'info';
 
   /** Optional bold heading rendered above the slotted content */
   @Prop() heading?: string;
@@ -63,9 +63,9 @@ export class IoInlineBanner {
         aria-live={this.variant === 'error' ? undefined : 'polite'}
         aria-atomic={this.variant === 'error' ? undefined : 'true'}
       >
-        <style>{getInlineBannerStyles()}</style>
-        <div class={`inline-banner inline-banner--${this.variant}`}>
-          <span class="inline-banner__icon" aria-hidden="true">
+        <style>{getInlineNotificationStyles()}</style>
+        <div class={`inline-notification inline-notification--${this.variant}`}>
+          <span class="inline-notification__icon" aria-hidden="true">
             {this.variant === 'info' && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="10" />
@@ -94,16 +94,16 @@ export class IoInlineBanner {
               </svg>
             )}
           </span>
-          <div class="inline-banner__body">
-            {this.heading && <strong class="inline-banner__heading">{this.heading}</strong>}
-            <div class="inline-banner__content">
+          <div class="inline-notification__body">
+            {this.heading && <strong class="inline-notification__heading">{this.heading}</strong>}
+            <div class="inline-notification__content">
               <slot />
             </div>
           </div>
           {this.dismissible && (
             <button
               type="button"
-              class="inline-banner__dismiss"
+              class="inline-notification__dismiss"
               aria-label={this.resolvedDismissLabel}
               onClick={this.handleDismiss}
             >

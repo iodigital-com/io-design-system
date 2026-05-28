@@ -3,19 +3,44 @@ export function getBannerStyles(): string {
     :host {
       display: block;
       font-family: var(--io-font-primary);
-      width: 100%;
     }
 
     .banner {
+      position: fixed;
+      top: var(--io-space-4);
+      left: var(--io-space-4);
+      right: var(--io-space-4);
+      margin: 0 auto;
+      max-width: 768px;
+      z-index: var(--io-z-toast);
+
       display: flex;
       align-items: flex-start;
       gap: var(--io-space-3);
-      padding: var(--io-space-4) var(--io-space-4);
-      border-left: var(--io-space-1) solid transparent;
+      padding: var(--io-space-4);
+
+      background: var(--io-bg-card);
+      border: 1px solid transparent;
+      border-radius: var(--io-border-radius-sm);
+      box-shadow: var(--io-shadow-lg);
+
       font-size: var(--io-font-size-sm);
       line-height: var(--io-line-height-normal);
-      width: 100%;
+      color: var(--io-text-primary);
+
       box-sizing: border-box;
+      animation: io-banner-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
+    }
+
+    @keyframes io-banner-in {
+      from {
+        opacity: 0;
+        transform: translateY(calc(-100% - var(--io-space-4)));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .banner__icon {
@@ -25,6 +50,7 @@ export function getBannerStyles(): string {
       justify-content: center;
       width: var(--io-icon-size-md);
       height: var(--io-icon-size-md);
+      color: var(--banner-icon-color);
     }
 
     .banner__icon svg {
@@ -43,11 +69,11 @@ export function getBannerStyles(): string {
     .banner__heading {
       display: block;
       font-weight: var(--io-font-weight-semibold);
-      color: inherit;
+      color: var(--io-text-primary);
     }
 
     .banner__content {
-      color: inherit;
+      color: var(--io-text-primary);
     }
 
     .banner__dismiss {
@@ -62,16 +88,16 @@ export function getBannerStyles(): string {
       padding: 0;
       background: transparent;
       border: none;
+      border-radius: var(--io-border-radius-sm);
       cursor: pointer;
-      color: inherit;
-      opacity: 0.7;
-      transition: opacity var(--io-motion-fast), background-color var(--io-motion-fast);
+      color: var(--io-text-secondary);
+      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
       margin-top: -2px;
     }
 
     .banner__dismiss:hover {
-      opacity: 1;
-      background-color: color-mix(in srgb, currentColor 10%, transparent);
+      color: var(--io-text-primary);
+      background-color: var(--io-state-hover);
     }
 
     .banner__dismiss:focus-visible {
@@ -85,36 +111,34 @@ export function getBannerStyles(): string {
       pointer-events: none;
     }
 
-    /* Variant: info */
+    /* Variants — set border accent + icon color only */
     .banner--info {
-      background-color: var(--io-color-info-soft);
-      color: var(--io-color-info);
       border-color: var(--io-color-info);
+      --banner-icon-color: var(--io-color-info);
     }
 
-    /* Variant: success */
     .banner--success {
-      background-color: var(--io-color-success-soft);
-      color: var(--io-color-success);
       border-color: var(--io-color-success);
+      --banner-icon-color: var(--io-color-success);
     }
 
-    /* Variant: warning */
     .banner--warning {
-      background-color: var(--io-color-warning-soft);
-      color: var(--io-color-warning);
       border-color: var(--io-color-warning);
+      --banner-icon-color: var(--io-color-warning);
     }
 
-    /* Variant: error */
     .banner--error {
-      background-color: var(--io-color-error-soft);
-      color: var(--io-color-error);
       border-color: var(--io-color-error);
+      --banner-icon-color: var(--io-color-error);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .banner__dismiss { transition: none; }
+      .banner {
+        animation: none;
+      }
+      .banner__dismiss {
+        transition: none;
+      }
     }
   `;
 }

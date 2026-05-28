@@ -3,12 +3,10 @@ import {
   wordmarkStory,
   wordmarkPropDefinitions,
   wordmarkStoryVariants,
-  wordmarkStorySizes,
   wordmarkStoryMarkSizes,
   wordmarkStoryLockupSizes,
-  wordmarkStoryColors,
   wordmarkStoryMarkColors,
-  wordmarkStoryMono,
+  wordmarkStoryLockupColors,
 } from './io-wordmark.stories';
 
 describe('io-wordmark storefront stories', () => {
@@ -46,39 +44,14 @@ describe('io-wordmark storefront stories', () => {
       expect((els[0] as { properties: Record<string, unknown> }).properties.size).toBe('lg');
     });
 
-    it('generator respects mono override', () => {
-      const els = wordmarkStory.generator?.({ properties: { mono: true } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.mono).toBe(true);
-    });
-
     it('generator respects variant override', () => {
-      const els = wordmarkStory.generator?.({ properties: { variant: 'mark' } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.variant).toBe('mark');
+      const els = wordmarkStory.generator?.({ properties: { variant: 'lockup' } }) ?? [];
+      expect((els[0] as { properties: Record<string, unknown> }).properties.variant).toBe('lockup');
     });
 
     it('generator respects color override', () => {
       const els = wordmarkStory.generator?.({ properties: { color: 'black' } }) ?? [];
       expect((els[0] as { properties: Record<string, unknown> }).properties.color).toBe('black');
-    });
-
-    it('generator strips empty-string href to avoid href=""', () => {
-      const els = wordmarkStory.generator?.({ properties: { href: '' } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.href).toBeUndefined();
-    });
-
-    it('generator includes href when non-empty', () => {
-      const els = wordmarkStory.generator?.({ properties: { href: 'https://example.com' } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.href).toBe('https://example.com');
-    });
-
-    it('generator strips empty-string target', () => {
-      const els = wordmarkStory.generator?.({ properties: { target: '' } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.target).toBeUndefined();
-    });
-
-    it('generator includes target when non-empty', () => {
-      const els = wordmarkStory.generator?.({ properties: { target: '_blank' } }) ?? [];
-      expect((els[0] as { properties: Record<string, unknown> }).properties.target).toBe('_blank');
     });
 
     it('state.properties includes variant', () => {
@@ -91,10 +64,6 @@ describe('io-wordmark storefront stories', () => {
 
     it('state.properties includes size', () => {
       expect((wordmarkStory.state?.properties as Record<string, unknown>).size).toBeDefined();
-    });
-
-    it('state.properties includes mono', () => {
-      expect((wordmarkStory.state?.properties as Record<string, unknown>).mono).toBeDefined();
     });
   });
 
@@ -132,15 +101,15 @@ describe('io-wordmark storefront stories', () => {
       expect(new Set(names).size).toBe(names.length);
     });
 
-    it('includes variant select with text/mark/lockup options', () => {
+    it('includes variant select with mark/lockup options', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'variant');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
       const opts = (def as unknown as { options: string[] }).options;
-      expect(opts).toContain('text');
       expect(opts).toContain('mark');
       expect(opts).toContain('lockup');
-      expect(def!.defaultValue).toBe('text');
+      expect(opts).not.toContain('text');
+      expect(def!.defaultValue).toBe('mark');
     });
 
     it('includes color select with blue/black/white/beige options', () => {
@@ -167,35 +136,30 @@ describe('io-wordmark storefront stories', () => {
       expect(def!.defaultValue).toBe('md');
     });
 
-    it('includes mono definition of type boolean', () => {
-      const def = wordmarkPropDefinitions.find((d) => d.name === 'mono');
-      expect(def).toBeDefined();
-      expect(def!.type).toBe('boolean');
-      expect(def!.defaultValue).toBe(false);
-    });
-
     it('includes ariaLabel definition of type string', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'ariaLabel');
       expect(def).toBeDefined();
       expect(def!.type).toBe('string');
     });
 
-    it('includes href definition of type string', () => {
+    it('does not include mono', () => {
+      const def = wordmarkPropDefinitions.find((d) => d.name === 'mono');
+      expect(def).toBeUndefined();
+    });
+
+    it('does not include href', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'href');
-      expect(def).toBeDefined();
-      expect(def!.type).toBe('string');
+      expect(def).toBeUndefined();
     });
 
-    it('includes target definition of type string', () => {
+    it('does not include target', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'target');
-      expect(def).toBeDefined();
-      expect(def!.type).toBe('string');
+      expect(def).toBeUndefined();
     });
 
-    it('includes rel definition of type string', () => {
+    it('does not include rel', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'rel');
-      expect(def).toBeDefined();
-      expect(def!.type).toBe('string');
+      expect(def).toBeUndefined();
     });
   });
 
@@ -204,35 +168,16 @@ describe('io-wordmark storefront stories', () => {
       expect(() => wordmarkStoryVariants.generator?.()).not.toThrow();
     });
 
-    it('generator returns 3 elements (one per variant)', () => {
-      expect(wordmarkStoryVariants.generator?.()!.length).toBe(3);
+    it('generator returns 2 elements (mark and lockup)', () => {
+      expect(wordmarkStoryVariants.generator?.()!.length).toBe(2);
     });
 
-    it('elements cover text/mark/lockup variants', () => {
+    it('elements cover mark/lockup variants', () => {
       const els = wordmarkStoryVariants.generator?.() ?? [];
       const variants = els.map((el) => (el as { properties: Record<string, unknown> }).properties.variant);
-      expect(variants).toContain('text');
       expect(variants).toContain('mark');
       expect(variants).toContain('lockup');
-    });
-  });
-
-  describe('wordmarkStorySizes', () => {
-    it('generator does not throw', () => {
-      expect(() => wordmarkStorySizes.generator?.()).not.toThrow();
-    });
-
-    it('generator returns 4 elements (one per size)', () => {
-      expect(wordmarkStorySizes.generator?.()!.length).toBe(4);
-    });
-
-    it('elements cover all four sizes sm/md/lg/xl', () => {
-      const els = wordmarkStorySizes.generator?.() ?? [];
-      const sizes = els.map((el) => (el as { properties: Record<string, unknown> }).properties.size);
-      expect(sizes).toContain('sm');
-      expect(sizes).toContain('md');
-      expect(sizes).toContain('lg');
-      expect(sizes).toContain('xl');
+      expect(variants).not.toContain('text');
     });
   });
 
@@ -251,6 +196,15 @@ describe('io-wordmark storefront stories', () => {
         expect((el as { properties: Record<string, unknown> }).properties.variant).toBe('mark');
       }
     });
+
+    it('elements cover all four sizes sm/md/lg/xl', () => {
+      const els = wordmarkStoryMarkSizes.generator?.() ?? [];
+      const sizes = els.map((el) => (el as { properties: Record<string, unknown> }).properties.size);
+      expect(sizes).toContain('sm');
+      expect(sizes).toContain('md');
+      expect(sizes).toContain('lg');
+      expect(sizes).toContain('xl');
+    });
   });
 
   describe('wordmarkStoryLockupSizes', () => {
@@ -267,24 +221,6 @@ describe('io-wordmark storefront stories', () => {
       for (const el of els) {
         expect((el as { properties: Record<string, unknown> }).properties.variant).toBe('lockup');
       }
-    });
-  });
-
-  describe('wordmarkStoryColors', () => {
-    it('generator does not throw', () => {
-      expect(() => wordmarkStoryColors.generator?.()).not.toThrow();
-    });
-
-    it('generator returns 3 elements (blue/black/white)', () => {
-      expect(wordmarkStoryColors.generator?.()!.length).toBe(3);
-    });
-
-    it('elements cover blue/black/white colors', () => {
-      const els = wordmarkStoryColors.generator?.() ?? [];
-      const colors = els.map((el) => (el as { properties: Record<string, unknown> }).properties.color);
-      expect(colors).toContain('blue');
-      expect(colors).toContain('black');
-      expect(colors).toContain('white');
     });
   });
 
@@ -314,23 +250,28 @@ describe('io-wordmark storefront stories', () => {
     });
   });
 
-  describe('wordmarkStoryMono', () => {
+  describe('wordmarkStoryLockupColors', () => {
     it('generator does not throw', () => {
-      expect(() => wordmarkStoryMono.generator?.()).not.toThrow();
+      expect(() => wordmarkStoryLockupColors.generator?.()).not.toThrow();
     });
 
-    it('generator returns 2 elements', () => {
-      expect(wordmarkStoryMono.generator?.()!.length).toBe(2);
+    it('generator returns 3 elements (blue/black/white)', () => {
+      expect(wordmarkStoryLockupColors.generator?.()!.length).toBe(3);
     });
 
-    it('first element has mono=false', () => {
-      const first = wordmarkStoryMono.generator?.()![0] as { properties: Record<string, unknown> };
-      expect(first.properties.mono).toBe(false);
+    it('elements cover blue/black/white colors', () => {
+      const els = wordmarkStoryLockupColors.generator?.() ?? [];
+      const colors = els.map((el) => (el as { properties: Record<string, unknown> }).properties.color);
+      expect(colors).toContain('blue');
+      expect(colors).toContain('black');
+      expect(colors).toContain('white');
     });
 
-    it('second element has mono=true', () => {
-      const second = wordmarkStoryMono.generator?.()![1] as { properties: Record<string, unknown> };
-      expect(second.properties.mono).toBe(true);
+    it('all elements have variant=lockup', () => {
+      const els = wordmarkStoryLockupColors.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { properties: Record<string, unknown> }).properties.variant).toBe('lockup');
+      }
     });
   });
 });

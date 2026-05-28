@@ -2,55 +2,7 @@ export function getWordmarkStyles(): string {
   return `
     :host {
       display: inline-flex;
-      font-family: var(--io-font-primary, 'Manrope', sans-serif);
     }
-
-    /* ── variant='text' — link wrapper (rendered when href is set) ── */
-
-    .wordmark-link {
-      display: inline-flex;
-      text-decoration: none;
-      color: inherit;
-      border-radius: var(--io-border-radius-xs);
-      outline-offset: 2px;
-    }
-
-    .wordmark-link:focus-visible {
-      outline: 2px solid var(--io-border-focus);
-      outline-offset: 2px;
-    }
-
-    /* ── variant='text' — typographic wordmark ────────────────────── */
-
-    .wordmark {
-      display: inline-flex;
-      align-items: baseline;
-      font-family: var(--io-font-primary, 'Manrope', sans-serif);
-      font-weight: 700;
-      line-height: 1;
-      white-space: nowrap;
-      letter-spacing: var(--io-wordmark-letter-spacing);
-    }
-
-    .wordmark--sm { font-size: var(--io-wordmark-font-size-sm); }
-    .wordmark--md { font-size: var(--io-wordmark-font-size-md); }
-    .wordmark--lg { font-size: var(--io-wordmark-font-size-lg); }
-    .wordmark--xl { font-size: var(--io-wordmark-font-size-xl); }
-
-    /* Default: "io" in brand blue, "digital" in currentColor */
-    .wordmark__io    { color: var(--io-color-primary, #0000D2); }
-    .wordmark__digital { color: currentColor; }
-
-    /* color='black' on text variant */
-    :host([variant="text"][color="black"]) .wordmark__io,
-    :host([variant="text"][color="black"]) .wordmark__digital { color: var(--io-color-grey-6, #242424); }
-
-    /* color='white' on text variant */
-    :host([variant="text"][color="white"]) .wordmark__io,
-    :host([variant="text"][color="white"]) .wordmark__digital { color: var(--io-color-white, #ffffff); }
-
-    /* mono mode — both parts use currentColor (backwards-compat, text only) */
-    :host([mono]) .wordmark__io { color: currentColor; }
 
     /* ── variant='mark' — geometric iO mark SVG ──────────────────── */
 
@@ -93,8 +45,5 @@ export function getWordmarkStyles(): string {
     :host([variant="mark"][color="beige"]),
     :host([variant="lockup"][color="beige"]) { color: var(--io-color-beige, #DCCFC2); }
 
-    @media (prefers-reduced-motion: reduce) {
-      .wordmark { transition: none; }
-    }
   `;
 }

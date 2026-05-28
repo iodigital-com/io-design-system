@@ -364,7 +364,7 @@ export const sitemap: NavSection[] = [
         href: '/components/io-wordmark/configurator',
         status: 'stable',
         slug: 'io-wordmark',
-        description: 'Official iO Digital brand component. Three variants — typographic text wordmark, geometric iO mark SVG, and full official brand lockup SVG. Four colour options and four size steps.',
+        description: 'Official iO Digital brand component. Two variants — geometric iO mark SVG and full official brand lockup SVG. Four colour options and four size steps.',
         related: ['io-avatar', 'io-badge'],
       },
     ],

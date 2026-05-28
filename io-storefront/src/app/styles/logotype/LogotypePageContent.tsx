@@ -242,7 +242,7 @@ export default function LogotypePageContent() {
       <section id="introduction" className="space-y-6">
         <SectionHeader
           title="Introduction"
-          description="The iO brand identity system. Three variants for different contexts — all driven by the io-wordmark component."
+          description="The iO brand identity system. Two variants for different contexts — all driven by the io-wordmark component."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Hero mark */}
@@ -278,32 +278,9 @@ export default function LogotypePageContent() {
       <section id="variants" className="space-y-6">
         <SectionHeader
           title="Variants"
-          description="The io-wordmark component offers three variants for different brand contexts."
+          description="The io-wordmark component offers two variants for different brand contexts."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {/* Text variant */}
-          <div
-            className="rounded-lg overflow-hidden"
-            style={{ border: '1px solid var(--io-border)' }}
-          >
-            <div
-              className="flex items-center justify-center py-12"
-              style={{ background: 'var(--io-bg-raised)' }}
-            >
-              <io-wordmark variant="text" color="blue" size="lg" />
-            </div>
-            <div
-              className="px-5 py-4"
-              style={{ borderTop: '1px solid var(--io-border)', background: 'var(--io-bg-base)' }}
-            >
-              <p className="text-sm font-semibold" style={{ color: 'var(--io-text-primary)' }}>
-                variant=&quot;text&quot;
-              </p>
-              <p className="text-xs mt-1" style={{ color: 'var(--io-text-secondary)' }}>
-                Typographic wordmark in bold Manrope. Default. Use in navigation bars, footers, and inline brand contexts.
-              </p>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Mark variant */}
           <div
             className="rounded-lg overflow-hidden"
@@ -320,7 +297,7 @@ export default function LogotypePageContent() {
               style={{ borderTop: '1px solid var(--io-border)', background: 'var(--io-bg-base)' }}
             >
               <p className="text-sm font-semibold" style={{ color: 'var(--io-text-primary)' }}>
-                variant=&quot;mark&quot;
+                variant=&quot;mark&quot; (default)
               </p>
               <p className="text-xs mt-1" style={{ color: 'var(--io-text-secondary)' }}>
                 Official geometric iO mark SVG (i + O). Use in favicons, avatars, and constrained icon slots.
@@ -526,7 +503,7 @@ export default function LogotypePageContent() {
       <section id="size" className="space-y-6">
         <SectionHeader
           title="Size"
-          description="Four size steps via the size prop — sm, md, lg, xl. For the mark variant these control SVG height; for text they control font size."
+          description="Four size steps via the size prop — sm, md, lg, xl. Both variants scale SVG height."
         />
         <div
           className="rounded-lg px-8 py-10 overflow-x-auto"
@@ -676,9 +653,9 @@ export default function LogotypePageContent() {
         </div>
         <RuleCard label="Usage scope">
           Use <code style={{ fontSize: '0.85em' }}>variant=&quot;lockup&quot;</code> for hero
-          sections and brand-moment placements that require the official full-lockup SVG. For navigation
-          and inline brand contexts, prefer{' '}
-          <code style={{ fontSize: '0.85em' }}>variant=&quot;text&quot;</code>.
+          sections and brand-moment placements that require the official full-lockup SVG. Use{' '}
+          <code style={{ fontSize: '0.85em' }}>variant=&quot;mark&quot;</code> for navigation bars,
+          avatars, and constrained icon slots.
         </RuleCard>
       </section>
 
@@ -693,7 +670,7 @@ export default function LogotypePageContent() {
             {
               label: 'Angular',
               language: 'html',
-              code: `<!-- Text wordmark (default) -->
+              code: `<!-- iO mark (default) -->
 <io-wordmark></io-wordmark>
 
 <!-- iO mark in blue, large -->
@@ -702,12 +679,12 @@ export default function LogotypePageContent() {
 <!-- Full brand lockup, white on dark background -->
 <io-wordmark variant="lockup" color="white" size="md"></io-wordmark>
 
-<!-- Text wordmark as a link -->
-<io-wordmark href="/" aria-label="iO Digital — go to homepage"></io-wordmark>`,
+<!-- Full brand lockup, black -->
+<io-wordmark variant="lockup" color="black" size="md"></io-wordmark>`,
             },
             {
               label: 'React',
-              code: `// Text wordmark (default)
+              code: `// iO mark (default)
 <io-wordmark />
 
 // iO mark in blue, large
@@ -716,13 +693,13 @@ export default function LogotypePageContent() {
 // Full brand lockup, white on dark background
 <io-wordmark variant="lockup" color="white" size="md" />
 
-// Text wordmark as a link
-<io-wordmark href="/" ariaLabel="iO Digital — go to homepage" />`,
+// Full brand lockup, black
+<io-wordmark variant="lockup" color="black" size="md" />`,
             },
             {
               label: 'Vanilla JS',
               language: 'html',
-              code: `<!-- Text wordmark (default) -->
+              code: `<!-- iO mark (default) -->
 <io-wordmark></io-wordmark>
 
 <!-- iO mark in blue, large -->

@@ -17,19 +17,18 @@ export default function IoWordmarkApiPage() {
         <ApiTable
           columns={[
             { label: 'Name', width: '160px' },
-            { label: 'Type', width: '300px' },
+            { label: 'Type', width: '260px' },
             { label: 'Default', width: '120px' },
             { label: 'Description' },
           ]}
           rows={[
             [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;text&apos; | &apos;mark&apos; | &apos;lockup&apos;</InlineCode>,
-              <InlineCode key="d">&apos;text&apos;</InlineCode>,
+              <InlineCode key="t">&apos;mark&apos; | &apos;lockup&apos;</InlineCode>,
+              <InlineCode key="d">&apos;mark&apos;</InlineCode>,
               <span key="desc">
                 Which visual representation to render.{' '}
-                <InlineCode>text</InlineCode> = typographic web-font wordmark (default, backwards-compatible).{' '}
-                <InlineCode>mark</InlineCode> = geometric iO mark SVG.{' '}
+                <InlineCode>mark</InlineCode> = geometric iO mark SVG (default).{' '}
                 <InlineCode>lockup</InlineCode> = full official brand lockup SVG.
               </span>,
             ],
@@ -46,16 +45,7 @@ export default function IoWordmarkApiPage() {
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
-              'Controls font-size on the text variant, or SVG height on mark/lockup variants.',
-            ],
-            [
-              <span key="n"><InlineCode>mono</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              <span key="desc">
-                Monochrome mode. Both &ldquo;io&rdquo; and &ldquo;digital&rdquo; use{' '}
-                <InlineCode>currentColor</InlineCode>. Text variant only — kept for backwards compatibility.
-              </span>,
+              'Controls SVG height for mark and lockup variants.',
             ],
             [
               <InlineCode key="n">ariaLabel</InlineCode>,
@@ -63,30 +53,9 @@ export default function IoWordmarkApiPage() {
               <InlineCode key="d">&apos;io Digital&apos;</InlineCode>,
               <span key="desc">
                 Sets <InlineCode>aria-label</InlineCode> on the host{' '}
-                <InlineCode>role=&quot;img&quot;</InlineCode> element (or the <InlineCode>{'<a>'}</InlineCode> in link mode).
+                <InlineCode>role=&quot;img&quot;</InlineCode> element.
                 Override when a more specific announcement is needed.
               </span>,
-            ],
-            [
-              <InlineCode key="n">href</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
-              <span key="desc">
-                When provided on <InlineCode>variant=&quot;text&quot;</InlineCode>, renders as an{' '}
-                <InlineCode>{'<a>'}</InlineCode> element. Common use case: logo linking back to the homepage.
-              </span>,
-            ],
-            [
-              <InlineCode key="n">target</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
-              'Browsing context for the link (_self, _blank, etc.). Only applied when href is set.',
-            ],
-            [
-              <InlineCode key="n">rel</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
-              'Link relationship (noopener noreferrer, etc.). Only applied when href is set.',
             ],
           ]}
         />
@@ -132,32 +101,12 @@ export default function IoWordmarkApiPage() {
       <section id="css-parts" className="space-y-4">
         <SectionHeader
           title="CSS Parts"
-          description="Named parts exposed for targeted styling via the ::part() pseudo-element. Only available on variant='text'."
+          description="Named parts exposed for targeted styling via the ::part() pseudo-element."
         />
-        <ApiTable
-          columns={[
-            { label: 'Part', width: '160px' },
-            { label: 'Description' },
-          ]}
-          rows={[
-            [
-              <InlineCode key="n">root</InlineCode>,
-              'The outer wrapper span on variant="text". Target to adjust layout or spacing.',
-            ],
-            [
-              <InlineCode key="n">io</InlineCode>,
-              'The "io" text span on variant="text". Receives the brand-blue colour token by default.',
-            ],
-            [
-              <InlineCode key="n">digital</InlineCode>,
-              'The "digital" text span on variant="text". Inherits currentColor from the host.',
-            ],
-            [
-              <InlineCode key="n">link</InlineCode>,
-              'The <a> element rendered on variant="text" when href is set.',
-            ],
-          ]}
-        />
+        <EmptyNote>
+          <strong style={{ color: 'var(--io-text-primary)' }}>io-wordmark exposes no CSS parts.</strong>
+          {' '}Both variants render official brand SVGs — their internal structure is not exposed for modification.
+        </EmptyNote>
       </section>
 
     </div>

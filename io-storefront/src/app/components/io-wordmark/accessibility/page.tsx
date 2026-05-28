@@ -56,7 +56,7 @@ export default function IoWordmarkAccessibilityPage() {
                   img
                 </code>
               ),
-              description: 'The host element carries role="img" so screen readers treat it as a named graphic rather than reading the raw "io" and "digital" text fragments separately.',
+              description: 'The host element carries role="img" so screen readers treat it as a named graphic. The inner SVG is marked aria-hidden="true" to prevent double-announcement.',
             },
             {
               attribute: 'aria-label',
@@ -82,20 +82,20 @@ export default function IoWordmarkAccessibilityPage() {
       <section id="wcag-compliance" className="space-y-6">
         <SectionHeader
           title="WCAG 2.2 compliance"
-          description="io-wordmark is tested against WCAG 2.2 Level AA across all size and mono variants."
+          description="io-wordmark is tested against WCAG 2.2 Level AA across all size steps and both variants."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <ComplianceCard
             criterion="1.4.3"
             level="AA"
             title="Contrast (Minimum)"
-            note='The default "io" colour (#0000D2) meets the 4.5:1 contrast ratio on white backgrounds. The "digital" part inherits the surrounding text colour, which must meet contrast requirements set by the consuming context. In mono mode, the full wordmark inherits the text colour.'
+            note='The default brand blue (#0000D2) meets the 4.5:1 contrast ratio on white backgrounds. Use color="black" or color="white" to ensure contrast on coloured surfaces. The color prop drives SVG fill via currentColor — the consuming context controls the final contrast.'
           />
           <ComplianceCard
             criterion="1.4.4"
             level="AA"
             title="Resize Text"
-            note="Wordmark typography is driven entirely by CSS token-based font-size values. The wordmark scales correctly when the user increases browser font size up to 200%."
+            note="Both variants render SVG with token-scaled heights. The wordmark scales proportionally when the viewport or container size changes and is not affected by browser font-size overrides."
           />
           <ComplianceCard
             criterion="1.1.1"
@@ -128,10 +128,10 @@ export default function IoWordmarkAccessibilityPage() {
           The wordmark&apos;s <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-label</code> should
           complement — not duplicate — the parent&apos;s label. Consider using an empty or hidden wordmark in this case.
         </RuleCard>
-        <RuleCard label="Ensure sufficient contrast in mono mode">
-          When <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>mono</code> is
-          set, the wordmark inherits <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>currentColor</code>.
-          Verify the surrounding text colour achieves at least 4.5:1 contrast against the background surface.
+        <RuleCard label="Ensure sufficient contrast for the chosen colour">
+          The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>color</code> prop
+          drives SVG fill via <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>currentColor</code>.
+          Verify the chosen colour achieves at least 3:1 contrast against the background surface (WCAG 1.4.11 — non-text contrast).
         </RuleCard>
       </section>
 

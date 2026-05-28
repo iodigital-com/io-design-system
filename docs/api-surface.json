@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-27T08:44:15.214Z",
+  "generated": "2026-05-28T08:12:04.147Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -22,8 +22,6 @@
     "io-alert": {
       "props": {
         "dismissible": "boolean",
-        "dismissLabel": "string | undefined",
-        "heading": "string | undefined",
         "variant": "IoAlertVariant"
       },
       "methods": {},
@@ -583,8 +581,7 @@
     },
     "io-tabs-bar": {
       "props": {
-        "activeTabIndex": "number",
-        "label": "string | undefined"
+        "activeTabIndex": "number"
       },
       "methods": {},
       "events": {
@@ -610,7 +607,6 @@
       "props": {
         "align": "IoTextAlign",
         "color": "IoTextColor",
-        "datetime": "string | undefined",
         "ellipsis": "boolean",
         "size": "IoTextSize",
         "tag": "IoTextTag",
@@ -686,8 +682,9 @@
     "io-wordmark": {
       "props": {
         "ariaLabel": "string",
-        "mono": "boolean",
-        "size": "IoWordmarkSize"
+        "color": "IoWordmarkColor",
+        "size": "IoWordmarkSize",
+        "variant": "IoWordmarkVariant"
       },
       "methods": {},
       "events": {}

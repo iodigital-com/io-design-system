@@ -44,9 +44,8 @@ export default function IoBannerUsagePage() {
           title="Controlling visibility with open"
           description="io-banner is hidden by default. Set open=true to show it and wire the dismiss event to hide it."
         />
-        <RuleCard>
-          The <C>open</C> prop drives visibility via CSS (<C>:host([open]) {'{'}display: block{'}'}</C>). The banner
-          remains mounted in the DOM when closed, so any live region announcements are preserved.
+        <RuleCard label="Use open, not unmount">
+          The <C>open</C> prop drives visibility. The banner remains mounted in the DOM when closed, so the live region is ready to announce as soon as content is injected.
           Toggle <C>open</C> from your application state — do not unmount the element to hide it.
         </RuleCard>
         <pre className="bg-surface rounded p-4 text-sm overflow-x-auto"><code>{`<!-- Show the banner -->

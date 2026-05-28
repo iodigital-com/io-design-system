@@ -11,8 +11,6 @@
  */
 import { describe, it, expect, vi } from 'vitest';
 
-import { IoBreadcrumb } from './io-breadcrumb';
-
 describe('io-breadcrumb — click: link items', () => {
   it('link item anchor is rendered with correct href', () => {
     const el = document.createElement('div');

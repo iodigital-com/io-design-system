@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
+import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
+
 import { inlineBannerPropDefinitions, inlineBannerStory } from './io-inline-banner.stories';
+
+function asElement(node: unknown): ElementConfig<HTMLTagOrComponent> {
+  return node as ElementConfig<HTMLTagOrComponent>;
+}
 
 describe('inlineBannerStory — generator', () => {
   it('generates a non-empty array', () => {
@@ -11,17 +17,17 @@ describe('inlineBannerStory — generator', () => {
 
   it('generates an io-inline-banner element', () => {
     const nodes = inlineBannerStory.generator?.();
-    expect(nodes![0].tag).toBe('io-inline-banner');
+    expect(asElement(nodes![0]).tag).toBe('io-inline-banner');
   });
 
   it('applies properties from state', () => {
     const nodes = inlineBannerStory.generator?.({ properties: { variant: 'error' } });
-    expect((nodes![0].properties as Record<string, unknown>).variant).toBe('error');
+    expect((asElement(nodes![0]).properties as Record<string, unknown>).variant).toBe('error');
   });
 
   it.each(['info', 'success', 'warning', 'error'])('renders variant %s', (variant) => {
     const nodes = inlineBannerStory.generator?.({ properties: { variant } });
-    expect(nodes![0].tag).toBe('io-inline-banner');
+    expect(asElement(nodes![0]).tag).toBe('io-inline-banner');
   });
 
   it('renders with heading', () => {
@@ -56,7 +62,9 @@ describe('inlineBannerPropDefinitions', () => {
   it('variant definition has all four options', () => {
     const variantDef = inlineBannerPropDefinitions.find(p => p.name === 'variant');
     expect(variantDef?.type).toBe('select');
-    expect(variantDef?.options).toEqual(expect.arrayContaining(['info', 'success', 'warning', 'error']));
+    expect((variantDef as unknown as { options: string[] })?.options).toEqual(
+      expect.arrayContaining(['info', 'success', 'warning', 'error']),
+    );
   });
 
   it('has no open prop (visibility controlled by mount/unmount)', () => {

@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
+import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/generator';
+
 import { bannerPropDefinitions, bannerStory } from './io-banner.stories';
+
+function asElement(node: unknown): ElementConfig<HTMLTagOrComponent> {
+  return node as ElementConfig<HTMLTagOrComponent>;
+}
 
 describe('bannerStory — generator', () => {
   it('generates a non-empty array', () => {
@@ -11,18 +17,18 @@ describe('bannerStory — generator', () => {
 
   it('generates an io-banner element', () => {
     const nodes = bannerStory.generator?.();
-    expect(nodes![0].tag).toBe('io-banner');
+    expect(asElement(nodes![0]).tag).toBe('io-banner');
   });
 
   it('applies properties from state', () => {
     const nodes = bannerStory.generator?.({ properties: { variant: 'error', open: true } });
-    expect((nodes![0].properties as Record<string, unknown>).variant).toBe('error');
-    expect((nodes![0].properties as Record<string, unknown>).open).toBe(true);
+    expect((asElement(nodes![0]).properties as Record<string, unknown>).variant).toBe('error');
+    expect((asElement(nodes![0]).properties as Record<string, unknown>).open).toBe(true);
   });
 
   it.each(['info', 'success', 'warning', 'error'])('renders variant %s', (variant) => {
     const nodes = bannerStory.generator?.({ properties: { variant, open: true } });
-    expect(nodes![0].tag).toBe('io-banner');
+    expect(asElement(nodes![0]).tag).toBe('io-banner');
   });
 
   it('renders with heading', () => {
@@ -57,7 +63,9 @@ describe('bannerPropDefinitions', () => {
   it('variant definition has all four options', () => {
     const variantDef = bannerPropDefinitions.find(p => p.name === 'variant');
     expect(variantDef?.type).toBe('select');
-    expect(variantDef?.options).toEqual(expect.arrayContaining(['info', 'success', 'warning', 'error']));
+    expect((variantDef as unknown as { options: string[] })?.options).toEqual(
+      expect.arrayContaining(['info', 'success', 'warning', 'error']),
+    );
   });
 
   it('open definition is boolean', () => {

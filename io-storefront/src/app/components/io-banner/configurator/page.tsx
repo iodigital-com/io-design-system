@@ -1,9 +1,9 @@
 'use client';
 
-import { Configurator } from '@/components/configurator/Configurator';
+import { Configurator } from '@/components/playground/Configurator';
 
 import { bannerPropDefinitions, bannerStory } from '../io-banner.stories';
 
 export default function IoBannerConfiguratorPage() {
-  return <Configurator story={bannerStory} propDefinitions={bannerPropDefinitions} />;
+  return <Configurator tagName="io-banner" story={bannerStory} propDefinitions={bannerPropDefinitions} />;
 }

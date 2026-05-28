@@ -44,8 +44,8 @@ export default function IoInlineBannerUsagePage() {
           title="Controlling visibility"
           description="io-inline-banner has no open prop — the consumer controls visibility by mounting or unmounting the element."
         />
-        <RuleCard>
-          Unlike <C>io-banner</C>, the inline banner does not have an <C>open</C> prop. Conditionally render it from
+        <RuleCard label="Mount to show, unmount to hide">
+          Unlike <C>io-banner</C>, the inline banner has no <C>open</C> prop. Conditionally render it from
           your framework&apos;s template. When the user dismisses it (via the <C>dismiss</C> event), remove it from the DOM.
         </RuleCard>
         <pre className="bg-surface rounded p-4 text-sm overflow-x-auto"><code>{`<!-- Show when condition is true -->

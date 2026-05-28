@@ -3,6 +3,9 @@ import {
   headingStory,
   headingStorySizes,
   headingStoryLevels,
+  headingStoryWeights,
+  headingStoryAlign,
+  headingStoryEllipsis,
   headingPropDefinitions,
 } from './io-heading.stories';
 
@@ -182,6 +185,57 @@ describe('io-heading storefront stories', () => {
     it('returns one element per heading level', () => {
       const els = headingStoryLevels.generator?.() ?? [];
       expect(els.length).toBe(6);
+    });
+  });
+
+  describe('headingStoryWeights (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryWeights.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per weight variant', () => {
+      const els = headingStoryWeights.generator?.() ?? [];
+      expect(els.length).toBe(3);
+    });
+
+    it('each element is an io-heading', () => {
+      const els = headingStoryWeights.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { tag: string }).tag).toBe('io-heading');
+      }
+    });
+  });
+
+  describe('headingStoryAlign (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryAlign.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per alignment', () => {
+      const els = headingStoryAlign.generator?.() ?? [];
+      expect(els.length).toBe(3);
+    });
+
+    it('each element is an io-heading', () => {
+      const els = headingStoryAlign.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { tag: string }).tag).toBe('io-heading');
+      }
+    });
+  });
+
+  describe('headingStoryEllipsis (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryEllipsis.generator?.()).not.toThrow();
+    });
+
+    it('returns a wrapper div containing an io-heading', () => {
+      const els = headingStoryEllipsis.generator?.() ?? [];
+      expect(els.length).toBe(1);
+      const wrapper = els[0] as { tag: string; children?: unknown[] };
+      expect(wrapper.tag).toBe('div');
+      const heading = wrapper.children?.find((c) => (c as { tag: string }).tag === 'io-heading');
+      expect(heading).toBeDefined();
     });
   });
 });

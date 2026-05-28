@@ -283,6 +283,84 @@ describe('SearchPalette', () => {
 
       expect(document.activeElement).toBe(last);
     });
+
+    it('wraps focus to the first element on Tab from the last (no results)', () => {
+      render(<SearchPalette open={true} onClose={onClose} />);
+
+      act(() => { vi.runAllTimers(); });
+
+      const dialog = screen.getByRole('dialog');
+      const focusable = dialog.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      expect(focusable.length).toBeGreaterThan(0);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      last.focus();
+      expect(document.activeElement).toBe(last);
+
+      press('Tab');
+
+      expect(document.activeElement).toBe(first);
+    });
+
+    it('wraps focus to the first element on Tab from the last (with results)', () => {
+      render(<SearchPalette open={true} onClose={onClose} />);
+
+      act(() => { vi.runAllTimers(); });
+      typeQuery('button');
+
+      const dialog = screen.getByRole('dialog');
+      const focusable = dialog.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      expect(focusable.length).toBeGreaterThan(0);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      last.focus();
+      press('Tab');
+
+      expect(document.activeElement).toBe(first);
+    });
+  });
+
+  // ── Mouse interaction ────────────────────────────────────────────────────
+
+  describe('mouse interaction', () => {
+    it('mousedown on the outer backdrop calls onClose', () => {
+      render(<SearchPalette open={true} onClose={onClose} />);
+      const backdrop = document.querySelector('[role="presentation"]') as HTMLElement;
+      fireEvent.mouseDown(backdrop);
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('mousedown on the inner dialog does not call onClose', () => {
+      render(<SearchPalette open={true} onClose={onClose} />);
+      const dialog = screen.getByRole('dialog');
+      fireEvent.mouseDown(dialog);
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('clicking a search result link calls onClose and saves to recent', () => {
+      render(<SearchPalette open={true} onClose={onClose} />);
+      typeQuery('button');
+      const links = screen.getAllByRole('link');
+      fireEvent.click(links[0]);
+      expect(onClose).toHaveBeenCalledTimes(1);
+      const raw = localStorage.getItem('io-search-palette-recent');
+      expect(raw).not.toBeNull();
+    });
+
+    it('clicking a recent search link calls onClose', () => {
+      const recentData = [{ id: 'component:button', label: 'Button', href: '/components/io-button', type: 'Components' as const }];
+      localStorage.setItem('io-search-palette-recent', JSON.stringify(recentData));
+      render(<SearchPalette open={true} onClose={onClose} />);
+      const links = screen.getAllByRole('link');
+      fireEvent.click(links[0]);
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
   });
 
   // ── Recent searches ──────────────────────────────────────────────────────

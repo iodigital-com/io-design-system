@@ -84,6 +84,28 @@ describe('io-divider storefront stories', () => {
       expect(() => (dividerStory as { frameworkCode?: (state?: unknown) => unknown }).frameworkCode?.(dividerStory.state)).not.toThrow();
     });
 
+    it('frameworkCode with orientation=vertical adds orientation attribute', () => {
+      const code = (dividerStory as { frameworkCode?: (state?: unknown) => { html: string; react: string } }).frameworkCode?.({
+        properties: { orientation: 'vertical', color: 'default', label: '' },
+      });
+      expect(code?.html).toContain('orientation="vertical"');
+      expect(code?.react).toContain('orientation="vertical"');
+    });
+
+    it('frameworkCode with color=subtle adds color attribute', () => {
+      const code = (dividerStory as { frameworkCode?: (state?: unknown) => { html: string } }).frameworkCode?.({
+        properties: { orientation: 'horizontal', color: 'subtle', label: '' },
+      });
+      expect(code?.html).toContain('color="subtle"');
+    });
+
+    it('frameworkCode with label adds label attribute', () => {
+      const code = (dividerStory as { frameworkCode?: (state?: unknown) => { html: string } }).frameworkCode?.({
+        properties: { orientation: 'horizontal', color: 'default', label: 'or' },
+      });
+      expect(code?.html).toContain('label="or"');
+    });
+
     it('configurator story produces io-divider as root element', () => {
       const els = dividerStory.generator?.(dividerStory.state) ?? [];
       const wrapper = els[0] as { tag: string; children?: unknown[] };

@@ -4,6 +4,9 @@ import {
   textPropDefinitions,
   textStorySizes,
   textStoryColors,
+  textStoryWeights,
+  textStoryAlign,
+  textStoryEllipsis,
 } from './io-text.stories';
 
 describe('io-text storefront stories', () => {
@@ -237,6 +240,58 @@ describe('io-text storefront stories', () => {
         const element = el as { children: unknown[] };
         expect(element.children.length).toBeGreaterThan(0);
       }
+    });
+  });
+
+  describe('textStoryWeights', () => {
+    it('does not throw', () => {
+      expect(() => textStoryWeights.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per weight variant', () => {
+      const els = textStoryWeights.generator?.() ?? [];
+      expect(els.length).toBe(4);
+    });
+
+    it('each element is an io-text', () => {
+      const els = textStoryWeights.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { tag: string }).tag).toBe('io-text');
+      }
+    });
+  });
+
+  describe('textStoryAlign', () => {
+    it('does not throw', () => {
+      expect(() => textStoryAlign.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per alignment', () => {
+      const els = textStoryAlign.generator?.() ?? [];
+      expect(els.length).toBe(3);
+    });
+
+    it('each element is an io-text', () => {
+      const els = textStoryAlign.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { tag: string }).tag).toBe('io-text');
+      }
+    });
+  });
+
+  describe('textStoryEllipsis', () => {
+    it('does not throw', () => {
+      expect(() => textStoryEllipsis.generator?.()).not.toThrow();
+    });
+
+    it('returns a wrapper div containing an io-text with ellipsis', () => {
+      const els = textStoryEllipsis.generator?.() ?? [];
+      expect(els.length).toBe(1);
+      const wrapper = els[0] as { tag: string; children?: unknown[] };
+      expect(wrapper.tag).toBe('div');
+      const text = wrapper.children?.find((c) => (c as { tag: string }).tag === 'io-text');
+      expect(text).toBeDefined();
+      expect((text as { properties: Record<string, unknown> }).properties.ellipsis).toBe(true);
     });
   });
 });

@@ -100,6 +100,23 @@ afterEach(() => {
 
 // ── Tests ──────────────────────────────────────────────────────────────────
 
+describe('useStorefrontTheme default context', () => {
+  it('noop setTheme does not throw when no provider is present', async () => {
+    function BareConsumer() {
+      const { setTheme } = useStorefrontTheme();
+      return (
+        <button type="button" onClick={() => setTheme('dark')}>
+          call setTheme
+        </button>
+      );
+    }
+    render(<BareConsumer />);
+    await act(async () => {
+      screen.getByText('call setTheme').click();
+    });
+  });
+});
+
 describe('StorefrontThemeProvider / useStorefrontTheme', () => {
   describe('initial state', () => {
     it('defaults to auto theme when localStorage is empty', () => {

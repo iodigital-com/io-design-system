@@ -36,6 +36,23 @@ export function getBreadcrumbItemStyles(): string {
       font-family: var(--io-font-primary);
     }
 
+    .breadcrumb__separator {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 var(--io-space-2);
+      color: var(--io-color-grey-4);
+      font-size: var(--io-font-size-sm);
+      user-select: none;
+    }
+
+    .breadcrumb__separator::after {
+      content: var(--io-breadcrumb-separator, '›');
+    }
+
+    :host-context([dir="rtl"]) .breadcrumb__separator {
+      transform: scaleX(-1);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       a { transition: none; }
     }

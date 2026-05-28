@@ -1,8 +1,6 @@
 import type { Story } from '@/models/story';
 
 // ── Stories ──────────────────────────────────────────────────────────────────
-// All stories use the declarative slot-based API (Wave XI).
-// Use io-breadcrumb-item sub-components as direct children.
 
 export const breadcrumbStoryDefault: Story<'io-breadcrumb'> = {
   state: {
@@ -21,18 +19,50 @@ export const breadcrumbStoryDefault: Story<'io-breadcrumb'> = {
   ],
 };
 
+// Wraps io-breadcrumb in a display:contents div so the CSS custom property
+// cascades into the shadow DOM without affecting the rendered layout.
+// The frameworkCode override shows consumers how to apply the override
+// directly on io-breadcrumb without the wrapper.
 export const breadcrumbStorySlash: Story<'io-breadcrumb'> = {
+  frameworkCode: {
+    html: `<io-breadcrumb style="--io-breadcrumb-separator: '/'">
+  <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+  <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
+  <io-breadcrumb-item current>Team</io-breadcrumb-item>
+</io-breadcrumb>`,
+    react: `<IoBreadcrumb style={{ '--io-breadcrumb-separator': \"'/'\" }}>
+  <IoBreadcrumbItem href="/">Home</IoBreadcrumbItem>
+  <IoBreadcrumbItem href="/about">About</IoBreadcrumbItem>
+  <IoBreadcrumbItem current>Team</IoBreadcrumbItem>
+</IoBreadcrumb>`,
+    angular: `<io-breadcrumb style="--io-breadcrumb-separator: '/'">
+  <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+  <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
+  <io-breadcrumb-item current>Team</io-breadcrumb-item>
+</io-breadcrumb>`,
+    vue: `<io-breadcrumb :style="{ '--io-breadcrumb-separator': \"'/'\" }">
+  <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+  <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
+  <io-breadcrumb-item current>Team</io-breadcrumb-item>
+</io-breadcrumb>`,
+  },
   state: {
     properties: {},
   },
   generator: () => [
     {
-      tag: 'io-breadcrumb' as const,
-      properties: {},
+      tag: 'div' as const,
+      properties: { style: { '--io-breadcrumb-separator': "'/'", display: 'contents' } },
       children: [
-        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
-        { tag: 'io-breadcrumb-item' as const, properties: { href: '/about' }, children: ['About'] },
-        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Team'] },
+        {
+          tag: 'io-breadcrumb' as const,
+          properties: {},
+          children: [
+            { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+            { tag: 'io-breadcrumb-item' as const, properties: { href: '/about' }, children: ['About'] },
+            { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Team'] },
+          ],
+        },
       ],
     },
   ],

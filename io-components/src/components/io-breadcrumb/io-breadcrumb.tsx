@@ -10,8 +10,8 @@ type BreadcrumbItem = Element & { current: boolean };
  * Breadcrumb navigation for hierarchical orientation.
  * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
  *
- * Separators are inserted programmatically between slotted items via slotchange.
- * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+ * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+ * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
  *
  * @example
  * <io-breadcrumb>
@@ -30,27 +30,12 @@ export class IoBreadcrumb {
   // ── Slot handling ─────────────────────────────────────────────
 
   private handleSlotChange = () => {
-    const ol = this.el.shadowRoot?.querySelector('ol');
-    if (!ol) return;
+    const items = Array.from(this.el.querySelectorAll('io-breadcrumb-item')) as BreadcrumbItem[];
+    if (!items.length) return;
 
-    // Remove all existing separators before re-inserting to prevent duplicates
-    ol.querySelectorAll('.breadcrumb__separator').forEach(s => s.remove());
-
-    const items = Array.from(ol.querySelectorAll('io-breadcrumb-item'));
-
-    items.forEach((item, i) => {
-      if (i < items.length - 1) {
-        const sep = document.createElement('span');
-        sep.className = 'breadcrumb__separator';
-        sep.setAttribute('aria-hidden', 'true');
-        item.after(sep);
-      }
-
-      // Set current=true on last item if none has it explicitly
-      if (i === items.length - 1 && !items.some(it => (it as BreadcrumbItem).current === true)) {
-        (item as BreadcrumbItem).current = true;
-      }
-    });
+    if (!items.some(it => it.current === true)) {
+      items[items.length - 1].current = true;
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────

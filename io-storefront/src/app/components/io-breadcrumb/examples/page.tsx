@@ -11,12 +11,9 @@ export default function IoBreadcrumbExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Basic breadcrumb"
-          description="Three items: two links and a current page item. Separators are inserted automatically by io-breadcrumb."
+          description="Three items: two links and a current page item. Separators are rendered automatically between items."
         />
-        <ComponentStory
-          story={breadcrumbStoryDefault}
-          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
-        />
+        <ComponentStory story={breadcrumbStoryDefault} />
       </section>
 
       <section>
@@ -24,10 +21,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Custom separator via CSS"
           description="Override the separator character using --io-breadcrumb-separator CSS custom property."
         />
-        <ComponentStory
-          story={breadcrumbStorySlash}
-          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
-        />
+        <ComponentStory story={breadcrumbStorySlash} />
       </section>
 
       <section>
@@ -35,10 +29,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Deep hierarchy"
           description="Five items showing a deeper navigation path. The last item is automatically marked as the current page."
         />
-        <ComponentStory
-          story={breadcrumbStoryLong}
-          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
-        />
+        <ComponentStory story={breadcrumbStoryLong} />
       </section>
 
       <section>

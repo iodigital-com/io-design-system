@@ -9,13 +9,10 @@ export default function IoBreadcrumbConfiguratorPage() {
   return (
     <div className="space-y-8">
       <ExamplesSectionHeader
-        title="Declarative slot-based API"
-        description="Place io-breadcrumb-item sub-components directly inside io-breadcrumb. Separators are inserted automatically."
+        title="Breadcrumb"
+        description="Place io-breadcrumb-item sub-components directly inside io-breadcrumb. Separators are rendered automatically between items."
       />
-      <ComponentStory
-        story={breadcrumbStoryDefault}
-        previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
-      />
+      <ComponentStory story={breadcrumbStoryDefault} />
     </div>
   );
 }

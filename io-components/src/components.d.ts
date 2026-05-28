@@ -6,9 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-import { IoAlertVariant } from "./components/io-alert/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
+import { IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -18,6 +18,7 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+import { IoInlineBannerVariant } from "./components/io-inline-banner/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -44,9 +45,9 @@ import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-export { IoAlertVariant } from "./components/io-alert/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
+export { IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -56,6 +57,7 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+export { IoInlineBannerVariant } from "./components/io-inline-banner/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
@@ -138,39 +140,6 @@ export namespace Components {
         "sticky": boolean;
     }
     /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification component with four severity variants.
-     * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
-     * so we only set aria-live and aria-atomic for non-error variants.
-     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
-     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
-     */
-    interface IoAlert {
-        /**
-          * Accessible label for the dismiss button. Override this when multiple alerts appear on the same page so each button has a unique name. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
-         */
-        "dismissLabel"?: string;
-        /**
-          * When true, renders a dismiss button that emits the `dismiss` event on click
-          * @default false
-         */
-        "dismissible": boolean;
-        /**
-          * Optional bold heading rendered above the slotted content
-         */
-        "heading"?: string;
-        /**
-          * Severity variant — controls icon, colour, and aria-live politeness
-          * @default 'info'
-         */
-        "variant": IoAlertVariant;
-    }
-    /**
      * io-avatar
      * =========
      * Displays a user avatar with three progressive fallbacks:
@@ -232,12 +201,53 @@ export namespace Components {
         "variant": IoBadgeVariant;
     }
     /**
+     * io-banner
+     * =========
+     * Full-width page-level notification strip with four severity variants.
+     * Visibility is controlled by the `open` prop — the host hides itself when open=false.
+     * Set open=true to show and wire the dismiss event to set it back to false.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-banner variant="info" open heading="Maintenance scheduled">
+     *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
+     * </io-banner>
+     * <io-banner variant="success" open dismissible>
+     *   Your changes have been saved.
+     * </io-banner>
+     */
+    interface IoBanner {
+        /**
+          * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event and closes the banner
+          * @default false
+         */
+        "dismissible": boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Controls visibility. Set to true to show the banner.
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant": IoBannerVariant;
+    }
+    /**
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
      * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
-     * Separators are inserted programmatically between slotted items via slotchange.
-     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+     * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
      * @example <io-breadcrumb>
      *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
@@ -761,6 +771,42 @@ export namespace Components {
           * @default 'semibold'
          */
         "weight": IoHeadingWeight;
+    }
+    /**
+     * io-inline-banner
+     * ================
+     * Inline content-level notification with four severity variants.
+     * Sits within the content flow — no open/close state. The consumer
+     * controls visibility by mounting or unmounting the element.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     *   You have used 90% of your quota.
+     * </io-inline-banner>
+     * <io-inline-banner variant="error" dismissible>
+     *   Failed to save. Please try again.
+     * </io-inline-banner>
+     */
+    interface IoInlineBanner {
+        /**
+          * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event on click
+          * @default false
+         */
+        "dismissible": boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant": IoInlineBannerVariant;
     }
     /**
      * io-input
@@ -2319,9 +2365,9 @@ export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoAccordionElement;
 }
-export interface IoAlertCustomEvent<T> extends CustomEvent<T> {
+export interface IoBannerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLIoAlertElement;
+    target: HTMLIoBannerElement;
 }
 export interface IoButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2346,6 +2392,10 @@ export interface IoCheckboxGroupCustomEvent<T> extends CustomEvent<T> {
 export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
+}
+export interface IoInlineBannerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoInlineBannerElement;
 }
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2453,36 +2503,6 @@ declare global {
         prototype: HTMLIoAccordionElement;
         new (): HTMLIoAccordionElement;
     };
-    interface HTMLIoAlertElementEventMap {
-        "dismiss": void;
-    }
-    /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification component with four severity variants.
-     * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
-     * so we only set aria-live and aria-atomic for non-error variants.
-     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
-     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
-     */
-    interface HTMLIoAlertElement extends Components.IoAlert, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIoAlertElementEventMap>(type: K, listener: (this: HTMLIoAlertElement, ev: IoAlertCustomEvent<HTMLIoAlertElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLIoAlertElement: {
-        prototype: HTMLIoAlertElement;
-        new (): HTMLIoAlertElement;
-    };
     /**
      * io-avatar
      * =========
@@ -2514,13 +2534,46 @@ declare global {
         prototype: HTMLIoBadgeElement;
         new (): HTMLIoBadgeElement;
     };
+    interface HTMLIoBannerElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-banner
+     * =========
+     * Full-width page-level notification strip with four severity variants.
+     * Visibility is controlled by the `open` prop — the host hides itself when open=false.
+     * Set open=true to show and wire the dismiss event to set it back to false.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-banner variant="info" open heading="Maintenance scheduled">
+     *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
+     * </io-banner>
+     * <io-banner variant="success" open dismissible>
+     *   Your changes have been saved.
+     * </io-banner>
+     */
+    interface HTMLIoBannerElement extends Components.IoBanner, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoBannerElementEventMap>(type: K, listener: (this: HTMLIoBannerElement, ev: IoBannerCustomEvent<HTMLIoBannerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoBannerElementEventMap>(type: K, listener: (this: HTMLIoBannerElement, ev: IoBannerCustomEvent<HTMLIoBannerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoBannerElement: {
+        prototype: HTMLIoBannerElement;
+        new (): HTMLIoBannerElement;
+    };
     /**
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
      * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
-     * Separators are inserted programmatically between slotted items via slotchange.
-     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+     * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
      * @example <io-breadcrumb>
      *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
@@ -2788,6 +2841,39 @@ declare global {
     var HTMLIoHeadingElement: {
         prototype: HTMLIoHeadingElement;
         new (): HTMLIoHeadingElement;
+    };
+    interface HTMLIoInlineBannerElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-inline-banner
+     * ================
+     * Inline content-level notification with four severity variants.
+     * Sits within the content flow — no open/close state. The consumer
+     * controls visibility by mounting or unmounting the element.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     *   You have used 90% of your quota.
+     * </io-inline-banner>
+     * <io-inline-banner variant="error" dismissible>
+     *   Failed to save. Please try again.
+     * </io-inline-banner>
+     */
+    interface HTMLIoInlineBannerElement extends Components.IoInlineBanner, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoInlineBannerElementEventMap>(type: K, listener: (this: HTMLIoInlineBannerElement, ev: IoInlineBannerCustomEvent<HTMLIoInlineBannerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoInlineBannerElementEventMap>(type: K, listener: (this: HTMLIoInlineBannerElement, ev: IoInlineBannerCustomEvent<HTMLIoInlineBannerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoInlineBannerElement: {
+        prototype: HTMLIoInlineBannerElement;
+        new (): HTMLIoInlineBannerElement;
     };
     interface HTMLIoInputElementEventMap {
         "input": InputEvent;
@@ -3624,9 +3710,9 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "io-accordion": HTMLIoAccordionElement;
-        "io-alert": HTMLIoAlertElement;
         "io-avatar": HTMLIoAvatarElement;
         "io-badge": HTMLIoBadgeElement;
+        "io-banner": HTMLIoBannerElement;
         "io-breadcrumb": HTMLIoBreadcrumbElement;
         "io-breadcrumb-item": HTMLIoBreadcrumbItemElement;
         "io-button": HTMLIoButtonElement;
@@ -3638,6 +3724,7 @@ declare global {
         "io-drawer": HTMLIoDrawerElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-heading": HTMLIoHeadingElement;
+        "io-inline-banner": HTMLIoInlineBannerElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
@@ -3737,43 +3824,6 @@ declare namespace LocalJSX {
         "sticky"?: boolean;
     }
     /**
-     * io-alert
-     * =========
-     * Non-interactive inline notification component with four severity variants.
-     * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-     * Setting aria-live on a role="alert" element is redundant and ignored by AT,
-     * so we only set aria-live and aria-atomic for non-error variants.
-     * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
-     * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
-     * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
-     */
-    interface IoAlert {
-        /**
-          * Accessible label for the dismiss button. Override this when multiple alerts appear on the same page so each button has a unique name. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
-         */
-        "dismissLabel"?: string;
-        /**
-          * When true, renders a dismiss button that emits the `dismiss` event on click
-          * @default false
-         */
-        "dismissible"?: boolean;
-        /**
-          * Optional bold heading rendered above the slotted content
-         */
-        "heading"?: string;
-        /**
-          * Emitted when the dismiss button is clicked
-         */
-        "onDismiss"?: (event: IoAlertCustomEvent<void>) => void;
-        /**
-          * Severity variant — controls icon, colour, and aria-live politeness
-          * @default 'info'
-         */
-        "variant"?: IoAlertVariant;
-    }
-    /**
      * io-avatar
      * =========
      * Displays a user avatar with three progressive fallbacks:
@@ -3835,12 +3885,57 @@ declare namespace LocalJSX {
         "variant"?: IoBadgeVariant;
     }
     /**
+     * io-banner
+     * =========
+     * Full-width page-level notification strip with four severity variants.
+     * Visibility is controlled by the `open` prop — the host hides itself when open=false.
+     * Set open=true to show and wire the dismiss event to set it back to false.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-banner variant="info" open heading="Maintenance scheduled">
+     *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
+     * </io-banner>
+     * <io-banner variant="success" open dismissible>
+     *   Your changes have been saved.
+     * </io-banner>
+     */
+    interface IoBanner {
+        /**
+          * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event and closes the banner
+          * @default false
+         */
+        "dismissible"?: boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the dismiss button is clicked
+         */
+        "onDismiss"?: (event: IoBannerCustomEvent<void>) => void;
+        /**
+          * Controls visibility. Set to true to show the banner.
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant"?: IoBannerVariant;
+    }
+    /**
      * io-breadcrumb
      * =============
      * Breadcrumb navigation for hierarchical orientation.
      * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
-     * Separators are inserted programmatically between slotted items via slotchange.
-     * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+     * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+     * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
      * @example <io-breadcrumb>
      *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
@@ -4370,6 +4465,46 @@ declare namespace LocalJSX {
           * @default 'semibold'
          */
         "weight"?: IoHeadingWeight;
+    }
+    /**
+     * io-inline-banner
+     * ================
+     * Inline content-level notification with four severity variants.
+     * Sits within the content flow — no open/close state. The consumer
+     * controls visibility by mounting or unmounting the element.
+     * ARIA live region strategy:
+     *   - error variant:     role="alert" (implicit aria-live="assertive")
+     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     * @example <io-inline-banner variant="warning" heading="Storage limit">
+     *   You have used 90% of your quota.
+     * </io-inline-banner>
+     * <io-inline-banner variant="error" dismissible>
+     *   Failed to save. Please try again.
+     * </io-inline-banner>
+     */
+    interface IoInlineBanner {
+        /**
+          * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
+         */
+        "dismissLabel"?: string;
+        /**
+          * When true, renders a dismiss button that emits the `dismiss` event on click
+          * @default false
+         */
+        "dismissible"?: boolean;
+        /**
+          * Optional bold heading rendered above the slotted content
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the dismiss button is clicked
+         */
+        "onDismiss"?: (event: IoInlineBannerCustomEvent<void>) => void;
+        /**
+          * Severity variant — controls icon, colour, and aria-live politeness
+          * @default 'info'
+         */
+        "variant"?: IoInlineBannerVariant;
     }
     /**
      * io-input
@@ -5960,12 +6095,6 @@ declare namespace LocalJSX {
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
     }
-    interface IoAlertAttributes {
-        "variant": IoAlertVariant;
-        "heading": string;
-        "dismissible": boolean;
-        "dismissLabel": string;
-    }
     interface IoAvatarAttributes {
         "src": string | undefined;
         "alt": string;
@@ -5977,6 +6106,13 @@ declare namespace LocalJSX {
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
         "size": IoBadgeSize;
+    }
+    interface IoBannerAttributes {
+        "variant": IoBannerVariant;
+        "heading": string;
+        "open": boolean;
+        "dismissible": boolean;
+        "dismissLabel": string;
     }
     interface IoBreadcrumbItemAttributes {
         "href": string;
@@ -6067,6 +6203,12 @@ declare namespace LocalJSX {
         "align": IoHeadingAlign;
         "color": IoHeadingColor;
         "ellipsis": boolean;
+    }
+    interface IoInlineBannerAttributes {
+        "variant": IoInlineBannerVariant;
+        "heading": string;
+        "dismissible": boolean;
+        "dismissLabel": string;
     }
     interface IoInputAttributes {
         "label": string;
@@ -6341,9 +6483,9 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
-        "io-alert": Omit<IoAlert, keyof IoAlertAttributes> & { [K in keyof IoAlert & keyof IoAlertAttributes]?: IoAlert[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `attr:${K}`]?: IoAlertAttributes[K] } & { [K in keyof IoAlert & keyof IoAlertAttributes as `prop:${K}`]?: IoAlert[K] };
         "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
+        "io-banner": Omit<IoBanner, keyof IoBannerAttributes> & { [K in keyof IoBanner & keyof IoBannerAttributes]?: IoBanner[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `attr:${K}`]?: IoBannerAttributes[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `prop:${K}`]?: IoBanner[K] };
         "io-breadcrumb": IoBreadcrumb;
         "io-breadcrumb-item": Omit<IoBreadcrumbItem, keyof IoBreadcrumbItemAttributes> & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes]?: IoBreadcrumbItem[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `attr:${K}`]?: IoBreadcrumbItemAttributes[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `prop:${K}`]?: IoBreadcrumbItem[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
@@ -6355,6 +6497,7 @@ declare namespace LocalJSX {
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
+        "io-inline-banner": Omit<IoInlineBanner, keyof IoInlineBannerAttributes> & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes]?: IoInlineBanner[K] } & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes as `attr:${K}`]?: IoInlineBannerAttributes[K] } & { [K in keyof IoInlineBanner & keyof IoInlineBannerAttributes as `prop:${K}`]?: IoInlineBanner[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
@@ -6405,20 +6548,6 @@ declare module "@stencil/core" {
              */
             "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;
             /**
-             * io-alert
-             * =========
-             * Non-interactive inline notification component with four severity variants.
-             * ARIA live region strategy:
-             *   - error variant:     role="alert" (implicit aria-live="assertive")
-             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
-             * Setting aria-live on a role="alert" element is redundant and ignored by AT,
-             * so we only set aria-live and aria-atomic for non-error variants.
-             * @example <io-alert variant="info">Your session expires in 5 minutes.</io-alert>
-             * <io-alert variant="error" heading="Upload failed">The file exceeds 10 MB.</io-alert>
-             * <io-alert variant="success" dismissible>Changes saved successfully.</io-alert>
-             */
-            "io-alert": LocalJSX.IntrinsicElements["io-alert"] & JSXBase.HTMLAttributes<HTMLIoAlertElement>;
-            /**
              * io-avatar
              * =========
              * Displays a user avatar with three progressive fallbacks:
@@ -6440,12 +6569,29 @@ declare module "@stencil/core" {
              */
             "io-badge": LocalJSX.IntrinsicElements["io-badge"] & JSXBase.HTMLAttributes<HTMLIoBadgeElement>;
             /**
+             * io-banner
+             * =========
+             * Full-width page-level notification strip with four severity variants.
+             * Visibility is controlled by the `open` prop — the host hides itself when open=false.
+             * Set open=true to show and wire the dismiss event to set it back to false.
+             * ARIA live region strategy:
+             *   - error variant:     role="alert" (implicit aria-live="assertive")
+             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+             * @example <io-banner variant="info" open heading="Maintenance scheduled">
+             *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
+             * </io-banner>
+             * <io-banner variant="success" open dismissible>
+             *   Your changes have been saved.
+             * </io-banner>
+             */
+            "io-banner": LocalJSX.IntrinsicElements["io-banner"] & JSXBase.HTMLAttributes<HTMLIoBannerElement>;
+            /**
              * io-breadcrumb
              * =============
              * Breadcrumb navigation for hierarchical orientation.
              * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
-             * Separators are inserted programmatically between slotted items via slotchange.
-             * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+             * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+             * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
              * @example <io-breadcrumb>
              *   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
              *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
@@ -6591,6 +6737,23 @@ declare module "@stencil/core" {
              * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
              */
             "io-heading": LocalJSX.IntrinsicElements["io-heading"] & JSXBase.HTMLAttributes<HTMLIoHeadingElement>;
+            /**
+             * io-inline-banner
+             * ================
+             * Inline content-level notification with four severity variants.
+             * Sits within the content flow — no open/close state. The consumer
+             * controls visibility by mounting or unmounting the element.
+             * ARIA live region strategy:
+             *   - error variant:     role="alert" (implicit aria-live="assertive")
+             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+             * @example <io-inline-banner variant="warning" heading="Storage limit">
+             *   You have used 90% of your quota.
+             * </io-inline-banner>
+             * <io-inline-banner variant="error" dismissible>
+             *   Failed to save. Please try again.
+             * </io-inline-banner>
+             */
+            "io-inline-banner": LocalJSX.IntrinsicElements["io-inline-banner"] & JSXBase.HTMLAttributes<HTMLIoInlineBannerElement>;
             /**
              * io-input
              * =========

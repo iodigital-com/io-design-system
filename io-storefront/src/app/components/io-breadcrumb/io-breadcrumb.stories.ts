@@ -30,7 +30,7 @@ export const breadcrumbStorySlash: Story<'io-breadcrumb'> = {
   <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
   <io-breadcrumb-item current>Team</io-breadcrumb-item>
 </io-breadcrumb>`,
-    react: `<IoBreadcrumb style={{ '--io-breadcrumb-separator': \"'/'\" }}>
+    react: `<IoBreadcrumb style={{ '--io-breadcrumb-separator': "'/'"}}>
   <IoBreadcrumbItem href="/">Home</IoBreadcrumbItem>
   <IoBreadcrumbItem href="/about">About</IoBreadcrumbItem>
   <IoBreadcrumbItem current>Team</IoBreadcrumbItem>
@@ -40,7 +40,7 @@ export const breadcrumbStorySlash: Story<'io-breadcrumb'> = {
   <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
   <io-breadcrumb-item current>Team</io-breadcrumb-item>
 </io-breadcrumb>`,
-    vue: `<io-breadcrumb :style="{ '--io-breadcrumb-separator': \"'/'\" }">
+    vue: `<io-breadcrumb :style="{ '--io-breadcrumb-separator': "'/'" }">
   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
   <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
   <io-breadcrumb-item current>Team</io-breadcrumb-item>

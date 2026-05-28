@@ -13,9 +13,9 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
-  'io-alert': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAlertElement>, HTMLIoAlertElement> & Partial<StencilJSX.IoAlert>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
+  'io-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBannerElement>, HTMLIoBannerElement> & Partial<StencilJSX.IoBanner>;
   'io-breadcrumb': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbElement>, HTMLIoBreadcrumbElement> & Partial<StencilJSX.IoBreadcrumb>;
   'io-breadcrumb-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbItemElement>, HTMLIoBreadcrumbItemElement> & Partial<StencilJSX.IoBreadcrumbItem>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
@@ -27,6 +27,7 @@ declare module 'react' {
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
   'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoHeadingElement>, HTMLIoHeadingElement> & Partial<StencilJSX.IoHeading>;
+  'io-inline-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInlineBannerElement>, HTMLIoInlineBannerElement> & Partial<StencilJSX.IoInlineBanner>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;

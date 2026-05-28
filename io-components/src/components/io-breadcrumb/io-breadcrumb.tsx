@@ -10,8 +10,8 @@ type BreadcrumbItem = Element & { current: boolean };
  * Breadcrumb navigation for hierarchical orientation.
  * Uses a declarative slot-based API with io-breadcrumb-item sub-components.
  *
- * Separators are inserted programmatically between slotted items via slotchange.
- * The last item automatically receives aria-current="page" if no item has current=true explicitly.
+ * Separators are rendered by each io-breadcrumb-item in its own shadow DOM.
+ * The slotchange handler only infers current=true on the last item when no item sets it explicitly.
  *
  * @example
  * <io-breadcrumb>

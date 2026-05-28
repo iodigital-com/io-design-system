@@ -51,6 +51,9 @@ export class IoBreadcrumbItem {
             </span>
           )}
         </li>
+        {/* Separator is a sibling of <li>, not inside it. display:contents on :host
+            collapses the host so both flow as direct flex children of the parent <ol>.
+            aria-hidden ensures screen readers skip the purely decorative character. */}
         {!current && <span class="breadcrumb__separator" aria-hidden="true" />}
       </Host>
     );

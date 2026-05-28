@@ -69,7 +69,7 @@ export function getInlineNotificationStyles(): string {
       cursor: pointer;
       color: var(--io-text-secondary);
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
-      margin-top: -2px;
+      margin-top: -2px; /* optical alignment with icon top edge */
     }
 
     .inline-notification__dismiss:hover {
@@ -83,8 +83,8 @@ export function getInlineNotificationStyles(): string {
     }
 
     .inline-notification__dismiss svg {
-      width: 16px;
-      height: 16px;
+      width: var(--io-icon-size-sm);
+      height: var(--io-icon-size-sm);
       pointer-events: none;
     }
 

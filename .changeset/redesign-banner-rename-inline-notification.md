@@ -1,5 +1,5 @@
 ---
-"@iodigital-com/components": minor
+"@iodigital-com/components": major
 ---
 
 **io-banner** redesigned as a fixed viewport overlay: `position: fixed`, card-style appearance (white background, 1px colored border, border-radius, drop shadow), and a slide-in entry animation. No more thick left accent border.

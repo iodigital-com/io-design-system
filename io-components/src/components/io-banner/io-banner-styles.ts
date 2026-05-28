@@ -11,7 +11,7 @@ export function getBannerStyles(): string {
       left: var(--io-space-4);
       right: var(--io-space-4);
       margin: 0 auto;
-      max-width: 768px;
+      max-width: 768px; /* matches --io-breakpoint-md */
       z-index: var(--io-z-toast);
 
       display: flex;
@@ -92,7 +92,7 @@ export function getBannerStyles(): string {
       cursor: pointer;
       color: var(--io-text-secondary);
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
-      margin-top: -2px;
+      margin-top: -2px; /* optical alignment with icon top edge */
     }
 
     .banner__dismiss:hover {
@@ -106,8 +106,8 @@ export function getBannerStyles(): string {
     }
 
     .banner__dismiss svg {
-      width: 16px;
-      height: 16px;
+      width: var(--io-icon-size-sm);
+      height: var(--io-icon-size-sm);
       pointer-events: none;
     }
 

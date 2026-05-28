@@ -11,8 +11,11 @@ import type { IoBannerVariant } from './types';
  * Set open=true to show and wire the dismiss event to set it back to false.
  *
  * ARIA live region strategy:
- *   - error variant:     role="alert" (implicit aria-live="assertive")
- *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+ *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
+ *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+ *
+ * Role is placed on the conditionally-rendered inner div so the live region only exists
+ * while the banner is visible — prevents spurious announcements when open=false.
  *
  * @example
  * <io-banner variant="info" open heading="Maintenance scheduled">
@@ -62,13 +65,14 @@ export class IoBanner {
 
   render() {
     return (
-      <Host
-        role={this.variant === 'error' ? 'alert' : 'status'}
-        aria-live={this.variant === 'error' ? undefined : 'polite'}
-        aria-atomic={this.variant === 'error' ? undefined : 'true'}
-      >
+      <Host>
         <style>{getBannerStyles()}</style>
-        {this.open && <div class={`banner banner--${this.variant}`}>
+        {this.open && <div
+          class={`banner banner--${this.variant}`}
+          role={this.variant === 'error' ? 'alert' : 'status'}
+          aria-live={this.variant === 'error' ? undefined : 'polite'}
+          aria-atomic={this.variant === 'error' ? undefined : 'true'}
+        >
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

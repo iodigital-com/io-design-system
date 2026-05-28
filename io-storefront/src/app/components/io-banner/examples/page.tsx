@@ -32,6 +32,7 @@ export default function IoBannerExamplesPage() {
             key={variant}
             variant={variant}
             open={variantOpen === variant || undefined}
+            dismissible
             onDismiss={() => setVariantOpen(null)}
           >
             {variant === 'info' && 'System update available. Refresh the page to apply the latest changes.'}
@@ -58,22 +59,22 @@ export default function IoBannerExamplesPage() {
           ))}
         </div>
         {headingOpen === 'info' && (
-          <io-banner variant="info" open heading="Scheduled maintenance" onDismiss={() => setHeadingOpen(null)}>
+          <io-banner variant="info" open heading="Scheduled maintenance" dismissible onDismiss={() => setHeadingOpen(null)}>
             Maintenance window on Saturday 10:00–12:00 UTC. Services may be briefly interrupted.
           </io-banner>
         )}
         {headingOpen === 'success' && (
-          <io-banner variant="success" open heading="Payment confirmed" onDismiss={() => setHeadingOpen(null)}>
+          <io-banner variant="success" open heading="Payment confirmed" dismissible onDismiss={() => setHeadingOpen(null)}>
             Your order has been placed and you will receive a confirmation email shortly.
           </io-banner>
         )}
         {headingOpen === 'warning' && (
-          <io-banner variant="warning" open heading="Session expiring" onDismiss={() => setHeadingOpen(null)}>
+          <io-banner variant="warning" open heading="Session expiring" dismissible onDismiss={() => setHeadingOpen(null)}>
             Your session expires in 5 minutes. Save your work to avoid losing changes.
           </io-banner>
         )}
         {headingOpen === 'error' && (
-          <io-banner variant="error" open heading="Service disruption" onDismiss={() => setHeadingOpen(null)}>
+          <io-banner variant="error" open heading="Service disruption" dismissible onDismiss={() => setHeadingOpen(null)}>
             We are experiencing issues with the payment service. Please try again later.
           </io-banner>
         )}

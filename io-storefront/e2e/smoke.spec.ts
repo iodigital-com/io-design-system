@@ -9,9 +9,9 @@ import { test, expect } from '@playwright/test';
 
 const COMPONENTS = [
   'io-accordion',
-  'io-alert',
   'io-avatar',
   'io-badge',
+  'io-banner',
   'io-breadcrumb',
   'io-button',
   'io-button-group',
@@ -21,6 +21,7 @@ const COMPONENTS = [
   'io-divider',
   'io-drawer',
   'io-heading',
+  'io-inline-notification',
   'io-input',
   'io-link',
   'io-modal',

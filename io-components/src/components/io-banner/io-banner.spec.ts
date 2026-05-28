@@ -94,6 +94,46 @@ describe('io-banner — ARIA role mapping', () => {
   });
 });
 
+describe('io-banner — slot content detection', () => {
+  function getSlotchangeHandler(c: IoBanner): ((e: Event) => void) | undefined {
+    hMock.mockClear();
+    (c as any).render();
+    const slotCall = hMock.mock.calls.find(([tag]: [unknown]) => tag === 'slot');
+    return (slotCall?.[1] as Record<string, unknown>)?.['onSlotchange'] as ((e: Event) => void) | undefined;
+  }
+
+  it('defaults hasContent to false', () => {
+    const c = new IoBanner();
+    expect((c as any).hasContent).toBe(false);
+  });
+
+  it('sets hasContent true when slot has assigned nodes', () => {
+    const c = new IoBanner();
+    c.open = true;
+    const handler = getSlotchangeHandler(c);
+    const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([document.createTextNode('text')]) };
+    handler?.({ target: fakeSlot } as unknown as Event);
+    expect((c as any).hasContent).toBe(true);
+  });
+
+  it('sets hasContent false when slot has no assigned nodes', () => {
+    const c = new IoBanner();
+    c.open = true;
+    (c as any).hasContent = true;
+    const handler = getSlotchangeHandler(c);
+    const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([]) };
+    handler?.({ target: fakeSlot } as unknown as Event);
+    expect((c as any).hasContent).toBe(false);
+  });
+
+  it('slot handler is absent when banner is closed (open=false)', () => {
+    const c = new IoBanner();
+    c.open = false;
+    const handler = getSlotchangeHandler(c);
+    expect(handler).toBeUndefined();
+  });
+});
+
 describe('io-banner — dismissLabel resolution', () => {
   it('uses custom dismissLabel when provided', () => {
     const c = new IoBanner();

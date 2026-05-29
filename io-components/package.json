@@ -37,7 +37,8 @@
     "./utils/focus-visible": {
       "types": "./dist/types/utils/focus-visible.d.ts",
       "import": "./dist/collection/utils/focus-visible.js"
-    }
+    },
+    "./global.css": "./dist/io-components/io-components.css"
   },
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",

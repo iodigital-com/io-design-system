@@ -1,5 +1,17 @@
 # @iodigital-com/components
 
+## 1.0.1
+
+### Patch Changes
+
+- fix: export global.css and auto-import from components-react
+
+  Consumers of `@iodigital-com/components-react` now automatically receive all
+  `--io-*` CSS custom properties on `:root` without any extra setup. Previously,
+  component-level tokens (wordmark sizes, button padding, icon sizes, etc.) were
+  undefined in consuming apps because the compiled `app.css` had no export path
+  and nothing imported it.
+
 ## 1.0.0
 
 ### Major Changes

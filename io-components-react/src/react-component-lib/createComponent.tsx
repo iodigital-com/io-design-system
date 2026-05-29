@@ -12,7 +12,7 @@ interface StencilReactInternalProps<ElementType> extends React.HTMLAttributes<El
 }
 
 export const createReactComponent = <
-  PropType,
+  PropType extends object,
   ElementType extends HTMLStencilElement,
   ContextStateType = {},
   ExpandedPropsTypes = {}

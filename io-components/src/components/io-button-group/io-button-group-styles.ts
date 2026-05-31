@@ -55,8 +55,7 @@ export function getButtonGroupStyles(): string {
       line-height: var(--io-line-height-normal);
       background: transparent;
       color: var(--io-button-group-color);
-      /* Use transparent border rather than `none` so toggling active state only
-         changes the border color — not the border width — keeping layout stable. */
+      /* Transparent border (not none) keeps layout stable when active state toggles border color */
       border: 1px solid transparent;
       border-radius: var(--io-button-group-btn-radius);
       cursor: pointer;

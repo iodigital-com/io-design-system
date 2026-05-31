@@ -441,7 +441,6 @@
   --io-button-group-font-size:         var(--io-font-size-base);
   --io-button-group-active-bg:         var(--io-color-white);
   --io-button-group-active-color:      var(--io-color-grey-6);
-  --io-button-group-active-border:     transparent;
   --io-button-group-active-shadow:     0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
   --io-button-group-hover-bg:          rgba(0,0,0,0.04);
   --io-button-group-pill-bg:           var(--io-color-grey-1);
@@ -461,6 +460,11 @@
   --io-button-group-padding-x-lg:      var(--io-space-6);
   --io-button-group-font-size-sm:      var(--io-font-size-sm);
   --io-button-group-font-size-lg:      var(--io-font-size-lg);
+  --io-button-group-min-height-compact:   28px;
+  --io-button-group-padding-y-compact:    var(--io-space-1);
+  --io-button-group-padding-x-compact:    var(--io-space-2);
+  --io-button-group-font-size-compact:    var(--io-font-size-sm);
+  --io-button-group-pill-padding-compact: 1px;
   --io-button-group-transition:        background-color 500ms var(--io-motion-easing-snappy),
                                        color 500ms var(--io-motion-easing-snappy),
                                        border-color 500ms var(--io-motion-easing-snappy);

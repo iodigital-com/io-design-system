@@ -112,46 +112,6 @@
       "notes": "Avatar background token: purple variant (#6b3fa0 \u2014 no palette primitive available)."
     },
     {
-      "runtimeCssVar": "--io-avatar-text-blue",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Avatar text token: blue variant uses white (#ffffff)."
-    },
-    {
-      "runtimeCssVar": "--io-avatar-text-green",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Avatar text token: green variant uses white (#ffffff)."
-    },
-    {
-      "runtimeCssVar": "--io-avatar-text-grey",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Avatar text token: grey variant resolves to --io-color-grey-6."
-    },
-    {
-      "runtimeCssVar": "--io-avatar-text-orange",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Avatar text token: orange variant uses white (#ffffff)."
-    },
-    {
-      "runtimeCssVar": "--io-avatar-text-purple",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Avatar text token: purple variant uses white (#ffffff)."
-    },
-    {
       "runtimeCssVar": "--io-avatar-border-radius",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -248,6 +208,46 @@
       "notes": "Wave XI (#376) \u2014 Avatar size token xs=24px"
     },
     {
+      "runtimeCssVar": "--io-avatar-text-blue",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar text token: blue variant uses white (#ffffff)."
+    },
+    {
+      "runtimeCssVar": "--io-avatar-text-green",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar text token: green variant uses white (#ffffff)."
+    },
+    {
+      "runtimeCssVar": "--io-avatar-text-grey",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar text token: grey variant resolves to --io-color-grey-6."
+    },
+    {
+      "runtimeCssVar": "--io-avatar-text-orange",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar text token: orange variant uses white (#ffffff)."
+    },
+    {
+      "runtimeCssVar": "--io-avatar-text-purple",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar text token: purple variant uses white (#ffffff)."
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -310,14 +310,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
-      "runtimeCssVar": "--io-border-rgb",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#359 #367) \u2014 RGB components of --io-border for alpha-opacity variants (e.g. rgba(var(--io-border-rgb), 0.5)); overridden in dark theme."
     },
     {
       "runtimeCssVar": "--io-border-error",
@@ -406,6 +398,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-border-rgb",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#359 #367) \u2014 RGB components of --io-border for alpha-opacity variants (e.g. rgba(var(--io-border-rgb), 0.5)); overridden in dark theme."
     },
     {
       "runtimeCssVar": "--io-breakpoint-2xl",
@@ -536,6 +536,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-active-shadow",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
       "runtimeCssVar": "--io-button-group-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -568,6 +576,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-btn-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-btn-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
       "runtimeCssVar": "--io-button-group-color",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -592,6 +616,30 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-font-size-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-font-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-font-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
       "runtimeCssVar": "--io-button-group-hover-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -608,6 +656,30 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-min-height-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-min-height-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-min-height-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
       "runtimeCssVar": "--io-button-group-padding-x",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -616,7 +688,95 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-padding-x-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-padding-x-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-padding-x-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
       "runtimeCssVar": "--io-button-group-padding-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-padding-y-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-padding-y-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-padding-y-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-pill-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-pill-border",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-pill-padding",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-pill-padding-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-pill-radius",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -1376,6 +1536,38 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-drawer-backdrop",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) \u2014 Drawer backdrop overlay color."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) \u2014 Drawer width large=640px."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) \u2014 Drawer width medium=480px."
+    },
+    {
+      "runtimeCssVar": "--io-drawer-width-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#381) \u2014 Drawer width small=320px."
+    },
+    {
       "runtimeCssVar": "--io-field-focus-offset-y",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -2056,12 +2248,76 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-multi-select-chip-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Height of selected-value chips in the io-multi-select trigger. Component-level dimension token defined in app.css."
+    },
+    {
+      "runtimeCssVar": "--io-multi-select-chip-max-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Maximum width of selected-value chips in the io-multi-select trigger before text truncation. Component-level dimension token defined in app.css."
+    },
+    {
       "runtimeCssVar": "--io-option-hover-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Option/combobox row hover background. grey-1 in light mode; dark-bg-hover in dark mode."
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-font-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 font size for digit glyphs inside each pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 gap between pin-code input slots"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 border width of a pin-code slot in error state"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-border-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 default border width of a pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 border radius of each pin-code slot"
+    },
+    {
+      "runtimeCssVar": "--io-pin-code-slot-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI \u2014 width and height of each pin-code slot"
     },
     {
       "runtimeCssVar": "--io-playground-dot-color",
@@ -2552,12 +2808,108 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-stepper-circle-border-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#384) \u2014 Step circle border thickness=2px."
+    },
+    {
+      "runtimeCssVar": "--io-stepper-circle-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#384) \u2014 Step circle diameter=2rem (32px)."
+    },
+    {
+      "runtimeCssVar": "--io-stepper-connector-offset",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#384) \u2014 Connector offset aligns to circle centre=1rem."
+    },
+    {
+      "runtimeCssVar": "--io-stepper-connector-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#384) \u2014 Connector height/width=2px."
+    },
+    {
       "runtimeCssVar": "--io-surface-elevated",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Elevated surface \u2014 floating overlays (select dropdown, combobox, tooltip). White in light mode; dark-bg-raised in dark mode."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-offset-off",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch thumb left offset when unchecked=2px."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-offset-on",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch thumb offset when checked=calc(track-width - thumb-size - 2px)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch thumb border-radius=9999px (fully rounded)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-shadow",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave J (#452) \u2014 Switch thumb elevation shadow; replaces hardcoded rgba value."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch circular thumb diameter=1.25rem (20px)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch pill track height=1.5rem (24px)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch track border-radius=9999px (fully rounded pill)."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#342) \u2014 Switch pill track width=2.75rem (44px)."
     },
     {
       "runtimeCssVar": "--io-table-row-selected-bg",
@@ -2712,6 +3064,110 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-wordmark-font-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size large=28px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size medium=20px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size small."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-font-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size xl=40px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-letter-spacing",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XI (#386) \u2014 Wordmark letter-spacing=-0.01em."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height lg=120px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height md=80px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height sm=48px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-lockup-height-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height xl=168px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height lg=36px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height md=24px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height sm=16px."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-mark-height-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height xl=56px."
+    },
+    {
       "runtimeCssVar": "--io-z-above",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -2782,302 +3238,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
-      "runtimeCssVar": "--io-drawer-backdrop",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#381) \u2014 Drawer backdrop overlay color."
-    },
-    {
-      "runtimeCssVar": "--io-drawer-width-sm",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#381) \u2014 Drawer width small=320px."
-    },
-    {
-      "runtimeCssVar": "--io-drawer-width-md",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#381) \u2014 Drawer width medium=480px."
-    },
-    {
-      "runtimeCssVar": "--io-drawer-width-lg",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#381) \u2014 Drawer width large=640px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-font-size-sm",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#386) \u2014 Wordmark font-size small."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-font-size-md",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#386) \u2014 Wordmark font-size medium=20px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-font-size-lg",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#386) \u2014 Wordmark font-size large=28px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-font-size-xl",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#386) \u2014 Wordmark font-size xl=40px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-letter-spacing",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#386) \u2014 Wordmark letter-spacing=-0.01em."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-mark-height-sm",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height sm=16px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-mark-height-md",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height md=24px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-mark-height-lg",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height lg=36px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-mark-height-xl",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height xl=56px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-lockup-height-sm",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height sm=48px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-lockup-height-md",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height md=80px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-lockup-height-lg",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height lg=120px."
-    },
-    {
-      "runtimeCssVar": "--io-wordmark-lockup-height-xl",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height xl=168px."
-    },
-    {
-      "runtimeCssVar": "--io-stepper-circle-size",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#384) \u2014 Step circle diameter=2rem (32px)."
-    },
-    {
-      "runtimeCssVar": "--io-stepper-circle-border-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#384) \u2014 Step circle border thickness=2px."
-    },
-    {
-      "runtimeCssVar": "--io-stepper-connector-offset",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#384) \u2014 Connector offset aligns to circle centre=1rem."
-    },
-    {
-      "runtimeCssVar": "--io-stepper-connector-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#384) \u2014 Connector height/width=2px."
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-font-size",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 font size for digit glyphs inside each pin-code slot"
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-gap",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 gap between pin-code input slots"
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-slot-border-error-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 border width of a pin-code slot in error state"
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-slot-border-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 default border width of a pin-code slot"
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-slot-radius",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 border radius of each pin-code slot"
-    },
-    {
-      "runtimeCssVar": "--io-pin-code-slot-size",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI \u2014 width and height of each pin-code slot"
-    },
-    {
-      "runtimeCssVar": "--io-switch-track-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch pill track width=2.75rem (44px)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-track-height",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch pill track height=1.5rem (24px)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-track-radius",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch track border-radius=9999px (fully rounded pill)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-thumb-size",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch circular thumb diameter=1.25rem (20px)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-thumb-radius",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch thumb border-radius=9999px (fully rounded)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-thumb-offset-off",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) \u2014 Switch thumb left offset when unchecked=2px."
-    },
-    {
-      "runtimeCssVar": "--io-switch-thumb-offset-on",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch thumb offset when checked=calc(track-width - thumb-size - 2px)."
-    },
-    {
-      "runtimeCssVar": "--io-switch-thumb-shadow",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Wave J (#452) — Switch thumb elevation shadow; replaces hardcoded rgba value."
-    },
-    {
-      "runtimeCssVar": "--io-multi-select-chip-height",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Height of selected-value chips in the io-multi-select trigger. Component-level dimension token defined in app.css."
-    },
-    {
-      "runtimeCssVar": "--io-multi-select-chip-max-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Maximum width of selected-value chips in the io-multi-select trigger before text truncation. Component-level dimension token defined in app.css."
     }
   ]
 }

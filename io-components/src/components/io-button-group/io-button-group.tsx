@@ -63,6 +63,12 @@ export class IoButtonGroup {
    */
   @Prop({ reflect: true }) direction: IoButtonGroupDirection = 'row';
 
+  /**
+   * When true, renders the button group in a compact style.
+   * Reflected as an attribute so CSS can target :host([compact]).
+   */
+  @Prop({ reflect: true }) compact: boolean = false;
+
   // ── Events ────────────────────────────────────────────
 
   /** Fires when the selection changes. Detail contains the new value or value array. */

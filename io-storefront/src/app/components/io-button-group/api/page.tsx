@@ -84,6 +84,17 @@ export default function IoButtonGroupApiPage() {
                 propagate correctly.
               </span>,
             ],
+            [
+              <span key="n">
+                <InlineCode>compact</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Reduces height and padding for compact contexts like toolbars.
+              </span>,
+            ],
           ]}
         />
       </section>

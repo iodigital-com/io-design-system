@@ -120,6 +120,18 @@ export function getButtonGroupStyles(): string {
       font-size: var(--io-button-group-font-size-lg);
     }
 
+    /* ── Compact variant ─────────────────────────────────── */
+
+    :host([compact]) .group {
+      padding: var(--io-button-group-pill-padding-compact);
+    }
+
+    :host([compact]) .group-btn {
+      min-height: var(--io-button-group-min-height-compact);
+      padding: var(--io-button-group-padding-y-compact) var(--io-button-group-padding-x-compact);
+      font-size: var(--io-button-group-font-size-compact);
+    }
+
     /* ── Column (vertical) direction ────────────────────── */
 
     :host([direction="column"]) {

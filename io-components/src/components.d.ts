@@ -387,6 +387,11 @@ export namespace Components {
      */
     interface IoButtonGroup {
         /**
+          * When true, renders the button group in a compact style. Reflected as an attribute so CSS can target :host([compact]).
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Layout direction for the button group. 'row' (default) lays buttons out horizontally. 'column' stacks buttons vertically, full-width.
           * @default 'row'
          */
@@ -4079,6 +4084,11 @@ declare namespace LocalJSX {
      */
     interface IoButtonGroup {
         /**
+          * When true, renders the button group in a compact style. Reflected as an attribute so CSS can target :host([compact]).
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Layout direction for the button group. 'row' (default) lays buttons out horizontally. 'column' stacks buttons vertically, full-width.
           * @default 'row'
          */
@@ -6148,6 +6158,7 @@ declare namespace LocalJSX {
         "label": string | undefined;
         "size": IoButtonGroupSize;
         "direction": IoButtonGroupDirection;
+        "compact": boolean;
     }
     interface IoCarouselAttributes {
         "prevLabel": string;

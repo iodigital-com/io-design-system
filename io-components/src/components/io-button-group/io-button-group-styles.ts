@@ -27,11 +27,16 @@ export function getButtonGroupStyles(): string {
       display: none;
     }
 
-    /* ── Container ──────────────────────────────────────── */
+    /* ── Container (pill wrapper) ───────────────────────── */
 
     .group {
       display: inline-flex;
       align-items: stretch;
+      background: var(--io-button-group-pill-bg);
+      border: 1px solid var(--io-button-group-pill-border);
+      border-radius: var(--io-button-group-pill-radius);
+      padding: 2px;
+      gap: 0;
     }
 
     /* ── Individual button ──────────────────────────────── */
@@ -46,9 +51,10 @@ export function getButtonGroupStyles(): string {
       font-size: var(--io-button-group-font-size);
       font-weight: var(--io-font-weight-semibold);
       line-height: var(--io-line-height-normal);
-      background: var(--io-button-group-bg);
+      background: transparent;
       color: var(--io-button-group-color);
-      border: var(--io-button-group-border-width) solid var(--io-button-group-border-color);
+      border: none;
+      border-radius: var(--io-button-group-btn-radius);
       cursor: pointer;
       white-space: nowrap;
       position: relative;
@@ -56,44 +62,12 @@ export function getButtonGroupStyles(): string {
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Border collapse — adjacent buttons share a single border line */
-    .group-btn + .group-btn {
-      margin-left: calc(-1 * var(--io-button-group-border-width));
-    }
-
-    /* Corner radius — outer corners only */
-    .group-btn:first-of-type {
-      border-radius:
-        var(--io-button-group-border-radius)
-        0
-        0
-        var(--io-button-group-border-radius);
-    }
-
-    .group-btn:last-of-type {
-      border-radius:
-        0
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius)
-        0;
-    }
-
-    /* Single-item group gets full radius */
-    .group-btn:only-of-type {
-      border-radius: var(--io-button-group-border-radius);
-    }
-
     /* ── Active state ────────────────────────────────────── */
 
     .group-btn--active {
       background: var(--io-button-group-active-bg);
       color: var(--io-button-group-active-color);
-      border-color: var(--io-button-group-active-border);
-      /* z-index: 1 is intentional — raises active button above adjacent siblings so
-         the shared border (collapsed via negative margin) renders on both sides of
-         the active item. These are local stacking values within the inline-flex group
-         context, not semantic page-level z-indices, so component tokens are not used. */
-      z-index: 1;
+      box-shadow: var(--io-button-group-active-shadow);
     }
 
     /* ── Hover (pointer devices only — hover guard) ─────── */
@@ -122,7 +96,7 @@ export function getButtonGroupStyles(): string {
     .group-btn:focus-visible {
       outline: none;
       box-shadow: var(--io-focus-ring-active);
-      z-index: 2; /* must paint above z-index:1 active button — see note on .group-btn--active */
+      z-index: 1;
     }
 
     /* ── Reduced motion ──────────────────────────────────── */
@@ -146,33 +120,6 @@ export function getButtonGroupStyles(): string {
     :host([direction="column"]) .group-btn {
       width: 100%;
       justify-content: center;
-    }
-
-    /* Border collapse — adjacent buttons share a single top/bottom border */
-    :host([direction="column"]) .group-btn + .group-btn {
-      margin-left: 0;
-      margin-top: calc(-1 * var(--io-button-group-border-width));
-    }
-
-    /* Corner radius — top corners for first, bottom corners for last */
-    :host([direction="column"]) .group-btn:first-of-type {
-      border-radius:
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius)
-        0
-        0;
-    }
-
-    :host([direction="column"]) .group-btn:last-of-type {
-      border-radius:
-        0
-        0
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius);
-    }
-
-    :host([direction="column"]) .group-btn:only-of-type {
-      border-radius: var(--io-button-group-border-radius);
     }
   `;
 }

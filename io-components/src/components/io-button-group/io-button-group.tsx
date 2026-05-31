@@ -274,6 +274,7 @@ export class IoButtonGroup {
                 // semantics to AT. Using <button> instead of <div> is intentional.
                 role={exclusive ? 'radio' : 'checkbox'}
                 aria-checked={active ? 'true' : 'false'}
+                aria-label={item.ariaLabel || undefined}
                 aria-disabled={itemDisabled ? 'true' : undefined}
                 tabIndex={hasEnabledItems && index === focusIndex ? 0 : -1}
                 disabled={itemDisabled || undefined}

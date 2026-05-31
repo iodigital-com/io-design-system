@@ -35,8 +35,8 @@ export function getButtonGroupStyles(): string {
       background: var(--io-button-group-pill-bg);
       border: 1px solid var(--io-button-group-pill-border);
       border-radius: var(--io-button-group-pill-radius);
-      padding: 2px;
-      gap: 0;
+      padding: var(--io-button-group-pill-padding);
+      gap: var(--io-button-group-btn-gap);
     }
 
     /* ── Individual button ──────────────────────────────── */
@@ -68,6 +68,7 @@ export function getButtonGroupStyles(): string {
       background: var(--io-button-group-active-bg);
       color: var(--io-button-group-active-color);
       box-shadow: var(--io-button-group-active-shadow);
+      border: 1px solid var(--io-button-group-active-border);
     }
 
     /* ── Hover (pointer devices only — hover guard) ─────── */
@@ -103,6 +104,20 @@ export function getButtonGroupStyles(): string {
 
     @media (prefers-reduced-motion: reduce) {
       .group-btn { transition: none; }
+    }
+
+    /* ── Size variants ───────────────────────────────────── */
+
+    :host([size="sm"]) .group-btn {
+      min-height: var(--io-button-group-min-height-sm);
+      padding: var(--io-button-group-padding-y-sm) var(--io-button-group-padding-x-sm);
+      font-size: var(--io-button-group-font-size-sm);
+    }
+
+    :host([size="lg"]) .group-btn {
+      min-height: var(--io-button-group-min-height-lg);
+      padding: var(--io-button-group-padding-y-lg) var(--io-button-group-padding-x-lg);
+      font-size: var(--io-button-group-font-size-lg);
     }
 
     /* ── Column (vertical) direction ────────────────────── */

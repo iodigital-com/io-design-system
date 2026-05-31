@@ -10,6 +10,8 @@ export interface IoButtonGroupItem {
   value: string;
   /** Visible label rendered inside the button. */
   label: string;
+  /** Accessible name for icon-only buttons where label is empty. Propagated from the declarative io-button's aria-label attribute. */
+  ariaLabel?: string;
   /** When true, this individual item cannot be interacted with. */
   disabled?: boolean;
 }

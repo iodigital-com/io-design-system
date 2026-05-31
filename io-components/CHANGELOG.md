@@ -1,5 +1,11 @@
 # @iodigital-com/components
 
+## 1.0.2
+
+### Patch Changes
+
+- b2c1558: Update io-button-group pill style with visual improvements to spacing, border-radius, and button separation for a more polished appearance.
+
 ## 1.0.1
 
 ### Patch Changes

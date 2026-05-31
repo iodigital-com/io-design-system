@@ -63,6 +63,9 @@ export class IoButtonGroup {
    */
   @Prop({ reflect: true }) direction: IoButtonGroupDirection = 'row';
 
+  /** Reduces height and padding for toolbar and dense UI contexts. */
+  @Prop({ reflect: true }) compact: boolean = false;
+
   // ── Events ────────────────────────────────────────────
 
   /** Fires when the selection changes. Detail contains the new value or value array. */
@@ -274,6 +277,7 @@ export class IoButtonGroup {
                 // semantics to AT. Using <button> instead of <div> is intentional.
                 role={exclusive ? 'radio' : 'checkbox'}
                 aria-checked={active ? 'true' : 'false'}
+                aria-label={item.ariaLabel || undefined}
                 aria-disabled={itemDisabled ? 'true' : undefined}
                 tabIndex={hasEnabledItems && index === focusIndex ? 0 : -1}
                 disabled={itemDisabled || undefined}

@@ -15,7 +15,9 @@ export function getButtonGroupStyles(): string {
     }
 
     :host([disabled]) {
-      cursor: not-allowed;
+      /* cursor: not-allowed is NOT set here — pointer-events: none prevents the
+         host from entering the hit-test zone, so any cursor style on :host would
+         never render. The not-allowed cursor is handled by .group-btn--disabled. */
       pointer-events: none;
       opacity: var(--io-button-group-disabled-opacity);
     }
@@ -27,11 +29,16 @@ export function getButtonGroupStyles(): string {
       display: none;
     }
 
-    /* ── Container ──────────────────────────────────────── */
+    /* ── Container (pill wrapper) ───────────────────────── */
 
     .group {
       display: inline-flex;
       align-items: stretch;
+      background: var(--io-button-group-pill-bg);
+      border: 1px solid var(--io-button-group-pill-border);
+      border-radius: var(--io-button-group-pill-radius);
+      padding: var(--io-button-group-pill-padding);
+      gap: var(--io-button-group-btn-gap);
     }
 
     /* ── Individual button ──────────────────────────────── */
@@ -46,9 +53,12 @@ export function getButtonGroupStyles(): string {
       font-size: var(--io-button-group-font-size);
       font-weight: var(--io-font-weight-semibold);
       line-height: var(--io-line-height-normal);
-      background: var(--io-button-group-bg);
+      background: transparent;
       color: var(--io-button-group-color);
-      border: var(--io-button-group-border-width) solid var(--io-button-group-border-color);
+      /* Use transparent border rather than `none` so toggling active state only
+         changes the border color — not the border width — keeping layout stable. */
+      border: 1px solid transparent;
+      border-radius: var(--io-button-group-btn-radius);
       cursor: pointer;
       white-space: nowrap;
       position: relative;
@@ -56,44 +66,15 @@ export function getButtonGroupStyles(): string {
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Border collapse — adjacent buttons share a single border line */
-    .group-btn + .group-btn {
-      margin-left: calc(-1 * var(--io-button-group-border-width));
-    }
-
-    /* Corner radius — outer corners only */
-    .group-btn:first-of-type {
-      border-radius:
-        var(--io-button-group-border-radius)
-        0
-        0
-        var(--io-button-group-border-radius);
-    }
-
-    .group-btn:last-of-type {
-      border-radius:
-        0
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius)
-        0;
-    }
-
-    /* Single-item group gets full radius */
-    .group-btn:only-of-type {
-      border-radius: var(--io-button-group-border-radius);
-    }
-
     /* ── Active state ────────────────────────────────────── */
 
     .group-btn--active {
       background: var(--io-button-group-active-bg);
       color: var(--io-button-group-active-color);
+      box-shadow: var(--io-button-group-active-shadow);
+      /* Only change border color — width is already 1px from .group-btn baseline,
+         so no layout shift occurs when a button becomes active. */
       border-color: var(--io-button-group-active-border);
-      /* z-index: 1 is intentional — raises active button above adjacent siblings so
-         the shared border (collapsed via negative margin) renders on both sides of
-         the active item. These are local stacking values within the inline-flex group
-         context, not semantic page-level z-indices, so component tokens are not used. */
-      z-index: 1;
     }
 
     /* ── Hover (pointer devices only — hover guard) ─────── */
@@ -122,7 +103,7 @@ export function getButtonGroupStyles(): string {
     .group-btn:focus-visible {
       outline: none;
       box-shadow: var(--io-focus-ring-active);
-      z-index: 2; /* must paint above z-index:1 active button — see note on .group-btn--active */
+      z-index: 1;
     }
 
     /* ── Reduced motion ──────────────────────────────────── */
@@ -130,6 +111,48 @@ export function getButtonGroupStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .group-btn { transition: none; }
     }
+
+    /* ── Size variants ───────────────────────────────────── */
+    /* Note: size variants and [compact] share equal specificity
+       (:host([attr]) .group-btn). compact is intentionally declared after these
+       size blocks so it wins via source order when both attributes are present.
+       See the compact block below for the authoritative comment. */
+
+    :host([size="sm"]) .group-btn {
+      min-height: var(--io-button-group-min-height-sm);
+      padding: var(--io-button-group-padding-y-sm) var(--io-button-group-padding-x-sm);
+      font-size: var(--io-button-group-font-size-sm);
+    }
+
+    :host([size="lg"]) .group-btn {
+      min-height: var(--io-button-group-min-height-lg);
+      padding: var(--io-button-group-padding-y-lg) var(--io-button-group-padding-x-lg);
+      font-size: var(--io-button-group-font-size-lg);
+    }
+
+    /* ── Compact variant ─────────────────────────────────── */
+    /* compact intentionally follows size variant rules — equal specificity means
+       source order wins, so compact always overrides size padding and min-height.
+       If size="lg" and compact are combined, compact dimensions take effect. */
+
+    :host([compact]) .group {
+      padding: var(--io-button-group-pill-padding-compact);
+    }
+
+    :host([compact]) .group-btn {
+      min-height: var(--io-button-group-min-height-compact);
+      padding: var(--io-button-group-padding-y-compact) var(--io-button-group-padding-x-compact);
+      font-size: var(--io-button-group-font-size-compact);
+    }
+
+    /* ── Compact + column interaction ────────────────────── */
+    /* When compact and direction="column" are combined, the .group gets
+       flex-direction: column and width: 100% from the direction rule below.
+       The compact pill-padding (1px) is intentionally preserved in vertical layout;
+       full-width stacked buttons look correct with the reduced pill gap.
+       No additional overrides are needed — this rule documents the intentional
+       cascade so a future reorder does not silently break the combination. */
+    :host([compact][direction="column"]) .group {}
 
     /* ── Column (vertical) direction ────────────────────── */
 
@@ -146,33 +169,6 @@ export function getButtonGroupStyles(): string {
     :host([direction="column"]) .group-btn {
       width: 100%;
       justify-content: center;
-    }
-
-    /* Border collapse — adjacent buttons share a single top/bottom border */
-    :host([direction="column"]) .group-btn + .group-btn {
-      margin-left: 0;
-      margin-top: calc(-1 * var(--io-button-group-border-width));
-    }
-
-    /* Corner radius — top corners for first, bottom corners for last */
-    :host([direction="column"]) .group-btn:first-of-type {
-      border-radius:
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius)
-        0
-        0;
-    }
-
-    :host([direction="column"]) .group-btn:last-of-type {
-      border-radius:
-        0
-        0
-        var(--io-button-group-border-radius)
-        var(--io-button-group-border-radius);
-    }
-
-    :host([direction="column"]) .group-btn:only-of-type {
-      border-radius: var(--io-button-group-border-radius);
     }
   `;
 }

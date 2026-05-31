@@ -21,6 +21,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
       label: 'View period',
       size: 'md',
       direction: 'row',
+      compact: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -33,6 +34,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         label: properties?.label as string ?? 'View period',
         size: (properties?.size as 'sm' | 'md' | 'lg') ?? 'md',
         direction: (properties?.direction as 'row' | 'column') ?? 'row',
+        compact: properties?.compact as boolean ?? false,
       },
       children: [
         createButtonGroupItem('day', 'Day'),
@@ -187,6 +189,21 @@ export const buttonGroupStoryDirectionColumn: Story<'io-button-group'> = {
   ],
 };
 
+export const buttonGroupStoryCompact: Story<'io-button-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { exclusive: true, value: 'week', compact: true, label: 'View period (compact)' },
+      children: [
+        createButtonGroupItem('day', 'Day'),
+        createButtonGroupItem('week', 'Week'),
+        createButtonGroupItem('month', 'Month'),
+      ],
+    },
+  ],
+};
+
 export const buttonGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'exclusive',
@@ -222,5 +239,11 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     options: ['row', 'column'],
     defaultValue: 'row',
     description: "Layout direction for the button group. 'row' lays buttons out horizontally (default); 'column' stacks them vertically.",
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces height and padding for compact contexts like toolbars.',
   },
 ];

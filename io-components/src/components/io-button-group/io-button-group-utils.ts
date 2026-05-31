@@ -27,7 +27,9 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
           : el.getAttribute('value')) ?? '';
       const disabled =
         typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
-      return { value, label: el.textContent?.trim() ?? '', disabled };
+      const label = el.textContent?.trim() ?? '';
+      const ariaLabel = el.getAttribute('aria-label') ?? undefined;
+      return { value, label, ariaLabel, disabled };
     })
     .filter(item => item.value !== '');
 }

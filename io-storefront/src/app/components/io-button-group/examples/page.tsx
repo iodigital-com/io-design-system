@@ -12,6 +12,7 @@ import {
   buttonGroupStorySizeLg,
   buttonGroupStoryDirectionRow,
   buttonGroupStoryDirectionColumn,
+  buttonGroupStoryCompact,
 } from '../io-button-group.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -193,6 +194,16 @@ export default function IoButtonGroupExamplesPage() {
           a horizontal arrangement would overflow. Border-radius adapts so the group still looks connected.
         </p>
         <ComponentStory story={buttonGroupStoryDirectionColumn} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="Compact" />
+        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>compact</code>{' '}
+          to reduce the height and internal padding of the group. Use this in dense UI surfaces such as
+          toolbars, data-table headers, or sidebars where vertical space is constrained.
+        </p>
+        <ComponentStory story={buttonGroupStoryCompact} />
       </section>
     </div>
   );

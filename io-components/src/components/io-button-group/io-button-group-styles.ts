@@ -15,7 +15,9 @@ export function getButtonGroupStyles(): string {
     }
 
     :host([disabled]) {
-      cursor: not-allowed;
+      /* cursor: not-allowed is NOT set here — pointer-events: none prevents the
+         host from entering the hit-test zone, so any cursor style on :host would
+         never render. The not-allowed cursor is handled by .group-btn--disabled. */
       pointer-events: none;
       opacity: var(--io-button-group-disabled-opacity);
     }
@@ -53,7 +55,9 @@ export function getButtonGroupStyles(): string {
       line-height: var(--io-line-height-normal);
       background: transparent;
       color: var(--io-button-group-color);
-      border: none;
+      /* Use transparent border rather than `none` so toggling active state only
+         changes the border color — not the border width — keeping layout stable. */
+      border: 1px solid transparent;
       border-radius: var(--io-button-group-btn-radius);
       cursor: pointer;
       white-space: nowrap;
@@ -68,7 +72,9 @@ export function getButtonGroupStyles(): string {
       background: var(--io-button-group-active-bg);
       color: var(--io-button-group-active-color);
       box-shadow: var(--io-button-group-active-shadow);
-      border: 1px solid var(--io-button-group-active-border);
+      /* Only change border color — width is already 1px from .group-btn baseline,
+         so no layout shift occurs when a button becomes active. */
+      border-color: var(--io-button-group-active-border);
     }
 
     /* ── Hover (pointer devices only — hover guard) ─────── */
@@ -107,6 +113,10 @@ export function getButtonGroupStyles(): string {
     }
 
     /* ── Size variants ───────────────────────────────────── */
+    /* Note: size variants and [compact] share equal specificity
+       (:host([attr]) .group-btn). compact is intentionally declared after these
+       size blocks so it wins via source order when both attributes are present.
+       See the compact block below for the authoritative comment. */
 
     :host([size="sm"]) .group-btn {
       min-height: var(--io-button-group-min-height-sm);
@@ -121,6 +131,9 @@ export function getButtonGroupStyles(): string {
     }
 
     /* ── Compact variant ─────────────────────────────────── */
+    /* compact intentionally follows size variant rules — equal specificity means
+       source order wins, so compact always overrides size padding and min-height.
+       If size="lg" and compact are combined, compact dimensions take effect. */
 
     :host([compact]) .group {
       padding: var(--io-button-group-pill-padding-compact);
@@ -131,6 +144,15 @@ export function getButtonGroupStyles(): string {
       padding: var(--io-button-group-padding-y-compact) var(--io-button-group-padding-x-compact);
       font-size: var(--io-button-group-font-size-compact);
     }
+
+    /* ── Compact + column interaction ────────────────────── */
+    /* When compact and direction="column" are combined, the .group gets
+       flex-direction: column and width: 100% from the direction rule below.
+       The compact pill-padding (1px) is intentionally preserved in vertical layout;
+       full-width stacked buttons look correct with the reduced pill gap.
+       No additional overrides are needed — this rule documents the intentional
+       cascade so a future reorder does not silently break the combination. */
+    :host([compact][direction="column"]) .group {}
 
     /* ── Column (vertical) direction ────────────────────── */
 

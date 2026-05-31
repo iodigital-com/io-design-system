@@ -63,10 +63,7 @@ export class IoButtonGroup {
    */
   @Prop({ reflect: true }) direction: IoButtonGroupDirection = 'row';
 
-  /**
-   * When true, renders the button group in a compact style.
-   * Reflected as an attribute so CSS can target :host([compact]).
-   */
+  /** Reduces height and padding for toolbar and dense UI contexts. */
   @Prop({ reflect: true }) compact: boolean = false;
 
   // ── Events ────────────────────────────────────────────

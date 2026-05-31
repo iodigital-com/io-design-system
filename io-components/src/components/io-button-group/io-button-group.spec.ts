@@ -443,6 +443,19 @@ describe('io-button-group — size prop', () => {
   });
 });
 
+describe('io-button-group — compact prop', () => {
+  it('compact defaults to false', () => {
+    const comp = makeComponent();
+    expect(comp.compact).toBe(false);
+  });
+
+  it('renders with compact=true without throwing', () => {
+    const comp = makeRenderComp({ compact: true } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
+  });
+});
+
 describe('io-button-group — direction prop', () => {
   it('direction defaults to "row"', () => {
     const comp = makeComponent();

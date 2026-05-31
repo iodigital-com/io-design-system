@@ -11,6 +11,7 @@ import {
   buttonGroupStorySizeLg,
   buttonGroupStoryDirectionRow,
   buttonGroupStoryDirectionColumn,
+  buttonGroupStoryCompact,
 } from './io-button-group.stories';
 
 describe('io-button-group storefront stories', () => {
@@ -307,6 +308,23 @@ describe('io-button-group storefront stories', () => {
 
     it('every returned element has a tag', () => {
       const els = buttonGroupStoryDirectionColumn.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+  });
+
+  describe('buttonGroupStoryCompact', () => {
+    it('generator returns non-empty array', () => {
+      const els = buttonGroupStoryCompact.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = buttonGroupStoryCompact.generator?.() ?? [];
       for (const el of els) {
         if (el && typeof el === 'object' && 'tag' in el) {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');

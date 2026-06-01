@@ -10,7 +10,7 @@ import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize, IoButtonGroupVariant } from "./components/io-button-group/types";
+import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
@@ -49,7 +49,7 @@ export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize, IoButtonGroupVariant } from "./components/io-button-group/types";
+export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
@@ -410,12 +410,6 @@ export namespace Components {
           * Accessible label for the group container (aria-label)
          */
         "label": string | undefined;
-        /**
-          * Size preset propagated to all slotted io-button children. 'sm' | 'md' (default) | 'lg'
-          * @deprecated Use `compact` instead for reduced-density contexts. The `size` prop will be removed in a future major version.
-          * @default 'md'
-         */
-        "size": IoButtonGroupSize;
         /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
@@ -4118,12 +4112,6 @@ declare namespace LocalJSX {
          */
         "onChange"?: (event: IoButtonGroupCustomEvent<IoButtonGroupChangeDetail>) => void;
         /**
-          * Size preset propagated to all slotted io-button children. 'sm' | 'md' (default) | 'lg'
-          * @deprecated Use `compact` instead for reduced-density contexts. The `size` prop will be removed in a future major version.
-          * @default 'md'
-         */
-        "size"?: IoButtonGroupSize;
-        /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
          */
@@ -6168,7 +6156,6 @@ declare namespace LocalJSX {
         "value": string | string[];
         "disabled": boolean;
         "label": string | undefined;
-        "size": IoButtonGroupSize;
         "direction": IoButtonGroupDirection;
         "compact": boolean;
         "variant": IoButtonGroupVariant;

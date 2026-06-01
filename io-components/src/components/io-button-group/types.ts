@@ -1,6 +1,3 @@
-/** Size preset for the button group — propagated to all slotted io-button children. */
-export type IoButtonGroupSize = 'sm' | 'md' | 'lg';
-
 /**
  * Visual variant controlling the active-state color scheme.
  * - `primary` — active button uses the brand primary color (blue fill, white text). Use for navigation and primary selection controls.

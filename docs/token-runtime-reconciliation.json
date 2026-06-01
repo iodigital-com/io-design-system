@@ -552,44 +552,20 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
-      "runtimeCssVar": "--io-button-group-border-color",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
-      "runtimeCssVar": "--io-button-group-border-radius",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
-      "runtimeCssVar": "--io-button-group-border-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
-      "runtimeCssVar": "--io-button-group-btn-gap",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
       "runtimeCssVar": "--io-button-group-btn-radius",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-btn-radius-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Compact variant button border-radius: 6px hard-coded (falls between --io-border-radius-sm and --io-border-radius-md; no radius token maps to this value)."
     },
     {
       "runtimeCssVar": "--io-button-group-color",
@@ -662,6 +638,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Gap between buttons in the default (non-compact) button group: 2px."
     },
     {
       "runtimeCssVar": "--io-button-group-hover-bg",

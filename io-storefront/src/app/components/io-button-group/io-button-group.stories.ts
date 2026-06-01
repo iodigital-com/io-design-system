@@ -19,7 +19,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
       value: '',
       disabled: false,
       label: 'View period',
-      size: 'md',
+      variant: 'primary',
       direction: 'row',
       compact: false,
     },
@@ -32,7 +32,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         value: properties?.value as string ?? '',
         disabled: properties?.disabled as boolean ?? false,
         label: properties?.label as string ?? 'View period',
-        size: (properties?.size as 'sm' | 'md' | 'lg') ?? 'md',
+        variant: (properties?.variant as 'primary' | 'secondary') ?? 'primary',
         direction: (properties?.direction as 'row' | 'column') ?? 'row',
         compact: properties?.compact as boolean ?? false,
       },
@@ -114,12 +114,12 @@ export const buttonGroupStoryItemDisabled: Story<'io-button-group'> = {
   ],
 };
 
-export const buttonGroupStorySizeSm: Story<'io-button-group'> = {
+export const buttonGroupStoryVariantPrimary: Story<'io-button-group'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', size: 'sm', label: 'View period (sm)' },
+      properties: { exclusive: true, value: 'week', variant: 'primary', label: 'View period (primary — default)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -129,27 +129,12 @@ export const buttonGroupStorySizeSm: Story<'io-button-group'> = {
   ],
 };
 
-export const buttonGroupStorySizeMd: Story<'io-button-group'> = {
+export const buttonGroupStoryVariantSecondary: Story<'io-button-group'> = {
   state: { properties: {} },
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', size: 'md', label: 'View period (md — default)' },
-      children: [
-        createButtonGroupItem('day', 'Day'),
-        createButtonGroupItem('week', 'Week'),
-        createButtonGroupItem('month', 'Month'),
-      ],
-    },
-  ],
-};
-
-export const buttonGroupStorySizeLg: Story<'io-button-group'> = {
-  state: { properties: {} },
-  generator: () => [
-    {
-      tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', size: 'lg', label: 'View period (lg)' },
+      properties: { exclusive: true, value: 'week', variant: 'secondary', label: 'View period (secondary)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -227,11 +212,11 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     defaultValue: '',
   },
   {
-    name: 'size',
+    name: 'variant',
     type: 'select',
-    options: ['sm', 'md', 'lg'],
-    defaultValue: 'md',
-    description: "Size preset propagated to all slotted io-button children.",
+    options: ['primary', 'secondary'],
+    defaultValue: 'primary',
+    description: "Visual variant controlling the active-state color scheme. 'primary' uses brand blue fill with white text; 'secondary' uses a white/surface fill with shadow.",
   },
   {
     name: 'direction',

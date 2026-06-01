@@ -312,20 +312,52 @@ describe('io-button-group render — multi-select mode (group)', () => {
 });
 
 describe('io-button-group render — label prop', () => {
-  it('sets aria-label on the group container when label is provided', () => {
+  it('group container uses aria-labelledby when label is provided', () => {
     const comp = makeRenderComp({ label: 'View period' });
     vi.mocked(h).mockClear();
     comp.render();
     const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
-    expect(divProps?.['aria-label']).toBe('View period');
+    expect(divProps?.['aria-labelledby']).toBe('io-button-group-label');
   });
 
-  it('omits aria-label when label prop is undefined', () => {
+  it('omits aria-labelledby when label prop is undefined', () => {
     const comp = makeRenderComp({ label: undefined });
     vi.mocked(h).mockClear();
     comp.render();
     const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
-    expect(divProps?.['aria-label']).toBeUndefined();
+    expect(divProps?.['aria-labelledby']).toBeUndefined();
+  });
+
+  it('renders a span element with group-label class when label is provided', () => {
+    const comp = makeRenderComp({ label: 'View period' });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const spanProps = hCallsForTag('span').find((p) => p?.['class'] === 'group-label');
+    expect(spanProps).toBeDefined();
+  });
+
+  it('span label element has aria-hidden="true" (visible but hidden from screen readers)', () => {
+    const comp = makeRenderComp({ label: 'View period' });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const spanProps = hCallsForTag('span').find((p) => p?.['class'] === 'group-label');
+    expect(spanProps?.['aria-hidden']).toBe('true');
+  });
+
+  it('does not render a group-label span when label prop is undefined', () => {
+    const comp = makeRenderComp({ label: undefined });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const labelSpans = hCallsForTag('span').filter((p) => p?.['class'] === 'group-label');
+    expect(labelSpans).toHaveLength(0);
+  });
+
+  it('does not render a group-label span when label prop is empty string', () => {
+    const comp = makeRenderComp({ label: '' });
+    vi.mocked(h).mockClear();
+    comp.render();
+    const labelSpans = hCallsForTag('span').filter((p) => p?.['class'] === 'group-label');
+    expect(labelSpans).toHaveLength(0);
   });
 });
 
@@ -353,95 +385,51 @@ describe('io-button-group render — group disabled', () => {
   });
 });
 
-describe('io-button-group — size prop', () => {
-  it('size defaults to "md"', () => {
+// ── Variant prop ──────────────────────────────────────────────────────────────
+
+describe('io-button-group — variant prop', () => {
+  it('variant defaults to "primary"', () => {
     const comp = makeComponent();
-    expect(comp.size).toBe('md');
+    expect(comp.variant).toBe('primary');
   });
 
-  it('size prop can be set to "sm"', () => {
-    const comp = makeComponent({ size: 'sm' } as any);
-    expect(comp.size).toBe('sm');
+  it('variant prop can be set to "secondary"', () => {
+    const comp = makeComponent({ variant: 'secondary' } as any);
+    expect(comp.variant).toBe('secondary');
   });
 
-  it('size prop can be set to "lg"', () => {
-    const comp = makeComponent({ size: 'lg' } as any);
-    expect(comp.size).toBe('lg');
+  it('renders with variant="primary" without throwing', () => {
+    const comp = makeRenderComp({ variant: 'primary' } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
   });
 
-  it('propagateSize sets size on all IO-BUTTON assignedElements', () => {
-    const comp = makeComponent({ size: 'sm' } as any);
-
-    const btn1 = document.createElement('io-button') as any;
-    const btn2 = document.createElement('io-button') as any;
-
-    const slotStub = {
-      assignedElements: () => [btn1, btn2],
-    } as unknown as HTMLSlotElement;
-
-    const shadowRootStub = {
-      querySelector: () => slotStub,
-    } as unknown as ShadowRoot;
-
-    Object.defineProperty((comp as any).el, 'shadowRoot', {
-      get: () => shadowRootStub,
-      configurable: true,
-    });
-
-    (comp as any).propagateSize();
-
-    expect(btn1.size).toBe('sm');
-    expect(btn2.size).toBe('sm');
+  it('renders with variant="secondary" without throwing', () => {
+    const comp = makeRenderComp({ variant: 'secondary' } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
   });
 
-  it('propagateSize skips non-IO-BUTTON elements without error', () => {
-    const comp = makeComponent({ size: 'lg' } as any);
-
-    const div = document.createElement('div') as any;
-    const btn = document.createElement('io-button') as any;
-
-    const slotStub = {
-      assignedElements: () => [div, btn],
-    } as unknown as HTMLSlotElement;
-
-    const shadowRootStub = {
-      querySelector: () => slotStub,
-    } as unknown as ShadowRoot;
-
-    Object.defineProperty((comp as any).el, 'shadowRoot', {
-      get: () => shadowRootStub,
-      configurable: true,
-    });
-
-    expect(() => (comp as any).propagateSize()).not.toThrow();
-    expect((div as any).size).toBeUndefined();
-    expect(btn.size).toBe('lg');
+  it('active button class includes group-btn--active for primary variant', () => {
+    const comp = makeRenderComp({ exclusive: true, value: 'a', variant: 'primary' } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const buttons = hCallsForTag('button');
+    const activeBtn = buttons.find((p) => (p?.['class'] as string)?.includes('group-btn--active'));
+    expect(activeBtn).toBeDefined();
   });
 
-  it('onSizeChange calls propagateSize', () => {
-    const comp = makeComponent({ size: 'sm' } as any);
-    const spy = vi.spyOn(comp as any, 'propagateSize');
-
-    (comp as any).onSizeChange();
-
-    expect(spy).toHaveBeenCalledOnce();
-  });
-
-  it('propagateSize is a no-op when shadowRoot has no slot', () => {
-    const comp = makeComponent();
-
-    const shadowRootStub = {
-      querySelector: () => null,
-    } as unknown as ShadowRoot;
-
-    Object.defineProperty((comp as any).el, 'shadowRoot', {
-      get: () => shadowRootStub,
-      configurable: true,
-    });
-
-    expect(() => (comp as any).propagateSize()).not.toThrow();
+  it('active button class includes group-btn--active for secondary variant', () => {
+    const comp = makeRenderComp({ exclusive: true, value: 'a', variant: 'secondary' } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const buttons = hCallsForTag('button');
+    const activeBtn = buttons.find((p) => (p?.['class'] as string)?.includes('group-btn--active'));
+    expect(activeBtn).toBeDefined();
   });
 });
+
+// ── Compact prop ──────────────────────────────────────────────────────────────
 
 describe('io-button-group — compact prop', () => {
   it('compact defaults to false', () => {
@@ -449,12 +437,58 @@ describe('io-button-group — compact prop', () => {
     expect(comp.compact).toBe(false);
   });
 
+  it('compact prop can be set to true', () => {
+    const comp = makeComponent({ compact: true } as any);
+    expect(comp.compact).toBe(true);
+  });
+
   it('renders with compact=true without throwing', () => {
     const comp = makeRenderComp({ compact: true } as any);
     vi.mocked(h).mockClear();
     expect(() => comp.render()).not.toThrow();
   });
+
+  it('renders with compact=false without throwing', () => {
+    const comp = makeRenderComp({ compact: false } as any);
+    vi.mocked(h).mockClear();
+    expect(() => comp.render()).not.toThrow();
+  });
+
+  it('compact=true renders the same button roles as compact=false', () => {
+    const compactComp = makeRenderComp({ compact: true, exclusive: true, value: 'a' } as any);
+    vi.mocked(h).mockClear();
+    compactComp.render();
+    const compactButtons = hCallsForTag('button');
+
+    const standardComp = makeRenderComp({ compact: false, exclusive: true, value: 'a' } as any);
+    vi.mocked(h).mockClear();
+    standardComp.render();
+    const standardButtons = hCallsForTag('button');
+
+    expect(compactButtons.map((p) => p?.['role'])).toEqual(standardButtons.map((p) => p?.['role']));
+  });
 });
+
+// ── Size prop removed ─────────────────────────────────────────────────────────
+
+describe('io-button-group — size prop removed', () => {
+  it('component does not have a size property', () => {
+    const comp = makeComponent();
+    expect((comp as any).size).toBeUndefined();
+  });
+
+  it('component does not have a propagateSize method', () => {
+    const comp = makeComponent();
+    expect(typeof (comp as any).propagateSize).not.toBe('function');
+  });
+
+  it('component does not have an onSizeChange method', () => {
+    const comp = makeComponent();
+    expect(typeof (comp as any).onSizeChange).not.toBe('function');
+  });
+});
+
+// ── Direction prop ────────────────────────────────────────────────────────────
 
 describe('io-button-group — direction prop', () => {
   it('direction defaults to "row"', () => {

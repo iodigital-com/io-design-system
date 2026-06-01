@@ -3,7 +3,7 @@ import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } 
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
-import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize, IoButtonGroupVariant } from './types';
+import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from './types';
 
 /**
  * io-button-group
@@ -49,13 +49,6 @@ export class IoButtonGroup {
 
   /** Accessible label for the group container (aria-label) */
   @Prop() label: string | undefined;
-
-  /**
-   * Size preset propagated to all slotted io-button children.
-   * 'sm' | 'md' (default) | 'lg'
-   * @deprecated Use `compact` instead for reduced-density contexts. The `size` prop will be removed in a future major version.
-   */
-  @Prop({ reflect: true }) size: IoButtonGroupSize = 'md';
 
   /**
    * Layout direction for the button group.
@@ -108,8 +101,6 @@ export class IoButtonGroup {
       }, 0);
     }
 
-    // Propagate initial size to already-slotted children
-    this.propagateSize();
   }
 
   disconnectedCallback() {
@@ -143,11 +134,6 @@ export class IoButtonGroup {
     this.initFocusIndex();
   }
 
-  @Watch('size')
-  onSizeChange() {
-    this.propagateSize();
-  }
-
   // ── Private helpers ───────────────────────────────────────────
 
   private getActiveValues(): string[] {
@@ -176,15 +162,6 @@ export class IoButtonGroup {
     // Prefer the first active enabled item
     const active = enabled.find(({ item }) => this.isActive(item.value));
     this.focusIndex = active ? active.index : enabled[0].index;
-  }
-
-  private propagateSize() {
-    const slot = this.el.shadowRoot?.querySelector('slot');
-    if (!slot) return;
-    (slot as HTMLSlotElement)
-      .assignedElements({ flatten: true })
-      .filter(el => el.tagName === 'IO-BUTTON')
-      .forEach(btn => ((btn as Element & { size: IoButtonGroupSize }).size = this.size));
   }
 
   private handleItemClick(index: number) {
@@ -256,9 +233,10 @@ export class IoButtonGroup {
     const { exclusive, disabled, label, items, focusIndex } = this;
     // When all items are disabled no item should be in the tab order.
     const hasEnabledItems = this.getEnabledItems().length > 0;
+    const labelId = label ? 'io-button-group-label' : undefined;
 
     return (
-      <Host>
+      <Host style={label ? { display: 'flex', flexDirection: 'column' } : undefined}>
         <style>{getButtonGroupStyles()}</style>
         {/*
           Hidden slot — only used so Stencil does not warn about unrendered
@@ -266,11 +244,14 @@ export class IoButtonGroup {
           via querySelectorAll and then re-rendered as internal shadow buttons.
           ::slotted(*) { display: none } in the shadow styles hides the originals.
         */}
-        <slot onSlotchange={() => this.propagateSize()} />
+        <slot />
+        {label && (
+          <span id={labelId} class="group-label" aria-hidden="true">{label}</span>
+        )}
         <div
           class="group"
           role={exclusive ? 'radiogroup' : 'group'}
-          aria-label={label || undefined}
+          aria-labelledby={labelId}
           aria-disabled={disabled ? 'true' : undefined}
         >
           {items.map((item, index) => {

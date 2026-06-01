@@ -1,8 +1,5 @@
 ---
 "@iodigital-com/components": patch
-"@iodigital-com/components-angular": patch
-"@iodigital-com/components-react": patch
-"@iodigital-com/components-vue": patch
 ---
 
 fix(button-group): restore primary blue active state to match storefront reference style

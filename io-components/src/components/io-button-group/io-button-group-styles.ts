@@ -52,7 +52,7 @@ export function getButtonGroupStyles(): string {
       font-family: var(--io-font-primary);
       font-size: var(--io-button-group-font-size);
       font-weight: var(--io-font-weight-medium);
-      line-height: var(--io-line-height-normal);
+      line-height: 1.25rem;   /* matches Tailwind text-sm: 20px so 6+20+6=32px button → 42px container */
       background: transparent;
       color: var(--io-button-group-color);
       /* Transparent border (not none) keeps layout stable when active state toggles border color */

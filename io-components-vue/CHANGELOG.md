@@ -1,5 +1,17 @@
 # @iodigital-com/components-vue
 
+## 1.1.0
+
+### Minor Changes
+
+- Align wrapper packages to @iodigital-com/components@1.1.0 — version parity across the iO DS package family. No functional changes; wrappers are thin framework-binding layers over the core web component package.
+
+### Patch Changes
+
+- Updated dependencies [ec09f1f]
+- Updated dependencies [5de8182]
+  - @iodigital-com/components@1.1.0
+
 ## 1.0.0
 
 ### Patch Changes

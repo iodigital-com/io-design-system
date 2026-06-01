@@ -1,6 +1,6 @@
 {
   "name": "@iodigital-com/components-vue",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Vue 3 wrapper package for io Digital Web Components.",
   "homepage": "https://io-design-system.iodigital.com",
   "bugs": {

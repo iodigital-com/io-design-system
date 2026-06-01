@@ -457,13 +457,13 @@
   --io-button-group-padding-x-lg:      var(--io-space-6);
   --io-button-group-font-size-sm:      var(--io-font-size-sm);
   --io-button-group-font-size-lg:      var(--io-font-size-lg);
-  --io-button-group-min-height-compact:   28px; /* intentional exception: 28px falls between --io-space-6 (24px) and --io-space-8 (32px); no space token maps to this value */
+  --io-button-group-min-height-compact:   24.8px; /* 4px padding-y × 2 + 16.8px line-height */
   --io-button-group-padding-y-compact:    4px;
-  --io-button-group-padding-x-compact:    12px;
+  --io-button-group-padding-x-compact:    6px;
   --io-button-group-font-size-compact:    var(--io-font-size-xs);
   --io-button-group-gap-compact:          1px;
   --io-button-group-pill-padding-compact: 2px;
-  --io-button-group-btn-radius-compact:   calc(var(--io-button-group-pill-radius) - var(--io-button-group-pill-padding-compact));   /* 12px - 2px = 10px */
+  --io-button-group-btn-radius-compact:   12px;
   --io-button-group-compact-active-bg:     var(--io-color-white);
   --io-button-group-compact-active-color:  var(--io-color-grey-6);
   --io-button-group-compact-active-shadow: 0 1px 2px rgba(0,0,0,0.08);

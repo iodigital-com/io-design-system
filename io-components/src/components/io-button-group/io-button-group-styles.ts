@@ -151,7 +151,9 @@ export function getButtonGroupStyles(): string {
       min-height: var(--io-button-group-min-height-compact);
       padding: var(--io-button-group-padding-y-compact) var(--io-button-group-padding-x-compact);
       font-size: var(--io-button-group-font-size-compact);
-      /* WCAG 2.5.5 touch-target mitigation: compact visual height is 28px which
+      line-height: 16.8px;    /* absolute px — matches sidebar compact button baseline */
+      border: none;           /* compact buttons have no border (matches sidebar no-border style) */
+      /* WCAG 2.5.5 touch-target mitigation: compact visual height is 24px which
          is below the 44×44 px minimum. Expand the invisible hit area via a
          ::before pseudo-element so pointer-device contexts remain unaffected. */
       position: relative;

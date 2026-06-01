@@ -387,7 +387,7 @@ export namespace Components {
      */
     interface IoButtonGroup {
         /**
-          * When true, renders the button group in a compact style. Reflected as an attribute so CSS can target :host([compact]).
+          * Reduces height and padding for toolbar and dense UI contexts.
           * @default false
          */
         "compact": boolean;
@@ -4084,7 +4084,7 @@ declare namespace LocalJSX {
      */
     interface IoButtonGroup {
         /**
-          * When true, renders the button group in a compact style. Reflected as an attribute so CSS can target :host([compact]).
+          * Reduces height and padding for toolbar and dense UI contexts.
           * @default false
          */
         "compact"?: boolean;

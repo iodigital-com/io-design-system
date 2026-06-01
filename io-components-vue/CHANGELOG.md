@@ -1,5 +1,11 @@
 # @iodigital-com/components-vue
 
+## 1.1.1
+
+### Patch Changes
+
+- 40e1765: Sync wrapper versions to @iodigital-com/components@1.1.1 — version parity across the iO DS package family.
+
 ## 1.1.0
 
 ### Minor Changes

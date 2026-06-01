@@ -252,7 +252,7 @@ export class IoButtonGroup {
         */}
         <slot />
         {label && (
-          <span id={labelId} class={hideLabel ? 'group-label group-label--sr-only' : 'group-label'} aria-hidden="true">
+          <span id={labelId} class={hideLabel ? 'group-label group-label--sr-only' : 'group-label'}>
             {label}
             {required && <span class="group-required" aria-hidden="true"> *</span>}
           </span>

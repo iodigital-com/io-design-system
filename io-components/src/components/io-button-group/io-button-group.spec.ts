@@ -336,12 +336,14 @@ describe('io-button-group render — label prop', () => {
     expect(spanProps).toBeDefined();
   });
 
-  it('span label element has aria-hidden="true" (visible but hidden from screen readers)', () => {
+  it('span label element does NOT have aria-hidden — it must be accessible to aria-labelledby', () => {
     const comp = makeRenderComp({ label: 'View period' });
     vi.mocked(h).mockClear();
     comp.render();
     const spanProps = hCallsForTag('span').find((p) => p?.['class'] === 'group-label');
-    expect(spanProps?.['aria-hidden']).toBe('true');
+    // aria-hidden must not be on the label span: the .group div references it via
+    // aria-labelledby, and ARIA prohibits referencing aria-hidden elements.
+    expect(spanProps?.['aria-hidden']).toBeUndefined();
   });
 
   it('does not render a group-label span when label prop is undefined', () => {

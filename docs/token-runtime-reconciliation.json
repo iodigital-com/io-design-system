@@ -656,14 +656,6 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
-      "runtimeCssVar": "--io-button-group-hover-bg",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
       "runtimeCssVar": "--io-button-group-min-height",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

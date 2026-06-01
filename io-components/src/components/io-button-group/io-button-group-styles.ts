@@ -157,28 +157,9 @@ export function getButtonGroupStyles(): string {
       .group-btn { transition: none; }
     }
 
-    /* ── Size variants ───────────────────────────────────── */
-    /* Note: size variants and [compact] share equal specificity
-       (:host([attr]) .group-btn). compact is intentionally declared after these
-       size blocks so it wins via source order when both attributes are present.
-       See the compact block below for the authoritative comment. */
-
-    :host([size="sm"]) .group-btn {
-      min-height: var(--io-button-group-min-height-sm);
-      padding: var(--io-button-group-padding-y-sm) var(--io-button-group-padding-x-sm);
-      font-size: var(--io-button-group-font-size-sm);
-    }
-
-    :host([size="lg"]) .group-btn {
-      min-height: var(--io-button-group-min-height-lg);
-      padding: var(--io-button-group-padding-y-lg) var(--io-button-group-padding-x-lg);
-      font-size: var(--io-button-group-font-size-lg);
-    }
-
     /* ── Compact variant ─────────────────────────────────── */
-    /* compact intentionally follows size variant rules — equal specificity means
-       source order wins, so compact always overrides size padding and min-height.
-       If size="lg" and compact are combined, compact dimensions take effect. */
+    /* Use compact for toolbar and dense UI contexts. Compact controls sizing only;
+       active-state color is controlled by the variant prop. */
 
     :host([compact]) .group {
       padding: var(--io-button-group-pill-padding-compact);
@@ -190,6 +171,7 @@ export function getButtonGroupStyles(): string {
       font-size: var(--io-button-group-font-size-compact);
       line-height: 16.8px;    /* absolute px — matches sidebar compact button baseline */
       border: none;           /* compact buttons have no border (matches sidebar no-border style) */
+      border-radius: var(--io-button-group-btn-radius-compact);
       /* WCAG 2.5.5 touch-target mitigation: compact visual height is 24px which
          is below the 44×44 px minimum. Expand the invisible hit area via a
          ::before pseudo-element so pointer-device contexts remain unaffected. */

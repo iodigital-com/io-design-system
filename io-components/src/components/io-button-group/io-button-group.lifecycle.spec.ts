@@ -21,32 +21,6 @@ function makeComponent(overrides: Partial<IoButtonGroup> = {}): IoButtonGroup {
   return comp;
 }
 
-// ─── onSizeChange watcher (line ~128-130) ─────────────────────────────────────
-// The @Watch('size') method calls propagateSize(). In jsdom shadowRoot is null
-// so propagateSize returns early — but the function itself must be covered.
-
-describe('io-button-group — onSizeChange watcher', () => {
-  it('calls propagateSize without throwing when shadowRoot is null', () => {
-    const comp = makeComponent();
-    // jsdom never creates a real shadow root, so el.shadowRoot === null by default
-    expect(() => (comp as any).onSizeChange()).not.toThrow();
-  });
-
-  it('delegates to propagateSize exactly once', () => {
-    const comp = makeComponent();
-    const spy = vi.spyOn(comp as any, 'propagateSize');
-    (comp as any).onSizeChange();
-    expect(spy).toHaveBeenCalledOnce();
-  });
-
-  it('calls propagateSize with the current size when size changes to sm', () => {
-    const comp = makeComponent();
-    const spy = vi.spyOn(comp as any, 'propagateSize');
-    comp.size = 'sm';
-    (comp as any).onSizeChange();
-    expect(spy).toHaveBeenCalledOnce();
-  });
-});
 
 // ─── handleKeyDown fallback switch (line ~250) ────────────────────────────────
 // The fallback IIFE fires when currentEnabledIndex < 0, i.e. the index passed
@@ -271,19 +245,22 @@ describe('io-button-group — render() inline handlers', () => {
     expect((comp as any).buttonRefs.has(0)).toBe(false);
   });
 
-  it('onSlotchange inline handler calls propagateSize', () => {
+  it('slot element is rendered without an onSlotchange handler', () => {
     const comp = makeComponent();
-    const propagateSpy = vi.spyOn(comp as any, 'propagateSize');
 
     comp.render();
 
-    // Find the <slot> call — it is h('slot', { onSlotchange: fn })
-    const slotCall = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown> | null]>)
-      .find(args => args[0] === 'slot' && args[1] != null && typeof args[1].onSlotchange === 'function');
+    // The slot renders with no props (null) — no onSlotchange handler since
+    // propagateSize was removed along with the size prop.
+    const slotCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown> | null]>)
+      .filter(args => args[0] === 'slot');
 
-    expect(slotCall).toBeDefined();
-    (slotCall![1]!.onSlotchange as () => void)();
-    expect(propagateSpy).toHaveBeenCalled();
+    expect(slotCalls.length).toBeGreaterThanOrEqual(1);
+    // None of the slot calls should carry an onSlotchange handler
+    const hasSlotchange = slotCalls.some(
+      args => args[1] != null && typeof args[1].onSlotchange === 'function',
+    );
+    expect(hasSlotchange).toBe(false);
   });
 });
 
@@ -328,7 +305,7 @@ describe('io-button-group — render() branch coverage', () => {
     expect(groupDiv?.['aria-disabled']).toBeUndefined();
   });
 
-  it('renders with label set (aria-label present)', () => {
+  it('renders with label set (aria-labelledby present)', () => {
     const comp = makeComponent({ label: 'Period selector' });
     comp.render();
 
@@ -336,7 +313,7 @@ describe('io-button-group — render() branch coverage', () => {
       .filter(args => args[0] === 'div')
       .map(args => args[1]);
     const groupDiv = divProps.find(p => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
-    expect(groupDiv?.['aria-label']).toBe('Period selector');
+    expect(groupDiv?.['aria-labelledby']).toBe('io-button-group-label');
   });
 
   it('renders with label unset (aria-label absent)', () => {

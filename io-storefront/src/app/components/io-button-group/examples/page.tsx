@@ -7,9 +7,6 @@ import {
   buttonGroupStoryMultiSelect,
   buttonGroupStoryDisabled,
   buttonGroupStoryItemDisabled,
-  buttonGroupStorySizeSm,
-  buttonGroupStorySizeMd,
-  buttonGroupStorySizeLg,
   buttonGroupStoryDirectionRow,
   buttonGroupStoryDirectionColumn,
   buttonGroupStoryCompact,
@@ -149,32 +146,6 @@ export default function IoButtonGroupExamplesPage() {
           to make only that option unavailable. Keyboard navigation skips disabled items.
         </p>
         <ComponentStory story={buttonGroupStoryItemDisabled} />
-      </section>
-
-      <section>
-        <ExamplesSectionHeader title="Size: sm" />
-        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>size=&quot;sm&quot;</code>{' '}
-          to propagate a compact size to all slotted <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-button</code> children.
-        </p>
-        <ComponentStory story={buttonGroupStorySizeSm} />
-      </section>
-
-      <section>
-        <ExamplesSectionHeader title="Size: md (default)" />
-        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          The default size. Equivalent to omitting the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>size</code> attribute.
-        </p>
-        <ComponentStory story={buttonGroupStorySizeMd} />
-      </section>
-
-      <section>
-        <ExamplesSectionHeader title="Size: lg" />
-        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>size=&quot;lg&quot;</code>{' '}
-          to propagate a larger size to all slotted <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-button</code> children.
-        </p>
-        <ComponentStory story={buttonGroupStorySizeLg} />
       </section>
 
       <section>

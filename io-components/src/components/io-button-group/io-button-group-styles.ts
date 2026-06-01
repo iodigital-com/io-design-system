@@ -51,7 +51,7 @@ export function getButtonGroupStyles(): string {
       padding: var(--io-button-group-padding-y) var(--io-button-group-padding-x);
       font-family: var(--io-font-primary);
       font-size: var(--io-button-group-font-size);
-      font-weight: var(--io-font-weight-semibold);
+      font-weight: var(--io-font-weight-medium);
       line-height: var(--io-line-height-normal);
       background: transparent;
       color: var(--io-button-group-color);
@@ -70,6 +70,7 @@ export function getButtonGroupStyles(): string {
     .group-btn--active {
       background: var(--io-button-group-active-bg);
       color: var(--io-button-group-active-color);
+      font-weight: var(--io-font-weight-semibold);
       box-shadow: var(--io-button-group-active-shadow);
       /* Only change border color — width is already 1px from .group-btn baseline,
          so no layout shift occurs when a button becomes active. */
@@ -93,6 +94,14 @@ export function getButtonGroupStyles(): string {
       pointer-events: none;
     }
 
+    /* Prevent double-opacity compounding when the whole group is disabled.
+       :host([disabled]) already sets opacity on the host element; each child
+       button must not also apply its own opacity layer (0.5 × 0.5 = 0.25). */
+    :host([disabled]) .group-btn--disabled,
+    :host([disabled]) .group-btn:disabled {
+      opacity: 1;
+    }
+
     /* ── Focus visible ───────────────────────────────────── */
 
     .group-btn:focus {
@@ -101,7 +110,7 @@ export function getButtonGroupStyles(): string {
 
     .group-btn:focus-visible {
       outline: none;
-      box-shadow: var(--io-focus-ring-active);
+      box-shadow: var(--io-focus-ring-active, var(--io-shadow-focus-ring));
       z-index: 1;
     }
 
@@ -142,7 +151,25 @@ export function getButtonGroupStyles(): string {
       min-height: var(--io-button-group-min-height-compact);
       padding: var(--io-button-group-padding-y-compact) var(--io-button-group-padding-x-compact);
       font-size: var(--io-button-group-font-size-compact);
+      /* WCAG 2.5.5 touch-target mitigation: compact visual height is 28px which
+         is below the 44×44 px minimum. Expand the invisible hit area via a
+         ::before pseudo-element so pointer-device contexts remain unaffected. */
+      position: relative;
     }
+
+    :host([compact]) .group-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 44px;
+      transform: translateY(-50%);
+    }
+
+    /* ── Compact active state ─────────────────────────────── */
+    /* Active state color is controlled by the variant prop, not compact.
+       Use variant="secondary" with compact for the white-fill active style. */
 
     /* ── Compact + column interaction ────────────────────── */
     /* When compact and direction="column" are combined, the .group gets

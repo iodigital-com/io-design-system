@@ -407,9 +407,19 @@ export namespace Components {
          */
         "exclusive": boolean;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Accessible label for the group container (aria-label)
          */
         "label": string | undefined;
+        /**
+          * Marks the group as required — shows a required asterisk (*) next to the label
+          * @default false
+         */
+        "required": boolean;
         /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
@@ -4104,6 +4114,11 @@ declare namespace LocalJSX {
          */
         "exclusive"?: boolean;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Accessible label for the group container (aria-label)
          */
         "label"?: string | undefined;
@@ -4111,6 +4126,11 @@ declare namespace LocalJSX {
           * Fires when the selection changes. Detail contains the new value or value array.
          */
         "onChange"?: (event: IoButtonGroupCustomEvent<IoButtonGroupChangeDetail>) => void;
+        /**
+          * Marks the group as required — shows a required asterisk (*) next to the label
+          * @default false
+         */
+        "required"?: boolean;
         /**
           * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
           * @default ''
@@ -6156,6 +6176,8 @@ declare namespace LocalJSX {
         "value": string | string[];
         "disabled": boolean;
         "label": string | undefined;
+        "hideLabel": boolean;
+        "required": boolean;
         "direction": IoButtonGroupDirection;
         "compact": boolean;
         "variant": IoButtonGroupVariant;

@@ -29,6 +29,43 @@ export function getButtonGroupStyles(): string {
       display: none;
     }
 
+    /* ── Group label ────────────────────────────────────── */
+    /* Canonical label tokens — aligned with io-input/.input-label and
+       io-select/.select-label. position: absolute and transition are
+       intentionally omitted: the button-group label is a static flow
+       element (not a floating label), so those properties do not apply.
+       margin-bottom provides the label-to-group gap that io-input achieves
+       via padding-top on its wrapper. */
+
+    .group-label {
+      display: block;
+      font-size: var(--io-label-font-size);
+      font-weight: var(--io-label-font-weight);
+      color: var(--io-text-secondary);
+      pointer-events: none;
+      margin-bottom: var(--io-space-2);
+    }
+
+    .group-label--sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .group-required {
+      color: var(--io-color-error);
+    }
+
+    :host([disabled]) .group-label {
+      opacity: var(--io-state-disabled-opacity);
+    }
+
     /* ── Container (pill wrapper) ───────────────────────── */
 
     .group {

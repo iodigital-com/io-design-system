@@ -50,6 +50,12 @@ export class IoButtonGroup {
   /** Accessible label for the group container (aria-label) */
   @Prop() label: string | undefined;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop({ reflect: true }) hideLabel = false;
+
+  /** Marks the group as required — shows a required asterisk (*) next to the label */
+  @Prop() required = false;
+
   /**
    * Layout direction for the button group.
    * 'row' (default) lays buttons out horizontally.
@@ -230,7 +236,7 @@ export class IoButtonGroup {
   // ── Render ───────────────────────────────────────────
 
   render() {
-    const { exclusive, disabled, label, items, focusIndex } = this;
+    const { exclusive, disabled, label, hideLabel, required, items, focusIndex } = this;
     // When all items are disabled no item should be in the tab order.
     const hasEnabledItems = this.getEnabledItems().length > 0;
     const labelId = label ? 'io-button-group-label' : undefined;
@@ -246,7 +252,10 @@ export class IoButtonGroup {
         */}
         <slot />
         {label && (
-          <span id={labelId} class="group-label" aria-hidden="true">{label}</span>
+          <span id={labelId} class={hideLabel ? 'group-label group-label--sr-only' : 'group-label'} aria-hidden="true">
+            {label}
+            {required && <span class="group-required" aria-hidden="true"> *</span>}
+          </span>
         )}
         <div
           class="group"

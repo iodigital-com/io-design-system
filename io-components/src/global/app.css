@@ -433,7 +433,7 @@
   /* Button Group */
   --io-button-group-bg:                var(--io-color-white);
   --io-button-group-color:             var(--io-text-secondary);
-  --io-button-group-padding-y:         6px;
+  --io-button-group-padding-y:         5px;   /* 5px compensates for 1px border: 5+20+5+1+1=32px button → 42px container */
   --io-button-group-padding-x:         var(--io-space-4);
   --io-button-group-font-size:         var(--io-font-size-sm);
   --io-button-group-gap:               2px;

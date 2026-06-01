@@ -1,6 +1,13 @@
 /** Size preset for the button group — propagated to all slotted io-button children. */
 export type IoButtonGroupSize = 'sm' | 'md' | 'lg';
 
+/**
+ * Visual variant controlling the active-state color scheme.
+ * - `primary` — active button uses the brand primary color (blue fill, white text). Use for navigation and primary selection controls.
+ * - `secondary` — active button uses a neutral white/surface fill with a subtle shadow. Use for property selectors and toolbar controls.
+ */
+export type IoButtonGroupVariant = 'primary' | 'secondary';
+
 /** Layout direction for the button group. 'row' stacks buttons horizontally (default); 'column' stacks them vertically. */
 export type IoButtonGroupDirection = 'row' | 'column';
 

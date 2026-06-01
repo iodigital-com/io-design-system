@@ -3,7 +3,7 @@ import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } 
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
-import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize } from './types';
+import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupSize, IoButtonGroupVariant } from './types';
 
 /**
  * io-button-group
@@ -53,6 +53,7 @@ export class IoButtonGroup {
   /**
    * Size preset propagated to all slotted io-button children.
    * 'sm' | 'md' (default) | 'lg'
+   * @deprecated Use `compact` instead for reduced-density contexts. The `size` prop will be removed in a future major version.
    */
   @Prop({ reflect: true }) size: IoButtonGroupSize = 'md';
 
@@ -65,6 +66,14 @@ export class IoButtonGroup {
 
   /** Reduces height and padding for toolbar and dense UI contexts. */
   @Prop({ reflect: true }) compact: boolean = false;
+
+  /**
+   * Visual variant controlling the active-state color scheme.
+   * - `primary` — brand blue fill, white text (navigation tabs, primary controls).
+   * - `secondary` — white/surface fill with shadow, dark text (property selectors, toolbar controls).
+   * @default 'primary'
+   */
+  @Prop({ reflect: true }) variant: IoButtonGroupVariant = 'primary';
 
   // ── Events ────────────────────────────────────────────
 

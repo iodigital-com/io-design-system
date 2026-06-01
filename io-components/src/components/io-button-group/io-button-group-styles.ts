@@ -152,6 +152,26 @@ export function getButtonGroupStyles(): string {
        No additional overrides are needed — this rule documents the intentional
        cascade so a future reorder does not silently break the combination. */
     :host([compact][direction="column"]) .group {}
+    /* ── Variant: secondary (white active, neutral) ──────── */
+    /* Use variant="secondary" for property selectors, toolbar controls, and
+       any context where a neutral white-fill active state is preferred over
+       the brand primary blue. Compact mode pairs naturally with secondary. */
+
+    :host([variant="secondary"]) .group-btn--active {
+      background: var(--io-button-group-secondary-active-bg);
+      color: var(--io-button-group-secondary-active-color);
+      box-shadow: var(--io-button-group-secondary-active-shadow);
+      border-color: transparent;
+      font-weight: var(--io-font-weight-medium);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      :host([variant="secondary"]) .group-btn:not(.group-btn--active):not(.group-btn--disabled):not(:disabled):hover {
+        background: var(--io-button-group-hover-bg);
+      }
+    }
+
+
 
     /* ── Column (vertical) direction ────────────────────── */
 

@@ -465,6 +465,9 @@
   --io-button-group-padding-x-compact:    var(--io-space-2);
   --io-button-group-font-size-compact:    var(--io-font-size-sm);
   --io-button-group-pill-padding-compact: 1px;
+  --io-button-group-secondary-active-bg:    var(--io-color-white);
+  --io-button-group-secondary-active-color: var(--io-color-grey-6);
+  --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
   --io-button-group-transition:        background-color 500ms var(--io-motion-easing-snappy),
                                        color 500ms var(--io-motion-easing-snappy),
                                        border-color 500ms var(--io-motion-easing-snappy);
@@ -908,6 +911,9 @@ io-table[compact] io-table-body-cell td {
   --io-button-group-active-color: var(--io-color-white);
   --io-button-group-active-shadow: 0 1px 4px rgba(0,0,210,0.40), 0 1px 2px rgba(0,0,0,0.24);
   --io-button-group-hover-bg:    var(--io-color-dark-bg-hover);
+  --io-button-group-secondary-active-bg:    var(--io-color-grey-4);
+  --io-button-group-secondary-active-color: var(--io-color-dark-text-primary);
+  --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.30);
   --io-button-group-min-height-compact:   28px; /* same value as :root — dark mode does not alter compact height */
   --io-button-group-padding-y-compact:    var(--io-space-1);
   --io-button-group-padding-x-compact:    var(--io-space-2);
@@ -968,6 +974,9 @@ io-table[compact] io-table-body-cell td {
   --io-button-group-active-color: var(--io-color-white);
   --io-button-group-active-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
   --io-button-group-hover-bg:    var(--io-state-hover);
+  --io-button-group-secondary-active-bg:    var(--io-color-white);
+  --io-button-group-secondary-active-color: var(--io-color-grey-6);
+  --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
   --io-progress-track-bg:        var(--io-color-grey-2);
 
   /* Avatar — grey variant: light surface + dark text */
@@ -1063,6 +1072,9 @@ io-table[compact] io-table-body-cell td {
   --io-button-group-active-color: var(--io-color-white);
   --io-button-group-active-shadow: 0 1px 4px rgba(0,0,210,0.40), 0 1px 2px rgba(0,0,0,0.24);
   --io-button-group-hover-bg:    var(--io-color-dark-bg-hover);
+  --io-button-group-secondary-active-bg:    var(--io-color-grey-4);
+  --io-button-group-secondary-active-color: var(--io-color-dark-text-primary);
+  --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.30);
   --io-button-group-min-height-compact:   28px; /* same value as :root — dark mode does not alter compact height */
   --io-button-group-padding-y-compact:    var(--io-space-1);
   --io-button-group-padding-x-compact:    var(--io-space-2);
@@ -1113,6 +1125,9 @@ io-table[compact] io-table-body-cell td {
   --io-button-group-active-color: var(--io-color-white);
   --io-button-group-active-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
   --io-button-group-hover-bg:    var(--io-state-hover);
+  --io-button-group-secondary-active-bg:    var(--io-color-white);
+  --io-button-group-secondary-active-color: var(--io-color-grey-6);
+  --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
   --io-progress-track-bg:        var(--io-color-grey-2);
   --io-avatar-bg-grey:           var(--io-color-grey-3);
   --io-avatar-text-grey:         var(--io-color-grey-6);

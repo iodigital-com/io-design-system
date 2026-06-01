@@ -15,8 +15,8 @@ function createButtonGroupItem(value: string, label: string, disabled = false) {
 export const buttonGroupStory: Story<'io-button-group'> = {
   state: {
     properties: {
-      exclusive: false,
-      value: '',
+      exclusive: true,
+      value: 'day',
       disabled: false,
       label: 'View period',
       variant: 'primary',
@@ -28,8 +28,8 @@ export const buttonGroupStory: Story<'io-button-group'> = {
     {
       tag: 'io-button-group' as const,
       properties: {
-        exclusive: properties?.exclusive as boolean ?? false,
-        value: properties?.value as string ?? '',
+        exclusive: properties?.exclusive as boolean ?? true,
+        value: properties?.value as string ?? 'day',
         disabled: properties?.disabled as boolean ?? false,
         label: properties?.label as string ?? 'View period',
         variant: (properties?.variant as 'primary' | 'secondary') ?? 'primary',

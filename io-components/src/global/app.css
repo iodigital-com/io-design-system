@@ -448,7 +448,7 @@
   --io-button-group-btn-radius:        var(--io-border-radius-lg);
   --io-button-group-active-border:     var(--io-color-primary);
   --io-button-group-disabled-opacity:  var(--io-state-disabled-opacity);
-  --io-button-group-min-height:        var(--io-touch-target-min);
+  --io-button-group-min-height:        var(--io-space-8);   /* 32px — matches PageHeader py-1.5 + text-sm natural height */
   --io-button-group-min-height-sm:     var(--io-space-8);
   --io-button-group-min-height-lg:     var(--io-space-14);
   --io-button-group-padding-y-sm:      var(--io-space-1);

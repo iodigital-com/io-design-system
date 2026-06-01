@@ -38,7 +38,7 @@ export default function IoButtonGroupAccessibilityPage() {
                 </span>
               ),
               action:
-                'Exclusive mode: moves focus to the next enabled item AND selects it. Multi-select mode: moves focus only — does not change selection. Wraps from last to first. Disabled items are skipped.',
+                'Single mode: moves focus to the next enabled item AND selects it. Multiple mode: moves focus only — does not change selection. Wraps from last to first. Disabled items are skipped.',
             },
             {
               key: (
@@ -49,22 +49,22 @@ export default function IoButtonGroupAccessibilityPage() {
                 </span>
               ),
               action:
-                'Exclusive mode: moves focus to the previous enabled item AND selects it. Multi-select mode: moves focus only. Wraps from first to last. Disabled items are skipped.',
+                'Single mode: moves focus to the previous enabled item AND selects it. Multiple mode: moves focus only. Wraps from first to last. Disabled items are skipped.',
             },
             {
               key: <Kbd>Home</Kbd>,
               action:
-                'Moves focus to the first enabled item. In exclusive mode, also selects it.',
+                'Moves focus to the first enabled item. In single mode, also selects it.',
             },
             {
               key: <Kbd>End</Kbd>,
               action:
-                'Moves focus to the last enabled item. In exclusive mode, also selects it.',
+                'Moves focus to the last enabled item. In single mode, also selects it.',
             },
             {
               key: <Kbd>Space</Kbd>,
               action:
-                'Exclusive mode: selects the focused item. Multi-select mode: toggles the focused item on/off. Has no effect on disabled items.',
+                'Single mode: selects the focused item. Multiple mode: toggles the focused item on/off. Has no effect on disabled items.',
             },
             {
               key: <Kbd>Enter</Kbd>,
@@ -79,7 +79,7 @@ export default function IoButtonGroupAccessibilityPage() {
       <section id="screen-reader-behaviour" className="space-y-6">
         <SectionHeader
           title="Screen reader behaviour"
-          description="io-button-group uses the ARIA radiogroup or group role depending on the exclusive prop, giving screen readers the correct semantic context."
+          description="io-button-group uses the ARIA radiogroup or group role depending on the type prop, giving screen readers the correct semantic context."
         />
         <AriaTable
           rows={[
@@ -87,7 +87,7 @@ export default function IoButtonGroupAccessibilityPage() {
               attribute: 'role="radiogroup"',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On the container when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code> is true
+                  On the container when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type</code> is <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;single&quot;</code>
                 </span>
               ),
               description:
@@ -97,7 +97,7 @@ export default function IoButtonGroupAccessibilityPage() {
               attribute: 'role="group"',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On the container when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code> is false
+                  On the container when <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type</code> is <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;multiple&quot;</code>
                 </span>
               ),
               description:
@@ -107,7 +107,7 @@ export default function IoButtonGroupAccessibilityPage() {
               attribute: 'role="radio" + aria-checked',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On each button in exclusive mode
+                  On each button in single mode
                 </span>
               ),
               description:

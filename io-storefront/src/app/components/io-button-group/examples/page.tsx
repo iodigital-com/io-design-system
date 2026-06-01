@@ -15,7 +15,7 @@ import {
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
-// ── Live exclusive demo ────────────────────────────────────────────────────────
+// ── Live single-select demo ────────────────────────────────────────────────────────
 
 function ExclusiveLiveDemo() {
   const [value, setValue] = useState('week');
@@ -36,7 +36,7 @@ function ExclusiveLiveDemo() {
     <div className="space-y-4">
       <io-button-group
         ref={ref}
-        exclusive={true}
+        type="single"
         value={value}
         label="View period"
       >
@@ -72,7 +72,7 @@ function MultiSelectLiveDemo() {
     <div className="space-y-4">
       <io-button-group
         ref={ref}
-        exclusive={false}
+        type="multiple"
         label="Working days"
       >
         <io-button value="mon">Mon</io-button>
@@ -97,9 +97,9 @@ export default function IoButtonGroupExamplesPage() {
   return (
     <div className="space-y-10">
       <section>
-        <ExamplesSectionHeader title="Exclusive (single-select)" />
+        <ExamplesSectionHeader title="Single (single-select)" />
         <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code>{' '}
+          Set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type=&quot;single&quot;</code>{' '}
           to enable single-select mode. The container receives <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>role=&quot;radiogroup&quot;</code> and each item{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>role=&quot;radio&quot;</code>.
           Arrow keys move focus and select simultaneously.
@@ -108,7 +108,7 @@ export default function IoButtonGroupExamplesPage() {
       </section>
 
       <section>
-        <ExamplesSectionHeader title="Exclusive — interactive" />
+        <ExamplesSectionHeader title="Single — interactive" />
         <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
           Listen for the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>change</code>{' '}
           event and update your controlled state. The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>detail.value</code>{' '}
@@ -120,7 +120,7 @@ export default function IoButtonGroupExamplesPage() {
       <section>
         <ExamplesSectionHeader title="Multi-select" />
         <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          Without <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code>,
+          With <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type=&quot;multiple&quot;</code>,
           each button toggles independently. The container receives <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>role=&quot;group&quot;</code> and each item{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>role=&quot;checkbox&quot;</code>.
           Arrow keys move focus only; Space/Enter toggle selection.

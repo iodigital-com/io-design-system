@@ -37,7 +37,7 @@ function makeCheckboxGroup(label: string, items: Array<{ label: string; checked:
 }
 
 describe('io-button-group — a11y', () => {
-  it('exclusive (radiogroup) with label and one selected item has no violations', async () => {
+  it('single (radiogroup) with label and one selected item has no violations', async () => {
     const el = makeRadioGroup('View period', [
       { label: 'Day', checked: false },
       { label: 'Week', checked: true },
@@ -75,7 +75,7 @@ describe('io-button-group — a11y', () => {
     await renderAndCheckA11y(group);
   });
 
-  it('column direction exclusive (radiogroup) has no violations', async () => {
+  it('column direction single (radiogroup) has no violations', async () => {
     const el = makeRadioGroup('Actions', [
       { label: 'Edit', checked: true },
       { label: 'Delete', checked: false },

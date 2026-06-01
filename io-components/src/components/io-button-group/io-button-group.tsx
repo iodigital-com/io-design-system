@@ -3,7 +3,7 @@ import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } 
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
-import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from './types';
+import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant, IoButtonGroupType } from './types';
 
 /**
  * io-button-group
@@ -15,7 +15,7 @@ import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirecti
  * full styling control, shared-border layout, and roving tabindex keyboard navigation.
  *
  * @example
- * <io-button-group value="week" exclusive label="View period">
+ * <io-button-group value="week" type="single" label="View period">
  *   <io-button value="day">Day</io-button>
  *   <io-button value="week">Week</io-button>
  *   <io-button value="month">Month</io-button>
@@ -31,16 +31,17 @@ export class IoButtonGroup {
   // ── Props ─────────────────────────────────────────────
 
   /**
-   * Exclusive (single-select) mode.
-   * When true: container gets `role="radiogroup"`, items get `role="radio"`.
-   * When false: container gets `role="group"`, items get `role="checkbox"`.
+   * Selection mode for the button group.
+   * - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`.
+   * - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
+   * @default 'multiple'
    */
-  @Prop({ reflect: true }) exclusive = false;
+  @Prop({ reflect: true }) type: IoButtonGroupType = 'multiple';
 
   /**
    * Currently selected value(s).
-   * In exclusive mode: a single string (or empty string for no selection).
-   * In multi-select mode: a string[].
+   * In single mode: a single string (or empty string for no selection).
+   * In multiple mode: a string[].
    */
   @Prop({ mutable: true }) value: string | string[] = '';
 
@@ -121,14 +122,14 @@ export class IoButtonGroup {
     this.initFocusIndex();
   }
 
-  @Watch('exclusive')
-  onExclusiveChange(newExclusive: boolean) {
-    if (newExclusive) {
-      // Switch from multi to exclusive — keep only the first active value
+  @Watch('type')
+  onTypeChange(newType: IoButtonGroupType) {
+    if (newType === 'single') {
+      // Switch from multiple to single — keep only the first active value
       const actives = this.getActiveValues();
       this.value = actives.length > 0 ? actives[0] : '';
     } else {
-      // Switch from exclusive to multi — wrap string in array
+      // Switch from single to multiple — wrap string in array
       const current = this.value;
       this.value = typeof current === 'string' && current !== '' ? [current] : [];
     }
@@ -174,7 +175,7 @@ export class IoButtonGroup {
     const item = this.items[index];
     if (!item || item.disabled || this.disabled) return;
 
-    if (this.exclusive) {
+    if (this.type === 'single') {
       this.value = item.value;
       this.change.emit({ value: item.value });
     } else {
@@ -216,7 +217,7 @@ export class IoButtonGroup {
       const target = enabled[fallbackIndex];
       if (target) {
         this.focusIndex = target.index;
-        if (this.exclusive) this.handleItemClick(target.index);
+        if (this.type === 'single') this.handleItemClick(target.index);
         this.buttonRefs.get(target.index)?.focus();
       }
       return;
@@ -227,8 +228,8 @@ export class IoButtonGroup {
       ev.preventDefault();
       const target = enabled[nextEnabledIndex];
       this.focusIndex = target.index;
-      // In exclusive (radiogroup) mode, arrow navigation also selects
-      if (this.exclusive) this.handleItemClick(target.index);
+      // In single (radiogroup) mode, arrow navigation also selects
+      if (this.type === 'single') this.handleItemClick(target.index);
       this.buttonRefs.get(target.index)?.focus();
     }
   }
@@ -236,7 +237,7 @@ export class IoButtonGroup {
   // ── Render ───────────────────────────────────────────
 
   render() {
-    const { exclusive, disabled, label, hideLabel, required, items, focusIndex } = this;
+    const { type, disabled, label, hideLabel, required, items, focusIndex } = this;
     // When all items are disabled no item should be in the tab order.
     const hasEnabledItems = this.getEnabledItems().length > 0;
     const labelId = label ? 'io-button-group-label' : undefined;
@@ -259,7 +260,7 @@ export class IoButtonGroup {
         )}
         <div
           class="group"
-          role={exclusive ? 'radiogroup' : 'group'}
+          role={type === 'single' ? 'radiogroup' : 'group'}
           aria-labelledby={labelId}
           aria-disabled={disabled ? 'true' : undefined}
         >
@@ -274,7 +275,7 @@ export class IoButtonGroup {
                 // (allowed roles list for <button>). The native button provides
                 // baseline keyboard and focus semantics; the ARIA role conveys selection
                 // semantics to AT. Using <button> instead of <div> is intentional.
-                role={exclusive ? 'radio' : 'checkbox'}
+                role={type === 'single' ? 'radio' : 'checkbox'}
                 aria-checked={active ? 'true' : 'false'}
                 aria-label={item.ariaLabel || undefined}
                 aria-disabled={itemDisabled ? 'true' : undefined}

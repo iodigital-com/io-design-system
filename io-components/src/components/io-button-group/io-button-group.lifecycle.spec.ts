@@ -142,20 +142,20 @@ describe('io-button-group — handleKeyDown fallback for disabled-index', () => 
     expect(ev.preventDefault).not.toHaveBeenCalled();
   });
 
-  it('fallback in exclusive mode also calls handleItemClick on the target', () => {
-    const comp = makeDisabledMiddleComp({ exclusive: true, value: 'a' } as any);
+  it('fallback in single mode also calls handleItemClick on the target', () => {
+    const comp = makeDisabledMiddleComp({ type: 'single', value: 'a' } as any);
     const clickSpy = vi.spyOn(comp as any, 'handleItemClick');
     const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
 
     (comp as any).handleKeyDown(ev, 1);
 
-    // In exclusive mode the fallback fires handleItemClick(target.index)
+    // In single mode the fallback fires handleItemClick(target.index)
     // target is enabled[enabled.length-1] → items index 2
     expect(clickSpy).toHaveBeenCalledWith(2);
   });
 
-  it('fallback in multi-select mode does NOT call handleItemClick', () => {
-    const comp = makeDisabledMiddleComp({ exclusive: false, value: [] } as any);
+  it('fallback in multiple mode does NOT call handleItemClick', () => {
+    const comp = makeDisabledMiddleComp({ type: 'multiple', value: [] } as any);
     const clickSpy = vi.spyOn(comp as any, 'handleItemClick');
     const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
 
@@ -277,8 +277,8 @@ describe('io-button-group — render() branch coverage', () => {
     expect(() => comp.render()).not.toThrow();
   });
 
-  it('renders with exclusive=false and multiple active items', () => {
-    const comp = makeComponent({ exclusive: false, value: ['a', 'c'] } as any);
+  it('renders with type="multiple" and multiple active items', () => {
+    const comp = makeComponent({ type: 'multiple', value: ['a', 'c'] } as any);
     expect(() => comp.render()).not.toThrow();
   });
 
@@ -327,8 +327,8 @@ describe('io-button-group — render() branch coverage', () => {
     expect(groupDiv?.['aria-label']).toBeUndefined();
   });
 
-  it('renders active item with aria-checked="true" in exclusive mode', () => {
-    const comp = makeComponent({ exclusive: true, value: 'b' });
+  it('renders active item with aria-checked="true" in single mode', () => {
+    const comp = makeComponent({ type: 'single', value: 'b' });
     comp.render();
 
     const btnProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)

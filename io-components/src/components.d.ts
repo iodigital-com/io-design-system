@@ -10,7 +10,7 @@ import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from "./components/io-button-group/types";
+import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
@@ -49,7 +49,7 @@ export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
-export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupVariant } from "./components/io-button-group/types";
+export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
@@ -379,7 +379,7 @@ export namespace Components {
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
      * full styling control, shared-border layout, and roving tabindex keyboard navigation.
-     * @example <io-button-group value="week" exclusive label="View period">
+     * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
@@ -402,11 +402,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Exclusive (single-select) mode. When true: container gets `role="radiogroup"`, items get `role="radio"`. When false: container gets `role="group"`, items get `role="checkbox"`.
-          * @default false
-         */
-        "exclusive": boolean;
-        /**
           * Visually hides the label while keeping it accessible to screen readers
           * @default false
          */
@@ -421,7 +416,12 @@ export namespace Components {
          */
         "required": boolean;
         /**
-          * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
+          * Selection mode for the button group. - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`. - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
+          * @default 'multiple'
+         */
+        "type": IoButtonGroupType;
+        /**
+          * Currently selected value(s). In single mode: a single string (or empty string for no selection). In multiple mode: a string[].
           * @default ''
          */
         "value": string | string[];
@@ -2660,7 +2660,7 @@ declare global {
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
      * full styling control, shared-border layout, and roving tabindex keyboard navigation.
-     * @example <io-button-group value="week" exclusive label="View period">
+     * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
@@ -4086,7 +4086,7 @@ declare namespace LocalJSX {
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
      * full styling control, shared-border layout, and roving tabindex keyboard navigation.
-     * @example <io-button-group value="week" exclusive label="View period">
+     * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
@@ -4109,11 +4109,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Exclusive (single-select) mode. When true: container gets `role="radiogroup"`, items get `role="radio"`. When false: container gets `role="group"`, items get `role="checkbox"`.
-          * @default false
-         */
-        "exclusive"?: boolean;
-        /**
           * Visually hides the label while keeping it accessible to screen readers
           * @default false
          */
@@ -4132,7 +4127,12 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Currently selected value(s). In exclusive mode: a single string (or empty string for no selection). In multi-select mode: a string[].
+          * Selection mode for the button group. - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`. - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
+          * @default 'multiple'
+         */
+        "type"?: IoButtonGroupType;
+        /**
+          * Currently selected value(s). In single mode: a single string (or empty string for no selection). In multiple mode: a string[].
           * @default ''
          */
         "value"?: string | string[];
@@ -6172,7 +6172,7 @@ declare namespace LocalJSX {
         "arrowPlacement": IoButtonArrowPlacement;
     }
     interface IoButtonGroupAttributes {
-        "exclusive": boolean;
+        "type": IoButtonGroupType;
         "value": string | string[];
         "disabled": boolean;
         "label": string | undefined;
@@ -6671,7 +6671,7 @@ declare module "@stencil/core" {
              * Place `<io-button value="...">Label</io-button>` children inside the component.
              * The group reads their values/labels at load time and renders internal buttons with
              * full styling control, shared-border layout, and roving tabindex keyboard navigation.
-             * @example <io-button-group value="week" exclusive label="View period">
+             * @example <io-button-group value="week" type="single" label="View period">
              *   <io-button value="day">Day</io-button>
              *   <io-button value="week">Week</io-button>
              *   <io-button value="month">Month</io-button>

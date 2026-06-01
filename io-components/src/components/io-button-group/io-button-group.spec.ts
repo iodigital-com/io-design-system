@@ -21,8 +21,8 @@ describe('io-button-group — default props', () => {
     comp = makeComponent();
   });
 
-  it('exclusive defaults to false', () => {
-    expect(comp.exclusive).toBe(false);
+  it('type defaults to "multiple"', () => {
+    expect(comp.type).toBe('multiple');
   });
 
   it('value defaults to empty string', () => {
@@ -131,36 +131,36 @@ describe('io-button-group — @Watch handlers', () => {
     expect((comp as any).focusIndex).toBe(2);
   });
 
-  it('onExclusiveChange from multi to exclusive keeps first active value', () => {
-    const comp = makeComponent({ exclusive: false, value: ['week', 'month'] } as any);
+  it('onTypeChange from multiple to single keeps first active value', () => {
+    const comp = makeComponent({ type: 'multiple', value: ['week', 'month'] } as any);
     (comp as any).items = [
       { value: 'day', label: 'Day' },
       { value: 'week', label: 'Week' },
       { value: 'month', label: 'Month' },
     ];
 
-    (comp as any).onExclusiveChange(true);
+    (comp as any).onTypeChange('single');
 
     expect(comp.value).toBe('week');
   });
 
-  it('onExclusiveChange from exclusive to multi wraps string in array', () => {
-    const comp = makeComponent({ exclusive: true, value: 'week' } as any);
+  it('onTypeChange from single to multiple wraps string in array', () => {
+    const comp = makeComponent({ type: 'single', value: 'week' } as any);
     (comp as any).items = [
       { value: 'day', label: 'Day' },
       { value: 'week', label: 'Week' },
     ];
 
-    (comp as any).onExclusiveChange(false);
+    (comp as any).onTypeChange('multiple');
 
     expect(comp.value).toEqual(['week']);
   });
 
-  it('onExclusiveChange from exclusive to multi produces empty array when no selection', () => {
-    const comp = makeComponent({ exclusive: true, value: '' });
+  it('onTypeChange from single to multiple produces empty array when no selection', () => {
+    const comp = makeComponent({ type: 'single', value: '' });
     (comp as any).items = [{ value: 'day', label: 'Day' }];
 
-    (comp as any).onExclusiveChange(false);
+    (comp as any).onTypeChange('multiple');
 
     expect(comp.value).toEqual([]);
   });
@@ -245,9 +245,9 @@ function hCallsForTag(tag: string): Array<Record<string, unknown> | undefined> {
     .map((args) => args[1] as Record<string, unknown> | undefined);
 }
 
-describe('io-button-group render — exclusive mode (radiogroup)', () => {
+describe('io-button-group render — single mode (radiogroup)', () => {
   beforeEach(() => {
-    const comp = makeRenderComp({ exclusive: true, value: 'b' });
+    const comp = makeRenderComp({ type: 'single', value: 'b' });
     vi.mocked(h).mockClear();
     comp.render();
   });
@@ -287,9 +287,9 @@ describe('io-button-group render — exclusive mode (radiogroup)', () => {
   });
 });
 
-describe('io-button-group render — multi-select mode (group)', () => {
+describe('io-button-group render — multiple mode (group)', () => {
   beforeEach(() => {
-    const comp = makeRenderComp({ exclusive: false, value: ['a', 'c'] });
+    const comp = makeRenderComp({ type: 'multiple', value: ['a', 'c'] });
     vi.mocked(h).mockClear();
     comp.render();
   });
@@ -413,7 +413,7 @@ describe('io-button-group — variant prop', () => {
   });
 
   it('active button class includes group-btn--active for primary variant', () => {
-    const comp = makeRenderComp({ exclusive: true, value: 'a', variant: 'primary' } as any);
+    const comp = makeRenderComp({ type: 'single', value: 'a', variant: 'primary' } as any);
     vi.mocked(h).mockClear();
     comp.render();
     const buttons = hCallsForTag('button');
@@ -422,7 +422,7 @@ describe('io-button-group — variant prop', () => {
   });
 
   it('active button class includes group-btn--active for secondary variant', () => {
-    const comp = makeRenderComp({ exclusive: true, value: 'a', variant: 'secondary' } as any);
+    const comp = makeRenderComp({ type: 'single', value: 'a', variant: 'secondary' } as any);
     vi.mocked(h).mockClear();
     comp.render();
     const buttons = hCallsForTag('button');
@@ -457,12 +457,12 @@ describe('io-button-group — compact prop', () => {
   });
 
   it('compact=true renders the same button roles as compact=false', () => {
-    const compactComp = makeRenderComp({ compact: true, exclusive: true, value: 'a' } as any);
+    const compactComp = makeRenderComp({ compact: true, type: 'single', value: 'a' } as any);
     vi.mocked(h).mockClear();
     compactComp.render();
     const compactButtons = hCallsForTag('button');
 
-    const standardComp = makeRenderComp({ compact: false, exclusive: true, value: 'a' } as any);
+    const standardComp = makeRenderComp({ compact: false, type: 'single', value: 'a' } as any);
     vi.mocked(h).mockClear();
     standardComp.render();
     const standardButtons = hCallsForTag('button');

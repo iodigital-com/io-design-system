@@ -15,7 +15,7 @@ function createButtonGroupItem(value: string, label: string, disabled = false) {
 export const buttonGroupStory: Story<'io-button-group'> = {
   state: {
     properties: {
-      exclusive: true,
+      type: 'single',
       value: 'day',
       disabled: false,
       label: 'View period',
@@ -28,7 +28,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
     {
       tag: 'io-button-group' as const,
       properties: {
-        exclusive: properties?.exclusive as boolean ?? true,
+        type: (properties?.type as 'single' | 'multiple') ?? 'single',
         value: properties?.value as string ?? 'day',
         disabled: properties?.disabled as boolean ?? false,
         label: properties?.label as string ?? 'View period',
@@ -53,11 +53,11 @@ export const buttonGroupStory: Story<'io-button-group'> = {
 };
 
 export const buttonGroupStoryExclusive: Story<'io-button-group'> = {
-  state: { properties: { exclusive: true, value: 'week' } },
+  state: { properties: { type: 'single', value: 'week' } },
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', label: 'View period' },
+      properties: { type: 'single', value: 'week', label: 'View period' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -68,11 +68,11 @@ export const buttonGroupStoryExclusive: Story<'io-button-group'> = {
 };
 
 export const buttonGroupStoryMultiSelect: Story<'io-button-group'> = {
-  state: { properties: { exclusive: false, value: ['mon', 'wed'] } },
+  state: { properties: { type: 'multiple', value: ['mon', 'wed'] } },
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: false, value: ['mon', 'wed'], label: 'Working days' },
+      properties: { type: 'multiple', value: ['mon', 'wed'], label: 'Working days' },
       children: [
         createButtonGroupItem('mon', 'Mon'),
         createButtonGroupItem('tue', 'Tue'),
@@ -89,7 +89,7 @@ export const buttonGroupStoryDisabled: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', disabled: true, label: 'View period (disabled)' },
+      properties: { type: 'single', value: 'week', disabled: true, label: 'View period (disabled)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -104,7 +104,7 @@ export const buttonGroupStoryItemDisabled: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'day', label: 'View period' },
+      properties: { type: 'single', value: 'day', label: 'View period' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week', true),
@@ -119,7 +119,7 @@ export const buttonGroupStoryVariantPrimary: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', variant: 'primary', label: 'View period (primary — default)' },
+      properties: { type: 'single', value: 'week', variant: 'primary', label: 'View period (primary — default)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -134,7 +134,7 @@ export const buttonGroupStoryVariantSecondary: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', variant: 'secondary', label: 'View period (secondary)' },
+      properties: { type: 'single', value: 'week', variant: 'secondary', label: 'View period (secondary)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -149,7 +149,7 @@ export const buttonGroupStoryDirectionRow: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', direction: 'row', label: 'View period (row — default)' },
+      properties: { type: 'single', value: 'week', direction: 'row', label: 'View period (row — default)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -164,7 +164,7 @@ export const buttonGroupStoryDirectionColumn: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'edit', direction: 'column', label: 'Actions' },
+      properties: { type: 'single', value: 'edit', direction: 'column', label: 'Actions' },
       children: [
         createButtonGroupItem('edit', 'Edit'),
         createButtonGroupItem('duplicate', 'Duplicate'),
@@ -179,7 +179,7 @@ export const buttonGroupStoryCompact: Story<'io-button-group'> = {
   generator: () => [
     {
       tag: 'io-button-group' as const,
-      properties: { exclusive: true, value: 'week', compact: true, label: 'View period (compact)' },
+      properties: { type: 'single', value: 'week', compact: true, label: 'View period (compact)' },
       children: [
         createButtonGroupItem('day', 'Day'),
         createButtonGroupItem('week', 'Week'),
@@ -191,15 +191,17 @@ export const buttonGroupStoryCompact: Story<'io-button-group'> = {
 
 export const buttonGroupPropDefinitions: PropDefinition[] = [
   {
-    name: 'exclusive',
-    type: 'boolean',
-    defaultValue: false,
+    name: 'type',
+    type: 'select',
+    options: ['single', 'multiple'],
+    defaultValue: 'single',
+    description: "Selection mode. 'single' enables single-select (radiogroup) mode — arrow keys move focus and select simultaneously. 'multiple' enables multi-select (checkbox group) mode — arrow keys only move focus.",
   },
   {
     name: 'value',
     type: 'string',
     defaultValue: '',
-    description: 'Selected value(s). A single string in exclusive mode; a comma-separated list represents multi-select state (managed programmatically as string[]).',
+    description: 'Selected value(s). A single string in single mode; a comma-separated list represents multi-select state (managed programmatically as string[]).',
   },
   {
     name: 'disabled',

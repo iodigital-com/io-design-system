@@ -15,14 +15,14 @@ export default function IoButtonGroupUsagePage() {
           Button groups work best when all options are visible simultaneously. For longer lists, prefer
           a <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-select</code> or a group of radio buttons.
         </RuleCard>
-        <RuleCard label="Use exclusive mode for single-select filters">
+        <RuleCard label="Use single mode for single-select filters">
           When only one option can be active at a time (e.g., a date-range picker: Day / Week / Month),
-          set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code>.
+          set <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type="single"</code>.
           This maps to the ARIA radiogroup pattern, which is the correct semantic choice.
         </RuleCard>
-        <RuleCard label="Use multi-select mode for independent toggles">
-          When multiple options can be active simultaneously (e.g., weekday filters), omit{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>exclusive</code>.
+        <RuleCard label="Use multiple mode for independent toggles">
+          When multiple options can be active simultaneously (e.g., weekday filters), set{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type="multiple"</code>.
           This maps to the ARIA group/checkbox pattern.
         </RuleCard>
       </section>
@@ -40,7 +40,7 @@ export default function IoButtonGroupUsagePage() {
           Large sets of options are better served by a dropdown select, checkbox list, or a combobox.
           A horizontal button group with many items will overflow on small viewports.
         </RuleCard>
-        <RuleCard label="Do not mix exclusive and multi-select styles in one group">
+        <RuleCard label="Do not mix single and multiple selection styles in one group">
           Each group should have a single, consistent selection model. Mixing the two patterns
           creates semantic ambiguity for assistive technology users.
         </RuleCard>

@@ -23,13 +23,13 @@ function emitSpy(comp: IoButtonGroup): ReturnType<typeof vi.fn> {
   return (comp as any).change.emit;
 }
 
-// ── Exclusive mode ─────────────────────────────────────────────────────────────
+// ── Single mode ────────────────────────────────────────────────────────────────
 
-describe('io-button-group.click — exclusive mode', () => {
+describe('io-button-group.click — single mode', () => {
   let comp: IoButtonGroup;
 
   beforeEach(() => {
-    comp = makeComponent({ exclusive: true, value: 'day' });
+    comp = makeComponent({ type: 'single', value: 'day' });
   });
 
   it('clicking an item sets value to that item value', () => {
@@ -59,13 +59,13 @@ describe('io-button-group.click — exclusive mode', () => {
   });
 });
 
-// ── Multi-select mode ──────────────────────────────────────────────────────────
+// ── Multiple mode ──────────────────────────────────────────────────────────────
 
-describe('io-button-group.click — multi-select mode', () => {
+describe('io-button-group.click — multiple mode', () => {
   let comp: IoButtonGroup;
 
   beforeEach(() => {
-    comp = makeComponent({ exclusive: false, value: ['day'] } as any);
+    comp = makeComponent({ type: 'multiple', value: ['day'] } as any);
   });
 
   it('clicking an inactive item adds it to the active set', () => {
@@ -94,7 +94,7 @@ describe('io-button-group.click — multi-select mode', () => {
 describe('io-button-group.click — disabled guards', () => {
   it('clicking a disabled item does nothing and does not emit', () => {
     const comp = makeComponent({
-      exclusive: true,
+      type: 'single',
       value: 'day',
     });
     (comp as any).items = [
@@ -110,7 +110,7 @@ describe('io-button-group.click — disabled guards', () => {
   });
 
   it('clicking any item while group-disabled does nothing and does not emit', () => {
-    const comp = makeComponent({ exclusive: true, value: 'day', disabled: true });
+    const comp = makeComponent({ type: 'single', value: 'day', disabled: true });
 
     (comp as any).handleItemClick(1);
 

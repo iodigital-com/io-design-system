@@ -40,15 +40,15 @@ describe('io-button-group storefront stories', () => {
       expect(buttonGroupStory.state?.properties).toBeDefined();
     });
 
-    it('generator with exclusive=true does not throw', () => {
+    it('generator with type=single does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, exclusive: true } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, type: 'single' } }),
       ).not.toThrow();
     });
 
-    it('generator with exclusive=false does not throw', () => {
+    it('generator with type=multiple does not throw', () => {
       expect(() =>
-        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, exclusive: false } }),
+        buttonGroupStory.generator?.({ properties: { ...buttonGroupStory.state?.properties, type: 'multiple' } }),
       ).not.toThrow();
     });
 

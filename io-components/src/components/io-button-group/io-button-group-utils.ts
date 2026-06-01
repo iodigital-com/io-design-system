@@ -40,7 +40,7 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
  *
  * Handles both horizontal (ArrowRight/ArrowLeft) and vertical (ArrowDown/ArrowUp)
  * arrows, plus Home/End. Matches the ARIA APG keyboard interaction model for
- * both radiogroup (exclusive) and group (multi-select) patterns.
+ * both radiogroup (single) and group (multiple) patterns.
  */
 export function getNextEnabledGroupIndex(
   key: string,

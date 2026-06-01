@@ -5,6 +5,13 @@
  */
 export type IoButtonGroupVariant = 'primary' | 'secondary';
 
+/**
+ * Selection mode for the button group.
+ * - `'single'` — single-select (radiogroup): exactly one item active at a time. Container gets `role="radiogroup"`, items get `role="radio"`.
+ * - `'multiple'` — multi-select (checkbox group): any number of items may be active. Container gets `role="group"`, items get `role="checkbox"`.
+ */
+export type IoButtonGroupType = 'single' | 'multiple';
+
 /** Layout direction for the button group. 'row' stacks buttons horizontally (default); 'column' stacks them vertically. */
 export type IoButtonGroupDirection = 'row' | 'column';
 
@@ -22,6 +29,6 @@ export interface IoButtonGroupItem {
 
 /** Detail emitted by the `change` event. */
 export interface IoButtonGroupChangeDetail {
-  /** In exclusive mode: the newly selected single value. In multi-select: the full updated array. */
+  /** In single mode: the newly selected single value. In multiple mode: the full updated array. */
   value: string | string[];
 }

@@ -37,13 +37,13 @@ function emitSpy(comp: IoButtonGroup): ReturnType<typeof vi.fn> {
   return (comp as any).change.emit;
 }
 
-// ── Exclusive mode (radiogroup) — arrows select ────────────────────────────────
+// ── Single mode (radiogroup) — arrows select ──────────────────────────────────
 
-describe('io-button-group.keyboard — exclusive mode', () => {
+describe('io-button-group.keyboard — single mode', () => {
   let comp: IoButtonGroup;
 
   beforeEach(() => {
-    comp = makeComponent({ exclusive: true, value: 'day', focusIndex: 0 } as any);
+    comp = makeComponent({ type: 'single', value: 'day', focusIndex: 0 } as any);
   });
 
   it('ArrowRight moves focusIndex to next and emits change', () => {
@@ -130,13 +130,13 @@ describe('io-button-group.keyboard — exclusive mode', () => {
   });
 });
 
-// ── Multi-select mode (group) — arrows move focus only ────────────────────────
+// ── Multiple mode (group) — arrows move focus only ────────────────────────────
 
-describe('io-button-group.keyboard — multi-select mode', () => {
+describe('io-button-group.keyboard — multiple mode', () => {
   let comp: IoButtonGroup;
 
   beforeEach(() => {
-    comp = makeComponent({ exclusive: false, value: [], focusIndex: 0 } as any);
+    comp = makeComponent({ type: 'multiple', value: [], focusIndex: 0 } as any);
   });
 
   it('ArrowRight moves focusIndex WITHOUT emitting change', () => {

@@ -22,14 +22,16 @@ export default function IoButtonGroupApiPage() {
           rows={[
             [
               <span key="n">
-                <InlineCode>exclusive</InlineCode>
+                <InlineCode>type</InlineCode>
                 <ReflectBadge />
               </span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
+              <InlineCode key="t">IoButtonGroupType</InlineCode>,
+              <InlineCode key="d">&apos;single&apos;</InlineCode>,
               <span key="desc">
-                When true, enables single-select (radiogroup) mode. Arrow keys move focus and select simultaneously.
-                When false (default), enables multi-select (checkbox group) mode — arrow keys only move focus.
+                Selection mode. <InlineCode>&apos;single&apos;</InlineCode> enables single-select (radiogroup) mode —
+                arrow keys move focus and select simultaneously.
+                <InlineCode>&apos;multiple&apos;</InlineCode> enables multi-select (checkbox group) mode — arrow keys
+                only move focus.
               </span>,
             ],
             [
@@ -40,8 +42,8 @@ export default function IoButtonGroupApiPage() {
               <InlineCode key="t">string | string[]</InlineCode>,
               <span key="d"><InlineCode>&apos;&apos;</InlineCode> / <InlineCode>[]</InlineCode></span>,
               <span key="desc">
-                The selected value(s). In exclusive mode, a string matching one of the item values (or empty string
-                for no selection; default <InlineCode>&apos;&apos;</InlineCode>). In multi-select mode, a string array
+                The selected value(s). In single mode, a string matching one of the item values (or empty string
+                for no selection; default <InlineCode>&apos;&apos;</InlineCode>). In multiple mode, a string array
                 of active values (default <InlineCode>[]</InlineCode>). Mutable — updated internally when the user
                 selects an item.
               </span>,
@@ -124,7 +126,7 @@ export default function IoButtonGroupApiPage() {
           ]}
         />
         <CodeNote label="HTML">
-{`<io-button-group value="week" exclusive label="View period">
+{`<io-button-group value="week" type="single" label="View period">
   <io-button value="day">Day</io-button>
   <io-button value="week">Week</io-button>
   <io-button value="month" disabled>Month</io-button>
@@ -151,16 +153,16 @@ export default function IoButtonGroupApiPage() {
               <InlineCode key="t">{'{ value: string | string[] }'}</InlineCode>,
               'No',
               <span key="d">
-                Fires when the selection changes. In exclusive mode, <InlineCode>detail.value</InlineCode>{' '}
-                is the newly selected string. In multi-select mode, it is the full updated string array.
+                Fires when the selection changes. In single mode, <InlineCode>detail.value</InlineCode>{' '}
+                is the newly selected string. In multiple mode, it is the full updated string array.
                 Does not fire for disabled items or when the group is disabled.
               </span>,
             ],
           ]}
         />
         <CodeNote label="Usage">
-{`// HTML — exclusive mode
-<io-button-group id="period" value="week" exclusive label="View period">
+{`// HTML — single mode
+<io-button-group id="period" value="week" type="single" label="View period">
   <io-button value="day">Day</io-button>
   <io-button value="week">Week</io-button>
   <io-button value="month">Month</io-button>
@@ -172,7 +174,7 @@ export default function IoButtonGroupApiPage() {
   });
 </script>
 
-// React — exclusive mode
+// React — single mode
 import { useState, useRef, useEffect } from 'react';
 
 function DateRangePicker() {
@@ -188,7 +190,7 @@ function DateRangePicker() {
   }, []);
 
   return (
-    <io-button-group ref={ref} exclusive value={value} label="View period">
+    <io-button-group ref={ref} type="single" value={value} label="View period">
       <io-button value="day">Day</io-button>
       <io-button value="week">Week</io-button>
       <io-button value="month">Month</io-button>
@@ -248,6 +250,16 @@ function WeekdayFilter() {
             { label: 'Description' },
           ]}
           rows={[
+            [
+              <InlineCode key="n">IoButtonGroupType</InlineCode>,
+              <InlineCode key="d">&apos;single&apos; | &apos;multiple&apos;</InlineCode>,
+              <span key="desc">
+                Selection mode for the button group. <InlineCode>&apos;single&apos;</InlineCode> maps to the ARIA
+                radiogroup pattern (one item selected at a time).{' '}
+                <InlineCode>&apos;multiple&apos;</InlineCode> maps to the ARIA checkbox group pattern (any number of
+                items may be selected independently).
+              </span>,
+            ],
             [
               <InlineCode key="n">IoButtonGroupSize</InlineCode>,
               <InlineCode key="d">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,

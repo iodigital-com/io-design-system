@@ -26,7 +26,7 @@ describe('io-button-group — group-level disabled', () => {
   let comp: IoButtonGroup;
 
   beforeEach(() => {
-    comp = makeComponent({ exclusive: true, value: 'day', disabled: true });
+    comp = makeComponent({ type: 'single', value: 'day', disabled: true });
   });
 
   it('does not emit change when group is disabled and an item is clicked', () => {
@@ -59,7 +59,7 @@ describe('io-button-group — group-level disabled', () => {
 
 describe('io-button-group — item-level disabled', () => {
   it('does not emit change when the clicked item is individually disabled', () => {
-    const comp = makeComponent({ exclusive: true, value: 'day' });
+    const comp = makeComponent({ type: 'single', value: 'day' });
     (comp as any).items = [
       { value: 'day', label: 'Day' },
       { value: 'week', label: 'Week', disabled: true },
@@ -69,7 +69,7 @@ describe('io-button-group — item-level disabled', () => {
   });
 
   it('does not mutate value when the clicked item is individually disabled', () => {
-    const comp = makeComponent({ exclusive: true, value: 'day' });
+    const comp = makeComponent({ type: 'single', value: 'day' });
     (comp as any).items = [
       { value: 'day', label: 'Day' },
       { value: 'week', label: 'Week', disabled: true },

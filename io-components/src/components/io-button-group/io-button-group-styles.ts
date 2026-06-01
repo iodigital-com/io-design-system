@@ -81,7 +81,7 @@ export function getButtonGroupStyles(): string {
 
     @media (hover: hover) and (pointer: fine) {
       .group-btn:not(.group-btn--active):not(.group-btn--disabled):not(:disabled):hover {
-        background: var(--io-button-group-hover-bg);
+        color: var(--io-text-primary);
       }
     }
 
@@ -196,7 +196,7 @@ export function getButtonGroupStyles(): string {
 
     @media (hover: hover) and (pointer: fine) {
       :host([variant="secondary"]) .group-btn:not(.group-btn--active):not(.group-btn--disabled):not(:disabled):hover {
-        background: var(--io-button-group-hover-bg);
+        color: var(--io-text-primary);
       }
     }
 

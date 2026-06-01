@@ -1,5 +1,13 @@
 # @iodigital-com/components-angular
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [ec09f1f]
+- Updated dependencies [5de8182]
+  - @iodigital-com/components@1.1.0
+
 ## 1.0.0
 
 ### Patch Changes

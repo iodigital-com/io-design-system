@@ -6,9 +6,6 @@ import {
   buttonGroupStoryMultiSelect,
   buttonGroupStoryDisabled,
   buttonGroupStoryItemDisabled,
-  buttonGroupStorySizeSm,
-  buttonGroupStorySizeMd,
-  buttonGroupStorySizeLg,
   buttonGroupStoryDirectionRow,
   buttonGroupStoryDirectionColumn,
   buttonGroupStoryCompact,
@@ -223,57 +220,6 @@ describe('io-button-group storefront stories', () => {
 
     it('every returned element has a tag', () => {
       const els = buttonGroupStoryItemDisabled.generator?.() ?? [];
-      for (const el of els) {
-        if (el && typeof el === 'object' && 'tag' in el) {
-          expect(typeof (el as { tag: unknown }).tag).toBe('string');
-        }
-      }
-    });
-  });
-
-  describe('buttonGroupStorySizeSm', () => {
-    it('generator returns non-empty array', () => {
-      const els = buttonGroupStorySizeSm.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('every returned element has a tag', () => {
-      const els = buttonGroupStorySizeSm.generator?.() ?? [];
-      for (const el of els) {
-        if (el && typeof el === 'object' && 'tag' in el) {
-          expect(typeof (el as { tag: unknown }).tag).toBe('string');
-        }
-      }
-    });
-  });
-
-  describe('buttonGroupStorySizeMd', () => {
-    it('generator returns non-empty array', () => {
-      const els = buttonGroupStorySizeMd.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('every returned element has a tag', () => {
-      const els = buttonGroupStorySizeMd.generator?.() ?? [];
-      for (const el of els) {
-        if (el && typeof el === 'object' && 'tag' in el) {
-          expect(typeof (el as { tag: unknown }).tag).toBe('string');
-        }
-      }
-    });
-  });
-
-  describe('buttonGroupStorySizeLg', () => {
-    it('generator returns non-empty array', () => {
-      const els = buttonGroupStorySizeLg.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('every returned element has a tag', () => {
-      const els = buttonGroupStorySizeLg.generator?.() ?? [];
       for (const el of els) {
         if (el && typeof el === 'object' && 'tag' in el) {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');

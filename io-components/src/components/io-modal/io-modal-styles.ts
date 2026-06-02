@@ -51,7 +51,7 @@ export function getModalStyles(): string {
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--io-bg-overlay);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;

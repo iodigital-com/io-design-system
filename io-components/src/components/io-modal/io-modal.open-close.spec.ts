@@ -172,29 +172,60 @@ describe('io-modal — preventTopLayer', () => {
     expect((component as any).backdropHostHandler).toBeUndefined();
   });
 
-  it('clicking host backdrop closes modal when closeOnBackdrop=true', () => {
+  it('clicking outside dialog panel closes modal when closeOnBackdrop=true', () => {
     component.open = true;
     component.closeOnBackdrop = true;
     (component as any).openChanged(true);
+    // Simulate click at (5, 5) — outside a centered dialog (default getBoundingClientRect = 0,0,0,0)
     const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
-    handler({ target: hostEl } as unknown as MouseEvent);
+    handler({ clientX: 5, clientY: 5 } as MouseEvent);
     expect(component.open).toBe(false);
   });
 
-  it('clicking host backdrop does nothing when closeOnBackdrop=false', () => {
+  it('clicking inside dialog panel does not close modal', () => {
+    component.open = true;
+    component.closeOnBackdrop = true;
+    (component as any).openChanged(true);
+    // Mock dialog bounding rect to wrap the click coordinates
+    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue(
+      { left: 0, right: 400, top: 0, bottom: 300, width: 400, height: 300, x: 0, y: 0, toJSON: () => ({}) } as DOMRect,
+    );
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ clientX: 200, clientY: 150 } as MouseEvent);
+    expect(component.open).toBe(true);
+  });
+
+  it('clicking outside does nothing when closeOnBackdrop=false', () => {
     component.open = true;
     component.closeOnBackdrop = false;
     (component as any).openChanged(true);
     const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
-    handler({ target: hostEl } as unknown as MouseEvent);
+    handler({ clientX: 5, clientY: 5 } as MouseEvent);
     expect(component.open).toBe(true);
   });
 
-  it('disconnectedCallback removes backdrop host listener', () => {
+  it('ESC key closes modal in preventTopLayer mode', () => {
     (component as any).openChanged(true);
-    const removeListenerSpy = vi.spyOn(hostEl, 'removeEventListener');
+    const handler = (component as any).escHandler as (ev: KeyboardEvent) => void;
+    handler({ key: 'Escape', preventDefault: vi.fn() } as unknown as KeyboardEvent);
+    expect(component.open).toBe(false);
+  });
+
+  it('ESC handler is removed on close', () => {
+    (component as any).openChanged(true);
+    expect((component as any).escHandler).toBeDefined();
+    dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect((component as any).escHandler).toBeUndefined();
+  });
+
+  it('disconnectedCallback removes backdrop and ESC listeners', () => {
+    (component as any).openChanged(true);
+    const removeHostSpy = vi.spyOn(hostEl, 'removeEventListener');
+    const removeDocSpy = vi.spyOn(document, 'removeEventListener');
     component.disconnectedCallback();
-    expect(removeListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect(removeHostSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect(removeDocSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 });
 

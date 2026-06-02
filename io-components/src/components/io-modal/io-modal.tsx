@@ -40,6 +40,7 @@ export class IoModal {
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
   private backdropHostHandler?: (ev: MouseEvent) => void;
+  private escHandler?: (ev: KeyboardEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -160,6 +161,7 @@ export class IoModal {
       if (this.preventTopLayer) {
         this.dialogEl.show();
         this.attachBackdropHostListener();
+        this.attachEscHandler();
       } else {
         this.dialogEl.showModal();
       }
@@ -173,6 +175,7 @@ export class IoModal {
     this.removeBackgroundInert();
     this.detachTransitionEndListener();
     this.detachBackdropHostListener();
+    this.detachEscHandler();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -193,6 +196,7 @@ export class IoModal {
         if (this.preventTopLayer) {
           this.dialogEl.show();
           this.attachBackdropHostListener();
+          this.attachEscHandler();
         } else {
           this.dialogEl.showModal();
         }
@@ -209,6 +213,7 @@ export class IoModal {
       }
 
       this.detachBackdropHostListener();
+      this.detachEscHandler();
       this.clearFocusTrap();
 
       // Remove inert from background elements
@@ -336,8 +341,12 @@ export class IoModal {
 
   private attachBackdropHostListener() {
     this.backdropHostHandler = (ev: MouseEvent) => {
-      if (!this.closeOnBackdrop) return;
-      if (ev.target === this.el) {
+      if (!this.closeOnBackdrop || !this.dialogEl) return;
+      // Use coordinate-based detection: a click outside the dialog panel is a backdrop click.
+      // ev.target cannot be used here — composed shadow DOM events are retargeted to the host,
+      // so in-dialog clicks and host backdrop clicks would be indistinguishable by target alone.
+      const rect = this.dialogEl.getBoundingClientRect();
+      if (isBackdropClick(rect, ev.clientX, ev.clientY)) {
         this.open = false;
       }
     };
@@ -348,6 +357,22 @@ export class IoModal {
     if (!this.backdropHostHandler) return;
     this.el.removeEventListener('click', this.backdropHostHandler);
     this.backdropHostHandler = undefined;
+  }
+
+  private attachEscHandler() {
+    this.escHandler = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') {
+        ev.preventDefault();
+        this.open = false;
+      }
+    };
+    document.addEventListener('keydown', this.escHandler);
+  }
+
+  private detachEscHandler() {
+    if (!this.escHandler) return;
+    document.removeEventListener('keydown', this.escHandler);
+    this.escHandler = undefined;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

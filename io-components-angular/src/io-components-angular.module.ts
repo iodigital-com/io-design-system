@@ -1,119 +1,29 @@
 import { NgModule } from '@angular/core';
-import {
-  IoAccordion,
-  IoAvatar,
-  IoBadge,
-  IoBanner,
-  IoBreadcrumb,
-  IoBreadcrumbItem,
-  IoButton,
-  IoButtonGroup,
-  IoCarousel,
-  IoCheckbox,
-  IoCheckboxGroup,
-  IoDivider,
-  IoDrawer,
-  IoFormField,
-  IoHeading,
-  IoInlineNotification,
-  IoInput,
-  IoLink,
-  IoModal,
-  IoMultiSelect,
-  IoOptgroup,
-  IoOption,
-  IoPagination,
-  IoPinCode,
-  IoPopover,
-  IoProgress,
-  IoRadio,
-  IoRadioGroup,
-  IoScroller,
-  IoSelect,
-  IoSpinner,
-  IoStep,
-  IoStepper,
-  IoSwitch,
-  IoTable,
-  IoTableBody,
-  IoTableBodyCell,
-  IoTableBodyRow,
-  IoTableHead,
-  IoTableHeadCell,
-  IoTableHeadRow,
-  IoTabs,
-  IoTabsBar,
-  IoTag,
-  IoText,
-  IoTextarea,
-  IoToast,
-  IoToastItem,
-  IoTooltip,
-  IoWordmark,
-} from './directives/proxies';
 
-const IO_COMPONENTS = [
-  IoAccordion,
-  IoAvatar,
-  IoBadge,
-  IoBanner,
-  IoBreadcrumb,
-  IoBreadcrumbItem,
-  IoButton,
-  IoButtonGroup,
-  IoCarousel,
-  IoCheckbox,
-  IoCheckboxGroup,
-  IoDivider,
-  IoDrawer,
-  IoFormField,
-  IoHeading,
-  IoInlineNotification,
-  IoInput,
-  IoLink,
-  IoModal,
-  IoMultiSelect,
-  IoOptgroup,
-  IoOption,
-  IoPagination,
-  IoPinCode,
-  IoPopover,
-  IoProgress,
-  IoRadio,
-  IoRadioGroup,
-  IoScroller,
-  IoSelect,
-  IoSpinner,
-  IoStep,
-  IoStepper,
-  IoSwitch,
-  IoTable,
-  IoTableBody,
-  IoTableBodyCell,
-  IoTableBodyRow,
-  IoTableHead,
-  IoTableHeadCell,
-  IoTableHeadRow,
-  IoTabs,
-  IoTabsBar,
-  IoTag,
-  IoText,
-  IoTextarea,
-  IoToast,
-  IoToastItem,
-  IoTooltip,
-  IoWordmark,
-];
+import { DIRECTIVES } from './directives';
 
 /**
  * Barrel NgModule that registers every iO Design System Angular component.
  *
- * Importing this module once gives a standalone component access to all
- * `io-*` elements with full type-safe bindings and typed event payloads —
+ * Importing this module once gives any Angular component or module access to
+ * all `io-*` elements with full type-safe bindings and typed event payloads —
  * no `CUSTOM_ELEMENTS_SCHEMA` workaround needed.
  *
+ * The component list is sourced from the auto-generated `DIRECTIVES` array in
+ * `./directives/index.ts`, so new components are included automatically when
+ * the package is rebuilt without any manual changes to this file.
+ *
  * @example
- * // app.component.ts (Angular v17+ standalone)
+ * // AppModule — NgModule-based apps
+ * import { IoComponentsAngularModule } from '@iodigital-com/components-angular';
+ *
+ * @NgModule({
+ *   imports: [IoComponentsAngularModule],
+ * })
+ * export class AppModule {}
+ *
+ * @example
+ * // Standalone component — Angular v17+
  * import { IoComponentsAngularModule } from '@iodigital-com/components-angular';
  *
  * @Component({
@@ -126,19 +36,10 @@ const IO_COMPONENTS = [
  *     </io-button-group>
  *   `,
  * })
- * export class AppComponent { ... }
- *
- * @example
- * // AppModule (NgModule-based apps)
- * import { IoComponentsAngularModule } from '@iodigital-com/components-angular';
- *
- * @NgModule({
- *   imports: [IoComponentsAngularModule],
- * })
- * export class AppModule {}
+ * export class MyComponent {}
  */
 @NgModule({
-  imports: IO_COMPONENTS,
-  exports: IO_COMPONENTS,
+  imports: DIRECTIVES,
+  exports: DIRECTIVES,
 })
 export class IoComponentsAngularModule {}

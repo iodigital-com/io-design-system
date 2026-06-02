@@ -45,9 +45,9 @@ export function getModalStyles(): string {
 
     /* ── preventTopLayer: CSS backdrop replacing native ::backdrop ── */
     /* When opened via show() instead of showModal(), ::backdrop is absent.
-       The host becomes the backdrop container to keep the overlay behaviour. */
-    :host([prevent-top-layer]) {
-      display: block;
+       The host becomes the backdrop container to keep the overlay behaviour.
+       Scoped to [open] so the overlay is absent when the modal is closed. */
+    :host([prevent-top-layer][open]) {
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);

@@ -6,6 +6,7 @@ function makeDialogEl() {
   const el = document.createElement('div') as unknown as HTMLDialogElement;
   el.open = false;
   el.showModal = vi.fn(() => { el.open = true; });
+  el.show = vi.fn(() => { el.open = true; });
   el.close = vi.fn(() => { el.open = false; });
   return el;
 }
@@ -122,6 +123,78 @@ describe('io-modal — open/close', () => {
     expect(dialogEl.showModal).toHaveBeenCalled();
     expect(inertSpy).toHaveBeenCalled();
     expect(focusTrapSpy).toHaveBeenCalled();
+  });
+});
+
+// ── preventTopLayer mode ──────────────────────────────────────────────────────
+
+describe('io-modal — preventTopLayer', () => {
+  let component: IoModal;
+  let dialogEl: ReturnType<typeof makeDialogEl>;
+  let hostEl: HTMLElement;
+
+  beforeEach(() => {
+    component = new IoModal();
+    hostEl = document.createElement('io-modal');
+    (component as any).el = hostEl;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    dialogEl = makeDialogEl();
+    (component as any).dialogEl = dialogEl;
+    component.preventTopLayer = true;
+  });
+
+  it('openChanged(true) calls dialog.show() instead of showModal()', () => {
+    (component as any).openChanged(true);
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('componentDidLoad calls dialog.show() when open=true', () => {
+    component.open = true;
+    component.componentDidLoad();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('host backdrop listener is attached on open', () => {
+    const addListenerSpy = vi.spyOn(hostEl, 'addEventListener');
+    (component as any).openChanged(true);
+    expect(addListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+  });
+
+  it('host backdrop listener is removed on close', () => {
+    (component as any).openChanged(true);
+    const removeListenerSpy = vi.spyOn(hostEl, 'removeEventListener');
+    dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect(removeListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect((component as any).backdropHostHandler).toBeUndefined();
+  });
+
+  it('clicking host backdrop closes modal when closeOnBackdrop=true', () => {
+    component.open = true;
+    component.closeOnBackdrop = true;
+    (component as any).openChanged(true);
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ target: hostEl } as unknown as MouseEvent);
+    expect(component.open).toBe(false);
+  });
+
+  it('clicking host backdrop does nothing when closeOnBackdrop=false', () => {
+    component.open = true;
+    component.closeOnBackdrop = false;
+    (component as any).openChanged(true);
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ target: hostEl } as unknown as MouseEvent);
+    expect(component.open).toBe(true);
+  });
+
+  it('disconnectedCallback removes backdrop host listener', () => {
+    (component as any).openChanged(true);
+    const removeListenerSpy = vi.spyOn(hostEl, 'removeEventListener');
+    component.disconnectedCallback();
+    expect(removeListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
   });
 });
 

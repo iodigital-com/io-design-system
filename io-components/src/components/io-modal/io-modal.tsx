@@ -39,6 +39,7 @@ export class IoModal {
   private inertElements: Element[] = []; // Track elements with inert applied
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
+  private backdropHostHandler?: (ev: MouseEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -156,7 +157,12 @@ export class IoModal {
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
-      this.preventTopLayer ? this.dialogEl.show() : this.dialogEl.showModal();
+      if (this.preventTopLayer) {
+        this.dialogEl.show();
+        this.attachBackdropHostListener();
+      } else {
+        this.dialogEl.showModal();
+      }
       this.applyBackgroundInert();
       this.setupFocusTrap();
     }
@@ -166,6 +172,7 @@ export class IoModal {
     this.clearFocusTrap();
     this.removeBackgroundInert();
     this.detachTransitionEndListener();
+    this.detachBackdropHostListener();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -183,7 +190,12 @@ export class IoModal {
       this.focusTrigger = document.activeElement as Element;
 
       if (!this.dialogEl.open) {
-        this.preventTopLayer ? this.dialogEl.show() : this.dialogEl.showModal();
+        if (this.preventTopLayer) {
+          this.dialogEl.show();
+          this.attachBackdropHostListener();
+        } else {
+          this.dialogEl.showModal();
+        }
       }
 
       // Apply inert to background elements to prevent screen reader navigation
@@ -196,6 +208,7 @@ export class IoModal {
         this.dialogEl.close();
       }
 
+      this.detachBackdropHostListener();
       this.clearFocusTrap();
 
       // Remove inert from background elements
@@ -321,6 +334,22 @@ export class IoModal {
     this.focusTrapHandler = undefined;
   }
 
+  private attachBackdropHostListener() {
+    this.backdropHostHandler = (ev: MouseEvent) => {
+      if (!this.closeOnBackdrop) return;
+      if (ev.target === this.el) {
+        this.open = false;
+      }
+    };
+    this.el.addEventListener('click', this.backdropHostHandler);
+  }
+
+  private detachBackdropHostListener() {
+    if (!this.backdropHostHandler) return;
+    this.el.removeEventListener('click', this.backdropHostHandler);
+    this.backdropHostHandler = undefined;
+  }
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleDialogClick = (ev: MouseEvent) => {
@@ -360,6 +389,7 @@ export class IoModal {
           class={`modal--${size} modal--bg-${background}`}
           aria-labelledby={heading ? headingId : undefined}
           aria-describedby={descriptionId}
+          aria-modal={this.preventTopLayer ? 'true' : undefined}
           onClick={this.handleDialogClick}
           onCancel={this.handleCancel}
         >

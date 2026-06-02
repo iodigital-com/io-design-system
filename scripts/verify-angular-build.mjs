@@ -14,13 +14,39 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = resolve(__dirname, '../io-components-angular');
 const pkg = JSON.parse(readFileSync(resolve(pkgRoot, 'package.json'), 'utf-8'));
 
-const required = [
-  pkg.main,
-  pkg.module,
-  pkg.types,
-  pkg.exports?.['.']?.default,
-  pkg.exports?.['.']?.types,
-];
+function relativePosixPath(inputPath) {
+  return inputPath.replace(/\\/g, '/').replace(/^\.\//, '');
+}
+
+function resolveAndValidateWithinPackage(relativePath, label) {
+  if (typeof relativePath !== 'string' || relativePath.trim().length === 0) {
+    throw new Error(`Missing required field: ${label}`);
+  }
+
+  const normalized = relativePosixPath(relativePath);
+  if (normalized.startsWith('../') || normalized.includes('/../')) {
+    throw new Error(`Invalid path outside package root for ${label}: ${relativePath}`);
+  }
+
+  const resolved = resolve(pkgRoot, normalized);
+  const expectedPrefix = `${pkgRoot}/`;
+  const normalizedResolved = resolved.replace(/\\/g, '/');
+  const normalizedRoot = pkgRoot.replace(/\\/g, '/');
+
+  if (normalizedResolved !== normalizedRoot && !normalizedResolved.startsWith(expectedPrefix)) {
+    throw new Error(`Resolved path escapes package root for ${label}: ${relativePath}`);
+  }
+
+  return resolved;
+}
+
+const requiredFields = {
+  main: pkg.main,
+  module: pkg.module,
+  types: pkg.types,
+  'exports["."].default': pkg.exports?.['.']?.default,
+  'exports["."].types': pkg.exports?.['.']?.types,
+};
 
 const distPkg = resolve(pkgRoot, 'dist/package.json');
 
@@ -32,15 +58,29 @@ if (!existsSync(distPkg)) {
 
 const distExports = JSON.parse(readFileSync(distPkg, 'utf-8')).exports ?? {};
 
+const distDefault = distExports['.']?.default;
+const distTypes = distExports['.']?.types;
+
+const requiredDistFields = {
+  'dist.exports["."].default': distDefault,
+  'dist.exports["."].types': distTypes,
+};
+
+for (const [label, value] of Object.entries({ ...requiredFields, ...requiredDistFields })) {
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    console.error(`✗  Missing required field: ${label}`);
+    process.exit(1);
+  }
+}
+
 // Also verify dist/package.json exports resolve correctly (relative to dist/)
 const distFiles = [
-  distExports['.']?.default,
-  distExports['.']?.types,
-].filter(Boolean).map(f => resolve(pkgRoot, 'dist', f.replace(/^\.\//, '')));
+  resolveAndValidateWithinPackage(`dist/${relativePosixPath(distDefault)}`, 'dist.exports["."].default'),
+  resolveAndValidateWithinPackage(`dist/${relativePosixPath(distTypes)}`, 'dist.exports["."].types'),
+];
 
-const rootFiles = required
-  .filter(Boolean)
-  .map(f => resolve(pkgRoot, f));
+const rootFiles = Object.entries(requiredFields)
+  .map(([label, value]) => resolveAndValidateWithinPackage(value, label));
 
 let failed = false;
 

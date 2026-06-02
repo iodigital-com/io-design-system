@@ -26,9 +26,10 @@ describe('io-modal — open/close', () => {
     (component as any).dialogEl = dialogEl;
   });
 
-  it('openChanged(true) calls showModal', () => {
+  it('openChanged(true) calls dialog.show() by default (preventTopLayer=true)', () => {
     (component as any).openChanged(true);
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
   it('openChanged(false) calls dialog.close and emits dismiss', () => {
@@ -45,9 +46,10 @@ describe('io-modal — open/close', () => {
     expect(ioDismissEmit).toHaveBeenCalled();
   });
 
-  it('openChanged(true) does not call showModal if dialog is already open', () => {
+  it('openChanged(true) does not call dialog.show() if dialog is already open', () => {
     dialogEl.open = true;
     (component as any).openChanged(true);
+    expect(dialogEl.show).not.toHaveBeenCalled();
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
@@ -74,12 +76,13 @@ describe('io-modal — open/close', () => {
     expect(component.open).toBe(true);
   });
 
-  it('show() triggers showModal when openChanged is propagated', async () => {
+  it('show() triggers dialog.show() when openChanged is propagated (preventTopLayer=true default)', async () => {
     component.open = false;
     await component.show();
     // Simulate @Watch propagation
     (component as any).openChanged(component.open);
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
   it('show() is a no-op when already open (prop stays true, openChanged not triggered)', async () => {
@@ -88,6 +91,7 @@ describe('io-modal — open/close', () => {
     await component.show();
     // prop unchanged — the guard prevents the assignment
     expect(component.open).toBe(true);
+    expect(dialogEl.show).not.toHaveBeenCalled();
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
@@ -112,7 +116,7 @@ describe('io-modal — open/close', () => {
     expect(ioDismissEmit).not.toHaveBeenCalled();
   });
 
-  it('componentDidLoad applies modal setup when initially open', () => {
+  it('componentDidLoad uses dialog.show() by default (preventTopLayer=true)', () => {
     const inertSpy = vi.spyOn(component as any, 'applyBackgroundInert');
     const focusTrapSpy = vi.spyOn(component as any, 'setupFocusTrap');
     component.open = true;
@@ -120,9 +124,40 @@ describe('io-modal — open/close', () => {
 
     component.componentDidLoad();
 
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
     expect(inertSpy).toHaveBeenCalled();
     expect(focusTrapSpy).toHaveBeenCalled();
+  });
+});
+
+// ── preventTopLayer=false: native showModal() path ───────────────────────────
+
+describe('io-modal — preventTopLayer=false (native showModal)', () => {
+  let component: IoModal;
+  let dialogEl: ReturnType<typeof makeDialogEl>;
+
+  beforeEach(() => {
+    component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    dialogEl = makeDialogEl();
+    (component as any).dialogEl = dialogEl;
+    component.preventTopLayer = false;
+  });
+
+  it('openChanged(true) calls showModal() not show()', () => {
+    (component as any).openChanged(true);
+    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).not.toHaveBeenCalled();
+  });
+
+  it('componentDidLoad calls showModal() when open=true', () => {
+    component.open = true;
+    component.componentDidLoad();
+    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).not.toHaveBeenCalled();
   });
 });
 

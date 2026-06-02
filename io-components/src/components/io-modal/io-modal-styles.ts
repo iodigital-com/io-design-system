@@ -56,6 +56,7 @@ export function getModalStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
+      animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }

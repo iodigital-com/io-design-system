@@ -78,31 +78,28 @@ export class IoModal {
   @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
 
   /**
-   * When `true`, the native `<dialog>` is opened with `show()` instead of
-   * `showModal()`. This prevents the element from entering the browser's
-   * **top layer**, which is necessary for React 18 consumers.
+   * When `true` (default), the native `<dialog>` is opened with `show()`
+   * instead of `showModal()`. The component manages its own backdrop,
+   * focus-trap, ESC key, and `inert` management — behavior is identical to
+   * the `showModal()` path but compatible with every JavaScript framework.
    *
-   * ### Why this matters for React 18
+   * ### Why `true` is the default
    *
-   * `showModal()` promotes the `<dialog>` to the browser top layer — a
-   * separate rendering layer that sits above all CSS stacking contexts.
-   * React 18 delegates synthetic events (including `onClick`) to the root
-   * container (`#root`). Composed click events from shadow-DOM children
-   * inside a top-layer dialog **do not reliably bubble to the React root**,
-   * causing slotted footer buttons to appear unclickable.
+   * `showModal()` promotes `<dialog>` to the browser top layer. React 18
+   * delegates synthetic events to `#root`; composed click events from
+   * shadow-DOM children inside a top-layer dialog do not reliably reach the
+   * React root, causing slotted `slot="footer"` buttons to be non-clickable.
+   * Vue 3, Angular, and Svelte attach listeners directly so they are
+   * unaffected — but they receive the same fully-featured behavior either
+   * way, so the default `true` is safe for all consumers.
    *
-   * Setting `preventTopLayer` to `true` keeps the dialog in the normal
-   * document flow so React's event delegation works as expected. The
-   * component handles its own backdrop, z-index, and focus-trap — all
-   * accessibility guarantees remain in place.
+   * Set to `false` only when native top-layer stacking is strictly required,
+   * for example to guarantee the dialog appears above Popover API elements or
+   * fullscreen video on the same page.
    *
-   * @example
-   * // React 18 usage
-   * <io-modal open={isOpen} prevent-top-layer heading="Confirm">
-   *   <io-button slot="footer" onClick={handleClose}>Cancel</io-button>
-   * </io-modal>
+   * @default true
    */
-  @Prop({ reflect: true }) preventTopLayer = false;
+  @Prop({ reflect: true }) preventTopLayer = true;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -165,6 +162,7 @@ export class IoModal {
       } else {
         this.dialogEl.showModal();
       }
+      document.body.style.overflow = 'hidden';
       this.applyBackgroundInert();
       this.setupFocusTrap();
     }
@@ -202,6 +200,8 @@ export class IoModal {
         }
       }
 
+      document.body.style.overflow = 'hidden';
+
       // Apply inert to background elements to prevent screen reader navigation
       this.applyBackgroundInert();
 
@@ -211,6 +211,8 @@ export class IoModal {
       if (this.dialogEl.open) {
         this.dialogEl.close();
       }
+
+      document.body.style.overflow = '';
 
       this.detachBackdropHostListener();
       this.detachEscHandler();

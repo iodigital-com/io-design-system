@@ -1064,6 +1064,11 @@ export namespace Components {
          */
         "open": boolean;
         /**
+          * When `true` (default), the native `<dialog>` is opened with `show()` instead of `showModal()`. The component manages its own backdrop, focus-trap, ESC key, and `inert` management — behavior is identical to the `showModal()` path but compatible with every JavaScript framework.  ### Why `true` is the default  `showModal()` promotes `<dialog>` to the browser top layer. React 18 delegates synthetic events to `#root`; composed click events from shadow-DOM children inside a top-layer dialog do not reliably reach the React root, causing slotted `slot="footer"` buttons to be non-clickable. Vue 3, Angular, and Svelte attach listeners directly so they are unaffected — but they receive the same fully-featured behavior either way, so the default `true` is safe for all consumers.  Set to `false` only when native top-layer stacking is strictly required, for example to guarantee the dialog appears above Popover API elements or fullscreen video on the same page.
+          * @default true
+         */
+        "preventTopLayer": boolean;
+        /**
           * Programmatically show (open) the modal. No-op if already open.  Named `show()` to mirror the native <dialog> API and avoid a TypeScript duplicate-identifier conflict with the `open` boolean prop. Equivalent to setting `open = true`.
           * @example   const modal = document.querySelector('io-modal');   modal.show();
          */
@@ -4783,6 +4788,11 @@ declare namespace LocalJSX {
          */
         "open"?: boolean;
         /**
+          * When `true` (default), the native `<dialog>` is opened with `show()` instead of `showModal()`. The component manages its own backdrop, focus-trap, ESC key, and `inert` management — behavior is identical to the `showModal()` path but compatible with every JavaScript framework.  ### Why `true` is the default  `showModal()` promotes `<dialog>` to the browser top layer. React 18 delegates synthetic events to `#root`; composed click events from shadow-DOM children inside a top-layer dialog do not reliably reach the React root, causing slotted `slot="footer"` buttons to be non-clickable. Vue 3, Angular, and Svelte attach listeners directly so they are unaffected — but they receive the same fully-featured behavior either way, so the default `true` is safe for all consumers.  Set to `false` only when native top-layer stacking is strictly required, for example to guarantee the dialog appears above Popover API elements or fullscreen video on the same page.
+          * @default true
+         */
+        "preventTopLayer"?: boolean;
+        /**
           * Width preset for the dialog
           * @default 'md'
          */
@@ -6292,6 +6302,7 @@ declare namespace LocalJSX {
         "closeOnBackdrop": boolean;
         "description": string;
         "background": IoModalBackground;
+        "preventTopLayer": boolean;
     }
     interface IoMultiSelectAttributes {
         "label": string;

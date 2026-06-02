@@ -12,11 +12,6 @@
     "directory": "io-components-angular"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
     "prepack": "npm run build"
@@ -39,6 +34,7 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com",
-    "provenance": true
+    "provenance": true,
+    "directory": "dist"
   }
 }

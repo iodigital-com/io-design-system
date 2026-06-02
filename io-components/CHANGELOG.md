@@ -1,6 +1,6 @@
 # @iodigital-com/components
 
-## 2.0.0
+## 1.0.0
 
 ### Major Changes
 
@@ -273,7 +273,7 @@
   - `onSlotchange` is wired directly on `<slot>` elements (not via `@Listen`)
   - All slot containers use CSS class toggling with `display: none` for show/hide
 
-## 2.0.0
+## 1.0.0
 
 ### Major Changes
 

@@ -1,6 +1,6 @@
 {
   "name": "@iodigital-com/components-react",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "React wrapper package for io Digital Web Components.",
   "homepage": "https://io-design-system.iodigital.com",
   "bugs": {
@@ -31,7 +31,7 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@iodigital-com/components": "^2.0.0",
+    "@iodigital-com/components": "^1.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },

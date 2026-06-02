@@ -320,7 +320,22 @@ Every PR that changes user-facing behaviour in a published package must include 
 npm run changeset:add   # Interactive: select packages + bump level + summary
 ```
 
-Bump levels: `patch` for bug/a11y/token fixes; `minor` for new props, slots, methods, events; `major` for breaking changes.
+**Bump levels — read this carefully before choosing:**
+
+| Level | Use for | Examples |
+|---|---|---|
+| `patch` | Bug fixes, a11y fixes, visual tweaks, doc fixes | Fix wrong ARIA role, fix alignment, fix typo in label |
+| `minor` | New features, new components, new props, new defaults — even if technically breaking for an edge case | Add `preventTopLayer` prop, add `IoComponentsAngularModule`, rename a component with migration path, change a prop default |
+| `major` | **Only** for a complete visual overhaul of the design system — new color palette, full token rename, brand redesign | New iO brand colors, rename all `--io-*` tokens to a new prefix |
+
+**NEVER use `major` for:**
+- Adding or removing a prop (use `minor` or `patch`)
+- Changing a prop default (use `minor`)
+- Renaming a component with a clear migration path (use `minor`)
+- Removing a deprecated component (use `minor`)
+- Any change where consumers can adapt with a one-line diff
+
+A `major` bump on this project means the design system looks different. Not that an API changed.
 
 The `.changeset/*.md` file must be committed alongside the code. On merge to `main`, `release.yml` opens a Release PR aggregating all changesets; when that PR merges, packages publish to npm with provenance attestation.
 

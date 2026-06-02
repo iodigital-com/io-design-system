@@ -6,10 +6,9 @@
  * with a clear message so CI catches resolution breakage before publish.
  */
 
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFileSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = resolve(__dirname, '../io-components-angular');
@@ -24,6 +23,13 @@ const required = [
 ];
 
 const distPkg = resolve(pkgRoot, 'dist/package.json');
+
+if (!existsSync(distPkg)) {
+  console.error('✗  dist/package.json not found — ng-packagr build may have failed.');
+  console.error('   Run `npm run build:wrapper:angular` and retry.');
+  process.exit(1);
+}
+
 const distExports = JSON.parse(readFileSync(distPkg, 'utf-8')).exports ?? {};
 
 // Also verify dist/package.json exports resolve correctly (relative to dist/)

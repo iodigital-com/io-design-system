@@ -12,9 +12,6 @@
     "directory": "io-components-angular"
   },
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
     "prepack": "npm run build"

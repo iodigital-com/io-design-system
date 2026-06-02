@@ -1,6 +1,6 @@
 {
   "name": "@iodigital-com/components-vue",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "Vue 3 wrapper package for io Digital Web Components.",
   "homepage": "https://io-design-system.iodigital.com",
   "bugs": {
@@ -31,7 +31,7 @@
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@iodigital-com/components": "^1.1.1",
+    "@iodigital-com/components": "^2.0.0",
     "vue": "^3.4.0"
   },
   "devDependencies": {

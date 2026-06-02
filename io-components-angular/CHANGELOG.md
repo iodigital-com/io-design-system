@@ -1,5 +1,15 @@
 # @iodigital-com/components-angular
 
+## 2.1.0
+
+### Minor Changes
+
+- fix(angular): use publishConfig.directory to resolve Vite import error
+
+  ng-packagr writes correct exports/module fields to dist/package.json but npm was using the root package.json instead (which had wrong paths). Adding publishConfig.directory: 'dist' tells npm to treat the ng-packagr output directory as the package root during publish — so consumers get the correct exports map and can resolve the package properly.
+
+  Also removes 'files' from root package.json to prevent empty tarball when publishConfig.directory is set.
+
 ## 2.0.0
 
 ### Minor Changes

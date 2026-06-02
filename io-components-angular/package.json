@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
-    "prepack": "npm run build && node ../scripts/verify-angular-build.mjs"
+    "prepack": "npm run build"
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0",

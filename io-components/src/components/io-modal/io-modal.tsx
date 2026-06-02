@@ -160,15 +160,20 @@ export class IoModal {
         this.attachBackdropHostListener();
         this.attachEscHandler();
       } else {
+        this.dialogEl.inert = true;    // prevent autofocus conflicting with open animation
         this.dialogEl.showModal();
+        this.dialogEl.inert = false;
       }
+      this.dialogEl.focus();           // Safari: explicit focus prevents transition bug
       document.body.style.overflow = 'hidden';
+      this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       this.applyBackgroundInert();
       this.setupFocusTrap();
     }
   }
 
   disconnectedCallback() {
+    document.body.style.overflow = '';
     this.clearFocusTrap();
     this.removeBackgroundInert();
     this.detachTransitionEndListener();
@@ -196,8 +201,12 @@ export class IoModal {
           this.attachBackdropHostListener();
           this.attachEscHandler();
         } else {
+          this.dialogEl.inert = true;    // prevent autofocus conflicting with open animation
           this.dialogEl.showModal();
+          this.dialogEl.inert = false;
         }
+        this.dialogEl.focus();           // Safari: explicit focus prevents transition bug
+        this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       }
 
       document.body.style.overflow = 'hidden';
@@ -416,7 +425,7 @@ export class IoModal {
           class={`modal--${size} modal--bg-${background}`}
           aria-labelledby={heading ? headingId : undefined}
           aria-describedby={descriptionId}
-          aria-modal={this.preventTopLayer ? 'true' : undefined}
+          aria-modal="true"
           onClick={this.handleDialogClick}
           onCancel={this.handleCancel}
         >

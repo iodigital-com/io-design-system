@@ -5,6 +5,7 @@ import { IoModal } from './io-modal';
 function makeDialogEl() {
   const el = document.createElement('div') as unknown as HTMLDialogElement;
   el.open = false;
+  el.show = vi.fn(() => { el.open = true; });
   el.showModal = vi.fn(() => { el.open = true; });
   el.close = vi.fn(() => { el.open = false; });
   return el;
@@ -260,16 +261,17 @@ describe('io-modal — openChanged(true)', () => {
     document.body.removeChild(triggerBtn);
   });
 
-  it('calls showModal when dialog is not already open', () => {
+  it('calls dialog.show() when dialog is not already open (preventTopLayer default)', () => {
     dialogEl.open = false;
     (component as any).openChanged(true);
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
-  it('does not call showModal when dialog is already open', () => {
+  it('does not call dialog.show() when dialog is already open', () => {
     dialogEl.open = true;
     (component as any).openChanged(true);
-    expect(dialogEl.showModal).not.toHaveBeenCalled();
+    expect(dialogEl.show).not.toHaveBeenCalled();
   });
 
   it('calls applyBackgroundInert', () => {

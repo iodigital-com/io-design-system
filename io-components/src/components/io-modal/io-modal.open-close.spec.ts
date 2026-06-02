@@ -6,6 +6,7 @@ function makeDialogEl() {
   const el = document.createElement('div') as unknown as HTMLDialogElement;
   el.open = false;
   el.showModal = vi.fn(() => { el.open = true; });
+  el.show = vi.fn(() => { el.open = true; });
   el.close = vi.fn(() => { el.open = false; });
   return el;
 }
@@ -25,9 +26,10 @@ describe('io-modal — open/close', () => {
     (component as any).dialogEl = dialogEl;
   });
 
-  it('openChanged(true) calls showModal', () => {
+  it('openChanged(true) calls dialog.show() by default (preventTopLayer=true)', () => {
     (component as any).openChanged(true);
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
   it('openChanged(false) calls dialog.close and emits dismiss', () => {
@@ -44,9 +46,10 @@ describe('io-modal — open/close', () => {
     expect(ioDismissEmit).toHaveBeenCalled();
   });
 
-  it('openChanged(true) does not call showModal if dialog is already open', () => {
+  it('openChanged(true) does not call dialog.show() if dialog is already open', () => {
     dialogEl.open = true;
     (component as any).openChanged(true);
+    expect(dialogEl.show).not.toHaveBeenCalled();
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
@@ -73,12 +76,13 @@ describe('io-modal — open/close', () => {
     expect(component.open).toBe(true);
   });
 
-  it('show() triggers showModal when openChanged is propagated', async () => {
+  it('show() triggers dialog.show() when openChanged is propagated (preventTopLayer=true default)', async () => {
     component.open = false;
     await component.show();
     // Simulate @Watch propagation
     (component as any).openChanged(component.open);
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
   it('show() is a no-op when already open (prop stays true, openChanged not triggered)', async () => {
@@ -87,6 +91,7 @@ describe('io-modal — open/close', () => {
     await component.show();
     // prop unchanged — the guard prevents the assignment
     expect(component.open).toBe(true);
+    expect(dialogEl.show).not.toHaveBeenCalled();
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
@@ -111,7 +116,7 @@ describe('io-modal — open/close', () => {
     expect(ioDismissEmit).not.toHaveBeenCalled();
   });
 
-  it('componentDidLoad applies modal setup when initially open', () => {
+  it('componentDidLoad uses dialog.show() by default (preventTopLayer=true)', () => {
     const inertSpy = vi.spyOn(component as any, 'applyBackgroundInert');
     const focusTrapSpy = vi.spyOn(component as any, 'setupFocusTrap');
     component.open = true;
@@ -119,9 +124,143 @@ describe('io-modal — open/close', () => {
 
     component.componentDidLoad();
 
-    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
     expect(inertSpy).toHaveBeenCalled();
     expect(focusTrapSpy).toHaveBeenCalled();
+  });
+});
+
+// ── preventTopLayer=false: native showModal() path ───────────────────────────
+
+describe('io-modal — preventTopLayer=false (native showModal)', () => {
+  let component: IoModal;
+  let dialogEl: ReturnType<typeof makeDialogEl>;
+
+  beforeEach(() => {
+    component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    dialogEl = makeDialogEl();
+    (component as any).dialogEl = dialogEl;
+    component.preventTopLayer = false;
+  });
+
+  it('openChanged(true) calls showModal() not show()', () => {
+    (component as any).openChanged(true);
+    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).not.toHaveBeenCalled();
+  });
+
+  it('componentDidLoad calls showModal() when open=true', () => {
+    component.open = true;
+    component.componentDidLoad();
+    expect(dialogEl.showModal).toHaveBeenCalled();
+    expect(dialogEl.show).not.toHaveBeenCalled();
+  });
+});
+
+// ── preventTopLayer mode ──────────────────────────────────────────────────────
+
+describe('io-modal — preventTopLayer', () => {
+  let component: IoModal;
+  let dialogEl: ReturnType<typeof makeDialogEl>;
+  let hostEl: HTMLElement;
+
+  beforeEach(() => {
+    component = new IoModal();
+    hostEl = document.createElement('io-modal');
+    (component as any).el = hostEl;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    dialogEl = makeDialogEl();
+    (component as any).dialogEl = dialogEl;
+    component.preventTopLayer = true;
+  });
+
+  it('openChanged(true) calls dialog.show() instead of showModal()', () => {
+    (component as any).openChanged(true);
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('componentDidLoad calls dialog.show() when open=true', () => {
+    component.open = true;
+    component.componentDidLoad();
+    expect(dialogEl.show).toHaveBeenCalled();
+    expect(dialogEl.showModal).not.toHaveBeenCalled();
+  });
+
+  it('host backdrop listener is attached on open', () => {
+    const addListenerSpy = vi.spyOn(hostEl, 'addEventListener');
+    (component as any).openChanged(true);
+    expect(addListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+  });
+
+  it('host backdrop listener is removed on close', () => {
+    (component as any).openChanged(true);
+    const removeListenerSpy = vi.spyOn(hostEl, 'removeEventListener');
+    dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect(removeListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect((component as any).backdropHostHandler).toBeUndefined();
+  });
+
+  it('clicking outside dialog panel closes modal when closeOnBackdrop=true', () => {
+    component.open = true;
+    component.closeOnBackdrop = true;
+    (component as any).openChanged(true);
+    // Simulate click at (5, 5) — outside a centered dialog (default getBoundingClientRect = 0,0,0,0)
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ clientX: 5, clientY: 5 } as MouseEvent);
+    expect(component.open).toBe(false);
+  });
+
+  it('clicking inside dialog panel does not close modal', () => {
+    component.open = true;
+    component.closeOnBackdrop = true;
+    (component as any).openChanged(true);
+    // Mock dialog bounding rect to wrap the click coordinates
+    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue(
+      { left: 0, right: 400, top: 0, bottom: 300, width: 400, height: 300, x: 0, y: 0, toJSON: () => ({}) } as DOMRect,
+    );
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ clientX: 200, clientY: 150 } as MouseEvent);
+    expect(component.open).toBe(true);
+  });
+
+  it('clicking outside does nothing when closeOnBackdrop=false', () => {
+    component.open = true;
+    component.closeOnBackdrop = false;
+    (component as any).openChanged(true);
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ clientX: 5, clientY: 5 } as MouseEvent);
+    expect(component.open).toBe(true);
+  });
+
+  it('ESC key closes modal in preventTopLayer mode', () => {
+    (component as any).openChanged(true);
+    const handler = (component as any).escHandler as (ev: KeyboardEvent) => void;
+    handler({ key: 'Escape', preventDefault: vi.fn() } as unknown as KeyboardEvent);
+    expect(component.open).toBe(false);
+  });
+
+  it('ESC handler is removed on close', () => {
+    (component as any).openChanged(true);
+    expect((component as any).escHandler).toBeDefined();
+    dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect((component as any).escHandler).toBeUndefined();
+  });
+
+  it('disconnectedCallback removes backdrop and ESC listeners', () => {
+    (component as any).openChanged(true);
+    const removeHostSpy = vi.spyOn(hostEl, 'removeEventListener');
+    const removeDocSpy = vi.spyOn(document, 'removeEventListener');
+    component.disconnectedCallback();
+    expect(removeHostSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect(removeDocSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 });
 

@@ -39,6 +39,8 @@ export class IoModal {
   private inertElements: Element[] = []; // Track elements with inert applied
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
+  private backdropHostHandler?: (ev: MouseEvent) => void;
+  private escHandler?: (ev: KeyboardEvent) => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -74,6 +76,30 @@ export class IoModal {
    * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
    */
   @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
+
+  /**
+   * When `true` (default), the native `<dialog>` is opened with `show()`
+   * instead of `showModal()`. The component manages its own backdrop,
+   * focus-trap, ESC key, and `inert` management — behavior is identical to
+   * the `showModal()` path but compatible with every JavaScript framework.
+   *
+   * ### Why `true` is the default
+   *
+   * `showModal()` promotes `<dialog>` to the browser top layer. React 18
+   * delegates synthetic events to `#root`; composed click events from
+   * shadow-DOM children inside a top-layer dialog do not reliably reach the
+   * React root, causing slotted `slot="footer"` buttons to be non-clickable.
+   * Vue 3, Angular, and Svelte attach listeners directly so they are
+   * unaffected — but they receive the same fully-featured behavior either
+   * way, so the default `true` is safe for all consumers.
+   *
+   * Set to `false` only when native top-layer stacking is strictly required,
+   * for example to guarantee the dialog appears above Popover API elements or
+   * fullscreen video on the same page.
+   *
+   * @default true
+   */
+  @Prop({ reflect: true }) preventTopLayer = true;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -129,16 +155,30 @@ export class IoModal {
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
-      this.dialogEl.showModal();
+      if (this.preventTopLayer) {
+        this.dialogEl.show();
+        this.attachBackdropHostListener();
+        this.attachEscHandler();
+      } else {
+        this.dialogEl.inert = true;    // prevent autofocus conflicting with open animation
+        this.dialogEl.showModal();
+        this.dialogEl.inert = false;
+      }
+      this.dialogEl.focus();           // Safari: explicit focus prevents transition bug
+      document.body.style.overflow = 'hidden';
+      this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       this.applyBackgroundInert();
       this.setupFocusTrap();
     }
   }
 
   disconnectedCallback() {
+    document.body.style.overflow = '';
     this.clearFocusTrap();
     this.removeBackgroundInert();
     this.detachTransitionEndListener();
+    this.detachBackdropHostListener();
+    this.detachEscHandler();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -156,8 +196,20 @@ export class IoModal {
       this.focusTrigger = document.activeElement as Element;
 
       if (!this.dialogEl.open) {
-        this.dialogEl.showModal();
+        if (this.preventTopLayer) {
+          this.dialogEl.show();
+          this.attachBackdropHostListener();
+          this.attachEscHandler();
+        } else {
+          this.dialogEl.inert = true;    // prevent autofocus conflicting with open animation
+          this.dialogEl.showModal();
+          this.dialogEl.inert = false;
+        }
+        this.dialogEl.focus();           // Safari: explicit focus prevents transition bug
+        this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       }
+
+      document.body.style.overflow = 'hidden';
 
       // Apply inert to background elements to prevent screen reader navigation
       this.applyBackgroundInert();
@@ -169,6 +221,10 @@ export class IoModal {
         this.dialogEl.close();
       }
 
+      document.body.style.overflow = '';
+
+      this.detachBackdropHostListener();
+      this.detachEscHandler();
       this.clearFocusTrap();
 
       // Remove inert from background elements
@@ -294,6 +350,42 @@ export class IoModal {
     this.focusTrapHandler = undefined;
   }
 
+  private attachBackdropHostListener() {
+    this.backdropHostHandler = (ev: MouseEvent) => {
+      if (!this.closeOnBackdrop || !this.dialogEl) return;
+      // Use coordinate-based detection: a click outside the dialog panel is a backdrop click.
+      // ev.target cannot be used here — composed shadow DOM events are retargeted to the host,
+      // so in-dialog clicks and host backdrop clicks would be indistinguishable by target alone.
+      const rect = this.dialogEl.getBoundingClientRect();
+      if (isBackdropClick(rect, ev.clientX, ev.clientY)) {
+        this.open = false;
+      }
+    };
+    this.el.addEventListener('click', this.backdropHostHandler);
+  }
+
+  private detachBackdropHostListener() {
+    if (!this.backdropHostHandler) return;
+    this.el.removeEventListener('click', this.backdropHostHandler);
+    this.backdropHostHandler = undefined;
+  }
+
+  private attachEscHandler() {
+    this.escHandler = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') {
+        ev.preventDefault();
+        this.open = false;
+      }
+    };
+    document.addEventListener('keydown', this.escHandler);
+  }
+
+  private detachEscHandler() {
+    if (!this.escHandler) return;
+    document.removeEventListener('keydown', this.escHandler);
+    this.escHandler = undefined;
+  }
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleDialogClick = (ev: MouseEvent) => {
@@ -333,6 +425,7 @@ export class IoModal {
           class={`modal--${size} modal--bg-${background}`}
           aria-labelledby={heading ? headingId : undefined}
           aria-describedby={descriptionId}
+          aria-modal="true"
           onClick={this.handleDialogClick}
           onCancel={this.handleCancel}
         >

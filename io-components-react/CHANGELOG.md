@@ -1,5 +1,12 @@
 # @iodigital-com/components-react
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [34d86da]
+  - @iodigital-com/components@2.0.0
+
 ## 1.1.1
 
 ### Patch Changes

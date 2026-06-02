@@ -15,7 +15,7 @@
     "build:components": "npm --workspace @iodigital-com/components run build",
     "build:wrapper:react": "npm --workspace @iodigital-com/components-react run build",
     "build:wrapper:vue": "npm --workspace @iodigital-com/components-vue run build",
-    "build:wrapper:angular": "npm --workspace @iodigital-com/components-angular run build",
+    "build:wrapper:angular": "npm --workspace @iodigital-com/components-angular run build && node scripts/verify-angular-build.mjs",
     "build:wrappers": "npm run build:wrapper:react && npm run build:wrapper:vue && npm run build:wrapper:angular",
     "build": "npm run build:components && npm run build:wrappers",
     "test": "npm --workspace @iodigital-com/components run test && npm --workspace @iodigital-com/storefront run test",

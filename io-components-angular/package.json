@@ -12,6 +12,15 @@
     "directory": "io-components-angular"
   },
   "license": "MIT",
+  "main": "dist/fesm2022/iodigital-com-components-angular.mjs",
+  "module": "dist/fesm2022/iodigital-com-components-angular.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/fesm2022/iodigital-com-components-angular.mjs"
+    }
+  },
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
     "prepack": "npm run build"

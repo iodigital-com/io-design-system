@@ -12,31 +12,27 @@
     "directory": "io-components-angular"
   },
   "license": "MIT",
-  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "ng-packagr -p ng-package.json",
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@angular/core": ">=17.0.0 <21.0.0",
+    "@angular/core": ">=17.0.0",
     "@iodigital-com/components": "^1.1.1",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/compiler-cli": "^20.0.0",
     "@angular/core": "^20.0.0",
     "@iodigital-com/components": "file:../io-components",
+    "ng-packagr": "^20.0.0",
     "rxjs": "^7.8.0",
     "typescript": "^5.7.2"
   },

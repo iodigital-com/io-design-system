@@ -43,6 +43,21 @@ export function getModalStyles(): string {
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
+    /* ── preventTopLayer: CSS backdrop replacing native ::backdrop ── */
+    /* When opened via show() instead of showModal(), ::backdrop is absent.
+       The host becomes the backdrop container to keep the overlay behaviour. */
+    :host([prevent-top-layer]) {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: var(--io-z-modal);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     dialog.modal--sm { width: var(--io-modal-width-sm); }
     dialog.modal--md { width: var(--io-modal-width-md); }
     dialog.modal--lg { width: var(--io-modal-width-lg); }

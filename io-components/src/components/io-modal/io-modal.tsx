@@ -75,6 +75,33 @@ export class IoModal {
    */
   @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
 
+  /**
+   * When `true`, the native `<dialog>` is opened with `show()` instead of
+   * `showModal()`. This prevents the element from entering the browser's
+   * **top layer**, which is necessary for React 18 consumers.
+   *
+   * ### Why this matters for React 18
+   *
+   * `showModal()` promotes the `<dialog>` to the browser top layer — a
+   * separate rendering layer that sits above all CSS stacking contexts.
+   * React 18 delegates synthetic events (including `onClick`) to the root
+   * container (`#root`). Composed click events from shadow-DOM children
+   * inside a top-layer dialog **do not reliably bubble to the React root**,
+   * causing slotted footer buttons to appear unclickable.
+   *
+   * Setting `preventTopLayer` to `true` keeps the dialog in the normal
+   * document flow so React's event delegation works as expected. The
+   * component handles its own backdrop, z-index, and focus-trap — all
+   * accessibility guarantees remain in place.
+   *
+   * @example
+   * // React 18 usage
+   * <io-modal open={isOpen} prevent-top-layer heading="Confirm">
+   *   <io-button slot="footer" onClick={handleClose}>Cancel</io-button>
+   * </io-modal>
+   */
+  @Prop({ reflect: true }) preventTopLayer = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
@@ -129,7 +156,7 @@ export class IoModal {
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
-      this.dialogEl.showModal();
+      this.preventTopLayer ? this.dialogEl.show() : this.dialogEl.showModal();
       this.applyBackgroundInert();
       this.setupFocusTrap();
     }
@@ -156,7 +183,7 @@ export class IoModal {
       this.focusTrigger = document.activeElement as Element;
 
       if (!this.dialogEl.open) {
-        this.dialogEl.showModal();
+        this.preventTopLayer ? this.dialogEl.show() : this.dialogEl.showModal();
       }
 
       // Apply inert to background elements to prevent screen reader navigation

@@ -43,28 +43,33 @@ export function getModalStyles(): string {
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
-    /* ── preventTopLayer: CSS backdrop replacing native ::backdrop ── */
-    /* When opened via show() instead of showModal(), ::backdrop is absent.
-       The host becomes the backdrop container to keep the overlay behaviour.
-       Use [open=""] (empty-string value) rather than bare [open] so that
-       frameworks like React 18 setting open="false" as an attribute string
-       do NOT accidentally trigger the backdrop. Stencil sets open="" (empty)
-       when the prop is true, and removes the attribute when false. */
-    :host([prevent-top-layer][open=""]) {
+    /* ── preventTopLayer: dedicated backdrop element in shadow DOM ──
+       The host stays as display:contents so it never intercepts pointer events
+       on slotted light-DOM children (e.g. IoButton slot="footer"). Following
+       the Porsche Design System pattern: backdrop is a sibling div rendered
+       before the dialog in the shadow root, not the host itself.
+       This ensures React 18 event delegation reaches slotted footer buttons. */
+    .modal__backdrop {
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);
       background: var(--io-bg-overlay);
       backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }
     dialog.modal--md { width: var(--io-modal-width-md); }
     dialog.modal--lg { width: var(--io-modal-width-lg); }
+
+    /* When preventTopLayer=true, the dialog must sit above the backdrop div */
+    :host([prevent-top-layer]) dialog {
+      position: fixed;
+      z-index: calc(var(--io-z-modal) + 1);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
     .modal__header {
       display: flex;

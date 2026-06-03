@@ -39,6 +39,7 @@ export class IoModal {
   private inertElements: Element[] = []; // Track elements with inert applied
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
+  private backdropEl?: HTMLDivElement;
   private backdropHostHandler?: (ev: MouseEvent) => void;
   private escHandler?: (ev: KeyboardEvent) => void;
 
@@ -351,22 +352,17 @@ export class IoModal {
   }
 
   private attachBackdropHostListener() {
-    this.backdropHostHandler = (ev: MouseEvent) => {
-      if (!this.closeOnBackdrop || !this.dialogEl) return;
-      // Use coordinate-based detection: a click outside the dialog panel is a backdrop click.
-      // ev.target cannot be used here — composed shadow DOM events are retargeted to the host,
-      // so in-dialog clicks and host backdrop clicks would be indistinguishable by target alone.
-      const rect = this.dialogEl.getBoundingClientRect();
-      if (isBackdropClick(rect, ev.clientX, ev.clientY)) {
-        this.open = false;
-      }
+    if (!this.backdropEl) return;
+    this.backdropHostHandler = () => {
+      if (!this.closeOnBackdrop) return;
+      this.open = false;
     };
-    this.el.addEventListener('click', this.backdropHostHandler);
+    this.backdropEl.addEventListener('click', this.backdropHostHandler);
   }
 
   private detachBackdropHostListener() {
-    if (!this.backdropHostHandler) return;
-    this.el.removeEventListener('click', this.backdropHostHandler);
+    if (!this.backdropHostHandler || !this.backdropEl) return;
+    this.backdropEl.removeEventListener('click', this.backdropHostHandler);
     this.backdropHostHandler = undefined;
   }
 
@@ -417,6 +413,12 @@ export class IoModal {
     return (
       <Host>
         <style>{getModalStyles()}</style>
+        {this.preventTopLayer && (
+          <div
+            class="modal__backdrop"
+            ref={(el?: HTMLDivElement) => { this.backdropEl = el; }}
+          />
+        )}
         <dialog
           ref={(el?: HTMLDialogElement) => {
             this.dialogEl = el;

@@ -3,6 +3,7 @@
 exports[`io-modal — render snapshots > renders default state 1`] = `
 <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop"></div>
     <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
       <div class="modal__header">
         <slot name="header">
@@ -52,6 +53,7 @@ MockHTMLElement {
   "_childNodes": [
     <io-modal size="sm" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop"></div>
     <dialog class="modal--sm modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
       <div class="modal__header">
         <slot name="header">
@@ -78,6 +80,7 @@ MockHTMLElement {
 </io-modal>,
     <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop"></div>
     <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
       <div class="modal__header">
         <slot name="header">
@@ -104,6 +107,7 @@ MockHTMLElement {
 </io-modal>,
     <io-modal size="lg" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop"></div>
     <dialog class="modal--lg modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
       <div class="modal__header">
         <slot name="header">
@@ -1299,6 +1303,7 @@ MockHTMLElement {
 exports[`io-modal — render snapshots > renders slotted footer actions 1`] = `
 <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop"></div>
     <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-describedby="io-modal-heading-4fzzzxjylrx-description" aria-modal="true">
       <div class="modal__header">
         <slot name="header">

@@ -192,50 +192,46 @@ describe('io-modal — preventTopLayer', () => {
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
-  it('host backdrop listener is attached on open', () => {
-    const addListenerSpy = vi.spyOn(hostEl, 'addEventListener');
+  it('backdrop element listener is attached on open', () => {
+    // Set up backdropEl ref as the render() would via @State ref callback
+    const backdropDiv = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
+    const addListenerSpy = vi.spyOn(backdropDiv, 'addEventListener');
     (component as any).openChanged(true);
     expect(addListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
   });
 
-  it('host backdrop listener is removed on close', () => {
+  it('backdrop element listener is removed on close', () => {
+    const backdropDiv = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
     (component as any).openChanged(true);
-    const removeListenerSpy = vi.spyOn(hostEl, 'removeEventListener');
+    const removeListenerSpy = vi.spyOn(backdropDiv, 'removeEventListener');
     dialogEl.open = true;
     (component as any).openChanged(false);
     expect(removeListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
     expect((component as any).backdropHostHandler).toBeUndefined();
   });
 
-  it('clicking outside dialog panel closes modal when closeOnBackdrop=true', () => {
+  it('clicking the backdrop div closes modal when closeOnBackdrop=true', () => {
+    const backdropDiv = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
     component.open = true;
     component.closeOnBackdrop = true;
     (component as any).openChanged(true);
-    // Simulate click at (5, 5) — outside a centered dialog (default getBoundingClientRect = 0,0,0,0)
-    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
-    handler({ clientX: 5, clientY: 5 } as MouseEvent);
+    // Handler is now a simple close — no coordinate check needed (backdrop div IS the backdrop)
+    const handler = (component as any).backdropHostHandler as () => void;
+    handler();
     expect(component.open).toBe(false);
   });
 
-  it('clicking inside dialog panel does not close modal', () => {
-    component.open = true;
-    component.closeOnBackdrop = true;
-    (component as any).openChanged(true);
-    // Mock dialog bounding rect to wrap the click coordinates
-    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue(
-      { left: 0, right: 400, top: 0, bottom: 300, width: 400, height: 300, x: 0, y: 0, toJSON: () => ({}) } as DOMRect,
-    );
-    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
-    handler({ clientX: 200, clientY: 150 } as MouseEvent);
-    expect(component.open).toBe(true);
-  });
-
-  it('clicking outside does nothing when closeOnBackdrop=false', () => {
+  it('clicking the backdrop does nothing when closeOnBackdrop=false', () => {
+    const backdropDiv = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
     component.open = true;
     component.closeOnBackdrop = false;
     (component as any).openChanged(true);
-    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
-    handler({ clientX: 5, clientY: 5 } as MouseEvent);
+    const handler = (component as any).backdropHostHandler as () => void;
+    handler();
     expect(component.open).toBe(true);
   });
 
@@ -255,11 +251,13 @@ describe('io-modal — preventTopLayer', () => {
   });
 
   it('disconnectedCallback removes backdrop and ESC listeners', () => {
+    const backdropDiv = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
     (component as any).openChanged(true);
-    const removeHostSpy = vi.spyOn(hostEl, 'removeEventListener');
+    const removeBackdropSpy = vi.spyOn(backdropDiv, 'removeEventListener');
     const removeDocSpy = vi.spyOn(document, 'removeEventListener');
     component.disconnectedCallback();
-    expect(removeHostSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    expect(removeBackdropSpy).toHaveBeenCalledWith('click', expect.any(Function));
     expect(removeDocSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 });

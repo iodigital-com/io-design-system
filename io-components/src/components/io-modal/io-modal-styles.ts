@@ -48,8 +48,20 @@ export function getModalStyles(): string {
        on slotted light-DOM children (e.g. IoButton slot="footer"). Following
        the Porsche Design System pattern: backdrop is a sibling div rendered
        before the dialog in the shadow root, not the host itself.
-       This ensures React 18 event delegation reaches slotted footer buttons. */
+       This ensures React 18 event delegation reaches slotted footer buttons.
+
+       The backdrop div is always in the shadow DOM but hidden by default —
+       only shown via [open=""] selector when the modal is truly open.
+       Using [open=""] (empty string) matches Stencil's reflection of open=true,
+       and avoids matching React 18's open="false" string attribute. */
     .modal__backdrop {
+      display: none;
+      pointer-events: none;
+    }
+
+    :host([prevent-top-layer][open=""]) .modal__backdrop {
+      display: block;
+      pointer-events: auto;
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);
@@ -62,8 +74,9 @@ export function getModalStyles(): string {
     dialog.modal--md { width: var(--io-modal-width-md); }
     dialog.modal--lg { width: var(--io-modal-width-lg); }
 
-    /* When preventTopLayer=true, the dialog must sit above the backdrop div */
-    :host([prevent-top-layer]) dialog {
+    /* When preventTopLayer=true and open, the dialog sits above the backdrop div.
+       Scoped to [open=""] so closed modals are not affected. */
+    :host([prevent-top-layer][open=""]) dialog {
       position: fixed;
       z-index: calc(var(--io-z-modal) + 1);
       top: 50%;

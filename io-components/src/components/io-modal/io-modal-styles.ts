@@ -46,8 +46,11 @@ export function getModalStyles(): string {
     /* ── preventTopLayer: CSS backdrop replacing native ::backdrop ── */
     /* When opened via show() instead of showModal(), ::backdrop is absent.
        The host becomes the backdrop container to keep the overlay behaviour.
-       Scoped to [open] so the overlay is absent when the modal is closed. */
-    :host([prevent-top-layer][open]) {
+       Use [open=""] (empty-string value) rather than bare [open] so that
+       frameworks like React 18 setting open="false" as an attribute string
+       do NOT accidentally trigger the backdrop. Stencil sets open="" (empty)
+       when the prop is true, and removes the attribute when false. */
+    :host([prevent-top-layer][open=""]) {
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);

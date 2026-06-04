@@ -34,7 +34,7 @@
     "@stencil/vue-output-target": "^0.13.2"
   },
   "peerDependencies": {
-    "@iodigital-com/components": "^1.0.0",
+    "@iodigital-com/components": "^1.0.1",
     "vue": "^3.4.0"
   },
   "devDependencies": {

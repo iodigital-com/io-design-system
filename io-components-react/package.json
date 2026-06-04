@@ -34,7 +34,7 @@
     "@stencil/react-output-target": "^1.5.3"
   },
   "peerDependencies": {
-    "@iodigital-com/components": "^1.0.0",
+    "@iodigital-com/components": "^1.0.1",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },

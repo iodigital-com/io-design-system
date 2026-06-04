@@ -218,10 +218,23 @@ describe('io-modal — preventTopLayer', () => {
     component.open = true;
     component.closeOnBackdrop = true;
     (component as any).openChanged(true);
-    // Handler is now a simple close — no coordinate check needed (backdrop div IS the backdrop)
-    const handler = (component as any).backdropHostHandler as () => void;
-    handler();
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    // ev.target === backdropEl means user clicked the backdrop area directly
+    handler({ target: backdropDiv } as unknown as MouseEvent);
     expect(component.open).toBe(false);
+  });
+
+  it('clicking inside the dialog does not close the modal', () => {
+    const backdropDiv = document.createElement('div');
+    const dialogChild = document.createElement('div');
+    (component as any).backdropEl = backdropDiv;
+    component.open = true;
+    component.closeOnBackdrop = true;
+    (component as any).openChanged(true);
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    // ev.target !== backdropEl means the click came from inside the dialog
+    handler({ target: dialogChild } as unknown as MouseEvent);
+    expect(component.open).toBe(true);
   });
 
   it('clicking the backdrop does nothing when closeOnBackdrop=false', () => {
@@ -230,8 +243,8 @@ describe('io-modal — preventTopLayer', () => {
     component.open = true;
     component.closeOnBackdrop = false;
     (component as any).openChanged(true);
-    const handler = (component as any).backdropHostHandler as () => void;
-    handler();
+    const handler = (component as any).backdropHostHandler as (ev: MouseEvent) => void;
+    handler({ target: backdropDiv } as unknown as MouseEvent);
     expect(component.open).toBe(true);
   });
 

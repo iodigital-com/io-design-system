@@ -154,6 +154,10 @@ export class IoAccordion {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. Expanded panel content shown when the accordion is open.
+   * @slot heading - Trigger label text. Falls back to the `heading` prop when not provided.
+   */
   render() {
     const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
     const HeadingTag = headingTag;

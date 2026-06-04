@@ -405,6 +405,11 @@ export class IoModal {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. Body content of the modal dialog.
+   * @slot header - Replaces the built-in heading area. Use when you need custom heading markup or an io-heading element.
+   * @slot footer - Action area rendered at the bottom of the dialog. Typically 1–2 io-button elements.
+   */
   render() {
     const { size, background, heading, headingId, description } = this;
     const closeIcon = getModalCloseIcon();

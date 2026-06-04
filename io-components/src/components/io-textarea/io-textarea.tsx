@@ -277,6 +277,11 @@ export class IoTextarea {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
+   * @slot message - Validation message content. Replaces the plain-text `message` prop in error state.
+   * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
+   */
   render() {
     const {
       label,

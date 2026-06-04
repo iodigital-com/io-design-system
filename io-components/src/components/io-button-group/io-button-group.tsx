@@ -236,6 +236,9 @@ export class IoButtonGroup {
 
   // ── Render ───────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. io-button children whose `value` and label are parsed at load time to build the internal button group.
+   */
   render() {
     const { type, disabled, label, hideLabel, required, items, focusIndex } = this;
     // When all items are disabled no item should be in the tab order.

@@ -58,6 +58,9 @@ export class IoInlineNotification {
     this.dismiss.emit();
   };
 
+  /**
+   * @slot - Default slot. Notification message body text or inline elements.
+   */
   render() {
     return (
       <Host

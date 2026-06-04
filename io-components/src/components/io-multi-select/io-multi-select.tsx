@@ -523,6 +523,9 @@ export class IoMultiSelect {
 
   // ── Render ────────────────────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. io-option and io-optgroup children parsed at load time to build the option list.
+   */
   render() {
     const {
       label,

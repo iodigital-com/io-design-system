@@ -39,7 +39,7 @@ describe('io-select — change handling', () => {
   it('emits change with the selected value', () => {
     const ev = makeChangeEvent('a');
     (component as any).handleChange(ev);
-    expect(changeMock).toHaveBeenCalledWith('a');
+    expect(changeMock).toHaveBeenCalledWith({ value: 'a', name: undefined });
   });
 
   it('updates value prop on change', () => {
@@ -58,5 +58,17 @@ describe('io-select — change handling', () => {
     const ev = new FocusEvent('blur');
     (component as any).handleBlur(ev);
     expect(blurMock).toHaveBeenCalledWith(ev);
+  });
+
+  it('includes name in change detail when name prop is set', () => {
+    // Arrange
+    component.name = 'country';
+    const ev = makeChangeEvent('nl');
+
+    // Act
+    (component as any).handleChange(ev);
+
+    // Assert
+    expect(changeMock).toHaveBeenCalledWith({ value: 'nl', name: 'country' });
   });
 });

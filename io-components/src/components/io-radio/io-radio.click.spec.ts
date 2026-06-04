@@ -27,7 +27,7 @@ describe('io-radio — event behavior', () => {
     const ev = makeChangeEvent(true);
     (component as any).handleChange(ev);
     expect(emitMock).toHaveBeenCalledOnce();
-    expect(emitMock).toHaveBeenCalledWith({ checked: true, value: 'test-value' });
+    expect(emitMock).toHaveBeenCalledWith({ value: 'test-value' });
   });
 
   it('emits change when radio is deselected', () => {
@@ -35,7 +35,7 @@ describe('io-radio — event behavior', () => {
     const ev = makeChangeEvent(false);
     (component as any).handleChange(ev);
     expect(emitMock).toHaveBeenCalledOnce();
-    expect(emitMock).toHaveBeenCalledWith({ checked: false, value: 'test-value' });
+    expect(emitMock).toHaveBeenCalledWith({ value: 'test-value' });
   });
 
   it('updates checked prop on change', () => {

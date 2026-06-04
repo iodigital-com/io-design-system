@@ -792,6 +792,12 @@
     "description": "Global z-index for the toast layer."
   },
   {
+    "cssVar": "--io-toast-item-blur",
+    "classification": "public-api",
+    "component": "io-toast-item",
+    "description": "Backdrop filter blur intensity for toast items. Accepts any CSS length (e.g. 0 to disable). Default: 12px."
+  },
+  {
     "cssVar": "--io-z-tooltip",
     "classification": "internal",
     "component": "io-tooltip",

@@ -66,6 +66,22 @@ const ROADMAP_ITEMS: RoadmapItem[] = [
     horizon: 'Next',
   },
   {
+    title: 'Framework playgrounds',
+    summary: 'Live playground apps for React, Angular, Vue, and native HTML — each targeting the local Stencil build. Catch framework-specific regressions (event delegation, Shadow DOM hit-testing, wrapper type safety) before publish.',
+    status: 'Planned',
+    owner: 'Engineering',
+    outcome: 'Block broken packages from reaching consumers — the io-modal footer click regression (4 patch releases) would have been caught by a React 18 real-click test.',
+    horizon: 'Next',
+  },
+  {
+    title: 'Lucide icon integration',
+    summary: 'Integrate Lucide icon pack as the system icon library. Utility/system icons (close, chevron, search, check, alert) sourced from Lucide via raw SVG imports; iO-specific brand icons kept as custom inline SVGs.',
+    status: 'Exploring',
+    owner: 'Design + engineering',
+    outcome: 'Replace ad-hoc inline SVGs with a consistent, tree-shakeable icon vocabulary.',
+    horizon: 'Next',
+  },
+  {
     title: 'News content sourcing',
     summary: 'Evaluate deriving roadmap and changelog content from source artifacts with typed schemas.',
     status: 'Exploring',

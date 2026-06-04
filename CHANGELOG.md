@@ -8,7 +8,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-The `io*` event name prefix is scheduled for removal in the next major release. No action required today — this section documents the migration that will be required when it ships.
+The `io*` event name prefix is scheduled for removal in the next major release.
+
+---
+
+## [1.0.1] — 2026-06-04
+
+Post-release audit patch. No breaking changes. All 4,946 unit tests pass.
+
+### Fixed — WCAG compliance
+
+- **io-input** — Error state now changes `border-bottom-width` (2px) alongside `border-bottom-color`, satisfying WCAG 1.4.1 (use of color). New public token: `--io-input-border-error-width`.
+- **io-textarea** — Same fix as io-input. New public token: `--io-textarea-border-error-width`.
+- **io-select** — Combobox dropdown border and filter input field now use `--io-border-interactive` (#767676, 4.57:1 contrast) instead of `--io-border` (~1.3:1), satisfying WCAG 1.4.11 non-text contrast.
+- **io-select** — FACE hidden error message (`select-message--hidden`) now has `display: none` — previously an empty `role="alert"` was rendered and announced by screen readers when `faceInvalid=true` with no message prop (WCAG 3.3.1).
+- **io-textarea** — Same hidden message fix as io-select (`textarea-message--hidden`).
+- **io-pin-code** — Focus ring selector changed from `:focus` to `:focus-visible` — ring no longer appears on mouse click, consistent with all other components.
+
+### Fixed — FACE form behaviour
+
+- **io-checkbox** — `formResetCallback()` now clears `faceInvalid = false` before calling `syncFormValue()`. Previously, resetting a required+unchecked checkbox immediately triggered a validation error before re-interaction.
+- **io-radio** — Same fix as io-checkbox.
+
+### Fixed — Token hygiene
+
+- **io-button-group** — Focus ring CSS removed the undefined `--io-shadow-focus-ring` fallback. Rule is now `var(--io-focus-ring-active)` only, matching all other components.
+- **io-multi-select**, **io-option**, **io-select** — Hardcoded `16px`/`18px` icon sizes replaced with `var(--io-icon-size-sm)` / `var(--io-icon-size-md)`.
+
+### Added — Test coverage
+
+- `.a11y.spec.ts` (axe-core scans) added for: `io-link`, `io-modal`, `io-pagination`, `io-select`, `io-spinner`, `io-tabs`, `io-textarea`, `io-toast`, `io-tooltip`.
+- `.disabled.spec.ts` added for `io-drawer` and `io-tabs-bar`.
+- `io-banner` and `io-inline-notification` a11y specs migrated from raw `axe.run()` to the shared `renderAndCheckA11y` helper.
+- `io-scroller` spec: removed `@ts-expect-error` — private state now asserted via host class list. No action required today — this section documents the migration that will be required when it ships.
 
 ### Changed — Planned Breaking events API migration
 

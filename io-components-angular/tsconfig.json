@@ -12,8 +12,14 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": false,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "@iodigital-com/components": ["../io-components/dist/types/components.d.ts"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../io-components/dist/types/components.d.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

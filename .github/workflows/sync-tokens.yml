@@ -6,6 +6,9 @@ name: Figma Token Sync
 # Manual dispatch accepts an optional branch_name input.  When called via
 # repository_dispatch the client payload may supply the same field.
 on:
+  push:
+    branches: [main]  # No-op on push — full sync only runs on workflow_dispatch/repository_dispatch
+
   workflow_dispatch:
     inputs:
       branch_name:
@@ -26,6 +29,15 @@ env:
   NODE_VERSION: '20'
 
 jobs:
+  # Push events are acknowledged with a no-op so the check always passes.
+  # Full sync only runs on workflow_dispatch or repository_dispatch.
+  push-ack:
+    name: Push event acknowledged
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - run: echo "Token sync is manual-only (workflow_dispatch / repository_dispatch)."
+
   # ────────────────────────────────────────────────────────────────────────────
   # 1. Validate existing tokens against all governance scripts.
   #    This job must pass before a PR branch is opened.

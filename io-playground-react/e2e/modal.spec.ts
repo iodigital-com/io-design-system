@@ -82,4 +82,33 @@ test.describe('io-modal — footer button click (React 19)', () => {
     await page.waitForTimeout(200);
     await expect(page.getByTestId('result')).toContainText('cancel-clicked');
   });
+
+  test('Save with filled input — result contains saved name', async ({ page }) => {
+    // Set the input value via JS since it lives inside shadow DOM
+    await page.evaluate(() => {
+      const input = document.querySelector('io-modal io-input') as any;
+      if (input) input.value = 'Test item';
+    });
+
+    // Also fire an input event so the React state (name) is updated
+    await page.evaluate(() => {
+      const input = document.querySelector('io-modal io-input') as any;
+      input?.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
+    });
+
+    const { x, y } = await page.evaluate(() => {
+      const modal = document.querySelector('io-modal');
+      const saveBtn = modal?.querySelectorAll('io-button[slot="footer"]')?.[1];
+      const rect = saveBtn?.shadowRoot?.querySelector('button')?.getBoundingClientRect();
+      return {
+        x: Math.round((rect?.left ?? 0) + (rect?.width ?? 0) / 2),
+        y: Math.round((rect?.top ?? 0) + (rect?.height ?? 0) / 2),
+      };
+    });
+
+    await page.mouse.click(x, y);
+    await page.waitForTimeout(200);
+
+    await expect(page.getByTestId('result')).toContainText('saved: Test item');
+  });
 });

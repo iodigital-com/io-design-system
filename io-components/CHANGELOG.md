@@ -44,7 +44,7 @@
   the visual footer area was being captured by the host backdrop before reaching
   the IoButton elements — making Cancel/Save footer buttons unclickable.
 
-  **Fix:** Following the Porsche Design System pattern, the backdrop is now a
+  **Fix:** The backdrop is now a
   dedicated `<div class="modal__backdrop">` rendered inside the shadow DOM
   _before_ the `<dialog>`, and the `:host` stays as `display: contents` always.
   This removes the host from the pointer-event path entirely:
@@ -104,7 +104,7 @@
 
   2. **Scroll locking added** (`document.body.style.overflow = 'hidden'` on open,
      restored on close). This ensures the page cannot be scrolled behind the modal
-     in any mode — matching the Porsche Design System pattern.
+     in any mode.
 
   3. **Backdrop fade-in animation** added to the `preventTopLayer` CSS path so the
      host overlay animates identically to the native `::backdrop`.

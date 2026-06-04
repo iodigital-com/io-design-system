@@ -1,9 +1,11 @@
-import { Component, Host, Prop, h } from '@stencil/core';
+import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
 import type { IoIconName } from '../../utils/icons';
 import { getIconSvg } from '../../utils/icons';
 import { getIconStyles } from './io-icon-styles';
 import type { IoIconSize } from './types';
+
+const svgCache = new Map<string, string>();
 
 /**
  * io-icon
@@ -17,6 +19,7 @@ import type { IoIconSize } from './types';
  * @example
  * <io-icon name="check" size="md"></io-icon>
  * <io-icon name="arrow-right" size="sm" label="Navigate forward"></io-icon>
+ * <io-icon icon-source="/assets/custom.svg" label="Custom icon"></io-icon>
  */
 @Component({
   tag: 'io-icon',
@@ -32,18 +35,63 @@ export class IoIcon {
   /** Accessible label. When provided, replaces aria-hidden with role="img" + aria-label. */
   @Prop() label?: string;
 
-  render() {
-    const svg = getIconSvg(this.name);
-    if (!svg) return null;
+  /** URL of a custom SVG to render instead of the built-in registry. Overrides name. */
+  @Prop() iconSource?: string;
 
-    const svgWithAria = this.label
+  /** Mirror the icon horizontally. Useful for explicit RTL overrides. */
+  @Prop({ reflect: true }) flip = false;
+
+  @State() private fetchedSvg?: string;
+
+  @Watch('iconSource')
+  async loadIconSource(url?: string) {
+    if (!url) {
+      this.fetchedSvg = undefined;
+      return;
+    }
+    if (svgCache.has(url)) {
+      this.fetchedSvg = svgCache.get(url);
+      return;
+    }
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`fetch ${url} → ${res.status}`);
+      const text = await res.text();
+      svgCache.set(url, text);
+      this.fetchedSvg = text;
+    } catch {
+      this.fetchedSvg = undefined;
+    }
+  }
+
+  componentWillLoad() {
+    if (this.iconSource) return this.loadIconSource(this.iconSource);
+  }
+
+  private patchAria(svg: string): string {
+    return this.label
       ? svg.replace('aria-hidden="true"', `role="img" aria-label="${this.label}"`)
       : svg;
+  }
+
+  render() {
+    if (this.iconSource) {
+      if (!this.fetchedSvg) return null;
+      return (
+        <Host>
+          <style>{getIconStyles()}</style>
+          <span innerHTML={this.patchAria(this.fetchedSvg)} />
+        </Host>
+      );
+    }
+
+    const svg = getIconSvg(this.name);
+    if (!svg) return null;
 
     return (
       <Host>
         <style>{getIconStyles()}</style>
-        <span innerHTML={svgWithAria} />
+        <span innerHTML={this.patchAria(svg)} />
       </Host>
     );
   }

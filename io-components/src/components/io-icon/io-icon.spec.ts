@@ -33,7 +33,28 @@ describe('io-icon', () => {
     const c = new IoIcon();
     c.name = 'check';
     c.label = 'Success';
-    // render() should not throw and should produce a non-null result
+    const result = (c as any).render();
+    expect(result).not.toBeNull();
+  });
+
+  it('defaults flip to false', () => {
+    const c = new IoIcon();
+    c.name = 'arrow-right';
+    expect(c.flip).toBe(false);
+  });
+
+  it('returns null when iconSource set but fetchedSvg not yet loaded', () => {
+    const c = new IoIcon();
+    c.iconSource = 'https://example.com/icon.svg';
+    (c as any).fetchedSvg = undefined;
+    const result = (c as any).render();
+    expect(result).toBeNull();
+  });
+
+  it('renders fetchedSvg when iconSource resolves', () => {
+    const c = new IoIcon();
+    c.iconSource = 'https://example.com/icon.svg';
+    (c as any).fetchedSvg = '<svg aria-hidden="true"><path/></svg>';
     const result = (c as any).render();
     expect(result).not.toBeNull();
   });

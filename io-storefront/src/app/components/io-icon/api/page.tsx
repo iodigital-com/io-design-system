@@ -27,8 +27,9 @@ export default function IoIconApiPage() {
               <InlineCode key="t">IoIconName</InlineCode>,
               <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic', fontSize: '0.8rem' }}>required</span>,
               <span key="desc">
-                The icon to render. Must be one of the 32 registered names from the io icon registry.
+                The icon to render. Must be one of the 51 registered names from the io icon registry.
                 See the <strong>Usage</strong> tab for the full list of available names.
+                Ignored when <InlineCode>iconSource</InlineCode> is set.
               </span>,
             ],
             [
@@ -53,6 +54,26 @@ export default function IoIconApiPage() {
                 <InlineCode>role=&quot;img&quot;</InlineCode> and <InlineCode>aria-label</InlineCode>.
                 When omitted, <InlineCode>aria-hidden=&quot;true&quot;</InlineCode> is applied and the icon
                 is invisible to assistive technology.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">icon-source</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic', fontSize: '0.8rem' }}>undefined</span>,
+              <span key="desc">
+                URL of a custom SVG to render. Fetched once, cached for the session. Overrides{' '}
+                <InlineCode>name</InlineCode> when set. Requires <InlineCode>label</InlineCode> for
+                non-decorative use. Renders nothing until fetch resolves.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>flip</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Mirrors the icon horizontally via <InlineCode>scaleX(-1)</InlineCode>. Use for explicit
+                RTL overrides. Directional icons (arrow-left/right, chevron-left/right) also flip
+                automatically in <InlineCode>:dir(rtl)</InlineCode> contexts.
               </span>,
             ],
           ]}
@@ -91,8 +112,8 @@ export default function IoIconApiPage() {
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-icon has no slots.</strong>
-          {' '}The SVG is rendered programmatically from the pre-extracted icon registry using the{' '}
-          <InlineCode>name</InlineCode> prop. There is no slot for custom SVG content.
+          {' '}SVG is rendered programmatically from the registry (<InlineCode>name</InlineCode>) or
+          fetched from a URL (<InlineCode>icon-source</InlineCode>). No slot for custom SVG content.
         </EmptyNote>
       </section>
 

@@ -50,4 +50,7 @@ jobs:
         if: steps.changesets.outputs.hasChangesets == 'false'
         run: npx changeset publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ORG_PACKAGES_TOKEN must be a PAT from an iodigital-com org member
+          # with write:packages + read:packages scope.
+          # GITHUB_TOKEN lacks permission to read/write @iodigital-com packages.
+          NODE_AUTH_TOKEN: ${{ secrets.ORG_PACKAGES_TOKEN }}

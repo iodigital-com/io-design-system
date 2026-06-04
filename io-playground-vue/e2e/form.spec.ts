@@ -18,6 +18,6 @@ test.describe('FACE form (Vue 3)', () => {
     await page.evaluate(() => {
       (document.querySelector('form') as HTMLFormElement)?.requestSubmit();
     });
-    await expect(page.getByTestId('result')).toContainText('Vue User');
+    await expect(page.getByTestId('form-result')).toContainText('Vue User');
   });
 });

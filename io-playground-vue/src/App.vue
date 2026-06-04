@@ -53,7 +53,7 @@ function handleSubmit(e: Event) {
   <main v-else-if="page === 'modal'">
     <h1>io-modal — Footer Button Click Test</h1>
     <io-button @click="openModal()">Open modal</io-button>
-    <div class="result" data-testid="result">{{ modalResult || 'No action yet' }}</div>
+    <div class="result" data-testid="modal-result">{{ modalResult || 'No action yet' }}</div>
     <io-modal
       :open="modalOpen ? '' : null"
       heading="Create item"
@@ -74,7 +74,7 @@ function handleSubmit(e: Event) {
       <io-checkbox label="I agree to terms" name="terms" required />
       <io-button type="submit">Submit</io-button>
     </form>
-    <div v-if="formResult" class="result" data-testid="result">
+    <div v-if="formResult" class="result" data-testid="form-result">
       <pre>{{ formResult }}</pre>
     </div>
   </main>
@@ -84,7 +84,7 @@ function handleSubmit(e: Event) {
     <h1>io-button — Click Event Test</h1>
     <io-button @click="buttonCount++">Click me</io-button>
     <io-button variant="ghost" @click="buttonCount = 0" style="margin-left: 0.5rem">Reset</io-button>
-    <div class="result" data-testid="result">Click count: {{ buttonCount }}</div>
+    <div class="result" data-testid="button-result">Click count: {{ buttonCount }}</div>
   </main>
 </template>
 

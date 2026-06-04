@@ -1,7 +1,7 @@
 {
   "name": "@iodigital-com/components",
   "version": "1.0.0",
-  "description": "io Digital Design System \u2014 Framework-agnostic Web Components built with Stencil.js",
+  "description": "io Digital Design System — Framework-agnostic Web Components built with Stencil.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -38,7 +38,8 @@
       "types": "./dist/types/utils/focus-visible.d.ts",
       "import": "./dist/collection/utils/focus-visible.js"
     },
-    "./global.css": "./dist/io-components/io-components.css"
+    "./global.css": "./dist/io-components/io-components.css",
+    "./dist/io-components/io-components.css": "./dist/io-components/io-components.css"
   },
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",

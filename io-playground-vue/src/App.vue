@@ -89,7 +89,7 @@ function handleSubmit(e: Event) {
 </template>
 
 <style>
-@import '@iodigital-com/components/dist/io-components/io-components.css';
+@import '@iodigital-com/components/global.css';
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; font-family: var(--io-font-primary, system-ui, sans-serif); padding: 2rem; background: var(--io-bg-page, #fff); color: var(--io-text-primary, #111); }
 nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }

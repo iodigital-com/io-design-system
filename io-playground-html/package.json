@@ -13,7 +13,7 @@
     "@iodigital-com/components": "file:../io-components"
   },
   "devDependencies": {
-    "@playwright/test": "^1.50.0",
-    "vite": "^6.0.0"
+    "@playwright/test": "^1.60.0",
+    "vite": "^8.0.16"
   }
 }

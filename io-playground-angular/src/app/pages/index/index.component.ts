@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 @Component({
-  standalone: true,
   template: `
     <main>
       <h1>io Design System — Angular 20 Playground</h1>

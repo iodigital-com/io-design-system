@@ -55,7 +55,7 @@ function handleSubmit(e: Event) {
     <io-button @click="openModal()">Open modal</io-button>
     <div class="result" data-testid="result">{{ modalResult || 'No action yet' }}</div>
     <io-modal
-      :open="modalOpen || null"
+      :open="modalOpen ? '' : null"
       heading="Create item"
       @dismiss="handleCancel()"
     >

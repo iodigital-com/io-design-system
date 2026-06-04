@@ -7,7 +7,7 @@ export default defineConfig({
       template: {
         compilerOptions: {
           // Treat all tags with a dash as custom elements (Web Components)
-          isCustomElement: (tag) => tag.includes('-'),
+          isCustomElement: (tag) => tag.startsWith('io-'),
         },
       },
     }),

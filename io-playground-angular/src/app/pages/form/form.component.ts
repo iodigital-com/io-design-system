@@ -2,7 +2,6 @@ import { Component, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [JsonPipe],
   template: `

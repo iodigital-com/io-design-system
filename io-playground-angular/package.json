@@ -9,23 +9,23 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@angular/animations": "^20.0.0",
-    "@angular/common": "^20.0.0",
-    "@angular/compiler": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@angular/forms": "^20.0.0",
-    "@angular/platform-browser": "^20.0.0",
-    "@angular/platform-browser-dynamic": "^20.0.0",
-    "@angular/router": "^20.0.0",
+    "@angular/animations": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/compiler": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/platform-browser-dynamic": "^22.0.0",
+    "@angular/router": "^22.0.0",
     "@iodigital-com/components": "file:../io-components",
     "@iodigital-com/components-angular": "file:../io-components-angular",
     "rxjs": "^7.8.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.16.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.0.0",
-    "@angular/cli": "^20.0.0",
-    "@playwright/test": "^1.50.0",
-    "typescript": "~5.7.0"
+    "@angular/build": "^22.0.0",
+    "@angular/cli": "^22.0.0",
+    "@playwright/test": "^1.60.0",
+    "typescript": "~5.8.0"
   }
 }

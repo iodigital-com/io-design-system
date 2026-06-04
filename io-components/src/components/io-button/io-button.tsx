@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h }
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import type { IoIconName } from '../../utils/icons';
 
 import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
 
@@ -72,6 +73,18 @@ export class IoButton {
 
   /** Side on which the arrow is rendered. Defaults to 'right'. */
   @Prop({ reflect: true }) arrowPlacement: IoButtonArrowPlacement = 'right';
+
+  /** Name of a Lucide icon to render inside the button. */
+  @Prop() icon?: IoIconName;
+
+  /** Custom SVG string for a non-library icon (mutually exclusive with `icon`). */
+  @Prop() iconSource?: string;
+
+  /** Hides the text label visually (icon-only mode with accessible label via `label` prop). */
+  @Prop() hideLabel = false;
+
+  /** Side on which the icon is rendered relative to the label. Defaults to 'left'. */
+  @Prop({ reflect: true }) iconPosition: 'left' | 'right' = 'left';
 
   /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
@@ -147,8 +160,18 @@ export class IoButton {
 
   // ── Render ───────────────────────────────────────────────────
 
+  private renderIcon() {
+    if (!this.icon && !this.iconSource) return null;
+
+    if (this.iconSource) {
+      return <span class="btn__icon-wrap" aria-hidden="true" innerHTML={this.iconSource} />;
+    }
+
+    return <io-icon name={this.icon!} size="sm" aria-hidden="true" />;
+  }
+
   render() {
-    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement } = this;
+    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition } = this;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
@@ -160,6 +183,7 @@ export class IoButton {
     this.warnIconOnlyLabelMissing();
 
     const Tag = href ? 'a' : 'button';
+    const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
       class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
@@ -185,6 +209,14 @@ export class IoButton {
       innerProps['aria-label'] = accessibleLabel;
     }
 
+    const labelSlot = iconOnly
+      ? <span class="btn__icon" aria-hidden="true"><slot /></span>
+      : (
+        <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'} aria-hidden={hideLabel ? 'true' : undefined}>
+          <slot />
+        </span>
+      );
+
     return (
       <Host class={classList}>
         <style>{getButtonStyles()}</style>
@@ -200,7 +232,9 @@ export class IoButton {
               </svg>
             </span>
           )}
-          {iconOnly ? <span class="btn__icon" aria-hidden="true"><slot /></span> : <span class="btn__label"><slot /></span>}
+          {hasIcon && iconPosition === 'left' && this.renderIcon()}
+          {labelSlot}
+          {hasIcon && iconPosition === 'right' && this.renderIcon()}
           {!iconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}

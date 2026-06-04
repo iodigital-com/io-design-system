@@ -1968,6 +1968,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-icon-size-xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale — 12px (0.75rem). Used by io-icon component."
+    },
+    {
       "runtimeCssVar": "--io-icon-size-lg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -1990,6 +1998,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-icon-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale — 32px (2rem). Used by io-icon component."
     },
     {
       "runtimeCssVar": "--io-input-border-width",

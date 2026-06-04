@@ -20,6 +20,7 @@ export type IoTagNames =
   | 'io-drawer'
   | 'io-form-field'
   | 'io-heading'
+  | 'io-icon'
   | 'io-inline-notification'
   | 'io-input'
   | 'io-link'

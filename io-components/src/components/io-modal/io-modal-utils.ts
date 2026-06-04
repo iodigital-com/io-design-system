@@ -1,6 +1,6 @@
-const MODAL_HEADING_ID_PREFIX = 'io-modal-heading-';
+import { getIconSvg } from '../../utils/icons';
 
-const MODAL_CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+const MODAL_HEADING_ID_PREFIX = 'io-modal-heading-';
 
 export function createModalHeadingId(randomValue: string): string {
   return `${MODAL_HEADING_ID_PREFIX}${randomValue}`;
@@ -11,5 +11,5 @@ export function isBackdropClick(rect: DOMRect, clientX: number, clientY: number)
 }
 
 export function getModalCloseIcon(): string {
-  return MODAL_CLOSE_ICON;
+  return getIconSvg('x', 20);
 }

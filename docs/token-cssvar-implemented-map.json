@@ -561,12 +561,6 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "component.toast.itemAccentBorderWidth",
-      "runtimeCssVar": "--io-toast-item-accent-border-width",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "component.toast.itemCloseOffsetTop",
       "runtimeCssVar": "--io-toast-item-close-offset-top",
       "sourceFile": "io-components/src/global/app.css",

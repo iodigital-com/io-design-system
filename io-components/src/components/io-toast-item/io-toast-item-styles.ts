@@ -31,6 +31,8 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       gap: var(--io-space-3);
       padding: var(--io-space-4);
       background: ${bgColor};
+      backdrop-filter: blur(var(--io-toast-item-blur, 12px));
+      -webkit-backdrop-filter: blur(var(--io-toast-item-blur, 12px));
       border-radius: var(--io-border-radius-sm);
       box-shadow: var(--io-shadow-lg);
       color: var(--io-text-primary);

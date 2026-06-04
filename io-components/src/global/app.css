@@ -410,7 +410,7 @@
 
   /* Toast */
   --io-toast-max-width:          400px;
-  --io-toast-item-accent-border-width: 4px;
+  --io-toast-item-blur:          12px;
   --io-toast-item-icon-offset-top: 1px;
   --io-toast-item-close-size:    var(--io-icon-size-lg);
   --io-toast-item-close-offset-top: -2px;

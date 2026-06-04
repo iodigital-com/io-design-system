@@ -201,7 +201,7 @@ export class IoRadio {
     if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
-    this.change.emit({ checked: input.checked, value: this.value });
+    this.change.emit({ value: this.value });
 
     // Mutual exclusion: when this radio becomes checked, deselect all other
     // io-radio elements in the document that share the same name. Native

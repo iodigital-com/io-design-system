@@ -11,11 +11,10 @@ import {
   getComboboxOptionClass,
   parseSelectContent,
 } from './io-select-utils';
-import type { IoSelectChangeDetail } from './io-select-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types';
+import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeDetail } from './types';
 
 /**
  * io-select

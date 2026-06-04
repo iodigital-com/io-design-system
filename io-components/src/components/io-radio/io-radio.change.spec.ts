@@ -23,17 +23,17 @@ describe('io-radio — change handling', () => {
     component.value = 'test-value';
   });
 
-  it('emits change with checked=true when selecting', () => {
+  it('emits change with value when selecting', () => {
     const ev = makeChangeEvent(true);
     (component as any).handleChange(ev);
-    expect(emitMock).toHaveBeenCalledWith({ checked: true, value: 'test-value' });
+    expect(emitMock).toHaveBeenCalledWith({ value: 'test-value' });
   });
 
-  it('emits change with checked=false when deselecting', () => {
+  it('emits change with value when deselecting', () => {
     component.checked = true;
     const ev = makeChangeEvent(false);
     (component as any).handleChange(ev);
-    expect(emitMock).toHaveBeenCalledWith({ checked: false, value: 'test-value' });
+    expect(emitMock).toHaveBeenCalledWith({ value: 'test-value' });
   });
 
   it('updates checked prop on change', () => {

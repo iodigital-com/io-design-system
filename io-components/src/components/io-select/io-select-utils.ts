@@ -2,9 +2,6 @@ import { offset, flip, shift } from '@floating-ui/dom';
 
 import type { IoSelectOption, IoSelectOptionGroup } from './types';
 
-/** Payload emitted by the io-select change event */
-export type IoSelectChangeDetail = { value: string | string[]; name?: string };
-
 export function sanitizeNameSegment(name: string): string {
   return name
     .trim()

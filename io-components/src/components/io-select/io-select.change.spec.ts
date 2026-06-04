@@ -59,4 +59,16 @@ describe('io-select — change handling', () => {
     (component as any).handleBlur(ev);
     expect(blurMock).toHaveBeenCalledWith(ev);
   });
+
+  it('includes name in change detail when name prop is set', () => {
+    // Arrange
+    component.name = 'country';
+    const ev = makeChangeEvent('nl');
+
+    // Act
+    (component as any).handleChange(ev);
+
+    // Assert
+    expect(changeMock).toHaveBeenCalledWith({ value: 'nl', name: 'country' });
+  });
 });

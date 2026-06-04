@@ -1,7 +1,7 @@
 {
   "name": "@iodigital-com/components",
-  "version": "1.0.4",
-  "description": "io Digital Design System — Framework-agnostic Web Components built with Stencil.js",
+  "version": "1.0.0",
+  "description": "io Digital Design System \u2014 Framework-agnostic Web Components built with Stencil.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public",

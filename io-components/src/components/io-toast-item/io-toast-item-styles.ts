@@ -1,13 +1,5 @@
 import type { IoToastVariant } from '../io-toast/types';
 
-const VARIANT_ACCENT: Record<IoToastVariant, string> = {
-  neutral: 'var(--io-border)',
-  success: 'var(--io-color-success)',
-  error:   'var(--io-color-error)',
-  warning: 'var(--io-color-warning)',
-  info:    'var(--io-color-info)',
-};
-
 const VARIANT_BG: Record<IoToastVariant, string> = {
   neutral: 'var(--io-bg-card)',
   success: 'var(--io-color-success-soft)',
@@ -16,9 +8,17 @@ const VARIANT_BG: Record<IoToastVariant, string> = {
   info:    'var(--io-color-info-soft)',
 };
 
+const VARIANT_ICON: Record<IoToastVariant, string> = {
+  neutral: 'var(--io-text-secondary)',
+  success: 'var(--io-color-success)',
+  error:   'var(--io-color-error)',
+  warning: 'var(--io-color-warning)',
+  info:    'var(--io-color-info)',
+};
+
 export function getToastItemStyles(variant: IoToastVariant): string {
-  const accentColor = VARIANT_ACCENT[variant];
   const bgColor = VARIANT_BG[variant];
+  const iconColor = VARIANT_ICON[variant];
 
   return `
     :host {
@@ -31,7 +31,6 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       gap: var(--io-space-3);
       padding: var(--io-space-4);
       background: ${bgColor};
-      border: 1px solid var(--io-border);
       border-radius: var(--io-border-radius-sm);
       box-shadow: var(--io-shadow-lg);
       color: var(--io-text-primary);
@@ -43,7 +42,7 @@ export function getToastItemStyles(variant: IoToastVariant): string {
 
     .toast__icon {
       flex-shrink: 0;
-      color: ${accentColor};
+      color: ${iconColor};
       margin-top: var(--io-toast-item-icon-offset-top);
     }
 

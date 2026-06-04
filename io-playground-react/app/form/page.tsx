@@ -24,7 +24,7 @@ export default function FormPage() {
           <option value="design">Designer</option>
           <option value="pm">Product Manager</option>
         </IoSelect>
-        <IoCheckbox label="I agree to terms" name="terms" required />
+        <IoCheckbox label="I agree to terms" name="terms" value="on" required />
         <div style={{ display: 'flex', gap: '1rem' }}>
           <IoRadio label="Option A" name="choice" value="a" />
           <IoRadio label="Option B" name="choice" value="b" />

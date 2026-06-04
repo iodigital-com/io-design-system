@@ -10,14 +10,13 @@ export default function TabsPage() {
     <main suppressHydrationWarning>
       <h1>io-tabs — Tab Switch Test</h1>
       <IoTabs
-        onUpdate={(e: CustomEvent<{ index: number }>) => setActive(e.detail?.index ?? 0)}
+        onUpdate={(e: CustomEvent<{ activeTabIndex: number }>) =>
+          setActive(e.detail?.activeTabIndex ?? 0)
+        }
       >
-        <span slot="label">Tab One</span>
-        <span slot="label">Tab Two</span>
-        <span slot="label">Tab Three</span>
-        <div>Content for Tab One</div>
-        <div>Content for Tab Two</div>
-        <div>Content for Tab Three</div>
+        <button type="button">Tab One</button>
+        <button type="button">Tab Two</button>
+        <button type="button">Tab Three</button>
       </IoTabs>
       <div className="result" data-testid="result">Active tab: {active}</div>
     </main>

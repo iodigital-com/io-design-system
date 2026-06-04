@@ -8,20 +8,31 @@ function submitForm(fields: Record<string, string>, checkboxNames: string[] = []
   return (page: import('@playwright/test').Page) =>
     page.evaluate(
       ({ fields, checkboxNames, radioValues }: { fields: Record<string, string>; checkboxNames: string[]; radioValues: Record<string, string> }) => {
+        const form = document.querySelector('form') as HTMLFormElement;
+        // React (like Vue) sets custom element props as DOM properties, not HTML attributes.
+        // FACE FormData uses content attributes for element names — sync them first.
+        // React/Vue set custom element props as DOM properties, not HTML attributes.
+        // FACE FormData uses content attributes — sync name AND value props to attributes.
+        form?.querySelectorAll('io-input, io-checkbox, io-radio, io-select').forEach((el: any) => {
+          if (el.name && !el.getAttribute('name')) el.setAttribute('name', el.name);
+          if (el.tagName === 'IO-RADIO' && el.value && !el.getAttribute('value'))
+            el.setAttribute('value', el.value);
+        });
         for (const [name, value] of Object.entries(fields)) {
-          const el = document.querySelector(`io-input[name="${name}"]`) as any;
+          const inputs = Array.from(form?.querySelectorAll('io-input') ?? []) as any[];
+          const el = inputs.find((e: any) => e.name === name);
           if (el) el.value = value;
         }
         for (const name of checkboxNames) {
-          const el = document.querySelector(`io-checkbox[name="${name}"]`) as any;
+          const checkboxes = Array.from(form?.querySelectorAll('io-checkbox') ?? []) as any[];
+          const el = checkboxes.find((e: any) => e.name === name);
           if (el) el.checked = true;
         }
         for (const [name, value] of Object.entries(radioValues)) {
-          const el = document.querySelector(`io-radio[value="${value}"][name="${name}"]`) as any
-            ?? document.querySelector(`io-radio[value="${value}"]`) as any;
+          const radios = Array.from(form?.querySelectorAll('io-radio') ?? []) as any[];
+          const el = radios.find((e: any) => e.value === value && e.name === name);
           if (el) el.checked = true;
         }
-        const form = document.querySelector('form') as HTMLFormElement;
         form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       },
       { fields, checkboxNames, radioValues }

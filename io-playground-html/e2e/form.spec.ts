@@ -18,13 +18,15 @@ test.describe('FACE form (Native HTML)', () => {
     // requestSubmit() would check validity before native inputs reflect new values.
     // dispatchEvent bypasses constraint validation while still firing the submit event.
     await page.evaluate(() => {
-      const nameInput = document.querySelector('io-input[name="name"]') as any;
-      const emailInput = document.querySelector('io-input[name="email"]') as any;
-      const checkbox = document.querySelector('io-checkbox[name="terms"]') as any;
+      // Scope to #test-form — the modal section also has io-input[name="name"]
+      // and querySelector returns the first DOM match (the modal's, not the form's).
+      const form = document.getElementById('test-form') as HTMLFormElement;
+      const nameInput = form?.querySelector('io-input[name="name"]') as any;
+      const emailInput = form?.querySelector('io-input[name="email"]') as any;
+      const checkbox = form?.querySelector('io-checkbox[name="terms"]') as any;
       if (nameInput) nameInput.value = 'HTML User';
       if (emailInput) emailInput.value = 'html@test.io';
       if (checkbox) checkbox.checked = true;
-      const form = document.getElementById('test-form') as HTMLFormElement;
       form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     });
     const result = page.getByTestId('form-result');

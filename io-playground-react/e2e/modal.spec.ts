@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('io-modal — footer button click (React 19)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/modal');
-    await page.getByRole('button', { name: 'Open modal' }).click();
+    await page.waitForFunction(() => customElements.get('io-button') !== undefined);
+    await page.locator('io-button').filter({ hasText: 'Open modal' }).click();
     await page.waitForTimeout(300); // animation
   });
 
@@ -29,10 +30,13 @@ test.describe('io-modal — footer button click (React 19)', () => {
   });
 
   test('Save button — real mouse click with valid input fires save', async ({ page }) => {
-    // Fill the input
+    // Fill the input AND dispatch input event so React's onInput handler updates name state
     await page.evaluate(() => {
       const input = document.querySelector('io-modal io-input') as any;
-      if (input) input.value = 'Test item';
+      if (input) {
+        input.value = 'Test item';
+        input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      }
     });
 
     const { x, y } = await page.evaluate(() => {

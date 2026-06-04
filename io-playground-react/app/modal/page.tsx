@@ -1,16 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { IoButton, IoModal, IoInput } from '@iodigital-com/components-react';
 
 export default function ModalPage() {
   const [open, setOpen] = useState(false);
   const [result, setResult] = useState('');
   const [name, setName] = useState('');
+  // Ref tracks whether handleSave() initiated the close — prevents
+  // the dismiss side-effect from overwriting the saved result (stale closure issue).
+  const savedRef = useRef(false);
 
   const handleCancel = () => {
     setOpen(false);
     setResult('cancel-clicked');
+  };
+
+  const handleDismiss = () => {
+    if (!savedRef.current) handleCancel();
+    savedRef.current = false;
   };
 
   const handleSave = () => {
@@ -18,6 +26,7 @@ export default function ModalPage() {
       setResult('validation-error: name is required');
       return;
     }
+    savedRef.current = true;
     setOpen(false);
     setResult(`saved: ${name}`);
   };
@@ -26,7 +35,7 @@ export default function ModalPage() {
     <main suppressHydrationWarning>
       <h1>io-modal — Footer Button Click Test</h1>
 
-      <IoButton onClick={() => { setOpen(true); setResult(''); }}>
+      <IoButton onClick={() => { setOpen(true); setResult(''); setName(''); }}>
         Open modal
       </IoButton>
 
@@ -35,7 +44,7 @@ export default function ModalPage() {
       <IoModal
         open={open}
         heading="Create item"
-        onDismiss={handleCancel}
+        onDismiss={handleDismiss}
       >
         <IoInput
           label="Name"

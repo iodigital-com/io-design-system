@@ -79,7 +79,7 @@ function handleSubmit(e: Event) {
     <form @submit="handleSubmit" style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px;">
       <io-input label="Full name" name="name" required />
       <io-input label="Email" name="email" type="email" required />
-      <io-checkbox label="I agree to terms" name="terms" required />
+      <io-checkbox label="I agree to terms" name="terms" value="on" required />
       <io-button type="submit">Submit</io-button>
     </form>
     <div v-if="formResult" class="result" data-testid="form-result">

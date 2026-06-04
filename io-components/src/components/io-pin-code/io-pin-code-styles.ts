@@ -69,7 +69,7 @@ export function getPinCodeStyles(): string {
     }
 
     /* Focus state */
-    .pin-code__slot:focus {
+    .pin-code__slot:focus-visible {
       border-color: var(--io-color-primary);
       border-width: 2px;
       box-shadow: var(--io-focus-ring-active);

@@ -357,8 +357,8 @@ export function getSelectStyles(): string {
 
     .combobox-option__checkbox {
       flex-shrink: 0;
-      width: 18px;
-      height: 18px;
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
       border: var(--io-checkbox-border-width) solid var(--io-border-interactive);
       border-radius: var(--io-border-radius-xs);
       display: flex;

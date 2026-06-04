@@ -15,7 +15,7 @@ test.describe('FACE form (Native HTML)', () => {
       if (checkbox) checkbox.checked = true;
     });
     await page.getByRole('button', { name: 'Submit' }).click();
-    const result = page.getByTestId('result');
+    const result = page.getByTestId('form-result');
     await expect(result).toBeVisible();
     await expect(result).toContainText('HTML User');
   });

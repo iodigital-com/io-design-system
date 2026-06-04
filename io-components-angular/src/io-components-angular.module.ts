@@ -39,7 +39,7 @@ import { DIRECTIVES } from './directives';
  * export class MyComponent {}
  */
 @NgModule({
-  imports: DIRECTIVES,
+  declarations: DIRECTIVES,
   exports: DIRECTIVES,
 })
 export class IoComponentsAngularModule {}

@@ -44,7 +44,7 @@ export class IoRadio {
   @Prop() required = false;
 
   /** Disables the radio button */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';

@@ -43,7 +43,7 @@ export class IoSwitch {
   @Prop() required = false;
 
   /** Disables the switch */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Puts the switch in error state */
   @Prop({ reflect: true }) error = false;

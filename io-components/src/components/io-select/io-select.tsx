@@ -72,7 +72,7 @@ export class IoSelect {
   @Prop() required = false;
 
   /** Disables the select */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color, icon, and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -198,8 +198,12 @@ export class IoSelect {
   }
 
   connectedCallback() {
-    if (!this.label && !this.el.getAttribute('aria-label') && !this.el.getAttribute('aria-labelledby')) {
-      console.error('[io-select] Missing accessible label. Provide label prop, aria-label, or aria-labelledby.');
+    const hasLabelProp = this.label?.trim();
+    const hasAriaLabel = this.el.getAttribute('aria-label')?.trim();
+    const hasAriaLabelledBy = this.el.getAttribute('aria-labelledby')?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (!hasLabelProp && !hasAriaLabel && !hasAriaLabelledBy && !hasLabelSlot) {
+      console.error(`[io-select] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".`);
     }
   }
 

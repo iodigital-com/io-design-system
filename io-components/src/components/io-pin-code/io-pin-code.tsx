@@ -63,7 +63,7 @@ export class IoPinCode {
   @Prop() required = false;
 
   /** Disables all inputs */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Visual validation state — aligns with other io form-field components */
   @Prop({ reflect: true }) state: IoPinCodeState = 'none';

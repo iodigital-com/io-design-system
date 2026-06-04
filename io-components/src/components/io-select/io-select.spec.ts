@@ -205,7 +205,7 @@ describe('io-select — formDisabledCallback', () => {
 });
 
 describe('io-select — connectedCallback', () => {
-  it('logs error when label, aria-label, and aria-labelledby are all missing', () => {
+  it('logs error when label, aria-label, aria-labelledby, and slot="label" are all missing', () => {
     const component = new IoSelect();
     const el = document.createElement('io-select');
     (component as any).el = el;
@@ -215,7 +215,7 @@ describe('io-select — connectedCallback', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     (component as any).label = '';
     (component as any).connectedCallback();
-    expect(errorSpy).toHaveBeenCalledWith('[io-select] Missing accessible label. Provide label prop, aria-label, or aria-labelledby.');
+    expect(errorSpy).toHaveBeenCalledWith('[io-select] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".');
     errorSpy.mockRestore();
   });
 
@@ -237,6 +237,24 @@ describe('io-select — connectedCallback', () => {
     const component = new IoSelect();
     const el = document.createElement('io-select');
     el.setAttribute('aria-label', 'Country');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when slot="label" child is present', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    const slottedLabel = document.createElement('span');
+    slottedLabel.setAttribute('slot', 'label');
+    slottedLabel.textContent = 'Country';
+    el.appendChild(slottedLabel);
     (component as any).el = el;
     (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
     (component as any).change = { emit: vi.fn() };

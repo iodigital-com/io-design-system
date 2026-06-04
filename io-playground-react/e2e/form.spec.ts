@@ -31,10 +31,11 @@ function submitForm(fields: Record<string, string>, checkboxNames: string[] = []
 test.describe('FACE form (React)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/form');
-    await page.waitForFunction(() =>
-      customElements.get('io-input') !== undefined &&
-      customElements.get('io-checkbox') !== undefined
-    );
+    await page.waitForFunction(() => {
+      const inputs = Array.from(document.querySelectorAll('io-input'));
+      return inputs.length > 0 &&
+        inputs.every(el => !!(el as any).shadowRoot?.querySelector('input'));
+    });
   });
 
   test('full submission captures all field values', async ({ page }) => {

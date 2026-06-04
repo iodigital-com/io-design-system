@@ -4,10 +4,13 @@ test.describe('FACE form (Native HTML)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => (window as any).show('form'));
-    await page.waitForFunction(() =>
-      customElements.get('io-input') !== undefined &&
-      customElements.get('io-checkbox') !== undefined
-    );
+    // Wait for ALL io-input shadow DOMs to be rendered — confirms internals are set up.
+    // customElements.get() only confirms class registration, not instance initialization.
+    await page.waitForFunction(() => {
+      const inputs = Array.from(document.querySelectorAll('io-input'));
+      return inputs.length > 0 &&
+        inputs.every(el => !!(el as any).shadowRoot?.querySelector('input'));
+    });
   });
 
   test('FACE form captures io-input value via FormData', async ({ page }) => {

@@ -405,6 +405,17 @@ export function getButtonStyles(): string {
       transition: opacity 150ms ease;
     }
 
+    /* Visually hidden label for icon+hideLabel mode — preserves accessible text */
+    .btn__label--hidden {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
     .btn--loading .btn__label,
     .btn--loading .btn__arrow {
       opacity: 0;

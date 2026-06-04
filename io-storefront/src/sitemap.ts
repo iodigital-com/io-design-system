@@ -176,6 +176,14 @@ export const sitemap: NavSection[] = [
         related: ['io-text', 'io-link', 'io-badge'],
       },
       {
+        label: 'Icon',
+        href: '/components/io-icon/configurator',
+        status: 'stable',
+        slug: 'io-icon',
+        description: 'Token-driven SVG icon set derived from Lucide. Renders at five sizes, inherits currentColor, and supports accessible labelling for meaningful icons.',
+        related: ['io-button', 'io-badge', 'io-spinner'],
+      },
+      {
         label: 'Inline Notification',
         href: '/components/io-inline-notification/configurator',
         status: 'beta',

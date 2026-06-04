@@ -8,6 +8,10 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@iodigital-com/storefront"
+    "@iodigital-com/storefront",
+    "@iodigital-com/playground-react",
+    "@iodigital-com/playground-vue",
+    "@iodigital-com/playground-angular",
+    "@iodigital-com/playground-html"
   ]
 }

@@ -576,6 +576,18 @@
     "description": "Vertical padding of the input field."
   },
   {
+    "cssVar": "--io-input-border-error-width",
+    "classification": "public-api",
+    "component": "io-input",
+    "description": "Border width applied to the input underline in an error state (2px satisfies WCAG 1.4.1 non-color indicator requirement)."
+  },
+  {
+    "cssVar": "--io-textarea-border-error-width",
+    "classification": "public-api",
+    "component": "io-textarea",
+    "description": "Border width applied to the textarea underline in an error state (2px satisfies WCAG 1.4.1 non-color indicator requirement)."
+  },
+  {
     "cssVar": "--io-label-font-size",
     "classification": "public-api",
     "component": "io-input",

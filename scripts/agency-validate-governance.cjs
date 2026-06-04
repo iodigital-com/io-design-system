@@ -233,16 +233,6 @@ function validateCopilotExtendedCuratedJson(relativePath) {
 }
 
 // Required governance files
-requireFile("docs/agency-agents/ADAPTATION_LAYER.md");
-requireFile("docs/agency-agents/README.md");
-requireFile("docs/agency-agents/curated-io-design-system.json");
-requireFile("docs/agency-agents/curated-io-design-system-copilot.json");
-requireFile("docs/agency-agents/curated-io-design-system-copilot-extended.json");
-requireFile("scripts/install-curated-agency-claude.cjs");
-requireFile("scripts/sync-curated-agency-copilot.cjs");
-requireFile("scripts/sync-curated-agency-copilot-extended.cjs");
-requireFile("scripts/check-copilot-agent-drift.cjs");
-requireFile("scripts/check-copilot-agent-extended-drift.cjs");
 requireFile("scripts/check-token-runtime-reconciliation.cjs");
 requireFile("scripts/check-token-doc-coverage.cjs");
 requireFile("scripts/check-style-literals.cjs");
@@ -272,11 +262,6 @@ requireText("package.json", [
   "\"token-doc-coverage:check\"",
   "\"style-literals:check\"",
   "\"status-governance:check\"",
-  "\"agents:install:claude\"",
-  "\"agents:sync:copilot\"",
-  "\"agents:sync:copilot-extended\"",
-  "\"agents:check:copilot-drift\"",
-  "\"agents:check:copilot-extended-drift\"",
 ]);
 requireTextAbsent("package.json", [
   "\"io-components/storefront\"",
@@ -309,30 +294,10 @@ requireText("scripts/sync-stencil-assets.cjs", [
 ]);
 
 // Governance docs presence
-requireText("docs/agency-agents/README.md", [
-  "Curated source of truth",
-  "npm run agents:install:claude",
-  "npm run agents:sync:copilot",
-  "npm run agents:sync:copilot-extended",
-]);
-
 requireText("AGENTS.md", [
-  "AI Agents (Claude)",
-  "AI Agents (GitHub Copilot)",
-  "npm run agents:sync:copilot",
-  "npm run agents:sync:copilot-extended",
-]);
-
-requireText("docs/agency-agents/ADAPTATION_LAYER.md", [
-  "Non-Negotiable Guardrails",
-  "token-first styling",
-  "io-storefront",
   "npm run governance:check",
+  "npm run build:quality-gates",
 ]);
-
-validateCuratedJson("docs/agency-agents/curated-io-design-system.json");
-validateCopilotCuratedJson("docs/agency-agents/curated-io-design-system-copilot.json");
-validateCopilotExtendedCuratedJson("docs/agency-agents/curated-io-design-system-copilot-extended.json");
 
 if (errors.length > 0) {
   console.error("[Governance Gate] Validation failed:");

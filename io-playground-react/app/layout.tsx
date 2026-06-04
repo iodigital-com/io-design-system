@@ -19,8 +19,8 @@ const NAV_LINKS = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <IoProvider>
           <nav aria-label="Playground navigation">
             {NAV_LINKS.map(({ href, label }) => (

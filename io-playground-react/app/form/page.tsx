@@ -13,7 +13,7 @@ export default function FormPage() {
   };
 
   return (
-    <main>
+    <main suppressHydrationWarning>
       <h1>Forms — FACE Participation Test</h1>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px' }}>
         <IoInput label="Full name" name="name" required />

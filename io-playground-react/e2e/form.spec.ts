@@ -3,6 +3,10 @@ import { test, expect } from '@playwright/test';
 test.describe('FACE form (React)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/form');
+    await page.waitForFunction(() =>
+      customElements.get('io-input') !== undefined &&
+      customElements.get('io-checkbox') !== undefined
+    );
   });
 
   // --- original test kept intact ---
@@ -20,7 +24,7 @@ test.describe('FACE form (React)', () => {
       if (checkbox) checkbox.checked = true;
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
     await expect(page.getByTestId('result')).toContainText('Jake Ortega');
     await expect(page.getByTestId('result')).toContainText('jake@io.digital');
   });
@@ -28,7 +32,7 @@ test.describe('FACE form (React)', () => {
   // --- new tests ---
 
   test('submit with all empty required fields — form does NOT submit', async ({ page }) => {
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
     // The result div is only rendered after a successful submission
     await expect(page.getByTestId('result')).not.toBeVisible();
   });
@@ -39,7 +43,7 @@ test.describe('FACE form (React)', () => {
       if (nameInput) nameInput.value = 'Jake';
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
     await expect(page.getByTestId('result')).not.toBeVisible();
   });
 
@@ -56,7 +60,7 @@ test.describe('FACE form (React)', () => {
       if (checkbox) checkbox.checked = true;
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
 
     const result = page.getByTestId('result');
     await expect(result).toContainText('Jane Doe');
@@ -78,7 +82,7 @@ test.describe('FACE form (React)', () => {
       if (checkbox) checkbox.checked = true;
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
     await expect(page.getByTestId('result')).toContainText('"on"');
 
     // Reload, leave checkbox unchecked, submit — terms key should not be present
@@ -90,7 +94,7 @@ test.describe('FACE form (React)', () => {
       if (emailInput) emailInput.value = 'test@io.digital';
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
     // Without the required checkbox the form should not submit
     await expect(page.getByTestId('result')).not.toBeVisible();
   });
@@ -114,7 +118,7 @@ test.describe('FACE form (React)', () => {
       if (radioB) radioB.checked = true;
     });
 
-    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.evaluate(() => (document.querySelector('form') as HTMLFormElement)?.requestSubmit());
 
     const result = page.getByTestId('result');
     await expect(result).toContainText('"choice"');

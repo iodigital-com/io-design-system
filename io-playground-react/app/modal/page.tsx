@@ -23,7 +23,7 @@ export default function ModalPage() {
   };
 
   return (
-    <main>
+    <main suppressHydrationWarning>
       <h1>io-modal — Footer Button Click Test</h1>
 
       <IoButton onClick={() => { setOpen(true); setResult(''); }}>

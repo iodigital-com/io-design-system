@@ -7,7 +7,7 @@ export default function ButtonPage() {
   const [count, setCount] = useState(0);
 
   return (
-    <main>
+    <main suppressHydrationWarning>
       <h1>io-button — Click Event Test</h1>
       <IoButton onClick={() => setCount(c => c + 1)}>Click me</IoButton>
       <IoButton variant="ghost" onClick={() => setCount(0)} style={{ marginLeft: '0.5rem' }}>Reset</IoButton>

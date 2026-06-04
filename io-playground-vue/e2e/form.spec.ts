@@ -4,6 +4,10 @@ test.describe('FACE form (Vue 3)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.getByText('Forms').click();
+    await page.waitForFunction(() =>
+      customElements.get('io-input') !== undefined &&
+      customElements.get('io-checkbox') !== undefined
+    );
   });
 
   test('form submits with FACE values', async ({ page }) => {

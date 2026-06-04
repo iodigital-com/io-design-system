@@ -7,7 +7,7 @@ export default function TabsPage() {
   const [active, setActive] = useState(0);
 
   return (
-    <main>
+    <main suppressHydrationWarning>
       <h1>io-tabs — Tab Switch Test</h1>
       <IoTabs
         onUpdate={(e: CustomEvent<{ index: number }>) => setActive(e.detail?.index ?? 0)}

@@ -15,11 +15,12 @@ export function getIconStyles(): string {
       line-height: 1;
       color: currentColor;
     }
-    :host([size="xs"]) { width: var(--io-icon-size-xs, 12px); height: var(--io-icon-size-xs, 12px); }
-    :host([size="sm"]) { width: var(--io-icon-size-sm, 16px); height: var(--io-icon-size-sm, 16px); }
-    :host([size="md"]) { width: var(--io-icon-size-md, 20px); height: var(--io-icon-size-md, 20px); }
-    :host([size="lg"]) { width: var(--io-icon-size-lg, 24px); height: var(--io-icon-size-lg, 24px); }
-    :host([size="xl"]) { width: var(--io-icon-size-xl, 32px); height: var(--io-icon-size-xl, 32px); }
-    svg { width: 100%; height: 100%; display: block; }
+    span { display: contents; }
+    svg { display: block; }
+    :host([size="xs"]) svg { width: var(--io-icon-size-xs, 12px); height: var(--io-icon-size-xs, 12px); }
+    :host([size="sm"]) svg { width: var(--io-icon-size-sm, 16px); height: var(--io-icon-size-sm, 16px); }
+    :host([size="md"]) svg { width: var(--io-icon-size-md, 20px); height: var(--io-icon-size-md, 20px); }
+    :host([size="lg"]) svg { width: var(--io-icon-size-lg, 24px); height: var(--io-icon-size-lg, 24px); }
+    :host([size="xl"]) svg { width: var(--io-icon-size-xl, 32px); height: var(--io-icon-size-xl, 32px); }
   `;
 }

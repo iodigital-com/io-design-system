@@ -12,7 +12,7 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="All icons"
-          description="The full set of 32 registered icons rendered at size md. Each icon is labelled for screen reader identification."
+          description="The full set of 51 registered icons rendered at size md. Each icon is labelled for screen reader identification."
         />
         <ComponentStory
           story={iconStoryAllIcons}

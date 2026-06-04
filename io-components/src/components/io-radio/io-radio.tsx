@@ -44,7 +44,7 @@ export class IoRadio {
   @Prop() required = false;
 
   /** Disables the radio button */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -67,7 +67,7 @@ export class IoRadio {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() change!: EventEmitter<IoRadioChangeDetail>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoRadioChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -139,6 +139,10 @@ export class IoRadio {
     }
   }
 
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();
@@ -201,7 +205,7 @@ export class IoRadio {
     if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
-    this.change.emit({ checked: input.checked, value: this.value });
+    this.change.emit({ value: this.value });
 
     // Mutual exclusion: when this radio becomes checked, deselect all other
     // io-radio elements in the document that share the same name. Native

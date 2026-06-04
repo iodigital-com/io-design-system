@@ -294,6 +294,13 @@ export class IoInput {
     this.blur.emit(ev);
   };
 
+  /**
+   * @slot prefix - Content placed before the input field. Typically an icon or short text.
+   * @slot suffix - Content placed after the input field. Typically an icon, unit label, or action button.
+   * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
+   * @slot message - Validation message content. Replaces the plain-text `message` prop in error state.
+   * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
+   */
   render() {
     const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const { inputId, errorId, helperId } = this.getInputIds();

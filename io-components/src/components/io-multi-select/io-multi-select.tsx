@@ -79,7 +79,7 @@ export class IoMultiSelect {
   @Prop({ reflect: true }) required = false;
 
   /** Disables the multi-select. */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /**
    * Visual / validation state.
@@ -207,6 +207,10 @@ export class IoMultiSelect {
     this.value = [...this.defaultValue];
     this.syncFormValue();
     this.faceInvalid = false;
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   // ── Watchers ──────────────────────────────────────────────────────────────
@@ -523,6 +527,9 @@ export class IoMultiSelect {
 
   // ── Render ────────────────────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. io-option and io-optgroup children parsed at load time to build the option list.
+   */
   render() {
     const {
       label,

@@ -76,7 +76,7 @@ describe('io-select combobox — selection (single)', () => {
   it('selectOption sets value and emits change', () => {
     (component as any).selectOption(OPTIONS[0]);
     expect(component.value).toBe('a');
-    expect(emitSpy).toHaveBeenCalledWith('a');
+    expect(emitSpy).toHaveBeenCalledWith({ value: 'a', name: undefined });
   });
 
   it('selectOption closes dropdown in single mode', () => {
@@ -88,6 +88,17 @@ describe('io-select combobox — selection (single)', () => {
     (component as any).selectOption(OPTIONS[2]); // disabled
     expect(component.value).toBe('');
     expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('includes name in change detail when name prop is set', () => {
+    // Arrange
+    component.name = 'role';
+
+    // Act
+    (component as any).selectOption(OPTIONS[0]);
+
+    // Assert
+    expect(emitSpy).toHaveBeenCalledWith({ value: 'a', name: 'role' });
   });
 });
 
@@ -124,12 +135,23 @@ describe('io-select combobox — selection (multiple)', () => {
 
   it('emits change with array', () => {
     (component as any).selectOption(OPTIONS[0]);
-    expect(emitSpy).toHaveBeenCalledWith(['a']);
+    expect(emitSpy).toHaveBeenCalledWith({ value: ['a'], name: undefined });
   });
 
   it('dropdown stays open in multiple mode', () => {
     (component as any).selectOption(OPTIONS[0]);
     expect((component as any).isOpen).toBe(true);
+  });
+
+  it('includes name in change detail when name prop is set (multiple)', () => {
+    // Arrange
+    component.name = 'tags';
+
+    // Act
+    (component as any).selectOption(OPTIONS[0]);
+
+    // Assert
+    expect(emitSpy).toHaveBeenCalledWith({ value: ['a'], name: 'tags' });
   });
 });
 

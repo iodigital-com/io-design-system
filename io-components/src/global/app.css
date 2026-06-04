@@ -333,9 +333,11 @@
      ============================================================ */
 
   --io-touch-target-min:         44px;
+  --io-icon-size-xs:             0.75rem;    /* 12px */
   --io-icon-size-sm:             1rem;       /* 16px */
   --io-icon-size-md:             1.25rem;    /* 20px */
   --io-icon-size-lg:             1.5rem;     /* 24px */
+  --io-icon-size-xl:             2rem;       /* 32px */
 
    /* Shared control sizing (button/input/select/textarea) */
    --io-size-button-sm:           31px;

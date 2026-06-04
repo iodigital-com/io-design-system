@@ -40,7 +40,7 @@ describe('io-select — event behavior', () => {
     const ev = makeChangeEvent('a');
     (component as any).handleChange(ev);
     expect(changeMock).toHaveBeenCalledOnce();
-    expect(changeMock).toHaveBeenCalledWith('a');
+    expect(changeMock).toHaveBeenCalledWith({ value: 'a', name: undefined });
   });
 
   it('updates value prop on change', () => {

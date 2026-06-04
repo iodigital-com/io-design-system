@@ -18,15 +18,14 @@ describe('getToastVariantIcon', () => {
     expect(unknown).toBe(neutral);
   });
 
-  it('success icon contains a check/polyline path', () => {
+  it('success icon contains path elements (check-circle from Lucide)', () => {
     const icon = getToastVariantIcon('success');
-    expect(icon).toContain('polyline');
+    expect(icon).toContain('<path');
   });
 
-  it('error icon contains an X shape (two lines)', () => {
+  it('error icon contains path elements (x-circle from Lucide)', () => {
     const icon = getToastVariantIcon('error');
-    const lineCount = (icon.match(/<line /g) ?? []).length;
-    expect(lineCount).toBeGreaterThanOrEqual(2);
+    expect(icon).toContain('<path');
   });
 
   it('warning icon contains a triangle path', () => {

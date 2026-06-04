@@ -83,3 +83,25 @@ describe('io-switch — regression guards (Wave J)', () => {
     expect(styles).not.toMatch(/box-shadow:\s*0\s+1px/);
   });
 });
+
+describe('io-switch — formDisabledCallback', () => {
+  let component: IoSwitch;
+
+  beforeEach(() => {
+    component = new IoSwitch();
+    (component as any).el = document.createElement('io-switch');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});

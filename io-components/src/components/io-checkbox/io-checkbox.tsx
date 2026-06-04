@@ -47,7 +47,7 @@ export class IoCheckbox {
   @Prop() required = false;
 
   /** Disables the checkbox */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -70,7 +70,7 @@ export class IoCheckbox {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() change!: EventEmitter<IoCheckboxChangeDetail>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoCheckboxChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -120,10 +120,28 @@ export class IoCheckbox {
     }
   }
 
+  connectedCallback() {
+    const hasLabelProp = this.label?.trim();
+    const hasAriaLabel = this.el.getAttribute('aria-label')?.trim();
+    const hasAriaLabelledBy = this.el.getAttribute('aria-labelledby')?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (!hasLabelProp && !hasAriaLabel && !hasAriaLabelledBy && !hasLabelSlot) {
+      console.error(`[io-checkbox] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".`);
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   formResetCallback() {
     this.checked = this.defaultChecked;
     this.indeterminate = false;
     this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('checked')

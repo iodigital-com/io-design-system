@@ -15,3 +15,6 @@ export type IoSelectOptionGroup = {
 
 /** Visual size scale aligned with io-button sizing tokens */
 export type IoSelectSize = 'sm' | 'md' | 'lg';
+
+/** Payload emitted by the io-select change event */
+export type IoSelectChangeDetail = { value: string | string[]; name?: string };

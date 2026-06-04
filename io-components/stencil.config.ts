@@ -122,14 +122,15 @@ export const config: Config = {
     // ──────────────────────────────────────────────────────────
 
     /**
-     * React proxy target.
-     * Generates forwardRef wrappers + event prop name mapping.
-     * Output path: ../io-components-react/src/components.ts
+     * React output target (v1.x — @lit/react based).
+     * Generates typed functional wrappers for every io-* component.
+     * outDir points at the src/ of the React wrapper package so the
+     * generated components.ts (and any per-component files) land there.
+     * The runtime is provided by @stencil/react-output-target itself,
+     * which must be listed as a dependency in io-components-react.
      */
     reactOutputTarget({
-      componentCorePackage: "@iodigital-com/components",
-      proxiesFile: "../io-components-react/src/components.ts",
-      includeDefineCustomElements: true,
+      outDir: "../io-components-react/src/",
     }),
 
     /**

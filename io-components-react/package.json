@@ -26,9 +26,12 @@
     }
   },
   "scripts": {
-    "prebuild": "node ../scripts/fix-react-wrapper-typings.cjs",
     "build": "tsc -p tsconfig.json",
     "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@lit/react": "^1.0.8",
+    "@stencil/react-output-target": "^1.5.3"
   },
   "peerDependencies": {
     "@iodigital-com/components": "^1.0.0",

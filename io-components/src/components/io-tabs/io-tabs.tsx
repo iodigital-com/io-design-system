@@ -209,6 +209,9 @@ export class IoTabs {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. `<button>` elements representing each tab. Keyboard navigation and ARIA are applied automatically.
+   */
   render() {
     return (
       <Host>

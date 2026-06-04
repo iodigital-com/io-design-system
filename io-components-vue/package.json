@@ -30,6 +30,9 @@
     "build": "tsc -p tsconfig.json",
     "prepack": "npm run build"
   },
+  "dependencies": {
+    "@stencil/vue-output-target": "^0.13.2"
+  },
   "peerDependencies": {
     "@iodigital-com/components": "^1.0.0",
     "vue": "^3.4.0"

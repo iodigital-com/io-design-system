@@ -14,7 +14,7 @@ import {
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize } from './types';
+import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeDetail } from './types';
 
 /**
  * io-select
@@ -72,7 +72,7 @@ export class IoSelect {
   @Prop() required = false;
 
   /** Disables the select */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color, icon, and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -138,13 +138,13 @@ export class IoSelect {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the selected value changes. */
-  @Event() change!: EventEmitter<string | string[]>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoSelectChangeDetail>;
 
   /** Fires when the select gains focus */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @Event({ bubbles: false, composed: false }) focus!: EventEmitter<FocusEvent>;
 
   /** Fires when the select loses focus */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @Event({ bubbles: false, composed: false }) blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -197,6 +197,20 @@ export class IoSelect {
     }
   }
 
+  connectedCallback() {
+    const hasLabelProp = this.label?.trim();
+    const hasAriaLabel = this.el.getAttribute('aria-label')?.trim();
+    const hasAriaLabelledBy = this.el.getAttribute('aria-labelledby')?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (!hasLabelProp && !hasAriaLabel && !hasAriaLabelledBy && !hasLabelSlot) {
+      console.error(`[io-select] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".`);
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   formResetCallback() {
     if (this.multiple) {
       this.selectedValues = [...this.defaultSelectedValues];
@@ -205,6 +219,10 @@ export class IoSelect {
     }
     this.syncFormValue();
     this.faceInvalid = false;
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('value')
@@ -373,11 +391,11 @@ export class IoSelect {
       } else {
         this.selectedValues = [...this.selectedValues, opt.value];
       }
-      this.change.emit([...this.selectedValues]);
+      this.change.emit({ value: [...this.selectedValues], name: this.name });
       // keep dropdown open in multiple mode
     } else {
       this.value = opt.value;
-      this.change.emit(this.value);
+      this.change.emit({ value: this.value, name: this.name });
       this.isOpen = false;
     }
   }
@@ -420,7 +438,7 @@ export class IoSelect {
   private handleChange = (ev: Event) => {
     if (this.disabled) return;
     this.value = (ev.target as HTMLSelectElement).value;
-    this.change.emit(this.value);
+    this.change.emit({ value: this.value, name: this.name });
   };
 
   private handleFocus = (ev: FocusEvent) => {
@@ -595,6 +613,12 @@ export class IoSelect {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. io-option and io-optgroup children parsed at load time to build the option list.
+   * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
+   * @slot message - Validation message content. Replaces the plain-text `message` prop in error state.
+   * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
+   */
   render() {
     if (this.custom) {
       return this.renderCombobox();

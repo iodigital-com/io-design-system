@@ -13,8 +13,8 @@ exports[`io-modal — render snapshots > renders default state 1`] = `
           </slot>
           <button type="button" class="modal__close" aria-label="Close dialog">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>
@@ -64,8 +64,8 @@ MockHTMLElement {
           </slot>
           <button type="button" class="modal__close" aria-label="Close dialog">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>
@@ -92,8 +92,8 @@ MockHTMLElement {
           </slot>
           <button type="button" class="modal__close" aria-label="Close dialog">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>
@@ -120,8 +120,8 @@ MockHTMLElement {
           </slot>
           <button type="button" class="modal__close" aria-label="Close dialog">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>
@@ -239,7 +239,7 @@ MockHTMLElement {
                 "_childNodes": [
                   _MockTextNode {
                     "_childNodes": [],
-                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                     "nodeName": "#text",
                     "nodeType": 3,
                     "ownerDocument": [Circular],
@@ -254,7 +254,7 @@ MockHTMLElement {
                 "sheet": MockCSSStyleSheet {
                   "cssRules": [
                     MockCSSRule {
-                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                       "parentStyleSheet": [Circular],
                       "type": 0,
                     },
@@ -456,7 +456,7 @@ MockHTMLElement {
                   "_childNodes": [
                     _MockTextNode {
                       "_childNodes": [],
-                      "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                       "nodeName": "#text",
                       "nodeType": 3,
                       "ownerDocument": [Circular],
@@ -471,7 +471,7 @@ MockHTMLElement {
                   "sheet": MockCSSStyleSheet {
                     "cssRules": [
                       MockCSSRule {
-                        "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                        "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                         "parentStyleSheet": [Circular],
                         "type": 0,
                       },
@@ -647,7 +647,7 @@ MockHTMLElement {
                         "_childNodes": [
                           _MockTextNode {
                             "_childNodes": [],
-                            "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                            "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                             "nodeName": "#text",
                             "nodeType": 3,
                             "ownerDocument": [Circular],
@@ -662,7 +662,7 @@ MockHTMLElement {
                         "sheet": MockCSSStyleSheet {
                           "cssRules": [
                             MockCSSRule {
-                              "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                              "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                               "parentStyleSheet": [Circular],
                               "type": 0,
                             },
@@ -803,7 +803,7 @@ MockHTMLElement {
                     "_childNodes": [
                       _MockTextNode {
                         "_childNodes": [],
-                        "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                        "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                         "nodeName": "#text",
                         "nodeType": 3,
                         "ownerDocument": [Circular],
@@ -818,7 +818,7 @@ MockHTMLElement {
                     "sheet": MockCSSStyleSheet {
                       "cssRules": [
                         MockCSSRule {
-                          "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                          "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                           "parentStyleSheet": [Circular],
                           "type": 0,
                         },
@@ -888,7 +888,7 @@ MockHTMLElement {
                 "_childNodes": [
                   _MockTextNode {
                     "_childNodes": [],
-                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                     "nodeName": "#text",
                     "nodeType": 3,
                     "ownerDocument": _MockDocument {
@@ -1051,7 +1051,7 @@ MockHTMLElement {
                 "sheet": MockCSSStyleSheet {
                   "cssRules": [
                     MockCSSRule {
-                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
                       "parentStyleSheet": [Circular],
                       "type": 0,
                     },
@@ -1317,8 +1317,8 @@ exports[`io-modal — render snapshots > renders slotted footer actions 1`] = `
           </slot>
           <button type="button" class="modal__close" aria-label="Close dialog">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>

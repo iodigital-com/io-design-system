@@ -17,7 +17,7 @@ test.describe('io-modal — footer button click (Native HTML)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('cancel-clicked');
+    await expect(page.getByTestId('modal-result')).toContainText('cancel-clicked');
   });
 
   test('Save button with empty input stays open with validation error', async ({ page }) => {
@@ -29,7 +29,7 @@ test.describe('io-modal — footer button click (Native HTML)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('validation-error');
+    await expect(page.getByTestId('modal-result')).toContainText('validation-error');
   });
 
   test('Save button with filled input closes modal and result contains saved value', async ({ page }) => {
@@ -45,7 +45,7 @@ test.describe('io-modal — footer button click (Native HTML)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('saved: HTML User');
+    await expect(page.getByTestId('modal-result')).toContainText('saved: HTML User');
   });
 
   test('Backdrop click at (10, 10) closes modal', async ({ page }) => {
@@ -57,6 +57,6 @@ test.describe('io-modal — footer button click (Native HTML)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('cancel-clicked');
+    await expect(page.getByTestId('modal-result')).toContainText('cancel-clicked');
   });
 });

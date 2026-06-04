@@ -35,7 +35,7 @@
   <section id="modal">
     <h1>io-modal — Footer Button Click Test</h1>
     <io-button id="open-modal-btn">Open modal</io-button>
-    <div class="result" id="modal-result" data-testid="result">No action yet</div>
+    <div class="result" id="modal-result" data-testid="modal-result">No action yet</div>
 
     <io-modal id="test-modal" heading="Create item">
       <io-input id="modal-name" label="Name" name="name"></io-input>
@@ -52,14 +52,14 @@
       <io-checkbox label="I agree to terms" name="terms" required></io-checkbox>
       <io-button type="submit">Submit</io-button>
     </form>
-    <div class="result" id="form-result" data-testid="result" style="display:none"></div>
+    <div class="result" id="form-result" data-testid="form-result" style="display:none"></div>
   </section>
 
   <section id="button">
     <h1>io-button — Click Event Test</h1>
     <io-button id="count-btn">Click me</io-button>
     <io-button variant="ghost" id="reset-btn" style="margin-left: 0.5rem">Reset</io-button>
-    <div class="result" data-testid="result" id="count-result">Click count: 0</div>
+    <div class="result" data-testid="button-result" id="count-result">Click count: 0</div>
   </section>
 
   <script>

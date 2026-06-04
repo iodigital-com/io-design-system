@@ -9,12 +9,12 @@ test.describe('io-button (Vue 3)', () => {
   test('click increments counter', async ({ page }) => {
     await page.getByRole('button', { name: 'Click me' }).click();
     await page.getByRole('button', { name: 'Click me' }).click();
-    await expect(page.getByTestId('result')).toContainText('Click count: 2');
+    await expect(page.getByTestId('button-result')).toContainText('Click count: 2');
   });
 
   test('reset sets counter to 0', async ({ page }) => {
     await page.getByRole('button', { name: 'Click me' }).click();
     await page.getByRole('button', { name: 'Reset' }).click();
-    await expect(page.getByTestId('result')).toContainText('Click count: 0');
+    await expect(page.getByTestId('button-result')).toContainText('Click count: 0');
   });
 });

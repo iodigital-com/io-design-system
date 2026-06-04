@@ -17,7 +17,7 @@ test.describe('io-modal — footer button click (Vue 3)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('cancel-clicked');
+    await expect(page.getByTestId('modal-result')).toContainText('cancel-clicked');
   });
 
   test('Save button with empty input stays open and shows validation error', async ({ page }) => {
@@ -29,7 +29,7 @@ test.describe('io-modal — footer button click (Vue 3)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('validation-error');
+    await expect(page.getByTestId('modal-result')).toContainText('validation-error');
   });
 
   test('Save button with filled input closes modal and shows saved value', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('io-modal — footer button click (Vue 3)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('saved: Test Vue item');
+    await expect(page.getByTestId('modal-result')).toContainText('saved: Test Vue item');
   });
 
   test('Backdrop click closes modal', async ({ page }) => {
@@ -64,6 +64,6 @@ test.describe('io-modal — footer button click (Vue 3)', () => {
     });
     await page.mouse.click(x, y);
     await page.waitForTimeout(200);
-    await expect(page.getByTestId('result')).toContainText('cancel-clicked');
+    await expect(page.getByTestId('modal-result')).toContainText('cancel-clicked');
   });
 });

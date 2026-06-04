@@ -14,6 +14,6 @@ test.describe('FACE form (Vue 3)', () => {
       if (checkbox) checkbox.checked = true;
     });
     await page.getByRole('button', { name: 'Submit' }).click();
-    await expect(page.getByTestId('result')).toContainText('Vue User');
+    await expect(page.getByTestId('form-result')).toContainText('Vue User');
   });
 });

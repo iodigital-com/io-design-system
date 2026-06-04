@@ -160,7 +160,8 @@ export function getSelectStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
-    .select-error--hidden {
+    .select-error--hidden,
+    .select-message--hidden {
       display: none;
     }
 
@@ -258,7 +259,7 @@ export function getSelectStyles(): string {
       position: absolute;
       z-index: var(--io-combobox-z);
       background: var(--io-surface-elevated, var(--io-color-white));
-      border: var(--io-input-border-width) solid var(--io-border);
+      border: var(--io-input-border-width) solid var(--io-border-interactive);
       border-radius: var(--io-border-radius-sm);
       box-shadow: var(--io-shadow-md);
       overflow: hidden;
@@ -285,7 +286,7 @@ export function getSelectStyles(): string {
       width: 100%;
       box-sizing: border-box;
       border: none;
-      border-bottom: var(--io-input-border-width) solid var(--io-border);
+      border-bottom: var(--io-input-border-width) solid var(--io-border-interactive);
       padding: var(--io-space-1) 0;
       font-family: var(--io-font-primary);
       font-size: var(--io-font-size-sm);

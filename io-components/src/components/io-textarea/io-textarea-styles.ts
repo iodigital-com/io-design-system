@@ -169,7 +169,8 @@ export function getTextareaStyles(): string {
       color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
     }
 
-    .textarea-error--hidden {
+    .textarea-error--hidden,
+    .textarea-message--hidden {
       display: none;
     }
 

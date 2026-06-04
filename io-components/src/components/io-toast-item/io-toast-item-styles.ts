@@ -1,7 +1,15 @@
 import type { IoToastVariant } from '../io-toast/types';
 
-const VARIANT_COLORS: Record<IoToastVariant, string> = {
-  neutral: 'var(--io-border)',
+const VARIANT_BG: Record<IoToastVariant, string> = {
+  neutral: 'var(--io-bg-card)',
+  success: 'var(--io-color-success-soft)',
+  error:   'var(--io-color-error-soft)',
+  warning: 'var(--io-color-warning-soft)',
+  info:    'var(--io-color-info-soft)',
+};
+
+const VARIANT_ICON: Record<IoToastVariant, string> = {
+  neutral: 'var(--io-text-secondary)',
   success: 'var(--io-color-success)',
   error:   'var(--io-color-error)',
   warning: 'var(--io-color-warning)',
@@ -9,7 +17,8 @@ const VARIANT_COLORS: Record<IoToastVariant, string> = {
 };
 
 export function getToastItemStyles(variant: IoToastVariant): string {
-  const accentColor = VARIANT_COLORS[variant];
+  const bgColor = VARIANT_BG[variant];
+  const iconColor = VARIANT_ICON[variant];
 
   return `
     :host {
@@ -21,9 +30,9 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       align-items: flex-start;
       gap: var(--io-space-3);
       padding: var(--io-space-4);
-      background: var(--io-bg-card);
-      border: 1px solid var(--io-border);
-      border-left: var(--io-toast-item-accent-border-width) solid ${accentColor};
+      background: ${bgColor};
+      backdrop-filter: blur(var(--io-toast-item-blur, 12px));
+      -webkit-backdrop-filter: blur(var(--io-toast-item-blur, 12px));
       border-radius: var(--io-border-radius-sm);
       box-shadow: var(--io-shadow-lg);
       color: var(--io-text-primary);
@@ -35,7 +44,7 @@ export function getToastItemStyles(variant: IoToastVariant): string {
 
     .toast__icon {
       flex-shrink: 0;
-      color: ${accentColor};
+      color: ${iconColor};
       margin-top: var(--io-toast-item-icon-offset-top);
     }
 

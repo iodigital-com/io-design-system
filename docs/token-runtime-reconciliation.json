@@ -1973,7 +1973,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 12px (0.75rem). Used by io-icon component."
+      "notes": "Icon size scale \u2014 12px (0.75rem). Used by io-icon component."
     },
     {
       "runtimeCssVar": "--io-icon-size-lg",
@@ -2005,7 +2005,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 32px (2rem). Used by io-icon component."
+      "notes": "Icon size scale \u2014 32px (2rem). Used by io-icon component."
     },
     {
       "runtimeCssVar": "--io-input-border-width",
@@ -3048,14 +3048,6 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
-      "runtimeCssVar": "--io-toast-item-accent-border-width",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
-    },
-    {
       "runtimeCssVar": "--io-toast-item-close-offset-top",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -3281,6 +3273,14 @@
     },
     {
       "runtimeCssVar": "--io-z-tooltip",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-toast-item-blur",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,

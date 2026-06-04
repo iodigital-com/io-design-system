@@ -744,12 +744,6 @@
     "description": "Global extra-small border radius."
   },
   {
-    "cssVar": "--io-toast-item-accent-border-width",
-    "classification": "public-api",
-    "component": "io-toast-item",
-    "description": "Width of the left accent border on a toast notification."
-  },
-  {
     "cssVar": "--io-toast-item-close-offset-top",
     "classification": "public-api",
     "component": "io-toast-item",
@@ -796,6 +790,12 @@
     "classification": "internal",
     "component": "io-toast",
     "description": "Global z-index for the toast layer."
+  },
+  {
+    "cssVar": "--io-toast-item-blur",
+    "classification": "public-api",
+    "component": "io-toast-item",
+    "description": "Backdrop filter blur intensity for toast items. Accepts any CSS length (e.g. 0 to disable). Default: 12px."
   },
   {
     "cssVar": "--io-z-tooltip",

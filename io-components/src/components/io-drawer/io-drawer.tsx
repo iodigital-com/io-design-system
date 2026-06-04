@@ -279,6 +279,10 @@ export class IoDrawer {
 
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot - Default slot. Body content of the drawer panel.
+   * @slot footer - Action area rendered at the bottom of the drawer. Typically 1–2 io-button elements.
+   */
   render() {
     const { placement, size, background, heading, headingId } = this;
     const closeIcon = getDrawerCloseIcon();

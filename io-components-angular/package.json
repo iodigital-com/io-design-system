@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "@angular/core": ">=17.0.0",
-    "@iodigital-com/components": "^1.0.4",
+    "@iodigital-com/components": "^1.0.0",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {

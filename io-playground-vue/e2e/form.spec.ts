@@ -13,7 +13,9 @@ test.describe('FACE form (Vue 3)', () => {
   test('form submits with FACE values', async ({ page }) => {
     await page.evaluate(() => {
       const nameInput = document.querySelector('io-input[name="name"]') as any;
+      const emailInput = document.querySelector('io-input[name="email"]') as any;
       if (nameInput) nameInput.value = 'Vue User';
+      if (emailInput) emailInput.value = 'vue@test.io';
       const checkbox = document.querySelector('io-checkbox[name="terms"]') as any;
       if (checkbox) checkbox.checked = true;
     });

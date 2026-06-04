@@ -18,6 +18,14 @@ function handleCancel() {
   modalOpen.value = false;
   modalResult.value = 'cancel-clicked';
 }
+function handleDismiss() {
+  // Only treat dismiss as cancel when the modal is still open.
+  // If handleSave() already closed it, dismiss fires as a side-effect
+  // and must NOT overwrite the saved result.
+  if (modalOpen.value) {
+    handleCancel();
+  }
+}
 function handleSave() {
   if (!modalName.value.trim()) {
     modalResult.value = 'validation-error: name is required';
@@ -57,7 +65,7 @@ function handleSubmit(e: Event) {
     <io-modal
       :open="modalOpen ? '' : null"
       heading="Create item"
-      @dismiss="handleCancel()"
+      @dismiss="handleDismiss()"
     >
       <io-input label="Name" name="name" @input="(e: any) => modalName = e.target.value" />
       <io-button slot="footer" variant="ghost" @click="handleCancel()">Cancel</io-button>

@@ -4,7 +4,8 @@ test.describe('io-modal — footer button click (Vue 3)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.getByText('io-modal').click();
-    await page.getByRole('button', { name: 'Open modal' }).click();
+    await page.waitForFunction(() => customElements.get('io-button') !== undefined);
+    await page.locator('io-button').filter({ hasText: 'Open modal' }).click();
     await page.waitForTimeout(300);
   });
 

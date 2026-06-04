@@ -13,7 +13,9 @@ test.describe('FACE form (Native HTML)', () => {
   test('FACE form captures io-input value via FormData', async ({ page }) => {
     await page.evaluate(() => {
       const nameInput = document.querySelector('io-input[name="name"]') as any;
+      const emailInput = document.querySelector('io-input[name="email"]') as any;
       if (nameInput) nameInput.value = 'HTML User';
+      if (emailInput) emailInput.value = 'html@test.io';
       const checkbox = document.querySelector('io-checkbox[name="terms"]') as any;
       if (checkbox) checkbox.checked = true;
     });

@@ -1,0 +1,8 @@
+@import '@iodigital-com/components/dist/io-components/io-components.css';
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: var(--io-font-primary, system-ui, sans-serif); padding: 2rem; background: var(--io-bg-page, #fff); color: var(--io-text-primary, #111); }
+nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+nav a { color: var(--io-color-primary, #0000d2); text-decoration: none; font-size: 0.875rem; padding: 0.25rem 0.75rem; border: 1px solid var(--io-border, #ddd); border-radius: 6px; cursor: pointer; }
+nav a:hover, nav a.active { background: var(--io-state-hover, #f0f0f0); }
+h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 1.5rem; }
+.result { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.875rem; border: 1px solid var(--io-border, #ddd); background: var(--io-bg-raised, #f9f9f9); min-height: 2.5rem; }

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>io DS — Native HTML Playground</title>
+  <link rel="stylesheet" href="/node_modules/@iodigital-com/components/dist/io-components/io-components.css">
+  <script type="module">
+    import { defineCustomElements } from '/node_modules/@iodigital-com/components/loader/index.es2017.mjs';
+    defineCustomElements(window);
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: var(--io-font-primary, system-ui); padding: 2rem; background: var(--io-bg-page, #fff); color: var(--io-text-primary, #111); }
+    nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    nav a { color: var(--io-color-primary, #0000d2); text-decoration: none; font-size: 0.875rem; padding: 0.25rem 0.75rem; border: 1px solid var(--io-border, #ddd); border-radius: 6px; }
+    nav a:hover { background: var(--io-state-hover, #f0f0f0); }
+    h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 1.5rem; }
+    .result { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.875rem; border: 1px solid var(--io-border, #ddd); background: var(--io-bg-raised, #f9f9f9); min-height: 2.5rem; }
+    section { display: none; }
+    section.active { display: block; }
+  </style>
+</head>
+<body>
+  <nav aria-label="Playground navigation">
+    <a href="#" onclick="show('index')">Index</a>
+    <a href="#" onclick="show('modal')">io-modal</a>
+    <a href="#" onclick="show('form')">Forms</a>
+    <a href="#" onclick="show('button')">io-button</a>
+  </nav>
+
+  <section id="index" class="active">
+    <h1>io Design System — Native HTML Playground</h1>
+    <p style="color: var(--io-text-secondary); font-size: 0.875rem">
+      Vanilla HTML + Vite. Tests the raw Web Component experience without any framework layer.
+    </p>
+  </section>
+
+  <section id="modal">
+    <h1>io-modal — Footer Button Click Test</h1>
+    <io-button id="open-modal-btn">Open modal</io-button>
+    <div class="result" id="modal-result" data-testid="result">No action yet</div>
+
+    <io-modal id="test-modal" heading="Create item">
+      <io-input id="modal-name" label="Name" name="name"></io-input>
+      <io-button slot="footer" variant="ghost" id="cancel-btn">Cancel</io-button>
+      <io-button slot="footer" id="save-btn">Save</io-button>
+    </io-modal>
+  </section>
+
+  <section id="form">
+    <h1>Forms — FACE Participation Test</h1>
+    <form id="test-form" style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px;">
+      <io-input label="Full name" name="name" required></io-input>
+      <io-input label="Email" name="email" type="email" required></io-input>
+      <io-checkbox label="I agree to terms" name="terms" required></io-checkbox>
+      <io-button type="submit">Submit</io-button>
+    </form>
+    <div class="result" id="form-result" data-testid="result" style="display:none"></div>
+  </section>
+
+  <section id="button">
+    <h1>io-button — Click Event Test</h1>
+    <io-button id="count-btn">Click me</io-button>
+    <io-button variant="ghost" id="reset-btn" style="margin-left: 0.5rem">Reset</io-button>
+    <div class="result" data-testid="result" id="count-result">Click count: 0</div>
+  </section>
+
+  <script>
+    function show(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id)?.classList.add('active');
+    }
+
+    // Wait for custom elements to be defined
+    window.addEventListener('load', () => {
+      // Modal
+      const openBtn = document.getElementById('open-modal-btn');
+      const modal = document.getElementById('test-modal');
+      const result = document.getElementById('modal-result');
+      const cancelBtn = document.getElementById('cancel-btn');
+      const saveBtn = document.getElementById('save-btn');
+
+      openBtn?.addEventListener('click', () => {
+        modal.open = true;
+        result.textContent = '';
+      });
+      cancelBtn?.addEventListener('click', () => {
+        modal.open = false;
+        result.textContent = 'cancel-clicked';
+      });
+      saveBtn?.addEventListener('click', () => {
+        const nameInput = document.getElementById('modal-name');
+        const val = nameInput?.value?.trim();
+        if (!val) {
+          result.textContent = 'validation-error: name is required';
+          return;
+        }
+        modal.open = false;
+        result.textContent = 'saved: ' + val;
+      });
+      modal?.addEventListener('dismiss', () => {
+        modal.open = false;
+        if (!result.textContent) result.textContent = 'cancel-clicked';
+      });
+
+      // Button counter
+      let count = 0;
+      document.getElementById('count-btn')?.addEventListener('click', () => {
+        count++;
+        document.getElementById('count-result').textContent = 'Click count: ' + count;
+      });
+      document.getElementById('reset-btn')?.addEventListener('click', () => {
+        count = 0;
+        document.getElementById('count-result').textContent = 'Click count: 0';
+      });
+
+      // Form
+      document.getElementById('test-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const formResult = document.getElementById('form-result');
+        formResult.style.display = 'block';
+        formResult.textContent = JSON.stringify(Object.fromEntries(data.entries()), null, 2);
+      });
+    });
+  </script>
+</body>
+</html>

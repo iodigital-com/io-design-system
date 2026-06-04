@@ -1,7 +1,7 @@
 import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
 import type { IoIconName } from '../../utils/icons';
-import { getIconSvg } from '../../utils/icons';
+import { getIconSvg, escapeAttr } from '../../utils/icons';
 import { getIconStyles } from './io-icon-styles';
 import type { IoIconSize } from './types';
 
@@ -69,9 +69,9 @@ export class IoIcon {
   }
 
   private patchAria(svg: string): string {
-    return this.label
-      ? svg.replace('aria-hidden="true"', `role="img" aria-label="${this.label}"`)
-      : svg;
+    if (!this.label) return svg;
+    const safe = escapeAttr(this.label);
+    return svg.replace('aria-hidden="true"', `role="img" aria-label="${safe}"`);
   }
 
   render() {

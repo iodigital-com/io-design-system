@@ -22,12 +22,11 @@ export function getIconStyles(): string {
     :host([size="md"]) svg { width: var(--io-icon-size-md, 20px); height: var(--io-icon-size-md, 20px); }
     :host([size="lg"]) svg { width: var(--io-icon-size-lg, 24px); height: var(--io-icon-size-lg, 24px); }
     :host([size="xl"]) svg { width: var(--io-icon-size-xl, 32px); height: var(--io-icon-size-xl, 32px); }
-    :dir(rtl) :host([name="arrow-right"]) svg,
-    :dir(rtl) :host([name="arrow-left"]) svg,
-    :dir(rtl) :host([name="chevron-right"]) svg,
-    :dir(rtl) :host([name="chevron-left"]) svg,
-    :dir(rtl) :host([name="chevrons-up-down"]) svg,
-    :dir(rtl) :host([name="log-out"]) svg,
+    :host([name="arrow-right"]:dir(rtl)) svg,
+    :host([name="arrow-left"]:dir(rtl)) svg,
+    :host([name="chevron-right"]:dir(rtl)) svg,
+    :host([name="chevron-left"]:dir(rtl)) svg,
+    :host([name="log-out"]:dir(rtl)) svg,
     :host([flip]) svg { transform: scaleX(-1); }
   `;
 }

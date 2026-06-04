@@ -8,7 +8,7 @@
  * Never import from lucide at runtime — use this pre-extracted map.
  */
 
-const ICON_NODES: Record<string, [string, Record<string, string>][]> = {
+const ICON_NODES = {
   'x': [["path",{"d":"M18 6 6 18"}],["path",{"d":"m6 6 12 12"}]],
   'check': [["path",{"d":"M20 6 9 17l-5-5"}]],
   'check-circle': [["path",{"d":"M21.801 10A10 10 0 1 1 17 3.335"}],["path",{"d":"m9 11 3 3L22 4"}]],
@@ -60,11 +60,15 @@ const ICON_NODES: Record<string, [string, Record<string, string>][]> = {
   'tag': [["path",{"d":"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"}],["circle",{"cx":"7.5","cy":"7.5","r":".5","fill":"currentColor"}]],
   'circle-check': [["circle",{"cx":"12","cy":"12","r":"10"}],["path",{"d":"m9 12 2 2 4-4"}]],
   'user-plus': [["path",{"d":"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"}],["circle",{"cx":"9","cy":"7","r":"4"}],["line",{"x1":"19","x2":"19","y1":"8","y2":"14"}],["line",{"x1":"22","x2":"16","y1":"11","y2":"11"}]],
-};
+} satisfies Record<string, [string, Record<string, string>][]>;
 
 export type IoIconName = keyof typeof ICON_NODES;
 
 export const IO_ICON_NAMES = Object.keys(ICON_NODES) as IoIconName[];
+
+function escapeAttr(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 export function getIconSvg(name: IoIconName, size = 24): string {
   const nodes = ICON_NODES[name];
@@ -75,3 +79,5 @@ export function getIconSvg(name: IoIconName, size = 24): string {
     .join('');
   return `<svg ${attrs}>${children}</svg>`;
 }
+
+export { escapeAttr };

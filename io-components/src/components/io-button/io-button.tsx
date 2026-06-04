@@ -212,7 +212,7 @@ export class IoButton {
     const labelSlot = iconOnly
       ? <span class="btn__icon" aria-hidden="true"><slot /></span>
       : (
-        <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'} aria-hidden={hideLabel ? 'true' : undefined}>
+        <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
           <slot />
         </span>
       );
@@ -232,9 +232,9 @@ export class IoButton {
               </svg>
             </span>
           )}
-          {hasIcon && iconPosition === 'left' && this.renderIcon()}
+          {hasIcon && !iconOnly && iconPosition === 'left' && this.renderIcon()}
           {labelSlot}
-          {hasIcon && iconPosition === 'right' && this.renderIcon()}
+          {hasIcon && !iconOnly && iconPosition === 'right' && this.renderIcon()}
           {!iconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}

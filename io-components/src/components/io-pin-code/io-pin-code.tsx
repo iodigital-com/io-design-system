@@ -63,7 +63,7 @@ export class IoPinCode {
   @Prop() required = false;
 
   /** Disables all inputs */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Visual validation state — aligns with other io form-field components */
   @Prop({ reflect: true }) state: IoPinCodeState = 'none';
@@ -121,6 +121,10 @@ export class IoPinCode {
     // Reset visual invalidity indicator after form reset — users shouldn't see
     // errors before re-interacting, even if the field is required and empty.
     this.faceInvalid = false;
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('value')

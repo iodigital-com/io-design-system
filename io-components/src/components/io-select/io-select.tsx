@@ -72,7 +72,7 @@ export class IoSelect {
   @Prop() required = false;
 
   /** Disables the select */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state — controls border color, icon, and message color */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -197,6 +197,20 @@ export class IoSelect {
     }
   }
 
+  connectedCallback() {
+    const hasLabelProp = this.label?.trim();
+    const hasAriaLabel = this.el.getAttribute('aria-label')?.trim();
+    const hasAriaLabelledBy = this.el.getAttribute('aria-labelledby')?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (!hasLabelProp && !hasAriaLabel && !hasAriaLabelledBy && !hasLabelSlot) {
+      console.error(`[io-select] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".`);
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   formResetCallback() {
     if (this.multiple) {
       this.selectedValues = [...this.defaultSelectedValues];
@@ -205,6 +219,10 @@ export class IoSelect {
     }
     this.syncFormValue();
     this.faceInvalid = false;
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('value')

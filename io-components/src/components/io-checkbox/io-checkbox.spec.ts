@@ -117,3 +117,100 @@ describe('io-checkbox — default props', () => {
     expect(() => (component as any).render()).not.toThrow();
   });
 });
+
+describe('io-checkbox — formDisabledCallback', () => {
+  let component: IoCheckbox;
+
+  beforeEach(() => {
+    component = new IoCheckbox();
+    (component as any).el = document.createElement('io-checkbox');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});
+
+describe('io-checkbox — connectedCallback', () => {
+  it('logs error when label, aria-label, aria-labelledby, and slot="label" are all missing', () => {
+    const component = new IoCheckbox();
+    const el = document.createElement('io-checkbox');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).toHaveBeenCalledWith('[io-checkbox] Missing accessible label. Provide label prop, aria-label, aria-labelledby, or slot="label".');
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when label prop is provided', () => {
+    const component = new IoCheckbox();
+    const el = document.createElement('io-checkbox');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = 'Accept terms';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when aria-label is present on the element', () => {
+    const component = new IoCheckbox();
+    const el = document.createElement('io-checkbox');
+    el.setAttribute('aria-label', 'Accept terms');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when slot="label" child is present', () => {
+    const component = new IoCheckbox();
+    const el = document.createElement('io-checkbox');
+    const slottedLabel = document.createElement('span');
+    slottedLabel.setAttribute('slot', 'label');
+    slottedLabel.textContent = 'Accept terms';
+    el.appendChild(slottedLabel);
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+});
+
+describe('io-checkbox — componentShouldUpdate', () => {
+  it('returns true when new and old values differ', () => {
+    const component = new IoCheckbox();
+    expect((component as any).componentShouldUpdate('new', 'old')).toBe(true);
+  });
+
+  it('returns false when new and old values are identical', () => {
+    const component = new IoCheckbox();
+    expect((component as any).componentShouldUpdate('same', 'same')).toBe(false);
+  });
+});

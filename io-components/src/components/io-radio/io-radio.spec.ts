@@ -113,3 +113,25 @@ describe('io-radio — default props', () => {
     expect(() => (component as any).render()).not.toThrow();
   });
 });
+
+describe('io-radio — formDisabledCallback', () => {
+  let component: IoRadio;
+
+  beforeEach(() => {
+    component = new IoRadio();
+    (component as any).el = document.createElement('io-radio');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});

@@ -29,9 +29,8 @@ test.describe('Angular — io-button click counter', () => {
   });
 
   test('keyboard Enter on focused button increments counter', async ({ page }) => {
-    // Tab into the page to reach the first focusable button (Click me)
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Enter');
+    // Use Playwright's locator.press() which focuses and presses in one action
+    await page.locator('io-button').filter({ hasText: 'Click me' }).press('Enter');
     await expect(page.getByTestId('result')).toContainText('Click count: 1');
   });
 });

@@ -13,7 +13,7 @@ import { Component, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
       <io-modal
         [attr.open]="modalOpen() ? '' : null"
         heading="Create item"
-        (dismiss)="handleCancel()"
+        (dismiss)="handleDismiss()"
       >
         <io-input
           label="Name"
@@ -39,10 +39,12 @@ export class ModalComponent {
   modalOpen = signal(false);
   result = signal('');
   name = signal('');
+  private saving = false;
 
   openModal() {
     this.modalOpen.set(true);
     this.result.set('');
+    this.name.set('');
   }
 
   handleCancel() {
@@ -50,11 +52,19 @@ export class ModalComponent {
     this.result.set('cancel-clicked');
   }
 
+  // Guard: dismiss fires as side-effect when handleSave() closes the modal.
+  // saving flag prevents overwriting the saved result.
+  handleDismiss() {
+    if (!this.saving) this.handleCancel();
+    this.saving = false;
+  }
+
   handleSave() {
     if (!this.name().trim()) {
       this.result.set('validation-error: name is required');
       return;
     }
+    this.saving = true;
     this.modalOpen.set(false);
     this.result.set('saved: ' + this.name());
   }

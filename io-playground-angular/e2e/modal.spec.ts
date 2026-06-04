@@ -27,9 +27,13 @@ test.describe('io-modal — footer button click (Angular 20)', () => {
   });
 
   test('Save button — real mouse click fires save action', async ({ page }) => {
+    // Set value AND dispatch input event so Angular's (input) binding updates name signal
     await page.evaluate(() => {
       const input = document.querySelector('io-modal io-input') as any;
-      if (input) input.value = 'Test item';
+      if (input) {
+        input.value = 'Test item';
+        input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      }
     });
 
     const { x, y } = await page.evaluate(() => {

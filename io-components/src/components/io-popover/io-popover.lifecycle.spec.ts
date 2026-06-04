@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import * as utils from './io-popover-utils';
 import { IoPopover } from './io-popover';
+import * as utils from './io-popover-utils';
 
 // Prevent requestAnimationFrame callbacks from firing after tests complete.
 // applyOpenState schedules a focus call via rAF; in jsdom this fires via a

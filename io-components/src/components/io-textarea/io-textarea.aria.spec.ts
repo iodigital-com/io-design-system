@@ -6,8 +6,9 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { IoTextarea } from './io-textarea';
 import { applyAriaProp } from '../../utils/aria-prop';
+
+import { IoTextarea } from './io-textarea';
 
 vi.mock('../../utils/aria-prop', () => ({
   applyAriaProp: vi.fn(),

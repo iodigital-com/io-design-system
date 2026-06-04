@@ -1,6 +1,6 @@
+import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { vi } from 'vitest';
-import { h } from '@stencil/core';
 
 import { IoInlineNotification } from './io-inline-notification';
 

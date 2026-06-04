@@ -86,6 +86,7 @@ vi.mock('@floating-ui/dom', () => ({
 }));
 
 import { h } from '@stencil/core';
+
 import { IoSelect } from './io-select';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { IoOption } from './io-option';
 
 describe('io-option — click behaviour', () => {

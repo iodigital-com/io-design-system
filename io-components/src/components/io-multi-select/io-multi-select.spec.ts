@@ -11,6 +11,7 @@ vi.mock('@floating-ui/dom', () => ({
 }));
 
 import { computePosition } from '@floating-ui/dom';
+
 import { IoMultiSelect } from './io-multi-select';
 
 describe('io-multi-select — default props', () => {

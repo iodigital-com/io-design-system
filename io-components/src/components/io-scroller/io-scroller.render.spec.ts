@@ -5,8 +5,8 @@
  * are never invoked by the lifecycle tests. This spec calls render(), extracts each
  * ref from h.mock.calls, and invokes it to drive coverage for lines 192-207.
  */
-import { describe, it, expect, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoScroller } from './io-scroller';
 

@@ -6,8 +6,9 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { IoDrawer } from './io-drawer';
 import { applyAriaProp } from '../../utils/aria-prop';
+
+import { IoDrawer } from './io-drawer';
 
 vi.mock('../../utils/aria-prop', () => ({
   applyAriaProp: vi.fn(),

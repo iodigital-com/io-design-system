@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import { IoStepper } from './io-stepper';
 import { IoStep } from './io-step';
+import { IoStepper } from './io-stepper';
 
 describe('io-stepper — default props', () => {
   let component: IoStepper;

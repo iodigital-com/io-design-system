@@ -5,11 +5,12 @@
  * Checks role structure, aria-multiselectable, aria-expanded, aria-selected,
  * and associated form field semantics.
  */
-import { describe, it, expect, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, vi } from 'vitest';
+
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 import { IoMultiSelect } from './io-multi-select';
-import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-multi-select — a11y (ARIA patterns)', () => {
   it('closed combobox with label has no axe violations', async () => {

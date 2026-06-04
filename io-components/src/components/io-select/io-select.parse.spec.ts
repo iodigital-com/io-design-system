@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { parseSelectContent } from './io-select-utils';
 
 describe('parseSelectContent', () => {

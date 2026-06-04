@@ -4,8 +4,8 @@
  * Covers branches in io-switch.tsx render() and io-switch-utils.ts that
  * are not exercised by the existing watch/a11y specs.
  */
-import { describe, it, expect, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoSwitch } from './io-switch';
 import {

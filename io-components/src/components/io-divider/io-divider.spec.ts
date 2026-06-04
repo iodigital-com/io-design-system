@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoDivider } from './io-divider';
 import { getDividerStyles } from './io-divider-styles';

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+
 import { IoOptgroup } from './io-optgroup';
 import { getOptgroupClass } from './io-optgroup-utils';
 

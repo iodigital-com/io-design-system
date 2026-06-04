@@ -13,8 +13,8 @@
  * - setFocus with options arg
  * - render() inline JSX callback bodies (slotchange, chip remove onClick)
  */
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoMultiSelect } from './io-multi-select';
 

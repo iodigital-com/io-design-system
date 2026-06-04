@@ -6,8 +6,8 @@
  * h is mocked in this test environment — we use h.mock.calls to inspect
  * the virtual tree without a real DOM.
  */
-import { describe, it, expect, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoPinCode } from './io-pin-code';
 

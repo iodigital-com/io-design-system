@@ -6,8 +6,9 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { IoInput } from './io-input';
 import { applyAriaProp } from '../../utils/aria-prop';
+
+import { IoInput } from './io-input';
 
 vi.mock('../../utils/aria-prop', () => ({
   applyAriaProp: vi.fn(),

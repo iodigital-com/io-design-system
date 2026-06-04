@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoButtonGroup } from './io-button-group';
+
 import type { IoButtonGroupItem } from './types';
 
 // ─── Shared fixtures ──────────────────────────────────────────────────────────

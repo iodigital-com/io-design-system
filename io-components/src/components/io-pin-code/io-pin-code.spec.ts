@@ -125,3 +125,25 @@ describe('io-pin-code — setFocus method', () => {
     expect(focusMock).toHaveBeenCalled();
   });
 });
+
+describe('io-pin-code — formDisabledCallback', () => {
+  let component: IoPinCode;
+
+  beforeEach(() => {
+    component = new IoPinCode();
+    (component as any).el = document.createElement('io-pin-code');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});

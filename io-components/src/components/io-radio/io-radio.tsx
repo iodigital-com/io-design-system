@@ -139,6 +139,10 @@ export class IoRadio {
     }
   }
 
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();

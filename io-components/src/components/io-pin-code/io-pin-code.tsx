@@ -123,6 +123,10 @@ export class IoPinCode {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
   @Watch('value')
   onValueChange(newValue: string) {
     this.digits = splitDigits(newValue ?? '', this.length);

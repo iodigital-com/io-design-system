@@ -197,6 +197,16 @@ export class IoSelect {
     }
   }
 
+  connectedCallback() {
+    if (!this.label && !this.el.getAttribute('aria-label') && !this.el.getAttribute('aria-labelledby')) {
+      console.error('[io-select] Missing accessible label. Provide label prop, aria-label, or aria-labelledby.');
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   formResetCallback() {
     if (this.multiple) {
       this.selectedValues = [...this.defaultSelectedValues];
@@ -205,6 +215,10 @@ export class IoSelect {
     }
     this.syncFormValue();
     this.faceInvalid = false;
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('value')

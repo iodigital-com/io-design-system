@@ -236,3 +236,27 @@ describe('io-multi-select — positionDropdown', () => {
     expect(dropdownEl.style.width).toBe('200px');
   });
 });
+
+describe('io-multi-select — formDisabledCallback', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'test';
+    (component as any).componentWillLoad();
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});

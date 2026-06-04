@@ -120,10 +120,24 @@ export class IoCheckbox {
     }
   }
 
+  connectedCallback() {
+    if (!this.label && !this.el.getAttribute('aria-label') && !this.el.getAttribute('aria-labelledby')) {
+      console.error('[io-checkbox] Missing accessible label. Provide label prop, aria-label, or aria-labelledby.');
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   formResetCallback() {
     this.checked = this.defaultChecked;
     this.indeterminate = false;
     this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
   }
 
   @Watch('checked')

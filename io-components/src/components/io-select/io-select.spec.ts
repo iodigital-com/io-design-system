@@ -181,3 +181,82 @@ describe('io-select — renderComboboxOption onClick handler invocation', () => 
     expect(selectOptionSpy).toHaveBeenCalledWith(opt);
   });
 });
+
+describe('io-select — formDisabledCallback', () => {
+  let component: IoSelect;
+
+  beforeEach(() => {
+    component = new IoSelect();
+    (component as any).el = document.createElement('io-select');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('sets disabled to true when formDisabledCallback(true) is called', () => {
+    (component as any).formDisabledCallback(true);
+    expect(component.disabled).toBe(true);
+  });
+
+  it('sets disabled to false when formDisabledCallback(false) is called', () => {
+    component.disabled = true;
+    (component as any).formDisabledCallback(false);
+    expect(component.disabled).toBe(false);
+  });
+});
+
+describe('io-select — connectedCallback', () => {
+  it('logs error when label, aria-label, and aria-labelledby are all missing', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).toHaveBeenCalledWith('[io-select] Missing accessible label. Provide label prop, aria-label, or aria-labelledby.');
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when label prop is provided', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = 'Country';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('does not log error when aria-label is present on the element', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    el.setAttribute('aria-label', 'Country');
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (component as any).label = '';
+    (component as any).connectedCallback();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+});
+
+describe('io-select — componentShouldUpdate', () => {
+  it('returns true when new and old values differ', () => {
+    const component = new IoSelect();
+    expect((component as any).componentShouldUpdate('new', 'old')).toBe(true);
+  });
+
+  it('returns false when new and old values are identical', () => {
+    const component = new IoSelect();
+    expect((component as any).componentShouldUpdate('same', 'same')).toBe(false);
+  });
+});

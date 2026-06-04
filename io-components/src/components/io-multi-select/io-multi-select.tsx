@@ -209,6 +209,10 @@ export class IoMultiSelect {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
   // ── Watchers ──────────────────────────────────────────────────────────────
 
   @Watch('value')

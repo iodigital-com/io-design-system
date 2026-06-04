@@ -106,6 +106,10 @@ export class IoSwitch {
     this.syncFormValue();
   }
 
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();

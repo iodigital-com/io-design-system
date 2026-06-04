@@ -28,6 +28,10 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: 'io Design System',
   description: 'Production-ready Web Components with a CSS token system, framework integration guides for React, Angular, Vue, and Next.js, and full design documentation.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+  },
   openGraph: {
     title: 'io Design System',
     description: 'Production-ready Web Components — one token system, any framework.',

@@ -126,9 +126,13 @@ export class IoButton {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleClick = (ev: MouseEvent) => {
+    // Stop native shadow-DOM click from propagating to the host element.
+    // Consumers should listen to the Stencil 'click' event emitted below,
+    // not the inner button's native click — prevents double-fire in
+    // framework wrappers that listen on the host element.
+    ev.stopPropagation();
     if (this.disabled || this.loading) {
       ev.preventDefault();
-      ev.stopPropagation();
       return;
     }
     this.click.emit(ev);

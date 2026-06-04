@@ -8,7 +8,11 @@
     "io-storefront",
     "io-components-react",
     "io-components-vue",
-    "io-components-angular"
+    "io-components-angular",
+    "io-playground-react",
+    "io-playground-angular",
+    "io-playground-vue",
+    "io-playground-html"
   ],
   "scripts": {
     "dev": "npm --workspace @iodigital-com/components run dev",
@@ -19,6 +23,11 @@
     "build:wrappers": "npm run build:wrapper:react && npm run build:wrapper:vue && npm run build:wrapper:angular",
     "build": "npm run build:components && npm run build:wrappers",
     "test": "npm --workspace @iodigital-com/components run test && npm --workspace @iodigital-com/storefront run test",
+    "test:e2e:react": "npm --workspace @iodigital-com/playground-react run test:e2e",
+    "test:e2e:angular": "npm --workspace @iodigital-com/playground-angular run test:e2e",
+    "test:e2e:vue": "npm --workspace @iodigital-com/playground-vue run test:e2e",
+    "test:e2e:html": "npm --workspace @iodigital-com/playground-html run test:e2e",
+    "test:e2e": "npm run test:e2e:react && npm run test:e2e:angular && npm run test:e2e:vue && npm run test:e2e:html",
     "type-check": "npm --workspace @iodigital-com/storefront run type-check",
     "build:storefront": "npm --workspace @iodigital-com/storefront run build",
     "size": "size-limit",

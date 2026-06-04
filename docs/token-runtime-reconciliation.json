@@ -2424,6 +2424,22 @@
       "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
+      "runtimeCssVar": "--io-input-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1. Fixes #541."
+    },
+    {
+      "runtimeCssVar": "--io-textarea-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1. Fixes #541."
+    },
+    {
       "runtimeCssVar": "--io-radio-border-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

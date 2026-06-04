@@ -1,6 +1,6 @@
 {
   "$schema": "./api-surface.schema.json",
-  "generated": "2026-05-28T08:12:04.147Z",
+  "generated": "2026-06-04T09:19:24.022Z",
   "components": {
     "io-accordion": {
       "props": {
@@ -17,16 +17,6 @@
       "methods": {},
       "events": {
         "update": "IoAccordionUpdateDetail"
-      }
-    },
-    "io-alert": {
-      "props": {
-        "dismissible": "boolean",
-        "variant": "IoAlertVariant"
-      },
-      "methods": {},
-      "events": {
-        "dismiss": "void"
       }
     },
     "io-avatar": {
@@ -48,6 +38,17 @@
       },
       "methods": {},
       "events": {}
+    },
+    "io-banner": {
+      "props": {
+        "dismissible": "boolean",
+        "open": "boolean",
+        "variant": "IoBannerVariant"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
+      }
     },
     "io-breadcrumb": {
       "props": {},
@@ -88,12 +89,15 @@
     },
     "io-button-group": {
       "props": {
+        "compact": "boolean",
         "direction": "IoButtonGroupDirection",
         "disabled": "boolean",
-        "exclusive": "boolean",
+        "hideLabel": "boolean",
         "label": "string | undefined",
-        "size": "IoButtonGroupSize",
-        "value": "string | string[]"
+        "required": "boolean",
+        "type": "IoButtonGroupType",
+        "value": "string | string[]",
+        "variant": "IoButtonGroupVariant"
       },
       "methods": {},
       "events": {
@@ -204,6 +208,16 @@
       "methods": {},
       "events": {}
     },
+    "io-inline-notification": {
+      "props": {
+        "dismissible": "boolean",
+        "variant": "IoInlineNotificationVariant"
+      },
+      "methods": {},
+      "events": {
+        "dismiss": "void"
+      }
+    },
     "io-input": {
       "props": {
         "autocomplete": "string | undefined",
@@ -266,6 +280,7 @@
         "background": "IoModalBackground",
         "closeOnBackdrop": "boolean",
         "open": "boolean",
+        "preventTopLayer": "boolean",
         "size": "IoModalSize"
       },
       "methods": {

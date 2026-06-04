@@ -353,9 +353,13 @@ export class IoModal {
 
   private attachBackdropHostListener() {
     if (!this.backdropEl) return;
-    this.backdropHostHandler = () => {
+    this.backdropHostHandler = (ev: MouseEvent) => {
       if (!this.closeOnBackdrop) return;
-      this.open = false;
+      // Only close when clicking the backdrop area itself, not elements inside the dialog.
+      // ev.target is the backdrop div only when clicking outside the dialog panel.
+      if (ev.target === this.backdropEl) {
+        this.open = false;
+      }
     };
     this.backdropEl.addEventListener('click', this.backdropHostHandler);
   }
@@ -410,50 +414,61 @@ export class IoModal {
     const closeIcon = getModalCloseIcon();
     const descriptionId = description ? `${headingId}-description` : undefined;
 
+    const dialog = (
+      <dialog
+        ref={(el?: HTMLDialogElement) => {
+          this.dialogEl = el;
+          applyAriaProp(this.aria, el ?? null);
+        }}
+        class={`modal--${size} modal--bg-${background}`}
+        aria-labelledby={heading ? headingId : undefined}
+        aria-describedby={descriptionId}
+        aria-modal="true"
+        onClick={this.handleDialogClick}
+        onCancel={this.handleCancel}
+      >
+        <div class="modal__header">
+          <slot name="header">
+            {heading && (
+              <h2 id={headingId} class="modal__heading">
+                {heading}
+              </h2>
+            )}
+          </slot>
+          <button
+            type="button"
+            class="modal__close"
+            aria-label="Close dialog"
+            onClick={this.handleCloseClick}
+            innerHTML={closeIcon}
+          />
+        </div>
+        <div class="modal__body" id={descriptionId}>
+          <slot />
+        </div>
+        <div class="modal__footer">
+          <slot name="footer" />
+        </div>
+      </dialog>
+    );
+
     return (
       <Host>
         <style>{getModalStyles()}</style>
-        {this.preventTopLayer && (
+        {this.preventTopLayer ? (
+          /* Backdrop is the fixed flex-centering container; dialog is its child.
+             This avoids giving the dialog an elevated z-index, which would cause
+             the shadow DOM element to intercept pointer events intended for
+             slotted light-DOM children (slot="footer" IoButton elements). */
           <div
             class="modal__backdrop"
             ref={(el?: HTMLDivElement) => { this.backdropEl = el; }}
-          />
+          >
+            {dialog}
+          </div>
+        ) : (
+          dialog
         )}
-        <dialog
-          ref={(el?: HTMLDialogElement) => {
-            this.dialogEl = el;
-            applyAriaProp(this.aria, el ?? null);
-          }}
-          class={`modal--${size} modal--bg-${background}`}
-          aria-labelledby={heading ? headingId : undefined}
-          aria-describedby={descriptionId}
-          aria-modal="true"
-          onClick={this.handleDialogClick}
-          onCancel={this.handleCancel}
-        >
-          <div class="modal__header">
-            <slot name="header">
-              {heading && (
-                <h2 id={headingId} class="modal__heading">
-                  {heading}
-                </h2>
-              )}
-            </slot>
-            <button
-              type="button"
-              class="modal__close"
-              aria-label="Close dialog"
-              onClick={this.handleCloseClick}
-              innerHTML={closeIcon}
-            />
-          </div>
-          <div class="modal__body" id={descriptionId}>
-            <slot />
-          </div>
-          <div class="modal__footer">
-            <slot name="footer" />
-          </div>
-        </dialog>
       </Host>
     );
   }

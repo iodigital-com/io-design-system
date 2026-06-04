@@ -3,28 +3,29 @@
 exports[`io-modal — render snapshots > renders default state 1`] = `
 <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <div class="modal__backdrop"></div>
-    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
-      <div class="modal__header">
-        <slot name="header">
-          <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
-            Confirm action
-          </h2>
-        </slot>
-        <button type="button" class="modal__close" aria-label="Close dialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <slot></slot>
-      </div>
-      <div class="modal__footer">
-        <slot name="footer"></slot>
-      </div>
-    </dialog>
+    <div class="modal__backdrop">
+      <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              Confirm action
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
   </mock:shadow-root>
   Body copy
 </io-modal>
@@ -53,82 +54,85 @@ MockHTMLElement {
   "_childNodes": [
     <io-modal size="sm" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <div class="modal__backdrop"></div>
-    <dialog class="modal--sm modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
-      <div class="modal__header">
-        <slot name="header">
-          <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
-            Small
-          </h2>
-        </slot>
-        <button type="button" class="modal__close" aria-label="Close dialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <slot></slot>
-      </div>
-      <div class="modal__footer">
-        <slot name="footer"></slot>
-      </div>
-    </dialog>
+    <div class="modal__backdrop">
+      <dialog class="modal--sm modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              Small
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
   </mock:shadow-root>
   Small body
 </io-modal>,
     <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <div class="modal__backdrop"></div>
-    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
-      <div class="modal__header">
-        <slot name="header">
-          <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
-            Medium
-          </h2>
-        </slot>
-        <button type="button" class="modal__close" aria-label="Close dialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <slot></slot>
-      </div>
-      <div class="modal__footer">
-        <slot name="footer"></slot>
-      </div>
-    </dialog>
+    <div class="modal__backdrop">
+      <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              Medium
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
   </mock:shadow-root>
   Medium body
 </io-modal>,
     <io-modal size="lg" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <div class="modal__backdrop"></div>
-    <dialog class="modal--lg modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
-      <div class="modal__header">
-        <slot name="header">
-          <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
-            Large
-          </h2>
-        </slot>
-        <button type="button" class="modal__close" aria-label="Close dialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <slot></slot>
-      </div>
-      <div class="modal__footer">
-        <slot name="footer"></slot>
-      </div>
-    </dialog>
+    <div class="modal__backdrop">
+      <dialog class="modal--lg modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              Large
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
   </mock:shadow-root>
   Large body
 </io-modal>,
@@ -1303,28 +1307,29 @@ MockHTMLElement {
 exports[`io-modal — render snapshots > renders slotted footer actions 1`] = `
 <io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <div class="modal__backdrop"></div>
-    <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-describedby="io-modal-heading-4fzzzxjylrx-description" aria-modal="true">
-      <div class="modal__header">
-        <slot name="header">
-          <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
-            Open modal
-          </h2>
-        </slot>
-        <button type="button" class="modal__close" aria-label="Close dialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal__body" id="io-modal-heading-4fzzzxjylrx-description">
-        <slot></slot>
-      </div>
-      <div class="modal__footer">
-        <slot name="footer"></slot>
-      </div>
-    </dialog>
+    <div class="modal__backdrop">
+      <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-describedby="io-modal-heading-4fzzzxjylrx-description" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              Open modal
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body" id="io-modal-heading-4fzzzxjylrx-description">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
   </mock:shadow-root>
   <p __self="[object global]" __source="[object Object]">
     Modal body content.

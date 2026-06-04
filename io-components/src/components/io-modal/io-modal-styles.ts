@@ -43,25 +43,31 @@ export function getModalStyles(): string {
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
-    /* ── preventTopLayer: dedicated backdrop element in shadow DOM ──
+    /* ── preventTopLayer: backdrop is a flex-centering container in shadow DOM ──
        The host stays as display:contents so it never intercepts pointer events
-       on slotted light-DOM children (e.g. IoButton slot="footer"). Following
-       the Porsche Design System pattern: backdrop is a sibling div rendered
-       before the dialog in the shadow root, not the host itself.
-       This ensures React 18 event delegation reaches slotted footer buttons.
+       on slotted light-DOM children (e.g. IoButton slot="footer").
 
-       The backdrop div is always in the shadow DOM but hidden by default —
-       only shown via [open=""] selector when the modal is truly open.
-       Using [open=""] (empty string) matches Stencil's reflection of open=true,
-       and avoids matching React 18's open="false" string attribute. */
+       CRITICAL: The <dialog> must NOT have position:fixed + explicit z-index in
+       preventTopLayer mode. If it did, the browser's hit-test would land on the
+       higher-z-index shadow DOM element instead of the slotted light-DOM IoButton.
+       React's event delegation then retargets to <io-modal> and never reaches the
+       onClick handlers on <IoButton slot="footer">.
+
+       Fix: dialog is rendered INSIDE the backdrop div (child, not sibling).
+       The backdrop div is the fixed full-screen flex container; the dialog is
+       just a regular block element centered by the flex parent. No explicit
+       z-index on dialog → no hit-test interception → light-DOM clicks propagate
+       correctly through React's fiber tree.
+
+       Using [open=""] avoids matching React 18's reflected open="false" string. */
     .modal__backdrop {
       display: none;
-      pointer-events: none;
     }
 
     :host([prevent-top-layer][open=""]) .modal__backdrop {
-      display: block;
-      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: fixed;
       inset: 0;
       z-index: var(--io-z-modal);
@@ -73,16 +79,6 @@ export function getModalStyles(): string {
     dialog.modal--sm { width: var(--io-modal-width-sm); }
     dialog.modal--md { width: var(--io-modal-width-md); }
     dialog.modal--lg { width: var(--io-modal-width-lg); }
-
-    /* When preventTopLayer=true and open, the dialog sits above the backdrop div.
-       Scoped to [open=""] so closed modals are not affected. */
-    :host([prevent-top-layer][open=""]) dialog {
-      position: fixed;
-      z-index: calc(var(--io-z-modal) + 1);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
 
     .modal__header {
       display: flex;

@@ -228,30 +228,6 @@
     "description": "Text color of the active/selected button in the group."
   },
   {
-    "cssVar": "--io-button-group-bg",
-    "classification": "public-api",
-    "component": "io-button-group",
-    "description": "Background color of unselected buttons in the group. Overridden in dark mode."
-  },
-  {
-    "cssVar": "--io-button-group-border-color",
-    "classification": "public-api",
-    "component": "io-button-group",
-    "description": "Border color of unselected buttons in the group. Overridden in dark mode."
-  },
-  {
-    "cssVar": "--io-button-group-border-radius",
-    "classification": "public-api",
-    "component": "io-button-group",
-    "description": "Border radius applied to the outer corners of the first and last button."
-  },
-  {
-    "cssVar": "--io-button-group-border-width",
-    "classification": "public-api",
-    "component": "io-button-group",
-    "description": "Border width of each button in the group. Used for border collapse calculation."
-  },
-  {
     "cssVar": "--io-button-group-color",
     "classification": "public-api",
     "component": "io-button-group",
@@ -268,12 +244,6 @@
     "classification": "public-api",
     "component": "io-button-group",
     "description": "Font size of the button group label text."
-  },
-  {
-    "cssVar": "--io-button-group-hover-bg",
-    "classification": "public-api",
-    "component": "io-button-group",
-    "description": "Background color of a hovered unselected button."
   },
   {
     "cssVar": "--io-button-group-min-height",

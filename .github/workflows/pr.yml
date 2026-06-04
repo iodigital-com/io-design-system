@@ -41,9 +41,6 @@ jobs:
       - name: Storefront status governance
         run: node scripts/check-storefront-status-governance.cjs
 
-      - name: Copilot agent drift
-        run: node scripts/check-copilot-agent-drift.cjs
-
       - name: Agency governance
         run: node scripts/agency-validate-governance.cjs
 

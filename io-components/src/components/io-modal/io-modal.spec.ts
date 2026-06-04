@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoModal } from './io-modal';
 import { getModalStyles } from './io-modal-styles';
-
 import type { IoModalBackground } from './types';
 
 describe('io-modal — default props', () => {

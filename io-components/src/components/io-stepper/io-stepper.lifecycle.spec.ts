@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { IoStep } from './io-step';
 import { IoStepper } from './io-stepper';
+import { IoStep } from './io-step';
 
 function makeStepper() {
   const s = new IoStepper();

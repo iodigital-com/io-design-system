@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
 import { IoBreadcrumb } from './io-breadcrumb';
-import { getBreadcrumbItemStyles } from './io-breadcrumb-item/io-breadcrumb-item-styles';
 import { getBreadcrumbStyles } from './io-breadcrumb-styles';
+import { getBreadcrumbItemStyles } from './io-breadcrumb-item/io-breadcrumb-item-styles';
 
 // ── Style string tests ────────────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
-import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoCheckbox } from './io-checkbox';
 

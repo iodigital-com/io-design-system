@@ -118,7 +118,6 @@ export class IoRadio {
   }
 
   formResetCallback() {
-    this.faceInvalid = false;
     this.checked = this.defaultChecked;
     this.syncFormValue();
 

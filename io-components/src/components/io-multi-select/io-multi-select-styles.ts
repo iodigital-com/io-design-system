@@ -91,8 +91,8 @@ export function getMultiSelectStyles(): string {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: var(--io-icon-size-sm);
-      height: var(--io-icon-size-sm);
+      width: 16px;
+      height: 16px;
       padding: 0;
       margin: 0;
       border: none;
@@ -273,8 +273,8 @@ export function getMultiSelectStyles(): string {
     /* Checkbox indicator (WCAG 1.4.11: --io-border-interactive for non-text contrast) */
     .multi-select-option__checkbox {
       flex-shrink: 0;
-      width: var(--io-icon-size-md);
-      height: var(--io-icon-size-md);
+      width: 18px;
+      height: 18px;
       border: var(--io-checkbox-border-width) solid var(--io-border-interactive);
       border-radius: var(--io-border-radius-xs);
       display: flex;

@@ -12,8 +12,8 @@
  *   - nameChanged() watch handler
  *   - render() does not throw for every key prop combination
  */
-import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 

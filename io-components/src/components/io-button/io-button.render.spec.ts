@@ -5,8 +5,8 @@
  * h is mocked and refs are just props on the vnode. This spec extracts the ref
  * from h.mock.calls and invokes it to drive coverage.
  */
-import { h } from '@stencil/core';
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoButton } from './io-button';
 

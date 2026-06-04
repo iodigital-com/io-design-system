@@ -1,9 +1,6 @@
-import { h } from '@stencil/core';
 import { describe, it, expect, vi } from 'vitest';
-
-import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
-
 import { IoSwitch } from './io-switch';
+import { h } from '@stencil/core';
 
 /**
  * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-switch
@@ -12,6 +9,7 @@ import { IoSwitch } from './io-switch';
  * (input[type=checkbox][role=switch] + label + aria-checked/aria-invalid/describedby).
  * Full component-level auditing against the Shadow DOM requires the Stencil render environment.
  */
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-switch — a11y (ARIA patterns)', () => {
   it('unchecked switch with visible label has no axe violations', async () => {

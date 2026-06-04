@@ -1,5 +1,5 @@
-import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoButton } from './io-button';
 import { getButtonStyles } from './io-button-styles';

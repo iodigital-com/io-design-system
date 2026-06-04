@@ -28,14 +28,14 @@ describe('io-scroller — default props', () => {
     expect(component.label).toBeUndefined();
   });
 
-  it('has no fade-start class by default (atStart is true)', () => {
-    (component as any).syncHostClasses();
-    expect((component as any).el.classList.contains('has-fade-start')).toBe(false);
+  it('atStart defaults to true', () => {
+    // @ts-expect-error accessing private state for test
+    expect(component.atStart).toBe(true);
   });
 
-  it('has no fade-end class by default (atEnd is true)', () => {
-    (component as any).syncHostClasses();
-    expect((component as any).el.classList.contains('has-fade-end')).toBe(false);
+  it('atEnd defaults to true', () => {
+    // @ts-expect-error accessing private state for test
+    expect(component.atEnd).toBe(true);
   });
 });
 

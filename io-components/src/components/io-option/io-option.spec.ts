@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-
 import { IoOption } from './io-option';
 import { resolveOptionId, getOptionClass } from './io-option-utils';
 

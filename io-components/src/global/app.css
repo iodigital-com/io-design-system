@@ -364,8 +364,6 @@
   --io-form-checkbox-border-radius: var(--io-checkbox-radius);
   --io-checkbox-border-width:         1.5px;
   --io-checkbox-border-error-width:   2px;
-  --io-input-border-error-width:      2px;
-  --io-textarea-border-error-width:   2px;
   --io-checkbox-icon-size:            10px;
   --io-select-padding-right:     1.6rem;
   --io-select-chevron-offset-y:  2px;

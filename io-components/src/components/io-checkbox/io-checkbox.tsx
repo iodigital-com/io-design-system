@@ -121,7 +121,6 @@ export class IoCheckbox {
   }
 
   formResetCallback() {
-    this.faceInvalid = false;
     this.checked = this.defaultChecked;
     this.indeterminate = false;
     this.syncFormValue();

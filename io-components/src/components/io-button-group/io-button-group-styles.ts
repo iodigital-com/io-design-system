@@ -147,7 +147,7 @@ export function getButtonGroupStyles(): string {
 
     .group-btn:focus-visible {
       outline: none;
-      box-shadow: var(--io-focus-ring-active);
+      box-shadow: var(--io-focus-ring-active, var(--io-shadow-focus-ring));
       z-index: 1;
     }
 

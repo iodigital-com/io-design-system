@@ -6,8 +6,8 @@
  *   1. Calls render() and extracts the ref from h.mock.calls
  *   2. Stubs rAF to invoke the callback synchronously so the inner code runs
  */
-import { h } from '@stencil/core';
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoPopover } from './io-popover';
 import { getPanelFocusableElements } from './io-popover-utils';

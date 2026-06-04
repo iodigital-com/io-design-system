@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { IoToast } from './io-toast';
 import { IoToastManagerClass } from './io-toast-manager';
 import { getToastItemVariant, isToastPersistent } from './io-toast-utils';
-
 import type { IoToastEntry } from './types';
 
 // ── getToastItemVariant: null/undefined variant (??  'neutral' branch) ────────

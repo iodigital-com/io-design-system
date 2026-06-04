@@ -8,8 +8,8 @@
  *  - getMultiSelectMiddleware() utility (line 45 in utils)
  *  - positionDropdown() when both refs are present
  */
-import { h } from '@stencil/core';
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoMultiSelect } from './io-multi-select';
 import { getMultiSelectMiddleware } from './io-multi-select-utils';

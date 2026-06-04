@@ -5,8 +5,8 @@
  * by existing specs. This spec covers both the truthy (label provided) and
  * falsy (label absent) paths.
  */
-import { h } from '@stencil/core';
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTabsBar } from './io-tabs-bar';
 

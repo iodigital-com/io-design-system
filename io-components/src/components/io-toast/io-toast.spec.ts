@@ -1,6 +1,6 @@
-import { h } from '@stencil/core';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+import { h } from '@stencil/core';
 import { IoToast } from './io-toast';
 import { toastManager } from './io-toast-manager';
 import { getToastStyles } from './io-toast-styles';

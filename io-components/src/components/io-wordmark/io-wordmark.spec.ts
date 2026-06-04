@@ -1,5 +1,5 @@
-import { h, Host } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h, Host } from '@stencil/core';
 
 import { IoWordmark } from './io-wordmark';
 

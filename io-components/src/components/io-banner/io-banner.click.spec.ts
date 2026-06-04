@@ -1,5 +1,5 @@
-import { h } from '@stencil/core';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoBanner } from './io-banner';
 

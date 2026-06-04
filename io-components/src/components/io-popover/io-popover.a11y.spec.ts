@@ -1,10 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
-
 import { IoPopover } from './io-popover';
 import { getPanelFocusableElements } from './io-popover-utils';
 
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-popover — a11y', () => {
   it('open dialog with label has no axe violations', async () => {

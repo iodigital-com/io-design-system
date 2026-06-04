@@ -76,7 +76,7 @@ describe('io-select combobox — selection (single)', () => {
   it('selectOption sets value and emits change', () => {
     (component as any).selectOption(OPTIONS[0]);
     expect(component.value).toBe('a');
-    expect(emitSpy).toHaveBeenCalledWith('a');
+    expect(emitSpy).toHaveBeenCalledWith({ value: 'a', name: undefined });
   });
 
   it('selectOption closes dropdown in single mode', () => {
@@ -124,7 +124,7 @@ describe('io-select combobox — selection (multiple)', () => {
 
   it('emits change with array', () => {
     (component as any).selectOption(OPTIONS[0]);
-    expect(emitSpy).toHaveBeenCalledWith(['a']);
+    expect(emitSpy).toHaveBeenCalledWith({ value: ['a'], name: undefined });
   });
 
   it('dropdown stays open in multiple mode', () => {

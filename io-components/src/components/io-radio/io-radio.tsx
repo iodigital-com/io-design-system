@@ -67,7 +67,7 @@ export class IoRadio {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() change!: EventEmitter<IoRadioChangeDetail>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoRadioChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 

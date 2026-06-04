@@ -330,7 +330,7 @@ describe('io-select — handleFilterKeyDown', () => {
     (c as any).change = { emit: emitSpy };
     const ev = { key: 'Enter', stopPropagation: vi.fn(), preventDefault: vi.fn() } as unknown as KeyboardEvent;
     (c as any).handleFilterKeyDown(ev);
-    expect(emitSpy).toHaveBeenCalledWith('a');
+    expect(emitSpy).toHaveBeenCalledWith({ value: 'a', name: undefined });
   });
 });
 

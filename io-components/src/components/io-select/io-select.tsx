@@ -11,6 +11,7 @@ import {
   getComboboxOptionClass,
   parseSelectContent,
 } from './io-select-utils';
+import type { IoSelectChangeDetail } from './io-select-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
@@ -138,13 +139,13 @@ export class IoSelect {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the selected value changes. */
-  @Event() change!: EventEmitter<string | string[]>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoSelectChangeDetail>;
 
   /** Fires when the select gains focus */
-  @Event() focus!: EventEmitter<FocusEvent>;
+  @Event({ bubbles: false, composed: false }) focus!: EventEmitter<FocusEvent>;
 
   /** Fires when the select loses focus */
-  @Event() blur!: EventEmitter<FocusEvent>;
+  @Event({ bubbles: false, composed: false }) blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -373,11 +374,11 @@ export class IoSelect {
       } else {
         this.selectedValues = [...this.selectedValues, opt.value];
       }
-      this.change.emit([...this.selectedValues]);
+      this.change.emit({ value: [...this.selectedValues], name: this.name });
       // keep dropdown open in multiple mode
     } else {
       this.value = opt.value;
-      this.change.emit(this.value);
+      this.change.emit({ value: this.value, name: this.name });
       this.isOpen = false;
     }
   }
@@ -420,7 +421,7 @@ export class IoSelect {
   private handleChange = (ev: Event) => {
     if (this.disabled) return;
     this.value = (ev.target as HTMLSelectElement).value;
-    this.change.emit(this.value);
+    this.change.emit({ value: this.value, name: this.name });
   };
 
   private handleFocus = (ev: FocusEvent) => {

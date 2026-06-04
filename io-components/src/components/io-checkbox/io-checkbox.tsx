@@ -70,7 +70,7 @@ export class IoCheckbox {
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
-  @Event() change!: EventEmitter<IoCheckboxChangeDetail>;
+  @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoCheckboxChangeDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 

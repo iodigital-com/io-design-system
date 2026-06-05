@@ -321,6 +321,66 @@ export function getButtonStyles(): string {
       }
     }
 
+    /* Orange */
+    .btn--ghost.btn--orange {
+      color: var(--io-color-orange);
+      border-color: var(--io-color-orange);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn--ghost.btn--orange:hover:not(.btn--disabled):not(.btn--loading) {
+        background-color: var(--io-color-orange);
+        color: var(--io-color-white);
+      }
+    }
+
+    /* Pink — hover text matches solid (grey-6) */
+    .btn--ghost.btn--pink {
+      color: var(--io-color-pink);
+      border-color: var(--io-color-pink);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn--ghost.btn--pink:hover:not(.btn--disabled):not(.btn--loading) {
+        background-color: var(--io-color-pink);
+        color: var(--io-color-grey-6);
+      }
+    }
+
+    /* Rouge */
+    .btn--ghost.btn--rouge {
+      color: var(--io-color-rouge);
+      border-color: var(--io-color-rouge);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn--ghost.btn--rouge:hover:not(.btn--disabled):not(.btn--loading) {
+        background-color: var(--io-color-rouge);
+        color: var(--io-color-white);
+      }
+    }
+
+    /* Yellow — hover text matches solid (grey-6) */
+    .btn--ghost.btn--yellow {
+      color: var(--io-color-yellow);
+      border-color: var(--io-color-yellow);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn--ghost.btn--yellow:hover:not(.btn--disabled):not(.btn--loading) {
+        background-color: var(--io-color-yellow);
+        color: var(--io-color-grey-6);
+      }
+    }
+
+    /* Beige — hover text matches solid (grey-6) */
+    .btn--ghost.btn--beige {
+      color: var(--io-color-beige);
+      border-color: var(--io-color-beige);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .btn--ghost.btn--beige:hover:not(.btn--disabled):not(.btn--loading) {
+        background-color: var(--io-color-beige);
+        color: var(--io-color-grey-6);
+      }
+    }
+
     /* ============================================================
        LINK VARIANT (no fill, no border, animated underline)
        ============================================================ */
@@ -405,6 +465,11 @@ export function getButtonStyles(): string {
       transition: opacity 150ms ease;
     }
 
+    io-icon,
+    .btn__icon-wrap {
+      transition: opacity 150ms ease;
+    }
+
     /* Visually hidden label for icon+hideLabel mode — preserves accessible text */
     .btn__label--hidden {
       clip: rect(0 0 0 0);
@@ -417,8 +482,22 @@ export function getButtonStyles(): string {
     }
 
     .btn--loading .btn__label,
-    .btn--loading .btn__arrow {
+    .btn--loading .btn__arrow,
+    .btn--loading io-icon,
+    .btn--loading .btn__icon-wrap {
       opacity: 0;
+    }
+
+    /* ── Loading live region (screen-reader only) ──────── */
+
+    .btn__loading-sr {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
     }
 
     /* ── Loading spinner ────────────────────────────────── */
@@ -444,7 +523,9 @@ export function getButtonStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .btn,
       .btn::after,
-      .btn__arrow {
+      .btn__arrow,
+      io-icon,
+      .btn__icon-wrap {
         transition: none;
       }
       .btn__spinner {

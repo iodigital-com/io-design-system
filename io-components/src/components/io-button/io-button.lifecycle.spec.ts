@@ -187,6 +187,105 @@ describe('io-button — render ref callback (btnEl assignment + applyAriaProp)',
   });
 });
 
+describe('io-button — validatePropValues', () => {
+  it('does not warn for valid default props', () => {
+    const c = makeButton();
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).validatePropValues();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('warns for invalid variant', () => {
+    const c = makeButton();
+    (c as any).variant = 'outline';
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).validatePropValues();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"variant"'));
+    spy.mockRestore();
+  });
+
+  it('warns for invalid color', () => {
+    const c = makeButton();
+    (c as any).color = 'purple';
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).validatePropValues();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"color"'));
+    spy.mockRestore();
+  });
+
+  it('warns for invalid size', () => {
+    const c = makeButton();
+    (c as any).size = 'xxl';
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).validatePropValues();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('"size"'));
+    spy.mockRestore();
+  });
+
+  it('is suppressed in production (__STENCIL_PROD__=true)', () => {
+    const c = makeButton();
+    (c as any).variant = 'invalid';
+    (globalThis as any).__STENCIL_PROD__ = true;
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).validatePropValues();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+    delete (globalThis as any).__STENCIL_PROD__;
+  });
+});
+
+describe('io-button — componentShouldUpdate', () => {
+  it('returns true when values differ', () => {
+    const c = makeButton();
+    expect(c.componentShouldUpdate('solid', 'ghost')).toBe(true);
+  });
+
+  it('returns false when values are the same', () => {
+    const c = makeButton();
+    expect(c.componentShouldUpdate('solid', 'solid')).toBe(false);
+  });
+});
+
+describe('io-button — onLoadingChange / loading a11y', () => {
+  it('loadingTransitioned starts false', () => {
+    const c = makeButton();
+    expect((c as any).loadingTransitioned).toBe(false);
+  });
+
+  it('sets loadingTransitioned=true when loading transitions to true', () => {
+    const c = makeButton();
+    (c as any).onLoadingChange(true);
+    expect((c as any).loadingTransitioned).toBe(true);
+  });
+
+  it('does not reset loadingTransitioned when loading goes back to false', () => {
+    const c = makeButton();
+    (c as any).onLoadingChange(true);
+    (c as any).onLoadingChange(false);
+    expect((c as any).loadingTransitioned).toBe(true);
+  });
+});
+
+describe('io-button — renderIconOnlyContent', () => {
+  it('does not throw when icon prop is set', () => {
+    const c = makeButton();
+    c.icon = 'search';
+    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+  });
+
+  it('does not throw when no icon or iconSource (brand arrow fallback path)', () => {
+    const c = makeButton();
+    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+  });
+
+  it('does not throw when iconSource is set', () => {
+    const c = makeButton();
+    c.iconSource = '<svg></svg>';
+    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+  });
+});
+
 describe('io-button — handleKeyDown branches', () => {
   it('handleKeyDown with href triggers click on Enter', () => {
     const c = makeButton();

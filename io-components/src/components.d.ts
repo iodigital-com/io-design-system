@@ -289,11 +289,14 @@ export namespace Components {
      * io-button
      * ==========
      * Primary interactive element for io Digital's design system.
-     * Supports 9 color themes × 3 variants (solid, ghost, link) × 3 sizes.
+     * Supports 9 color themes × 3 variants (solid, ghost, link) × 4 sizes.
      * Renders as <button> by default, or <a> when `href` is provided.
+     * Default type is 'button'. Set type="submit" or type="reset" explicitly
+     * when placing inside a form — this deviates from the HTML default of 'submit'.
      * @example <io-button color="blue" variant="solid" size="md">Get started</io-button>
      * <io-button color="blue" variant="ghost" size="md">Learn more</io-button>
      * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
+     * <io-button type="submit" color="blue" variant="solid">Submit form</io-button>
      */
     interface IoButton {
         /**
@@ -320,6 +323,10 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+        /**
+          * Associates the button with a form element by its ID. Allows the button to submit/reset a form it is not a descendant of.
+         */
+        "form": string | undefined;
         /**
           * Stretches button to fill its container width
           * @default false
@@ -362,6 +369,10 @@ export namespace Components {
          */
         "loading": boolean;
         /**
+          * The name submitted as form data when type="submit". Only relevant when button is associated with a form.
+         */
+        "name": string | undefined;
+        /**
           * Rel attribute — only used when href is set
          */
         "rel": string | undefined;
@@ -380,12 +391,12 @@ export namespace Components {
          */
         "target": string | undefined;
         /**
-          * Native button type (irrelevant when href is set)
+          * Native button type. Note: defaults to 'button' (unlike the HTML default of 'submit') — set type="submit" or type="reset" explicitly when placing inside a form. Irrelevant when href is set.
           * @default 'button'
          */
         "type": IoButtonType;
         /**
-          * Value used by io-button-group to identify this item
+          * Submitted as a name/value pair with form data when type="submit". Also used by io-button-group to identify this item.
          */
         "value": string | undefined;
         /**
@@ -2697,11 +2708,14 @@ declare global {
      * io-button
      * ==========
      * Primary interactive element for io Digital's design system.
-     * Supports 9 color themes × 3 variants (solid, ghost, link) × 3 sizes.
+     * Supports 9 color themes × 3 variants (solid, ghost, link) × 4 sizes.
      * Renders as <button> by default, or <a> when `href` is provided.
+     * Default type is 'button'. Set type="submit" or type="reset" explicitly
+     * when placing inside a form — this deviates from the HTML default of 'submit'.
      * @example <io-button color="blue" variant="solid" size="md">Get started</io-button>
      * <io-button color="blue" variant="ghost" size="md">Learn more</io-button>
      * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
+     * <io-button type="submit" color="blue" variant="solid">Submit form</io-button>
      */
     interface HTMLIoButtonElement extends Components.IoButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoButtonElementEventMap>(type: K, listener: (this: HTMLIoButtonElement, ev: IoButtonCustomEvent<HTMLIoButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4077,11 +4091,14 @@ declare namespace LocalJSX {
      * io-button
      * ==========
      * Primary interactive element for io Digital's design system.
-     * Supports 9 color themes × 3 variants (solid, ghost, link) × 3 sizes.
+     * Supports 9 color themes × 3 variants (solid, ghost, link) × 4 sizes.
      * Renders as <button> by default, or <a> when `href` is provided.
+     * Default type is 'button'. Set type="submit" or type="reset" explicitly
+     * when placing inside a form — this deviates from the HTML default of 'submit'.
      * @example <io-button color="blue" variant="solid" size="md">Get started</io-button>
      * <io-button color="blue" variant="ghost" size="md">Learn more</io-button>
      * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
+     * <io-button type="submit" color="blue" variant="solid">Submit form</io-button>
      */
     interface IoButton {
         /**
@@ -4108,6 +4125,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
+        /**
+          * Associates the button with a form element by its ID. Allows the button to submit/reset a form it is not a descendant of.
+         */
+        "form"?: string | undefined;
         /**
           * Stretches button to fill its container width
           * @default false
@@ -4150,6 +4171,10 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
+          * The name submitted as form data when type="submit". Only relevant when button is associated with a form.
+         */
+        "name"?: string | undefined;
+        /**
           * Fires on user click/Enter/Space activation. Not fired when disabled or loading.
          */
         "onClick"?: (event: IoButtonCustomEvent<MouseEvent>) => void;
@@ -4168,12 +4193,12 @@ declare namespace LocalJSX {
          */
         "target"?: string | undefined;
         /**
-          * Native button type (irrelevant when href is set)
+          * Native button type. Note: defaults to 'button' (unlike the HTML default of 'submit') — set type="submit" or type="reset" explicitly when placing inside a form. Irrelevant when href is set.
           * @default 'button'
          */
         "type"?: IoButtonType;
         /**
-          * Value used by io-button-group to identify this item
+          * Submitted as a name/value pair with form data when type="submit". Also used by io-button-group to identify this item.
          */
         "value"?: string | undefined;
         /**
@@ -6315,6 +6340,8 @@ declare namespace LocalJSX {
         "fullWidth": boolean;
         "label": string | undefined;
         "value": string | undefined;
+        "name": string | undefined;
+        "form": string | undefined;
         "iconOnly": boolean;
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;
@@ -6819,11 +6846,14 @@ declare module "@stencil/core" {
              * io-button
              * ==========
              * Primary interactive element for io Digital's design system.
-             * Supports 9 color themes × 3 variants (solid, ghost, link) × 3 sizes.
+             * Supports 9 color themes × 3 variants (solid, ghost, link) × 4 sizes.
              * Renders as <button> by default, or <a> when `href` is provided.
+             * Default type is 'button'. Set type="submit" or type="reset" explicitly
+             * when placing inside a form — this deviates from the HTML default of 'submit'.
              * @example <io-button color="blue" variant="solid" size="md">Get started</io-button>
              * <io-button color="blue" variant="ghost" size="md">Learn more</io-button>
              * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
+             * <io-button type="submit" color="blue" variant="solid">Submit form</io-button>
              */
             "io-button": LocalJSX.IntrinsicElements["io-button"] & JSXBase.HTMLAttributes<HTMLIoButtonElement>;
             /**

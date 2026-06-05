@@ -41,6 +41,9 @@ export class IoIcon {
   /** Mirror the icon horizontally. Useful for explicit RTL overrides. */
   @Prop({ reflect: true }) flip = false;
 
+  /** Forces the host element width to match the icon size. Useful for consistent column alignment in lists and navigation menus. */
+  @Prop({ reflect: true }) fixedWidth = false;
+
   @State() private fetchedSvg?: string;
 
   @Watch('iconSource')

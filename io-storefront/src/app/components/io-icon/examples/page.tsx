@@ -4,6 +4,8 @@ import {
   iconStoryAllIcons,
   iconStorySizes,
   iconStoryColour,
+  iconStoryInheritSize,
+  iconStoryFixedWidth,
   iconStoryFormActions,
   iconStoryWysiwygFormat,
   iconStoryWysiwygStructure,
@@ -70,6 +72,28 @@ export default function IoIconExamplesPage() {
         <ComponentStory
           story={iconStoryColour}
           previewClassName="flex flex-wrap gap-6 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Inherit size"
+          description='size="inherit" scales the icon to match the parent element\'s font-size. Useful for placing icons inline with text at any size without a separate prop override.'
+        />
+        <ComponentStory
+          story={iconStoryInheritSize}
+          previewClassName="flex flex-wrap gap-6 items-end"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Fixed width"
+          description="fixedWidth forces the host element width to match the icon size. Use in navigation menus and icon lists to keep icon columns aligned regardless of icon shape."
+        />
+        <ComponentStory
+          story={iconStoryFixedWidth}
+          previewClassName="flex flex-col gap-2 items-start"
         />
       </section>
 

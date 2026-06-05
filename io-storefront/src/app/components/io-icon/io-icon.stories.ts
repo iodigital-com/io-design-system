@@ -539,6 +539,24 @@ export const iconStoryColour: Story<'io-icon'> = {
   ],
 };
 
+export const iconStoryInheritSize: Story<'io-icon'> = {
+  state: { properties: { name: 'search', size: 'inherit' } },
+  generator: () => [
+    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '12px text' } },
+    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '16px text' } },
+    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '24px text' } },
+  ],
+};
+
+export const iconStoryFixedWidth: Story<'io-icon'> = {
+  state: { properties: { name: 'search', fixedWidth: true } },
+  generator: () =>
+    (['check', 'alert-triangle', 'info', 'x-circle', 'settings'] as const).map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md' as const, fixedWidth: true, label: name },
+    })),
+};
+
 const FORM_ICONS = [
   'save', 'save-all', 'save-off',
   'pen-line', 'pencil', 'square-pen', 'pen-off',
@@ -827,14 +845,20 @@ export const iconPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['xs', 'sm', 'md', 'lg', 'xl'],
+    options: ['xs', 'sm', 'md', 'lg', 'xl', 'inherit'],
     defaultValue: 'md',
-    description: 'Rendered size of the icon. Maps to design-token pixel values.',
+    description: 'Rendered size of the icon. "inherit" scales the icon to match the parent element\'s font-size.',
   },
   {
     name: 'label',
     type: 'string',
     defaultValue: '',
     description: 'Accessible label. When set, the icon renders with role="img" and aria-label. Omit for decorative icons.',
+  },
+  {
+    name: 'fixedWidth',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Forces the host element width to match the icon size. Use in nav menus and icon lists for consistent column alignment.',
   },
 ];

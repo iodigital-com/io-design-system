@@ -5,6 +5,8 @@ import {
   iconStoryAllIcons,
   iconStorySizes,
   iconStoryColour,
+  iconStoryInheritSize,
+  iconStoryFixedWidth,
   iconStoryFormActions,
   iconStoryWysiwygFormat,
   iconStoryWysiwygStructure,
@@ -269,6 +271,21 @@ describe('io-icon storefront stories', () => {
       const opts = (sizeDef as unknown as { options: string[] })?.options ?? [];
       expect(opts).toContain('md');
     });
+
+    it('size definition options contain inherit', () => {
+      const sizeDef = iconPropDefinitions.find((d) => d.name === 'size');
+      const opts = (sizeDef as unknown as { options: string[] })?.options ?? [];
+      expect(opts).toContain('inherit');
+    });
+
+    it('includes fixedWidth definition', () => {
+      expect(iconPropDefinitions.find((d) => d.name === 'fixedWidth')).toBeDefined();
+    });
+
+    it('fixedWidth definition is boolean type', () => {
+      const def = iconPropDefinitions.find((d) => d.name === 'fixedWidth');
+      expect(def?.type).toBe('boolean');
+    });
   });
 
   // ── Named stories ───────────────────────────────────────────────────────
@@ -342,6 +359,45 @@ describe('io-icon storefront stories', () => {
 
     it('does not throw with no args', () => {
       expect(() => iconStoryColour.generator?.()).not.toThrow();
+    });
+  });
+
+  // ── New prop stories ─────────────────────────────────────────────────────
+  describe('iconStoryInheritSize', () => {
+    it('generator returns non-empty array', () => {
+      const els = iconStoryInheritSize.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every element has size=inherit', () => {
+      const els = iconStoryInheritSize.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { properties: { size: string } }).properties.size).toBe('inherit');
+      }
+    });
+
+    it('does not throw with no args', () => {
+      expect(() => iconStoryInheritSize.generator?.()).not.toThrow();
+    });
+  });
+
+  describe('iconStoryFixedWidth', () => {
+    it('generator returns non-empty array', () => {
+      const els = iconStoryFixedWidth.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every element has fixedWidth=true', () => {
+      const els = iconStoryFixedWidth.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { properties: { fixedWidth: boolean } }).properties.fixedWidth).toBe(true);
+      }
+    });
+
+    it('does not throw with no args', () => {
+      expect(() => iconStoryFixedWidth.generator?.()).not.toThrow();
     });
   });
 

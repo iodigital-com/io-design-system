@@ -259,8 +259,8 @@ function ControlRow({ def, value, onUpdate }: {
       <div className="flex items-center justify-between gap-3 py-1.5">
         <div className="flex items-center gap-1.5">
           <span
-            className="text-[13px] font-medium select-none"
-            style={{ color: 'var(--io-text-primary)' }}
+            className="text-[11px] font-medium select-none"
+            style={{ color: 'var(--io-text-secondary)', letterSpacing: '0.01em' }}
           >
             {label}
           </span>

@@ -135,7 +135,7 @@ describe('io-input — named slots (label, description, message)', () => {
     component.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('input-error'),
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('input-message--error'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
     const nonHiddenCalls = pCalls.filter(
@@ -193,7 +193,7 @@ describe('io-input — named slots (label, description, message)', () => {
     component.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('input-error'),
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('input-message--error'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
     const nonHiddenCalls = pCalls.filter(

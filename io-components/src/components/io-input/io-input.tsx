@@ -428,7 +428,7 @@ export class IoInput {
           </label>
         </div>
         {showError && (
-          <p id={errorId} class={`input-error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
             <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>

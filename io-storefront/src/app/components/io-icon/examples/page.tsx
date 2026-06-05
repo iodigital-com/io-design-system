@@ -78,7 +78,7 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Inherit size"
-          description='size="inherit" scales the icon to match the parent element\'s font-size. Useful for placing icons inline with text at any size without a separate prop override.'
+          description={`size="inherit" scales the icon to match the parent element's font-size. Useful for placing icons inline with text at any size without a separate prop override.`}
         />
         <ComponentStory
           story={iconStoryInheritSize}

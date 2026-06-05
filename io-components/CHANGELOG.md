@@ -1,5 +1,40 @@
 # @iodigital-com/components
 
+## 1.1.0
+
+### Minor Changes
+
+- 19a4a0e: feat(io-icon): expand registry to 455 icons; add fixedWidth, inherit size, CSS var override
+
+  Expands `ICON_NODES` in `src/utils/icons.ts` from 51 to **455 icons** across 27 categories. All icons pre-extracted from `lucide@^0.577.0` — no runtime import. `IoIconName` union auto-expands.
+
+  **New component features**
+
+  - `fixedWidth` prop — forces host width to match icon size for consistent column alignment in nav menus and icon lists
+  - `size="inherit"` — scales icon to match parent `font-size`; useful for inline-with-text usage
+  - `--io-icon-size` CSS variable — per-instance size override without a prop change
+
+  **New icon categories (350 icons)**
+
+  Accessibility, Accounts & Access, Arrows, Buildings, Charts, Design, Development, Files, Finance, Layout, Mail, Multimedia, Navigation, Notifications, Photography, Security, Text, Time & Calendar, Transportation, Travel, Weather
+
+  **WYSIWYG editor icons (48 icons)**
+
+  Form actions (save, pen-line, trash, …), text formatting (bold, italic, code, …), headings (h1–h6), block structure (list, quote, indent, …), insert (link, image, table, …), table operations, history & alignment (undo-2, align-left, …)
+
+- 56cdfbb: fix(io-button): form integration, ghost colors, loading icon, icon-only, and configurator gaps
+
+  - Add `formAssociated: true` + FACE integration (`name`, `form` props, `internals.form.requestSubmit/reset` on click, `componentWillLoad` value sync)
+  - Add loading a11y: visually-hidden live region + `aria-describedby` announces loading state to screen readers (WCAG 4.1.3)
+  - Add `componentShouldUpdate` guard to prevent unnecessary re-renders on unchanged props
+  - Add dev-mode prop validation warnings for invalid `variant`, `color`, `size` values
+  - Fix ghost variant missing borders for orange, pink, rouge, yellow, beige colors
+  - Fix loading state: icon and custom SVG now fade to opacity 0 alongside label/arrow
+  - Fix icon-only mode: respects `icon`/`iconSource` prop; falls back to iO brand arrow (not hardcoded ×)
+  - Add `link` variant to Configurator prop definitions
+  - Expand ghost story to all 9 colors
+  - Refs: #581, #582, #583, #584, #585
+
 ## 1.0.1
 
 ### Patch Changes

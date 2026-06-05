@@ -486,7 +486,7 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(inputCall?.[1]?.['aria-describedby']).toBeUndefined();
   });
 
-  it('includes both errorId and helperId when state=error and helperText is set', () => {
+  it('does not include helperId when state=error and message is shown', () => {
     c.state = 'error';
     c.helperText = 'Helper text';
     c.message = 'Error occurred';
@@ -495,7 +495,7 @@ describe('io-input — render() aria-describedby computation', () => {
 
     const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
     const describedBy = inputCall?.[1]?.['aria-describedby'] as string;
-    expect(describedBy).toContain('-helper');
+    expect(describedBy).not.toContain('-helper');
     expect(describedBy).toContain('-error');
   });
 });
@@ -601,16 +601,17 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeDefined();
   });
 
-  it('renders helper paragraph even when state=error (helperText always visible)', () => {
+  it('does not render helper paragraph when state=error and message is shown', () => {
     c.state = 'error';
     c.helperText = 'Enter your company email';
+    c.message = 'Invalid email';
     vi.mocked(h).mockClear();
     c.render();
 
     const helperPara = vi.mocked(h).mock.calls.find(
       (call) => call[0] === 'p' && call[1]?.class === 'input-helper',
     );
-    expect(helperPara).toBeDefined();
+    expect(helperPara).toBeUndefined();
   });
 
   it('does not render helper paragraph when helperText is absent', () => {

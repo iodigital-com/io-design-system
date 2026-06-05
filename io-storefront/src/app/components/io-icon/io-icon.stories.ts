@@ -2,6 +2,7 @@ import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
 export const IO_ICON_NAMES = [
+  // Navigation & UI
   'x',
   'check',
   'check-circle',
@@ -53,6 +54,67 @@ export const IO_ICON_NAMES = [
   'refresh-cw',
   'check-square',
   'loader',
+  // CRUD / Form actions
+  'save',
+  'save-all',
+  'save-off',
+  'pen-line',
+  'pencil',
+  'square-pen',
+  'pen-off',
+  'trash',
+  'eraser',
+  'copy-plus',
+  'files',
+  'square-check-big',
+  // Text formatting
+  'bold',
+  'italic',
+  'underline',
+  'strikethrough',
+  'code',
+  'code-2',
+  'highlighter',
+  'remove-formatting',
+  // Headings
+  'heading-1',
+  'heading-2',
+  'heading-3',
+  'heading-4',
+  'heading-5',
+  'heading-6',
+  // Block structure
+  'quote',
+  'text-quote',
+  'list',
+  'list-ordered',
+  'list-checks',
+  'list-todo',
+  'indent-increase',
+  'indent-decrease',
+  'separator-horizontal',
+  // Insert
+  'unlink',
+  'image',
+  'table',
+  'paperclip',
+  'square-code',
+  // Table operations
+  'table-cells-merge',
+  'table-cells-split',
+  'table-columns-split',
+  'table-rows-split',
+  'table-config',
+  'table-properties',
+  // History & alignment
+  'undo-2',
+  'redo-2',
+  'align-left',
+  'align-center',
+  'align-right',
+  'align-justify',
+  'spell-check-2',
+  'text-cursor',
 ] as const;
 
 export type IoIconName = (typeof IO_ICON_NAMES)[number];
@@ -112,13 +174,101 @@ export const iconStoryColour: Story<'io-icon'> = {
   ],
 };
 
+const FORM_ICONS = [
+  'save', 'save-all', 'save-off',
+  'pen-line', 'pencil', 'square-pen', 'pen-off',
+  'trash', 'eraser', 'copy-plus', 'files', 'square-check-big',
+] as const;
+
+const WYSIWYG_FORMAT_ICONS = [
+  'bold', 'italic', 'underline', 'strikethrough',
+  'code', 'code-2', 'highlighter', 'remove-formatting',
+] as const;
+
+const WYSIWYG_STRUCTURE_ICONS = [
+  'heading-1', 'heading-2', 'heading-3', 'heading-4', 'heading-5', 'heading-6',
+  'quote', 'text-quote',
+  'list', 'list-ordered', 'list-checks', 'list-todo',
+  'indent-increase', 'indent-decrease', 'separator-horizontal',
+] as const;
+
+const WYSIWYG_INSERT_ICONS = [
+  'link', 'unlink', 'image', 'table', 'paperclip', 'square-code',
+] as const;
+
+const WYSIWYG_TABLE_ICONS = [
+  'table-cells-merge', 'table-cells-split',
+  'table-columns-split', 'table-rows-split',
+  'table-config', 'table-properties',
+] as const;
+
+const WYSIWYG_HISTORY_ICONS = [
+  'undo-2', 'redo-2',
+  'align-left', 'align-center', 'align-right', 'align-justify',
+  'spell-check-2', 'text-cursor',
+] as const;
+
+export const iconStoryFormActions: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    FORM_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
+export const iconStoryWysiwygFormat: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    WYSIWYG_FORMAT_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
+export const iconStoryWysiwygStructure: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    WYSIWYG_STRUCTURE_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
+export const iconStoryWysiwygInsert: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    WYSIWYG_INSERT_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
+export const iconStoryWysiwygTables: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    WYSIWYG_TABLE_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
+export const iconStoryWysiwygHistory: Story<'io-icon'> = {
+  state: { properties: { size: 'md' } },
+  generator: () =>
+    WYSIWYG_HISTORY_ICONS.map((name) => ({
+      tag: 'io-icon' as const,
+      properties: { name, size: 'md', label: name },
+    })),
+};
+
 export const iconPropDefinitions: PropDefinition[] = [
   {
     name: 'name',
     type: 'select',
     options: [...IO_ICON_NAMES],
     defaultValue: 'search',
-    description: 'The icon to render. Must be one of the 51 registered icon names.',
+    description: 'The icon to render. Must be one of the 105 registered icon names.',
   },
   {
     name: 'size',

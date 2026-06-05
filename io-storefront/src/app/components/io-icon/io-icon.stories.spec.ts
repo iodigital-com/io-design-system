@@ -5,6 +5,12 @@ import {
   iconStoryAllIcons,
   iconStorySizes,
   iconStoryColour,
+  iconStoryFormActions,
+  iconStoryWysiwygFormat,
+  iconStoryWysiwygStructure,
+  iconStoryWysiwygInsert,
+  iconStoryWysiwygTables,
+  iconStoryWysiwygHistory,
   IO_ICON_NAMES,
 } from './io-icon.stories';
 
@@ -182,6 +188,17 @@ describe('io-icon storefront stories', () => {
       expect(unique.size).toBe(IO_ICON_NAMES.length);
     });
 
+    it('contains save', () => { expect(IO_ICON_NAMES).toContain('save'); });
+    it('contains pen-line', () => { expect(IO_ICON_NAMES).toContain('pen-line'); });
+    it('contains trash', () => { expect(IO_ICON_NAMES).toContain('trash'); });
+    it('contains bold', () => { expect(IO_ICON_NAMES).toContain('bold'); });
+    it('contains italic', () => { expect(IO_ICON_NAMES).toContain('italic'); });
+    it('contains heading-1', () => { expect(IO_ICON_NAMES).toContain('heading-1'); });
+    it('contains list', () => { expect(IO_ICON_NAMES).toContain('list'); });
+    it('contains table', () => { expect(IO_ICON_NAMES).toContain('table'); });
+    it('contains undo-2', () => { expect(IO_ICON_NAMES).toContain('undo-2'); });
+    it('contains align-left', () => { expect(IO_ICON_NAMES).toContain('align-left'); });
+
     it('every name is a non-empty string', () => {
       for (const name of IO_ICON_NAMES) {
         expect(typeof name).toBe('string');
@@ -327,4 +344,37 @@ describe('io-icon storefront stories', () => {
       expect(() => iconStoryColour.generator?.()).not.toThrow();
     });
   });
+
+  // ── Category stories (form / WYSIWYG) ───────────────────────────────────
+  const categoryStories = [
+    { name: 'iconStoryFormActions', story: iconStoryFormActions },
+    { name: 'iconStoryWysiwygFormat', story: iconStoryWysiwygFormat },
+    { name: 'iconStoryWysiwygStructure', story: iconStoryWysiwygStructure },
+    { name: 'iconStoryWysiwygInsert', story: iconStoryWysiwygInsert },
+    { name: 'iconStoryWysiwygTables', story: iconStoryWysiwygTables },
+    { name: 'iconStoryWysiwygHistory', story: iconStoryWysiwygHistory },
+  ];
+
+  for (const { name, story } of categoryStories) {
+    describe(name, () => {
+      it('generator returns non-empty array', () => {
+        const els = story.generator?.();
+        expect(Array.isArray(els)).toBe(true);
+        expect(els!.length).toBeGreaterThan(0);
+      });
+
+      it('every element has tag=io-icon', () => {
+        const els = story.generator?.() ?? [];
+        for (const el of els) {
+          if (el && typeof el === 'object' && 'tag' in el) {
+            expect((el as { tag: string }).tag).toBe('io-icon');
+          }
+        }
+      });
+
+      it('does not throw with no args', () => {
+        expect(() => story.generator?.()).not.toThrow();
+      });
+    });
+  }
 });

@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
+import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core';
 
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
@@ -7,25 +7,40 @@ import type { IoIconName } from '../../utils/icons';
 
 import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
 
+/** Shared path data for the iO brand arrow SVG — avoids duplication across render sites. */
+const BRAND_ARROW_PATH = 'M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z';
+
+const VALID_VARIANTS: readonly IoButtonVariant[] = ['solid', 'ghost', 'link'];
+const VALID_COLORS: readonly IoButtonColor[] = ['blue', 'white', 'black', 'antraciet', 'orange', 'pink', 'rouge', 'yellow', 'beige', 'grey'];
+const VALID_SIZES: readonly IoButtonSize[] = ['sm', 'md', 'lg', 'xl'];
+
+let _idCounter = 0;
+
 /**
  * io-button
  * ==========
  * Primary interactive element for io Digital's design system.
  *
- * Supports 9 color themes × 3 variants (solid, ghost, link) × 3 sizes.
+ * Supports 9 color themes × 3 variants (solid, ghost, link) × 4 sizes.
  * Renders as <button> by default, or <a> when `href` is provided.
+ *
+ * Default type is 'button'. Set type="submit" or type="reset" explicitly
+ * when placing inside a form — this deviates from the HTML default of 'submit'.
  *
  * @example
  * <io-button color="blue" variant="solid" size="md">Get started</io-button>
  * <io-button color="blue" variant="ghost" size="md">Learn more</io-button>
  * <io-button href="/pricing" color="blue" variant="link">See pricing</io-button>
+ * <io-button type="submit" color="blue" variant="solid">Submit form</io-button>
  */
 @Component({
   tag: 'io-button',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoButton {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -38,7 +53,12 @@ export class IoButton {
   /** Size preset */
   @Prop({ reflect: true }) size: IoButtonSize = 'md';
 
-  /** Native button type (irrelevant when href is set) */
+  /**
+   * Native button type.
+   * Note: defaults to 'button' (unlike the HTML default of 'submit') — set
+   * type="submit" or type="reset" explicitly when placing inside a form.
+   * Irrelevant when href is set.
+   */
   @Prop() type: IoButtonType = 'button';
 
   /** Renders the button as an anchor tag with this href */
@@ -62,8 +82,23 @@ export class IoButton {
   /** Accessible label — required for icon-only buttons */
   @Prop() label: string | undefined;
 
-  /** Value used by io-button-group to identify this item */
+  /**
+   * Submitted as a name/value pair with form data when type="submit".
+   * Also used by io-button-group to identify this item.
+   */
   @Prop({ reflect: true }) value: string | undefined;
+
+  /**
+   * The name submitted as form data when type="submit".
+   * Only relevant when button is associated with a form.
+   */
+  @Prop({ reflect: true }) name: string | undefined;
+
+  /**
+   * Associates the button with a form element by its ID.
+   * Allows the button to submit/reset a form it is not a descendant of.
+   */
+  @Prop({ reflect: true }) form: string | undefined;
 
   /** Renders a square icon-only button and suppresses text label rendering */
   @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
@@ -98,6 +133,14 @@ export class IoButton {
 
   private hasWarnedIconOnlyLabel = false;
   private btnEl?: HTMLElement;
+  private readonly loadingId: string;
+
+  /** True once `loading` has transitioned to true at least once after mount. Guards live-region announcement. */
+  @State() private loadingTransitioned = false;
+
+  constructor() {
+    this.loadingId = `io-btn-loading-${++_idCounter}`;
+  }
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -116,11 +159,41 @@ export class IoButton {
     inner?.focus(options);
   }
 
+  // ── Lifecycle ────────────────────────────────────────────────
+
+  componentWillLoad(): void {
+    if (this.name !== undefined) {
+      this.internals?.setFormValue?.(this.value ?? '');
+    }
+  }
+
+  componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
+    return newVal !== oldVal;
+  }
+
   // ── Watchers ─────────────────────────────────────────────────
 
+  @Watch('value')
+  onValueChange(newValue: string | undefined): void {
+    if (this.name !== undefined) {
+      this.internals?.setFormValue?.(newValue ?? '');
+    }
+  }
+
+  @Watch('loading')
+  onLoadingChange(newVal: boolean): void {
+    if (newVal) this.loadingTransitioned = true;
+  }
+
   @Watch('aria')
-  onAriaChange() {
+  onAriaChange(): void {
     applyAriaProp(this.aria, this.btnEl ?? null);
+  }
+
+  // ── Form callbacks ───────────────────────────────────────────
+
+  formResetCallback(): void {
+    // Buttons have no user-controlled state to reset.
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -136,6 +209,18 @@ export class IoButton {
       return;
     }
     this.click.emit(ev);
+
+    // FACE form integration — only for button (not anchor) mode.
+    if (!this.href) {
+      const form = this.internals?.form;
+      if (form) {
+        if (this.type === 'submit') {
+          form.requestSubmit();
+        } else if (this.type === 'reset') {
+          form.reset();
+        }
+      }
+    }
   };
 
   private handleKeyDown = (ev: KeyboardEvent) => {
@@ -162,7 +247,22 @@ export class IoButton {
     this.hasWarnedIconOnlyLabel = true;
   }
 
-  // ── Render ───────────────────────────────────────────────────
+  private validatePropValues(): void {
+    const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (isStencilProd) return;
+
+    if (!VALID_VARIANTS.includes(this.variant)) {
+      console.warn(`io-button: Invalid value "${this.variant}" for prop "variant". Expected: ${VALID_VARIANTS.join(' | ')}.`);
+    }
+    if (!VALID_COLORS.includes(this.color)) {
+      console.warn(`io-button: Invalid value "${this.color}" for prop "color". Expected: ${VALID_COLORS.join(' | ')}.`);
+    }
+    if (!VALID_SIZES.includes(this.size)) {
+      console.warn(`io-button: Invalid value "${this.size}" for prop "size". Expected: ${VALID_SIZES.join(' | ')}.`);
+    }
+  }
+
+  // ── Render helpers ───────────────────────────────────────────
 
   private renderIcon() {
     if (!this.icon && !this.iconSource) return null;
@@ -174,12 +274,27 @@ export class IoButton {
     return <io-icon name={this.icon!} size="sm" aria-hidden="true" />;
   }
 
+  private renderIconOnlyContent() {
+    if (this.icon || this.iconSource) {
+      return <span class="btn__icon">{this.renderIcon()}</span>;
+    }
+    return (
+      <span class="btn__icon btn__icon--brand-arrow" aria-hidden="true">
+        <svg viewBox="0 0 26 16" fill="currentColor">
+          <path d={BRAND_ARROW_PATH} />
+        </svg>
+      </span>
+    );
+  }
+
   render() {
     const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition } = this;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
     const arrow = rawArrow === 'none' || rawArrow === null ? undefined : this.arrow;
+
+    this.validatePropValues();
 
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
     const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
@@ -213,8 +328,12 @@ export class IoButton {
       innerProps['aria-label'] = accessibleLabel;
     }
 
+    if (loading && this.loadingTransitioned) {
+      innerProps['aria-describedby'] = this.loadingId;
+    }
+
     const labelSlot = iconOnly
-      ? <span class="btn__icon" aria-hidden="true"><slot /></span>
+      ? this.renderIconOnlyContent()
       : (
         <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
           <slot />
@@ -232,7 +351,7 @@ export class IoButton {
               aria-hidden="true"
             >
               <svg viewBox="0 0 26 16" fill="currentColor">
-                <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" />
+                <path d={BRAND_ARROW_PATH} />
               </svg>
             </span>
           )}
@@ -245,11 +364,21 @@ export class IoButton {
               aria-hidden="true"
             >
               <svg viewBox="0 0 26 16" fill="currentColor">
-                <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z" />
+                <path d={BRAND_ARROW_PATH} />
               </svg>
             </span>
           )}
         </Tag>
+        {/* Loading live region — sibling to button so it's outside the interactive element's accessible subtree */}
+        <span
+          id={this.loadingId}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          class="btn__loading-sr"
+        >
+          {loading && this.loadingTransitioned ? 'Loading' : ''}
+        </span>
       </Host>
     );
   }

@@ -342,7 +342,45 @@ describe('io-button storefront stories', () => {
     });
   });
 
-  describe('buttonStoryIconOnly', () => {
+  describe('buttonPropDefinitions — variant includes link (#582)', () => {
+    it('variant options include link', () => {
+      const variantDef = buttonPropDefinitions.find((d) => d.name === 'variant');
+      const opts = (variantDef as unknown as { options: string[] })?.options ?? [];
+      expect(opts).toContain('link');
+    });
+
+    it('variant options include solid and ghost', () => {
+      const variantDef = buttonPropDefinitions.find((d) => d.name === 'variant');
+      const opts = (variantDef as unknown as { options: string[] })?.options ?? [];
+      expect(opts).toContain('solid');
+      expect(opts).toContain('ghost');
+    });
+  });
+
+  describe('buttonStoryGhost — all 9 colors (#583)', () => {
+    it('includes all 9 colors', () => {
+      const els = buttonStoryGhost.generator?.() ?? [];
+      const colors = els
+        .filter((el) => el !== null && typeof el === 'object' && 'properties' in el)
+        .map((el) => (el as unknown as { properties: { color: string } }).properties.color);
+      expect(colors).toContain('orange');
+      expect(colors).toContain('pink');
+      expect(colors).toContain('rouge');
+      expect(colors).toContain('yellow');
+      expect(colors).toContain('beige');
+      expect(colors).toContain('blue');
+      expect(colors).toContain('black');
+      expect(colors).toContain('antraciet');
+      expect(colors).toContain('grey');
+    });
+
+    it('returns 9 elements', () => {
+      const els = buttonStoryGhost.generator?.() ?? [];
+      expect(els.length).toBe(9);
+    });
+  });
+
+  describe('buttonStoryIconOnly — uses icon prop, no hardcoded × (#585)', () => {
     it('generator returns non-empty array', () => {
       const els = buttonStoryIconOnly.generator?.();
       expect(Array.isArray(els)).toBe(true);
@@ -356,6 +394,28 @@ describe('io-button storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+
+    it('no element has × as slot content', () => {
+      const els = buttonStoryIconOnly.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'children' in el) {
+          const children = (el as { children: unknown[] }).children;
+          expect(children).not.toContain('×');
+        }
+      }
+    });
+
+    it('icon-only elements with icon prop use icon not slot text', () => {
+      const els = buttonStoryIconOnly.generator?.() ?? [];
+      const withIcon = els.filter(
+        (el) =>
+          el !== null &&
+          typeof el === 'object' &&
+          'properties' in el &&
+          (el as unknown as { properties: { icon?: string } }).properties.icon,
+      );
+      expect(withIcon.length).toBeGreaterThan(0);
     });
   });
 

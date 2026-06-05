@@ -28,7 +28,7 @@ export const buttonStory: Story<'io-button'> = {
     // Code generators already filter out null, so it won't appear in output.
     if (attrs['arrow'] === 'none') attrs['arrow'] = null;
     if (attrs['icon'] === 'none') attrs['icon'] = null;
-    const content = attrs['iconOnly'] ? '×' : (label as string);
+    const content = attrs['iconOnly'] ? '' : (label as string);
     return [
       {
         tag: 'io-button' as const,
@@ -52,11 +52,11 @@ export const buttonStorySolid: Story<'io-button'> = {
     ),
 };
 
-/** Ghost / outline variants — light-stage colors (blue, black, antraciet, grey). */
+/** Ghost / outline variants — all colors. */
 export const buttonStoryGhost: Story<'io-button'> = {
   state: { properties: { variant: 'ghost', color: 'blue', arrow: 'forward' } },
   generator: () =>
-    (['blue', 'black', 'antraciet', 'grey'] as const).map((color) => ({
+    (['blue', 'black', 'antraciet', 'grey', 'orange', 'rouge', 'yellow', 'pink', 'beige'] as const).map((color) => ({
       tag: 'io-button' as const,
       properties: { variant: 'ghost', color, arrow: 'forward' },
       children: [color.charAt(0).toUpperCase() + color.slice(1)],
@@ -120,11 +120,12 @@ export const buttonStorySizes: Story<'io-button'> = {
 
 /** Icon-only examples. */
 export const buttonStoryIconOnly: Story<'io-button'> = {
-  state: { properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, label: 'Close' } },
+  state: { properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, icon: 'x', label: 'Close' } },
   generator: () => [
-    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'sm', iconOnly: true, label: 'Close' }, children: ['×'] },
-    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, label: 'Close' }, children: ['×'] },
-    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'lg', iconOnly: true, label: 'Close' }, children: ['×'] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'sm', iconOnly: true, icon: 'x', label: 'Close' }, children: [] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'md', iconOnly: true, icon: 'x', label: 'Close' }, children: [] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'lg', iconOnly: true, icon: 'x', label: 'Close' }, children: [] },
+    { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'md', iconOnly: true, label: 'Next' }, children: [] },
   ],
 };
 
@@ -176,9 +177,9 @@ export const buttonPropDefinitions: PropDefinition[] = [
   {
     name: 'variant',
     type: 'select',
-    options: ['solid', 'ghost'],
+    options: ['solid', 'ghost', 'link'],
     defaultValue: 'solid',
-    description: 'Chooses the visual button style.',
+    description: 'Chooses the visual button style. Note: the color prop has no effect in the link variant — it always uses --io-color-primary.',
     group: 'Appearance',
   },
   {

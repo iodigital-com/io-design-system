@@ -8,6 +8,7 @@ exports[`io-button — render snapshots > renders default state 1`] = `
         <slot></slot>
       </span>
     </button>
+    <span id="io-btn-loading-1" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   Click me
 </io-button>
@@ -21,6 +22,7 @@ exports[`io-button — render snapshots > renders disabled state 1`] = `
         <slot></slot>
       </span>
     </button>
+    <span id="io-btn-loading-5" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   Disabled
 </io-button>
@@ -54,6 +56,7 @@ MockHTMLElement {
         <slot></slot>
       </span>
     </button>
+    <span id="io-btn-loading-2" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   Solid
 </io-button>,
@@ -64,6 +67,7 @@ MockHTMLElement {
         <slot></slot>
       </span>
     </button>
+    <span id="io-btn-loading-3" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   Ghost
 </io-button>,
@@ -74,6 +78,7 @@ MockHTMLElement {
         <slot></slot>
       </span>
     </button>
+    <span id="io-btn-loading-4" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   Link
 </io-button>,
@@ -1243,10 +1248,13 @@ exports[`io-button — render snapshots > renders icon-only mode without arrow m
 <io-button class="io-button--solid io-button--blue io-button--md io-button--icon-only hydrated" variant="solid" color="blue" size="md" icon-only arrow="forward" arrow-placement="right" icon-position="left">
   <mock:shadow-root shadowrootdelegatesfocus>
     <button class="btn btn--solid btn--blue btn--md btn--icon-only" type="button" aria-label="Open menu">
-      <span class="btn__icon" aria-hidden="true">
-        <slot></slot>
+      <span class="btn__icon btn__icon--brand-arrow" aria-hidden="true">
+        <svg viewBox="0 0 26 16" fill="currentColor">
+          <path d="M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z"></path>
+        </svg>
       </span>
     </button>
+    <span id="io-btn-loading-6" role="status" aria-live="polite" aria-atomic="true" class="btn__loading-sr"></span>
   </mock:shadow-root>
   <svg viewBox="0 0 16 16" aria-hidden="true">
     <path d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h12v2H2v-2z"></path>

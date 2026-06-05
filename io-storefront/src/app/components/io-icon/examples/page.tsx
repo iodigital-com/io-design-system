@@ -10,6 +10,27 @@ import {
   iconStoryWysiwygInsert,
   iconStoryWysiwygTables,
   iconStoryWysiwygHistory,
+  iconStoryAccessibility,
+  iconStoryAccountsAccess,
+  iconStoryArrows,
+  iconStoryBuildings,
+  iconStoryCharts,
+  iconStoryDesign,
+  iconStoryDevelopment,
+  iconStoryFiles,
+  iconStoryFinance,
+  iconStoryLayout,
+  iconStoryMail,
+  iconStoryMultimedia,
+  iconStoryNavigation,
+  iconStoryNotifications,
+  iconStoryPhotography,
+  iconStorySecurity,
+  iconStoryText,
+  iconStoryTime,
+  iconStoryTransportation,
+  iconStoryTravel,
+  iconStoryWeather,
 } from '../io-icon.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -22,7 +43,7 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="All icons"
-          description="The full set of 105 registered icons rendered at size md. Each icon is labelled for screen reader identification."
+          description="The full set of 455 registered icons rendered at size md. Each icon is labelled for screen reader identification."
         />
         <ComponentStory
           story={iconStoryAllIcons}
@@ -77,7 +98,7 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="WYSIWYG — headings & structure"
-          description="Heading levels h1–h6, blockquote, lists (bullet, numbered, checklist, todo), indent controls, and horizontal rule."
+          description="Heading levels h1–h6, blockquote, lists, indent controls, and horizontal rule."
         />
         <ComponentStory
           story={iconStoryWysiwygStructure}
@@ -110,10 +131,241 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="WYSIWYG — history & alignment"
-          description="Undo, redo, text alignment (left, center, right, justify), spell check, and text cursor."
+          description="Undo, redo, text alignment, spell check, and text cursor."
         />
         <ComponentStory
           story={iconStoryWysiwygHistory}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Accessibility"
+          description="Universal design icons: screen reader, zoom, contrast, motion controls."
+        />
+        <ComponentStory
+          story={iconStoryAccessibility}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Accounts & access"
+          description="User management, authentication, permissions, bookmarks, and wallet icons."
+        />
+        <ComponentStory
+          story={iconStoryAccountsAccess}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Arrows"
+          description="Navigation arrows, directional indicators, refresh, undo/redo, and trend arrows."
+        />
+        <ComponentStory
+          story={iconStoryArrows}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Buildings"
+          description="Architectural and institutional building icons."
+        />
+        <ComponentStory
+          story={iconStoryBuildings}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Charts"
+          description="Data visualisation: bar, line, pie, area, scatter, candlestick, gantt, and kanban."
+        />
+        <ComponentStory
+          story={iconStoryCharts}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Design"
+          description="Layout, grid, drawing, and visual design tool icons."
+        />
+        <ComponentStory
+          story={iconStoryDesign}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Development"
+          description="Code, database, git, server, and developer tooling icons."
+        />
+        <ComponentStory
+          story={iconStoryDevelopment}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Files"
+          description="File types, folder management, archive, import, and spreadsheet icons."
+        />
+        <ComponentStory
+          story={iconStoryFiles}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Finance"
+          description="Currency, payment, banking, and financial indicator icons."
+        />
+        <ComponentStory
+          story={iconStoryFinance}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Layout"
+          description="Panel, grid, column, row, and interface layout controls."
+        />
+        <ComponentStory
+          story={iconStoryLayout}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Mail"
+          description="Email actions: send, reply, forward, mailbox, and inbox icons."
+        />
+        <ComponentStory
+          story={iconStoryMail}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Multimedia"
+          description="Audio, video, playback, broadcast, and media library icons."
+        />
+        <ComponentStory
+          story={iconStoryMultimedia}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Navigation"
+          description="Maps, globe, compass, routing, and geolocation icons."
+        />
+        <ComponentStory
+          story={iconStoryNavigation}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Notifications"
+          description="Alerts, status indicators, and notification state icons."
+        />
+        <ComponentStory
+          story={iconStoryNotifications}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Photography"
+          description="Camera, gallery, focus, aperture, and image capture icons."
+        />
+        <ComponentStory
+          story={iconStoryPhotography}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Security"
+          description="Lock, key, shield, vault, door, and access control icons."
+        />
+        <ComponentStory
+          story={iconStorySecurity}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Text"
+          description="Clipboard, hash, notebook, signatures, and typography utility icons."
+        />
+        <ComponentStory
+          story={iconStoryText}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Time & calendar"
+          description="Clocks, calendars, alarms, timers, and scheduling icons."
+        />
+        <ComponentStory
+          story={iconStoryTime}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Transportation"
+          description="Vehicles, transit modes, fuel, and logistics icons."
+        />
+        <ComponentStory
+          story={iconStoryTransportation}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Travel"
+          description="Luggage, map pins, and travel essentials."
+        />
+        <ComponentStory
+          story={iconStoryTravel}
+          previewClassName="flex flex-wrap gap-4 items-center"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Weather"
+          description="Sun, cloud, rain, wind, temperature, and seasonal weather icons."
+        />
+        <ComponentStory
+          story={iconStoryWeather}
           previewClassName="flex flex-wrap gap-4 items-center"
         />
       </section>

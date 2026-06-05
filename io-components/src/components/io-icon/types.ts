@@ -1,1 +1,1 @@
-export type IoIconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type IoIconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'inherit';

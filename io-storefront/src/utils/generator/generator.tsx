@@ -56,6 +56,42 @@ type StoryHostElement = HTMLElement & {
   [key: string]: unknown;
 };
 
+/**
+ * Apply a properties bag to a live DOM element.
+ * Exported for unit testing.
+ *
+ * - `style` object → `el.style.setProperty()` per entry (CSSStyleDeclaration cannot be replaced wholesale)
+ * - hyphenated keys → `setAttribute` / `removeAttribute`
+ * - all other keys → direct property assignment
+ */
+export function applyPropertiesToElement(el: StoryHostElement, properties: Record<string, unknown>): void {
+  // Clear previously applied inline styles so stale styles don't leak when a
+  // subsequent render omits the style prop or changes which properties are set.
+  el.style.cssText = '';
+
+  for (const [propName, propValue] of Object.entries(properties)) {
+    if (propName === 'style') {
+      if (propValue !== null && propValue !== undefined && typeof propValue === 'object') {
+        for (const [cssProp, cssValue] of Object.entries(propValue as Record<string, string>)) {
+          el.style.setProperty(
+            cssProp.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`),
+            String(cssValue),
+          );
+        }
+      }
+      // null / undefined / non-object style → already cleared above; skip assignment
+    } else if (propName.includes('-')) {
+      if (propValue === null || propValue === undefined || propValue === false) {
+        el.removeAttribute(propName);
+      } else {
+        el.setAttribute(propName, String(propValue));
+      }
+    } else {
+      el[propName] = propValue;
+    }
+  }
+}
+
 let _keyCounter = 0;
 
 /**
@@ -138,22 +174,7 @@ function createElement(
 
         el.__ioStoryListeners = next;
 
-        // Apply custom-element properties directly on each render. This avoids
-        // React normalizing certain prop names (e.g. size, iconOnly) in ways
-        // that can prevent Stencil props from updating correctly.
-        // Hyphenated names (e.g. io-tooltip, data-*) are HTML attributes and
-        // must use setAttribute — Stencil props are always camelCase/lowercase.
-        for (const [propName, propValue] of Object.entries(properties)) {
-          if (propName.includes('-')) {
-            if (propValue === null || propValue === undefined || propValue === false) {
-              el.removeAttribute(propName);
-            } else {
-              el.setAttribute(propName, String(propValue));
-            }
-          } else {
-            el[propName] = propValue;
-          }
-        }
+        applyPropertiesToElement(el, properties);
       }
     : undefined;
 

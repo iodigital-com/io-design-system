@@ -43,6 +43,37 @@ describe('io-icon', () => {
     expect(c.flip).toBe(false);
   });
 
+  it('defaults fixedWidth to false', () => {
+    const c = new IoIcon();
+    c.name = 'search';
+    expect(c.fixedWidth).toBe(false);
+  });
+
+  it('accepts fixedWidth=true', () => {
+    const c = new IoIcon();
+    c.name = 'search';
+    c.fixedWidth = true;
+    expect(c.fixedWidth).toBe(true);
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('accepts size="inherit"', () => {
+    const c = new IoIcon();
+    c.name = 'search';
+    c.size = 'inherit';
+    expect(c.size).toBe('inherit');
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('renders with fixedWidth and inherit size', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.fixedWidth = true;
+    c.size = 'inherit';
+    const result = (c as any).render();
+    expect(result).not.toBeNull();
+  });
+
   it('returns null when iconSource set but fetchedSvg not yet loaded', () => {
     const c = new IoIcon();
     c.iconSource = 'https://example.com/icon.svg';

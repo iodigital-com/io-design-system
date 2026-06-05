@@ -4,91 +4,37 @@
 
 ### Patch Changes
 
-- 7e63acc: **Breaking:** `io-select` `change` event detail changed from bare `string | string[]` to `{ value: string | string[]; name?: string }`. Update event handlers: `event.detail` → `event.detail.value`.
-- efd065d: **io-toast-item:** replace left-border accent with state background colors.
+- dacc075: fix(io-input,io-textarea): error state visual polish + message/helperText consistency
 
-  - Removed `--io-toast-item-accent-border-width` token and the 4px left accent border
-  - Each variant now uses its soft state token as the card background (`--io-color-{state}-soft`)
-  - Added frosted glass effect via `backdrop-filter: blur(var(--io-toast-item-blur, 12px))`
-  - Added `--io-toast-item-blur` CSS variable (default 12px) for consumer override — set to `0` to disable blur
-  - Neutral variant keeps `--io-bg-card` (white); icon retains accent color as state indicator
+  **io-input + io-textarea — border fix**
+  Remove `border-bottom-width: var(--io-input-border-error-width)` /
+  `var(--io-textarea-border-error-width)`. Both tokens were undefined,
+  causing the browser to fall back to `medium` (3px). Error border now
+  matches success/warning (1px default).
 
-## 1.0.4
+  **io-input — message class fix**
+  Error message `<p>` was using class `input-error` (no typography rules).
+  Changed to `input-message input-message--error` — consistent with the
+  CSS that was already in place.
 
-### Patch Changes
+  **io-input — success/warning now show message prop**
+  `message` prop previously only rendered in error state. Success and
+  warning states now render the message with appropriate colour
+  (`input-message--success` / `input-message--warning`) and ARIA role
+  (`role="status"`).
 
-- 7526e01: fix(io-modal): hide backdrop div when modal is closed — prevents pointer-event interception
+  **io-input — message replaces helperText when active**
+  When a validation state is active and a `message` is provided, the
+  `message` is shown instead of `helperText`. When no `message` is set,
+  `helperText` falls back as the visible description. This matches the
+  Material 3 / Carbon / Fluent pattern of a single description slot
+  that switches between helper and validation copy.
 
-  The `modal__backdrop` div introduced in 1.0.3 was always visible in the shadow
-  DOM even when `open=false`, causing it to intercept pointer events on elements
-  behind the modal (e.g. the "Add location" button on the Locations page was
-  unclickable because the invisible backdrop div covered the whole viewport).
-
-  Fixes:
-
-  - `.modal__backdrop` defaults to `display: none; pointer-events: none`
-  - Backdrop and dialog positioning are both scoped to `:host([prevent-top-layer][open=""])`
-    so they only apply when the modal is truly open (Stencil sets `open=""` for
-    `open=true`, and removes the attribute for `open=false`)
-
-## 1.0.3
-
-### Patch Changes
-
-- 1b4279b: fix(io-modal): render backdrop as shadow DOM div — fixes slot pointer events in React 18
-
-  **Root cause:** When `preventTopLayer=true`, making the `:host` element the
-  full-screen backdrop (`position: fixed; inset: 0`) causes the host to intercept
-  pointer events on slotted light-DOM children (`slot="footer"` IoButton elements).
-  Since slotted content lives in the light DOM at the host level, any click on
-  the visual footer area was being captured by the host backdrop before reaching
-  the IoButton elements — making Cancel/Save footer buttons unclickable.
-
-  **Fix:** The backdrop is now a
-  dedicated `<div class="modal__backdrop">` rendered inside the shadow DOM
-  _before_ the `<dialog>`, and the `:host` stays as `display: contents` always.
-  This removes the host from the pointer-event path entirely:
-
-  - Host: `display: contents` — never intercepts pointer events
-  - `.modal__backdrop`: `position: fixed; inset: 0` — visual backdrop + click-to-close
-  - `<dialog>`: `position: fixed; z-index: +1` above backdrop
-  - Slotted footer buttons: rendered in dialog footer via slot, pointer events work correctly
-
-## 1.0.2
-
-### Patch Changes
-
-- 17054b4: fix(io-modal): use `[open=""]` selector for backdrop to avoid React 18 false-positive
-
-  React 18 (and other frameworks) may set `open="false"` as a string attribute
-  on custom elements rather than removing the attribute. The CSS selector
-  `[open]` matches ANY element with the attribute present, regardless of value —
-  so `open="false"` was triggering the `preventTopLayer` backdrop overlay even
-  when the modal should be closed.
-
-  Changed `:host([prevent-top-layer][open])` to `:host([prevent-top-layer][open=""])`.
-  Stencil sets `open=""` (empty string) when the prop is `true` and removes the
-  attribute entirely when `false`, so the empty-string value check correctly
-  matches only the truly-open state.
-
-## 1.0.1
-
-### Patch Changes
-
-- 0a43fcb: fix(io-modal): default preventTopLayer to true for React 18 compatibility
-
-  `showModal()` promotes `<dialog>` to the browser top layer. React 18 delegates
-  synthetic events to `#root`, so click events from shadow-DOM children inside a
-  top-layer dialog do not reach React — causing slotted `slot="footer"` buttons
-  to be non-clickable.
-
-  `preventTopLayer` now defaults to `true`: the modal opens with `show()` and
-  manages its own backdrop, ESC key, focus-trap, scroll lock, and `inert`
-  attributes. Behavior is identical for all consumers; React 18 footer buttons
-  now work correctly without any code changes.
-
-  Set `preventTopLayer={false}` explicitly only when native top-layer stacking
-  is required (e.g. to guarantee the modal appears above Popover API elements).
+  **io-input — Lucide state icons**
+  Replaced custom 14×14 filled SVG paths with Lucide stroke icons:
+  `circle-alert` (error), `circle-check` (success), `triangle-alert`
+  (warning). Consistent with Lucide icon language used elsewhere in
+  the product.
 
 ## 1.0.0
 
@@ -208,24 +154,6 @@
   - Active button text restored to white for contrast on blue background
   - Active border updated to match primary color
   - Syncs components-angular, components-react, components-vue to version parity with components
-
-## 1.0.2
-
-### Patch Changes
-
-- b2c1558: Update io-button-group pill style with visual improvements to spacing, border-radius, and button separation for a more polished appearance.
-
-## 1.0.1
-
-### Patch Changes
-
-- fix: export global.css and auto-import from components-react
-
-  Consumers of `@iodigital-com/components-react` now automatically receive all
-  `--io-*` CSS custom properties on `:root` without any extra setup. Previously,
-  component-level tokens (wordmark sizes, button padding, icon sizes, etc.) were
-  undefined in consuming apps because the compiled `app.css` had no export path
-  and nothing imported it.
 
 ## 1.0.0
 

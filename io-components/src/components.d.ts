@@ -10,6 +10,7 @@ import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoIconName } from "./utils/icons";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
@@ -18,6 +19,7 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+import { IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -31,7 +33,7 @@ import { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 import { IoScrollerOrientation } from "./components/io-scroller/types";
-import { IoSelectSize } from "./components/io-select/types";
+import { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -49,6 +51,7 @@ export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avat
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoIconName } from "./utils/icons";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
@@ -57,6 +60,7 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+export { IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
@@ -70,7 +74,7 @@ export { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
-export { IoSelectSize } from "./components/io-select/types";
+export { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -322,14 +326,32 @@ export namespace Components {
          */
         "fullWidth": boolean;
         /**
+          * Hides the text label visually (icon-only mode with accessible label via `label` prop).
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Renders the button as an anchor tag with this href
          */
         "href": string | undefined;
+        /**
+          * Name of a Lucide icon to render inside the button.
+         */
+        "icon"?: IoIconName;
         /**
           * Renders a square icon-only button and suppresses text label rendering
           * @default false
          */
         "iconOnly": boolean;
+        /**
+          * Side on which the icon is rendered relative to the label. Defaults to 'left'.
+          * @default 'left'
+         */
+        "iconPosition": 'left' | 'right';
+        /**
+          * Custom SVG string for a non-library icon (mutually exclusive with `icon`).
+         */
+        "iconSource"?: string;
         /**
           * Accessible label — required for icon-only buttons
          */
@@ -788,6 +810,46 @@ export namespace Components {
           * @default 'semibold'
          */
         "weight": IoHeadingWeight;
+    }
+    /**
+     * io-icon
+     * ========
+     * Renders a Lucide icon as an inline SVG within Shadow DOM.
+     * Sizing is controlled by the `size` prop which maps to --io-icon-size-*
+     * CSS custom properties. The SVG inherits `color: currentColor` so it
+     * adopts the text color of its parent.
+     * @example <io-icon name="check" size="md"></io-icon>
+     * <io-icon name="arrow-right" size="sm" label="Navigate forward"></io-icon>
+     * <io-icon icon-source="/assets/custom.svg" label="Custom icon"></io-icon>
+     */
+    interface IoIcon {
+        /**
+          * Forces the host element width to match the icon size. Useful for consistent column alignment in lists and navigation menus.
+          * @default false
+         */
+        "fixedWidth": boolean;
+        /**
+          * Mirror the icon horizontally. Useful for explicit RTL overrides.
+          * @default false
+         */
+        "flip": boolean;
+        /**
+          * URL of a custom SVG to render instead of the built-in registry. Overrides name.
+         */
+        "iconSource"?: string;
+        /**
+          * Accessible label. When provided, replaces aria-hidden with role="img" + aria-label.
+         */
+        "label"?: string;
+        /**
+          * Name of the Lucide icon to render.
+         */
+        "name": IoIconName;
+        /**
+          * Visual size of the icon. Defaults to 'md' (20px).
+          * @default 'md'
+         */
+        "size": IoIconSize;
     }
     /**
      * io-inline-notification
@@ -2866,6 +2928,23 @@ declare global {
         prototype: HTMLIoHeadingElement;
         new (): HTMLIoHeadingElement;
     };
+    /**
+     * io-icon
+     * ========
+     * Renders a Lucide icon as an inline SVG within Shadow DOM.
+     * Sizing is controlled by the `size` prop which maps to --io-icon-size-*
+     * CSS custom properties. The SVG inherits `color: currentColor` so it
+     * adopts the text color of its parent.
+     * @example <io-icon name="check" size="md"></io-icon>
+     * <io-icon name="arrow-right" size="sm" label="Navigate forward"></io-icon>
+     * <io-icon icon-source="/assets/custom.svg" label="Custom icon"></io-icon>
+     */
+    interface HTMLIoIconElement extends Components.IoIcon, HTMLStencilElement {
+    }
+    var HTMLIoIconElement: {
+        prototype: HTMLIoIconElement;
+        new (): HTMLIoIconElement;
+    };
     interface HTMLIoInlineNotificationElementEventMap {
         "dismiss": void;
     }
@@ -3246,7 +3325,7 @@ declare global {
         new (): HTMLIoScrollerElement;
     };
     interface HTMLIoSelectElementEventMap {
-        "change": string | string[];
+        "change": IoSelectChangeDetail;
         "focus": FocusEvent;
         "blur": FocusEvent;
     }
@@ -3748,6 +3827,7 @@ declare global {
         "io-drawer": HTMLIoDrawerElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-heading": HTMLIoHeadingElement;
+        "io-icon": HTMLIoIconElement;
         "io-inline-notification": HTMLIoInlineNotificationElement;
         "io-input": HTMLIoInputElement;
         "io-link": HTMLIoLinkElement;
@@ -4034,14 +4114,32 @@ declare namespace LocalJSX {
          */
         "fullWidth"?: boolean;
         /**
+          * Hides the text label visually (icon-only mode with accessible label via `label` prop).
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Renders the button as an anchor tag with this href
          */
         "href"?: string | undefined;
+        /**
+          * Name of a Lucide icon to render inside the button.
+         */
+        "icon"?: IoIconName;
         /**
           * Renders a square icon-only button and suppresses text label rendering
           * @default false
          */
         "iconOnly"?: boolean;
+        /**
+          * Side on which the icon is rendered relative to the label. Defaults to 'left'.
+          * @default 'left'
+         */
+        "iconPosition"?: 'left' | 'right';
+        /**
+          * Custom SVG string for a non-library icon (mutually exclusive with `icon`).
+         */
+        "iconSource"?: string;
         /**
           * Accessible label — required for icon-only buttons
          */
@@ -4506,6 +4604,46 @@ declare namespace LocalJSX {
           * @default 'semibold'
          */
         "weight"?: IoHeadingWeight;
+    }
+    /**
+     * io-icon
+     * ========
+     * Renders a Lucide icon as an inline SVG within Shadow DOM.
+     * Sizing is controlled by the `size` prop which maps to --io-icon-size-*
+     * CSS custom properties. The SVG inherits `color: currentColor` so it
+     * adopts the text color of its parent.
+     * @example <io-icon name="check" size="md"></io-icon>
+     * <io-icon name="arrow-right" size="sm" label="Navigate forward"></io-icon>
+     * <io-icon icon-source="/assets/custom.svg" label="Custom icon"></io-icon>
+     */
+    interface IoIcon {
+        /**
+          * Forces the host element width to match the icon size. Useful for consistent column alignment in lists and navigation menus.
+          * @default false
+         */
+        "fixedWidth"?: boolean;
+        /**
+          * Mirror the icon horizontally. Useful for explicit RTL overrides.
+          * @default false
+         */
+        "flip"?: boolean;
+        /**
+          * URL of a custom SVG to render instead of the built-in registry. Overrides name.
+         */
+        "iconSource"?: string;
+        /**
+          * Accessible label. When provided, replaces aria-hidden with role="img" + aria-label.
+         */
+        "label"?: string;
+        /**
+          * Name of the Lucide icon to render.
+         */
+        "name": IoIconName;
+        /**
+          * Visual size of the icon. Defaults to 'md' (20px).
+          * @default 'md'
+         */
+        "size"?: IoIconSize;
     }
     /**
      * io-inline-notification
@@ -5374,7 +5512,7 @@ declare namespace LocalJSX {
         /**
           * Fires when the selected value changes.
          */
-        "onChange"?: (event: IoSelectCustomEvent<string | string[]>) => void;
+        "onChange"?: (event: IoSelectCustomEvent<IoSelectChangeDetail>) => void;
         /**
           * Fires when the select gains focus
          */
@@ -6180,6 +6318,10 @@ declare namespace LocalJSX {
         "iconOnly": boolean;
         "arrow": IoButtonArrow | undefined;
         "arrowPlacement": IoButtonArrowPlacement;
+        "icon": IoIconName;
+        "iconSource": string;
+        "hideLabel": boolean;
+        "iconPosition": 'left' | 'right';
     }
     interface IoButtonGroupAttributes {
         "type": IoButtonGroupType;
@@ -6252,6 +6394,14 @@ declare namespace LocalJSX {
         "align": IoHeadingAlign;
         "color": IoHeadingColor;
         "ellipsis": boolean;
+    }
+    interface IoIconAttributes {
+        "name": IoIconName;
+        "size": IoIconSize;
+        "label": string;
+        "iconSource": string;
+        "flip": boolean;
+        "fixedWidth": boolean;
     }
     interface IoInlineNotificationAttributes {
         "variant": IoInlineNotificationVariant;
@@ -6547,6 +6697,7 @@ declare namespace LocalJSX {
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
+        "io-icon": Omit<IoIcon, keyof IoIconAttributes> & { [K in keyof IoIcon & keyof IoIconAttributes]?: IoIcon[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `attr:${K}`]?: IoIconAttributes[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `prop:${K}`]?: IoIcon[K] } & OneOf<"name", IoIcon["name"], IoIconAttributes["name"]>;
         "io-inline-notification": Omit<IoInlineNotification, keyof IoInlineNotificationAttributes> & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes]?: IoInlineNotification[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `attr:${K}`]?: IoInlineNotificationAttributes[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `prop:${K}`]?: IoInlineNotification[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
@@ -6789,6 +6940,18 @@ declare module "@stencil/core" {
              * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
              */
             "io-heading": LocalJSX.IntrinsicElements["io-heading"] & JSXBase.HTMLAttributes<HTMLIoHeadingElement>;
+            /**
+             * io-icon
+             * ========
+             * Renders a Lucide icon as an inline SVG within Shadow DOM.
+             * Sizing is controlled by the `size` prop which maps to --io-icon-size-*
+             * CSS custom properties. The SVG inherits `color: currentColor` so it
+             * adopts the text color of its parent.
+             * @example <io-icon name="check" size="md"></io-icon>
+             * <io-icon name="arrow-right" size="sm" label="Navigate forward"></io-icon>
+             * <io-icon icon-source="/assets/custom.svg" label="Custom icon"></io-icon>
+             */
+            "io-icon": LocalJSX.IntrinsicElements["io-icon"] & JSXBase.HTMLAttributes<HTMLIoIconElement>;
             /**
              * io-inline-notification
              * ======================

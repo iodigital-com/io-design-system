@@ -58,16 +58,16 @@ describe('io-button — FACE: componentWillLoad', () => {
     expect((c as any).internals.setFormValue).not.toHaveBeenCalled();
   });
 
-  it('does not call setFormValue when form is missing', () => {
+  it('calls setFormValue when name is set without form attribute (ancestor-form association)', () => {
     const c = makeButton();
     c.name = 'action';
+    c.value = 'submit';
     c.componentWillLoad();
-    expect((c as any).internals.setFormValue).not.toHaveBeenCalled();
+    expect((c as any).internals.setFormValue).toHaveBeenCalledWith('submit');
   });
 
   it('uses empty string when value is undefined', () => {
     const c = makeButton();
-    c.form = 'my-form';
     c.name = 'action';
     c.componentWillLoad();
     expect((c as any).internals.setFormValue).toHaveBeenCalledWith('');
@@ -75,9 +75,8 @@ describe('io-button — FACE: componentWillLoad', () => {
 });
 
 describe('io-button — FACE: onValueChange', () => {
-  it('syncs new value when form and name are set', () => {
+  it('syncs new value when name is set', () => {
     const c = makeButton();
-    c.form = 'my-form';
     c.name = 'action';
     (c as any).onValueChange('new-value');
     expect((c as any).internals.setFormValue).toHaveBeenCalledWith('new-value');
@@ -85,7 +84,6 @@ describe('io-button — FACE: onValueChange', () => {
 
   it('does not sync when name is missing', () => {
     const c = makeButton();
-    c.form = 'my-form';
     (c as any).onValueChange('new-value');
     expect((c as any).internals.setFormValue).not.toHaveBeenCalled();
   });

@@ -361,7 +361,7 @@ describe('io-button storefront stories', () => {
     it('includes all 9 colors', () => {
       const els = buttonStoryGhost.generator?.() ?? [];
       const colors = els
-        .filter((el): el is { properties: { color: string } } & object => el !== null && typeof el === 'object' && 'properties' in el)
+        .filter((el) => el !== null && typeof el === 'object' && 'properties' in el)
         .map((el) => (el as unknown as { properties: { color: string } }).properties.color);
       expect(colors).toContain('orange');
       expect(colors).toContain('pink');

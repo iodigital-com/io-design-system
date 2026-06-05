@@ -162,7 +162,7 @@ export class IoButton {
   // ── Lifecycle ────────────────────────────────────────────────
 
   componentWillLoad(): void {
-    if (this.form && this.name !== undefined) {
+    if (this.name !== undefined) {
       this.internals?.setFormValue?.(this.value ?? '');
     }
   }
@@ -175,7 +175,7 @@ export class IoButton {
 
   @Watch('value')
   onValueChange(newValue: string | undefined): void {
-    if (this.form && this.name !== undefined) {
+    if (this.name !== undefined) {
       this.internals?.setFormValue?.(newValue ?? '');
     }
   }
@@ -276,7 +276,7 @@ export class IoButton {
 
   private renderIconOnlyContent() {
     if (this.icon || this.iconSource) {
-      return this.renderIcon();
+      return <span class="btn__icon">{this.renderIcon()}</span>;
     }
     return (
       <span class="btn__icon btn__icon--brand-arrow" aria-hidden="true">

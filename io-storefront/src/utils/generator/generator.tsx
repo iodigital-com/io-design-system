@@ -65,14 +65,21 @@ type StoryHostElement = HTMLElement & {
  * - all other keys → direct property assignment
  */
 export function applyPropertiesToElement(el: StoryHostElement, properties: Record<string, unknown>): void {
+  // Clear previously applied inline styles so stale styles don't leak when a
+  // subsequent render omits the style prop or changes which properties are set.
+  el.style.cssText = '';
+
   for (const [propName, propValue] of Object.entries(properties)) {
-    if (propName === 'style' && propValue !== null && propValue !== undefined && typeof propValue === 'object') {
-      for (const [cssProp, cssValue] of Object.entries(propValue as Record<string, string>)) {
-        el.style.setProperty(
-          cssProp.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`),
-          String(cssValue),
-        );
+    if (propName === 'style') {
+      if (propValue !== null && propValue !== undefined && typeof propValue === 'object') {
+        for (const [cssProp, cssValue] of Object.entries(propValue as Record<string, string>)) {
+          el.style.setProperty(
+            cssProp.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`),
+            String(cssValue),
+          );
+        }
       }
+      // null / undefined / non-object style → already cleared above; skip assignment
     } else if (propName.includes('-')) {
       if (propValue === null || propValue === undefined || propValue === false) {
         el.removeAttribute(propName);

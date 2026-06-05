@@ -394,7 +394,7 @@ describe('io-icon storefront stories', () => {
     it('every element has fixedWidth=true', () => {
       const els = iconStoryFixedWidth.generator?.() ?? [];
       for (const el of els) {
-        expect((el as { properties: { fixedWidth: boolean } }).properties.fixedWidth).toBe(true);
+        expect((el as unknown as { properties: { fixedWidth: boolean } }).properties.fixedWidth).toBe(true);
       }
     });
 

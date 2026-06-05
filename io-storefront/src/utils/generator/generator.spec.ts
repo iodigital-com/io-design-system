@@ -43,6 +43,37 @@ describe('applyPropertiesToElement', () => {
     expect(el.style).toBe(originalStyle);
   });
 
+  it('clears previously applied inline styles when re-rendered without style prop', () => {
+    applyPropertiesToElement(el as any, { style: { color: 'red' } });
+    expect(el.style.getPropertyValue('color')).toBe('red');
+    // second render omits style
+    applyPropertiesToElement(el as any, { name: 'search' });
+    expect(el.style.getPropertyValue('color')).toBe('');
+  });
+
+  it('clears stale styles when new render changes style object', () => {
+    applyPropertiesToElement(el as any, { style: { color: 'red', fontSize: '12px' } });
+    // second render has only color, no fontSize
+    applyPropertiesToElement(el as any, { style: { color: 'blue' } });
+    expect(el.style.getPropertyValue('color')).toBe('blue');
+    expect(el.style.getPropertyValue('font-size')).toBe('');
+  });
+
+  it('does not throw when style is null', () => {
+    expect(() => applyPropertiesToElement(el as any, { style: null })).not.toThrow();
+  });
+
+  it('does not throw when style is undefined', () => {
+    expect(() => applyPropertiesToElement(el as any, { style: undefined })).not.toThrow();
+  });
+
+  it('does not assign plain object to el.style (avoids no-op assignment)', () => {
+    // If style were assigned via el.style = {...}, the object would be discarded
+    // and no style would appear. Verify the value actually lands on the element.
+    applyPropertiesToElement(el as any, { style: { backgroundColor: 'green' } });
+    expect(el.style.getPropertyValue('background-color')).toBe('green');
+  });
+
   // ── hyphenated attribute keys ─────────────────────────────────────────────
 
   it('sets hyphenated key via setAttribute', () => {

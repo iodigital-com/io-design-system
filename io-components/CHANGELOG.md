@@ -1,8 +1,8 @@
 # @iodigital-com/components
 
-## 1.1.0
+## 1.0.1
 
-### Minor Changes
+### Patch Changes
 
 - dacc075: fix(io-input,io-textarea): error state visual polish + message/helperText consistency
 
@@ -35,19 +35,6 @@
   `circle-alert` (error), `circle-check` (success), `triangle-alert`
   (warning). Consistent with Lucide icon language used elsewhere in
   the product.
-
-## 1.0.1
-
-### Patch Changes
-
-- 7e63acc: **Breaking:** `io-select` `change` event detail changed from bare `string | string[]` to `{ value: string | string[]; name?: string }`. Update event handlers: `event.detail` → `event.detail.value`.
-- efd065d: **io-toast-item:** replace left-border accent with state background colors.
-
-  - Removed `--io-toast-item-accent-border-width` token and the 4px left accent border
-  - Each variant now uses its soft state token as the card background (`--io-color-{state}-soft`)
-  - Added frosted glass effect via `backdrop-filter: blur(var(--io-toast-item-blur, 12px))`
-  - Added `--io-toast-item-blur` CSS variable (default 12px) for consumer override — set to `0` to disable blur
-  - Neutral variant keeps `--io-bg-card` (white); icon retains accent color as state indicator
 
 ## 1.0.4
 

@@ -601,17 +601,20 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeDefined();
   });
 
-  it('does not render helper paragraph when state=error and message is shown', () => {
+  it('renders helper paragraph as hidden when state=error and message is shown', () => {
     c.state = 'error';
     c.helperText = 'Enter your company email';
     c.message = 'Invalid email';
     vi.mocked(h).mockClear();
     c.render();
 
+    // Helper <p> is always in the DOM but toggled via class (not removed from DOM).
+    // When a message is shown, showDescription=false → hidden class is applied.
     const helperPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && call[1]?.class === 'input-helper',
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-helper'),
     );
-    expect(helperPara).toBeUndefined();
+    expect(helperPara).toBeDefined();
+    expect((helperPara?.[1]?.class as string)).toContain('input-helper--hidden');
   });
 
   it('does not render helper paragraph when helperText is absent', () => {
@@ -637,6 +640,58 @@ describe('io-input — render() error and helper text paragraphs', () => {
       (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
     expect(errorPara).toBeDefined();
+  });
+
+  it('renders success message paragraph with role=status when state=success and message is set', () => {
+    c.state = 'success';
+    c.message = 'Saved successfully';
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const successPara = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
+    );
+    expect(successPara).toBeDefined();
+    expect(successPara?.[1]?.['role']).toBe('status');
+  });
+
+  it('renders warning message paragraph with role=status when state=warning and message is set', () => {
+    c.state = 'warning';
+    c.message = 'Check your entry';
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const warningPara = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--warning'),
+    );
+    expect(warningPara).toBeDefined();
+    expect(warningPara?.[1]?.['role']).toBe('status');
+  });
+
+  it('renders success message as hidden when state=success but message is absent', () => {
+    c.state = 'success';
+    c.message = '';
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const successPara = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
+    );
+    expect(successPara).toBeDefined();
+    expect((successPara?.[1]?.class as string)).toContain('input-error--hidden');
+  });
+
+  it('does not render success paragraph when state=none', () => {
+    c.state = 'none';
+    (c as any).faceInvalid = false;
+    c.message = 'Should not appear';
+    vi.mocked(h).mockClear();
+    c.render();
+
+    const successPara = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
+    );
+    expect(successPara).toBeUndefined();
   });
 });
 

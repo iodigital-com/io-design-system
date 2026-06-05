@@ -21,11 +21,12 @@ warning states now render the message with appropriate colour
 (`input-message--success` / `input-message--warning`) and ARIA role
 (`role="status"`).
 
-**io-input — helperText always visible**
-`helperText` / `description` slot now renders independently of validation
-state. Consumers can provide persistent contextual hints (e.g.
-"We'll never share your email") that stay visible alongside error,
-success, or warning messages.
+**io-input — message replaces helperText when active**
+When a validation state is active and a `message` is provided, the
+`message` is shown instead of `helperText`. When no `message` is set,
+`helperText` falls back as the visible description. This matches the
+Material 3 / Carbon / Fluent pattern of a single description slot
+that switches between helper and validation copy.
 
 **io-input — Lucide state icons**
 Replaced custom 14×14 filled SVG paths with Lucide stroke icons:

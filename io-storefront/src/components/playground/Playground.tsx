@@ -66,6 +66,7 @@ export function Playground({ children, frameworkCode, codeVisible = true, previe
         data-theme={previewDark ? 'dark' : undefined}
         style={{
           backgroundColor: previewDark ? 'var(--io-color-dark-bg-base)' : 'var(--io-bg-raised)',
+          color: 'var(--io-text-primary)',
           backgroundImage: 'linear-gradient(var(--io-border) 1px, transparent 1px), linear-gradient(to right, var(--io-border) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
           ...previewStyle,

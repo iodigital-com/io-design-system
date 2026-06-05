@@ -522,19 +522,23 @@ export const iconStoryColour: Story<'io-icon'> = {
   generator: () => [
     {
       tag: 'io-icon' as const,
-      properties: { name: 'check-circle', size: 'lg', label: 'Primary colour' },
+      properties: { name: 'check-circle', size: 'lg', label: 'Success colour', style: { color: 'var(--io-color-success)' } },
     },
     {
       tag: 'io-icon' as const,
-      properties: { name: 'alert-triangle', size: 'lg', label: 'Warning colour' },
+      properties: { name: 'alert-triangle', size: 'lg', label: 'Warning colour', style: { color: 'var(--io-color-warning)' } },
     },
     {
       tag: 'io-icon' as const,
-      properties: { name: 'info', size: 'lg', label: 'Info colour' },
+      properties: { name: 'info', size: 'lg', label: 'Info colour', style: { color: 'var(--io-color-info)' } },
     },
     {
       tag: 'io-icon' as const,
-      properties: { name: 'x-circle', size: 'lg', label: 'Error colour' },
+      properties: { name: 'x-circle', size: 'lg', label: 'Error colour', style: { color: 'var(--io-color-error)' } },
+    },
+    {
+      tag: 'io-icon' as const,
+      properties: { name: 'star', size: 'lg', label: 'Primary colour', style: { color: 'var(--io-color-primary)' } },
     },
   ],
 };
@@ -542,9 +546,30 @@ export const iconStoryColour: Story<'io-icon'> = {
 export const iconStoryInheritSize: Story<'io-icon'> = {
   state: { properties: { name: 'search', size: 'inherit' } },
   generator: () => [
-    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '12px text' } },
-    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '16px text' } },
-    { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: '24px text' } },
+    {
+      tag: 'span' as const,
+      properties: { style: { fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px' } },
+      children: [
+        { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: 'search' } },
+        '12px',
+      ],
+    },
+    {
+      tag: 'span' as const,
+      properties: { style: { fontSize: '16px', display: 'inline-flex', alignItems: 'center', gap: '4px' } },
+      children: [
+        { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: 'search' } },
+        '16px',
+      ],
+    },
+    {
+      tag: 'span' as const,
+      properties: { style: { fontSize: '24px', display: 'inline-flex', alignItems: 'center', gap: '4px' } },
+      children: [
+        { tag: 'io-icon' as const, properties: { name: 'search', size: 'inherit' as const, label: 'search' } },
+        '24px',
+      ],
+    },
   ],
 };
 

@@ -370,10 +370,12 @@ describe('io-icon storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('every element has size=inherit', () => {
+    it('every child icon has size=inherit', () => {
       const els = iconStoryInheritSize.generator?.() ?? [];
       for (const el of els) {
-        expect((el as { properties: { size: string } }).properties.size).toBe('inherit');
+        const wrapper = el as { children?: Array<{ properties?: { size?: string } }> };
+        const icon = wrapper.children?.find((c) => typeof c === 'object' && c !== null && 'properties' in c);
+        expect((icon as { properties: { size: string } })?.properties?.size).toBe('inherit');
       }
     });
 

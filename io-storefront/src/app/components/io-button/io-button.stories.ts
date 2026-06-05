@@ -14,6 +14,7 @@ export const buttonStory: Story<'io-button'> = {
       color: 'blue',
       size: 'md',
       arrow: undefined,
+      icon: 'none',
       disabled: false,
       loading: false,
       fullWidth: false,
@@ -26,6 +27,7 @@ export const buttonStory: Story<'io-button'> = {
     // null tells React to explicitly reset the DOM property (delete skips the reset).
     // Code generators already filter out null, so it won't appear in output.
     if (attrs['arrow'] === 'none') attrs['arrow'] = null;
+    if (attrs['icon'] === 'none') attrs['icon'] = null;
     const content = attrs['iconOnly'] ? '×' : (label as string);
     return [
       {
@@ -217,6 +219,23 @@ export const buttonPropDefinitions: PropDefinition[] = [
     options: ['right', 'left'],
     defaultValue: 'right',
     description: 'Controls whether the arrow appears before or after the label.',
+    group: 'Content',
+  },
+  {
+    name: 'icon',
+    type: 'select',
+    options: [
+      'none',
+      'alert-circle', 'alert-triangle', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up',
+      'bell', 'calendar', 'check', 'check-circle', 'check-square', 'chevron-down', 'chevron-left',
+      'chevron-right', 'chevron-up', 'chevrons-up-down', 'circle-check', 'clock', 'copy', 'download',
+      'edit', 'external-link', 'eye', 'eye-off', 'filter', 'home', 'info', 'link', 'loader', 'lock',
+      'log-out', 'mail', 'map-pin', 'menu', 'minus', 'more-horizontal', 'more-vertical',
+      'phone', 'plus', 'refresh-cw', 'search', 'settings', 'star', 'tag', 'trash-2', 'unlock',
+      'upload', 'user', 'user-plus', 'x', 'x-circle',
+    ],
+    defaultValue: 'none',
+    description: 'Renders a Lucide icon inside the button alongside the label. Independent of the branded arrow.',
     group: 'Content',
   },
   // ── State ─────────────────────────────────────────────────

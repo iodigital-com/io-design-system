@@ -309,8 +309,8 @@ export class IoInput {
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
-    const showMessage = showError && (hasMessageSlot || message);
-    const showDescription = !showError && (hasDescriptionSlot || helperText);
+    const showMessage = (showError || showSuccess || showWarning) && (hasMessageSlot || !!message);
+    const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
     const describedBy = [
       showMessage ? errorId : '',
       showDescription ? helperId : '',
@@ -389,25 +389,27 @@ export class IoInput {
             )}
             {showError && (
               <div class="input-state-icon input-state-icon--error" aria-hidden="true">
-                <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M7 3.667a.667.667 0 0 0-.667.666V7a.667.667 0 1 0 1.334 0V4.333A.667.667 0 0 0 7 3.667Zm.613 5.746a.507.507 0 0 0-.06-.12l-.08-.1a.667.667 0 0 0-.726-.14.767.767 0 0 0-.22.14.667.667 0 0 0-.14.727.6.6 0 0 0 .36.36.626.626 0 0 0 .506 0 .6.6 0 0 0 .36-.36.667.667 0 0 0 .054-.253.907.907 0 0 0 0-.134.427.427 0 0 0-.054-.12ZM7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm0 12A5.334 5.334 0 1 1 7 1.666a5.334 5.334 0 0 1 0 10.667Z"
-                    fill="currentColor"
-                  />
+                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" x2="12" y1="8" y2="12" />
+                  <line x1="12" x2="12.01" y1="16" y2="16" />
                 </svg>
               </div>
             )}
             {showSuccess && (
               <div class="input-state-icon input-state-icon--success" aria-hidden="true">
-                <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 .333a6.667 6.667 0 1 0 0 13.334A6.667 6.667 0 0 0 7 .333Zm3.14 5.14-3.667 3.667a.667.667 0 0 1-.946 0L3.86 7.473a.669.669 0 0 1 .947-.946l2.193 2.193 3.193-3.193a.669.669 0 0 1 .947.946Z" fill="currentColor" />
+                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
                 </svg>
               </div>
             )}
             {showWarning && (
               <div class="input-state-icon input-state-icon--warning" aria-hidden="true">
-                <svg width="1.5rem" height="1.5rem" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.253 10.667 8.12 1.667a1.333 1.333 0 0 0-2.24 0L.747 10.667A1.333 1.333 0 0 0 1.88 12.667h10.24a1.333 1.333 0 0 0 1.133-2Zm-6.92-5.334a.667.667 0 0 1 1.334 0V8a.667.667 0 0 1-1.334 0V5.333Zm.667 5.334a.667.667 0 1 1 0-1.334.667.667 0 0 1 0 1.334Z" fill="currentColor" />
+                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                  <path d="M12 9v4" />
+                  <path d="M12 17h.01" />
                 </svg>
               </div>
             )}
@@ -428,21 +430,35 @@ export class IoInput {
           </label>
         </div>
         {showError && (
-          <p id={errorId} class={`input-error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
             <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
             {!hasMessageSlot && message}
           </p>
         )}
-        {!showError && (
-          <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
-            <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
-              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+        {showSuccess && (
+          <p id={errorId} class={`input-message input-message--success${showMessage ? '' : ' input-error--hidden'}`} role="status">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasDescriptionSlot && helperText}
+            {!hasMessageSlot && message}
           </p>
         )}
+        {showWarning && (
+          <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
+          <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
+            <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+          </span>
+          {!hasDescriptionSlot && helperText}
+        </p>
         {showCounter && (
           <div id={this.counterId} class="input-counter" aria-hidden="true">
             {currentLength} / {maxLength}

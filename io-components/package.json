@@ -3,6 +3,15 @@
   "version": "1.0.1",
   "description": "io Digital Design System — Framework-agnostic Web Components built with Stencil.js",
   "license": "MIT",
+  "homepage": "https://io-design-system-showcase.web.app",
+  "bugs": {
+    "url": "https://github.com/iodigital-com/io-design-system/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iodigital-com/io-design-system.git",
+    "directory": "io-components"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com",

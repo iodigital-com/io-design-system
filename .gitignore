@@ -13,6 +13,10 @@ io-components/.stencil/
 .next/
 out/
 io-storefront/next-env.d.ts
+io-playground-react/next-env.d.ts
+
+# Angular build cache
+io-playground-angular/.angular/
 io-storefront/public/stencil/
 io-storefront/.lighthouseci/
 io-storefront/lighthouseci/

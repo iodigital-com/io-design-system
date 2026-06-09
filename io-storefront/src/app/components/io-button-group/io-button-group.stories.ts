@@ -35,6 +35,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         variant: (properties?.variant as 'primary' | 'secondary') ?? 'primary',
         direction: (properties?.direction as 'row' | 'column') ?? 'row',
         compact: properties?.compact as boolean ?? false,
+        hideLabel: (properties?.hideLabel as boolean) ?? false,
       },
       children: [
         createButtonGroupItem('day', 'Day'),

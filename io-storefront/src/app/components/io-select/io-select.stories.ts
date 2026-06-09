@@ -42,6 +42,7 @@ export const selectStory: Story<'io-select'> = {
         error: (properties?.error as boolean) ?? false,
         errorMessage: (properties?.errorMessage as string) || undefined,
         helperText: (properties?.helperText as string) || undefined,
+        hideLabel: (properties?.hideLabel as boolean) ?? false,
       },
       children: DEFAULT_CHILDREN,
     },

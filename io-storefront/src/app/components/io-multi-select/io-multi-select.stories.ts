@@ -35,6 +35,7 @@ export const multiSelectStory: Story<'io-multi-select'> = {
         state: (properties?.state as string) ?? 'none',
         message: (properties?.message as string) || undefined,
         filter: (properties?.filter as boolean) ?? false,
+        hideLabel: (properties?.hideLabel as boolean) ?? false,
       },
       children: DEFAULT_CHILDREN,
     },

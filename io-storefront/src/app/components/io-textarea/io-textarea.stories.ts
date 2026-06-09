@@ -36,6 +36,7 @@ export const textareaStory: Story<'io-textarea'> = {
         state: (properties?.state as string) ?? 'none',
         message: (properties?.message as string) || undefined,
         helperText: (properties?.helperText as string) || undefined,
+        hideLabel: (properties?.hideLabel as boolean) ?? false,
       },
     },
   ],

@@ -9,6 +9,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoButton } from './io-button';
+import type { IoButtonSize } from './types';
+import type { IoIconSize } from '../io-icon/types';
 
 function makeButton(overrides: Partial<IoButton> = {}): IoButton {
   const c = new IoButton();
@@ -109,16 +111,16 @@ describe('io-button render() — branch coverage', () => {
 // ── icon size scaling ─────────────────────────────────────────────────────────
 
 describe('io-button renderIcon() — icon size scales with button size', () => {
-  const cases: Array<{ buttonSize: string; expected: string }> = [
-    { buttonSize: 'sm', expected: 'sm' },
-    { buttonSize: 'md', expected: 'sm' },
-    { buttonSize: 'lg', expected: 'md' },
-    { buttonSize: 'xl', expected: 'lg' },
-  ];
+  const cases: ReadonlyArray<readonly [IoButtonSize, IoIconSize]> = [
+    ['sm', 'sm'],
+    ['md', 'sm'],
+    ['lg', 'md'],
+    ['xl', 'lg'],
+  ] as const;
 
-  for (const { buttonSize, expected } of cases) {
+  for (const [buttonSize, expected] of cases) {
     it(`button size="${buttonSize}" renders io-icon size="${expected}"`, () => {
-      const c = makeButton({ icon: 'add', size: buttonSize as any });
+      const c = makeButton({ icon: 'add', size: buttonSize });
       const calls = renderCalls(c);
       const iconCall = calls.find(([tag]) => tag === 'io-icon');
       expect(iconCall).toBeDefined();
@@ -127,7 +129,7 @@ describe('io-button renderIcon() — icon size scales with button size', () => {
   }
 
   it('icon-only button with size="lg" renders io-icon size="md"', () => {
-    const c = makeButton({ icon: 'add', iconOnly: true, size: 'lg' as any, label: 'Add' });
+    const c = makeButton({ icon: 'add', iconOnly: true, size: 'lg', label: 'Add' });
     const calls = renderCalls(c);
     const iconCall = calls.find(([tag]) => tag === 'io-icon');
     expect(iconCall).toBeDefined();
@@ -135,7 +137,7 @@ describe('io-button renderIcon() — icon size scales with button size', () => {
   });
 
   it('icon-only button with size="xl" renders io-icon size="lg"', () => {
-    const c = makeButton({ icon: 'add', iconOnly: true, size: 'xl' as any, label: 'Add' });
+    const c = makeButton({ icon: 'add', iconOnly: true, size: 'xl', label: 'Add' });
     const calls = renderCalls(c);
     const iconCall = calls.find(([tag]) => tag === 'io-icon');
     expect(iconCall).toBeDefined();

@@ -105,3 +105,40 @@ describe('io-button render() — branch coverage', () => {
     expect(() => c.render()).not.toThrow();
   });
 });
+
+// ── icon size scaling ─────────────────────────────────────────────────────────
+
+describe('io-button renderIcon() — icon size scales with button size', () => {
+  const cases: Array<{ buttonSize: string; expected: string }> = [
+    { buttonSize: 'sm', expected: 'sm' },
+    { buttonSize: 'md', expected: 'sm' },
+    { buttonSize: 'lg', expected: 'md' },
+    { buttonSize: 'xl', expected: 'lg' },
+  ];
+
+  for (const { buttonSize, expected } of cases) {
+    it(`button size="${buttonSize}" renders io-icon size="${expected}"`, () => {
+      const c = makeButton({ icon: 'add', size: buttonSize as any });
+      const calls = renderCalls(c);
+      const iconCall = calls.find(([tag]) => tag === 'io-icon');
+      expect(iconCall).toBeDefined();
+      expect(iconCall![1].size).toBe(expected);
+    });
+  }
+
+  it('icon-only button with size="lg" renders io-icon size="md"', () => {
+    const c = makeButton({ icon: 'add', iconOnly: true, size: 'lg' as any, label: 'Add' });
+    const calls = renderCalls(c);
+    const iconCall = calls.find(([tag]) => tag === 'io-icon');
+    expect(iconCall).toBeDefined();
+    expect(iconCall![1].size).toBe('md');
+  });
+
+  it('icon-only button with size="xl" renders io-icon size="lg"', () => {
+    const c = makeButton({ icon: 'add', iconOnly: true, size: 'xl' as any, label: 'Add' });
+    const calls = renderCalls(c);
+    const iconCall = calls.find(([tag]) => tag === 'io-icon');
+    expect(iconCall).toBeDefined();
+    expect(iconCall![1].size).toBe('lg');
+  });
+});

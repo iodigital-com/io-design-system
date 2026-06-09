@@ -4,6 +4,7 @@ import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
+import type { IoIconSize } from '../io-icon/types';
 
 import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
 
@@ -13,6 +14,13 @@ const BRAND_ARROW_PATH = 'M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.3
 const VALID_VARIANTS: readonly IoButtonVariant[] = ['solid', 'ghost', 'link'];
 const VALID_COLORS: readonly IoButtonColor[] = ['blue', 'white', 'black', 'antraciet', 'orange', 'pink', 'rouge', 'yellow', 'beige', 'grey'];
 const VALID_SIZES: readonly IoButtonSize[] = ['sm', 'md', 'lg', 'xl'];
+
+const ICON_SIZE_MAP: Record<IoButtonSize, IoIconSize> = {
+  sm: 'sm',
+  md: 'sm',
+  lg: 'md',
+  xl: 'lg',
+};
 
 let _idCounter = 0;
 
@@ -271,7 +279,7 @@ export class IoButton {
       return <span class="btn__icon-wrap" aria-hidden="true" innerHTML={this.iconSource} />;
     }
 
-    return <io-icon name={this.icon!} size="sm" aria-hidden="true" />;
+    return <io-icon name={this.icon!} size={ICON_SIZE_MAP[this.size] ?? 'sm'} aria-hidden="true" />;
   }
 
   private renderIconOnlyContent() {

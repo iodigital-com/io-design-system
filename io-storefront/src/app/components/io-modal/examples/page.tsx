@@ -4,6 +4,7 @@ import {
   modalStoryDefault,
   modalStorySm,
   modalStoryLg,
+  modalStoryNoFooter,
   modalStoryNoHeading,
 } from '../io-modal.stories';
 
@@ -43,6 +44,13 @@ export default function IoModalExamplesPage() {
         description="A wider modal for forms, tables, or any content that benefits from extra horizontal space."
       >
         <ComponentStory story={modalStoryLg} interactive />
+      </Section>
+
+      <Section
+        title="No footer"
+        description="When no slot='footer' content is provided, the footer and its top-border divider are hidden automatically."
+      >
+        <ComponentStory story={modalStoryNoFooter} interactive />
       </Section>
 
       <Section

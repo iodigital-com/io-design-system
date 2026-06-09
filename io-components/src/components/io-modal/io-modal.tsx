@@ -154,13 +154,12 @@ export class IoModal {
 
   componentWillLoad() {
     this.headingId = createModalHeadingId(Math.random().toString(36).slice(2));
+    this.hasFooterSlot = Array.from(this.el?.children ?? []).some(
+      c => c.getAttribute('slot') === 'footer',
+    );
   }
 
   componentDidLoad() {
-    const footerSlot = this.el.shadowRoot?.querySelector('slot[name="footer"]') as HTMLSlotElement | null;
-    if (footerSlot) {
-      this.hasFooterSlot = footerSlot.assignedNodes({ flatten: true }).length > 0;
-    }
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
@@ -415,9 +414,10 @@ export class IoModal {
     this.open = false;
   };
 
-  private handleFooterSlotChange = (ev: Event) => {
-    const slot = ev.target as HTMLSlotElement;
-    this.hasFooterSlot = slot.assignedNodes({ flatten: true }).length > 0;
+  private handleFooterSlotChange = () => {
+    this.hasFooterSlot = Array.from(this.el.children).some(
+      c => c.getAttribute('slot') === 'footer',
+    );
   };
 
   // ── Render ───────────────────────────────────────────────────

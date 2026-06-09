@@ -145,25 +145,19 @@ describe('io-modal render() — footer slot visibility', () => {
     expect(footerCall![1].class).not.toContain('modal__footer--hidden');
   });
 
-  it('handleFooterSlotChange sets hasFooterSlot true when nodes assigned', () => {
+  it('handleFooterSlotChange sets hasFooterSlot true when footer child present', () => {
     const c = makeModal();
-    const slot = document.createElement('slot') as HTMLSlotElement;
-    const node = document.createElement('button');
-    Object.defineProperty(slot, 'assignedNodes', { value: () => [node] });
-    const ev = new Event('slotchange');
-    Object.defineProperty(ev, 'target', { value: slot });
-    (c as any).handleFooterSlotChange(ev);
+    const child = document.createElement('button');
+    child.setAttribute('slot', 'footer');
+    (c as any).el.appendChild(child);
+    (c as any).handleFooterSlotChange();
     expect((c as any).hasFooterSlot).toBe(true);
   });
 
-  it('handleFooterSlotChange sets hasFooterSlot false when no nodes assigned', () => {
+  it('handleFooterSlotChange sets hasFooterSlot false when no footer children', () => {
     const c = makeModal();
     (c as any).hasFooterSlot = true;
-    const slot = document.createElement('slot') as HTMLSlotElement;
-    Object.defineProperty(slot, 'assignedNodes', { value: () => [] });
-    const ev = new Event('slotchange');
-    Object.defineProperty(ev, 'target', { value: slot });
-    (c as any).handleFooterSlotChange(ev);
+    (c as any).handleFooterSlotChange();
     expect((c as any).hasFooterSlot).toBe(false);
   });
 });

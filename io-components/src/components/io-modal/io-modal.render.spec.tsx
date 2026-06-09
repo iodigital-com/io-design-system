@@ -33,5 +33,7 @@ describe('io-modal — render snapshots', () => {
       <io-modal heading="No footer">Body only</io-modal>
     );
     expect(root).toMatchSnapshot();
+    const footer = root.shadowRoot?.querySelector('.modal__footer');
+    expect(footer?.classList.contains('modal__footer--hidden')).toBe(true);
   });
 });

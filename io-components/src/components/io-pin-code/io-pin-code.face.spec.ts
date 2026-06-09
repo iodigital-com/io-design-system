@@ -152,6 +152,31 @@ describe('io-pin-code — FACE: formResetCallback', () => {
   });
 });
 
+describe('io-pin-code — FACE: handleBlur touched gate', () => {
+  it('does not set touched when focus moves to another slot input', () => {
+    const component = makeComponent('', true);
+    const slotInput = document.createElement('input');
+    (component as any).inputRefs = [slotInput, null, null, null];
+
+    const ev = new FocusEvent('blur', { relatedTarget: slotInput });
+    (component as any).handleBlur(ev);
+
+    expect((component as any).touched).toBe(false);
+  });
+
+  it('sets touched when focus leaves component entirely (relatedTarget not in inputRefs)', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).inputRefs = [null, null, null, null];
+
+    const outsideEl = document.createElement('button');
+    const ev = new FocusEvent('blur', { relatedTarget: outsideEl });
+    (component as any).handleBlur(ev);
+
+    expect((component as any).touched).toBe(true);
+  });
+});
+
 describe('io-pin-code — FACE: checkValidity and reportValidity', () => {
   it('checkValidity delegates to internals', async () => {
     const component = makeComponent();

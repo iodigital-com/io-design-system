@@ -41,7 +41,7 @@ export class IoInput {
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
 
-  /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
+  /** Tracks FACE form validation invalidity; drives aria-invalid and error UI once field has been touched */
   @State() faceInvalid = false;
 
   /** True after the user has blurred the field at least once — gates eager FACE error display */

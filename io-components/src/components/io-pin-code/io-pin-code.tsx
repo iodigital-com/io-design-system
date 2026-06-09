@@ -39,7 +39,7 @@ export class IoPinCode {
   /** Internal digits array — one entry per slot */
   @State() private digits: string[] = [];
 
-  /** Tracks FACE invalidity for aria-invalid and visual feedback */
+  /** Tracks FACE form validation invalidity; drives aria-invalid and error UI once field has been touched */
   @State() faceInvalid = false;
 
   /** True after the user has blurred any slot at least once — gates eager FACE error display */
@@ -287,7 +287,8 @@ export class IoPinCode {
     input.select();
   };
 
-  private handleBlur = () => {
+  private handleBlur = (ev: FocusEvent) => {
+    if (this.inputRefs.includes(ev.relatedTarget as HTMLInputElement)) return;
     this.touched = true;
     this.syncFormValue();
   };

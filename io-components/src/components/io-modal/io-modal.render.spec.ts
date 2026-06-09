@@ -118,3 +118,52 @@ describe('io-modal render() — branch coverage', () => {
     expect(dialogCall![1]['aria-describedby']).toBeUndefined();
   });
 });
+
+// ── footer slot class toggle ──────────────────────────────────────────────────
+
+describe('io-modal render() — footer slot visibility', () => {
+  it('footer div has modal__footer--hidden class when hasFooterSlot is false', () => {
+    const c = makeModal();
+    const calls = renderCalls(c);
+
+    const footerCall = calls.find(
+      ([tag, props]) => tag === 'div' && typeof props?.class === 'string' && (props.class as string).includes('modal__footer')
+    );
+    expect(footerCall).toBeDefined();
+    expect(footerCall![1].class).toContain('modal__footer--hidden');
+  });
+
+  it('footer div lacks modal__footer--hidden class when hasFooterSlot is true', () => {
+    const c = makeModal();
+    (c as any).hasFooterSlot = true;
+    const calls = renderCalls(c);
+
+    const footerCall = calls.find(
+      ([tag, props]) => tag === 'div' && typeof props?.class === 'string' && (props.class as string).includes('modal__footer')
+    );
+    expect(footerCall).toBeDefined();
+    expect(footerCall![1].class).not.toContain('modal__footer--hidden');
+  });
+
+  it('handleFooterSlotChange sets hasFooterSlot true when nodes assigned', () => {
+    const c = makeModal();
+    const slot = document.createElement('slot') as HTMLSlotElement;
+    const node = document.createElement('button');
+    Object.defineProperty(slot, 'assignedNodes', { value: () => [node] });
+    const ev = new Event('slotchange');
+    Object.defineProperty(ev, 'target', { value: slot });
+    (c as any).handleFooterSlotChange(ev);
+    expect((c as any).hasFooterSlot).toBe(true);
+  });
+
+  it('handleFooterSlotChange sets hasFooterSlot false when no nodes assigned', () => {
+    const c = makeModal();
+    (c as any).hasFooterSlot = true;
+    const slot = document.createElement('slot') as HTMLSlotElement;
+    Object.defineProperty(slot, 'assignedNodes', { value: () => [] });
+    const ev = new Event('slotchange');
+    Object.defineProperty(ev, 'target', { value: slot });
+    (c as any).handleFooterSlotChange(ev);
+    expect((c as any).hasFooterSlot).toBe(false);
+  });
+});

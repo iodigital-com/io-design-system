@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, State, Watch, h } from '@stencil/core';
 
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
@@ -32,6 +32,10 @@ import type { IoModalBackground, IoModalSize } from './types';
 })
 export class IoModal {
   @Element() el!: HTMLElement;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  @State() private hasFooterSlot = false;
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
@@ -153,6 +157,10 @@ export class IoModal {
   }
 
   componentDidLoad() {
+    const footerSlot = this.el.shadowRoot?.querySelector('slot[name="footer"]') as HTMLSlotElement | null;
+    if (footerSlot) {
+      this.hasFooterSlot = footerSlot.assignedNodes({ flatten: true }).length > 0;
+    }
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.focusTrigger = document.activeElement as Element;
@@ -407,6 +415,11 @@ export class IoModal {
     this.open = false;
   };
 
+  private handleFooterSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasFooterSlot = slot.assignedNodes({ flatten: true }).length > 0;
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   /**
@@ -451,8 +464,8 @@ export class IoModal {
         <div class="modal__body" id={descriptionId}>
           <slot />
         </div>
-        <div class="modal__footer">
-          <slot name="footer" />
+        <div class={`modal__footer${this.hasFooterSlot ? '' : ' modal__footer--hidden'}`}>
+          <slot name="footer" onSlotchange={this.handleFooterSlotChange} />
         </div>
       </dialog>
     );

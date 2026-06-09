@@ -1342,3 +1342,34 @@ exports[`io-modal — render snapshots > renders slotted footer actions 1`] = `
   </button>
 </io-modal>
 `;
+
+exports[`io-modal — render snapshots > renders without footer when no footer slot content 1`] = `
+<io-modal size="md" background="canvas" prevent-top-layer class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="modal__backdrop">
+      <dialog class="modal--md modal--bg-canvas" aria-labelledby="io-modal-heading-4fzzzxjylrx" aria-modal="true">
+        <div class="modal__header">
+          <slot name="header">
+            <h2 id="io-modal-heading-4fzzzxjylrx" class="modal__heading">
+              No footer
+            </h2>
+          </slot>
+          <button type="button" class="modal__close" aria-label="Close dialog">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="modal__body">
+          <slot></slot>
+        </div>
+        <div class="modal__footer">
+          <slot name="footer"></slot>
+        </div>
+      </dialog>
+    </div>
+  </mock:shadow-root>
+  Body only
+</io-modal>
+`;

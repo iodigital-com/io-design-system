@@ -27,4 +27,11 @@ describe('io-modal — render snapshots', () => {
     );
     expect(root).toMatchSnapshot();
   });
+
+  it('renders without footer when no footer slot content', async () => {
+    const { root } = await render(
+      <io-modal heading="No footer">Body only</io-modal>
+    );
+    expect(root).toMatchSnapshot();
+  });
 });

@@ -119,7 +119,11 @@ export class IoPinCode {
     this.inputRefs = new Array(this.length).fill(null);
     this.syncFormValue();
     if (this.hideLabel && !this.label) {
-      console.warn('[io-pin-code] hideLabel=true requires a non-empty label for accessibility.');
+      const hostAriaLabel = this.el.getAttribute('aria-label');
+      const hostAriaLabelledBy = this.el.getAttribute('aria-labelledby');
+      if (!hostAriaLabel && !hostAriaLabelledBy) {
+        console.warn('[io-pin-code] hideLabel=true requires a non-empty label for accessibility.');
+      }
     }
   }
 

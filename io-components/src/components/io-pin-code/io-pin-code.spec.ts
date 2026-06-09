@@ -2,6 +2,7 @@
  * io-pin-code — default props and render tests
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h, Host } from '@stencil/core';
 
 import { IoPinCode } from './io-pin-code';
 
@@ -182,5 +183,64 @@ describe('io-pin-code — hideLabel prop', () => {
     (component as any).componentWillLoad();
     expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is empty but host has aria-label', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (component as any).el.setAttribute('aria-label', 'External label');
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
+
+describe('io-pin-code — hideLabel render', () => {
+  let component: IoPinCode;
+
+  function makeRenderComp(overrides: Partial<IoPinCode> = {}): IoPinCode {
+    const comp = new IoPinCode();
+    (comp as any).el = document.createElement('io-pin-code');
+    (comp as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (comp as any).change = { emit: vi.fn() };
+    Object.assign(comp, overrides);
+    return comp;
+  }
+
+  beforeEach(() => {
+    component = makeRenderComp();
+  });
+
+  it('does not render pin-code__label span when hideLabel=true', () => {
+    component.label = 'Enter PIN';
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const labelSpan = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'span')
+      .find(args => (args[1] as any)?.class === 'pin-code__label');
+    expect(labelSpan).toBeUndefined();
+  });
+
+  it('renders pin-code__label span when hideLabel=false and label is provided', () => {
+    component.label = 'Enter PIN';
+    component.hideLabel = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const labelSpan = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'span')
+      .find(args => (args[1] as any)?.class === 'pin-code__label');
+    expect(labelSpan).toBeDefined();
+  });
+
+  it('Host has aria-label and no aria-labelledby when hideLabel=true and label provided', () => {
+    component.label = 'Enter PIN';
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const hostCall = vi.mocked(h).mock.calls.find(args => args[0] === Host);
+    const hostProps = hostCall?.[1] as Record<string, unknown>;
+    expect(hostProps?.['aria-label']).toBe('Enter PIN');
+    expect(hostProps?.['aria-labelledby']).toBeUndefined();
   });
 });

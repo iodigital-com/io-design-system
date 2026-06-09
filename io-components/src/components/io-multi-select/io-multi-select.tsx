@@ -182,7 +182,11 @@ export class IoMultiSelect {
     this.defaultValue = [...(this.value ?? [])];
     this.syncFormValue();
     if (this.hideLabel && !this.label) {
-      console.warn('[io-multi-select] hideLabel=true requires a non-empty label for accessibility.');
+      const hostAriaLabel = this.el.getAttribute('aria-label');
+      const hostAriaLabelledBy = this.el.getAttribute('aria-labelledby');
+      if (!hostAriaLabel && !hostAriaLabelledBy) {
+        console.warn('[io-multi-select] hideLabel=true requires a non-empty label for accessibility.');
+      }
     }
   }
 
@@ -659,7 +663,7 @@ export class IoMultiSelect {
             aria-haspopup="listbox"
             aria-expanded={String(isOpen)}
             aria-labelledby={hideLabel ? undefined : labelId}
-            aria-label={hideLabel ? label : undefined}
+            aria-label={hideLabel && label ? label : undefined}
             aria-controls={listboxId}
             aria-activedescendant={activeOptId}
             aria-required={required ? 'true' : undefined}
@@ -720,7 +724,7 @@ export class IoMultiSelect {
               id={listboxId}
               role="listbox"
               aria-labelledby={hideLabel ? undefined : labelId}
-              aria-label={hideLabel ? label : undefined}
+              aria-label={hideLabel && label ? label : undefined}
               aria-multiselectable="true"
               class="multi-select-listbox"
             >

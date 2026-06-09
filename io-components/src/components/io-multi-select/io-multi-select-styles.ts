@@ -50,19 +50,6 @@ export function getMultiSelectStyles(): string {
       color: var(--io-color-error);
     }
 
-    /* Visually hide label while keeping it accessible to screen readers */
-    .multi-select-label--sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-
     /* Collapse the label space entirely when hideLabel=true */
     :host([hide-label]) .multi-select-wrapper {
       padding-top: 0;

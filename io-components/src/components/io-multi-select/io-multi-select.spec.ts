@@ -2,6 +2,7 @@
  * io-multi-select — default props / render tests
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 vi.mock('@floating-ui/dom', () => ({
   computePosition: vi.fn().mockResolvedValue({ x: 42, y: 84 }),
@@ -297,5 +298,75 @@ describe('io-multi-select — hideLabel prop', () => {
     (component as any).componentWillLoad();
     expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
+  });
+
+  it('does not warn when hideLabel=true and label is empty but host has aria-label', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (component as any).el.setAttribute('aria-label', 'External label');
+    component.label = '' as any;
+    component.hideLabel = true;
+    (component as any).componentWillLoad();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+});
+
+describe('io-multi-select — hideLabel render', () => {
+  let component: IoMultiSelect;
+
+  function makeRenderComp(overrides: Partial<IoMultiSelect> = {}): IoMultiSelect {
+    const comp = new IoMultiSelect();
+    (comp as any).el = document.createElement('io-multi-select');
+    (comp as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (comp as any).change = { emit: vi.fn() };
+    comp.name = 'test';
+    comp.label = 'Countries';
+    Object.assign(comp, overrides);
+    (comp as any).componentWillLoad();
+    return comp;
+  }
+
+  beforeEach(() => {
+    component = makeRenderComp();
+  });
+
+  it('does not render label element when hideLabel=true', () => {
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const labelCalls = vi.mocked(h).mock.calls.filter(args => args[0] === 'label');
+    expect(labelCalls).toHaveLength(0);
+  });
+
+  it('renders label element when hideLabel=false', () => {
+    component.hideLabel = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const labelCalls = vi.mocked(h).mock.calls.filter(args => args[0] === 'label');
+    expect(labelCalls.length).toBeGreaterThan(0);
+  });
+
+  it('combobox trigger uses aria-label and omits aria-labelledby when hideLabel=true and label provided', () => {
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    expect(triggerProps?.['aria-label']).toBe('Countries');
+    expect(triggerProps?.['aria-labelledby']).toBeUndefined();
+  });
+
+  it('listbox uses aria-label and omits aria-labelledby when hideLabel=true and label provided', () => {
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const listboxProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'ul')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'listbox');
+    expect(listboxProps?.['aria-label']).toBe('Countries');
+    expect(listboxProps?.['aria-labelledby']).toBeUndefined();
   });
 });

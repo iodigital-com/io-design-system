@@ -42,6 +42,9 @@ export class IoPinCode {
   /** Tracks FACE invalidity for aria-invalid and visual feedback */
   @State() faceInvalid = false;
 
+  /** True after the user has blurred any slot at least once — gates eager FACE error display */
+  @State() private touched = false;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /** Accessible label displayed above the PIN slots */
@@ -117,6 +120,7 @@ export class IoPinCode {
   formResetCallback() {
     this.value = this.defaultValue;
     this.digits = splitDigits(this.defaultValue, this.length);
+    this.touched = false;
     this.syncFormValue();
     // Reset visual invalidity indicator after form reset — users shouldn't see
     // errors before re-interacting, even if the field is required and empty.
@@ -159,7 +163,7 @@ export class IoPinCode {
 
     if (!isValid) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please complete the PIN');
-      this.faceInvalid = true;
+      this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
       this.faceInvalid = false;
@@ -283,6 +287,11 @@ export class IoPinCode {
     input.select();
   };
 
+  private handleBlur = () => {
+    this.touched = true;
+    this.syncFormValue();
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   private getSlotClass(index: number): string {
@@ -358,6 +367,7 @@ export class IoPinCode {
               onInput={(e) => this.handleInput(e as InputEvent, i)}
               onPaste={(e) => this.handlePaste(e, i)}
               onFocus={this.handleFocus}
+              onBlur={this.handleBlur}
             />
           ))}
         </div>

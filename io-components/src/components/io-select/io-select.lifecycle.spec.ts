@@ -122,6 +122,7 @@ describe('io-select — syncFormValue: multiple required branch', () => {
     const internals = makeInternals();
     (c as any).internals = internals;
     (c as any).selectedValues = [];
+    (c as any).touched = true;
     (c as any).syncFormValue();
     expect(internals.setValidity).toHaveBeenCalledWith(
       { valueMissing: true },

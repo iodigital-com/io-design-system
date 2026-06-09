@@ -152,6 +152,9 @@ export class IoTextarea {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  /** True after the user has blurred the field at least once — gates eager FACE error display */
+  @State() private touched = false;
+
   @State() private hasLabelSlot = false;
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
@@ -179,6 +182,7 @@ export class IoTextarea {
 
   formResetCallback() {
     this.value = this.defaultValue;
+    this.touched = false;
     this.syncFormValue();
     this.faceInvalid = false;
   }
@@ -217,14 +221,14 @@ export class IoTextarea {
     if (nativeTextarea) {
       if (!nativeTextarea.checkValidity()) {
         this.internals?.setValidity?.(nativeTextarea.validity, nativeTextarea.validationMessage, nativeTextarea);
-        this.faceInvalid = true;
+        this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
-      this.faceInvalid = true;
+      this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
       this.faceInvalid = false;
@@ -272,6 +276,8 @@ export class IoTextarea {
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled || this.loading) return;
+    this.touched = true;
+    this.syncFormValue();
     this.blur.emit(ev);
   };
 

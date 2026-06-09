@@ -118,6 +118,9 @@ export class IoSelect {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  /** True after the user has blurred the field at least once — gates eager FACE error display */
+  @State() private touched = false;
+
   @State() private hasLabelSlot = false;
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
@@ -217,6 +220,7 @@ export class IoSelect {
     } else {
       this.value = this.defaultValue;
     }
+    this.touched = false;
     this.syncFormValue();
     this.faceInvalid = false;
   }
@@ -267,7 +271,7 @@ export class IoSelect {
     }
     if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
-      this.faceInvalid = true;
+      this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
       this.faceInvalid = false;
@@ -448,6 +452,8 @@ export class IoSelect {
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
+    this.touched = true;
+    this.syncFormValue();
     this.blur.emit(ev);
   };
 

@@ -70,11 +70,19 @@ describe('io-pin-code — FACE: syncFormValue', () => {
     expect(internals.setValidity).toHaveBeenCalledWith({});
   });
 
-  it('sets faceInvalid=true when required and incomplete', () => {
+  it('sets faceInvalid=true when required, incomplete, and touched', () => {
+    const component = makeComponent('12', true);
+    (component as any).internals = makeInternals();
+    (component as any).touched = true;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
+  it('keeps faceInvalid=false when required and incomplete but not yet touched', () => {
     const component = makeComponent('12', true);
     (component as any).internals = makeInternals();
     (component as any).syncFormValue();
-    expect((component as any).faceInvalid).toBe(true);
+    expect((component as any).faceInvalid).toBe(false);
   });
 
   it('sets faceInvalid=false when required and complete', () => {
@@ -123,6 +131,15 @@ describe('io-pin-code — FACE: formResetCallback', () => {
 
     (component as any).formResetCallback();
     expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('resets touched to false on reset', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).touched = true;
+
+    (component as any).formResetCallback();
+    expect((component as any).touched).toBe(false);
   });
 
   it('calls setFormValue with null when reset to empty', () => {

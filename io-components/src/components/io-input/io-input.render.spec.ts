@@ -141,6 +141,7 @@ describe('io-input — syncFormValue with native input validity', () => {
     (c as any).el = { shadowRoot: mockShadowRoot };
 
     c.value = '';
+    (c as any).touched = true;
     (c as any).syncFormValue();
 
     expect((c as any).faceInvalid).toBe(true);

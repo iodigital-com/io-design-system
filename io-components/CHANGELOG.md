@@ -1,5 +1,44 @@
 # @iodigital-com/components
 
+## 1.2.0
+
+### Minor Changes
+
+- 3ad0687: feat(hideLabel): add hideLabel prop to IoInput, IoSelect, IoTextarea, IoPinCode, IoMultiSelect, IoButtonGroup
+
+  When `hideLabel={true}` the label area is visually removed and all vertical space it
+  occupied collapses — no gap, no reserved height above the component.
+
+  - **IoInput / IoTextarea / IoSelect / IoButtonGroup**: existing `hideLabel` prop now fully
+    collapses the wrapper `padding-top` via `:host([hide-label])` CSS rules; the `sr-only`
+    label stays in the DOM so `<label for>` association remains intact for screen readers.
+  - **IoPinCode**: new `hideLabel` prop — hides the label `<span>` and sets `aria-label` on
+    the group Host so screen readers still receive an accessible name.
+  - **IoMultiSelect**: new `hideLabel` prop — hides the `<label>` element and switches both
+    the combobox trigger and listbox from `aria-labelledby` to `aria-label` when hidden.
+  - All six components emit a `console.warn` when `hideLabel=true` and no `label` is provided.
+  - Storefront configurators for all six components now expose `hideLabel` as a boolean toggle.
+
+### Patch Changes
+
+- 2002d5a: fix(io-input, io-select, io-textarea, io-pin-code): suppress eager FACE error state before user interaction
+
+  Required fields no longer show error state on mount. `faceInvalid` is now gated behind an internal `touched` flag that is set on the first blur event. Consumers who need immediate validation can still drive error state via the `state="error"` prop. `touched` resets on form reset.
+
+- 1946227: fix(io-button): scale icon size with button size prop
+
+  Icon rendered by `renderIcon()` was hardcoded to `size="sm"` regardless
+  of the button's `size` prop. Adds `ICON_SIZE_MAP` (sm→sm, md→sm, lg→md,
+  xl→lg) so icon-only and regular icon-bearing buttons are visually balanced
+  at all four sizes.
+
+- c97cfd0: fix(io-modal): hide footer divider when footer slot is empty
+
+  `modal__footer` rendered unconditionally, showing a top-border divider over
+  nothing when no `slot="footer"` content was slotted. Adds `@State hasFooterSlot`
+  driven by `slotchange` + `componentDidLoad` init, toggling `.modal__footer--hidden`
+  (display:none) so the footer and its border only appear when content is present.
+
 ## 1.1.0
 
 ### Minor Changes

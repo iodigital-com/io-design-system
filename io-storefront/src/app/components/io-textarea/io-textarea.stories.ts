@@ -246,4 +246,10 @@ export const textareaPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Displays supporting guidance below the textarea.',
   },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
 ];

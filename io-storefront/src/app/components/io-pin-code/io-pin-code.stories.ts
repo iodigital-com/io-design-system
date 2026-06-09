@@ -104,4 +104,10 @@ export const pinCodePropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Disables all digit inputs.',
   },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
 ];

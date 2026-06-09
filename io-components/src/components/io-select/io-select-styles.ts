@@ -71,6 +71,11 @@ export function getSelectStyles(): string {
       border-width: 0;
     }
 
+    /* Collapse the label space entirely when hideLabel=true */
+    :host([hide-label]) .select-wrapper {
+      padding-top: 0;
+    }
+
     /* Native select — appearance reset, underline border */
     .select-field {
       display: block;

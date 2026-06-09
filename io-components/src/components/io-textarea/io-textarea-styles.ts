@@ -74,6 +74,11 @@ export function getTextareaStyles(): string {
       border-width: 0;
     }
 
+    /* Collapse the label space entirely when hideLabel=true */
+    :host([hide-label]) .textarea-wrapper {
+      padding-top: 0;
+    }
+
     .textarea-required {
       color: var(--io-color-error);
     }

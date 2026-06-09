@@ -50,6 +50,11 @@ export function getMultiSelectStyles(): string {
       color: var(--io-color-error);
     }
 
+    /* Collapse the label space entirely when hideLabel=true */
+    :host([hide-label]) .multi-select-wrapper {
+      padding-top: 0;
+    }
+
     /* ── Chips row (selected value chips above the trigger line) ── */
 
     .multi-select-chips {

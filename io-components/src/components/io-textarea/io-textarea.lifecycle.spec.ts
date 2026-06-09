@@ -66,10 +66,11 @@ describe('io-textarea — formResetCallback', () => {
 });
 
 describe('io-textarea — syncFormValue fallback branch (required + no value + no shadow root)', () => {
-  it('sets faceInvalid=true when required=true and value is empty', () => {
+  it('sets faceInvalid=true when required=true and value is empty (touched)', () => {
     const c = makeTextarea();
     c.required = true;
     c.value = undefined;
+    (c as any).touched = true;
     (c as any).syncFormValue();
     expect((c as any).faceInvalid).toBe(true);
   });
@@ -137,7 +138,7 @@ describe('io-textarea — handleInput resize=auto branch', () => {
 });
 
 describe('io-textarea — syncFormValue with native textarea', () => {
-  it('sets faceInvalid=true when nativeTextarea.checkValidity() returns false', () => {
+  it('sets faceInvalid=true when nativeTextarea.checkValidity() returns false (touched)', () => {
     const c = makeTextarea();
     const fakeTextarea = document.createElement('textarea');
     const fakeValidity = { valueMissing: true, valid: false } as ValidityState;
@@ -155,6 +156,7 @@ describe('io-textarea — syncFormValue with native textarea', () => {
       reportValidity: vi.fn().mockReturnValue(true),
     };
     (c as any).internals = internals;
+    (c as any).touched = true;
 
     (c as any).syncFormValue();
 

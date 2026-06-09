@@ -69,6 +69,25 @@ describe('io-select — FACE', () => {
     );
   });
 
+  it('faceInvalid stays false on mount when required and empty (untouched)', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('faceInvalid becomes true after syncFormValue when required, empty, and touched', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    (component as any).touched = true;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
   it('syncFormValue clears validity when required and value present', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
@@ -116,6 +135,35 @@ describe('io-select — FACE', () => {
     expect((component as any).faceInvalid).toBe(true);
   });
 
+  describe('handleBlur touched gate (custom mode)', () => {
+    it('does not set touched when focus moves within shadow root (intra-dropdown)', () => {
+      const dropdownEl = document.createElement('div');
+      const mockShadowRoot = { contains: vi.fn().mockReturnValue(true) };
+      (component as any).el = { shadowRoot: mockShadowRoot };
+      (component as any).blur = { emit: vi.fn() };
+      component.custom = true;
+
+      const ev = new FocusEvent('blur', { relatedTarget: dropdownEl });
+      (component as any).handleBlur(ev);
+
+      expect((component as any).touched).toBe(false);
+    });
+
+    it('sets touched when focus leaves component entirely in custom mode', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      const mockShadowRoot = { contains: vi.fn().mockReturnValue(false) };
+      (component as any).el = { shadowRoot: mockShadowRoot };
+      (component as any).blur = { emit: vi.fn() };
+      component.custom = true;
+
+      const ev = new FocusEvent('blur', { relatedTarget: null });
+      (component as any).handleBlur(ev);
+
+      expect((component as any).touched).toBe(true);
+    });
+  });
+
   it('form prop is undefined by default', () => {
     expect(component.form).toBeUndefined();
   });
@@ -141,6 +189,14 @@ describe('io-select — FACE', () => {
       (component as any).faceInvalid = true;
       component.formResetCallback();
       expect((component as any).faceInvalid).toBe(false);
+    });
+
+    it('resets touched to false on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).touched = true;
+      component.formResetCallback();
+      expect((component as any).touched).toBe(false);
     });
 
     it('calls setFormValue with the reset value (single mode)', () => {

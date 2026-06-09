@@ -70,11 +70,19 @@ describe('io-pin-code — FACE: syncFormValue', () => {
     expect(internals.setValidity).toHaveBeenCalledWith({});
   });
 
-  it('sets faceInvalid=true when required and incomplete', () => {
+  it('sets faceInvalid=true when required, incomplete, and touched', () => {
+    const component = makeComponent('12', true);
+    (component as any).internals = makeInternals();
+    (component as any).touched = true;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
+  it('keeps faceInvalid=false when required and incomplete but not yet touched', () => {
     const component = makeComponent('12', true);
     (component as any).internals = makeInternals();
     (component as any).syncFormValue();
-    expect((component as any).faceInvalid).toBe(true);
+    expect((component as any).faceInvalid).toBe(false);
   });
 
   it('sets faceInvalid=false when required and complete', () => {
@@ -125,6 +133,15 @@ describe('io-pin-code — FACE: formResetCallback', () => {
     expect((component as any).faceInvalid).toBe(false);
   });
 
+  it('resets touched to false on reset', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).touched = true;
+
+    (component as any).formResetCallback();
+    expect((component as any).touched).toBe(false);
+  });
+
   it('calls setFormValue with null when reset to empty', () => {
     const component = makeComponent('');
     const internals = makeInternals();
@@ -132,6 +149,31 @@ describe('io-pin-code — FACE: formResetCallback', () => {
 
     (component as any).formResetCallback();
     expect(internals.setFormValue).toHaveBeenCalledWith(null);
+  });
+});
+
+describe('io-pin-code — FACE: handleBlur touched gate', () => {
+  it('does not set touched when focus moves to another slot input', () => {
+    const component = makeComponent('', true);
+    const slotInput = document.createElement('input');
+    (component as any).inputRefs = [slotInput, null, null, null];
+
+    const ev = new FocusEvent('blur', { relatedTarget: slotInput });
+    (component as any).handleBlur(ev);
+
+    expect((component as any).touched).toBe(false);
+  });
+
+  it('sets touched when focus leaves component entirely (relatedTarget not in inputRefs)', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).inputRefs = [null, null, null, null];
+
+    const outsideEl = document.createElement('button');
+    const ev = new FocusEvent('blur', { relatedTarget: outsideEl });
+    (component as any).handleBlur(ev);
+
+    expect((component as any).touched).toBe(true);
   });
 });
 

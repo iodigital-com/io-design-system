@@ -109,9 +109,10 @@ describe('io-pin-code — onRequiredChange (@Watch required)', () => {
     );
   });
 
-  it('sets faceInvalid=true when required+incomplete on onRequiredChange', () => {
+  it('sets faceInvalid=true when required+incomplete on onRequiredChange (touched)', () => {
     const c = makeComponent({ value: '12', required: true });
     (c as any).internals = makeInternals();
+    (c as any).touched = true;
 
     (c as any).onRequiredChange();
 
@@ -548,10 +549,11 @@ describe('io-pin-code — reportValidity', () => {
 // ── syncFormValue branches ─────────────────────────────────────────────────
 
 describe('io-pin-code — syncFormValue: required+incomplete → faceInvalid', () => {
-  it('sets faceInvalid=true when required and PIN is incomplete', () => {
+  it('sets faceInvalid=true when required and PIN is incomplete (touched)', () => {
     const c = makeComponent({ value: '12', required: true });
     const internals = makeInternals();
     (c as any).internals = internals;
+    (c as any).touched = true;
 
     (c as any).syncFormValue();
 

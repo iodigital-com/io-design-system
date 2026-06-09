@@ -44,6 +44,25 @@ describe('io-textarea — FACE', () => {
     );
   });
 
+  it('faceInvalid stays false on mount when required and empty (untouched)', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
+  it('faceInvalid becomes true after syncFormValue when required, empty, and touched', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    (component as any).touched = true;
+    (component as any).syncFormValue();
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
   it('syncFormValue clears validity when value is present', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
@@ -140,6 +159,14 @@ describe('io-textarea — FACE', () => {
       (component as any).faceInvalid = true;
       component.formResetCallback();
       expect((component as any).faceInvalid).toBe(false);
+    });
+
+    it('resets touched to false on reset', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).touched = true;
+      component.formResetCallback();
+      expect((component as any).touched).toBe(false);
     });
 
     it('calls setFormValue with the reset value', () => {

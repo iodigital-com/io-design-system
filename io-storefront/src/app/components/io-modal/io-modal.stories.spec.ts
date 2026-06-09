@@ -4,6 +4,7 @@ import {
   modalStoryDefault,
   modalStorySm,
   modalStoryLg,
+  modalStoryNoFooter,
   modalStoryNoHeading,
   modalPropDefinitions,
 } from './io-modal.stories';
@@ -178,6 +179,27 @@ describe('io-modal storefront stories', () => {
 
     it('does not throw', () => {
       expect(() => modalStoryLg.generator?.()).not.toThrow();
+    });
+  });
+
+  describe('modalStoryNoFooter (named story)', () => {
+    it('generator with no args returns non-empty array', () => {
+      const els = modalStoryNoFooter.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = modalStoryNoFooter.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('does not throw', () => {
+      expect(() => modalStoryNoFooter.generator?.()).not.toThrow();
     });
   });
 

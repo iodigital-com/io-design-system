@@ -133,6 +133,10 @@ export function getModalStyles(): string {
       flex-shrink: 0;
     }
 
+    .modal__footer--hidden {
+      display: none;
+    }
+
     @keyframes io-modal-in {
       from {
         opacity: 0;

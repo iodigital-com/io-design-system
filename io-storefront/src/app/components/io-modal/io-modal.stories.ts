@@ -179,6 +179,30 @@ export const modalStoryLg: Story<'io-modal'> = {
   },
 };
 
+/** No footer — body-only modal, footer divider hidden. */
+export const modalStoryNoFooter: Story<'io-modal'> = {
+  state: { properties: { open: false } },
+  generator: ({ properties } = {}) => {
+    const open = (properties ?? {})['open'] ?? false;
+    return [
+      {
+        tag: 'io-button' as const,
+        properties: { variant: 'solid' },
+        children: ['Open modal'],
+        events: { onClick: { target: 'io-modal', prop: 'open', value: true } },
+      },
+      {
+        tag: 'io-modal' as const,
+        properties: { open, heading: 'Information' },
+        children: [
+          { tag: 'p' as const, children: ['No footer actions are needed for this modal. The footer divider is hidden automatically when no footer slot content is provided.'] },
+        ],
+        events: { onDismiss: { target: 'io-modal', prop: 'open', value: false } },
+      },
+    ] as (string | ElementConfig<HTMLTagOrComponent> | undefined)[];
+  },
+};
+
 /** Custom header slot — overrides the heading prop. */
 export const modalStoryNoHeading: Story<'io-modal'> = {
   state: { properties: { open: false } },

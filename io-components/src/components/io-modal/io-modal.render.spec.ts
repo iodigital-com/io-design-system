@@ -118,3 +118,46 @@ describe('io-modal render() — branch coverage', () => {
     expect(dialogCall![1]['aria-describedby']).toBeUndefined();
   });
 });
+
+// ── footer slot class toggle ──────────────────────────────────────────────────
+
+describe('io-modal render() — footer slot visibility', () => {
+  it('footer div has modal__footer--hidden class when hasFooterSlot is false', () => {
+    const c = makeModal();
+    const calls = renderCalls(c);
+
+    const footerCall = calls.find(
+      ([tag, props]) => tag === 'div' && typeof props?.class === 'string' && (props.class as string).includes('modal__footer')
+    );
+    expect(footerCall).toBeDefined();
+    expect(footerCall![1].class).toContain('modal__footer--hidden');
+  });
+
+  it('footer div lacks modal__footer--hidden class when hasFooterSlot is true', () => {
+    const c = makeModal();
+    (c as any).hasFooterSlot = true;
+    const calls = renderCalls(c);
+
+    const footerCall = calls.find(
+      ([tag, props]) => tag === 'div' && typeof props?.class === 'string' && (props.class as string).includes('modal__footer')
+    );
+    expect(footerCall).toBeDefined();
+    expect(footerCall![1].class).not.toContain('modal__footer--hidden');
+  });
+
+  it('handleFooterSlotChange sets hasFooterSlot true when footer child present', () => {
+    const c = makeModal();
+    const child = document.createElement('button');
+    child.setAttribute('slot', 'footer');
+    (c as any).el.appendChild(child);
+    (c as any).handleFooterSlotChange();
+    expect((c as any).hasFooterSlot).toBe(true);
+  });
+
+  it('handleFooterSlotChange sets hasFooterSlot false when no footer children', () => {
+    const c = makeModal();
+    (c as any).hasFooterSlot = true;
+    (c as any).handleFooterSlotChange();
+    expect((c as any).hasFooterSlot).toBe(false);
+  });
+});

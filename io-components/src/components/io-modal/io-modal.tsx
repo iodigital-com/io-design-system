@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Method, Element, Host, State, Watch, h } from '@stencil/core';
 
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
@@ -32,6 +32,10 @@ import type { IoModalBackground, IoModalSize } from './types';
 })
 export class IoModal {
   @Element() el!: HTMLElement;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  @State() private hasFooterSlot = false;
 
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
@@ -150,6 +154,9 @@ export class IoModal {
 
   componentWillLoad() {
     this.headingId = createModalHeadingId(Math.random().toString(36).slice(2));
+    this.hasFooterSlot = Array.from(this.el?.children ?? []).some(
+      c => c.getAttribute('slot') === 'footer',
+    );
   }
 
   componentDidLoad() {
@@ -407,6 +414,12 @@ export class IoModal {
     this.open = false;
   };
 
+  private handleFooterSlotChange = () => {
+    this.hasFooterSlot = Array.from(this.el.children).some(
+      c => c.getAttribute('slot') === 'footer',
+    );
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   /**
@@ -451,8 +464,8 @@ export class IoModal {
         <div class="modal__body" id={descriptionId}>
           <slot />
         </div>
-        <div class="modal__footer">
-          <slot name="footer" />
+        <div class={`modal__footer${this.hasFooterSlot ? '' : ' modal__footer--hidden'}`}>
+          <slot name="footer" onSlotchange={this.handleFooterSlotChange} />
         </div>
       </dialog>
     );

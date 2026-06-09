@@ -1189,6 +1189,11 @@ export namespace Components {
          */
         "filter": boolean;
         /**
+          * Hides the visible label and collapses its space; aria-label is set on the trigger/listbox when a label value is provided
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -1364,6 +1369,11 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+        /**
+          * Hides the visible label and collapses its space; aria-label is set on the group when a label value is provided
+          * @default false
+         */
+        "hideLabel": boolean;
         /**
           * Accessible label displayed above the PIN slots
          */
@@ -4998,6 +5008,11 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * Hides the visible label and collapses its space; aria-label is set on the trigger/listbox when a label value is provided
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -5177,6 +5192,11 @@ declare namespace LocalJSX {
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
+        /**
+          * Hides the visible label and collapses its space; aria-label is set on the group when a label value is provided
+          * @default false
+         */
+        "hideLabel"?: boolean;
         /**
           * Accessible label displayed above the PIN slots
          */
@@ -6483,6 +6503,7 @@ declare namespace LocalJSX {
     }
     interface IoMultiSelectAttributes {
         "label": string;
+        "hideLabel": boolean;
         "name": string;
         "placeholder": string;
         "required": boolean;
@@ -6516,6 +6537,7 @@ declare namespace LocalJSX {
     }
     interface IoPinCodeAttributes {
         "label": string | undefined;
+        "hideLabel": boolean;
         "length": IoPinCodeLength;
         "type": IoPinCodeType;
         "value": string;

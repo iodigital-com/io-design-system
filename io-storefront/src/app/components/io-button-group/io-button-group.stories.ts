@@ -233,4 +233,10 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Reduces height and padding for compact contexts like toolbars.',
   },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
 ];

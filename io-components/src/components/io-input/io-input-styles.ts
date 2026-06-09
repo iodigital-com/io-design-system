@@ -97,6 +97,11 @@ export function getInputStyles(): string {
       border-width: 0;
     }
 
+    /* Collapse the label space entirely when hideLabel=true */
+    :host([hide-label]) .input-wrapper {
+      padding-top: 0;
+    }
+
     .input-required {
       color: var(--io-color-error);
     }

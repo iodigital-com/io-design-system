@@ -66,6 +66,9 @@ export class IoMultiSelect {
   /** Label text — required for accessibility */
   @Prop() label!: string;
 
+  /** Hides the visible label and collapses its space; aria-label is set on the trigger/listbox when a label value is provided */
+  @Prop({ reflect: true }) hideLabel = false;
+
   /** HTML name attribute (required for form submission) */
   @Prop() name!: string;
 
@@ -178,6 +181,9 @@ export class IoMultiSelect {
     this.fieldId = resolveMultiSelectId(this.name, this.fallbackId);
     this.defaultValue = [...(this.value ?? [])];
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-multi-select] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   componentDidLoad() {
@@ -541,6 +547,7 @@ export class IoMultiSelect {
       activeIndex,
       filterQuery,
       faceInvalid,
+      hideLabel,
     } = this;
 
     const showError = state === 'error' || faceInvalid;
@@ -588,15 +595,17 @@ export class IoMultiSelect {
         }} />
 
         <div class={wrapperClass}>
-          {/* Label */}
-          <label id={labelId} class="multi-select-label">
-            {label}
-            {required && (
-              <span class="multi-select-required" aria-hidden="true">
-                {' *'}
-              </span>
-            )}
-          </label>
+          {/* Label — hidden via conditional render when hideLabel=true */}
+          {!hideLabel && (
+            <label id={labelId} class="multi-select-label">
+              {label}
+              {required && (
+                <span class="multi-select-required" aria-hidden="true">
+                  {' *'}
+                </span>
+              )}
+            </label>
+          )}
 
           {/* Selected chips */}
           {selectedValues.length > 0 && (
@@ -649,7 +658,8 @@ export class IoMultiSelect {
             role="combobox"
             aria-haspopup="listbox"
             aria-expanded={String(isOpen)}
-            aria-labelledby={labelId}
+            aria-labelledby={hideLabel ? undefined : labelId}
+            aria-label={hideLabel ? label : undefined}
             aria-controls={listboxId}
             aria-activedescendant={activeOptId}
             aria-required={required ? 'true' : undefined}
@@ -709,7 +719,8 @@ export class IoMultiSelect {
             <ul
               id={listboxId}
               role="listbox"
-              aria-labelledby={labelId}
+              aria-labelledby={hideLabel ? undefined : labelId}
+              aria-label={hideLabel ? label : undefined}
               aria-multiselectable="true"
               class="multi-select-listbox"
             >

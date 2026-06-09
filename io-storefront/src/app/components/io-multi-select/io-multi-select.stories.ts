@@ -180,4 +180,10 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
     defaultValue: 3,
     description: 'Max number of selected chips shown before a "+N more" overflow indicator.',
   },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
 ];

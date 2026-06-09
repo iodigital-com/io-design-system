@@ -50,6 +50,9 @@ export class IoPinCode {
   /** Accessible label displayed above the PIN slots */
   @Prop() label: string | undefined;
 
+  /** Hides the visible label and collapses its space; aria-label is set on the group when a label value is provided */
+  @Prop({ reflect: true }) hideLabel = false;
+
   /** Number of digit slots */
   @Prop() length: IoPinCodeLength = 4;
 
@@ -115,6 +118,9 @@ export class IoPinCode {
     );
     this.inputRefs = new Array(this.length).fill(null);
     this.syncFormValue();
+    if (this.hideLabel && !this.label) {
+      console.warn('[io-pin-code] hideLabel=true requires a non-empty label for accessibility.');
+    }
   }
 
   formResetCallback() {
@@ -324,21 +330,24 @@ export class IoPinCode {
   }
 
   render() {
-    const { label, type, disabled, required, message, length } = this;
+    const { label, type, disabled, required, message, length, hideLabel } = this;
     const isError = this.state === 'error' || this.faceInvalid;
 
-    const ariaLabelledBy = label ? this.labelId : undefined;
+    const showLabel = !hideLabel && !!label;
+    const ariaLabelledBy = showLabel ? this.labelId : undefined;
+    const ariaLabel = hideLabel && label ? label : undefined;
     const ariaDescribedBy = message ? this.messageId : undefined;
 
     return (
       <Host
         role="group"
         aria-labelledby={ariaLabelledBy}
+        aria-label={ariaLabel}
         aria-disabled={disabled ? 'true' : undefined}
       >
         <style>{getPinCodeStyles()}</style>
 
-        {label && (
+        {showLabel && (
           <span id={this.labelId} class="pin-code__label" aria-hidden="true">
             {label}
             {required && (

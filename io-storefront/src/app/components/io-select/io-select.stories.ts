@@ -221,4 +221,10 @@ export const selectPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Displays supporting guidance below the select.',
   },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
 ];

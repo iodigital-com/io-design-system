@@ -1,5 +1,5 @@
 ---
-'@io-digital/components': patch
+'@iodigital-com/components': patch
 ---
 
 fix(io-input, io-select, io-textarea, io-pin-code): suppress eager FACE error state before user interaction

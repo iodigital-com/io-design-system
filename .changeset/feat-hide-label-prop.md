@@ -1,5 +1,5 @@
 ---
-'@io-digital/components': minor
+'@iodigital-com/components': minor
 ---
 
 feat(hideLabel): add hideLabel prop to IoInput, IoSelect, IoTextarea, IoPinCode, IoMultiSelect, IoButtonGroup

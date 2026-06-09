@@ -1,5 +1,5 @@
 ---
-'@io-digital/components': patch
+'@iodigital-com/components': patch
 ---
 
 fix(io-modal): hide footer divider when footer slot is empty

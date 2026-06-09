@@ -1,5 +1,5 @@
 ---
-'@io-digital/components': patch
+'@iodigital-com/components': patch
 ---
 
 fix(io-button): scale icon size with button size prop

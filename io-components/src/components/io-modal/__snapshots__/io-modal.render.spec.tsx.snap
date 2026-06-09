@@ -21,7 +21,7 @@ exports[`io-modal — render snapshots > renders default state 1`] = `
         <div class="modal__body">
           <slot></slot>
         </div>
-        <div class="modal__footer">
+        <div class="modal__footer modal__footer--hidden">
           <slot name="footer"></slot>
         </div>
       </dialog>
@@ -72,7 +72,7 @@ MockHTMLElement {
         <div class="modal__body">
           <slot></slot>
         </div>
-        <div class="modal__footer">
+        <div class="modal__footer modal__footer--hidden">
           <slot name="footer"></slot>
         </div>
       </dialog>
@@ -100,7 +100,7 @@ MockHTMLElement {
         <div class="modal__body">
           <slot></slot>
         </div>
-        <div class="modal__footer">
+        <div class="modal__footer modal__footer--hidden">
           <slot name="footer"></slot>
         </div>
       </dialog>
@@ -128,7 +128,7 @@ MockHTMLElement {
         <div class="modal__body">
           <slot></slot>
         </div>
-        <div class="modal__footer">
+        <div class="modal__footer modal__footer--hidden">
           <slot name="footer"></slot>
         </div>
       </dialog>
@@ -1364,7 +1364,7 @@ exports[`io-modal — render snapshots > renders without footer when no footer s
         <div class="modal__body">
           <slot></slot>
         </div>
-        <div class="modal__footer">
+        <div class="modal__footer modal__footer--hidden">
           <slot name="footer"></slot>
         </div>
       </dialog>

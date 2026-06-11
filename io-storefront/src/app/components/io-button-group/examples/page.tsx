@@ -10,6 +10,7 @@ import {
   buttonGroupStoryDirectionRow,
   buttonGroupStoryDirectionColumn,
   buttonGroupStoryCompact,
+  buttonGroupStoryWithIcons,
 } from '../io-button-group.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -175,6 +176,16 @@ export default function IoButtonGroupExamplesPage() {
           toolbars, data-table headers, or sidebars where vertical space is constrained.
         </p>
         <ComponentStory story={buttonGroupStoryCompact} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="With icons" />
+        <p className="text-sm mb-4" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
+          Pass <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>icon=&quot;...&quot;</code>{' '}
+          on each child <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-button</code>{' '}
+          to render a Lucide icon before the label. Icon names match those available on the io-icon examples page.
+        </p>
+        <ComponentStory story={buttonGroupStoryWithIcons} />
       </section>
     </div>
   );

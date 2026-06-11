@@ -1,3 +1,5 @@
+import type { IoIconName } from '../../utils/icons';
+
 /**
  * Visual variant controlling the active-state color scheme.
  * - `primary` — active button uses the brand primary color (blue fill, white text). Use for navigation and primary selection controls.
@@ -25,6 +27,8 @@ export interface IoButtonGroupItem {
   ariaLabel?: string;
   /** When true, this individual item cannot be interacted with. */
   disabled?: boolean;
+  /** Name of a Lucide icon rendered before the label. */
+  icon?: IoIconName;
 }
 
 /** Detail emitted by the `change` event. */

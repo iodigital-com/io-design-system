@@ -190,6 +190,21 @@ export const buttonGroupStoryCompact: Story<'io-button-group'> = {
   ],
 };
 
+export const buttonGroupStoryWithIcons: Story<'io-button-group'> = {
+  state: { properties: { type: 'single', value: 'calendar', label: 'View mode' } },
+  generator: () => [
+    {
+      tag: 'io-button-group' as const,
+      properties: { type: 'single', value: 'calendar', label: 'View mode' },
+      children: [
+        { tag: 'io-button' as const, properties: { value: 'calendar', icon: 'calendar' }, children: ['Calendar'] },
+        { tag: 'io-button' as const, properties: { value: 'table', icon: 'table' }, children: ['Table'] },
+        { tag: 'io-button' as const, properties: { value: 'chart', icon: 'bar-chart-2' }, children: ['Chart'] },
+      ],
+    },
+  ],
+};
+
 export const buttonGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'type',

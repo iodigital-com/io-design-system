@@ -1,3 +1,4 @@
+import type { IoIconName } from '../../utils/icons';
 import type { IoButtonGroupItem } from './types';
 
 /**
@@ -28,8 +29,9 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
       const disabled =
         typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
       const label = el.textContent?.trim() ?? '';
+      const icon = (el.getAttribute('icon') ?? undefined) as IoIconName | undefined;
       const ariaLabel = el.getAttribute('aria-label') ?? undefined;
-      return { value, label, ariaLabel, disabled };
+      return { value, label, ariaLabel, disabled, icon };
     })
     .filter(item => item.value !== '');
 }

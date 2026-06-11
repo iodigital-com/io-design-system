@@ -450,7 +450,7 @@ export namespace Components {
         "required": boolean;
         /**
           * Selection mode for the button group. - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`. - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
-          * @default 'multiple'
+          * @default 'single'
          */
         "type": IoButtonGroupType;
         /**
@@ -4266,7 +4266,7 @@ declare namespace LocalJSX {
         "required"?: boolean;
         /**
           * Selection mode for the button group. - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`. - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
-          * @default 'multiple'
+          * @default 'single'
          */
         "type"?: IoButtonGroupType;
         /**

@@ -21,8 +21,8 @@ describe('io-button-group — default props', () => {
     comp = makeComponent();
   });
 
-  it('type defaults to "multiple"', () => {
-    expect(comp.type).toBe('multiple');
+  it('type defaults to "single"', () => {
+    expect(comp.type).toBe('single');
   });
 
   it('value defaults to empty string', () => {

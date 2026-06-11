@@ -199,7 +199,7 @@ export const buttonGroupStoryWithIcons: Story<'io-button-group'> = {
       children: [
         { tag: 'io-button' as const, properties: { value: 'calendar', icon: 'calendar' }, children: ['Calendar'] },
         { tag: 'io-button' as const, properties: { value: 'table', icon: 'table' }, children: ['Table'] },
-        { tag: 'io-button' as const, properties: { value: 'chart', icon: 'bar-chart-2' }, children: ['Chart'] },
+        { tag: 'io-button' as const, properties: { value: 'chart', icon: 'chart-bar' }, children: ['Chart'] },
       ],
     },
   ],

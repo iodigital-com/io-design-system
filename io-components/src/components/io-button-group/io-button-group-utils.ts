@@ -21,7 +21,7 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
   );
   return elements
     .map(el => {
-      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown };
+      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown; icon?: unknown };
       const value =
         (typeof elAny.value === 'string' && elAny.value !== ''
           ? elAny.value
@@ -29,7 +29,13 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
       const disabled =
         typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
       const label = el.textContent?.trim() ?? '';
-      const icon = (el.getAttribute('icon') ?? undefined) as IoIconName | undefined;
+      // Read icon from JS property first (io-button does not reflect icon to an attribute),
+      // then fall back to the HTML attribute. Treat empty string as absent.
+      const iconRaw =
+        typeof elAny.icon === 'string' && elAny.icon !== ''
+          ? elAny.icon
+          : el.getAttribute('icon') || undefined;
+      const icon = (iconRaw || undefined) as IoIconName | undefined;
       const ariaLabel = el.getAttribute('aria-label') ?? undefined;
       return { value, label, ariaLabel, disabled, icon };
     })

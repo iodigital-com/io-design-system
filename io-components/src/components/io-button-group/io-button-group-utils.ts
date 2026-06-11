@@ -39,8 +39,10 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
       const icon = (iconRaw || undefined) as IoIconName | undefined;
       // aria-label > io-button label prop (not reflected) > label attribute fallback
       const labelProp =
-        typeof elAny.label === 'string' && elAny.label !== '' ? elAny.label : undefined;
-      const ariaLabel = el.getAttribute('aria-label') ?? labelProp ?? el.getAttribute('label') ?? undefined;
+        typeof elAny.label === 'string' ? elAny.label.trim() || undefined : undefined;
+      const ariaLabelAttr = (el.getAttribute('aria-label') ?? '').trim() || undefined;
+      const labelAttr = (el.getAttribute('label') ?? '').trim() || undefined;
+      const ariaLabel = ariaLabelAttr ?? labelProp ?? labelAttr;
       return { value, label, ariaLabel, disabled, icon };
     })
     .filter(item => item.value !== '');

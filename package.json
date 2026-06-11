@@ -91,6 +91,7 @@
     "commit-msg": "npx commitlint --edit $1"
   },
   "overrides": {
-    "tmp": "^0.2.6"
+    "tmp": "^0.2.6",
+    "shell-quote": "^1.8.4"
   }
 }

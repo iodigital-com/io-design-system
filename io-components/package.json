@@ -84,7 +84,7 @@
     "@stencil/vue-output-target": "^0.13.2",
     "@vitest/coverage-v8": "^4.1.0",
     "axe-core": "^4.11.4",
-    "concurrently": "^9.2.1",
+    "concurrently": "^10.0.3",
     "jsdom": "^29.0.0",
     "type-coverage": "^2.29.7",
     "typescript": "^5.7.2",

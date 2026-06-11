@@ -21,7 +21,7 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
   );
   return elements
     .map(el => {
-      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown; icon?: unknown };
+      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown; icon?: unknown; label?: unknown };
       const value =
         (typeof elAny.value === 'string' && elAny.value !== ''
           ? elAny.value
@@ -36,7 +36,10 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
           ? elAny.icon
           : el.getAttribute('icon') || undefined;
       const icon = (iconRaw || undefined) as IoIconName | undefined;
-      const ariaLabel = el.getAttribute('aria-label') ?? undefined;
+      // aria-label > io-button label prop (not reflected) > label attribute fallback
+      const labelProp =
+        typeof elAny.label === 'string' && elAny.label !== '' ? elAny.label : undefined;
+      const ariaLabel = el.getAttribute('aria-label') ?? labelProp ?? el.getAttribute('label') ?? undefined;
       return { value, label, ariaLabel, disabled, icon };
     })
     .filter(item => item.value !== '');

@@ -111,6 +111,54 @@ describe('io-button-group — icon parsing in parseButtonGroupItems', () => {
   });
 });
 
+describe('io-button-group — ariaLabel parsing in parseButtonGroupItems', () => {
+  it('reads ariaLabel from aria-label attribute', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button');
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('aria-label', 'Calendar view');
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('Calendar view');
+  });
+
+  it('falls back to label JS property when aria-label attribute is absent (icon-only pattern)', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button') as HTMLElement & { value?: string; label?: string };
+    btn.setAttribute('value', 'cal');
+    btn.label = 'Calendar view';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('Calendar view');
+  });
+
+  it('aria-label attribute takes precedence over label prop', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button') as HTMLElement & { value?: string; label?: string };
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('aria-label', 'ARIA wins');
+    btn.label = 'Label prop loses';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('ARIA wins');
+  });
+});
+
 describe('io-button-group — componentDidLoad parsing', () => {
   it('populates items from io-button children', () => {
     const host = document.createElement('io-button-group');

@@ -291,7 +291,7 @@ export class IoButtonGroup {
                   else this.buttonRefs.delete(index);
                 }}
               >
-                {item.icon && <io-icon name={item.icon} size="sm" aria-hidden="true" />}
+                {item.icon && <io-icon name={item.icon} size={this.compact ? 'xs' : 'sm'} aria-hidden="true" />}
                 {item.label}
               </button>
             );

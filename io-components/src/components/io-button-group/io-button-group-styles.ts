@@ -11,6 +11,7 @@ export function getButtonGroupStyles(): string {
   return `
     :host {
       display: inline-flex;
+      flex-direction: column;
       font-family: var(--io-font-primary);
     }
 

@@ -246,7 +246,7 @@ export class IoButtonGroup {
     const labelId = label ? 'io-button-group-label' : undefined;
 
     return (
-      <Host style={label ? { display: 'flex', flexDirection: 'column' } : undefined}>
+      <Host>
         <style>{getButtonGroupStyles()}</style>
         {/*
           Hidden slot — only used so Stencil does not warn about unrendered

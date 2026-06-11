@@ -1,6 +1,6 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
-import { IO_ICON_NAMES } from '@/app/components/io-icon/io-icon.stories';
+import { IO_ICON_NAMES } from '@/app/components/io-icon/icon-names';
 
 /**
  * Main configurator story for io-button.

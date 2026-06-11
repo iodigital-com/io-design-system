@@ -21,8 +21,8 @@ describe('io-button-group — default props', () => {
     comp = makeComponent();
   });
 
-  it('type defaults to "multiple"', () => {
-    expect(comp.type).toBe('multiple');
+  it('type defaults to "single"', () => {
+    expect(comp.type).toBe('single');
   });
 
   it('value defaults to empty string', () => {
@@ -43,6 +43,119 @@ describe('io-button-group — default props', () => {
 
   it('focusIndex state starts at 0', () => {
     expect((comp as any).focusIndex).toBe(0);
+  });
+});
+
+describe('io-button-group — icon parsing in parseButtonGroupItems', () => {
+  it('reads icon from HTML attribute', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button');
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('icon', 'calendar');
+    btn.textContent = 'Calendar';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].icon).toBe('calendar');
+  });
+
+  it('reads icon from JS property (no reflect — attribute absent)', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button') as HTMLElement & { value?: string; icon?: string };
+    btn.value = 'cal';
+    btn.icon = 'calendar';
+    btn.textContent = 'Calendar';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].icon).toBe('calendar');
+  });
+
+  it('treats empty icon attribute as undefined', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button');
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('icon', '');
+    btn.textContent = 'Calendar';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].icon).toBeUndefined();
+  });
+
+  it('icon is undefined when neither attribute nor property is set', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button');
+    btn.setAttribute('value', 'cal');
+    btn.textContent = 'Calendar';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].icon).toBeUndefined();
+  });
+});
+
+describe('io-button-group — ariaLabel parsing in parseButtonGroupItems', () => {
+  it('reads ariaLabel from aria-label attribute', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button');
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('aria-label', 'Calendar view');
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('Calendar view');
+  });
+
+  it('falls back to label JS property when aria-label attribute is absent (icon-only pattern)', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button') as HTMLElement & { value?: string; label?: string };
+    btn.setAttribute('value', 'cal');
+    btn.label = 'Calendar view';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('Calendar view');
+  });
+
+  it('aria-label attribute takes precedence over label prop', () => {
+    const host = document.createElement('io-button-group');
+    const btn = document.createElement('io-button') as HTMLElement & { value?: string; label?: string };
+    btn.setAttribute('value', 'cal');
+    btn.setAttribute('aria-label', 'ARIA wins');
+    btn.label = 'Label prop loses';
+    host.appendChild(btn);
+
+    const comp = new IoButtonGroup();
+    (comp as any).el = host;
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentDidLoad();
+
+    expect((comp as any).items[0].ariaLabel).toBe('ARIA wins');
   });
 });
 
@@ -487,6 +600,54 @@ describe('io-button-group — size prop removed', () => {
   it('component does not have an onSizeChange method', () => {
     const comp = makeComponent();
     expect(typeof (comp as any).onSizeChange).not.toBe('function');
+  });
+});
+
+// ── Icon rendering ────────────────────────────────────────────────────────────
+
+describe('io-button-group render — icon support', () => {
+  const ICON_ITEMS: IoButtonGroupItem[] = [
+    { value: 'a', label: 'Alpha', icon: 'calendar' as IoButtonGroupItem['icon'] },
+    { value: 'b', label: 'Beta' },
+  ];
+
+  it('renders io-icon when item.icon is set', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    (comp as any).items = [...ICON_ITEMS];
+    vi.mocked(h).mockClear();
+    comp.render();
+
+    const iconCalls = vi.mocked(h).mock.calls.filter((args) => args[0] === 'io-icon');
+    expect(iconCalls.length).toBeGreaterThan(0);
+  });
+
+  it('io-icon gets aria-hidden="true"', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    (comp as any).items = [...ICON_ITEMS];
+    vi.mocked(h).mockClear();
+    comp.render();
+
+    const iconProps = vi
+      .mocked(h)
+      .mock.calls.filter((args) => args[0] === 'io-icon')
+      .map((args) => args[1] as Record<string, unknown>);
+    expect(iconProps.every((p) => p?.['aria-hidden'] === 'true')).toBe(true);
+  });
+
+  it('does not render io-icon when item.icon is absent', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    (comp as any).items = [{ value: 'a', label: 'Alpha' }];
+    vi.mocked(h).mockClear();
+    comp.render();
+
+    const iconCalls = vi.mocked(h).mock.calls.filter((args) => args[0] === 'io-icon');
+    expect(iconCalls.length).toBe(0);
   });
 });
 

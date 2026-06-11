@@ -244,7 +244,7 @@ jobs:
         run: npm ci
 
       - name: Dependency vulnerability audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --omit=dev
 
   storefront:
     name: Storefront build

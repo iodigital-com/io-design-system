@@ -460,7 +460,7 @@
   --io-button-group-font-size-lg:      var(--io-font-size-lg);
   --io-button-group-min-height-compact:   24.8px; /* 4px padding-y × 2 + 16.8px line-height */
   --io-button-group-padding-y-compact:    4px;
-  --io-button-group-padding-x-compact:    6px;
+  --io-button-group-padding-x-compact:    var(--io-space-3);
   --io-button-group-font-size-compact:    var(--io-font-size-xs);
   --io-button-group-gap-compact:          1px;
   --io-button-group-pill-padding-compact: 2px;

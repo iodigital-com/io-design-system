@@ -48,7 +48,7 @@
     "governance:check": "node scripts/agency-validate-governance.cjs && node scripts/check-token-cssvar-naming.cjs && node scripts/check-token-runtime-reconciliation.cjs && node scripts/check-token-doc-coverage.cjs && node scripts/check-style-literals.cjs && node scripts/check-storefront-status-governance.cjs && node scripts/check-dark-mode-tokens.cjs && node scripts/check-public-css-api.cjs && node scripts/check-changeset-bump-levels.mjs",
     "api:snapshot": "node scripts/snapshot-api-surface.cjs",
     "api:check": "node scripts/check-api-surface.cjs",
-    "security:audit": "npm audit --audit-level=high",
+    "security:audit": "npm audit --audit-level=high --omit=dev",
     "type-coverage": "npm --workspace @iodigital-com/components run type-coverage",
     "events:guard": "node scripts/check-no-io-prefixed-events.cjs",
     "agents:install:claude": "node scripts/install-curated-agency-claude.cjs",

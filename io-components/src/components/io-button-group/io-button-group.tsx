@@ -34,9 +34,9 @@ export class IoButtonGroup {
    * Selection mode for the button group.
    * - `'single'` — single-select (radiogroup): container gets `role="radiogroup"`, items get `role="radio"`.
    * - `'multiple'` — multi-select (checkbox group): container gets `role="group"`, items get `role="checkbox"`.
-   * @default 'multiple'
+   * @default 'single'
    */
-  @Prop({ reflect: true }) type: IoButtonGroupType = 'multiple';
+  @Prop({ reflect: true }) type: IoButtonGroupType = 'single';
 
   /**
    * Currently selected value(s).
@@ -246,7 +246,7 @@ export class IoButtonGroup {
     const labelId = label ? 'io-button-group-label' : undefined;
 
     return (
-      <Host style={label ? { display: 'flex', flexDirection: 'column' } : undefined}>
+      <Host>
         <style>{getButtonGroupStyles()}</style>
         {/*
           Hidden slot — only used so Stencil does not warn about unrendered
@@ -291,6 +291,7 @@ export class IoButtonGroup {
                   else this.buttonRefs.delete(index);
                 }}
               >
+                {item.icon && <io-icon name={item.icon} size="sm" aria-hidden="true" />}
                 {item.label}
               </button>
             );

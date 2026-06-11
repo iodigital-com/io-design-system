@@ -1,3 +1,4 @@
+import type { IoIconName } from '../../utils/icons';
 import type { IoButtonGroupItem } from './types';
 
 /**
@@ -20,7 +21,7 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
   );
   return elements
     .map(el => {
-      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown };
+      const elAny = el as HTMLElement & { value?: unknown; disabled?: unknown; icon?: unknown; label?: unknown };
       const value =
         (typeof elAny.value === 'string' && elAny.value !== ''
           ? elAny.value
@@ -28,8 +29,21 @@ export function parseButtonGroupItems(hostEl: HTMLElement): IoButtonGroupItem[] 
       const disabled =
         typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
       const label = el.textContent?.trim() ?? '';
-      const ariaLabel = el.getAttribute('aria-label') ?? undefined;
-      return { value, label, ariaLabel, disabled };
+      // Read icon from JS property first (io-button does not reflect icon to an attribute),
+      // then fall back to the HTML attribute. Trim and treat empty string as absent so that
+      // storefront sentinel values like '' and whitespace-only strings never reach io-icon.
+      const iconRaw =
+        typeof elAny.icon === 'string' && elAny.icon !== ''
+          ? elAny.icon.trim()
+          : (el.getAttribute('icon') ?? '').trim() || undefined;
+      const icon = (iconRaw || undefined) as IoIconName | undefined;
+      // aria-label > io-button label prop (not reflected) > label attribute fallback
+      const labelProp =
+        typeof elAny.label === 'string' ? elAny.label.trim() || undefined : undefined;
+      const ariaLabelAttr = (el.getAttribute('aria-label') ?? '').trim() || undefined;
+      const labelAttr = (el.getAttribute('label') ?? '').trim() || undefined;
+      const ariaLabel = ariaLabelAttr ?? labelProp ?? labelAttr;
+      return { value, label, ariaLabel, disabled, icon };
     })
     .filter(item => item.value !== '');
 }

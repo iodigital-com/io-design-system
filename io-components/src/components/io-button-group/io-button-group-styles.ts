@@ -11,6 +11,7 @@ export function getButtonGroupStyles(): string {
   return `
     :host {
       display: inline-flex;
+      flex-direction: column;
       font-family: var(--io-font-primary);
     }
 
@@ -84,6 +85,7 @@ export function getButtonGroupStyles(): string {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: var(--io-space-1);
       min-height: var(--io-button-group-min-height);
       padding: var(--io-button-group-padding-y) var(--io-button-group-padding-x);
       font-family: var(--io-font-primary);

@@ -1,5 +1,16 @@
 # @iodigital-com/components
 
+## 1.4.0
+
+### Minor Changes
+
+- 266b813: feat(io-icon): add 52 new Lucide 0.577 icons — download (3), upload (3), list-_ (17), grid-2x2/grid-3x2 (4), map-_ (12), calendar-\* (13)
+- 15955c9: feat(io-inline-notification): add per-variant soft background colours matching Toast
+
+  feat(io-inline-notification): add actionLabel, actionIcon, actionLoading props and action event for inline call-to-action button
+
+- e2f26f1: feat(io-pagination): add compact prop for dense UI contexts — reduces button height from 48px to 32px
+
 ## 1.3.2
 
 ### Patch Changes

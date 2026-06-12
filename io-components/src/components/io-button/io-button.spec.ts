@@ -51,6 +51,15 @@ describe('io-button — default props', () => {
     expect(component.arrow).toBeUndefined();
   });
 
+  it('hideLabel is false by default', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('hideLabel can be set to true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+
   it('setFocus resolves without throwing', async () => {
     const inner = document.createElement('button');
     inner.className = 'btn';

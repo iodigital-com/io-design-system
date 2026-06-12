@@ -1321,6 +1321,11 @@ export namespace Components {
      */
     interface IoPagination {
         /**
+          * Reduces button size to ~32px height for dense UI contexts (toolbars, sidebars)
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Visually label the next button (used by aria-label)
           * @default 'Next page'
          */
@@ -5140,6 +5145,11 @@ declare namespace LocalJSX {
      */
     interface IoPagination {
         /**
+          * Reduces button size to ~32px height for dense UI contexts (toolbars, sidebars)
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Visually label the next button (used by aria-label)
           * @default 'Next page'
          */
@@ -6528,6 +6538,7 @@ declare namespace LocalJSX {
         "focused": boolean;
     }
     interface IoPaginationAttributes {
+        "compact": boolean;
         "page": number;
         "totalPages": number;
         "totalItems": number;

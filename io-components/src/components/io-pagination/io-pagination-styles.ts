@@ -138,6 +138,20 @@ export function getPaginationStyles(): string {
       width: var(--io-space-8);
       height: var(--io-space-8);
       font-size: var(--io-font-size-xs);
+      /* WCAG 2.5.5 touch-target mitigation: compact visual size is 32×32px which
+         is below the 44×44px minimum. Expand the invisible hit area via a
+         ::before pseudo-element so pointer-device contexts remain unaffected. */
+      position: relative;
+    }
+
+    :host([compact]) .page-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 44px;
+      min-height: 44px;
+      transform: translate(-50%, -50%);
     }
 
     :host([compact]) .page-dots {

@@ -10,7 +10,7 @@ export const paginationStory: Story<'io-pagination'> = {
       properties: {
         page: properties?.page ?? 1,
         totalPages: properties?.totalPages ?? 5,
-        compact: properties?.compact as boolean ?? false,
+        compact: (properties?.compact as boolean) ?? false,
       },
     },
   ],

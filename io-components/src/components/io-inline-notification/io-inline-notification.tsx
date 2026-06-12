@@ -2,6 +2,7 @@ import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/c
 
 import { getInlineNotificationStyles } from './io-inline-notification-styles';
 import type { IoInlineNotificationVariant } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 /**
  * io-inline-notification
@@ -21,6 +22,10 @@ import type { IoInlineNotificationVariant } from './types';
  *
  * <io-inline-notification variant="error" dismissible>
  *   Failed to save. Please try again.
+ * </io-inline-notification>
+ *
+ * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+ *   Your trip is ready to be logged.
  * </io-inline-notification>
  */
 @Component({
@@ -43,8 +48,20 @@ export class IoInlineNotification {
    */
   @Prop() dismissLabel?: string;
 
+  /** Label for the optional inline call-to-action button. When omitted, no action button is rendered. */
+  @Prop() actionLabel?: string;
+
+  /** Icon rendered on the action button. Defaults to 'arrow-right'. */
+  @Prop() actionIcon: IoIconName = 'arrow-right';
+
+  /** When true, the action button shows a loading spinner and interaction is suppressed. */
+  @Prop() actionLoading = false;
+
   /** Emitted when the dismiss button is clicked */
   @Event() dismiss!: EventEmitter<void>;
+
+  /** Emitted when the action button is clicked (not emitted while actionLoading is true) */
+  @Event({ bubbles: false }) action!: EventEmitter<void>;
 
   @State() private hasContent = false;
 
@@ -58,6 +75,12 @@ export class IoInlineNotification {
     this.dismiss.emit();
   };
 
+  private handleAction = () => {
+    if (!this.actionLoading) {
+      this.action.emit();
+    }
+  };
+
   /**
    * @slot - Default slot. Notification message body text or inline elements.
    */
@@ -68,7 +91,7 @@ export class IoInlineNotification {
         aria-live={this.variant === 'error' ? undefined : 'polite'}
         aria-atomic={this.variant === 'error' ? undefined : 'true'}
       >
-        <style>{getInlineNotificationStyles()}</style>
+        <style>{getInlineNotificationStyles(this.variant)}</style>
         <div class={`inline-notification inline-notification--${this.variant}`}>
           <span class="inline-notification__icon" aria-hidden="true">
             {this.variant === 'info' && (
@@ -107,6 +130,20 @@ export class IoInlineNotification {
                 this.hasContent = slot.assignedNodes({ flatten: true }).length > 0;
               }} />
             </div>
+            {this.actionLabel && (
+              <div class="inline-notification__actions">
+                <io-button
+                  size="sm"
+                  variant="ghost"
+                  icon={this.actionIcon}
+                  icon-position="right"
+                  loading={this.actionLoading}
+                  onClick={this.handleAction}
+                >
+                  {this.actionLabel}
+                </io-button>
+              </div>
+            )}
           </div>
           {this.dismissible && (
             <button

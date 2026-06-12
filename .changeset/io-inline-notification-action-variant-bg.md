@@ -1,5 +1,5 @@
 ---
-"@io-digital/components": minor
+"@iodigital-com/components": minor
 ---
 
 feat(io-inline-notification): add per-variant soft background colours matching Toast

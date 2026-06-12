@@ -2,15 +2,22 @@
 /* tslint:disable */
 import { fromEvent } from 'rxjs';
 
-export const proxyInputs = (Cmp: any, inputs: string[]) => {
+export const proxyInputs = (Cmp: any, inputs: string[], booleanInputs: string[] = []) => {
   const Prototype = Cmp.prototype;
+  const booleanSet = new Set(booleanInputs);
   inputs.forEach((item) => {
     Object.defineProperty(Prototype, item, {
       get() {
         return this.el[item];
       },
       set(val: any) {
-        this.z.runOutsideAngular(() => (this.el[item] = val));
+        this.z.runOutsideAngular(() => {
+          // Coerce empty string to true for boolean props — Angular passes "" when a
+          // static attribute (e.g. <io-button hideLabel>) is used without property
+          // binding brackets.
+          const coerced = booleanSet.has(item) && val === '' ? true : val;
+          (this.el as any)[item] = coerced;
+        });
       },
       /**
        * In the event that proxyInputs is called
@@ -45,16 +52,16 @@ export const defineCustomElement = (tagName: string, customElement: any) => {
 };
 
 // tslint:disable-next-line: only-arrow-functions
-export function ProxyCmp(opts: { defineCustomElementFn?: () => void; inputs?: any; methods?: any }) {
+export function ProxyCmp(opts: { defineCustomElementFn?: () => void; inputs?: any; booleanInputs?: string[]; methods?: any }) {
   const decorator = function (cls: any) {
-    const { defineCustomElementFn, inputs, methods } = opts;
+    const { defineCustomElementFn, inputs, booleanInputs, methods } = opts;
 
     if (defineCustomElementFn !== undefined) {
       defineCustomElementFn();
     }
 
     if (inputs) {
-      proxyInputs(cls, inputs);
+      proxyInputs(cls, inputs, booleanInputs);
     }
     if (methods) {
       proxyMethods(cls, methods);

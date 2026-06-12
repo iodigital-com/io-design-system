@@ -124,7 +124,7 @@ export class IoButton {
   @Prop() iconSource?: string;
 
   /** Hides the text label visually (icon-only mode with accessible label via `label` prop). */
-  @Prop() hideLabel = false;
+  @Prop({ reflect: true }) hideLabel = false;
 
   /** Side on which the icon is rendered relative to the label. Defaults to 'left'. */
   @Prop({ reflect: true }) iconPosition: 'left' | 'right' = 'left';

@@ -125,6 +125,42 @@ export function getPaginationStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* ── Compact variant ────────────────────────────────── */
+    /* Use :host([compact]) to reduce button size to ~32px for dense contexts.
+       Targets all button and ellipsis elements — keeps pill shape intact.   */
+
+    :host([compact]) .pagination {
+      gap: var(--io-space-2);
+    }
+
+    :host([compact]) .page-btn {
+      min-width: var(--io-space-8);
+      width: var(--io-space-8);
+      height: var(--io-space-8);
+      font-size: var(--io-font-size-xs);
+      /* WCAG 2.5.5 touch-target mitigation: compact visual size is 32×32px which
+         is below the 44×44px minimum. Expand the invisible hit area via a
+         ::before pseudo-element so pointer-device contexts remain unaffected. */
+      position: relative;
+    }
+
+    :host([compact]) .page-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 44px;
+      min-height: 44px;
+      transform: translate(-50%, -50%);
+    }
+
+    :host([compact]) .page-dots {
+      min-width: var(--io-space-8);
+      width: var(--io-space-8);
+      height: var(--io-space-8);
+      font-size: var(--io-font-size-xs);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .page-btn { transition: none; }
     }

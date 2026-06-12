@@ -1,10 +1,19 @@
 # @iodigital-com/components-angular
 
+## 1.0.2
+
+### Patch Changes
+
+- f1c0bb4: fix(io-button): add reflect: true to hideLabel prop so Angular static attribute pattern works correctly
+
+  fix(io-input,io-select,io-textarea,io-multi-select,io-pin-code,io-button): coerce empty-string to true for boolean props in Angular proxy, fixing hideLabel and other boolean props when used as static attributes
+
 ## 1.0.1
 
 ### Patch Changes
 
 - Updated dependencies [dacc075]
+
   - @iodigital-com/components@1.0.1
 
 - 6058086: fix(angular): add explicit resolution fields to root package.json

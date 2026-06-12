@@ -61,7 +61,7 @@ export function ProxyCmp(opts: { defineCustomElementFn?: () => void; inputs?: an
     }
 
     if (inputs) {
-      proxyInputs(cls, inputs, booleanInputs);
+      proxyInputs(cls, inputs, booleanInputs ?? []);
     }
     if (methods) {
       proxyMethods(cls, methods);

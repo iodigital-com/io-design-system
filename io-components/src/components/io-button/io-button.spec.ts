@@ -55,10 +55,7 @@ describe('io-button — default props', () => {
     expect(component.hideLabel).toBe(false);
   });
 
-  it('hideLabel reflects as an attribute on the host element', () => {
-    // Stencil reflect: true means the runtime sets the attribute on the host when
-    // the prop is truthy. In unit tests without the full Stencil runtime we verify
-    // the prop can be set and read back, mirroring what reflect: true enables.
+  it('hideLabel can be set to true', () => {
     component.hideLabel = true;
     expect(component.hideLabel).toBe(true);
   });

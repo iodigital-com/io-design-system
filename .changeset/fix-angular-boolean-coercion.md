@@ -1,5 +1,6 @@
 ---
-"@io-digital/components": patch
+"@iodigital-com/components": patch
+"@iodigital-com/components-angular": patch
 ---
 
 fix(io-button): add reflect: true to hideLabel prop so Angular static attribute pattern works correctly

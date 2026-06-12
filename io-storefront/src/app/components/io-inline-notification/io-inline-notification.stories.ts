@@ -7,6 +7,9 @@ export const inlineNotificationStory: Story<'io-inline-notification'> = {
       variant: 'info',
       heading: '',
       dismissible: false,
+      actionLabel: '',
+      actionIcon: 'arrow-right',
+      actionLoading: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -37,5 +40,23 @@ export const inlineNotificationPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'When true, renders a dismiss button that emits the dismiss event on click.',
+  },
+  {
+    name: 'actionLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Label for the optional inline call-to-action button. When empty, no action button is rendered.',
+  },
+  {
+    name: 'actionIcon',
+    type: 'string',
+    defaultValue: 'arrow-right',
+    description: 'Icon rendered on the action button. Accepts any IoIconName value.',
+  },
+  {
+    name: 'actionLoading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, the action button shows a loading spinner and the action event is suppressed.',
   },
 ];

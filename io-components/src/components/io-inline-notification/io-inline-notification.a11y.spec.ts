@@ -14,7 +14,7 @@ function renderToHTML(props: Partial<IoInlineNotification> = {}): string {
   const ariaLive = variant === 'error' ? '' : ' aria-live="polite" aria-atomic="true"';
   return `
     <div>
-      <style>${getInlineNotificationStyles()}</style>
+      <style>${getInlineNotificationStyles(variant)}</style>
       <div role="${role}"${ariaLive} class="inline-notification inline-notification--${variant}">
         <span aria-hidden="true">icon</span>
         <div class="inline-notification__body">${heading}<div>Notification body</div></div>

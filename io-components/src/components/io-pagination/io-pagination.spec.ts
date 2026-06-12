@@ -25,6 +25,28 @@ describe('io-pagination — default props', () => {
   it('defaults nextLabel to "Next page"', () => {
     expect(component.nextLabel).toBe('Next page');
   });
+
+  it('defaults compact to false', () => {
+    expect(component.compact).toBe(false);
+  });
+});
+
+describe('io-pagination — compact prop', () => {
+  it('reflects compact=true as host attribute', () => {
+    const component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+
+    component.compact = true;
+
+    expect(component.compact).toBe(true);
+  });
+
+  it('compact defaults to false', () => {
+    const component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+
+    expect(component.compact).toBe(false);
+  });
 });
 
 describe('io-pagination — pageRange', () => {

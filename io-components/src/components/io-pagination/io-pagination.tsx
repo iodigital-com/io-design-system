@@ -57,6 +57,9 @@ export class IoPagination {
    */
   @Prop() perPage?: number;
 
+  /** Reduces button size to ~32px height for dense UI contexts (toolbars, sidebars) */
+  @Prop({ reflect: true }) compact = false;
+
   /** Visually label the prev button (used by aria-label) */
   @Prop() prevLabel = 'Previous page';
 

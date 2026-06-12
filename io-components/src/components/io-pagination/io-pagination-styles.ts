@@ -125,6 +125,28 @@ export function getPaginationStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* ── Compact variant ────────────────────────────────── */
+    /* Use :host([compact]) to reduce button size to ~32px for dense contexts.
+       Targets all button and ellipsis elements — keeps pill shape intact.   */
+
+    :host([compact]) .pagination {
+      gap: var(--io-space-2);
+    }
+
+    :host([compact]) .page-btn {
+      min-width: var(--io-space-8);
+      width: var(--io-space-8);
+      height: var(--io-space-8);
+      font-size: var(--io-font-size-xs);
+    }
+
+    :host([compact]) .page-dots {
+      min-width: var(--io-space-8);
+      width: var(--io-space-8);
+      height: var(--io-space-8);
+      font-size: var(--io-font-size-xs);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .page-btn { transition: none; }
     }

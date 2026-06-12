@@ -3,13 +3,14 @@ import type { Story } from '@/models/story';
 
 // Default: page 1 of 5
 export const paginationStory: Story<'io-pagination'> = {
-  state: { properties: { page: 1, totalPages: 5 } },
+  state: { properties: { page: 1, totalPages: 5, compact: false } },
   generator: ({ properties } = {}) => [
     {
       tag: 'io-pagination' as const,
       properties: {
         page: properties?.page ?? 1,
         totalPages: properties?.totalPages ?? 5,
+        compact: properties?.compact as boolean ?? false,
       },
     },
   ],
@@ -34,4 +35,5 @@ export const paginationStoryFull: Story<'io-pagination'> = {
 export const paginationPropDefinitions: PropDefinition[] = [
   { name: 'page', type: 'number', defaultValue: 1 },
   { name: 'totalPages', type: 'number', defaultValue: 5 },
+  { name: 'compact', type: 'boolean', defaultValue: false, description: 'Reduces button height to ~32px for dense UI contexts like toolbars and sidebars.' },
 ];

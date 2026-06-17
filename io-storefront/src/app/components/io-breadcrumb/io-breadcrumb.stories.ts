@@ -21,7 +21,7 @@ export const breadcrumbStoryDefault: Story<'io-breadcrumb'> = {
 
 // Demonstrates a custom separator override using --io-breadcrumb-separator.
 // Default separator is '/' — this example overrides it with the guillemet '›'.
-export const breadcrumbStorySlash: Story<'io-breadcrumb'> = {
+export const breadcrumbStoryGuillemet: Story<'io-breadcrumb'> = {
   frameworkCode: {
     html: `<io-breadcrumb style="--io-breadcrumb-separator: '›'">
   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>

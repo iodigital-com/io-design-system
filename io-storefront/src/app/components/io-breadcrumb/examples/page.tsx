@@ -2,7 +2,7 @@
 
 import {
   breadcrumbStoryDefault,
-  breadcrumbStorySlash,
+  breadcrumbStoryGuillemet,
   breadcrumbStoryLong,
   breadcrumbStoryLabel,
   breadcrumbStoryTargetBlank,
@@ -27,7 +27,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Custom separator via CSS"
           description="Default separator is '/'. Override it with any character using the --io-breadcrumb-separator CSS custom property. This example uses the guillemet '›'."
         />
-        <ComponentStory story={breadcrumbStorySlash} />
+        <ComponentStory story={breadcrumbStoryGuillemet} />
       </section>
 
       <section>

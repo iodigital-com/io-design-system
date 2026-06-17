@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoBreadcrumb } from './io-breadcrumb';
+import { h } from '@stencil/core';
 
 describe('io-breadcrumb — default props and structure', () => {
   let c: IoBreadcrumb;
@@ -42,5 +43,30 @@ describe('io-breadcrumb — label prop', () => {
     (c as any).el = document.createElement('io-breadcrumb');
     (c as any).label = 'Fil d\'Ariane';
     expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('label prop is bound to nav aria-label in vnode (default)', () => {
+    const hMock = h as unknown as { mock: { calls: unknown[][] } };
+    vi.clearAllMocks();
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).render();
+    const navCall = hMock.mock.calls.find(([tag]) => tag === 'nav');
+    expect(navCall).toBeDefined();
+    const attrs = navCall![1] as Record<string, unknown>;
+    expect(attrs['aria-label']).toBe('Breadcrumb');
+  });
+
+  it('label prop is bound to nav aria-label in vnode (custom)', () => {
+    const hMock = h as unknown as { mock: { calls: unknown[][] } };
+    vi.clearAllMocks();
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    c.label = 'Navigatie';
+    (c as any).render();
+    const navCall = hMock.mock.calls.find(([tag]) => tag === 'nav');
+    expect(navCall).toBeDefined();
+    const attrs = navCall![1] as Record<string, unknown>;
+    expect(attrs['aria-label']).toBe('Navigatie');
   });
 });

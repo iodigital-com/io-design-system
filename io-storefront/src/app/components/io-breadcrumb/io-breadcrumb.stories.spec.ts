@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   breadcrumbStoryDefault,
-  breadcrumbStorySlash,
+  breadcrumbStoryGuillemet,
   breadcrumbStoryLong,
   breadcrumbStoryLabel,
   breadcrumbStoryTargetBlank,
@@ -34,19 +34,19 @@ describe('io-breadcrumb storefront stories', () => {
     });
   });
 
-  describe('breadcrumbStorySlash', () => {
+  describe('breadcrumbStoryGuillemet', () => {
     it('generator with no args does not throw', () => {
-      expect(() => breadcrumbStorySlash.generator?.()).not.toThrow();
+      expect(() => breadcrumbStoryGuillemet.generator?.()).not.toThrow();
     });
 
     it('generator returns non-empty array', () => {
-      const els = breadcrumbStorySlash.generator?.();
+      const els = breadcrumbStoryGuillemet.generator?.();
       expect(Array.isArray(els)).toBe(true);
       expect(els!.length).toBeGreaterThan(0);
     });
 
     it('every returned element has a tag', () => {
-      const els = breadcrumbStorySlash.generator?.() ?? [];
+      const els = breadcrumbStoryGuillemet.generator?.() ?? [];
       for (const el of els) {
         if (el && typeof el === 'object' && 'tag' in el) {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');

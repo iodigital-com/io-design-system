@@ -1,5 +1,5 @@
 ---
-'@io-digital/components': minor
+'@iodigital-com/components': minor
 ---
 
 feat(io-breadcrumb): close beta-to-stable API/a11y gaps (#627)

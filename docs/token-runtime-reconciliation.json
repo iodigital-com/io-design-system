@@ -1832,6 +1832,30 @@
       "notes": "Alias mapping governed by docs/token-cssvar-naming-map.json."
     },
     {
+      "runtimeCssVar": "--io-checkbox-border-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Checkbox resting/hover border colour override."
+    },
+    {
+      "runtimeCssVar": "--io-checkbox-background-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Checkbox checked/indeterminate fill colour override."
+    },
+    {
+      "runtimeCssVar": "--io-checkbox-icon-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Checkbox checkmark/dash icon colour override."
+    },
+    {
       "runtimeCssVar": "--io-gradient-brand-cool",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

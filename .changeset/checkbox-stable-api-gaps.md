@@ -1,5 +1,5 @@
 ---
-"@io-digital/components": minor
+"@iodigital-com/components": minor
 ---
 
 feat(io-checkbox): blur event, compact prop, formStateRestoreCallback, aria-disabled on loading, value default 'on', CSS tokens, keydown guard (#630)

@@ -9,8 +9,8 @@ function renderToHTML(props: Partial<IoBanner> = {}): string {
   const dismissible = props.dismissible
     ? `<button type="button" aria-label="Dismiss ${variant} notification"></button>`
     : '';
-  const role = variant === 'error' ? 'alert' : 'status';
-  const ariaLive = variant === 'error' ? '' : ' aria-live="polite" aria-atomic="true"';
+  const role = variant === 'error' || variant === 'warning' ? 'alert' : 'status';
+  const ariaLive = variant === 'error' || variant === 'warning' ? '' : ' aria-live="polite" aria-atomic="true"';
   return `
     <div>
       <style>${getBannerStyles()}</style>

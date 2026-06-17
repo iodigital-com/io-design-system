@@ -7,12 +7,12 @@ export function getBannerStyles(): string {
 
     .banner {
       position: fixed;
-      top: var(--io-space-4);
-      left: var(--io-space-4);
-      right: var(--io-space-4);
+      top: var(--io-banner-top, var(--io-space-4));
+      left: var(--io-banner-inset-x, var(--io-space-4));
+      right: var(--io-banner-inset-x, var(--io-space-4));
       margin: 0 auto;
-      max-width: 768px; /* matches --io-breakpoint-md */
-      z-index: var(--io-z-toast);
+      max-width: var(--io-banner-max-w, 768px);
+      z-index: var(--io-banner-z-index, var(--io-z-toast));
 
       display: flex;
       align-items: flex-start;
@@ -36,6 +36,24 @@ export function getBannerStyles(): string {
       from {
         opacity: 0;
         transform: translateY(calc(-100% - var(--io-space-4)));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Bottom position override — flip inset and animation direction */
+    :host([position='bottom']) .banner {
+      top: auto;
+      bottom: var(--io-banner-bottom, var(--io-space-4));
+      animation-name: io-banner-in-bottom;
+    }
+
+    @keyframes io-banner-in-bottom {
+      from {
+        opacity: 0;
+        transform: translateY(calc(100% + var(--io-space-4)));
       }
       to {
         opacity: 1;
@@ -72,6 +90,11 @@ export function getBannerStyles(): string {
       color: var(--io-text-primary);
     }
 
+    .banner__description {
+      margin: 0;
+      color: var(--io-text-primary);
+    }
+
     .banner__content {
       color: var(--io-text-primary);
     }
@@ -84,6 +107,9 @@ export function getBannerStyles(): string {
       flex-shrink: 0;
       display: flex;
       align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      min-height: 24px;
       padding: 0;
       background: transparent;
       border: none;

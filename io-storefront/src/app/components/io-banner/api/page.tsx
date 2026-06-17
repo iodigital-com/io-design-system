@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote } from '@/components/api/ApiPrimitives';
+import { SectionHeader, InlineCode, ApiTable, ReflectBadge } from '@/components/api/ApiPrimitives';
 
 export default function IoBannerApiPage() {
   return (

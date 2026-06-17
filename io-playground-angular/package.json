@@ -16,7 +16,7 @@
     "@angular/forms": "^21.2.17",
     "@angular/platform-browser": "^21.2.17",
     "@angular/platform-browser-dynamic": "^21.2.17",
-    "@angular/router": "^21.2.17",
+    "@angular/router": "^21.2.16",
     "@iodigital-com/components": "file:../io-components",
     "@iodigital-com/components-angular": "file:../io-components-angular",
     "rxjs": "^7.8.0",

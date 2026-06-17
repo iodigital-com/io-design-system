@@ -17,3 +17,6 @@ export type IoAccordionSize = 'sm' | 'md' | 'lg';
  * - `canvas`: uses `var(--io-bg-page)` — page-level fill
  */
 export type IoAccordionBackground = 'transparent' | 'surface' | 'canvas';
+
+/** Position of the expand/collapse marker icon relative to the trigger title */
+export type IoAccordionAlignMarker = 'start' | 'end';

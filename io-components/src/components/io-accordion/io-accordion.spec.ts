@@ -33,6 +33,14 @@ describe('io-accordion — default props', () => {
   it('defaults size to md', () => {
     expect(component.size).toBe('md');
   });
+
+  it('defaults compact to false', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('defaults alignMarker to end', () => {
+    expect(component.alignMarker).toBe('end');
+  });
 });
 
 describe('io-accordion — size prop', () => {
@@ -127,9 +135,11 @@ describe('io-accordion — lifecycle', () => {
     expect((component as any).baseId).toBe('accordion-host');
   });
 
-  it('keeps max-height fallback in open panel styles', () => {
+  it('panel uses grid-template-rows animation instead of max-height', () => {
     const styles = getAccordionStyles();
-    expect(styles).toContain('max-height: var(--io-accordion-max-height, 600px);');
+    expect(styles).toContain('grid-template-rows: 0fr');
+    expect(styles).toContain('grid-template-rows: 1fr');
+    expect(styles).not.toContain('max-height: 0');
   });
 });
 
@@ -192,7 +202,7 @@ describe('io-accordion — sticky prop', () => {
     const styles = getAccordionStyles();
     expect(styles).toContain(':host([sticky]) .accordion-heading');
     expect(styles).toContain('position: sticky');
-    expect(styles).toContain('top: 0');
+    expect(styles).toContain('top: var(--io-accordion-summary-top, 0)');
   });
 
   it('CSS uses --io-z-sticky token for z-index on sticky heading', () => {
@@ -203,6 +213,11 @@ describe('io-accordion — sticky prop', () => {
   it('sticky heading inherits background-color from host', () => {
     const styles = getAccordionStyles();
     expect(styles).toContain('background-color: inherit');
+  });
+
+  it('CSS uses --io-accordion-summary-top token for sticky top offset', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('top: var(--io-accordion-summary-top, 0)');
   });
 
   it('logs a warning when sticky=true and background="transparent"', () => {
@@ -249,5 +264,84 @@ describe('io-accordion — sticky prop', () => {
     component.componentWillLoad();
     expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
+  });
+});
+
+describe('io-accordion — compact prop', () => {
+  it('defaults compact to false', () => {
+    const component = new IoAccordion();
+    expect(component.compact).toBe(false);
+  });
+
+  it('accepts compact=true', () => {
+    const component = new IoAccordion();
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+
+  it('CSS includes :host([compact]) with tighter padding tokens', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([compact]) .accordion-trigger');
+    expect(styles).toContain('var(--io-space-2)');
+  });
+
+  it('CSS includes :host([compact]) with smaller font-size token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([compact]) .accordion-title');
+    expect(styles).toContain('var(--io-font-size-sm)');
+  });
+});
+
+describe('io-accordion — alignMarker prop', () => {
+  it('defaults alignMarker to end', () => {
+    const component = new IoAccordion();
+    expect(component.alignMarker).toBe('end');
+  });
+
+  it('accepts alignMarker=start', () => {
+    const component = new IoAccordion();
+    component.alignMarker = 'start';
+    expect(component.alignMarker).toBe('start');
+  });
+
+  it('accepts alignMarker=end', () => {
+    const component = new IoAccordion();
+    component.alignMarker = 'end';
+    expect(component.alignMarker).toBe('end');
+  });
+
+  it('CSS includes :host([align-marker=start]) with order: -1 on icon', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(":host([align-marker='start']) .accordion-icon");
+    expect(styles).toContain('order: -1');
+  });
+});
+
+describe('io-accordion — CSS token overrides', () => {
+  it('trigger padding uses --io-accordion-py and --io-accordion-px tokens', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-accordion-py, var(--io-space-6))');
+    expect(styles).toContain('var(--io-accordion-px, 0)');
+  });
+
+  it('border uses --io-accordion-border-color token with --io-text-primary fallback', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-accordion-border-color, var(--io-text-primary))');
+  });
+
+  it('sticky top uses --io-accordion-summary-top token with 0 fallback', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('top: var(--io-accordion-summary-top, 0)');
+  });
+
+  it('panel uses visibility: hidden when closed', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('visibility: hidden');
+    expect(styles).toContain('visibility: visible');
+  });
+
+  it('panel-inner has min-height: 0 for grid animation', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('min-height: 0');
   });
 });

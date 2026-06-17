@@ -13,6 +13,8 @@ import {
   accordionStorySurfaceBackground,
   accordionStoryCanvasBackground,
   accordionStoryStickyWithSurface,
+  accordionStoryCompact,
+  accordionStoryAlignMarkerStart,
 } from './io-accordion.stories';
 
 describe('io-accordion storefront stories', () => {
@@ -378,6 +380,52 @@ describe('io-accordion storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+  });
+
+  describe('accordionStoryCompact', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStoryCompact.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = accordionStoryCompact.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('story sets compact to true', () => {
+      const els = accordionStoryCompact.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(accordion.properties['compact']).toBe(true);
+    });
+  });
+
+  describe('accordionStoryAlignMarkerStart', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStoryAlignMarkerStart.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = accordionStoryAlignMarkerStart.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('story sets align-marker to start', () => {
+      const els = accordionStoryAlignMarkerStart.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(accordion.properties['align-marker']).toBe('start');
     });
   });
 });

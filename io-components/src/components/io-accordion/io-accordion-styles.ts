@@ -18,11 +18,11 @@ export function getAccordionStyles(): string {
     /* ── Item ───────────────────────────────────────────── */
 
     .accordion-item {
-      border-bottom: 1px solid var(--io-text-primary);
+      border-bottom: 1px solid var(--io-accordion-border-color, var(--io-text-primary));
     }
 
     .accordion-item--first {
-      border-top: 1px solid var(--io-text-primary);
+      border-top: 1px solid var(--io-accordion-border-color, var(--io-text-primary));
     }
 
     /* ── Trigger button ─────────────────────────────────── */
@@ -34,7 +34,7 @@ export function getAccordionStyles(): string {
       align-items: center;
       justify-content: space-between;
       gap: var(--io-space-4);
-      padding: var(--io-space-6) 0;
+      padding: var(--io-accordion-py, var(--io-space-6)) var(--io-accordion-px, 0);
       background: none;
       border: none;
       cursor: pointer;
@@ -117,16 +117,25 @@ export function getAccordionStyles(): string {
       right: var(--io-accordion-icon-horizontal-collapsed-side);
     }
 
-    /* ── Panel ──────────────────────────────────────────── */
+    /* ── Panel — grid-template-rows animation ───────────── */
 
+    /*
+     * Uses grid-template-rows: 0fr -> 1fr to animate to true content height
+     * without a fixed cap. visibility: hidden is a fallback for browsers
+     * without full inert support, preventing collapsed content from being
+     * reachable via Tab navigation.
+     */
     .accordion-panel {
-      max-height: 0;
+      display: grid;
+      grid-template-rows: 0fr;
       overflow: hidden;
-      transition: max-height var(--io-motion-slow);
+      visibility: hidden;
+      transition: grid-template-rows var(--io-motion-slow), visibility var(--io-motion-slow);
     }
 
     .accordion-item--open .accordion-panel {
-      max-height: var(--io-accordion-max-height, 600px);
+      grid-template-rows: 1fr;
+      visibility: visible;
     }
 
     /* ── Disabled ────────────────────────────────────────── */
@@ -141,6 +150,7 @@ export function getAccordionStyles(): string {
     }
 
     .accordion-panel-inner {
+      min-height: 0;
       padding-bottom: var(--io-space-16);
     }
 
@@ -180,6 +190,24 @@ export function getAccordionStyles(): string {
 
     :host([size="lg"]) .accordion-title {
       font-size: var(--io-font-size-xl);
+    }
+
+    /* ── Compact prop — dense layout independent of size ─── */
+
+    :host([compact]) .accordion-trigger {
+      padding-top: var(--io-space-2);
+      padding-bottom: var(--io-space-2);
+    }
+
+    :host([compact]) .accordion-title {
+      font-size: var(--io-font-size-sm);
+    }
+
+    /* ── Align marker ────────────────────────────────────── */
+
+    /* start: icon appears before the title (left side in LTR) */
+    :host([align-marker='start']) .accordion-icon {
+      order: -1;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -228,7 +256,7 @@ export function getAccordionStyles(): string {
      */
     :host([sticky]) .accordion-heading {
       position: sticky;
-      top: 0;
+      top: var(--io-accordion-summary-top, 0);
       z-index: var(--io-z-sticky);
       background-color: inherit;
     }

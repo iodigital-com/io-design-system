@@ -4,6 +4,7 @@ import type { Story } from '@/models/story';
 
 type IoAccordionSize = 'sm' | 'md' | 'lg';
 type IoAccordionBackground = 'transparent' | 'surface' | 'canvas';
+type IoAccordionAlignMarker = 'start' | 'end';
 
 export const accordionSingleOpenCode: FrameworkCode = {
   html: `<div class="accordion-group" data-accordion-group>
@@ -449,6 +450,44 @@ export const accordionStoryCanvasBackground: Story<'io-accordion'> = {
   ],
 };
 
+export const accordionStoryCompact: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Compact accordion', compact: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Compact accordion', compact: true },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['Dense layout mode — reduced trigger padding independent of the size preset.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStoryAlignMarkerStart: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Marker at start', 'align-marker': 'start' as IoAccordionAlignMarker } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { heading: 'Marker at start', 'align-marker': 'start' as IoAccordionAlignMarker },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['The expand/collapse icon appears before the title — useful for sidebar or tree-navigation layouts.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const accordionStoryStickyWithSurface: Story<'io-accordion'> = {
   state: { properties: { heading: 'Sticky header (surface)', background: 'surface', sticky: true, open: true } },
   generator: () => [
@@ -485,6 +524,19 @@ export const accordionPropDefinitions: PropDefinition[] = [
     defaultValue: 'md',
     options: ['sm', 'md', 'lg'],
     description: 'Controls trigger padding and heading font size. sm = compact, md = default, lg = comfortable.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Dense layout mode — reduces trigger padding independent of the size preset.',
+  },
+  {
+    name: 'align-marker',
+    type: 'select',
+    defaultValue: 'end',
+    options: ['start', 'end'],
+    description: 'Position of the expand/collapse icon. start = before title, end = after title (default).',
   },
   { name: 'disabled', type: 'boolean', defaultValue: false },
   {

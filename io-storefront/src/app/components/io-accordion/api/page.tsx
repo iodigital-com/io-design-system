@@ -41,6 +41,20 @@ export default function IoAccordionApiPage() {
               <span key="description">Size preset controlling trigger padding and heading font size. <InlineCode>sm</InlineCode> = compact, <InlineCode>md</InlineCode> = default, <InlineCode>lg</InlineCode> = comfortable. Reflects to attribute.</span>,
             ],
             [
+              <span key="property"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">compact</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">Dense layout mode — reduces trigger padding and font size independent of the <InlineCode>size</InlineCode> preset. Useful for space-constrained UI contexts. Reflects to attribute.</span>,
+            ],
+            [
+              <span key="property"><InlineCode>alignMarker</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">align-marker</InlineCode>,
+              <InlineCode key="type">'start' | 'end'</InlineCode>,
+              <InlineCode key="default">'end'</InlineCode>,
+              <span key="description">Position of the expand/collapse icon relative to the trigger title. <InlineCode>end</InlineCode> (default) places the icon after the title; <InlineCode>start</InlineCode> places it before, for sidebar or tree-navigation layouts.</span>,
+            ],
+            [
               <span key="property"><InlineCode>open</InlineCode><ReflectBadge /></span>,
               <InlineCode key="attribute">open</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
@@ -52,7 +66,7 @@ export default function IoAccordionApiPage() {
               <InlineCode key="attribute">disabled</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
-              <span key="description">Prevents interaction, reduces opacity, and sets <InlineCode>aria-disabled</InlineCode>. Reflects to attribute.</span>,
+              <span key="description">Prevents interaction, reduces opacity, and sets <InlineCode>aria-disabled</InlineCode> on the trigger button. The button remains focusable so screen readers can announce it as unavailable (WCAG 4.1.2). Reflects to attribute.</span>,
             ],
             [
               <span key="property"><InlineCode>defaultExpanded</InlineCode></span>,
@@ -130,9 +144,24 @@ export default function IoAccordionApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">--io-accordion-max-height</InlineCode>,
-              <InlineCode key="d">600px</InlineCode>,
-              'Maximum height of an open accordion panel. Content that exceeds this height will overflow with a vertical scrollbar.',
+              <InlineCode key="n">--io-accordion-border-color</InlineCode>,
+              <InlineCode key="d">var(--io-text-primary)</InlineCode>,
+              'Color of the top and bottom divider lines. Defaults to the primary text token, allowing independent theming of the divider without overriding text color.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-py</InlineCode>,
+              <InlineCode key="d">var(--io-space-6)</InlineCode>,
+              'Vertical (top/bottom) padding of the trigger button. Overrides the base padding; size-variant padding-top/bottom takes precedence when a size is set.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-px</InlineCode>,
+              <InlineCode key="d">0</InlineCode>,
+              'Horizontal (left/right) padding of the trigger button. Use to add lateral padding without overriding the entire padding shorthand.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-summary-top</InlineCode>,
+              <InlineCode key="d">0</InlineCode>,
+              'Top offset for the sticky trigger heading. Set to the height of a fixed app header to prevent the sticky header from hiding behind it.',
             ],
             [
               <InlineCode key="n">--io-accordion-icon-bar-thickness</InlineCode>,
@@ -160,4 +189,3 @@ export default function IoAccordionApiPage() {
     </div>
   );
 }
-

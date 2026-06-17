@@ -33,6 +33,7 @@ prompts/
 issues/
 .claude/
 .claire/
+.continue/
 
 # OS
 .DS_Store

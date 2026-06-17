@@ -181,8 +181,9 @@ export namespace Components {
         "name": string | undefined;
         /**
           * ARIA role for the host element. Defaults to 'presentation' when an image is visible (the img element carries its own accessible name via alt) and to 'img' for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
+          * @default ''
          */
-        "role"?: IoAvatarRole;
+        "role": IoAvatarRole | '';
         /**
           * Shape of the avatar container.
           * @default 'circle'
@@ -4062,8 +4063,9 @@ declare namespace LocalJSX {
         "name"?: string | undefined;
         /**
           * ARIA role for the host element. Defaults to 'presentation' when an image is visible (the img element carries its own accessible name via alt) and to 'img' for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
+          * @default ''
          */
-        "role"?: IoAvatarRole;
+        "role"?: IoAvatarRole | '';
         /**
           * Shape of the avatar container.
           * @default 'circle'
@@ -6482,7 +6484,7 @@ declare namespace LocalJSX {
         "size": IoAvatarSize;
         "color": IoAvatarColor;
         "shape": IoAvatarShape;
-        "role": IoAvatarRole;
+        "role": IoAvatarRole | '';
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;

@@ -135,6 +135,9 @@ export class IoBanner {
    * @slot - Default slot. Notification message body text or inline elements.
    */
   render() {
+    const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
+    const HeadingTag = headingTag;
+
     return (
       <Host>
         <style>{getBannerStyles()}</style>
@@ -174,7 +177,7 @@ export class IoBanner {
             )}
           </span>
           <div class="banner__body">
-            {this.heading && h(this.headingTag as any, { class: 'banner__heading' }, this.heading)}
+            {this.heading && <HeadingTag class="banner__heading">{this.heading}</HeadingTag>}
             {this.description && <p class="banner__description">{this.description}</p>}
             <div class={{ 'banner__content': true, 'banner__content--empty': !this.hasContent }}>
               <slot onSlotchange={(e: Event) => {

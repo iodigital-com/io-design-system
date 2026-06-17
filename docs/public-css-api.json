@@ -1,9 +1,9 @@
 [
   {
     "cssVar": "--io-accordion-max-height",
-    "classification": "public-api",
+    "classification": "deprecated",
     "component": "io-accordion",
-    "description": "Maximum height of an open accordion panel. Override to control how tall expanded content can grow before scrolling."
+    "description": "Deprecated. Previously set a max-height cap on open panels. Removed when grid-template-rows animation replaced the max-height approach. No longer has any effect."
   },
   {
     "cssVar": "--io-accordion-icon-bar-thickness",
@@ -118,6 +118,30 @@
     "classification": "internal",
     "component": "io-accordion",
     "description": "Global primary text color."
+  },
+  {
+    "cssVar": "--io-accordion-border-color",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "Color of the horizontal divider lines between accordion items."
+  },
+  {
+    "cssVar": "--io-accordion-py",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "Vertical padding of the trigger button. Overrides the per-size preset when set."
+  },
+  {
+    "cssVar": "--io-accordion-px",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "Horizontal padding of the trigger button. Defaults to 0."
+  },
+  {
+    "cssVar": "--io-accordion-summary-top",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "top offset for the sticky trigger header when sticky is enabled. Defaults to 0."
   },
   {
     "cssVar": "--io-accent-bg",

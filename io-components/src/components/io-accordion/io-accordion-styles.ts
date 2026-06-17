@@ -130,7 +130,7 @@ export function getAccordionStyles(): string {
       grid-template-rows: 0fr;
       overflow: hidden;
       visibility: hidden;
-      transition: grid-template-rows var(--io-motion-slow), visibility var(--io-motion-slow);
+      transition: grid-template-rows var(--io-motion-slow);
     }
 
     .accordion-item--open .accordion-panel {
@@ -164,8 +164,8 @@ export function getAccordionStyles(): string {
 
     /* sm — compact: tighter padding, smaller title font */
     :host([size="sm"]) .accordion-trigger {
-      padding-top: var(--io-space-3);
-      padding-bottom: var(--io-space-3);
+      padding-top: var(--io-accordion-py, var(--io-space-3));
+      padding-bottom: var(--io-accordion-py, var(--io-space-3));
     }
 
     :host([size="sm"]) .accordion-title {
@@ -174,8 +174,8 @@ export function getAccordionStyles(): string {
 
     /* md — default (explicitly restated so overriding parent density is clean) */
     :host([size="md"]) .accordion-trigger {
-      padding-top: var(--io-space-6);
-      padding-bottom: var(--io-space-6);
+      padding-top: var(--io-accordion-py, var(--io-space-6));
+      padding-bottom: var(--io-accordion-py, var(--io-space-6));
     }
 
     :host([size="md"]) .accordion-title {
@@ -184,8 +184,8 @@ export function getAccordionStyles(): string {
 
     /* lg — comfortable: generous padding, larger title font */
     :host([size="lg"]) .accordion-trigger {
-      padding-top: var(--io-space-8);
-      padding-bottom: var(--io-space-8);
+      padding-top: var(--io-accordion-py, var(--io-space-8));
+      padding-bottom: var(--io-accordion-py, var(--io-space-8));
     }
 
     :host([size="lg"]) .accordion-title {
@@ -195,8 +195,8 @@ export function getAccordionStyles(): string {
     /* ── Compact prop — dense layout independent of size ─── */
 
     :host([compact]) .accordion-trigger {
-      padding-top: var(--io-space-2);
-      padding-bottom: var(--io-space-2);
+      padding-top: var(--io-accordion-py, var(--io-space-2));
+      padding-bottom: var(--io-accordion-py, var(--io-space-2));
     }
 
     :host([compact]) .accordion-title {

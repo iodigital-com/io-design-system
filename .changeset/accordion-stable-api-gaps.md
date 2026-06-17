@@ -1,5 +1,5 @@
 ---
-"@io-digital/components": minor
+"@iodigital-com/components": minor
 ---
 
 feat(io-accordion): compact prop, alignMarker prop, grid animation, CSS tokens, a11y fixes (#629)

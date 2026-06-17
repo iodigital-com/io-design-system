@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerVariant } from "./components/io-banner/types";
@@ -46,7 +46,7 @@ import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/i
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
-export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerVariant } from "./components/io-banner/types";
@@ -98,6 +98,11 @@ export namespace Components {
      */
     interface IoAccordion {
         /**
+          * Position of the expand/collapse marker icon. - `end` (default): icon appears after the title (right side in LTR) - `start`: icon appears before the title (left side in LTR)
+          * @default 'end'
+         */
+        "alignMarker": IoAccordionAlignMarker;
+        /**
           * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
           * @default false
          */
@@ -107,6 +112,11 @@ export namespace Components {
           * @default 'transparent'
          */
         "background": IoAccordionBackground;
+        /**
+          * Dense layout mode — reduces trigger padding independent of the size preset
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -877,8 +887,25 @@ export namespace Components {
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
      * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
+        /**
+          * Icon rendered on the action button. Defaults to 'arrow-right'.
+          * @default 'arrow-right'
+         */
+        "actionIcon": IoIconName;
+        /**
+          * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, the action button shows a loading spinner and interaction is suppressed.
+          * @default false
+         */
+        "actionLoading": boolean;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -2976,6 +3003,7 @@ declare global {
     };
     interface HTMLIoInlineNotificationElementEventMap {
         "dismiss": void;
+        "action": void;
     }
     /**
      * io-inline-notification
@@ -2991,6 +3019,9 @@ declare global {
      * </io-inline-notification>
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
+     * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
      * </io-inline-notification>
      */
     interface HTMLIoInlineNotificationElement extends Components.IoInlineNotification, HTMLStencilElement {
@@ -3907,6 +3938,11 @@ declare namespace LocalJSX {
      */
     interface IoAccordion {
         /**
+          * Position of the expand/collapse marker icon. - `end` (default): icon appears after the title (right side in LTR) - `start`: icon appears before the title (left side in LTR)
+          * @default 'end'
+         */
+        "alignMarker"?: IoAccordionAlignMarker;
+        /**
           * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
           * @default false
          */
@@ -3916,6 +3952,11 @@ declare namespace LocalJSX {
           * @default 'transparent'
          */
         "background"?: IoAccordionBackground;
+        /**
+          * Dense layout mode — reduces trigger padding independent of the size preset
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -4700,8 +4741,25 @@ declare namespace LocalJSX {
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
      * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
+        /**
+          * Icon rendered on the action button. Defaults to 'arrow-right'.
+          * @default 'arrow-right'
+         */
+        "actionIcon"?: IoIconName;
+        /**
+          * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, the action button shows a loading spinner and interaction is suppressed.
+          * @default false
+         */
+        "actionLoading"?: boolean;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -4715,6 +4773,10 @@ declare namespace LocalJSX {
           * Optional bold heading rendered above the slotted content
          */
         "heading"?: string;
+        /**
+          * Emitted when the action button is clicked (not emitted while actionLoading is true)
+         */
+        "onAction"?: (event: IoInlineNotificationCustomEvent<void>) => void;
         /**
           * Emitted when the dismiss button is clicked
          */
@@ -6328,6 +6390,8 @@ declare namespace LocalJSX {
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
         "size": IoAccordionSize;
+        "compact": boolean;
+        "alignMarker": IoAccordionAlignMarker;
         "disabled": boolean;
         "background": IoAccordionBackground;
         "sticky": boolean;
@@ -6465,6 +6529,9 @@ declare namespace LocalJSX {
         "heading": string;
         "dismissible": boolean;
         "dismissLabel": string;
+        "actionLabel": string;
+        "actionIcon": IoIconName;
+        "actionLoading": boolean;
     }
     interface IoInputAttributes {
         "label": string;
@@ -6538,11 +6605,11 @@ declare namespace LocalJSX {
         "focused": boolean;
     }
     interface IoPaginationAttributes {
-        "compact": boolean;
         "page": number;
         "totalPages": number;
         "totalItems": number;
         "perPage": number;
+        "compact": boolean;
         "prevLabel": string;
         "nextLabel": string;
     }
@@ -7029,6 +7096,9 @@ declare module "@stencil/core" {
              * </io-inline-notification>
              * <io-inline-notification variant="error" dismissible>
              *   Failed to save. Please try again.
+             * </io-inline-notification>
+             * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+             *   Your trip is ready to be logged.
              * </io-inline-notification>
              */
             "io-inline-notification": LocalJSX.IntrinsicElements["io-inline-notification"] & JSXBase.HTMLAttributes<HTMLIoInlineNotificationElement>;

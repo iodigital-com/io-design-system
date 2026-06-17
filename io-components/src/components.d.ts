@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerVariant } from "./components/io-banner/types";
@@ -46,7 +46,7 @@ import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/i
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
-export { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
+export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerVariant } from "./components/io-banner/types";
@@ -98,6 +98,11 @@ export namespace Components {
      */
     interface IoAccordion {
         /**
+          * Position of the expand/collapse marker icon. - `end` (default): icon appears after the title (right side in LTR) - `start`: icon appears before the title (left side in LTR)
+          * @default 'end'
+         */
+        "alignMarker": IoAccordionAlignMarker;
+        /**
           * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
           * @default false
          */
@@ -107,6 +112,11 @@ export namespace Components {
           * @default 'transparent'
          */
         "background": IoAccordionBackground;
+        /**
+          * Dense layout mode — reduces trigger padding independent of the size preset
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -3941,6 +3951,11 @@ declare namespace LocalJSX {
      */
     interface IoAccordion {
         /**
+          * Position of the expand/collapse marker icon. - `end` (default): icon appears after the title (right side in LTR) - `start`: icon appears before the title (left side in LTR)
+          * @default 'end'
+         */
+        "alignMarker"?: IoAccordionAlignMarker;
+        /**
           * When `false` (default), opening this accordion dispatches a coordination event so sibling accordions sharing the same parent auto-close (single-open group behaviour). Set to `true` to allow multiple panels open at once.  The coordination event is dispatched by the *opener* unconditionally; each receiver decides independently whether to auto-close based on its own `allowMultiple` value. This means accordions with `allowMultiple=false` will auto-close even if the opener has `allowMultiple=true`.
           * @default false
          */
@@ -3950,6 +3965,11 @@ declare namespace LocalJSX {
           * @default 'transparent'
          */
         "background"?: IoAccordionBackground;
+        /**
+          * Dense layout mode — reduces trigger padding independent of the size preset
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
           * @default false
@@ -6396,6 +6416,8 @@ declare namespace LocalJSX {
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
         "size": IoAccordionSize;
+        "compact": boolean;
+        "alignMarker": IoAccordionAlignMarker;
         "disabled": boolean;
         "background": IoAccordionBackground;
         "sticky": boolean;

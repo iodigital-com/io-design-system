@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil
 import { getAccordionStyles } from './io-accordion-styles';
 import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
-import type { IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
+import type { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
 
 /**
  * io-accordion
@@ -37,6 +37,16 @@ export class IoAccordion {
 
   /** Size preset — controls trigger padding and title font size */
   @Prop({ reflect: true }) size: IoAccordionSize = 'md';
+
+  /** Dense layout mode — reduces trigger padding independent of the size preset */
+  @Prop({ reflect: true }) compact = false;
+
+  /**
+   * Position of the expand/collapse marker icon.
+   * - `end` (default): icon appears after the title (right side in LTR)
+   * - `start`: icon appears before the title (left side in LTR)
+   */
+  @Prop({ reflect: true, attribute: 'align-marker' }) alignMarker: IoAccordionAlignMarker = 'end';
 
   /** Prevents interaction and applies reduced-opacity styling */
   @Prop({ reflect: true }) disabled = false;
@@ -178,7 +188,6 @@ export class IoAccordion {
                 aria-expanded={String(isOpen)}
                 aria-controls={panelId}
                 aria-disabled={this.disabled ? 'true' : undefined}
-                disabled={this.disabled}
                 onClick={this.toggleSingle}
               >
                 <span class="accordion-title">

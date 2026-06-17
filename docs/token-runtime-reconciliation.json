@@ -65,11 +65,43 @@
     },
     {
       "runtimeCssVar": "--io-accordion-max-height",
+      "disposition": "deprecated",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Deprecated: replaced by grid-template-rows animation. Token has no effect."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-border-color",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
+      "notes": "Accordion divider color."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-py",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Trigger vertical padding override. Applies to all size variants."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-px",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Trigger horizontal padding override."
+    },
+    {
+      "runtimeCssVar": "--io-accordion-summary-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Sticky header top offset."
     },
     {
       "runtimeCssVar": "--io-avatar-bg-blue",

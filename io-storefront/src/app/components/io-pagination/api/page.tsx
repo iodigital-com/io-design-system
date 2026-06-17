@@ -72,6 +72,13 @@ export default function IoPaginationApiPage() {
               <InlineCode key="default">&apos;Next page&apos;</InlineCode>,
               <span key="description">aria-label for the next button.</span>,
             ],
+            [
+              <span key="property"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">compact</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">Dense layout for toolbar contexts. Hides page-number buttons and shows only prev/next controls.</span>,
+            ],
           ]}
         />
       </section>

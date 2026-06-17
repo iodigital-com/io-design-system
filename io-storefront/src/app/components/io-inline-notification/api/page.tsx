@@ -43,6 +43,24 @@ export default function IoInlineNotificationApiPage() {
               <InlineCode key="d">undefined</InlineCode>,
               'Override the accessible label for the dismiss button. Defaults to "Dismiss {heading}" or "Dismiss {variant} notification".',
             ],
+            [
+              <InlineCode key="n">actionLabel</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Label for an optional call-to-action button rendered below the body content. When omitted, no action button is rendered.',
+            ],
+            [
+              <InlineCode key="n">actionIcon</InlineCode>,
+              <InlineCode key="t">IoIconName</InlineCode>,
+              <InlineCode key="d">&apos;arrow-right&apos;</InlineCode>,
+              'Icon rendered on the action button. Any valid io-icon name.',
+            ],
+            [
+              <InlineCode key="n">actionLoading</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, the action button shows a loading spinner and suppresses the action event.',
+            ],
           ]}
         />
       </section>
@@ -63,6 +81,11 @@ export default function IoInlineNotificationApiPage() {
               <InlineCode key="n">dismiss</InlineCode>,
               <InlineCode key="t">void</InlineCode>,
               'Emitted when the user clicks the dismiss button. Your application is responsible for removing or hiding the element.',
+            ],
+            [
+              <InlineCode key="n">action</InlineCode>,
+              <InlineCode key="t">void</InlineCode>,
+              'Emitted when the action button is clicked. Not emitted while actionLoading is true. Only fires when actionLabel is set.',
             ],
           ]}
         />

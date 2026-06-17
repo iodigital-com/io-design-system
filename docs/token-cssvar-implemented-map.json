@@ -429,12 +429,6 @@
       "notes": "Mapped via governance coverage for issue #112."
     },
     {
-      "tokenPath": "component.accordion.maxHeight",
-      "runtimeCssVar": "--io-accordion-max-height",
-      "sourceFile": "io-components/src/global/app.css",
-      "notes": "Mapped via governance coverage for issue #112."
-    },
-    {
       "tokenPath": "component.button.arrowHeightDefault",
       "runtimeCssVar": "--io-button-arrow-height-default",
       "sourceFile": "io-components/src/global/app.css",

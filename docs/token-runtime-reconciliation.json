@@ -65,11 +65,11 @@
     },
     {
       "runtimeCssVar": "--io-accordion-max-height",
-      "disposition": "deprecated",
-      "documentationScope": "app-css-runtime",
+      "disposition": "removed",
+      "documentationScope": "retired",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Deprecated: replaced by grid-template-rows animation. Token has no effect."
+      "notes": "Removed: was a max-height cap on open accordion panels. Replaced by grid-template-rows animation (no fixed cap needed)."
     },
     {
       "runtimeCssVar": "--io-accordion-border-color",

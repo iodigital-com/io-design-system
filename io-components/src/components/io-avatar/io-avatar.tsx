@@ -2,7 +2,7 @@ import { Component, Prop, State, Watch, Host, h } from '@stencil/core';
 
 import { getAvatarStyles } from './io-avatar-styles';
 import { getInitials, getAvatarClass } from './io-avatar-utils';
-import type { IoAvatarSize, IoAvatarColor, IoAvatarShape } from './types';
+import type { IoAvatarSize, IoAvatarColor, IoAvatarShape, IoAvatarRole } from './types';
 
 /**
  * io-avatar
@@ -37,6 +37,14 @@ export class IoAvatar {
   /** Shape of the avatar container. */
   @Prop({ reflect: true }) shape: IoAvatarShape = 'circle';
 
+  /**
+   * ARIA role for the host element. Defaults to 'presentation' when an image is
+   * visible (the img element carries its own accessible name via alt) and to 'img'
+   * for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a
+   * purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
+   */
+  @Prop() role?: IoAvatarRole;
+
   /** Tracks whether the image has failed to load. */
   @State() imgError = false;
 
@@ -56,10 +64,25 @@ export class IoAvatar {
     const showIcon = !showImage && !this.name;
 
     const cls = getAvatarClass(this.size, this.shape, this.color, showImage);
-    const ariaLabel = this.name || (this.alt && !showImage ? this.alt : undefined);
+
+    // Default: 'presentation' when image is visible (img alt carries the name);
+    // 'img' for initials and icon modes so Host IS the labelled image widget.
+    const effectiveRole: IoAvatarRole = this.role ?? (showImage ? 'presentation' : 'img');
+
+    let effectiveAriaLabel: string | undefined;
+    if (effectiveRole === 'img') {
+      if (showInitials) {
+        effectiveAriaLabel = this.name;
+      } else if (showIcon) {
+        effectiveAriaLabel = this.alt || this.name || 'User avatar';
+      } else {
+        // showImage with consumer-forced role='img' — honour alt
+        effectiveAriaLabel = this.alt || undefined;
+      }
+    }
 
     return (
-      <Host aria-label={ariaLabel ?? undefined}>
+      <Host role={effectiveRole} aria-label={effectiveAriaLabel}>
         <style>{getAvatarStyles()}</style>
         <div class={cls}>
           {showImage && (

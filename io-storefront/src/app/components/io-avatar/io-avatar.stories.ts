@@ -74,6 +74,17 @@ export const avatarStoryShapes: Story<'io-avatar'> = {
   ],
 };
 
+/** Story: decorative avatar (role="presentation" — AT skips it) */
+export const avatarStoryDecorative: Story<'io-avatar'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-avatar' as const,
+      properties: { src: 'https://i.pravatar.cc/150?img=5', alt: '', role: 'presentation', size: 'md' },
+    },
+  ],
+};
+
 export const avatarPropDefinitions: PropDefinition[] = [
   {
     name: 'src',
@@ -113,5 +124,12 @@ export const avatarPropDefinitions: PropDefinition[] = [
     options: ['circle', 'square'],
     defaultValue: 'circle',
     description: 'Shape of the avatar container.',
+  },
+  {
+    name: 'role',
+    type: 'select',
+    options: ['img', 'presentation', 'none'],
+    defaultValue: '',
+    description: 'ARIA role on the host element. Auto-computed from the rendering mode when omitted.',
   },
 ];

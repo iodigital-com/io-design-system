@@ -7,6 +7,7 @@ import {
   avatarStoryIcon,
   avatarStorySizes,
   avatarStoryShapes,
+  avatarStoryDecorative,
 } from './io-avatar.stories';
 
 describe('io-avatar storefront stories', () => {
@@ -270,6 +271,29 @@ describe('io-avatar storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+  });
+
+  describe('avatarStoryDecorative', () => {
+    it('generator returns non-empty array', () => {
+      const els = avatarStoryDecorative.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = avatarStoryDecorative.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('story sets role to presentation', () => {
+      const els = avatarStoryDecorative.generator?.() ?? [];
+      const el = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(el.properties.role).toBe('presentation');
     });
   });
 });

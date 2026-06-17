@@ -15,14 +15,19 @@ export default function IoAvatarAccessibilityPage() {
         <AriaTable
           rows={[
             {
-              attribute: 'aria-label',
-              value: <span style={{ color: 'var(--io-text-secondary)' }}>Set to <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>name</code> when present</span>,
-              description: 'When the name prop is provided the host element receives aria-label set to that name. This ensures initials and icon fallbacks are announced correctly by screen readers.',
+              attribute: 'role (on host)',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}><code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>"img"</code> or <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>"presentation"</code> (auto)</span>,
+              description: 'Set to "img" for initials and icon fallback modes so the host is the labelled image widget. Set to "presentation" when an actual image is visible, delegating the accessible name to the img element\'s alt attribute. Override with the role prop to mark an avatar as purely decorative.',
+            },
+            {
+              attribute: 'aria-label (on host)',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}>name, alt, or <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>"User avatar"</code></span>,
+              description: 'Set when role is "img". For initials mode: equals the name prop. For icon-only mode: equals alt or name if provided, otherwise defaults to "User avatar". Not set when role is "presentation" or "none".',
             },
             {
               attribute: 'alt (on img)',
               value: <span style={{ color: 'var(--io-text-secondary)' }}>Passed through from <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>alt</code> prop</span>,
-              description: 'When an image is rendered, the alt attribute is set to the alt prop value. Provides the accessible name for sighted AT users when no aria-label is present.',
+              description: 'When an image is rendered, the alt attribute is set to the alt prop value. Provides the accessible name for image mode avatars — the host role is "presentation" so AT reads the img alt directly.',
             },
             {
               attribute: 'aria-hidden (on img)',
@@ -32,7 +37,7 @@ export default function IoAvatarAccessibilityPage() {
             {
               attribute: 'aria-hidden (on SVG icon)',
               value: <span style={{ color: 'var(--io-text-secondary)' }}>Always <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>"true"</code></span>,
-              description: 'The person icon SVG is always decorative. The accessible name is provided by the host aria-label (from name) or must be provided by the surrounding context.',
+              description: 'The person icon SVG is always decorative. The accessible name is provided by the host aria-label ("User avatar" default, or name/alt if provided).',
             },
           ]}
         />
@@ -61,7 +66,7 @@ export default function IoAvatarAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="When name is provided, the host element receives aria-label equal to the name prop so screen readers can identify the avatar. When name is absent and the avatar is decorative, aria-hidden is applied to the image."
+            note="The host receives role='img' for initials and icon modes with an appropriate aria-label (name, alt, or 'User avatar'). Image mode defaults to role='presentation' so AT reads the img alt directly. The role prop lets consumers mark decorative avatars with role='presentation' or 'none'."
           />
         </div>
       </section>

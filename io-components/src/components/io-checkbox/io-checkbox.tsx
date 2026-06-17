@@ -1,10 +1,10 @@
-import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Listen, Method, Element, Host, Watch, State, AttachInternals, h } from '@stencil/core';
 
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoCheckboxChangeDetail } from './types';
+import type { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from './types';
 
 /**
  * io-checkbox
@@ -34,8 +34,8 @@ export class IoCheckbox {
   /** Input name */
   @Prop() name: string | undefined;
 
-  /** Value submitted with the form */
-  @Prop() value = '';
+  /** Value submitted with the form when checked — matches native HTML checkbox default (RFC 1866) */
+  @Prop() value = 'on';
 
   /** Checked state */
   @Prop({ mutable: true, reflect: true }) checked = false;
@@ -58,7 +58,7 @@ export class IoCheckbox {
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
 
-  /** Shows a loading spinner replacing the checkbox control and disables interaction */
+  /** Shows a loading spinner replacing the checkbox visual and disables interaction */
   @Prop({ reflect: true }) loading = false;
 
   /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
@@ -67,10 +67,16 @@ export class IoCheckbox {
   /** Visually hides the label while keeping it accessible to screen readers */
   @Prop({ reflect: true }) hideLabel = false;
 
+  /** Dense layout mode — reduces checkbox size and label gap */
+  @Prop({ reflect: true }) compact = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the checked state changes */
   @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoCheckboxChangeDetail>;
+
+  /** Fires when the inner input loses focus — required by form libraries for touched/dirty tracking */
+  @Event({ bubbles: false, composed: true }) blur!: EventEmitter<IoCheckboxBlurEventDetail>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -144,6 +150,11 @@ export class IoCheckbox {
     this.disabled = disabled;
   }
 
+  formStateRestoreCallback(state: string | null) {
+    this.checked = state !== null;
+    this.syncFormValue();
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();
@@ -202,6 +213,19 @@ export class IoCheckbox {
     this.change.emit({ checked: input.checked, value: this.value });
   };
 
+  private onBlur = (ev: FocusEvent) => {
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
+    this.blur.emit(ev);
+  };
+
+  @Listen('keydown')
+  handleKeydown(ev: KeyboardEvent) {
+    if ((ev.key === ' ' || ev.key === 'Spacebar') && (this.disabled || this.loading)) {
+      ev.preventDefault();
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -232,26 +256,28 @@ export class IoCheckbox {
         <style>{getCheckboxStyles()}</style>
         <div class={getCheckboxWrapperClass(isDisabled, showError, showSuccess, showWarning, loading)}>
           <label class="checkbox-label" htmlFor={inputId}>
-            {loading ? (
-              <span class="checkbox-control checkbox-control--loading" aria-hidden="true">
-                <io-spinner size="sm" />
-              </span>
-            ) : (
-              <span class="checkbox-control">
-                <input
-                  id={inputId}
-                  class="checkbox-native"
-                  type="checkbox"
-                  name={name}
-                  value={value}
-                  checked={checked}
-                  disabled={isDisabled}
-                  required={required}
-                  form={form}
-                  aria-invalid={showError ? 'true' : undefined}
-                  aria-describedby={describedBy || undefined}
-                  onChange={this.handleChange}
-                />
+            <span class="checkbox-control">
+              <input
+                id={inputId}
+                class="checkbox-native"
+                type="checkbox"
+                name={name}
+                value={value}
+                checked={checked}
+                disabled={isDisabled}
+                required={required}
+                form={form}
+                aria-invalid={showError ? 'true' : undefined}
+                aria-disabled={loading ? 'true' : undefined}
+                aria-describedby={describedBy || undefined}
+                onChange={this.handleChange}
+                onBlur={this.onBlur}
+              />
+              {loading ? (
+                <span class="checkbox-custom-spinner" aria-hidden="true">
+                  <io-spinner size="sm" />
+                </span>
+              ) : (
                 <span
                   class={getCheckboxCustomClass(checked, indeterminate)}
                   aria-hidden="true"
@@ -267,8 +293,8 @@ export class IoCheckbox {
                     </svg>
                   )}
                 </span>
-              </span>
-            )}
+              )}
+            </span>
             <span class={hideLabel ? 'checkbox-text checkbox-text--sr-only' : 'checkbox-text'}>
               <span class={hasLabelSlot ? 'checkbox-label__slot' : 'checkbox-label__slot checkbox-label__slot--hidden'}>
                 <slot name="label" onSlotchange={this.handleLabelSlotChange} />

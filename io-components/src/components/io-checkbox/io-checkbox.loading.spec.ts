@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoCheckbox } from './io-checkbox';
 
@@ -36,5 +36,14 @@ describe('io-checkbox — loading state', () => {
     component.disabled = true;
     expect(component.loading).toBe(true);
     expect(component.disabled).toBe(true);
+  });
+
+  it('render does not throw when loading=true (native input stays in DOM)', () => {
+    component.loading = true;
+    (component as any).label = 'Loading checkbox';
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
   });
 });

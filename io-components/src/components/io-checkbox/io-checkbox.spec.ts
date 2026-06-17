@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoCheckbox } from './io-checkbox';
+import { getCheckboxStyles } from './io-checkbox-styles';
 
 describe('io-checkbox — hideLabel prop', () => {
   let component: IoCheckbox;
@@ -69,8 +70,8 @@ describe('io-checkbox — default props', () => {
     expect(component.state).toBe('none');
   });
 
-  it('has empty value by default', () => {
-    expect(component.value).toBe('');
+  it('has value=on by default (native HTML checkbox default per RFC 1866)', () => {
+    expect(component.value).toBe('on');
   });
 
   it('has empty message by default', () => {
@@ -212,5 +213,70 @@ describe('io-checkbox — componentShouldUpdate', () => {
   it('returns false when new and old values are identical', () => {
     const component = new IoCheckbox();
     expect((component as any).componentShouldUpdate('same', 'same')).toBe(false);
+  });
+});
+
+describe('io-checkbox — compact prop', () => {
+  let component: IoCheckbox;
+
+  beforeEach(() => {
+    component = new IoCheckbox();
+    (component as any).el = document.createElement('io-checkbox');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('defaults compact to false', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('accepts compact=true', () => {
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+
+  it('render does not throw when compact=true', () => {
+    component.compact = true;
+    (component as any).label = 'Compact checkbox';
+    (component as any).componentWillLoad();
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('compact styles include --_io-checkbox-scaling: 0.75', () => {
+    const styles = getCheckboxStyles();
+    expect(styles).toContain(':host([compact])');
+    expect(styles).toContain('--_io-checkbox-scaling: 0.75');
+  });
+});
+
+describe('io-checkbox — formStateRestoreCallback', () => {
+  let component: IoCheckbox;
+
+  beforeEach(() => {
+    component = new IoCheckbox();
+    (component as any).el = document.createElement('io-checkbox');
+    (component as any).label = 'Accept terms';
+    component.value = 'yes';
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  it('restores checked=true when state is non-null', () => {
+    (component as any).formStateRestoreCallback('yes');
+    expect(component.checked).toBe(true);
+  });
+
+  it('restores checked=false when state is null', () => {
+    component.checked = true;
+    (component as any).formStateRestoreCallback(null);
+    expect(component.checked).toBe(false);
+  });
+
+  it('calls syncFormValue after restoring state', () => {
+    const internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).internals = internals;
+    (component as any).formStateRestoreCallback('yes');
+    expect(internals.setFormValue).toHaveBeenCalledWith('yes');
   });
 });

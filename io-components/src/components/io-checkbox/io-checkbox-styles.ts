@@ -12,6 +12,11 @@ export function getCheckboxStyles(): string {
     :host {
       display: block;
       font-family: var(--io-font-primary);
+      --_io-checkbox-scaling: 1;
+    }
+
+    :host([compact]) {
+      --_io-checkbox-scaling: 0.75;
     }
 
     .checkbox-wrapper--disabled {
@@ -23,22 +28,12 @@ export function getCheckboxStyles(): string {
       pointer-events: none;
     }
 
-    /* Loading: spinner replaces the checkbox control visual */
-    .checkbox-control--loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--io-checkbox-size);
-      height: var(--io-checkbox-size);
-      flex-shrink: 0;
-    }
-
     /* ── Label row ──────────────────────────────────────── */
 
     .checkbox-label {
       display: inline-flex;
       align-items: center;
-      gap: var(--io-space-2);
+      gap: calc(var(--io-space-2) * var(--_io-checkbox-scaling, 1));
       cursor: pointer;
       min-height: var(--io-touch-target-min);
       user-select: none;
@@ -48,12 +43,12 @@ export function getCheckboxStyles(): string {
 
     .checkbox-control {
       position: relative;
-      width: var(--io-checkbox-size);
-      height: var(--io-checkbox-size);
+      width: calc(var(--io-checkbox-size, 1rem) * var(--_io-checkbox-scaling, 1));
+      height: calc(var(--io-checkbox-size, 1rem) * var(--_io-checkbox-scaling, 1));
       flex-shrink: 0;
     }
 
-    /* Visually hidden but focusable native input */
+    /* Visually hidden but focusable native input — always in DOM for stable form refs */
     .checkbox-native {
       position: absolute;
       opacity: 0;
@@ -65,12 +60,22 @@ export function getCheckboxStyles(): string {
       z-index: 1;
     }
 
-    /* Custom visual square */
+    /* Loading spinner overlay — absolutely positioned to match control size */
+    .checkbox-custom-spinner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    /* Custom visual square — consumer can override border/bg/icon-color via tokens */
     .checkbox-custom {
       position: absolute;
       inset: 0;
       border-radius: var(--io-checkbox-radius);
-      border: var(--io-checkbox-border-width) solid var(--io-border-interactive);
+      border: var(--io-checkbox-border-width) solid var(--io-checkbox-border-color, var(--io-border-interactive));
       background: transparent;
       display: flex;
       align-items: center;
@@ -81,9 +86,9 @@ export function getCheckboxStyles(): string {
 
     .checkbox-custom--checked,
     .checkbox-custom--indeterminate {
-      background-color: var(--io-color-primary);
-      border-color: var(--io-color-primary);
-      color: var(--io-color-white);
+      background-color: var(--io-checkbox-background-color, var(--io-color-primary));
+      border-color: var(--io-checkbox-background-color, var(--io-color-primary));
+      color: var(--io-checkbox-icon-color, var(--io-color-white));
     }
 
     .checkbox-icon {
@@ -95,7 +100,7 @@ export function getCheckboxStyles(): string {
     /* Hover: tint border when unchecked */
     @media (hover: hover) and (pointer: fine) {
       .checkbox-label:hover .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
-        border-color: var(--io-color-primary);
+        border-color: var(--io-checkbox-border-color, var(--io-color-primary));
       }
     }
 
@@ -106,12 +111,12 @@ export function getCheckboxStyles(): string {
     }
 
     .checkbox-wrapper--state-success .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
-      border-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-color: var(--io-color-state-success, var(--io-color-success));
       border-width: var(--io-checkbox-border-error-width);
     }
 
     .checkbox-wrapper--state-warning .checkbox-custom:not(.checkbox-custom--checked):not(.checkbox-custom--indeterminate) {
-      border-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-color: var(--io-color-state-warning, var(--io-color-warning));
       border-width: var(--io-checkbox-border-error-width);
     }
 
@@ -121,8 +126,14 @@ export function getCheckboxStyles(): string {
       border-width: var(--io-checkbox-border-error-width);
     }
 
-    /* Focus ring on native input → show on custom visual */
-    .checkbox-native:focus-visible + .checkbox-custom {
+    /* Focus ring on native input -> show on custom visual */
+    .checkbox-native:focus-visible + .checkbox-custom,
+    .checkbox-native:focus-visible + .checkbox-custom-spinner + .checkbox-custom {
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    /* Focus ring on native input -> show on spinner when loading */
+    .checkbox-native:focus-visible ~ .checkbox-custom-spinner {
       box-shadow: var(--io-focus-ring-active);
     }
 
@@ -132,6 +143,10 @@ export function getCheckboxStyles(): string {
       font-size: var(--io-font-size-sm);
       color: var(--io-text-primary);
       line-height: var(--io-line-height-normal);
+    }
+
+    :host([compact]) .checkbox-text {
+      font-size: var(--io-font-size-xs);
     }
 
     /* Visually hide label text while keeping it accessible to screen readers */
@@ -163,14 +178,14 @@ export function getCheckboxStyles(): string {
     }
 
     .checkbox-message--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success, var(--io-color-success));
     }
 
     .checkbox-message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning, var(--io-color-warning));
     }
 
-    .checkbox-error--hidden {
+    .checkbox-message--hidden {
       display: none;
     }
 

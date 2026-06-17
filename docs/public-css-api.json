@@ -552,6 +552,24 @@
     "description": "Global interactive border color (WCAG 1.4.11 compliant)."
   },
   {
+    "cssVar": "--io-checkbox-border-color",
+    "classification": "public-api",
+    "component": "io-checkbox",
+    "description": "Override for the checkbox border colour in resting and hover states. Defaults to --io-border-interactive."
+  },
+  {
+    "cssVar": "--io-checkbox-background-color",
+    "classification": "public-api",
+    "component": "io-checkbox",
+    "description": "Override for the checked/indeterminate fill colour. Defaults to --io-color-primary."
+  },
+  {
+    "cssVar": "--io-checkbox-icon-color",
+    "classification": "public-api",
+    "component": "io-checkbox",
+    "description": "Override for the checkmark/indeterminate icon colour. Defaults to --io-color-white."
+  },
+  {
     "cssVar": "--io-divider-color",
     "classification": "public-api",
     "component": "io-divider",

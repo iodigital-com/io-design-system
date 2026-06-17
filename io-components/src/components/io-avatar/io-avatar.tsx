@@ -67,7 +67,14 @@ export class IoAvatar {
 
     // Default: 'presentation' when image is visible (img alt carries the name);
     // 'img' for initials and icon modes so Host IS the labelled image widget.
-    const effectiveRole: IoAvatarRole = this.role ?? (showImage ? 'presentation' : 'img');
+    // Validate role prop — reject empty string and non-IoAvatarRole values.
+    const VALID_ROLES: IoAvatarRole[] = ['img', 'presentation', 'none'];
+    const effectiveRole: IoAvatarRole =
+      this.role && VALID_ROLES.includes(this.role)
+        ? this.role
+        : showImage
+          ? 'presentation'
+          : 'img';
 
     let effectiveAriaLabel: string | undefined;
     if (effectiveRole === 'img') {
@@ -90,7 +97,7 @@ export class IoAvatar {
               class="avatar-img"
               src={this.src}
               alt={this.alt}
-              aria-hidden={this.alt === '' ? 'true' : undefined}
+              aria-hidden={effectiveRole === 'img' || this.alt === '' ? 'true' : undefined}
               onError={this.handleImgError}
             />
           )}

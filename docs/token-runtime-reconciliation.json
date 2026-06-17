@@ -280,6 +280,14 @@
       "notes": "Avatar text token: purple variant uses white (#ffffff)."
     },
     {
+      "runtimeCssVar": "--io-avatar-icon-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar icon size token. Defaults to --io-icon-size-md."
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

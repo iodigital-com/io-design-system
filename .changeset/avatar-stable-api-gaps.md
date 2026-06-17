@@ -1,5 +1,5 @@
 ---
-"@io-digital/components": minor
+"@iodigital-com/components": minor
 ---
 
 feat(io-avatar): add `role` prop and fix ARIA role/label logic (#626)

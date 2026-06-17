@@ -26,7 +26,8 @@
         "name": "string | undefined",
         "shape": "IoAvatarShape",
         "size": "IoAvatarSize",
-        "src": "string | undefined"
+        "src": "string | undefined",
+        "role": "IoAvatarRole | undefined"
       },
       "methods": {},
       "events": {}

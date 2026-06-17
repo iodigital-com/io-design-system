@@ -1018,5 +1018,11 @@
     "classification": "public-api",
     "component": "io-banner",
     "description": "Stack order of the banner overlay. Defaults to --io-z-toast."
+  },
+  {
+    "cssVar": "--io-avatar-icon-size",
+    "classification": "public-api",
+    "component": "io-avatar",
+    "description": "Size of the person icon in the icon-fallback mode. Defaults to --io-icon-size-md (24px)."
   }
 ]

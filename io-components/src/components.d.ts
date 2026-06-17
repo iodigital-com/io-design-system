@@ -261,6 +261,11 @@ export namespace Components {
      * </io-breadcrumb>
      */
     interface IoBreadcrumb {
+        /**
+          * Accessible label for the nav landmark. Override for non-English UIs or when multiple breadcrumbs appear on the same page (WCAG 2.4.6 / 4.1.2).
+          * @default 'Breadcrumb'
+         */
+        "label": string;
     }
     /**
      * io-breadcrumb-item
@@ -284,6 +289,14 @@ export namespace Components {
           * URL this breadcrumb item links to. When omitted the item renders as plain text.
          */
         "href"?: string;
+        /**
+          * Accessible name override for the link or current-page span. Use when slot content alone is insufficient (e.g. icon-only items) (WCAG 4.1.2).
+         */
+        "itemLabel"?: string;
+        /**
+          * Anchor target attribute (e.g. '_blank'). When '_blank', rel="noopener noreferrer" is added automatically for security (WCAG 3.2.2).
+         */
+        "target"?: string;
     }
     /**
      * io-button
@@ -877,8 +890,25 @@ export namespace Components {
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
      * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
+        /**
+          * Icon rendered on the action button. Defaults to 'arrow-right'.
+          * @default 'arrow-right'
+         */
+        "actionIcon": IoIconName;
+        /**
+          * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, the action button shows a loading spinner and interaction is suppressed.
+          * @default false
+         */
+        "actionLoading": boolean;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -2976,6 +3006,7 @@ declare global {
     };
     interface HTMLIoInlineNotificationElementEventMap {
         "dismiss": void;
+        "action": void;
     }
     /**
      * io-inline-notification
@@ -2991,6 +3022,9 @@ declare global {
      * </io-inline-notification>
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
+     * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
      * </io-inline-notification>
      */
     interface HTMLIoInlineNotificationElement extends Components.IoInlineNotification, HTMLStencilElement {
@@ -4078,6 +4112,11 @@ declare namespace LocalJSX {
      * </io-breadcrumb>
      */
     interface IoBreadcrumb {
+        /**
+          * Accessible label for the nav landmark. Override for non-English UIs or when multiple breadcrumbs appear on the same page (WCAG 2.4.6 / 4.1.2).
+          * @default 'Breadcrumb'
+         */
+        "label"?: string;
     }
     /**
      * io-breadcrumb-item
@@ -4101,6 +4140,14 @@ declare namespace LocalJSX {
           * URL this breadcrumb item links to. When omitted the item renders as plain text.
          */
         "href"?: string;
+        /**
+          * Accessible name override for the link or current-page span. Use when slot content alone is insufficient (e.g. icon-only items) (WCAG 4.1.2).
+         */
+        "itemLabel"?: string;
+        /**
+          * Anchor target attribute (e.g. '_blank'). When '_blank', rel="noopener noreferrer" is added automatically for security (WCAG 3.2.2).
+         */
+        "target"?: string;
     }
     /**
      * io-button
@@ -4700,8 +4747,25 @@ declare namespace LocalJSX {
      * <io-inline-notification variant="error" dismissible>
      *   Failed to save. Please try again.
      * </io-inline-notification>
+     * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+     *   Your trip is ready to be logged.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
+        /**
+          * Icon rendered on the action button. Defaults to 'arrow-right'.
+          * @default 'arrow-right'
+         */
+        "actionIcon"?: IoIconName;
+        /**
+          * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, the action button shows a loading spinner and interaction is suppressed.
+          * @default false
+         */
+        "actionLoading"?: boolean;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -4715,6 +4779,10 @@ declare namespace LocalJSX {
           * Optional bold heading rendered above the slotted content
          */
         "heading"?: string;
+        /**
+          * Emitted when the action button is clicked (not emitted while actionLoading is true)
+         */
+        "onAction"?: (event: IoInlineNotificationCustomEvent<void>) => void;
         /**
           * Emitted when the dismiss button is clicked
          */
@@ -6353,9 +6421,14 @@ declare namespace LocalJSX {
         "dismissible": boolean;
         "dismissLabel": string;
     }
+    interface IoBreadcrumbAttributes {
+        "label": string;
+    }
     interface IoBreadcrumbItemAttributes {
         "href": string;
         "current": boolean;
+        "target": string;
+        "itemLabel": string;
     }
     interface IoButtonAttributes {
         "variant": IoButtonVariant;
@@ -6465,6 +6538,9 @@ declare namespace LocalJSX {
         "heading": string;
         "dismissible": boolean;
         "dismissLabel": string;
+        "actionLabel": string;
+        "actionIcon": IoIconName;
+        "actionLoading": boolean;
     }
     interface IoInputAttributes {
         "label": string;
@@ -6538,11 +6614,11 @@ declare namespace LocalJSX {
         "focused": boolean;
     }
     interface IoPaginationAttributes {
-        "compact": boolean;
         "page": number;
         "totalPages": number;
         "totalItems": number;
         "perPage": number;
+        "compact": boolean;
         "prevLabel": string;
         "nextLabel": string;
     }
@@ -6746,7 +6822,7 @@ declare namespace LocalJSX {
         "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-banner": Omit<IoBanner, keyof IoBannerAttributes> & { [K in keyof IoBanner & keyof IoBannerAttributes]?: IoBanner[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `attr:${K}`]?: IoBannerAttributes[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `prop:${K}`]?: IoBanner[K] };
-        "io-breadcrumb": IoBreadcrumb;
+        "io-breadcrumb": Omit<IoBreadcrumb, keyof IoBreadcrumbAttributes> & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes]?: IoBreadcrumb[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `attr:${K}`]?: IoBreadcrumbAttributes[K] } & { [K in keyof IoBreadcrumb & keyof IoBreadcrumbAttributes as `prop:${K}`]?: IoBreadcrumb[K] };
         "io-breadcrumb-item": Omit<IoBreadcrumbItem, keyof IoBreadcrumbItemAttributes> & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes]?: IoBreadcrumbItem[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `attr:${K}`]?: IoBreadcrumbItemAttributes[K] } & { [K in keyof IoBreadcrumbItem & keyof IoBreadcrumbItemAttributes as `prop:${K}`]?: IoBreadcrumbItem[K] };
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
@@ -7029,6 +7105,9 @@ declare module "@stencil/core" {
              * </io-inline-notification>
              * <io-inline-notification variant="error" dismissible>
              *   Failed to save. Please try again.
+             * </io-inline-notification>
+             * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
+             *   Your trip is ready to be logged.
              * </io-inline-notification>
              */
             "io-inline-notification": LocalJSX.IntrinsicElements["io-inline-notification"] & JSXBase.HTMLAttributes<HTMLIoInlineNotificationElement>;

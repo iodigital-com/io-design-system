@@ -1,13 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import {
   breadcrumbStoryDefault,
-  breadcrumbStorySlash,
+  breadcrumbStoryGuillemet,
   breadcrumbStoryLong,
+  breadcrumbStoryLabel,
+  breadcrumbStoryTargetBlank,
 } from './io-breadcrumb.stories';
-
-// io-breadcrumb has no dedicated configurator story or propDefinitions export —
-// it uses a purely slot-based declarative API with no configurable props.
-// All three exported stories serve as named stories.
 
 describe('io-breadcrumb storefront stories', () => {
   // ── Named stories ───────────────────────────────────────────────────────
@@ -36,19 +34,19 @@ describe('io-breadcrumb storefront stories', () => {
     });
   });
 
-  describe('breadcrumbStorySlash', () => {
+  describe('breadcrumbStoryGuillemet', () => {
     it('generator with no args does not throw', () => {
-      expect(() => breadcrumbStorySlash.generator?.()).not.toThrow();
+      expect(() => breadcrumbStoryGuillemet.generator?.()).not.toThrow();
     });
 
     it('generator returns non-empty array', () => {
-      const els = breadcrumbStorySlash.generator?.();
+      const els = breadcrumbStoryGuillemet.generator?.();
       expect(Array.isArray(els)).toBe(true);
       expect(els!.length).toBeGreaterThan(0);
     });
 
     it('every returned element has a tag', () => {
-      const els = breadcrumbStorySlash.generator?.() ?? [];
+      const els = breadcrumbStoryGuillemet.generator?.() ?? [];
       for (const el of els) {
         if (el && typeof el === 'object' && 'tag' in el) {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
@@ -75,6 +73,51 @@ describe('io-breadcrumb storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+  });
+
+  describe('breadcrumbStoryLabel', () => {
+    it('generator with no args does not throw', () => {
+      expect(() => breadcrumbStoryLabel.generator?.()).not.toThrow();
+    });
+
+    it('generator returns non-empty array', () => {
+      const els = breadcrumbStoryLabel.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('io-breadcrumb has label property set', () => {
+      const els = breadcrumbStoryLabel.generator?.() ?? [];
+      const breadcrumb = els.find(
+        (el): el is { tag: string; properties: Record<string, unknown>; children: unknown[] } =>
+          typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
+      );
+      expect(breadcrumb?.properties?.label).toBe("Fil d'Ariane");
+    });
+  });
+
+  describe('breadcrumbStoryTargetBlank', () => {
+    it('generator with no args does not throw', () => {
+      expect(() => breadcrumbStoryTargetBlank.generator?.()).not.toThrow();
+    });
+
+    it('generator returns non-empty array', () => {
+      const els = breadcrumbStoryTargetBlank.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('one io-breadcrumb-item has target="_blank"', () => {
+      const els = breadcrumbStoryTargetBlank.generator?.() ?? [];
+      type BreadcrumbEl = { tag: string; properties: Record<string, unknown>; children?: unknown[] };
+      const root = els.find(
+        (el): el is BreadcrumbEl =>
+          typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
+      );
+      const items = (root?.children ?? []) as BreadcrumbEl[];
+      const blankItem = items.find(c => c?.properties?.target === '_blank');
+      expect(blankItem).toBeDefined();
     });
   });
 });

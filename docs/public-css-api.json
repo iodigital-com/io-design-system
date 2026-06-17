@@ -928,5 +928,35 @@
     "classification": "public-api",
     "component": "io-multi-select",
     "description": "Maximum width of a selected-value chip before text is truncated. Defaults to 160px."
+  },
+  {
+    "cssVar": "--io-breadcrumb-separator",
+    "classification": "public-api",
+    "component": "io-breadcrumb",
+    "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '\u203a')."
+  },
+  {
+    "cssVar": "--io-breadcrumb-font-size",
+    "classification": "public-api",
+    "component": "io-breadcrumb",
+    "description": "Font size for all breadcrumb items and the separator. Overrides the default --io-font-size-sm uniformly."
+  },
+  {
+    "cssVar": "--io-breadcrumb-item-color",
+    "classification": "public-api",
+    "component": "io-breadcrumb",
+    "description": "Text color of breadcrumb link items. Override for dark or brand-coloured surfaces."
+  },
+  {
+    "cssVar": "--io-breadcrumb-current-color",
+    "classification": "public-api",
+    "component": "io-breadcrumb",
+    "description": "Text color of the current page item (rendered as a span). Override when --io-text-secondary lacks sufficient contrast."
+  },
+  {
+    "cssVar": "--io-breadcrumb-separator-color",
+    "classification": "public-api",
+    "component": "io-breadcrumb",
+    "description": "Color of the separator character. Override for dark or brand-coloured containers."
   }
 ]

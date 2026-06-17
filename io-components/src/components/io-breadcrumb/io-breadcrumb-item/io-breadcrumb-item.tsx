@@ -31,22 +31,35 @@ export class IoBreadcrumbItem {
   /** Whether this item represents the current page. Adds aria-current="page". */
   @Prop({ reflect: true }) current = false;
 
+  /**
+   * Anchor target attribute (e.g. '_blank'). When '_blank', rel="noopener noreferrer"
+   * is added automatically for security (WCAG 3.2.2).
+   */
+  @Prop() target?: string;
+
+  /**
+   * Accessible name override for the link or current-page span. Use when slot
+   * content alone is insufficient (e.g. icon-only items) (WCAG 4.1.2).
+   */
+  @Prop() itemLabel?: string;
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { href, current } = this;
+    const { href, current, target, itemLabel } = this;
     const isLink = !!href && !current;
+    const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
     return (
       <Host>
         <style>{getBreadcrumbItemStyles()}</style>
         <li>
           {isLink ? (
-            <a href={href}>
+            <a href={href} target={target} rel={rel} aria-label={itemLabel}>
               <slot />
             </a>
           ) : (
-            <span aria-current={current ? 'page' : undefined}>
+            <span aria-current={current ? 'page' : undefined} aria-label={itemLabel}>
               <slot />
             </span>
           )}

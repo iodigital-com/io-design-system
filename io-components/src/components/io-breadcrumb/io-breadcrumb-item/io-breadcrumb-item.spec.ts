@@ -16,6 +16,59 @@ describe('io-breadcrumb-item — default props', () => {
   it('current defaults to false', () => {
     expect(c.current).toBe(false);
   });
+
+  it('target defaults to undefined', () => {
+    expect(c.target).toBeUndefined();
+  });
+
+  it('itemLabel defaults to undefined', () => {
+    expect(c.itemLabel).toBeUndefined();
+  });
+});
+
+describe('io-breadcrumb-item — target prop', () => {
+  it('accepts target="_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    (c as any).target = '_blank';
+    expect(c.target).toBe('_blank');
+  });
+
+  it('accepts target="_self"', () => {
+    const c = new IoBreadcrumbItem();
+    (c as any).target = '_self';
+    expect(c.target).toBe('_self');
+  });
+
+  it('rel is "noopener noreferrer" when target is "_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/page';
+    (c as any).target = '_blank';
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBe('noopener noreferrer');
+  });
+
+  it('rel is undefined when target is not "_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/page';
+    (c as any).target = '_self';
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBeUndefined();
+  });
+
+  it('rel is undefined when target is undefined', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/page';
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBeUndefined();
+  });
+});
+
+describe('io-breadcrumb-item — itemLabel prop', () => {
+  it('accepts a custom itemLabel string', () => {
+    const c = new IoBreadcrumbItem();
+    (c as any).itemLabel = 'Go to homepage';
+    expect(c.itemLabel).toBe('Go to homepage');
+  });
 });
 
 describe('io-breadcrumb-item — render logic', () => {

@@ -38,7 +38,7 @@ export const breadcrumbStoryGuillemet: Story<'io-breadcrumb'> = {
   <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
   <io-breadcrumb-item current>Team</io-breadcrumb-item>
 </io-breadcrumb>`,
-    vue: `<io-breadcrumb :style="{ '--io-breadcrumb-separator': \"'›'\" }">
+    vue: `<io-breadcrumb :style="{ '--io-breadcrumb-separator': "'›'" }">
   <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
   <io-breadcrumb-item href="/about">About</io-breadcrumb-item>
   <io-breadcrumb-item current>Team</io-breadcrumb-item>

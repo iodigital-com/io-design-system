@@ -136,4 +136,28 @@ describe('io-checkbox — FACE', () => {
     expect(c.checked).toBe(true);
     expect(internals.setFormValue).toHaveBeenLastCalledWith('yes');
   });
+
+  it('formStateRestoreCallback sets checked=true when state is non-null', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.checked = false;
+    (component as any).formStateRestoreCallback('yes');
+    expect(component.checked).toBe(true);
+  });
+
+  it('formStateRestoreCallback sets checked=false when state is null', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.checked = true;
+    (component as any).formStateRestoreCallback(null);
+    expect(component.checked).toBe(false);
+  });
+
+  it('formStateRestoreCallback calls syncFormValue — updates FormData', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.value = 'yes';
+    (component as any).formStateRestoreCallback('yes');
+    expect(internals.setFormValue).toHaveBeenCalledWith('yes');
+  });
 });

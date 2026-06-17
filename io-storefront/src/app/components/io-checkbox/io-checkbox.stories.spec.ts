@@ -7,6 +7,7 @@ import {
   checkboxStoryIndeterminate,
   checkboxStoryError,
   checkboxStoryDisabled,
+  checkboxStoryCompact,
 } from './io-checkbox.stories';
 
 describe('io-checkbox storefront stories', () => {
@@ -182,6 +183,13 @@ describe('io-checkbox storefront stories', () => {
       expect(((stateDef as unknown as { options: string[] })).options).toContain('success');
       expect(((stateDef as unknown as { options: string[] })).options).toContain('warning');
     });
+
+    it('includes compact boolean definition', () => {
+      const compactDef = checkboxPropDefinitions.find((d) => d.name === 'compact');
+      expect(compactDef).toBeDefined();
+      expect(compactDef?.type).toBe('boolean');
+      expect(compactDef?.defaultValue).toBe(false);
+    });
   });
 
   // ── Named stories ───────────────────────────────────────────────────────
@@ -267,6 +275,29 @@ describe('io-checkbox storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+  });
+
+  describe('checkboxStoryCompact', () => {
+    it('generator returns non-empty array', () => {
+      const els = checkboxStoryCompact.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = checkboxStoryCompact.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('story sets compact to true', () => {
+      const els = checkboxStoryCompact.generator?.() ?? [];
+      const first = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(first.properties.compact).toBe(true);
     });
   });
 });

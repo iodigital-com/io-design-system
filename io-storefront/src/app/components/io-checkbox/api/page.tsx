@@ -38,8 +38,8 @@ export default function IoCheckboxApiPage() {
             [
               <InlineCode key="n">value</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
-              <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Value submitted with the form when the checkbox is checked. Passed as the value field in the change event detail.',
+              <InlineCode key="d">&apos;on&apos;</InlineCode>,
+              'Value submitted with the form when the checkbox is checked. Matches the native HTML checkbox default (RFC 1866 §8.1.2). Unchecked checkboxes always submit null to FormData.',
             ],
             [
               <span key="n"><InlineCode>checked</InlineCode></span>,
@@ -66,6 +66,12 @@ export default function IoCheckboxApiPage() {
               'Disables the checkbox. Renders at reduced opacity and blocks all pointer events. Sets the native disabled attribute.',
             ],
             [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Replaces the checkbox visual with a spinner and disables interaction. The native input stays in the DOM for stable form-library refs, and aria-disabled="true" is set on it.',
+            ],
+            [
               <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
               <InlineCode key="d">&apos;none&apos;</InlineCode>,
@@ -83,6 +89,24 @@ export default function IoCheckboxApiPage() {
               '—',
               'Helper text shown below the checkbox when state is none. Hidden when any validation state is active.',
             ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Dense layout mode. Reduces the checkbox control to 75% of its standard size and uses a smaller label font. Use in data-dense UIs such as tables or filter panels.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label text while keeping it accessible to screen readers via sr-only technique.',
+            ],
+            [
+              <InlineCode key="n">form</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Associates this field with a form element by ID — enables out-of-DOM form participation via the FACE API.',
+            ],
           ]}
         />
       </section>
@@ -96,16 +120,25 @@ export default function IoCheckboxApiPage() {
         <ApiTable
           columns={[
             { label: 'Event', width: '160px' },
-            { label: 'Detail type', width: '220px' },
+            { label: 'Detail type', width: '240px' },
             { label: 'Bubbles', width: '100px' },
+            { label: 'Composed', width: '100px' },
             { label: 'Description' },
           ]}
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">{'{ checked: boolean; value: string }'}</InlineCode>,
-              'No',
+              'Yes',
+              'Yes',
               'Fires when the user toggles the checkbox. The detail contains the new checked state and the current value string.',
+            ],
+            [
+              <InlineCode key="n">blur</InlineCode>,
+              <InlineCode key="t">FocusEvent</InlineCode>,
+              'No',
+              'Yes',
+              'Fires when the inner input loses focus. Use for form library touched/dirty tracking. The native FocusEvent is re-emitted after stopPropagation() so shadow-boundary leakage is prevented.',
             ],
           ]}
         />
@@ -115,18 +148,21 @@ document.querySelector('io-checkbox')
   .addEventListener('change', (e) => {
     console.log('checked:', e.detail.checked, 'value:', e.detail.value);
   });
+document.querySelector('io-checkbox')
+  .addEventListener('blur', () => markFieldAsTouched());
 
 // React
 <IoCheckbox
   label="Accept terms"
   onChange={(e) => setAccepted(e.detail.checked)}
+  onBlur={() => setTouched(true)}
 />
 
 // Angular
-<io-checkbox label="Accept terms" (change)="onCheck($event)"></io-checkbox>
+<io-checkbox label="Accept terms" (change)="onCheck($event)" (blur)="onTouch()"></io-checkbox>
 
 // Vue
-<io-checkbox label="Accept terms" @change="handleChange" />`}
+<io-checkbox label="Accept terms" @change="handleChange" @blur="handleBlur" />`}
         </CodeNote>
       </section>
 
@@ -138,8 +174,8 @@ document.querySelector('io-checkbox')
         />
         <ApiTable
           columns={[
-            { label: 'Method', width: '160px' },
-            { label: 'Signature', width: '320px' },
+            { label: 'Method', width: '200px' },
+            { label: 'Signature', width: '340px' },
             { label: 'Description' },
           ]}
           rows={[
@@ -147,6 +183,16 @@ document.querySelector('io-checkbox')
               <InlineCode key="n">setFocus</InlineCode>,
               <InlineCode key="s">(options?: FocusOptions) =&gt; Promise&lt;void&gt;</InlineCode>,
               'Programmatically moves focus to the native checkbox input element. Use to return focus after a modal closes or to direct the user to a required field.',
+            ],
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity without showing browser validation UI. Returns true if valid.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity and shows browser validation UI if invalid. Returns true if valid.',
             ],
           ]}
         />
@@ -175,15 +221,15 @@ document.querySelector('io-checkbox')
         />
         <ApiTable
           columns={[
-            { label: 'Property', width: '280px' },
-            { label: 'Default', width: '220px' },
+            { label: 'Property', width: '300px' },
+            { label: 'Default', width: '240px' },
             { label: 'Description' },
           ]}
           rows={[
             [
               <InlineCode key="n">--io-checkbox-size</InlineCode>,
               <InlineCode key="d">1rem</InlineCode>,
-              'Width and height of the checkbox control square.',
+              'Width and height of the checkbox control square. In compact mode this is scaled to 75% automatically.',
             ],
             [
               <InlineCode key="n">--io-checkbox-radius</InlineCode>,
@@ -204,6 +250,21 @@ document.querySelector('io-checkbox')
               <InlineCode key="n">--io-checkbox-icon-size</InlineCode>,
               <InlineCode key="d">10px</InlineCode>,
               'Width of the checkmark SVG icon rendered inside the checkbox.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-border-color</InlineCode>,
+              <InlineCode key="d">var(--io-border-interactive)</InlineCode>,
+              'Override the resting and hover border colour. Use for contextual themes where the checkbox is embedded inside a custom label with its own hover style.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-background-color</InlineCode>,
+              <InlineCode key="d">var(--io-color-primary)</InlineCode>,
+              'Override the checked/indeterminate fill colour. Use for brand variants or error-state checked appearance without !important overrides.',
+            ],
+            [
+              <InlineCode key="n">--io-checkbox-icon-color</InlineCode>,
+              <InlineCode key="d">var(--io-color-white)</InlineCode>,
+              'Override the checkmark and indeterminate dash icon colour independently from the background fill.',
             ],
           ]}
         />

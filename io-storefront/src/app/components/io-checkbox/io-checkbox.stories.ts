@@ -9,6 +9,7 @@ export const checkboxStory: Story<'io-checkbox'> = {
       indeterminate: false,
       required: false,
       disabled: false,
+      compact: false,
       state: 'none',
       message: '',
       helperText: '',
@@ -23,6 +24,7 @@ export const checkboxStory: Story<'io-checkbox'> = {
         indeterminate: (properties?.indeterminate as boolean) ?? false,
         required: (properties?.required as boolean) ?? false,
         disabled: (properties?.disabled as boolean) ?? false,
+        compact: (properties?.compact as boolean) ?? false,
         error: (properties?.error as boolean) ?? false,
         errorMessage: (properties?.errorMessage as string) ?? undefined,
         helperText: (properties?.helperText as string) ?? undefined,
@@ -95,6 +97,20 @@ export const checkboxStoryDisabled: Story<'io-checkbox'> = {
   ],
 };
 
+export const checkboxStoryCompact: Story<'io-checkbox'> = {
+  state: { properties: { label: 'Compact checkbox', compact: true } },
+  generator: () => [
+    {
+      tag: 'io-checkbox' as const,
+      properties: { label: 'Compact checkbox', compact: true },
+    },
+    {
+      tag: 'io-checkbox' as const,
+      properties: { label: 'Compact checked', compact: true, checked: true },
+    },
+  ],
+};
+
 export const checkboxPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
@@ -144,5 +160,11 @@ export const checkboxPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Displays supporting guidance below the checkbox.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Dense layout mode — reduces checkbox size and label gap for data-dense UIs.',
   },
 ];

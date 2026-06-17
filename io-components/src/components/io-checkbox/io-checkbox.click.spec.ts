@@ -74,3 +74,78 @@ describe('io-checkbox — event behavior', () => {
     expect(component.indeterminate).toBe(true);
   });
 });
+
+describe('io-checkbox — blur event', () => {
+  let component: IoCheckbox;
+  let blurEmitMock: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoCheckbox();
+    (component as any).el = document.createElement('io-checkbox');
+    blurEmitMock = vi.fn();
+    (component as any).blur = { emit: blurEmitMock };
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('emits blur event when onBlur handler is called', () => {
+    const ev = new FocusEvent('blur');
+    const stopPropagationSpy = vi.spyOn(ev, 'stopPropagation');
+    const stopImmediatePropagationSpy = vi.spyOn(ev, 'stopImmediatePropagation');
+    (component as any).onBlur(ev);
+    expect(blurEmitMock).toHaveBeenCalledWith(ev);
+    expect(stopPropagationSpy).toHaveBeenCalled();
+    expect(stopImmediatePropagationSpy).toHaveBeenCalled();
+  });
+
+  it('stops propagation before emitting blur', () => {
+    const calls: string[] = [];
+    const ev = new FocusEvent('blur');
+    vi.spyOn(ev, 'stopPropagation').mockImplementation(() => calls.push('stop'));
+    blurEmitMock.mockImplementation(() => calls.push('emit'));
+    (component as any).onBlur(ev);
+    expect(calls[0]).toBe('stop');
+    expect(calls[1]).toBe('emit');
+  });
+});
+
+describe('io-checkbox — keydown Space guard', () => {
+  let component: IoCheckbox;
+
+  beforeEach(() => {
+    component = new IoCheckbox();
+    (component as any).el = document.createElement('io-checkbox');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+  });
+
+  it('prevents default on Space when disabled', () => {
+    component.disabled = true;
+    const ev = new KeyboardEvent('keydown', { key: ' ' });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  it('prevents default on Space when loading', () => {
+    component.loading = true;
+    const ev = new KeyboardEvent('keydown', { key: ' ' });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+
+  it('does not prevent default on Space when interactive', () => {
+    const ev = new KeyboardEvent('keydown', { key: ' ' });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev);
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+  });
+
+  it('does not prevent default on Enter key when disabled', () => {
+    component.disabled = true;
+    const ev = new KeyboardEvent('keydown', { key: 'Enter' });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev);
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+  });
+});

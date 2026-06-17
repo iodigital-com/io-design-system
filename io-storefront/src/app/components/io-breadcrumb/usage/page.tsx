@@ -70,16 +70,35 @@ export default function IoBreadcrumbUsagePage() {
         </div>
       </section>
 
+      {/* ── Localisation ─────────────────────────────────────────── */}
+      <section id="localisation" className="space-y-6">
+        <SectionHeader
+          title="Localisation"
+          description="Override the nav aria-label via the label prop for non-English deployments or multi-breadcrumb pages."
+        />
+        <div className="space-y-3">
+          <RuleCard label="label prop">
+            The default <C>aria-label</C> is <C>&apos;Breadcrumb&apos;</C>. Override it for non-English UIs or when multiple
+            breadcrumbs appear on the same page to satisfy WCAG 2.4.6 and prevent duplicate unlabelled landmark violations.
+            Example: <C>{`<io-breadcrumb label="Fil d'Ariane">`}</C>
+          </RuleCard>
+          <RuleCard label="Multiple breadcrumbs on one page">
+            When two breadcrumbs coexist on a page (e.g. global and contextual), give each a distinct <C>label</C> value
+            so screen reader landmark navigation distinguishes them.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── Separator customization ──────────────────────────────── */}
       <section id="separator" className="space-y-6">
         <SectionHeader
           title="Separator customization"
-          description="The separator between items defaults to '›' and can be overridden with a CSS custom property."
+          description="The separator between items defaults to '/' and can be overridden with a CSS custom property."
         />
         <div className="space-y-3">
           <RuleCard label="CSS custom property">
             Override the separator character by setting <C>--io-breadcrumb-separator</C> on the <C>io-breadcrumb</C> element or any ancestor.
-            Example: <C>{`io-breadcrumb { --io-breadcrumb-separator: '/'; }`}</C>
+            Example: <C>{`io-breadcrumb { --io-breadcrumb-separator: '›'; }`}</C>
           </RuleCard>
           <RuleCard label="Separators are aria-hidden">
             Separator spans have <C>aria-hidden="true"</C> — they are decorative and are not announced by screen readers.

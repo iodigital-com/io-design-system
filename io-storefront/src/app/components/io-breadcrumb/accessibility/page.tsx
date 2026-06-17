@@ -17,9 +17,9 @@ export default function IoBreadcrumbAccessibilityPage() {
         <AriaTable
           rows={[
             {
-              attribute: 'aria-label="Breadcrumb"',
+              attribute: 'aria-label (from label prop)',
               value: 'On the wrapping <nav>',
-              description: 'Labels the landmark so screen readers can identify it in the landmarks list. Without this label, multiple unlabelled nav elements on a page become indistinguishable.',
+              description: "Labels the landmark so screen readers can identify it in the landmarks list. Defaults to 'Breadcrumb'. Override via the label prop for non-English UIs or when two breadcrumbs coexist on the same page (WCAG 2.4.6).",
             },
             {
               attribute: 'aria-current="page"',
@@ -78,6 +78,18 @@ export default function IoBreadcrumbAccessibilityPage() {
             title="Contrast (Minimum)"
             note="Link text uses --io-color-primary (Energetic Blue). Current page text uses --io-text-secondary. Both meet the 4.5:1 contrast ratio requirement against standard page backgrounds."
           />
+          <ComplianceCard
+            criterion="2.4.11"
+            level="AA"
+            title="Focus Appearance"
+            note="Link focus ring uses both outline (2px solid --io-focus-inner) and box-shadow (0 0 0 4px --io-focus-outer), matching the system-wide focus pattern established across iO DS interactive components."
+          />
+          <ComplianceCard
+            criterion="2.4.6"
+            level="AA"
+            title="Headings and Labels"
+            note="The nav aria-label defaults to 'Breadcrumb' and can be localised via the label prop. Non-English deployments should override this value to match the visible UI language."
+          />
         </div>
       </section>
 
@@ -94,7 +106,10 @@ export default function IoBreadcrumbAccessibilityPage() {
           Slot text should match the destination page&apos;s <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<title>'}</code> or <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>{'<h1>'}</code>. Avoid abbreviations or internal codes that are not meaningful to users.
         </RuleCard>
         <RuleCard label="Ensure links are keyboard accessible">
-          Links inside <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-breadcrumb-item</code> receive focus naturally. Do not suppress focus styles — the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>--io-focus-inner</code> ring is applied on <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>:focus-visible</code>.
+          Links inside <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-breadcrumb-item</code> receive focus naturally. Do not suppress focus styles — the focus ring uses both <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>--io-focus-inner</code> (outline) and <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>--io-focus-outer</code> (box-shadow) on <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>:focus-visible</code> to satisfy WCAG 2.4.11.
+        </RuleCard>
+        <RuleCard label="Localise the nav aria-label">
+          Always set the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code> prop when deploying in a non-English language. The default value <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&apos;Breadcrumb&apos;</code> will mismatch the UI language and violate WCAG 2.4.6.
         </RuleCard>
       </section>
 

@@ -1,4 +1,4 @@
-import { Component, Element, Host, h } from '@stencil/core';
+import { Component, Element, Host, Prop, h } from '@stencil/core';
 
 import { getBreadcrumbStyles } from './io-breadcrumb-styles';
 
@@ -27,6 +27,14 @@ type BreadcrumbItem = Element & { current: boolean };
 export class IoBreadcrumb {
   @Element() el!: HTMLElement;
 
+  // ── Props ─────────────────────────────────────────────────────
+
+  /**
+   * Accessible label for the nav landmark. Override for non-English UIs or when
+   * multiple breadcrumbs appear on the same page (WCAG 2.4.6 / 4.1.2).
+   */
+  @Prop() label = 'Breadcrumb';
+
   // ── Slot handling ─────────────────────────────────────────────
 
   private handleSlotChange = () => {
@@ -44,7 +52,7 @@ export class IoBreadcrumb {
     return (
       <Host>
         <style>{getBreadcrumbStyles()}</style>
-        <nav aria-label="Breadcrumb">
+        <nav aria-label={this.label}>
           <ol>
             <slot onSlotchange={this.handleSlotChange} />
           </ol>

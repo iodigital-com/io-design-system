@@ -520,6 +520,13 @@
   --io-avatar-font-weight:       var(--io-font-weight-semibold, 600);
   --io-avatar-border-radius:     50%;
 
+  /* Breadcrumb */
+  --io-breadcrumb-separator:        '/';
+  --io-breadcrumb-font-size:        var(--io-font-size-sm);
+  --io-breadcrumb-item-color:       var(--io-color-primary);
+  --io-breadcrumb-current-color:    var(--io-text-secondary);
+  --io-breadcrumb-separator-color:  var(--io-color-grey-4);
+
   /* Accordion */
   --io-accordion-max-height:     600px;
   --io-accordion-icon-bar-thickness: 8%;

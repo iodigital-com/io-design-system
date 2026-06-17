@@ -11,7 +11,7 @@ export function getBannerStyles(): string {
       left: var(--io-banner-inset-x, var(--io-space-4));
       right: var(--io-banner-inset-x, var(--io-space-4));
       margin: 0 auto;
-      max-width: var(--io-banner-max-w, 768px);
+      max-width: var(--io-banner-max-w, var(--io-breakpoint-md, 768px));
       z-index: var(--io-banner-z-index, var(--io-z-toast));
 
       display: flex;
@@ -86,6 +86,8 @@ export function getBannerStyles(): string {
 
     .banner__heading {
       display: block;
+      margin: 0;
+      font-size: inherit;
       font-weight: var(--io-font-weight-semibold);
       color: var(--io-text-primary);
     }
@@ -108,8 +110,8 @@ export function getBannerStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 24px;
-      min-height: 24px;
+      min-width: var(--io-space-6);
+      min-height: var(--io-space-6);
       padding: 0;
       background: transparent;
       border: none;

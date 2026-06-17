@@ -67,6 +67,29 @@ describe('io-banner — Escape key dismiss (WCAG 2.1.2)', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
+  it('handleKeyDown does not call handleDismiss when dismissible=false', () => {
+    c.dismissible = false;
+    const spy = vi.spyOn(c as any, 'handleDismiss');
+    (c as any).handleKeyDown({ key: 'Escape' });
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('onDismissibleChange attaches listener when banner is open and dismissible becomes true', () => {
+    c.open = true;
+    const addSpy = vi.spyOn(document, 'addEventListener');
+    (c as any).onDismissibleChange(true);
+    expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    addSpy.mockRestore();
+  });
+
+  it('onDismissibleChange removes listener when banner is open and dismissible becomes false', () => {
+    c.open = true;
+    const removeSpy = vi.spyOn(document, 'removeEventListener');
+    (c as any).onDismissibleChange(false);
+    expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    removeSpy.mockRestore();
+  });
+
   it('onOpenChange attaches keydown listener when open becomes true and dismissible', () => {
     const addSpy = vi.spyOn(document, 'addEventListener');
     (c as any).onOpenChange(true);

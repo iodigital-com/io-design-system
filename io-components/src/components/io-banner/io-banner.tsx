@@ -80,7 +80,7 @@ export class IoBanner {
   };
 
   private handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.key === 'Escape') this.handleDismiss();
+    if (e.key === 'Escape' && this.dismissible) this.handleDismiss();
   };
 
   componentWillLoad(): void {
@@ -106,6 +106,17 @@ export class IoBanner {
       this.needsFocus = true;
     } else {
       document.removeEventListener('keydown', this.handleKeyDown);
+    }
+  }
+
+  @Watch('dismissible')
+  onDismissibleChange(newVal: boolean): void {
+    if (this.open) {
+      if (newVal) {
+        document.addEventListener('keydown', this.handleKeyDown);
+      } else {
+        document.removeEventListener('keydown', this.handleKeyDown);
+      }
     }
   }
 

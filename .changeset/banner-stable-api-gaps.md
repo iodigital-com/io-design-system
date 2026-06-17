@@ -1,5 +1,5 @@
 ---
-"@io-digital/components": minor
+"@iodigital-com/components": minor
 ---
 
 feat(io-banner): Escape key dismiss, focus management, warning→assertive, position prop (#628)

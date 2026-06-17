@@ -70,6 +70,17 @@ export default function IoAvatarApiPage() {
               <InlineCode key="d">&apos;circle&apos;</InlineCode>,
               <span key="desc">Shape of the avatar container. One of: <InlineCode>circle</InlineCode> <InlineCode>square</InlineCode></span>,
             ],
+            [
+              <InlineCode key="n">role</InlineCode>,
+              <InlineCode key="t">IoAvatarRole | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>auto</span>,
+              <span key="desc">
+                ARIA role on the host element. Defaults to <InlineCode>presentation</InlineCode> when an image is visible
+                (the <InlineCode>img</InlineCode> element carries its own accessible name via <InlineCode>alt</InlineCode>) and to{' '}
+                <InlineCode>img</InlineCode> for initials and icon fallback modes. Pass <InlineCode>presentation</InlineCode> or{' '}
+                <InlineCode>none</InlineCode> for purely decorative avatars so assistive technology skips the element. (WCAG 4.1.2)
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -111,6 +122,7 @@ export default function IoAvatarApiPage() {
             { label: 'Default' },
           ]}
           rows={[
+            [<InlineCode key="t">--io-avatar-icon-size</InlineCode>, <span key="v" style={{ color: 'var(--io-text-secondary)' }}>var(--io-icon-size-md) (20px)</span>],
             [<InlineCode key="t">--io-avatar-bg-blue</InlineCode>, <span key="v" style={{ color: 'var(--io-text-secondary)' }}>var(--io-color-primary)</span>],
             [<InlineCode key="t">--io-avatar-bg-orange</InlineCode>, <span key="v" style={{ color: 'var(--io-text-secondary)' }}>var(--io-color-orange)</span>],
             [<InlineCode key="t">--io-avatar-bg-green</InlineCode>, <span key="v" style={{ color: 'var(--io-text-secondary)' }}>#1a7a4a</span>],

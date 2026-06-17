@@ -1,18 +1,18 @@
-import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core';
 
 import { getBannerStyles } from './io-banner-styles';
-import type { IoBannerVariant } from './types';
+import type { IoBannerVariant, IoBannerPosition, IoBannerHeadingTag } from './types';
 
 /**
  * io-banner
  * =========
- * Full-width page-level notification strip with four severity variants.
+ * Fixed-position page-level notification banner with four severity variants.
  * Visibility is controlled by the `open` prop — the host hides itself when open=false.
- * Set open=true to show and wire the dismiss event to set it back to false.
+ * Set open=true to show; wire the dismiss event to set it back to false.
  *
  * ARIA live region strategy:
- *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
- *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+ *   - error / warning variants: role="alert" on inner .banner div (assertive)
+ *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
  *
  * Role is placed on the conditionally-rendered inner div so the live region only exists
  * while the banner is visible — prevents spurious announcements when open=false.
@@ -31,11 +31,19 @@ import type { IoBannerVariant } from './types';
   shadow: { delegatesFocus: true },
 })
 export class IoBanner {
+  @Element() el!: HTMLElement;
+
   /** Severity variant — controls icon, colour, and aria-live politeness */
   @Prop({ reflect: true }) variant: IoBannerVariant = 'info';
 
   /** Optional bold heading rendered above the slotted content */
   @Prop() heading?: string;
+
+  /** Semantic HTML tag for the heading element (WCAG 1.3.1) */
+  @Prop() headingTag: IoBannerHeadingTag = 'h5';
+
+  /** Optional description text rendered as a <p> below the heading */
+  @Prop() description?: string;
 
   /** Controls visibility. Set to true to show the banner. */
   @Prop({ mutable: true, reflect: true }) open = false;
@@ -43,16 +51,22 @@ export class IoBanner {
   /** When true, renders a dismiss button that emits the `dismiss` event and closes the banner */
   @Prop() dismissible = false;
 
+  /** Screen position of the fixed banner — top or bottom of the viewport */
+  @Prop({ reflect: true }) position: IoBannerPosition = 'top';
+
   /**
    * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set,
    * otherwise "Dismiss {variant} notification".
    */
   @Prop() dismissLabel?: string;
 
-  /** Emitted when the dismiss button is clicked */
+  /** Emitted when the dismiss button is clicked or Escape is pressed */
   @Event() dismiss!: EventEmitter<void>;
 
   @State() private hasContent = false;
+
+  /** Set to true in @Watch('open') to focus the dismiss button after the next render */
+  private needsFocus = false;
 
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
@@ -65,6 +79,58 @@ export class IoBanner {
     this.dismiss.emit();
   };
 
+  private handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.key === 'Escape' && this.dismissible) this.handleDismiss();
+  };
+
+  componentWillLoad(): void {
+    if (this.open && this.dismissible) {
+      this.needsFocus = true;
+    }
+  }
+
+  connectedCallback(): void {
+    if (this.open && this.dismissible) {
+      document.addEventListener('keydown', this.handleKeyDown);
+    }
+  }
+
+  disconnectedCallback(): void {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  @Watch('open')
+  onOpenChange(newVal: boolean): void {
+    if (newVal && this.dismissible) {
+      document.addEventListener('keydown', this.handleKeyDown);
+      this.needsFocus = true;
+    } else {
+      document.removeEventListener('keydown', this.handleKeyDown);
+    }
+  }
+
+  @Watch('dismissible')
+  onDismissibleChange(newVal: boolean): void {
+    if (this.open) {
+      if (newVal) {
+        document.addEventListener('keydown', this.handleKeyDown);
+      } else {
+        document.removeEventListener('keydown', this.handleKeyDown);
+      }
+    }
+  }
+
+  componentDidRender(): void {
+    if (this.needsFocus) {
+      this.needsFocus = false;
+      this.el?.shadowRoot?.querySelector<HTMLButtonElement>('.banner__dismiss')?.focus();
+    }
+  }
+
+  private get isAssertive(): boolean {
+    return this.variant === 'error' || this.variant === 'warning';
+  }
+
   /**
    * @slot - Default slot. Notification message body text or inline elements.
    */
@@ -74,9 +140,9 @@ export class IoBanner {
         <style>{getBannerStyles()}</style>
         {this.open && <div
           class={`banner banner--${this.variant}`}
-          role={this.variant === 'error' ? 'alert' : 'status'}
-          aria-live={this.variant === 'error' ? undefined : 'polite'}
-          aria-atomic={this.variant === 'error' ? undefined : 'true'}
+          role={this.isAssertive ? 'alert' : 'status'}
+          aria-live={this.isAssertive ? undefined : 'polite'}
+          aria-atomic={this.isAssertive ? undefined : 'true'}
         >
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (
@@ -108,7 +174,8 @@ export class IoBanner {
             )}
           </span>
           <div class="banner__body">
-            {this.heading && <strong class="banner__heading">{this.heading}</strong>}
+            {this.heading && h(this.headingTag as any, { class: 'banner__heading' }, this.heading)}
+            {this.description && <p class="banner__description">{this.description}</p>}
             <div class={{ 'banner__content': true, 'banner__content--empty': !this.hasContent }}>
               <slot onSlotchange={(e: Event) => {
                 const slot = e.target as HTMLSlotElement;

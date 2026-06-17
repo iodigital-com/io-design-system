@@ -6,3 +6,6 @@ export type IoAvatarColor = 'blue' | 'orange' | 'green' | 'purple' | 'grey';
 
 /** Shape of the avatar container */
 export type IoAvatarShape = 'circle' | 'square';
+
+/** ARIA role override for the host element */
+export type IoAvatarRole = 'img' | 'presentation' | 'none';

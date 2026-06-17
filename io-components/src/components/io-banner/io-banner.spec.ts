@@ -37,6 +37,18 @@ describe('io-banner — default props', () => {
     expect(c.dismissLabel).toBeUndefined();
   });
 
+  it('defaults headingTag to h5', () => {
+    expect(c.headingTag).toBe('h5');
+  });
+
+  it('defaults position to top', () => {
+    expect(c.position).toBe('top');
+  });
+
+  it('has no description by default', () => {
+    expect(c.description).toBeUndefined();
+  });
+
   it('has no items prop', () => {
     expect((c as any).items).toBeUndefined();
   });
@@ -72,7 +84,17 @@ describe('io-banner — ARIA role mapping', () => {
     expect(attrs['aria-atomic']).toBeUndefined();
   });
 
-  it.each(['info', 'success', 'warning'] as const)(
+  it('uses role="alert" for warning variant (assertive — warns urgently)', () => {
+    const c = new IoBanner();
+    c.variant = 'warning';
+    c.open = true;
+    const attrs = bannerDivAttrs(c);
+    expect(attrs.role).toBe('alert');
+    expect(attrs['aria-live']).toBeUndefined();
+    expect(attrs['aria-atomic']).toBeUndefined();
+  });
+
+  it.each(['info', 'success'] as const)(
     'uses role="status" + aria-live="polite" for %s variant',
     (variant) => {
       const c = new IoBanner();

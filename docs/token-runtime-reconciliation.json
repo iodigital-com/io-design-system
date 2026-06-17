@@ -280,6 +280,14 @@
       "notes": "Avatar text token: purple variant uses white (#ffffff)."
     },
     {
+      "runtimeCssVar": "--io-avatar-icon-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Avatar icon size token. Defaults to --io-icon-size-md."
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -3382,6 +3390,46 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-banner-max-w",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Banner max-width override. Fallback: --io-breakpoint-md (768px)."
+    },
+    {
+      "runtimeCssVar": "--io-banner-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Banner top offset. Fallback: --io-space-4."
+    },
+    {
+      "runtimeCssVar": "--io-banner-bottom",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Banner bottom offset (position=bottom). Fallback: --io-space-4."
+    },
+    {
+      "runtimeCssVar": "--io-banner-inset-x",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Banner horizontal inset from viewport edges. Fallback: --io-space-4."
+    },
+    {
+      "runtimeCssVar": "--io-banner-z-index",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Banner stack order. Fallback: --io-z-toast."
     }
   ]
 }

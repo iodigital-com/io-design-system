@@ -522,6 +522,7 @@
   /* Avatar typography & shape */
   --io-avatar-font-weight:       var(--io-font-weight-semibold, 600);
   --io-avatar-border-radius:     50%;
+  --io-avatar-icon-size:         var(--io-icon-size-md);
 
   /* Breadcrumb */
   --io-breadcrumb-separator:        '/';
@@ -539,6 +540,13 @@
   --io-accordion-py:             initial;
   --io-accordion-px:             initial;
   --io-accordion-summary-top:    initial;
+ 
+  /* Banner — fixed overlay card positioning overrides */
+  --io-banner-max-w:             var(--io-breakpoint-md);
+  --io-banner-top:               var(--io-space-4);
+  --io-banner-bottom:            var(--io-space-4);
+  --io-banner-inset-x:           var(--io-space-4);
+  --io-banner-z-index:           var(--io-z-toast);
 
   /* Dark theme source values */
   --io-color-dark-primary:       #4d4dff;    /* WCAG AA blue on dark bg — contrast 3.4:1 vs #181818 */

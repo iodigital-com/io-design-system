@@ -540,7 +540,7 @@
   --io-accordion-py:             initial;
   --io-accordion-px:             initial;
   --io-accordion-summary-top:    initial;
-
+ 
   /* Banner — fixed overlay card positioning overrides */
   --io-banner-max-w:             var(--io-breakpoint-md);
   --io-banner-top:               var(--io-space-4);

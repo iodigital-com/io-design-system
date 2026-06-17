@@ -1,0 +1,1291 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`io-checkbox — render snapshots > renders checked and indeterminate states 1`] = `
+MockHTMLElement {
+  "__attributeMap": MockAttributeMap {
+    "__items": [
+      MockAttr {
+        "_name": "__self",
+        "_namespaceURI": null,
+        "_value": "[object global]",
+      },
+      MockAttr {
+        "_name": "__source",
+        "_namespaceURI": null,
+        "_value": "[object Object]",
+      },
+    ],
+    "caseInsensitive": true,
+  },
+  "__namespaceURI": "http://www.w3.org/1999/xhtml",
+  "__shadowRoot": null,
+  "__style": undefined,
+  "_childNodes": [
+    <io-checkbox checked state="none" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="checkbox-wrapper">
+      <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
+        <span class="checkbox-control">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" checked>
+          <span class="checkbox-custom checkbox-custom--checked" aria-hidden="true">
+            <svg class="checkbox-icon" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+              <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </span>
+        <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
+          Checked
+        </span>
+      </label>
+    </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
+  </mock:shadow-root>
+</io-checkbox>,
+    <io-checkbox state="none" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="checkbox-wrapper">
+      <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
+        <span class="checkbox-control">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on">
+          <span class="checkbox-custom checkbox-custom--indeterminate" aria-hidden="true">
+            <svg class="checkbox-icon" viewBox="0 0 10 2" fill="none" aria-hidden="true">
+              <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </span>
+        </span>
+        <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
+          Indeterminate
+        </span>
+      </label>
+    </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
+  </mock:shadow-root>
+</io-checkbox>,
+  ],
+  "_nodeValue": null,
+  "nodeName": "DIV",
+  "nodeType": 1,
+  "ownerDocument": _MockDocument {
+    "__attributeMap": MockAttributeMap {
+      "__items": [],
+      "caseInsensitive": true,
+    },
+    "__listeners": [
+      MockEventListener {
+        "handler": [Function],
+        "type": "keydown",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "pointerdown",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "pointerover",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "pointerout",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "focusin",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "focusout",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "keydown",
+      },
+      MockEventListener {
+        "handler": null,
+        "type": "e",
+      },
+    ],
+    "__namespaceURI": "http://www.w3.org/1999/xhtml",
+    "__shadowRoot": null,
+    "__style": undefined,
+    "_childNodes": [
+      MockDocumentTypeNode {
+        "__attributeMap": MockAttributeMap {
+          "__items": [
+            MockAttr {
+              "_name": "html",
+              "_namespaceURI": null,
+              "_value": "",
+            },
+          ],
+          "caseInsensitive": true,
+        },
+        "__namespaceURI": "http://www.w3.org/1999/xhtml",
+        "__shadowRoot": null,
+        "__style": undefined,
+        "_childNodes": [],
+        "_nodeValue": null,
+        "nodeName": "!DOCTYPE",
+        "nodeType": 10,
+        "ownerDocument": [Circular],
+        "parentNode": [Circular],
+      },
+      MockHTMLElement {
+        "__attributeMap": MockAttributeMap {
+          "__items": [],
+          "caseInsensitive": true,
+        },
+        "__namespaceURI": "http://www.w3.org/1999/xhtml",
+        "__shadowRoot": null,
+        "__style": undefined,
+        "_childNodes": [
+          MockHTMLElement {
+            "__attributeMap": MockAttributeMap {
+              "__items": [],
+              "caseInsensitive": true,
+            },
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [
+              MockStyleElement {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [
+                    MockAttr {
+                      "_name": "data-styles",
+                      "_namespaceURI": null,
+                      "_value": "",
+                    },
+                  ],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [
+                  _MockTextNode {
+                    "_childNodes": [],
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                    "nodeName": "#text",
+                    "nodeType": 3,
+                    "ownerDocument": [Circular],
+                    "parentNode": [Circular],
+                  },
+                ],
+                "_nodeValue": null,
+                "nodeName": "STYLE",
+                "nodeType": 1,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+                "sheet": MockCSSStyleSheet {
+                  "cssRules": [
+                    MockCSSRule {
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "parentStyleSheet": [Circular],
+                      "type": 0,
+                    },
+                  ],
+                  "ownerNode": [Circular],
+                  "parentStyleSheet": null,
+                  "type": "text/css",
+                },
+              },
+            ],
+            "_nodeValue": null,
+            "nodeName": "HEAD",
+            "nodeType": 1,
+            "ownerDocument": [Circular],
+            "parentNode": [Circular],
+          },
+          MockHTMLElement {
+            "__attributeMap": MockAttributeMap {
+              "__items": [],
+              "caseInsensitive": true,
+            },
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [
+              _MockTextNode {
+                "_childNodes": [],
+                "_nodeValue": "http://localhost:3000/",
+                "nodeName": "#text",
+                "nodeType": 3,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+              },
+              MockHTMLElement {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [
+                    MockAttr {
+                      "_name": "class",
+                      "_namespaceURI": null,
+                      "_value": "stencil-component-stage",
+                    },
+                  ],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [
+                  [Circular],
+                ],
+                "_nodeValue": null,
+                "nodeName": "DIV",
+                "nodeType": 1,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+              },
+            ],
+            "_nodeValue": null,
+            "nodeName": "BODY",
+            "nodeType": 1,
+            "ownerDocument": [Circular],
+            "parentNode": [Circular],
+          },
+        ],
+        "_nodeValue": null,
+        "nodeName": "HTML",
+        "nodeType": 1,
+        "ownerDocument": [Circular],
+        "parentNode": [Circular],
+      },
+    ],
+    "_nodeValue": null,
+    "cookie": "",
+    "defaultView": [Object],
+    "nodeName": "#document",
+    "nodeType": 9,
+    "ownerDocument": null,
+    "parentNode": null,
+    "referrer": "",
+  },
+  "parentNode": MockHTMLElement {
+    "__attributeMap": MockAttributeMap {
+      "__items": [
+        MockAttr {
+          "_name": "class",
+          "_namespaceURI": null,
+          "_value": "stencil-component-stage",
+        },
+      ],
+      "caseInsensitive": true,
+    },
+    "__namespaceURI": "http://www.w3.org/1999/xhtml",
+    "__shadowRoot": null,
+    "__style": undefined,
+    "_childNodes": [
+      [Circular],
+    ],
+    "_nodeValue": null,
+    "nodeName": "DIV",
+    "nodeType": 1,
+    "ownerDocument": _MockDocument {
+      "__attributeMap": MockAttributeMap {
+        "__items": [],
+        "caseInsensitive": true,
+      },
+      "__listeners": [
+        MockEventListener {
+          "handler": [Function],
+          "type": "keydown",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "pointerdown",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "pointerover",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "pointerout",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "focusin",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "focusout",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "keydown",
+        },
+        MockEventListener {
+          "handler": null,
+          "type": "e",
+        },
+      ],
+      "__namespaceURI": "http://www.w3.org/1999/xhtml",
+      "__shadowRoot": null,
+      "__style": undefined,
+      "_childNodes": [
+        MockDocumentTypeNode {
+          "__attributeMap": MockAttributeMap {
+            "__items": [
+              MockAttr {
+                "_name": "html",
+                "_namespaceURI": null,
+                "_value": "",
+              },
+            ],
+            "caseInsensitive": true,
+          },
+          "__namespaceURI": "http://www.w3.org/1999/xhtml",
+          "__shadowRoot": null,
+          "__style": undefined,
+          "_childNodes": [],
+          "_nodeValue": null,
+          "nodeName": "!DOCTYPE",
+          "nodeType": 10,
+          "ownerDocument": [Circular],
+          "parentNode": [Circular],
+        },
+        MockHTMLElement {
+          "__attributeMap": MockAttributeMap {
+            "__items": [],
+            "caseInsensitive": true,
+          },
+          "__namespaceURI": "http://www.w3.org/1999/xhtml",
+          "__shadowRoot": null,
+          "__style": undefined,
+          "_childNodes": [
+            MockHTMLElement {
+              "__attributeMap": MockAttributeMap {
+                "__items": [],
+                "caseInsensitive": true,
+              },
+              "__namespaceURI": "http://www.w3.org/1999/xhtml",
+              "__shadowRoot": null,
+              "__style": undefined,
+              "_childNodes": [
+                MockStyleElement {
+                  "__attributeMap": MockAttributeMap {
+                    "__items": [
+                      MockAttr {
+                        "_name": "data-styles",
+                        "_namespaceURI": null,
+                        "_value": "",
+                      },
+                    ],
+                    "caseInsensitive": true,
+                  },
+                  "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                  "__shadowRoot": null,
+                  "__style": undefined,
+                  "_childNodes": [
+                    _MockTextNode {
+                      "_childNodes": [],
+                      "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "nodeName": "#text",
+                      "nodeType": 3,
+                      "ownerDocument": [Circular],
+                      "parentNode": [Circular],
+                    },
+                  ],
+                  "_nodeValue": null,
+                  "nodeName": "STYLE",
+                  "nodeType": 1,
+                  "ownerDocument": [Circular],
+                  "parentNode": [Circular],
+                  "sheet": MockCSSStyleSheet {
+                    "cssRules": [
+                      MockCSSRule {
+                        "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                        "parentStyleSheet": [Circular],
+                        "type": 0,
+                      },
+                    ],
+                    "ownerNode": [Circular],
+                    "parentStyleSheet": null,
+                    "type": "text/css",
+                  },
+                },
+              ],
+              "_nodeValue": null,
+              "nodeName": "HEAD",
+              "nodeType": 1,
+              "ownerDocument": [Circular],
+              "parentNode": [Circular],
+            },
+            MockHTMLElement {
+              "__attributeMap": MockAttributeMap {
+                "__items": [],
+                "caseInsensitive": true,
+              },
+              "__namespaceURI": "http://www.w3.org/1999/xhtml",
+              "__shadowRoot": null,
+              "__style": undefined,
+              "_childNodes": [
+                _MockTextNode {
+                  "_childNodes": [],
+                  "_nodeValue": "http://localhost:3000/",
+                  "nodeName": "#text",
+                  "nodeType": 3,
+                  "ownerDocument": [Circular],
+                  "parentNode": [Circular],
+                },
+                [Circular],
+              ],
+              "_nodeValue": null,
+              "nodeName": "BODY",
+              "nodeType": 1,
+              "ownerDocument": [Circular],
+              "parentNode": [Circular],
+            },
+          ],
+          "_nodeValue": null,
+          "nodeName": "HTML",
+          "nodeType": 1,
+          "ownerDocument": [Circular],
+          "parentNode": [Circular],
+        },
+      ],
+      "_nodeValue": null,
+      "cookie": "",
+      "defaultView": [Object],
+      "nodeName": "#document",
+      "nodeType": 9,
+      "ownerDocument": null,
+      "parentNode": null,
+      "referrer": "",
+    },
+    "parentNode": MockHTMLElement {
+      "__attributeMap": MockAttributeMap {
+        "__items": [],
+        "caseInsensitive": true,
+      },
+      "__namespaceURI": "http://www.w3.org/1999/xhtml",
+      "__shadowRoot": null,
+      "__style": undefined,
+      "_childNodes": [
+        _MockTextNode {
+          "_childNodes": [],
+          "_nodeValue": "http://localhost:3000/",
+          "nodeName": "#text",
+          "nodeType": 3,
+          "ownerDocument": _MockDocument {
+            "__attributeMap": MockAttributeMap {
+              "__items": [],
+              "caseInsensitive": true,
+            },
+            "__listeners": [
+              MockEventListener {
+                "handler": [Function],
+                "type": "keydown",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "pointerdown",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "pointerover",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "pointerout",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "focusin",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "focusout",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "keydown",
+              },
+              MockEventListener {
+                "handler": null,
+                "type": "e",
+              },
+            ],
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [
+              MockDocumentTypeNode {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [
+                    MockAttr {
+                      "_name": "html",
+                      "_namespaceURI": null,
+                      "_value": "",
+                    },
+                  ],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [],
+                "_nodeValue": null,
+                "nodeName": "!DOCTYPE",
+                "nodeType": 10,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+              },
+              MockHTMLElement {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [
+                  MockHTMLElement {
+                    "__attributeMap": MockAttributeMap {
+                      "__items": [],
+                      "caseInsensitive": true,
+                    },
+                    "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                    "__shadowRoot": null,
+                    "__style": undefined,
+                    "_childNodes": [
+                      MockStyleElement {
+                        "__attributeMap": MockAttributeMap {
+                          "__items": [
+                            MockAttr {
+                              "_name": "data-styles",
+                              "_namespaceURI": null,
+                              "_value": "",
+                            },
+                          ],
+                          "caseInsensitive": true,
+                        },
+                        "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                        "__shadowRoot": null,
+                        "__style": undefined,
+                        "_childNodes": [
+                          _MockTextNode {
+                            "_childNodes": [],
+                            "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                            "nodeName": "#text",
+                            "nodeType": 3,
+                            "ownerDocument": [Circular],
+                            "parentNode": [Circular],
+                          },
+                        ],
+                        "_nodeValue": null,
+                        "nodeName": "STYLE",
+                        "nodeType": 1,
+                        "ownerDocument": [Circular],
+                        "parentNode": [Circular],
+                        "sheet": MockCSSStyleSheet {
+                          "cssRules": [
+                            MockCSSRule {
+                              "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                              "parentStyleSheet": [Circular],
+                              "type": 0,
+                            },
+                          ],
+                          "ownerNode": [Circular],
+                          "parentStyleSheet": null,
+                          "type": "text/css",
+                        },
+                      },
+                    ],
+                    "_nodeValue": null,
+                    "nodeName": "HEAD",
+                    "nodeType": 1,
+                    "ownerDocument": [Circular],
+                    "parentNode": [Circular],
+                  },
+                  [Circular],
+                ],
+                "_nodeValue": null,
+                "nodeName": "HTML",
+                "nodeType": 1,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+              },
+            ],
+            "_nodeValue": null,
+            "cookie": "",
+            "defaultView": [Object],
+            "nodeName": "#document",
+            "nodeType": 9,
+            "ownerDocument": null,
+            "parentNode": null,
+            "referrer": "",
+          },
+          "parentNode": [Circular],
+        },
+        [Circular],
+      ],
+      "_nodeValue": null,
+      "nodeName": "BODY",
+      "nodeType": 1,
+      "ownerDocument": _MockDocument {
+        "__attributeMap": MockAttributeMap {
+          "__items": [],
+          "caseInsensitive": true,
+        },
+        "__listeners": [
+          MockEventListener {
+            "handler": [Function],
+            "type": "keydown",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "pointerdown",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "pointerover",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "pointerout",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "focusin",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "focusout",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "keydown",
+          },
+          MockEventListener {
+            "handler": null,
+            "type": "e",
+          },
+        ],
+        "__namespaceURI": "http://www.w3.org/1999/xhtml",
+        "__shadowRoot": null,
+        "__style": undefined,
+        "_childNodes": [
+          MockDocumentTypeNode {
+            "__attributeMap": MockAttributeMap {
+              "__items": [
+                MockAttr {
+                  "_name": "html",
+                  "_namespaceURI": null,
+                  "_value": "",
+                },
+              ],
+              "caseInsensitive": true,
+            },
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [],
+            "_nodeValue": null,
+            "nodeName": "!DOCTYPE",
+            "nodeType": 10,
+            "ownerDocument": [Circular],
+            "parentNode": [Circular],
+          },
+          MockHTMLElement {
+            "__attributeMap": MockAttributeMap {
+              "__items": [],
+              "caseInsensitive": true,
+            },
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [
+              MockHTMLElement {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [
+                  MockStyleElement {
+                    "__attributeMap": MockAttributeMap {
+                      "__items": [
+                        MockAttr {
+                          "_name": "data-styles",
+                          "_namespaceURI": null,
+                          "_value": "",
+                        },
+                      ],
+                      "caseInsensitive": true,
+                    },
+                    "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                    "__shadowRoot": null,
+                    "__style": undefined,
+                    "_childNodes": [
+                      _MockTextNode {
+                        "_childNodes": [],
+                        "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                        "nodeName": "#text",
+                        "nodeType": 3,
+                        "ownerDocument": [Circular],
+                        "parentNode": [Circular],
+                      },
+                    ],
+                    "_nodeValue": null,
+                    "nodeName": "STYLE",
+                    "nodeType": 1,
+                    "ownerDocument": [Circular],
+                    "parentNode": [Circular],
+                    "sheet": MockCSSStyleSheet {
+                      "cssRules": [
+                        MockCSSRule {
+                          "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                          "parentStyleSheet": [Circular],
+                          "type": 0,
+                        },
+                      ],
+                      "ownerNode": [Circular],
+                      "parentStyleSheet": null,
+                      "type": "text/css",
+                    },
+                  },
+                ],
+                "_nodeValue": null,
+                "nodeName": "HEAD",
+                "nodeType": 1,
+                "ownerDocument": [Circular],
+                "parentNode": [Circular],
+              },
+              [Circular],
+            ],
+            "_nodeValue": null,
+            "nodeName": "HTML",
+            "nodeType": 1,
+            "ownerDocument": [Circular],
+            "parentNode": [Circular],
+          },
+        ],
+        "_nodeValue": null,
+        "cookie": "",
+        "defaultView": [Object],
+        "nodeName": "#document",
+        "nodeType": 9,
+        "ownerDocument": null,
+        "parentNode": null,
+        "referrer": "",
+      },
+      "parentNode": MockHTMLElement {
+        "__attributeMap": MockAttributeMap {
+          "__items": [],
+          "caseInsensitive": true,
+        },
+        "__namespaceURI": "http://www.w3.org/1999/xhtml",
+        "__shadowRoot": null,
+        "__style": undefined,
+        "_childNodes": [
+          MockHTMLElement {
+            "__attributeMap": MockAttributeMap {
+              "__items": [],
+              "caseInsensitive": true,
+            },
+            "__namespaceURI": "http://www.w3.org/1999/xhtml",
+            "__shadowRoot": null,
+            "__style": undefined,
+            "_childNodes": [
+              MockStyleElement {
+                "__attributeMap": MockAttributeMap {
+                  "__items": [
+                    MockAttr {
+                      "_name": "data-styles",
+                      "_namespaceURI": null,
+                      "_value": "",
+                    },
+                  ],
+                  "caseInsensitive": true,
+                },
+                "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                "__shadowRoot": null,
+                "__style": undefined,
+                "_childNodes": [
+                  _MockTextNode {
+                    "_childNodes": [],
+                    "_nodeValue": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                    "nodeName": "#text",
+                    "nodeType": 3,
+                    "ownerDocument": _MockDocument {
+                      "__attributeMap": MockAttributeMap {
+                        "__items": [],
+                        "caseInsensitive": true,
+                      },
+                      "__listeners": [
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "keydown",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "pointerdown",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "pointerover",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "pointerout",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "focusin",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "focusout",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "keydown",
+                        },
+                        MockEventListener {
+                          "handler": null,
+                          "type": "e",
+                        },
+                      ],
+                      "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                      "__shadowRoot": null,
+                      "__style": undefined,
+                      "_childNodes": [
+                        MockDocumentTypeNode {
+                          "__attributeMap": MockAttributeMap {
+                            "__items": [
+                              MockAttr {
+                                "_name": "html",
+                                "_namespaceURI": null,
+                                "_value": "",
+                              },
+                            ],
+                            "caseInsensitive": true,
+                          },
+                          "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                          "__shadowRoot": null,
+                          "__style": undefined,
+                          "_childNodes": [],
+                          "_nodeValue": null,
+                          "nodeName": "!DOCTYPE",
+                          "nodeType": 10,
+                          "ownerDocument": [Circular],
+                          "parentNode": [Circular],
+                        },
+                        [Circular],
+                      ],
+                      "_nodeValue": null,
+                      "cookie": "",
+                      "defaultView": [Object],
+                      "nodeName": "#document",
+                      "nodeType": 9,
+                      "ownerDocument": null,
+                      "parentNode": null,
+                      "referrer": "",
+                    },
+                    "parentNode": [Circular],
+                  },
+                ],
+                "_nodeValue": null,
+                "nodeName": "STYLE",
+                "nodeType": 1,
+                "ownerDocument": _MockDocument {
+                  "__attributeMap": MockAttributeMap {
+                    "__items": [],
+                    "caseInsensitive": true,
+                  },
+                  "__listeners": [
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "keydown",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "pointerdown",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "pointerover",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "pointerout",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "focusin",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "focusout",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "keydown",
+                    },
+                    MockEventListener {
+                      "handler": null,
+                      "type": "e",
+                    },
+                  ],
+                  "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                  "__shadowRoot": null,
+                  "__style": undefined,
+                  "_childNodes": [
+                    MockDocumentTypeNode {
+                      "__attributeMap": MockAttributeMap {
+                        "__items": [
+                          MockAttr {
+                            "_name": "html",
+                            "_namespaceURI": null,
+                            "_value": "",
+                          },
+                        ],
+                        "caseInsensitive": true,
+                      },
+                      "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                      "__shadowRoot": null,
+                      "__style": undefined,
+                      "_childNodes": [],
+                      "_nodeValue": null,
+                      "nodeName": "!DOCTYPE",
+                      "nodeType": 10,
+                      "ownerDocument": [Circular],
+                      "parentNode": [Circular],
+                    },
+                    [Circular],
+                  ],
+                  "_nodeValue": null,
+                  "cookie": "",
+                  "defaultView": [Object],
+                  "nodeName": "#document",
+                  "nodeType": 9,
+                  "ownerDocument": null,
+                  "parentNode": null,
+                  "referrer": "",
+                },
+                "parentNode": [Circular],
+                "sheet": MockCSSStyleSheet {
+                  "cssRules": [
+                    MockCSSRule {
+                      "cssText": "slot-fb{display:contents}slot-fb[hidden]{display:none}io-accordion,io-avatar,io-badge,io-banner,io-breadcrumb,io-breadcrumb-item,io-button,io-button-group,io-carousel,io-checkbox,io-checkbox-group,io-divider,io-drawer,io-form-field,io-heading,io-icon,io-inline-notification,io-input,io-link,io-modal,io-multi-select,io-optgroup,io-option,io-pagination,io-pin-code,io-popover,io-progress,io-radio,io-radio-group,io-scroller,io-select,io-spinner,io-step,io-stepper,io-switch,io-table,io-table-body,io-table-body-cell,io-table-body-row,io-table-head,io-table-head-cell,io-table-head-row,io-tabs,io-tabs-bar,io-tag,io-text,io-textarea,io-toast,io-toast-item,io-tooltip,io-wordmark{visibility:hidden}.hydrated{visibility:inherit}",
+                      "parentStyleSheet": [Circular],
+                      "type": 0,
+                    },
+                  ],
+                  "ownerNode": [Circular],
+                  "parentStyleSheet": null,
+                  "type": "text/css",
+                },
+              },
+            ],
+            "_nodeValue": null,
+            "nodeName": "HEAD",
+            "nodeType": 1,
+            "ownerDocument": _MockDocument {
+              "__attributeMap": MockAttributeMap {
+                "__items": [],
+                "caseInsensitive": true,
+              },
+              "__listeners": [
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "keydown",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "pointerdown",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "pointerover",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "pointerout",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "focusin",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "focusout",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "keydown",
+                },
+                MockEventListener {
+                  "handler": null,
+                  "type": "e",
+                },
+              ],
+              "__namespaceURI": "http://www.w3.org/1999/xhtml",
+              "__shadowRoot": null,
+              "__style": undefined,
+              "_childNodes": [
+                MockDocumentTypeNode {
+                  "__attributeMap": MockAttributeMap {
+                    "__items": [
+                      MockAttr {
+                        "_name": "html",
+                        "_namespaceURI": null,
+                        "_value": "",
+                      },
+                    ],
+                    "caseInsensitive": true,
+                  },
+                  "__namespaceURI": "http://www.w3.org/1999/xhtml",
+                  "__shadowRoot": null,
+                  "__style": undefined,
+                  "_childNodes": [],
+                  "_nodeValue": null,
+                  "nodeName": "!DOCTYPE",
+                  "nodeType": 10,
+                  "ownerDocument": [Circular],
+                  "parentNode": [Circular],
+                },
+                [Circular],
+              ],
+              "_nodeValue": null,
+              "cookie": "",
+              "defaultView": [Object],
+              "nodeName": "#document",
+              "nodeType": 9,
+              "ownerDocument": null,
+              "parentNode": null,
+              "referrer": "",
+            },
+            "parentNode": [Circular],
+          },
+          [Circular],
+        ],
+        "_nodeValue": null,
+        "nodeName": "HTML",
+        "nodeType": 1,
+        "ownerDocument": _MockDocument {
+          "__attributeMap": MockAttributeMap {
+            "__items": [],
+            "caseInsensitive": true,
+          },
+          "__listeners": [
+            MockEventListener {
+              "handler": [Function],
+              "type": "keydown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerdown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerover",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerout",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "focusin",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "focusout",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "keydown",
+            },
+            MockEventListener {
+              "handler": null,
+              "type": "e",
+            },
+          ],
+          "__namespaceURI": "http://www.w3.org/1999/xhtml",
+          "__shadowRoot": null,
+          "__style": undefined,
+          "_childNodes": [
+            MockDocumentTypeNode {
+              "__attributeMap": MockAttributeMap {
+                "__items": [
+                  MockAttr {
+                    "_name": "html",
+                    "_namespaceURI": null,
+                    "_value": "",
+                  },
+                ],
+                "caseInsensitive": true,
+              },
+              "__namespaceURI": "http://www.w3.org/1999/xhtml",
+              "__shadowRoot": null,
+              "__style": undefined,
+              "_childNodes": [],
+              "_nodeValue": null,
+              "nodeName": "!DOCTYPE",
+              "nodeType": 10,
+              "ownerDocument": [Circular],
+              "parentNode": [Circular],
+            },
+            [Circular],
+          ],
+          "_nodeValue": null,
+          "cookie": "",
+          "defaultView": [Object],
+          "nodeName": "#document",
+          "nodeType": 9,
+          "ownerDocument": null,
+          "parentNode": null,
+          "referrer": "",
+        },
+        "parentNode": _MockDocument {
+          "__attributeMap": MockAttributeMap {
+            "__items": [],
+            "caseInsensitive": true,
+          },
+          "__listeners": [
+            MockEventListener {
+              "handler": [Function],
+              "type": "keydown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerdown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerover",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerout",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "focusin",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "focusout",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "keydown",
+            },
+            MockEventListener {
+              "handler": null,
+              "type": "e",
+            },
+          ],
+          "__namespaceURI": "http://www.w3.org/1999/xhtml",
+          "__shadowRoot": null,
+          "__style": undefined,
+          "_childNodes": [
+            MockDocumentTypeNode {
+              "__attributeMap": MockAttributeMap {
+                "__items": [
+                  MockAttr {
+                    "_name": "html",
+                    "_namespaceURI": null,
+                    "_value": "",
+                  },
+                ],
+                "caseInsensitive": true,
+              },
+              "__namespaceURI": "http://www.w3.org/1999/xhtml",
+              "__shadowRoot": null,
+              "__style": undefined,
+              "_childNodes": [],
+              "_nodeValue": null,
+              "nodeName": "!DOCTYPE",
+              "nodeType": 10,
+              "ownerDocument": [Circular],
+              "parentNode": [Circular],
+            },
+            [Circular],
+          ],
+          "_nodeValue": null,
+          "cookie": "",
+          "defaultView": [Object],
+          "nodeName": "#document",
+          "nodeType": 9,
+          "ownerDocument": null,
+          "parentNode": null,
+          "referrer": "",
+        },
+      },
+    },
+  },
+  "s-hn": "DIV",
+}
+`;
+
+exports[`io-checkbox — render snapshots > renders default state 1`] = `
+<io-checkbox state="none" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="checkbox-wrapper">
+      <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
+        <span class="checkbox-control">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on">
+          <span class="checkbox-custom" aria-hidden="true"></span>
+        </span>
+        <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
+          Accept terms
+        </span>
+      </label>
+    </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+    </p>
+  </mock:shadow-root>
+</io-checkbox>
+`;
+
+exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
+<io-checkbox disabled state="none" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <div class="checkbox-wrapper checkbox-wrapper--disabled">
+      <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
+        <span class="checkbox-control">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" disabled aria-describedby="io-checkbox-4fzzzxjylrx-helper">
+          <span class="checkbox-custom" aria-hidden="true"></span>
+        </span>
+        <span class="checkbox-text">
+          <span class="checkbox-label__slot checkbox-label__slot--hidden">
+            <slot name="label"></slot>
+          </span>
+          Disabled
+        </span>
+      </label>
+    </div>
+    <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper">
+      <span class="checkbox-description__slot checkbox-description__slot--hidden">
+        <slot name="description"></slot>
+      </span>
+      Unavailable
+    </p>
+  </mock:shadow-root>
+</io-checkbox>
+`;

@@ -6,15 +6,15 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-import { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
+import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-import { IoBannerVariant } from "./components/io-banner/types";
+import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoIconName } from "./utils/icons";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
-import { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
@@ -47,15 +47,15 @@ import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
-export { IoAvatarColor, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
+export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-export { IoBannerVariant } from "./components/io-banner/types";
+export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoIconName } from "./utils/icons";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
-export { IoCheckboxChangeDetail } from "./components/io-checkbox/types";
+export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
@@ -180,6 +180,11 @@ export namespace Components {
          */
         "name": string | undefined;
         /**
+          * ARIA role for the host element. Defaults to 'presentation' when an image is visible (the img element carries its own accessible name via alt) and to 'img' for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
+          * @default ''
+         */
+        "role": IoAvatarRole | '';
+        /**
           * Shape of the avatar container.
           * @default 'circle'
          */
@@ -217,12 +222,12 @@ export namespace Components {
     /**
      * io-banner
      * =========
-     * Full-width page-level notification strip with four severity variants.
+     * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
-     * Set open=true to show and wire the dismiss event to set it back to false.
+     * Set open=true to show; wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     *   - error / warning variants: role="alert" on inner .banner div (assertive)
+     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
      * Role is placed on the conditionally-rendered inner div so the live region only exists
      * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
@@ -233,6 +238,10 @@ export namespace Components {
      * </io-banner>
      */
     interface IoBanner {
+        /**
+          * Optional description text rendered as a <p> below the heading
+         */
+        "description"?: string;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -247,10 +256,20 @@ export namespace Components {
          */
         "heading"?: string;
         /**
+          * Semantic HTML tag for the heading element (WCAG 1.3.1)
+          * @default 'h5'
+         */
+        "headingTag": IoBannerHeadingTag;
+        /**
           * Controls visibility. Set to true to show the banner.
           * @default false
          */
         "open": boolean;
+        /**
+          * Screen position of the fixed banner — top or bottom of the viewport
+          * @default 'top'
+         */
+        "position": IoBannerPosition;
         /**
           * Severity variant — controls icon, colour, and aria-live politeness
           * @default 'info'
@@ -554,6 +573,11 @@ export namespace Components {
          */
         "checked": boolean;
         /**
+          * Dense layout mode — reduces checkbox size and label gap
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Disables the checkbox
           * @default false
          */
@@ -581,7 +605,7 @@ export namespace Components {
          */
         "label": string;
         /**
-          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * Shows a loading spinner replacing the checkbox visual and disables interaction
           * @default false
          */
         "loading": boolean;
@@ -613,8 +637,8 @@ export namespace Components {
          */
         "state": IoFieldState;
         /**
-          * Value submitted with the form
-          * @default ''
+          * Value submitted with the form when checked — matches native HTML checkbox default (RFC 1866)
+          * @default 'on'
          */
         "value": string;
     }
@@ -2690,12 +2714,12 @@ declare global {
     /**
      * io-banner
      * =========
-     * Full-width page-level notification strip with four severity variants.
+     * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
-     * Set open=true to show and wire the dismiss event to set it back to false.
+     * Set open=true to show; wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     *   - error / warning variants: role="alert" on inner .banner div (assertive)
+     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
      * Role is placed on the conditionally-rendered inner div so the live region only exists
      * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
@@ -2850,6 +2874,7 @@ declare global {
     };
     interface HTMLIoCheckboxElementEventMap {
         "change": IoCheckboxChangeDetail;
+        "blur": IoCheckboxBlurEventDetail;
     }
     /**
      * io-checkbox
@@ -4037,6 +4062,11 @@ declare namespace LocalJSX {
          */
         "name"?: string | undefined;
         /**
+          * ARIA role for the host element. Defaults to 'presentation' when an image is visible (the img element carries its own accessible name via alt) and to 'img' for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
+          * @default ''
+         */
+        "role"?: IoAvatarRole | '';
+        /**
           * Shape of the avatar container.
           * @default 'circle'
          */
@@ -4074,12 +4104,12 @@ declare namespace LocalJSX {
     /**
      * io-banner
      * =========
-     * Full-width page-level notification strip with four severity variants.
+     * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
-     * Set open=true to show and wire the dismiss event to set it back to false.
+     * Set open=true to show; wire the dismiss event to set it back to false.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+     *   - error / warning variants: role="alert" on inner .banner div (assertive)
+     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
      * Role is placed on the conditionally-rendered inner div so the live region only exists
      * while the banner is visible — prevents spurious announcements when open=false.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
@@ -4090,6 +4120,10 @@ declare namespace LocalJSX {
      * </io-banner>
      */
     interface IoBanner {
+        /**
+          * Optional description text rendered as a <p> below the heading
+         */
+        "description"?: string;
         /**
           * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set, otherwise "Dismiss {variant} notification".
          */
@@ -4104,7 +4138,12 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
-          * Emitted when the dismiss button is clicked
+          * Semantic HTML tag for the heading element (WCAG 1.3.1)
+          * @default 'h5'
+         */
+        "headingTag"?: IoBannerHeadingTag;
+        /**
+          * Emitted when the dismiss button is clicked or Escape is pressed
          */
         "onDismiss"?: (event: IoBannerCustomEvent<void>) => void;
         /**
@@ -4112,6 +4151,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "open"?: boolean;
+        /**
+          * Screen position of the fixed banner — top or bottom of the viewport
+          * @default 'top'
+         */
+        "position"?: IoBannerPosition;
         /**
           * Severity variant — controls icon, colour, and aria-live politeness
           * @default 'info'
@@ -4419,6 +4463,11 @@ declare namespace LocalJSX {
          */
         "checked"?: boolean;
         /**
+          * Dense layout mode — reduces checkbox size and label gap
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Disables the checkbox
           * @default false
          */
@@ -4446,7 +4495,7 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
-          * Shows a loading spinner replacing the checkbox control and disables interaction
+          * Shows a loading spinner replacing the checkbox visual and disables interaction
           * @default false
          */
         "loading"?: boolean;
@@ -4459,6 +4508,10 @@ declare namespace LocalJSX {
           * Input name
          */
         "name"?: string | undefined;
+        /**
+          * Fires when the inner input loses focus — required by form libraries for touched/dirty tracking
+         */
+        "onBlur"?: (event: IoCheckboxCustomEvent<IoCheckboxBlurEventDetail>) => void;
         /**
           * Fires when the checked state changes
          */
@@ -4474,8 +4527,8 @@ declare namespace LocalJSX {
          */
         "state"?: IoFieldState;
         /**
-          * Value submitted with the form
-          * @default ''
+          * Value submitted with the form when checked — matches native HTML checkbox default (RFC 1866)
+          * @default 'on'
          */
         "value"?: string;
     }
@@ -6431,6 +6484,7 @@ declare namespace LocalJSX {
         "size": IoAvatarSize;
         "color": IoAvatarColor;
         "shape": IoAvatarShape;
+        "role": IoAvatarRole | '';
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
@@ -6439,8 +6493,11 @@ declare namespace LocalJSX {
     interface IoBannerAttributes {
         "variant": IoBannerVariant;
         "heading": string;
+        "headingTag": IoBannerHeadingTag;
+        "description": string;
         "open": boolean;
         "dismissible": boolean;
+        "position": IoBannerPosition;
         "dismissLabel": string;
     }
     interface IoBreadcrumbAttributes {
@@ -6508,6 +6565,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "form": string;
         "hideLabel": boolean;
+        "compact": boolean;
     }
     interface IoCheckboxGroupAttributes {
         "label": string;
@@ -6930,12 +6988,12 @@ declare module "@stencil/core" {
             /**
              * io-banner
              * =========
-             * Full-width page-level notification strip with four severity variants.
+             * Fixed-position page-level notification banner with four severity variants.
              * Visibility is controlled by the `open` prop — the host hides itself when open=false.
-             * Set open=true to show and wire the dismiss event to set it back to false.
+             * Set open=true to show; wire the dismiss event to set it back to false.
              * ARIA live region strategy:
-             *   - error variant:     role="alert" on inner .banner div (implicit aria-live="assertive")
-             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true" on inner .banner div
+             *   - error / warning variants: role="alert" on inner .banner div (assertive)
+             *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
              * Role is placed on the conditionally-rendered inner div so the live region only exists
              * while the banner is visible — prevents spurious announcements when open=false.
              * @example <io-banner variant="info" open heading="Maintenance scheduled">

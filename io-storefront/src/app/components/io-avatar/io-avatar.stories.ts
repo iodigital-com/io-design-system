@@ -129,6 +129,7 @@ export const avatarPropDefinitions: PropDefinition[] = [
     name: 'role',
     type: 'select',
     options: ['img', 'presentation', 'none'],
+    defaultValue: '',
     description: 'ARIA role on the host element. Auto-computed from the rendering mode when omitted.',
   },
 ];

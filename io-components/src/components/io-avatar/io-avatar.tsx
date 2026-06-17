@@ -43,7 +43,7 @@ export class IoAvatar {
    * for initials and icon fallback modes. Pass 'presentation' or 'none' to mark a
    * purely decorative avatar so assistive technology skips it entirely. (WCAG 4.1.2)
    */
-  @Prop() role?: IoAvatarRole;
+  @Prop() role: IoAvatarRole | '' = '';
 
   /** Tracks whether the image has failed to load. */
   @State() imgError = false;

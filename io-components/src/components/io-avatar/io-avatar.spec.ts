@@ -37,8 +37,8 @@ describe('io-avatar — default props', () => {
     expect((c as unknown as { imgError: boolean }).imgError).toBe(false);
   });
 
-  it('role is undefined by default', () => {
-    expect(c.role).toBeUndefined();
+  it('role is empty string by default', () => {
+    expect(c.role).toBe('');
   });
 
   it('renders without throwing with no props', () => {

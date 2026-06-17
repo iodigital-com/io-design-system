@@ -1481,6 +1481,11 @@
       "tokenPath": "component.toast.mobileBreakpointMax",
       "rationale": "No runtime CSS variable implementation. Docs/reference only.",
       "reviewAfter": "2026-12-31"
+    },
+    {
+      "tokenPath": "component.accordion.maxHeight",
+      "rationale": "Max-height cap removed when grid-template-rows animation replaced the max-height approach in io-accordion. The --io-accordion-max-height CSS var is no longer consumed by the component.",
+      "reviewAfter": "2027-01-01"
     }
   ]
 }

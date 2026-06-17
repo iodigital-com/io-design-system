@@ -51,7 +51,20 @@ export const bannerPropDefinitions: PropDefinition[] = [
     name: 'heading',
     type: 'string',
     defaultValue: '',
-    description: 'Optional bold heading rendered above the slotted content.',
+    description: 'Optional heading text rendered above the body content.',
+  },
+  {
+    name: 'headingTag',
+    type: 'select',
+    options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+    defaultValue: 'h5',
+    description: 'Semantic HTML tag for the heading element (WCAG 1.3.1).',
+  },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional plain-text description rendered below the heading.',
   },
   {
     name: 'open',
@@ -63,6 +76,13 @@ export const bannerPropDefinitions: PropDefinition[] = [
     name: 'dismissible',
     type: 'boolean',
     defaultValue: false,
-    description: 'When true, renders a dismiss button. Clicking it closes the banner and emits the dismiss event.',
+    description: 'When true, renders a dismiss button. Escape key also closes the banner.',
+  },
+  {
+    name: 'position',
+    type: 'select',
+    options: ['top', 'bottom'],
+    defaultValue: 'top',
+    description: 'Viewport edge where the banner is fixed (top or bottom).',
   },
 ];

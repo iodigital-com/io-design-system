@@ -367,6 +367,9 @@
   --io-checkbox-border-width:         1.5px;
   --io-checkbox-border-error-width:   2px;
   --io-checkbox-icon-size:            10px;
+  --io-checkbox-border-color:         var(--io-border-interactive);
+  --io-checkbox-background-color:     var(--io-color-primary);
+  --io-checkbox-icon-color:           var(--io-text-on-primary);
   --io-select-padding-right:     1.6rem;
   --io-select-chevron-offset-y:  2px;
 
@@ -525,14 +528,24 @@
   --io-breadcrumb-font-size:        var(--io-font-size-sm);
   --io-breadcrumb-item-color:       var(--io-color-primary);
   --io-breadcrumb-current-color:    var(--io-text-secondary);
-  --io-breadcrumb-separator-color:  var(--io-color-grey-4);
+  --io-breadcrumb-separator-color:  var(--io-text-secondary);
 
   /* Accordion */
-  --io-accordion-max-height:     600px;
   --io-accordion-icon-bar-thickness: 8%;
   --io-accordion-icon-bar-inset: 1%;
   --io-accordion-icon-bar-axis-offset: 44%;
   --io-accordion-icon-horizontal-collapsed-side: 50%;
+  --io-accordion-border-color:   var(--io-text-primary);
+  --io-accordion-py:             initial;
+  --io-accordion-px:             initial;
+  --io-accordion-summary-top:    initial;
+
+  /* Banner — fixed overlay card positioning overrides */
+  --io-banner-max-w:             var(--io-breakpoint-md);
+  --io-banner-top:               var(--io-space-4);
+  --io-banner-bottom:            var(--io-space-4);
+  --io-banner-inset-x:           var(--io-space-4);
+  --io-banner-z-index:           var(--io-z-toast);
 
   /* Dark theme source values */
   --io-color-dark-primary:       #4d4dff;    /* WCAG AA blue on dark bg — contrast 3.4:1 vs #181818 */

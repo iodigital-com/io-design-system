@@ -89,10 +89,10 @@ describe('io-breadcrumb storefront stories', () => {
 
     it('io-breadcrumb has label property set', () => {
       const els = breadcrumbStoryLabel.generator?.() ?? [];
+      type BreadcrumbLike = { tag: string; properties?: Record<string, unknown>; children?: unknown[] };
       const breadcrumb = els.find(
-        (el): el is { tag: string; properties: Record<string, unknown>; children: unknown[] } =>
-          typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
-      );
+        el => typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
+      ) as BreadcrumbLike | undefined;
       expect(breadcrumb?.properties?.label).toBe("Fil d'Ariane");
     });
   });
@@ -110,11 +110,10 @@ describe('io-breadcrumb storefront stories', () => {
 
     it('one io-breadcrumb-item has target="_blank"', () => {
       const els = breadcrumbStoryTargetBlank.generator?.() ?? [];
-      type BreadcrumbEl = { tag: string; properties: Record<string, unknown>; children?: unknown[] };
+      type BreadcrumbEl = { tag: string; properties?: Record<string, unknown>; children?: unknown[] };
       const root = els.find(
-        (el): el is BreadcrumbEl =>
-          typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
-      );
+        el => typeof el === 'object' && el !== null && 'tag' in el && (el as { tag: unknown }).tag === 'io-breadcrumb',
+      ) as BreadcrumbEl | undefined;
       const items = (root?.children ?? []) as BreadcrumbEl[];
       const blankItem = items.find(c => c?.properties?.target === '_blank');
       expect(blankItem).toBeDefined();

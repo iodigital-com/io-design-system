@@ -452,7 +452,12 @@ React Server Components with server-rendered Stencil HTML), activate the
 The commented-out target block and full activation instructions are in
 `io-components/stencil.config.ts` (TARGET 3 comment block).
 
-## Component Stability (Wave XI → Wave J)
+## Component Stability
+
+### Wave XIV / Global beta reset (2026-06-17)
+
+All 40 storefront components marked `status: 'beta'` in `sitemap.ts`. This is a deliberate product decision.
+Storefront docs updated: `io-pagination` added `compact` prop; `io-inline-notification` added `actionLabel`, `actionIcon`, `actionLoading` props and `action` event.
 
 ### Wave XIII promotions (2026-05-28)
 

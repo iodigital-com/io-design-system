@@ -65,4 +65,30 @@ describe('io-breadcrumb-item — a11y (ARIA patterns)', () => {
     const anchor = el.querySelector('a');
     expect(anchor?.hasAttribute('aria-current')).toBe(false);
   });
+
+  it('link with aria-label has no violations (itemLabel override)', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <nav aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/docs" aria-label="Documentation (opens in new tab)">Docs</a></li>
+          <li><span aria-current="page">API Reference</span></li>
+        </ol>
+      </nav>
+    `;
+    await renderAndCheckA11y(el);
+  });
+
+  it('link with target="_blank" and rel="noopener noreferrer" has no violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <nav aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/docs" target="_blank" rel="noopener noreferrer">Docs</a></li>
+          <li><span aria-current="page">API Reference</span></li>
+        </ol>
+      </nav>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

@@ -81,7 +81,7 @@ describe('io-breadcrumb — a11y (ARIA patterns)', () => {
     expect(sep?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('nav has aria-label="Breadcrumb"', () => {
+  it('nav has aria-label="Breadcrumb" by default', () => {
     const el = document.createElement('div');
     el.innerHTML = `
       <nav aria-label="Breadcrumb">
@@ -92,5 +92,39 @@ describe('io-breadcrumb — a11y (ARIA patterns)', () => {
     `;
     const nav = el.querySelector('nav');
     expect(nav?.getAttribute('aria-label')).toBe('Breadcrumb');
+  });
+
+  it('nav accepts localised aria-label (e.g. Dutch "Navigatie")', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <nav aria-label="Navigatie">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span aria-current="page">Huidige pagina</span></li>
+        </ol>
+      </nav>
+    `;
+    const nav = el.querySelector('nav');
+    expect(nav?.getAttribute('aria-label')).toBe('Navigatie');
+    await renderAndCheckA11y(el);
+  });
+
+  it('two breadcrumbs on the same page can have distinct aria-labels', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <nav aria-label="Primary navigation">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span aria-current="page">Page A</span></li>
+        </ol>
+      </nav>
+      <nav aria-label="Secondary navigation">
+        <ol>
+          <li><a href="/other">Other</a></li>
+          <li><span aria-current="page">Page B</span></li>
+        </ol>
+      </nav>
+    `;
+    await renderAndCheckA11y(el);
   });
 });

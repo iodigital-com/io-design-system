@@ -15,7 +15,7 @@ import { getBreadcrumbItemStyles } from './io-breadcrumb-item-styles';
  *
  * @example
  * <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
- * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+ * <io-breadcrumb-item href="/docs" target="_blank" item-label="Documentation (opens in new tab)">Docs</io-breadcrumb-item>
  * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
  */
 @Component({
@@ -31,22 +31,37 @@ export class IoBreadcrumbItem {
   /** Whether this item represents the current page. Adds aria-current="page". */
   @Prop({ reflect: true }) current = false;
 
+  /**
+   * Anchor target attribute (e.g. '_blank', '_self').
+   * When set to '_blank', rel="noopener noreferrer" is added automatically (WCAG 3.2.2).
+   */
+  @Prop() target?: string;
+
+  /**
+   * Accessible label override for the anchor or span.
+   * Use when the slot text is insufficient — e.g. an icon-only item,
+   * or when a "_blank" link needs context like "opens in new tab".
+   * Maps to aria-label on the rendered <a> or <span> (WCAG 4.1.2).
+   */
+  @Prop() itemLabel?: string;
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { href, current } = this;
+    const { href, current, target, itemLabel } = this;
     const isLink = !!href && !current;
+    const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
     return (
       <Host>
         <style>{getBreadcrumbItemStyles()}</style>
         <li>
           {isLink ? (
-            <a href={href}>
+            <a href={href} target={target} rel={rel} aria-label={itemLabel || undefined}>
               <slot />
             </a>
           ) : (
-            <span aria-current={current ? 'page' : undefined}>
+            <span aria-current={current ? 'page' : undefined} aria-label={itemLabel || undefined}>
               <slot />
             </span>
           )}

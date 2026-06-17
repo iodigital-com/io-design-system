@@ -3,11 +3,12 @@ import {
   breadcrumbStoryDefault,
   breadcrumbStorySlash,
   breadcrumbStoryLong,
+  breadcrumbStoryLocalised,
+  breadcrumbStoryExternalLink,
 } from './io-breadcrumb.stories';
 
-// io-breadcrumb has no dedicated configurator story or propDefinitions export —
-// it uses a purely slot-based declarative API with no configurable props.
-// All three exported stories serve as named stories.
+// io-breadcrumb uses a purely slot-based declarative API.
+// Stories test the generator contract and new prop shapes.
 
 describe('io-breadcrumb storefront stories', () => {
   // ── Named stories ───────────────────────────────────────────────────────
@@ -75,6 +76,46 @@ describe('io-breadcrumb storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
+    });
+  });
+
+  describe('breadcrumbStoryLocalised', () => {
+    it('generator does not throw', () => {
+      expect(() => breadcrumbStoryLocalised.generator?.()).not.toThrow();
+    });
+
+    it('generator returns non-empty array', () => {
+      const els = breadcrumbStoryLocalised.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('root element has label prop set to localised string', () => {
+      const els = breadcrumbStoryLocalised.generator?.() ?? [];
+      const root = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(root.properties.label).toBe('Navigatie');
+    });
+  });
+
+  describe('breadcrumbStoryExternalLink', () => {
+    it('generator does not throw', () => {
+      expect(() => breadcrumbStoryExternalLink.generator?.()).not.toThrow();
+    });
+
+    it('generator returns non-empty array', () => {
+      const els = breadcrumbStoryExternalLink.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('external link child has target="_blank" and itemLabel set', () => {
+      const els = breadcrumbStoryExternalLink.generator?.() ?? [];
+      const root = els[0] as { tag: string; children: Array<{ tag: string; properties: Record<string, unknown> }> };
+      const externalItem = root.children.find(
+        (c) => c.properties?.target === '_blank',
+      );
+      expect(externalItem).toBeDefined();
+      expect(externalItem?.properties.itemLabel).toBeTruthy();
     });
   });
 });

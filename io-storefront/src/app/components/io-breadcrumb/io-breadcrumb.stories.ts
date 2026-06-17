@@ -86,3 +86,45 @@ export const breadcrumbStoryLong: Story<'io-breadcrumb'> = {
     },
   ],
 };
+
+export const breadcrumbStoryLocalised: Story<'io-breadcrumb'> = {
+  state: {
+    properties: {},
+  },
+  generator: () => [
+    {
+      tag: 'io-breadcrumb' as const,
+      properties: { label: 'Navigatie' },
+      children: [
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/diensten' }, children: ['Diensten'] },
+        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['Digitale strategie'] },
+      ],
+    },
+  ],
+};
+
+export const breadcrumbStoryExternalLink: Story<'io-breadcrumb'> = {
+  state: {
+    properties: {},
+  },
+  generator: () => [
+    {
+      tag: 'io-breadcrumb' as const,
+      properties: {},
+      children: [
+        { tag: 'io-breadcrumb-item' as const, properties: { href: '/' }, children: ['Home'] },
+        {
+          tag: 'io-breadcrumb-item' as const,
+          properties: {
+            href: '/docs',
+            target: '_blank',
+            itemLabel: 'Documentation (opens in new tab)',
+          },
+          children: ['Docs'],
+        },
+        { tag: 'io-breadcrumb-item' as const, properties: { current: true }, children: ['API Reference'] },
+      ],
+    },
+  ],
+};

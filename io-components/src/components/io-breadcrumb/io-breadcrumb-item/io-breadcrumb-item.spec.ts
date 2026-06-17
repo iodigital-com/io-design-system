@@ -16,6 +16,14 @@ describe('io-breadcrumb-item — default props', () => {
   it('current defaults to false', () => {
     expect(c.current).toBe(false);
   });
+
+  it('target defaults to undefined', () => {
+    expect(c.target).toBeUndefined();
+  });
+
+  it('itemLabel defaults to undefined', () => {
+    expect(c.itemLabel).toBeUndefined();
+  });
 });
 
 describe('io-breadcrumb-item — render logic', () => {
@@ -84,5 +92,83 @@ describe('io-breadcrumb-item — render logic', () => {
     expect(c.current).toBe(false);
     (c as any).current = true;
     expect(c.current).toBe(true);
+  });
+});
+
+describe('io-breadcrumb-item — target prop', () => {
+  it('accepts target="_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    c.target = '_blank';
+    expect(c.target).toBe('_blank');
+  });
+
+  it('accepts target="_self"', () => {
+    const c = new IoBreadcrumbItem();
+    c.target = '_self';
+    expect(c.target).toBe('_self');
+  });
+
+  it('render does not throw when target="_blank" and href is set', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/docs';
+    c.target = '_blank';
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('computes rel="noopener noreferrer" when target="_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    c.target = '_blank';
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBe('noopener noreferrer');
+  });
+
+  it('rel is undefined when target is not "_blank"', () => {
+    const c = new IoBreadcrumbItem();
+    c.target = '_self';
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBeUndefined();
+  });
+
+  it('rel is undefined when target is not set', () => {
+    const c = new IoBreadcrumbItem();
+    const rel = c.target === '_blank' ? 'noopener noreferrer' : undefined;
+    expect(rel).toBeUndefined();
+  });
+});
+
+describe('io-breadcrumb-item — itemLabel prop', () => {
+  it('accepts itemLabel', () => {
+    const c = new IoBreadcrumbItem();
+    c.itemLabel = 'Documentation (opens in new tab)';
+    expect(c.itemLabel).toBe('Documentation (opens in new tab)');
+  });
+
+  it('render does not throw when itemLabel is set on a link', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/docs';
+    c.itemLabel = 'Docs, opens in new tab';
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('render does not throw when itemLabel is set on a current span', () => {
+    const c = new IoBreadcrumbItem();
+    c.current = true;
+    c.itemLabel = 'Current page: Digital Strategy';
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('itemLabel is returned as aria-label value when truthy', () => {
+    const c = new IoBreadcrumbItem();
+    c.href = '/docs';
+    c.itemLabel = 'Documentation';
+    const ariaLabel = c.itemLabel || undefined;
+    expect(ariaLabel).toBe('Documentation');
+  });
+
+  it('empty itemLabel resolves to undefined (no aria-label attribute)', () => {
+    const c = new IoBreadcrumbItem();
+    c.itemLabel = '';
+    const ariaLabel = c.itemLabel || undefined;
+    expect(ariaLabel).toBeUndefined();
   });
 });

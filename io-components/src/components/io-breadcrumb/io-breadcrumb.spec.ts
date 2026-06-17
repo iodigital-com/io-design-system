@@ -25,3 +25,29 @@ describe('io-breadcrumb — default props and structure', () => {
     expect((c as any).maxVisible).toBeUndefined();
   });
 });
+
+describe('io-breadcrumb — label prop', () => {
+  let c: IoBreadcrumb;
+
+  beforeEach(() => {
+    c = new IoBreadcrumb();
+  });
+
+  it('defaults label to "Breadcrumb"', () => {
+    expect(c.label).toBe('Breadcrumb');
+  });
+
+  it('accepts a custom label', () => {
+    c.label = 'Navigatie';
+    expect(c.label).toBe('Navigatie');
+  });
+
+  it('render does not throw with default label', () => {
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('render does not throw with custom label', () => {
+    c.label = 'Breadcrumb navigation';
+    expect(() => (c as any).render()).not.toThrow();
+  });
+});

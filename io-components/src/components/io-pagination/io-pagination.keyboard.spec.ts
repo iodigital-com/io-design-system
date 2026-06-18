@@ -19,13 +19,13 @@ describe('io-pagination — keyboard activation', () => {
   it('go() navigates to the given page and emits change', () => {
     (component as any).go(4);
     expect(component.page).toBe(4);
-    expect(changeEmitMock).toHaveBeenCalledWith({ page: 4 });
+    expect(changeEmitMock).toHaveBeenCalledWith({ page: 4, previousPage: 3 });
   });
 
   it('go() to prev page decrements page', () => {
     (component as any).go(2);
     expect(component.page).toBe(2);
-    expect(changeEmitMock).toHaveBeenCalledWith({ page: 2 });
+    expect(changeEmitMock).toHaveBeenCalledWith({ page: 2, previousPage: 3 });
   });
 
   it('go() clamps — does not navigate below page 1', () => {

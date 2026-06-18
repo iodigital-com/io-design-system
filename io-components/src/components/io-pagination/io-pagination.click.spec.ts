@@ -19,7 +19,7 @@ describe('io-pagination - click handling', () => {
 
     expect(component.page).toBe(3);
     expect(emitMock).toHaveBeenCalledOnce();
-    expect(emitMock).toHaveBeenCalledWith({ page: 3 });
+    expect(emitMock).toHaveBeenCalledWith({ page: 3, previousPage: 2 });
   });
 
   it('does not emit change when clicking current page', () => {
@@ -57,7 +57,7 @@ describe('io-pagination - click handling with computed pages (totalItems + perPa
 
     expect(component.page).toBe(3);
     expect(emitMock).toHaveBeenCalledOnce();
-    expect(emitMock).toHaveBeenCalledWith({ page: 3 });
+    expect(emitMock).toHaveBeenCalledWith({ page: 3, previousPage: 2 });
   });
 
   it('does not emit when target page exceeds computed total', () => {
@@ -73,7 +73,7 @@ describe('io-pagination - click handling with computed pages (totalItems + perPa
     (component as any).go(5);
 
     expect(component.page).toBe(5);
-    expect(emitMock).toHaveBeenCalledWith({ page: 5 });
+    expect(emitMock).toHaveBeenCalledWith({ page: 5, previousPage: 2 });
   });
 
   it('does not emit when navigating to current page', () => {

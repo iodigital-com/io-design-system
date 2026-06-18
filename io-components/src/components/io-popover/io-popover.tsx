@@ -90,6 +90,7 @@ export class IoPopover {
       ?.assignedElements({ flatten: true })[0] as HTMLElement | null;
 
     if (this.triggerEl) {
+      this.triggerEl.setAttribute('aria-haspopup', 'dialog');
       this.triggerEl.setAttribute('aria-expanded', String(this.open));
       this.triggerEl.setAttribute('aria-controls', this.panelId);
     }
@@ -101,6 +102,10 @@ export class IoPopover {
     if (this.open) {
       this.applyOpenState();
     }
+  }
+
+  disconnectedCallback(): void {
+    this.detachFocusTrap?.();
   }
 
   // ── Watchers ──────────────────────────────────────────────────

@@ -612,7 +612,7 @@ describe('io-popover — componentWillLoad', () => {
 // ── componentDidLoad ───────────────────────────────────────────────────────────
 
 describe('io-popover — componentDidLoad with triggerEl', () => {
-  it('sets aria-expanded and aria-controls on the resolved triggerEl', () => {
+  it('sets aria-haspopup, aria-expanded and aria-controls on the resolved triggerEl', () => {
     const c = new IoPopover();
     const mockTrigger = document.createElement('button');
 
@@ -628,6 +628,7 @@ describe('io-popover — componentDidLoad with triggerEl', () => {
 
     (c as any).componentDidLoad();
 
+    expect(mockTrigger.getAttribute('aria-haspopup')).toBe('dialog');
     expect(mockTrigger.getAttribute('aria-expanded')).toBe('false');
     expect(mockTrigger.getAttribute('aria-controls')).toBe(panelId);
   });
@@ -707,6 +708,39 @@ describe('io-popover — positionNativePanel', () => {
 
     expect(panel.style.top).toMatch(/\d+px/);
     expect(panel.style.left).toMatch(/\d+px/);
+  });
+});
+
+// ── disconnectedCallback ───────────────────────────────────────────────────────
+
+describe('io-popover — disconnectedCallback', () => {
+  it('calls detachFocusTrap to remove the panel keydown listener', () => {
+    const c = makePopover();
+    const panel = withPanel(c);
+    const removeSpy = vi.spyOn(panel, 'removeEventListener');
+
+    // Attach a focus trap so there is a handler to remove
+    (c as any).attachFocusTrap();
+    const handler = (c as any).focusTrapHandler;
+    expect(handler).toBeDefined();
+
+    (c as any).disconnectedCallback();
+
+    expect(removeSpy).toHaveBeenCalledWith('keydown', handler);
+    expect((c as any).focusTrapHandler).toBeUndefined();
+  });
+
+  it('does not throw when disconnected with no active focus trap', () => {
+    const c = makePopover();
+    withPanel(c);
+    (c as any).focusTrapHandler = undefined;
+    expect(() => (c as any).disconnectedCallback()).not.toThrow();
+  });
+
+  it('does not throw when disconnected with no panelEl', () => {
+    const c = makePopover();
+    (c as any).panelEl = undefined;
+    expect(() => (c as any).disconnectedCallback()).not.toThrow();
   });
 });
 

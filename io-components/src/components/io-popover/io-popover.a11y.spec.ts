@@ -104,6 +104,25 @@ describe('io-popover — a11y', () => {
     await renderAndCheckA11y(wrapper);
   });
 
+  it('trigger has aria-haspopup="dialog" set by componentDidLoad (WCAG 4.1.2)', () => {
+    const component = new IoPopover();
+
+    const mockTrigger = document.createElement('button');
+    mockTrigger.textContent = 'Open popover';
+
+    const mockSlot = { assignedElements: vi.fn().mockReturnValue([mockTrigger]) };
+    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
+
+    (component as any).el = { shadowRoot: mockShadowRoot };
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).panelEl = document.createElement('div');
+    (component as any).componentWillLoad();
+
+    (component as any).componentDidLoad();
+
+    expect(mockTrigger.getAttribute('aria-haspopup')).toBe('dialog');
+  });
+
   it('componentDidLoad wires aria-controls on trigger to the generated panelId', () => {
     const component = new IoPopover();
 

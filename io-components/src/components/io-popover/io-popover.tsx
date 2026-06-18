@@ -93,6 +93,14 @@ export class IoPopover {
       this.triggerEl.setAttribute('aria-haspopup', 'dialog');
       this.triggerEl.setAttribute('aria-expanded', String(this.open));
       this.triggerEl.setAttribute('aria-controls', this.panelId);
+
+      // Also set on the inner focusable control if it's a custom element with shadowRoot
+      const innerBtn = (this.triggerEl as HTMLElement).shadowRoot?.querySelector(
+        'button, a, [role="button"]',
+      );
+      if (innerBtn) {
+        innerBtn.setAttribute('aria-haspopup', 'dialog');
+      }
     }
 
     if (this.panelEl) {

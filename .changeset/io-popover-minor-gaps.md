@@ -1,8 +1,8 @@
 ---
-"@iodigital-com/components": minor
+"@iodigital-com/components": patch
 ---
 
 fix(io-popover): disconnectedCallback cleanup, aria-haspopup on trigger (#652)
 
-- Fixes memory leak: disconnectedCallback now removes global window click listener
-- Adds aria-haspopup="dialog" + aria-expanded to trigger for WCAG 4.1.2 compliance
+- Fixes memory leak: disconnectedCallback now removes panelEl keydown listener via detachFocusTrap
+- Adds aria-haspopup="dialog" to trigger (including inner shadow DOM button for custom elements) for WCAG 4.1.2 compliance

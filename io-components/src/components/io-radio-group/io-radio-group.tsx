@@ -42,6 +42,9 @@ export class IoRadioGroup {
   /** Disables the entire group */
   @Prop({ reflect: true }) disabled = false;
 
+  /** Shows a loading spinner overlay and blocks interaction */
+  @Prop({ reflect: true }) loading = false;
+
   /** Puts the group in error state */
   @Prop({ reflect: true }) error = false;
 
@@ -223,30 +226,37 @@ export class IoRadioGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage, orientation, required } = this;
+    const { label, disabled, loading, helperText, error, errorMessage, orientation, required } = this;
     const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getRadioGroupStyles()}</style>
-        <fieldset
-          class={fieldsetClass}
-          disabled={disabled}
-          role="radiogroup"
-          aria-invalid={error ? 'true' : undefined}
-          aria-describedby={describedBy}
-          aria-orientation={orientation}
-          aria-required={required ? 'true' : undefined}
-        >
-          <legend class="radio-group__legend">{label}</legend>
-          {helperText && (
-            <span class="radio-group__helper">{helperText}</span>
+        <div class="radio-group__wrapper">
+          <fieldset
+            class={`${fieldsetClass}${loading ? ' radio-group--loading' : ''}`}
+            disabled={disabled}
+            role="radiogroup"
+            aria-invalid={error ? 'true' : undefined}
+            aria-describedby={describedBy}
+            aria-orientation={orientation}
+            aria-required={required ? 'true' : undefined}
+          >
+            <legend class="radio-group__legend">{label}</legend>
+            {helperText && (
+              <span class="radio-group__helper">{helperText}</span>
+            )}
+            <div class="radio-group__options">
+              <slot onSlotchange={this.syncChildren} />
+            </div>
+          </fieldset>
+          {loading && (
+            <div class="radio-group__loading-overlay" aria-hidden="true">
+              <io-spinner size="sm" />
+            </div>
           )}
-          <div class="radio-group__options">
-            <slot onSlotchange={this.syncChildren} />
-          </div>
-        </fieldset>
+        </div>
         {error && errorMessage && (
           <p id={this.errorId} class="radio-group__error" aria-live="polite">
             {errorMessage}

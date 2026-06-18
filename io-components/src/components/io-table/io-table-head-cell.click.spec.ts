@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoTableHeadCell } from './io-table-head-cell';
 
-describe('io-table-head-cell — keyboard interaction', () => {
+describe('io-table-head-cell — click / sort interaction', () => {
   let component: IoTableHeadCell;
   let emitMock: ReturnType<typeof vi.fn>;
 
@@ -14,30 +14,22 @@ describe('io-table-head-cell — keyboard interaction', () => {
     component.sortKey = 'email';
   });
 
-  it('emits sort on Enter key press', () => {
-    const ev = new KeyboardEvent('keydown', { key: 'Enter' });
-    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
-    (component as any).handleKeyDown(ev);
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(emitMock).toHaveBeenCalledOnce();
-  });
-
-  it('emits sort on Space key press', () => {
-    const ev = new KeyboardEvent('keydown', { key: ' ' });
-    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
-    (component as any).handleKeyDown(ev);
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(emitMock).toHaveBeenCalledOnce();
-  });
-
-  it('does not emit sort on other key presses', () => {
-    const ev = new KeyboardEvent('keydown', { key: 'Tab' });
-    (component as any).handleKeyDown(ev);
-    expect(emitMock).not.toHaveBeenCalled();
-  });
-
-  it('emits sort on click', () => {
+  it('emits sort when handleSort is called', () => {
     (component as any).handleSort();
     expect(emitMock).toHaveBeenCalledOnce();
+  });
+
+  it('emits sort with correct key', () => {
+    component.sortKey = 'email';
+    component.sortDirection = 'none';
+    (component as any).handleSort();
+    expect(emitMock).toHaveBeenCalledWith({ key: 'email', direction: 'ascending' });
+  });
+
+  it('handleKeyDown is no longer used — keyboard handled natively by <button>', () => {
+    // The sort button pattern uses a native <button> inside <th>.
+    // The browser natively fires click on Enter/Space for <button>,
+    // so a custom handleKeyDown is not needed or present.
+    expect((component as any).handleKeyDown).toBeUndefined();
   });
 });

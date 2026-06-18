@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
+import { h } from '@stencil/core';
+
 import { IoLink } from './io-link';
 
 describe('io-link — default props', () => {
@@ -92,5 +94,72 @@ describe('io-link — external link security', () => {
   it('has external prop settable to false', () => {
     component.external = false;
     expect(component.external).toBe(false);
+  });
+});
+
+describe('io-link — icon prop', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('has no icon by default', () => {
+    expect(component.icon).toBeUndefined();
+  });
+
+  it('accepts an icon name', () => {
+    component.icon = 'arrow-right' as any;
+    expect(component.icon).toBe('arrow-right');
+  });
+
+  it('has no iconSource by default', () => {
+    expect(component.iconSource).toBeUndefined();
+  });
+
+  it('accepts an iconSource string', () => {
+    component.iconSource = '<svg></svg>';
+    expect(component.iconSource).toBe('<svg></svg>');
+  });
+});
+
+describe('io-link — hideLabel prop', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('has hideLabel false by default', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('accepts hideLabel true', () => {
+    component.hideLabel = true;
+    expect(component.hideLabel).toBe(true);
+  });
+});
+
+describe('io-link — disabled keyboard accessibility', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('renders tabIndex 0 and aria-disabled when disabled so keyboard users can still focus the link', () => {
+    component.disabled = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(attrs['tabIndex']).toBe(0);
+    expect(attrs['aria-disabled']).toBe('true');
   });
 });

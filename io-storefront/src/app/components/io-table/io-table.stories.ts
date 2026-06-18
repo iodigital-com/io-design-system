@@ -215,3 +215,31 @@ export const tableStorySizes: Story<'io-table'> = {
       ],
     })),
 };
+
+/**
+ * Demonstrates the sortChange event pattern.
+ *
+ * Attach a single listener on io-table rather than one per io-table-head-cell.
+ * The sortChange event is non-bubbling and carries the same detail shape as
+ * the underlying sort event: { key: string; direction: 'ascending' | 'descending' | 'none' }.
+ *
+ * @example
+ * const table = document.querySelector('io-table');
+ * table.addEventListener('sortChange', (e) => {
+ *   const { key, direction } = e.detail;
+ *   // re-sort data and update sortDirection on the matching io-table-head-cell
+ * });
+ */
+export const tableStorySortChange: Story<'io-table'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-table' as const,
+      properties: { caption: 'sortChange event demo' },
+      children: [
+        buildHead(HEAD_LABELS, [...HEAD_KEYS], true),
+        buildBody(DEMO_ROWS),
+      ],
+    },
+  ],
+};

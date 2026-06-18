@@ -94,7 +94,7 @@ export const tooltipPropDefinitions: PropDefinition[] = [
   {
     name: 'placement',
     type: 'select',
-    options: ['top', 'bottom', 'left', 'right'],
+    options: ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end'],
     defaultValue: 'top',
   },
 ];

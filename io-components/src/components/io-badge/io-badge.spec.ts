@@ -12,6 +12,7 @@ describe('io-badge - default props and render contract', () => {
   it('maps variant to expected class name', () => {
     expect(getBadgeClassName('success', 'sm')).toBe('badge badge--success badge--sm');
     expect(getBadgeClassName('outline', 'md')).toBe('badge badge--outline badge--md');
+    expect(getBadgeClassName('blue', 'lg')).toBe('badge badge--blue badge--lg');
   });
 
   it('uses md as the default size', () => {
@@ -27,5 +28,20 @@ describe('io-badge - default props and render contract', () => {
       component.variant = variant;
       expect(() => component.render()).not.toThrow();
     }
+  });
+
+  it('includes badge--lg class when size is lg', () => {
+    expect(getBadgeClassName('success', 'lg')).toBe('badge badge--success badge--lg');
+  });
+
+  it('stores ariaLabel prop when provided', () => {
+    const component = new IoBadge();
+    component.ariaLabel = 'New feature';
+    expect(component.ariaLabel).toBe('New feature');
+  });
+
+  it('stores ariaLabel as null when not provided', () => {
+    const component = new IoBadge();
+    expect(component.ariaLabel).toBeNull();
   });
 });

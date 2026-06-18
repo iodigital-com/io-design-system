@@ -3,6 +3,7 @@
 import {
   iconStoryAllIcons,
   iconStorySizes,
+  iconStoryColors,
   iconStoryColour,
   iconStoryInheritSize,
   iconStoryFixedWidth,
@@ -61,6 +62,17 @@ export default function IoIconExamplesPage() {
         <ComponentStory
           story={iconStorySizes}
           previewClassName="flex flex-wrap gap-6 items-end"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Color variants"
+          description="The color prop applies a semantic design-system token directly to the icon without needing a wrapper element. Each value maps to a design token: primary, contrast-high, contrast-medium, success, warning, error, info."
+        />
+        <ComponentStory
+          story={iconStoryColors}
+          previewClassName="flex flex-wrap gap-6 items-center"
         />
       </section>
 

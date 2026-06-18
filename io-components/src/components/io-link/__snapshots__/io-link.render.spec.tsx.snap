@@ -4,7 +4,9 @@ exports[`io-link — render snapshots > renders default state 1`] = `
 <io-link variant="standalone" color="blue" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <a class="link link--standalone link--blue" href="/about" target="_self">
-      <slot></slot>
+      <span class="link__label">
+        <slot></slot>
+      </span>
     </a>
   </mock:shadow-root>
   Learn more
@@ -14,8 +16,10 @@ exports[`io-link — render snapshots > renders default state 1`] = `
 exports[`io-link — render snapshots > renders disabled state 1`] = `
 <io-link variant="standalone" color="blue" disabled class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <a class="link link--standalone link--blue link--disabled" target="_self" aria-disabled="true" tabindex="-1">
-      <slot></slot>
+    <a class="link link--standalone link--blue link--disabled" target="_self" aria-disabled="true" tabindex="0">
+      <span class="link__label">
+        <slot></slot>
+      </span>
     </a>
   </mock:shadow-root>
   Unavailable
@@ -46,7 +50,9 @@ MockHTMLElement {
     <io-link variant="standalone" color="blue" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <a class="link link--standalone link--blue" href="/about" target="_self">
-      <slot></slot>
+      <span class="link__label">
+        <slot></slot>
+      </span>
     </a>
   </mock:shadow-root>
   Standalone
@@ -54,7 +60,9 @@ MockHTMLElement {
     <io-link variant="inline" color="blue" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <a class="link link--inline link--blue" href="/about" target="_self">
-      <slot></slot>
+      <span class="link__label">
+        <slot></slot>
+      </span>
     </a>
   </mock:shadow-root>
   Inline

@@ -33,6 +33,23 @@ export default function IoIconApiPage() {
               </span>,
             ],
             [
+              <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">IoIconColor</InlineCode>,
+              <InlineCode key="d">&apos;inherit&apos;</InlineCode>,
+              <span key="desc">
+                Semantic color applied via <InlineCode>--io-icon-color</InlineCode> CSS custom property.{' '}
+                <InlineCode>inherit</InlineCode> uses the CSS currentColor cascade from the parent element.
+                Maps each value to a design-system token:{' '}
+                <InlineCode>primary</InlineCode> → <InlineCode>--io-color-primary</InlineCode>,{' '}
+                <InlineCode>contrast-high</InlineCode> → <InlineCode>--io-text-primary</InlineCode>,{' '}
+                <InlineCode>contrast-medium</InlineCode> → <InlineCode>--io-text-secondary</InlineCode>,{' '}
+                <InlineCode>success</InlineCode> → <InlineCode>--io-color-success</InlineCode>,{' '}
+                <InlineCode>warning</InlineCode> → <InlineCode>--io-color-warning</InlineCode>,{' '}
+                <InlineCode>error</InlineCode> → <InlineCode>--io-color-error</InlineCode>,{' '}
+                <InlineCode>info</InlineCode> → <InlineCode>--io-color-info</InlineCode>.
+              </span>,
+            ],
+            [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,

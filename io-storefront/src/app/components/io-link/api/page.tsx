@@ -70,6 +70,24 @@ export default function IoLinkApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Disables the link. Sets aria-disabled="true" and blocks navigation on click. The element remains focusable.',
             ],
+            [
+              <InlineCode key="n">icon</InlineCode>,
+              <InlineCode key="t">IoIconName</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Lucide icon rendered before the link label. Set to none to suppress. Pass iconSource for a custom inline SVG.',
+            ],
+            [
+              <InlineCode key="n">iconSource</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Raw SVG string for a custom icon. When set, overrides the icon prop.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Applies a visually-hidden clip pattern to the label span, keeping the link accessible while showing only the icon.',
+            ],
           ]}
         />
       </section>

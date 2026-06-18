@@ -142,6 +142,19 @@ tag.addEventListener('remove', () => removeTag(tag));
         />
       </section>
 
+      {/* ── Implementation Notes ─────────────────────────────────── */}
+      <section id="implementation-notes" className="space-y-4">
+        <SectionHeader
+          title="Implementation Notes"
+          description="Technical details about io-tag behaviour."
+        />
+        <div className="space-y-4">
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
+            <strong style={{ color: 'var(--io-text-primary)' }}>Form safety:</strong> All internal button elements carry <InlineCode>type="button"</InlineCode>. This prevents accidental form submission when io-tag (especially the removable variant) is placed inside a <InlineCode>&lt;form&gt;</InlineCode> element. You can safely use removable tags in forms without worrying that clicking the remove button will trigger a submit.
+          </p>
+        </div>
+      </section>
+
       {/* ── CSS Custom Properties ─────────────────────────────────── */}
       <section id="css-custom-properties" className="space-y-4">
         <SectionHeader

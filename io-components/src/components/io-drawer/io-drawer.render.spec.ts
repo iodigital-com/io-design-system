@@ -5,7 +5,7 @@
  * h is mocked and refs are just props on the vnode. This spec extracts the ref
  * from h.mock.calls and invokes it to drive coverage.
  */
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoDrawer } from './io-drawer';
@@ -20,6 +20,14 @@ function makeDrawer(overrides: Partial<IoDrawer> = {}): IoDrawer {
   (c as any).componentWillLoad();
   return c;
 }
+
+// Suppress console.error fired by componentWillLoad when no heading/aria-label
+beforeEach(() => {
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 function renderCalls(c: IoDrawer) {
   const hMock = h as unknown as ReturnType<typeof vi.fn>;

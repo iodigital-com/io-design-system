@@ -88,6 +88,22 @@ export function getTabsStyles(): string {
       border-radius: var(--io-border-radius-xs);
     }
 
+    /* ── Size variants ───────────────────────────────────── */
+
+    .tabs--size-small ::slotted(button) {
+      font-size: var(--io-font-size-sm) !important;
+    }
+
+    .tabs--size-medium ::slotted(button) {
+      font-size: var(--io-font-size-base) !important;
+    }
+
+    /* ── Compact ─────────────────────────────────────────── */
+
+    :host([compact]) .tablist ::slotted(button) {
+      padding: var(--io-space-2) var(--io-space-3) !important;
+    }
+
     /* ── Reduced motion ──────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

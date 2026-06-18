@@ -139,11 +139,17 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
           description="Custom events emitted by io-toast."
         />
         <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-toast has no events.</strong>
+          <strong style={{ color: 'var(--io-text-primary)' }}>io-toast has no events of its own.</strong>
           {' '}Notification lifecycle (enqueue, display, dismiss) is managed entirely by the component
           internals. Use the{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>addToast()</code>{' '}
-          method to enqueue messages imperatively.
+          method to enqueue messages imperatively. The{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>action</code>{' '}
+          event from the internal{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-toast-item</code>{' '}
+          bubbles through the shadow boundary and can be caught on{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&lt;io-toast&gt;</code>{' '}
+          directly.
         </EmptyNote>
       </section>
 
@@ -212,8 +218,8 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
             [
               <InlineCode key="n">action</InlineCode>,
               <InlineCode key="t">void</InlineCode>,
-              'No',
-              'Fires when the user clicks the action button (only when actionLabel is set and actionHref is not). Not fired for anchor-based CTAs.',
+              'Yes',
+              'Fires when the user clicks the action button (only when actionLabel is set and actionHref is not). Bubbles and is composed — consumers can listen directly on <io-toast> or any ancestor. Not fired for anchor-based CTAs.',
             ],
           ]}
         />

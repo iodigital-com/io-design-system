@@ -75,7 +75,7 @@ export const spinnerPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md', 'lg'],
+    options: ['sm', 'md', 'lg', 'inherit'],
     defaultValue: 'md',
   },
   {

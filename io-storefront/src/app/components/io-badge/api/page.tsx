@@ -50,6 +50,12 @@ export default function IoBadgeApiPage() {
                 <InlineCode>outline</InlineCode>
               </span>,
             ],
+            [
+              <span key="n"><InlineCode>ariaLabel</InlineCode></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Accessible label for the badge. Set when the badge communicates meaning that is not already expressed by its visible text content (e.g., a colour-coded status badge without a text label).',
+            ],
           ]}
         />
       </section>

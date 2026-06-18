@@ -11,6 +11,7 @@ export function getButtonStyles(): string {
   return `
     :host {
       display: inline-flex;
+      align-self: flex-start;
       cursor: pointer;
       font-family: var(--io-font-primary);
     }

@@ -35,4 +35,26 @@ describe('io-divider — a11y', () => {
 
     await renderAndCheckA11y(wrapper);
   });
+
+  it('labeled separator with aria-label has no violations', async () => {
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('role', 'separator');
+    wrapper.setAttribute('aria-orientation', 'horizontal');
+    wrapper.setAttribute('aria-label', 'or');
+
+    const lineLeft = document.createElement('span');
+    lineLeft.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.textContent = 'or';
+
+    const lineRight = document.createElement('span');
+    lineRight.setAttribute('aria-hidden', 'true');
+
+    wrapper.appendChild(lineLeft);
+    wrapper.appendChild(label);
+    wrapper.appendChild(lineRight);
+
+    await renderAndCheckA11y(wrapper);
+  });
 });

@@ -22,15 +22,15 @@ export default function IoTextApiPage() {
           rows={[
             [
               <span key="n"><InlineCode>tag</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;p&apos; | &apos;span&apos; | &apos;div&apos; | &apos;blockquote&apos; | &apos;time&apos;</InlineCode>,
+              <InlineCode key="t">&apos;p&apos; | &apos;span&apos; | &apos;div&apos; | &apos;blockquote&apos; | &apos;time&apos; | &apos;address&apos; | &apos;figcaption&apos; | &apos;cite&apos; | &apos;legend&apos;</InlineCode>,
               <InlineCode key="d">&apos;p&apos;</InlineCode>,
               'Semantic HTML element to render. Choose the tag that matches the content\'s structural role.',
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;base&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
+              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;base&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;base&apos;</InlineCode>,
-              'Font size mapped to --io-font-size-* tokens (12px–20px).',
+              'Font size mapped to --io-font-size-* tokens (12px–20px). Use inherit to defer font-size to a parent element.',
             ],
             [
               <span key="n"><InlineCode>weight</InlineCode><ReflectBadge /></span>,
@@ -48,7 +48,7 @@ export default function IoTextApiPage() {
               <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoTextColor</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(8 values)</span>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(9 values)</span>
               </span>,
               <InlineCode key="d">&apos;primary&apos;</InlineCode>,
               <span key="desc">
@@ -60,6 +60,7 @@ export default function IoTextApiPage() {
                 <InlineCode>success</InlineCode>{' '}
                 <InlineCode>warning</InlineCode>{' '}
                 <InlineCode>error</InlineCode>{' '}
+                <InlineCode>info</InlineCode>{' '}
                 <InlineCode>inherit</InlineCode>
               </span>,
             ],
@@ -68,6 +69,12 @@ export default function IoTextApiPage() {
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'When true, applies overflow: hidden, text-overflow: ellipsis, white-space: nowrap for single-line truncation.',
+            ],
+            [
+              <span key="n"><InlineCode>hyphens</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;manual&apos; | &apos;auto&apos; | &apos;inherit&apos;</InlineCode>,
+              <InlineCode key="d">&apos;inherit&apos;</InlineCode>,
+              'CSS hyphenation mode. auto uses the browser dictionary; manual only breaks at soft-hyphen characters (­). When auto or manual, overflow-wrap: break-word is also applied to prevent overflowing unbreakable strings.',
             ],
           ]}
         />

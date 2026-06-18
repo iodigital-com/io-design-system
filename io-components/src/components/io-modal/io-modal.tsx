@@ -83,6 +83,18 @@ export class IoModal {
   @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
 
   /**
+   * When `true` (default), the built-in close (×) button is rendered in the
+   * modal header and pressing ESC will close the modal.
+   *
+   * Set to `false` to hide the close button and suppress ESC dismissal —
+   * useful for confirmation dialogs or multi-step flows where the user must
+   * explicitly choose an action to proceed.
+   *
+   * @default true
+   */
+  @Prop() dismissButton = true;
+
+  /**
    * When `true` (default), the native `<dialog>` is opened with `show()`
    * instead of `showModal()`. The component manages its own backdrop,
    * focus-trap, ESC key, and `inert` management — behavior is identical to
@@ -157,6 +169,13 @@ export class IoModal {
     this.hasFooterSlot = Array.from(this.el?.children ?? []).some(
       c => c.getAttribute('slot') === 'footer',
     );
+
+    const hasLabel = this.aria?.['aria-label'] || this.aria?.['aria-labelledby'];
+    if (!this.heading && !hasLabel) {
+      console.error(
+        '[io-modal] No accessible name provided. Set heading, aria-label, or aria-labelledby prop for WCAG 4.1.2 compliance.',
+      );
+    }
   }
 
   componentDidLoad() {
@@ -381,6 +400,7 @@ export class IoModal {
     this.escHandler = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
         ev.preventDefault();
+        if (!this.dismissButton) return;
         this.open = false;
       }
     };
@@ -407,6 +427,7 @@ export class IoModal {
 
   private handleCancel = (ev: Event) => {
     ev.preventDefault();
+    if (!this.dismissButton) return;
     this.open = false;
   };
 
@@ -453,13 +474,15 @@ export class IoModal {
               </h2>
             )}
           </slot>
-          <button
-            type="button"
-            class="modal__close"
-            aria-label="Close dialog"
-            onClick={this.handleCloseClick}
-            innerHTML={closeIcon}
-          />
+          {this.dismissButton && (
+            <button
+              type="button"
+              class="modal__close"
+              aria-label="Close dialog"
+              onClick={this.handleCloseClick}
+              innerHTML={closeIcon}
+            />
+          )}
         </div>
         <div class="modal__body" id={descriptionId}>
           <slot />

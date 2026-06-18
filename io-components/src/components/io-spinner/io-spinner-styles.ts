@@ -29,9 +29,10 @@ export function getSpinnerStyles(): string {
 
     /* ── Sizes ──────────────────────────────────────────── */
 
-    .spinner--sm { width: 1rem;    height: 1rem;    border-width: 1.5px; }
-    .spinner--md { width: 1.5rem;  height: 1.5rem;  border-width: 2px; }
-    .spinner--lg { width: 2.5rem;  height: 2.5rem;  border-width: 3px; }
+    .spinner--sm      { width: 1rem;    height: 1rem;    border-width: 1.5px; }
+    .spinner--md      { width: 1.5rem;  height: 1.5rem;  border-width: 2px; }
+    .spinner--lg      { width: 2.5rem;  height: 2.5rem;  border-width: 3px; }
+    .spinner--inherit { width: 1em;     height: 1em;     border-width: 0.125em; }
 
     /* ── Colours ────────────────────────────────────────── */
 
@@ -49,6 +50,16 @@ export function getSpinnerStyles(): string {
 
     @media (prefers-reduced-motion: reduce) {
       .spinner { animation-duration: 1500ms; }
+    }
+
+    /* ── Windows High Contrast Mode (forced-colors) ──────── */
+
+    @media (forced-colors: active) {
+      .spinner {
+        border-color: Canvas;
+        border-top-color: ButtonText;
+        forced-color-adjust: none;
+      }
     }
   `;
 }

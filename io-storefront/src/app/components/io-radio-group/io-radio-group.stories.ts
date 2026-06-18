@@ -139,7 +139,7 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     name: 'required',
     type: 'boolean',
     defaultValue: false,
-    description: 'Marks the group as required.',
+    description: 'Marks all child io-radio elements as required.',
   },
   {
     name: 'disabled',
@@ -158,5 +158,12 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Error message shown below the group when error is true.',
+  },
+  {
+    name: 'orientation',
+    type: 'select',
+    options: ['vertical', 'horizontal'],
+    defaultValue: 'vertical',
+    description: 'Controls layout direction of the radio options. Horizontal wraps at container boundary.',
   },
 ];

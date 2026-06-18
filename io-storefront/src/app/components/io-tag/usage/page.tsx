@@ -96,6 +96,9 @@ export default function IoTagUsagePage() {
           <RuleCard label="Do not combine removable with selected toggle">
             Removable tags should not also fire <C>toggle</C>. The remove icon is the interaction trigger. If you need both toggle and remove in the same group, reconsider the information architecture.
           </RuleCard>
+          <RuleCard label="Safe in HTML forms">
+            io-tag removable buttons carry <C>type="button"</C> and are safe to use inside HTML <C>{'<form>'}</C> elements without triggering form submission. You can place removable tags in forms and trust that clicking the remove button will only remove the tag, not submit the form.
+          </RuleCard>
         </div>
       </section>
 

@@ -2,7 +2,24 @@
 export interface IoPaginationChangeDetail {
   /** 1-based page number */
   page: number;
+  /** 1-based page number before the navigation occurred */
+  previousPage: number;
 }
+
+/**
+ * Localisation strings for io-pagination.
+ * Override any key to internationalise the navigation labels.
+ */
+export type IoPaginationIntl = {
+  /** aria-label for the `<nav>` element. Defaults to `'Pagination'`. */
+  root?: string;
+  /** aria-label for the previous button. Falls back to the `prevLabel` prop, then `'Previous page'`. */
+  prev?: string;
+  /** aria-label for the next button. Falls back to the `nextLabel` prop, then `'Next page'`. */
+  next?: string;
+  /** Prefix prepended to the page number for page button aria-labels. Defaults to `'Page'`. */
+  page?: string;
+};
 
 /**
  * Page count input model for io-pagination.

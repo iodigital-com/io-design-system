@@ -36,4 +36,5 @@ export const paginationPropDefinitions: PropDefinition[] = [
   { name: 'page', type: 'number', defaultValue: 1 },
   { name: 'totalPages', type: 'number', defaultValue: 5 },
   { name: 'compact', type: 'boolean', defaultValue: false, description: 'Reduces button height to ~32px for dense UI contexts like toolbars and sidebars.' },
+  { name: 'intl', type: 'string', description: 'JSON object (IoPaginationIntl) to localise nav/page/prev/next labels. Example: {"root":"Paginación","page":"Página","prev":"Anterior","next":"Siguiente"}' },
 ];

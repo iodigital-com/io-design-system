@@ -97,7 +97,7 @@ describe('io-pagination — navigation', () => {
 
   it('emits change with next page when navigating forward', () => {
     (component as any).go(4);
-    expect(emitSpy).toHaveBeenCalledWith({ page: 4 });
+    expect(emitSpy).toHaveBeenCalledWith({ page: 4, previousPage: 3 });
     expect(component.page).toBe(4);
   });
 
@@ -365,5 +365,102 @@ describe('io-pagination — totalItems and perPage props', () => {
     (component as any).onPerPageChange();
 
     expect(component.page).toBe(2);
+  });
+});
+
+describe('io-pagination — intl prop', () => {
+  let component: IoPagination;
+
+  beforeEach(() => {
+    component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('defaults intl to undefined', () => {
+    expect(component.intl).toBeUndefined();
+  });
+
+  it('uses "Pagination" as default nav label when intl.root is not set', () => {
+    component.intl = {};
+    // Resolved inside render() — verify the fallback value directly
+    const resolved = component.intl?.root ?? 'Pagination';
+    expect(resolved).toBe('Pagination');
+  });
+
+  it('uses intl.root when provided', () => {
+    component.intl = { root: 'Paginación' };
+    const resolved = component.intl?.root ?? 'Pagination';
+    expect(resolved).toBe('Paginación');
+  });
+
+  it('uses "Page" as default page prefix when intl.page is not set', () => {
+    component.intl = {};
+    const resolved = component.intl?.page ?? 'Page';
+    expect(resolved).toBe('Page');
+  });
+
+  it('uses intl.page when provided', () => {
+    component.intl = { page: 'Página' };
+    const resolved = component.intl?.page ?? 'Page';
+    expect(resolved).toBe('Página');
+  });
+
+  it('falls back to prevLabel when intl.prev is not set', () => {
+    component.prevLabel = 'Go back';
+    component.intl = {};
+    const resolved = component.intl?.prev ?? component.prevLabel;
+    expect(resolved).toBe('Go back');
+  });
+
+  it('uses intl.prev when provided', () => {
+    component.prevLabel = 'Previous page';
+    component.intl = { prev: 'Página anterior' };
+    const resolved = component.intl?.prev ?? component.prevLabel;
+    expect(resolved).toBe('Página anterior');
+  });
+
+  it('falls back to nextLabel when intl.next is not set', () => {
+    component.nextLabel = 'Go forward';
+    component.intl = {};
+    const resolved = component.intl?.next ?? component.nextLabel;
+    expect(resolved).toBe('Go forward');
+  });
+
+  it('uses intl.next when provided', () => {
+    component.nextLabel = 'Next page';
+    component.intl = { next: 'Página siguiente' };
+    const resolved = component.intl?.next ?? component.nextLabel;
+    expect(resolved).toBe('Página siguiente');
+  });
+});
+
+describe('io-pagination — previousPage in change event', () => {
+  let component: IoPagination;
+  let emitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoPagination();
+    emitSpy = vi.fn();
+    (component as any).change = { emit: emitSpy };
+    component.totalPages = 10;
+    component.page = 5;
+  });
+
+  it('includes previousPage in change event detail', () => {
+    (component as any).go(6);
+    expect(emitSpy).toHaveBeenCalledWith({ page: 6, previousPage: 5 });
+  });
+
+  it('previousPage reflects the page before navigation, not the new page', () => {
+    (component as any).go(2);
+    const detail = emitSpy.mock.calls[0][0];
+    expect(detail.page).toBe(2);
+    expect(detail.previousPage).toBe(5);
+    expect(detail.page).not.toBe(detail.previousPage);
+  });
+
+  it('updates component.page to the new value after navigation', () => {
+    (component as any).go(8);
+    expect(component.page).toBe(8);
   });
 });

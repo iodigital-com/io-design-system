@@ -40,6 +40,10 @@ describe('io-switch — default props', () => {
     expect(component.helperText).toBeUndefined();
   });
 
+  it('is not loading by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
   it('setFocus resolves without throwing', async () => {
     const input = document.createElement('input');
     input.focus = vi.fn();
@@ -81,6 +85,35 @@ describe('io-switch — regression guards (Wave J)', () => {
     const styles = getSwitchStyles();
     expect(styles).toContain('box-shadow: var(--io-switch-thumb-shadow)');
     expect(styles).not.toMatch(/box-shadow:\s*0\s+1px/);
+  });
+
+  it('loading overlay CSS uses correct class and token-first positioning (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('.switch-loading-overlay');
+    expect(styles).toContain('pointer-events: none');
+  });
+
+  it('hover state references var(--io-border-hover) and var(--io-color-primary-hover) tokens (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('var(--io-border-hover)');
+    expect(styles).toContain('var(--io-color-primary-hover)');
+  });
+
+  it('hover state is wrapped in @media (hover: hover) and (pointer: fine) (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('@media (hover: hover) and (pointer: fine)');
+  });
+
+  it('hover rules exclude error state via :not(.switch-wrapper--error) (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain(':not(.switch-wrapper--error)');
+  });
+
+  it('forced-colors media block is present (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('@media (forced-colors: active)');
+    expect(styles).toContain('ButtonText');
+    expect(styles).toContain('Highlight');
   });
 });
 

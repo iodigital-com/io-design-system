@@ -65,4 +65,60 @@ describe('io-switch — event behavior', () => {
     (component as any).handleChange(ev);
     expect(component.checked).toBe(false);
   });
+
+  it('does not emit when loading', () => {
+    component.loading = true;
+    const ev = makeChangeEvent(true);
+    (component as any).handleChange(ev);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+
+  it('does not mutate checked prop when loading', () => {
+    component.loading = true;
+    component.checked = false;
+    const ev = makeChangeEvent(true);
+    (component as any).handleChange(ev);
+    expect(component.checked).toBe(false);
+  });
+});
+
+describe('io-switch — blur event', () => {
+  let component: IoSwitch;
+  let blurEmitMock: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoSwitch();
+    (component as any).el = document.createElement('io-switch');
+    (component as any).change = { emit: vi.fn() };
+    blurEmitMock = vi.fn();
+    (component as any).blur = { emit: blurEmitMock };
+  });
+
+  it('emits blur event when handleBlur is called on an enabled switch', () => {
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    expect(blurEmitMock).toHaveBeenCalledOnce();
+    expect(blurEmitMock).toHaveBeenCalledWith(focusEvent);
+  });
+
+  it('blur event payload is the original FocusEvent', () => {
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    const emittedArg = blurEmitMock.mock.calls[0][0];
+    expect(emittedArg).toBe(focusEvent);
+  });
+
+  it('does not emit blur when disabled', () => {
+    component.disabled = true;
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    expect(blurEmitMock).not.toHaveBeenCalled();
+  });
+
+  it('does not emit blur when loading', () => {
+    component.loading = true;
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    expect(blurEmitMock).not.toHaveBeenCalled();
+  });
 });

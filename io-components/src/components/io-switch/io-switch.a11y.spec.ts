@@ -114,4 +114,55 @@ describe('io-switch — a11y (ARIA patterns)', () => {
     // native checked prop is used instead
     expect(attrs.checked).toBe(true);
   });
+
+  it('render() sets aria-busy="true" on Host when loading=true (#654)', () => {
+    const c = new IoSwitch();
+    (c as any).el = document.createElement('io-switch');
+    (c as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      reportValidity: vi.fn(),
+      checkValidity: vi.fn(),
+    };
+    c.label = 'Enable notifications';
+    c.loading = true;
+    (c as any).componentWillLoad();
+
+    // In the Stencil unit-test mock, Host resolves to undefined,
+    // so the h() call for <Host> has undefined as its first argument.
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    c.render();
+
+    const hostCall = hMock.mock.calls.find(
+      (call) => call[0] == null && (call[1] as Record<string, unknown>)?.['aria-busy'] !== undefined,
+    );
+    const hostProps = (hostCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(hostProps['aria-busy']).toBe('true');
+  });
+
+  it('render() does not set aria-busy on Host when loading=false (#654)', () => {
+    const c = new IoSwitch();
+    (c as any).el = document.createElement('io-switch');
+    (c as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      reportValidity: vi.fn(),
+      checkValidity: vi.fn(),
+    };
+    c.label = 'Enable notifications';
+    c.loading = false;
+    (c as any).componentWillLoad();
+
+    // In the Stencil unit-test mock, Host resolves to undefined,
+    // so the h() call for <Host> has undefined as its first argument.
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    c.render();
+
+    // Find the Host call (tag is null/undefined in mock env)
+    const hostCall = hMock.mock.calls.find((call) => call[0] == null);
+    const hostProps = (hostCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(hostProps['aria-busy']).toBeUndefined();
+  });
 });

@@ -169,7 +169,12 @@ export class IoRadioGroup {
     this.value = target.value;
     radios.forEach((r, i) => { if (i !== nextIndex) r.tabIndex = -1; });
     // Focus the target — setFocus() is defined on IoRadio, fall back to host focus
-    (target as any).setFocus?.() || (target as HTMLElement).focus();
+    const targetEl = target as HTMLElement & { setFocus?(): void };
+    if (typeof targetEl.setFocus === 'function') {
+      targetEl.setFocus();
+    } else {
+      targetEl.focus();
+    }
     this.change?.emit({ value: this.value });
   }
 

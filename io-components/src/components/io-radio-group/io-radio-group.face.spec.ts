@@ -7,7 +7,7 @@
  * - formResetCallback restores defaultValue and resyncs children
  * - formDisabledCallback propagates disabled to children
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoRadioGroup } from './io-radio-group';
 

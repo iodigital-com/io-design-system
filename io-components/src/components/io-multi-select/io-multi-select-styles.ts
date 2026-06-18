@@ -96,8 +96,11 @@ export function getMultiSelectStyles(): string {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      width: var(--io-icon-size-sm);
-      height: var(--io-icon-size-sm);
+      /* WCAG 2.5.8: minimum 24x24px touch target */
+      min-width: 24px;
+      min-height: 24px;
+      width: var(--io-multi-select-chip-remove-size, 24px);
+      height: var(--io-multi-select-chip-remove-size, 24px);
       padding: 0;
       margin: 0;
       border: none;

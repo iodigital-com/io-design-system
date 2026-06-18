@@ -225,3 +225,54 @@ describe('io-multi-select — change event', () => {
     expect(emitSpy).toHaveBeenCalledWith({ value: ['nl'], name: 'test' });
   });
 });
+
+describe('io-multi-select — blur event', () => {
+  it('emits blur when trigger loses focus and dropdown is closed', () => {
+    const { component } = makeComponent();
+    const blurEmitSpy = vi.fn();
+    (component as any).blur = { emit: blurEmitSpy };
+    (component as any).isOpen = false;
+
+    const ev = new FocusEvent('blur');
+    (component as any).handleTriggerBlur(ev);
+
+    expect(blurEmitSpy).toHaveBeenCalledOnce();
+  });
+
+  it('does not emit blur when trigger loses focus but dropdown is open', () => {
+    const { component } = makeComponent();
+    const blurEmitSpy = vi.fn();
+    (component as any).blur = { emit: blurEmitSpy };
+    (component as any).isOpen = true;
+
+    const ev = new FocusEvent('blur');
+    (component as any).handleTriggerBlur(ev);
+
+    expect(blurEmitSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-multi-select — toggle event', () => {
+  it('emits toggle with open=true when dropdown opens', () => {
+    const { component } = makeComponent();
+    const toggleEmitSpy = vi.fn();
+    (component as any).toggle = { emit: toggleEmitSpy };
+    (component as any).attachClickOutside = vi.fn();
+    (component as any).positionDropdown = vi.fn().mockResolvedValue(undefined);
+
+    (component as any).onIsOpenChange(true);
+
+    expect(toggleEmitSpy).toHaveBeenCalledWith({ open: true });
+  });
+
+  it('emits toggle with open=false when dropdown closes', () => {
+    const { component } = makeComponent();
+    const toggleEmitSpy = vi.fn();
+    (component as any).toggle = { emit: toggleEmitSpy };
+    (component as any).removeClickOutside = vi.fn();
+
+    (component as any).onIsOpenChange(false);
+
+    expect(toggleEmitSpy).toHaveBeenCalledWith({ open: false });
+  });
+});

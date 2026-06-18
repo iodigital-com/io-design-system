@@ -3,6 +3,7 @@
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
+import { getMultiSelectStyles } from './io-multi-select-styles';
 
 vi.mock('@floating-ui/dom', () => ({
   computePosition: vi.fn().mockResolvedValue({ x: 42, y: 84 }),
@@ -238,6 +239,57 @@ describe('io-multi-select — positionDropdown', () => {
   });
 });
 
+describe('io-multi-select — positionDropdown auto vs pinned', () => {
+  it('uses bottom-start placement and flip middleware when dropdownDirection is "auto"', async () => {
+    const component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).componentWillLoad();
+
+    const triggerEl = document.createElement('button');
+    triggerEl.getBoundingClientRect = vi.fn(() => ({ width: 200 } as DOMRect));
+    const dropdownEl = document.createElement('div');
+    dropdownEl.style.left = '';
+    dropdownEl.style.top = '';
+    dropdownEl.style.width = '';
+
+    (component as any).triggerEl = triggerEl;
+    (component as any).dropdownEl = dropdownEl;
+    component.dropdownDirection = 'auto';
+
+    vi.mocked(computePosition).mockResolvedValueOnce({ x: 0, y: 100, middlewareData: {}, placement: 'bottom-start' });
+
+    await (component as any).positionDropdown();
+
+    // For auto, middleware array has 3 items (offset + flip + shift)
+    const call = vi.mocked(computePosition).mock.calls.at(-1)!;
+    expect(call[2].placement).toBe('bottom-start');
+    expect(call[2].middleware).toHaveLength(3);
+  });
+
+  it('uses bottom-start placement and pinned middleware (no flip) when dropdownDirection is "down"', async () => {
+    const component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).componentWillLoad();
+
+    const triggerEl = document.createElement('button');
+    triggerEl.getBoundingClientRect = vi.fn(() => ({ width: 200 } as DOMRect));
+    const dropdownEl = document.createElement('div');
+
+    (component as any).triggerEl = triggerEl;
+    (component as any).dropdownEl = dropdownEl;
+    component.dropdownDirection = 'down';
+
+    vi.mocked(computePosition).mockResolvedValueOnce({ x: 0, y: 100, middlewareData: {}, placement: 'bottom-start' });
+
+    await (component as any).positionDropdown();
+
+    // For pinned (down), middleware array has 2 items (offset + shift, no flip)
+    const call = vi.mocked(computePosition).mock.calls.at(-1)!;
+    expect(call[2].placement).toBe('bottom-start');
+    expect(call[2].middleware).toHaveLength(2);
+  });
+});
+
 describe('io-multi-select — formDisabledCallback', () => {
   let component: IoMultiSelect;
 
@@ -308,6 +360,19 @@ describe('io-multi-select — hideLabel prop', () => {
     (component as any).componentWillLoad();
     expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
+  });
+});
+
+describe('io-multi-select — chip remove button touch target (WCAG 2.5.8)', () => {
+  it('chip remove button has min-width: 24px in styles', () => {
+    const styles = getMultiSelectStyles();
+    expect(styles).toContain('.multi-select-chip__remove');
+    expect(styles).toContain('min-width: 24px');
+  });
+
+  it('chip remove button has min-height: 24px in styles', () => {
+    const styles = getMultiSelectStyles();
+    expect(styles).toContain('min-height: 24px');
   });
 });
 

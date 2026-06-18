@@ -43,6 +43,7 @@ import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
+import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
@@ -86,6 +87,7 @@ export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
+export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
@@ -2527,6 +2529,38 @@ export namespace Components {
         "size": IoTagSize;
     }
     /**
+     * io-tag-dismissible
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     */
+    interface IoTagDismissible {
+        /**
+          * Optional leading icon name (from the io icon set)
+         */
+        "icon"?: IoIconName;
+        /**
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
+         */
+        "label": string;
+        /**
+          * Colour variant of the chip
+          * @default 'default'
+         */
+        "variant": IoTagColor1;
+    }
+    /**
      * io-text
      * =======
      * Light DOM typography primitive for body text.
@@ -2958,6 +2992,10 @@ export interface IoTabsBarCustomEvent<T> extends CustomEvent<T> {
 export interface IoTagCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoTagElement;
+}
+export interface IoTagDismissibleCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTagDismissibleElement;
 }
 export interface IoTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -4245,6 +4283,40 @@ declare global {
         prototype: HTMLIoTagElement;
         new (): HTMLIoTagElement;
     };
+    interface HTMLIoTagDismissibleElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-tag-dismissible
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     */
+    interface HTMLIoTagDismissibleElement extends Components.IoTagDismissible, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTagDismissibleElement: {
+        prototype: HTMLIoTagDismissibleElement;
+        new (): HTMLIoTagDismissibleElement;
+    };
     /**
      * io-text
      * =======
@@ -4421,6 +4493,7 @@ declare global {
         "io-tabs": HTMLIoTabsElement;
         "io-tabs-bar": HTMLIoTabsBarElement;
         "io-tag": HTMLIoTagElement;
+        "io-tag-dismissible": HTMLIoTagDismissibleElement;
         "io-text": HTMLIoTextElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
@@ -6952,6 +7025,42 @@ declare namespace LocalJSX {
         "size"?: IoTagSize;
     }
     /**
+     * io-tag-dismissible
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     */
+    interface IoTagDismissible {
+        /**
+          * Optional leading icon name (from the io icon set)
+         */
+        "icon"?: IoIconName;
+        /**
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
+         */
+        "label": string;
+        /**
+          * Fires when the dismiss button is clicked or Delete/Backspace is pressed
+         */
+        "onDismiss"?: (event: IoTagDismissibleCustomEvent<void>) => void;
+        /**
+          * Colour variant of the chip
+          * @default 'default'
+         */
+        "variant"?: IoTagColor1;
+    }
+    /**
      * io-text
      * =======
      * Light DOM typography primitive for body text.
@@ -7685,6 +7794,11 @@ declare namespace LocalJSX {
         "color": IoTagColor;
         "label": string;
     }
+    interface IoTagDismissibleAttributes {
+        "label": string;
+        "variant": IoTagColor;
+        "icon": IoIconName;
+    }
     interface IoTextAttributes {
         "tag": IoTextTag;
         "size": IoTextSize;
@@ -7790,6 +7904,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
+        "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] } & OneOf<"label", IoTagDismissible["label"], IoTagDismissibleAttributes["label"]>;
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
@@ -8459,6 +8574,24 @@ declare module "@stencil/core" {
              * <io-tag removable>React</io-tag>
              */
             "io-tag": LocalJSX.IntrinsicElements["io-tag"] & JSXBase.HTMLAttributes<HTMLIoTagElement>;
+            /**
+             * io-tag-dismissible
+             * ==================
+             * A display chip with a built-in dismiss (remove) button.
+             * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+             * label with a dedicated dismiss action. Use it wherever a selected value
+             * can be removed — e.g. applied filters, multi-select value chips, or
+             * active category pills.
+             * Accessibility:
+             * - The dismiss button carries `aria-label="Remove {label}"` so screen
+             *   reader users hear an unambiguous action label.
+             * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+             *   matching common dismissible chip patterns.
+             * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+             * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+             * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+             */
+            "io-tag-dismissible": LocalJSX.IntrinsicElements["io-tag-dismissible"] & JSXBase.HTMLAttributes<HTMLIoTagDismissibleElement>;
             /**
              * io-text
              * =======

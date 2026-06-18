@@ -360,6 +360,14 @@ export const sitemap: NavSection[] = [
         related: ['io-badge', 'io-checkbox', 'io-tabs'],
       },
       {
+        label: 'Tag Dismissible',
+        href: '/components/io-tag-dismissible/configurator',
+        status: 'beta',
+        slug: 'io-tag-dismissible',
+        description: 'Display chip with a built-in dismiss button. Separate from io-tag to keep toggle and dismiss concerns distinct. 24×24 px touch target (WCAG 2.5.8).',
+        related: ['io-tag', 'io-badge', 'io-multi-select'],
+      },
+      {
         label: 'Text',
         href: '/components/io-text/configurator',
         status: 'beta',

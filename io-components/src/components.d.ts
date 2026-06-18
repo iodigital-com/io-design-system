@@ -3278,6 +3278,7 @@ declare global {
     };
     interface HTMLIoPinCodeElementEventMap {
         "change": IoPinCodeChangeDetail;
+        "blur": void;
     }
     /**
      * io-pin-code
@@ -5365,6 +5366,10 @@ declare namespace LocalJSX {
           * HTML form field name
          */
         "name"?: string | undefined;
+        /**
+          * Fires when focus leaves the component (relatedTarget not in any slot)
+         */
+        "onBlur"?: (event: IoPinCodeCustomEvent<void>) => void;
         /**
           * Fires on every digit change with current value and completion status
          */

@@ -5,6 +5,7 @@ import {
   headingStoryLevels,
   headingStoryWeights,
   headingStoryAlign,
+  headingStoryColors,
   headingStoryEllipsis,
   headingPropDefinitions,
 } from './io-heading.stories';
@@ -71,7 +72,7 @@ describe('io-heading storefront stories', () => {
     });
 
     it('generator with each color option does not throw', () => {
-      for (const color of ['primary', 'secondary', 'inherit']) {
+      for (const color of ['primary', 'secondary', 'inherit', 'inverse', 'brand']) {
         expect(() =>
           headingStory.generator?.({ properties: { ...headingStory.state?.properties, color } })
         ).not.toThrow();
@@ -132,6 +133,14 @@ describe('io-heading storefront stories', () => {
       expect(sizeDef).toBeDefined();
       for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
         expect(((sizeDef as unknown as { options: string[] })).options).toContain(size);
+      }
+    });
+
+    it('color select options include inverse and brand', () => {
+      const colorDef = headingPropDefinitions.find((d) => d.name === 'color');
+      expect(colorDef).toBeDefined();
+      for (const color of ['primary', 'secondary', 'inherit', 'inverse', 'brand']) {
+        expect(((colorDef as unknown as { options: string[] })).options).toContain(color);
       }
     });
   });
@@ -224,6 +233,35 @@ describe('io-heading storefront stories', () => {
     });
   });
 
+  describe('headingStoryColors (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryColors.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per color variant', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      expect(els.length).toBe(5);
+    });
+
+    it('includes primary, secondary, and inherit as direct io-heading elements', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      const directHeadings = els.filter((el) => (el as { tag: string }).tag === 'io-heading');
+      expect(directHeadings.length).toBeGreaterThanOrEqual(3);
+    });
+
+    it('wraps inverse color with a dark background container', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      const inverseEl = els.find((el) => {
+        if ((el as { tag: string }).tag === 'div') {
+          const children = (el as { children?: unknown[] }).children ?? [];
+          return children.some((c) => (c as { properties?: { color: string } })?.properties?.color === 'inverse');
+        }
+        return false;
+      });
+      expect(inverseEl).toBeDefined();
+    });
+  });
+
   describe('headingStoryEllipsis (named story)', () => {
     it('does not throw', () => {
       expect(() => headingStoryEllipsis.generator?.()).not.toThrow();
@@ -238,4 +276,5 @@ describe('io-heading storefront stories', () => {
       expect(heading).toBeDefined();
     });
   });
+
 });

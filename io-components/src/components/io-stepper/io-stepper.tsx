@@ -1,4 +1,4 @@
-import { Component, Prop, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h } from '@stencil/core';
 
 import { getStepperStyles } from './io-stepper-styles';
 import type { IoStepperOrientation } from './types';
@@ -33,6 +33,28 @@ export class IoStepper {
 
   /** Layout direction of the stepper. */
   @Prop({ reflect: true }) orientation: IoStepperOrientation = 'horizontal';
+
+  /**
+   * Accessible label for the <nav> landmark.
+   * Override for i18n — default is 'Progress'.
+   */
+  @Prop() ariaLabel = 'Progress';
+
+  // ── Events ────────────────────────────────────────────────────
+
+  /**
+   * Fired when a complete (non-disabled) step is clicked.
+   * Payload: { activeStepIndex: number } — 1-based index of the clicked step.
+   */
+  @Event({ bubbles: false }) stepChange!: EventEmitter<{ activeStepIndex: number }>;
+
+  // ── Event delegation ─────────────────────────────────────────
+
+  @Listen('stepClick')
+  onStepClick(ev: CustomEvent<{ index: number }>) {
+    ev.stopPropagation();
+    this.stepChange.emit({ activeStepIndex: ev.detail.index });
+  }
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -74,7 +96,7 @@ export class IoStepper {
     return (
       <Host>
         <style>{getStepperStyles()}</style>
-        <nav class="stepper-nav" aria-label="Progress">
+        <nav class="stepper-nav" aria-label={this.ariaLabel}>
           <ol class={`stepper stepper--${this.orientation}`}>
             <slot onSlotchange={this.handleSlotChange} />
           </ol>

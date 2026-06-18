@@ -1,7 +1,32 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoStepper } from './io-stepper';
 import { IoStep } from './io-step';
+
+const hMock = h as unknown as ReturnType<typeof vi.fn>;
+
+// ─── Helpers ───────────────────────────────────────────────────────────────
+
+function getButtonAttrs(step: IoStep): Record<string, unknown> {
+  hMock.mockClear();
+  (step as any).render();
+  const call = hMock.mock.calls.find(
+    ([tag]: [unknown]) => tag === 'button',
+  ) as [unknown, Record<string, unknown>] | undefined;
+  return call?.[1] ?? {};
+}
+
+function getNavAttrs(stepper: IoStepper): Record<string, unknown> {
+  hMock.mockClear();
+  (stepper as any).render();
+  const call = hMock.mock.calls.find(
+    ([tag]: [unknown]) => tag === 'nav',
+  ) as [unknown, Record<string, unknown>] | undefined;
+  return call?.[1] ?? {};
+}
+
+// ─── io-stepper default props ──────────────────────────────────────────────
 
 describe('io-stepper — default props', () => {
   let component: IoStepper;
@@ -19,6 +44,10 @@ describe('io-stepper — default props', () => {
     expect(component.orientation).toBe('horizontal');
   });
 
+  it('has ariaLabel "Progress" by default', () => {
+    expect(component.ariaLabel).toBe('Progress');
+  });
+
   it('renders without throwing', () => {
     expect(() => component.render()).not.toThrow();
   });
@@ -33,6 +62,63 @@ describe('io-stepper — default props', () => {
     expect(() => component.render()).not.toThrow();
   });
 });
+
+// ─── io-stepper ariaLabel prop ─────────────────────────────────────────────
+
+describe('io-stepper — ariaLabel prop', () => {
+  it('applies default ariaLabel "Progress" to nav element', () => {
+    const stepper = new IoStepper();
+    (stepper as any).el = document.createElement('io-stepper');
+    const attrs = getNavAttrs(stepper);
+    expect(attrs['aria-label']).toBe('Progress');
+  });
+
+  it('applies custom ariaLabel to nav element', () => {
+    const stepper = new IoStepper();
+    (stepper as any).el = document.createElement('io-stepper');
+    stepper.ariaLabel = 'Checkout progress';
+    const attrs = getNavAttrs(stepper);
+    expect(attrs['aria-label']).toBe('Checkout progress');
+  });
+});
+
+// ─── io-stepper stepChange event ──────────────────────────────────────────
+
+describe('io-stepper — stepChange event', () => {
+  it('emits stepChange when onStepClick is called', () => {
+    const stepper = new IoStepper();
+    (stepper as any).el = document.createElement('io-stepper');
+    const emitted: any[] = [];
+    (stepper as any).stepChange = { emit: (detail: any) => emitted.push(detail) };
+
+    const fakeEvent = {
+      stopPropagation: vi.fn(),
+      detail: { index: 2 },
+    } as any;
+    (stepper as any).onStepClick(fakeEvent);
+
+    expect(fakeEvent.stopPropagation).toHaveBeenCalled();
+    expect(emitted).toHaveLength(1);
+    expect(emitted[0]).toEqual({ activeStepIndex: 2 });
+  });
+
+  it('emits stepChange with correct index for first step', () => {
+    const stepper = new IoStepper();
+    (stepper as any).el = document.createElement('io-stepper');
+    const emitted: any[] = [];
+    (stepper as any).stepChange = { emit: (detail: any) => emitted.push(detail) };
+
+    const fakeEvent = {
+      stopPropagation: vi.fn(),
+      detail: { index: 1 },
+    } as any;
+    (stepper as any).onStepClick(fakeEvent);
+
+    expect(emitted[0]).toEqual({ activeStepIndex: 1 });
+  });
+});
+
+// ─── io-stepper updateSteps ────────────────────────────────────────────────
 
 describe('io-stepper — updateSteps()', () => {
   it('sets index, total, and orientation on io-step children', () => {
@@ -82,6 +168,8 @@ describe('io-stepper — updateSteps()', () => {
   });
 });
 
+// ─── io-step default props ─────────────────────────────────────────────────
+
 describe('io-step — default props', () => {
   it('has status upcoming by default', () => {
     const step = new IoStep();
@@ -101,6 +189,11 @@ describe('io-step — default props', () => {
   it('has horizontal orientation by default', () => {
     const step = new IoStep();
     expect(step.orientation).toBe('horizontal');
+  });
+
+  it('has disabled false by default', () => {
+    const step = new IoStep();
+    expect(step.disabled).toBe(false);
   });
 
   it('renders without throwing for status=current', () => {
@@ -130,6 +223,15 @@ describe('io-step — default props', () => {
     expect(() => step.render()).not.toThrow();
   });
 
+  it('renders without throwing for status=warning', () => {
+    const step = new IoStep();
+    step.label = 'Verify';
+    step.status = 'warning';
+    step.index = 2;
+    step.total = 3;
+    expect(() => step.render()).not.toThrow();
+  });
+
   it('renders without throwing for vertical orientation', () => {
     const step = new IoStep();
     step.label = 'Payment';
@@ -145,5 +247,237 @@ describe('io-step — default props', () => {
     step.index = 3;
     step.total = 3;
     expect(() => step.render()).not.toThrow();
+  });
+});
+
+// ─── io-step button wrapper ────────────────────────────────────────────────
+
+describe('io-step — button wrapper (WCAG 2.1.1/4.1.2)', () => {
+  it('renders a <button> element in the step', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    hMock.mockClear();
+    step.render();
+    const buttonCall = hMock.mock.calls.find(([tag]: [unknown]) => tag === 'button');
+    expect(buttonCall).toBeDefined();
+  });
+
+  it('aria-current="step" is set on current step button', () => {
+    const step = new IoStep();
+    step.label = 'Details';
+    step.status = 'current';
+    step.index = 2;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-current']).toBe('step');
+  });
+
+  it('aria-current is not set on non-current steps', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-current']).toBeUndefined();
+  });
+
+  it('aria-disabled="true" is set on upcoming step button', () => {
+    const step = new IoStep();
+    step.label = 'Review';
+    step.status = 'upcoming';
+    step.index = 3;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBe('true');
+  });
+
+  it('aria-disabled is not set on complete (interactive) step', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBeUndefined();
+  });
+
+  it('button has type="button" to prevent accidental form submission', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['type']).toBe('button');
+  });
+});
+
+// ─── io-step stepClick event ───────────────────────────────────────────────
+
+describe('io-step — stepClick event', () => {
+  it('emits stepClick when complete non-disabled step handleClick is called', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.disabled = false;
+
+    const emitted: any[] = [];
+    (step as any).stepClick = { emit: (detail: any) => emitted.push(detail) };
+
+    (step as any).handleClick();
+
+    expect(emitted).toHaveLength(1);
+    expect(emitted[0]).toEqual({ index: 1 });
+  });
+
+  it('does not emit stepClick for upcoming step', () => {
+    const step = new IoStep();
+    step.label = 'Review';
+    step.status = 'upcoming';
+    step.index = 3;
+
+    const emitted: any[] = [];
+    (step as any).stepClick = { emit: (detail: any) => emitted.push(detail) };
+
+    (step as any).handleClick();
+
+    expect(emitted).toHaveLength(0);
+  });
+
+  it('does not emit stepClick for current step', () => {
+    const step = new IoStep();
+    step.label = 'Details';
+    step.status = 'current';
+    step.index = 2;
+
+    const emitted: any[] = [];
+    (step as any).stepClick = { emit: (detail: any) => emitted.push(detail) };
+
+    (step as any).handleClick();
+
+    expect(emitted).toHaveLength(0);
+  });
+
+  it('does not emit stepClick when disabled=true even if complete', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.disabled = true;
+
+    const emitted: any[] = [];
+    (step as any).stepClick = { emit: (detail: any) => emitted.push(detail) };
+
+    (step as any).handleClick();
+
+    expect(emitted).toHaveLength(0);
+  });
+
+  it('does not emit stepClick for warning step', () => {
+    const step = new IoStep();
+    step.label = 'Verify';
+    step.status = 'warning';
+    step.index = 2;
+
+    const emitted: any[] = [];
+    (step as any).stepClick = { emit: (detail: any) => emitted.push(detail) };
+
+    (step as any).handleClick();
+
+    expect(emitted).toHaveLength(0);
+  });
+});
+
+// ─── io-step warning status ────────────────────────────────────────────────
+
+describe('io-step — warning status', () => {
+  it('renders without throwing for status=warning', () => {
+    const step = new IoStep();
+    step.label = 'Verify';
+    step.status = 'warning';
+    step.index = 2;
+    step.total = 3;
+    expect(() => step.render()).not.toThrow();
+  });
+
+  it('aria-disabled is set for warning step (non-interactive)', () => {
+    const step = new IoStep();
+    step.label = 'Verify';
+    step.status = 'warning';
+    step.index = 2;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBe('true');
+  });
+
+  it('renders a warning SVG icon for status=warning', () => {
+    const step = new IoStep();
+    step.label = 'Verify';
+    step.status = 'warning';
+    step.index = 2;
+    step.total = 3;
+    hMock.mockClear();
+    step.render();
+    // Warning icon is an SVG with class step__warning-icon
+    const svgCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'svg' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        (attrs as Record<string, unknown>)['class'] === 'step__warning-icon',
+    );
+    expect(svgCall).toBeDefined();
+  });
+});
+
+// ─── io-step disabled prop ─────────────────────────────────────────────────
+
+describe('io-step — disabled prop', () => {
+  it('renders without throwing when disabled=true', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    step.disabled = true;
+    expect(() => step.render()).not.toThrow();
+  });
+
+  it('aria-disabled is set when disabled=true on complete step', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    step.disabled = true;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBe('true');
+  });
+
+  it('applies step__button--disabled class when disabled=true', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    step.disabled = true;
+    const attrs = getButtonAttrs(step);
+    expect(String(attrs['class'])).toContain('step__button--disabled');
+  });
+
+  it('does not apply step__button--disabled class when disabled=false', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'complete';
+    step.index = 1;
+    step.total = 3;
+    step.disabled = false;
+    const attrs = getButtonAttrs(step);
+    expect(String(attrs['class'])).not.toContain('step__button--disabled');
   });
 });

@@ -12,6 +12,10 @@ export function getStepClass(status: IoStepStatus): string {
  * Format: "Step {index}: {label}, {status}"
  */
 export function getStepAriaLabel(index: number, label: string, status: IoStepStatus): string {
-  const statusLabel = status === 'complete' ? 'complete' : status === 'current' ? 'current' : 'upcoming';
+  const statusLabel =
+    status === 'complete' ? 'complete' :
+    status === 'current'  ? 'current'  :
+    status === 'warning'  ? 'warning'  :
+    'upcoming';
   return `Step ${index}: ${label}, ${statusLabel}`;
 }

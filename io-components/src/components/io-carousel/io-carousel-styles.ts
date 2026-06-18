@@ -151,14 +151,22 @@ export function getCarouselStyles(): string {
       .carousel-btn { transition: none; }
     }
 
-    /* ── Heading and description slots ─────────────────── */
+    /* ── Heading and description slots / props ──────────── */
 
     .carousel-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       margin-bottom: var(--io-space-4);
     }
 
     .carousel-header--hidden {
       display: none;
+    }
+
+    .carousel-header--center {
+      align-items: center;
+      text-align: center;
     }
 
     .carousel-heading {
@@ -168,6 +176,15 @@ export function getCarouselStyles(): string {
 
     .carousel-heading--hidden {
       display: none;
+    }
+
+    .carousel-heading-text {
+      display: block;
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-xl, 1.25rem);
+      font-weight: var(--io-font-weight-semibold, 600);
+      line-height: var(--io-line-height-tight, 1.25);
+      color: var(--io-text-primary);
     }
 
     .carousel-description {
@@ -180,6 +197,14 @@ export function getCarouselStyles(): string {
       display: none;
     }
 
+    .carousel-description-text {
+      display: block;
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-md, 1rem);
+      line-height: var(--io-line-height-base, 1.5);
+      color: var(--io-text-secondary);
+    }
+
     /* ── Controls slot ──────────────────────────────────── */
 
     .carousel-controls {
@@ -190,6 +215,66 @@ export function getCarouselStyles(): string {
 
     .carousel-controls--hidden {
       display: none;
+    }
+
+    /* ── Pagination dots ────────────────────────────────── */
+
+    .carousel-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--io-space-2);
+      margin-top: var(--io-space-4);
+    }
+
+    .carousel-dot {
+      appearance: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: var(--io-space-2);
+      height: var(--io-space-2);
+      border-radius: var(--io-border-radius-pill);
+      background: color-mix(in srgb, var(--io-color-primary) 30%, transparent);
+      transition: background var(--io-motion-fast), transform var(--io-motion-fast);
+      min-width: var(--io-space-touch-target, 44px);
+      min-height: var(--io-space-touch-target, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-dot::after {
+      content: '';
+      display: block;
+      width: var(--io-space-2);
+      height: var(--io-space-2);
+      border-radius: var(--io-border-radius-pill);
+      background: color-mix(in srgb, var(--io-color-primary) 30%, transparent);
+      transition: background var(--io-motion-fast), transform var(--io-motion-fast);
+    }
+
+    .carousel-dot--active::after {
+      background: var(--io-color-primary);
+      transform: scale(1.25);
+    }
+
+    .carousel-dot:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .carousel-dot:hover::after {
+        background: var(--io-color-primary-hover);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-dot,
+      .carousel-dot::after {
+        transition: none;
+      }
     }
   `;
 }

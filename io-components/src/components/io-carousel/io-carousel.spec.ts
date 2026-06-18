@@ -33,6 +33,22 @@ describe('io-carousel — default props', () => {
   it('is not dragging by default', () => {
     expect((component as any).isDragging).toBe(false);
   });
+
+  it('defaults heading to undefined', () => {
+    expect(component.heading).toBeUndefined();
+  });
+
+  it('defaults description to undefined', () => {
+    expect(component.description).toBeUndefined();
+  });
+
+  it('defaults pagination to false', () => {
+    expect(component.pagination).toBe(false);
+  });
+
+  it('defaults alignHeader to "left"', () => {
+    expect(component.alignHeader).toBe('left');
+  });
 });
 
 describe('io-carousel — drag interaction', () => {

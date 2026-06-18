@@ -107,4 +107,9 @@ describe('io-tooltip — overlay transition contract', () => {
     const rmIdx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
     expect(styles.slice(rmIdx)).toContain('transition: none');
   });
+
+  it('does not set pointer-events: none — tooltip panel must be hoverable (WCAG 1.4.13)', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).not.toContain('pointer-events: none');
+  });
 });

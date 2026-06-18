@@ -18,9 +18,14 @@ const DESCRIBEDBY_BACKUP_ATTR = 'data-io-tooltip-prev-describedby';
 const WIN_INIT_FLAG = '__io_tooltip_attr_init';
 type WinWithFlag = typeof globalThis & { [WIN_INIT_FLAG]?: boolean };
 
+// Delay (ms) before hiding after pointer leaves the trigger — allows the user
+// to move the pointer onto the tooltip panel without it disappearing (WCAG 1.4.13).
+const HIDE_DELAY_MS = 150;
+
 let activeTrigger: HTMLElement | null = null;
 let tooltipEl: HTMLDivElement | null = null;
 let listenersBound = false;
+let hideTimer: ReturnType<typeof setTimeout> | null = null;
 
 let pointerOverHandler: ((ev: Event) => void) | null = null;
 let pointerOutHandler: ((ev: MouseEvent) => void) | null = null;
@@ -29,7 +34,35 @@ let focusOutHandler: ((ev: FocusEvent) => void) | null = null;
 let keyDownHandler: ((ev: KeyboardEvent) => void) | null = null;
 
 function isPlacement(value: string | null): value is IoTooltipPlacement {
-  return value === 'top' || value === 'bottom' || value === 'left' || value === 'right';
+  return (
+    value === 'top' ||
+    value === 'top-start' ||
+    value === 'top-end' ||
+    value === 'bottom' ||
+    value === 'bottom-start' ||
+    value === 'bottom-end' ||
+    value === 'left' ||
+    value === 'left-start' ||
+    value === 'left-end' ||
+    value === 'right' ||
+    value === 'right-start' ||
+    value === 'right-end'
+  );
+}
+
+function cancelHideTimer(): void {
+  if (hideTimer !== null) {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+  }
+}
+
+function scheduleHide(): void {
+  cancelHideTimer();
+  hideTimer = setTimeout(() => {
+    hideTimer = null;
+    hideTooltip();
+  }, HIDE_DELAY_MS);
 }
 
 function resolvePlacement(trigger: HTMLElement): IoTooltipPlacement {
@@ -143,6 +176,7 @@ async function showTooltip(trigger: HTMLElement): Promise<void> {
 }
 
 function hideTooltip(): void {
+  cancelHideTimer();
   const el = tooltipEl;
   if (!el) return;
 
@@ -162,16 +196,25 @@ function findTooltipTrigger(target: EventTarget | null): HTMLElement | null {
 }
 
 async function onPointerOver(ev: Event): Promise<void> {
+  // If pointer enters the tooltip panel itself, keep the tooltip visible.
+  if (tooltipEl && ev.target instanceof Node && tooltipEl.contains(ev.target as Node)) {
+    cancelHideTimer();
+    return;
+  }
   const trigger = findTooltipTrigger(ev.target);
   if (!trigger) return;
+  cancelHideTimer();
   await showTooltip(trigger);
 }
 
 function onPointerOut(ev: MouseEvent): void {
   if (!activeTrigger) return;
   const next = ev.relatedTarget;
+  // Pointer moved to a child of the trigger — stay visible.
   if (next instanceof Node && activeTrigger.contains(next)) return;
-  hideTooltip();
+  // Pointer moved onto the tooltip panel — stay visible (WCAG 1.4.13).
+  if (tooltipEl && next instanceof Node && tooltipEl.contains(next)) return;
+  scheduleHide();
 }
 
 async function onFocusIn(ev: FocusEvent): Promise<void> {
@@ -239,6 +282,7 @@ export function __resetTooltipAttributeForTests(): void {
   focusOutHandler = null;
   keyDownHandler = null;
 
+  cancelHideTimer();
   activeTrigger = null;
   tooltipEl?.remove();
   tooltipEl = null;

@@ -12,8 +12,10 @@ import type { IoIconName } from '../../utils/icons';
  * controls visibility by mounting or unmounting the element.
  *
  * ARIA live region strategy:
- *   - error/warning variants: role="alert" aria-live="assertive" (interrupts screen reader)
- *   - info/success variants:  role="status" aria-live="polite" aria-atomic="true"
+ *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+ *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+ *
+ * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
  *
  * @example
  * <io-inline-notification variant="warning" heading="Storage limit">
@@ -57,6 +59,13 @@ export class IoInlineNotification {
   /** Icon rendered on the action button. Defaults to 'arrow-right'. */
   @Prop() actionIcon: IoIconName = 'arrow-right';
 
+  /**
+   * Accessible label for the notification live region (aria-label on the host element).
+   * Use when the page contains multiple notifications and consumers need to distinguish them.
+   * When omitted no aria-label is set and the notification content provides its own accessible name.
+   */
+  @Prop() label?: string;
+
   /** When true, the action button shows a loading spinner and interaction is suppressed. */
   @Prop() actionLoading = false;
 
@@ -96,6 +105,7 @@ export class IoInlineNotification {
         role={isAssertive ? 'alert' : 'status'}
         aria-live={isAssertive ? 'assertive' : 'polite'}
         aria-atomic="true"
+        aria-label={this.label || undefined}
       >
         <style>{getInlineNotificationStyles(this.variant)}</style>
         <div class={`inline-notification inline-notification--${this.variant}`}>

@@ -39,7 +39,7 @@ export const inlineNotificationPropDefinitions: PropDefinition[] = [
   {
     name: 'headingTag',
     type: 'select',
-    options: ['h2', 'h3', 'h4', 'h5', 'h6'],
+    options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     defaultValue: 'h5',
     description: 'Semantic HTML tag for the notification heading. Defaults to h5 to avoid disrupting document hierarchy.',
   },

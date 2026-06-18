@@ -155,7 +155,7 @@ describe('io-inline-notification — headingTag prop', () => {
     c.heading = 'Test heading';
     (c as any).render();
     const headingCall = hMock.mock.calls.find(([tag]: [unknown]) =>
-      typeof tag === 'string' && /^h[2-6]$/.test(tag),
+      typeof tag === 'string' && /^h[1-6]$/.test(tag),
     ) as [string, unknown] | undefined;
     return headingCall?.[0];
   }
@@ -165,8 +165,8 @@ describe('io-inline-notification — headingTag prop', () => {
     expect(getHeadingTag(c)).toBe('h5');
   });
 
-  it.each(['h2', 'h3', 'h4', 'h5', 'h6'] as const)(
-    'renders heading as %s when headingTag is %s',
+  it.each(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const)(
+    'renders heading as %s',
     (tag) => {
       const c = new IoInlineNotification();
       c.headingTag = tag;
@@ -179,7 +179,7 @@ describe('io-inline-notification — headingTag prop', () => {
     hMock.mockClear();
     (c as any).render();
     const headingCall = hMock.mock.calls.find(([tag]: [unknown]) =>
-      typeof tag === 'string' && /^h[2-6]$/.test(tag),
+      typeof tag === 'string' && /^h[1-6]$/.test(tag),
     );
     expect(headingCall).toBeUndefined();
   });
@@ -319,14 +319,14 @@ describe('io-inline-notification — action event emission', () => {
 });
 
 describe('io-inline-notification — dismiss button touch target (WCAG 2.5.8)', () => {
-  it('dismiss button styles include min-width: 24px', () => {
+  it('dismiss button styles include min-width token (WCAG 2.5.8)', () => {
     const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-width: 24px');
+    expect(css).toContain('min-width: var(--io-space-6)');
   });
 
-  it('dismiss button styles include min-height: 24px', () => {
+  it('dismiss button styles include min-height token (WCAG 2.5.8)', () => {
     const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-height: 24px');
+    expect(css).toContain('min-height: var(--io-space-6)');
   });
 
   it('dismiss button styles include padding token (not zero)', () => {

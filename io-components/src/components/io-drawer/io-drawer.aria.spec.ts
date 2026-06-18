@@ -18,10 +18,15 @@ describe('io-drawer — aria prop', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('aria prop is undefined by default', () => {

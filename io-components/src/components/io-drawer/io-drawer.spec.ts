@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoDrawer } from './io-drawer';
 import { getDrawerStyles } from './io-drawer-styles';
@@ -6,14 +6,20 @@ import type { IoDrawerBackground } from './types';
 
 describe('io-drawer — default props', () => {
   let component: IoDrawer;
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
   });
 
   it('is not open by default', () => {
@@ -129,10 +135,15 @@ describe('io-drawer — bottom sheet rendering', () => {
   let component: IoDrawer;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('render does not throw for bottom placement', () => {
@@ -150,12 +161,17 @@ describe('io-drawer — background prop', () => {
   let component: IoDrawer;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('defaults to canvas background', () => {
@@ -196,6 +212,7 @@ describe('io-drawer — show/close methods', () => {
   let dialogEl: HTMLDialogElement;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -208,6 +225,10 @@ describe('io-drawer — show/close methods', () => {
     dialogEl.showModal = vi.fn(() => { dialogEl.open = true; });
     dialogEl.close = vi.fn(() => { dialogEl.open = false; });
     (component as any).dialogEl = dialogEl;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('show() sets open to true', async () => {
@@ -238,6 +259,7 @@ describe('io-drawer — show/close methods', () => {
 
 describe('io-drawer — removeSwipeListeners', () => {
   it('calls removeEventListener for each bound touch handler and clears them', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     const component = new IoDrawer();
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
@@ -270,5 +292,285 @@ describe('io-drawer — removeSwipeListeners', () => {
     expect((component as any).boundHandleTouchStart).toBeUndefined();
     expect((component as any).boundHandleTouchMove).toBeUndefined();
     expect((component as any).boundHandleTouchEnd).toBeUndefined();
+  });
+});
+
+// ── dismissButton prop ────────────────────────────────────────────────────────
+
+describe('io-drawer — dismissButton prop', () => {
+  let component: IoDrawer;
+
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    component = new IoDrawer();
+    (component as any).el = document.createElement('io-drawer');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('defaults to true', () => {
+    expect(component.dismissButton).toBe(true);
+  });
+
+  it('can be set to false', () => {
+    component.dismissButton = false;
+    expect(component.dismissButton).toBe(false);
+  });
+
+  it('render does not throw when dismissButton is false', () => {
+    component.dismissButton = false;
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw when dismissButton is true', () => {
+    component.dismissButton = true;
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('handleCancel is a no-op when dismissButton is false (ESC suppressed)', () => {
+    component.dismissButton = false;
+    component.open = true;
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    expect(component.open).toBe(true);
+  });
+
+  it('handleCancel closes the drawer when dismissButton is true', () => {
+    component.dismissButton = true;
+    component.open = true;
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    expect(component.open).toBe(false);
+  });
+
+  it('handleCancel always calls preventDefault regardless of dismissButton value', () => {
+    component.dismissButton = false;
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    expect(ev.preventDefault).toHaveBeenCalled();
+  });
+});
+
+// ── dismiss event — user-initiated only ───────────────────────────────────────
+
+describe('io-drawer — dismiss event fires only on user-initiated close', () => {
+  let component: IoDrawer;
+  let emitSpy: ReturnType<typeof vi.fn>;
+
+  function makeMockDialog(initialOpen = true) {
+    const mockDialog = {
+      open: initialOpen,
+      showModal: vi.fn(),
+      close: vi.fn(() => { mockDialog.open = false; }),
+    };
+    return mockDialog;
+  }
+
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    component = new IoDrawer();
+    emitSpy = vi.fn();
+    (component as any).el = document.createElement('io-drawer');
+    (component as any).dismissEvent = { emit: emitSpy };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    component.open = true;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('does NOT emit dismiss when close() is called programmatically', async () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    await component.close();
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('does NOT emit dismiss when open prop is set to false directly', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    component.open = false;
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('emits dismiss when close button is clicked', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    (component as any).handleCloseClick();
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('emits dismiss when ESC key triggers handleCancel (dismissButton=true)', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('does NOT emit dismiss when ESC key triggers handleCancel with dismissButton=false', () => {
+    component.dismissButton = false;
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    // open is still true — no onOpenChange call needed
+
+    expect(emitSpy).not.toHaveBeenCalled();
+    expect(component.open).toBe(true);
+  });
+
+  it('emits dismiss when backdrop is clicked', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    // Simulate backdrop click detection: set flag directly then trigger watcher
+    (component as any)._userInitiatedClose = true;
+    component.open = false;
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('_userInitiatedClose flag is reset to false after onOpenChange fires dismiss', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    (component as any).handleCloseClick();
+    (component as any).onOpenChange(false);
+
+    expect((component as any)._userInitiatedClose).toBe(false);
+  });
+
+  it('_userInitiatedClose flag is reset to false even when dismiss is NOT emitted', () => {
+    const mockDialog = makeMockDialog(true);
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    // No user action — flag stays false, onOpenChange resets it
+    (component as any).onOpenChange(false);
+
+    expect((component as any)._userInitiatedClose).toBe(false);
+  });
+
+  it('emits dismiss when swipe closes the bottom sheet', () => {
+    component.placement = 'bottom';
+    const mockDialog = makeMockDialog(true);
+    // querySelector returns null for '.drawer__handle' but the dialog element for 'dialog'
+    const shadowRoot = {
+      querySelector: vi.fn((selector: string) => {
+        if (selector === 'dialog') return mockDialog;
+        return null;
+      }),
+    };
+    (component as any).el = { shadowRoot };
+
+    (component as any).touchStartY = 100;
+    const ev = { changedTouches: [{ clientY: 181 }] } as unknown as TouchEvent;
+    (component as any).handleTouchEnd(ev);
+    (component as any).onOpenChange(false);
+
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ── componentWillLoad console.error ──────────────────────────────────────────
+
+describe('io-drawer — componentWillLoad accessible label warning', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('logs console.error when neither heading nor aria-label is supplied', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('[io-drawer]'),
+    );
+  });
+
+  it('does NOT log console.error when heading is supplied', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.heading = 'My Drawer';
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does NOT log console.error when the aria prop supplies a label key', () => {
+    // The host element attribute is NOT forwarded to the internal <dialog> in
+    // Shadow DOM — only the `aria` prop reaches the dialog. The warning must
+    // check the prop, not the host attribute.
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { label: 'Settings panel' };
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does NOT log console.error when the aria prop supplies an aria-label key', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { 'aria-label': 'Settings panel' };
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
   });
 });

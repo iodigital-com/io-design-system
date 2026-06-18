@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoDrawer } from './io-drawer';
 
@@ -12,6 +12,14 @@ function makeDrawer(overrides: Partial<IoDrawer> = {}): IoDrawer {
   Object.assign(c, overrides);
   return c;
 }
+
+// Suppress console.error fired by componentWillLoad when no heading/aria-label
+beforeEach(() => {
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 function makeDialogEl(open = false): HTMLDialogElement {
   const el = document.createElement('div') as unknown as HTMLDialogElement;
@@ -123,20 +131,33 @@ describe('io-drawer — onOpenChange', () => {
 
   // ── newVal = false ─────────────────────────────────────────────
 
-  it('calls dialog.close() and emits dismiss when dialog is open and newVal=false', () => {
+  it('calls dialog.close() and emits dismiss when dialog is open and newVal=false (user-initiated)', () => {
     const dialogEl = makeDialogEl(true);
     withShadowRoot(c, dialogEl);
 
+    (c as any)._userInitiatedClose = true;
     (c as any).onOpenChange(false);
 
     expect(dialogEl.close).toHaveBeenCalledTimes(1);
     expect((c as any).dismissEvent.emit).toHaveBeenCalledTimes(1);
   });
 
-  it('does NOT call dialog.close() but still emits dismiss when dialog is already closed and newVal=false', () => {
+  it('calls dialog.close() but does NOT emit dismiss when programmatic close (no user action)', () => {
+    const dialogEl = makeDialogEl(true);
+    withShadowRoot(c, dialogEl);
+
+    // _userInitiatedClose stays false (default)
+    (c as any).onOpenChange(false);
+
+    expect(dialogEl.close).toHaveBeenCalledTimes(1);
+    expect((c as any).dismissEvent.emit).not.toHaveBeenCalled();
+  });
+
+  it('does NOT call dialog.close() but still emits dismiss when dialog is already closed and newVal=false (user-initiated)', () => {
     const dialogEl = makeDialogEl(false);
     withShadowRoot(c, dialogEl);
 
+    (c as any)._userInitiatedClose = true;
     (c as any).onOpenChange(false);
 
     expect(dialogEl.close).not.toHaveBeenCalled();

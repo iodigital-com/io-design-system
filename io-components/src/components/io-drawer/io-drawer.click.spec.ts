@@ -7,6 +7,7 @@ describe('io-drawer — click handling', () => {
   let dialogEl: HTMLDialogElement;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoDrawer();
     (component as any).el = document.createElement('io-drawer');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -22,6 +23,10 @@ describe('io-drawer — click handling', () => {
       dialogEl.open = false;
     });
     (component as any).dialogEl = dialogEl;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('close button click sets open to false', () => {
@@ -85,7 +90,7 @@ describe('io-drawer — click handling', () => {
     expect(component.open).toBe(true);
   });
 
-  it('dismiss event is emitted when open changes to false', () => {
+  it('dismiss event is emitted when close button click triggers onOpenChange(false)', () => {
     const emit = (component as any).dismissEvent.emit as ReturnType<typeof vi.fn>;
     const mockDialog = {
       open: true,
@@ -95,9 +100,26 @@ describe('io-drawer — click handling', () => {
     const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
     (component as any).el = { shadowRoot };
 
-    component.open = false;
+    // User-initiated: close button click sets the flag before changing open
+    (component as any).handleCloseClick();
     (component as any).onOpenChange(false);
     expect(emit).toHaveBeenCalled();
+  });
+
+  it('dismiss event is NOT emitted when open changes to false programmatically', () => {
+    const emit = (component as any).dismissEvent.emit as ReturnType<typeof vi.fn>;
+    const mockDialog = {
+      open: true,
+      showModal: vi.fn(),
+      close: vi.fn(),
+    };
+    const shadowRoot = { querySelector: vi.fn().mockReturnValue(mockDialog) };
+    (component as any).el = { shadowRoot };
+
+    // No user action — flag stays false
+    component.open = false;
+    (component as any).onOpenChange(false);
+    expect(emit).not.toHaveBeenCalled();
   });
 
   it('dismiss event is NOT emitted when open changes to true', () => {

@@ -185,7 +185,8 @@ export class IoScroller {
     const isVertical = this.orientation === 'vertical';
     const size = isVertical ? el.clientHeight : el.clientWidth;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const delta = direction === 'prev' ? -size * 0.5 : size * 0.5;
+    const offset = Math.round(size / 2) || 200;
+    const delta = direction === 'prev' ? -offset : offset;
     if (isVertical) {
       el.scrollBy({ top: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
     } else {

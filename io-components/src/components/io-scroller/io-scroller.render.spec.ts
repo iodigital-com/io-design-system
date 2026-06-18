@@ -208,7 +208,7 @@ describe('io-scroller render() — scroll indicator buttons', () => {
         tag === 'button' && String(attrs?.class).includes('indicator--prev'),
     );
     expect(prevBtn).toBeDefined();
-    expect(prevBtn![1]['aria-hidden']).toBe('true');
+    expect(prevBtn![1]['aria-label']).toBe('Scroll backward');
     expect(prevBtn![1]['tabIndex']).toBe(-1);
   });
 
@@ -223,7 +223,7 @@ describe('io-scroller render() — scroll indicator buttons', () => {
         tag === 'button' && String(attrs?.class).includes('indicator--next'),
     );
     expect(nextBtn).toBeDefined();
-    expect(nextBtn![1]['aria-hidden']).toBe('true');
+    expect(nextBtn![1]['aria-label']).toBe('Scroll forward');
     expect(nextBtn![1]['tabIndex']).toBe(-1);
   });
 

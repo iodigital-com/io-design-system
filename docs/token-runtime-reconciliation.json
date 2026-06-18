@@ -2736,6 +2736,30 @@
       "notes": "Input/select/textarea size token aligned to io-button sm."
     },
     {
+      "runtimeCssVar": "--io-spinner-border-width-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for lg size. Value: 3px."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-border-width-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for md size. Value: 2px."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-border-width-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for sm size. Value: 1.5px."
+    },
+    {
       "runtimeCssVar": "--io-space-1",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

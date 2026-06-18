@@ -704,6 +704,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-group-line-height-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Line-height used in compact button-group mode. Value: 16.8px."
+    },
+    {
       "runtimeCssVar": "--io-button-group-min-height",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -3086,6 +3094,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-indicator-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Height of the active tab bottom indicator line. Value: 2px."
     },
     {
       "runtimeCssVar": "--io-tabs-track-color",

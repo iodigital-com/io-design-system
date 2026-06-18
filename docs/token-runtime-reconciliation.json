@@ -288,6 +288,14 @@
       "notes": "Avatar icon size token. Defaults to --io-icon-size-md."
     },
     {
+      "runtimeCssVar": "--io-backdrop-blur",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Backdrop blur radius used on overlay backgrounds. Value: 4px."
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -2334,6 +2342,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-motion-entrance-offset-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Vertical translate offset for modal/flyout entrance animation. Value: 12px."
     },
     {
       "runtimeCssVar": "--io-motion-extra-slow",

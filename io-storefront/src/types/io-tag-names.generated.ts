@@ -18,6 +18,7 @@ export type IoTagNames =
   | 'io-checkbox-group'
   | 'io-divider'
   | 'io-drawer'
+  | 'io-flyout'
   | 'io-form-field'
   | 'io-heading'
   | 'io-icon'

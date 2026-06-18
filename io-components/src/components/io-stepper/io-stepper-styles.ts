@@ -115,10 +115,10 @@ export function getStepStyles(): string {
     .step__circle {
       width: var(--io-stepper-circle-size);
       height: var(--io-stepper-circle-size);
-      border-radius: var(--io-border-radius-full, 9999px);
-      border: var(--io-stepper-circle-border-width) solid var(--io-border, #e5e5e5);
-      background: var(--io-bg-base, #fff);
-      color: var(--io-text-secondary, #666);
+      border-radius: var(--io-border-radius-pill);
+      border: var(--io-stepper-circle-border-width) solid var(--io-border);
+      background: var(--io-bg-base);
+      color: var(--io-text-secondary);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -132,30 +132,30 @@ export function getStepStyles(): string {
 
     /* Complete: primary fill */
     .step--complete .step__circle {
-      background: var(--io-color-primary, #0000D2);
-      border-color: var(--io-color-primary, #0000D2);
-      color: var(--io-color-white, #fff);
+      background: var(--io-color-primary);
+      border-color: var(--io-color-primary);
+      color: var(--io-color-white);
     }
 
     /* Current: primary border + tinted bg */
     .step--current .step__circle {
-      border-color: var(--io-color-primary, #0000D2);
-      background: var(--io-bg-base, #fff);
-      color: var(--io-color-primary, #0000D2);
+      border-color: var(--io-color-primary);
+      background: var(--io-bg-base);
+      color: var(--io-color-primary);
       font-weight: var(--io-font-weight-bold, 700);
     }
 
     /* Upcoming: muted */
     .step--upcoming .step__circle {
-      border-color: var(--io-border, #e5e5e5);
-      background: var(--io-bg-base, #fff);
-      color: var(--io-text-muted, #999);
+      border-color: var(--io-border);
+      background: var(--io-bg-base);
+      color: var(--io-text-muted);
     }
 
     /* Warning: warning color border + icon */
     .step--warning .step__circle {
       border-color: var(--io-color-warning);
-      background: var(--io-bg-base, #fff);
+      background: var(--io-bg-base);
       color: var(--io-color-warning);
     }
 
@@ -180,22 +180,22 @@ export function getStepStyles(): string {
     .step__label {
       font-size: var(--io-font-size-sm, 0.875rem);
       line-height: var(--io-line-height-normal, 1.5);
-      color: var(--io-text-secondary, #666);
+      color: var(--io-text-secondary);
       text-align: center;
       white-space: nowrap;
     }
 
     .step--complete .step__label {
-      color: var(--io-text-secondary, #666);
+      color: var(--io-text-secondary);
     }
 
     .step--current .step__label {
-      color: var(--io-text-primary, #111);
+      color: var(--io-text-primary);
       font-weight: var(--io-font-weight-semibold, 600);
     }
 
     .step--upcoming .step__label {
-      color: var(--io-text-muted, #999);
+      color: var(--io-text-muted);
     }
 
     .step--warning .step__label {
@@ -221,7 +221,7 @@ export function getStepStyles(): string {
     .step__connector {
       flex: 1;
       height: var(--io-stepper-connector-width);
-      background: var(--io-border, #e5e5e5);
+      background: var(--io-border);
       transition: background-color var(--io-motion-base, 300ms ease);
       min-width: var(--io-space-6, 24px);
       align-self: flex-start;
@@ -229,7 +229,7 @@ export function getStepStyles(): string {
     }
 
     .step--complete .step__connector {
-      background: var(--io-color-primary, #0000D2);
+      background: var(--io-color-primary);
     }
 
     /* Last step: hide connector */

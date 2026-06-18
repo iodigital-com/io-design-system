@@ -35,17 +35,17 @@ export function getWordmarkStyles(): string {
     /* ── Color tokens for mark + lockup (drives SVG fill via currentColor) */
 
     :host([variant="mark"][color="blue"]),
-    :host([variant="lockup"][color="blue"])  { color: var(--io-color-primary, #0000D2); }
+    :host([variant="lockup"][color="blue"])  { color: var(--io-color-primary); }
 
     :host([variant="mark"][color="black"]),
-    :host([variant="lockup"][color="black"]) { color: var(--io-color-grey-6, #242424); }
+    :host([variant="lockup"][color="black"]) { color: var(--io-color-grey-6); }
 
     :host([variant="mark"][color="white"]),
-    :host([variant="lockup"][color="white"]) { color: var(--io-color-white, #ffffff); }
+    :host([variant="lockup"][color="white"]) { color: var(--io-color-white); }
 
     /* beige: mark only (not a supported lockup colour, but rendered visibly as fallback) */
     :host([variant="mark"][color="beige"]),
-    :host([variant="lockup"][color="beige"]) { color: var(--io-color-beige, #DCCFC2); }
+    :host([variant="lockup"][color="beige"]) { color: var(--io-color-beige); }
 
     /* ── Link mode (when href is set) ──────────────────────────────────── */
 

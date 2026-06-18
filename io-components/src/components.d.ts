@@ -18,6 +18,7 @@ import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -60,6 +61,7 @@ export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -809,6 +811,49 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoDrawerSize;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoFlyout {
+        /**
+          * Programmatically close the flyout. No-op if already closed. Does NOT emit the dismiss event (programmatic close).
+          * @example   const flyout = document.querySelector('io-flyout');   flyout.close();
+         */
+        "close": () => Promise<void>;
+        /**
+          * Heading text displayed in the flyout header
+         */
+        "heading"?: string;
+        /**
+          * Controls flyout visibility
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Which side the flyout panel is anchored to
+          * @default 'right'
+         */
+        "position": IoFlyoutPosition;
+        /**
+          * Programmatically open the flyout. No-op if already open.
+          * @example   const flyout = document.querySelector('io-flyout');   flyout.show();
+         */
+        "show": () => Promise<void>;
     }
     /**
      * io-form-field
@@ -2814,6 +2859,10 @@ export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
 }
+export interface IoFlyoutCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoFlyoutElement;
+}
 export interface IoInlineNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoInlineNotificationElement;
@@ -3252,6 +3301,40 @@ declare global {
     var HTMLIoDrawerElement: {
         prototype: HTMLIoDrawerElement;
         new (): HTMLIoDrawerElement;
+    };
+    interface HTMLIoFlyoutElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface HTMLIoFlyoutElement extends Components.IoFlyout, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoFlyoutElementEventMap>(type: K, listener: (this: HTMLIoFlyoutElement, ev: IoFlyoutCustomEvent<HTMLIoFlyoutElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoFlyoutElementEventMap>(type: K, listener: (this: HTMLIoFlyoutElement, ev: IoFlyoutCustomEvent<HTMLIoFlyoutElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoFlyoutElement: {
+        prototype: HTMLIoFlyoutElement;
+        new (): HTMLIoFlyoutElement;
     };
     /**
      * io-form-field
@@ -4303,6 +4386,7 @@ declare global {
         "io-checkbox-group": HTMLIoCheckboxGroupElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
+        "io-flyout": HTMLIoFlyoutElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-heading": HTMLIoHeadingElement;
         "io-icon": HTMLIoIconElement;
@@ -5085,6 +5169,43 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoDrawerSize;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoFlyout {
+        /**
+          * Heading text displayed in the flyout header
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the flyout is dismissed (close button, backdrop click, or Escape key)
+         */
+        "onDismiss"?: (event: IoFlyoutCustomEvent<void>) => void;
+        /**
+          * Controls flyout visibility
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Which side the flyout panel is anchored to
+          * @default 'right'
+         */
+        "position"?: IoFlyoutPosition;
     }
     /**
      * io-form-field
@@ -7268,6 +7389,11 @@ declare namespace LocalJSX {
         "dismissButton": boolean;
         "background": IoDrawerBackground;
     }
+    interface IoFlyoutAttributes {
+        "open": boolean;
+        "heading": string;
+        "position": IoFlyoutPosition;
+    }
     interface IoFormFieldAttributes {
         "label": string;
         "helperText": string;
@@ -7629,6 +7755,7 @@ declare namespace LocalJSX {
         "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]> & OneOf<"name", IoCheckboxGroup["name"], IoCheckboxGroupAttributes["name"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
+        "io-flyout": Omit<IoFlyout, keyof IoFlyoutAttributes> & { [K in keyof IoFlyout & keyof IoFlyoutAttributes]?: IoFlyout[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `attr:${K}`]?: IoFlyoutAttributes[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `prop:${K}`]?: IoFlyout[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
         "io-icon": Omit<IoIcon, keyof IoIconAttributes> & { [K in keyof IoIcon & keyof IoIconAttributes]?: IoIcon[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `attr:${K}`]?: IoIconAttributes[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `prop:${K}`]?: IoIcon[K] } & OneOf<"name", IoIcon["name"], IoIconAttributes["name"]>;
@@ -7853,6 +7980,24 @@ declare module "@stencil/core" {
              * </script>
              */
             "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
+            /**
+             * io-flyout
+             * =========
+             * Side-anchored flyout panel for navigation menus and complex UI panels.
+             * Fills the gap between io-popover (small) and io-drawer (full-height).
+             * Focus trap uses document.activeElement — works for both Shadow DOM and
+             * slotted light-DOM children.
+             * @example <io-flyout heading="Navigation" position="right">
+             *   <p>Flyout body content here.</p>
+             *   <io-button slot="footer" variant="ghost">Close</io-button>
+             * </io-flyout>
+             * <script>
+             *   const flyout = document.querySelector('io-flyout');
+             *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+             *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+             * </script>
+             */
+            "io-flyout": LocalJSX.IntrinsicElements["io-flyout"] & JSXBase.HTMLAttributes<HTMLIoFlyoutElement>;
             /**
              * io-form-field
              * ==============

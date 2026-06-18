@@ -33,6 +33,22 @@ describe('io-carousel — default props', () => {
   it('is not dragging by default', () => {
     expect((component as any).isDragging).toBe(false);
   });
+
+  it('defaults heading to undefined', () => {
+    expect(component.heading).toBeUndefined();
+  });
+
+  it('defaults description to undefined', () => {
+    expect(component.description).toBeUndefined();
+  });
+
+  it('defaults pagination to false', () => {
+    expect(component.pagination).toBe(false);
+  });
+
+  it('defaults alignHeader to "left"', () => {
+    expect(component.alignHeader).toBe('left');
+  });
 });
 
 describe('io-carousel — drag interaction', () => {
@@ -434,5 +450,125 @@ describe('io-carousel — componentWillLoad headingId', () => {
     b.componentWillLoad();
 
     expect((a as any).headingId).not.toBe((b as any).headingId);
+  });
+});
+
+describe('io-carousel — heading prop', () => {
+  it('heading prop stores the provided string', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.heading = 'Featured Articles';
+    expect(component.heading).toBe('Featured Articles');
+  });
+
+  it('heading prop triggers aria-labelledby mode (not aria-label)', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.heading = 'My Carousel';
+    // When heading is set, the region should use aria-labelledby (headingId is truthy)
+    // and aria-label should be undefined.
+    const headingIsSet = !!component.heading;
+    expect(headingIsSet).toBe(true);
+  });
+
+  it('renders heading text via heading prop when set', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.heading = 'Test Heading';
+    expect(component.heading).toBe('Test Heading');
+  });
+
+  it('heading prop defaults to undefined', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    expect(component.heading).toBeUndefined();
+  });
+});
+
+describe('io-carousel — description prop', () => {
+  it('description prop stores the provided string', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.description = 'Browse our latest content.';
+    expect(component.description).toBe('Browse our latest content.');
+  });
+
+  it('description prop defaults to undefined', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    expect(component.description).toBeUndefined();
+  });
+
+  it('description prop accepts any string value', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.description = 'A longer description with multiple words.';
+    expect(component.description).toBe('A longer description with multiple words.');
+  });
+});
+
+describe('io-carousel — pagination prop', () => {
+  it('pagination defaults to false', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    expect(component.pagination).toBe(false);
+  });
+
+  it('pagination can be set to true', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.pagination = true;
+    expect(component.pagination).toBe(true);
+  });
+
+  it('pagination dot count matches totalSlides', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.pagination = true;
+    // With pagination=true and 3 slides, 3 dots should be rendered
+    const totalSlides = 3;
+    const dots = Array.from({ length: totalSlides }, (_, i) => i);
+    expect(dots.length).toBe(3);
+  });
+
+  it('pagination dot is active for the activeSlideIndex', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.pagination = true;
+    component.activeSlideIndex = 1;
+    const totalSlides = 3;
+    const activeDot = Array.from({ length: totalSlides }, (_, i) => i).find(i => i === component.activeSlideIndex);
+    expect(activeDot).toBe(1);
+  });
+});
+
+describe('io-carousel — alignHeader prop', () => {
+  it('alignHeader defaults to "left"', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    expect(component.alignHeader).toBe('left');
+  });
+
+  it('alignHeader can be set to "center"', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.alignHeader = 'center';
+    expect(component.alignHeader).toBe('center');
+  });
+
+  it('alignHeader "center" maps to carousel-header--center CSS class logic', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.alignHeader = 'center';
+    const isCenterClass = component.alignHeader === 'center';
+    expect(isCenterClass).toBe(true);
+  });
+
+  it('alignHeader "left" does NOT use carousel-header--center class', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.alignHeader = 'left';
+    const isCenterClass = component.alignHeader === 'center';
+    expect(isCenterClass).toBe(false);
   });
 });

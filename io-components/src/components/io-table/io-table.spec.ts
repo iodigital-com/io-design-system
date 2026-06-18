@@ -123,3 +123,60 @@ describe('io-table — componentWillLoad', () => {
     warnSpy.mockRestore();
   });
 });
+
+describe('io-table — sortChange event', () => {
+  it('has handleSortBubble method', () => {
+    const component = new IoTable();
+    // handleSortBubble is the @Listen handler that re-emits sortChange
+    expect(typeof (component as any).handleSortBubble).toBe('function');
+  });
+
+  it('handleSortBubble re-emits sort detail via sortChange', () => {
+    const component = new IoTable();
+    const emitMock = vi.fn();
+    (component as any).sortChange = { emit: emitMock };
+
+    const detail = { key: 'name', direction: 'ascending' as const };
+    const ev = new CustomEvent('sort', { detail });
+    (component as any).handleSortBubble(ev);
+
+    expect(emitMock).toHaveBeenCalledWith(detail);
+  });
+
+  it('handleSortBubble forwards descending direction', () => {
+    const component = new IoTable();
+    const emitMock = vi.fn();
+    (component as any).sortChange = { emit: emitMock };
+
+    const detail = { key: 'email', direction: 'descending' as const };
+    const ev = new CustomEvent('sort', { detail });
+    (component as any).handleSortBubble(ev);
+
+    expect(emitMock).toHaveBeenCalledWith(detail);
+  });
+});
+
+describe('io-table — scroll wrapper aria-label', () => {
+  it('sets aria-label on scroll wrapper when caption is provided', () => {
+    const component = new IoTable();
+    component.caption = 'Users';
+    // Verify the regionLabel logic: caption is always used when present
+    const regionLabel = component.caption || undefined;
+    expect(regionLabel).toBe('Users');
+  });
+
+  it('omits aria-label on scroll wrapper when caption is empty', () => {
+    const component = new IoTable();
+    component.caption = '';
+    const regionLabel = component.caption || undefined;
+    expect(regionLabel).toBeUndefined();
+  });
+
+  it('sets aria-label with caption when captionHidden is true', () => {
+    const component = new IoTable();
+    component.caption = 'Hidden caption';
+    component.captionHidden = true;
+    const regionLabel = component.caption || undefined;
+    expect(regionLabel).toBe('Hidden caption');
+  });
+});

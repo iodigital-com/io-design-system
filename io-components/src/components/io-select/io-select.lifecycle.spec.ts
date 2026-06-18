@@ -30,6 +30,7 @@ function makeSelect() {
   (c as any).change = { emit: vi.fn() };
   (c as any).focus = { emit: vi.fn() };
   (c as any).blur = { emit: vi.fn() };
+  (c as any).toggle = { emit: vi.fn() };
   (c as any).internals = makeInternals();
   (c as any).label = 'Country';
   (c as any).flatOptions = OPTIONS;
@@ -295,6 +296,7 @@ describe('io-select — handleFocus / handleBlur when disabled', () => {
 describe('io-select — onIsOpenChange', () => {
   it('onIsOpenChange(false) resets activeIndex and filterQuery', () => {
     const c = makeSelect();
+    c.custom = true;
     (c as any).activeIndex = 2;
     (c as any).filterQuery = 'test';
     (c as any).isOpen = false;

@@ -51,6 +51,11 @@ export function getSwitchStyles(): string {
       z-index: 1;
     }
 
+    /* Block pointer events when loading */
+    .switch-native--loading {
+      pointer-events: none;
+    }
+
     /* Custom track */
     .switch-track {
       position: absolute;
@@ -77,6 +82,33 @@ export function getSwitchStyles(): string {
       background-color: var(--io-color-error);
     }
 
+    /* ── Hover states (WCAG 1.4.11) ─────────────────────── */
+
+    .switch-native:hover ~ .switch-track {
+      background-color: var(--io-border-hover);
+    }
+
+    .switch-native:checked:hover ~ .switch-track {
+      background-color: var(--io-color-primary-hover);
+    }
+
+    /* Suppress hover when disabled or loading */
+    .switch-native:disabled:hover ~ .switch-track {
+      background-color: var(--io-border-interactive);
+    }
+
+    .switch-native:disabled:checked:hover ~ .switch-track {
+      background-color: var(--io-color-primary);
+    }
+
+    .switch-native--loading:hover ~ .switch-track {
+      background-color: var(--io-border-interactive);
+    }
+
+    .switch-native--loading:checked:hover ~ .switch-track {
+      background-color: var(--io-color-primary);
+    }
+
     /* Thumb */
     .switch-thumb {
       position: absolute;
@@ -98,6 +130,17 @@ export function getSwitchStyles(): string {
     /* Focus ring on native input → show on track */
     .switch-native:focus-visible + .switch-track {
       box-shadow: var(--io-focus-ring-active);
+    }
+
+    /* ── Loading overlay ────────────────────────────────── */
+
+    .switch-loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
     }
 
     /* ── Label text ─────────────────────────────────────── */
@@ -129,6 +172,34 @@ export function getSwitchStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .switch-track { transition: none; }
       .switch-thumb { transition: none; }
+    }
+
+    /* ── Forced-colors / Windows High Contrast Mode (WCAG 1.4.11) ── */
+
+    @media (forced-colors: active) {
+      .switch-track {
+        border: 2px solid ButtonText;
+        background-color: ButtonFace;
+        forced-color-adjust: none;
+      }
+
+      .switch-track--checked {
+        background-color: Highlight;
+        border-color: Highlight;
+      }
+
+      .switch-thumb {
+        background-color: ButtonText;
+        forced-color-adjust: none;
+      }
+
+      .switch-native:disabled ~ .switch-track {
+        border-color: GrayText;
+      }
+
+      .switch-native:disabled ~ .switch-track .switch-thumb {
+        background-color: GrayText;
+      }
     }
   `;
 }

@@ -45,6 +45,9 @@ export class IoSwitch {
   /** Disables the switch */
   @Prop({ mutable: true, reflect: true }) disabled = false;
 
+  /** Shows a loading spinner and blocks interaction */
+  @Prop({ reflect: true }) loading = false;
+
   /** Puts the switch in error state */
   @Prop({ reflect: true }) error = false;
 
@@ -58,6 +61,9 @@ export class IoSwitch {
 
   /** Fires when the switch state changes */
   @Event() change!: EventEmitter<IoSwitchChangeDetail>;
+
+  /** Fires when the switch loses focus — use for validation-on-blur patterns */
+  @Event({ bubbles: false }) blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -140,16 +146,20 @@ export class IoSwitch {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });
   };
 
+  private handleBlur = (ev: FocusEvent) => {
+    this.blur.emit(ev);
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, error, errorMessage, helperText } = this;
+    const { label, name, value, checked, required, disabled, loading, error, errorMessage, helperText } = this;
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
@@ -164,14 +174,14 @@ export class IoSwitch {
       .join(' ');
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getSwitchStyles()}</style>
         <div class={getSwitchWrapperClass(disabled, error || this.faceInvalid)}>
           <label class="switch-label" htmlFor={inputId}>
             <span class="switch-control">
               <input
                 id={inputId}
-                class="switch-native"
+                class={`switch-native${loading ? ' switch-native--loading' : ''}`}
                 type="checkbox"
                 role="switch"
                 name={name}
@@ -182,12 +192,18 @@ export class IoSwitch {
                 aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
+                onBlur={this.handleBlur}
               />
               <span
                 class={getSwitchTrackClass(checked)}
                 aria-hidden="true"
               >
                 <span class="switch-thumb" aria-hidden="true" />
+                {loading && (
+                  <span class="switch-loading-overlay" aria-hidden="true">
+                    <io-spinner />
+                  </span>
+                )}
               </span>
             </span>
             <span class="switch-text">

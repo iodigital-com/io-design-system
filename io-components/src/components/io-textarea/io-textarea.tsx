@@ -187,6 +187,15 @@ export class IoTextarea {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(disabled: boolean): void {
+    this.disabled = disabled;
+  }
+
+  formStateRestoreCallback(state: string, _mode: 'restore' | 'autocomplete'): void {
+    this.value = state;
+    this.syncFormValue();
+  }
+
   @Watch('value')
   onValueChange() {
     this.syncFormValue();

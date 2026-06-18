@@ -135,7 +135,7 @@ export function getTextareaStyles(): string {
 
     .textarea-field:focus-visible {
       outline: none;
-      box-shadow: none;
+      box-shadow: var(--io-focus-ring-active);
     }
 
     .textarea-wrapper--state-error .textarea-field {
@@ -151,9 +151,11 @@ export function getTextareaStyles(): string {
     }
 
     /* Resize variants */
-    .textarea-field--resize-none     { resize: none; }
-    .textarea-field--resize-vertical { resize: vertical; }
-    .textarea-field--resize-auto     { resize: none; overflow: hidden; }
+    .textarea-field--resize-none       { resize: none; }
+    .textarea-field--resize-vertical   { resize: vertical; }
+    .textarea-field--resize-horizontal { resize: horizontal; }
+    .textarea-field--resize-both       { resize: both; }
+    .textarea-field--resize-auto       { resize: none; overflow: hidden; }
 
     /* ── Helper / state messages ─────────────────────────── */
 

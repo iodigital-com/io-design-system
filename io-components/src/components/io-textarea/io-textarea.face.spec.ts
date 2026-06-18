@@ -202,4 +202,42 @@ describe('io-textarea — FACE', () => {
       expect((component as any).faceInvalid).toBe(false);
     });
   });
+
+  describe('formDisabledCallback (#658)', () => {
+    it('sets disabled to true when formDisabledCallback(true) is called', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).formDisabledCallback(true);
+      expect(component.disabled).toBe(true);
+    });
+
+    it('sets disabled to false when formDisabledCallback(false) is called', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.disabled = true;
+      (component as any).formDisabledCallback(false);
+      expect(component.disabled).toBe(false);
+    });
+  });
+
+  describe('formStateRestoreCallback (#658)', () => {
+    it('restores value from state string', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).formStateRestoreCallback('restored text', 'restore');
+      expect(component.value).toBe('restored text');
+    });
+
+    it('calls setFormValue after restoring value', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).formStateRestoreCallback('autocompleted', 'autocomplete');
+      expect(internals.setFormValue).toHaveBeenCalledWith('autocompleted');
+    });
+
+    it('does not throw when internals is unavailable', () => {
+      (component as any).internals = undefined;
+      expect(() => (component as any).formStateRestoreCallback('value', 'restore')).not.toThrow();
+    });
+  });
 });

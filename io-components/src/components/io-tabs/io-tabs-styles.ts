@@ -47,7 +47,7 @@ export function getTabsStyles(): string {
       color: var(--io-text-secondary) !important;
       background: transparent !important;
       border: none !important;
-      border-bottom: 2px solid transparent !important;
+      border-bottom: var(--io-tabs-indicator-height) solid transparent !important;
       margin: 0 0 -1px 0 !important;
       cursor: pointer !important;
       white-space: nowrap !important;

@@ -143,7 +143,7 @@ export function getInputStyles(): string {
 
     .input-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
-      margin-top: var(--io-field-focus-offset-y);
+      margin-top: var(--io-field-focus-offset-y, -2px);
     }
 
     .input-field:focus-visible {

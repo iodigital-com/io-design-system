@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoTextarea } from './io-textarea';
+import { getTextareaStyles } from './io-textarea-styles';
 
 describe('io-textarea — hideLabel prop', () => {
   let component: IoTextarea;
@@ -299,5 +300,44 @@ describe('io-textarea — new props (#362)', () => {
 
     component.render();
     expect((component as any).counterId).toBe(id1);
+  });
+});
+
+describe('io-textarea — styles (#658)', () => {
+  it(':focus-visible applies --io-focus-ring-active (WCAG 2.4.11)', () => {
+    const styles = getTextareaStyles();
+    // Assert that the :focus-visible block specifically contains the focus ring shadow
+    expect(styles).toMatch(/focus-visible[^}]*box-shadow:\s*var\(--io-focus-ring-active\)/);
+  });
+
+  it('resize-horizontal CSS class is defined', () => {
+    const styles = getTextareaStyles();
+    expect(styles).toContain('.textarea-field--resize-horizontal');
+  });
+
+  it('resize-both CSS class is defined', () => {
+    const styles = getTextareaStyles();
+    expect(styles).toContain('.textarea-field--resize-both');
+  });
+});
+
+describe('io-textarea — resize prop extended values (#658)', () => {
+  let component: IoTextarea;
+
+  beforeEach(() => {
+    component = new IoTextarea();
+    (component as any).el = document.createElement('io-textarea');
+    (component as any).label = 'Notes';
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+  });
+
+  it('accepts resize="horizontal"', () => {
+    component.resize = 'horizontal';
+    expect(component.resize).toBe('horizontal');
+  });
+
+  it('accepts resize="both"', () => {
+    component.resize = 'both';
+    expect(component.resize).toBe('both');
   });
 });

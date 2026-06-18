@@ -38,7 +38,7 @@ export class IoTabs {
   /** Optional accessible label for the tablist region. */
   @Prop() label?: string;
 
-  /** Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px. */
+  /** Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium'). */
   @Prop() size: IoTabsSize = 'small';
 
   /** When true, reduces tab button padding using density tokens. */
@@ -88,6 +88,11 @@ export class IoTabs {
       return;
     }
     this.applyAriaToButtons(this.buttons, normalized);
+  }
+
+  @Watch('panelIds')
+  onPanelIdsChange() {
+    this.applyAriaToButtons(this.buttons, this.activeTabIndex);
   }
 
   // ── Slot handling ─────────────────────────────────────────────
@@ -248,8 +253,8 @@ export class IoTabs {
           class={tablistClass}
           role="tablist"
           aria-orientation="horizontal"
-          aria-label={this.label || undefined}
           aria-labelledby={this.labelledby || undefined}
+          aria-label={!this.labelledby ? (this.label || undefined) : undefined}
         >
           <slot onSlotchange={this.onSlotChange} />
         </div>

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTabs } from './io-tabs';
 
@@ -275,6 +276,36 @@ describe('io-tabs — size and compact props', () => {
     component.compact = true;
     expect(component.compact).toBe(true);
   });
+
+  it('render() tablist includes tabs--size-small class when size=small', () => {
+    const component = makeComponent();
+    component.size = 'small';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    const cls = tablistCall![1].class as Record<string, boolean>;
+    expect(cls['tabs--size-small']).toBe(true);
+  });
+
+  it('render() tablist includes tabs--size-medium class when size=medium', () => {
+    const component = makeComponent();
+    component.size = 'medium';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    const cls = tablistCall![1].class as Record<string, boolean>;
+    expect(cls['tabs--size-medium']).toBe(true);
+  });
 });
 
 describe('io-tabs — labelledby prop', () => {
@@ -282,6 +313,35 @@ describe('io-tabs — labelledby prop', () => {
     const component = makeComponent();
     component.labelledby = 'my-heading';
     expect(component.labelledby).toBe('my-heading');
+  });
+
+  it('render() sets aria-labelledby when labelledby is provided', () => {
+    const component = makeComponent();
+    component.labelledby = 'heading-id';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    expect(tablistCall![1]['aria-labelledby']).toBe('heading-id');
+  });
+
+  it('render() omits aria-label when labelledby is provided', () => {
+    const component = makeComponent();
+    component.labelledby = 'heading-id';
+    component.label = 'fallback label';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    expect(tablistCall![1]['aria-label']).toBeUndefined();
   });
 });
 

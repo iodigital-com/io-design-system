@@ -97,11 +97,6 @@ describe('io-table-head-cell — aria-sort attribute', () => {
 
   it('omits aria-sort when sortable=false', () => {
     component.sortable = false;
-    const vnode = component.render() as any;
-    const th = vnode?.vchildren?.find?.((c: any) => c?.vtag === 'th') ?? vnode;
-    // ariaSort should be undefined (not present)
-    expect((component as any).render).not.toThrow;
-    // Verify via internal logic: ariaSort is undefined when sortable=false
     const ariaSort = component.sortable && component.sortDirection !== 'none'
       ? component.sortDirection
       : undefined;

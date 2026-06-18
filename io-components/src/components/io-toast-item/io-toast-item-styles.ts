@@ -53,6 +53,36 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       color: var(--io-text-primary);
     }
 
+    .toast__action {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      background: transparent;
+      color: var(--io-color-primary);
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      font-weight: var(--io-font-weight-semibold);
+      line-height: var(--io-line-height-normal);
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      border-radius: var(--io-border-radius-sm);
+      transition: color var(--io-motion-fast);
+    }
+
+    .toast__action:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .toast__action:hover {
+        color: var(--io-color-primary-hover, var(--io-color-primary));
+        text-decoration: none;
+      }
+    }
+
     .toast__close {
       flex-shrink: 0;
       display: flex;

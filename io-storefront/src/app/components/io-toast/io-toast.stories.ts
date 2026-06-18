@@ -6,6 +6,8 @@ export const toastStory: Story<'io-toast-item'> = {
     properties: {
       variant: 'neutral',
       text: 'Notification message.',
+      actionLabel: undefined,
+      actionHref: undefined,
     },
   },
   generator: ({ properties } = {}) => [
@@ -14,6 +16,8 @@ export const toastStory: Story<'io-toast-item'> = {
       properties: {
         variant: (properties?.variant as string) ?? 'neutral',
         text: (properties?.text as string) ?? 'Notification message.',
+        ...(properties?.actionLabel ? { actionLabel: properties.actionLabel as string } : {}),
+        ...(properties?.actionHref ? { actionHref: properties.actionHref as string } : {}),
       },
     },
   ],
@@ -69,6 +73,26 @@ export const toastStoryInfo: Story<'io-toast-item'> = {
   ],
 };
 
+export const toastStoryWithAction: Story<'io-toast-item'> = {
+  state: { properties: { variant: 'neutral', text: 'Your file is ready.', actionLabel: 'Download' } },
+  generator: () => [
+    {
+      tag: 'io-toast-item' as const,
+      properties: { variant: 'neutral', text: 'Your file is ready.', actionLabel: 'Download' },
+    },
+  ],
+};
+
+export const toastStoryWithActionHref: Story<'io-toast-item'> = {
+  state: { properties: { variant: 'info', text: 'New release available.', actionLabel: 'View changelog', actionHref: '#' } },
+  generator: () => [
+    {
+      tag: 'io-toast-item' as const,
+      properties: { variant: 'info', text: 'New release available.', actionLabel: 'View changelog', actionHref: '#' },
+    },
+  ],
+};
+
 export const toastPropDefinitions: PropDefinition[] = [
   {
     name: 'text',
@@ -80,5 +104,15 @@ export const toastPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['neutral', 'success', 'error', 'warning', 'info'],
     defaultValue: 'neutral',
+  },
+  {
+    name: 'actionLabel',
+    type: 'string',
+    defaultValue: '',
+  },
+  {
+    name: 'actionHref',
+    type: 'string',
+    defaultValue: '',
   },
 ];

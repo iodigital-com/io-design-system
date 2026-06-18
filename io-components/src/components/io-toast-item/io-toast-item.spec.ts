@@ -9,6 +9,7 @@ describe('io-toast-item — default props', () => {
   beforeEach(() => {
     component = new IoToastItem();
     (component as any).dismiss = { emit: vi.fn() };
+    (component as any).action = { emit: vi.fn() };
   });
 
   it('text defaults to empty string', () => {
@@ -17,6 +18,14 @@ describe('io-toast-item — default props', () => {
 
   it('variant defaults to neutral', () => {
     expect(component.variant).toBe('neutral');
+  });
+
+  it('actionLabel defaults to undefined', () => {
+    expect(component.actionLabel).toBeUndefined();
+  });
+
+  it('actionHref defaults to undefined', () => {
+    expect(component.actionHref).toBeUndefined();
   });
 });
 
@@ -75,14 +84,48 @@ describe('io-toast-item — interaction model consistency', () => {
 
 describe('io-toast-item — overlay transition contract', () => {
   it('enter animation uses motion easing token', () => {
-    const styles: string = getToastItemStyles();
+    const styles: string = getToastItemStyles('neutral');
     expect(styles).toContain('--io-motion-easing-ease-out');
   });
 
   it('prefers-reduced-motion guard disables enter animation', () => {
-    const styles: string = getToastItemStyles();
+    const styles: string = getToastItemStyles('neutral');
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
     const rmIdx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
     expect(styles.slice(rmIdx)).toContain('animation: none');
+  });
+});
+
+describe('io-toast-item — action CTA', () => {
+  it('emits action event when action button is clicked', () => {
+    const component = new IoToastItem() as any;
+    const actionEmitMock = vi.fn();
+    component.dismiss = { emit: vi.fn() };
+    component.action = { emit: actionEmitMock };
+    component.actionLabel = 'Undo';
+
+    component.handleAction();
+
+    expect(actionEmitMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not emit action when close button is clicked', () => {
+    const component = new IoToastItem() as any;
+    const actionEmitMock = vi.fn();
+    const dismissEmitMock = vi.fn();
+    component.dismiss = { emit: dismissEmitMock };
+    component.action = { emit: actionEmitMock };
+    component.actionLabel = 'Undo';
+
+    component.handleClose();
+
+    expect(actionEmitMock).not.toHaveBeenCalled();
+    expect(dismissEmitMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('action CTA styles include primary colour token', () => {
+    const styles = getToastItemStyles('neutral');
+    expect(styles).toContain('--io-color-primary');
+    expect(styles).toContain('.toast__action');
   });
 });

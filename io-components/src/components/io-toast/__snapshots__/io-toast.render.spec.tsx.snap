@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`io-toast — render snapshots > renders active toast item state 1`] = `
-<io-toast role="status" aria-live="polite" aria-atomic="true" data-position="bottom-end" class="hydrated">
+<io-toast role="status" aria-live="polite" aria-atomic="true" data-position="bottom-end" position="bottom-end" class="hydrated">
   <mock:shadow-root>
     <io-toast-item variant="success" class="hydrated">
       <mock:shadow-root shadowrootdelegatesfocus>
@@ -29,7 +29,7 @@ exports[`io-toast — render snapshots > renders active toast item state 1`] = `
 `;
 
 exports[`io-toast — render snapshots > renders default state 1`] = `
-<io-toast role="status" aria-live="polite" aria-atomic="true" data-position="bottom-end" class="hydrated">
+<io-toast role="status" aria-live="polite" aria-atomic="true" data-position="bottom-end" position="bottom-end" class="hydrated">
   <mock:shadow-root></mock:shadow-root>
 </io-toast>
 `;

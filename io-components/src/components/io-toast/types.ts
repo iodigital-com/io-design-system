@@ -23,6 +23,17 @@ export interface IoToastMessage {
    * Error-variant toasts are always persistent.
    */
   persistent?: boolean;
+  /**
+   * Label for the optional call-to-action button/link rendered beside the text.
+   * When omitted, no action is rendered.
+   */
+  actionLabel?: string;
+  /**
+   * When set alongside `actionLabel`, renders the CTA as an anchor pointing to
+   * this href (opens in the same tab). When omitted, the CTA is a button that
+   * emits the `action` event on io-toast-item.
+   */
+  actionHref?: string;
 }
 
 export type IoToastEntry = IoToastMessage & { id: number };

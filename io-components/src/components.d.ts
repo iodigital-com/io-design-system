@@ -2463,17 +2463,16 @@ export namespace Components {
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, and a dismiss button.
+     * Displays a single notification row with icon, text, optional CTA, and a
+     * dismiss button.
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
-          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
          */
         "actionHref"?: string;
         /**
-          * Label for an optional call-to-action rendered beside the text.
-          * When omitted, no action is rendered.
+          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
          */
         "actionLabel"?: string;
         /**
@@ -3296,9 +3295,8 @@ declare global {
         new (): HTMLIoPaginationElement;
     };
     interface HTMLIoPinCodeElementEventMap {
-        "blur": FocusEvent;
         "change": IoPinCodeChangeDetail;
-        "blur": void;
+        "blur": FocusEvent;
     }
     /**
      * io-pin-code
@@ -3874,12 +3872,14 @@ declare global {
     };
     interface HTMLIoToastItemElementEventMap {
         "dismiss": void;
+        "action": void;
     }
     /**
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, and a dismiss button.
+     * Displays a single notification row with icon, text, optional CTA, and a
+     * dismiss button.
      */
     interface HTMLIoToastItemElement extends Components.IoToastItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoToastItemElementEventMap>(type: K, listener: (this: HTMLIoToastItemElement, ev: IoToastItemCustomEvent<HTMLIoToastItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6413,19 +6413,22 @@ declare namespace LocalJSX {
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, and a dismiss button.
+     * Displays a single notification row with icon, text, optional CTA, and a
+     * dismiss button.
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
-          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
          */
         "actionHref"?: string;
         /**
-          * Label for an optional call-to-action rendered beside the text.
-          * When omitted, no action is rendered.
+          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
          */
         "actionLabel"?: string;
+        /**
+          * Fires when the action button is clicked (only when `actionLabel` is set and `actionHref` is not). Bubbles and is composed so it can be observed on `<io-toast>` without reaching into shadow DOM.
+         */
+        "onAction"?: (event: IoToastItemCustomEvent<void>) => void;
         /**
           * Fires when the user dismisses the toast
          */
@@ -6927,10 +6930,10 @@ declare namespace LocalJSX {
         "position": IoToastPosition;
     }
     interface IoToastItemAttributes {
-        "actionHref"?: string;
-        "actionLabel"?: string;
         "text": string;
         "variant": IoToastVariant;
+        "actionLabel": string;
+        "actionHref": string;
     }
     interface IoTooltipAttributes {
         "content": string;
@@ -7643,7 +7646,8 @@ declare module "@stencil/core" {
              * io-toast-item
              * ==============
              * Internal component rendered by <io-toast>. Not intended for direct use.
-             * Displays a single notification row with icon, text, and a dismiss button.
+             * Displays a single notification row with icon, text, optional CTA, and a
+             * dismiss button.
              */
             "io-toast-item": LocalJSX.IntrinsicElements["io-toast-item"] & JSXBase.HTMLAttributes<HTMLIoToastItemElement>;
             /**

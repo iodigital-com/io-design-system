@@ -6,8 +6,8 @@ export const toastStory: Story<'io-toast-item'> = {
     properties: {
       variant: 'neutral',
       text: 'Notification message.',
-      actionLabel: undefined,
-      actionHref: undefined,
+      actionLabel: '',
+      actionHref: '',
     },
   },
   generator: ({ properties } = {}) => [

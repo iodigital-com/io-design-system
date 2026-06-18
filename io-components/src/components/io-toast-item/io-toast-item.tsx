@@ -29,13 +29,13 @@ export class IoToastItem {
    * Label for an optional call-to-action rendered beside the text.
    * When omitted, no action is rendered.
    */
-  @Prop() actionLabel?: string;
+  @Prop({ reflect: true }) actionLabel?: string;
 
   /**
    * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
    * this URL. When omitted the CTA is a `<button>` that emits `action`.
    */
-  @Prop() actionHref?: string;
+  @Prop({ reflect: true }) actionHref?: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -44,9 +44,10 @@ export class IoToastItem {
 
   /**
    * Fires when the action button is clicked (only when `actionLabel` is set
-   * and `actionHref` is not).
+   * and `actionHref` is not). Bubbles and is composed so it can be observed
+   * on `<io-toast>` without reaching into shadow DOM.
    */
-  @Event({ bubbles: false }) action!: EventEmitter<void>;
+  @Event({ bubbles: true, composed: true }) action!: EventEmitter<void>;
 
   // ── Handlers ─────────────────────────────────────────────────
 

@@ -47,6 +47,32 @@ export default function IoModalApiPage() {
               <InlineCode key="d">true</InlineCode>,
               'Dismisses the dialog when the user clicks the backdrop area outside the dialog panel. Disable for critical dialogs where accidental dismissal would cause data loss.',
             ],
+            [
+              <InlineCode key="n">dismissButton</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">true</InlineCode>,
+              'Controls visibility of the × dismiss button in the modal header. When false, the ESC key is also suppressed — the modal can only close via programmatic close(). Use false for critical-confirmation modals where accidental dismissal must be prevented. Always include at least one explicit action button in the footer slot.',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── Development Warnings ─────────────────────────────────── */}
+      <section id="development-warnings" className="space-y-4">
+        <SectionHeader
+          title="Development warnings"
+          description="These console.error messages are emitted in development to flag accessibility violations. They do not appear in production builds."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Condition', width: '320px' },
+            { label: 'Message' },
+          ]}
+          rows={[
+            [
+              'No accessible name provided (missing heading prop, header slot with a heading element, aria-label, or aria-labelledby)',
+              '[io-modal] No accessible name provided. Set heading, aria-label, or aria-labelledby prop for WCAG 4.1.2 compliance.',
+            ],
           ]}
         />
       </section>

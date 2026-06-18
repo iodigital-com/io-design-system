@@ -58,7 +58,7 @@ export function getWordmarkStyles(): string {
     a:focus-visible {
       outline: var(--io-focus-ring-active);
       outline-offset: 2px;
-      border-radius: 2px;
+      border-radius: var(--io-border-radius-2xs);
     }
 
   `;

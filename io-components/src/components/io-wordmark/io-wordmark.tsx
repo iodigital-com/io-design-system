@@ -1,4 +1,4 @@
-import { Component, Prop, Host, h, Element } from '@stencil/core';
+import { Component, Prop, State, Host, h } from '@stencil/core';
 
 import { getWordmarkStyles } from './io-wordmark-styles';
 
@@ -24,8 +24,6 @@ import type { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from './types
   shadow: { delegatesFocus: true },
 })
 export class IoWordmark {
-  @Element() el!: HTMLElement;
-
   /**
    * Which visual representation to render.
    * - 'mark'   → geometric iO mark SVG (default)
@@ -49,6 +47,9 @@ export class IoWordmark {
    */
   @Prop({ attribute: 'aria-label' }) ariaLabel: string = 'io Digital';
 
+  /** Internal resolved color — set in componentWillRender to avoid mutating non-mutable @Prop */
+  @State() private resolvedColor: IoWordmarkColor = 'blue';
+
   /**
    * Optional URL to wrap the wordmark in an anchor element.
    * When set, the wordmark becomes a navigable link.
@@ -62,12 +63,13 @@ export class IoWordmark {
   @Prop() target: '_self' | '_blank' | '_parent' | '_top' = '_self';
 
   componentWillRender() {
-    // Validate: beige is not a supported color for lockup variant
     if (this.variant === 'lockup' && this.color === 'beige') {
       console.error(
         '[io-wordmark] color="beige" is not supported on variant="lockup". Falling back to color="blue".'
       );
-      this.color = 'blue';
+      this.resolvedColor = 'blue';
+    } else {
+      this.resolvedColor = this.color;
     }
   }
 
@@ -76,12 +78,12 @@ export class IoWordmark {
   }
 
   render() {
-    const { variant, ariaLabel, size, href, target } = this;
+    const { variant, ariaLabel, size, href, target, resolvedColor } = this;
 
     // If href is set, wrap the content in an anchor element
     if (href) {
       return (
-        <Host>
+        <Host color={resolvedColor}>
           <style>{getWordmarkStyles()}</style>
           <a
             href={href}
@@ -96,22 +98,22 @@ export class IoWordmark {
     }
 
     // Default: render as img role
-    if (variant === 'lockup') return this.renderLockup(ariaLabel, size);
-    return this.renderMark(ariaLabel, size);
+    if (variant === 'lockup') return this.renderLockup(ariaLabel, size, resolvedColor);
+    return this.renderMark(ariaLabel, size, resolvedColor);
   }
 
-  private renderMark(ariaLabel: string, size: IoWordmarkSize) {
+  private renderMark(ariaLabel: string, size: IoWordmarkSize, resolvedColor: IoWordmarkColor) {
     return (
-      <Host role="img" aria-label={ariaLabel}>
+      <Host role="img" aria-label={ariaLabel} color={resolvedColor}>
         <style>{getWordmarkStyles()}</style>
         {this.renderMarkSVG(size)}
       </Host>
     );
   }
 
-  private renderLockup(ariaLabel: string, size: IoWordmarkSize) {
+  private renderLockup(ariaLabel: string, size: IoWordmarkSize, resolvedColor: IoWordmarkColor) {
     return (
-      <Host role="img" aria-label={ariaLabel}>
+      <Host role="img" aria-label={ariaLabel} color={resolvedColor}>
         <style>{getWordmarkStyles()}</style>
         {this.renderLockupSVG(size)}
       </Host>

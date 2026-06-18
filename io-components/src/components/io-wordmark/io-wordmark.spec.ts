@@ -224,9 +224,15 @@ describe('io-wordmark — beige + lockup validation', () => {
     spy.mockRestore();
   });
 
-  it('resets color to blue when color="beige" and variant="lockup"', () => {
+  it('resolves color to blue when color="beige" and variant="lockup"', () => {
     const component = makeWordmark({ variant: 'lockup', color: 'beige' });
     component.componentWillRender();
-    expect(component.color).toBe('blue');
+    expect((component as any).resolvedColor).toBe('blue');
+  });
+
+  it('does not mutate the public color prop', () => {
+    const component = makeWordmark({ variant: 'lockup', color: 'beige' });
+    component.componentWillRender();
+    expect(component.color).toBe('beige');
   });
 });

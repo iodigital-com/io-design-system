@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
 
 import { getRadioGroupStyles } from './io-radio-group-styles';
 
@@ -19,9 +19,11 @@ import type { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from './types'
 @Component({
   tag: 'io-radio-group',
   shadow: true,
+  formAssociated: true,
 })
 export class IoRadioGroup {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -55,6 +57,7 @@ export class IoRadioGroup {
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
+  private defaultValue?: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -66,10 +69,13 @@ export class IoRadioGroup {
   componentWillLoad() {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-rg-error-${suffix}`;
+    this.defaultValue = this.value;
+    this.syncFormValue();
   }
 
   componentDidLoad() {
     this.syncChildren();
+    this.updateTabStops();
   }
 
   @Watch('name')
@@ -80,6 +86,8 @@ export class IoRadioGroup {
   @Watch('value')
   onValueChange() {
     this.syncChildren();
+    this.updateTabStops();
+    this.syncFormValue();
   }
 
   @Watch('disabled')
@@ -89,6 +97,20 @@ export class IoRadioGroup {
 
   @Watch('required')
   onRequiredChange() {
+    this.syncChildren();
+  }
+
+  // ── FACE callbacks ────────────────────────────────────────────
+
+  formResetCallback(): void {
+    this.value = this.defaultValue ?? '';
+    this.syncChildren();
+    this.updateTabStops();
+    this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean): void {
+    this.disabled = disabled;
     this.syncChildren();
   }
 
@@ -110,24 +132,98 @@ export class IoRadioGroup {
 
   // ── Private helpers ───────────────────────────────────────────
 
-  private syncChildren = () => {
-    const radios = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; checked: boolean; disabled: boolean; required: boolean; value: string }>('io-radio'),
+  /** ARIA APG roving tabindex: Arrow keys, Home, End navigate the group */
+  @Listen('keydown')
+  handleGroupKeydown(ev: KeyboardEvent): void {
+    const radios = this.getRadios().filter(r => !r.disabled);
+    if (!radios.length) return;
+
+    let currentIndex = radios.findIndex(r => r === document.activeElement);
+    if (currentIndex === -1) {
+      currentIndex = radios.findIndex(r => r.checked && !r.disabled);
+      if (currentIndex === -1) currentIndex = radios.findIndex(r => !r.disabled);
+      if (currentIndex === -1) return;
+    }
+    let nextIndex = currentIndex;
+
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      nextIndex = (currentIndex + 1) % radios.length;
+    } else if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      nextIndex = (currentIndex - 1 + radios.length) % radios.length;
+    } else if (ev.key === 'Home') {
+      ev.preventDefault();
+      nextIndex = 0;
+    } else if (ev.key === 'End') {
+      ev.preventDefault();
+      nextIndex = radios.length - 1;
+    } else {
+      return;
+    }
+
+    const target = radios[nextIndex];
+    target.checked = true;
+    target.tabIndex = 0;
+    this.value = target.value;
+    radios.forEach((r, i) => { if (i !== nextIndex) r.tabIndex = -1; });
+    // Focus the target — setFocus() is defined on IoRadio, fall back to host focus
+    const targetEl = target as HTMLElement & { setFocus?(): void };
+    if (typeof targetEl.setFocus === 'function') {
+      targetEl.setFocus();
+    } else {
+      targetEl.focus();
+    }
+    this.change?.emit({ value: this.value });
+  }
+
+  private syncFormValue(): void {
+    const hasValue = Boolean(this.value);
+    this.internals?.setFormValue?.(hasValue ? this.value! : null);
+
+    if (this.required && !hasValue) {
+      this.internals?.setValidity?.(
+        { valueMissing: true },
+        'Please select an option.',
+        this.el?.shadowRoot?.querySelector('input') ?? undefined,
+      );
+    } else {
+      this.internals?.setValidity?.({});
+    }
+  }
+
+  private getRadios(): Array<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }> {
+    return Array.from(
+      this.el.querySelectorAll<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }>('io-radio'),
     );
+  }
+
+  private updateTabStops(): void {
+    const radios = this.getRadios();
+    const active = radios.find(r => r.value === this.value && !r.disabled);
+    const first = radios.find(r => !r.disabled);
+    const target = active ?? first;
+    radios.forEach(r => {
+      r.tabIndex = (r === target && !r.disabled) ? 0 : -1;
+    });
+  }
+
+  private syncChildren = () => {
+    const radios = this.getRadios();
+    radios.forEach(r => {
+      r.disabled = this.disabled;
+    });
     for (const radio of radios) {
       radio.name = this.name;
       radio.checked = radio.value === this.value;
       radio.required = this.required;
-      if (this.disabled) {
-        radio.disabled = true;
-      }
     }
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage, orientation } = this;
+    const { label, disabled, helperText, error, errorMessage, orientation, required } = this;
     const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
@@ -141,6 +237,7 @@ export class IoRadioGroup {
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
           aria-orientation={orientation}
+          aria-required={required ? 'true' : undefined}
         >
           <legend class="radio-group__legend">{label}</legend>
           {helperText && (

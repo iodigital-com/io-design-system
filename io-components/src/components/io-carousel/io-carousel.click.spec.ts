@@ -52,8 +52,32 @@ describe('io-carousel — update event propagation contract', () => {
     // Act — simulate a scroll-driven active index change
     (component as any).setActiveIndex(1, true);
 
-    // Assert — payload is emitted; bubbles:true + composed:true are declared on @Event decorator
-    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 1, totalSlides: 3 });
+    // Assert — payload includes previousIndex; bubbles:true + composed:true declared on @Event
+    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 1, previousIndex: 0, totalSlides: 3 });
+  });
+
+  it('update event includes the correct previousIndex when navigating forward', () => {
+    const component = new IoCarousel();
+    const emitSpy = vi.fn();
+    (component as any).update = { emit: emitSpy };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
+    component.activeSlideIndex = 2;
+
+    (component as any).setActiveIndex(4, true);
+
+    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 4, previousIndex: 2, totalSlides: 5 });
+  });
+
+  it('update event includes the correct previousIndex when navigating backward', () => {
+    const component = new IoCarousel();
+    const emitSpy = vi.fn();
+    (component as any).update = { emit: emitSpy };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 5 });
+    component.activeSlideIndex = 3;
+
+    (component as any).setActiveIndex(1, true);
+
+    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 1, previousIndex: 3, totalSlides: 5 });
   });
 
   it('update event is NOT emitted when slide index does not change', () => {

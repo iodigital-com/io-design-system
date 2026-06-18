@@ -1,8 +1,20 @@
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoCarousel } from './io-carousel';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+function renderCalls(c: IoCarousel) {
+  const hMock = h as unknown as ReturnType<typeof vi.fn>;
+  hMock.mockClear();
+  (c as any).render();
+  return hMock.mock.calls as Array<[string, Record<string, unknown>, ...unknown[]]>;
+}
+
+function findBtn(calls: Array<[string, Record<string, unknown>, ...unknown[]]>, cls: string) {
+  return calls.find(([tag, attrs]) => tag === 'button' && typeof attrs?.class === 'string' && (attrs.class as string).includes(cls));
+}
 
 function makeTrack(
   overrides: Partial<{ scrollLeft: number; scrollWidth: number; clientWidth: number }> = {},
@@ -167,7 +179,7 @@ describe('io-carousel — setActiveIndex', () => {
     Object.defineProperty(c as any, 'totalSlides', { get: () => 3 });
     c.activeSlideIndex = 0;
     (c as any).setActiveIndex(2, true);
-    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 3 });
+    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, previousIndex: 0, totalSlides: 3 });
   });
 
   it('sets slideAnnouncement to human-readable position string', () => {
@@ -581,7 +593,7 @@ describe('io-carousel — syncIndexFromScroll (via onTrackScroll)', () => {
     (c as any).getNearestSlideIndex = vi.fn().mockReturnValue(2);
     c.activeSlideIndex = 0;
     (c as any).syncIndexFromScroll();
-    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 4 });
+    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, previousIndex: 0, totalSlides: 4 });
     expect(c.activeSlideIndex).toBe(2);
   });
 });
@@ -685,5 +697,154 @@ describe('io-carousel — edge cases', () => {
     const callCount = ((track as any).scrollTo as ReturnType<typeof vi.fn>).mock.calls.length;
     (c as any).onSlotChange();
     expect(((track as any).scrollTo as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(callCount);
+  });
+});
+
+// ── updateBoundaryState ────────────────────────────────────────────────────────
+
+describe('io-carousel — updateBoundaryState', () => {
+  it('isAtStart defaults to true', () => {
+    const { c } = makeCarousel([]);
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('isAtEnd defaults to false', () => {
+    const { c } = makeCarousel([]);
+    expect((c as any).isAtEnd).toBe(false);
+  });
+
+  it('sets isAtStart=true when scrollLeft is 0', () => {
+    const { c } = makeCarousel([], { scrollLeft: 0, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('sets isAtStart=true when scrollLeft is exactly 1 (boundary tolerance)', () => {
+    const { c } = makeCarousel([], { scrollLeft: 1, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('sets isAtStart=false when scrollLeft is 2 (past boundary)', () => {
+    const { c } = makeCarousel([], { scrollLeft: 2, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(false);
+  });
+
+  it('sets isAtEnd=true when scrollLeft equals maxScroll', () => {
+    // maxScroll = 3000 - 900 = 2100
+    const { c } = makeCarousel([], { scrollLeft: 2100, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(true);
+  });
+
+  it('sets isAtEnd=true when scrollLeft is within 1px of maxScroll (tolerance)', () => {
+    // maxScroll = 3000 - 900 = 2100; 2100 - 1 = 2099
+    const { c } = makeCarousel([], { scrollLeft: 2099, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(true);
+  });
+
+  it('sets isAtEnd=false when scrollLeft is not near maxScroll', () => {
+    const { c } = makeCarousel([], { scrollLeft: 100, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(false);
+  });
+
+  it('returns early without error when track is null', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(null) } };
+    expect(() => (c as any).updateBoundaryState()).not.toThrow();
+  });
+
+  it('syncIndexFromScroll updates boundary state before setting active index', () => {
+    // scrollLeft=2100 means isAtEnd=true (maxScroll = 3000-900 = 2100)
+    const { c } = makeCarousel([], { scrollLeft: 2100, clientWidth: 900, scrollWidth: 3000 });
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 5 });
+    (c as any).getNearestSlideIndex = vi.fn().mockReturnValue(4);
+    c.activeSlideIndex = 0;
+    (c as any).syncIndexFromScroll();
+    expect((c as any).isAtEnd).toBe(true);
+    expect((c as any).isAtStart).toBe(false);
+  });
+
+  it('componentDidLoad calls updateBoundaryState after scroll', () => {
+    const updateBoundarySpy = vi.spyOn(makeCarousel([]).c as any, 'updateBoundaryState');
+    // Rebuild a fresh component with the spy attached
+    const { c } = makeCarousel([], { scrollLeft: 0, clientWidth: 900, scrollWidth: 3000 });
+    const spy = vi.spyOn(c as any, 'updateBoundaryState');
+    c.componentDidLoad();
+    expect(spy).toHaveBeenCalled();
+    void updateBoundarySpy; // satisfy lint
+  });
+});
+
+// ── disabled prev/next button DOM assertions ─────────────────────────────────
+// These tests verify render() actually writes disabled and aria-label into the
+// button vnode props — not just that the guard expression evaluates correctly.
+
+describe('io-carousel — boundary-disabled DOM assertions', () => {
+  it('prev button receives disabled=true when rewind=false and isAtStart=true', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtStart = true;
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1].disabled).toBe(true);
+  });
+
+  it('prev button does NOT receive disabled when rewind=true (even at start)', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtStart = true;
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1].disabled).toBe(false);
+  });
+
+  it('next button receives disabled=true when rewind=false and isAtEnd=true', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtEnd = true;
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1].disabled).toBe(true);
+  });
+
+  it('next button does NOT receive disabled when rewind=true (even at end)', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtEnd = true;
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1].disabled).toBe(false);
+  });
+
+  it('prev button aria-label reflects prevLabel prop', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.prevLabel = 'Vorige';
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1]['aria-label']).toBe('Vorige');
+  });
+
+  it('next button aria-label reflects nextLabel prop', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.nextLabel = 'Volgende';
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1]['aria-label']).toBe('Volgende');
   });
 });

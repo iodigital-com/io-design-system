@@ -187,11 +187,17 @@ describe('io-carousel — behavior helpers', () => {
     Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
     (component as any).getNearestSlideIndex = vi.fn(() => 2);
     component.activeSlideIndex = 0;
+    // Provide el with a track so updateBoundaryState can run
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'clientWidth', { value: 900 });
+    Object.defineProperty(track, 'scrollWidth', { value: 3000 });
+    track.scrollLeft = 100;
+    (component as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(track) } };
 
     (component as any).onTrackScroll();
 
     expect(component.activeSlideIndex).toBe(2);
-    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 4 });
+    expect(emitSpy).toHaveBeenCalledWith({ activeIndex: 2, previousIndex: 0, totalSlides: 4 });
   });
 });
 

@@ -5,6 +5,7 @@ import {
   headingStoryLevels,
   headingStoryWeights,
   headingStoryAlign,
+  headingStoryColors,
   headingStoryEllipsis,
   headingStoryColors,
   headingPropDefinitions,
@@ -230,6 +231,35 @@ describe('io-heading storefront stories', () => {
       for (const el of els) {
         expect((el as { tag: string }).tag).toBe('io-heading');
       }
+    });
+  });
+
+  describe('headingStoryColors (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryColors.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per color variant', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      expect(els.length).toBe(5);
+    });
+
+    it('includes primary, secondary, and inherit as direct io-heading elements', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      const directHeadings = els.filter((el) => (el as { tag: string }).tag === 'io-heading');
+      expect(directHeadings.length).toBeGreaterThanOrEqual(3);
+    });
+
+    it('wraps inverse color with a dark background container', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      const inverseEl = els.find((el) => {
+        if ((el as { tag: string }).tag === 'div') {
+          const children = (el as { children?: unknown[] }).children ?? [];
+          return children.some((c) => (c as { properties?: { color: string } })?.properties?.color === 'inverse');
+        }
+        return false;
+      });
+      expect(inverseEl).toBeDefined();
     });
   });
 

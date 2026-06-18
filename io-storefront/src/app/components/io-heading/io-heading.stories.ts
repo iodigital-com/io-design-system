@@ -60,6 +60,31 @@ export const headingStoryAlign: Story<'io-heading'> = {
     })),
 };
 
+export const headingStoryColors: Story<'io-heading'> = {
+  state: { properties: {} },
+  generator: () => {
+    const colors = ['primary', 'secondary', 'inherit', 'inverse', 'brand'] as const;
+    return colors.map((color) => {
+      const isInverse = color === 'inverse';
+      return {
+        tag: isInverse ? ('div' as const) : ('io-heading' as const),
+        properties: isInverse
+          ? { style: { background: 'var(--io-color-primary)', padding: 'var(--io-space-3)' } }
+          : { color, tag: 'h2', size: '2xl', weight: 'semibold', align: 'start' },
+        children: isInverse
+          ? [
+              {
+                tag: 'io-heading' as const,
+                properties: { color, tag: 'h2', size: '2xl', weight: 'semibold' },
+                children: [`Color: ${color}`],
+              },
+            ]
+          : [`Color: ${color} — Heading text example`],
+      };
+    });
+  },
+};
+
 export const headingStoryEllipsis: Story<'io-heading'> = {
   state: { properties: {} },
   generator: () => [

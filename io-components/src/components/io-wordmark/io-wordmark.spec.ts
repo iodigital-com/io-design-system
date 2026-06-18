@@ -21,6 +21,14 @@ describe('io-wordmark — default props', () => {
   it('has "io Digital" as the default ariaLabel', () => {
     expect(new IoWordmark().ariaLabel).toBe('io Digital');
   });
+
+  it('has undefined href by default', () => {
+    expect(new IoWordmark().href).toBeUndefined();
+  });
+
+  it('has "_self" as the default target', () => {
+    expect(new IoWordmark().target).toBe('_self');
+  });
 });
 
 // ── Render helpers ─────────────────────────────────────────────────────────────
@@ -53,7 +61,7 @@ describe('io-wordmark — variant="mark" render contract', () => {
   });
 
   it('renders without throwing for each supported size', () => {
-    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
+    for (const size of ['sm', 'md', 'lg', 'xl', 'inherit'] as const) {
       expect(() => makeWordmark({ variant: 'mark', size }).render()).not.toThrow();
     }
   });
@@ -98,7 +106,7 @@ describe('io-wordmark — variant="lockup" render contract', () => {
   });
 
   it('renders without throwing for each supported size', () => {
-    for (const size of ['sm', 'md', 'lg', 'xl'] as const) {
+    for (const size of ['sm', 'md', 'lg', 'xl', 'inherit'] as const) {
       expect(() => makeWordmark({ variant: 'lockup', size }).render()).not.toThrow();
     }
   });
@@ -148,8 +156,77 @@ describe('io-wordmark — default render (mark)', () => {
     expect(host?.['role']).toBe('img');
   });
 
-  it('does not render an <a> element', () => {
+  it('does not render an <a> element when href is not set', () => {
     new IoWordmark().render();
     expect(hCallsForTag('a')).toHaveLength(0);
+  });
+});
+
+// ── href + target link wrapping ──────────────────────────────────────────
+
+describe('io-wordmark — href link wrapping', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
+  it('renders an <a> element when href is set', () => {
+    makeWordmark({ href: '/' }).render();
+    expect(hCallsForTag('a').length).toBeGreaterThan(0);
+  });
+
+  it('anchor has correct href attribute', () => {
+    makeWordmark({ href: '/home' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['href']).toBe('/home');
+  });
+
+  it('anchor has target attribute set to _self by default', () => {
+    makeWordmark({ href: '/' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['target']).toBe('_self');
+  });
+
+  it('anchor has rel="noopener noreferrer" when target="_blank"', () => {
+    makeWordmark({ href: '/', target: '_blank' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['rel']).toBe('noopener noreferrer');
+  });
+
+  it('anchor has aria-label when href is set', () => {
+    makeWordmark({ href: '/', ariaLabel: 'Home' }).render();
+    const [anchor] = hCallsForTag('a');
+    expect(anchor?.['aria-label']).toBe('Home');
+  });
+});
+
+// ── size='inherit' ──────────────────────────────────────────────────────────────
+
+describe('io-wordmark — size="inherit"', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
+  it('renders without throwing with size="inherit"', () => {
+    expect(() => makeWordmark({ variant: 'mark', size: 'inherit' }).render()).not.toThrow();
+  });
+
+  it('renders without throwing with size="inherit" and variant="lockup"', () => {
+    expect(() => makeWordmark({ variant: 'lockup', size: 'inherit' }).render()).not.toThrow();
+  });
+});
+
+// ── beige + lockup validation ────────────────────────────────────────────────
+
+describe('io-wordmark — beige + lockup validation', () => {
+  it('logs console.error when color="beige" and variant="lockup"', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = makeWordmark({ variant: 'lockup', color: 'beige' });
+    component.componentWillRender();
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('color="beige" is not supported on variant="lockup"')
+    );
+    spy.mockRestore();
+  });
+
+  it('resets color to blue when color="beige" and variant="lockup"', () => {
+    const component = makeWordmark({ variant: 'lockup', color: 'beige' });
+    component.componentWillRender();
+    expect(component.color).toBe('blue');
   });
 });

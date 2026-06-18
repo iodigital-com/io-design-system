@@ -9,4 +9,4 @@ export type IoWordmarkVariant = 'mark' | 'lockup';
 export type IoWordmarkColor = 'blue' | 'black' | 'white' | 'beige';
 
 /** Wordmark size scale — controls SVG height for mark and lockup variants */
-export type IoWordmarkSize = 'sm' | 'md' | 'lg' | 'xl';
+export type IoWordmarkSize = 'sm' | 'md' | 'lg' | 'xl' | 'inherit';

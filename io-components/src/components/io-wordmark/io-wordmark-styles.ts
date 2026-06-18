@@ -16,6 +16,7 @@ export function getWordmarkStyles(): string {
     .mark-svg--md { height: var(--io-wordmark-mark-height-md); }
     .mark-svg--lg { height: var(--io-wordmark-mark-height-lg); }
     .mark-svg--xl { height: var(--io-wordmark-mark-height-xl); }
+    .mark-svg--inherit { height: inherit; }
 
     /* ── variant='lockup' — full brand SVG (mark + text) ─────────── */
 
@@ -29,6 +30,7 @@ export function getWordmarkStyles(): string {
     .lockup-svg--md { height: var(--io-wordmark-lockup-height-md); }
     .lockup-svg--lg { height: var(--io-wordmark-lockup-height-lg); }
     .lockup-svg--xl { height: var(--io-wordmark-lockup-height-xl); }
+    .lockup-svg--inherit { height: inherit; }
 
     /* ── Color tokens for mark + lockup (drives SVG fill via currentColor) */
 
@@ -44,6 +46,20 @@ export function getWordmarkStyles(): string {
     /* beige: mark only (not a supported lockup colour, but rendered visibly as fallback) */
     :host([variant="mark"][color="beige"]),
     :host([variant="lockup"][color="beige"]) { color: var(--io-color-beige, #DCCFC2); }
+
+    /* ── Link mode (when href is set) ──────────────────────────────────── */
+
+    a {
+      display: inline-flex;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a:focus-visible {
+      outline: var(--io-focus-ring-active);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
 
   `;
 }

@@ -11,4 +11,4 @@ export type IoBadgeVariant =
   | 'outline';
 
 /** Badge size scale aligned with io-tag */
-export type IoBadgeSize = 'sm' | 'md';
+export type IoBadgeSize = 'sm' | 'md' | 'lg';

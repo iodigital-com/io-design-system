@@ -26,11 +26,14 @@ export class IoBadge {
   /** Size variant aligned with io-tag */
   @Prop({ reflect: true }) size: IoBadgeSize = 'md';
 
+  /** Accessible label for icon-only or abbreviated badges */
+  @Prop() ariaLabel?: string;
+
   render() {
     return (
       <Host>
         <style>{getBadgeStyles()}</style>
-        <span class={getBadgeClassName(this.variant, this.size)}>
+        <span class={getBadgeClassName(this.variant, this.size)} aria-label={this.ariaLabel || undefined}>
           <slot />
         </span>
       </Host>

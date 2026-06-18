@@ -27,6 +27,12 @@ export function getBadgeStyles(): string {
       min-height: var(--io-space-10);
     }
 
+    .badge--lg {
+      padding: var(--io-space-3) var(--io-space-5);
+      font-size: var(--io-font-size-base);
+      min-height: var(--io-space-12);
+    }
+
     .badge--blue {
       background-color: var(--io-accent-bg);
       color: var(--io-accent-text);

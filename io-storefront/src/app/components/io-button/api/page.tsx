@@ -112,6 +112,25 @@ export default function IoButtonApiPage() {
               <InlineCode key="d">&apos;right&apos;</InlineCode>,
               'Side on which the arrow icon is rendered relative to the label. Use "left" for back-navigation patterns.',
             ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Reduces button height to ~32px for dense layouts (toolbars, table rows, inline actions). Does not affect icon size or font size.',
+            ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <span key="t">
+                <InlineCode>Partial&lt;Record&lt;IoButtonAriaAttribute, string&gt;&gt;</InlineCode>
+                <span className="block text-xs mt-1" style={{ color: 'var(--io-text-muted)' }}>
+                  Allowed keys: <InlineCode>aria-label</InlineCode> <InlineCode>aria-description</InlineCode> <InlineCode>aria-expanded</InlineCode> <InlineCode>aria-pressed</InlineCode> <InlineCode>aria-haspopup</InlineCode> <InlineCode>aria-controls</InlineCode> <InlineCode>aria-current</InlineCode> <InlineCode>aria-describedby</InlineCode>
+                </span>
+              </span>,
+              '—',
+              <span key="desc">
+                Injects ARIA attributes directly onto the inner <InlineCode>&lt;button&gt;</InlineCode> or <InlineCode>&lt;a&gt;</InlineCode> element. Use for dynamic widget patterns (e.g. <InlineCode>aria-expanded</InlineCode> on a disclosure button, <InlineCode>aria-pressed</InlineCode> on a toggle). Keys may include or omit the <InlineCode>aria-</InlineCode> prefix — both forms are accepted.
+              </span>,
+            ],
           ]}
         />
       </section>

@@ -20,6 +20,7 @@ export const buttonStory: Story<'io-button'> = {
       loading: false,
       fullWidth: false,
       iconOnly: false,
+      compact: false,
       label: 'Click me',
     },
   },
@@ -169,6 +170,18 @@ export const buttonStoryStates: Story<'io-button'> = {
   ],
 };
 
+/** Compact mode — reduced 32px height at multiple sizes and variants. */
+export const buttonStoryCompact: Story<'io-button'> = {
+  state: { properties: { variant: 'solid', color: 'blue', size: 'md', compact: true } },
+  generator: () => [
+    { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'sm', compact: true }, children: ['Compact sm'] },
+    { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'md', compact: true }, children: ['Compact md'] },
+    { tag: 'io-button' as const, properties: { variant: 'solid', color: 'blue', size: 'lg', compact: true }, children: ['Compact lg'] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'md', compact: true, arrow: 'forward' }, children: ['Ghost compact'] },
+    { tag: 'io-button' as const, properties: { variant: 'ghost', color: 'blue', size: 'md', compact: true, iconOnly: true, icon: 'x', label: 'Close' }, children: [] },
+  ],
+};
+
 /**
  * Prop definitions for the Configurator controls panel.
  * Maps directly to the @Prop() declarations in io-button.tsx.
@@ -258,6 +271,13 @@ export const buttonPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Renders a square icon-only button. Requires label or aria-label for accessibility.',
+    group: 'State',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces button height to 32px for dense toolbar or table-row contexts. Does not affect icon size.',
     group: 'State',
   },
 ];

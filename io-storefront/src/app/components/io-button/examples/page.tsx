@@ -8,6 +8,7 @@ import {
   buttonStorySizes,
   buttonStoryIconOnly,
   buttonStoryStates,
+  buttonStoryCompact,
 } from '../io-button.stories';
 
 import type { CSSProperties, ReactNode } from 'react';
@@ -112,6 +113,18 @@ export default function IoButtonExamplesPage() {
         <ComponentStory story={buttonStoryStates} previewClassName="flex-wrap gap-3 items-center" />
         <StageLabel>
           opacity: var(--io-state-disabled-opacity) · cursor: not-allowed · pointer-events: none
+        </StageLabel>
+      </section>
+
+      {/* ── Compact ─────────────────────────────────────────── */}
+      <section>
+        <ExamplesSectionHeader
+          title="Compact"
+          description="compact=true reduces the button height to ~32px. Use in dense contexts such as toolbars, table rows, and inline action bars. Icon size and font size are unaffected."
+        />
+        <ComponentStory story={buttonStoryCompact} previewClassName="flex-wrap gap-3 items-center" />
+        <StageLabel>
+          compact=true · height: ~32px · icon size unchanged
         </StageLabel>
       </section>
 

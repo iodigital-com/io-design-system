@@ -58,7 +58,6 @@ export class IoRadioGroup {
 
   private errorId!: string;
   private defaultValue?: string;
-  private _childDisabledStates = new WeakMap<Element, boolean>();
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -211,16 +210,9 @@ export class IoRadioGroup {
 
   private syncChildren = () => {
     const radios = this.getRadios();
-    if (this.disabled) {
-      radios.forEach(r => {
-        this._childDisabledStates.set(r, r.disabled);
-        r.disabled = true;
-      });
-    } else {
-      radios.forEach(r => {
-        r.disabled = this._childDisabledStates.get(r) ?? false;
-      });
-    }
+    radios.forEach(r => {
+      r.disabled = this.disabled;
+    });
     for (const radio of radios) {
       radio.name = this.name;
       radio.checked = radio.value === this.value;

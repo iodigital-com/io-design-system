@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoModal } from './io-modal';
 
@@ -7,6 +7,7 @@ describe('io-modal — keyboard / cancel event', () => {
   let ioCloseEmit: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
     ioCloseEmit = vi.fn();
@@ -21,6 +22,10 @@ describe('io-modal — keyboard / cancel event', () => {
     (component as any).dialogEl = dialogEl;
 
     component.open = true;
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('cancel event (ESC) sets open to false', () => {
@@ -72,5 +77,34 @@ describe('io-modal — keyboard / cancel event', () => {
     const ev = { clientX: 10, clientY: 10, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(true);
+  });
+
+  it('cancel event does not close when dismissButton is false', () => {
+    component.dismissButton = false;
+    const cancelEvent = new Event('cancel', { cancelable: true });
+    vi.spyOn(cancelEvent, 'preventDefault');
+    (component as any).handleCancel(cancelEvent);
+    // open remains true because dismissButton=false suppresses closing
+    expect(component.open).toBe(true);
+  });
+
+  it('ESC handler does not close when dismissButton is false', () => {
+    component.dismissButton = false;
+    // Directly invoke the escHandler as if Escape was pressed
+    const escHandler = (component as any).escHandler as ((ev: KeyboardEvent) => void) | undefined;
+    if (escHandler) {
+      const ev = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
+      vi.spyOn(ev, 'preventDefault');
+      escHandler(ev);
+      expect(component.open).toBe(true);
+    } else {
+      // escHandler not yet attached (preventTopLayer=true path attaches on openChanged)
+      // Set up escHandler manually and verify it suppresses close
+      (component as any).attachEscHandler();
+      const handler = (component as any).escHandler as (ev: KeyboardEvent) => void;
+      const ev = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
+      handler(ev);
+      expect(component.open).toBe(true);
+    }
   });
 });

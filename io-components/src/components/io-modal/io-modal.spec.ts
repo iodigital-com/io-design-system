@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoModal } from './io-modal';
 import { getModalStyles } from './io-modal-styles';
@@ -8,12 +8,17 @@ describe('io-modal — default props', () => {
   let component: IoModal;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('is not open by default', () => {
@@ -61,12 +66,17 @@ describe('io-modal — background prop', () => {
   let component: IoModal;
 
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     component = new IoModal();
     (component as any).el = document.createElement('io-modal');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
     (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('defaults to canvas background', () => {
@@ -99,5 +109,99 @@ describe('io-modal — background prop', () => {
     const styles: string = getModalStyles();
     expect(styles).toContain('modal--bg-elevated');
     expect(styles).toContain('var(--io-bg-raised)');
+  });
+});
+
+describe('io-modal — dismissButton prop', () => {
+  let component: IoModal;
+  let errorSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+  });
+
+  afterEach(() => {
+    errorSpy.mockRestore();
+  });
+
+  it('defaults to true', () => {
+    component.heading = 'Test';
+    (component as any).componentWillLoad();
+    expect(component.dismissButton).toBe(true);
+  });
+
+  it('can be set to false', () => {
+    component.heading = 'Test';
+    component.dismissButton = false;
+    (component as any).componentWillLoad();
+    expect(component.dismissButton).toBe(false);
+  });
+});
+
+describe('io-modal — WCAG 4.1.2 accessible name warning', () => {
+  let errorSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    errorSpy.mockRestore();
+  });
+
+  it('logs console.error when no heading, aria-label, or aria-labelledby is provided', () => {
+    const component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      '[io-modal] No accessible name provided. Set heading, aria-label, or aria-labelledby prop for WCAG 4.1.2 compliance.',
+    );
+  });
+
+  it('does not log console.error when heading is provided', () => {
+    const component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.heading = 'My Modal';
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does not log console.error when aria-label attribute is present', () => {
+    const component = new IoModal();
+    const el = document.createElement('io-modal');
+    el.setAttribute('aria-label', 'My modal dialog');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does not log console.error when aria-labelledby attribute is present', () => {
+    const component = new IoModal();
+    const el = document.createElement('io-modal');
+    el.setAttribute('aria-labelledby', 'external-heading-id');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
   });
 });

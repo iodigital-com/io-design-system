@@ -113,7 +113,12 @@ export class IoSelect {
   /** Visually hides the label while keeping it accessible to screen readers */
   @Prop({ reflect: true }) hideLabel = false;
 
-  /** Supplementary description shown below the field for additional context */
+  /**
+   * Supplementary description rendered as a persistent `<p>` below the field.
+   * Distinct from `helperText` (which is hidden in error state) and from the
+   * `slot="description"` slot (which accepts rich HTML content) — use this prop
+   * for plain-text contextual guidance that always remains visible.
+   */
   @Prop() description: string | undefined;
 
   // ── State ─────────────────────────────────────────────────────

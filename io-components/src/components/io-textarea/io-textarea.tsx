@@ -102,7 +102,12 @@ export class IoTextarea {
   /** Controls how newlines are submitted — maps to native wrap attribute */
   @Prop() wrap: IoTextareaWrap | undefined;
 
-  /** Supplementary description shown below the field for additional context */
+  /**
+   * Supplementary description rendered as a persistent `<p>` below the field.
+   * Distinct from `helperText` (which is hidden in error state) and from the
+   * `slot="description"` slot (which accepts rich HTML content) — use this prop
+   * for plain-text contextual guidance that always remains visible.
+   */
   @Prop() description: string | undefined;
 
   /**

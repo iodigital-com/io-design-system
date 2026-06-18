@@ -86,3 +86,47 @@ describe('io-table-head-cell — sort direction cycling', () => {
     expect(emitMock).toHaveBeenCalledWith({ key: 'name', direction: 'none' });
   });
 });
+
+describe('io-table-head-cell — aria-sort attribute', () => {
+  let component: IoTableHeadCell;
+
+  beforeEach(() => {
+    component = new IoTableHeadCell();
+    (component as any).sort = { emit: vi.fn() };
+  });
+
+  it('omits aria-sort when sortable=false', () => {
+    component.sortable = false;
+    const ariaSort = component.sortable && component.sortDirection !== 'none'
+      ? component.sortDirection
+      : undefined;
+    expect(ariaSort).toBeUndefined();
+  });
+
+  it('omits aria-sort when sortable=true but sortDirection="none"', () => {
+    component.sortable = true;
+    component.sortDirection = 'none';
+    const ariaSort = component.sortable && component.sortDirection !== 'none'
+      ? component.sortDirection
+      : undefined;
+    expect(ariaSort).toBeUndefined();
+  });
+
+  it('sets aria-sort="ascending" when sortable=true and sortDirection="ascending"', () => {
+    component.sortable = true;
+    component.sortDirection = 'ascending';
+    const ariaSort = component.sortable && component.sortDirection !== 'none'
+      ? component.sortDirection
+      : undefined;
+    expect(ariaSort).toBe('ascending');
+  });
+
+  it('sets aria-sort="descending" when sortable=true and sortDirection="descending"', () => {
+    component.sortable = true;
+    component.sortDirection = 'descending';
+    const ariaSort = component.sortable && component.sortDirection !== 'none'
+      ? component.sortDirection
+      : undefined;
+    expect(ariaSort).toBe('descending');
+  });
+});

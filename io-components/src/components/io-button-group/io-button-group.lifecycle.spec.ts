@@ -307,13 +307,15 @@ describe('io-button-group — render() branch coverage', () => {
 
   it('renders with label set (aria-labelledby present)', () => {
     const comp = makeComponent({ label: 'Period selector' });
+    comp.componentWillLoad();
     comp.render();
 
     const divProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
       .filter(args => args[0] === 'div')
       .map(args => args[1]);
     const groupDiv = divProps.find(p => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
-    expect(groupDiv?.['aria-labelledby']).toBe('io-button-group-label');
+    expect(typeof groupDiv?.['aria-labelledby']).toBe('string');
+    expect((groupDiv?.['aria-labelledby'] as string).startsWith('io-button-group-label-')).toBe(true);
   });
 
   it('renders with label unset (aria-label absent)', () => {

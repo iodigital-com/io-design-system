@@ -688,6 +688,14 @@
       "notes": "Gap between buttons in the default (non-compact) button group: 2px."
     },
     {
+      "runtimeCssVar": "--io-button-group-btn-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Gap between adjacent buttons in io-button-group segmented control."
+    },
+    {
       "runtimeCssVar": "--io-button-group-gap-compact",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

@@ -442,6 +442,7 @@
   --io-button-group-padding-x:         var(--io-space-4);
   --io-button-group-font-size:         var(--io-font-size-sm);
   --io-button-group-gap:               2px;
+  --io-button-group-btn-gap: var(--io-button-group-gap);
   --io-button-group-active-bg:         var(--io-color-primary);
   --io-button-group-active-color:      var(--io-color-white);
   --io-button-group-active-shadow:     0px 2px 4px rgba(0,0,0,0.2);

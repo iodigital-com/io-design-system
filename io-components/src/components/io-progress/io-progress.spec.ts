@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { IoProgress } from './io-progress';
+import { computePercentage } from './io-progress-utils';
 
 describe('io-progress — default props', () => {
   let component: IoProgress;
@@ -31,6 +32,26 @@ describe('io-progress — default props', () => {
 
   it('label is undefined by default', () => {
     expect(component.label).toBeUndefined();
+  });
+
+  it('labelledBy is undefined by default', () => {
+    expect(component.labelledBy).toBeUndefined();
+  });
+
+  it('valueText is undefined by default', () => {
+    expect(component.valueText).toBeUndefined();
+  });
+
+  it('min defaults to 0', () => {
+    expect(component.min).toBe(0);
+  });
+
+  it('max defaults to 100', () => {
+    expect(component.max).toBe(100);
+  });
+
+  it('indeterminate defaults to false', () => {
+    expect(component.indeterminate).toBe(false);
   });
 });
 
@@ -88,6 +109,32 @@ describe('io-progress — render stability', () => {
     component.label = 'Upload progress';
     expect(() => component.render()).not.toThrow();
   });
+
+  it('does not throw with labelledBy set', () => {
+    const component = new IoProgress();
+    component.labelledBy = 'custom-label-id';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with valueText set', () => {
+    const component = new IoProgress();
+    component.valueText = '3 of 5 steps';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with custom min/max range', () => {
+    const component = new IoProgress();
+    component.min = 0;
+    component.max = 50;
+    component.value = 25;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with indeterminate=true', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    expect(() => component.render()).not.toThrow();
+  });
 });
 
 describe('io-progress — no interactive methods', () => {
@@ -96,5 +143,41 @@ describe('io-progress — no interactive methods', () => {
     expect(methodNames).not.toContain('handleClick');
     expect(methodNames).not.toContain('handleKeyDown');
     expect(methodNames).not.toContain('handleChange');
+  });
+});
+
+describe('io-progress — utility: computePercentage', () => {
+  it('computes percentage for default range [0, 100]', () => {
+    expect(computePercentage(0, 0, 100)).toBe(0);
+    expect(computePercentage(50, 0, 100)).toBe(50);
+    expect(computePercentage(100, 0, 100)).toBe(100);
+  });
+
+  it('computes percentage for custom range [0, 50]', () => {
+    expect(computePercentage(0, 0, 50)).toBe(0);
+    expect(computePercentage(25, 0, 50)).toBe(50);
+    expect(computePercentage(50, 0, 50)).toBe(100);
+  });
+
+  it('computes percentage for offset range [10, 20]', () => {
+    expect(computePercentage(10, 10, 20)).toBe(0);
+    expect(computePercentage(15, 10, 20)).toBe(50);
+    expect(computePercentage(20, 10, 20)).toBe(100);
+  });
+
+  it('clamps result to [0, 100] when value exceeds max', () => {
+    expect(computePercentage(150, 0, 100)).toBe(100);
+  });
+
+  it('clamps result to [0, 100] when value below min', () => {
+    expect(computePercentage(-50, 0, 100)).toBe(0);
+  });
+
+  it('returns 0 when min equals max (edge case)', () => {
+    expect(computePercentage(50, 100, 100)).toBe(0);
+  });
+
+  it('returns 0 when min > max (invalid range)', () => {
+    expect(computePercentage(50, 100, 50)).toBe(0);
   });
 });

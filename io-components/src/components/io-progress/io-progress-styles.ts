@@ -49,10 +49,28 @@ export function getProgressStyles(): string {
 
     .progress-fill--static { transition: none; }
 
+    /* ── Indeterminate animation ──────────────────────────────────– */
+
+    @keyframes io-progress-indeterminate {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .progress-fill--indeterminate {
+      width: 30% !important;
+      transform-origin: left;
+      animation: io-progress-indeterminate var(--io-motion-extra-slow, 1200ms ease-in-out) infinite linear;
+    }
+
     /* ── Reduced motion ──────────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
       .progress-fill { transition: none; }
+      .progress-fill--indeterminate { animation: none; }
     }
 
     /* ── Label ───────────────────────────────────────────────────── */

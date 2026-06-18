@@ -21,7 +21,7 @@ import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
-import { IoInputSize, IoInputType } from "./components/io-input/types";
+import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -62,7 +62,7 @@ export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
-export { IoInputSize, IoInputType } from "./components/io-input/types";
+export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -1016,6 +1016,11 @@ export namespace Components {
           * @default false
          */
         "hideLabel": boolean;
+        /**
+          * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
+          * @default 'text'
+         */
+        "inputMode": IoInputMode;
         /**
           * Label text — required for accessibility
          */
@@ -4947,6 +4952,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "hideLabel"?: boolean;
+        /**
+          * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
+          * @default 'text'
+         */
+        "inputMode"?: IoInputMode;
         /**
           * Label text — required for accessibility
          */

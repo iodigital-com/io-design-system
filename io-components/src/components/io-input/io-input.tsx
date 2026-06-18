@@ -5,7 +5,7 @@ import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoInputType, IoInputSize } from './types';
+import type { IoInputType, IoInputSize, IoInputMode } from './types';
 
 let idCounter = 0;
 
@@ -129,6 +129,15 @@ export class IoInput {
    */
   @Prop() aria?: Record<string, string>;
 
+  /** Native inputmode attribute — hints at the virtual keyboard type to show on mobile */
+  @Prop() inputMode: IoInputMode = 'text';
+
+  /** Native pattern attribute — regex that the input value must match for validity */
+  @Prop() pattern?: string;
+
+  /** Compact variant — reduces the field height and vertical padding for dense layouts */
+  @Prop({ reflect: true }) compact = false;
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -184,6 +193,11 @@ export class IoInput {
 
   @Watch('step')
   onStepChange() {
+    this.syncFormValue();
+  }
+
+  @Watch('pattern')
+  onPatternChange() {
     this.syncFormValue();
   }
 
@@ -308,7 +322,7 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern } = this;
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;
@@ -376,6 +390,8 @@ export class IoInput {
               autocomplete={autoComplete ?? autocomplete}
               spellcheck={spellCheck}
               form={form}
+              inputmode={inputMode}
+              pattern={pattern}
               aria-invalid={showError ? 'true' : undefined}
               aria-readonly={readonly ? 'true' : undefined}
               aria-describedby={describedBy}
@@ -469,6 +485,11 @@ export class IoInput {
           <div id={this.counterId} class="input-counter" aria-hidden="true">
             {currentLength} / {maxLength}
           </div>
+        )}
+        {showCounter && (
+          <span class="input-counter-sr" aria-live="polite" aria-atomic="true">
+            {currentLength} of {maxLength} characters
+          </span>
         )}
       </Host>
     );

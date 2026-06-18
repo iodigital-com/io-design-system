@@ -12,3 +12,14 @@ export type IoInputType =
 
 /** Visual size scale aligned with io-button sizing tokens */
 export type IoInputSize = 'sm' | 'md' | 'lg';
+
+/** Native inputmode values — hints the virtual keyboard type on mobile */
+export type IoInputMode =
+  | 'none'
+  | 'text'
+  | 'decimal'
+  | 'numeric'
+  | 'tel'
+  | 'search'
+  | 'email'
+  | 'url';

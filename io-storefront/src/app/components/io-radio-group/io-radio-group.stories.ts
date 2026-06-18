@@ -187,4 +187,10 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     defaultValue: 'vertical',
     description: 'Controls layout direction of the radio options. Horizontal wraps at container boundary.',
   },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Supplementary description shown below the legend for additional context.',
+  },
 ];

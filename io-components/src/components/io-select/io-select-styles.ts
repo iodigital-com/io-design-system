@@ -180,6 +180,12 @@ export function getSelectStyles(): string {
       display: none;
     }
 
+    .select-description {
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin: var(--io-space-1) 0 0;
+    }
+
     .select-label__slot--hidden,
     .select-message__slot--hidden,
     .select-description__slot--hidden {

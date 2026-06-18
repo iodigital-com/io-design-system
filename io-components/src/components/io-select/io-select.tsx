@@ -113,6 +113,9 @@ export class IoSelect {
   /** Visually hides the label while keeping it accessible to screen readers */
   @Prop({ reflect: true }) hideLabel = false;
 
+  /** Supplementary description shown below the field for additional context */
+  @Prop() description: string | undefined;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Tracks FACE form validation invalidity; drives aria-invalid and error UI once field has been touched */
@@ -124,6 +127,8 @@ export class IoSelect {
   @State() private hasLabelSlot = false;
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
+
+  @State() private descriptionId = '';
 
   /** Parsed option groups — drives rendering in both modes */
   @State() private groups: IoSelectOptionGroup[] = [];
@@ -195,6 +200,7 @@ export class IoSelect {
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSelectId(this.name, this.fallbackId);
+    this.descriptionId = `io-select-desc-${this.fallbackId}`;
     this.defaultValue = this.value ?? '';
     this.defaultSelectedValues = [...this.selectedValues];
     this.syncFormValue();
@@ -650,7 +656,7 @@ export class IoSelect {
   }
 
   private renderNativeSelect() {
-    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, size, groups, form, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
+    const { label, name, value, placeholder, required, disabled, loading, state, message, helperText, description, size, groups, form, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
@@ -663,6 +669,7 @@ export class IoSelect {
     const describedBy = [
       showMessage ? messageId : '',
       showDescription ? helperId : '',
+      description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     return (
@@ -754,12 +761,15 @@ export class IoSelect {
             {!hasDescriptionSlot && helperText}
           </p>
         )}
+        {description && (
+          <p id={this.descriptionId} class="select-description">{description}</p>
+        )}
       </Host>
     );
   }
 
   private renderCombobox() {
-    const { label, required, disabled, loading, state, message, helperText, size, isOpen, activeIndex, filterQuery, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
+    const { label, required, disabled, loading, state, message, helperText, description, size, isOpen, activeIndex, filterQuery, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const isDisabled = disabled || loading;
     const showError = state === 'error' || this.faceInvalid;
     const showSuccess = state === 'success' && !this.faceInvalid;
@@ -776,6 +786,7 @@ export class IoSelect {
     const describedBy = [
       showMessage ? messageId : '',
       showDescription ? helperId : '',
+      description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const activeOptId = activeIndex >= 0 ? getComboboxOptionId(listboxId, activeIndex) : undefined;
@@ -893,6 +904,9 @@ export class IoSelect {
             </span>
             {!hasDescriptionSlot && helperText}
           </p>
+        )}
+        {description && (
+          <p id={this.descriptionId} class="select-description">{description}</p>
         )}
       </Host>
     );

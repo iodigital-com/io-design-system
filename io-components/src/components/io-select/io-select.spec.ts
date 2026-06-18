@@ -278,3 +278,59 @@ describe('io-select — componentShouldUpdate', () => {
     expect((component as any).componentShouldUpdate('same', 'same')).toBe(false);
   });
 });
+
+describe('io-select — description prop', () => {
+  let component: IoSelect;
+
+  beforeEach(() => {
+    component = new IoSelect();
+    (component as any).el = document.createElement('io-select');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    component.label = 'Country';
+    (component as any).componentWillLoad();
+  });
+
+  it('has undefined description by default', () => {
+    expect(component.description).toBeUndefined();
+  });
+
+  it('accepts a description string', () => {
+    component.description = 'Select the country where you reside.';
+    expect(component.description).toBe('Select the country where you reside.');
+  });
+
+  it('generates a descriptionId in componentWillLoad', () => {
+    const id = (component as any).descriptionId as string;
+    expect(id).toMatch(/^io-select-desc-/);
+  });
+
+  it('renders description <p> when description is set (native mode)', () => {
+    component.description = 'Select the country where you reside.';
+    vi.mocked(h).mockClear();
+    (component as any).renderNativeSelect();
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'select-description');
+    expect(pCalls.length).toBe(1);
+  });
+
+  it('does not render description <p> when description is undefined (native mode)', () => {
+    component.description = undefined;
+    vi.mocked(h).mockClear();
+    (component as any).renderNativeSelect();
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'select-description');
+    expect(pCalls.length).toBe(0);
+  });
+
+  it('includes descriptionId in aria-describedby on native select when description is set', () => {
+    component.description = 'Select the country where you reside.';
+    vi.mocked(h).mockClear();
+    (component as any).renderNativeSelect();
+    const selectCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'select');
+    const selectProps = selectCalls[0]?.[1] as Record<string, unknown>;
+    const descId = (component as any).descriptionId as string;
+    expect(String(selectProps?.['aria-describedby'] ?? '')).toContain(descId);
+  });
+});

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoPopover } from './io-popover';
 import { getPopoverStyles } from './io-popover-styles';
@@ -123,5 +124,68 @@ describe('io-popover — label ID generation', () => {
     const a = makePopover();
     const b = makePopover();
     expect((a as any).labelId).not.toBe((b as any).labelId);
+  });
+});
+
+// ── description prop ──────────────────────────────────────────────────────────
+
+describe('io-popover — description prop', () => {
+  it('has undefined description by default', () => {
+    const component = makePopover();
+    expect(component.description).toBeUndefined();
+  });
+
+  it('accepts a description string', () => {
+    const component = makePopover();
+    component.description = 'Use this panel to manage your settings.';
+    expect(component.description).toBe('Use this panel to manage your settings.');
+  });
+
+  it('generates a descriptionId in componentWillLoad', () => {
+    const component = makePopover();
+    const id = (component as any).descriptionId as string;
+    expect(id).toMatch(/^io-popover-desc-/);
+  });
+
+  it('renders description <p> when description is set', () => {
+    const component = makePopover();
+    component.label = 'Actions';
+    component.description = 'Use this panel to manage your settings.';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'popover__description');
+    expect(pCalls.length).toBe(1);
+  });
+
+  it('does not render description <p> when description is undefined', () => {
+    const component = makePopover();
+    component.label = 'Actions';
+    component.description = undefined;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'popover__description');
+    expect(pCalls.length).toBe(0);
+  });
+
+  it('includes descriptionId in aria-describedby on panel div when description is set', () => {
+    const component = makePopover();
+    component.label = 'Actions';
+    component.description = 'Use this panel to manage your settings.';
+    const descId = (component as any).descriptionId as string;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    // The panel div is rendered with spread panelProps — check for 'aria-describedby' in any div call
+    const divCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'div');
+    const panelCall = divCalls.find(call => String(call[1]?.['aria-describedby'] ?? '').includes(descId));
+    expect(panelCall).toBeDefined();
   });
 });

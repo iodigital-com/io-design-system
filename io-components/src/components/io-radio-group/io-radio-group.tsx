@@ -57,9 +57,13 @@ export class IoRadioGroup {
   /** Layout orientation — 'vertical' (default) or 'horizontal' */
   @Prop({ reflect: true }) orientation: IoRadioGroupOrientation = 'vertical';
 
+  /** Supplementary description shown below the legend for additional context */
+  @Prop() description: string | undefined;
+
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
+  private descriptionId!: string;
   private defaultValue?: string;
 
   // ── Events ────────────────────────────────────────────────────
@@ -72,6 +76,7 @@ export class IoRadioGroup {
   componentWillLoad() {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-rg-error-${suffix}`;
+    this.descriptionId = `io-rg-desc-${suffix}`;
     this.defaultValue = this.value;
     this.syncFormValue();
   }
@@ -226,9 +231,12 @@ export class IoRadioGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, error, errorMessage, orientation, required } = this;
+    const { label, disabled, loading, helperText, description, error, errorMessage, orientation, required } = this;
     const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
-    const describedBy = error && errorMessage ? this.errorId : undefined;
+    const describedBy = [
+      error && errorMessage ? this.errorId : '',
+      description ? this.descriptionId : '',
+    ].filter(Boolean).join(' ') || undefined;
 
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
@@ -244,6 +252,9 @@ export class IoRadioGroup {
             aria-required={required ? 'true' : undefined}
           >
             <legend class="radio-group__legend">{label}</legend>
+            {description && (
+              <p id={this.descriptionId} class="radio-group__description">{description}</p>
+            )}
             {helperText && (
               <span class="radio-group__helper">{helperText}</span>
             )}

@@ -102,6 +102,9 @@ export class IoTextarea {
   /** Controls how newlines are submitted — maps to native wrap attribute */
   @Prop() wrap: IoTextareaWrap | undefined;
 
+  /** Supplementary description shown below the field for additional context */
+  @Prop() description: string | undefined;
+
   /**
    * Custom ARIA attributes to inject onto the native `<textarea>` element.
    * Keys may omit or include the `aria-` prefix — both forms are accepted.
@@ -159,6 +162,8 @@ export class IoTextarea {
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
 
+  @State() private descriptionId = '';
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
@@ -173,6 +178,7 @@ export class IoTextarea {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveTextareaId(this.name, this.fallbackId);
     this.counterId = `io-textarea-counter-${++idCounter}`;
+    this.descriptionId = `io-textarea-desc-${this.fallbackId}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
     if (this.hideLabel && !this.label) {
@@ -309,6 +315,7 @@ export class IoTextarea {
       state,
       message,
       helperText,
+      description,
       maxLength,
       minLength,
       rows,
@@ -339,6 +346,7 @@ export class IoTextarea {
     const describedBy = [
       showMessage ? messageId : '',
       showDescription ? helperId : '',
+      description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const showCounter = counter && maxLength != null;
@@ -419,6 +427,9 @@ export class IoTextarea {
           <div id={this.counterId} class="textarea-counter" aria-hidden="true">
             {currentLength} / {maxLength}
           </div>
+        )}
+        {description && (
+          <p id={this.descriptionId} class="textarea-description">{description}</p>
         )}
       </Host>
     );

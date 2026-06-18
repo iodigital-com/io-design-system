@@ -228,4 +228,11 @@ export const popoverPropDefinitions: PropDefinition[] = [
     description: 'Close the popover when the user clicks outside the panel.',
     group: 'Behaviour',
   },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Supplementary description shown inside the panel below the heading.',
+    group: 'Content',
+  },
 ];

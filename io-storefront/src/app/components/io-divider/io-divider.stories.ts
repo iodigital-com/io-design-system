@@ -243,6 +243,6 @@ export const dividerPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description:
-      'Optional text centered between two lines (e.g. "or", "and"). Overrides the visual layout to flex-row regardless of orientation. The orientation prop still sets aria-orientation on the labeled wrapper.',
+      'Optional visible label rendered at the center of the divider line. Also sets aria-label on the separator landmark. When using the default slot, slot content takes precedence over the label prop text.',
   },
 ];

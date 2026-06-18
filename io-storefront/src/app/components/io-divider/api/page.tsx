@@ -41,9 +41,9 @@ export default function IoDividerApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               <span key="desc">
-                Optional text label centered between two lines. Common use cases: &quot;or&quot;, &quot;and&quot;,
-                &quot;continue with&quot;, date headings. When set, a flex row layout is used regardless of{' '}
-                <InlineCode>orientation</InlineCode>.
+                Optional visible label rendered at the center of the divider line. Also sets{' '}
+                <InlineCode>aria-label</InlineCode> on the separator landmark. Common use cases: &quot;or&quot;, &quot;and&quot;,
+                &quot;continue with&quot;, date headings. When using the default slot, slot content takes precedence over the label prop text.
               </span>,
             ],
           ]}
@@ -54,12 +54,24 @@ export default function IoDividerApiPage() {
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="io-divider exposes no slots."
+          description="Named and default slots for optional label content."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-divider has no slots.</strong>
-          {' '}Content is fully controlled via props.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '180px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">(default)</InlineCode>,
+              <span key="desc">
+                Optional label content rendered at the center of the divider line. Equivalent to the{' '}
+                <InlineCode>label</InlineCode> prop but allows rich content (e.g. icons, styled text).
+                When the slot is populated, slot content takes precedence over the <InlineCode>label</InlineCode> prop text.
+              </span>,
+            ],
+          ]}
+        />
       </section>
 
       {/* ── Events ───────────────────────────────────────────────────────── */}
@@ -121,6 +133,14 @@ export default function IoDividerApiPage() {
 <div class="my-section">
   <io-divider />
 </div>`}
+        </CodeNote>
+        <CodeNote label="Forced colors media query">
+{`/* High contrast / forced colors mode (Windows High Contrast, dark reader, etc.) */
+@media (forced-colors: active) {
+  io-divider {
+    --io-divider-color: CanvasText;
+  }
+}`}
         </CodeNote>
       </section>
 

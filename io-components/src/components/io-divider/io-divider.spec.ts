@@ -288,3 +288,97 @@ describe('io-divider — color prop', () => {
     expect(styles).not.toMatch(/#[0-9a-fA-F]{3,6}\b/);
   });
 });
+
+// ── Accessibility: aria-label on labeled divider ────────────────────────
+
+describe('io-divider render — labeled variant aria-label', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('labeled divider carries aria-label={label} on the separator div', () => {
+    makeComp({ label: 'or' }).render();
+    const separatorDivs = hCallsForTag('div').filter(
+      (p) => p && typeof p === 'object' && (p as Record<string, unknown>)['role'] === 'separator',
+    );
+    expect(separatorDivs[0]?.['aria-label']).toBe('or');
+  });
+
+  it('aria-label value matches the label prop text', () => {
+    makeComp({ label: 'and' }).render();
+    const separatorDivs = hCallsForTag('div').filter(
+      (p) => p && typeof p === 'object' && (p as Record<string, unknown>)['role'] === 'separator',
+    );
+    expect(separatorDivs[0]?.['aria-label']).toBe('and');
+  });
+
+  it('aria-label remains set even when slot contains content', () => {
+    const comp = makeComp({ label: 'separator' });
+    (comp as any).hasSlotContent = true;
+    vi.mocked(h).mockClear();
+    comp.render();
+    const separatorDivs = hCallsForTag('div').filter(
+      (p) => p && typeof p === 'object' && (p as Record<string, unknown>)['role'] === 'separator',
+    );
+    expect(separatorDivs[0]?.['aria-label']).toBe('separator');
+  });
+});
+
+// ── Slot content handling ────────────────────────────────────────────────
+
+describe('io-divider render — slot content', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('hasSlotContent defaults to false', () => {
+    const comp = makeComp({ label: 'or' });
+    expect((comp as any).hasSlotContent).toBe(false);
+  });
+
+  it('slot is rendered when label is set', () => {
+    makeComp({ label: 'or' }).render();
+    const slots = hCallsForTag('slot');
+    expect(slots.length).toBeGreaterThan(0);
+  });
+
+  it('label text renders as fallback when hasSlotContent is false', () => {
+    const comp = makeComp({ label: 'or' });
+    (comp as any).hasSlotContent = false;
+    vi.mocked(h).mockClear();
+    comp.render();
+    // Verify that the label is still rendered as content
+    const labelSpans = hCallsForTag('span').filter(
+      (p) =>
+        p &&
+        typeof p === 'object' &&
+        typeof (p as Record<string, unknown>)['class'] === 'string' &&
+        ((p as Record<string, unknown>)['class'] as string).includes('divider__label'),
+    );
+    expect(labelSpans.length).toBeGreaterThan(0);
+  });
+});
+
+// ── Forced-colors media query ────────────────────────────────────────────
+
+describe('io-divider — forced-colors (Windows High Contrast Mode)', () => {
+  it('styles include @media (forced-colors: active) rule', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain('@media (forced-colors: active)');
+  });
+
+  it('forced-colors rule sets .divider border-top-color to ButtonText', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain('border-top-color: ButtonText');
+  });
+
+  it('forced-colors rule sets .divider--vertical border-left-color to ButtonText', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain('border-left-color: ButtonText');
+  });
+
+  it('forced-colors rule sets .divider__line background to ButtonText', () => {
+    const styles = getDividerStyles();
+    expect(styles).toContain('background: ButtonText');
+  });
+});

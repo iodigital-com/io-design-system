@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@floating-ui/dom', () => ({
   computePosition: vi.fn().mockResolvedValue({ x: 10, y: 20 }),
@@ -133,23 +133,36 @@ describe('tooltip-attribute', () => {
       expect(overlay?.getAttribute('data-visible')).toBe('true');
     });
 
-    it('hides tooltip when pointer leaves the active trigger entirely', async () => {
-      const btn = document.createElement('button');
-      btn.setAttribute('io-tooltip', 'Leave me');
-      document.body.appendChild(btn);
+    it('hides tooltip after delay when pointer leaves the active trigger entirely', async () => {
+      vi.useFakeTimers();
+      try {
+        const btn = document.createElement('button');
+        btn.setAttribute('io-tooltip', 'Leave me');
+        document.body.appendChild(btn);
 
-      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
-      await flushAsyncTooltipShow();
+        btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+        // showTooltip is async — flush without fake-timers already active for the show path
+        await Promise.resolve();
+        await Promise.resolve();
 
-      const overlay = document.getElementById('io-tooltip-attribute-overlay');
-      expect(overlay?.getAttribute('data-visible')).toBe('true');
+        const overlay = document.getElementById('io-tooltip-attribute-overlay');
+        expect(overlay?.getAttribute('data-visible')).toBe('true');
 
-      // relatedTarget is not inside btn — tooltip should hide
-      const outside = document.createElement('div');
-      document.body.appendChild(outside);
-      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
+        // relatedTarget is not inside btn — tooltip should schedule hide
+        const outside = document.createElement('div');
+        document.body.appendChild(outside);
+        document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
 
-      expect(overlay?.hasAttribute('data-visible')).toBe(false);
+        // Tooltip still visible before delay elapses
+        expect(overlay?.getAttribute('data-visible')).toBe('true');
+
+        // Advance past the 150 ms delay
+        vi.runAllTimers();
+
+        expect(overlay?.hasAttribute('data-visible')).toBe(false);
+      } finally {
+        vi.useRealTimers();
+      }
     });
   });
 
@@ -333,6 +346,136 @@ describe('tooltip-attribute', () => {
       await flushAsyncTooltipShow();
 
       expect(document.getElementById('io-tooltip-attribute-overlay')?.getAttribute('data-visible')).toBe('true');
+    });
+
+    it.each([
+      'top-start', 'top-end',
+      'bottom-start', 'bottom-end',
+      'left-start', 'left-end',
+      'right-start', 'right-end',
+    ])('accepts extended placement "%s"', async (placement) => {
+      const button = document.createElement('button');
+      button.setAttribute('io-tooltip', `${placement} tip`);
+      button.setAttribute('io-tooltip-placement', placement);
+      document.body.appendChild(button);
+
+      button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await flushAsyncTooltipShow();
+
+      expect(document.getElementById('io-tooltip-attribute-overlay')?.getAttribute('data-visible')).toBe('true');
+    });
+  });
+
+  describe('WCAG 1.4.13 — hoverable tooltip (pointer-events fix)', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('tooltip stays visible when pointer moves from trigger onto the overlay panel', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Hoverable');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay')!;
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Pointer leaves trigger — scheduled hide starts
+      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: overlay }));
+
+      // Tooltip must still be visible (relatedTarget IS the overlay → no scheduleHide)
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Advance past hide delay — tooltip must still be visible because schedule was never set
+      vi.runAllTimers();
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+    });
+
+    it('cancels scheduled hide when pointer enters the overlay directly via pointerover', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Enter overlay');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay')!;
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Pointer leaves trigger — schedule hide
+      const outside = document.createElement('div');
+      document.body.appendChild(outside);
+      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
+
+      // Before timer fires, pointer enters the overlay — should cancel the hide
+      overlay.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+
+      // Run timers — hide must have been cancelled
+      vi.runAllTimers();
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+    });
+
+    it('does hide after delay when pointer leaves both trigger and overlay', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Leaves all');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay')!;
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      const outside = document.createElement('div');
+      document.body.appendChild(outside);
+      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
+
+      // Still visible before delay
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      vi.runAllTimers();
+      expect(overlay.hasAttribute('data-visible')).toBe(false);
+    });
+
+    it('pending hide timer is cancelled when focus enters trigger', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Focus cancels hide');
+      document.body.appendChild(btn);
+
+      // Show tooltip via pointerover
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay')!;
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Pointer leaves — schedules a hide after HIDE_DELAY_MS
+      const outside = document.createElement('div');
+      document.body.appendChild(outside);
+      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
+
+      // Tooltip still visible before delay elapses
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Focus enters the trigger before the timer fires — should cancel the pending hide
+      btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      // Advance past the hide delay — hide must NOT have fired
+      vi.runAllTimers();
+
+      expect(overlay.getAttribute('data-visible')).toBe('true');
     });
   });
 

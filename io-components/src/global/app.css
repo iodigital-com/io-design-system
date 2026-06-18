@@ -881,7 +881,7 @@ io-table[compact] io-table-body-cell td {
    max-width: 240px;
    white-space: normal;
    word-break: break-word;
-   pointer-events: none;
+   /* pointer-events intentionally omitted — tooltip must be hoverable (WCAG 1.4.13) */
    opacity: 0;
    visibility: hidden;
    transition:

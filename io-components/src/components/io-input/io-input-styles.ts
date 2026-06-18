@@ -261,22 +261,18 @@ export function getInputStyles(): string {
     :host([compact]) .input-field {
       padding-top: var(--io-space-1);
       padding-bottom: var(--io-space-1);
-      min-height: unset;
     }
 
     :host([compact]) .input-field--sm {
-      height: calc(var(--io-size-input-sm) - 8px);
-      min-height: unset;
+      height: calc(var(--io-size-input-sm) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--md {
-      height: calc(var(--io-size-input-md) - 8px);
-      min-height: unset;
+      height: calc(var(--io-size-input-md) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--lg {
-      height: calc(var(--io-size-input-lg) - 8px);
-      min-height: unset;
+      height: calc(var(--io-size-input-lg) - var(--io-space-2));
     }
 
     /* ── RTL support ─────────────────────────────────────────── */

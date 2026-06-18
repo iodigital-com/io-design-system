@@ -1,8 +1,8 @@
 /**
  * io-popover — disabled state: N/A marker
  *
- * io-popover intentionally has no `disabled` prop. The component uses open/close
- * state (the `open` boolean prop + `show()`/`close()` methods) to control
+ * io-popover intentionally has no `disabled` prop. The component uses the `open`
+ * boolean prop (toggled via internal click and keyboard handlers) to control
  * visibility. Disabling a popover is not a meaningful concept — consumers should
  * simply not render or not wire up the trigger element instead.
  *

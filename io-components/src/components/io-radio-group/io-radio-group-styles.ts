@@ -78,12 +78,8 @@ export function getRadioGroupStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--io-bg-surface, rgba(255, 255, 255, 0.7));
+      background: var(--io-overlay-loading-bg);
       border-radius: var(--io-border-radius-sm);
-    }
-
-    .radio-group--loading {
-      pointer-events: none;
     }
 
     /* ── Error state ────────────────────────────────────────── */

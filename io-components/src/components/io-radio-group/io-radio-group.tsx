@@ -233,9 +233,9 @@ export class IoRadioGroup {
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getRadioGroupStyles()}</style>
-        <div class="radio-group__wrapper">
+        <div class="radio-group__wrapper" inert={loading ? true : undefined}>
           <fieldset
-            class={`${fieldsetClass}${loading ? ' radio-group--loading' : ''}`}
+            class={fieldsetClass}
             disabled={disabled}
             role="radiogroup"
             aria-invalid={error ? 'true' : undefined}

@@ -177,6 +177,37 @@ describe('io-pin-code — FACE: handleBlur touched gate', () => {
   });
 });
 
+describe('io-pin-code — FACE: blur event emission', () => {
+  it('does not emit blur when focus moves between slots', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    const slotInput = document.createElement('input');
+    (component as any).inputRefs = [slotInput, null, null, null];
+    const blurEmit = vi.fn();
+    (component as any).blur = { emit: blurEmit };
+
+    const ev = new FocusEvent('blur', { relatedTarget: slotInput });
+    (component as any).handleBlur(ev);
+
+    expect(blurEmit).not.toHaveBeenCalled();
+  });
+
+  it('emits blur with FocusEvent when focus leaves component entirely', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).inputRefs = [null, null, null, null];
+    const blurEmit = vi.fn();
+    (component as any).blur = { emit: blurEmit };
+
+    const outsideEl = document.createElement('button');
+    const ev = new FocusEvent('blur', { relatedTarget: outsideEl });
+    (component as any).handleBlur(ev);
+
+    expect(blurEmit).toHaveBeenCalledOnce();
+    expect(blurEmit).toHaveBeenCalledWith(ev);
+  });
+});
+
 describe('io-pin-code — FACE: checkValidity and reportValidity', () => {
   it('checkValidity delegates to internals', async () => {
     const component = makeComponent();

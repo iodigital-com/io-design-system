@@ -82,6 +82,9 @@ export class IoPinCode {
   /** Fires on every digit change with current value and completion status */
   @Event() change!: EventEmitter<IoPinCodeChangeDetail>;
 
+  /** Fires when focus leaves the component (relatedTarget not in any slot) */
+  @Event({ bubbles: false }) blur!: EventEmitter<FocusEvent>;
+
   // ── Methods ───────────────────────────────────────────────────
 
   /** Programmatically focus the first empty slot (or the last slot if complete) */
@@ -301,6 +304,7 @@ export class IoPinCode {
     if (this.inputRefs.includes(ev.relatedTarget as HTMLInputElement)) return;
     this.touched = true;
     this.syncFormValue();
+    this.blur?.emit?.(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────
@@ -381,7 +385,7 @@ export class IoPinCode {
               onInput={(e) => this.handleInput(e as InputEvent, i)}
               onPaste={(e) => this.handlePaste(e, i)}
               onFocus={this.handleFocus}
-              onBlur={this.handleBlur}
+              onBlur={(e) => this.handleBlur(e as FocusEvent)}
             />
           ))}
         </div>

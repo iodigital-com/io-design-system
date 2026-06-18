@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
 import { IoButton } from './io-button';
+import { getButtonStyles } from './io-button-styles';
 
 describe('io-button — default props', () => {
   let component: IoButton;
@@ -77,5 +78,12 @@ describe('io-button — default props', () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
 
     warnSpy.mockRestore();
+  });
+});
+
+describe('io-button — :host styles', () => {
+  it(':host CSS includes align-self: flex-start to prevent flex stretch', () => {
+    const styles = getButtonStyles();
+    expect(styles).toContain('align-self: flex-start');
   });
 });

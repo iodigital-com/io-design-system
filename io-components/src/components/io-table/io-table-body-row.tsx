@@ -38,7 +38,7 @@ export class IoTableBodyRow {
   render() {
     return (
       <Host>
-        <tr>
+        <tr aria-selected={this.selectable ? (this.selected ? 'true' : 'false') : undefined}>
           {this.selectable && (
             <td class="td--checkbox">
               <input

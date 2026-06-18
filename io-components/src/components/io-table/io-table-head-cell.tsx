@@ -60,10 +60,10 @@ export class IoTableHeadCell {
   render() {
     const { sortable, sortDirection } = this;
 
-    const ariaSort: 'ascending' | 'descending' | 'none' | undefined = sortable
-      ? sortDirection === 'none'
-        ? 'none'
-        : sortDirection
+    // Only emit aria-sort when the column is actively sorted (not for unsorted sortable columns)
+    // ARIA spec: aria-sort should be omitted entirely when sortDirection === 'none'
+    const ariaSort: 'ascending' | 'descending' | undefined = sortable && sortDirection !== 'none'
+      ? sortDirection
       : undefined;
 
     const thClass = sortable
@@ -90,7 +90,7 @@ export class IoTableHeadCell {
         <th
           scope="col"
           class={thClass}
-          aria-sort={ariaSort}
+          aria-sort={ariaSort ?? undefined}
           tabIndex={sortable ? 0 : undefined}
           onClick={sortable ? this.handleSort : undefined}
           onKeyDown={sortable ? this.handleKeyDown : undefined}

@@ -71,6 +71,7 @@ export class IoTable {
   /** Intercept the bubbling `sort` event from io-table-head-cell and re-emit as sortChange. */
   @Listen('sort')
   handleSortBubble(ev: CustomEvent<IoTableSortDetail>): void {
+    ev.stopPropagation();
     this.sortChange.emit(ev.detail);
   }
 

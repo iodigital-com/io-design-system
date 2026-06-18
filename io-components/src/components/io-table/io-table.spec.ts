@@ -143,6 +143,18 @@ describe('io-table — sortChange event', () => {
     expect(emitMock).toHaveBeenCalledWith(detail);
   });
 
+  it('handleSortBubble calls stopPropagation to prevent original sort event escaping io-table', () => {
+    const component = new IoTable();
+    (component as any).sortChange = { emit: vi.fn() };
+
+    const detail = { key: 'name', direction: 'ascending' as const };
+    const ev = new CustomEvent('sort', { detail });
+    const stopSpy = vi.spyOn(ev, 'stopPropagation');
+    (component as any).handleSortBubble(ev);
+
+    expect(stopSpy).toHaveBeenCalledOnce();
+  });
+
   it('handleSortBubble forwards descending direction', () => {
     const component = new IoTable();
     const emitMock = vi.fn();

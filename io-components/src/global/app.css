@@ -705,8 +705,12 @@ io-table[sticky] io-table-head-cell th {
 
 /* ── Sortable header ───────────────────────────────────────── */
 
-io-table-head-cell th.th--sortable {
-  /* Remove interactive styling from th — the inner button handles it */
+io-table io-table-head-cell th.th--sortable {
+  /* Remove interactive styling from th — the inner button handles it.
+     The extra `io-table` ancestor bumps specificity above the size/compact
+     density rules (io-table[size="sm"] io-table-head-cell th, etc.) so
+     padding: 0 is never overridden, preventing double-padding on the th
+     and its inner sort button. */
   cursor: default;
   user-select: none;
   padding: 0;

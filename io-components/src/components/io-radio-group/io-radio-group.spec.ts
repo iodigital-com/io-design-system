@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { IoRadioGroup } from './io-radio-group';
@@ -33,6 +34,10 @@ describe('io-radio-group — default props', () => {
 
   it('has empty helperText by default', () => {
     expect(component.helperText).toBe('');
+  });
+
+  it('has vertical orientation by default', () => {
+    expect(component.orientation).toBe('vertical');
   });
 });
 
@@ -85,6 +90,45 @@ describe('io-radio-group — syncChildren', () => {
 
     expect(() => (component as any).syncChildren()).not.toThrow();
   });
+
+  it('propagates required prop to all io-radio children', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio1 = Object.assign(document.createElement('io-radio'), { value: 'a', name: '', checked: false, disabled: false, required: false });
+    const radio2 = Object.assign(document.createElement('io-radio'), { value: 'b', name: '', checked: false, disabled: false, required: false });
+    host.appendChild(radio1);
+    host.appendChild(radio2);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'choice';
+    component.value = 'a';
+    component.required = true;
+
+    (component as any).syncChildren();
+
+    expect(radio1.required).toBe(true);
+    expect(radio2.required).toBe(true);
+  });
+
+  it('updates required on children when group required prop changes', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), { value: 'x', name: '', checked: false, disabled: false, required: false });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'g';
+    component.value = '';
+    component.required = false;
+
+    (component as any).syncChildren();
+    expect(radio.required).toBe(false);
+
+    component.required = true;
+    (component as any).onRequiredChange();
+
+    expect(radio.required).toBe(true);
+  });
 });
 
 describe('io-radio-group — handleRadioChange', () => {
@@ -126,5 +170,48 @@ describe('io-radio-group — handleRadioChange', () => {
     (component as any).handleRadioChange(ev);
 
     expect(emitFn).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-radio-group — render() role and aria-orientation', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('renders fieldset with role="radiogroup" for valid aria-orientation', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.orientation = 'vertical';
+
+    component.render();
+
+    const fieldsetProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset')
+      .map(args => args[1]);
+
+    expect(fieldsetProps.length).toBeGreaterThanOrEqual(1);
+    expect(fieldsetProps[0]?.['role']).toBe('radiogroup');
+  });
+
+  it('passes aria-orientation to the fieldset with role="radiogroup"', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.orientation = 'horizontal';
+
+    component.render();
+
+    const fieldsetProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset')
+      .map(args => args[1]);
+
+    expect(fieldsetProps[0]?.['aria-orientation']).toBe('horizontal');
   });
 });

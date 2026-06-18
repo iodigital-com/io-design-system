@@ -341,3 +341,62 @@ describe('io-textarea — resize prop extended values (#658)', () => {
     expect(component.resize).toBe('both');
   });
 });
+
+describe('io-textarea — description prop', () => {
+  let component: IoTextarea;
+
+  beforeEach(() => {
+    component = new IoTextarea();
+    (component as any).el = document.createElement('io-textarea');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).label = 'Message';
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  it('has undefined description by default', () => {
+    expect(component.description).toBeUndefined();
+  });
+
+  it('accepts a description string', () => {
+    component.description = 'Briefly describe your topic.';
+    expect(component.description).toBe('Briefly describe your topic.');
+  });
+
+  it('generates a descriptionId in componentWillLoad', () => {
+    const id = (component as any).descriptionId as string;
+    expect(id).toMatch(/^io-textarea-desc-/);
+  });
+
+  it('renders description <p> when description is set', () => {
+    component.description = 'Briefly describe your topic.';
+    vi.mocked(h).mockClear();
+    component.render();
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'textarea-description');
+    expect(pCalls.length).toBe(1);
+  });
+
+  it('does not render description <p> when description is undefined', () => {
+    component.description = undefined;
+    vi.mocked(h).mockClear();
+    component.render();
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'textarea-description');
+    expect(pCalls.length).toBe(0);
+  });
+
+  it('includes descriptionId in aria-describedby on native textarea when description is set', () => {
+    component.description = 'Briefly describe your topic.';
+    vi.mocked(h).mockClear();
+    component.render();
+    const textareaCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'textarea');
+    const textareaProps = textareaCalls[0]?.[1] as Record<string, unknown>;
+    const descId = (component as any).descriptionId as string;
+    expect(String(textareaProps?.['aria-describedby'] ?? '')).toContain(descId);
+  });
+});

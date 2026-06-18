@@ -348,3 +348,90 @@ describe('io-radio-group — loading prop', () => {
     expect(spinnerCall).toBeUndefined();
   });
 });
+
+describe('io-radio-group — description prop', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('has undefined description by default', () => {
+    const component = new IoRadioGroup();
+    expect(component.description).toBeUndefined();
+  });
+
+  it('accepts a description string', () => {
+    const component = new IoRadioGroup();
+    component.description = 'Choose how you prefer to be contacted.';
+    expect(component.description).toBe('Choose how you prefer to be contacted.');
+  });
+
+  it('generates a descriptionId in componentWillLoad', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    component.label = 'Contact';
+    component.name = 'contact';
+    (component as any).componentWillLoad();
+    const id = (component as any).descriptionId as string;
+    expect(id).toMatch(/^io-rg-desc-/);
+  });
+
+  it('renders description <p> when description is set', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+    component.description = 'Choose how you prefer to be contacted.';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'radio-group__description');
+    expect(pCalls.length).toBe(1);
+  });
+
+  it('does not render description <p> when description is undefined', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+    component.description = undefined;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(call => call[0] === 'p' && (call[1] as Record<string, unknown>)?.['class'] === 'radio-group__description');
+    expect(pCalls.length).toBe(0);
+  });
+
+  it('includes descriptionId in aria-describedby on fieldset when description is set', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+    component.description = 'Choose how you prefer to be contacted.';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'fieldset');
+    const fieldsetProps = fieldsetCalls[0]?.[1] as Record<string, unknown>;
+    expect(String(fieldsetProps?.['aria-describedby'] ?? '')).toContain('io-rg-desc-test');
+  });
+});

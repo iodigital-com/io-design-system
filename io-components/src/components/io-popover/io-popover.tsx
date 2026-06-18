@@ -46,6 +46,7 @@ export class IoPopover {
   private panelEl?: HTMLDivElement;
   private labelId!: string;
   private panelId!: string;
+  private descriptionId!: string;
   private triggerEl?: HTMLElement | null;
   private useNativePopover = false;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
@@ -64,6 +65,9 @@ export class IoPopover {
   /** Accessible label for the popover dialog */
   @Prop() label?: string;
 
+  /** Supplementary description shown inside the panel below the heading */
+  @Prop() description: string | undefined;
+
   // ── State ─────────────────────────────────────────────────────
 
   @State() private panelStyle: Record<string, string> = {};
@@ -79,6 +83,7 @@ export class IoPopover {
     const seed = Math.random().toString(36).slice(2);
     this.labelId = createPopoverLabelId(seed);
     this.panelId = createPopoverPanelId(seed);
+    this.descriptionId = `io-popover-desc-${seed}`;
     if (!this.label) {
       console.error('[io-popover] `label` prop is required for accessible dialog naming (WCAG 4.1.2).');
     }
@@ -297,7 +302,7 @@ export class IoPopover {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, labelId, panelId, open, panelStyle } = this;
+    const { label, labelId, panelId, open, panelStyle, description } = this;
     const ariaHidden = open ? undefined : 'true';
 
     const panelProps: Record<string, unknown> = {
@@ -305,6 +310,7 @@ export class IoPopover {
       role: 'dialog',
       'aria-modal': 'true',
       'aria-labelledby': label ? labelId : undefined,
+      'aria-describedby': description ? this.descriptionId : undefined,
       'aria-hidden': ariaHidden,
       class: 'popover__panel',
       style: panelStyle,
@@ -322,6 +328,9 @@ export class IoPopover {
             <span id={labelId} class="popover__label">
               {label}
             </span>
+          )}
+          {description && (
+            <p id={this.descriptionId} class="popover__description">{description}</p>
           )}
           <slot />
         </div>

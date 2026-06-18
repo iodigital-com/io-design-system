@@ -428,6 +428,8 @@
   --io-button-arrow-shift-forward: 6px;
   --io-button-arrow-shift-down:  5px;
   --io-button-spinner-border-width: 2px;
+  --io-button-padding-y-compact: var(--io-space-1);
+  --io-button-height-compact:    2rem;             /* 32px — compact icon-only override */
 
   /* Divider */
   --io-divider-color:              var(--io-border);

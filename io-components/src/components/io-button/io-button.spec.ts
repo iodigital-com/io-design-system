@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoButton } from './io-button';
 import { getButtonStyles } from './io-button-styles';
@@ -81,9 +82,67 @@ describe('io-button — default props', () => {
   });
 });
 
+describe('io-button — compact prop', () => {
+  let component: IoButton;
+
+  beforeEach(() => {
+    component = new IoButton();
+    (component as any).el = document.createElement('io-button');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('compact is false by default', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('compact can be set to true', () => {
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+});
+
 describe('io-button — :host styles', () => {
   it(':host CSS includes align-self: flex-start to prevent flex stretch', () => {
     const styles = getButtonStyles();
     expect(styles).toContain('align-self: flex-start');
+  });
+
+  it('compact CSS rule reduces padding-top and padding-bottom via token', () => {
+    const styles = getButtonStyles();
+    expect(styles).toContain('.btn--compact');
+    expect(styles).toContain('var(--io-button-padding-y-compact)');
+  });
+});
+
+describe('io-button — disabled anchor tabIndex (WCAG 2.4.3)', () => {
+  let component: IoButton;
+  const hMock = vi.mocked(h);
+
+  beforeEach(() => {
+    component = new IoButton();
+    (component as any).el = document.createElement('io-button');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('disabled anchor retains tabIndex=0 for keyboard discoverability', () => {
+    hMock.mockClear();
+    component.href = '/page';
+    component.disabled = true;
+    component.render();
+    const anchorCall = hMock.mock.calls.find(
+      (call) => call[0] === 'a' && call[1] && typeof call[1] === 'object' && 'href' in (call[1] as object),
+    );
+    expect((anchorCall?.[1] as Record<string, unknown>)?.tabIndex).toBe(0);
+  });
+
+  it('non-disabled anchor does not set tabIndex', () => {
+    hMock.mockClear();
+    component.href = '/page';
+    component.disabled = false;
+    component.render();
+    const anchorCall = hMock.mock.calls.find(
+      (call) => call[0] === 'a' && call[1] && typeof call[1] === 'object' && 'href' in (call[1] as object),
+    );
+    expect((anchorCall?.[1] as Record<string, unknown>)?.tabIndex).toBeUndefined();
   });
 });

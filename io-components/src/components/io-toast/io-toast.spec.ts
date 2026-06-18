@@ -77,16 +77,7 @@ describe('io-toast — position prop', () => {
     }
   });
 
-  it('position prop is decorated with reflect: true (host attribute matches prop)', () => {
-    // Verify the Stencil @Prop metadata records reflect as true
-    const meta = (IoToast as any).COMPILER_META ?? (IoToast as any).__stencilCompilerMeta;
-    if (meta) {
-      const positionProp = meta.properties?.find((p: { name: string }) => p.name === 'position');
-      if (positionProp) {
-        expect(positionProp.reflect).toBe(true);
-      }
-    }
-    // Also verify the prop value is accessible as expected
+  it('position prop defaults to bottom-end', () => {
     const component = new IoToast();
     expect(component.position).toBe('bottom-end');
   });

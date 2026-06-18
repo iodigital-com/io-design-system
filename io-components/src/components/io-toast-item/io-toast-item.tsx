@@ -29,13 +29,13 @@ export class IoToastItem {
    * Label for an optional call-to-action rendered beside the text.
    * When omitted, no action is rendered.
    */
-  @Prop() actionLabel?: string;
+  @Prop({ reflect: true }) actionLabel?: string;
 
   /**
    * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
    * this URL. When omitted the CTA is a `<button>` that emits `action`.
    */
-  @Prop() actionHref?: string;
+  @Prop({ reflect: true }) actionHref?: string;
 
   // ── Events ────────────────────────────────────────────────────
 

@@ -13,4 +13,14 @@ describe('io-toast-item — render snapshots', () => {
       expect(root).toMatchSnapshot(`${variant} variant`);
     }
   });
+
+  it('renders CTA as button when actionLabel is set without actionHref', async () => {
+    const { root } = await render(<io-toast-item text="Your file is ready." actionLabel="Download" />);
+    expect(root).toMatchSnapshot();
+  });
+
+  it('renders CTA as anchor when actionLabel and actionHref are both set', async () => {
+    const { root } = await render(<io-toast-item text="New release available." actionLabel="View changelog" actionHref="/changelog" />);
+    expect(root).toMatchSnapshot();
+  });
 });

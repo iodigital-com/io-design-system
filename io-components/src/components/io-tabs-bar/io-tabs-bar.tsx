@@ -134,7 +134,7 @@ export class IoTabsBar {
       const clickHandler = () => this.handleTabClick(index);
       const keyHandler = (ev: KeyboardEvent) => this.handleKeyDown(ev, index);
       btn.addEventListener('click', clickHandler);
-      btn.addEventListener('keydown', keyHandler);
+      btn.addEventListener('keydown', keyHandler as EventListener);
       this.clickHandlers.set(btn, clickHandler);
       this.keyHandlers.set(btn, keyHandler as EventListener);
     });

@@ -44,6 +44,7 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
         ['Overview', 'Details', 'Settings'],
       ),
       properties: {
+        activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ...(properties?.compact ? { compact: true } : {}),
       },
       events: {

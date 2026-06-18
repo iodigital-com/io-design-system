@@ -2467,6 +2467,16 @@ export namespace Components {
      */
     interface IoToastItem {
         /**
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
+          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+         */
+        "actionHref"?: string;
+        /**
+          * Label for an optional call-to-action rendered beside the text.
+          * When omitted, no action is rendered.
+         */
+        "actionLabel"?: string;
+        /**
           * Notification text
           * @default ''
          */
@@ -6407,6 +6417,16 @@ declare namespace LocalJSX {
      */
     interface IoToastItem {
         /**
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
+          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+         */
+        "actionHref"?: string;
+        /**
+          * Label for an optional call-to-action rendered beside the text.
+          * When omitted, no action is rendered.
+         */
+        "actionLabel"?: string;
+        /**
           * Fires when the user dismisses the toast
          */
         "onDismiss"?: (event: IoToastItemCustomEvent<void>) => void;
@@ -6907,6 +6927,8 @@ declare namespace LocalJSX {
         "position": IoToastPosition;
     }
     interface IoToastItemAttributes {
+        "actionHref"?: string;
+        "actionLabel"?: string;
         "text": string;
         "variant": IoToastVariant;
     }

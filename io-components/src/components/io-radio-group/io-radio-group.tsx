@@ -2,7 +2,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h }
 
 import { getRadioGroupStyles } from './io-radio-group-styles';
 
-import type { IoRadioGroupChangeDetail } from './types';
+import type { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from './types';
 
 /**
  * io-radio-group
@@ -49,6 +49,9 @@ export class IoRadioGroup {
   /** Helper text shown below the legend */
   @Prop() helperText = '';
 
+  /** Layout orientation — 'vertical' (default) or 'horizontal' */
+  @Prop({ reflect: true }) orientation: IoRadioGroupOrientation = 'vertical';
+
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
@@ -84,6 +87,11 @@ export class IoRadioGroup {
     this.syncChildren();
   }
 
+  @Watch('required')
+  onRequiredChange() {
+    this.syncChildren();
+  }
+
   // ── Event Handlers ────────────────────────────────────────────
 
   /**
@@ -104,11 +112,12 @@ export class IoRadioGroup {
 
   private syncChildren = () => {
     const radios = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; checked: boolean; disabled: boolean; value: string }>('io-radio'),
+      this.el.querySelectorAll<HTMLElement & { name: string; checked: boolean; disabled: boolean; required: boolean; value: string }>('io-radio'),
     );
     for (const radio of radios) {
       radio.name = this.name;
       radio.checked = radio.value === this.value;
+      radio.required = this.required;
       if (this.disabled) {
         radio.disabled = true;
       }
@@ -118,7 +127,7 @@ export class IoRadioGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage } = this;
+    const { label, disabled, helperText, error, errorMessage, orientation } = this;
     const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
@@ -130,6 +139,7 @@ export class IoRadioGroup {
           disabled={disabled}
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
+          aria-orientation={orientation}
         >
           <legend class="radio-group__legend">{label}</legend>
           {helperText && (

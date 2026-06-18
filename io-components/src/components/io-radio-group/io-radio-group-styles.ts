@@ -58,6 +58,12 @@ export function getRadioGroupStyles(): string {
       gap: var(--io-space-1, 4px);
     }
 
+    :host([orientation='horizontal']) .radio-group__options {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--io-space-4, 16px);
+    }
+
     /* ── Error state ────────────────────────────────────────── */
 
     .radio-group--error .radio-group__legend {

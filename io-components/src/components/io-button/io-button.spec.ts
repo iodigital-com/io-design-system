@@ -78,4 +78,14 @@ describe('io-button — default props', () => {
 
     warnSpy.mockRestore();
   });
+
+  it('compact is false by default', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('compact can be set to true', () => {
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+
 });

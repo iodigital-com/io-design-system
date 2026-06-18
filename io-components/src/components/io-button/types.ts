@@ -29,3 +29,14 @@ export type IoButtonArrow = 'forward' | 'back' | 'down';
 
 /** Side on which the arrow icon is rendered. Defaults to 'right'. */
 export type IoButtonArrowPlacement = 'left' | 'right';
+
+/** Allowed ARIA attribute keys for the `aria` prop (with or without `aria-` prefix). */
+export const IO_BUTTON_ARIA_ATTRIBUTES = [
+  'aria-label',
+  'aria-description',
+  'aria-expanded',
+  'aria-pressed',
+  'aria-haspopup',
+] as const;
+
+export type IoButtonAriaAttribute = (typeof IO_BUTTON_ARIA_ATTRIBUTES)[number];

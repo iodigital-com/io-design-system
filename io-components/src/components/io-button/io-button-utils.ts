@@ -40,8 +40,9 @@ export function getButtonClassList(options: {
   loading: boolean;
   fullWidth: boolean;
   iconOnly: boolean;
+  compact: boolean;
 }): string {
-  const { variant, color, size, disabled, loading, fullWidth, iconOnly } = options;
+  const { variant, color, size, disabled, loading, fullWidth, iconOnly, compact } = options;
   const classes = [
     `io-button--${variant}`,
     `io-button--${color}`,
@@ -52,6 +53,7 @@ export function getButtonClassList(options: {
   if (loading)  classes.push('io-button--loading');
   if (fullWidth) classes.push('io-button--full-width');
   if (iconOnly) classes.push('io-button--icon-only');
+  if (compact)  classes.push('io-button--compact');
 
   return classes.join(' ');
 }

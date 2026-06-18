@@ -6,7 +6,7 @@ import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
 
-import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement } from './types';
+import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonAriaAttribute } from './types';
 
 /** Shared path data for the iO brand arrow SVG — avoids duplication across render sites. */
 const BRAND_ARROW_PATH = 'M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z';
@@ -132,12 +132,16 @@ export class IoButton {
   /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
    * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   * Accepted keys: aria-label, aria-description, aria-expanded, aria-pressed, aria-haspopup.
    *
    * @example
-   * // Sets aria-controls="panel-id" on the inner <button>
-   * <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+   * // Sets aria-expanded="true" on the inner <button>
+   * <io-button .aria={{ 'aria-expanded': 'true', 'aria-haspopup': 'dialog' }}>Open panel</io-button>
    */
-  @Prop() aria?: Record<string, string>;
+  @Prop() aria?: Partial<Record<IoButtonAriaAttribute, string>>;
+
+  /** Compact mode for dense layouts — reduces padding and height. */
+  @Prop({ reflect: true }) compact = false;
 
   private hasWarnedIconOnlyLabel = false;
   private btnEl?: HTMLElement;
@@ -296,7 +300,7 @@ export class IoButton {
   }
 
   render() {
-    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition } = this;
+    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition, compact } = this;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
@@ -305,7 +309,7 @@ export class IoButton {
     this.validatePropValues();
 
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
-    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
+    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly, compact });
     const accessibleLabel = this.getAccessibleLabel();
     this.warnIconOnlyLabelMissing();
 
@@ -313,7 +317,7 @@ export class IoButton {
     const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}${compact ? ' btn--compact' : ''}`,
       ref: (el?: HTMLElement) => {
         this.btnEl = el;
         applyAriaProp(this.aria, el ?? null);
@@ -327,6 +331,11 @@ export class IoButton {
       innerProps['href'] = disabled || loading ? undefined : href;
       innerProps['target'] = target;
       innerProps['rel'] = rel;
+      // Disabled anchors lose their natural tab stop when href is removed.
+      // Explicitly restore it so keyboard users can still focus and read the label.
+      if (disabled || loading) {
+        innerProps['tabIndex'] = 0;
+      }
     } else {
       innerProps['type'] = type;
       innerProps['disabled'] = disabled || loading;

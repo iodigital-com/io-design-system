@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
+import { IO_BUTTON_ARIA_ATTRIBUTES } from './types';
 
 describe('getButtonAriaAttrs', () => {
   it('returns empty object for default button (not disabled, not loading, no href)', () => {
@@ -42,6 +43,7 @@ describe('getButtonClassList', () => {
       loading: false,
       fullWidth: false,
       iconOnly: false,
+      compact: false,
     });
     expect(result).toBe('io-button--solid io-button--blue io-button--md');
   });
@@ -55,6 +57,7 @@ describe('getButtonClassList', () => {
       loading: false,
       fullWidth: false,
       iconOnly: false,
+      compact: false,
     });
     expect(result).toContain('io-button--disabled');
   });
@@ -68,6 +71,7 @@ describe('getButtonClassList', () => {
       loading: true,
       fullWidth: false,
       iconOnly: false,
+      compact: false,
     });
     expect(result).toContain('io-button--loading');
   });
@@ -81,6 +85,7 @@ describe('getButtonClassList', () => {
       loading: false,
       fullWidth: true,
       iconOnly: false,
+      compact: false,
     });
     expect(result).toContain('io-button--full-width');
   });
@@ -94,10 +99,50 @@ describe('getButtonClassList', () => {
       loading: true,
       fullWidth: true,
       iconOnly: true,
+      compact: false,
     });
     expect(result).toContain('io-button--disabled');
     expect(result).toContain('io-button--loading');
     expect(result).toContain('io-button--full-width');
     expect(result).toContain('io-button--icon-only');
+  });
+
+  it('includes compact class when compact=true', () => {
+    const result = getButtonClassList({
+      variant: 'solid',
+      color: 'blue',
+      size: 'md',
+      disabled: false,
+      loading: false,
+      fullWidth: false,
+      iconOnly: false,
+      compact: true,
+    });
+    expect(result).toContain('io-button--compact');
+  });
+
+  it('does not include compact class when compact=false', () => {
+    const result = getButtonClassList({
+      variant: 'solid',
+      color: 'blue',
+      size: 'md',
+      disabled: false,
+      loading: false,
+      fullWidth: false,
+      iconOnly: false,
+      compact: false,
+    });
+    expect(result).not.toContain('io-button--compact');
+  });
+});
+
+describe('IO_BUTTON_ARIA_ATTRIBUTES', () => {
+  it('contains exactly the five allowed ARIA attribute keys', () => {
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toContain('aria-label');
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toContain('aria-description');
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toContain('aria-expanded');
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toContain('aria-pressed');
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toContain('aria-haspopup');
+    expect(IO_BUTTON_ARIA_ATTRIBUTES).toHaveLength(5);
   });
 });

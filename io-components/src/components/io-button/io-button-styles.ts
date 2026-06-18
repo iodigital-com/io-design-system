@@ -52,6 +52,13 @@ export function getButtonStyles(): string {
       font-size: var(--io-font-size-sm);
     }
 
+    /* compact  ≈ 32px — dense layout modifier; overrides padding/height regardless of size */
+    .btn--compact {
+      padding: var(--io-space-1) var(--io-space-4);
+      height: var(--io-space-8);
+      font-size: var(--io-font-size-sm);
+    }
+
     /* md  = 42px  (8px V + 24px text + 8px V + 2px border) */
     .btn--md {
       padding: var(--io-spacing-component-y) var(--io-spacing-component-x);

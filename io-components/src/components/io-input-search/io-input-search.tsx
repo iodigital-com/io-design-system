@@ -5,8 +5,6 @@ import { getInputSearchStyles } from './io-input-search-styles';
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputSearchSize } from './types';
 
-let idCounter = 0;
-
 /**
  * io-input-search
  * ================
@@ -83,7 +81,6 @@ export class IoInputSearch {
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
     this.hasValue = !!this.value;
-    idCounter++;
   }
 
   private handleInput = (ev: InputEvent) => {

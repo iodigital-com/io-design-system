@@ -5,8 +5,6 @@ import { getInputPasswordStyles } from './io-input-password-styles';
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputPasswordSize } from './types';
 
-let idCounter = 0;
-
 /**
  * io-input-password
  * ==================
@@ -77,7 +75,6 @@ export class IoInputPassword {
     this.inputId = base;
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
-    idCounter++;
   }
 
   private handleInput = (ev: InputEvent) => {

@@ -5,8 +5,6 @@ import { getInputDateStyles } from './io-input-date-styles';
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputDateSize } from './types';
 
-let idCounter = 0;
-
 /**
  * io-input-date
  * ==============
@@ -76,7 +74,6 @@ export class IoInputDate {
     this.inputId = base;
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
-    idCounter++;
   }
 
   private handleInput = (ev: InputEvent) => {

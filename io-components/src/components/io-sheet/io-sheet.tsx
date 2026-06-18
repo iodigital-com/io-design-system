@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Element,
   Host,
+  Method,
   Watch,
   Listen,
   h,
@@ -92,6 +93,18 @@ export class IoSheet {
   /** Emitted when the sheet is dismissed (close button, backdrop click, or Escape key) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
+  // ── Public methods ────────────────────────────────────────────
+
+  /** Opens the sheet programmatically */
+  @Method() async show() {
+    this.open = true;
+  }
+
+  /** Closes the sheet programmatically */
+  @Method() async close() {
+    this.open = false;
+  }
+
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
@@ -146,7 +159,12 @@ export class IoSheet {
 
     requestAnimationFrame(() => {
       const focusable = this.getFocusableElements();
-      focusable[0]?.focus();
+      if (focusable.length > 0) {
+        focusable[0].focus();
+      } else {
+        // No focusable children — focus the panel as fallback
+        this.panelEl?.focus();
+      }
     });
   }
 
@@ -177,9 +195,12 @@ export class IoSheet {
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      // Use document.activeElement — works for both Shadow DOM and slotted
-      // light-DOM children (shadowRoot.activeElement returns the slot host)
-      const active = document.activeElement as HTMLElement | null;
+      // Prefer shadow activeElement for elements inside our shadow root;
+      // fall back to document.activeElement for slotted light-DOM children.
+      const shadowActive = this.el.shadowRoot?.activeElement;
+      const active = (shadowActive && !(shadowActive instanceof HTMLSlotElement))
+        ? shadowActive as HTMLElement
+        : document.activeElement as HTMLElement | null;
 
       if (ev.shiftKey && active === first) {
         ev.preventDefault();
@@ -229,7 +250,7 @@ export class IoSheet {
       <Host
         role="dialog"
         aria-modal="true"
-        aria-labelledby={heading ? headingId : undefined}
+        {...(heading ? { 'aria-labelledby': headingId } : {})}
       >
         <style>{getSheetStyles()}</style>
 
@@ -244,8 +265,11 @@ export class IoSheet {
         {/* Panel */}
         <div
           class="sheet__panel"
+          tabIndex={-1}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >
+          <div class="sheet__handle" aria-hidden="true" />
+
           <div class="sheet__header">
             <div class="sheet__header-slot">
               <slot name="header">

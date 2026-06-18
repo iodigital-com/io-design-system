@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@
 import { getTabsStyles } from './io-tabs-styles';
 import { getNextEnabledIndex } from './io-tabs-utils';
 
-import type { IoTabsUpdateDetail } from './types';
+import type { IoTabsUpdateDetail, IoTabsSize } from './types';
 
 /**
  * io-tabs
@@ -37,6 +37,21 @@ export class IoTabs {
 
   /** Optional accessible label for the tablist region. */
   @Prop() label?: string;
+
+  /** Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px. */
+  @Prop() size: IoTabsSize = 'small';
+
+  /** When true, reduces tab button padding using density tokens. */
+  @Prop({ reflect: true }) compact = false;
+
+  /** ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div. */
+  @Prop() labelledby?: string;
+
+  /**
+   * Panel element IDs that map 1:1 to slotted buttons (index-matched).
+   * When provided, each tab button receives aria-controls pointing to its associated panel.
+   */
+  @Prop() panelIds?: string[];
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -141,6 +156,14 @@ export class IoTabs {
       btn.setAttribute('aria-selected', String(isActive));
       btn.setAttribute('tabindex', String(isActive ? 0 : -1));
 
+      // aria-controls: link each tab to its associated panel when panelIds provided.
+      const panelId = this.panelIds?.[index];
+      if (panelId) {
+        btn.setAttribute('aria-controls', panelId);
+      } else {
+        btn.removeAttribute('aria-controls');
+      }
+
       // Icon-only tabs: preserve the author-supplied aria-label (already set by consumer).
       // Tabs with badge children: strip badge text so screen readers don't announce counts
       // as part of the tab name. Consumers mark badge elements with data-slot="badge".
@@ -213,10 +236,21 @@ export class IoTabs {
    * @slot - Default slot. `<button>` elements representing each tab. Keyboard navigation and ARIA are applied automatically.
    */
   render() {
+    const tablistClass = {
+      tablist: true,
+      [`tabs--size-${this.size}`]: true,
+    };
+
     return (
       <Host>
         <style>{getTabsStyles()}</style>
-        <div class="tablist" role="tablist" aria-orientation="horizontal" aria-label={this.label || undefined}>
+        <div
+          class={tablistClass}
+          role="tablist"
+          aria-orientation="horizontal"
+          aria-label={this.label || undefined}
+          aria-labelledby={this.labelledby || undefined}
+        >
           <slot onSlotchange={this.onSlotChange} />
         </div>
       </Host>

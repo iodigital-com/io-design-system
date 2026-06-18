@@ -79,7 +79,10 @@ export function getInlineNotificationStyles(variant: IoInlineNotificationVariant
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      padding: 0;
+      justify-content: center;
+      min-width: var(--io-space-6);
+      min-height: var(--io-space-6);
+      padding: var(--io-space-1);
       background: transparent;
       border: none;
       cursor: pointer;

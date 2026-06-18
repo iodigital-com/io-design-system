@@ -1,7 +1,7 @@
 import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
 
 import { getInlineNotificationStyles } from './io-inline-notification-styles';
-import type { IoInlineNotificationVariant } from './types';
+import type { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from './types';
 import type { IoIconName } from '../../utils/icons';
 
 /**
@@ -12,8 +12,10 @@ import type { IoIconName } from '../../utils/icons';
  * controls visibility by mounting or unmounting the element.
  *
  * ARIA live region strategy:
- *   - error variant:     role="alert" (implicit aria-live="assertive")
- *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+ *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+ *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+ *
+ * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
  *
  * @example
  * <io-inline-notification variant="warning" heading="Storage limit">
@@ -39,6 +41,9 @@ export class IoInlineNotification {
   /** Optional bold heading rendered above the slotted content */
   @Prop() heading?: string;
 
+  /** Semantic HTML tag for the notification heading. Defaults to 'h5' to avoid disrupting document hierarchy in most layouts. */
+  @Prop() headingTag: IoInlineNotificationHeadingTag = 'h5';
+
   /** When true, renders a dismiss button that emits the `dismiss` event on click */
   @Prop() dismissible = false;
 
@@ -53,6 +58,13 @@ export class IoInlineNotification {
 
   /** Icon rendered on the action button. Defaults to 'arrow-right'. */
   @Prop() actionIcon: IoIconName = 'arrow-right';
+
+  /**
+   * Accessible label for the notification live region (aria-label on the host element).
+   * Use when the page contains multiple notifications and consumers need to distinguish them.
+   * When omitted no aria-label is set and the notification content provides its own accessible name.
+   */
+  @Prop() label?: string;
 
   /** When true, the action button shows a loading spinner and interaction is suppressed. */
   @Prop() actionLoading = false;
@@ -85,11 +97,15 @@ export class IoInlineNotification {
    * @slot - Default slot. Notification message body text or inline elements.
    */
   render() {
+    const isAssertive = this.variant === 'error' || this.variant === 'warning';
+    const HeadingTag = this.headingTag;
+
     return (
       <Host
-        role={this.variant === 'error' ? 'alert' : 'status'}
-        aria-live={this.variant === 'error' ? undefined : 'polite'}
-        aria-atomic={this.variant === 'error' ? undefined : 'true'}
+        role={isAssertive ? 'alert' : 'status'}
+        aria-live={isAssertive ? 'assertive' : 'polite'}
+        aria-atomic="true"
+        aria-label={this.label || undefined}
       >
         <style>{getInlineNotificationStyles(this.variant)}</style>
         <div class={`inline-notification inline-notification--${this.variant}`}>
@@ -123,7 +139,7 @@ export class IoInlineNotification {
             )}
           </span>
           <div class="inline-notification__body">
-            {this.heading && <strong class="inline-notification__heading">{this.heading}</strong>}
+            {this.heading && <HeadingTag class="inline-notification__heading">{this.heading}</HeadingTag>}
             <div class={{ 'inline-notification__content': true, 'inline-notification__content--empty': !this.hasContent }}>
               <slot onSlotchange={(e: Event) => {
                 const slot = e.target as HTMLSlotElement;

@@ -49,6 +49,10 @@ describe('io-inline-notification — default props', () => {
   it('defaults actionLoading to false', () => {
     expect(c.actionLoading).toBe(false);
   });
+
+  it('defaults headingTag to h5', () => {
+    expect(c.headingTag).toBe('h5');
+  });
 });
 
 describe('io-inline-notification — render does not throw per variant', () => {
@@ -69,16 +73,19 @@ describe('io-inline-notification — ARIA role mapping', () => {
     return hostCall?.[1] ?? {};
   }
 
-  it('uses role="alert" for error variant', () => {
-    const c = new IoInlineNotification();
-    c.variant = 'error';
-    const attrs = hostAttrs(c);
-    expect(attrs.role).toBe('alert');
-    expect(attrs['aria-live']).toBeUndefined();
-    expect(attrs['aria-atomic']).toBeUndefined();
-  });
+  it.each(['error', 'warning'] as const)(
+    'uses role="alert" + aria-live="assertive" for %s variant (WCAG 4.1.3)',
+    (variant) => {
+      const c = new IoInlineNotification();
+      c.variant = variant;
+      const attrs = hostAttrs(c);
+      expect(attrs.role).toBe('alert');
+      expect(attrs['aria-live']).toBe('assertive');
+      expect(attrs['aria-atomic']).toBe('true');
+    },
+  );
 
-  it.each(['info', 'success', 'warning'] as const)(
+  it.each(['info', 'success'] as const)(
     'uses role="status" + aria-live="polite" for %s variant',
     (variant) => {
       const c = new IoInlineNotification();
@@ -139,6 +146,42 @@ describe('io-inline-notification — dismissLabel resolution', () => {
     const c = new IoInlineNotification();
     c.variant = 'error';
     expect((c as any).resolvedDismissLabel).toBe('Dismiss error notification');
+  });
+});
+
+describe('io-inline-notification — headingTag prop', () => {
+  function getHeadingTag(c: IoInlineNotification): string | undefined {
+    hMock.mockClear();
+    c.heading = 'Test heading';
+    (c as any).render();
+    const headingCall = hMock.mock.calls.find(([tag]: [unknown]) =>
+      typeof tag === 'string' && /^h[1-6]$/.test(tag),
+    ) as [string, unknown] | undefined;
+    return headingCall?.[0];
+  }
+
+  it('renders heading as h5 by default', () => {
+    const c = new IoInlineNotification();
+    expect(getHeadingTag(c)).toBe('h5');
+  });
+
+  it.each(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const)(
+    'renders heading as %s',
+    (tag) => {
+      const c = new IoInlineNotification();
+      c.headingTag = tag;
+      expect(getHeadingTag(c)).toBe(tag);
+    },
+  );
+
+  it('does not render a heading element when heading prop is not set', () => {
+    const c = new IoInlineNotification();
+    hMock.mockClear();
+    (c as any).render();
+    const headingCall = hMock.mock.calls.find(([tag]: [unknown]) =>
+      typeof tag === 'string' && /^h[1-6]$/.test(tag),
+    );
+    expect(headingCall).toBeUndefined();
   });
 });
 
@@ -272,5 +315,24 @@ describe('io-inline-notification — action event emission', () => {
     (c as any).handleDismiss();
 
     expect(emitSpy).toHaveBeenCalledOnce();
+  });
+});
+
+describe('io-inline-notification — dismiss button touch target (WCAG 2.5.8)', () => {
+  it('dismiss button styles include min-width token (WCAG 2.5.8)', () => {
+    const css = getInlineNotificationStyles('info');
+    expect(css).toContain('min-width: var(--io-space-6)');
+  });
+
+  it('dismiss button styles include min-height token (WCAG 2.5.8)', () => {
+    const css = getInlineNotificationStyles('info');
+    expect(css).toContain('min-height: var(--io-space-6)');
+  });
+
+  it('dismiss button styles include padding token (not zero)', () => {
+    const css = getInlineNotificationStyles('info');
+    // Should include padding with a token, not bare `padding: 0`
+    expect(css).toContain('padding: var(--io-space-1)');
+    expect(css).not.toContain('padding: 0');
   });
 });

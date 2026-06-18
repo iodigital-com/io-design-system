@@ -17,7 +17,7 @@ import type { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, Io
  */
 @Component({
   tag: 'io-text',
-  shadow: false,
+  shadow: false, // light DOM — no *-styles.ts; typography inherits from app.css globals
   scoped: false,
 })
 export class IoText {

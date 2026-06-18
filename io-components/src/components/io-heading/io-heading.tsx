@@ -36,7 +36,7 @@ const HEADING_TRACKING_MAP: Partial<Record<IoHeadingSize, string>> = {
  */
 @Component({
   tag: 'io-heading',
-  shadow: false,
+  shadow: false, // light DOM — no *-styles.ts; typography inherits from app.css globals
   scoped: false,
 })
 export class IoHeading {

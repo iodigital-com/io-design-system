@@ -33,6 +33,11 @@ describe('io-text — default props', () => {
     const component = new IoText();
     expect(component.ellipsis).toBe(false);
   });
+
+  it('has "inherit" as the default hyphens', () => {
+    const component = new IoText();
+    expect(component.hyphens).toBe('inherit');
+  });
 });
 
 describe('io-text — render does not throw', () => {
@@ -85,6 +90,42 @@ describe('io-text — render does not throw', () => {
     const component = new IoText();
     component.ellipsis = true;
     expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders without throwing for all supported tags including new tags', () => {
+    const tags = ['p', 'span', 'div', 'blockquote', 'time', 'address', 'figcaption', 'cite', 'legend'] as const;
+    for (const tag of tags) {
+      const component = new IoText();
+      component.tag = tag;
+      expect(() => component.render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for all supported sizes including inherit', () => {
+    const sizes = ['xs', 'sm', 'base', 'lg', 'xl', 'inherit'] as const;
+    for (const size of sizes) {
+      const component = new IoText();
+      component.size = size;
+      expect(() => component.render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for all supported colors including info', () => {
+    const colors = ['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'info', 'inherit'] as const;
+    for (const color of colors) {
+      const component = new IoText();
+      component.color = color;
+      expect(() => component.render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for all supported hyphens values', () => {
+    const hyphens = ['none', 'manual', 'auto', 'inherit'] as const;
+    for (const h of hyphens) {
+      const component = new IoText();
+      component.hyphens = h;
+      expect(() => component.render()).not.toThrow();
+    }
   });
 });
 
@@ -174,6 +215,79 @@ describe('io-text — h() call arguments (style computation)', () => {
     component.render();
     const [, styleArg] = hMock.mock.calls[OUTER];
     expect((styleArg as any).style.color).toBe('inherit');
+  });
+
+  it('passes info color token', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.color = 'info';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.color).toBe('var(--io-color-info)');
+  });
+
+  it('passes inherit as font-size when size is inherit', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.size = 'inherit';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.fontSize).toBe('inherit');
+  });
+
+  it('passes hyphens value to style', () => {
+    const hMock = vi.mocked(h);
+    const hyphensValues = ['none', 'manual', 'auto', 'inherit'] as const;
+    for (const h_val of hyphensValues) {
+      hMock.mockClear();
+      const component = new IoText();
+      component.hyphens = h_val;
+      component.render();
+      const [, styleArg] = hMock.mock.calls[OUTER];
+      expect((styleArg as any).style.hyphens).toBe(h_val);
+    }
+  });
+
+  it('adds overflowWrap break-word when hyphens is auto', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.hyphens = 'auto';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBe('break-word');
+  });
+
+  it('adds overflowWrap break-word when hyphens is manual', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.hyphens = 'manual';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBe('break-word');
+  });
+
+  it('does not add overflowWrap when hyphens is none', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.hyphens = 'none';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBeUndefined();
+  });
+
+  it('does not add overflowWrap when hyphens is inherit', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoText();
+    component.hyphens = 'inherit';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBeUndefined();
   });
 
   it('passes text-align from align prop', () => {

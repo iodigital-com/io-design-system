@@ -81,14 +81,14 @@ export const textPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',
     type: 'select',
-    options: ['p', 'span', 'div', 'blockquote', 'time'],
+    options: ['p', 'span', 'div', 'blockquote', 'time', 'address', 'figcaption', 'cite', 'legend'],
     defaultValue: 'p',
     description: 'Semantic HTML element to render.',
   },
   {
     name: 'size',
     type: 'select',
-    options: ['xs', 'sm', 'base', 'lg', 'xl'],
+    options: ['xs', 'sm', 'base', 'lg', 'xl', 'inherit'],
     defaultValue: 'base',
     description: 'Font size using --io-font-size-* tokens.',
   },
@@ -109,7 +109,7 @@ export const textPropDefinitions: PropDefinition[] = [
   {
     name: 'color',
     type: 'select',
-    options: ['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'inherit'],
+    options: ['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'info', 'inherit'],
     defaultValue: 'primary',
     description: 'Text color using semantic --io-text-* tokens.',
   },
@@ -118,5 +118,12 @@ export const textPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'When true, truncates text with an ellipsis on a single line.',
+  },
+  {
+    name: 'hyphens',
+    type: 'select',
+    options: ['none', 'manual', 'auto', 'inherit'],
+    defaultValue: 'inherit',
+    description: 'CSS hyphenation behaviour. auto uses the browser hyphenation dictionary; manual respects soft-hyphens (­) only. Also sets overflow-wrap: break-word when auto or manual.',
   },
 ];

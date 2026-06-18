@@ -43,6 +43,7 @@ declare module 'react' {
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-radio-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioGroupElement>, HTMLIoRadioGroupElement> & Partial<StencilJSX.IoRadioGroup>;
   'io-scroller': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoScrollerElement>, HTMLIoScrollerElement> & Partial<StencilJSX.IoScroller>;
+  'io-sheet': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { open?: boolean; heading?: string; dismissible?: boolean; onDismiss?: (e: CustomEvent<void>) => void };
   'io-segment': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSegmentElement>, HTMLIoSegmentElement> & Partial<StencilJSX.IoSegment>;
   'io-segmented-control': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSegmentedControlElement>, HTMLIoSegmentedControlElement> & Partial<StencilJSX.IoSegmentedControl>;
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;

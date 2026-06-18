@@ -37,6 +37,7 @@ export type IoTagNames =
   | 'io-radio-group'
   | 'io-scroller'
   | 'io-segment'
+  | 'io-sheet'
   | 'io-segmented-control'
   | 'io-select'
   | 'io-spinner'

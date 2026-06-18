@@ -126,6 +126,7 @@
   --io-bg-card:                  var(--io-color-white);
   --io-bg-overlay:               rgba(0, 0, 0, 0.5);
   --io-backdrop-blur:            4px;
+  --io-overlay-loading-bg:       rgba(255, 255, 255, 0.7);
 
   /* Text */
   --io-text-primary:             var(--io-color-grey-6);
@@ -949,6 +950,7 @@ io-table[compact] io-table-body-cell td {
   /* Semantic tokens */
   --io-text-disabled:            var(--io-color-dark-text-muted);
   --io-state-disabled-bg:        rgba(255, 255, 255, 0.08);
+  --io-overlay-loading-bg:       rgba(0, 0, 0, 0.5);
 
   /* Component tokens that use light-only primitives */
   --io-color-primary:            var(--io-color-dark-primary);

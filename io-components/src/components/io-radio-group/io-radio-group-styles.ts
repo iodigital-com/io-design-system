@@ -14,6 +14,12 @@ export function getRadioGroupStyles(): string {
       font-family: var(--io-font-primary);
     }
 
+    /* ── Wrapper ────────────────────────────────────────────── */
+
+    .radio-group__wrapper {
+      position: relative;
+    }
+
     /* ── Fieldset reset ─────────────────────────────────────── */
 
     .radio-group {
@@ -62,6 +68,18 @@ export function getRadioGroupStyles(): string {
       flex-direction: row;
       flex-wrap: wrap;
       gap: var(--io-space-4, 16px);
+    }
+
+    /* ── Loading overlay ────────────────────────────────────── */
+
+    .radio-group__loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--io-overlay-loading-bg);
+      border-radius: var(--io-border-radius-sm);
     }
 
     /* ── Error state ────────────────────────────────────────── */

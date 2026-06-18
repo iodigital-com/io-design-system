@@ -2440,6 +2440,14 @@
       "notes": "Option/combobox row hover background. grey-1 in light mode; dark-bg-hover in dark mode."
     },
     {
+      "runtimeCssVar": "--io-overlay-loading-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Loading overlay background for radio-group and textarea components. Semi-transparent in both light and dark mode."
+    },
+    {
       "runtimeCssVar": "--io-pin-code-font-size",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

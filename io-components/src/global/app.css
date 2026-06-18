@@ -125,6 +125,7 @@
   --io-bg-surface:               var(--io-color-grey-1);
   --io-bg-card:                  var(--io-color-white);
   --io-bg-overlay:               rgba(0, 0, 0, 0.5);
+  --io-backdrop-blur:            4px;
 
   /* Text */
   --io-text-primary:             var(--io-color-grey-6);
@@ -282,6 +283,7 @@
    --io-motion-overlay-enter:     var(--io-motion-base);
    --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
    --io-motion-overlay-fade:      var(--io-motion-fast);
+   --io-motion-entrance-offset-y: 12px;
 
   /* ============================================================
      7. Z-INDEX SCALE

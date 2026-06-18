@@ -94,7 +94,7 @@ describe('io-switch — blur event', () => {
     (component as any).blur = { emit: blurEmitMock };
   });
 
-  it('emits blur event when handleBlur is called', () => {
+  it('emits blur event when handleBlur is called on an enabled switch', () => {
     const focusEvent = new FocusEvent('blur');
     (component as any).handleBlur(focusEvent);
     expect(blurEmitMock).toHaveBeenCalledOnce();
@@ -106,5 +106,19 @@ describe('io-switch — blur event', () => {
     (component as any).handleBlur(focusEvent);
     const emittedArg = blurEmitMock.mock.calls[0][0];
     expect(emittedArg).toBe(focusEvent);
+  });
+
+  it('does not emit blur when disabled', () => {
+    component.disabled = true;
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    expect(blurEmitMock).not.toHaveBeenCalled();
+  });
+
+  it('does not emit blur when loading', () => {
+    component.loading = true;
+    const focusEvent = new FocusEvent('blur');
+    (component as any).handleBlur(focusEvent);
+    expect(blurEmitMock).not.toHaveBeenCalled();
   });
 });

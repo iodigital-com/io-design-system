@@ -84,29 +84,14 @@ export function getSwitchStyles(): string {
 
     /* ── Hover states (WCAG 1.4.11) ─────────────────────── */
 
-    .switch-native:hover ~ .switch-track {
-      background-color: var(--io-border-hover);
-    }
+    @media (hover: hover) and (pointer: fine) {
+      .switch-wrapper:not(.switch-wrapper--error) .switch-native:not(:disabled):not(.switch-native--loading):hover ~ .switch-track {
+        background-color: var(--io-border-hover);
+      }
 
-    .switch-native:checked:hover ~ .switch-track {
-      background-color: var(--io-color-primary-hover);
-    }
-
-    /* Suppress hover when disabled or loading */
-    .switch-native:disabled:hover ~ .switch-track {
-      background-color: var(--io-border-interactive);
-    }
-
-    .switch-native:disabled:checked:hover ~ .switch-track {
-      background-color: var(--io-color-primary);
-    }
-
-    .switch-native--loading:hover ~ .switch-track {
-      background-color: var(--io-border-interactive);
-    }
-
-    .switch-native--loading:checked:hover ~ .switch-track {
-      background-color: var(--io-color-primary);
+      .switch-wrapper:not(.switch-wrapper--error) .switch-native:not(:disabled):not(.switch-native--loading):checked:hover ~ .switch-track {
+        background-color: var(--io-color-primary-hover);
+      }
     }
 
     /* Thumb */

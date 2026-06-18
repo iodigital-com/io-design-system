@@ -99,6 +99,16 @@ describe('io-switch — regression guards (Wave J)', () => {
     expect(styles).toContain('var(--io-color-primary-hover)');
   });
 
+  it('hover state is wrapped in @media (hover: hover) and (pointer: fine) (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain('@media (hover: hover) and (pointer: fine)');
+  });
+
+  it('hover rules exclude error state via :not(.switch-wrapper--error) (#654)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain(':not(.switch-wrapper--error)');
+  });
+
   it('forced-colors media block is present (#654)', () => {
     const styles = getSwitchStyles();
     expect(styles).toContain('@media (forced-colors: active)');

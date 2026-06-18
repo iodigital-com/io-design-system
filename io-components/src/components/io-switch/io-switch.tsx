@@ -63,7 +63,7 @@ export class IoSwitch {
   @Event() change!: EventEmitter<IoSwitchChangeDetail>;
 
   /** Fires when the switch loses focus — use for validation-on-blur patterns */
-  @Event({ bubbles: false }) blur!: EventEmitter<FocusEvent>;
+  @Event() blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -152,7 +152,8 @@ export class IoSwitch {
     this.change.emit({ checked: input.checked, value: this.value });
   };
 
-  private handleBlur = (ev: FocusEvent) => {
+  private handleBlur = (ev: FocusEvent): void => {
+    if (this.disabled || this.loading) return;
     this.blur.emit(ev);
   };
 
@@ -201,7 +202,7 @@ export class IoSwitch {
                 <span class="switch-thumb" aria-hidden="true" />
                 {loading && (
                   <span class="switch-loading-overlay" aria-hidden="true">
-                    <io-spinner />
+                    <io-spinner size="sm" />
                   </span>
                 )}
               </span>

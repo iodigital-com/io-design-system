@@ -85,4 +85,23 @@ describe('io-checkbox-group — a11y (ARIA patterns)', () => {
     `;
     await renderAndCheckA11y(el);
   });
+
+  it('error group with role=alert message has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <fieldset aria-invalid="true" aria-describedby="cbg-err-1">
+        <legend>Required choices <span aria-hidden="true"> *</span></legend>
+        <div>
+          <input type="checkbox" id="cbg-10" name="choices" value="a" />
+          <label for="cbg-10">Option A</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cbg-11" name="choices" value="b" />
+          <label for="cbg-11">Option B</label>
+        </div>
+      </fieldset>
+      <p id="cbg-err-1" role="alert" aria-atomic="true">Please select at least one option.</p>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

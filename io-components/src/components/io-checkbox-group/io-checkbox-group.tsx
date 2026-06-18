@@ -1,5 +1,6 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h } from '@stencil/core';
 
+import { applyAriaProp } from '../../utils/aria-prop';
 import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
 
 import type { IoCheckboxGroupChangeDetail } from './types';
@@ -48,9 +49,19 @@ export class IoCheckboxGroup {
   /** Helper text shown below the legend */
   @Prop() helperText = '';
 
+  /**
+   * Arbitrary ARIA attributes to spread onto the fieldset element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * <io-checkbox-group .aria={{ labelledby: 'external-label' }} label="Options" name="opts" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
+  private fieldsetEl?: HTMLFieldSetElement;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -66,6 +77,7 @@ export class IoCheckboxGroup {
 
   componentDidLoad() {
     this.syncChildren();
+    applyAriaProp(this.aria, this.fieldsetEl ?? null);
   }
 
   @Watch('name')
@@ -76,6 +88,16 @@ export class IoCheckboxGroup {
   @Watch('disabled')
   onDisabledChange() {
     this.syncChildren();
+  }
+
+  @Watch('error')
+  onErrorChange() {
+    this.syncChildren();
+  }
+
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.fieldsetEl ?? null);
   }
 
   // ── Event Handlers ────────────────────────────────────────────
@@ -97,13 +119,12 @@ export class IoCheckboxGroup {
 
   private syncChildren = () => {
     const checkboxes = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; value: string }>('io-checkbox'),
+      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; value: string; state: string }>('io-checkbox'),
     );
     for (const checkbox of checkboxes) {
       checkbox.name = this.name;
-      if (this.disabled) {
-        checkbox.disabled = true;
-      }
+      checkbox.disabled = this.disabled;
+      checkbox.state = this.error ? 'error' : 'none';
     }
   };
 
@@ -119,7 +140,7 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage } = this;
+    const { label, disabled, helperText, error, errorMessage, required } = this;
     const fieldsetClass = error ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
@@ -131,8 +152,12 @@ export class IoCheckboxGroup {
           disabled={disabled}
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
+          ref={(el) => { this.fieldsetEl = el as HTMLFieldSetElement | undefined; }}
         >
-          <legend class="checkbox-group__legend">{label}</legend>
+          <legend class="checkbox-group__legend">
+            {label}
+            {required && <span aria-hidden="true" class="checkbox-group__required"> *</span>}
+          </legend>
           {helperText && (
             <span class="checkbox-group__helper">{helperText}</span>
           )}
@@ -141,7 +166,7 @@ export class IoCheckboxGroup {
           </div>
         </fieldset>
         {error && errorMessage && (
-          <p id={this.errorId} class="checkbox-group__error" aria-live="polite">
+          <p id={this.errorId} class="checkbox-group__error" role="alert" aria-atomic="true">
             {errorMessage}
           </p>
         )}

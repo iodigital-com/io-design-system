@@ -76,7 +76,7 @@ export class IoSegment {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { value, label, disabled, icon, selected } = this;
+    const { label, disabled, icon, selected } = this;
 
     const btnClass = [
       'segment',

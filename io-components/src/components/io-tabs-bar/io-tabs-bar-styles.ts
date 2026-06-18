@@ -28,9 +28,10 @@ export function getTabsBarStyles(): string {
       display: none;
     }
 
-    /* ── Slotted tab button (base) ──────────────────────── */
+    /* ── Slotted tab button / anchor (base) ─────────────── */
 
-    ::slotted(button) {
+    ::slotted(button),
+    ::slotted(a) {
       /* !important overrides are required here: Tailwind's preflight resets
          button {padding:0; color:inherit; font-*:inherit; cursor:default}
          in the outer document, and light-DOM author styles take cascade
@@ -52,13 +53,15 @@ export function getTabsBarStyles(): string {
       cursor: pointer !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
+      text-decoration: none !important;
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast), border-bottom-color var(--io-motion-fast);
       -webkit-font-smoothing: antialiased;
     }
 
     /* ── Active tab ──────────────────────────────────────── */
 
-    ::slotted(button[aria-selected="true"]) {
+    ::slotted(button[aria-selected="true"]),
+    ::slotted(a[aria-selected="true"]) {
       color: var(--io-text-primary) !important;
       border-bottom-color: var(--io-tabs-indicator-color) !important;
     }
@@ -66,7 +69,8 @@ export function getTabsBarStyles(): string {
     /* ── Hover ───────────────────────────────────────────── */
 
     @media (hover: hover) and (pointer: fine) {
-      ::slotted(button:not([aria-selected="true"]):not(:disabled):hover) {
+      ::slotted(button:not([aria-selected="true"]):not(:disabled):hover),
+      ::slotted(a:not([aria-selected="true"]):not([aria-disabled="true"]):hover) {
         color: var(--io-text-primary) !important;
         background: var(--io-state-hover) !important;
       }
@@ -74,7 +78,8 @@ export function getTabsBarStyles(): string {
 
     /* ── Disabled ────────────────────────────────────────── */
 
-    ::slotted(button:disabled) {
+    ::slotted(button:disabled),
+    ::slotted(a[aria-disabled="true"]) {
       opacity: var(--io-state-disabled-opacity);
       cursor: not-allowed;
       pointer-events: none;
@@ -82,7 +87,8 @@ export function getTabsBarStyles(): string {
 
     /* ── Focus visible ───────────────────────────────────── */
 
-    ::slotted(button:focus-visible) {
+    ::slotted(button:focus-visible),
+    ::slotted(a:focus-visible) {
       outline: none;
       box-shadow: var(--io-focus-ring-active);
       border-radius: var(--io-border-radius-xs);
@@ -91,7 +97,42 @@ export function getTabsBarStyles(): string {
     /* ── Reduced motion ──────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      ::slotted(button) { transition: none; }
+      ::slotted(button),
+      ::slotted(a) { transition: none; }
+    }
+
+    /* ── Compact layout ──────────────────────────────────── */
+
+    :host([compact]) .tablist {
+      padding: var(--io-space-1) var(--io-space-2);
+    }
+
+    :host([compact]) ::slotted(button),
+    :host([compact]) ::slotted(a) {
+      padding: var(--io-space-1) var(--io-space-2) !important;
+    }
+
+    /* ── Forced colors / Windows High Contrast Mode ──────── */
+
+    @media (forced-colors: active) {
+      .tablist {
+        border-bottom: 2px solid ButtonText;
+        forced-color-adjust: none;
+      }
+
+      ::slotted(button[aria-selected="true"]),
+      ::slotted(a[aria-selected="true"]) {
+        color: Highlight !important;
+        border-bottom-color: Highlight !important;
+        outline: 2px solid Highlight;
+        forced-color-adjust: none;
+      }
+
+      ::slotted(button:disabled),
+      ::slotted([aria-disabled="true"]) {
+        color: GrayText !important;
+        forced-color-adjust: none;
+      }
     }
   `;
 }

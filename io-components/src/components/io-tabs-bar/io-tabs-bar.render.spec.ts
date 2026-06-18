@@ -49,3 +49,17 @@ describe('io-tabs-bar render() — label prop', () => {
     expect(tablistCall![1]['aria-label']).toBeUndefined();
   });
 });
+
+// ── compact prop ──────────────────────────────────────────────────────────────
+
+describe('io-tabs-bar render() — compact prop', () => {
+  it('compact prop defaults to false', () => {
+    const c = makeTabsBar();
+    expect(c.compact).toBe(false);
+  });
+
+  it('compact prop can be set to true', () => {
+    const c = makeTabsBar({ compact: true } as Partial<IoTabsBar>);
+    expect((c as any).compact).toBe(true);
+  });
+});

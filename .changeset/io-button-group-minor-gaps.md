@@ -1,5 +1,5 @@
 ---
-"@iodigital-com/components": minor
+"@iodigital-com/components": patch
 ---
 
 fix(io-button-group): define missing gap token, unique label IDs (#640)

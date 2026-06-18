@@ -16,7 +16,9 @@ import type { IoSpinnerSize, IoSpinnerColor } from './types';
  * @example
  * <io-spinner></io-spinner>
  * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
- * <io-spinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }}></io-spinner>
+ * // JSX / framework usage (dot-property binding):
+ * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+ * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
  */
 @Component({
   tag: 'io-spinner',
@@ -48,8 +50,8 @@ export class IoSpinner {
     const label = normalizeSpinnerLabel(this.label);
     const className = getSpinnerClassName(size, color);
 
-    // aria['aria-label'] takes precedence over the label prop
-    const ariaLabel = aria?.['aria-label'] ?? label;
+    // aria['aria-label'] takes precedence over the label prop, but only when non-blank
+    const ariaLabel = aria?.['aria-label']?.trim() || label;
 
     return (
       <Host

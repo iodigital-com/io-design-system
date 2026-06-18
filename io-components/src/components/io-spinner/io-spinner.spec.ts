@@ -148,4 +148,32 @@ describe('io-spinner — aria prop', () => {
     };
     expect(() => component.render()).not.toThrow();
   });
+
+  it('falls back to label prop when aria-label is an empty string', () => {
+    const component = new IoSpinner();
+    component.label = 'Processing';
+    component.aria = { 'aria-label': '' };
+
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-label']).toBe('Processing');
+  });
+
+  it('falls back to label prop when aria-label is whitespace-only', () => {
+    const component = new IoSpinner();
+    component.label = 'Processing';
+    component.aria = { 'aria-label': '   ' };
+
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-label']).toBe('Processing');
+  });
+
+  it('falls back to "Loading" default when aria-label is blank and label is empty', () => {
+    const component = new IoSpinner() as any;
+    component.label = undefined;
+    component.aria = { 'aria-label': '' };
+
+    const attrs = hostAttrs(component);
+    // normalizeSpinnerLabel(undefined) returns 'Loading'
+    expect(attrs['aria-label']).toBe('Loading');
+  });
 });

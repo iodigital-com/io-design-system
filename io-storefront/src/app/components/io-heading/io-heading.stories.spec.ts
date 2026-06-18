@@ -7,7 +7,6 @@ import {
   headingStoryAlign,
   headingStoryColors,
   headingStoryEllipsis,
-  headingStoryColors,
   headingPropDefinitions,
 } from './io-heading.stories';
 

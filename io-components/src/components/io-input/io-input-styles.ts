@@ -229,6 +229,19 @@ export function getInputStyles(): string {
       margin-top: var(--io-space-1);
     }
 
+    /* Visually hidden sr-only live region for counter — announced by screen readers */
+    .input-counter-sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
     .input-wrapper__loading {
       display: flex;
       align-items: center;
@@ -238,6 +251,32 @@ export function getInputStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .input-field,
       .input-label { transition: none; }
+    }
+
+    /* ── Compact variant ─────────────────────────────────────── */
+
+    /* Compact: reduces field height and vertical padding for dense layouts.
+       Uses the compact density token (--io-space-1 = 4px) to override the default
+       (--io-spacing-component-y = 8px) without relying on the global density selector. */
+    :host([compact]) .input-field {
+      padding-top: var(--io-space-1);
+      padding-bottom: var(--io-space-1);
+      min-height: unset;
+    }
+
+    :host([compact]) .input-field--sm {
+      height: calc(var(--io-size-input-sm) - 8px);
+      min-height: unset;
+    }
+
+    :host([compact]) .input-field--md {
+      height: calc(var(--io-size-input-md) - 8px);
+      min-height: unset;
+    }
+
+    :host([compact]) .input-field--lg {
+      height: calc(var(--io-size-input-lg) - 8px);
+      min-height: unset;
     }
 
     /* ── RTL support ─────────────────────────────────────────── */

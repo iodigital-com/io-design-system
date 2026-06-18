@@ -9,6 +9,7 @@ import {
   progressStorySuccess,
   progressStoryWarning,
   progressStoryError,
+  progressStoryIndeterminate,
 } from '../io-progress.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -101,6 +102,14 @@ export default function IoProgressExamplesPage() {
             <io-progress value={0} color="blue" size="md" label="Step 3 not started" />
           </div>
         </div>
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="Indeterminate — infinite shimmer animation for unknown progress duration" />
+        <ComponentStory
+          story={progressStoryIndeterminate}
+          previewStyle={{ flexDirection: 'column', alignItems: 'stretch', minWidth: '300px' }}
+        />
       </section>
 
     </div>

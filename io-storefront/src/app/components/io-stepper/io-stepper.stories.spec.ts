@@ -61,6 +61,12 @@ describe('io-stepper storefront stories', () => {
       expect(first.properties.orientation).toBe('vertical');
     });
 
+    it('generator forwards ariaLabel from properties', () => {
+      const els = stepperStory.generator?.({ properties: { ariaLabel: 'My steps' } }) ?? [];
+      const first = els[0] as { properties: Record<string, unknown> };
+      expect(first.properties.ariaLabel).toBe('My steps');
+    });
+
     it('step before current has complete status', () => {
       const els = stepperStory.generator?.({ properties: { current: 3 } }) ?? [];
       const first = els[0] as { children: Array<{ properties: Record<string, unknown> }> };
@@ -125,6 +131,7 @@ describe('io-stepper storefront stories', () => {
       const names = stepperPropDefinitions.map((d) => d.name);
       expect(names).toContain('current');
       expect(names).toContain('orientation');
+      expect(names).toContain('ariaLabel');
     });
 
     it('orientation prop has horizontal and vertical options', () => {

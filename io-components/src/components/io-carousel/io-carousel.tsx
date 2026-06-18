@@ -113,7 +113,7 @@ export class IoCarousel {
   private dragStartScrollLeft = 0;
 
   private get track(): HTMLElement | null {
-    return this.el.shadowRoot?.querySelector<HTMLElement>('.carousel-track') ?? null;
+    return this.el?.shadowRoot?.querySelector<HTMLElement>('.carousel-track') ?? null;
   }
 
 
@@ -209,6 +209,9 @@ export class IoCarousel {
     if (emitEvent) {
       this.update.emit({ activeIndex: next, previousIndex, totalSlides: this.totalSlides });
     }
+    // Keep isAtStart/isAtEnd fresh for programmatic index changes (slot changes, resize,
+    // external activeSlideIndex prop changes) that do not go through the scroll handler.
+    this.updateBoundaryState();
   }
 
   private onPrev = () => {
@@ -359,10 +362,10 @@ export class IoCarousel {
     const isPrevDisabled = !rewind && isAtStart;
     const isNextDisabled = !rewind && isAtEnd;
 
-    // When rewind=true at a boundary, give AT users a contextual label indicating
-    // the wrap-around destination instead of the generic prev/next label.
-    const prevAriaLabel = rewind && isAtStart ? 'Go to last slide' : prevLabel;
-    const nextAriaLabel = rewind && isAtEnd ? 'Go to first slide' : nextLabel;
+    // When rewind=true at a boundary, keep the existing prevLabel/nextLabel for
+    // localization — callers already customize those props for their language.
+    const prevAriaLabel = prevLabel;
+    const nextAriaLabel = nextLabel;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

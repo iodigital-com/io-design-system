@@ -1,8 +1,20 @@
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoCarousel } from './io-carousel';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+
+function renderCalls(c: IoCarousel) {
+  const hMock = h as unknown as ReturnType<typeof vi.fn>;
+  hMock.mockClear();
+  (c as any).render();
+  return hMock.mock.calls as Array<[string, Record<string, unknown>, ...unknown[]]>;
+}
+
+function findBtn(calls: Array<[string, Record<string, unknown>, ...unknown[]]>, cls: string) {
+  return calls.find(([tag, attrs]) => tag === 'button' && typeof attrs?.class === 'string' && (attrs.class as string).includes(cls));
+}
 
 function makeTrack(
   overrides: Partial<{ scrollLeft: number; scrollWidth: number; clientWidth: number }> = {},
@@ -767,112 +779,72 @@ describe('io-carousel — updateBoundaryState', () => {
   });
 });
 
-// ── disabled prev/next button logic ──────────────────────────────────────────
-// These tests verify that the disabled guard conditions are correct.
-// The render() tests only verify no-throw; actual DOM output is covered by
-// io-carousel.render.spec.tsx snapshots.
+// ── disabled prev/next button DOM assertions ─────────────────────────────────
+// These tests verify render() actually writes disabled and aria-label into the
+// button vnode props — not just that the guard expression evaluates correctly.
 
-describe('io-carousel — boundary-disabled logic', () => {
-  it('prev button should be disabled when rewind=false and at start', () => {
+describe('io-carousel — boundary-disabled DOM assertions', () => {
+  it('prev button receives disabled=true when rewind=false and isAtStart=true', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
     c.rewind = false;
     (c as any).isAtStart = true;
-    // isPrevDisabled = !rewind && isAtStart
-    expect(!c.rewind && (c as any).isAtStart).toBe(true);
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1].disabled).toBe(true);
   });
 
-  it('prev button should NOT be disabled when rewind=true even at start', () => {
+  it('prev button does NOT receive disabled when rewind=true (even at start)', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
     c.rewind = true;
     (c as any).isAtStart = true;
-    expect(!c.rewind && (c as any).isAtStart).toBe(false);
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1].disabled).toBe(false);
   });
 
-  it('prev button should NOT be disabled when rewind=false but NOT at start', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = false;
-    (c as any).isAtStart = false;
-    expect(!c.rewind && (c as any).isAtStart).toBe(false);
-  });
-
-  it('next button should be disabled when rewind=false and at end', () => {
+  it('next button receives disabled=true when rewind=false and isAtEnd=true', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
     c.rewind = false;
     (c as any).isAtEnd = true;
-    // isNextDisabled = !rewind && isAtEnd
-    expect(!c.rewind && (c as any).isAtEnd).toBe(true);
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1].disabled).toBe(true);
   });
 
-  it('next button should NOT be disabled when rewind=true even at end', () => {
+  it('next button does NOT receive disabled when rewind=true (even at end)', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
     c.rewind = true;
     (c as any).isAtEnd = true;
-    expect(!c.rewind && (c as any).isAtEnd).toBe(false);
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1].disabled).toBe(false);
   });
 
-  it('next button should NOT be disabled when rewind=false but NOT at end', () => {
+  it('prev button aria-label reflects prevLabel prop', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
-    c.rewind = false;
-    (c as any).isAtEnd = false;
-    expect(!c.rewind && (c as any).isAtEnd).toBe(false);
+    c.prevLabel = 'Vorige';
+    const calls = renderCalls(c);
+    const prevBtn = findBtn(calls, 'carousel-btn--prev');
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1]['aria-label']).toBe('Vorige');
   });
 
-  it('render does not throw with rewind=false, isAtStart=true', () => {
+  it('next button aria-label reflects nextLabel prop', () => {
     const c = new IoCarousel();
     (c as any).el = { shadowRoot: null };
-    c.rewind = false;
-    (c as any).isAtStart = true;
-    expect(() => (c as any).render()).not.toThrow();
-  });
-
-  it('render does not throw with rewind=false, isAtEnd=true', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = false;
-    (c as any).isAtEnd = true;
-    expect(() => (c as any).render()).not.toThrow();
-  });
-
-  it('contextual aria-label for prev at start with rewind=true is "Go to last slide"', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = true;
-    (c as any).isAtStart = true;
-    // prevAriaLabel = rewind && isAtStart ? 'Go to last slide' : prevLabel
-    const expected = (c.rewind && (c as any).isAtStart) ? 'Go to last slide' : c.prevLabel;
-    expect(expected).toBe('Go to last slide');
-  });
-
-  it('contextual aria-label for next at end with rewind=true is "Go to first slide"', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = true;
-    (c as any).isAtEnd = true;
-    const expected = (c.rewind && (c as any).isAtEnd) ? 'Go to first slide' : c.nextLabel;
-    expect(expected).toBe('Go to first slide');
-  });
-
-  it('contextual aria-label for prev uses prevLabel when NOT at start', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = true;
-    (c as any).isAtStart = false;
-    const expected = (c.rewind && (c as any).isAtStart) ? 'Go to last slide' : c.prevLabel;
-    expect(expected).toBe('Previous');
-  });
-
-  it('contextual aria-label for next uses nextLabel when NOT at end', () => {
-    const c = new IoCarousel();
-    (c as any).el = { shadowRoot: null };
-    c.rewind = true;
-    (c as any).isAtEnd = false;
-    const expected = (c.rewind && (c as any).isAtEnd) ? 'Go to first slide' : c.nextLabel;
-    expect(expected).toBe('Next');
+    c.nextLabel = 'Volgende';
+    const calls = renderCalls(c);
+    const nextBtn = findBtn(calls, 'carousel-btn--next');
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1]['aria-label']).toBe('Volgende');
   });
 });

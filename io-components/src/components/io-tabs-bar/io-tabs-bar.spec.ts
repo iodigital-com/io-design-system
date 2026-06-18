@@ -33,6 +33,11 @@ describe('io-tabs-bar — default props', () => {
     const component = makeComponent();
     expect(component.label).toBeUndefined();
   });
+
+  it('has compact=false by default', () => {
+    const component = makeComponent();
+    expect(component.compact).toBe(false);
+  });
 });
 
 // ── syncFromSlot ──────────────────────────────────────────────────────────────
@@ -449,6 +454,100 @@ describe('normalizeActiveTabIndex — all buttons disabled', () => {
   it('returns 0 when all buttons are disabled (no firstEnabled found)', () => {
     const buttons = [makeButton('A', true), makeButton('B', true), makeButton('C', true)];
     expect(normalizeActiveTabIndex(0, buttons)).toBe(0);
+  });
+});
+
+// ── compact prop ──────────────────────────────────────────────────────────────
+
+describe('io-tabs-bar — compact prop', () => {
+  it('has compact=false by default', () => {
+    const component = makeComponent();
+    expect(component.compact).toBe(false);
+  });
+
+  it('compact prop can be set to true', () => {
+    const component = makeComponent();
+    (component as any).compact = true;
+    expect((component as any).compact).toBe(true);
+  });
+});
+
+// ── anchor element support ────────────────────────────────────────────────────
+
+function makeAnchor(label: string, disabled = false): HTMLAnchorElement {
+  const a = document.createElement('a');
+  a.href = '#';
+  a.textContent = label;
+  if (disabled) a.setAttribute('aria-disabled', 'true');
+  return a;
+}
+
+function makeComponentWithItems(items: Array<HTMLButtonElement | HTMLAnchorElement> = []) {
+  const component = new IoTabsBar();
+  (component as any).el = document.createElement('io-tabs-bar');
+  (component as any).update = { emit: vi.fn() };
+  (component as any).slotEl = { assignedElements: () => items };
+  return component;
+}
+
+describe('io-tabs-bar — anchor element support', () => {
+  it('recognizes <a> elements as tab items', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('About');
+    const component = makeComponentWithItems([a1, a2]);
+    (component as any).syncFromSlot();
+    expect((component as any).buttons).toHaveLength(2);
+  });
+
+  it('applies role=tab to slotted anchor elements', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('About');
+    const component = makeComponentWithItems([a1, a2]);
+    (component as any).syncFromSlot();
+    expect(a1.getAttribute('role')).toBe('tab');
+    expect(a2.getAttribute('role')).toBe('tab');
+  });
+
+  it('sets aria-selected on anchor tab items', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('About');
+    const component = makeComponentWithItems([a1, a2]);
+    component.activeTabIndex = 1;
+    (component as any).syncFromSlot();
+    expect(a1.getAttribute('aria-selected')).toBe('false');
+    expect(a2.getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('skips anchor elements with aria-disabled="true"', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('Disabled', true);
+    const a3 = makeAnchor('About');
+    const component = makeComponentWithItems([a1, a2, a3]);
+    component.activeTabIndex = 1; // disabled anchor
+    (component as any).syncFromSlot();
+    // Should normalize away from disabled anchor
+    expect(component.activeTabIndex).toBe(0);
+  });
+
+  it('supports mixed button and anchor tab items', () => {
+    const btn = makeButton('Button Tab');
+    const a = makeAnchor('Anchor Tab');
+    const component = makeComponentWithItems([btn, a]);
+    (component as any).syncFromSlot();
+    expect((component as any).buttons).toHaveLength(2);
+    expect(btn.getAttribute('role')).toBe('tab');
+    expect(a.getAttribute('role')).toBe('tab');
+  });
+
+  it('does not emit update event when clicking a disabled anchor', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('Disabled', true);
+    const component = makeComponentWithItems([a1, a2]);
+    (component as any).syncFromSlot();
+
+    (component as any).handleTabClick(1);
+
+    expect((component as any).update.emit).not.toHaveBeenCalled();
   });
 });
 

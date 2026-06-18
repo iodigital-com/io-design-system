@@ -38,6 +38,18 @@ describe('io-tabs-bar — getTabsBarStyles', () => {
   it('contains ::slotted(button) selector', () => {
     expect(getTabsBarStyles()).toContain('::slotted(button)');
   });
+
+  it('contains ::slotted(a) selector for anchor support', () => {
+    expect(getTabsBarStyles()).toContain('::slotted(a)');
+  });
+
+  it('contains :host([compact]) selector for compact prop', () => {
+    expect(getTabsBarStyles()).toContain(':host([compact])');
+  });
+
+  it('contains forced-colors media query for HCM support', () => {
+    expect(getTabsBarStyles()).toContain('forced-colors: active');
+  });
 });
 
 // ── componentDidLoad ──────────────────────────────────────────────────────────

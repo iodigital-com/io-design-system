@@ -148,7 +148,7 @@ export class IoMultiSelect {
    * Fires when the trigger button loses focus and the dropdown is closed.
    * Useful for touched/dirty tracking in form libraries.
    */
-  @Event({ bubbles: false }) blur!: EventEmitter<void>;
+  @Event() blur!: EventEmitter<FocusEvent>;
 
   /**
    * Fires whenever the dropdown opens or closes.
@@ -236,11 +236,13 @@ export class IoMultiSelect {
     this.disabled = disabled;
   }
 
-  formStateRestoreCallback(state: string | FormData, _mode: 'restore' | 'autocomplete'): void {
-    if (state instanceof FormData) {
-      this.value = state.getAll(this.name ?? '') as string[];
+  formStateRestoreCallback(state: string | File | FormData | null): void {
+    if (state === null) {
+      this.value = [];
     } else if (typeof state === 'string') {
-      this.value = state ? state.split(',') : [];
+      this.value = state ? [state] : [];
+    } else if (state instanceof FormData) {
+      this.value = (state.getAll(this.name ?? '') as string[]).filter(v => typeof v === 'string');
     }
     this.syncFormValue?.();
   }
@@ -402,10 +404,9 @@ export class IoMultiSelect {
     this.isOpen = !this.isOpen;
   };
 
-  private handleTriggerBlur = (_ev: FocusEvent): void => {
-    if (!this.isOpen) {
-      this.blur.emit();
-    }
+  private handleTriggerBlur = (ev: FocusEvent): void => {
+    if (this.isOpen) return;
+    this.blur.emit(ev);
   };
 
   private handleTriggerKeyDown = (ev: KeyboardEvent) => {

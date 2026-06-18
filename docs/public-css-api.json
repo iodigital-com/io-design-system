@@ -960,6 +960,12 @@
     "description": "Maximum width of a selected-value chip before text is truncated. Defaults to 160px."
   },
   {
+    "cssVar": "--io-multi-select-chip-remove-size",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Width and height of the chip remove button. Must meet WCAG 2.5.8 minimum touch target of 24x24px. Defaults to 24px."
+  },
+  {
     "cssVar": "--io-breadcrumb-separator",
     "classification": "public-api",
     "component": "io-breadcrumb",

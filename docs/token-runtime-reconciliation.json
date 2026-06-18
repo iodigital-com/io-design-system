@@ -2376,6 +2376,14 @@
       "notes": "Maximum width of selected-value chips in the io-multi-select trigger before text truncation. Component-level dimension token defined in app.css."
     },
     {
+      "runtimeCssVar": "--io-multi-select-chip-remove-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width and height of the chip remove button in io-multi-select. WCAG 2.5.8 minimum 24x24px touch target."
+    },
+    {
       "runtimeCssVar": "--io-option-hover-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

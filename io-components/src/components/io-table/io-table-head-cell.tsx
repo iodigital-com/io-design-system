@@ -90,7 +90,7 @@ export class IoTableHeadCell {
         <th
           scope="col"
           class={thClass}
-          aria-sort={ariaSort ?? undefined}
+          aria-sort={ariaSort}
           tabIndex={sortable ? 0 : undefined}
           onClick={sortable ? this.handleSort : undefined}
           onKeyDown={sortable ? this.handleKeyDown : undefined}

@@ -129,7 +129,7 @@ export class IoLink {
           onClick={this.handleClick}
         >
           {hasIcon && this.renderIcon()}
-          <span class={hideLabel && (icon || iconSource) ? 'link__label link__label--hidden' : 'link__label'}>
+          <span class={hideLabel && (this.icon || this.iconSource) ? 'link__label link__label--hidden' : 'link__label'}>
             <slot />
           </span>
         </a>

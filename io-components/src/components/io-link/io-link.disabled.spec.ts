@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
+import { h } from '@stencil/core';
+
 import { IoLink } from './io-link';
 
 describe('io-link — disabled', () => {
@@ -42,13 +44,12 @@ describe('io-link — disabled', () => {
     expect(stopPropagationMock).toHaveBeenCalled();
   });
 
-  it('render uses tabIndex=0 and aria-disabled when disabled', () => {
+  it('render sets aria-disabled="true" and tabIndex=0 on the anchor when disabled', () => {
     component.disabled = true;
-    // render() sets tabIndex={disabled ? 0 : undefined} so the link remains
-    // focusable for keyboard users while aria-disabled="true" blocks navigation.
-    const vnode = component.render() as any;
-    const anchor = vnode.vchildren?.find((c: any) => c.$tag$ === 'a') ?? vnode;
-    const attrs = anchor.$attrs$ ?? {};
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
     expect(attrs['aria-disabled']).toBe('true');
     expect(attrs['tabIndex']).toBe(0);
   });

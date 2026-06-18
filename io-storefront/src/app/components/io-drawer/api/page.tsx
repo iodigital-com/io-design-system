@@ -59,6 +59,12 @@ export default function IoDrawerApiPage() {
               <InlineCode key="d">&apos;Close drawer&apos;</InlineCode>,
               'Accessible label for the close button. Override with a more specific description when the context warrants it.',
             ],
+            [
+              <InlineCode key="n">dismissButton</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">true</InlineCode>,
+              'Controls visibility of the × dismiss button. When false, the drawer header has no close button and the user cannot dismiss via keyboard. Use false for guided-flow drawers where the consumer controls the close action.',
+            ],
           ]}
         />
       </section>
@@ -84,7 +90,7 @@ export default function IoDrawerApiPage() {
             [
               <InlineCode key="n">close()</InlineCode>,
               <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
-              'Closes the drawer and emits the dismiss event. No-op if already closed. Equivalent to setting open = false.',
+              'Closes the drawer programmatically. No-op if already closed. Does NOT emit the dismiss event. Equivalent to setting open = false.',
             ],
           ]}
         />
@@ -108,10 +114,13 @@ export default function IoDrawerApiPage() {
               <InlineCode key="n">dismiss</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
-              'Emitted after the drawer closes — whether via backdrop click, ESC key, the built-in close button, or setting open to false.',
+              'Only fires when the user actively dismisses (× button, Escape key, backdrop click). Does NOT fire when open is set to false programmatically.',
             ],
           ]}
         />
+        <CodeNote label="Accessible name required">
+          {`// A console.error is logged in development when the drawer has no accessible name.\n// Provide at least one of: heading prop, heading slot, aria-label, or aria-labelledby.`}
+        </CodeNote>
         <CodeNote label="Usage">
 {`// Vanilla JS
 const drawer = document.querySelector('io-drawer');

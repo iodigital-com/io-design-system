@@ -200,8 +200,8 @@ export function getCarouselStyles(): string {
     .carousel-description-text {
       display: block;
       font-family: var(--io-font-primary);
-      font-size: var(--io-font-size-md, 1rem);
-      line-height: var(--io-line-height-base, 1.5);
+      font-size: var(--io-font-size-base, 1rem);
+      line-height: var(--io-line-height-normal, 1.5);
       color: var(--io-text-secondary);
     }
 
@@ -237,8 +237,8 @@ export function getCarouselStyles(): string {
       border-radius: var(--io-border-radius-pill);
       background: color-mix(in srgb, var(--io-color-primary) 30%, transparent);
       transition: background var(--io-motion-fast), transform var(--io-motion-fast);
-      min-width: var(--io-space-touch-target, 44px);
-      min-height: var(--io-space-touch-target, 44px);
+      min-width: var(--io-touch-target-min, 44px);
+      min-height: var(--io-touch-target-min, 44px);
       display: flex;
       align-items: center;
       justify-content: center;

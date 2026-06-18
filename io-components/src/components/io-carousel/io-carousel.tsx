@@ -397,8 +397,8 @@ export class IoCarousel {
         <style>{getCarouselStyles()}</style>
         <div
           role="region"
-          aria-label={hasHeadingSlot ? undefined : label}
-          aria-labelledby={hasHeadingSlot ? headingId : undefined}
+          aria-label={hasHeadingSlot || heading ? undefined : label}
+          aria-labelledby={hasHeadingSlot || heading ? headingId : undefined}
           aria-roledescription="carousel"
         >
           <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
@@ -452,14 +452,13 @@ export class IoCarousel {
           </div>
 
           {pagination && totalSlides > 0 && (
-            <div class="carousel-pagination" role="tablist" aria-label="Slide indicators">
+            <div class="carousel-pagination" role="group" aria-label="Slide navigation">
               {Array.from({ length: totalSlides }, (_, i) => (
                 <button
                   type="button"
-                  role="tab"
                   class={{ 'carousel-dot': true, 'carousel-dot--active': i === activeSlideIndex }}
                   aria-label={`Go to slide ${i + 1}`}
-                  aria-selected={i === activeSlideIndex ? 'true' : 'false'}
+                  aria-current={i === activeSlideIndex ? 'true' : undefined}
                   onClick={() => {
                     this.scrollToIndex(i, this.scrollBehavior);
                   }}

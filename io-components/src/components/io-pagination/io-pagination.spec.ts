@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoPagination } from './io-pagination';
 
@@ -365,5 +366,185 @@ describe('io-pagination — totalItems and perPage props', () => {
     (component as any).onPerPageChange();
 
     expect(component.page).toBe(2);
+  });
+});
+
+describe('io-pagination — intl prop', () => {
+  let component: IoPagination;
+
+  beforeEach(() => {
+    component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('defaults intl to undefined', () => {
+    expect(component.intl).toBeUndefined();
+  });
+
+  it('renders nav with default aria-label "Pagination" when intl.root is not set', () => {
+    component.totalPages = 5;
+    component.page = 1;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find the nav h() call
+    const navCall = hMock.mock.calls.find(
+      ([tag, attrs]) => tag === 'nav' && (attrs as Record<string, unknown>)?.['aria-label'] !== undefined,
+    );
+    const navAriaLabel = navCall?.[1]?.['aria-label'];
+    expect(navAriaLabel).toBe('Pagination');
+  });
+
+  it('renders nav with custom aria-label from intl.root', () => {
+    component.intl = { root: 'Paginación' };
+    component.totalPages = 5;
+    component.page = 1;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    const navCall = hMock.mock.calls.find(
+      ([tag, attrs]) => tag === 'nav' && (attrs as Record<string, unknown>)?.['aria-label'] !== undefined,
+    );
+    const navAriaLabel = navCall?.[1]?.['aria-label'];
+    expect(navAriaLabel).toBe('Paginación');
+  });
+
+  it('renders prev button with aria-label from intl.prev', () => {
+    component.intl = { prev: 'Anterior' };
+    component.totalPages = 5;
+    component.page = 2;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find the prev button (page-btn--nav class, first one should be prev)
+    const prevBtnCall = hMock.mock.calls.find(
+      ([tag, attrs], idx, arr) => {
+        // Find button with page-btn--nav class in first position
+        const isBtn = tag === 'button';
+        const hasNavClass = (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav');
+        if (!isBtn || !hasNavClass) return false;
+        // Make sure it's the first one (prev button)
+        const prevBtnCalls = arr.filter(
+          ([t, a]) =>
+            t === 'button' &&
+            (a as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
+        );
+        return arr.indexOf([tag, attrs, ...arr[idx].slice(2)]) === arr.indexOf(prevBtnCalls[0]);
+      },
+    );
+    const prevAriaLabel = prevBtnCall?.[1]?.['aria-label'];
+    expect(prevAriaLabel).toBe('Anterior');
+  });
+
+  it('renders next button with aria-label from intl.next', () => {
+    component.intl = { next: 'Siguiente' };
+    component.totalPages = 5;
+    component.page = 2;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find the next button (page-btn--nav class, last one should be next)
+    const navBtnCalls = hMock.mock.calls.filter(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
+    );
+    const nextBtnCall = navBtnCalls[navBtnCalls.length - 1];
+    const nextAriaLabel = nextBtnCall?.[1]?.['aria-label'];
+    expect(nextAriaLabel).toBe('Siguiente');
+  });
+
+  it('renders page button with aria-label from intl.page prefix', () => {
+    component.intl = { page: 'Página' };
+    component.totalPages = 5;
+    component.page = 1;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find page number buttons (not nav buttons)
+    const pageBtnCall = hMock.mock.calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.['aria-label']?.toString().startsWith('Página'),
+    );
+    const pageAriaLabel = pageBtnCall?.[1]?.['aria-label'];
+    expect(pageAriaLabel).toMatch(/^Página \d+$/);
+  });
+
+  it('prev button falls back to prevLabel when intl.prev is not set', () => {
+    component.prevLabel = 'Go back';
+    component.totalPages = 5;
+    component.page = 2;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find prev button
+    const navBtnCalls = hMock.mock.calls.filter(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
+    );
+    const prevBtnCall = navBtnCalls[0];
+    const prevAriaLabel = prevBtnCall?.[1]?.['aria-label'];
+    expect(prevAriaLabel).toBe('Go back');
+  });
+
+  it('next button falls back to nextLabel when intl.next is not set', () => {
+    component.nextLabel = 'Go forward';
+    component.totalPages = 5;
+    component.page = 2;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find next button
+    const navBtnCalls = hMock.mock.calls.filter(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
+    );
+    const nextBtnCall = navBtnCalls[navBtnCalls.length - 1];
+    const nextAriaLabel = nextBtnCall?.[1]?.['aria-label'];
+    expect(nextAriaLabel).toBe('Go forward');
+  });
+
+  it('page button uses default "Page" prefix when intl.page is not set', () => {
+    component.totalPages = 5;
+    component.page = 1;
+    component.componentWillLoad();
+
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    component.render();
+
+    // Find page number button (not nav button)
+    const pageBtnCall = hMock.mock.calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        !(attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav') &&
+        (attrs as Record<string, unknown>)?.['aria-label']?.toString().includes('Page'),
+    );
+    const pageAriaLabel = pageBtnCall?.[1]?.['aria-label'];
+    expect(pageAriaLabel).toMatch(/^Page \d+$/);
   });
 });

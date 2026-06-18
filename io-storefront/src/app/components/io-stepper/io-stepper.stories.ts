@@ -10,11 +10,11 @@ export const stepperStory: Story<'io-stepper'> = {
     properties: {
       current: 2,
       orientation: 'horizontal',
-      ariaLabel: 'Progress steps',
+      ariaLabel: 'Progress',
     },
   },
   generator: ({ properties } = {}) => {
-    const { current = 2, orientation = 'horizontal', ariaLabel = 'Progress steps' } = (properties ?? {}) as {
+    const { current = 2, orientation = 'horizontal', ariaLabel = 'Progress' } = (properties ?? {}) as {
       current?: number;
       orientation?: 'horizontal' | 'vertical';
       ariaLabel?: string;
@@ -119,6 +119,23 @@ export const stepperStoryFiveSteps: Story<'io-stepper'> = {
   ],
 };
 
+
+/** Step with warning status — use when a step requires attention before proceeding. */
+export const stepperStoryWarning: Story<'io-stepper'> = {
+  state: { properties: { current: 2, orientation: 'horizontal' } },
+  generator: () => [
+    {
+      tag: 'io-stepper' as const,
+      properties: { current: 2, orientation: 'horizontal' },
+      children: [
+        { tag: 'io-step' as const, properties: { label: 'Account', status: 'complete' }, children: [] },
+        { tag: 'io-step' as const, properties: { label: 'Details', status: 'warning' }, children: [] },
+        { tag: 'io-step' as const, properties: { label: 'Review', status: 'upcoming' }, children: [] },
+      ],
+    },
+  ],
+};
+
 /**
  * Prop definitions for the Configurator controls panel.
  */
@@ -141,7 +158,7 @@ export const stepperPropDefinitions: PropDefinition[] = [
   {
     name: 'ariaLabel',
     type: 'string',
-    defaultValue: 'Progress steps',
+    defaultValue: 'Progress',
     description: 'Accessible label for the <nav> landmark. Override for i18n.',
     group: 'Accessibility',
   },

@@ -220,6 +220,7 @@ function onPointerOut(ev: MouseEvent): void {
 async function onFocusIn(ev: FocusEvent): Promise<void> {
   const trigger = findTooltipTrigger(ev.target);
   if (!trigger) return;
+  cancelHideTimer();
   await showTooltip(trigger);
 }
 

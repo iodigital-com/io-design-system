@@ -444,6 +444,39 @@ describe('tooltip-attribute', () => {
       vi.runAllTimers();
       expect(overlay.hasAttribute('data-visible')).toBe(false);
     });
+
+    it('pending hide timer is cancelled when focus enters trigger', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Focus cancels hide');
+      document.body.appendChild(btn);
+
+      // Show tooltip via pointerover
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay')!;
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Pointer leaves — schedules a hide after HIDE_DELAY_MS
+      const outside = document.createElement('div');
+      document.body.appendChild(outside);
+      document.dispatchEvent(new MouseEvent('pointerout', { bubbles: true, relatedTarget: outside }));
+
+      // Tooltip still visible before delay elapses
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+
+      // Focus enters the trigger before the timer fires — should cancel the pending hide
+      btn.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+
+      // Advance past the hide delay — hide must NOT have fired
+      vi.runAllTimers();
+
+      expect(overlay.getAttribute('data-visible')).toBe('true');
+    });
   });
 
   describe('showTooltip — empty text guard', () => {

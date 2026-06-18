@@ -184,7 +184,7 @@ export class IoTabsBar {
 
     if (ev.key === 'Enter') {
       // Enter on anchor: let the browser follow the link natively
-      const isAnchor = (ev.target as HTMLElement).tagName === 'A';
+      const isAnchor = (ev.target as HTMLElement | null)?.tagName === 'A';
       if (!isAnchor) {
         ev.preventDefault();
         this.handleTabClick(index);

@@ -41,8 +41,20 @@ export function getMultiSelectOptionId(listboxId: string, index: number): string
 
 // ── Floating-UI middleware ────────────────────────────────────────────────────
 
+/**
+ * Middleware for auto-placement: includes flip() so the dropdown flips to
+ * the opposite side when there is insufficient viewport space.
+ */
 export function getMultiSelectMiddleware() {
   return [offset(4), flip(), shift({ padding: 8 })];
+}
+
+/**
+ * Middleware for pinned placement (direction='up' or direction='down'):
+ * omits flip() to respect the consumer's explicit direction choice.
+ */
+export function getMultiSelectPinnedMiddleware() {
+  return [offset(4), shift({ padding: 8 })];
 }
 
 // ── ID helpers ────────────────────────────────────────────────────────────────

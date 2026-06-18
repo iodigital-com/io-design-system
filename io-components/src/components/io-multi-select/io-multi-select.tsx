@@ -18,6 +18,7 @@ import {
   resolveMultiSelectId,
   getMultiSelectWrapperClass,
   getMultiSelectMiddleware,
+  getMultiSelectPinnedMiddleware,
   getMultiSelectOptionId,
   getMultiSelectOptionClass,
   parseMultiSelectContent,
@@ -143,6 +144,18 @@ export class IoMultiSelect {
    */
   @Event() change!: EventEmitter<IoMultiSelectChangeDetail>;
 
+  /**
+   * Fires when the trigger button loses focus and the dropdown is closed.
+   * Useful for touched/dirty tracking in form libraries.
+   */
+  @Event({ bubbles: false }) blur!: EventEmitter<void>;
+
+  /**
+   * Fires whenever the dropdown opens or closes.
+   * Detail: `{ open: boolean }`
+   */
+  @Event({ bubbles: false }) toggle!: EventEmitter<{ open: boolean }>;
+
   // ── Public methods ────────────────────────────────────────────────────────
 
   /** Returns true when the field value satisfies all constraints. */
@@ -223,6 +236,15 @@ export class IoMultiSelect {
     this.disabled = disabled;
   }
 
+  formStateRestoreCallback(state: string | FormData, _mode: 'restore' | 'autocomplete'): void {
+    if (state instanceof FormData) {
+      this.value = state.getAll(this.name ?? '') as string[];
+    } else if (typeof state === 'string') {
+      this.value = state ? state.split(',') : [];
+    }
+    this.syncFormValue?.();
+  }
+
   // ── Watchers ──────────────────────────────────────────────────────────────
 
   @Watch('value')
@@ -243,6 +265,8 @@ export class IoMultiSelect {
 
   @Watch('isOpen')
   onIsOpenChange(newVal: boolean) {
+    this.toggle.emit({ open: newVal });
+
     if (newVal) {
       this.attachClickOutside();
       void this.positionDropdown();
@@ -298,15 +322,14 @@ export class IoMultiSelect {
   private async positionDropdown(): Promise<void> {
     if (!this.triggerEl || !this.dropdownEl) return;
 
+    const isAuto = this.dropdownDirection === 'auto';
     const placement =
       this.dropdownDirection === 'up'
         ? 'top-start'
-        : this.dropdownDirection === 'down'
-          ? 'bottom-start'
-          : 'bottom-start';
+        : 'bottom-start';
 
     const { x, y } = await computePosition(this.triggerEl, this.dropdownEl, {
-      middleware: getMultiSelectMiddleware(),
+      middleware: isAuto ? getMultiSelectMiddleware() : getMultiSelectPinnedMiddleware(),
       placement,
       strategy: 'fixed',
     });
@@ -377,6 +400,12 @@ export class IoMultiSelect {
   private handleTriggerClick = () => {
     if (this.disabled) return;
     this.isOpen = !this.isOpen;
+  };
+
+  private handleTriggerBlur = (_ev: FocusEvent): void => {
+    if (!this.isOpen) {
+      this.blur.emit();
+    }
   };
 
   private handleTriggerKeyDown = (ev: KeyboardEvent) => {
@@ -672,6 +701,7 @@ export class IoMultiSelect {
             disabled={disabled}
             onClick={this.handleTriggerClick}
             onKeyDown={this.handleTriggerKeyDown}
+            onBlur={this.handleTriggerBlur}
           >
             <span class="multi-select-trigger__text">
               {displayText ?? (

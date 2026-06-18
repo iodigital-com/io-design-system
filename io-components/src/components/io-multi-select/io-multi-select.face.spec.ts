@@ -154,3 +154,61 @@ describe('io-multi-select — FACE', () => {
     expect(spy).toHaveBeenCalledOnce();
   });
 });
+
+describe('io-multi-select — formStateRestoreCallback', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    component.name = 'countries';
+    (component as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+    };
+    (component as any).componentWillLoad();
+  });
+
+  it('restores value from FormData', () => {
+    const fd = new FormData();
+    fd.append('countries', 'nl');
+    fd.append('countries', 'be');
+    (component as any).formStateRestoreCallback(fd, 'restore');
+    expect(component.value).toEqual(['nl', 'be']);
+  });
+
+  it('restores value from comma-separated string', () => {
+    (component as any).formStateRestoreCallback('nl,be,de', 'restore');
+    expect(component.value).toEqual(['nl', 'be', 'de']);
+  });
+
+  it('restores value from single-item string', () => {
+    (component as any).formStateRestoreCallback('nl', 'restore');
+    expect(component.value).toEqual(['nl']);
+  });
+
+  it('restores empty value from empty string', () => {
+    component.value = ['nl'];
+    (component as any).formStateRestoreCallback('', 'restore');
+    expect(component.value).toEqual([]);
+  });
+
+  it('calls syncFormValue after restoring from FormData', () => {
+    const syncSpy = vi.spyOn(component as any, 'syncFormValue');
+    const fd = new FormData();
+    fd.append('countries', 'nl');
+    (component as any).formStateRestoreCallback(fd, 'restore');
+    expect(syncSpy).toHaveBeenCalledOnce();
+  });
+
+  it('calls syncFormValue after restoring from string', () => {
+    const syncSpy = vi.spyOn(component as any, 'syncFormValue');
+    (component as any).formStateRestoreCallback('nl', 'autocomplete');
+    expect(syncSpy).toHaveBeenCalledOnce();
+  });
+
+  it('works with autocomplete mode for string state', () => {
+    (component as any).formStateRestoreCallback('be,de', 'autocomplete');
+    expect(component.value).toEqual(['be', 'de']);
+  });
+});

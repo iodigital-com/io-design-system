@@ -1,8 +1,15 @@
 /**
  * io-multi-select — utility function unit tests
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
+vi.mock('@floating-ui/dom', () => ({
+  offset: vi.fn(() => ({ name: 'offset' })),
+  flip: vi.fn(() => ({ name: 'flip' })),
+  shift: vi.fn(() => ({ name: 'shift' })),
+}));
+
+import { flip } from '@floating-ui/dom';
 import {
   getMultiSelectWrapperClass,
   getMultiSelectOptionClass,
@@ -10,6 +17,8 @@ import {
   resolveMultiSelectId,
   parseMultiSelectContent,
   getMultiSelectDisplayText,
+  getMultiSelectMiddleware,
+  getMultiSelectPinnedMiddleware,
 } from './io-multi-select-utils';
 
 // ── getMultiSelectWrapperClass ────────────────────────────────────────────────
@@ -82,6 +91,26 @@ describe('getMultiSelectOptionClass', () => {
 describe('getMultiSelectOptionId', () => {
   it('generates correct id', () => {
     expect(getMultiSelectOptionId('listbox-1', 3)).toBe('listbox-1-option-3');
+  });
+});
+
+// ── getMultiSelectMiddleware / getMultiSelectPinnedMiddleware ─────────────────
+
+describe('getMultiSelectMiddleware', () => {
+  it('returns 3 middleware items including flip', () => {
+    vi.mocked(flip).mockClear();
+    const mw = getMultiSelectMiddleware();
+    expect(mw).toHaveLength(3);
+    expect(vi.mocked(flip)).toHaveBeenCalled();
+  });
+});
+
+describe('getMultiSelectPinnedMiddleware', () => {
+  it('returns 2 middleware items (no flip)', () => {
+    vi.mocked(flip).mockClear();
+    const mw = getMultiSelectPinnedMiddleware();
+    expect(mw).toHaveLength(2);
+    expect(vi.mocked(flip)).not.toHaveBeenCalled();
   });
 });
 

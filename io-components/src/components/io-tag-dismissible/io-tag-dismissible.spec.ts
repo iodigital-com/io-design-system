@@ -10,8 +10,8 @@ describe('io-tag-dismissible — default props', () => {
     (component as any).dismiss = { emit: vi.fn() };
   });
 
-  it('variant defaults to neutral', () => {
-    expect(component.variant).toBe('neutral');
+  it("variant defaults to 'default'", () => {
+    expect(component.variant).toBe('default');
   });
 
   it('icon is undefined by default', () => {

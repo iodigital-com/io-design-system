@@ -469,6 +469,7 @@
   --io-button-group-padding-y-compact:    4px;
   --io-button-group-padding-x-compact:    var(--io-space-3);
   --io-button-group-font-size-compact:    var(--io-font-size-xs);
+  --io-button-group-line-height-compact:  16.8px; /* compact button baseline */
   --io-button-group-gap-compact:          1px;
   --io-button-group-pill-padding-compact: 2px;
   --io-button-group-btn-radius-compact:   calc(var(--io-button-group-pill-radius) - var(--io-button-group-pill-padding-compact));   /* optical inset: 12px - 2px = 10px — mirrors normal-mode calc */

@@ -59,6 +59,12 @@ export class IoScroller {
    */
   @Prop() label: string | undefined;
 
+  /**
+   * When `true`, reduces internal gap between slotted items for dense
+   * layout contexts. Reflected as an attribute so CSS can target it.
+   */
+  @Prop({ reflect: true }) compact = false;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** True when scroll position is at the start edge (no fade shown at start). */
@@ -173,6 +179,21 @@ export class IoScroller {
     }
   }
 
+  private scrollBy(direction: 'prev' | 'next'): void {
+    const el = this.scrollContainer;
+    if (!el) return;
+    const isVertical = this.orientation === 'vertical';
+    const size = isVertical ? el.clientHeight : el.clientWidth;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const offset = Math.round(size / 2) || 200;
+    const delta = direction === 'prev' ? -offset : offset;
+    if (isVertical) {
+      el.scrollBy({ top: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
+    } else {
+      el.scrollBy({ left: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -183,11 +204,31 @@ export class IoScroller {
     return (
       <Host>
         <style>{getScrollerStyles()}</style>
+        {!this.atStart && (
+          <button
+            type="button"
+            class="scroller__indicator scroller__indicator--prev"
+            tabIndex={-1}
+            aria-label="Scroll backward"
+            onPointerDown={(e) => e.preventDefault()}
+            onClick={() => this.scrollBy('prev')}
+          />
+        )}
+        {!this.atEnd && (
+          <button
+            type="button"
+            class="scroller__indicator scroller__indicator--next"
+            tabIndex={-1}
+            aria-label="Scroll forward"
+            onPointerDown={(e) => e.preventDefault()}
+            onClick={() => this.scrollBy('next')}
+          />
+        )}
         <div
           class={scrollerClass}
           role="region"
           aria-label={regionLabel}
-          tabIndex={0}
+          tabIndex={(!this.atStart || !this.atEnd) ? 0 : undefined}
           ref={(el) => {
             this.scrollContainer = el as HTMLDivElement;
           }}

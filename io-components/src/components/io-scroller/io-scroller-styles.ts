@@ -144,6 +144,63 @@ export function getScrollerStyles(): string {
       );
     }
 
+    /* ── Scroll indicator buttons ────────────────────────────── */
+
+    /* Clickable prev/next buttons overlaid on the fade gradient area.
+       tabIndex=-1 keeps them out of the keyboard tab order; aria-label names
+       them for pointer users who navigate with assistive technology. */
+
+    .scroller__indicator {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: var(--io-scroller-fade-size);
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 2;
+      pointer-events: all;
+      appearance: none;
+    }
+
+    .scroller__indicator--prev {
+      inset-inline-start: 0;
+    }
+
+    .scroller__indicator--next {
+      inset-inline-end: 0;
+    }
+
+    /* Vertical orientation: indicators span full width, positioned at top/bottom */
+    :host([orientation='vertical']) .scroller__indicator {
+      inset-inline-start: 0;
+      inset-inline-end: 0;
+      width: auto;
+      height: var(--io-scroller-fade-size);
+      bottom: auto;
+    }
+
+    :host([orientation='vertical']) .scroller__indicator--prev {
+      top: 0;
+    }
+
+    :host([orientation='vertical']) .scroller__indicator--next {
+      top: auto;
+      bottom: 0;
+    }
+
+    /* ── Compact variant ──────────────────────────────────────── */
+
+    :host([compact]) .scroller--horizontal {
+      gap: var(--io-space-1);
+    }
+
+    :host([compact]) .scroller--vertical {
+      gap: var(--io-space-1);
+    }
+
     /* ── Reduced motion ───────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

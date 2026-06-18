@@ -1,5 +1,7 @@
 import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
 
+let _labelIdCounter = 0;
+
 import { getButtonGroupStyles } from './io-button-group-styles';
 import { parseButtonGroupItems, getNextEnabledGroupIndex, getButtonGroupClassList } from './io-button-group-utils';
 
@@ -89,8 +91,13 @@ export class IoButtonGroup {
 
   private buttonRefs: Map<number, HTMLButtonElement> = new Map();
   private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
+  private labelId!: string;
 
   // ── Lifecycle ───────────────────────────────────────────
+
+  componentWillLoad() {
+    this.labelId = `io-button-group-label-${++_labelIdCounter}`;
+  }
 
   componentDidLoad() {
     this.items = parseButtonGroupItems(this.el);
@@ -243,7 +250,7 @@ export class IoButtonGroup {
     const { type, disabled, label, hideLabel, required, items, focusIndex } = this;
     // When all items are disabled no item should be in the tab order.
     const hasEnabledItems = this.getEnabledItems().length > 0;
-    const labelId = label ? 'io-button-group-label' : undefined;
+    const labelId = label ? this.labelId : undefined;
 
     return (
       <Host>

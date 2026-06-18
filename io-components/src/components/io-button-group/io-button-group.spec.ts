@@ -427,10 +427,12 @@ describe('io-button-group render — multiple mode (group)', () => {
 describe('io-button-group render — label prop', () => {
   it('group container uses aria-labelledby when label is provided', () => {
     const comp = makeRenderComp({ label: 'View period' });
+    comp.componentWillLoad();
     vi.mocked(h).mockClear();
     comp.render();
     const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
-    expect(divProps?.['aria-labelledby']).toBe('io-button-group-label');
+    expect(typeof divProps?.['aria-labelledby']).toBe('string');
+    expect((divProps?.['aria-labelledby'] as string).startsWith('io-button-group-label-')).toBe(true);
   });
 
   it('omits aria-labelledby when label prop is undefined', () => {
@@ -681,5 +683,53 @@ describe('io-button-group render — direction prop', () => {
     const comp = makeRenderComp({ direction: 'column' } as any);
     vi.mocked(h).mockClear();
     expect(() => comp.render()).not.toThrow();
+  });
+});
+
+// ── CSS token coverage ────────────────────────────────────────────────────────
+
+import { getButtonGroupStyles } from './io-button-group-styles';
+
+describe('io-button-group — CSS token --io-button-group-btn-gap', () => {
+  it('styles reference --io-button-group-btn-gap', () => {
+    const styles = getButtonGroupStyles();
+    expect(styles).toContain('--io-button-group-btn-gap');
+  });
+});
+
+// ── Unique label IDs per instance (WCAG 4.1.1) ───────────────────────────────
+
+describe('io-button-group — unique label IDs across instances', () => {
+  it('two instances assigned different labelIds via componentWillLoad', () => {
+    const comp1 = new IoButtonGroup();
+    (comp1 as any).el = document.createElement('io-button-group');
+    (comp1 as any).change = { emit: vi.fn() };
+    comp1.componentWillLoad();
+
+    const comp2 = new IoButtonGroup();
+    (comp2 as any).el = document.createElement('io-button-group');
+    (comp2 as any).change = { emit: vi.fn() };
+    comp2.componentWillLoad();
+
+    expect((comp1 as any).labelId).not.toBe((comp2 as any).labelId);
+  });
+
+  it('labelId starts with "io-button-group-label-"', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    comp.componentWillLoad();
+
+    expect((comp as any).labelId.startsWith('io-button-group-label-')).toBe(true);
+  });
+
+  it('aria-labelledby uses the instance labelId', () => {
+    const comp = makeRenderComp({ label: 'Test label' });
+    comp.componentWillLoad();
+    vi.mocked(h).mockClear();
+    comp.render();
+
+    const divProps = hCallsForTag('div').find((p) => p?.['role'] === 'group' || p?.['role'] === 'radiogroup');
+    expect(divProps?.['aria-labelledby']).toBe((comp as any).labelId);
   });
 });

@@ -40,17 +40,15 @@ export function getLinkStyles(): string {
       flex-shrink: 0;
     }
 
-    /* Visually hidden label (screen-reader accessible) */
+    /* Visually hidden label (screen-reader accessible) — matches io-button pattern */
     .link__label--hidden {
-      position: absolute;
-      width: 1px;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
       height: 1px;
-      padding: 0;
-      margin: -1px;
       overflow: hidden;
-      clip: rect(0, 0, 0, 0);
+      position: absolute;
       white-space: nowrap;
-      border: 0;
+      width: 1px;
     }
 
     /* Animated underline via ::after pseudo-element */

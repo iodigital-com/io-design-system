@@ -42,10 +42,14 @@ describe('io-link — disabled', () => {
     expect(stopPropagationMock).toHaveBeenCalled();
   });
 
-  it('keeps disabled as true to confirm the prop is set', () => {
-    // The anchor uses tabIndex={0} when disabled so keyboard users can still
-    // focus the link — aria-disabled="true" prevents navigation.
+  it('render uses tabIndex=0 and aria-disabled when disabled', () => {
     component.disabled = true;
-    expect(component.disabled).toBe(true);
+    // render() sets tabIndex={disabled ? 0 : undefined} so the link remains
+    // focusable for keyboard users while aria-disabled="true" blocks navigation.
+    const vnode = component.render() as any;
+    const anchor = vnode.vchildren?.find((c: any) => c.$tag$ === 'a') ?? vnode;
+    const attrs = anchor.$attrs$ ?? {};
+    expect(attrs['aria-disabled']).toBe('true');
+    expect(attrs['tabIndex']).toBe(0);
   });
 });

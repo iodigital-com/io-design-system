@@ -151,11 +151,14 @@ describe('io-link — disabled keyboard accessibility', () => {
     (component as any).click = { emit: vi.fn() };
   });
 
-  it('renders tabIndex 0 when disabled so keyboard users can still focus the link', () => {
+  it('renders tabIndex 0 and aria-disabled when disabled so keyboard users can still focus the link', () => {
     component.disabled = true;
-    // tabIndex on the anchor should be 0 (not -1) when disabled
-    // We verify by checking the prop value used in render logic
-    // The render sets tabIndex={disabled ? 0 : undefined}
-    expect(component.disabled).toBe(true);
+    // render() produces tabIndex={0} and aria-disabled="true" on the <a>
+    // so the link is keyboard-focusable but navigation is blocked.
+    const vnode = component.render() as any;
+    const anchor = vnode.vchildren?.find((c: any) => c.$tag$ === 'a') ?? vnode;
+    const attrs = anchor.$attrs$ ?? {};
+    expect(attrs['tabIndex']).toBe(0);
+    expect(attrs['aria-disabled']).toBe('true');
   });
 });

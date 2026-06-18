@@ -58,7 +58,7 @@ export class IoLink {
   /** Name of a Lucide icon to render before the label. Set to a valid IoIconName to show an icon. */
   @Prop() icon?: IoIconName;
 
-  /** Custom SVG source string for a non-library icon (mutually exclusive with `icon`). */
+  /** Custom SVG source string for a non-library icon. Takes precedence over `icon` when both are set. */
   @Prop() iconSource?: string;
 
   /** Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance. */
@@ -98,7 +98,7 @@ export class IoLink {
       return <span class="link__icon" aria-hidden="true" innerHTML={this.iconSource} />;
     }
 
-    return <io-icon name={this.icon!} aria-hidden="true" />;
+    return <io-icon class="link__icon" name={this.icon!} aria-hidden="true" />;
   }
 
   // ── Render ───────────────────────────────────────────────────
@@ -129,7 +129,7 @@ export class IoLink {
           onClick={this.handleClick}
         >
           {hasIcon && this.renderIcon()}
-          <span class={hideLabel ? 'link__label link__label--hidden' : 'link__label'}>
+          <span class={hideLabel && (icon || iconSource) ? 'link__label link__label--hidden' : 'link__label'}>
             <slot />
           </span>
         </a>

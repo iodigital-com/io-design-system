@@ -32,7 +32,7 @@ describe('io-link — a11y (ARIA patterns)', () => {
   it('disabled link using aria-disabled has no axe violations', async () => {
     const el = document.createElement('a');
     el.setAttribute('aria-disabled', 'true');
-    el.setAttribute('tabindex', '-1');
+    el.setAttribute('tabindex', '0');
     el.textContent = 'Disabled link';
     await renderAndCheckA11y(el);
   });

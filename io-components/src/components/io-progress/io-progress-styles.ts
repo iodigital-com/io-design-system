@@ -63,7 +63,7 @@ export function getProgressStyles(): string {
     .progress-fill--indeterminate {
       width: 30% !important;
       transform-origin: left;
-      animation: io-progress-indeterminate var(--io-motion-extra-slow, 1200ms ease-in-out) infinite linear;
+      animation: io-progress-indeterminate 1200ms linear infinite;
     }
 
     /* ── Reduced motion ──────────────────────────────────────────── */

@@ -74,7 +74,7 @@ export class IoProgress {
     return (
       <Host
         role="progressbar"
-        aria-valuenow={this.indeterminate ? undefined : percentage}
+        aria-valuenow={this.indeterminate ? undefined : this.value}
         aria-valuemin={this.min}
         aria-valuemax={this.max}
         aria-valuetext={this.valueText ?? undefined}

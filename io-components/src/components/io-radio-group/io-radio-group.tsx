@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
 
 import { getRadioGroupStyles } from './io-radio-group-styles';
 
@@ -19,9 +19,11 @@ import type { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from './types'
 @Component({
   tag: 'io-radio-group',
   shadow: true,
+  formAssociated: true,
 })
 export class IoRadioGroup {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -55,6 +57,7 @@ export class IoRadioGroup {
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
+  private defaultValue?: string;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -66,10 +69,13 @@ export class IoRadioGroup {
   componentWillLoad() {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-rg-error-${suffix}`;
+    this.defaultValue = this.value;
+    this.internals?.setFormValue?.(this.value ?? '');
   }
 
   componentDidLoad() {
     this.syncChildren();
+    this.updateTabStops();
   }
 
   @Watch('name')
@@ -80,6 +86,8 @@ export class IoRadioGroup {
   @Watch('value')
   onValueChange() {
     this.syncChildren();
+    this.updateTabStops();
+    this.internals?.setFormValue?.(this.value ?? '');
   }
 
   @Watch('disabled')
@@ -89,6 +97,20 @@ export class IoRadioGroup {
 
   @Watch('required')
   onRequiredChange() {
+    this.syncChildren();
+  }
+
+  // ── FACE callbacks ────────────────────────────────────────────
+
+  formResetCallback(): void {
+    this.value = this.defaultValue ?? '';
+    this.syncChildren();
+    this.updateTabStops();
+    this.internals?.setFormValue?.(this.value ?? '');
+  }
+
+  formDisabledCallback(disabled: boolean): void {
+    this.disabled = disabled;
     this.syncChildren();
   }
 
@@ -110,24 +132,73 @@ export class IoRadioGroup {
 
   // ── Private helpers ───────────────────────────────────────────
 
-  private syncChildren = () => {
-    const radios = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; checked: boolean; disabled: boolean; required: boolean; value: string }>('io-radio'),
+  /** ARIA APG roving tabindex: Arrow keys, Home, End navigate the group */
+  @Listen('keydown')
+  handleGroupKeydown(ev: KeyboardEvent): void {
+    const radios = this.getRadios().filter(r => !r.disabled);
+    if (!radios.length) return;
+
+    const currentIndex = radios.findIndex(r => r === document.activeElement);
+    let nextIndex = currentIndex;
+
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      nextIndex = (currentIndex + 1) % radios.length;
+    } else if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      nextIndex = (currentIndex - 1 + radios.length) % radios.length;
+    } else if (ev.key === 'Home') {
+      ev.preventDefault();
+      nextIndex = 0;
+    } else if (ev.key === 'End') {
+      ev.preventDefault();
+      nextIndex = radios.length - 1;
+    } else {
+      return;
+    }
+
+    const target = radios[nextIndex];
+    target.checked = true;
+    target.tabIndex = 0;
+    this.value = target.value;
+    radios.forEach((r, i) => { if (i !== nextIndex) r.tabIndex = -1; });
+    // Focus the target — setFocus() is defined on IoRadio, fall back to host focus
+    (target as any).setFocus?.() || (target as HTMLElement).focus();
+    this.change?.emit({ value: this.value });
+  }
+
+  private getRadios(): Array<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }> {
+    return Array.from(
+      this.el.querySelectorAll<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }>('io-radio'),
     );
+  }
+
+  private updateTabStops(): void {
+    const radios = this.getRadios();
+    radios.forEach((radio, i) => {
+      // The checked radio (or first if none checked) gets tabindex=0
+      const isActive = this.value !== undefined && this.value !== ''
+        ? radio.value === this.value
+        : i === 0;
+      radio.tabIndex = isActive ? 0 : -1;
+    });
+  }
+
+  private syncChildren = () => {
+    const radios = this.getRadios();
     for (const radio of radios) {
       radio.name = this.name;
       radio.checked = radio.value === this.value;
       radio.required = this.required;
-      if (this.disabled) {
-        radio.disabled = true;
-      }
+      // Fix: unconditionally assign disabled so re-enabling the group propagates correctly
+      radio.disabled = this.disabled;
     }
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage, orientation } = this;
+    const { label, disabled, helperText, error, errorMessage, orientation, required } = this;
     const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
@@ -141,6 +212,7 @@ export class IoRadioGroup {
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
           aria-orientation={orientation}
+          aria-required={required ? 'true' : undefined}
         >
           <legend class="radio-group__legend">{label}</legend>
           {helperText && (

@@ -129,6 +129,27 @@ describe('io-radio-group — syncChildren', () => {
 
     expect(radio.required).toBe(true);
   });
+
+  it('re-enables children when group disabled changes from true to false (fix: no if-guard)', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), { value: 'x', name: '', checked: false, disabled: true });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'g';
+    component.value = '';
+
+    // Group starts disabled — radio should be disabled
+    component.disabled = true;
+    (component as any).syncChildren();
+    expect(radio.disabled).toBe(true);
+
+    // Re-enable the group — radio should be re-enabled
+    component.disabled = false;
+    (component as any).syncChildren();
+    expect(radio.disabled).toBe(false);
+  });
 });
 
 describe('io-radio-group — handleRadioChange', () => {
@@ -213,5 +234,41 @@ describe('io-radio-group — render() role and aria-orientation', () => {
       .map(args => args[1]);
 
     expect(fieldsetProps[0]?.['aria-orientation']).toBe('horizontal');
+  });
+
+  it('sets aria-required="true" on fieldset when required=true', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.required = true;
+
+    component.render();
+
+    const fieldsetProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset')
+      .map(args => args[1]);
+
+    expect(fieldsetProps[0]?.['aria-required']).toBe('true');
+  });
+
+  it('omits aria-required when required=false', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.required = false;
+
+    component.render();
+
+    const fieldsetProps = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset')
+      .map(args => args[1]);
+
+    expect(fieldsetProps[0]?.['aria-required']).toBeUndefined();
   });
 });

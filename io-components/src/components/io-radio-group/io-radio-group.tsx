@@ -58,6 +58,7 @@ export class IoRadioGroup {
 
   private errorId!: string;
   private defaultValue?: string;
+  private _childDisabledStates = new WeakMap<Element, boolean>();
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -70,7 +71,7 @@ export class IoRadioGroup {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-rg-error-${suffix}`;
     this.defaultValue = this.value;
-    this.internals?.setFormValue?.(this.value ?? '');
+    this.syncFormValue();
   }
 
   componentDidLoad() {
@@ -87,7 +88,7 @@ export class IoRadioGroup {
   onValueChange() {
     this.syncChildren();
     this.updateTabStops();
-    this.internals?.setFormValue?.(this.value ?? '');
+    this.syncFormValue();
   }
 
   @Watch('disabled')
@@ -106,7 +107,7 @@ export class IoRadioGroup {
     this.value = this.defaultValue ?? '';
     this.syncChildren();
     this.updateTabStops();
-    this.internals?.setFormValue?.(this.value ?? '');
+    this.syncFormValue();
   }
 
   formDisabledCallback(disabled: boolean): void {
@@ -138,7 +139,12 @@ export class IoRadioGroup {
     const radios = this.getRadios().filter(r => !r.disabled);
     if (!radios.length) return;
 
-    const currentIndex = radios.findIndex(r => r === document.activeElement);
+    let currentIndex = radios.findIndex(r => r === document.activeElement);
+    if (currentIndex === -1) {
+      currentIndex = radios.findIndex(r => r.checked && !r.disabled);
+      if (currentIndex === -1) currentIndex = radios.findIndex(r => !r.disabled);
+      if (currentIndex === -1) return;
+    }
     let nextIndex = currentIndex;
 
     if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
@@ -167,6 +173,21 @@ export class IoRadioGroup {
     this.change?.emit({ value: this.value });
   }
 
+  private syncFormValue(): void {
+    const hasValue = Boolean(this.value);
+    this.internals?.setFormValue?.(hasValue ? this.value! : null);
+
+    if (this.required && !hasValue) {
+      this.internals?.setValidity?.(
+        { valueMissing: true },
+        'Please select an option.',
+        this.el?.shadowRoot?.querySelector('input') ?? undefined,
+      );
+    } else {
+      this.internals?.setValidity?.({});
+    }
+  }
+
   private getRadios(): Array<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }> {
     return Array.from(
       this.el.querySelectorAll<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }>('io-radio'),
@@ -175,23 +196,30 @@ export class IoRadioGroup {
 
   private updateTabStops(): void {
     const radios = this.getRadios();
-    radios.forEach((radio, i) => {
-      // The checked radio (or first if none checked) gets tabindex=0
-      const isActive = this.value !== undefined && this.value !== ''
-        ? radio.value === this.value
-        : i === 0;
-      radio.tabIndex = isActive ? 0 : -1;
+    const active = radios.find(r => r.value === this.value && !r.disabled);
+    const first = radios.find(r => !r.disabled);
+    const target = active ?? first;
+    radios.forEach(r => {
+      r.tabIndex = (r === target && !r.disabled) ? 0 : -1;
     });
   }
 
   private syncChildren = () => {
     const radios = this.getRadios();
+    if (this.disabled) {
+      radios.forEach(r => {
+        this._childDisabledStates.set(r, r.disabled);
+        r.disabled = true;
+      });
+    } else {
+      radios.forEach(r => {
+        r.disabled = this._childDisabledStates.get(r) ?? false;
+      });
+    }
     for (const radio of radios) {
       radio.name = this.name;
       radio.checked = radio.value === this.value;
       radio.required = this.required;
-      // Fix: unconditionally assign disabled so re-enabling the group propagates correctly
-      radio.disabled = this.disabled;
     }
   };
 

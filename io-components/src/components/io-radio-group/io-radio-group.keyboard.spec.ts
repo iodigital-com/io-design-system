@@ -7,7 +7,7 @@
  * - Disabled radios are skipped
  * - tabIndex updates (active radio = 0, others = -1)
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoRadioGroup } from './io-radio-group';
 
@@ -68,6 +68,8 @@ describe('io-radio-group — keyboard navigation (roving tabindex)', () => {
     host.appendChild(radio2);
     host.appendChild(radio3);
   });
+
+  afterEach(() => vi.restoreAllMocks());
 
   it('ArrowDown moves focus to next radio and selects it', () => {
     // Simulate radio1 is active element
@@ -223,6 +225,8 @@ describe('io-radio-group — keyboard navigation (roving tabindex)', () => {
 });
 
 describe('io-radio-group — updateTabStops', () => {
+  afterEach(() => vi.restoreAllMocks());
+
   it('gives tabIndex=0 to checked radio, -1 to others', () => {
     const { c, host } = makeComponent();
     const radio1 = makeRadio('a');

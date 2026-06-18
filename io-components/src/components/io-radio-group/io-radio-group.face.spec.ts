@@ -69,12 +69,12 @@ describe('io-radio-group — FACE / formAssociated', () => {
       expect(internals.setFormValue).toHaveBeenCalledWith('b');
     });
 
-    it('calls setFormValue with empty string when no initial value', () => {
+    it('calls setFormValue with null when no initial value', () => {
       const { c } = makeComponent('');
       const internals = makeInternals();
       (c as any).internals = internals;
       (c as any).componentWillLoad();
-      expect(internals.setFormValue).toHaveBeenCalledWith('');
+      expect(internals.setFormValue).toHaveBeenCalledWith(null);
     });
   });
 
@@ -122,7 +122,7 @@ describe('io-radio-group — FACE / formAssociated', () => {
       (c as any).formResetCallback();
 
       expect(c.value).toBe('');
-      expect(internals.setFormValue).toHaveBeenCalledWith('');
+      expect(internals.setFormValue).toHaveBeenCalledWith(null);
     });
 
     it('resyncs children checked state on reset', () => {

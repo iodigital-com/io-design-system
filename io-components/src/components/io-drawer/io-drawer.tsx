@@ -100,7 +100,7 @@ export class IoDrawer {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Emitted after the drawer is closed by a user action (close button, backdrop click, or ESC key). NOT emitted on programmatic close via the `open` prop or `close()` method. */
+  /** Emitted after the drawer is closed by a user action (close button, backdrop click, ESC key, or swipe-to-dismiss on bottom-sheet placement). NOT emitted on programmatic close via the `open` prop or `close()` method. */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   /** Emitted after the open animation/transition has completed (transitionend on the drawer panel) */
@@ -155,7 +155,10 @@ export class IoDrawer {
     this.headingId = createDrawerHeadingId(Math.random().toString(36).slice(2));
 
     const hasHeading = Boolean(this.heading);
-    const hasAriaLabel = Boolean(this.el?.getAttribute?.('aria-label'));
+    // Check the `aria` prop (not the host element attribute) because io-drawer
+    // uses Shadow DOM — host aria-* attributes are NOT forwarded to the internal
+    // <dialog>. The `aria` prop is the only way to supply aria-label to the dialog.
+    const hasAriaLabel = Boolean(this.aria?.['label'] ?? this.aria?.['aria-label']);
     if (!hasHeading && !hasAriaLabel) {
       console.error(
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',

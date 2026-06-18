@@ -541,15 +541,33 @@ describe('io-drawer — componentWillLoad accessible label warning', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('does NOT log console.error when aria-label attribute is set on the host element', () => {
+  it('does NOT log console.error when the aria prop supplies a label key', () => {
+    // The host element attribute is NOT forwarded to the internal <dialog> in
+    // Shadow DOM — only the `aria` prop reaches the dialog. The warning must
+    // check the prop, not the host attribute.
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const component = new IoDrawer();
     const el = document.createElement('io-drawer');
-    el.setAttribute('aria-label', 'Settings panel');
     (component as any).el = el;
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { label: 'Settings panel' };
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
+  it('does NOT log console.error when the aria prop supplies an aria-label key', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { 'aria-label': 'Settings panel' };
 
     (component as any).componentWillLoad();
 

@@ -1,8 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputSearch } from './io-input-search';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-input-search accessibility', () => {
+  it('visible label associated with search input has no axe violations', async () => {
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <div>
+        <label for="srch1">Search</label>
+        <input id="srch1" type="search" />
+      </div>
+    `;
+    await renderAndCheckA11y(container);
+  });
+
   it('associates label with input via htmlFor/id', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],

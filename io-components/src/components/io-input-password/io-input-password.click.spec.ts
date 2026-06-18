@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputPassword } from './io-input-password';
 
@@ -33,15 +33,18 @@ describe('io-input-password click events', () => {
   });
 
   it('emits change event on input change', async () => {
+    const changeSpy = vi.fn();
     const page = await newSpecPage({
       components: [IoInputPassword],
       html: '<io-input-password label="Password"></io-input-password>',
     });
+    page.root?.addEventListener('change', changeSpy);
     const input = page.root?.shadowRoot?.querySelector<HTMLInputElement>('input');
     // Simulate change event
     const changeEvent = new Event('change');
     Object.defineProperty(changeEvent, 'target', { value: { value: 'secret123' } });
     input?.dispatchEvent(changeEvent);
     await page.waitForChanges();
+    expect(changeSpy).toHaveBeenCalled();
   });
 });

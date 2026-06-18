@@ -1,8 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputPassword } from './io-input-password';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-input-password accessibility', () => {
+  it('visible label associated with password input has no axe violations', async () => {
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <div>
+        <label for="pw1">Password</label>
+        <input id="pw1" type="password" />
+      </div>
+    `;
+    await renderAndCheckA11y(container);
+  });
+
   it('associates label with input via htmlFor/id', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],

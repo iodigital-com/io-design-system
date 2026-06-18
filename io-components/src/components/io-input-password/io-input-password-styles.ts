@@ -132,6 +132,8 @@ export function getInputPasswordStyles(): string {
       line-height: 0;
       border-radius: var(--io-border-radius-sm);
       transition: color var(--io-motion-base);
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
     }
 
     .password-toggle:hover {
@@ -139,8 +141,8 @@ export function getInputPasswordStyles(): string {
     }
 
     .password-toggle:focus-visible {
-      outline: var(--io-input-border-width-focus) solid var(--io-focus-inner);
-      outline-offset: 2px;
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
     }
 
     .input-state-icon {

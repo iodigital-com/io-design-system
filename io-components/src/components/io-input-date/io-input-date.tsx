@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, h, AttachInternals } from '@stencil/core';
 
 import { getInputDateStyles } from './io-input-date-styles';
 
@@ -19,9 +19,12 @@ import type { IoInputDateSize } from './types';
 @Component({
   tag: 'io-input-date',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoInputDate {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
+  private defaultValue = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -74,6 +77,8 @@ export class IoInputDate {
     this.inputId = base;
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
+    this.defaultValue = this.value ?? '';
+    this.internals?.setFormValue?.(this.value ?? '');
   }
 
   private handleInput = (ev: InputEvent) => {
@@ -84,8 +89,16 @@ export class IoInputDate {
 
   private handleChange = (ev: Event) => {
     if (this.disabled) return;
-    this.change.emit((ev.target as HTMLInputElement).value);
+    const newVal = (ev.target as HTMLInputElement).value;
+    this.value = newVal;
+    this.internals?.setFormValue?.(newVal);
+    this.change.emit(newVal);
   };
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.internals?.setFormValue?.(this.defaultValue);
+  }
 
   private handleFocus = (ev: FocusEvent) => {
     if (this.disabled) return;

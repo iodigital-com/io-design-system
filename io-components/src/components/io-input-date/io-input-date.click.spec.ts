@@ -17,6 +17,7 @@ describe('io-input-date click events', () => {
     Object.defineProperty(event, 'target', { value: { value: '2026-01-15' } });
     input?.dispatchEvent(event);
     await page.waitForChanges();
+    expect(changeSpy).toHaveBeenCalled();
   });
 
   it('does not emit change when disabled', async () => {

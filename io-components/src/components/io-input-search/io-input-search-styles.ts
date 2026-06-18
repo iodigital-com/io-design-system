@@ -51,7 +51,6 @@ export function getInputSearchStyles(): string {
     .input-wrapper:has(.input-field:not(:placeholder-shown)) .input-label,
     .input-wrapper:has(.input-field:focus) .input-label {
       top: 0;
-      left: 0;
       font-size: var(--io-label-font-size-float);
     }
 
@@ -155,6 +154,8 @@ export function getInputSearchStyles(): string {
       line-height: 0;
       border-radius: var(--io-border-radius-sm);
       transition: color var(--io-motion-base);
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
     }
 
     .search-clear:hover {
@@ -162,8 +163,8 @@ export function getInputSearchStyles(): string {
     }
 
     .search-clear:focus-visible {
-      outline: var(--io-input-border-width-focus) solid var(--io-focus-inner);
-      outline-offset: 2px;
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
     }
 
     .search-clear--hidden {
@@ -239,7 +240,6 @@ export function getInputSearchStyles(): string {
 
     :host-context([dir="rtl"]) .input-wrapper:has(.input-field:not(:placeholder-shown)) .input-label,
     :host-context([dir="rtl"]) .input-wrapper:has(.input-field:focus) .input-label {
-      right: 0;
       left: auto;
     }
   `;

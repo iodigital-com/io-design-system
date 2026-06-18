@@ -1,8 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputDate } from './io-input-date';
+import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
 describe('io-input-date accessibility', () => {
+  it('visible label associated with date input has no axe violations', async () => {
+    const container = document.createElement('div');
+    container.innerHTML = `
+      <div>
+        <label for="date1">Birth date</label>
+        <input id="date1" type="date" />
+      </div>
+    `;
+    await renderAndCheckA11y(container);
+  });
+
   it('associates label with input via htmlFor/id', async () => {
     const page = await newSpecPage({
       components: [IoInputDate],

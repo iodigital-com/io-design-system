@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, State, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Element, Host, h, AttachInternals, Watch } from '@stencil/core';
 
 import { getInputSearchStyles } from './io-input-search-styles';
 
@@ -17,9 +17,12 @@ import type { IoInputSearchSize } from './types';
 @Component({
   tag: 'io-input-search',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoInputSearch {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
+  private defaultValue = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -80,7 +83,15 @@ export class IoInputSearch {
     this.inputId = base;
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
+    this.defaultValue = this.value ?? '';
     this.hasValue = !!this.value;
+    this.internals?.setFormValue?.(this.value ?? '');
+  }
+
+  @Watch('value')
+  onValueChange(newVal: string) {
+    this.hasValue = !!newVal;
+    this.internals?.setFormValue?.(newVal ?? '');
   }
 
   private handleInput = (ev: InputEvent) => {
@@ -93,7 +104,10 @@ export class IoInputSearch {
 
   private handleChange = (ev: Event) => {
     if (this.disabled) return;
-    this.change.emit((ev.target as HTMLInputElement).value);
+    const newVal = (ev.target as HTMLInputElement).value;
+    this.value = newVal;
+    this.internals?.setFormValue?.(newVal);
+    this.change.emit(newVal);
   };
 
   private handleFocus = (ev: FocusEvent) => {
@@ -105,6 +119,11 @@ export class IoInputSearch {
     if (this.disabled) return;
     this.blur.emit(ev);
   };
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.internals?.setFormValue?.(this.defaultValue);
+  }
 
   private handleClear = () => {
     this.value = '';

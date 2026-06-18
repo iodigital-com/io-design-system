@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, State, Element, Host, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Element, Host, h, AttachInternals } from '@stencil/core';
 
 import { getInputPasswordStyles } from './io-input-password-styles';
 
@@ -17,9 +17,12 @@ import type { IoInputPasswordSize } from './types';
 @Component({
   tag: 'io-input-password',
   shadow: { delegatesFocus: true },
+  formAssociated: true,
 })
 export class IoInputPassword {
   @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
+  private defaultValue = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -75,6 +78,8 @@ export class IoInputPassword {
     this.inputId = base;
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
+    this.defaultValue = this.value ?? '';
+    this.internals?.setFormValue?.(this.value ?? '');
   }
 
   private handleInput = (ev: InputEvent) => {
@@ -85,7 +90,10 @@ export class IoInputPassword {
 
   private handleChange = (ev: Event) => {
     if (this.disabled) return;
-    this.change.emit((ev.target as HTMLInputElement).value);
+    const newVal = (ev.target as HTMLInputElement).value;
+    this.value = newVal;
+    this.internals?.setFormValue?.(newVal);
+    this.change.emit(newVal);
   };
 
   private handleFocus = (ev: FocusEvent) => {
@@ -97,6 +105,11 @@ export class IoInputPassword {
     if (this.disabled) return;
     this.blur.emit(ev);
   };
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.internals?.setFormValue?.(this.defaultValue);
+  }
 
   private toggleVisibility = () => {
     this.showPassword = !this.showPassword;

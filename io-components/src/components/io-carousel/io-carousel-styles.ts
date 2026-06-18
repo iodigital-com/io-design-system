@@ -131,6 +131,21 @@ export function getCarouselStyles(): string {
       transform: rotate(180deg);
     }
 
+    .carousel-btn:disabled {
+      color: var(--io-text-disabled);
+      border-color: var(--io-border);
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.5;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .carousel-btn:disabled:hover {
+        box-shadow: none;
+        transform: translateY(-50%);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .carousel-track { scroll-behavior: auto; }
       .carousel-btn { transition: none; }

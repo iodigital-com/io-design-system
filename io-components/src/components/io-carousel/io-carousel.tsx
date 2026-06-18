@@ -73,6 +73,10 @@ export class IoCarousel {
   @State() private hasHeadingSlot = false;
   @State() private hasDescriptionSlot = false;
   @State() private hasControlsSlot = false;
+  /** True when the track is scrolled to the physical start. Used to disable prev button when rewind=false. */
+  @State() private isAtStart = true;
+  /** True when the track is scrolled to the physical end. Used to disable next button when rewind=false. */
+  @State() private isAtEnd = false;
 
   // ── Private fields ────────────────────────────────────────────
 
@@ -171,7 +175,16 @@ export class IoCarousel {
     return nearest;
   }
 
+  private updateBoundaryState(): void {
+    const track = this.track;
+    if (!track) return;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    this.isAtStart = track.scrollLeft <= 1;
+    this.isAtEnd = track.scrollLeft >= maxScroll - 1;
+  }
+
   private syncIndexFromScroll = () => {
+    this.updateBoundaryState();
     this.setActiveIndex(this.getNearestSlideIndex(), true);
   };
 
@@ -185,6 +198,7 @@ export class IoCarousel {
   private setActiveIndex(index: number, emitEvent: boolean): void {
     const next = this.clampIndex(index);
     if (next === this.activeSlideIndex) return;
+    const previousIndex = this.activeSlideIndex;
     // Mark this as an internal change so the @Watch skips its scrollToIndex call.
     // The scroll is already in progress; Watch-driven instant scrolls would
     // interrupt smooth-scroll animations (most visibly: rewind navigation).
@@ -193,7 +207,7 @@ export class IoCarousel {
     // Always announce slide change — AT users need feedback regardless of event emission.
     this.slideAnnouncement = `Slide ${next + 1} of ${this.totalSlides}`;
     if (emitEvent) {
-      this.update.emit({ activeIndex: next, totalSlides: this.totalSlides });
+      this.update.emit({ activeIndex: next, previousIndex, totalSlides: this.totalSlides });
     }
   }
 
@@ -317,6 +331,7 @@ export class IoCarousel {
   componentDidLoad() {
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
+    this.updateBoundaryState();
     // Seed live region so AT users know the initial slide position on mount.
     if (this.totalSlides > 0) {
       this.slideAnnouncement = `Slide ${this.activeSlideIndex + 1} of ${this.totalSlides}`;
@@ -336,7 +351,18 @@ export class IoCarousel {
       hasDescriptionSlot,
       hasControlsSlot,
       headingId,
+      rewind,
+      isAtStart,
+      isAtEnd,
     } = this;
+
+    const isPrevDisabled = !rewind && isAtStart;
+    const isNextDisabled = !rewind && isAtEnd;
+
+    // When rewind=true at a boundary, give AT users a contextual label indicating
+    // the wrap-around destination instead of the generic prev/next label.
+    const prevAriaLabel = rewind && isAtStart ? 'Go to last slide' : prevLabel;
+    const nextAriaLabel = rewind && isAtEnd ? 'Go to first slide' : nextLabel;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -373,10 +399,20 @@ export class IoCarousel {
               <slot onSlotchange={this.onSlotChange} />
             </div>
 
-            <button class="carousel-btn carousel-btn--prev" aria-label={prevLabel} onClick={this.onPrev}>
+            <button
+              class="carousel-btn carousel-btn--prev"
+              aria-label={prevAriaLabel}
+              disabled={isPrevDisabled}
+              onClick={this.onPrev}
+            >
               {arrowSvg}
             </button>
-            <button class="carousel-btn carousel-btn--next" aria-label={nextLabel} onClick={this.onNext}>
+            <button
+              class="carousel-btn carousel-btn--next"
+              aria-label={nextAriaLabel}
+              disabled={isNextDisabled}
+              onClick={this.onNext}
+            >
               {arrowSvg}
             </button>
 

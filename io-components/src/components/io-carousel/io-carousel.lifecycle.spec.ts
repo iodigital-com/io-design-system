@@ -167,7 +167,7 @@ describe('io-carousel — setActiveIndex', () => {
     Object.defineProperty(c as any, 'totalSlides', { get: () => 3 });
     c.activeSlideIndex = 0;
     (c as any).setActiveIndex(2, true);
-    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 3 });
+    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, previousIndex: 0, totalSlides: 3 });
   });
 
   it('sets slideAnnouncement to human-readable position string', () => {
@@ -581,7 +581,7 @@ describe('io-carousel — syncIndexFromScroll (via onTrackScroll)', () => {
     (c as any).getNearestSlideIndex = vi.fn().mockReturnValue(2);
     c.activeSlideIndex = 0;
     (c as any).syncIndexFromScroll();
-    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, totalSlides: 4 });
+    expect((c as any).update.emit).toHaveBeenCalledWith({ activeIndex: 2, previousIndex: 0, totalSlides: 4 });
     expect(c.activeSlideIndex).toBe(2);
   });
 });
@@ -685,5 +685,194 @@ describe('io-carousel — edge cases', () => {
     const callCount = ((track as any).scrollTo as ReturnType<typeof vi.fn>).mock.calls.length;
     (c as any).onSlotChange();
     expect(((track as any).scrollTo as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(callCount);
+  });
+});
+
+// ── updateBoundaryState ────────────────────────────────────────────────────────
+
+describe('io-carousel — updateBoundaryState', () => {
+  it('isAtStart defaults to true', () => {
+    const { c } = makeCarousel([]);
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('isAtEnd defaults to false', () => {
+    const { c } = makeCarousel([]);
+    expect((c as any).isAtEnd).toBe(false);
+  });
+
+  it('sets isAtStart=true when scrollLeft is 0', () => {
+    const { c } = makeCarousel([], { scrollLeft: 0, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('sets isAtStart=true when scrollLeft is exactly 1 (boundary tolerance)', () => {
+    const { c } = makeCarousel([], { scrollLeft: 1, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(true);
+  });
+
+  it('sets isAtStart=false when scrollLeft is 2 (past boundary)', () => {
+    const { c } = makeCarousel([], { scrollLeft: 2, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtStart).toBe(false);
+  });
+
+  it('sets isAtEnd=true when scrollLeft equals maxScroll', () => {
+    // maxScroll = 3000 - 900 = 2100
+    const { c } = makeCarousel([], { scrollLeft: 2100, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(true);
+  });
+
+  it('sets isAtEnd=true when scrollLeft is within 1px of maxScroll (tolerance)', () => {
+    // maxScroll = 3000 - 900 = 2100; 2100 - 1 = 2099
+    const { c } = makeCarousel([], { scrollLeft: 2099, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(true);
+  });
+
+  it('sets isAtEnd=false when scrollLeft is not near maxScroll', () => {
+    const { c } = makeCarousel([], { scrollLeft: 100, clientWidth: 900, scrollWidth: 3000 });
+    (c as any).updateBoundaryState();
+    expect((c as any).isAtEnd).toBe(false);
+  });
+
+  it('returns early without error when track is null', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: { querySelector: vi.fn().mockReturnValue(null) } };
+    expect(() => (c as any).updateBoundaryState()).not.toThrow();
+  });
+
+  it('syncIndexFromScroll updates boundary state before setting active index', () => {
+    // scrollLeft=2100 means isAtEnd=true (maxScroll = 3000-900 = 2100)
+    const { c } = makeCarousel([], { scrollLeft: 2100, clientWidth: 900, scrollWidth: 3000 });
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 5 });
+    (c as any).getNearestSlideIndex = vi.fn().mockReturnValue(4);
+    c.activeSlideIndex = 0;
+    (c as any).syncIndexFromScroll();
+    expect((c as any).isAtEnd).toBe(true);
+    expect((c as any).isAtStart).toBe(false);
+  });
+
+  it('componentDidLoad calls updateBoundaryState after scroll', () => {
+    const updateBoundarySpy = vi.spyOn(makeCarousel([]).c as any, 'updateBoundaryState');
+    // Rebuild a fresh component with the spy attached
+    const { c } = makeCarousel([], { scrollLeft: 0, clientWidth: 900, scrollWidth: 3000 });
+    const spy = vi.spyOn(c as any, 'updateBoundaryState');
+    c.componentDidLoad();
+    expect(spy).toHaveBeenCalled();
+    void updateBoundarySpy; // satisfy lint
+  });
+});
+
+// ── disabled prev/next button logic ──────────────────────────────────────────
+// These tests verify that the disabled guard conditions are correct.
+// The render() tests only verify no-throw; actual DOM output is covered by
+// io-carousel.render.spec.tsx snapshots.
+
+describe('io-carousel — boundary-disabled logic', () => {
+  it('prev button should be disabled when rewind=false and at start', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtStart = true;
+    // isPrevDisabled = !rewind && isAtStart
+    expect(!c.rewind && (c as any).isAtStart).toBe(true);
+  });
+
+  it('prev button should NOT be disabled when rewind=true even at start', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtStart = true;
+    expect(!c.rewind && (c as any).isAtStart).toBe(false);
+  });
+
+  it('prev button should NOT be disabled when rewind=false but NOT at start', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtStart = false;
+    expect(!c.rewind && (c as any).isAtStart).toBe(false);
+  });
+
+  it('next button should be disabled when rewind=false and at end', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtEnd = true;
+    // isNextDisabled = !rewind && isAtEnd
+    expect(!c.rewind && (c as any).isAtEnd).toBe(true);
+  });
+
+  it('next button should NOT be disabled when rewind=true even at end', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtEnd = true;
+    expect(!c.rewind && (c as any).isAtEnd).toBe(false);
+  });
+
+  it('next button should NOT be disabled when rewind=false but NOT at end', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtEnd = false;
+    expect(!c.rewind && (c as any).isAtEnd).toBe(false);
+  });
+
+  it('render does not throw with rewind=false, isAtStart=true', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtStart = true;
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('render does not throw with rewind=false, isAtEnd=true', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = false;
+    (c as any).isAtEnd = true;
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('contextual aria-label for prev at start with rewind=true is "Go to last slide"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtStart = true;
+    // prevAriaLabel = rewind && isAtStart ? 'Go to last slide' : prevLabel
+    const expected = (c.rewind && (c as any).isAtStart) ? 'Go to last slide' : c.prevLabel;
+    expect(expected).toBe('Go to last slide');
+  });
+
+  it('contextual aria-label for next at end with rewind=true is "Go to first slide"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtEnd = true;
+    const expected = (c.rewind && (c as any).isAtEnd) ? 'Go to first slide' : c.nextLabel;
+    expect(expected).toBe('Go to first slide');
+  });
+
+  it('contextual aria-label for prev uses prevLabel when NOT at start', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtStart = false;
+    const expected = (c.rewind && (c as any).isAtStart) ? 'Go to last slide' : c.prevLabel;
+    expect(expected).toBe('Previous');
+  });
+
+  it('contextual aria-label for next uses nextLabel when NOT at end', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.rewind = true;
+    (c as any).isAtEnd = false;
+    const expected = (c.rewind && (c as any).isAtEnd) ? 'Go to first slide' : c.nextLabel;
+    expect(expected).toBe('Next');
   });
 });

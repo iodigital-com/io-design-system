@@ -175,9 +175,20 @@ export class IoTabsBar {
     const enabled = this.getEnabledButtons();
     if (enabled.length === 0) return;
 
-    if (ev.key === 'Enter' || ev.key === ' ') {
+    if (ev.key === ' ') {
+      // Space: always prevent scroll and activate
       ev.preventDefault();
       this.handleTabClick(index);
+      return;
+    }
+
+    if (ev.key === 'Enter') {
+      // Enter on anchor: let the browser follow the link natively
+      const isAnchor = (ev.target as HTMLElement).tagName === 'A';
+      if (!isAnchor) {
+        ev.preventDefault();
+        this.handleTabClick(index);
+      }
       return;
     }
 

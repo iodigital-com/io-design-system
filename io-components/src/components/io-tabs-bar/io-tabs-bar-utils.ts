@@ -1,5 +1,5 @@
 /** Union of element types that can serve as tab items inside io-tabs-bar. */
-type TabItem = HTMLButtonElement | HTMLAnchorElement;
+export type TabItem = HTMLButtonElement | HTMLAnchorElement;
 
 /** Returns true when a tab item should be treated as disabled. */
 function isTabItemDisabled(item: TabItem): boolean {

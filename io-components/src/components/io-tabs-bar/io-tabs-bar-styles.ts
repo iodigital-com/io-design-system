@@ -122,7 +122,15 @@ export function getTabsBarStyles(): string {
 
       ::slotted(button[aria-selected="true"]),
       ::slotted(a[aria-selected="true"]) {
+        color: Highlight !important;
+        border-bottom-color: Highlight !important;
         outline: 2px solid Highlight;
+        forced-color-adjust: none;
+      }
+
+      ::slotted(button:disabled),
+      ::slotted([aria-disabled="true"]) {
+        color: GrayText !important;
         forced-color-adjust: none;
       }
     }

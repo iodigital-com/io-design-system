@@ -439,6 +439,11 @@
   --io-divider-gap:                var(--io-space-3);
   --io-divider-label-size:         var(--io-font-size-sm);
 
+  /* Spinner */
+  --io-spinner-border-width-sm:    1.5px;
+  --io-spinner-border-width-md:    2px;
+  --io-spinner-border-width-lg:    3px;
+
   /* Button Group */
   --io-button-group-bg:                var(--io-color-white);
   --io-button-group-color:             var(--io-text-secondary);

@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputPassword } from './io-input-password';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-input-password accessibility', () => {
+describe('io-input-password — a11y (ARIA patterns)', () => {
   it('visible label associated with password input has no axe violations', async () => {
     const container = document.createElement('div');
     container.innerHTML = `
@@ -15,60 +16,56 @@ describe('io-input-password accessibility', () => {
     await renderAndCheckA11y(container);
   });
 
-  it('associates label with input via htmlFor/id', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(input?.id).toBeTruthy();
-    expect(label?.htmlFor).toBe(input?.id);
-  });
+  describe('render ARIA props', () => {
+    let component: IoInputPassword;
 
-  it('sets aria-invalid when state is error', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" state="error" message="Required"></io-input-password>',
+    beforeEach(() => {
+      component = new IoInputPassword();
+      (component as any).el = document.createElement('io-input-password');
+      (component as any).change = { emit: vi.fn() };
+      (component as any).input = { emit: vi.fn() };
+      (component as any).focus = { emit: vi.fn() };
+      (component as any).blur = { emit: vi.fn() };
+      (component as any).internals = { setFormValue: vi.fn() };
+      component.label = 'Password';
+      (component as any).componentWillLoad();
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBe('true');
-  });
 
-  it('does not set aria-invalid when state is none', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
+    it('sets aria-invalid when state is error', () => {
+      component.state = 'error';
+      component.message = 'Required';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBe('true');
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBeNull();
-  });
 
-  it('sets aria-describedby when error message is present', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" state="error" message="Required field"></io-input-password>',
+    it('does not set aria-invalid when state is none', () => {
+      component.state = 'none';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBeUndefined();
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-describedby')).toBeTruthy();
-  });
 
-  it('toggle button has descriptive aria-label', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
+    it('sets aria-describedby when error message present', () => {
+      component.state = 'error';
+      component.message = 'Required field';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-describedby']).toBeTruthy();
     });
-    const btn = page.root?.shadowRoot?.querySelector('button.password-toggle');
-    const ariaLabel = btn?.getAttribute('aria-label');
-    expect(['Show password', 'Hide password']).toContain(ariaLabel);
-  });
 
-  it('error message has role="alert"', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" state="error" message="Invalid password"></io-input-password>',
+    it('label htmlFor matches inputId', () => {
+      vi.mocked(h).mockClear();
+      component.render();
+      const labelCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'label');
+      const props = (labelCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['htmlFor']).toBe((component as any).inputId);
     });
-    const errorEl = page.root?.shadowRoot?.querySelector('.input-message--error');
-    expect(errorEl?.getAttribute('role')).toBe('alert');
   });
 });

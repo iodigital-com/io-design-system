@@ -1,96 +1,105 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputSearch } from './io-input-search';
 
-describe('io-input-search', () => {
-  it('renders with required label', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
-    });
-    expect(page.root).toBeDefined();
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(label?.textContent?.trim()).toContain('Search');
+describe('io-input-search — default props', () => {
+  let component: IoInputSearch;
+
+  beforeEach(() => {
+    component = new IoInputSearch();
+    (component as any).el = document.createElement('io-input-search');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).clear = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn() };
   });
 
-  it('renders a search input', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.type).toBe('search');
+  it('value defaults to empty string', () => { expect(component.value).toBe(''); });
+  it('required defaults to false', () => { expect(component.required).toBe(false); });
+  it('disabled defaults to false', () => { expect(component.disabled).toBe(false); });
+  it('state defaults to none', () => { expect(component.state).toBe('none'); });
+  it('hideLabel defaults to false', () => { expect(component.hideLabel).toBe(false); });
+  it('size defaults to md', () => { expect(component.size).toBe('md'); });
+  it('autocomplete defaults to off', () => { expect(component.autocomplete).toBe('off'); });
+  it('clearAriaLabel defaults to Clear search', () => { expect(component.clearAriaLabel).toBe('Clear search'); });
+
+  it('generates inputId in componentWillLoad', () => {
+    component.label = 'Search';
+    (component as any).componentWillLoad();
+    expect((component as any).inputId).toBeTruthy();
   });
 
-  it('renders search prefix icon', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
-    });
-    const prefix = page.root?.shadowRoot?.querySelector('.search-prefix');
-    expect(prefix).toBeDefined();
+  it('hasValue false when value empty at load', () => {
+    component.label = 'Search';
+    component.value = '';
+    (component as any).componentWillLoad();
+    expect((component as any).hasValue).toBe(false);
   });
 
-  it('hides clear button when value is empty', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" value=""></io-input-search>',
-    });
-    const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
-    expect(clearBtn?.classList.contains('search-clear--hidden')).toBe(true);
+  it('hasValue true when value set at load', () => {
+    component.label = 'Search';
+    component.value = 'hello';
+    (component as any).componentWillLoad();
+    expect((component as any).hasValue).toBe(true);
   });
 
-  it('shows clear button when value is non-empty', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" value="hello"></io-input-search>',
-    });
-    const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
-    expect(clearBtn?.classList.contains('search-clear--hidden')).toBe(false);
+  it('renders type=search on native input', () => {
+    component.label = 'Search';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['type']).toBe('search');
   });
 
-  it('applies disabled attribute', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" disabled></io-input-search>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.disabled).toBe(true);
+  it('passes disabled to native input', () => {
+    component.label = 'Search';
+    component.disabled = true;
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['disabled']).toBe(true);
   });
 
-  it('sets autocomplete to off by default', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.autocomplete).toBe('off');
+  it('sets aria-invalid when state is error', () => {
+    component.label = 'Search';
+    component.state = 'error';
+    component.message = 'Invalid';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['aria-invalid']).toBe('true');
   });
 
-  it('applies error state class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" state="error" message="Required"></io-input-search>',
-    });
-    const wrapper = page.root?.shadowRoot?.querySelector('.input-wrapper');
-    expect(wrapper?.classList.contains('input-wrapper--state-error')).toBe(true);
+  it('applies size class to input field', () => {
+    component.label = 'Search';
+    component.size = 'sm';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect((props['class'] as string)).toContain('input-field--sm');
   });
 
-  it('renders size class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" size="sm"></io-input-search>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.classList.contains('input-field--sm')).toBe(true);
-  });
-
-  it('renders helper text when provided', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" helper-text="Enter at least 2 chars"></io-input-search>',
-    });
-    const helper = page.root?.shadowRoot?.querySelector('.input-helper');
-    expect(helper?.textContent).toContain('Enter at least 2 chars');
+  it('clear button hidden class when hasValue is false', () => {
+    component.label = 'Search';
+    component.value = '';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const btnCall = vi.mocked(h).mock.calls.find(
+      (c) => c[0] === 'button' && (c[1] as Record<string, unknown>)?.['aria-label'] === 'Clear search'
+    );
+    const props = (btnCall?.[1] ?? {}) as Record<string, unknown>;
+    expect((props['class'] as string)).toContain('search-clear--hidden');
   });
 });

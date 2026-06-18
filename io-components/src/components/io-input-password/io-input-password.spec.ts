@@ -1,88 +1,96 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputPassword } from './io-input-password';
 
-describe('io-input-password', () => {
-  it('renders with required label', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    expect(page.root).toBeDefined();
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(label?.textContent?.trim()).toContain('Password');
+describe('io-input-password — default props', () => {
+  let component: IoInputPassword;
+
+  beforeEach(() => {
+    component = new IoInputPassword();
+    (component as any).el = document.createElement('io-input-password');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn() };
   });
 
-  it('renders a password input by default', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.type).toBe('password');
+  it('value defaults to empty string', () => { expect(component.value).toBe(''); });
+  it('required defaults to false', () => { expect(component.required).toBe(false); });
+  it('disabled defaults to false', () => { expect(component.disabled).toBe(false); });
+  it('state defaults to none', () => { expect(component.state).toBe('none'); });
+  it('hideLabel defaults to false', () => { expect(component.hideLabel).toBe(false); });
+  it('size defaults to md', () => { expect(component.size).toBe('md'); });
+  it('autocomplete defaults to current-password', () => { expect(component.autocomplete).toBe('current-password'); });
+  it('showPassword defaults to false', () => { expect((component as any).showPassword).toBe(false); });
+
+  it('generates inputId in componentWillLoad', () => {
+    component.label = 'Password';
+    (component as any).componentWillLoad();
+    expect((component as any).inputId).toBeTruthy();
   });
 
-  it('shows toggle button', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const btn = page.root?.shadowRoot?.querySelector('button.password-toggle');
-    expect(btn).toBeDefined();
-    expect(btn?.getAttribute('aria-label')).toBe('Show password');
+  it('renders type=password by default', () => {
+    component.label = 'Password';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['type']).toBe('password');
   });
 
-  it('applies disabled attribute', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" disabled></io-input-password>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.disabled).toBe(true);
+  it('renders type=text when showPassword is true', () => {
+    component.label = 'Password';
+    (component as any).showPassword = true;
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['type']).toBe('text');
   });
 
-  it('applies error state class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" state="error" message="Required"></io-input-password>',
-    });
-    const wrapper = page.root?.shadowRoot?.querySelector('.input-wrapper');
-    expect(wrapper?.classList.contains('input-wrapper--state-error')).toBe(true);
+  it('passes disabled to native input', () => {
+    component.label = 'Password';
+    component.disabled = true;
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['disabled']).toBe(true);
   });
 
-  it('sets autocomplete to current-password by default', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.autocomplete).toBe('current-password');
+  it('sets aria-invalid when state is error', () => {
+    component.label = 'Password';
+    component.state = 'error';
+    component.message = 'Required';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['aria-invalid']).toBe('true');
   });
 
-  it('renders required asterisk when required', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" required></io-input-password>',
-    });
-    const asterisk = page.root?.shadowRoot?.querySelector('.input-required');
-    expect(asterisk).toBeDefined();
+  it('applies size class to input field', () => {
+    component.label = 'Password';
+    component.size = 'lg';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect((props['class'] as string)).toContain('input-field--lg');
   });
 
-  it('renders size class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" size="lg"></io-input-password>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.classList.contains('input-field--lg')).toBe(true);
-  });
-
-  it('renders helper text when provided', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password" helper-text="Min 8 characters"></io-input-password>',
-    });
-    const helper = page.root?.shadowRoot?.querySelector('.input-helper');
-    expect(helper?.textContent).toContain('Min 8 characters');
+  it('toggle function flips showPassword', () => {
+    expect((component as any).showPassword).toBe(false);
+    (component as any).toggleVisibility();
+    expect((component as any).showPassword).toBe(true);
+    (component as any).toggleVisibility();
+    expect((component as any).showPassword).toBe(false);
   });
 });

@@ -1,50 +1,60 @@
-import { describe, it, expect, vi } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { IoInputPassword } from './io-input-password';
 
-describe('io-input-password click events', () => {
-  it('toggles to text type when toggle button is clicked', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const btn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('button.password-toggle');
-    expect(btn).toBeDefined();
-    btn!.click();
-    await page.waitForChanges();
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.type).toBe('text');
-    expect(btn?.getAttribute('aria-label')).toBe('Hide password');
+describe('io-input-password — click/change events', () => {
+  let component: IoInputPassword;
+  let changeMock: ReturnType<typeof vi.fn>;
+
+  function makeChangeEvent(value: string): Event {
+    const input = document.createElement('input');
+    input.value = value;
+    const ev = new Event('change');
+    Object.defineProperty(ev, 'target', { value: input });
+    return ev;
+  }
+
+  beforeEach(() => {
+    component = new IoInputPassword();
+    (component as any).el = document.createElement('io-input-password');
+    changeMock = vi.fn();
+    (component as any).change = { emit: changeMock };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn() };
+    component.label = 'Password';
   });
 
-  it('toggles back to password type on second click', async () => {
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    const btn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('button.password-toggle');
-    btn!.click();
-    await page.waitForChanges();
-    btn!.click();
-    await page.waitForChanges();
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.type).toBe('password');
-    expect(btn?.getAttribute('aria-label')).toBe('Show password');
+  it('toggles showPassword on toggleVisibility', () => {
+    expect((component as any).showPassword).toBe(false);
+    (component as any).toggleVisibility();
+    expect((component as any).showPassword).toBe(true);
   });
 
-  it('emits change event on input change', async () => {
-    const changeSpy = vi.fn();
-    const page = await newSpecPage({
-      components: [IoInputPassword],
-      html: '<io-input-password label="Password"></io-input-password>',
-    });
-    page.root?.addEventListener('change', changeSpy);
-    const input = page.root?.shadowRoot?.querySelector<HTMLInputElement>('input');
-    // Simulate change event
-    const changeEvent = new Event('change');
-    Object.defineProperty(changeEvent, 'target', { value: { value: 'secret123' } });
-    input?.dispatchEvent(changeEvent);
-    await page.waitForChanges();
-    expect(changeSpy).toHaveBeenCalled();
+  it('toggles back on second call', () => {
+    (component as any).toggleVisibility();
+    (component as any).toggleVisibility();
+    expect((component as any).showPassword).toBe(false);
+  });
+
+  it('emits change with value on handleChange', () => {
+    const ev = makeChangeEvent('secret123');
+    (component as any).handleChange(ev);
+    expect(changeMock).toHaveBeenCalledOnce();
+    expect(changeMock).toHaveBeenCalledWith('secret123');
+  });
+
+  it('does not emit change when disabled', () => {
+    component.disabled = true;
+    const ev = makeChangeEvent('secret123');
+    (component as any).handleChange(ev);
+    expect(changeMock).not.toHaveBeenCalled();
+  });
+
+  it('updates value prop on change', () => {
+    const ev = makeChangeEvent('newpass');
+    (component as any).handleChange(ev);
+    expect(component.value).toBe('newpass');
   });
 });

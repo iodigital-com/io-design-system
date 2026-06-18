@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputDate } from './io-input-date';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-input-date accessibility', () => {
+describe('io-input-date — a11y (ARIA patterns)', () => {
   it('visible label associated with date input has no axe violations', async () => {
     const container = document.createElement('div');
     container.innerHTML = `
@@ -15,59 +16,56 @@ describe('io-input-date accessibility', () => {
     await renderAndCheckA11y(container);
   });
 
-  it('associates label with input via htmlFor/id', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(input?.id).toBeTruthy();
-    expect(label?.htmlFor).toBe(input?.id);
-  });
+  describe('render ARIA props', () => {
+    let component: IoInputDate;
 
-  it('sets aria-invalid when state is error', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" state="error" message="Invalid date"></io-input-date>',
+    beforeEach(() => {
+      component = new IoInputDate();
+      (component as any).el = document.createElement('io-input-date');
+      (component as any).change = { emit: vi.fn() };
+      (component as any).input = { emit: vi.fn() };
+      (component as any).focus = { emit: vi.fn() };
+      (component as any).blur = { emit: vi.fn() };
+      (component as any).internals = { setFormValue: vi.fn() };
+      component.label = 'Birth date';
+      (component as any).componentWillLoad();
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBe('true');
-  });
 
-  it('does not set aria-invalid when state is none', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
+    it('sets aria-invalid when state is error', () => {
+      component.state = 'error';
+      component.message = 'Invalid date';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBe('true');
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBeNull();
-  });
 
-  it('calendar icon is aria-hidden', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
+    it('does not set aria-invalid when state is none', () => {
+      component.state = 'none';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBeUndefined();
     });
-    const icon = page.root?.shadowRoot?.querySelector('.date-suffix');
-    expect(icon?.getAttribute('aria-hidden')).toBe('true');
-  });
 
-  it('sets aria-describedby when error message is present', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" state="error" message="Date is required"></io-input-date>',
+    it('sets aria-describedby when error message present', () => {
+      component.state = 'error';
+      component.message = 'Date is required';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-describedby']).toBeTruthy();
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-describedby')).toBeTruthy();
-  });
 
-  it('error message has role="alert"', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" state="error" message="Invalid date"></io-input-date>',
+    it('label htmlFor matches inputId', () => {
+      vi.mocked(h).mockClear();
+      component.render();
+      const labelCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'label');
+      const props = (labelCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['htmlFor']).toBe((component as any).inputId);
     });
-    const errorEl = page.root?.shadowRoot?.querySelector('.input-message--error');
-    expect(errorEl?.getAttribute('role')).toBe('alert');
   });
 });

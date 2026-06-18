@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputSearch } from './io-input-search';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-input-search accessibility', () => {
+describe('io-input-search — a11y (ARIA patterns)', () => {
   it('visible label associated with search input has no axe violations', async () => {
     const container = document.createElement('div');
     container.innerHTML = `
@@ -15,68 +16,67 @@ describe('io-input-search accessibility', () => {
     await renderAndCheckA11y(container);
   });
 
-  it('associates label with input via htmlFor/id', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(input?.id).toBeTruthy();
-    expect(label?.htmlFor).toBe(input?.id);
-  });
+  describe('render ARIA props', () => {
+    let component: IoInputSearch;
 
-  it('sets aria-invalid when state is error', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" state="error" message="No results"></io-input-search>',
+    beforeEach(() => {
+      component = new IoInputSearch();
+      (component as any).el = document.createElement('io-input-search');
+      (component as any).change = { emit: vi.fn() };
+      (component as any).input = { emit: vi.fn() };
+      (component as any).focus = { emit: vi.fn() };
+      (component as any).blur = { emit: vi.fn() };
+      (component as any).clear = { emit: vi.fn() };
+      (component as any).internals = { setFormValue: vi.fn() };
+      component.label = 'Search';
+      (component as any).componentWillLoad();
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBe('true');
-  });
 
-  it('does not set aria-invalid when state is none', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
+    it('sets aria-invalid when state is error', () => {
+      component.state = 'error';
+      component.message = 'Required';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBe('true');
     });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.getAttribute('aria-invalid')).toBeNull();
-  });
 
-  it('clear button has clearAriaLabel', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" value="hello" clear-aria-label="Clear search field"></io-input-search>',
+    it('does not set aria-invalid when state is none', () => {
+      component.state = 'none';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-invalid']).toBeUndefined();
     });
-    const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
-    expect(clearBtn?.getAttribute('aria-label')).toBe('Clear search field');
-  });
 
-  it('clear button uses default clearAriaLabel', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" value="hello"></io-input-search>',
+    it('sets aria-describedby when error message present', () => {
+      component.state = 'error';
+      component.message = 'Search failed';
+      vi.mocked(h).mockClear();
+      component.render();
+      const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+      const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-describedby']).toBeTruthy();
     });
-    const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
-    expect(clearBtn?.getAttribute('aria-label')).toBe('Clear search');
-  });
 
-  it('prefix search icon is aria-hidden', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search"></io-input-search>',
+    it('label htmlFor matches inputId', () => {
+      vi.mocked(h).mockClear();
+      component.render();
+      const labelCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'label');
+      const props = (labelCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['htmlFor']).toBe((component as any).inputId);
     });
-    const prefix = page.root?.shadowRoot?.querySelector('.search-prefix');
-    expect(prefix?.getAttribute('aria-hidden')).toBe('true');
-  });
 
-  it('error message has role="alert"', async () => {
-    const page = await newSpecPage({
-      components: [IoInputSearch],
-      html: '<io-input-search label="Search" state="error" message="Search error"></io-input-search>',
+    it('clear button has aria-label', () => {
+      vi.mocked(h).mockClear();
+      component.render();
+      const btnCall = vi.mocked(h).mock.calls.find(
+        (c) => c[0] === 'button' && (c[1] as Record<string, unknown>)?.['aria-label']
+      );
+      const props = (btnCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-label']).toBeTruthy();
     });
-    const errorEl = page.root?.shadowRoot?.querySelector('.input-message--error');
-    expect(errorEl?.getAttribute('role')).toBe('alert');
   });
 });

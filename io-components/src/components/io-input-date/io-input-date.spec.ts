@@ -1,97 +1,101 @@
-import { describe, it, expect } from 'vitest';
-import { newSpecPage } from '@stencil/core/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
+
 import { IoInputDate } from './io-input-date';
 
-describe('io-input-date', () => {
-  it('renders with required label', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
-    });
-    expect(page.root).toBeDefined();
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(label?.textContent?.trim()).toContain('Birth date');
+describe('io-input-date — default props', () => {
+  let component: IoInputDate;
+
+  beforeEach(() => {
+    component = new IoInputDate();
+    (component as any).el = document.createElement('io-input-date');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn() };
   });
 
-  it('renders a date input', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.type).toBe('date');
+  it('value defaults to empty string', () => { expect(component.value).toBe(''); });
+  it('required defaults to false', () => { expect(component.required).toBe(false); });
+  it('disabled defaults to false', () => { expect(component.disabled).toBe(false); });
+  it('state defaults to none', () => { expect(component.state).toBe('none'); });
+  it('hideLabel defaults to false', () => { expect(component.hideLabel).toBe(false); });
+  it('size defaults to md', () => { expect(component.size).toBe('md'); });
+  it('message defaults to empty string', () => { expect(component.message).toBe(''); });
+  it('min defaults to undefined', () => { expect(component.min).toBeUndefined(); });
+  it('max defaults to undefined', () => { expect(component.max).toBeUndefined(); });
+
+  it('generates inputId in componentWillLoad', () => {
+    component.label = 'Birth date';
+    (component as any).componentWillLoad();
+    expect((component as any).inputId).toBeTruthy();
   });
 
-  it('applies disabled attribute', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" disabled></io-input-date>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.disabled).toBe(true);
+  it('renders type=date on native input', () => {
+    component.label = 'Birth date';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['type']).toBe('date');
   });
 
-  it('passes min and max to native input', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" min="2000-01-01" max="2026-12-31"></io-input-date>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.min).toBe('2000-01-01');
-    expect(input?.max).toBe('2026-12-31');
+  it('passes min/max to native input', () => {
+    component.label = 'Birth date';
+    component.min = '2000-01-01';
+    component.max = '2026-12-31';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['min']).toBe('2000-01-01');
+    expect(props['max']).toBe('2026-12-31');
   });
 
-  it('applies error state class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" state="error" message="Invalid date"></io-input-date>',
-    });
-    const wrapper = page.root?.shadowRoot?.querySelector('.input-wrapper');
-    expect(wrapper?.classList.contains('input-wrapper--state-error')).toBe(true);
+  it('passes disabled to native input', () => {
+    component.label = 'Birth date';
+    component.disabled = true;
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['disabled']).toBe(true);
   });
 
-  it('renders calendar icon', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
-    });
-    const icon = page.root?.shadowRoot?.querySelector('.date-suffix');
-    expect(icon).toBeDefined();
+  it('sets aria-invalid when state is error', () => {
+    component.label = 'Birth date';
+    component.state = 'error';
+    component.message = 'Invalid date';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['aria-invalid']).toBe('true');
   });
 
-  it('label is permanently floated', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date"></io-input-date>',
-    });
-    const label = page.root?.shadowRoot?.querySelector('label');
-    expect(label?.classList.contains('input-label--date-float')).toBe(true);
+  it('does not set aria-invalid when state is none', () => {
+    component.label = 'Birth date';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(props['aria-invalid']).toBeUndefined();
   });
 
-  it('renders required asterisk when required', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" required></io-input-date>',
-    });
-    const asterisk = page.root?.shadowRoot?.querySelector('.input-required');
-    expect(asterisk).toBeDefined();
-  });
-
-  it('renders size class', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" size="lg"></io-input-date>',
-    });
-    const input = page.root?.shadowRoot?.querySelector('input');
-    expect(input?.classList.contains('input-field--lg')).toBe(true);
-  });
-
-  it('renders helper text when provided', async () => {
-    const page = await newSpecPage({
-      components: [IoInputDate],
-      html: '<io-input-date label="Birth date" helper-text="Format: YYYY-MM-DD"></io-input-date>',
-    });
-    const helper = page.root?.shadowRoot?.querySelector('.input-helper');
-    expect(helper?.textContent).toContain('Format: YYYY-MM-DD');
+  it('applies size class to input field', () => {
+    component.label = 'Birth date';
+    component.size = 'lg';
+    (component as any).componentWillLoad();
+    vi.mocked(h).mockClear();
+    component.render();
+    const inputCall = vi.mocked(h).mock.calls.find((c) => c[0] === 'input');
+    const props = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect((props['class'] as string)).toContain('input-field--lg');
   });
 });

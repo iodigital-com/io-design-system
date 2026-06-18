@@ -17,10 +17,10 @@ export const scrollerStoryHorizontalChips: Story<'io-scroller'> = {
       children: [
         {
           tag: 'div' as const,
-          properties: { style: 'display: flex; gap: var(--io-space-2); padding: 2px;' },
+          properties: { style: { display: 'flex', gap: 'var(--io-space-2)', padding: '2px' } },
           children: chipLabels.map((label) => ({
             tag: 'io-tag' as const,
-            properties: { style: 'flex-shrink: 0' },
+            properties: { style: { flexShrink: '0' } },
             children: [label],
           })),
         },
@@ -35,11 +35,11 @@ export const scrollerStoryVerticalLinks: Story<'io-scroller'> = {
   generator: () => [
     {
       tag: 'io-scroller' as const,
-      properties: { orientation: 'vertical', label: 'Navigation links', style: 'height: 160px; display: block;' },
+      properties: { orientation: 'vertical', label: 'Navigation links', style: { height: '160px', display: 'block' } },
       children: [
         {
           tag: 'div' as const,
-          properties: { style: 'display: flex; flex-direction: column; gap: var(--io-space-2);' },
+          properties: { style: { display: 'flex', flexDirection: 'column', gap: 'var(--io-space-2)' } },
           children: linkLabels.map((item) => ({
             tag: 'io-link' as const,
             properties: { href: '#' },
@@ -61,10 +61,10 @@ export const scrollerStoryWithScrollbar: Story<'io-scroller'> = {
       children: [
         {
           tag: 'div' as const,
-          properties: { style: 'display: flex; gap: var(--io-space-3); padding: 4px 2px 12px;' },
+          properties: { style: { display: 'flex', gap: 'var(--io-space-3)', padding: '4px 2px 12px' } },
           children: chipLabels.map((label) => ({
             tag: 'io-tag' as const,
-            properties: { style: 'flex-shrink: 0' },
+            properties: { style: { flexShrink: '0' } },
             children: [label],
           })),
         },
@@ -83,10 +83,10 @@ export const scrollerStoryButtonStrip: Story<'io-scroller'> = {
       children: [
         {
           tag: 'div' as const,
-          properties: { style: 'display: flex; gap: var(--io-space-2); padding: 2px;' },
+          properties: { style: { display: 'flex', gap: 'var(--io-space-2)', padding: '2px' } },
           children: actionLabels.map((action) => ({
             tag: 'io-button' as const,
-            properties: { variant: 'ghost', style: 'flex-shrink: 0' },
+            properties: { variant: 'ghost', style: { flexShrink: '0' } },
             children: [action],
           })),
         },
@@ -117,22 +117,22 @@ export const scrollerStory: Story<'io-scroller'> = {
         properties: {
           orientation,
           showScrollbar: (properties?.showScrollbar as boolean) === true,
-          ...(isVertical ? { style: 'height: 160px; display: block;' } : {}),
+          ...(isVertical ? { style: { height: '160px', display: 'block' } } : {}),
           ...(properties?.label ? { label: properties.label as string } : {}),
         },
         children: isVertical
           ? linkLabels.map(label => ({
               tag: 'io-link' as const,
-              properties: { href: '#', style: 'display: block; margin-bottom: var(--io-space-2)' },
+              properties: { href: '#', style: { display: 'block', marginBottom: 'var(--io-space-2)' } },
               children: [label],
             }))
           : [
               {
                 tag: 'div' as const,
-                properties: { style: 'display: flex; gap: var(--io-space-2); padding: 2px;' },
+                properties: { style: { display: 'flex', gap: 'var(--io-space-2)', padding: '2px' } },
                 children: chipLabels.map(label => ({
                   tag: 'io-tag' as const,
-                  properties: { style: 'flex-shrink: 0' },
+                  properties: { style: { flexShrink: '0' } },
                   children: [label],
                 })),
               },

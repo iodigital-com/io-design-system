@@ -209,6 +209,10 @@ export namespace Components {
      */
     interface IoBadge {
         /**
+          * Accessible label for icon-only or abbreviated badges
+         */
+        "ariaLabel": string | null;
+        /**
           * Size variant aligned with io-tag
           * @default 'md'
          */
@@ -4101,6 +4105,10 @@ declare namespace LocalJSX {
      * <io-badge variant="error">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Accessible label for icon-only or abbreviated badges
+         */
+        "ariaLabel"?: string | null;
         /**
           * Size variant aligned with io-tag
           * @default 'md'

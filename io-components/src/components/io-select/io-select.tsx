@@ -228,8 +228,14 @@ export class IoSelect {
     this.faceInvalid = false;
   }
 
-  formStateRestoreCallback(state: string, _mode: 'restore' | 'autocomplete'): void {
-    this.value = state;
+  formStateRestoreCallback(state: string | null, _mode: 'restore' | 'autocomplete'): void {
+    if (typeof state === 'string') {
+      this.value = state;
+    } else {
+      this.value = undefined as unknown as string;
+    }
+    this.touched = false;
+    this.faceInvalid = false;
     this.syncFormValue();
   }
 
@@ -316,6 +322,7 @@ export class IoSelect {
 
   @Watch('isOpen')
   onIsOpenChange(newVal: boolean) {
+    if (!this.custom) return;
     this.toggle.emit({ open: newVal });
     if (newVal) {
       this.attachClickOutside();

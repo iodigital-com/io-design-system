@@ -96,16 +96,24 @@ describe('io-select — event behavior', () => {
   });
 
   describe('toggle event', () => {
-    it('emits toggle with { open: true } when isOpen changes to true', () => {
+    it('emits toggle with { open: true } when isOpen changes to true in custom mode', () => {
+      component.custom = true;
       (component as any).onIsOpenChange(true);
       expect(toggleMock).toHaveBeenCalledOnce();
       expect(toggleMock).toHaveBeenCalledWith({ open: true });
     });
 
-    it('emits toggle with { open: false } when isOpen changes to false', () => {
+    it('emits toggle with { open: false } when isOpen changes to false in custom mode', () => {
+      component.custom = true;
       (component as any).onIsOpenChange(false);
       expect(toggleMock).toHaveBeenCalledOnce();
       expect(toggleMock).toHaveBeenCalledWith({ open: false });
+    });
+
+    it('does NOT emit toggle in native mode (custom=false)', () => {
+      component.custom = false;
+      (component as any).onIsOpenChange(true);
+      expect(toggleMock).not.toHaveBeenCalled();
     });
   });
 });

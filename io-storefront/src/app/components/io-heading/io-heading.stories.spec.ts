@@ -277,28 +277,4 @@ describe('io-heading storefront stories', () => {
     });
   });
 
-  describe('headingStoryColors (named story)', () => {
-    it('does not throw', () => {
-      expect(() => headingStoryColors.generator?.()).not.toThrow();
-    });
-
-    it('returns one element per color variant', () => {
-      const els = headingStoryColors.generator?.() ?? [];
-      expect(els.length).toBe(4);
-    });
-
-    it('each element is an io-heading', () => {
-      const els = headingStoryColors.generator?.() ?? [];
-      for (const el of els) {
-        expect((el as { tag: string }).tag).toBe('io-heading');
-      }
-    });
-
-    it('covers inverse and brand colors', () => {
-      const els = headingStoryColors.generator?.() ?? [];
-      const colors = els.map((el) => (el as { properties: { color: string } }).properties.color);
-      expect(colors).toContain('inverse');
-      expect(colors).toContain('brand');
-    });
-  });
 });

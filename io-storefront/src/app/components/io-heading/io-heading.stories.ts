@@ -102,16 +102,6 @@ export const headingStoryEllipsis: Story<'io-heading'> = {
   ],
 };
 
-export const headingStoryColors: Story<'io-heading'> = {
-  state: { properties: {} },
-  generator: () =>
-    (['primary', 'secondary', 'inverse', 'brand'] as const).map((color) => ({
-      tag: 'io-heading' as const,
-      properties: { color, tag: 'h2', size: '2xl', weight: 'semibold' },
-      children: [`Color: ${color}`],
-    })),
-};
-
 export const headingPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',

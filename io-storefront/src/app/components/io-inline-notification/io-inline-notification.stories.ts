@@ -6,6 +6,7 @@ export const inlineNotificationStory: Story<'io-inline-notification'> = {
     properties: {
       variant: 'info',
       heading: '',
+      headingTag: 'h5',
       dismissible: false,
       actionLabel: '',
       actionIcon: 'arrow-right',
@@ -34,6 +35,13 @@ export const inlineNotificationPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Optional bold heading rendered above the slotted content.',
+  },
+  {
+    name: 'headingTag',
+    type: 'select',
+    options: ['h2', 'h3', 'h4', 'h5', 'h6'],
+    defaultValue: 'h5',
+    description: 'Semantic HTML tag for the notification heading. Defaults to h5 to avoid disrupting document hierarchy.',
   },
   {
     name: 'dismissible',

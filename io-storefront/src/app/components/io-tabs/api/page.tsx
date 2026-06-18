@@ -47,6 +47,48 @@ export default function IoTabsApiPage() {
                 <InlineCode>aria-label</InlineCode>. Recommended when multiple tablists appear on the same page.
               </span>,
             ],
+            [
+              <InlineCode key="n">size</InlineCode>,
+              <InlineCode key="t">&apos;small&apos; | &apos;medium&apos;</InlineCode>,
+              <InlineCode key="d">&apos;small&apos;</InlineCode>,
+              <span key="desc">
+                Visual size of the tab list. <InlineCode>medium</InlineCode> increases tab height and font
+                size for prominent navigation contexts.
+              </span>,
+            ],
+            [
+              <span key="n">
+                <InlineCode>compact</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Reduces tab button padding using density tokens. Useful for dense layouts where vertical
+                space is constrained. Reflected to the host attribute <InlineCode>compact</InlineCode>.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">labelledby</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                ID of an element that labels this tab group. Sets{' '}
+                <InlineCode>aria-labelledby</InlineCode> on the internal tablist element (ARIA 4.1.2).
+                Use instead of <InlineCode>label</InlineCode> when the labelling element already exists
+                in the DOM.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">panelIds</InlineCode>,
+              <InlineCode key="t">string[] | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Array of panel element IDs mapped 1:1 by index to the slotted tab buttons. When
+                provided, each tab button receives <InlineCode>aria-controls</InlineCode> pointing to
+                its associated panel — required for full ARIA APG tabpanel pattern compliance.
+              </span>,
+            ],
           ]}
         />
       </section>

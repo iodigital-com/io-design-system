@@ -99,7 +99,7 @@ describe('io-stepper — stepChange event', () => {
 
     expect(fakeEvent.stopPropagation).toHaveBeenCalled();
     expect(emitted).toHaveLength(1);
-    expect(emitted[0]).toEqual({ activeStepIndex: 2 });
+    expect(emitted[0]).toEqual({ activeStepIndex: 1 });
   });
 
   it('emits stepChange with correct index for first step', () => {
@@ -114,7 +114,7 @@ describe('io-stepper — stepChange event', () => {
     } as any;
     (stepper as any).onStepClick(fakeEvent);
 
-    expect(emitted[0]).toEqual({ activeStepIndex: 1 });
+    expect(emitted[0]).toEqual({ activeStepIndex: 0 });
   });
 });
 
@@ -300,6 +300,16 @@ describe('io-step — button wrapper (WCAG 2.1.1/4.1.2)', () => {
     step.label = 'Account';
     step.status = 'complete';
     step.index = 1;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBeUndefined();
+  });
+
+  it('aria-disabled is not set on current step (current is focusable, not disabled)', () => {
+    const step = new IoStep();
+    step.label = 'Details';
+    step.status = 'current';
+    step.index = 2;
     step.total = 3;
     const attrs = getButtonAttrs(step);
     expect(attrs['aria-disabled']).toBeUndefined();

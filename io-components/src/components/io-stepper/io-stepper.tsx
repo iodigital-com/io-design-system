@@ -44,7 +44,7 @@ export class IoStepper {
 
   /**
    * Fired when a complete (non-disabled) step is clicked.
-   * Payload: { activeStepIndex: number } — 1-based index of the clicked step.
+   * Payload: { activeStepIndex: number } — 0-based index of the clicked step.
    */
   @Event({ bubbles: false }) stepChange!: EventEmitter<{ activeStepIndex: number }>;
 
@@ -53,7 +53,7 @@ export class IoStepper {
   @Listen('stepClick')
   onStepClick(ev: CustomEvent<{ index: number }>) {
     ev.stopPropagation();
-    this.stepChange.emit({ activeStepIndex: ev.detail.index });
+    this.stepChange.emit({ activeStepIndex: ev.detail.index - 1 }); // convert 1-based → 0-based
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────

@@ -11,7 +11,8 @@ import type { IoStepStatus, IoStepperOrientation } from './types';
  *
  * Renders as an <li> containing a <button> for keyboard accessibility (WCAG 2.1.1/4.1.2).
  * The button has aria-current="step" on the current step, and aria-disabled="true" on
- * non-interactive steps (upcoming, warning when not navigable, or disabled).
+ * non-interactive, non-current steps (upcoming, warning, or explicitly disabled). The
+ * current step is always focusable and never receives aria-disabled.
  *
  * The `index`, `total`, and `orientation` props are set programmatically by
  * the parent io-stepper — you do not need to set them manually.
@@ -113,7 +114,7 @@ export class IoStep {
             type="button"
             class={`step__button${disabled ? ' step__button--disabled' : ''}`}
             aria-current={isCurrent ? 'step' : undefined}
-            aria-disabled={(!isInteractive) ? 'true' : undefined}
+            aria-disabled={(!isInteractive && !isCurrent) ? 'true' : undefined}
             aria-label={ariaLabel}
             onClick={this.handleClick}
           >

@@ -82,25 +82,21 @@ export function getStepStyles(): string {
 
     .step__button[aria-disabled="true"] {
       cursor: default;
-      pointer-events: none;
     }
 
     .step__button--disabled {
       cursor: not-allowed;
-      opacity: var(--io-opacity-disabled, 0.4);
-      pointer-events: none;
+      opacity: var(--io-state-disabled-opacity);
     }
 
-    /* Focus-visible ring using io-focus tokens */
+    /* Focus-visible ring using io-focus token convention */
     .step__button:focus {
       outline: none;
     }
 
     .step__button:focus-visible {
-      outline: 2px solid var(--io-focus-inner, #7D0034);
-      outline-offset: 2px;
-      box-shadow: 0 0 0 4px var(--io-focus-outer, #FFE4EE);
-      border-radius: var(--io-border-radius-sm, 9px);
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
     }
 
     /* ── Step inner: circle + label stacked vertically ─── */
@@ -158,9 +154,9 @@ export function getStepStyles(): string {
 
     /* Warning: warning color border + icon */
     .step--warning .step__circle {
-      border-color: var(--io-color-warning, #f59e0b);
+      border-color: var(--io-color-warning);
       background: var(--io-bg-base, #fff);
-      color: var(--io-color-warning, #f59e0b);
+      color: var(--io-color-warning);
     }
 
     /* ── Checkmark SVG ──────────────────────────────────── */
@@ -203,7 +199,7 @@ export function getStepStyles(): string {
     }
 
     .step--warning .step__label {
-      color: var(--io-color-warning, #f59e0b);
+      color: var(--io-color-warning);
     }
 
     /* ── Visually hidden screen reader text ─────────────── */

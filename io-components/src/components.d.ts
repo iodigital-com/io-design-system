@@ -9,7 +9,7 @@ import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, I
 import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-import { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoIconName } from "./utils/icons";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -19,21 +19,21 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
-import { IoIconSize } from "./components/io-icon/types";
-import { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
+import { IoIconColor, IoIconSize } from "./components/io-icon/types";
+import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
-import { IoPaginationChangeDetail } from "./components/io-pagination/types";
+import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoPopoverPlacement } from "./components/io-popover/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
-import { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 import { IoScrollerOrientation } from "./components/io-scroller/types";
-import { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
+import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -41,7 +41,8 @@ import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
-import { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
+import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
+import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -50,7 +51,7 @@ export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, I
 export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-export { IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoIconName } from "./utils/icons";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -60,21 +61,21 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
-export { IoIconSize } from "./components/io-icon/types";
-export { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
+export { IoIconColor, IoIconSize } from "./components/io-icon/types";
+export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
-export { IoPaginationChangeDetail } from "./components/io-pagination/types";
+export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoPopoverPlacement } from "./components/io-popover/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
-export { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
+export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -82,7 +83,8 @@ export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize,
 export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
-export { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
+export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
+export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -210,6 +212,7 @@ export namespace Components {
     interface IoBadge {
         /**
           * Accessible label for icon-only or abbreviated badges
+          * @default null
          */
         "ariaLabel": string | null;
         /**
@@ -346,10 +349,10 @@ export namespace Components {
      */
     interface IoButton {
         /**
-          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="panel-id" on the inner <button> <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys should be semantically meaningful for buttons (e.g. `aria-expanded`, `aria-pressed`, `aria-haspopup`, `aria-controls`). Keys may omit or include the `aria-` prefix.
+          * @example // Sets aria-expanded="true" on the inner <button> <io-button .aria={{ 'aria-expanded': 'true', 'aria-controls': 'panel-id' }}>Open panel</io-button>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: Partial<Record<IoButtonAriaAttribute, string>>;
         /**
           * Direction of the optional animated arrow icon. Omit to hide the arrow.
          */
@@ -364,6 +367,11 @@ export namespace Components {
           * @default 'blue'
          */
         "color": IoButtonColor;
+        /**
+          * Reduces vertical padding to a compact preset without changing the size classification. Equivalent to `sm` padding density but preserves the current `size` font-size and icon scale.
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Disables the button and applies reduced opacity
           * @default false
@@ -660,6 +668,11 @@ export namespace Components {
      */
     interface IoCheckboxGroup {
         /**
+          * Arbitrary ARIA attributes to spread onto the fieldset element. Keys may omit or include the `aria-` prefix — both forms are accepted.  Component-managed attributes take precedence: - `aria-invalid` is always controlled by the `error` prop and cannot be overridden. - `aria-describedby` is controlled by the component when `error` is active   (to preserve error-message linkage) and cannot be overridden in that state.
+          * @example <io-checkbox-group .aria={{ labelledby: 'external-label' }} label="Options" name="opts" />
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Disables the entire group
           * @default false
          */
@@ -704,6 +717,7 @@ export namespace Components {
      * <io-divider label="or" />
      * <io-divider color="subtle" />
      * <io-divider color="strong" />
+     * <io-divider>Custom separator content</io-divider>
      */
     interface IoDivider {
         /**
@@ -712,7 +726,7 @@ export namespace Components {
          */
         "color": IoDividerColor;
         /**
-          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
+          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation. Alternatively, use the default slot for rich content (overrides label prop text).
          */
         "label": string | undefined;
         /**
@@ -752,7 +766,7 @@ export namespace Components {
          */
         "background": IoDrawerBackground;
         /**
-          * Programmatically close the drawer. No-op if already closed. Emits the `dismiss` event.  For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
+          * Programmatically close the drawer. No-op if already closed. Does NOT emit the `dismiss` event (programmatic close).  For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
           * @example   const drawer = document.querySelector('io-drawer');   drawer.close();
          */
         "close": () => Promise<void>;
@@ -766,6 +780,11 @@ export namespace Components {
           * @default true
          */
         "closeOnBackdrop": boolean;
+        /**
+          * When false, the built-in close button is not rendered and ESC-key dismissal is suppressed. Use this for drawers where only an explicit in-content action should close the panel (e.g. a wizard step).
+          * @default true
+         */
+        "dismissButton": boolean;
         /**
           * Heading text displayed in the drawer header
          */
@@ -886,6 +905,11 @@ export namespace Components {
      */
     interface IoIcon {
         /**
+          * Semantic color of the icon. Maps to design-system tokens. Defaults to 'inherit' (currentColor).
+          * @default 'inherit'
+         */
+        "color": IoIconColor;
+        /**
           * Forces the host element width to match the icon size. Useful for consistent column alignment in lists and navigation menus.
           * @default false
          */
@@ -920,8 +944,9 @@ export namespace Components {
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+     *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+     * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
      * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
      * </io-inline-notification>
@@ -961,6 +986,15 @@ export namespace Components {
          */
         "heading"?: string;
         /**
+          * Semantic HTML tag for the notification heading. Defaults to 'h5' to avoid disrupting document hierarchy in most layouts.
+          * @default 'h5'
+         */
+        "headingTag": IoInlineNotificationHeadingTag;
+        /**
+          * Accessible label for the notification live region (aria-label on the host element). Use when the page contains multiple notifications and consumers need to distinguish them. When omitted no aria-label is set and the notification content provides its own accessible name.
+         */
+        "label"?: string;
+        /**
           * Severity variant — controls icon, colour, and aria-live politeness
           * @default 'info'
          */
@@ -993,6 +1027,11 @@ export namespace Components {
           * Check validity without showing browser validation UI. Returns true if valid.
          */
         "checkValidity": () => Promise<boolean>;
+        /**
+          * Compact variant — reduces the field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Shows {currentLength} / {maxLength} character counter below the field
           * @default false
@@ -1055,6 +1094,10 @@ export namespace Components {
           * Input name
          */
         "name": string | undefined;
+        /**
+          * Native pattern attribute — regex that the input value must match for validity
+         */
+        "pattern"?: string;
         /**
           * Placeholder — shown when no value and label is resting
          */
@@ -1136,9 +1179,22 @@ export namespace Components {
          */
         "external": boolean;
         /**
+          * Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance.
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Destination URL
          */
         "href": string;
+        /**
+          * Name of a Lucide icon to render before the label. Set to a valid IoIconName to show an icon.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG source string for a non-library icon. Takes precedence over `icon` when both are set.
+         */
+        "iconSource"?: string;
         /**
           * Rel attribute. Overridden to 'noopener noreferrer' when external is true.
          */
@@ -1200,6 +1256,11 @@ export namespace Components {
           * Description text for accessibility (used in aria-describedby)
          */
         "description"?: string;
+        /**
+          * When `true` (default), the built-in close (×) button is rendered in the modal header and pressing ESC will close the modal.  Set to `false` to hide the close button and suppress ESC dismissal — useful for confirmation dialogs or multi-step flows where the user must explicitly choose an action to proceed.
+          * @default true
+         */
+        "dismissButton": boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -1399,6 +1460,10 @@ export namespace Components {
          */
         "compact": boolean;
         /**
+          * Localisation strings. Override to internationalise navigation labels.
+         */
+        "intl"?: IoPaginationIntl;
+        /**
           * Visually label the next button (used by aria-label)
           * @default 'Next page'
          */
@@ -1551,9 +1616,28 @@ export namespace Components {
          */
         "color": IoProgressColor;
         /**
+          * When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec.
+          * @default false
+         */
+        "indeterminate": boolean;
+        /**
           * Accessible label set as aria-label on the host element.
          */
         "label": string | undefined;
+        /**
+          * Element ID that labels this progress bar (aria-labelledby). Takes precedence over label prop.
+         */
+        "labelledBy": string | undefined;
+        /**
+          * Maximum value of the range. Affects aria-valuemax and percentage calculation.
+          * @default 100
+         */
+        "max": number;
+        /**
+          * Minimum value of the range. Affects aria-valuemin and percentage calculation.
+          * @default 0
+         */
+        "min": number;
         /**
           * When true, renders a visible percentage label below the track.
           * @default false
@@ -1565,10 +1649,14 @@ export namespace Components {
          */
         "size": IoProgressSize;
         /**
-          * Progress value from 0 to 100 (clamped automatically).
+          * Progress value from 0 to 100 (or min-max range if supplied).
           * @default 0
          */
         "value": number;
+        /**
+          * Text description for the current value, e.g. "3 of 5 steps" (aria-valuetext).
+         */
+        "valueText": string | undefined;
     }
     /**
      * io-radio
@@ -1688,6 +1776,11 @@ export namespace Components {
          */
         "name": string;
         /**
+          * Layout orientation — 'vertical' (default) or 'horizontal'
+          * @default 'vertical'
+         */
+        "orientation": IoRadioGroupOrientation;
+        /**
           * Marks the group as required
           * @default false
          */
@@ -1716,6 +1809,11 @@ export namespace Components {
      * </io-scroller>
      */
     interface IoScroller {
+        /**
+          * When `true`, reduces internal gap between slotted items for dense layout contexts. Reflected as an attribute so CSS can target it.
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
          */
@@ -1854,8 +1952,15 @@ export namespace Components {
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
+     * // JSX / framework usage (dot-property binding):
+     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
      */
     interface IoSpinner {
+        /**
+          * Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
+         */
+        "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
         /**
           * Color of the spinner ring
           * @default 'primary'
@@ -1867,7 +1972,7 @@ export namespace Components {
          */
         "label": string;
         /**
-          * Size preset
+          * Size preset. Use 'inherit' to scale with parent font-size (1em).
           * @default 'md'
          */
         "size": IoSpinnerSize;
@@ -1876,15 +1981,23 @@ export namespace Components {
      * io-step
      * =======
      * Individual step item within an io-stepper container.
-     * Renders as an <li> with a circle indicator (number or checkmark), a visible
-     * label, a connector line, and a screen-reader-only full description.
+     * Renders as an <li> containing a <button> for keyboard accessibility (WCAG 2.1.1/4.1.2).
+     * The button has aria-current="step" on the current step, and aria-disabled="true" on
+     * non-interactive, non-current steps (upcoming, warning, or explicitly disabled). The
+     * current step is always focusable and never receives aria-disabled.
      * The `index`, `total`, and `orientation` props are set programmatically by
      * the parent io-stepper — you do not need to set them manually.
      * @example <io-step label="Account" status="complete"></io-step>
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
+     * <io-step label="Verify" status="warning"></io-step>
      */
     interface IoStep {
+        /**
+          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations.
+          * @default false
+         */
+        "disabled": boolean;
         /**
           * 1-based position of this step in the sequence. Set automatically by the parent io-stepper.
           * @default 0
@@ -1924,6 +2037,11 @@ export namespace Components {
      * </io-stepper>
      */
     interface IoStepper {
+        /**
+          * Accessible label for the <nav> landmark. Override for i18n — default is 'Progress'.
+          * @default 'Progress'
+         */
+        "ariaLabel": string;
         /**
           * 1-based index of the current active step.
           * @default 1
@@ -1976,6 +2094,11 @@ export namespace Components {
           * Label text — required for accessibility
          */
         "label": string;
+        /**
+          * Shows a loading spinner and blocks interaction
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Input name
          */
@@ -2190,6 +2313,7 @@ export namespace Components {
         "activeTabIndex": number;
         /**
           * When true, reduces tab button padding using density tokens.
+          * @default false
          */
         "compact": boolean;
         /**
@@ -2201,12 +2325,12 @@ export namespace Components {
          */
         "labelledby"?: string;
         /**
-          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
-          * When provided, each tab button receives aria-controls pointing to its associated panel.
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched). When provided, each tab button receives aria-controls pointing to its associated panel.
          */
         "panelIds"?: string[];
         /**
-          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+          * Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium').
+          * @default 'small'
          */
         "size": IoTabsSize;
     }
@@ -2219,15 +2343,23 @@ export namespace Components {
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
      * and ARIA tablist semantics.
-     * Place <button> children inside the component. The component applies
+     * Place <button> or <a> children inside the component. The component applies
      * role="tab", aria-selected, and tabindex automatically. Control the
      * active tab via the activeTabIndex prop and respond to the update event.
+     * Use <a> elements for navigation tab patterns where each tab is a route link.
+     * Use <button> elements for in-page tab switching.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * Disabled anchors (via aria-disabled="true") are skipped.
      * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
      *   <button type="button">Overview</button>
      *   <button type="button">Details</button>
      *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     * @example — anchor navigation pattern
+     * <io-tabs-bar active-tab-index="0" label="Site navigation">
+     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
     interface IoTabsBar {
@@ -2236,6 +2368,11 @@ export namespace Components {
           * @default 0
          */
         "activeTabIndex": number;
+        /**
+          * When true, applies a compact layout with reduced padding.
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Optional accessible label for the tablist region.
          */
@@ -2285,25 +2422,35 @@ export namespace Components {
     }
     /**
      * io-tag-dismissible
-     * ===================
-     * Display chip with a built-in dismiss button.
-     * Use when a selected value can be removed — e.g. applied filters, multi-select chips.
-     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
      */
     interface IoTagDismissible {
         /**
           * Optional leading icon name (from the io icon set)
          */
-        "icon"?: string;
+        "icon"?: IoIconName;
         /**
-          * Visible label text — also used as the accessible name for the dismiss button.
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
          */
         "label": string;
         /**
           * Colour variant of the chip
-          * @default 'neutral'
+          * @default 'default'
          */
-        "variant": IoTagColor;
+        "variant": IoTagColor1;
     }
     /**
      * io-text
@@ -2336,6 +2483,11 @@ export namespace Components {
           * @default false
          */
         "ellipsis": boolean;
+        /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'inherit'
+         */
+        "hyphens": IoTextHyphens;
         /**
           * Font size using --io-font-size-* tokens
           * @default 'base'
@@ -2516,13 +2668,11 @@ export namespace Components {
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
-          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
          */
         "actionHref"?: string;
         /**
-          * Label for an optional call-to-action rendered beside the text.
-          * When omitted, no action is rendered.
+          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
          */
         "actionLabel"?: string;
         /**
@@ -2683,9 +2833,21 @@ export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoSelectElement;
 }
+export interface IoStepCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoStepElement;
+}
+export interface IoStepperCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoStepperElement;
+}
 export interface IoSwitchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoSwitchElement;
+}
+export interface IoTableCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTableElement;
 }
 export interface IoTableBodyRowCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3012,6 +3174,7 @@ declare global {
      * <io-divider label="or" />
      * <io-divider color="subtle" />
      * <io-divider color="strong" />
+     * <io-divider>Custom separator content</io-divider>
      */
     interface HTMLIoDividerElement extends Components.IoDivider, HTMLStencilElement {
     }
@@ -3122,8 +3285,9 @@ declare global {
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+     *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+     * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
      * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
      * </io-inline-notification>
@@ -3244,6 +3408,8 @@ declare global {
     };
     interface HTMLIoMultiSelectElementEventMap {
         "change": IoMultiSelectChangeDetail;
+        "blur": FocusEvent;
+        "toggle": { open: boolean };
     }
     /**
      * io-multi-select
@@ -3499,6 +3665,7 @@ declare global {
         "change": IoSelectChangeDetail;
         "focus": FocusEvent;
         "blur": FocusEvent;
+        "toggle": IoSelectToggleDetail;
     }
     /**
      * io-select
@@ -3543,6 +3710,9 @@ declare global {
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
+     * // JSX / framework usage (dot-property binding):
+     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
      */
     interface HTMLIoSpinnerElement extends Components.IoSpinner, HTMLStencilElement {
     }
@@ -3550,24 +3720,41 @@ declare global {
         prototype: HTMLIoSpinnerElement;
         new (): HTMLIoSpinnerElement;
     };
+    interface HTMLIoStepElementEventMap {
+        "stepClick": { index: number };
+    }
     /**
      * io-step
      * =======
      * Individual step item within an io-stepper container.
-     * Renders as an <li> with a circle indicator (number or checkmark), a visible
-     * label, a connector line, and a screen-reader-only full description.
+     * Renders as an <li> containing a <button> for keyboard accessibility (WCAG 2.1.1/4.1.2).
+     * The button has aria-current="step" on the current step, and aria-disabled="true" on
+     * non-interactive, non-current steps (upcoming, warning, or explicitly disabled). The
+     * current step is always focusable and never receives aria-disabled.
      * The `index`, `total`, and `orientation` props are set programmatically by
      * the parent io-stepper — you do not need to set them manually.
      * @example <io-step label="Account" status="complete"></io-step>
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
+     * <io-step label="Verify" status="warning"></io-step>
      */
     interface HTMLIoStepElement extends Components.IoStep, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoStepElementEventMap>(type: K, listener: (this: HTMLIoStepElement, ev: IoStepCustomEvent<HTMLIoStepElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoStepElementEventMap>(type: K, listener: (this: HTMLIoStepElement, ev: IoStepCustomEvent<HTMLIoStepElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoStepElement: {
         prototype: HTMLIoStepElement;
         new (): HTMLIoStepElement;
     };
+    interface HTMLIoStepperElementEventMap {
+        "stepChange": { activeStepIndex: number };
+    }
     /**
      * io-stepper
      * ==========
@@ -3582,6 +3769,14 @@ declare global {
      * </io-stepper>
      */
     interface HTMLIoStepperElement extends Components.IoStepper, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoStepperElementEventMap>(type: K, listener: (this: HTMLIoStepperElement, ev: IoStepperCustomEvent<HTMLIoStepperElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoStepperElementEventMap>(type: K, listener: (this: HTMLIoStepperElement, ev: IoStepperCustomEvent<HTMLIoStepperElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoStepperElement: {
         prototype: HTMLIoStepperElement;
@@ -3589,6 +3784,7 @@ declare global {
     };
     interface HTMLIoSwitchElementEventMap {
         "change": IoSwitchChangeDetail;
+        "blur": FocusEvent;
     }
     /**
      * io-switch
@@ -3613,6 +3809,9 @@ declare global {
         prototype: HTMLIoSwitchElement;
         new (): HTMLIoSwitchElement;
     };
+    interface HTMLIoTableElementEventMap {
+        "sortChange": IoTableSortDetail;
+    }
     /**
      * io-table
      * =========
@@ -3635,6 +3834,14 @@ declare global {
      * </io-table>
      */
     interface HTMLIoTableElement extends Components.IoTable, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTableElementEventMap>(type: K, listener: (this: HTMLIoTableElement, ev: IoTableCustomEvent<HTMLIoTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTableElementEventMap>(type: K, listener: (this: HTMLIoTableElement, ev: IoTableCustomEvent<HTMLIoTableElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIoTableElement: {
         prototype: HTMLIoTableElement;
@@ -3804,15 +4011,23 @@ declare global {
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
      * and ARIA tablist semantics.
-     * Place <button> children inside the component. The component applies
+     * Place <button> or <a> children inside the component. The component applies
      * role="tab", aria-selected, and tabindex automatically. Control the
      * active tab via the activeTabIndex prop and respond to the update event.
+     * Use <a> elements for navigation tab patterns where each tab is a route link.
+     * Use <button> elements for in-page tab switching.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * Disabled anchors (via aria-disabled="true") are skipped.
      * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
      *   <button type="button">Overview</button>
      *   <button type="button">Details</button>
      *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     * @example — anchor navigation pattern
+     * <io-tabs-bar active-tab-index="0" label="Site navigation">
+     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
     interface HTMLIoTabsBarElement extends Components.IoTabsBar, HTMLStencilElement {
@@ -3862,9 +4077,20 @@ declare global {
     }
     /**
      * io-tag-dismissible
-     * ===================
-     * Display chip with a built-in dismiss button.
-     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
      */
     interface HTMLIoTagDismissibleElement extends Components.IoTagDismissible, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4191,6 +4417,7 @@ declare namespace LocalJSX {
     interface IoBadge {
         /**
           * Accessible label for icon-only or abbreviated badges
+          * @default null
          */
         "ariaLabel"?: string | null;
         /**
@@ -4331,10 +4558,10 @@ declare namespace LocalJSX {
      */
     interface IoButton {
         /**
-          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="panel-id" on the inner <button> <io-button .aria={{ controls: 'panel-id', haspopup: 'dialog' }}>Open panel</io-button>
+          * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`). Keys should be semantically meaningful for buttons (e.g. `aria-expanded`, `aria-pressed`, `aria-haspopup`, `aria-controls`). Keys may omit or include the `aria-` prefix.
+          * @example // Sets aria-expanded="true" on the inner <button> <io-button .aria={{ 'aria-expanded': 'true', 'aria-controls': 'panel-id' }}>Open panel</io-button>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: Partial<Record<IoButtonAriaAttribute, string>>;
         /**
           * Direction of the optional animated arrow icon. Omit to hide the arrow.
          */
@@ -4349,6 +4576,11 @@ declare namespace LocalJSX {
           * @default 'blue'
          */
         "color"?: IoButtonColor;
+        /**
+          * Reduces vertical padding to a compact preset without changing the size classification. Equivalent to `sm` padding density but preserves the current `size` font-size and icon scale.
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Disables the button and applies reduced opacity
           * @default false
@@ -4649,6 +4881,11 @@ declare namespace LocalJSX {
      */
     interface IoCheckboxGroup {
         /**
+          * Arbitrary ARIA attributes to spread onto the fieldset element. Keys may omit or include the `aria-` prefix — both forms are accepted.  Component-managed attributes take precedence: - `aria-invalid` is always controlled by the `error` prop and cannot be overridden. - `aria-describedby` is controlled by the component when `error` is active   (to preserve error-message linkage) and cannot be overridden in that state.
+          * @example <io-checkbox-group .aria={{ labelledby: 'external-label' }} label="Options" name="opts" />
+         */
+        "aria"?: Record<string, string>;
+        /**
           * Disables the entire group
           * @default false
          */
@@ -4697,6 +4934,7 @@ declare namespace LocalJSX {
      * <io-divider label="or" />
      * <io-divider color="subtle" />
      * <io-divider color="strong" />
+     * <io-divider>Custom separator content</io-divider>
      */
     interface IoDivider {
         /**
@@ -4705,7 +4943,7 @@ declare namespace LocalJSX {
          */
         "color"?: IoDividerColor;
         /**
-          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation.
+          * Optional label centered within the divider line. Common use case: "or", "and", date headings. When set, the component uses a flex row layout regardless of orientation. Alternatively, use the default slot for rich content (overrides label prop text).
          */
         "label"?: string | undefined;
         /**
@@ -4755,11 +4993,16 @@ declare namespace LocalJSX {
          */
         "closeOnBackdrop"?: boolean;
         /**
+          * When false, the built-in close button is not rendered and ESC-key dismissal is suppressed. Use this for drawers where only an explicit in-content action should close the panel (e.g. a wizard step).
+          * @default true
+         */
+        "dismissButton"?: boolean;
+        /**
           * Heading text displayed in the drawer header
          */
         "heading"?: string;
         /**
-          * Emitted after the drawer closes (any close path: button, backdrop, ESC)
+          * Emitted after the drawer is closed by a user action (close button, backdrop click, ESC key, or swipe-to-dismiss on bottom-sheet placement). NOT emitted on programmatic close via the `open` prop or `close()` method.
          */
         "onDismiss"?: (event: IoDrawerCustomEvent<void>) => void;
         /**
@@ -4881,6 +5124,11 @@ declare namespace LocalJSX {
      */
     interface IoIcon {
         /**
+          * Semantic color of the icon. Maps to design-system tokens. Defaults to 'inherit' (currentColor).
+          * @default 'inherit'
+         */
+        "color"?: IoIconColor;
+        /**
           * Forces the host element width to match the icon size. Useful for consistent column alignment in lists and navigation menus.
           * @default false
          */
@@ -4915,8 +5163,9 @@ declare namespace LocalJSX {
      * Sits within the content flow — no open/close state. The consumer
      * controls visibility by mounting or unmounting the element.
      * ARIA live region strategy:
-     *   - error variant:     role="alert" (implicit aria-live="assertive")
-     *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+     *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+     *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+     * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
      * @example <io-inline-notification variant="warning" heading="Storage limit">
      *   You have used 90% of your quota.
      * </io-inline-notification>
@@ -4956,6 +5205,15 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
+          * Semantic HTML tag for the notification heading. Defaults to 'h5' to avoid disrupting document hierarchy in most layouts.
+          * @default 'h5'
+         */
+        "headingTag"?: IoInlineNotificationHeadingTag;
+        /**
+          * Accessible label for the notification live region (aria-label on the host element). Use when the page contains multiple notifications and consumers need to distinguish them. When omitted no aria-label is set and the notification content provides its own accessible name.
+         */
+        "label"?: string;
+        /**
           * Emitted when the action button is clicked (not emitted while actionLoading is true)
          */
         "onAction"?: (event: IoInlineNotificationCustomEvent<void>) => void;
@@ -4992,6 +5250,11 @@ declare namespace LocalJSX {
           * Autocomplete attribute (legacy — prefer autoComplete)
          */
         "autocomplete"?: string | undefined;
+        /**
+          * Compact variant — reduces the field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Shows {currentLength} / {maxLength} character counter below the field
           * @default false
@@ -5058,6 +5321,10 @@ declare namespace LocalJSX {
         "onChange"?: (event: IoInputCustomEvent<string>) => void;
         "onFocus"?: (event: IoInputCustomEvent<FocusEvent>) => void;
         "onInput"?: (event: IoInputCustomEvent<InputEvent>) => void;
+        /**
+          * Native pattern attribute — regex that the input value must match for validity
+         */
+        "pattern"?: string;
         /**
           * Placeholder — shown when no value and label is resting
          */
@@ -5134,9 +5401,22 @@ declare namespace LocalJSX {
          */
         "external"?: boolean;
         /**
+          * Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance.
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Destination URL
          */
         "href": string;
+        /**
+          * Name of a Lucide icon to render before the label. Set to a valid IoIconName to show an icon.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG source string for a non-library icon. Takes precedence over `icon` when both are set.
+         */
+        "iconSource"?: string;
         /**
           * Fires on click. Not fired when disabled.
          */
@@ -5193,6 +5473,11 @@ declare namespace LocalJSX {
           * Description text for accessibility (used in aria-describedby)
          */
         "description"?: string;
+        /**
+          * When `true` (default), the built-in close (×) button is rendered in the modal header and pressing ESC will close the modal.  Set to `false` to hide the close button and suppress ESC dismissal — useful for confirmation dialogs or multi-step flows where the user must explicitly choose an action to proceed.
+          * @default true
+         */
+        "dismissButton"?: boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -5284,9 +5569,17 @@ declare namespace LocalJSX {
          */
         "name": string;
         /**
+          * Fires when the trigger button loses focus and the dropdown is closed. Useful for touched/dirty tracking in form libraries.
+         */
+        "onBlur"?: (event: IoMultiSelectCustomEvent<FocusEvent>) => void;
+        /**
           * Fires when the selection changes. Detail: `{ value: string[], name: string }`
          */
         "onChange"?: (event: IoMultiSelectCustomEvent<IoMultiSelectChangeDetail>) => void;
+        /**
+          * Fires whenever the dropdown opens or closes. Detail: `{ open: boolean }`
+         */
+        "onToggle"?: (event: IoMultiSelectCustomEvent<{ open: boolean }>) => void;
         /**
           * Placeholder shown in the trigger when nothing is selected.
           * @default 'Select options'
@@ -5398,6 +5691,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "compact"?: boolean;
+        /**
+          * Localisation strings. Override to internationalise navigation labels.
+         */
+        "intl"?: IoPaginationIntl;
         /**
           * Visually label the next button (used by aria-label)
           * @default 'Next page'
@@ -5559,9 +5856,28 @@ declare namespace LocalJSX {
          */
         "color"?: IoProgressColor;
         /**
+          * When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec.
+          * @default false
+         */
+        "indeterminate"?: boolean;
+        /**
           * Accessible label set as aria-label on the host element.
          */
         "label"?: string | undefined;
+        /**
+          * Element ID that labels this progress bar (aria-labelledby). Takes precedence over label prop.
+         */
+        "labelledBy"?: string | undefined;
+        /**
+          * Maximum value of the range. Affects aria-valuemax and percentage calculation.
+          * @default 100
+         */
+        "max"?: number;
+        /**
+          * Minimum value of the range. Affects aria-valuemin and percentage calculation.
+          * @default 0
+         */
+        "min"?: number;
         /**
           * When true, renders a visible percentage label below the track.
           * @default false
@@ -5573,10 +5889,14 @@ declare namespace LocalJSX {
          */
         "size"?: IoProgressSize;
         /**
-          * Progress value from 0 to 100 (clamped automatically).
+          * Progress value from 0 to 100 (or min-max range if supplied).
           * @default 0
          */
         "value"?: number;
+        /**
+          * Text description for the current value, e.g. "3 of 5 steps" (aria-valuetext).
+         */
+        "valueText"?: string | undefined;
     }
     /**
      * io-radio
@@ -5675,6 +5995,10 @@ declare namespace LocalJSX {
          */
         "errorMessage"?: string | undefined;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Helper text shown below the legend
           * @default ''
          */
@@ -5691,6 +6015,11 @@ declare namespace LocalJSX {
           * Fires when a radio in the group is selected
          */
         "onChange"?: (event: IoRadioGroupCustomEvent<IoRadioGroupChangeDetail>) => void;
+        /**
+          * Layout orientation — 'vertical' (default) or 'horizontal'
+          * @default 'vertical'
+         */
+        "orientation"?: IoRadioGroupOrientation;
         /**
           * Marks the group as required
           * @default false
@@ -5720,6 +6049,11 @@ declare namespace LocalJSX {
      * </io-scroller>
      */
     interface IoScroller {
+        /**
+          * When `true`, reduces internal gap between slotted items for dense layout contexts. Reflected as an attribute so CSS can target it.
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Accessible label set as `aria-label` on the scroll region. Provides context for screen reader users navigating with the keyboard. Defaults to a generic description when not provided.
          */
@@ -5826,6 +6160,10 @@ declare namespace LocalJSX {
          */
         "onFocus"?: (event: IoSelectCustomEvent<FocusEvent>) => void;
         /**
+          * Fires when the custom-mode dropdown opens or closes. Not emitted in native mode.
+         */
+        "onToggle"?: (event: IoSelectCustomEvent<IoSelectToggleDetail>) => void;
+        /**
           * Placeholder option shown when no value is selected
          */
         "placeholder"?: string | undefined;
@@ -5858,8 +6196,15 @@ declare namespace LocalJSX {
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
+     * // JSX / framework usage (dot-property binding):
+     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
      */
     interface IoSpinner {
+        /**
+          * Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
+         */
+        "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
         /**
           * Color of the spinner ring
           * @default 'primary'
@@ -5871,7 +6216,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Size preset
+          * Size preset. Use 'inherit' to scale with parent font-size (1em).
           * @default 'md'
          */
         "size"?: IoSpinnerSize;
@@ -5880,15 +6225,23 @@ declare namespace LocalJSX {
      * io-step
      * =======
      * Individual step item within an io-stepper container.
-     * Renders as an <li> with a circle indicator (number or checkmark), a visible
-     * label, a connector line, and a screen-reader-only full description.
+     * Renders as an <li> containing a <button> for keyboard accessibility (WCAG 2.1.1/4.1.2).
+     * The button has aria-current="step" on the current step, and aria-disabled="true" on
+     * non-interactive, non-current steps (upcoming, warning, or explicitly disabled). The
+     * current step is always focusable and never receives aria-disabled.
      * The `index`, `total`, and `orientation` props are set programmatically by
      * the parent io-stepper — you do not need to set them manually.
      * @example <io-step label="Account" status="complete"></io-step>
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
+     * <io-step label="Verify" status="warning"></io-step>
      */
     interface IoStep {
+        /**
+          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations.
+          * @default false
+         */
+        "disabled"?: boolean;
         /**
           * 1-based position of this step in the sequence. Set automatically by the parent io-stepper.
           * @default 0
@@ -5898,6 +6251,10 @@ declare namespace LocalJSX {
           * Visible text label for this step. Required.
          */
         "label": string;
+        /**
+          * Fired when a navigable (complete, non-disabled) step button is clicked. Bubbles up to io-stepper for re-emission as stepChange. Internal event — not part of the public API.
+         */
+        "onStepClick"?: (event: IoStepCustomEvent<{ index: number }>) => void;
         /**
           * Orientation inherited from the parent io-stepper. Set automatically by the parent io-stepper.
           * @default 'horizontal'
@@ -5929,10 +6286,19 @@ declare namespace LocalJSX {
      */
     interface IoStepper {
         /**
+          * Accessible label for the <nav> landmark. Override for i18n — default is 'Progress'.
+          * @default 'Progress'
+         */
+        "ariaLabel"?: string;
+        /**
           * 1-based index of the current active step.
           * @default 1
          */
         "current"?: number;
+        /**
+          * Fired when a complete (non-disabled) step is clicked. Payload: { activeStepIndex: number } — 0-based index of the clicked step.
+         */
+        "onStepChange"?: (event: IoStepperCustomEvent<{ activeStepIndex: number }>) => void;
         /**
           * Layout direction of the stepper.
           * @default 'horizontal'
@@ -5981,9 +6347,18 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner and blocks interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Input name
          */
         "name"?: string | undefined;
+        /**
+          * Fires when the switch loses focus — use for validation-on-blur patterns
+         */
+        "onBlur"?: (event: IoSwitchCustomEvent<FocusEvent>) => void;
         /**
           * Fires when the switch state changes
          */
@@ -6041,6 +6416,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "compact"?: boolean;
+        /**
+          * Emitted when a sortable column header is activated. Aggregates the bubbling `sort` event from io-table-head-cell so consumers can attach a single listener on io-table instead of one per column. Non-bubbling — stops at the io-table boundary.
+         */
+        "onSortChange"?: (event: IoTableCustomEvent<IoTableSortDetail>) => void;
         /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
@@ -6202,6 +6581,7 @@ declare namespace LocalJSX {
         "activeTabIndex"?: number;
         /**
           * When true, reduces tab button padding using density tokens.
+          * @default false
          */
         "compact"?: boolean;
         /**
@@ -6217,12 +6597,12 @@ declare namespace LocalJSX {
          */
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
         /**
-          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
-          * When provided, each tab button receives aria-controls pointing to its associated panel.
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched). When provided, each tab button receives aria-controls pointing to its associated panel.
          */
         "panelIds"?: string[];
         /**
-          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+          * Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium').
+          * @default 'small'
          */
         "size"?: IoTabsSize;
     }
@@ -6235,15 +6615,23 @@ declare namespace LocalJSX {
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
      * and ARIA tablist semantics.
-     * Place <button> children inside the component. The component applies
+     * Place <button> or <a> children inside the component. The component applies
      * role="tab", aria-selected, and tabindex automatically. Control the
      * active tab via the activeTabIndex prop and respond to the update event.
+     * Use <a> elements for navigation tab patterns where each tab is a route link.
+     * Use <button> elements for in-page tab switching.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
+     * Disabled anchors (via aria-disabled="true") are skipped.
      * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
      *   <button type="button">Overview</button>
      *   <button type="button">Details</button>
      *   <button type="button" disabled>Settings</button>
+     * </io-tabs-bar>
+     * @example — anchor navigation pattern
+     * <io-tabs-bar active-tab-index="0" label="Site navigation">
+     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
     interface IoTabsBar {
@@ -6252,6 +6640,11 @@ declare namespace LocalJSX {
           * @default 0
          */
         "activeTabIndex"?: number;
+        /**
+          * When true, applies a compact layout with reduced padding.
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Optional accessible label for the tablist region.
          */
@@ -6313,28 +6706,39 @@ declare namespace LocalJSX {
     }
     /**
      * io-tag-dismissible
-     * ===================
-     * Display chip with a built-in dismiss button.
-     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     * ==================
+     * A display chip with a built-in dismiss (remove) button.
+     * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+     * label with a dedicated dismiss action. Use it wherever a selected value
+     * can be removed — e.g. applied filters, multi-select value chips, or
+     * active category pills.
+     * Accessibility:
+     * - The dismiss button carries `aria-label="Remove {label}"` so screen
+     *   reader users hear an unambiguous action label.
+     * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+     *   matching common dismissible chip patterns.
+     * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+     * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+     * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
      */
     interface IoTagDismissible {
         /**
           * Optional leading icon name (from the io icon set)
          */
-        "icon"?: string;
+        "icon"?: IoIconName;
         /**
-          * Visible label text — also used as the accessible name for the dismiss button.
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
          */
-        "label"?: string;
+        "label": string;
         /**
-          * Fires when the dismiss button is clicked or Delete/Backspace is pressed.
+          * Fires when the dismiss button is clicked or Delete/Backspace is pressed
          */
         "onDismiss"?: (event: IoTagDismissibleCustomEvent<void>) => void;
         /**
           * Colour variant of the chip
-          * @default 'neutral'
+          * @default 'default'
          */
-        "variant"?: IoTagColor;
+        "variant"?: IoTagColor1;
     }
     /**
      * io-text
@@ -6367,6 +6771,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "ellipsis"?: boolean;
+        /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'inherit'
+         */
+        "hyphens"?: IoTextHyphens;
         /**
           * Font size using --io-font-size-* tokens
           * @default 'base'
@@ -6547,19 +6956,15 @@ declare namespace LocalJSX {
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
-          * this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
          */
         "actionHref"?: string;
         /**
-          * Label for an optional call-to-action rendered beside the text.
-          * When omitted, no action is rendered.
+          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
          */
         "actionLabel"?: string;
         /**
-          * Fires when the action button is clicked (only when `actionLabel` is set
-          * and `actionHref` is not). Bubbles and is composed so consumers can listen
-          * on `<io-toast>` or any ancestor — no need to reach into `shadowRoot`.
+          * Fires when the action button is clicked (only when `actionLabel` is set and `actionHref` is not). Bubbles and is composed so consumers can listen on `<io-toast>` or any ancestor — no need to reach into `shadowRoot`.
          */
         "onAction"?: (event: IoToastItemCustomEvent<void>) => void;
         /**
@@ -6669,6 +7074,7 @@ declare namespace LocalJSX {
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
         "size": IoBadgeSize;
+        "ariaLabel": string | null;
     }
     interface IoBannerAttributes {
         "variant": IoBannerVariant;
@@ -6711,6 +7117,7 @@ declare namespace LocalJSX {
         "iconSource": string;
         "hideLabel": boolean;
         "iconPosition": 'left' | 'right';
+        "compact": boolean;
     }
     interface IoButtonGroupAttributes {
         "type": IoButtonGroupType;
@@ -6768,6 +7175,7 @@ declare namespace LocalJSX {
         "heading": string;
         "closeOnBackdrop": boolean;
         "closeLabel": string;
+        "dismissButton": boolean;
         "background": IoDrawerBackground;
     }
     interface IoFormFieldAttributes {
@@ -6790,16 +7198,19 @@ declare namespace LocalJSX {
         "size": IoIconSize;
         "label": string;
         "iconSource": string;
+        "color": IoIconColor;
         "flip": boolean;
         "fixedWidth": boolean;
     }
     interface IoInlineNotificationAttributes {
         "variant": IoInlineNotificationVariant;
         "heading": string;
+        "headingTag": IoInlineNotificationHeadingTag;
         "dismissible": boolean;
         "dismissLabel": string;
         "actionLabel": string;
         "actionIcon": IoIconName;
+        "label": string;
         "actionLoading": boolean;
     }
     interface IoInputAttributes {
@@ -6827,6 +7238,9 @@ declare namespace LocalJSX {
         "counter": boolean;
         "form": string | undefined;
         "hideLabel": boolean;
+        "inputMode": IoInputMode;
+        "pattern": string;
+        "compact": boolean;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -6837,6 +7251,9 @@ declare namespace LocalJSX {
         "external": boolean;
         "download": string | undefined;
         "disabled": boolean;
+        "icon": IoIconName;
+        "iconSource": string;
+        "hideLabel": boolean;
     }
     interface IoModalAttributes {
         "open": boolean;
@@ -6845,6 +7262,7 @@ declare namespace LocalJSX {
         "closeOnBackdrop": boolean;
         "description": string;
         "background": IoModalBackground;
+        "dismissButton": boolean;
         "preventTopLayer": boolean;
     }
     interface IoMultiSelectAttributes {
@@ -6907,6 +7325,11 @@ declare namespace LocalJSX {
         "animated": boolean;
         "label": string | undefined;
         "showLabel": boolean;
+        "labelledBy": string | undefined;
+        "valueText": string | undefined;
+        "min": number;
+        "max": number;
+        "indeterminate": boolean;
     }
     interface IoRadioAttributes {
         "label": string;
@@ -6931,11 +7354,13 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
+        "orientation": IoRadioGroupOrientation;
     }
     interface IoScrollerAttributes {
         "orientation": IoScrollerOrientation;
         "showScrollbar": boolean;
         "label": string | undefined;
+        "compact": boolean;
     }
     interface IoSelectAttributes {
         "label": string;
@@ -6966,10 +7391,12 @@ declare namespace LocalJSX {
         "index": number;
         "total": number;
         "orientation": IoStepperOrientation;
+        "disabled": boolean;
     }
     interface IoStepperAttributes {
         "current": number;
         "orientation": IoStepperOrientation;
+        "ariaLabel": string;
     }
     interface IoSwitchAttributes {
         "label": string;
@@ -6978,6 +7405,7 @@ declare namespace LocalJSX {
         "checked": boolean;
         "required": boolean;
         "disabled": boolean;
+        "loading": boolean;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
@@ -7012,14 +7440,15 @@ declare namespace LocalJSX {
     }
     interface IoTabsAttributes {
         "activeTabIndex": number;
-        "compact": boolean;
         "label": string;
-        "labelledby": string;
         "size": IoTabsSize;
+        "compact": boolean;
+        "labelledby": string;
     }
     interface IoTabsBarAttributes {
         "activeTabIndex": number;
         "label": string;
+        "compact": boolean;
     }
     interface IoTagAttributes {
         "selected": boolean;
@@ -7029,6 +7458,11 @@ declare namespace LocalJSX {
         "color": IoTagColor;
         "label": string;
     }
+    interface IoTagDismissibleAttributes {
+        "label": string;
+        "variant": IoTagColor;
+        "icon": IoIconName;
+    }
     interface IoTextAttributes {
         "tag": IoTextTag;
         "size": IoTextSize;
@@ -7037,6 +7471,7 @@ declare namespace LocalJSX {
         "color": IoTextColor;
         "ellipsis": boolean;
         "datetime": string;
+        "hyphens": IoTextHyphens;
     }
     interface IoTextareaAttributes {
         "label": string;
@@ -7066,10 +7501,10 @@ declare namespace LocalJSX {
         "position": IoToastPosition;
     }
     interface IoToastItemAttributes {
-        "actionHref"?: string;
-        "actionLabel"?: string;
         "text": string;
         "variant": IoToastVariant;
+        "actionLabel": string;
+        "actionHref": string;
     }
     interface IoTooltipAttributes {
         "content": string;
@@ -7130,7 +7565,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
-        "io-tag-dismissible": IoTagDismissible;
+        "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] } & OneOf<"label", IoTagDismissible["label"], IoTagDismissibleAttributes["label"]>;
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
@@ -7298,6 +7733,7 @@ declare module "@stencil/core" {
              * <io-divider label="or" />
              * <io-divider color="subtle" />
              * <io-divider color="strong" />
+             * <io-divider>Custom separator content</io-divider>
              */
             "io-divider": LocalJSX.IntrinsicElements["io-divider"] & JSXBase.HTMLAttributes<HTMLIoDividerElement>;
             /**
@@ -7366,8 +7802,9 @@ declare module "@stencil/core" {
              * Sits within the content flow — no open/close state. The consumer
              * controls visibility by mounting or unmounting the element.
              * ARIA live region strategy:
-             *   - error variant:     role="alert" (implicit aria-live="assertive")
-             *   - all other variants: role="status" with aria-live="polite" aria-atomic="true"
+             *   - error/warning variants: role="alert" aria-live="assertive" aria-atomic="true" (interrupts screen reader)
+             *   - info/success variants:  role="status" aria-live="polite"  aria-atomic="true" (polite announcement)
+             * aria-atomic="true" is applied to ALL variants so the entire notification is read as a unit.
              * @example <io-inline-notification variant="warning" heading="Storage limit">
              *   You have used 90% of your quota.
              * </io-inline-notification>
@@ -7575,19 +8012,25 @@ declare module "@stencil/core" {
              * Use inside io-button (loading state), page transitions, or lazy content areas.
              * @example <io-spinner></io-spinner>
              * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
+             * // JSX / framework usage (dot-property binding):
+             * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+             * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
              */
             "io-spinner": LocalJSX.IntrinsicElements["io-spinner"] & JSXBase.HTMLAttributes<HTMLIoSpinnerElement>;
             /**
              * io-step
              * =======
              * Individual step item within an io-stepper container.
-             * Renders as an <li> with a circle indicator (number or checkmark), a visible
-             * label, a connector line, and a screen-reader-only full description.
+             * Renders as an <li> containing a <button> for keyboard accessibility (WCAG 2.1.1/4.1.2).
+             * The button has aria-current="step" on the current step, and aria-disabled="true" on
+             * non-interactive, non-current steps (upcoming, warning, or explicitly disabled). The
+             * current step is always focusable and never receives aria-disabled.
              * The `index`, `total`, and `orientation` props are set programmatically by
              * the parent io-stepper — you do not need to set them manually.
              * @example <io-step label="Account" status="complete"></io-step>
              * <io-step label="Details" status="current"></io-step>
              * <io-step label="Review" status="upcoming"></io-step>
+             * <io-step label="Verify" status="warning"></io-step>
              */
             "io-step": LocalJSX.IntrinsicElements["io-step"] & JSXBase.HTMLAttributes<HTMLIoStepElement>;
             /**
@@ -7718,15 +8161,23 @@ declare module "@stencil/core" {
              * panel switching. The consumer owns route/content transitions; io-tabs-bar
              * provides the visual tab strip with active indicator, keyboard navigation,
              * and ARIA tablist semantics.
-             * Place <button> children inside the component. The component applies
+             * Place <button> or <a> children inside the component. The component applies
              * role="tab", aria-selected, and tabindex automatically. Control the
              * active tab via the activeTabIndex prop and respond to the update event.
+             * Use <a> elements for navigation tab patterns where each tab is a route link.
+             * Use <button> elements for in-page tab switching.
              * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
              * Disabled buttons (via the HTML disabled attribute) are skipped.
+             * Disabled anchors (via aria-disabled="true") are skipped.
              * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
              *   <button type="button">Overview</button>
              *   <button type="button">Details</button>
              *   <button type="button" disabled>Settings</button>
+             * </io-tabs-bar>
+             * @example — anchor navigation pattern
+             * <io-tabs-bar active-tab-index="0" label="Site navigation">
+             * <a href="/overview" aria-current="page">Overview</a>
+             * <a href="/details">Details</a>
              * </io-tabs-bar>
              */
             "io-tabs-bar": LocalJSX.IntrinsicElements["io-tabs-bar"] & JSXBase.HTMLAttributes<HTMLIoTabsBarElement>;
@@ -7743,9 +8194,20 @@ declare module "@stencil/core" {
             "io-tag": LocalJSX.IntrinsicElements["io-tag"] & JSXBase.HTMLAttributes<HTMLIoTagElement>;
             /**
              * io-tag-dismissible
-             * ===================
-             * Display chip with a built-in dismiss button.
-             * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+             * ==================
+             * A display chip with a built-in dismiss (remove) button.
+             * Unlike io-tag (which is a toggle chip), io-tag-dismissible is a static
+             * label with a dedicated dismiss action. Use it wherever a selected value
+             * can be removed — e.g. applied filters, multi-select value chips, or
+             * active category pills.
+             * Accessibility:
+             * - The dismiss button carries `aria-label="Remove {label}"` so screen
+             *   reader users hear an unambiguous action label.
+             * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
+             *   matching common dismissible chip patterns.
+             * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
+             * @example <io-tag-dismissible label="React"></io-tag-dismissible>
+             * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
              */
             "io-tag-dismissible": LocalJSX.IntrinsicElements["io-tag-dismissible"] & JSXBase.HTMLAttributes<HTMLIoTagDismissibleElement>;
             /**

@@ -23,11 +23,13 @@ export function getTagDismissibleStyles(): string {
       border: 1px solid var(--io-border);
       overflow: hidden;
       transition: border-color var(--io-motion-fast), background-color var(--io-motion-fast);
+      min-height: var(--io-touch-target-min);
     }
 
     /* ── Colour variants ────────────────────────────────────── */
 
-    .tag-dismissible--neutral {
+    .tag-dismissible--default {
+      background: transparent;
       border-color: var(--io-border);
     }
 
@@ -79,6 +81,12 @@ export function getTagDismissibleStyles(): string {
       color: var(--io-color-error);
     }
 
+    .tag-dismissible--outline {
+      background: transparent;
+      border-color: var(--io-border);
+      color: var(--io-text-primary);
+    }
+
     /* ── Label span ─────────────────────────────────────────── */
 
     .tag-dismissible__label {
@@ -107,8 +115,8 @@ export function getTagDismissibleStyles(): string {
       justify-content: center;
       color: var(--io-text-secondary);
       transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
-      min-width: 24px;
-      min-height: 24px;
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
       padding: 0 var(--io-space-2);
     }
 
@@ -146,10 +154,15 @@ export function getTagDismissibleStyles(): string {
         background: var(--io-state-hover);
       }
 
+      .tag-dismissible--outline .tag-dismissible__dismiss:hover {
+        color: var(--io-text-primary);
+        background: var(--io-state-hover);
+      }
+
       .tag-dismissible--dark .tag-dismissible__dismiss:hover,
       .tag-dismissible--orange .tag-dismissible__dismiss:hover,
       .tag-dismissible--rouge .tag-dismissible__dismiss:hover {
-        background: rgba(0, 0, 0, 0.1);
+        opacity: 0.85;
         color: var(--io-color-white);
       }
     }

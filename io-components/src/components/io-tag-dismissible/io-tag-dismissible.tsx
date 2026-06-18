@@ -19,11 +19,11 @@ import type { IoIconName } from '../../utils/icons';
  *   reader users hear an unambiguous action label.
  * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
  *   matching common dismissible chip patterns.
- * - Dismiss button meets WCAG 2.5.8 minimum touch target (24×24 px).
+ * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
  *
  * @example
- * <io-tag-dismissible label="React">React</io-tag-dismissible>
- * <io-tag-dismissible label="TypeScript" variant="blue">TypeScript</io-tag-dismissible>
+ * <io-tag-dismissible label="React"></io-tag-dismissible>
+ * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
  */
 @Component({
   tag: 'io-tag-dismissible',
@@ -39,7 +39,7 @@ export class IoTagDismissible {
   @Prop() label!: string;
 
   /** Colour variant of the chip */
-  @Prop({ reflect: true }) variant: IoTagColor = 'neutral' as IoTagColor;
+  @Prop({ reflect: true }) variant: IoTagColor = 'default';
 
   /** Optional leading icon name (from the io icon set) */
   @Prop() icon?: IoIconName;

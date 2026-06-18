@@ -9,6 +9,7 @@ export const radioGroupStory: Story<'io-radio-group'> = {
       value: 'email',
       required: false,
       disabled: false,
+      loading: false,
       error: false,
       errorMessage: '',
       helperText: '',
@@ -110,6 +111,20 @@ export const radioGroupStoryDisabled: Story<'io-radio-group'> = {
   ],
 };
 
+export const radioGroupStoryLoading: Story<'io-radio-group'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-radio-group' as const,
+      properties: { label: 'Shipping method', name: 'shipping-loading', value: 'standard', loading: true },
+      children: [
+        { tag: 'io-radio' as const, properties: { label: 'Standard (3-5 days)', value: 'standard' } },
+        { tag: 'io-radio' as const, properties: { label: 'Express (1-2 days)', value: 'express' } },
+      ],
+    },
+  ],
+};
+
 export const radioGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
@@ -146,6 +161,12 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Disables the entire group and all child radios.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a spinner overlay and blocks interaction while an async operation is in progress.',
   },
   {
     name: 'error',

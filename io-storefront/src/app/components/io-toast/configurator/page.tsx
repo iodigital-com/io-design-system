@@ -13,18 +13,20 @@ import { Playground } from '@/components/playground/Playground';
 export default function IoToastConfiguratorPage() {
   const toastRef = useRef<HTMLIoToastElement | null>(null);
   const [storyState, setStoryState] = useState<StoryState<HTMLTagOrComponent>>({
-    properties: { text: 'Notification message.', variant: 'neutral' },
+    properties: { text: 'Notification message.', variant: 'neutral', duration: 5000, dismissible: true },
   });
 
   const text = (storyState.properties?.text as string) ?? 'Notification message.';
   const variant = (storyState.properties?.variant as string) ?? 'neutral';
+  const duration = (storyState.properties?.duration as number) ?? 5000;
+  const dismissible = (storyState.properties?.dismissible as boolean) ?? true;
 
   const frameworkCode = {
     html: `<io-toast id="toast"></io-toast>
 
 <script>
   const toast = document.getElementById('toast');
-  toast.addToast({ text: '${text}', variant: '${variant}' });
+  toast.addToast({ text: '${text}', variant: '${variant}', duration: ${duration}, persistent: ${!dismissible} });
 </script>`,
     react: `import { useRef } from 'react';
 
@@ -35,7 +37,7 @@ function App() {
     <>
       <io-toast ref={toastRef} />
       <io-button
-        onClick={() => toastRef.current?.addToast({ text: '${text}', variant: '${variant}' })}
+        onClick={() => toastRef.current?.addToast({ text: '${text}', variant: '${variant}', duration: ${duration}, persistent: ${!dismissible} })}
       >
         Show toast
       </io-button>
@@ -59,7 +61,7 @@ export class AppComponent {
   constructor(private toast: ToastManager) {}
 
   showToast() {
-    this.toast.addToast({ text: '${text}', variant: '${variant}' });
+    this.toast.addToast({ text: '${text}', variant: '${variant}', duration: ${duration}, persistent: ${!dismissible} });
   }
 }`,
     vue: `<template>
@@ -70,15 +72,20 @@ export class AppComponent {
 <script setup lang="ts">
 import { ref } from 'vue';
 const toast = ref<HTMLIoToastElement | null>(null);
-const showToast = () => toast.value?.addToast({ text: '${text}', variant: '${variant}' });
+const showToast = () => toast.value?.addToast({ text: '${text}', variant: '${variant}', duration: ${duration}, persistent: ${!dismissible} });
 </script>`,
   };
 
   const showToast = useCallback(() => {
     if (toastRef.current) {
-      toastRef.current.addToast({ text, variant: variant as Parameters<HTMLIoToastElement['addToast']>[0]['variant'] });
+      toastRef.current.addToast({
+        text,
+        variant: variant as Parameters<HTMLIoToastElement['addToast']>[0]['variant'],
+        duration,
+        persistent: !dismissible,
+      });
     }
-  }, [text, variant]);
+  }, [text, variant, duration, dismissible]);
 
   return (
     <div>

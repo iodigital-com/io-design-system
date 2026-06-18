@@ -25,6 +25,7 @@ declare module 'react' {
   'io-checkbox-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxGroupElement>, HTMLIoCheckboxGroupElement> & Partial<StencilJSX.IoCheckboxGroup>;
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
+  'io-flyout': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFlyoutElement>, HTMLIoFlyoutElement> & Partial<StencilJSX.IoFlyout>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
   'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoHeadingElement>, HTMLIoHeadingElement> & Partial<StencilJSX.IoHeading>;
   'io-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoIconElement>, HTMLIoIconElement> & Partial<StencilJSX.IoIcon>;
@@ -42,6 +43,8 @@ declare module 'react' {
   'io-radio': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioElement>, HTMLIoRadioElement> & Partial<StencilJSX.IoRadio>;
   'io-radio-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoRadioGroupElement>, HTMLIoRadioGroupElement> & Partial<StencilJSX.IoRadioGroup>;
   'io-scroller': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoScrollerElement>, HTMLIoScrollerElement> & Partial<StencilJSX.IoScroller>;
+  'io-segment': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSegmentElement>, HTMLIoSegmentElement> & Partial<StencilJSX.IoSegment>;
+  'io-segmented-control': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSegmentedControlElement>, HTMLIoSegmentedControlElement> & Partial<StencilJSX.IoSegmentedControl>;
   'io-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSelectElement>, HTMLIoSelectElement> & Partial<StencilJSX.IoSelect>;
   'io-spinner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSpinnerElement>, HTMLIoSpinnerElement> & Partial<StencilJSX.IoSpinner>;
   'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;

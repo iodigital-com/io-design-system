@@ -194,4 +194,29 @@ export const carouselPropDefinitions: PropDefinition[] = [
     defaultValue: 'Next',
     description: 'Accessible label for the next-slide button. Override for localisation.',
   },
+  {
+    name: 'heading',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional heading text rendered above the slide track.',
+  },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional description text rendered below the heading and above the slide track.',
+  },
+  {
+    name: 'pagination',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, renders dot indicators below the slides synced to the active slide.',
+  },
+  {
+    name: 'alignHeader',
+    type: 'select',
+    options: ['left', 'center'],
+    defaultValue: 'left',
+    description: 'Alignment of the heading and description header area.',
+  },
 ];

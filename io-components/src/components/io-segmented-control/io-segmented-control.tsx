@@ -1,0 +1,193 @@
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
+
+import { getSegmentedControlStyles } from './io-segmented-control-styles';
+
+import type { IoSegmentedControlChangeDetail } from './types';
+
+/**
+ * io-segmented-control
+ * =====================
+ * FACE-compliant exclusive-selection bar. A styled radio group with a unified
+ * horizontal bar visual layout. Parent component that manages selection state
+ * and keyboard navigation across slotted io-segment children.
+ *
+ * Uses role="group" on the host with roving tabindex across child segments.
+ *
+ * @example
+ * <io-segmented-control name="view" value="list">
+ *   <io-segment value="list" label="List" />
+ *   <io-segment value="grid" label="Grid" />
+ *   <io-segment value="map" label="Map" />
+ * </io-segmented-control>
+ */
+@Component({
+  tag: 'io-segmented-control',
+  shadow: true,
+  formAssociated: true,
+})
+export class IoSegmentedControl {
+  @Element() el!: HTMLElement;
+  @AttachInternals() internals!: ElementInternals;
+
+  // ── Props ─────────────────────────────────────────────────────
+
+  /** Currently selected segment value */
+  @Prop({ mutable: true }) value: string | undefined;
+
+  /** HTML name attribute for form participation */
+  @Prop() name: string | undefined;
+
+  /** Disables the entire control and all child segments */
+  @Prop({ reflect: true }) disabled = false;
+
+  // ── Private ───────────────────────────────────────────────────
+
+  private defaultValue?: string;
+
+  // ── Events ────────────────────────────────────────────────────
+
+  /** Fires when the selected segment changes */
+  @Event() change!: EventEmitter<IoSegmentedControlChangeDetail>;
+
+  // ── Lifecycle ─────────────────────────────────────────────────
+
+  componentWillLoad() {
+    this.defaultValue = this.value;
+    this.syncFormValue();
+  }
+
+  componentDidLoad() {
+    this.syncChildren();
+    this.updateTabStops();
+  }
+
+  @Watch('value')
+  onValueChange() {
+    this.syncChildren();
+    this.updateTabStops();
+    this.syncFormValue();
+  }
+
+  @Watch('disabled')
+  onDisabledChange() {
+    this.syncChildren();
+  }
+
+  // ── FACE callbacks ────────────────────────────────────────────
+
+  formResetCallback(): void {
+    this.value = this.defaultValue;
+    this.syncChildren();
+    this.updateTabStops();
+    this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean): void {
+    this.disabled = disabled;
+    this.syncChildren();
+  }
+
+  // ── Event Handlers ────────────────────────────────────────────
+
+  /**
+   * Listen for the 'segmentSelect' event bubbled from io-segment children.
+   */
+  @Listen('segmentSelect')
+  handleSegmentSelect(ev: CustomEvent<{ value: string }>) {
+    const newValue = ev.detail?.value ?? '';
+    this.value = newValue;
+    this.change.emit({ value: newValue });
+  }
+
+  /** Roving tabindex keyboard navigation across segments */
+  @Listen('keydown')
+  handleGroupKeydown(ev: KeyboardEvent): void {
+    const segments = this.getSegments().filter(s => !s.disabled);
+    if (!segments.length) return;
+
+    let currentIndex = segments.findIndex(s => s === document.activeElement);
+    if (currentIndex === -1) {
+      currentIndex = segments.findIndex(s => s.value === this.value && !s.disabled);
+      if (currentIndex === -1) currentIndex = 0;
+    }
+
+    let nextIndex = currentIndex;
+
+    if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') {
+      ev.preventDefault();
+      nextIndex = (currentIndex + 1) % segments.length;
+    } else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      nextIndex = (currentIndex - 1 + segments.length) % segments.length;
+    } else if (ev.key === 'Home') {
+      ev.preventDefault();
+      nextIndex = 0;
+    } else if (ev.key === 'End') {
+      ev.preventDefault();
+      nextIndex = segments.length - 1;
+    } else {
+      return;
+    }
+
+    const target = segments[nextIndex];
+    this.value = target.value;
+    segments.forEach((s, i) => { s.tabIndex = i === nextIndex ? 0 : -1; });
+    const targetEl = target as HTMLElement & { setFocus?(): void };
+    if (typeof targetEl.setFocus === 'function') {
+      targetEl.setFocus();
+    } else {
+      targetEl.focus();
+    }
+    this.change?.emit({ value: this.value ?? '' });
+  }
+
+  // ── Private helpers ───────────────────────────────────────────
+
+  private syncFormValue(): void {
+    const hasValue = this.value !== undefined && this.value !== '';
+    this.internals?.setFormValue?.(hasValue ? this.value! : null);
+    this.internals?.setValidity?.({});
+  }
+
+  private getSegments(): Array<HTMLElement & { value: string; selected: boolean; disabled: boolean; tabIndex: number }> {
+    return Array.from(
+      this.el.querySelectorAll<HTMLElement & { value: string; selected: boolean; disabled: boolean; tabIndex: number }>('io-segment'),
+    );
+  }
+
+  private updateTabStops(): void {
+    const segments = this.getSegments();
+    const active = segments.find(s => s.value === this.value && !s.disabled);
+    const first = segments.find(s => !s.disabled);
+    const target = active ?? first;
+    segments.forEach(s => {
+      s.tabIndex = (s === target && !s.disabled) ? 0 : -1;
+    });
+  }
+
+  private syncChildren = () => {
+    const segments = this.getSegments();
+    segments.forEach(s => {
+      s.selected = s.value === this.value;
+      s.disabled = this.disabled;
+    });
+  };
+
+  // ── Render ───────────────────────────────────────────────────
+
+  render() {
+    const { disabled } = this;
+
+    return (
+      <Host
+        role="group"
+        aria-disabled={disabled ? 'true' : undefined}
+      >
+        <style>{getSegmentedControlStyles()}</style>
+        <div class="segmented-control" aria-label={undefined}>
+          <slot onSlotchange={this.syncChildren} />
+        </div>
+      </Host>
+    );
+  }
+}

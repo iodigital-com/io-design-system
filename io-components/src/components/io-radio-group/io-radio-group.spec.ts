@@ -39,6 +39,10 @@ describe('io-radio-group — default props', () => {
   it('has vertical orientation by default', () => {
     expect(component.orientation).toBe('vertical');
   });
+
+  it('is not loading by default', () => {
+    expect(component.loading).toBe(false);
+  });
 });
 
 describe('io-radio-group — syncChildren', () => {
@@ -270,5 +274,77 @@ describe('io-radio-group — render() role and aria-orientation', () => {
       .map(args => args[1]);
 
     expect(fieldsetProps[0]?.['aria-required']).toBeUndefined();
+  });
+});
+
+describe('io-radio-group — loading prop', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('sets aria-busy="true" on Host when loading=true', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.loading = true;
+
+    component.render();
+
+    // In the Stencil unit-test mock, Host resolves to undefined,
+    // so the h() call for <Host> has undefined as its first argument.
+    const hostCall = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>).find(
+      call => call[0] == null && call[1]?.['aria-busy'] !== undefined,
+    );
+    expect(hostCall?.[1]?.['aria-busy']).toBe('true');
+  });
+
+  it('omits aria-busy when loading=false', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.loading = false;
+
+    component.render();
+
+    const hostCall = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>).find(
+      call => call[0] == null && call[1]?.['aria-busy'] !== undefined,
+    );
+    expect(hostCall).toBeUndefined();
+  });
+
+  it('renders io-spinner when loading=true', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.loading = true;
+
+    component.render();
+
+    const spinnerCall = vi.mocked(h).mock.calls.find(call => call[0] === 'io-spinner');
+    expect(spinnerCall).toBeDefined();
+  });
+
+  it('does not render io-spinner when loading=false', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    component.label = 'Choose an option';
+    component.name = 'choice';
+    component.loading = false;
+
+    component.render();
+
+    const spinnerCall = vi.mocked(h).mock.calls.find(call => call[0] === 'io-spinner');
+    expect(spinnerCall).toBeUndefined();
   });
 });

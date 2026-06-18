@@ -39,7 +39,7 @@ export function getModalStyles(): string {
 
     dialog::backdrop {
       background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(var(--io-backdrop-blur));
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
@@ -72,7 +72,7 @@ export function getModalStyles(): string {
       inset: 0;
       z-index: var(--io-z-modal);
       background: var(--io-bg-overlay);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(var(--io-backdrop-blur));
       animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
@@ -140,7 +140,7 @@ export function getModalStyles(): string {
     @keyframes io-modal-in {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(var(--io-motion-entrance-offset-y));
       }
       to {
         opacity: 1;

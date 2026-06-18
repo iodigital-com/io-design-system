@@ -1,3 +1,4 @@
+import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
 // ── Stories ──────────────────────────────────────────────────────────────────
@@ -101,6 +102,11 @@ export const breadcrumbStoryTargetBlank: Story<'io-breadcrumb'> = {
     },
   ],
 };
+
+// Alias used by the Configurator tab (no configurable props — structure is slot-driven).
+export const breadcrumbStory = breadcrumbStoryDefault;
+
+export const breadcrumbPropDefinitions: PropDefinition[] = [];
 
 export const breadcrumbStoryLong: Story<'io-breadcrumb'> = {
   state: {

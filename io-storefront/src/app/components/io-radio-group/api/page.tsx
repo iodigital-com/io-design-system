@@ -47,7 +47,7 @@ export default function IoRadioGroupApiPage() {
               <InlineCode key="n">required</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Marks the group as required.',
+              'Marks all child io-radio elements as required. Propagates the required state to every slotted io-radio.',
             ],
             [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
@@ -66,6 +66,12 @@ export default function IoRadioGroupApiPage() {
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
+            ],
+            [
+              <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;vertical&apos; | &apos;horizontal&apos;</InlineCode>,
+              <InlineCode key="d">&apos;vertical&apos;</InlineCode>,
+              'Layout direction for the radio option list. horizontal wraps when the container is too narrow. Maps to aria-orientation on the fieldset element.',
             ],
           ]}
         />

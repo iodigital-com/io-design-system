@@ -104,7 +104,7 @@ export default function IoPinCodeApiPage() {
               <InlineCode key="n">blur</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
-              'No',
+              'Yes',
               'Fires when focus leaves the component entirely (relatedTarget is not one of the slot inputs). Use for form-library touched/dirty tracking. Does NOT fire when focus moves between PIN slots.',
             ],
           ]}

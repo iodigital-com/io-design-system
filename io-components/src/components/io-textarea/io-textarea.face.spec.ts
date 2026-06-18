@@ -235,6 +235,21 @@ describe('io-textarea — FACE', () => {
       expect(internals.setFormValue).toHaveBeenCalledWith('autocompleted');
     });
 
+    it('sets value to empty string when state is null', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = 'previous value';
+      (component as any).formStateRestoreCallback(null);
+      expect(component.value).toBe('');
+    });
+
+    it('calls setFormValue with empty string when state is null', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).formStateRestoreCallback(null);
+      expect(internals.setFormValue).toHaveBeenCalledWith('');
+    });
+
     it('does not throw when internals is unavailable', () => {
       (component as any).internals = undefined;
       expect(() => (component as any).formStateRestoreCallback('value', 'restore')).not.toThrow();

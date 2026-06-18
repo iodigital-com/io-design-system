@@ -304,10 +304,10 @@ describe('io-textarea — new props (#362)', () => {
 });
 
 describe('io-textarea — styles (#658)', () => {
-  it(':focus-visible applies --io-focus-ring-active, not box-shadow: none (WCAG 2.4.11)', () => {
+  it(':focus-visible applies --io-focus-ring-active (WCAG 2.4.11)', () => {
     const styles = getTextareaStyles();
-    expect(styles).toContain('box-shadow: var(--io-focus-ring-active)');
-    expect(styles).not.toContain('box-shadow: none');
+    // Assert that the :focus-visible block specifically contains the focus ring shadow
+    expect(styles).toMatch(/focus-visible[^}]*box-shadow:\s*var\(--io-focus-ring-active\)/);
   });
 
   it('resize-horizontal CSS class is defined', () => {

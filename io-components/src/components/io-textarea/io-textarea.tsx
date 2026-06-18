@@ -191,8 +191,8 @@ export class IoTextarea {
     this.disabled = disabled;
   }
 
-  formStateRestoreCallback(state: string, _mode: 'restore' | 'autocomplete'): void {
-    this.value = state;
+  formStateRestoreCallback(state: string | File | FormData | null): void {
+    this.value = typeof state === 'string' ? state : '';
     this.syncFormValue();
   }
 

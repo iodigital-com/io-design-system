@@ -114,3 +114,134 @@ describe('io-scroller render() — label prop', () => {
     expect(regionDiv![1]['aria-label']).toContain('horizontal');
   });
 });
+
+// ── tabIndex — conditional ────────────────────────────────────────────────────
+
+describe('io-scroller render() — conditional tabIndex', () => {
+  it('omits tabIndex when atStart=true and atEnd=true (no overflow)', () => {
+    const c = makeComponent();
+    // Default state: atStart=true, atEnd=true
+    const calls = renderCalls(c);
+
+    const regionDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'region',
+    );
+    expect(regionDiv).toBeDefined();
+    expect(regionDiv![1]['tabIndex']).toBeUndefined();
+  });
+
+  it('sets tabIndex=0 when atStart=false (content overflows start)', () => {
+    const c = makeComponent();
+    (c as any).atStart = false;
+    (c as any).atEnd = true;
+    const calls = renderCalls(c);
+
+    const regionDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'region',
+    );
+    expect(regionDiv).toBeDefined();
+    expect(regionDiv![1]['tabIndex']).toBe(0);
+  });
+
+  it('sets tabIndex=0 when atEnd=false (content overflows end)', () => {
+    const c = makeComponent();
+    (c as any).atStart = true;
+    (c as any).atEnd = false;
+    const calls = renderCalls(c);
+
+    const regionDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'region',
+    );
+    expect(regionDiv).toBeDefined();
+    expect(regionDiv![1]['tabIndex']).toBe(0);
+  });
+
+  it('sets tabIndex=0 when both atStart=false and atEnd=false', () => {
+    const c = makeComponent();
+    (c as any).atStart = false;
+    (c as any).atEnd = false;
+    const calls = renderCalls(c);
+
+    const regionDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'region',
+    );
+    expect(regionDiv).toBeDefined();
+    expect(regionDiv![1]['tabIndex']).toBe(0);
+  });
+});
+
+// ── scroll indicator buttons ──────────────────────────────────────────────────
+
+describe('io-scroller render() — scroll indicator buttons', () => {
+  it('does not render prev indicator when atStart=true', () => {
+    const c = makeComponent();
+    (c as any).atStart = true;
+    const calls = renderCalls(c);
+
+    const prevBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--prev'),
+    );
+    expect(prevBtn).toBeUndefined();
+  });
+
+  it('does not render next indicator when atEnd=true', () => {
+    const c = makeComponent();
+    (c as any).atEnd = true;
+    const calls = renderCalls(c);
+
+    const nextBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--next'),
+    );
+    expect(nextBtn).toBeUndefined();
+  });
+
+  it('renders prev indicator when atStart=false', () => {
+    const c = makeComponent();
+    (c as any).atStart = false;
+    (c as any).atEnd = true;
+    const calls = renderCalls(c);
+
+    const prevBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--prev'),
+    );
+    expect(prevBtn).toBeDefined();
+    expect(prevBtn![1]['aria-hidden']).toBe('true');
+    expect(prevBtn![1]['tabIndex']).toBe(-1);
+  });
+
+  it('renders next indicator when atEnd=false', () => {
+    const c = makeComponent();
+    (c as any).atStart = true;
+    (c as any).atEnd = false;
+    const calls = renderCalls(c);
+
+    const nextBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--next'),
+    );
+    expect(nextBtn).toBeDefined();
+    expect(nextBtn![1]['aria-hidden']).toBe('true');
+    expect(nextBtn![1]['tabIndex']).toBe(-1);
+  });
+
+  it('renders both indicators when neither edge is reached', () => {
+    const c = makeComponent();
+    (c as any).atStart = false;
+    (c as any).atEnd = false;
+    const calls = renderCalls(c);
+
+    const prevBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--prev'),
+    );
+    const nextBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--next'),
+    );
+    expect(prevBtn).toBeDefined();
+    expect(nextBtn).toBeDefined();
+  });
+});

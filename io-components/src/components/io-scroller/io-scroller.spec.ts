@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IoScroller } from './io-scroller';
 import { getScrollerClass } from './io-scroller-utils';
@@ -28,6 +28,10 @@ describe('io-scroller — default props', () => {
     expect(component.label).toBeUndefined();
   });
 
+  it('compact defaults to false', () => {
+    expect(component.compact).toBe(false);
+  });
+
   it('atStart defaults to true', () => {
     // @ts-expect-error accessing private state for test
     expect(component.atStart).toBe(true);
@@ -42,6 +46,12 @@ describe('io-scroller — default props', () => {
 describe('io-scroller — render stability', () => {
   it('does not throw with default props', () => {
     const component = makeComponent();
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with compact=true', () => {
+    const component = makeComponent();
+    component.compact = true;
     expect(() => component.render()).not.toThrow();
   });
 
@@ -178,5 +188,69 @@ describe('io-scroller — no unnecessary public methods', () => {
     const methodNames = Object.getOwnPropertyNames(IoScroller.prototype);
     expect(methodNames).not.toContain('handleClick');
     expect(methodNames).not.toContain('handleChange');
+  });
+});
+
+describe('io-scroller — scrollBy private method', () => {
+  it('calls scrollBy with negative left offset for prev direction (horizontal)', () => {
+    const component = makeComponent();
+    const mockContainer = document.createElement('div');
+    Object.defineProperty(mockContainer, 'clientWidth', { value: 400, configurable: true });
+    const scrollBySpy = vi.fn();
+    mockContainer.scrollBy = scrollBySpy;
+    (component as any).scrollContainer = mockContainer;
+    component.orientation = 'horizontal';
+
+    (component as any).scrollBy('prev');
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ left: -200, behavior: 'smooth' });
+  });
+
+  it('calls scrollBy with positive left offset for next direction (horizontal)', () => {
+    const component = makeComponent();
+    const mockContainer = document.createElement('div');
+    Object.defineProperty(mockContainer, 'clientWidth', { value: 400, configurable: true });
+    const scrollBySpy = vi.fn();
+    mockContainer.scrollBy = scrollBySpy;
+    (component as any).scrollContainer = mockContainer;
+    component.orientation = 'horizontal';
+
+    (component as any).scrollBy('next');
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ left: 200, behavior: 'smooth' });
+  });
+
+  it('calls scrollBy with negative top offset for prev direction (vertical)', () => {
+    const component = makeComponent();
+    const mockContainer = document.createElement('div');
+    Object.defineProperty(mockContainer, 'clientWidth', { value: 400, configurable: true });
+    const scrollBySpy = vi.fn();
+    mockContainer.scrollBy = scrollBySpy;
+    (component as any).scrollContainer = mockContainer;
+    component.orientation = 'vertical';
+
+    (component as any).scrollBy('prev');
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ top: -200, behavior: 'smooth' });
+  });
+
+  it('uses fallback offset of 200 when clientWidth is 0', () => {
+    const component = makeComponent();
+    const mockContainer = document.createElement('div');
+    Object.defineProperty(mockContainer, 'clientWidth', { value: 0, configurable: true });
+    const scrollBySpy = vi.fn();
+    mockContainer.scrollBy = scrollBySpy;
+    (component as any).scrollContainer = mockContainer;
+    component.orientation = 'horizontal';
+
+    (component as any).scrollBy('next');
+
+    expect(scrollBySpy).toHaveBeenCalledWith({ left: 200, behavior: 'smooth' });
+  });
+
+  it('does not throw when scrollContainer is undefined', () => {
+    const component = makeComponent();
+    (component as any).scrollContainer = undefined;
+    expect(() => (component as any).scrollBy('next')).not.toThrow();
   });
 });

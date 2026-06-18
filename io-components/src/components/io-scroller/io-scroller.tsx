@@ -59,6 +59,12 @@ export class IoScroller {
    */
   @Prop() label: string | undefined;
 
+  /**
+   * When `true`, reduces internal gap between slotted items for dense
+   * layout contexts. Reflected as an attribute so CSS can target it.
+   */
+  @Prop({ reflect: true }) compact = false;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** True when scroll position is at the start edge (no fade shown at start). */
@@ -173,6 +179,21 @@ export class IoScroller {
     }
   }
 
+  private scrollBy(direction: 'prev' | 'next'): void {
+    const offset = this.scrollContainer?.clientWidth ? this.scrollContainer.clientWidth * 0.5 : 200;
+    if (this.orientation === 'vertical') {
+      this.scrollContainer?.scrollBy({
+        top: direction === 'prev' ? -offset : offset,
+        behavior: 'smooth',
+      });
+    } else {
+      this.scrollContainer?.scrollBy({
+        left: direction === 'prev' ? -offset : offset,
+        behavior: 'smooth',
+      });
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -183,11 +204,29 @@ export class IoScroller {
     return (
       <Host>
         <style>{getScrollerStyles()}</style>
+        {!this.atStart && (
+          <button
+            type="button"
+            class="scroller__indicator scroller__indicator--prev"
+            tabIndex={-1}
+            aria-hidden="true"
+            onClick={() => this.scrollBy('prev')}
+          />
+        )}
+        {!this.atEnd && (
+          <button
+            type="button"
+            class="scroller__indicator scroller__indicator--next"
+            tabIndex={-1}
+            aria-hidden="true"
+            onClick={() => this.scrollBy('next')}
+          />
+        )}
         <div
           class={scrollerClass}
           role="region"
           aria-label={regionLabel}
-          tabIndex={0}
+          tabIndex={(!this.atStart || !this.atEnd) ? 0 : undefined}
           ref={(el) => {
             this.scrollContainer = el as HTMLDivElement;
           }}

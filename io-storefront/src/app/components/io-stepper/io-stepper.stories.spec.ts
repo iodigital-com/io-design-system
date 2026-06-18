@@ -79,6 +79,7 @@ describe('io-stepper storefront stories', () => {
       expect(props.ariaLabel).toBe('Progress');
     });
 
+
     it('step before current has complete status', () => {
       const els = stepperStory.generator?.({ properties: { current: 3 } }) ?? [];
       const first = els[0] as { children: Array<{ properties: Record<string, unknown> }> };

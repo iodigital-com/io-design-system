@@ -1,4 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+// NOTE: `@stencil/core` is aliased in vitest.config.ts to
+// `tests/unit/mocks/stencil-decorator.mocks.ts`, where `h` is exported as
+// `vi.fn()`. So `vi.mocked(h)` and `.mock.calls` work correctly here — no
+// additional `vi.mock(...)` call is required. See io-textarea.spec.ts for the
+// same pattern.
 import { h } from '@stencil/core';
 
 import { IoCheckboxGroup } from './io-checkbox-group';

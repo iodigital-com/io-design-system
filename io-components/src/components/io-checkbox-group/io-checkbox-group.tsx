@@ -53,6 +53,11 @@ export class IoCheckboxGroup {
    * Arbitrary ARIA attributes to spread onto the fieldset element.
    * Keys may omit or include the `aria-` prefix — both forms are accepted.
    *
+   * Component-managed attributes take precedence:
+   * - `aria-invalid` is always controlled by the `error` prop and cannot be overridden.
+   * - `aria-describedby` is controlled by the component when `error` is active
+   *   (to preserve error-message linkage) and cannot be overridden in that state.
+   *
    * @example
    * <io-checkbox-group .aria={{ labelledby: 'external-label' }} label="Options" name="opts" />
    */
@@ -77,7 +82,7 @@ export class IoCheckboxGroup {
 
   componentDidLoad() {
     this.syncChildren();
-    applyAriaProp(this.aria, this.fieldsetEl ?? null);
+    applyAriaProp(this.safeAriaProp(), this.fieldsetEl ?? null);
   }
 
   @Watch('name')
@@ -97,7 +102,7 @@ export class IoCheckboxGroup {
 
   @Watch('aria')
   onAriaChange() {
-    applyAriaProp(this.aria, this.fieldsetEl ?? null);
+    applyAriaProp(this.safeAriaProp(), this.fieldsetEl ?? null);
   }
 
   // ── Event Handlers ────────────────────────────────────────────
@@ -116,6 +121,30 @@ export class IoCheckboxGroup {
   }
 
   // ── Private helpers ───────────────────────────────────────────
+
+  /**
+   * Returns a filtered copy of `this.aria` that omits component-managed
+   * attributes so they cannot be accidentally overridden by consumers.
+   *
+   * - `aria-invalid` is always managed by the `error` prop.
+   * - `aria-describedby` is managed by the component when `error` is active
+   *   (to preserve the error-message linkage).
+   */
+  private safeAriaProp(): Record<string, string> | undefined {
+    if (!this.aria) return undefined;
+    const blocked = new Set(['aria-invalid', 'invalid']);
+    if (this.error) {
+      blocked.add('aria-describedby');
+      blocked.add('describedby');
+    }
+    const filtered: Record<string, string> = {};
+    for (const [key, value] of Object.entries(this.aria)) {
+      if (!blocked.has(key.toLowerCase())) {
+        filtered[key] = value;
+      }
+    }
+    return Object.keys(filtered).length > 0 ? filtered : undefined;
+  }
 
   private syncChildren = () => {
     const checkboxes = Array.from(

@@ -44,9 +44,10 @@ export class IoToastItem {
 
   /**
    * Fires when the action button is clicked (only when `actionLabel` is set
-   * and `actionHref` is not).
+   * and `actionHref` is not). Bubbles and is composed so consumers can listen
+   * on `<io-toast>` or any ancestor — no need to reach into `shadowRoot`.
    */
-  @Event({ bubbles: false }) action!: EventEmitter<void>;
+  @Event({ bubbles: true, composed: true }) action!: EventEmitter<void>;
 
   // ── Handlers ─────────────────────────────────────────────────
 

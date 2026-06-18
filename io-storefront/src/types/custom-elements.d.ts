@@ -25,6 +25,7 @@ declare module 'react' {
   'io-checkbox-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxGroupElement>, HTMLIoCheckboxGroupElement> & Partial<StencilJSX.IoCheckboxGroup>;
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
+  'io-flyout': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { open?: boolean; heading?: string; position?: 'left' | 'right'; onDismiss?: (event: CustomEvent<void>) => void; };
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
   'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoHeadingElement>, HTMLIoHeadingElement> & Partial<StencilJSX.IoHeading>;
   'io-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoIconElement>, HTMLIoIconElement> & Partial<StencilJSX.IoIcon>;

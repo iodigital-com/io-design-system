@@ -152,6 +152,14 @@ export const sitemap: NavSection[] = [
         related: ['io-modal', 'io-button', 'io-tabs'],
       },
       {
+        label: 'Flyout',
+        href: '/components/io-flyout/configurator',
+        status: 'beta',
+        slug: 'io-flyout',
+        description: 'Side-anchored flyout panel for navigation menus and complex UI panels. Fills the gap between io-popover (small) and io-drawer (full height). Left or right position, focus trap, Escape to close.',
+        related: ['io-drawer', 'io-popover', 'io-modal'],
+      },
+      {
         label: 'Checkbox',
         href: '/components/io-checkbox/configurator',
         status: 'beta',

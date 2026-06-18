@@ -210,4 +210,23 @@ export const inputPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'inputMode',
+    type: 'select',
+    options: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'],
+    defaultValue: 'text',
+    description: 'Hint for virtual keyboards on mobile devices. numeric shows a number pad, tel shows a phone keypad.',
+  },
+  {
+    name: 'pattern',
+    type: 'string',
+    defaultValue: '',
+    description: 'HTML5 regular expression for client-side validation. The native input patternMismatch validity state is automatically reported via FACE.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces input height and padding for dense layouts.',
+  },
 ];

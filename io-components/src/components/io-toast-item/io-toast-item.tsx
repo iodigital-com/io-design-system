@@ -9,7 +9,8 @@ import type { IoToastVariant } from '../io-toast/types';
  * io-toast-item
  * ==============
  * Internal component rendered by <io-toast>. Not intended for direct use.
- * Displays a single notification row with icon, text, and a dismiss button.
+ * Displays a single notification row with icon, text, optional CTA, and a
+ * dismiss button.
  */
 @Component({
   tag: 'io-toast-item',
@@ -24,10 +25,28 @@ export class IoToastItem {
   /** Visual variant controlling colour accent and icon */
   @Prop({ reflect: true }) variant: IoToastVariant = 'neutral';
 
+  /**
+   * Label for an optional call-to-action rendered beside the text.
+   * When omitted, no action is rendered.
+   */
+  @Prop() actionLabel?: string;
+
+  /**
+   * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
+   * this URL. When omitted the CTA is a `<button>` that emits `action`.
+   */
+  @Prop() actionHref?: string;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the user dismisses the toast */
   @Event() dismiss!: EventEmitter<void>;
+
+  /**
+   * Fires when the action button is clicked (only when `actionLabel` is set
+   * and `actionHref` is not).
+   */
+  @Event({ bubbles: false }) action!: EventEmitter<void>;
 
   // ── Handlers ─────────────────────────────────────────────────
 
@@ -35,12 +54,22 @@ export class IoToastItem {
     this.dismiss.emit();
   };
 
+  private handleAction = () => {
+    this.action.emit();
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, text } = this;
+    const { variant, text, actionLabel, actionHref } = this;
     const closeIcon = getToastCloseIcon();
     const variantIcon = getToastVariantIcon(variant);
+
+    const actionNode = actionLabel
+      ? actionHref
+        ? <a class="toast__action" href={actionHref}>{actionLabel}</a>
+        : <button type="button" class="toast__action" onClick={this.handleAction}>{actionLabel}</button>
+      : null;
 
     return (
       <Host>
@@ -48,6 +77,7 @@ export class IoToastItem {
         <div class="toast">
           <span class="toast__icon" innerHTML={variantIcon} />
           <span class="toast__text">{text}</span>
+          {actionNode}
           <button
             type="button"
             class="toast__close"

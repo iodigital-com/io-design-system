@@ -37,7 +37,7 @@ export class IoToast {
    * Where on screen the toast stack appears.
    * @default 'bottom-end'
    */
-  @Prop() position: IoToastPosition = 'bottom-end';
+  @Prop({ reflect: true }) position: IoToastPosition = 'bottom-end';
 
   @State() private currentMsg: IoToastEntry | null = null;
 
@@ -85,6 +85,8 @@ export class IoToast {
             key={this.currentMsg.id}
             text={this.currentMsg.text}
             variant={getToastItemVariant(this.currentMsg)}
+            actionLabel={this.currentMsg.actionLabel}
+            actionHref={this.currentMsg.actionHref}
             onDismiss={this.handleItemDismiss}
           />
         )}

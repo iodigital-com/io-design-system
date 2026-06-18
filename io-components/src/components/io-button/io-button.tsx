@@ -320,7 +320,7 @@ export class IoButton {
     const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}${compact ? ' btn--compact' : ''}`,
       ref: (el?: HTMLElement) => {
         this.btnEl = el;
         applyAriaProp(this.aria, el ?? null);

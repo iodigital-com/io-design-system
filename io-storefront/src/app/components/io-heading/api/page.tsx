@@ -46,9 +46,9 @@ export default function IoHeadingApiPage() {
             ],
             [
               <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;primary&apos; | &apos;secondary&apos; | &apos;inherit&apos;</InlineCode>,
+              <InlineCode key="t">&apos;primary&apos; | &apos;secondary&apos; | &apos;inherit&apos; | &apos;inverse&apos; | &apos;brand&apos;</InlineCode>,
               <InlineCode key="d">&apos;primary&apos;</InlineCode>,
-              'Text color using semantic --io-text-* tokens.',
+              'Text color. primary → --io-text-primary; secondary → --io-text-secondary; inverse → --io-text-inverse (use on dark surfaces); brand → --io-color-primary; inherit → inherits from parent.',
             ],
             [
               <span key="n"><InlineCode>ellipsis</InlineCode><ReflectBadge /></span>,

@@ -6,6 +6,7 @@ import {
   headingStoryWeights,
   headingStoryAlign,
   headingStoryEllipsis,
+  headingStoryColors,
   headingPropDefinitions,
 } from './io-heading.stories';
 
@@ -71,7 +72,7 @@ describe('io-heading storefront stories', () => {
     });
 
     it('generator with each color option does not throw', () => {
-      for (const color of ['primary', 'secondary', 'inherit']) {
+      for (const color of ['primary', 'secondary', 'inherit', 'inverse', 'brand']) {
         expect(() =>
           headingStory.generator?.({ properties: { ...headingStory.state?.properties, color } })
         ).not.toThrow();
@@ -132,6 +133,14 @@ describe('io-heading storefront stories', () => {
       expect(sizeDef).toBeDefined();
       for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
         expect(((sizeDef as unknown as { options: string[] })).options).toContain(size);
+      }
+    });
+
+    it('color select options include inverse and brand', () => {
+      const colorDef = headingPropDefinitions.find((d) => d.name === 'color');
+      expect(colorDef).toBeDefined();
+      for (const color of ['primary', 'secondary', 'inherit', 'inverse', 'brand']) {
+        expect(((colorDef as unknown as { options: string[] })).options).toContain(color);
       }
     });
   });
@@ -236,6 +245,31 @@ describe('io-heading storefront stories', () => {
       expect(wrapper.tag).toBe('div');
       const heading = wrapper.children?.find((c) => (c as { tag: string }).tag === 'io-heading');
       expect(heading).toBeDefined();
+    });
+  });
+
+  describe('headingStoryColors (named story)', () => {
+    it('does not throw', () => {
+      expect(() => headingStoryColors.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per color variant', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      expect(els.length).toBe(4);
+    });
+
+    it('each element is an io-heading', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      for (const el of els) {
+        expect((el as { tag: string }).tag).toBe('io-heading');
+      }
+    });
+
+    it('covers inverse and brand colors', () => {
+      const els = headingStoryColors.generator?.() ?? [];
+      const colors = els.map((el) => (el as { properties: { color: string } }).properties.color);
+      expect(colors).toContain('inverse');
+      expect(colors).toContain('brand');
     });
   });
 });

@@ -77,6 +77,16 @@ export const headingStoryEllipsis: Story<'io-heading'> = {
   ],
 };
 
+export const headingStoryColors: Story<'io-heading'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['primary', 'secondary', 'inverse', 'brand'] as const).map((color) => ({
+      tag: 'io-heading' as const,
+      properties: { color, tag: 'h2', size: '2xl', weight: 'semibold' },
+      children: [`Color: ${color}`],
+    })),
+};
+
 export const headingPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',
@@ -109,9 +119,9 @@ export const headingPropDefinitions: PropDefinition[] = [
   {
     name: 'color',
     type: 'select',
-    options: ['primary', 'secondary', 'inherit'],
+    options: ['primary', 'secondary', 'inherit', 'inverse', 'brand'],
     defaultValue: 'primary',
-    description: 'Text color using semantic --io-text-* tokens.',
+    description: 'Text color. primary → --io-text-primary; secondary → --io-text-secondary; inverse → --io-text-inverse (use on dark surfaces); brand → --io-color-primary; inherit → inherits from parent.',
   },
   {
     name: 'ellipsis',

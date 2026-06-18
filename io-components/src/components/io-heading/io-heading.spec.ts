@@ -94,7 +94,7 @@ describe('io-heading — render does not throw', () => {
   });
 
   it('renders without throwing for all supported colors', () => {
-    const colors = ['primary', 'secondary', 'inherit'] as const;
+    const colors = ['primary', 'secondary', 'inherit', 'inverse', 'brand'] as const;
     for (const color of colors) {
       const component = new IoHeading();
       component.tag = 'h2';
@@ -188,6 +188,64 @@ describe('io-heading — h() call arguments (style computation)', () => {
     component.render();
     const [, styleArg] = hMock.mock.calls[OUTER];
     expect((styleArg as any).style.color).toBe('inherit');
+  });
+
+  it('passes --io-text-inverse for inverse color', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.color = 'inverse';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.color).toBe('var(--io-text-inverse)');
+  });
+
+  it('passes --io-color-primary for brand color', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.color = 'brand';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.color).toBe('var(--io-color-primary)');
+  });
+
+  it('applies --io-line-height-heading to all sizes', () => {
+    const hMock = vi.mocked(h);
+    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const;
+    for (const size of sizes) {
+      hMock.mockClear();
+      const component = new IoHeading();
+      component.tag = 'h2';
+      component.size = size;
+      component.render();
+      const [, styleArg] = hMock.mock.calls[OUTER];
+      expect((styleArg as any).style.lineHeight).toBe('var(--io-line-height-heading)');
+    }
+  });
+
+  it('applies tracking tokens for xl+ sizes and omits tracking for sm/md/lg', () => {
+    const hMock = vi.mocked(h);
+    const TRACKING_MAP: Record<string, string | undefined> = {
+      'sm': undefined,
+      'md': undefined,
+      'lg': undefined,
+      'xl': 'var(--io-heading-tracking-4)',
+      '2xl': 'var(--io-heading-tracking-3)',
+      '3xl': 'var(--io-heading-tracking-2)',
+      '4xl': 'var(--io-heading-tracking-1)',
+    };
+    for (const [size, expected] of Object.entries(TRACKING_MAP)) {
+      hMock.mockClear();
+      const component = new IoHeading();
+      component.tag = 'h2';
+      component.size = size as any;
+      component.render();
+      const [, styleArg] = hMock.mock.calls[OUTER];
+      expect((styleArg as any).style.letterSpacing).toBe(expected);
+    }
   });
 
   it('passes text-align from align prop', () => {

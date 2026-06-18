@@ -1,6 +1,6 @@
 'use client';
 
-import { headingStorySizes, headingStoryLevels, headingStoryWeights, headingStoryAlign, headingStoryEllipsis } from '../io-heading.stories';
+import { headingStorySizes, headingStoryLevels, headingStoryWeights, headingStoryAlign, headingStoryEllipsis, headingStoryColors } from '../io-heading.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import { ComponentStory } from '@/components/playground/ComponentStory';
@@ -38,6 +38,14 @@ export default function IoHeadingExamplesPage() {
           description="start, center, end — controls text-align within the element."
         />
         <ComponentStory story={headingStoryAlign} previewClassName="flex flex-col gap-4" />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Colors"
+          description="primary (default), secondary, inverse (for dark surfaces), brand (--io-color-primary). Use inherit to cascade from a parent."
+        />
+        <ComponentStory story={headingStoryColors} previewClassName="flex flex-col gap-4" />
       </section>
 
       <section>

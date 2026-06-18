@@ -12,6 +12,13 @@ const HEADING_SIZE_TOKEN_MAP: Record<IoHeadingSize, string> = {
   '4xl': 'var(--io-font-size-4xl)',
 };
 
+const HEADING_TRACKING_MAP: Partial<Record<IoHeadingSize, string>> = {
+  '4xl': 'var(--io-heading-tracking-1)',
+  '3xl': 'var(--io-heading-tracking-2)',
+  '2xl': 'var(--io-heading-tracking-3)',
+  xl: 'var(--io-heading-tracking-4)',
+};
+
 /**
  * io-heading
  * ==========
@@ -62,22 +69,28 @@ export class IoHeading {
   }
 
   private resolveColor(): string {
-    if (this.color === 'inherit') {
-      return 'inherit';
-    }
+    if (this.color === 'inherit') return 'inherit';
+    if (this.color === 'brand') return 'var(--io-color-primary)';
+    if (this.color === 'inverse') return 'var(--io-text-inverse)';
     return `var(--io-text-${this.color})`;
   }
 
   render() {
     const Tag = this.resolveTag();
     const sizeToken = HEADING_SIZE_TOKEN_MAP[this.size];
+    const tracking = HEADING_TRACKING_MAP[this.size];
 
     const style: Record<string, string> = {
       fontSize: sizeToken,
       fontWeight: `var(--io-font-weight-${this.weight})`,
+      lineHeight: 'var(--io-line-height-heading)',
       color: this.resolveColor(),
       textAlign: this.align,
     };
+
+    if (tracking) {
+      style['letterSpacing'] = tracking;
+    }
 
     if (this.ellipsis) {
       style['overflow'] = 'hidden';

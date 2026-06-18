@@ -85,7 +85,9 @@ export default function IoPinCodeApiPage() {
         <ApiTable
           columns={[
             { label: 'Event', width: '160px' },
-            { label: 'Detail type', width: '300px' },
+            { label: 'Detail type', width: '240px' },
+            { label: 'Bubbles', width: '100px' },
+            { label: 'Composed', width: '100px' },
             { label: 'Description' },
           ]}
           rows={[
@@ -94,7 +96,16 @@ export default function IoPinCodeApiPage() {
               <span key="t">
                 <InlineCode>{'{ value: string; isComplete: boolean }'}</InlineCode>
               </span>,
+              'Yes',
+              'Yes',
               'Fires on every digit change. value is all filled digits concatenated; isComplete is true when all slots are filled.',
+            ],
+            [
+              <InlineCode key="n">blur</InlineCode>,
+              <InlineCode key="t">FocusEvent</InlineCode>,
+              'No',
+              'No',
+              'Fires when focus leaves the component entirely (relatedTarget is not one of the slot inputs). Use for form-library touched/dirty tracking. Does NOT fire when focus moves between PIN slots.',
             ],
           ]}
         />

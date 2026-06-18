@@ -2,7 +2,6 @@ import { Component, Prop, Host, h } from '@stencil/core';
 
 import { getProgressStyles } from './io-progress-styles';
 import {
-  clampValue,
   computePercentage,
   getProgressWrapperClass,
   getProgressFillClass,

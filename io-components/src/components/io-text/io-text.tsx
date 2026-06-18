@@ -1,6 +1,6 @@
 import { Component, Prop, h } from '@stencil/core';
 
-import type { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from './types';
+import type { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from './types';
 
 /**
  * io-text
@@ -48,6 +48,9 @@ export class IoText {
    */
   @Prop() datetime?: string;
 
+  /** CSS hyphens property for word breaking and hyphenation */
+  @Prop({ reflect: true }) hyphens: IoTextHyphens = 'inherit';
+
   private resolveColor(): string {
     switch (this.color) {
       case 'success':
@@ -56,6 +59,8 @@ export class IoText {
         return 'var(--io-color-warning)';
       case 'error':
         return 'var(--io-color-error)';
+      case 'info':
+        return 'var(--io-color-info)';
       case 'inherit':
         return 'inherit';
       default:
@@ -66,12 +71,19 @@ export class IoText {
   render() {
     const Tag = this.tag;
 
+    const fontSize = this.size === 'inherit' ? 'inherit' : `var(--io-font-size-${this.size})`;
+
     const style: Record<string, string> = {
-      fontSize: `var(--io-font-size-${this.size})`,
+      fontSize,
       fontWeight: `var(--io-font-weight-${this.weight})`,
       color: this.resolveColor(),
       textAlign: this.align,
+      hyphens: this.hyphens,
     };
+
+    if ((this.hyphens === 'auto' || this.hyphens === 'manual') && !style['overflowWrap']) {
+      style['overflowWrap'] = 'break-word';
+    }
 
     if (this.ellipsis) {
       style['overflow'] = 'hidden';

@@ -482,8 +482,9 @@
   --io-carousel-scrollbar-height: 4px;
 
   /* Multi-Select */
-  --io-multi-select-chip-height:    24px;  /* height of selected-value chips */
-  --io-multi-select-chip-max-width: 160px; /* max width of selected-value chips before truncation */
+  --io-multi-select-chip-height:       24px;  /* height of selected-value chips */
+  --io-multi-select-chip-max-width:    160px; /* max width of selected-value chips before truncation */
+  --io-multi-select-chip-remove-size:  24px;  /* min-width/height of chip remove button (WCAG 2.5.8) */
 
   /* ── Pin Code ────────────────────────────────────────── */
   --io-pin-code-slot-size:               3rem;

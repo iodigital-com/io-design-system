@@ -29,3 +29,20 @@ export type IoButtonArrow = 'forward' | 'back' | 'down';
 
 /** Side on which the arrow icon is rendered. Defaults to 'right'. */
 export type IoButtonArrowPlacement = 'left' | 'right';
+
+/**
+ * ARIA attributes that are semantically meaningful for a button or link-button.
+ * Used to type the `aria` escape-hatch prop so TypeScript consumers get compile-time guidance.
+ */
+export const IO_BUTTON_ARIA_ATTRIBUTES = [
+  'aria-label',
+  'aria-description',
+  'aria-expanded',
+  'aria-pressed',
+  'aria-haspopup',
+  'aria-controls',
+  'aria-labelledby',
+  'aria-describedby',
+] as const;
+
+export type IoButtonAriaAttribute = (typeof IO_BUTTON_ARIA_ATTRIBUTES)[number];

@@ -112,6 +112,18 @@ export function getButtonStyles(): string {
       display: none;
     }
 
+    /* ── Compact density overlay ────────────────────────── */
+
+    .btn--compact {
+      padding-top:    var(--io-button-padding-y-compact);
+      padding-bottom: var(--io-button-padding-y-compact);
+    }
+
+    .btn--compact.btn--icon-only {
+      width:  var(--io-button-height-compact);
+      height: var(--io-button-height-compact);
+    }
+
     /* ── Full width ─────────────────────────────────────── */
 
     :host(.io-button--full-width) {

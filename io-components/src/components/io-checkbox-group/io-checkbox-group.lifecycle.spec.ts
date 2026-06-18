@@ -31,7 +31,7 @@ describe('io-checkbox-group — componentDidLoad', () => {
   it('calls syncChildren on load', () => {
     const { c, host } = makeComponent();
     (c as any).componentWillLoad();
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: '', checked: false, disabled: false });
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: '', checked: false, disabled: false, state: 'none' });
     host.appendChild(cb);
     c.componentDidLoad();
     expect(cb.name).toBe('opts');
@@ -48,7 +48,7 @@ describe('io-checkbox-group — watcher methods', () => {
   });
 
   it('onNameChange propagates new name to children', () => {
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: '', checked: false, disabled: false });
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: '', checked: false, disabled: false, state: 'none' });
     host.appendChild(cb);
     c.name = 'newGroup';
     (c as any).onNameChange();
@@ -56,7 +56,7 @@ describe('io-checkbox-group — watcher methods', () => {
   });
 
   it('onDisabledChange disables children when group becomes disabled', () => {
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: 'opts', checked: false, disabled: false });
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: 'opts', checked: false, disabled: false, state: 'none' });
     host.appendChild(cb);
     c.disabled = true;
     (c as any).onDisabledChange();

@@ -58,6 +58,13 @@ export function getCheckboxGroupStyles(): string {
       gap: var(--io-space-1);
     }
 
+    /* ── Required indicator ─────────────────────────────────── */
+
+    .checkbox-group__required {
+      color: var(--io-color-error);
+      margin-inline-start: var(--io-space-1);
+    }
+
     /* ── Error state ────────────────────────────────────────── */
 
     .checkbox-group--error .checkbox-group__legend {

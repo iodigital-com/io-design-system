@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoCheckboxGroup } from './io-checkbox-group';
 
-function makeCheckbox(value: string, checked = false): HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean } {
-  return Object.assign(document.createElement('io-checkbox'), { value, checked, name: '', disabled: false });
+function makeCheckbox(value: string, checked = false): HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; state: string } {
+  return Object.assign(document.createElement('io-checkbox'), { value, checked, name: '', disabled: false, state: 'none' });
 }
 
 function makeChangeEvent(target: HTMLElement): Event {

@@ -314,7 +314,7 @@ describe('io-divider render — labeled variant aria-label', () => {
 
   it('aria-label remains set even when slot contains content', () => {
     const comp = makeComp({ label: 'separator' });
-    comp.hasSlotContent = true;
+    (comp as any).hasSlotContent = true;
     vi.mocked(h).mockClear();
     comp.render();
     const separatorDivs = hCallsForTag('div').filter(
@@ -344,7 +344,7 @@ describe('io-divider render — slot content', () => {
 
   it('label text renders as fallback when hasSlotContent is false', () => {
     const comp = makeComp({ label: 'or' });
-    comp.hasSlotContent = false;
+    (comp as any).hasSlotContent = false;
     vi.mocked(h).mockClear();
     comp.render();
     // Verify that the label is still rendered as content

@@ -64,8 +64,11 @@ export class IoDivider {
   // ── Methods ──────────────────────────────────────────────────
 
   private handleSlotchange = (ev: Event) => {
-    const slot = ev.target as HTMLSlotElement;
-    this.hasSlotContent = slot.assignedNodes().length > 0;
+    const assignedNodes = (ev.target as HTMLSlotElement).assignedNodes({ flatten: true });
+    const hasContent = assignedNodes.some(
+      (n) => n.nodeType !== Node.TEXT_NODE || (n.textContent?.trim() ?? '') !== '',
+    );
+    this.hasSlotContent = hasContent;
   };
 
   // ── Render ───────────────────────────────────────────────────
@@ -74,9 +77,9 @@ export class IoDivider {
     const { orientation, label, hasSlotContent } = this;
     const isVertical = orientation === 'vertical';
 
-    if (label) {
-      // The labeled variant always renders a horizontal flex layout regardless
-      // of the orientation prop. aria-orientation is therefore always
+    if (label || hasSlotContent) {
+      // The labeled/slotted variant always renders a horizontal flex layout
+      // regardless of the orientation prop. aria-orientation is therefore always
       // "horizontal" — setting it to "vertical" here would be misleading to AT.
       return (
         <Host>
@@ -108,6 +111,8 @@ export class IoDivider {
             role="separator"
             aria-orientation="vertical"
           />
+          {/* Hidden slot listener — fires slotchange when consumer projects content */}
+          <slot onSlotchange={this.handleSlotchange} style={{ display: 'none' }} />
         </Host>
       );
     }
@@ -118,6 +123,8 @@ export class IoDivider {
       <Host>
         <style>{getDividerStyles()}</style>
         <hr class="divider" />
+        {/* Hidden slot listener — fires slotchange when consumer projects content */}
+        <slot onSlotchange={this.handleSlotchange} style={{ display: 'none' }} />
       </Host>
     );
   }

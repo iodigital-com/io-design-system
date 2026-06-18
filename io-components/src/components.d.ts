@@ -18,6 +18,7 @@ import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -33,6 +34,7 @@ import { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 import { IoScrollerOrientation } from "./components/io-scroller/types";
+import { IoSegmentedControlChangeDetail } from "./components/io-segmented-control/types";
 import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -60,6 +62,7 @@ export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -75,6 +78,7 @@ export { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
+export { IoSegmentedControlChangeDetail } from "./components/io-segmented-control/types";
 export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -809,6 +813,49 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoDrawerSize;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoFlyout {
+        /**
+          * Programmatically close the flyout. No-op if already closed. Does NOT emit the dismiss event (programmatic close).
+          * @example   const flyout = document.querySelector('io-flyout');   flyout.close();
+         */
+        "close": () => Promise<void>;
+        /**
+          * Heading text displayed in the flyout header
+         */
+        "heading"?: string;
+        /**
+          * Controls flyout visibility
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Which side the flyout panel is anchored to
+          * @default 'right'
+         */
+        "position": IoFlyoutPosition;
+        /**
+          * Programmatically open the flyout. No-op if already open.
+          * @example   const flyout = document.querySelector('io-flyout');   flyout.show();
+         */
+        "show": () => Promise<void>;
     }
     /**
      * io-form-field
@@ -1830,6 +1877,67 @@ export namespace Components {
         "showScrollbar": boolean;
     }
     /**
+     * io-segment
+     * ===========
+     * A single option within an io-segmented-control bar.
+     * Renders as a button with role="radio" semantics — selected state and
+     * tabIndex are managed by the parent io-segmented-control.
+     * Do not use standalone — always nest inside io-segmented-control.
+     * @example <io-segment value="list" label="List" />
+     * <io-segment value="grid" label="Grid" icon="grid" />
+     */
+    interface IoSegment {
+        /**
+          * Disables this segment (also set by parent on group disable)
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Optional icon name to display alongside the label
+         */
+        "icon": IoIconName | undefined;
+        /**
+          * Accessible label text for this segment
+         */
+        "label": string;
+        /**
+          * Programmatically move focus to the segment button
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Value submitted when this segment is selected
+         */
+        "value": string;
+    }
+    /**
+     * io-segmented-control
+     * =====================
+     * FACE-compliant exclusive-selection bar. A styled radio group with a unified
+     * horizontal bar visual layout. Parent component that manages selection state
+     * and keyboard navigation across slotted io-segment children.
+     * Uses role="group" on the host with roving tabindex across child segments.
+     * @example <io-segmented-control name="view" value="list">
+     *   <io-segment value="list" label="List" />
+     *   <io-segment value="grid" label="Grid" />
+     *   <io-segment value="map" label="Map" />
+     * </io-segmented-control>
+     */
+    interface IoSegmentedControl {
+        /**
+          * Disables the entire control and all child segments
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * HTML name attribute for form participation
+         */
+        "name": string | undefined;
+        /**
+          * Currently selected segment value
+         */
+        "value": string | undefined;
+    }
+    /**
      * io-select
      * ==========
      * Styled native select with floating label — companion to io-input.
@@ -2785,6 +2893,10 @@ export interface IoDrawerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoDrawerElement;
 }
+export interface IoFlyoutCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoFlyoutElement;
+}
 export interface IoInlineNotificationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoInlineNotificationElement;
@@ -2828,6 +2940,14 @@ export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
 export interface IoRadioGroupCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoRadioGroupElement;
+}
+export interface IoSegmentCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoSegmentElement;
+}
+export interface IoSegmentedControlCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoSegmentedControlElement;
 }
 export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3219,6 +3339,40 @@ declare global {
     var HTMLIoDrawerElement: {
         prototype: HTMLIoDrawerElement;
         new (): HTMLIoDrawerElement;
+    };
+    interface HTMLIoFlyoutElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface HTMLIoFlyoutElement extends Components.IoFlyout, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoFlyoutElementEventMap>(type: K, listener: (this: HTMLIoFlyoutElement, ev: IoFlyoutCustomEvent<HTMLIoFlyoutElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoFlyoutElementEventMap>(type: K, listener: (this: HTMLIoFlyoutElement, ev: IoFlyoutCustomEvent<HTMLIoFlyoutElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoFlyoutElement: {
+        prototype: HTMLIoFlyoutElement;
+        new (): HTMLIoFlyoutElement;
     };
     /**
      * io-form-field
@@ -3660,6 +3814,63 @@ declare global {
     var HTMLIoScrollerElement: {
         prototype: HTMLIoScrollerElement;
         new (): HTMLIoScrollerElement;
+    };
+    interface HTMLIoSegmentElementEventMap {
+        "segmentSelect": { value: string };
+    }
+    /**
+     * io-segment
+     * ===========
+     * A single option within an io-segmented-control bar.
+     * Renders as a button with role="radio" semantics — selected state and
+     * tabIndex are managed by the parent io-segmented-control.
+     * Do not use standalone — always nest inside io-segmented-control.
+     * @example <io-segment value="list" label="List" />
+     * <io-segment value="grid" label="Grid" icon="grid" />
+     */
+    interface HTMLIoSegmentElement extends Components.IoSegment, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoSegmentElementEventMap>(type: K, listener: (this: HTMLIoSegmentElement, ev: IoSegmentCustomEvent<HTMLIoSegmentElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoSegmentElementEventMap>(type: K, listener: (this: HTMLIoSegmentElement, ev: IoSegmentCustomEvent<HTMLIoSegmentElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoSegmentElement: {
+        prototype: HTMLIoSegmentElement;
+        new (): HTMLIoSegmentElement;
+    };
+    interface HTMLIoSegmentedControlElementEventMap {
+        "change": IoSegmentedControlChangeDetail;
+    }
+    /**
+     * io-segmented-control
+     * =====================
+     * FACE-compliant exclusive-selection bar. A styled radio group with a unified
+     * horizontal bar visual layout. Parent component that manages selection state
+     * and keyboard navigation across slotted io-segment children.
+     * Uses role="group" on the host with roving tabindex across child segments.
+     * @example <io-segmented-control name="view" value="list">
+     *   <io-segment value="list" label="List" />
+     *   <io-segment value="grid" label="Grid" />
+     *   <io-segment value="map" label="Map" />
+     * </io-segmented-control>
+     */
+    interface HTMLIoSegmentedControlElement extends Components.IoSegmentedControl, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoSegmentedControlElementEventMap>(type: K, listener: (this: HTMLIoSegmentedControlElement, ev: IoSegmentedControlCustomEvent<HTMLIoSegmentedControlElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoSegmentedControlElementEventMap>(type: K, listener: (this: HTMLIoSegmentedControlElement, ev: IoSegmentedControlCustomEvent<HTMLIoSegmentedControlElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoSegmentedControlElement: {
+        prototype: HTMLIoSegmentedControlElement;
+        new (): HTMLIoSegmentedControlElement;
     };
     interface HTMLIoSelectElementEventMap {
         "change": IoSelectChangeDetail;
@@ -4247,6 +4458,7 @@ declare global {
         "io-checkbox-group": HTMLIoCheckboxGroupElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
+        "io-flyout": HTMLIoFlyoutElement;
         "io-form-field": HTMLIoFormFieldElement;
         "io-heading": HTMLIoHeadingElement;
         "io-icon": HTMLIoIconElement;
@@ -4264,6 +4476,8 @@ declare global {
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
         "io-scroller": HTMLIoScrollerElement;
+        "io-segment": HTMLIoSegmentElement;
+        "io-segmented-control": HTMLIoSegmentedControlElement;
         "io-select": HTMLIoSelectElement;
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
@@ -5028,6 +5242,43 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoDrawerSize;
+    }
+    /**
+     * io-flyout
+     * =========
+     * Side-anchored flyout panel for navigation menus and complex UI panels.
+     * Fills the gap between io-popover (small) and io-drawer (full-height).
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-flyout heading="Navigation" position="right">
+     *   <p>Flyout body content here.</p>
+     *   <io-button slot="footer" variant="ghost">Close</io-button>
+     * </io-flyout>
+     * <script>
+     *   const flyout = document.querySelector('io-flyout');
+     *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+     *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoFlyout {
+        /**
+          * Heading text displayed in the flyout header
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the flyout is dismissed (close button, backdrop click, or Escape key)
+         */
+        "onDismiss"?: (event: IoFlyoutCustomEvent<void>) => void;
+        /**
+          * Controls flyout visibility
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Which side the flyout panel is anchored to
+          * @default 'right'
+         */
+        "position"?: IoFlyoutPosition;
     }
     /**
      * io-form-field
@@ -6068,6 +6319,75 @@ declare namespace LocalJSX {
           * @default false
          */
         "showScrollbar"?: boolean;
+    }
+    /**
+     * io-segment
+     * ===========
+     * A single option within an io-segmented-control bar.
+     * Renders as a button with role="radio" semantics — selected state and
+     * tabIndex are managed by the parent io-segmented-control.
+     * Do not use standalone — always nest inside io-segmented-control.
+     * @example <io-segment value="list" label="List" />
+     * <io-segment value="grid" label="Grid" icon="grid" />
+     */
+    interface IoSegment {
+        /**
+          * Disables this segment (also set by parent on group disable)
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Optional icon name to display alongside the label
+         */
+        "icon"?: IoIconName | undefined;
+        /**
+          * Accessible label text for this segment
+         */
+        "label": string;
+        /**
+          * Fires when this segment is activated by click or keyboard
+         */
+        "onSegmentSelect"?: (event: IoSegmentCustomEvent<{ value: string }>) => void;
+        /**
+          * Value submitted when this segment is selected
+         */
+        "value": string;
+    }
+    /**
+     * io-segmented-control
+     * =====================
+     * FACE-compliant exclusive-selection bar. A styled radio group with a unified
+     * horizontal bar visual layout. Parent component that manages selection state
+     * and keyboard navigation across slotted io-segment children.
+     * Uses role="group" on the host with roving tabindex across child segments.
+     * @example <io-segmented-control name="view" value="list">
+     *   <io-segment value="list" label="List" />
+     *   <io-segment value="grid" label="Grid" />
+     *   <io-segment value="map" label="Map" />
+     * </io-segmented-control>
+     */
+    interface IoSegmentedControl {
+        /**
+          * Disables the entire control and all child segments
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * HTML name attribute for form participation
+         */
+        "name"?: string | undefined;
+        /**
+          * Fires when the selected segment changes
+         */
+        "onChange"?: (event: IoSegmentedControlCustomEvent<IoSegmentedControlChangeDetail>) => void;
+        /**
+          * Currently selected segment value
+         */
+        "value"?: string | undefined;
     }
     /**
      * io-select
@@ -7178,6 +7498,11 @@ declare namespace LocalJSX {
         "dismissButton": boolean;
         "background": IoDrawerBackground;
     }
+    interface IoFlyoutAttributes {
+        "open": boolean;
+        "heading": string;
+        "position": IoFlyoutPosition;
+    }
     interface IoFormFieldAttributes {
         "label": string;
         "helperText": string;
@@ -7362,6 +7687,17 @@ declare namespace LocalJSX {
         "label": string | undefined;
         "compact": boolean;
     }
+    interface IoSegmentAttributes {
+        "value": string;
+        "label": string;
+        "disabled": boolean;
+        "icon": IoIconName | undefined;
+    }
+    interface IoSegmentedControlAttributes {
+        "value": string | undefined;
+        "name": string | undefined;
+        "disabled": boolean;
+    }
     interface IoSelectAttributes {
         "label": string;
         "name": string | undefined;
@@ -7533,6 +7869,7 @@ declare namespace LocalJSX {
         "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]> & OneOf<"name", IoCheckboxGroup["name"], IoCheckboxGroupAttributes["name"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
+        "io-flyout": Omit<IoFlyout, keyof IoFlyoutAttributes> & { [K in keyof IoFlyout & keyof IoFlyoutAttributes]?: IoFlyout[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `attr:${K}`]?: IoFlyoutAttributes[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `prop:${K}`]?: IoFlyout[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
         "io-icon": Omit<IoIcon, keyof IoIconAttributes> & { [K in keyof IoIcon & keyof IoIconAttributes]?: IoIcon[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `attr:${K}`]?: IoIconAttributes[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `prop:${K}`]?: IoIcon[K] } & OneOf<"name", IoIcon["name"], IoIconAttributes["name"]>;
@@ -7550,6 +7887,8 @@ declare namespace LocalJSX {
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
         "io-scroller": Omit<IoScroller, keyof IoScrollerAttributes> & { [K in keyof IoScroller & keyof IoScrollerAttributes]?: IoScroller[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `attr:${K}`]?: IoScrollerAttributes[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `prop:${K}`]?: IoScroller[K] };
+        "io-segment": Omit<IoSegment, keyof IoSegmentAttributes> & { [K in keyof IoSegment & keyof IoSegmentAttributes]?: IoSegment[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `attr:${K}`]?: IoSegmentAttributes[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `prop:${K}`]?: IoSegment[K] } & OneOf<"value", IoSegment["value"], IoSegmentAttributes["value"]> & OneOf<"label", IoSegment["label"], IoSegmentAttributes["label"]>;
+        "io-segmented-control": Omit<IoSegmentedControl, keyof IoSegmentedControlAttributes> & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes]?: IoSegmentedControl[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `attr:${K}`]?: IoSegmentedControlAttributes[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `prop:${K}`]?: IoSegmentedControl[K] };
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
@@ -7756,6 +8095,24 @@ declare module "@stencil/core" {
              * </script>
              */
             "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
+            /**
+             * io-flyout
+             * =========
+             * Side-anchored flyout panel for navigation menus and complex UI panels.
+             * Fills the gap between io-popover (small) and io-drawer (full-height).
+             * Focus trap uses document.activeElement — works for both Shadow DOM and
+             * slotted light-DOM children.
+             * @example <io-flyout heading="Navigation" position="right">
+             *   <p>Flyout body content here.</p>
+             *   <io-button slot="footer" variant="ghost">Close</io-button>
+             * </io-flyout>
+             * <script>
+             *   const flyout = document.querySelector('io-flyout');
+             *   document.getElementById('open-btn').addEventListener('click', () => { flyout.show(); });
+             *   flyout.addEventListener('dismiss', () => console.log('dismissed'));
+             * </script>
+             */
+            "io-flyout": LocalJSX.IntrinsicElements["io-flyout"] & JSXBase.HTMLAttributes<HTMLIoFlyoutElement>;
             /**
              * io-form-field
              * ==============
@@ -7982,6 +8339,31 @@ declare module "@stencil/core" {
              * </io-scroller>
              */
             "io-scroller": LocalJSX.IntrinsicElements["io-scroller"] & JSXBase.HTMLAttributes<HTMLIoScrollerElement>;
+            /**
+             * io-segment
+             * ===========
+             * A single option within an io-segmented-control bar.
+             * Renders as a button with role="radio" semantics — selected state and
+             * tabIndex are managed by the parent io-segmented-control.
+             * Do not use standalone — always nest inside io-segmented-control.
+             * @example <io-segment value="list" label="List" />
+             * <io-segment value="grid" label="Grid" icon="grid" />
+             */
+            "io-segment": LocalJSX.IntrinsicElements["io-segment"] & JSXBase.HTMLAttributes<HTMLIoSegmentElement>;
+            /**
+             * io-segmented-control
+             * =====================
+             * FACE-compliant exclusive-selection bar. A styled radio group with a unified
+             * horizontal bar visual layout. Parent component that manages selection state
+             * and keyboard navigation across slotted io-segment children.
+             * Uses role="group" on the host with roving tabindex across child segments.
+             * @example <io-segmented-control name="view" value="list">
+             *   <io-segment value="list" label="List" />
+             *   <io-segment value="grid" label="Grid" />
+             *   <io-segment value="map" label="Map" />
+             * </io-segmented-control>
+             */
+            "io-segmented-control": LocalJSX.IntrinsicElements["io-segmented-control"] & JSXBase.HTMLAttributes<HTMLIoSegmentedControlElement>;
             /**
              * io-select
              * ==========

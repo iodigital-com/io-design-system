@@ -34,6 +34,7 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
   state: {
     properties: {
       activeTabIndex: DEFAULT_ACTIVE_TAB_INDEX,
+      compact: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -42,6 +43,10 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
         (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ['Overview', 'Details', 'Settings'],
       ),
+      properties: {
+        activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
+        ...(properties?.compact ? { compact: true } : {}),
+      },
       events: {
         onUpdate: {
           target: 'io-tabs-bar',
@@ -91,5 +96,11 @@ export const tabsBarPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Accessible aria-label for the tablist region — set when the surrounding context does not already label the navigation.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Renders the tabs bar in compact mode with smaller tab dimensions.',
   },
 ];

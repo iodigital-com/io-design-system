@@ -125,6 +125,8 @@
   --io-bg-surface:               var(--io-color-grey-1);
   --io-bg-card:                  var(--io-color-white);
   --io-bg-overlay:               rgba(0, 0, 0, 0.5);
+  --io-backdrop-blur:            4px;
+  --io-overlay-loading-bg:       rgba(255, 255, 255, 0.7);
 
   /* Text */
   --io-text-primary:             var(--io-color-grey-6);
@@ -282,6 +284,7 @@
    --io-motion-overlay-enter:     var(--io-motion-base);
    --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
    --io-motion-overlay-fade:      var(--io-motion-fast);
+   --io-motion-entrance-offset-y: 12px;
 
   /* ============================================================
      7. Z-INDEX SCALE
@@ -402,6 +405,7 @@
   --io-radio-dot-size:                8px;        /* inner filled dot when checked */
   --io-tabs-track-color:         var(--io-border);
   --io-tabs-indicator-color:     var(--io-color-primary);
+  --io-tabs-indicator-height:    2px;
   --io-tabs-icon-size:           var(--io-icon-size-sm);  /* 16px — icon child inside tab button */
   --io-tabs-icon-gap:            var(--io-space-1);       /* 4px — gap between icon and label */
 
@@ -437,6 +441,11 @@
   --io-divider-gap:                var(--io-space-3);
   --io-divider-label-size:         var(--io-font-size-sm);
 
+  /* Spinner */
+  --io-spinner-border-width-sm:    1.5px;
+  --io-spinner-border-width-md:    2px;
+  --io-spinner-border-width-lg:    3px;
+
   /* Button Group */
   --io-button-group-bg:                var(--io-color-white);
   --io-button-group-color:             var(--io-text-secondary);
@@ -468,6 +477,7 @@
   --io-button-group-padding-y-compact:    4px;
   --io-button-group-padding-x-compact:    var(--io-space-3);
   --io-button-group-font-size-compact:    var(--io-font-size-xs);
+  --io-button-group-line-height-compact:  16.8px; /* compact button baseline */
   --io-button-group-gap-compact:          1px;
   --io-button-group-pill-padding-compact: 2px;
   --io-button-group-btn-radius-compact:   calc(var(--io-button-group-pill-radius) - var(--io-button-group-pill-padding-compact));   /* optical inset: 12px - 2px = 10px — mirrors normal-mode calc */
@@ -940,6 +950,7 @@ io-table[compact] io-table-body-cell td {
   /* Semantic tokens */
   --io-text-disabled:            var(--io-color-dark-text-muted);
   --io-state-disabled-bg:        rgba(255, 255, 255, 0.08);
+  --io-overlay-loading-bg:       rgba(0, 0, 0, 0.5);
 
   /* Component tokens that use light-only primitives */
   --io-color-primary:            var(--io-color-dark-primary);

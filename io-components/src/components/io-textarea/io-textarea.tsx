@@ -347,7 +347,7 @@ export class IoTextarea {
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getTextareaStyles()}</style>
-        <div class={getTextareaWrapperClass(showError, showSuccess, showWarning, isDisabled, readOnly)}>
+        <div class={getTextareaWrapperClass(showError, showSuccess, showWarning, isDisabled, readOnly)} inert={loading ? true : undefined}>
           <textarea
             id={textareaId}
             class={getTextareaFieldClass(resize, size)}

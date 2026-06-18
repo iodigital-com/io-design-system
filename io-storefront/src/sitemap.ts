@@ -152,6 +152,14 @@ export const sitemap: NavSection[] = [
         related: ['io-modal', 'io-button', 'io-tabs'],
       },
       {
+        label: 'Flyout',
+        href: '/components/io-flyout/configurator',
+        status: 'beta',
+        slug: 'io-flyout',
+        description: 'Side-anchored flyout panel for navigation menus and complex UI panels. Fills the gap between io-popover (small) and io-drawer (full height). Left or right position, focus trap, Escape to close.',
+        related: ['io-drawer', 'io-popover', 'io-modal'],
+      },
+      {
         label: 'Checkbox',
         href: '/components/io-checkbox/configurator',
         status: 'beta',
@@ -278,6 +286,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-scroller',
         description: 'Scrollable content wrapper with gradient fade indicators at each edge. Use for tab bars, chip groups, image strips, and any overflowing content.',
         related: ['io-tabs', 'io-button-group', 'io-carousel'],
+      },
+      {
+        label: 'Segmented Control',
+        href: '/components/io-segmented-control/configurator',
+        status: 'beta',
+        slug: 'io-segmented-control',
+        description: 'FACE-compliant exclusive-selection bar. A styled radio group with a unified horizontal bar layout. Use for switching between two to five mutually exclusive views or modes.',
+        related: ['io-radio-group', 'io-button-group', 'io-tabs-bar'],
       },
       {
         label: 'Select',

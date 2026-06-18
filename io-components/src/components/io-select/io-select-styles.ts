@@ -128,11 +128,11 @@ export function getSelectStyles(): string {
     }
 
     .select-wrapper--state-success .select-field {
-      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-bottom-color: var(--io-color-state-success);
     }
 
     .select-wrapper--state-warning .select-field {
-      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-bottom-color: var(--io-color-state-warning);
     }
 
     /* Chevron icon */
@@ -158,11 +158,11 @@ export function getSelectStyles(): string {
     }
 
     .select-message--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success);
     }
 
     .select-message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
 
     .select-error--hidden,
@@ -229,11 +229,11 @@ export function getSelectStyles(): string {
     }
 
     .select-wrapper--state-success .combobox-trigger {
-      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-bottom-color: var(--io-color-state-success);
     }
 
     .select-wrapper--state-warning .combobox-trigger {
-      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-bottom-color: var(--io-color-state-warning);
     }
 
     .combobox-trigger__text {

@@ -10,12 +10,14 @@ export const stepperStory: Story<'io-stepper'> = {
     properties: {
       current: 2,
       orientation: 'horizontal',
+      ariaLabel: 'Progress steps',
     },
   },
   generator: ({ properties } = {}) => {
-    const { current = 2, orientation = 'horizontal' } = (properties ?? {}) as {
+    const { current = 2, orientation = 'horizontal', ariaLabel = 'Progress steps' } = (properties ?? {}) as {
       current?: number;
       orientation?: 'horizontal' | 'vertical';
+      ariaLabel?: string;
     };
 
     const numericCurrent = Number(current);
@@ -28,7 +30,7 @@ export const stepperStory: Story<'io-stepper'> = {
     return [
       {
         tag: 'io-stepper' as const,
-        properties: { current: numericCurrent, orientation },
+        properties: { current: numericCurrent, orientation, ariaLabel },
         children: [
           {
             tag: 'io-step' as const,
@@ -135,5 +137,12 @@ export const stepperPropDefinitions: PropDefinition[] = [
     defaultValue: 'horizontal',
     description: 'Layout direction of the stepper.',
     group: 'Appearance',
+  },
+  {
+    name: 'ariaLabel',
+    type: 'string',
+    defaultValue: 'Progress steps',
+    description: 'Accessible label for the <nav> landmark. Override for i18n.',
+    group: 'Accessibility',
   },
 ];

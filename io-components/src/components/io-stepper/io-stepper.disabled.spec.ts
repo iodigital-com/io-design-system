@@ -16,9 +16,9 @@ function getButtonAttrs(step: IoStep): Record<string, unknown> {
   return call?.[1] ?? {};
 }
 
-// ─── io-step — disabled step does not emit stepChange ────────────────────
+// ─── io-step — disabled step does not emit stepClick ─────────────────────
 
-describe('io-step — disabled step does not emit stepChange', () => {
+describe('io-step — disabled step does not emit stepClick', () => {
   let step: IoStep;
   let stepClickMock: ReturnType<typeof vi.fn>;
 
@@ -88,7 +88,7 @@ describe('io-step — disabled step aria-disabled', () => {
     expect(attrs['aria-disabled']).toBeUndefined();
   });
 
-  it('sets aria-disabled="true" when disabled=true on current step', () => {
+  it('does not set aria-disabled when disabled=true on current step (current step stays focusable)', () => {
     const step = new IoStep();
     step.label = 'Details';
     step.status = 'current';

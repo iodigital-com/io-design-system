@@ -59,15 +59,15 @@ export function getFormFieldStyles(): string {
     }
 
     .form-field__message--error {
-      color: var(--io-color-state-error, var(--io-color-error, #D32F2F));
+      color: var(--io-color-state-error);
     }
 
     .form-field__message--success {
-      color: var(--io-color-state-success, #1a7f4b);
+      color: var(--io-color-state-success);
     }
 
     .form-field__message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
   `;
 }

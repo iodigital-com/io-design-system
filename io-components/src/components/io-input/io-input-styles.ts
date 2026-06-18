@@ -156,11 +156,11 @@ export function getInputStyles(): string {
     }
 
     .input-wrapper--state-success .input-field {
-      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-bottom-color: var(--io-color-state-success);
     }
 
     .input-wrapper--state-warning .input-field {
-      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-bottom-color: var(--io-color-state-warning);
     }
 
     .input-state-icon {
@@ -177,11 +177,11 @@ export function getInputStyles(): string {
     }
 
     .input-state-icon--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success);
     }
 
     .input-state-icon--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
 
     .input-message {
@@ -194,11 +194,11 @@ export function getInputStyles(): string {
     }
 
     .input-message--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success);
     }
 
     .input-message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
 
     .input-error--hidden {

@@ -130,7 +130,7 @@ export class IoInput {
   @Prop() aria?: Record<string, string>;
 
   /** Native inputmode attribute — hints at the virtual keyboard type to show on mobile */
-  @Prop() inputMode?: IoInputMode;
+  @Prop() inputMode: IoInputMode = 'text';
 
   /** Native pattern attribute — regex that the input value must match for validity */
   @Prop() pattern?: string;

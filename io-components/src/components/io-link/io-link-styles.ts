@@ -20,7 +20,9 @@ export function getLinkStyles(): string {
     }
 
     .link {
-      display: inline;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--io-space-1);
       position: relative;
       font-family: inherit;
       font-size: inherit;
@@ -29,6 +31,26 @@ export function getLinkStyles(): string {
       text-decoration: none;
       cursor: pointer;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Icon wrapper — sized to match current text */
+    .link__icon {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* Visually hidden label (screen-reader accessible) */
+    .link__label--hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     /* Animated underline via ::after pseudo-element */

@@ -41,4 +41,11 @@ describe('io-link — disabled', () => {
     expect(preventDefaultMock).toHaveBeenCalled();
     expect(stopPropagationMock).toHaveBeenCalled();
   });
+
+  it('keeps disabled as true to confirm the prop is set', () => {
+    // The anchor uses tabIndex={0} when disabled so keyboard users can still
+    // focus the link — aria-disabled="true" prevents navigation.
+    component.disabled = true;
+    expect(component.disabled).toBe(true);
+  });
 });

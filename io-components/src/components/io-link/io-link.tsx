@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, h } from '
 
 import { getLinkStyles } from './io-link-styles';
 import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
+import type { IoIconName } from '../../utils/icons';
 
 import type { IoLinkVariant, IoLinkColor } from './types';
 
@@ -54,6 +55,15 @@ export class IoLink {
   /** Disables the link — removes href and blocks click */
   @Prop({ reflect: true }) disabled = false;
 
+  /** Name of a Lucide icon to render before the label. Set to a valid IoIconName to show an icon. */
+  @Prop() icon?: IoIconName;
+
+  /** Custom SVG source string for a non-library icon (mutually exclusive with `icon`). */
+  @Prop() iconSource?: string;
+
+  /** Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance. */
+  @Prop() hideLabel = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on click. Not fired when disabled. */
@@ -79,16 +89,30 @@ export class IoLink {
     this.click.emit(ev);
   };
 
+  // ── Render helpers ───────────────────────────────────────────
+
+  private renderIcon() {
+    if (!this.icon && !this.iconSource) return null;
+
+    if (this.iconSource) {
+      return <span class="link__icon" aria-hidden="true" innerHTML={this.iconSource} />;
+    }
+
+    return <io-icon name={this.icon!} aria-hidden="true" />;
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, color, href, target, rel, external, disabled, download } = this;
+    const { variant, color, href, target, rel, external, disabled, download, hideLabel } = this;
     const resolvedTarget = resolveLinkTarget(target, external);
     const resolvedRel = resolveLinkRel(rel, resolvedTarget, external);
-    
+
     // Compute aria-label: append "(opens in new tab)" for external links
     const linkText = this.el.textContent?.trim() || '';
     const ariaLabel = external && linkText ? `${linkText}, opens in new tab` : undefined;
+
+    const hasIcon = Boolean(this.icon || this.iconSource);
 
     return (
       <Host>
@@ -101,10 +125,13 @@ export class IoLink {
           download={download}
           aria-label={ariaLabel}
           aria-disabled={disabled ? 'true' : undefined}
-          tabIndex={disabled ? -1 : undefined}
+          tabIndex={disabled ? 0 : undefined}
           onClick={this.handleClick}
         >
-          <slot />
+          {hasIcon && this.renderIcon()}
+          <span class={hideLabel ? 'link__label link__label--hidden' : 'link__label'}>
+            <slot />
+          </span>
         </a>
       </Host>
     );

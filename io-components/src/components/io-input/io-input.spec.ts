@@ -346,8 +346,8 @@ describe('io-input — inputMode, pattern, compact props (#643)', () => {
 
   // ── inputMode ─────────────────────────────────────────────────
 
-  it('has inputMode=undefined by default', () => {
-    expect(component.inputMode).toBeUndefined();
+  it("has inputMode='text' by default", () => {
+    expect(component.inputMode).toBe('text');
   });
 
   it('passes inputMode to native input via render', () => {
@@ -374,7 +374,7 @@ describe('io-input — inputMode, pattern, compact props (#643)', () => {
     expect(inputProps['inputmode']).toBe('tel');
   });
 
-  it('omits inputmode attribute when inputMode is undefined', () => {
+  it("passes default inputmode='text' to native input", () => {
     (component as any).componentWillLoad();
 
     vi.mocked(h).mockClear();
@@ -382,7 +382,7 @@ describe('io-input — inputMode, pattern, compact props (#643)', () => {
 
     const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
     const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
-    expect(inputProps['inputmode']).toBeUndefined();
+    expect(inputProps['inputmode']).toBe('text');
   });
 
   // ── pattern ───────────────────────────────────────────────────

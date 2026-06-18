@@ -38,7 +38,7 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-import { IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
@@ -79,7 +79,7 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-export { IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
@@ -2180,9 +2180,26 @@ export namespace Components {
          */
         "activeTabIndex": number;
         /**
+          * When true, reduces tab button padding using density tokens.
+         */
+        "compact": boolean;
+        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
+        /**
+          * ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div.
+         */
+        "labelledby"?: string;
+        /**
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
+          * When provided, each tab button receives aria-controls pointing to its associated panel.
+         */
+        "panelIds"?: string[];
+        /**
+          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+         */
+        "size": IoTabsSize;
     }
     /**
      * io-tabs-bar
@@ -6104,13 +6121,30 @@ declare namespace LocalJSX {
          */
         "activeTabIndex"?: number;
         /**
+          * When true, reduces tab button padding using density tokens.
+         */
+        "compact"?: boolean;
+        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
         /**
+          * ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div.
+         */
+        "labelledby"?: string;
+        /**
           * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
+        /**
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
+          * When provided, each tab button receives aria-controls pointing to its associated panel.
+         */
+        "panelIds"?: string[];
+        /**
+          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+         */
+        "size"?: IoTabsSize;
     }
     /**
      * io-tabs-bar
@@ -6856,7 +6890,10 @@ declare namespace LocalJSX {
     }
     interface IoTabsAttributes {
         "activeTabIndex": number;
+        "compact": boolean;
         "label": string;
+        "labelledby": string;
+        "size": IoTabsSize;
     }
     interface IoTabsBarAttributes {
         "activeTabIndex": number;

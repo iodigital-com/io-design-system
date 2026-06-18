@@ -6,6 +6,7 @@ import {
   stepperStoryVertical,
   stepperStoryStatuses,
   stepperStoryFiveSteps,
+  stepperStoryWarning,
 } from './io-stepper.stories';
 
 describe('io-stepper storefront stories', () => {
@@ -59,6 +60,23 @@ describe('io-stepper storefront stories', () => {
       const els = stepperStory.generator?.({ properties: { orientation: 'vertical' } }) ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
       expect(first.properties.orientation).toBe('vertical');
+    });
+
+    it('generator forwards ariaLabel from properties', () => {
+      const els = stepperStory.generator?.({ properties: { ariaLabel: 'My steps' } }) ?? [];
+      const first = els[0] as { properties: Record<string, unknown> };
+      expect(first.properties.ariaLabel).toBe('My steps');
+    });
+
+    it('generator uses default ariaLabel of Progress when not provided', () => {
+      const els = stepperStory.generator?.({}) ?? [];
+      const first = els[0] as { properties: Record<string, unknown> };
+      expect(first.properties.ariaLabel).toBe('Progress');
+    });
+
+    it('state.properties.ariaLabel defaults to Progress', () => {
+      const props = stepperStory.state?.properties as Record<string, unknown>;
+      expect(props.ariaLabel).toBe('Progress');
     });
 
     it('step before current has complete status', () => {
@@ -125,6 +143,12 @@ describe('io-stepper storefront stories', () => {
       const names = stepperPropDefinitions.map((d) => d.name);
       expect(names).toContain('current');
       expect(names).toContain('orientation');
+      expect(names).toContain('ariaLabel');
+    });
+
+    it('ariaLabel prop has defaultValue of Progress', () => {
+      const def = stepperPropDefinitions.find((d) => d.name === 'ariaLabel');
+      expect(def?.defaultValue).toBe('Progress');
     });
 
     it('orientation prop has horizontal and vertical options', () => {
@@ -217,6 +241,33 @@ describe('io-stepper storefront stories', () => {
       const els = stepperStoryFiveSteps.generator?.() ?? [];
       const first = els[0] as { children: unknown[] };
       expect(first.children.length).toBe(5);
+    });
+  });
+
+  describe('stepperStoryWarning', () => {
+    it('generator returns non-empty array', () => {
+      const els = stepperStoryWarning.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('first element has tag io-stepper', () => {
+      const els = stepperStoryWarning.generator?.() ?? [];
+      const first = els[0] as { tag: string };
+      expect(first.tag).toBe('io-stepper');
+    });
+
+    it('has a step with warning status', () => {
+      const els = stepperStoryWarning.generator?.() ?? [];
+      const first = els[0] as { children: Array<{ properties: Record<string, unknown> }> };
+      const warningStep = first.children.find((c) => c.properties.status === 'warning');
+      expect(warningStep).toBeDefined();
+    });
+
+    it('has three io-step children', () => {
+      const els = stepperStoryWarning.generator?.() ?? [];
+      const first = els[0] as { children: unknown[] };
+      expect(first.children.length).toBe(3);
     });
   });
 });

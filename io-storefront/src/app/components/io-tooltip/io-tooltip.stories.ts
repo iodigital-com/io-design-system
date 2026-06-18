@@ -96,5 +96,6 @@ export const tooltipPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end'],
     defaultValue: 'top',
+    description: 'Preferred placement of the tooltip relative to the trigger element.',
   },
 ];

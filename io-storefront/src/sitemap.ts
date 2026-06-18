@@ -280,6 +280,14 @@ export const sitemap: NavSection[] = [
         related: ['io-tabs', 'io-button-group', 'io-carousel'],
       },
       {
+        label: 'Segmented Control',
+        href: '/components/io-segmented-control/configurator',
+        status: 'beta',
+        slug: 'io-segmented-control',
+        description: 'FACE-compliant exclusive-selection bar. A styled radio group with a unified horizontal bar layout. Use for switching between two to five mutually exclusive views or modes.',
+        related: ['io-radio-group', 'io-button-group', 'io-tabs-bar'],
+      },
+      {
         label: 'Select',
         href: '/components/io-select/configurator',
         status: 'beta',

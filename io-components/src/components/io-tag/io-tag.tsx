@@ -90,6 +90,7 @@ export class IoTag {
             role="none"
           >
             <button
+              type="button"
               class={`${tagClass} tag--removable-main`}
               disabled={disabled}
               aria-pressed={String(selected)}
@@ -98,6 +99,7 @@ export class IoTag {
               <slot />
             </button>
             <button
+              type="button"
               class={`tag tag--${size} tag--${color} tag__remove tag__remove--${size}${selected ? ' tag--selected' : ''}${disabled ? ' tag--disabled' : ''}`}
               aria-label={label ? `Remove ${label}` : 'Remove'}
               disabled={disabled}
@@ -116,6 +118,7 @@ export class IoTag {
       <Host>
         <style>{getTagStyles()}</style>
         <button
+          type="button"
           class={tagClass}
           disabled={disabled}
           aria-pressed={String(selected)}

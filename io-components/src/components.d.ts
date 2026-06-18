@@ -3286,9 +3286,8 @@ declare global {
         new (): HTMLIoPaginationElement;
     };
     interface HTMLIoPinCodeElementEventMap {
-        "blur": FocusEvent;
         "change": IoPinCodeChangeDetail;
-        "blur": void;
+        "blur": FocusEvent;
     }
     /**
      * io-pin-code

@@ -23,7 +23,7 @@ MockHTMLElement {
   "_childNodes": [
     <io-tag size="sm" color="default" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--sm tag--default" aria-pressed="false">
+    <button type="button" class="tag tag--sm tag--default" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -31,7 +31,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="blue" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--blue" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--blue" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -39,7 +39,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="beige" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--beige" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--beige" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -47,7 +47,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="dark" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--dark" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--dark" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -55,7 +55,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="orange" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--orange" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--orange" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -63,7 +63,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="rouge" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--rouge" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--rouge" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -71,7 +71,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="success" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--success" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--success" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -79,7 +79,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="warning" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--warning" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--warning" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -87,7 +87,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="error" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--error" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--error" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -95,7 +95,7 @@ MockHTMLElement {
 </io-tag>,
     <io-tag size="md" color="outline" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--outline" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--outline" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -1266,7 +1266,7 @@ MockHTMLElement {
 exports[`io-tag — render snapshots > renders default state 1`] = `
 <io-tag size="md" color="default" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--default" aria-pressed="false">
+    <button type="button" class="tag tag--md tag--default" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>
@@ -1277,7 +1277,7 @@ exports[`io-tag — render snapshots > renders default state 1`] = `
 exports[`io-tag — render snapshots > renders disabled state 1`] = `
 <io-tag disabled size="md" color="default" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button class="tag tag--md tag--default tag--disabled" disabled aria-pressed="false">
+    <button type="button" class="tag tag--md tag--default tag--disabled" disabled aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>

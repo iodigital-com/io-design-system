@@ -705,24 +705,40 @@ io-table[sticky] io-table-head-cell th {
 
 /* ── Sortable header ───────────────────────────────────────── */
 
-io-table-head-cell th.th--sortable {
-  cursor: pointer;
+io-table io-table-head-cell th.th--sortable {
+  /* Remove interactive styling from th — the inner button handles it.
+     The extra `io-table` ancestor bumps specificity above the size/compact
+     density rules (io-table[size="sm"] io-table-head-cell th, etc.) so
+     padding: 0 is never overridden, preventing double-padding on the th
+     and its inner sort button. */
+  cursor: default;
   user-select: none;
+  padding: 0;
 }
 
-io-table-head-cell th.th--sortable:hover {
-  color: var(--io-text-primary, #242424);
-}
-
-io-table-head-cell th.th--sortable:focus-visible {
-  outline: none;
-  box-shadow: var(--io-focus-ring-active);
-}
-
-.th__inner {
+/* Sort button — receives focus, keyboard, and pointer events */
+.th__sort-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--io-space-2, 8px);
+  width: 100%;
+  padding: var(--io-table-cell-padding-y, var(--io-space-3)) var(--io-table-cell-padding-x, var(--io-space-4));
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  user-select: none;
+}
+
+io-table-head-cell th.th--sortable:hover .th__sort-btn {
+  color: var(--io-text-primary, #242424);
+}
+
+.th__sort-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--io-focus-ring-active);
 }
 
 /* ── Sort icon ─────────────────────────────────────────────── */
@@ -739,6 +755,7 @@ io-table-head-cell th.th--sortable:focus-visible {
 }
 
 io-table-head-cell th.th--sortable:hover .sort-icon,
+io-table-head-cell th.th--sortable .th__sort-btn:hover .sort-icon,
 io-table-head-cell th.th--sort-active .sort-icon {
   opacity: 1;
 }

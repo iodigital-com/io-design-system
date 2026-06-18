@@ -190,46 +190,59 @@ export default function IoTableApiPage() {
       <section id="events" className="space-y-4">
         <SectionHeader
           title="Events"
-          description="Custom events emitted by io-table sub-components. Listen via addEventListener or framework event binding."
+          description="Custom events emitted by io-table and its sub-components. Listen via addEventListener or framework event binding."
         />
         <ApiTable
           columns={[
             { label: 'Component', width: '200px' },
             { label: 'Event', width: '140px' },
             { label: 'Detail type', width: '300px' },
+            { label: 'Bubbles', width: '80px' },
             { label: 'Description' },
           ]}
           rows={[
             [
+              <InlineCode key="c">io-table</InlineCode>,
+              <InlineCode key="n">sortChange</InlineCode>,
+              <InlineCode key="t">{'{ key: string; direction: \'ascending\' | \'descending\' | \'none\' }'}</InlineCode>,
+              'No',
+              'Aggregated sort event re-emitted by io-table when any column sort button is clicked. Prefer this over listening to individual column sort events. detail contains the column key identifier and the new sort direction.',
+            ],
+            [
               <InlineCode key="c">io-table-head-cell</InlineCode>,
               <InlineCode key="n">sort</InlineCode>,
-              <InlineCode key="t">{'{ key: string; direction: \'ascending\' | \'descending\' }'}</InlineCode>,
-              'Fired when a sortable column header is clicked or activated via Enter/Space.',
+              <InlineCode key="t">{'{ key: string; direction: \'ascending\' | \'descending\' | \'none\' }'}</InlineCode>,
+              'Yes',
+              'Fired when a sortable column header button is clicked or activated via Enter/Space. Bubbles up to io-table where it is re-emitted as sortChange.',
             ],
             [
               <InlineCode key="c">io-table-head-row</InlineCode>,
               <InlineCode key="n">selectAll</InlineCode>,
               <InlineCode key="t">{'{ checked: boolean }'}</InlineCode>,
+              'Yes',
               'Fired when the select-all checkbox changes.',
             ],
             [
               <InlineCode key="c">io-table-body-row</InlineCode>,
               <InlineCode key="n">select</InlineCode>,
               <InlineCode key="t">{'{ selected: boolean }'}</InlineCode>,
+              'Yes',
               'Fired when a row\'s selection checkbox changes.',
             ],
           ]}
         />
         <CodeNote label="Usage">
-{`// Vanilla JS
+{`// Vanilla JS — preferred: single sortChange listener on io-table
+const table = document.querySelector('io-table');
+table.addEventListener('sortChange', (e) => {
+  console.log(e.detail); // { key: 'name', direction: 'ascending' }
+  // Update sortDirection prop on the relevant io-table-head-cell
+  // and re-sort your data accordingly.
+});
+
 const headRow = document.querySelector('io-table-head-row');
 headRow.addEventListener('selectAll', (e) => {
   console.log(e.detail); // { checked: true }
-});
-
-const headCell = document.querySelector('io-table-head-cell');
-headCell.addEventListener('sort', (e) => {
-  console.log(e.detail); // { key: 'name', direction: 'ascending' }
 });
 
 const bodyRows = document.querySelectorAll('io-table-body-row');
@@ -239,6 +252,34 @@ bodyRows.forEach((row, i) => {
   });
 });`}
         </CodeNote>
+      </section>
+
+      {/* ── Accessibility Notes ───────────────────────────────────── */}
+      <section id="accessibility" className="space-y-4">
+        <SectionHeader
+          title="Accessibility Notes"
+          description="Implementation details that inform correct usage and assistive-technology support."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Pattern', width: '260px' },
+            { label: 'Detail' },
+          ]}
+          rows={[
+            [
+              'ARIA APG sort-button pattern',
+              'Each sortable column header renders a native <button> inside the <th> element. This follows the WAI-ARIA Authoring Practices Guide table sort pattern. The aria-sort attribute is placed on the <th> (which has an implicit columnheader role), not on the button itself, so screen readers announce sort state when navigating column headers.',
+            ],
+            [
+              'Scroll wrapper accessible name (WCAG 1.3.1)',
+              'The horizontal scroll wrapper is rendered as role="region" and receives aria-label from the caption prop. This gives the landmark an accessible name so screen reader users can distinguish it from other landmarks on the page. Always provide a meaningful caption.',
+            ],
+            [
+              'Caption visibility',
+              'Use captionHidden to visually hide the caption when a heading already identifies the table. The caption remains in the DOM and is announced by screen readers, satisfying the accessible name requirement without visual duplication.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── CSS Custom Properties ─────────────────────────────────── */}

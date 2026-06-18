@@ -1,8 +1,8 @@
-import { Component, Prop, Host, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Listen, Prop, Host, h } from '@stencil/core';
 
 import { getTableStyles } from './io-table-styles';
 
-import type { IoTableSize } from './types';
+import type { IoTableSize, IoTableSortDetail } from './types';
 
 /**
  * io-table
@@ -56,6 +56,25 @@ export class IoTable {
   /** Reduces row padding to display more rows in the same vertical space. */
   @Prop({ reflect: true }) compact: boolean = false;
 
+  // ── Events ────────────────────────────────────────────────────
+
+  /**
+   * Emitted when a sortable column header is activated.
+   * Aggregates the bubbling `sort` event from io-table-head-cell so consumers
+   * can attach a single listener on io-table instead of one per column.
+   * Non-bubbling — stops at the io-table boundary.
+   */
+  @Event({ bubbles: false }) sortChange!: EventEmitter<IoTableSortDetail>;
+
+  // ── Listeners ────────────────────────────────────────────────
+
+  /** Intercept the bubbling `sort` event from io-table-head-cell and re-emit as sortChange. */
+  @Listen('sort')
+  handleSortBubble(ev: CustomEvent<IoTableSortDetail>): void {
+    ev.stopPropagation();
+    this.sortChange.emit(ev.detail);
+  }
+
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
@@ -68,9 +87,10 @@ export class IoTable {
 
   render() {
     const { caption, captionHidden } = this;
-    // Only label the scroll region when the caption is visually hidden — otherwise the
-    // caption already names the table and labelling the region too would be redundant.
-    const regionLabel = (captionHidden || !caption) ? (caption || undefined) : undefined;
+    // Label the scroll region whenever a caption is provided so the role="region"
+    // landmark has an accessible name — required by ARIA for landmarks to be
+    // distinguishable by AT users (WCAG 1.3.1 / ARIA spec §5.3.7).
+    const regionLabel = caption || undefined;
     const captionClass = !caption || captionHidden ? 'sr-only' : undefined;
 
     return (

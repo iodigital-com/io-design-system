@@ -115,19 +115,19 @@ describe('io-drawer — bottom sheet styles', () => {
     expect(handleBlock).toContain('--io-border-hover');
   });
 
-  it('drag handle dimensions are 32px wide and 4px tall', () => {
+  it('drag handle dimensions use --io-space-8 / --io-space-1 tokens', () => {
     const styles: string = getDrawerStyles();
     const handleIdx = styles.indexOf('.drawer__handle');
     const handleBlock = styles.slice(handleIdx, handleIdx + 200);
-    expect(handleBlock).toContain('width: 32px');
-    expect(handleBlock).toContain('height: 4px');
+    expect(handleBlock).toContain('var(--io-space-8)');
+    expect(handleBlock).toContain('var(--io-space-1)');
   });
 
-  it('drag handle uses border-radius: 2px per ACs', () => {
+  it('drag handle uses --io-border-radius-2xs token', () => {
     const styles: string = getDrawerStyles();
     const handleIdx = styles.indexOf('.drawer__handle');
     const handleBlock = styles.slice(handleIdx, handleIdx + 200);
-    expect(handleBlock).toContain('border-radius: 2px');
+    expect(handleBlock).toContain('var(--io-border-radius-2xs)');
   });
 });
 

@@ -15,13 +15,22 @@ export default function IoToastApiPage() {
           title="Properties"
           description="All @Prop() declarations on the io-toast Stencil component."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-toast has no configurable props.</strong>
-          {' '}It is a container that registers with the singleton manager. All notification content is passed
-          imperatively via the{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>addToast()</code>{' '}
-          method.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '160px' },
+            { label: 'Type', width: '220px' },
+            { label: 'Default', width: '130px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">position</InlineCode>,
+              <InlineCode key="t">IoToastPosition</InlineCode>,
+              <InlineCode key="d">&apos;bottom-end&apos;</InlineCode>,
+              'Where on screen the toast stack appears. Reflects to the host attribute. One of: top-start, top-center, top-end, bottom-start, bottom-center, bottom-end.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── Methods ──────────────────────────────────────────────── */}
@@ -79,6 +88,27 @@ export default function IoToastApiPage() {
                 <InlineCode key="d">6000</InlineCode>,
                 'Time in milliseconds before the toast auto-dismisses. Set to 0 for a persistent toast that requires manual dismissal.',
               ],
+              [
+                <InlineCode key="n">persistent</InlineCode>,
+                <InlineCode key="t">boolean</InlineCode>,
+                'No',
+                <InlineCode key="d">false</InlineCode>,
+                'When true the toast will not auto-dismiss and must be manually closed. Error-variant toasts are always treated as persistent regardless of this flag.',
+              ],
+              [
+                <InlineCode key="n">actionLabel</InlineCode>,
+                <InlineCode key="t">string | undefined</InlineCode>,
+                'No',
+                '—',
+                'Label for an optional call-to-action rendered beside the notification text. When omitted, no action is shown. When set alongside actionHref, renders an anchor; otherwise renders a button that emits the action event on io-toast-item.',
+              ],
+              [
+                <InlineCode key="n">actionHref</InlineCode>,
+                <InlineCode key="t">string | undefined</InlineCode>,
+                'No',
+                '—',
+                'When set alongside actionLabel, renders the CTA as an anchor pointing to this URL (opens in the same tab). When omitted, the CTA is a button.',
+              ],
             ]}
           />
         </div>
@@ -115,6 +145,78 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>addToast()</code>{' '}
           method to enqueue messages imperatively.
         </EmptyNote>
+      </section>
+
+      {/* ── io-toast-item Props ───────────────────────────────────── */}
+      <section id="io-toast-item-properties" className="space-y-4">
+        <SectionHeader
+          title="io-toast-item Properties"
+          description="Props on the internal io-toast-item sub-component. Not intended for direct use — io-toast manages this automatically. Documented here for completeness and framework wrapper consumers."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Property', width: '160px' },
+            { label: 'Type', width: '220px' },
+            { label: 'Default', width: '130px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">text</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Notification text displayed in the toast body.',
+            ],
+            [
+              <InlineCode key="n">variant</InlineCode>,
+              <InlineCode key="t">IoToastVariant</InlineCode>,
+              <InlineCode key="d">&apos;neutral&apos;</InlineCode>,
+              'Visual variant controlling the colour accent and icon. Reflects to the host attribute. One of: neutral, success, error, warning, info.',
+            ],
+            [
+              <InlineCode key="n">actionLabel</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Label for an optional call-to-action rendered beside the notification text. When omitted, no action is shown. When set without actionHref, renders a button that emits the action event. When set with actionHref, renders an anchor.',
+            ],
+            [
+              <InlineCode key="n">actionHref</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'When set alongside actionLabel, renders the CTA as an <a> element pointing to this URL. When omitted, the CTA is a button.',
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── io-toast-item Events ──────────────────────────────────── */}
+      <section id="io-toast-item-events" className="space-y-4">
+        <SectionHeader
+          title="io-toast-item Events"
+          description="Custom events emitted by the internal io-toast-item sub-component."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Event', width: '160px' },
+            { label: 'Detail', width: '120px' },
+            { label: 'Bubbles', width: '100px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">dismiss</InlineCode>,
+              <InlineCode key="t">void</InlineCode>,
+              'Yes',
+              'Fires when the user clicks the dismiss (×) button. io-toast listens to this event internally to dequeue the current message.',
+            ],
+            [
+              <InlineCode key="n">action</InlineCode>,
+              <InlineCode key="t">void</InlineCode>,
+              'No',
+              'Fires when the user clicks the action button (only when actionLabel is set and actionHref is not). Not fired for anchor-based CTAs.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── Slots ────────────────────────────────────────────────── */}

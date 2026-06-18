@@ -16,6 +16,9 @@ import type { IoSpinnerSize, IoSpinnerColor } from './types';
  * @example
  * <io-spinner></io-spinner>
  * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
+ * // JSX / framework usage (dot-property binding):
+ * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+ * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
  */
 @Component({
   tag: 'io-spinner',
@@ -24,7 +27,7 @@ import type { IoSpinnerSize, IoSpinnerColor } from './types';
 export class IoSpinner {
   // ── Props ─────────────────────────────────────────────────────
 
-  /** Size preset */
+  /** Size preset. Use 'inherit' to scale with parent font-size (1em). */
   @Prop({ reflect: true }) size: IoSpinnerSize = 'md';
 
   /** Color of the spinner ring */
@@ -33,15 +36,31 @@ export class IoSpinner {
   /** Accessible label announced by screen readers */
   @Prop() label = 'Loading';
 
+  /**
+   * Additional ARIA attributes spread onto the Host element.
+   * When aria-label is provided here, it takes precedence over the label prop.
+   * Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
+   */
+  @Prop() aria?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { size, color } = this;
+    const { size, color, aria } = this;
     const label = normalizeSpinnerLabel(this.label);
     const className = getSpinnerClassName(size, color);
 
+    // aria['aria-label'] takes precedence over the label prop, but only when non-blank
+    const ariaLabel = aria?.['aria-label']?.trim() || label;
+
     return (
-      <Host role="status" aria-label={label}>
+      <Host
+        role="status"
+        aria-label={ariaLabel}
+        aria-describedby={aria?.['aria-describedby']}
+        aria-live={aria?.['aria-live']}
+        aria-atomic={aria?.['aria-atomic']}
+      >
         <style>{getSpinnerStyles()}</style>
         <span
           class={className}

@@ -14,6 +14,35 @@ import {
 import { getFlyoutStyles } from './io-flyout-styles';
 import type { IoFlyoutPosition } from './types';
 
+const FOCUSABLE_SELECTORS = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(', ');
+
+/**
+ * Returns all focusable elements inside the flyout panel, including both
+ * shadow DOM elements and slotted light DOM elements.
+ */
+function getFlyoutFocusableElements(panelEl: HTMLElement): HTMLElement[] {
+  const shadowFocusable = Array.from(panelEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
+
+  const slots = Array.from(panelEl.querySelectorAll('slot')) as HTMLSlotElement[];
+  const slottedFocusable = slots.flatMap(slot =>
+    Array.from(slot.assignedElements({ flatten: true })).flatMap(el => {
+      const matches: HTMLElement[] = [];
+      if ((el as HTMLElement).matches(FOCUSABLE_SELECTORS)) matches.push(el as HTMLElement);
+      matches.push(...Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)));
+      return matches;
+    }),
+  );
+
+  return [...shadowFocusable, ...slottedFocusable];
+}
+
 /**
  * io-flyout
  * =========
@@ -98,11 +127,26 @@ export class IoFlyout {
   componentWillLoad() {
     const seed = Math.random().toString(36).slice(2);
     this.headingId = `io-flyout-heading-${seed}`;
+
+    // WCAG 4.1.2 — the flyout dialog must have an accessible name.
+    // It is provided by aria-labelledby (when heading prop is set) or
+    // aria-label on the host (when heading is absent). Log an error when
+    // neither is available so authors know the contract is not satisfied.
+    if (!this.heading) {
+      console.error(
+        '[io-flyout] Accessible name missing. Provide a "heading" prop or set aria-label on the host element.',
+      );
+    }
   }
 
   componentDidLoad() {
     if (this.open) {
       this.applyOpenState();
+    } else {
+      // Ensure panel starts inert when initially closed
+      if (this.panelEl) {
+        this.panelEl.setAttribute('inert', '');
+      }
     }
   }
 
@@ -144,13 +188,13 @@ export class IoFlyout {
 
     if (this.panelEl) {
       this.panelEl.removeAttribute('aria-hidden');
+      // Remove inert so the panel is interactive and reachable by AT
+      this.panelEl.removeAttribute('inert');
     }
 
     this.attachFocusTrap();
 
     requestAnimationFrame(() => {
-      const shadow = this.el?.shadowRoot;
-      if (!shadow) return;
       const focusable = this.getFocusableElements();
       focusable[0]?.focus();
     });
@@ -162,6 +206,9 @@ export class IoFlyout {
 
     if (this.panelEl) {
       this.panelEl.setAttribute('aria-hidden', 'true');
+      // Use inert (not visibility:hidden) so the close animation can play
+      // while the panel remains unreachable for keyboard / AT.
+      this.panelEl.setAttribute('inert', '');
     }
 
     // Restore focus to trigger
@@ -172,8 +219,8 @@ export class IoFlyout {
 
   private getFocusableElements(): HTMLElement[] {
     if (!this.panelEl) return [];
-    const selector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    return Array.from(this.panelEl.querySelectorAll<HTMLElement>(selector));
+    // Include both shadow DOM and slotted light-DOM children
+    return getFlyoutFocusableElements(this.panelEl);
   }
 
   private attachFocusTrap() {
@@ -242,6 +289,11 @@ export class IoFlyout {
 
     const ariaHidden = open ? undefined : 'true';
 
+    // WCAG 4.1.2: accessible name strategy —
+    //   heading prop set  → aria-labelledby on the panel pointing to the h2
+    //   heading prop absent → aria-label on the host (consumer may supply one via attr)
+    const hostAriaLabel = !heading ? (this.el.getAttribute('aria-label') ?? 'Flyout') : undefined;
+
     const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
     return (
@@ -264,6 +316,7 @@ export class IoFlyout {
           role="dialog"
           aria-modal="true"
           aria-labelledby={heading ? headingId : undefined}
+          aria-label={hostAriaLabel}
           aria-hidden={ariaHidden}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >

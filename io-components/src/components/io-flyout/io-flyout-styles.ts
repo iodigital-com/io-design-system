@@ -9,7 +9,7 @@ export function getFlyoutStyles(): string {
     .flyout__backdrop {
       position: fixed;
       inset: 0;
-      background: var(--io-backdrop, rgba(0, 0, 0, 0.4));
+      background: var(--io-drawer-backdrop);
       z-index: calc(var(--io-z-modal, 1000) - 1);
     }
 
@@ -19,7 +19,7 @@ export function getFlyoutStyles(): string {
       position: fixed;
       top: 0;
       bottom: 0;
-      width: min(480px, 90vw);
+      width: 480px;
       background: var(--io-bg-card);
       box-shadow: var(--io-shadow-lg);
       z-index: var(--io-z-modal, 1000);
@@ -58,9 +58,14 @@ export function getFlyoutStyles(): string {
     }
 
     /* ── Hidden state ─────────────────────────────────────────── */
+    /*
+     * Do NOT use visibility:hidden here — that would instantly hide the panel
+     * and prevent the close animation from playing.
+     * Instead we use pointer-events:none + the inert attribute (set in JS)
+     * so the panel slides off-screen before becoming unreachable.
+     */
 
     .flyout__panel[aria-hidden='true'] {
-      visibility: hidden;
       pointer-events: none;
     }
 
@@ -137,6 +142,14 @@ export function getFlyoutStyles(): string {
       .flyout__close:hover {
         color: var(--io-text-primary);
         background-color: var(--io-state-hover);
+      }
+    }
+
+    /* ── Mobile: full-width on narrow viewports ──────────────── */
+
+    @media (max-width: 480px) {
+      .flyout__panel {
+        width: 100vw;
       }
     }
 

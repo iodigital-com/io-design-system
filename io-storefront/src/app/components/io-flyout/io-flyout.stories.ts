@@ -6,7 +6,7 @@ import type { ElementConfig, HTMLTagOrComponent } from '@/utils/generator/genera
  * Configurator story for io-flyout.
  *
  * Renders a trigger <io-button> alongside the <io-flyout>.
- * EventConfig wires: button onClick → show(), flyout onDismiss → open:false.
+ * EventConfig wires: button onClick → open:true, flyout onDismiss → open:false.
  */
 export const flyoutStory: Story<'io-flyout'> = {
   state: {

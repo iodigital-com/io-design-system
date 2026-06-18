@@ -10,5 +10,5 @@ export type IoBadgeVariant =
   | 'error'
   | 'outline';
 
-/** Badge size scale aligned with io-tag */
+/** Badge size scale: sm (compact), md (default), lg (prominent) */
 export type IoBadgeSize = 'sm' | 'md' | 'lg';

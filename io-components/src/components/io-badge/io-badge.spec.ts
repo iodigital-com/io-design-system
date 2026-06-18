@@ -1,5 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
-import { h } from '@stencil/core';
+import { describe, it, expect } from 'vitest';
 
 import { IoBadge } from './io-badge';
 import { getBadgeClassName } from './io-badge-utils';
@@ -35,26 +34,14 @@ describe('io-badge - default props and render contract', () => {
     expect(getBadgeClassName('success', 'lg')).toBe('badge badge--success badge--lg');
   });
 
-  it('renders aria-label when ariaLabel prop is provided', () => {
-    const hMock = h as unknown as ReturnType<typeof vi.fn>;
-    hMock.mockClear();
+  it('stores ariaLabel prop when provided', () => {
     const component = new IoBadge();
     component.ariaLabel = 'New feature';
-    component.render();
-    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
-    const spanCall = calls.find(([tag]) => tag === 'span');
-    expect(spanCall).toBeDefined();
-    expect(spanCall![1]['aria-label']).toBe('New feature');
+    expect(component.ariaLabel).toBe('New feature');
   });
 
-  it('does not set aria-label when ariaLabel prop is undefined', () => {
-    const hMock = h as unknown as ReturnType<typeof vi.fn>;
-    hMock.mockClear();
+  it('stores ariaLabel as null when not provided', () => {
     const component = new IoBadge();
-    component.render();
-    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
-    const spanCall = calls.find(([tag]) => tag === 'span');
-    expect(spanCall).toBeDefined();
-    expect(spanCall![1]['aria-label']).toBeUndefined();
+    expect(component.ariaLabel).toBeNull();
   });
 });

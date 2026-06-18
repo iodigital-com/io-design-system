@@ -50,6 +50,7 @@ export type IoTagNames =
   | 'io-tabs'
   | 'io-tabs-bar'
   | 'io-tag'
+  | 'io-tag-dismissible'
   | 'io-text'
   | 'io-textarea'
   | 'io-toast'

@@ -2284,6 +2284,28 @@ export namespace Components {
         "size": IoTagSize;
     }
     /**
+     * io-tag-dismissible
+     * ===================
+     * Display chip with a built-in dismiss button.
+     * Use when a selected value can be removed — e.g. applied filters, multi-select chips.
+     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     */
+    interface IoTagDismissible {
+        /**
+          * Optional leading icon name (from the io icon set)
+         */
+        "icon"?: string;
+        /**
+          * Visible label text — also used as the accessible name for the dismiss button.
+         */
+        "label": string;
+        /**
+          * Colour variant of the chip
+          * @default 'neutral'
+         */
+        "variant": IoTagColor;
+    }
+    /**
      * io-text
      * =======
      * Light DOM typography primitive for body text.
@@ -2688,6 +2710,10 @@ export interface IoTabsBarCustomEvent<T> extends CustomEvent<T> {
 export interface IoTagCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoTagElement;
+}
+export interface IoTagDismissibleCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoTagDismissibleElement;
 }
 export interface IoTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3831,6 +3857,29 @@ declare global {
         prototype: HTMLIoTagElement;
         new (): HTMLIoTagElement;
     };
+    interface HTMLIoTagDismissibleElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-tag-dismissible
+     * ===================
+     * Display chip with a built-in dismiss button.
+     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     */
+    interface HTMLIoTagDismissibleElement extends Components.IoTagDismissible, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoTagDismissibleElement: {
+        prototype: HTMLIoTagDismissibleElement;
+        new (): HTMLIoTagDismissibleElement;
+    };
     /**
      * io-text
      * =======
@@ -4004,6 +4053,7 @@ declare global {
         "io-tabs": HTMLIoTabsElement;
         "io-tabs-bar": HTMLIoTabsBarElement;
         "io-tag": HTMLIoTagElement;
+        "io-tag-dismissible": HTMLIoTagDismissibleElement;
         "io-text": HTMLIoTextElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
@@ -6262,6 +6312,31 @@ declare namespace LocalJSX {
         "size"?: IoTagSize;
     }
     /**
+     * io-tag-dismissible
+     * ===================
+     * Display chip with a built-in dismiss button.
+     * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+     */
+    interface IoTagDismissible {
+        /**
+          * Optional leading icon name (from the io icon set)
+         */
+        "icon"?: string;
+        /**
+          * Visible label text — also used as the accessible name for the dismiss button.
+         */
+        "label"?: string;
+        /**
+          * Fires when the dismiss button is clicked or Delete/Backspace is pressed.
+         */
+        "onDismiss"?: (event: IoTagDismissibleCustomEvent<void>) => void;
+        /**
+          * Colour variant of the chip
+          * @default 'neutral'
+         */
+        "variant"?: IoTagColor;
+    }
+    /**
      * io-text
      * =======
      * Light DOM typography primitive for body text.
@@ -7055,6 +7130,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
+        "io-tag-dismissible": IoTagDismissible;
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
@@ -7665,6 +7741,13 @@ declare module "@stencil/core" {
              * <io-tag removable>React</io-tag>
              */
             "io-tag": LocalJSX.IntrinsicElements["io-tag"] & JSXBase.HTMLAttributes<HTMLIoTagElement>;
+            /**
+             * io-tag-dismissible
+             * ===================
+             * Display chip with a built-in dismiss button.
+             * @example <io-tag-dismissible label="React">React</io-tag-dismissible>
+             */
+            "io-tag-dismissible": LocalJSX.IntrinsicElements["io-tag-dismissible"] & JSXBase.HTMLAttributes<HTMLIoTagDismissibleElement>;
             /**
              * io-text
              * =======

@@ -179,27 +179,25 @@ describe('io-modal — WCAG 4.1.2 accessible name warning', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('does not log console.error when aria-label attribute is present', () => {
+  it('does not log console.error when aria-label prop is provided', () => {
     const component = new IoModal();
-    const el = document.createElement('io-modal');
-    el.setAttribute('aria-label', 'My modal dialog');
-    (component as any).el = el;
+    (component as any).el = document.createElement('io-modal');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { 'aria-label': 'My modal dialog' };
     (component as any).componentWillLoad();
 
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('does not log console.error when aria-labelledby attribute is present', () => {
+  it('does not log console.error when aria-labelledby prop is provided', () => {
     const component = new IoModal();
-    const el = document.createElement('io-modal');
-    el.setAttribute('aria-labelledby', 'external-heading-id');
-    (component as any).el = el;
+    (component as any).el = document.createElement('io-modal');
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.aria = { 'aria-labelledby': 'external-heading-id' };
     (component as any).componentWillLoad();
 
     expect(errorSpy).not.toHaveBeenCalled();

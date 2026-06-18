@@ -170,11 +170,8 @@ export class IoModal {
       c => c.getAttribute('slot') === 'footer',
     );
 
-    if (
-      !this.heading &&
-      !this.el.getAttribute('aria-label') &&
-      !this.el.getAttribute('aria-labelledby')
-    ) {
+    const hasLabel = this.aria?.['aria-label'] || this.aria?.['aria-labelledby'];
+    if (!this.heading && !hasLabel) {
       console.error(
         '[io-modal] No accessible name provided. Set heading, aria-label, or aria-labelledby prop for WCAG 4.1.2 compliance.',
       );

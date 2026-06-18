@@ -105,6 +105,7 @@ describe('io-modal — keyboard / cancel event', () => {
       const ev = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
       handler(ev);
       expect(component.open).toBe(true);
+      (component as any).detachEscHandler();
     }
   });
 });

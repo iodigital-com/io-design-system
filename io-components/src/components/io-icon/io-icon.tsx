@@ -91,7 +91,8 @@ export class IoIcon {
   }
 
   private get hostStyle(): { '--io-icon-color': string } | undefined {
-    const token = COLOR_TOKEN_MAP[this.color];
+    if (this.color === 'inherit') return undefined;
+    const token = COLOR_TOKEN_MAP[this.color as Exclude<IoIconColor, 'inherit'>];
     return token ? { '--io-icon-color': token } : undefined;
   }
 

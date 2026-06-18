@@ -39,6 +39,7 @@ export type IoTagNames =
   | 'io-segment'
   | 'io-segmented-control'
   | 'io-select'
+  | 'io-sheet'
   | 'io-spinner'
   | 'io-step'
   | 'io-stepper'

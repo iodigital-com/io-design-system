@@ -240,7 +240,7 @@ export class IoMultiSelect {
     if (state === null) {
       this.value = [];
     } else if (typeof state === 'string') {
-      this.value = state ? [state] : [];
+      this.value = state ? state.split(',').filter(Boolean) : [];
     } else if (state instanceof FormData) {
       this.value = (state.getAll(this.name ?? '') as string[]).filter(v => typeof v === 'string');
     }

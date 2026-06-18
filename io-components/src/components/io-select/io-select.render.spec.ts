@@ -128,6 +128,7 @@ function makeSelect(overrides: Partial<{ custom: boolean; multiple: boolean; fil
   (c as any).change = { emit: vi.fn() };
   (c as any).focus = { emit: vi.fn() };
   (c as any).blur = { emit: vi.fn() };
+  (c as any).toggle = { emit: vi.fn() };
   (c as any).triggerEl = {
     focus: vi.fn(),
     getBoundingClientRect: () => ({ width: 200 }),

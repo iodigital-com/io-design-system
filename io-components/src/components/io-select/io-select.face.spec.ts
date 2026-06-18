@@ -173,6 +173,31 @@ describe('io-select — FACE', () => {
     expect(component.form).toBe('my-form');
   });
 
+  describe('formStateRestoreCallback', () => {
+    it('restores value and calls syncFormValue', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = '';
+      (component as any).formStateRestoreCallback('nl', 'restore');
+      expect(component.value).toBe('nl');
+      expect(internals.setFormValue).toHaveBeenLastCalledWith('nl');
+    });
+
+    it('works for autocomplete mode', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.value = '';
+      (component as any).formStateRestoreCallback('be', 'autocomplete');
+      expect(component.value).toBe('be');
+      expect(internals.setFormValue).toHaveBeenLastCalledWith('be');
+    });
+
+    it('does not throw when internals is unavailable', () => {
+      (component as any).internals = undefined;
+      expect(() => (component as any).formStateRestoreCallback('nl', 'restore')).not.toThrow();
+    });
+  });
+
   describe('formResetCallback', () => {
     it('resets single-mode value to the default value captured in componentWillLoad()', () => {
       const internals = makeInternals();

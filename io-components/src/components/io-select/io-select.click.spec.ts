@@ -7,6 +7,7 @@ describe('io-select — event behavior', () => {
   let changeMock: ReturnType<typeof vi.fn>;
   let focusMock: ReturnType<typeof vi.fn>;
   let blurMock: ReturnType<typeof vi.fn>;
+  let toggleMock: ReturnType<typeof vi.fn>;
 
   function makeChangeEvent(value: string): Event {
     const select = document.createElement('select');
@@ -26,9 +27,11 @@ describe('io-select — event behavior', () => {
     changeMock = vi.fn();
     focusMock = vi.fn();
     blurMock = vi.fn();
+    toggleMock = vi.fn();
     (component as any).change = { emit: changeMock };
     (component as any).focus = { emit: focusMock };
     (component as any).blur = { emit: blurMock };
+    (component as any).toggle = { emit: toggleMock };
     (component as any).flatOptions = [
       { label: 'Option A', value: 'a' },
       { label: 'Option B', value: 'b' },
@@ -90,5 +93,19 @@ describe('io-select — event behavior', () => {
     const ev = new FocusEvent('blur');
     (component as any).handleBlur(ev);
     expect(blurMock).not.toHaveBeenCalled();
+  });
+
+  describe('toggle event', () => {
+    it('emits toggle with { open: true } when isOpen changes to true', () => {
+      (component as any).onIsOpenChange(true);
+      expect(toggleMock).toHaveBeenCalledOnce();
+      expect(toggleMock).toHaveBeenCalledWith({ open: true });
+    });
+
+    it('emits toggle with { open: false } when isOpen changes to false', () => {
+      (component as any).onIsOpenChange(false);
+      expect(toggleMock).toHaveBeenCalledOnce();
+      expect(toggleMock).toHaveBeenCalledWith({ open: false });
+    });
   });
 });

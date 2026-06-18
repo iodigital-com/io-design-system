@@ -30,6 +30,7 @@ function makeSelect() {
   (c as any).change = { emit: vi.fn() };
   (c as any).focus = { emit: vi.fn() };
   (c as any).blur = { emit: vi.fn() };
+  (c as any).toggle = { emit: vi.fn() };
   (c as any).internals = makeInternals();
   (c as any).label = 'Country';
   (c as any).flatOptions = OPTIONS;

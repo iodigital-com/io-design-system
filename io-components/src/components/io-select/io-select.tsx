@@ -14,7 +14,7 @@ import {
 import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeDetail } from './types';
+import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeDetail, IoSelectToggleDetail } from './types';
 
 /**
  * io-select
@@ -149,6 +149,9 @@ export class IoSelect {
   /** Fires when the select loses focus */
   @Event({ bubbles: false, composed: false }) blur!: EventEmitter<FocusEvent>;
 
+  /** Fires when the custom-mode dropdown opens or closes. Not emitted in native mode. */
+  @Event({ bubbles: false }) toggle!: EventEmitter<IoSelectToggleDetail>;
+
   // ── Methods ───────────────────────────────────────────────────
 
   /** Check validity without showing browser validation UI. Returns true if valid. */
@@ -223,6 +226,11 @@ export class IoSelect {
     this.touched = false;
     this.syncFormValue();
     this.faceInvalid = false;
+  }
+
+  formStateRestoreCallback(state: string, _mode: 'restore' | 'autocomplete'): void {
+    this.value = state;
+    this.syncFormValue();
   }
 
   formDisabledCallback(disabled: boolean) {
@@ -308,6 +316,7 @@ export class IoSelect {
 
   @Watch('isOpen')
   onIsOpenChange(newVal: boolean) {
+    this.toggle.emit({ open: newVal });
     if (newVal) {
       this.attachClickOutside();
       void this.positionDropdown();

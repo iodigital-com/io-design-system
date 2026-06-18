@@ -18,3 +18,6 @@ export type IoSelectSize = 'sm' | 'md' | 'lg';
 
 /** Payload emitted by the io-select change event */
 export type IoSelectChangeDetail = { value: string | string[]; name?: string };
+
+/** Payload emitted by the io-select toggle event when the dropdown opens or closes */
+export type IoSelectToggleDetail = { open: boolean };

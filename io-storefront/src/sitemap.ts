@@ -160,6 +160,14 @@ export const sitemap: NavSection[] = [
         related: ['io-drawer', 'io-popover', 'io-modal'],
       },
       {
+        label: 'Sheet',
+        href: '/components/io-sheet/configurator',
+        status: 'beta',
+        slug: 'io-sheet',
+        description: 'Bottom sheet overlay that slides up from the bottom of the viewport. Focus trap, backdrop dismiss, and Escape key. Use for contextual actions and secondary content.',
+        related: ['io-drawer', 'io-flyout', 'io-modal'],
+      },
+      {
         label: 'Checkbox',
         href: '/components/io-checkbox/configurator',
         status: 'beta',

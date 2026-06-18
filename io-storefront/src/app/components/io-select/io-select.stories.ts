@@ -228,4 +228,10 @@ export const selectPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Supplementary description shown below the field for additional context.',
+  },
 ];

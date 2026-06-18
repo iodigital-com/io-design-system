@@ -12,7 +12,7 @@ import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./compone
 import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoIconName } from "./utils/icons";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
-import { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -56,7 +56,7 @@ export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./compone
 export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoIconName } from "./utils/icons";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
-export { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
@@ -544,6 +544,19 @@ export namespace Components {
          */
         "activeSlideIndex": number;
         /**
+          * Alignment of the heading and description header area.
+          * @default 'left'
+         */
+        "alignHeader": IoCarouselAlignHeader;
+        /**
+          * Optional description text rendered below the heading and above the slide track.
+         */
+        "description"?: string;
+        /**
+          * Optional heading text rendered above the slide track.
+         */
+        "heading"?: string;
+        /**
           * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
          */
@@ -553,6 +566,11 @@ export namespace Components {
           * @default 'Next'
          */
         "nextLabel": string;
+        /**
+          * When true, renders dot indicators below the slides, each synced to activeSlideIndex.
+          * @default false
+         */
+        "pagination": boolean;
         /**
           * Accessible label for the previous button
           * @default 'Previous'
@@ -1819,6 +1837,11 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner overlay and blocks interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Name propagated to all slotted io-radio children
          */
         "name": string;
@@ -2051,6 +2074,40 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    /**
+     * io-sheet
+     * ========
+     * Bottom sheet overlay that slides up from the bottom of the viewport.
+     * Use for contextual actions, confirmations, and secondary content that
+     * needs more prominence than a popover but less than a full-screen modal.
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-sheet heading="Share" open>
+     *   <p>Choose a sharing option.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     * </io-sheet>
+     * <script>
+     *   const sheet = document.querySelector('io-sheet');
+     *   document.getElementById('open-btn').addEventListener('click', () => { sheet.open = true; });
+     *   sheet.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoSheet {
+        /**
+          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
+          * @default true
+         */
+        "dismissible": boolean;
+        /**
+          * Heading text displayed in the sheet header
+         */
+        "heading"?: string;
+        /**
+          * Controls sheet visibility
+          * @default false
+         */
+        "open": boolean;
     }
     /**
      * io-spinner
@@ -2952,6 +3009,10 @@ export interface IoSegmentedControlCustomEvent<T> extends CustomEvent<T> {
 export interface IoSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoSelectElement;
+}
+export interface IoSheetCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoSheetElement;
 }
 export interface IoStepCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3913,6 +3974,41 @@ declare global {
         prototype: HTMLIoSelectElement;
         new (): HTMLIoSelectElement;
     };
+    interface HTMLIoSheetElementEventMap {
+        "dismiss": void;
+    }
+    /**
+     * io-sheet
+     * ========
+     * Bottom sheet overlay that slides up from the bottom of the viewport.
+     * Use for contextual actions, confirmations, and secondary content that
+     * needs more prominence than a popover but less than a full-screen modal.
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-sheet heading="Share" open>
+     *   <p>Choose a sharing option.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     * </io-sheet>
+     * <script>
+     *   const sheet = document.querySelector('io-sheet');
+     *   document.getElementById('open-btn').addEventListener('click', () => { sheet.open = true; });
+     *   sheet.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface HTMLIoSheetElement extends Components.IoSheet, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoSheetElementEventMap>(type: K, listener: (this: HTMLIoSheetElement, ev: IoSheetCustomEvent<HTMLIoSheetElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoSheetElementEventMap>(type: K, listener: (this: HTMLIoSheetElement, ev: IoSheetCustomEvent<HTMLIoSheetElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoSheetElement: {
+        prototype: HTMLIoSheetElement;
+        new (): HTMLIoSheetElement;
+    };
     /**
      * io-spinner
      * ==========
@@ -4479,6 +4575,7 @@ declare global {
         "io-segment": HTMLIoSegmentElement;
         "io-segmented-control": HTMLIoSegmentedControlElement;
         "io-select": HTMLIoSelectElement;
+        "io-sheet": HTMLIoSheetElement;
         "io-spinner": HTMLIoSpinnerElement;
         "io-step": HTMLIoStepElement;
         "io-stepper": HTMLIoStepperElement;
@@ -4967,6 +5064,19 @@ declare namespace LocalJSX {
          */
         "activeSlideIndex"?: number;
         /**
+          * Alignment of the heading and description header area.
+          * @default 'left'
+         */
+        "alignHeader"?: IoCarouselAlignHeader;
+        /**
+          * Optional description text rendered below the heading and above the slide track.
+         */
+        "description"?: string;
+        /**
+          * Optional heading text rendered above the slide track.
+         */
+        "heading"?: string;
+        /**
           * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
          */
@@ -4980,6 +5090,11 @@ declare namespace LocalJSX {
           * Emitted when the active slide index changes.
          */
         "onUpdate"?: (event: IoCarouselCustomEvent<IoCarouselUpdateDetail>) => void;
+        /**
+          * When true, renders dot indicators below the slides, each synced to activeSlideIndex.
+          * @default false
+         */
+        "pagination"?: boolean;
         /**
           * Accessible label for the previous button
           * @default 'Previous'
@@ -6259,6 +6374,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner overlay and blocks interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Name propagated to all slotted io-radio children
          */
         "name": string;
@@ -6507,6 +6627,44 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    /**
+     * io-sheet
+     * ========
+     * Bottom sheet overlay that slides up from the bottom of the viewport.
+     * Use for contextual actions, confirmations, and secondary content that
+     * needs more prominence than a popover but less than a full-screen modal.
+     * Focus trap uses document.activeElement — works for both Shadow DOM and
+     * slotted light-DOM children.
+     * @example <io-sheet heading="Share" open>
+     *   <p>Choose a sharing option.</p>
+     *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+     * </io-sheet>
+     * <script>
+     *   const sheet = document.querySelector('io-sheet');
+     *   document.getElementById('open-btn').addEventListener('click', () => { sheet.open = true; });
+     *   sheet.addEventListener('dismiss', () => console.log('dismissed'));
+     * </script>
+     */
+    interface IoSheet {
+        /**
+          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
+          * @default true
+         */
+        "dismissible"?: boolean;
+        /**
+          * Heading text displayed in the sheet header
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the sheet is dismissed (close button, backdrop click, or Escape key)
+         */
+        "onDismiss"?: (event: IoSheetCustomEvent<void>) => void;
+        /**
+          * Controls sheet visibility
+          * @default false
+         */
+        "open"?: boolean;
     }
     /**
      * io-spinner
@@ -7457,6 +7615,10 @@ declare namespace LocalJSX {
         "slidesPerPage": string;
         "rewind": boolean;
         "activeSlideIndex": number;
+        "heading": string;
+        "description": string;
+        "pagination": boolean;
+        "alignHeader": IoCarouselAlignHeader;
     }
     interface IoCheckboxAttributes {
         "label": string;
@@ -7676,6 +7838,7 @@ declare namespace LocalJSX {
         "value": string;
         "required": boolean;
         "disabled": boolean;
+        "loading": boolean;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
@@ -7715,6 +7878,11 @@ declare namespace LocalJSX {
         "loading": boolean;
         "form": string;
         "hideLabel": boolean;
+    }
+    interface IoSheetAttributes {
+        "open": boolean;
+        "heading": string;
+        "dismissible": boolean;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;
@@ -7890,6 +8058,7 @@ declare namespace LocalJSX {
         "io-segment": Omit<IoSegment, keyof IoSegmentAttributes> & { [K in keyof IoSegment & keyof IoSegmentAttributes]?: IoSegment[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `attr:${K}`]?: IoSegmentAttributes[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `prop:${K}`]?: IoSegment[K] } & OneOf<"value", IoSegment["value"], IoSegmentAttributes["value"]> & OneOf<"label", IoSegment["label"], IoSegmentAttributes["label"]>;
         "io-segmented-control": Omit<IoSegmentedControl, keyof IoSegmentedControlAttributes> & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes]?: IoSegmentedControl[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `attr:${K}`]?: IoSegmentedControlAttributes[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `prop:${K}`]?: IoSegmentedControl[K] };
         "io-select": Omit<IoSelect, keyof IoSelectAttributes> & { [K in keyof IoSelect & keyof IoSelectAttributes]?: IoSelect[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `attr:${K}`]?: IoSelectAttributes[K] } & { [K in keyof IoSelect & keyof IoSelectAttributes as `prop:${K}`]?: IoSelect[K] } & OneOf<"label", IoSelect["label"], IoSelectAttributes["label"]>;
+        "io-sheet": Omit<IoSheet, keyof IoSheetAttributes> & { [K in keyof IoSheet & keyof IoSheetAttributes]?: IoSheet[K] } & { [K in keyof IoSheet & keyof IoSheetAttributes as `attr:${K}`]?: IoSheetAttributes[K] } & { [K in keyof IoSheet & keyof IoSheetAttributes as `prop:${K}`]?: IoSheet[K] };
         "io-spinner": Omit<IoSpinner, keyof IoSpinnerAttributes> & { [K in keyof IoSpinner & keyof IoSpinnerAttributes]?: IoSpinner[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `attr:${K}`]?: IoSpinnerAttributes[K] } & { [K in keyof IoSpinner & keyof IoSpinnerAttributes as `prop:${K}`]?: IoSpinner[K] };
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
         "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
@@ -8386,6 +8555,25 @@ declare module "@stencil/core" {
              * The single-select native and custom modes are NOT deprecated.
              */
             "io-select": LocalJSX.IntrinsicElements["io-select"] & JSXBase.HTMLAttributes<HTMLIoSelectElement>;
+            /**
+             * io-sheet
+             * ========
+             * Bottom sheet overlay that slides up from the bottom of the viewport.
+             * Use for contextual actions, confirmations, and secondary content that
+             * needs more prominence than a popover but less than a full-screen modal.
+             * Focus trap uses document.activeElement — works for both Shadow DOM and
+             * slotted light-DOM children.
+             * @example <io-sheet heading="Share" open>
+             *   <p>Choose a sharing option.</p>
+             *   <io-button slot="footer" variant="ghost">Cancel</io-button>
+             * </io-sheet>
+             * <script>
+             *   const sheet = document.querySelector('io-sheet');
+             *   document.getElementById('open-btn').addEventListener('click', () => { sheet.open = true; });
+             *   sheet.addEventListener('dismiss', () => console.log('dismissed'));
+             * </script>
+             */
+            "io-sheet": LocalJSX.IntrinsicElements["io-sheet"] & JSXBase.HTMLAttributes<HTMLIoSheetElement>;
             /**
              * io-spinner
              * ==========

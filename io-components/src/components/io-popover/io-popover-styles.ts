@@ -59,6 +59,14 @@ export function getPopoverStyles(): string {
       margin-bottom: var(--io-space-2);
     }
 
+    /* ── Description ─────────────────────────────────────────── */
+
+    .popover__description {
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin: var(--io-space-1) 0 0;
+    }
+
     /* ── Reduced motion ──────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

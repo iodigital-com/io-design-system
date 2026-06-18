@@ -191,6 +191,12 @@ export function getTextareaStyles(): string {
       display: none;
     }
 
+    .textarea-description {
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin: var(--io-space-1) 0 0;
+    }
+
     .textarea-label__slot--hidden,
     .textarea-message__slot--hidden,
     .textarea-description__slot--hidden {

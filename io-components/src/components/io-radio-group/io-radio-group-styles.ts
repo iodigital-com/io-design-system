@@ -97,5 +97,13 @@ export function getRadioGroupStyles(): string {
       line-height: var(--io-line-height-normal);
       margin-top: var(--io-space-1, 4px);
     }
+
+    /* ── Description ────────────────────────────────────────── */
+
+    .radio-group__description {
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      margin: var(--io-space-1) 0 0;
+    }
   `;
 }

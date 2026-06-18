@@ -44,7 +44,6 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
         ['Overview', 'Details', 'Settings'],
       ),
       properties: {
-        activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ...(properties?.compact ? { compact: true } : {}),
       },
       events: {
@@ -101,5 +100,6 @@ export const tabsBarPropDefinitions: PropDefinition[] = [
     name: 'compact',
     type: 'boolean',
     defaultValue: false,
+    description: 'Renders the tabs bar in compact mode with smaller tab dimensions.',
   },
 ];

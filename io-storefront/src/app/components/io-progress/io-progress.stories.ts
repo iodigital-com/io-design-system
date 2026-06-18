@@ -86,6 +86,13 @@ export const progressStoryError: Story<'io-progress'> = {
   ],
 };
 
+export const progressStoryIndeterminate: Story<'io-progress'> = {
+  state: { properties: { indeterminate: true, color: 'blue', size: 'md' } },
+  generator: () => [
+    { tag: 'io-progress' as const, properties: { indeterminate: true, color: 'blue', size: 'md' } },
+  ],
+};
+
 export const progressPropDefinitions: PropDefinition[] = [
   {
     name: 'value',
@@ -124,5 +131,35 @@ export const progressPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Accessible aria-label for screen readers.',
+  },
+  {
+    name: 'labelledBy',
+    type: 'string',
+    defaultValue: '',
+    description: 'ID of an external heading element that labels this progress bar. Sets aria-labelledby.',
+  },
+  {
+    name: 'valueText',
+    type: 'string',
+    defaultValue: '',
+    description: 'Human-readable text alternative to the numeric aria-valuenow (e.g. "Step 2 of 5"). Sets aria-valuetext.',
+  },
+  {
+    name: 'indeterminate',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Switches to indeterminate (infinite shimmer) mode. Omits aria-valuenow when true.',
+  },
+  {
+    name: 'min',
+    type: 'number',
+    defaultValue: 0,
+    description: 'Minimum value. Maps to aria-valuemin.',
+  },
+  {
+    name: 'max',
+    type: 'number',
+    defaultValue: 100,
+    description: 'Maximum value. Maps to aria-valuemax.',
   },
 ];

@@ -72,6 +72,36 @@ export default function IoProgressApiPage() {
               <InlineCode key="d">undefined</InlineCode>,
               'Accessible name set as aria-label on the host element. Announced by screen readers. Always provide a contextual value — e.g. "Upload progress" or "Step 2 of 4".',
             ],
+            [
+              <InlineCode key="n">labelledBy</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'ID of an element that labels this progress bar. Sets aria-labelledby.',
+            ],
+            [
+              <InlineCode key="n">valueText</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Human-readable progress description for screen readers (e.g. "Step 2 of 5"). Sets aria-valuetext.',
+            ],
+            [
+              <InlineCode key="n">indeterminate</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows an infinite shimmer animation. Omits aria-valuenow so assistive technology announces an unknown progress state.',
+            ],
+            [
+              <InlineCode key="n">min</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">0</InlineCode>,
+              'Minimum value. Sets aria-valuemin.',
+            ],
+            [
+              <InlineCode key="n">max</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
+              <InlineCode key="d">100</InlineCode>,
+              'Maximum value. Sets aria-valuemax.',
+            ],
           ]}
         />
       </section>
@@ -113,8 +143,13 @@ export default function IoProgressApiPage() {
           <InlineCode>color</InlineCode>,{' '}
           <InlineCode>size</InlineCode>,{' '}
           <InlineCode>animated</InlineCode>,{' '}
-          <InlineCode>showLabel</InlineCode>, and{' '}
-          <InlineCode>label</InlineCode>.
+          <InlineCode>showLabel</InlineCode>,{' '}
+          <InlineCode>label</InlineCode>,{' '}
+          <InlineCode>labelledBy</InlineCode>,{' '}
+          <InlineCode>valueText</InlineCode>,{' '}
+          <InlineCode>indeterminate</InlineCode>,{' '}
+          <InlineCode>min</InlineCode>, and{' '}
+          <InlineCode>max</InlineCode>.
         </EmptyNote>
       </section>
 

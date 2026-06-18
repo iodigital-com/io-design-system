@@ -137,6 +137,7 @@ export class IoRadioGroup {
         <fieldset
           class={fieldsetClass}
           disabled={disabled}
+          role="radiogroup"
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={describedBy}
           aria-orientation={orientation}

@@ -72,7 +72,7 @@ export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType }
 export { IoPopoverPlacement } from "./components/io-popover/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
-export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";

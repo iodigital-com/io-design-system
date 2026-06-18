@@ -2510,7 +2510,7 @@ export namespace Components {
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
-     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark variant="lockup" color="black" size="md" href="/" />
      */
     interface IoWordmark {
         /**
@@ -2524,10 +2524,19 @@ export namespace Components {
          */
         "color": IoWordmarkColor;
         /**
+          * Optional URL to wrap the wordmark in an anchor element. When set, the wordmark becomes a navigable link.
+         */
+        "href": string | undefined;
+        /**
           * Size scale — controls SVG height for mark and lockup variants
           * @default 'md'
          */
         "size": IoWordmarkSize;
+        /**
+          * Target attribute for the anchor element (when href is set). Defaults to '_self'.
+          * @default '_self'
+         */
+        "target": '_self' | '_blank' | '_parent' | '_top';
         /**
           * Which visual representation to render. - 'mark'   → geometric iO mark SVG (default) - 'lockup' → full official brand lockup SVG (mark + text)
           * @default 'mark'
@@ -3901,7 +3910,7 @@ declare global {
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
-     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark variant="lockup" color="black" size="md" href="/" />
      */
     interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
     }
@@ -6439,7 +6448,7 @@ declare namespace LocalJSX {
      *                       Supports size scale and blue/black/white color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
-     * <io-wordmark variant="lockup" color="black" size="md" />
+     * <io-wordmark variant="lockup" color="black" size="md" href="/" />
      */
     interface IoWordmark {
         /**
@@ -6453,10 +6462,19 @@ declare namespace LocalJSX {
          */
         "color"?: IoWordmarkColor;
         /**
+          * Optional URL to wrap the wordmark in an anchor element. When set, the wordmark becomes a navigable link.
+         */
+        "href"?: string | undefined;
+        /**
           * Size scale — controls SVG height for mark and lockup variants
           * @default 'md'
          */
         "size"?: IoWordmarkSize;
+        /**
+          * Target attribute for the anchor element (when href is set). Defaults to '_self'.
+          * @default '_self'
+         */
+        "target"?: '_self' | '_blank' | '_parent' | '_top';
         /**
           * Which visual representation to render. - 'mark'   → geometric iO mark SVG (default) - 'lockup' → full official brand lockup SVG (mark + text)
           * @default 'mark'
@@ -6895,6 +6913,8 @@ declare namespace LocalJSX {
         "color": IoWordmarkColor;
         "size": IoWordmarkSize;
         "ariaLabel": string;
+        "href": string | undefined;
+        "target": '_self' | '_blank' | '_parent' | '_top';
     }
 
     interface IntrinsicElements {
@@ -7620,7 +7640,7 @@ declare module "@stencil/core" {
              *                       Supports size scale and blue/black/white color values.
              * @example <io-wordmark />
              * <io-wordmark variant="mark" color="blue" size="lg" />
-             * <io-wordmark variant="lockup" color="black" size="md" />
+             * <io-wordmark variant="lockup" color="black" size="md" href="/" />
              */
             "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }

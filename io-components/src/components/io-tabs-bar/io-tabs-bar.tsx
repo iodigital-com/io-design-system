@@ -82,7 +82,7 @@ export class IoTabsBar {
   private slotEl: HTMLSlotElement | null = null;
   private buttons: TabItem[] = [];
   private clickHandlers: Map<TabItem, () => void> = new Map();
-  private keyHandlers: Map<TabItem, (ev: KeyboardEvent) => void> = new Map();
+  private keyHandlers: Map<TabItem, EventListener> = new Map();
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -136,7 +136,7 @@ export class IoTabsBar {
       btn.addEventListener('click', clickHandler);
       btn.addEventListener('keydown', keyHandler);
       this.clickHandlers.set(btn, clickHandler);
-      this.keyHandlers.set(btn, keyHandler);
+      this.keyHandlers.set(btn, keyHandler as EventListener);
     });
   }
 

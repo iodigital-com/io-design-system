@@ -1,4 +1,4 @@
-import { Component, Prop, Host, h } from '@stencil/core';
+import { Component, Prop, Host, State, h } from '@stencil/core';
 
 import { getDividerStyles } from './io-divider-styles';
 
@@ -19,6 +19,7 @@ import type { IoDividerColor, IoDividerOrientation } from './types';
  * <io-divider label="or" />
  * <io-divider color="subtle" />
  * <io-divider color="strong" />
+ * <io-divider>Custom separator content</io-divider>
  */
 @Component({
   tag: 'io-divider',
@@ -48,13 +49,29 @@ export class IoDivider {
    * Optional label centered within the divider line.
    * Common use case: "or", "and", date headings.
    * When set, the component uses a flex row layout regardless of orientation.
+   * Alternatively, use the default slot for rich content (overrides label prop text).
    */
   @Prop() label: string | undefined;
+
+  // ── State ────────────────────────────────────────────────────
+
+  /**
+   * Tracks whether the default slot has content.
+   * When true, the slot replaces the label prop text while keeping aria-label.
+   */
+  @State() private hasSlotContent = false;
+
+  // ── Methods ──────────────────────────────────────────────────
+
+  private handleSlotchange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasSlotContent = slot.assignedNodes().length > 0;
+  };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { orientation, label } = this;
+    const { orientation, label, hasSlotContent } = this;
     const isVertical = orientation === 'vertical';
 
     if (label) {
@@ -68,9 +85,14 @@ export class IoDivider {
             class="divider divider--labeled"
             role="separator"
             aria-orientation="horizontal"
+            aria-label={label || undefined}
           >
             <span class="divider__line" aria-hidden="true" />
-            <span class="divider__label">{label}</span>
+            <span class="divider__label">
+              <slot onSlotchange={this.handleSlotchange}>
+                {!hasSlotContent && label}
+              </slot>
+            </span>
             <span class="divider__line" aria-hidden="true" />
           </div>
         </Host>

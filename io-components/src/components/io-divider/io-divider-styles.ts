@@ -81,5 +81,21 @@ export function getDividerStyles(): string {
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    /* ── Windows High Contrast Mode (forced-colors) ──────────── */
+
+    @media (forced-colors: active) {
+      .divider {
+        border-top-color: ButtonText;
+      }
+
+      .divider--vertical {
+        border-left-color: ButtonText;
+      }
+
+      .divider__line {
+        background: ButtonText;
+      }
+    }
   `;
 }

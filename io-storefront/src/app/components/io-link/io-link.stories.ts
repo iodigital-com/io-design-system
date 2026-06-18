@@ -1,5 +1,6 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
+import { IO_ICON_NAMES } from '@/app/components/io-icon/icon-names';
 
 export const linkStory: Story<'io-link'> = {
   state: {
@@ -9,22 +10,33 @@ export const linkStory: Story<'io-link'> = {
       href: '#',
       external: false,
       disabled: false,
+      icon: 'none',
+      iconSource: undefined,
+      hideLabel: false,
       label: 'Learn more',
     },
   },
-  generator: ({ properties } = {}) => [
-    {
-      tag: 'io-link' as const,
-      properties: {
-        variant: (properties?.variant as string) ?? 'standalone',
-        color: (properties?.color as string) ?? 'blue',
-        href: (properties?.href as string) ?? '#',
-        external: (properties?.external as boolean) ?? false,
-        disabled: (properties?.disabled as boolean) ?? false,
+  generator: ({ properties } = {}) => {
+    const { label = 'Learn more', ...attrs } = (properties ?? {}) as Record<string, unknown> & { label?: string };
+    if (attrs['icon'] === 'none') attrs['icon'] = null;
+    const content = (label as string);
+    return [
+      {
+        tag: 'io-link' as const,
+        properties: {
+          variant: (attrs['variant'] as string) ?? 'standalone',
+          color: (attrs['color'] as string) ?? 'blue',
+          href: (attrs['href'] as string) ?? '#',
+          external: (attrs['external'] as boolean) ?? false,
+          disabled: (attrs['disabled'] as boolean) ?? false,
+          ...(attrs['icon'] != null ? { icon: attrs['icon'] } : {}),
+          ...(attrs['iconSource'] ? { iconSource: attrs['iconSource'] } : {}),
+          ...(attrs['hideLabel'] ? { hideLabel: true } : {}),
+        },
+        children: [content],
       },
-      children: [(properties?.label as string) ?? 'Learn more'],
-    },
-  ],
+    ];
+  },
 };
 
 export const linkStoryStandalone: Story<'io-link'> = {
@@ -76,6 +88,22 @@ export const linkStoryDisabled: Story<'io-link'> = {
   ],
 };
 
+export const iconLinkStory: Story<'io-link'> = {
+  state: { properties: { variant: 'standalone', color: 'blue', href: '#', icon: 'arrow-right', hideLabel: false } },
+  generator: () => [
+    {
+      tag: 'io-link' as const,
+      properties: { variant: 'standalone', color: 'blue', href: '#', icon: 'arrow-right' },
+      children: ['Read the docs'],
+    },
+    {
+      tag: 'io-link' as const,
+      properties: { variant: 'standalone', color: 'blue', href: '#', icon: 'arrow-right', hideLabel: true },
+      children: ['Read the docs'],
+    },
+  ],
+};
+
 export const linkPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
@@ -103,5 +131,24 @@ export const linkPropDefinitions: PropDefinition[] = [
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,
+  },
+  {
+    name: 'icon',
+    type: 'select',
+    options: ['none', ...IO_ICON_NAMES],
+    defaultValue: 'none',
+    description: 'Lucide icon shown before the link text. none hides the icon.',
+  },
+  {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
+    description: 'Raw SVG markup for a custom icon. Takes precedence over the icon prop.',
+  },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Visually hides the link text while keeping it accessible to screen readers. Use with icon for icon-only links.',
   },
 ];

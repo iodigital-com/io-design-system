@@ -35,14 +35,30 @@ export default function IoTooltipApiPage() {
               <span key="t" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                 <InlineCode>&apos;top&apos;</InlineCode>
                 {' | '}
+                <InlineCode>&apos;top-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;top-end&apos;</InlineCode>
+                {' | '}
                 <InlineCode>&apos;bottom&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;bottom-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;bottom-end&apos;</InlineCode>
                 {' | '}
                 <InlineCode>&apos;left&apos;</InlineCode>
                 {' | '}
+                <InlineCode>&apos;left-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;left-end&apos;</InlineCode>
+                {' | '}
                 <InlineCode>&apos;right&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;right-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;right-end&apos;</InlineCode>
               </span>,
               <InlineCode key="d">&apos;top&apos;</InlineCode>,
-              'Preferred placement. @floating-ui/dom flips/shifts automatically when needed.',
+              'Preferred placement. All 12 floating-ui placements are supported. The component auto-flips to an available placement if the preferred one would clip outside the viewport.',
             ],
           ]}
         />
@@ -145,6 +161,32 @@ import { IoButton } from '@iodigital-com/components-vue';
         <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
           This component has no component-level override tokens. All visual properties are governed by global design tokens documented in the <Link href="/styles/tokens" className="underline">Token Explorer</Link>.
         </p>
+      </section>
+
+      {/* ── Accessibility Notes ───────────────────────────────────── */}
+      <section id="accessibility" className="space-y-4">
+        <SectionHeader
+          title="Accessibility Notes"
+          description="WCAG compliance details and keyboard/pointer interaction behaviour."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Criterion', width: '220px' },
+            { label: 'Details' },
+          ]}
+          rows={[
+            [
+              <span key="c">WCAG 1.4.13 Content on Hover</span>,
+              <span key="d">
+                The tooltip overlay is hoverable — moving the pointer from the trigger into the
+                tooltip keeps it visible. A 150 ms hide delay (configurable via{' '}
+                <InlineCode>--io-tooltip-hide-delay</InlineCode>) gives the pointer time to
+                travel from trigger to tooltip without it dismissing. This allows users to copy
+                text or click links inside the tooltip.
+              </span>,
+            ],
+          ]}
+        />
       </section>
 
     </div>

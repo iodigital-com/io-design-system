@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTabs } from './io-tabs';
 
@@ -27,6 +28,26 @@ describe('io-tabs — default props', () => {
   it('has no label by default', () => {
     const component = makeComponent();
     expect(component.label).toBeUndefined();
+  });
+
+  it('has size=small by default', () => {
+    const component = makeComponent();
+    expect(component.size).toBe('small');
+  });
+
+  it('has compact=false by default', () => {
+    const component = makeComponent();
+    expect(component.compact).toBe(false);
+  });
+
+  it('has no labelledby by default', () => {
+    const component = makeComponent();
+    expect(component.labelledby).toBeUndefined();
+  });
+
+  it('has no panelIds by default', () => {
+    const component = makeComponent();
+    expect(component.panelIds).toBeUndefined();
   });
 });
 
@@ -189,4 +210,138 @@ describe('io-tabs — badge aria-label stripping', () => {
   });
 });
 
+describe('io-tabs — panelIds aria-controls', () => {
+  it('sets aria-controls on each button when panelIds provided', () => {
+    const btn1 = makeButton('Overview');
+    const btn2 = makeButton('Details');
+    const component = makeComponent([btn1, btn2]);
+    component.panelIds = ['panel-overview', 'panel-details'];
+    (component as any).syncFromSlot();
+
+    expect(btn1.getAttribute('aria-controls')).toBe('panel-overview');
+    expect(btn2.getAttribute('aria-controls')).toBe('panel-details');
+  });
+
+  it('removes aria-controls when panelIds is not provided', () => {
+    const btn1 = makeButton('Overview');
+    btn1.setAttribute('aria-controls', 'old-panel');
+    const component = makeComponent([btn1]);
+    (component as any).syncFromSlot();
+
+    expect(btn1.hasAttribute('aria-controls')).toBe(false);
+  });
+
+  it('removes aria-controls when panelIds array does not cover all buttons', () => {
+    const btn1 = makeButton('Overview');
+    const btn2 = makeButton('Details');
+    const component = makeComponent([btn1, btn2]);
+    component.panelIds = ['panel-overview'];
+    (component as any).syncFromSlot();
+
+    expect(btn1.getAttribute('aria-controls')).toBe('panel-overview');
+    expect(btn2.hasAttribute('aria-controls')).toBe(false);
+  });
+
+  it('updates aria-controls when panelIds changes and applyAriaToButtons re-runs', () => {
+    const btn1 = makeButton('A');
+    const component = makeComponent([btn1]);
+    component.panelIds = ['panel-a'];
+    (component as any).syncFromSlot();
+
+    expect(btn1.getAttribute('aria-controls')).toBe('panel-a');
+
+    // Simulate update via onActiveTabIndexChange re-applying aria
+    component.panelIds = ['panel-a-updated'];
+    (component as any).applyAriaToButtons((component as any).buttons, component.activeTabIndex);
+
+    expect(btn1.getAttribute('aria-controls')).toBe('panel-a-updated');
+  });
+});
+
+describe('io-tabs — size and compact props', () => {
+  it('accepts size=medium without error', () => {
+    const component = makeComponent();
+    component.size = 'medium';
+    expect(component.size).toBe('medium');
+  });
+
+  it('accepts size=small without error', () => {
+    const component = makeComponent();
+    component.size = 'small';
+    expect(component.size).toBe('small');
+  });
+
+  it('accepts compact=true without error', () => {
+    const component = makeComponent();
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+
+  it('render() tablist includes tabs--size-small class when size=small', () => {
+    const component = makeComponent();
+    component.size = 'small';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    const cls = tablistCall![1].class as Record<string, boolean>;
+    expect(cls['tabs--size-small']).toBe(true);
+  });
+
+  it('render() tablist includes tabs--size-medium class when size=medium', () => {
+    const component = makeComponent();
+    component.size = 'medium';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    const cls = tablistCall![1].class as Record<string, boolean>;
+    expect(cls['tabs--size-medium']).toBe(true);
+  });
+});
+
+describe('io-tabs — labelledby prop', () => {
+  it('accepts a labelledby value', () => {
+    const component = makeComponent();
+    component.labelledby = 'my-heading';
+    expect(component.labelledby).toBe('my-heading');
+  });
+
+  it('render() sets aria-labelledby when labelledby is provided', () => {
+    const component = makeComponent();
+    component.labelledby = 'heading-id';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    expect(tablistCall![1]['aria-labelledby']).toBe('heading-id');
+  });
+
+  it('render() omits aria-label when labelledby is provided', () => {
+    const component = makeComponent();
+    component.labelledby = 'heading-id';
+    component.label = 'fallback label';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    expect(tablistCall![1]['aria-label']).toBeUndefined();
+  });
+});
 

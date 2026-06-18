@@ -30,6 +30,7 @@ export const tabsStory: Story<'io-tabs'> = {
   state: {
     properties: {
       activeTabIndex: DEFAULT_ACTIVE_TAB_INDEX,
+      size: 'small',
     },
   },
   generator: ({ properties } = {}) => [
@@ -38,6 +39,13 @@ export const tabsStory: Story<'io-tabs'> = {
         (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ['Overview', 'Details', 'Settings'],
       ),
+      properties: {
+        activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
+        size: (properties?.size as string) ?? 'small',
+        compact: (properties?.compact as boolean) ?? false,
+        labelledby: (properties?.labelledby as string) ?? undefined,
+        panelIds: (properties?.panelIds as string[]) ?? undefined,
+      },
       events: {
         onUpdate: {
           target: 'io-tabs',
@@ -69,6 +77,31 @@ export const tabsPropDefinitions: PropDefinition[] = [
     name: 'activeTabIndex',
     type: 'number',
     defaultValue: DEFAULT_ACTIVE_TAB_INDEX,
+  },
+  {
+    name: 'size',
+    type: 'select',
+    options: ['small', 'medium'],
+    defaultValue: 'small',
+    description: 'Visual size of the tab list. medium increases tab height and font size for prominent navigation.',
+  },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces tab padding for dense layouts.',
+  },
+  {
+    name: 'labelledby',
+    type: 'string',
+    defaultValue: '',
+    description: 'ID of an element that labels this tab group. Sets aria-labelledby on the tablist element.',
+  },
+  {
+    name: 'panelIds',
+    type: 'string',
+    defaultValue: '',
+    description: 'Comma-separated panel IDs (or array in JSX) that map to each tab. Sets aria-controls on each slotted tab button for ARIA APG compliance.',
   },
 ];
 

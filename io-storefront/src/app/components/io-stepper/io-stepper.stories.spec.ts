@@ -243,7 +243,7 @@ describe('io-stepper storefront stories', () => {
       expect(first.children.length).toBe(5);
     });
   });
-}
+
   describe('stepperStoryWarning', () => {
     it('generator returns non-empty array', () => {
       const els = stepperStoryWarning.generator?.();

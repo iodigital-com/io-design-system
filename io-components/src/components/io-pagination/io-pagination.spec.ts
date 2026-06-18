@@ -480,22 +480,12 @@ describe('io-pagination — intl prop', () => {
     hMock.mockClear();
     component.render();
 
-    // Find the prev button (page-btn--nav class, first one should be prev)
-    const prevBtnCall = hMock.mock.calls.find(
-      ([tag, attrs], idx, arr) => {
-        // Find button with page-btn--nav class in first position
-        const isBtn = tag === 'button';
-        const hasNavClass = (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav');
-        if (!isBtn || !hasNavClass) return false;
-        // Make sure it's the first one (prev button)
-        const prevBtnCalls = arr.filter(
-          ([t, a]) =>
-            t === 'button' &&
-            (a as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
-        );
-        return arr.indexOf([tag, attrs, ...arr[idx].slice(2)]) === arr.indexOf(prevBtnCalls[0]);
-      },
+    const navBtnCalls = hMock.mock.calls.filter(
+      ([tag, attrs]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.class?.toString().includes('page-btn--nav'),
     );
+    const prevBtnCall = navBtnCalls[0];
     const prevAriaLabel = prevBtnCall?.[1]?.['aria-label'];
     expect(prevAriaLabel).toBe('Anterior');
   });

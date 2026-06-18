@@ -147,7 +147,8 @@ export function getScrollerStyles(): string {
     /* ── Scroll indicator buttons ────────────────────────────── */
 
     /* Clickable prev/next buttons overlaid on the fade gradient area.
-       tabIndex is -1 and aria-hidden in markup — purely for pointer users. */
+       tabIndex=-1 keeps them out of the keyboard tab order; aria-label names
+       them for pointer users who navigate with assistive technology. */
 
     .scroller__indicator {
       position: absolute;

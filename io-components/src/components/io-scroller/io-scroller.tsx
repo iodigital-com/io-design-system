@@ -180,17 +180,16 @@ export class IoScroller {
   }
 
   private scrollBy(direction: 'prev' | 'next'): void {
-    const offset = this.scrollContainer?.clientWidth ? this.scrollContainer.clientWidth * 0.5 : 200;
-    if (this.orientation === 'vertical') {
-      this.scrollContainer?.scrollBy({
-        top: direction === 'prev' ? -offset : offset,
-        behavior: 'smooth',
-      });
+    const el = this.scrollContainer;
+    if (!el) return;
+    const isVertical = this.orientation === 'vertical';
+    const size = isVertical ? el.clientHeight : el.clientWidth;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const delta = direction === 'prev' ? -size * 0.5 : size * 0.5;
+    if (isVertical) {
+      el.scrollBy({ top: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
     } else {
-      this.scrollContainer?.scrollBy({
-        left: direction === 'prev' ? -offset : offset,
-        behavior: 'smooth',
-      });
+      el.scrollBy({ left: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
     }
   }
 
@@ -209,7 +208,8 @@ export class IoScroller {
             type="button"
             class="scroller__indicator scroller__indicator--prev"
             tabIndex={-1}
-            aria-hidden="true"
+            aria-label="Scroll backward"
+            onPointerDown={(e) => e.preventDefault()}
             onClick={() => this.scrollBy('prev')}
           />
         )}
@@ -218,7 +218,8 @@ export class IoScroller {
             type="button"
             class="scroller__indicator scroller__indicator--next"
             tabIndex={-1}
-            aria-hidden="true"
+            aria-label="Scroll forward"
+            onPointerDown={(e) => e.preventDefault()}
             onClick={() => this.scrollBy('next')}
           />
         )}

@@ -330,3 +330,179 @@ describe('io-input — stable id linkage', () => {
     expect(() => (component as any).render()).not.toThrow();
   });
 });
+
+describe('io-input — inputMode, pattern, compact props (#643)', () => {
+  let component: IoInput;
+
+  beforeEach(() => {
+    component = new IoInput();
+    (component as any).el = document.createElement('io-input');
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+  });
+
+  // ── inputMode ─────────────────────────────────────────────────
+
+  it("has inputMode='text' by default", () => {
+    expect(component.inputMode).toBe('text');
+  });
+
+  it('passes inputMode to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.inputMode = 'numeric';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['inputmode']).toBe('numeric');
+  });
+
+  it('passes inputMode=tel to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.inputMode = 'tel';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['inputmode']).toBe('tel');
+  });
+
+  it("passes default inputmode='text' to native input", () => {
+    (component as any).componentWillLoad();
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['inputmode']).toBe('text');
+  });
+
+  // ── pattern ───────────────────────────────────────────────────
+
+  it('has pattern=undefined by default', () => {
+    expect(component.pattern).toBeUndefined();
+  });
+
+  it('passes pattern to native input via render', () => {
+    (component as any).componentWillLoad();
+    component.pattern = '[0-9]{4}';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['pattern']).toBe('[0-9]{4}');
+  });
+
+  it('omits pattern attribute when pattern is undefined', () => {
+    (component as any).componentWillLoad();
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(inputProps['pattern']).toBeUndefined();
+  });
+
+  it('onPatternChange calls syncFormValue', () => {
+    const syncSpy = vi.spyOn(component as any, 'syncFormValue');
+    (component as any).onPatternChange();
+    expect(syncSpy).toHaveBeenCalled();
+  });
+
+  // ── compact ───────────────────────────────────────────────────
+
+  it('has compact=false by default', () => {
+    expect(component.compact).toBe(false);
+  });
+
+  it('accepts compact=true', () => {
+    component.compact = true;
+    expect(component.compact).toBe(true);
+  });
+
+  it('render does not throw when compact=true', () => {
+    (component as any).componentWillLoad();
+    component.compact = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  // ── counter sr-only live region ───────────────────────────────
+
+  it('renders sr-only counter span with aria-live when counter=true and maxLength is set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 50;
+    component.value = 'hello';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const srSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-counter-sr' &&
+        (call[1] as Record<string, unknown>)?.['aria-live'] === 'polite',
+    );
+    expect(srSpan).toBeDefined();
+  });
+
+  it('sr-only counter span has aria-atomic=true', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 50;
+    component.value = 'hi';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const srSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-counter-sr',
+    );
+    const srProps = (srSpan?.[1] ?? {}) as Record<string, unknown>;
+    expect(srProps['aria-atomic']).toBe('true');
+  });
+
+  it('does not render sr-only counter span when counter=false', () => {
+    (component as any).componentWillLoad();
+    component.counter = false;
+    component.maxLength = 50;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const srSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-counter-sr',
+    );
+    expect(srSpan).toBeUndefined();
+  });
+
+  it('does not render sr-only counter span when maxLength is not set', () => {
+    (component as any).componentWillLoad();
+    component.counter = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const srSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-counter-sr',
+    );
+    expect(srSpan).toBeUndefined();
+  });
+});

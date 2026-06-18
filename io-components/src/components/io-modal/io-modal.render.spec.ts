@@ -5,7 +5,7 @@
  * h is mocked and refs are just props on the vnode. This spec extracts the ref
  * from h.mock.calls and invokes it to drive coverage.
  */
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoModal } from './io-modal';
@@ -20,6 +20,14 @@ function makeModal(overrides: Partial<IoModal> = {}): IoModal {
   (c as any).componentWillLoad();
   return c;
 }
+
+// Suppress console.error from WCAG accessible-name warning in render spec helpers
+beforeEach(() => {
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 function renderCalls(c: IoModal) {
   const hMock = h as unknown as ReturnType<typeof vi.fn>;
@@ -159,5 +167,35 @@ describe('io-modal render() — footer slot visibility', () => {
     (c as any).hasFooterSlot = true;
     (c as any).handleFooterSlotChange();
     expect((c as any).hasFooterSlot).toBe(false);
+  });
+});
+
+// ── dismissButton render toggle ───────────────────────────────────────────────
+
+describe('io-modal render() — dismissButton', () => {
+  it('renders the close button when dismissButton is true (default)', () => {
+    const c = makeModal({ heading: 'Test' });
+    const calls = renderCalls(c);
+
+    const closeBtn = calls.find(
+      ([tag, props]) =>
+        tag === 'button' &&
+        typeof props?.class === 'string' &&
+        (props.class as string).includes('modal__close'),
+    );
+    expect(closeBtn).toBeDefined();
+  });
+
+  it('does not render the close button when dismissButton is false', () => {
+    const c = makeModal({ heading: 'Test', dismissButton: false });
+    const calls = renderCalls(c);
+
+    const closeBtn = calls.find(
+      ([tag, props]) =>
+        tag === 'button' &&
+        typeof props?.class === 'string' &&
+        (props.class as string).includes('modal__close'),
+    );
+    expect(closeBtn).toBeUndefined();
   });
 });

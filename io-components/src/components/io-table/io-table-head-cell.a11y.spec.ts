@@ -47,29 +47,36 @@ describe('io-table-head-cell — a11y (ARIA patterns)', () => {
     await renderAndCheckA11y(table);
   });
 
-  it('sortable column header with aria-sort="none" has no violations', async () => {
+  it('sortable column header with button inside th (APG pattern) and aria-sort="none" has no violations', async () => {
     const table = buildTable((th) => {
       th.setAttribute('aria-sort', 'none');
-      th.setAttribute('tabindex', '0');
-      th.textContent = 'Name';
+      // ARIA APG sort-button pattern: focusable <button> inside th, not tabindex on th
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Name';
+      th.appendChild(btn);
     });
     await renderAndCheckA11y(table);
   });
 
-  it('sortable column header with aria-sort="ascending" has no violations', async () => {
+  it('sortable column header with button inside th and aria-sort="ascending" has no violations', async () => {
     const table = buildTable((th) => {
       th.setAttribute('aria-sort', 'ascending');
-      th.setAttribute('tabindex', '0');
-      th.textContent = 'Name';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Name';
+      th.appendChild(btn);
     });
     await renderAndCheckA11y(table);
   });
 
-  it('sortable column header with aria-sort="descending" has no violations', async () => {
+  it('sortable column header with button inside th and aria-sort="descending" has no violations', async () => {
     const table = buildTable((th) => {
       th.setAttribute('aria-sort', 'descending');
-      th.setAttribute('tabindex', '0');
-      th.textContent = 'Name';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Name';
+      th.appendChild(btn);
     });
     await renderAndCheckA11y(table);
   });

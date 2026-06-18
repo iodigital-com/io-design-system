@@ -48,6 +48,11 @@ export class IoDrawer {
   private boundHandleTouchMove?: (ev: TouchEvent) => void;
   private boundHandleTouchEnd?: (ev: TouchEvent) => void;
 
+  // ── User-initiated close flag ─────────────────────────────────
+  // Set to true before any user-action handler sets open=false so
+  // onOpenChange can distinguish user-initiated closes from programmatic ones.
+  private _userInitiatedClose = false;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /** Controls drawer visibility; synced to showModal/close */
@@ -69,6 +74,13 @@ export class IoDrawer {
   @Prop() closeLabel = 'Close drawer';
 
   /**
+   * When false, the built-in close button is not rendered and ESC-key
+   * dismissal is suppressed. Use this for drawers where only an explicit
+   * in-content action should close the panel (e.g. a wizard step).
+   */
+  @Prop() dismissButton = true;
+
+  /**
    * Custom ARIA attributes to inject onto the native `<dialog>` element.
    * Keys may omit or include the `aria-` prefix — both forms are accepted.
    *
@@ -88,7 +100,7 @@ export class IoDrawer {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Emitted after the drawer closes (any close path: button, backdrop, ESC) */
+  /** Emitted after the drawer is closed by a user action (close button, backdrop click, ESC key, or swipe-to-dismiss on bottom-sheet placement). NOT emitted on programmatic close via the `open` prop or `close()` method. */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   /** Emitted after the open animation/transition has completed (transitionend on the drawer panel) */
@@ -122,7 +134,7 @@ export class IoDrawer {
 
   /**
    * Programmatically close the drawer. No-op if already closed.
-   * Emits the `dismiss` event.
+   * Does NOT emit the `dismiss` event (programmatic close).
    *
    * For bottom-sheet placement, removes swipe-to-dismiss touch listeners.
    *
@@ -141,6 +153,17 @@ export class IoDrawer {
 
   componentWillLoad() {
     this.headingId = createDrawerHeadingId(Math.random().toString(36).slice(2));
+
+    const hasHeading = Boolean(this.heading);
+    // Check the `aria` prop (not the host element attribute) because io-drawer
+    // uses Shadow DOM — host aria-* attributes are NOT forwarded to the internal
+    // <dialog>. The `aria` prop is the only way to supply aria-label to the dialog.
+    const hasAriaLabel = Boolean(this.aria?.['label'] ?? this.aria?.['aria-label']);
+    if (!hasHeading && !hasAriaLabel) {
+      console.error(
+        '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',
+      );
+    }
   }
 
   componentDidLoad() {
@@ -177,7 +200,11 @@ export class IoDrawer {
       if (dialog.open) {
         dialog.close();
       }
-      this.dismissEvent.emit();
+      // Only emit dismiss for user-initiated closes (close button, backdrop, ESC).
+      if (this._userInitiatedClose) {
+        this.dismissEvent.emit();
+      }
+      this._userInitiatedClose = false;
     }
   }
 
@@ -213,16 +240,20 @@ export class IoDrawer {
     const rect = dialog.getBoundingClientRect();
     const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
+      this._userInitiatedClose = true;
       this.open = false;
     }
   };
 
   private handleCancel = (ev: Event) => {
     ev.preventDefault();
+    if (!this.dismissButton) return;
+    this._userInitiatedClose = true;
     this.open = false;
   };
 
   private handleCloseClick = () => {
+    this._userInitiatedClose = true;
     this.open = false;
   };
 
@@ -272,6 +303,7 @@ export class IoDrawer {
     const endY = ev.changedTouches[0]?.clientY ?? 0;
     const deltaY = endY - this.touchStartY;
     if (deltaY >= SWIPE_CLOSE_THRESHOLD) {
+      this._userInitiatedClose = true;
       this.open = false;
       this.removeSwipeListeners();
     }
@@ -311,13 +343,15 @@ export class IoDrawer {
                 {heading}
               </h2>
             )}
-            <button
-              type="button"
-              class="drawer__close"
-              aria-label={this.closeLabel}
-              onClick={this.handleCloseClick}
-              innerHTML={closeIcon}
-            />
+            {this.dismissButton && (
+              <button
+                type="button"
+                class="drawer__close"
+                aria-label={this.closeLabel}
+                onClick={this.handleCloseClick}
+                innerHTML={closeIcon}
+              />
+            )}
           </div>
           <div class="drawer__body">
             <slot />

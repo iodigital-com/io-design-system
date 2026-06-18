@@ -67,6 +67,12 @@ export const modalPropDefinitions: PropDefinition[] = [
   { name: 'heading', type: 'string', defaultValue: 'Modal heading', group: 'Content' },
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md', group: 'Appearance' },
   { name: 'closeOnBackdrop', type: 'boolean', defaultValue: true, group: 'Behaviour' },
+  {
+    name: 'dismissButton',
+    type: 'boolean',
+    defaultValue: true,
+    description: 'Shows or hides the × close button. When false, ESC key is also suppressed — the modal can only be closed programmatically. Always pair with a clear action button in the footer.',
+  },
 ];
 
 // ── Static example stories ────────────────────────────────────────────────

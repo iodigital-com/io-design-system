@@ -30,6 +30,7 @@ export const badgeStorySizes: Story<'io-badge'> = {
   generator: () => [
     { tag: 'io-badge' as const, properties: { variant: 'blue', size: 'sm' }, children: ['Small'] },
     { tag: 'io-badge' as const, properties: { variant: 'blue', size: 'md' }, children: ['Medium'] },
+    { tag: 'io-badge' as const, properties: { variant: 'blue', size: 'lg' }, children: ['Large'] },
   ],
 };
 
@@ -37,7 +38,7 @@ export const badgePropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md'],
+    options: ['sm', 'md', 'lg'],
     defaultValue: 'md',
     description: 'Adjusts badge density for compact or standard layouts.',
   },
@@ -47,5 +48,11 @@ export const badgePropDefinitions: PropDefinition[] = [
     options: ['beige', 'blue', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
     defaultValue: 'blue',
     description: 'Sets visual style and semantic meaning of the badge.',
+  },
+  {
+    name: 'ariaLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label for decorative badges. Only set when badge conveys meaning not expressed by its text content.',
   },
 ];

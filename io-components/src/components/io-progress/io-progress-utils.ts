@@ -9,12 +9,36 @@ export function clampValue(value: number): number {
   return Math.min(100, Math.max(0, value));
 }
 
-export function getProgressWrapperClass(size: string): string {
-  return `progress-wrapper progress-wrapper--${size}`;
+/**
+ * Compute normalized fill percentage using min/max range.
+ * @param value — Current value
+ * @param min — Minimum of range
+ * @param max — Maximum of range
+ * @returns Percentage (0-100)
+ */
+export function computePercentage(value: number, min: number, max: number): number {
+  if (max <= min) return 0;
+  const normalized = (value - min) / (max - min) * 100;
+  return clampValue(normalized);
 }
 
-export function getProgressFillClass(color: string, animated: boolean): string {
-  return ['progress-fill', `progress-fill--${color}`, !animated && 'progress-fill--static']
+export function getProgressWrapperClass(size: string, indeterminate = false): string {
+  return [
+    'progress-wrapper',
+    `progress-wrapper--${size}`,
+    indeterminate && 'progress-wrapper--indeterminate',
+  ]
+    .filter(Boolean)
+    .join(' ');
+}
+
+export function getProgressFillClass(color: string, animated: boolean, indeterminate = false): string {
+  return [
+    'progress-fill',
+    `progress-fill--${color}`,
+    !animated && 'progress-fill--static',
+    indeterminate && 'progress-fill--indeterminate',
+  ]
     .filter(Boolean)
     .join(' ');
 }

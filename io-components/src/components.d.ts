@@ -21,7 +21,7 @@ import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
-import { IoInputSize, IoInputType } from "./components/io-input/types";
+import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -38,7 +38,7 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-import { IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
@@ -62,7 +62,7 @@ export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./component
 export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationVariant } from "./components/io-inline-notification/types";
-export { IoInputSize, IoInputType } from "./components/io-input/types";
+export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -72,14 +72,14 @@ export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType }
 export { IoPopoverPlacement } from "./components/io-popover/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
-export { IoRadioGroupChangeDetail } from "./components/io-radio-group/types";
+export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSelectChangeDetail, IoSelectSize } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-export { IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTextAlign, IoTextColor, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
@@ -208,6 +208,10 @@ export namespace Components {
      * <io-badge variant="error">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Accessible label for icon-only or abbreviated badges
+         */
+        "ariaLabel": string | null;
         /**
           * Size variant aligned with io-tag
           * @default 'md'
@@ -1012,6 +1016,11 @@ export namespace Components {
           * @default false
          */
         "hideLabel": boolean;
+        /**
+          * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
+          * @default 'text'
+         */
+        "inputMode": IoInputMode;
         /**
           * Label text — required for accessibility
          */
@@ -2180,9 +2189,26 @@ export namespace Components {
          */
         "activeTabIndex": number;
         /**
+          * When true, reduces tab button padding using density tokens.
+         */
+        "compact": boolean;
+        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
+        /**
+          * ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div.
+         */
+        "labelledby"?: string;
+        /**
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
+          * When provided, each tab button receives aria-controls pointing to its associated panel.
+         */
+        "panelIds"?: string[];
+        /**
+          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+         */
+        "size": IoTabsSize;
     }
     /**
      * io-tabs-bar
@@ -3286,9 +3312,8 @@ declare global {
         new (): HTMLIoPaginationElement;
     };
     interface HTMLIoPinCodeElementEventMap {
-        "blur": FocusEvent;
         "change": IoPinCodeChangeDetail;
-        "blur": void;
+        "blur": FocusEvent;
     }
     /**
      * io-pin-code
@@ -4101,6 +4126,10 @@ declare namespace LocalJSX {
      * <io-badge variant="error">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Accessible label for icon-only or abbreviated badges
+         */
+        "ariaLabel"?: string | null;
         /**
           * Size variant aligned with io-tag
           * @default 'md'
@@ -4923,6 +4952,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "hideLabel"?: boolean;
+        /**
+          * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
+          * @default 'text'
+         */
+        "inputMode"?: IoInputMode;
         /**
           * Label text — required for accessibility
          */
@@ -6104,13 +6138,30 @@ declare namespace LocalJSX {
          */
         "activeTabIndex"?: number;
         /**
+          * When true, reduces tab button padding using density tokens.
+         */
+        "compact"?: boolean;
+        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
         /**
+          * ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div.
+         */
+        "labelledby"?: string;
+        /**
           * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
+        /**
+          * Panel element IDs that map 1:1 to slotted buttons (index-matched).
+          * When provided, each tab button receives aria-controls pointing to its associated panel.
+         */
+        "panelIds"?: string[];
+        /**
+          * Font size scale for the tab buttons. 'small' = 14px, 'medium' = 16px.
+         */
+        "size"?: IoTabsSize;
     }
     /**
      * io-tabs-bar
@@ -6856,7 +6907,10 @@ declare namespace LocalJSX {
     }
     interface IoTabsAttributes {
         "activeTabIndex": number;
+        "compact": boolean;
         "label": string;
+        "labelledby": string;
+        "size": IoTabsSize;
     }
     interface IoTabsBarAttributes {
         "activeTabIndex": number;

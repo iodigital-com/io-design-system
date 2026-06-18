@@ -17,7 +17,7 @@ export function getIconStyles(): string {
       align-items: center;
       justify-content: center;
       line-height: 1;
-      color: currentColor;
+      color: var(--io-icon-color, currentColor);
     }
     span { display: contents; }
     svg { display: block; }

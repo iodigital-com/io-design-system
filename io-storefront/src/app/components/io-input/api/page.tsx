@@ -133,6 +133,27 @@ export default function IoInputApiPage() {
               '—',
               'HTML autocomplete attribute. Use standard token values such as "email", "name", "tel", "current-password" to enable browser autofill.',
             ],
+            [
+              <InlineCode key="n">inputMode</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
+                <InlineCode>IoInputMode</InlineCode>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(8 values)</span>
+              </span>,
+              <InlineCode key="d">&apos;text&apos;</InlineCode>,
+              'Virtual keyboard hint. numeric and tel show digit/phone keyboards on mobile; email and url show domain-optimized keyboards. Wired directly to the native inputmode attribute.',
+            ],
+            [
+              <InlineCode key="n">pattern</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'HTML5 pattern attribute for native validation. Triggers patternMismatch validity state which FACE reports via setValidity.',
+            ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Reduces padding and height for dense form layouts.',
+            ],
           ]}
         />
       </section>
@@ -280,6 +301,19 @@ await ref.current.setFocus({ preventScroll: true });`}
             ],
           ]}
         />
+      </section>
+
+      {/* ── Accessibility Notes ───────────────────────────────────── */}
+      <section id="accessibility-notes" className="space-y-4">
+        <SectionHeader
+          title="Accessibility Notes"
+          description="Behaviour and patterns that affect assistive technology users."
+        />
+        <EmptyNote>
+          The character counter (<InlineCode>maxLength</InlineCode>) announces updates via a visually-hidden{' '}
+          <InlineCode>aria-live=&quot;polite&quot;</InlineCode> region, ensuring screen readers hear{' '}
+          &quot;12 of 20 characters entered&quot; without interrupting other speech.
+        </EmptyNote>
       </section>
 
     </div>

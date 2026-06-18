@@ -48,13 +48,6 @@ export class IoTableHeadCell {
     this.sort.emit({ key: this.sortKey, direction: this.nextDirection() });
   };
 
-  private handleKeyDown = (ev: KeyboardEvent): void => {
-    if (ev.key === 'Enter' || ev.key === ' ') {
-      ev.preventDefault();
-      this.handleSort();
-    }
-  };
-
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -76,30 +69,36 @@ export class IoTableHeadCell {
           .join(' ')
       : undefined;
 
-    const sortIcon = sortable ? (
+    const sortIcon = (
       <span class="sort-icon" aria-hidden="true">
         <svg viewBox="0 0 10 12" fill="currentColor">
           <path d="M5 0L9 4H1L5 0Z" />
           <path d="M5 12L1 8H9L5 12Z" opacity="0.4" />
         </svg>
       </span>
-    ) : null;
+    );
 
     return (
       <Host>
+        {/*
+          ARIA APG sort-button pattern: aria-sort lives on the <th> (columnheader role),
+          while a focusable <button> inside the <th> receives keyboard/click events.
+          This satisfies SC 2.1.1 without making <th> itself a focus target.
+        */}
         <th
           scope="col"
           class={thClass}
           aria-sort={ariaSort}
-          tabIndex={sortable ? 0 : undefined}
-          onClick={sortable ? this.handleSort : undefined}
-          onKeyDown={sortable ? this.handleKeyDown : undefined}
         >
           {sortable ? (
-            <span class="th__inner">
+            <button
+              type="button"
+              class="th__sort-btn"
+              onClick={this.handleSort}
+            >
               <slot />
               {sortIcon}
-            </span>
+            </button>
           ) : (
             <slot />
           )}

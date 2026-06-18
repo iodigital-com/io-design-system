@@ -7,15 +7,10 @@ describe('io-toast-item — render snapshots', () => {
   });
 
   it('renders each variant', async () => {
-    const { root } = await render(
-      <div>
-        <io-toast-item text="Neutral" variant="neutral" />
-        <io-toast-item text="Success" variant="success" />
-        <io-toast-item text="Error" variant="error" />
-        <io-toast-item text="Warning" variant="warning" />
-        <io-toast-item text="Info" variant="info" />
-      </div>
-    );
-    expect(root).toMatchSnapshot();
+    const variants = ['neutral', 'success', 'error', 'warning', 'info'] as const;
+    for (const variant of variants) {
+      const { root } = await render(<io-toast-item text={variant} variant={variant} />);
+      expect(root).toMatchSnapshot(`${variant} variant`);
+    }
   });
 });

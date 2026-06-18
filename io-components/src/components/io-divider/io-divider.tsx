@@ -112,7 +112,9 @@ export class IoDivider {
             aria-orientation="vertical"
           />
           {/* Hidden slot listener — fires slotchange when consumer projects content */}
-          <slot onSlotchange={this.handleSlotchange} style={{ display: 'none' }} />
+          <div style={{ display: 'none' }}>
+            <slot onSlotchange={this.handleSlotchange} />
+          </div>
         </Host>
       );
     }
@@ -124,7 +126,9 @@ export class IoDivider {
         <style>{getDividerStyles()}</style>
         <hr class="divider" />
         {/* Hidden slot listener — fires slotchange when consumer projects content */}
-        <slot onSlotchange={this.handleSlotchange} style={{ display: 'none' }} />
+        <div style={{ display: 'none' }}>
+          <slot onSlotchange={this.handleSlotchange} />
+        </div>
       </Host>
     );
   }

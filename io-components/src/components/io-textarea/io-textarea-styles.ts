@@ -143,11 +143,11 @@ export function getTextareaStyles(): string {
     }
 
     .textarea-wrapper--state-success .textarea-field {
-      border-bottom-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-bottom-color: var(--io-color-state-success);
     }
 
     .textarea-wrapper--state-warning .textarea-field {
-      border-bottom-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-bottom-color: var(--io-color-state-warning);
     }
 
     /* Resize variants */
@@ -169,11 +169,11 @@ export function getTextareaStyles(): string {
     }
 
     .textarea-message--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success);
     }
 
     .textarea-message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
 
     .textarea-error--hidden,

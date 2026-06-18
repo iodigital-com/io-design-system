@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch, State } 
 import { getPaginationStyles } from './io-pagination-styles';
 import { canNavigateToPage, createPaginationNavId, getPaginationRange } from './io-pagination-utils';
 
-import type { IoPaginationChangeDetail } from './types';
+import type { IoPaginationChangeDetail, IoPaginationIntl } from './types';
 
 /**
  * io-pagination
@@ -65,6 +65,9 @@ export class IoPagination {
 
   /** Visually label the next button (used by aria-label) */
   @Prop() nextLabel = 'Next page';
+
+  /** Localisation strings. Override to internationalise navigation labels. */
+  @Prop() intl?: IoPaginationIntl;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -180,17 +183,23 @@ export class IoPagination {
   private go(page: number) {
     const totalPages = this.computedTotalPages;
     if (!canNavigateToPage(page, totalPages, this.page)) return;
+    const previousPage = this.page;
     this.page = page;
     this.liveMessage = `Page ${page} of ${totalPages}`;
-    this.change.emit({ page });
+    this.change.emit({ page, previousPage });
   }
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { page, prevLabel, nextLabel, navId } = this;
+    const { page, prevLabel, nextLabel, navId, intl } = this;
     const totalPages = this.computedTotalPages;
     const pages = this.pageRange(page, totalPages);
+
+    const resolvedNavLabel = intl?.root ?? 'Pagination';
+    const resolvedPrevLabel = intl?.prev ?? prevLabel;
+    const resolvedNextLabel = intl?.next ?? nextLabel;
+    const resolvedPagePrefix = intl?.page ?? 'Page';
 
     const arrowLeft = (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
@@ -208,11 +217,12 @@ export class IoPagination {
       <Host>
         <style>{getPaginationStyles()}</style>
         <span aria-live="polite" aria-atomic="true" class="sr-only">{this.liveMessage}</span>
-        <nav aria-label="Pagination" id={navId}>
+        <nav aria-label={resolvedNavLabel} id={navId}>
           <div class="pagination">
             <button
+              type="button"
               class="page-btn page-btn--nav"
-              aria-label={prevLabel}
+              aria-label={resolvedPrevLabel}
               disabled={page === 1}
               onClick={() => this.go(page - 1)}
             >
@@ -224,8 +234,9 @@ export class IoPagination {
                 ? <span class="page-dots" aria-hidden="true">…</span>
                 : (
                   <button
+                    type="button"
                     class={`page-btn${p === page ? ' page-btn--active' : ' page-btn--number'}`}
-                    aria-label={`Page ${p}`}
+                    aria-label={`${resolvedPagePrefix} ${p}`}
                     aria-current={p === page ? 'page' : undefined}
                     onClick={() => this.go(p as number)}
                   >
@@ -235,8 +246,9 @@ export class IoPagination {
             )}
 
             <button
+              type="button"
               class="page-btn page-btn--nav"
-              aria-label={nextLabel}
+              aria-label={resolvedNextLabel}
               disabled={page === totalPages}
               onClick={() => this.go(page + 1)}
             >

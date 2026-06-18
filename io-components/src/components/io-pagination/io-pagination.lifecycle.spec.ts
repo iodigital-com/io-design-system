@@ -269,7 +269,7 @@ describe('io-pagination — go() method comprehensive', () => {
   it('navigates to valid new page, emits change, and sets liveMessage', () => {
     (component as any).go(7);
     expect(component.page).toBe(7);
-    expect(emitSpy).toHaveBeenCalledWith({ page: 7 });
+    expect(emitSpy).toHaveBeenCalledWith({ page: 7, previousPage: 5 });
     expect((component as any).liveMessage).toBe('Page 7 of 10');
   });
 
@@ -300,13 +300,13 @@ describe('io-pagination — go() method comprehensive', () => {
   it('navigates to first page from middle', () => {
     (component as any).go(1);
     expect(component.page).toBe(1);
-    expect(emitSpy).toHaveBeenCalledWith({ page: 1 });
+    expect(emitSpy).toHaveBeenCalledWith({ page: 1, previousPage: 5 });
   });
 
   it('navigates to last page', () => {
     (component as any).go(10);
     expect(component.page).toBe(10);
-    expect(emitSpy).toHaveBeenCalledWith({ page: 10 });
+    expect(emitSpy).toHaveBeenCalledWith({ page: 10, previousPage: 5 });
   });
 });
 

@@ -1,4 +1,4 @@
-import { h } from '@stencil/core';
+import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputSearch } from './io-input-search';
 
@@ -6,7 +6,7 @@ describe('io-input-search', () => {
   it('renders with required label', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" />,
+      html: '<io-input-search label="Search"></io-input-search>',
     });
     expect(page.root).toBeDefined();
     const label = page.root?.shadowRoot?.querySelector('label');
@@ -16,7 +16,7 @@ describe('io-input-search', () => {
   it('renders a search input', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" />,
+      html: '<io-input-search label="Search"></io-input-search>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.type).toBe('search');
@@ -25,7 +25,7 @@ describe('io-input-search', () => {
   it('renders search prefix icon', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" />,
+      html: '<io-input-search label="Search"></io-input-search>',
     });
     const prefix = page.root?.shadowRoot?.querySelector('.search-prefix');
     expect(prefix).toBeDefined();
@@ -34,7 +34,7 @@ describe('io-input-search', () => {
   it('hides clear button when value is empty', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" value="" />,
+      html: '<io-input-search label="Search" value=""></io-input-search>',
     });
     const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
     expect(clearBtn?.classList.contains('search-clear--hidden')).toBe(true);
@@ -43,7 +43,7 @@ describe('io-input-search', () => {
   it('shows clear button when value is non-empty', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" value="hello" />,
+      html: '<io-input-search label="Search" value="hello"></io-input-search>',
     });
     const clearBtn = page.root?.shadowRoot?.querySelector('.search-clear');
     expect(clearBtn?.classList.contains('search-clear--hidden')).toBe(false);
@@ -52,7 +52,7 @@ describe('io-input-search', () => {
   it('applies disabled attribute', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" disabled />,
+      html: '<io-input-search label="Search" disabled></io-input-search>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.disabled).toBe(true);
@@ -61,7 +61,7 @@ describe('io-input-search', () => {
   it('sets autocomplete to off by default', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" />,
+      html: '<io-input-search label="Search"></io-input-search>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.autocomplete).toBe('off');
@@ -70,7 +70,7 @@ describe('io-input-search', () => {
   it('applies error state class', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" state="error" message="Required" />,
+      html: '<io-input-search label="Search" state="error" message="Required"></io-input-search>',
     });
     const wrapper = page.root?.shadowRoot?.querySelector('.input-wrapper');
     expect(wrapper?.classList.contains('input-wrapper--state-error')).toBe(true);
@@ -79,7 +79,7 @@ describe('io-input-search', () => {
   it('renders size class', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" size="sm" />,
+      html: '<io-input-search label="Search" size="sm"></io-input-search>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.classList.contains('input-field--sm')).toBe(true);
@@ -88,7 +88,7 @@ describe('io-input-search', () => {
   it('renders helper text when provided', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" helperText="Enter at least 2 chars" />,
+      html: '<io-input-search label="Search" helper-text="Enter at least 2 chars"></io-input-search>',
     });
     const helper = page.root?.shadowRoot?.querySelector('.input-helper');
     expect(helper?.textContent).toContain('Enter at least 2 chars');

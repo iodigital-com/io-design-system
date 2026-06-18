@@ -1,4 +1,4 @@
-import { h } from '@stencil/core';
+import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputPassword } from './io-input-password';
 
@@ -6,7 +6,7 @@ describe('io-input-password accessibility', () => {
   it('associates label with input via htmlFor/id', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     const label = page.root?.shadowRoot?.querySelector('label');
@@ -17,7 +17,7 @@ describe('io-input-password accessibility', () => {
   it('sets aria-invalid when state is error', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" state="error" message="Required" />,
+      html: '<io-input-password label="Password" state="error" message="Required"></io-input-password>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.getAttribute('aria-invalid')).toBe('true');
@@ -26,7 +26,7 @@ describe('io-input-password accessibility', () => {
   it('does not set aria-invalid when state is none', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.getAttribute('aria-invalid')).toBeNull();
@@ -35,7 +35,7 @@ describe('io-input-password accessibility', () => {
   it('sets aria-describedby when error message is present', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" state="error" message="Required field" />,
+      html: '<io-input-password label="Password" state="error" message="Required field"></io-input-password>',
     });
     const input = page.root?.shadowRoot?.querySelector('input');
     expect(input?.getAttribute('aria-describedby')).toBeTruthy();
@@ -44,7 +44,7 @@ describe('io-input-password accessibility', () => {
   it('toggle button has descriptive aria-label', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const btn = page.root?.shadowRoot?.querySelector('button.password-toggle');
     const ariaLabel = btn?.getAttribute('aria-label');
@@ -54,7 +54,7 @@ describe('io-input-password accessibility', () => {
   it('error message has role="alert"', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" state="error" message="Invalid password" />,
+      html: '<io-input-password label="Password" state="error" message="Invalid password"></io-input-password>',
     });
     const errorEl = page.root?.shadowRoot?.querySelector('.input-message--error');
     expect(errorEl?.getAttribute('role')).toBe('alert');

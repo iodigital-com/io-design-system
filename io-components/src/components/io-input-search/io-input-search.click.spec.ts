@@ -1,4 +1,4 @@
-import { h } from '@stencil/core';
+import { describe, it, expect, vi } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputSearch } from './io-input-search';
 
@@ -6,20 +6,19 @@ describe('io-input-search click events', () => {
   it('clears value when clear button is clicked', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" value="hello" />,
+      html: '<io-input-search label="Search" value="hello"></io-input-search>',
     });
     const clearBtn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('.search-clear');
     expect(clearBtn).toBeDefined();
     clearBtn!.click();
     await page.waitForChanges();
-    const input = page.root?.shadowRoot?.querySelector<HTMLInputElement>('input');
     expect(page.rootInstance.value).toBe('');
   });
 
   it('hides clear button after clearing', async () => {
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" value="hello" />,
+      html: '<io-input-search label="Search" value="hello"></io-input-search>',
     });
     const clearBtn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('.search-clear');
     clearBtn!.click();
@@ -29,11 +28,12 @@ describe('io-input-search click events', () => {
   });
 
   it('emits clear event when clear button is clicked', async () => {
-    const clearSpy = jest.fn();
+    const clearSpy = vi.fn();
     const page = await newSpecPage({
       components: [IoInputSearch],
-      template: () => <io-input-search label="Search" value="hello" onClear={clearSpy} />,
+      html: '<io-input-search label="Search" value="hello"></io-input-search>',
     });
+    page.root?.addEventListener('clear', clearSpy);
     const clearBtn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('.search-clear');
     clearBtn!.click();
     await page.waitForChanges();

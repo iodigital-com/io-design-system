@@ -1,4 +1,4 @@
-import { h } from '@stencil/core';
+import { describe, it, expect } from 'vitest';
 import { newSpecPage } from '@stencil/core/testing';
 import { IoInputPassword } from './io-input-password';
 
@@ -6,7 +6,7 @@ describe('io-input-password click events', () => {
   it('toggles to text type when toggle button is clicked', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const btn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('button.password-toggle');
     expect(btn).toBeDefined();
@@ -20,7 +20,7 @@ describe('io-input-password click events', () => {
   it('toggles back to password type on second click', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const btn = page.root?.shadowRoot?.querySelector<HTMLButtonElement>('button.password-toggle');
     btn!.click();
@@ -35,7 +35,7 @@ describe('io-input-password click events', () => {
   it('emits change event on input change', async () => {
     const page = await newSpecPage({
       components: [IoInputPassword],
-      template: () => <io-input-password label="Password" />,
+      html: '<io-input-password label="Password"></io-input-password>',
     });
     const input = page.root?.shadowRoot?.querySelector<HTMLInputElement>('input');
     // Simulate change event

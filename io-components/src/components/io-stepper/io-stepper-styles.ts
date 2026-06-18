@@ -61,6 +61,44 @@ export function getStepStyles(): string {
       position: relative;
     }
 
+    /* ── Step button wrapper (WCAG 2.1.1/4.1.2) ────────── */
+
+    .step__button {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      text-decoration: none;
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step__button[aria-disabled="true"] {
+      cursor: default;
+    }
+
+    .step__button--disabled {
+      cursor: not-allowed;
+      opacity: var(--io-state-disabled-opacity);
+    }
+
+    /* Focus-visible ring using io-focus token convention */
+    .step__button:focus {
+      outline: none;
+    }
+
+    .step__button:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
     /* ── Step inner: circle + label stacked vertically ─── */
 
     .step__inner {
@@ -114,9 +152,24 @@ export function getStepStyles(): string {
       color: var(--io-text-muted, #999);
     }
 
+    /* Warning: warning color border + icon */
+    .step--warning .step__circle {
+      border-color: var(--io-color-warning);
+      background: var(--io-bg-base, #fff);
+      color: var(--io-color-warning);
+    }
+
     /* ── Checkmark SVG ──────────────────────────────────── */
 
     .step__check {
+      width: 1em;
+      height: 1em;
+      display: block;
+    }
+
+    /* ── Warning icon SVG ───────────────────────────────── */
+
+    .step__warning-icon {
       width: 1em;
       height: 1em;
       display: block;
@@ -143,6 +196,10 @@ export function getStepStyles(): string {
 
     .step--upcoming .step__label {
       color: var(--io-text-muted, #999);
+    }
+
+    .step--warning .step__label {
+      color: var(--io-color-warning);
     }
 
     /* ── Visually hidden screen reader text ─────────────── */
@@ -183,6 +240,11 @@ export function getStepStyles(): string {
     /* ── Vertical orientation ───────────────────────────── */
 
     :host([data-orientation="vertical"]) .step {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    :host([data-orientation="vertical"]) .step__button {
       flex-direction: column;
       align-items: flex-start;
     }

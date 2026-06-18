@@ -9,5 +9,6 @@ Adds a `color` prop to `io-icon` with values: `primary`, `contrast-high`,
 
 When set, the component inlines `--io-icon-color` on the host element which
 the Shadow DOM `color` property resolves via `var(--io-icon-color, currentColor)`.
-This removes the need for wrapper-level CSS while keeping the prop fully
-token-driven and overrideable. Closes #641.
+This removes the need for wrapper-level CSS while keeping colors token-driven.
+External CSS cannot override the inline style; use the `color` prop to change
+the icon color. Closes #641.

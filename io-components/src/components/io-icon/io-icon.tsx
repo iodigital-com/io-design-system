@@ -7,7 +7,7 @@ import type { IoIconColor, IoIconSize } from './types';
 
 const svgCache = new Map<string, string>();
 
-const COLOR_TOKEN_MAP: Record<string, string> = {
+const COLOR_TOKEN_MAP: Record<Exclude<IoIconColor, 'inherit'>, string> = {
   primary: 'var(--io-color-primary)',
   'contrast-high': 'var(--io-text-primary)',
   'contrast-medium': 'var(--io-text-secondary)',

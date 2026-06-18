@@ -5,6 +5,7 @@ import {
   linkStoryInline,
   linkStoryColors,
   linkStoryDisabled,
+  iconLinkStory,
 } from '../io-link.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -31,6 +32,11 @@ export default function IoLinkExamplesPage() {
       <section>
         <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={linkStoryDisabled} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader title="With icon" />
+        <ComponentStory story={iconLinkStory} />
       </section>
     </div>
   );

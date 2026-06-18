@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
+import { h } from '@stencil/core';
+
 import { IoLink } from './io-link';
 
 describe('io-link — disabled', () => {
@@ -40,5 +42,15 @@ describe('io-link — disabled', () => {
     (component as any).handleClick(ev);
     expect(preventDefaultMock).toHaveBeenCalled();
     expect(stopPropagationMock).toHaveBeenCalled();
+  });
+
+  it('render sets aria-disabled="true" and tabIndex=0 on the anchor when disabled', () => {
+    component.disabled = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(attrs['aria-disabled']).toBe('true');
+    expect(attrs['tabIndex']).toBe(0);
   });
 });

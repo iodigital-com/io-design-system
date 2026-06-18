@@ -3,7 +3,7 @@ import { Component, Prop, Element, Host, h, State, Listen, Event, EventEmitter, 
 import { getCarouselStyles } from './io-carousel-styles';
 import { clampSlideIndex, getCarouselFallbackDistance, getCarouselStepSize, getCarouselTargetIndex, normalizeSlidesPerPage, shouldUseTargetScroll } from './io-carousel-utils';
 
-import type { IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
+import type { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
 
 /**
  * io-carousel
@@ -62,6 +62,18 @@ export class IoCarousel {
 
   /** Zero-based active slide index. */
   @Prop({ mutable: true, reflect: true }) activeSlideIndex = 0;
+
+  /** Optional heading text rendered above the slide track. */
+  @Prop() heading?: string;
+
+  /** Optional description text rendered below the heading and above the slide track. */
+  @Prop() description?: string;
+
+  /** When true, renders dot indicators below the slides, each synced to activeSlideIndex. */
+  @Prop() pagination = false;
+
+  /** Alignment of the heading and description header area. */
+  @Prop() alignHeader: IoCarouselAlignHeader = 'left';
 
   /** Emitted when the active slide index changes. */
   @Event({ eventName: 'update', bubbles: true, composed: true, cancelable: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
@@ -357,7 +369,14 @@ export class IoCarousel {
       rewind,
       isAtStart,
       isAtEnd,
+      heading,
+      description,
+      pagination,
+      alignHeader,
+      activeSlideIndex,
     } = this;
+
+    const totalSlides = this.totalSlides;
 
     const isPrevDisabled = !rewind && isAtStart;
     const isNextDisabled = !rewind && isAtEnd;
@@ -378,17 +397,25 @@ export class IoCarousel {
         <style>{getCarouselStyles()}</style>
         <div
           role="region"
-          aria-label={hasHeadingSlot ? undefined : label}
-          aria-labelledby={hasHeadingSlot ? headingId : undefined}
+          aria-label={hasHeadingSlot || heading ? undefined : label}
+          aria-labelledby={hasHeadingSlot || heading ? headingId : undefined}
           aria-roledescription="carousel"
         >
           <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
 
-          <div class={{ 'carousel-header': true, 'carousel-header--hidden': !hasHeadingSlot && !hasDescriptionSlot }}>
-            <div id={headingId} class={{ 'carousel-heading': true, 'carousel-heading--hidden': !hasHeadingSlot }}>
+          <div
+            class={{
+              'carousel-header': true,
+              'carousel-header--hidden': !hasHeadingSlot && !hasDescriptionSlot && !heading && !description,
+              'carousel-header--center': alignHeader === 'center',
+            }}
+          >
+            <div id={headingId} class={{ 'carousel-heading': true, 'carousel-heading--hidden': !hasHeadingSlot && !heading }}>
+              {heading ? <span class="carousel-heading-text">{heading}</span> : null}
               <slot name="heading" onSlotchange={this.handleHeadingSlotChange} />
             </div>
-            <div class={{ 'carousel-description': true, 'carousel-description--hidden': !hasDescriptionSlot }}>
+            <div class={{ 'carousel-description': true, 'carousel-description--hidden': !hasDescriptionSlot && !description }}>
+              {description ? <span class="carousel-description-text">{description}</span> : null}
               <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
             </div>
           </div>
@@ -423,6 +450,22 @@ export class IoCarousel {
               <slot name="controls" onSlotchange={this.handleControlsSlotChange} />
             </div>
           </div>
+
+          {pagination && totalSlides > 0 && (
+            <div class="carousel-pagination" role="group" aria-label="Slide navigation">
+              {Array.from({ length: totalSlides }, (_, i) => (
+                <button
+                  type="button"
+                  class={{ 'carousel-dot': true, 'carousel-dot--active': i === activeSlideIndex }}
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-current={i === activeSlideIndex ? 'true' : undefined}
+                  onClick={() => {
+                    this.scrollToIndex(i, this.scrollBehavior);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </Host>
     );

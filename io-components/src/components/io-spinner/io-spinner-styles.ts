@@ -29,9 +29,9 @@ export function getSpinnerStyles(): string {
 
     /* ── Sizes ──────────────────────────────────────────── */
 
-    .spinner--sm      { width: 1rem;    height: 1rem;    border-width: 1.5px; }
-    .spinner--md      { width: 1.5rem;  height: 1.5rem;  border-width: 2px; }
-    .spinner--lg      { width: 2.5rem;  height: 2.5rem;  border-width: 3px; }
+    .spinner--sm      { width: 1rem;    height: 1rem;    border-width: var(--io-spinner-border-width-sm); }
+    .spinner--md      { width: 1.5rem;  height: 1.5rem;  border-width: var(--io-spinner-border-width-md); }
+    .spinner--lg      { width: 2.5rem;  height: 2.5rem;  border-width: var(--io-spinner-border-width-lg); }
     .spinner--inherit { width: 1em;     height: 1em;     border-width: 0.125em; }
 
     /* ── Colours ────────────────────────────────────────── */

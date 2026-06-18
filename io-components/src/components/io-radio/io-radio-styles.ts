@@ -111,12 +111,12 @@ export function getRadioStyles(): string {
     }
 
     .radio-wrapper--state-success .radio-custom:not(.radio-custom--checked) {
-      border-color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      border-color: var(--io-color-state-success);
       border-width: var(--io-radio-border-error-width);
     }
 
     .radio-wrapper--state-warning .radio-custom:not(.radio-custom--checked) {
-      border-color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      border-color: var(--io-color-state-warning);
       border-width: var(--io-radio-border-error-width);
     }
 
@@ -168,11 +168,11 @@ export function getRadioStyles(): string {
     }
 
     .radio-message--success {
-      color: var(--io-color-state-success, var(--io-color-success, #1a7f4b));
+      color: var(--io-color-state-success);
     }
 
     .radio-message--warning {
-      color: var(--io-color-state-warning, var(--io-color-warning, #b45309));
+      color: var(--io-color-state-warning);
     }
 
     .radio-error--hidden {

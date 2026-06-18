@@ -115,10 +115,10 @@ export function getDrawerStyles(): string {
     /* ── Drag handle ─────────────────────────────────────────── */
 
     .drawer__handle {
-      width: 32px;
-      height: 4px;
+      width: var(--io-space-8);
+      height: var(--io-space-1);
       background-color: var(--io-border-hover);
-      border-radius: 2px;
+      border-radius: var(--io-border-radius-2xs);
       margin: var(--io-space-2) auto;
       flex-shrink: 0;
       cursor: grab;

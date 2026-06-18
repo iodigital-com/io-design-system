@@ -288,6 +288,14 @@
       "notes": "Avatar icon size token. Defaults to --io-icon-size-md."
     },
     {
+      "runtimeCssVar": "--io-backdrop-blur",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Backdrop blur radius used on overlay backgrounds. Value: 4px."
+    },
+    {
       "runtimeCssVar": "--io-bg-base",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -702,6 +710,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-button-group-line-height-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Line-height used in compact button-group mode. Value: 16.8px."
     },
     {
       "runtimeCssVar": "--io-button-group-min-height",
@@ -2336,6 +2352,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-motion-entrance-offset-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Vertical translate offset for modal/flyout entrance animation. Value: 12px."
+    },
+    {
       "runtimeCssVar": "--io-motion-extra-slow",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -2744,6 +2768,30 @@
       "notes": "Input/select/textarea size token aligned to io-button sm."
     },
     {
+      "runtimeCssVar": "--io-spinner-border-width-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for lg size. Value: 3px."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-border-width-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for md size. Value: 2px."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-border-width-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner border width for sm size. Value: 1.5px."
+    },
+    {
       "runtimeCssVar": "--io-space-1",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -3094,6 +3142,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Documented runtime variable in app.css inventory."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-indicator-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Height of the active tab bottom indicator line. Value: 2px."
     },
     {
       "runtimeCssVar": "--io-tabs-track-color",

@@ -83,7 +83,7 @@ export class IoPinCode {
   @Event() change!: EventEmitter<IoPinCodeChangeDetail>;
 
   /** Fires when focus leaves the component (relatedTarget not in any slot) */
-  @Event({ bubbles: false }) blur!: EventEmitter<void>;
+  @Event({ bubbles: false }) blur!: EventEmitter<FocusEvent>;
 
   // ── Methods ───────────────────────────────────────────────────
 
@@ -304,7 +304,7 @@ export class IoPinCode {
     if (this.inputRefs.includes(ev.relatedTarget as HTMLInputElement)) return;
     this.touched = true;
     this.syncFormValue();
-    this.blur?.emit?.();
+    this.blur?.emit?.(ev);
   };
 
   // ── Render ───────────────────────────────────────────────────

@@ -108,11 +108,11 @@ export const toastPropDefinitions: PropDefinition[] = [
   {
     name: 'actionLabel',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
   },
   {
     name: 'actionHref',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
   },
 ];

@@ -1024,5 +1024,11 @@
     "classification": "public-api",
     "component": "io-avatar",
     "description": "Size of the person icon in the icon-fallback mode. Defaults to --io-icon-size-md (24px)."
+  },
+  {
+    "cssVar": "--io-icon-color",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info)."
   }
 ]

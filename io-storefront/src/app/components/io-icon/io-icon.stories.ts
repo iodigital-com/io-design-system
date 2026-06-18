@@ -9,6 +9,7 @@ export const iconStory: Story<'io-icon'> = {
     properties: {
       name: 'search',
       size: 'md',
+      color: 'inherit',
     },
   },
   generator: ({ properties } = {}) => [
@@ -388,6 +389,13 @@ export const iconPropDefinitions: PropDefinition[] = [
     description: 'The icon to render. Must be one of the 455 registered icon names.',
   },
   {
+    name: 'color',
+    type: 'select',
+    options: ['inherit', 'primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info'],
+    defaultValue: 'inherit',
+    description: 'Semantic color token applied to the icon. inherit uses CSS currentColor from the parent element.',
+  },
+  {
     name: 'size',
     type: 'select',
     options: ['xs', 'sm', 'md', 'lg', 'xl', 'inherit'],
@@ -407,3 +415,11 @@ export const iconPropDefinitions: PropDefinition[] = [
     description: 'Forces the host element width to match the icon size. Use in nav menus and icon lists for consistent column alignment.',
   },
 ];
+
+export const iconStoryColors: Story<'io-icon'> = {
+  state: { properties: { name: 'heart', size: 'md' } },
+  generator: () =>
+    (['primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info'] as const).map(
+      (color) => ({ tag: 'io-icon' as const, properties: { name: 'heart', size: 'md', color }, children: [] }),
+    ),
+};

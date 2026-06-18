@@ -3,9 +3,19 @@ import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 import type { IoIconName } from '../../utils/icons';
 import { getIconSvg, escapeAttr } from '../../utils/icons';
 import { getIconStyles } from './io-icon-styles';
-import type { IoIconSize } from './types';
+import type { IoIconColor, IoIconSize } from './types';
 
 const svgCache = new Map<string, string>();
+
+const COLOR_TOKEN_MAP: Record<Exclude<IoIconColor, 'inherit'>, string> = {
+  primary: 'var(--io-color-primary)',
+  'contrast-high': 'var(--io-text-primary)',
+  'contrast-medium': 'var(--io-text-secondary)',
+  success: 'var(--io-color-success)',
+  warning: 'var(--io-color-warning)',
+  error: 'var(--io-color-error)',
+  info: 'var(--io-color-info)',
+};
 
 /**
  * io-icon
@@ -37,6 +47,9 @@ export class IoIcon {
 
   /** URL of a custom SVG to render instead of the built-in registry. Overrides name. */
   @Prop() iconSource?: string;
+
+  /** Semantic color of the icon. Maps to design-system tokens. Defaults to 'inherit' (currentColor). */
+  @Prop({ reflect: true }) color: IoIconColor = 'inherit';
 
   /** Mirror the icon horizontally. Useful for explicit RTL overrides. */
   @Prop({ reflect: true }) flip = false;
@@ -77,11 +90,17 @@ export class IoIcon {
     return svg.replace('aria-hidden="true"', `role="img" aria-label="${safe}"`);
   }
 
+  private get hostStyle(): { '--io-icon-color': string } | undefined {
+    if (this.color === 'inherit') return undefined;
+    const token = COLOR_TOKEN_MAP[this.color as Exclude<IoIconColor, 'inherit'>];
+    return token ? { '--io-icon-color': token } : undefined;
+  }
+
   render() {
     if (this.iconSource) {
       if (!this.fetchedSvg) return null;
       return (
-        <Host>
+        <Host style={this.hostStyle}>
           <style>{getIconStyles()}</style>
           <span innerHTML={this.patchAria(this.fetchedSvg)} />
         </Host>
@@ -92,7 +111,7 @@ export class IoIcon {
     if (!svg) return null;
 
     return (
-      <Host>
+      <Host style={this.hostStyle}>
         <style>{getIconStyles()}</style>
         <span innerHTML={this.patchAria(svg)} />
       </Host>

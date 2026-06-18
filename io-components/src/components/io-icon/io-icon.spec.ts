@@ -89,4 +89,76 @@ describe('io-icon', () => {
     const result = (c as any).render();
     expect(result).not.toBeNull();
   });
+
+  it('defaults color to inherit', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    expect(c.color).toBe('inherit');
+  });
+
+  it('returns undefined hostStyle when color is inherit', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'inherit';
+    expect((c as any).hostStyle).toBeUndefined();
+  });
+
+  it('sets --io-icon-color to primary token when color="primary"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'primary';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-color-primary)' });
+  });
+
+  it('sets --io-icon-color to text-primary token when color="contrast-high"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'contrast-high';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-text-primary)' });
+  });
+
+  it('sets --io-icon-color to text-secondary token when color="contrast-medium"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'contrast-medium';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-text-secondary)' });
+  });
+
+  it('sets --io-icon-color to success token when color="success"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'success';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-color-success)' });
+  });
+
+  it('sets --io-icon-color to warning token when color="warning"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'warning';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-color-warning)' });
+  });
+
+  it('sets --io-icon-color to error token when color="error"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'error';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-color-error)' });
+  });
+
+  it('sets --io-icon-color to info token when color="info"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'info';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-color-info)' });
+  });
+
+  it('render does not throw for each named color', () => {
+    const colors = ['primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info', 'inherit'] as const;
+    for (const color of colors) {
+      const c = new IoIcon();
+      c.name = 'check';
+      c.color = color;
+      expect(() => (c as any).render()).not.toThrow();
+    }
+  });
 });

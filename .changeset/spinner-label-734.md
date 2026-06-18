@@ -1,6 +1,7 @@
 ---
 "@iodigital-com/components": minor
 ---
+
 feat(io-spinner): add label prop for accessible name
 
 Adds label prop (default: "Loading") wired to aria-label on host.

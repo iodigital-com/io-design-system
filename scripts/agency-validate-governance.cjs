@@ -6,8 +6,6 @@ const path = require("node:path");
 const repoRoot = process.cwd();
 const errors = [];
 const EXPECTED_AGENT_COUNT = 9;
-const EXPECTED_COPILOT_AGENT_COUNT = 12;
-const EXPECTED_COPILOT_EXTENDED_AGENT_COUNT = 14;
 
 function resolve(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -156,81 +154,6 @@ function validateCuratedJson(relativePath) {
   }
 }
 
-function validateCopilotCuratedJson(relativePath) {
-  if (!exists(relativePath)) {
-    errors.push(`Missing required file: ${relativePath}`);
-    return;
-  }
-
-  try {
-    const parsed = JSON.parse(read(relativePath));
-    if (parsed.project !== "io-design-system") {
-      errors.push(`${relativePath} must set "project" to "io-design-system".`);
-    }
-    if (parsed.target !== "github-copilot-repo-local") {
-      errors.push(`${relativePath} must set "target" to "github-copilot-repo-local".`);
-    }
-    if (!Array.isArray(parsed.agents) || parsed.agents.length !== EXPECTED_COPILOT_AGENT_COUNT) {
-      errors.push(
-        `${relativePath} must include exactly ${EXPECTED_COPILOT_AGENT_COUNT} curated Copilot agents.`,
-      );
-    }
-
-    const sources = Array.isArray(parsed.agents)
-      ? parsed.agents.map((agent) => agent.source).filter(Boolean)
-      : [];
-
-    if (sources.length !== EXPECTED_COPILOT_AGENT_COUNT) {
-      errors.push(
-        `${relativePath} must define source paths for all ${EXPECTED_COPILOT_AGENT_COUNT} Copilot agents.`,
-      );
-    }
-
-    if (new Set(sources).size !== sources.length) {
-      errors.push(`${relativePath} contains duplicate Copilot agent source paths.`);
-    }
-  } catch (error) {
-    errors.push(`${relativePath} is not valid JSON: ${error.message}`);
-  }
-}
-
-function validateCopilotExtendedCuratedJson(relativePath) {
-  if (!exists(relativePath)) {
-    errors.push(`Missing required file: ${relativePath}`);
-    return;
-  }
-
-  try {
-    const parsed = JSON.parse(read(relativePath));
-    if (parsed.project !== "io-design-system") {
-      errors.push(`${relativePath} must set "project" to "io-design-system".`);
-    }
-    if (parsed.target !== "github-copilot-repo-local-extended") {
-      errors.push(`${relativePath} must set "target" to "github-copilot-repo-local-extended".`);
-    }
-    if (!Array.isArray(parsed.agents) || parsed.agents.length !== EXPECTED_COPILOT_EXTENDED_AGENT_COUNT) {
-      errors.push(
-        `${relativePath} must include exactly ${EXPECTED_COPILOT_EXTENDED_AGENT_COUNT} extended Copilot agents.`,
-      );
-    }
-
-    const sources = Array.isArray(parsed.agents)
-      ? parsed.agents.map((agent) => agent.source).filter(Boolean)
-      : [];
-
-    if (sources.length !== EXPECTED_COPILOT_EXTENDED_AGENT_COUNT) {
-      errors.push(
-        `${relativePath} must define source paths for all ${EXPECTED_COPILOT_EXTENDED_AGENT_COUNT} extended Copilot agents.`,
-      );
-    }
-
-    if (new Set(sources).size !== sources.length) {
-      errors.push(`${relativePath} contains duplicate extended Copilot agent source paths.`);
-    }
-  } catch (error) {
-    errors.push(`${relativePath} is not valid JSON: ${error.message}`);
-  }
-}
 
 // Required governance files
 requireFile("scripts/check-token-runtime-reconciliation.cjs");
@@ -246,12 +169,14 @@ requireFile("docs/style-literal-allowlist.json");
 requireFile("docs/storefront-status-governance.md");
 requireFile("docs/component-stability-recommendations.md");
 
+// Claude Code agent manifest — curated agents installed via npm run agents:install:claude
+validateCuratedJson("docs/agency-agents/curated-io-design-system.json");
+
 // Deprecated paths must be removed
 // Note: .claude/ is excluded — it is the Claude Code CLI tooling directory (images, worktrees, settings).
 requirePathAbsent(".agent");
 requirePathAbsent(".codex");
 requirePathAbsent(".gemini");
-requirePathAbsent("CLAUDE.md");
 requirePathAbsent("design-system");
 
 // Workspace topology + scripts
@@ -293,8 +218,8 @@ requireText("scripts/sync-stencil-assets.cjs", [
   "'stencil'",
 ]);
 
-// Governance docs presence
-requireText("AGENTS.md", [
+// Governance docs presence — Claude Code is primary AI; CLAUDE.md is the authoritative instructions file
+requireText("CLAUDE.md", [
   "npm run governance:check",
   "npm run build:quality-gates",
 ]);

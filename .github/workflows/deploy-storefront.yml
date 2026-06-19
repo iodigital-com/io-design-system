@@ -1,0 +1,73 @@
+name: Deploy Storefront
+
+# Rebuild and redeploy the storefront to Firebase Hosting whenever
+# io-components/CHANGELOG.md changes on main — which happens automatically
+# when the Changesets release PR (#671 pattern) is merged.
+#
+# Also runs on workflow_dispatch for manual redeployments.
+#
+# Required secrets:
+#   FIREBASE_SERVICE_ACCOUNT — Service account JSON with Firebase Hosting
+#   deploy permission for the io-design-system-showcase project.
+#   Generate via: firebase init hosting (choose Service Account) or
+#   https://console.firebase.google.com → Project Settings → Service Accounts.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'io-components/CHANGELOG.md'
+      - 'io-storefront/**'
+      - 'io-components/src/**'
+      - 'io-components/package.json'
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deploy target
+        type: choice
+        required: true
+        default: production
+        options:
+          - production
+
+concurrency:
+  group: deploy-storefront
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build + deploy storefront
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build components (generates types + Stencil assets)
+        run: npm run build:components
+
+      - name: Sync Stencil assets to storefront
+        run: node scripts/sync-stencil-assets.cjs
+
+      - name: Build storefront (static export)
+        run: npm run build:storefront
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: io-design-system-showcase
+          target: ''
+          entryPoint: io-storefront

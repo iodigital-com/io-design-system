@@ -31,6 +31,9 @@ declare module 'react' {
   'io-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoIconElement>, HTMLIoIconElement> & Partial<StencilJSX.IoIcon>;
   'io-inline-notification': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInlineNotificationElement>, HTMLIoInlineNotificationElement> & Partial<StencilJSX.IoInlineNotification>;
   'io-input': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputElement>, HTMLIoInputElement> & Partial<StencilJSX.IoInput>;
+  'io-input-date': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputDateElement>, HTMLIoInputDateElement> & Partial<StencilJSX.IoInputDate>;
+  'io-input-password': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputPasswordElement>, HTMLIoInputPasswordElement> & Partial<StencilJSX.IoInputPassword>;
+  'io-input-search': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputSearchElement>, HTMLIoInputSearchElement> & Partial<StencilJSX.IoInputSearch>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
   'io-multi-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoMultiSelectElement>, HTMLIoMultiSelectElement> & Partial<StencilJSX.IoMultiSelect>;

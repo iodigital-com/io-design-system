@@ -31,7 +31,9 @@ io-components-angular/src/directives/index.ts
 design-system/
 prompts/
 issues/
-.claude/
+.claude/*
+!.claude/agents/
+!.claude/agents/*.md
 .claire/
 .continue/
 

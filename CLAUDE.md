@@ -341,15 +341,45 @@ The `.changeset/*.md` file must be committed alongside the code. On merge to `ma
 
 ## AI Agents (Claude)
 
-This project uses 45 project-local Claude agents from the [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) registry, filtered and tailored to io-DS roles (engineering, design, testing, product, project-management).
+Two-layer agent system:
 
-Agents live in `.claude/agents/` (gitignored — each developer installs locally):
+**Layer 1 — Project-specific agents** (committed to `.claude/agents/`, always available):
+
+| Agent | Model | Use for |
+|---|---|---|
+| `io-component-author` | sonnet | New Stencil component, FACE implementation, major feature |
+| `io-storefront-author` | sonnet | 5-tab storefront pages, stories spec, configurator |
+| `io-code-reviewer` | sonnet | PR review, anti-pattern audit, pre-merge check |
+| `io-a11y-auditor` | opus | WCAG AA audit, ARIA review, keyboard/screen-reader check |
+| `io-minimal-change` | haiku | Surgical fix, single prop add, mechanical rename |
+| `io-reality-checker` | sonnet | Ship-readiness gate — defaults to NEEDS WORK |
+| `io-wave-implementor` | sonnet | Full wave: issue → branch → implement → PR → fix loop |
+
+**Layer 2 — Registry agents** (install once with `npm run agents:install:claude`):
 
 ```bash
-npm run agents:install:claude   # Clone agency-agents and install filtered set to .claude/agents/
+npm run agents:install:claude   # Fetch 9 curated agents from msitarzewski/agency-agents
 ```
 
-Agent categories: engineering (frontend, code review, security, devops, git workflow, minimal-change, rapid-prototyper, technical writer, SRE, software architect) · design (UI, UX, brand, a11y visuals) · testing (accessibility auditor, reality checker, evidence collector, API tester) · product (PM, sprint, feedback, trends) · project management (project shepherd, Jira steward).
+Curated registry manifest: `docs/agency-agents/curated-io-design-system.json`.
+Covers: frontend engineer, code reviewer, software architect, minimal-change engineer,
+technical writer, git workflow, accessibility auditor, reality checker, UX architect.
+
+**Model cost tiers:**
+- `haiku` — search, grep, read-only inspection, surgical 1-file fixes
+- `sonnet` — component authoring, storefront pages, spec writing, code review, changeset creation
+- `opus` — WCAG audit, security review, architecture decisions, complex FACE logic
+
+**Prompt enhancement:** Every project-specific agent has a "Prompt enhancement" section that
+instructs it to internally expand requests, consider edge cases, and invoke sub-agents before
+acting. This happens silently — agents never narrate their expansion, they just act on it.
+
+**Agent routing guide** (when in doubt):
+- New component from scratch → `io-wave-implementor` orchestrates all sub-agents
+- Single component feature → `io-component-author`
+- Bug fix ≤ 3 files → `io-minimal-change`
+- After any implementation → `io-code-reviewer` + `io-a11y-auditor`
+- Before merging → `io-reality-checker`
 
 ## Commit Messages
 

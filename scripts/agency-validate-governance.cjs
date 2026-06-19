@@ -169,6 +169,9 @@ requireFile("docs/style-literal-allowlist.json");
 requireFile("docs/storefront-status-governance.md");
 requireFile("docs/component-stability-recommendations.md");
 
+// Claude Code agent manifest — curated agents installed via npm run agents:install:claude
+validateCuratedJson("docs/agency-agents/curated-io-design-system.json");
+
 // Deprecated paths must be removed
 // Note: .claude/ is excluded — it is the Claude Code CLI tooling directory (images, worktrees, settings).
 requirePathAbsent(".agent");

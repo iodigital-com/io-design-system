@@ -1,0 +1,42 @@
+{
+  "project": "io-design-system",
+  "description": "Curated Claude Code agents from msitarzewski/agency-agents for io-design-system. Install with: npm run agents:install:claude",
+  "agents": [
+    {
+      "source": "engineering/engineering-frontend-developer.md",
+      "role": "General Stencil/TypeScript/Next.js implementation outside io-DS-specific patterns"
+    },
+    {
+      "source": "engineering/engineering-code-reviewer.md",
+      "role": "General code review when io-code-reviewer is not specific enough"
+    },
+    {
+      "source": "engineering/engineering-software-architect.md",
+      "role": "Cross-package API design, wrapper contracts, architectural trade-offs"
+    },
+    {
+      "source": "engineering/engineering-minimal-change-engineer.md",
+      "role": "Surgical fixes — touch minimum lines, refuse scope creep"
+    },
+    {
+      "source": "engineering/engineering-technical-writer.md",
+      "role": "CONTRIBUTING.md, README, API docs, storefront prose"
+    },
+    {
+      "source": "engineering/engineering-git-workflow-master.md",
+      "role": "Branch strategy, rebase, conventional commits, changeset workflow"
+    },
+    {
+      "source": "testing/testing-accessibility-auditor.md",
+      "role": "Deep WCAG audit when io-a11y-auditor needs a second opinion"
+    },
+    {
+      "source": "testing/testing-reality-checker.md",
+      "role": "Ship-readiness gate — evidence-based, defaults to NEEDS WORK"
+    },
+    {
+      "source": "design/design-ux-architect.md",
+      "role": "Component UX decisions, interaction patterns, API shape trade-offs"
+    }
+  ]
+}

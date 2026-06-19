@@ -160,7 +160,7 @@ describe('io-button — FACE: formResetCallback', () => {
 function makeImplicitSubmitSetup(type: 'submit' | 'button' | 'reset' = 'submit', hrefOverride?: string) {
   const form = document.createElement('form');
   const requestSubmit = vi.fn();
-  form.requestSubmit = requestSubmit;
+  Object.defineProperty(form, 'requestSubmit', { value: requestSubmit, writable: true, configurable: true });
 
   const el = document.createElement('io-button');
   el.setAttribute('type', type);
@@ -366,6 +366,25 @@ describe('io-button — implicit form submission: handler behaviour', () => {
   it('does not call requestSubmit when button is loading', () => {
     const { c, handler, textInput, requestSubmit } = setup();
     c.loading = true;
+    const ev = makeKeyEvent('Enter', textInput);
+    handler(ev);
+    expect(requestSubmit).not.toHaveBeenCalled();
+  });
+
+  it('does not call requestSubmit when a native submit button precedes io-button', () => {
+    const { c, form, requestSubmit } = makeImplicitSubmitSetup('submit');
+    (c as any).componentDidLoad();
+    const handler = (c as any)._implicitSubmitHandler as (ev: KeyboardEvent) => void;
+
+    // Insert a native submit button before the io-button
+    const nativeBtn = document.createElement('button');
+    nativeBtn.type = 'submit';
+    form.insertBefore(nativeBtn, (c as any).el);
+
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    form.appendChild(textInput);
+
     const ev = makeKeyEvent('Enter', textInput);
     handler(ev);
     expect(requestSubmit).not.toHaveBeenCalled();

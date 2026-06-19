@@ -252,15 +252,26 @@ export class IoButton {
       if (target.tagName !== 'INPUT') return;
       const nonTextTypes = ['submit', 'reset', 'button', 'checkbox', 'radio', 'file', 'image', 'range', 'color'];
       if (nonTextTypes.includes(target.type)) return;
-      // Only the first io-button with type="submit" in the form triggers submission.
-      // Check the JS property first (programmatic assignment), then the DOM attribute
-      // (HTML markup) — type prop is not reflected so both paths are needed.
-      const submitButtons = Array.from(form.querySelectorAll('io-button'));
-      const first = submitButtons.find((btn) => {
+      // Find the first eligible submit control in document order across both native
+      // controls (form.elements) and io-button DOM descendants (querySelectorAll).
+      // This prevents overriding native implicit submission when a native submit
+      // button precedes this io-button, and handles the standard case correctly.
+      const nativeSubmitters = Array.from(form.elements).filter((el) => {
+        const tag = el.tagName.toLowerCase();
+        return (
+          (tag === 'button' || tag === 'input') &&
+          (el as HTMLButtonElement | HTMLInputElement).type === 'submit'
+        );
+      });
+      const ioSubmitBtns = Array.from(form.querySelectorAll('io-button')).filter((btn) => {
         const el = btn as HTMLElement & { type?: string };
         return el.type === 'submit' || el.getAttribute('type') === 'submit';
       });
-      if (first !== this.el) return;
+      const allSubmitters = [...nativeSubmitters, ...ioSubmitBtns].sort((a, b) => {
+        const pos = a.compareDocumentPosition(b);
+        return pos & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : pos & Node.DOCUMENT_POSITION_PRECEDING ? 1 : 0;
+      });
+      if (allSubmitters[0] !== this.el) return;
       ev.preventDefault();
       if (!this.disabled && !this.loading) {
         form.requestSubmit();

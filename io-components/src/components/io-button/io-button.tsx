@@ -149,6 +149,8 @@ export class IoButton {
   private hasWarnedIconOnlyLabel = false;
   private btnEl?: HTMLElement;
   private readonly loadingId: string;
+  private _implicitSubmitHandler?: (ev: KeyboardEvent) => void;
+  private _implicitSubmitForm?: HTMLFormElement;
 
   /** True once `loading` has transitioned to true at least once after mount. Guards live-region announcement. */
   @State() private loadingTransitioned = false;
@@ -182,8 +184,16 @@ export class IoButton {
     }
   }
 
+  componentDidLoad(): void {
+    this.attachImplicitSubmitListener();
+  }
+
   componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
     return newVal !== oldVal;
+  }
+
+  disconnectedCallback(): void {
+    this.detachImplicitSubmitListener();
   }
 
   // ── Watchers ─────────────────────────────────────────────────
@@ -205,10 +215,77 @@ export class IoButton {
     applyAriaProp(this.aria, this.btnEl ?? null);
   }
 
+  @Watch('type')
+  onTypeChange(): void {
+    this.detachImplicitSubmitListener();
+    this.attachImplicitSubmitListener();
+  }
+
+  @Watch('href')
+  onHrefChange(): void {
+    this.detachImplicitSubmitListener();
+    this.attachImplicitSubmitListener();
+  }
+
   // ── Form callbacks ───────────────────────────────────────────
 
   formResetCallback(): void {
     // Buttons have no user-controlled state to reset.
+  }
+
+  formAssociatedCallback(_form: HTMLFormElement | null): void {
+    this.detachImplicitSubmitListener();
+    this.attachImplicitSubmitListener();
+  }
+
+  // ── Implicit form submission (Enter key in sibling inputs) ───
+
+  private attachImplicitSubmitListener(): void {
+    if (this.href || this.type !== 'submit') return;
+    const form = this.internals?.form;
+    if (!form) return;
+    this._implicitSubmitForm = form;
+    this._implicitSubmitHandler = (ev: KeyboardEvent) => {
+      if (ev.key !== 'Enter' || ev.isComposing || ev.defaultPrevented) return;
+      const target = ev.target as HTMLInputElement;
+      // Only intercept text-like inputs — textarea Enter inserts a newline, not a submit
+      if (target.tagName !== 'INPUT') return;
+      const nonTextTypes = ['submit', 'reset', 'button', 'checkbox', 'radio', 'file', 'image', 'range', 'color'];
+      if (nonTextTypes.includes(target.type)) return;
+      // Find the first eligible submit control in document order across both native
+      // controls (form.elements) and io-button DOM descendants (querySelectorAll).
+      // This prevents overriding native implicit submission when a native submit
+      // button precedes this io-button, and handles the standard case correctly.
+      const nativeSubmitters = Array.from(form.elements).filter((el) => {
+        const tag = el.tagName.toLowerCase();
+        return (
+          (tag === 'button' || tag === 'input') &&
+          (el as HTMLButtonElement | HTMLInputElement).type === 'submit'
+        );
+      });
+      const ioSubmitBtns = Array.from(form.querySelectorAll('io-button')).filter((btn) => {
+        const el = btn as HTMLElement & { type?: string };
+        return el.type === 'submit' || el.getAttribute('type') === 'submit';
+      });
+      const allSubmitters = [...nativeSubmitters, ...ioSubmitBtns].sort((a, b) => {
+        const pos = a.compareDocumentPosition(b);
+        return pos & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : pos & Node.DOCUMENT_POSITION_PRECEDING ? 1 : 0;
+      });
+      if (allSubmitters[0] !== this.el) return;
+      ev.preventDefault();
+      if (!this.disabled && !this.loading) {
+        form.requestSubmit();
+      }
+    };
+    this._implicitSubmitForm.addEventListener('keydown', this._implicitSubmitHandler);
+  }
+
+  private detachImplicitSubmitListener(): void {
+    if (this._implicitSubmitForm && this._implicitSubmitHandler) {
+      this._implicitSubmitForm.removeEventListener('keydown', this._implicitSubmitHandler);
+    }
+    this._implicitSubmitHandler = undefined;
+    this._implicitSubmitForm = undefined;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

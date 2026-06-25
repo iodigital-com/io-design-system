@@ -81,6 +81,14 @@ export class IoLink {
     inner?.focus(options);
   }
 
+  // ── Lifecycle ────────────────────────────────────────────────
+
+  componentWillLoad() {
+    if (!this.href && !this.disabled) {
+      console.error('[io-link] `href` prop is required when disabled is false. A link without a valid href and not disabled is not keyboard-focusable and may render as an anchor with no destination (WCAG 4.1.2).');
+    }
+  }
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleClick = (ev: MouseEvent) => {

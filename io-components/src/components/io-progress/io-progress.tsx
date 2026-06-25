@@ -1,4 +1,4 @@
-import { Component, Prop, Host, h } from '@stencil/core';
+import { Component, Prop, Host, Element, h } from '@stencil/core';
 
 import { getProgressStyles } from './io-progress-styles';
 import {
@@ -24,6 +24,8 @@ import type { IoProgressColor, IoProgressSize } from './types';
   shadow: true,
 })
 export class IoProgress {
+  @Element() el!: HTMLElement;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /** Progress value from 0 to 100 (or min-max range if supplied). */
@@ -61,6 +63,16 @@ export class IoProgress {
 
   /** When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec. */
   @Prop({ reflect: true }) indeterminate = false;
+
+  // ── Lifecycle ────────────────────────────────────────────────
+
+  componentWillLoad() {
+    const hasHostAriaLabel = this.el.getAttribute('aria-label')?.trim();
+    const hasHostAriaLabelledBy = this.el.getAttribute('aria-labelledby')?.trim();
+    if (!this.label && !this.labelledBy && !hasHostAriaLabel && !hasHostAriaLabelledBy) {
+      console.error('[io-progress] A progressbar requires an accessible name for WCAG 4.1.2. Provide `label` or `labelledBy` prop, or set `aria-label`/`aria-labelledby` directly on the host element.');
+    }
+  }
 
   // ── Render ───────────────────────────────────────────────────
 

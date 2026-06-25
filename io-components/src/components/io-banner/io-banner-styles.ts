@@ -110,8 +110,8 @@ export function getBannerStyles(): string {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: var(--io-space-6);
-      min-height: var(--io-space-6);
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
       padding: 0;
       background: transparent;
       border: none;

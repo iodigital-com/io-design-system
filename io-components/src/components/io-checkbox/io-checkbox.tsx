@@ -170,6 +170,15 @@ export class IoCheckbox {
     this.syncFormValue();
   }
 
+  @Watch('indeterminate')
+  onIndeterminateChange() {
+    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (nativeInput) {
+      nativeInput.indeterminate = this.indeterminate;
+    }
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
     // Indeterminate state does not affect form value or validity — only checked/unchecked matters.

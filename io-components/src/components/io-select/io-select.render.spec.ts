@@ -617,7 +617,7 @@ describe('io-select renderComboboxOption — multiple mode checkboxes', () => {
     expect(() => (c as any).renderComboboxOption(opt, 0)).not.toThrow();
   });
 
-  it('renders aria-checked attribute in multiple mode', () => {
+  it('renders aria-selected attribute in multiple mode', () => {
     const c = makeSelect({ custom: true, multiple: true });
     (c as any).selectedValues = ['a'];
     const opt = { value: 'a', label: 'Alpha' };

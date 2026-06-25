@@ -129,3 +129,11 @@ describe('io-toast-item — action CTA', () => {
     expect(styles).toContain('.toast__action');
   });
 });
+
+describe('io-toast-item — close button touch target (WCAG 2.5.8)', () => {
+  it('close button styles include touch-target-min token', () => {
+    const styles = getToastItemStyles('neutral');
+    expect(styles).toContain('--io-touch-target-min');
+    expect(styles).toContain('.toast__close');
+  });
+});

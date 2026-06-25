@@ -223,6 +223,42 @@ describe('io-button-group — componentDidLoad parsing', () => {
   });
 });
 
+describe('io-button-group — componentWillLoad console.warn', () => {
+  let warnSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  it('fires console.warn when label is absent', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    comp.label = undefined;
+
+    comp.componentWillLoad();
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('[io-button-group] A "label" prop is required'),
+    );
+  });
+
+  it('does not fire console.warn when label is present', () => {
+    const comp = new IoButtonGroup();
+    (comp as any).el = document.createElement('io-button-group');
+    (comp as any).change = { emit: vi.fn() };
+    comp.label = 'View period';
+
+    comp.componentWillLoad();
+
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+});
+
 describe('io-button-group — @Watch handlers', () => {
   it('onValueChange calls initFocusIndex (updates focusIndex)', () => {
     const host = document.createElement('io-button-group');

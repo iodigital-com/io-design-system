@@ -10,20 +10,31 @@ export default function IoStepperAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="io-stepper is a progress indicator, not an interactive widget. It does not capture keyboard input and does not require keyboard navigation between steps."
+          description="io-stepper is an interactive navigation component. Every step renders a native button element. Complete steps are keyboard-activatable and fire the stepChange event."
         />
         <KeyboardTable
           rows={[
             {
               key: <Kbd>Tab</Kbd>,
-              action: 'Focus passes through the stepper to the next focusable element. The stepper itself is not a focusable interactive control.',
+              action: 'Move focus to the next step button. All steps (complete, current, and upcoming) are in the tab sequence — upcoming and disabled steps render with aria-disabled="true" but remain focusable.',
+            },
+            {
+              key: <span className="flex items-center gap-1"><Kbd>Shift</Kbd><span style={{ color: 'var(--io-text-muted)' }}>+</span><Kbd>Tab</Kbd></span>,
+              action: 'Move focus to the previous step button.',
+            },
+            {
+              key: <span className="flex items-center gap-1"><Kbd>Enter</Kbd><span style={{ color: 'var(--io-text-muted)' }}>/</span><Kbd>Space</Kbd></span>,
+              action: 'Activate a focused complete step. Fires the stepChange event so the application can navigate backward to that step. Has no effect on current, upcoming, or disabled steps.',
             },
           ]}
         />
-        <RuleCard label="Navigation is handled externally">
-          Advancement between steps is driven by your application logic (e.g. a &ldquo;Next&rdquo; button that increments the
-          <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>current</code> prop).
-          The stepper component itself is a visual progress indicator only.
+        <RuleCard label="Back-navigation via complete steps">
+          Clicking or activating a complete step fires <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>stepChange</code> with
+          the 0-based index of the selected step. Handle this event to navigate the user back to a previous step in your application flow.
+        </RuleCard>
+        <RuleCard label="Upcoming steps are non-activatable">
+          Upcoming and disabled steps render with <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-disabled=&quot;true&quot;</code> on
+          the button. They are intentionally kept in the tab sequence so keyboard users can discover all steps; activation is suppressed.
         </RuleCard>
       </section>
 
@@ -79,6 +90,12 @@ export default function IoStepperAccessibilityPage() {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <ComplianceCard
+            criterion="2.1.1"
+            level="A"
+            title="Keyboard"
+            note="All step buttons are keyboard-operable. Complete steps activate with Enter or Space and fire stepChange. Upcoming and disabled steps are reachable via Tab but activation is suppressed via aria-disabled."
+          />
+          <ComplianceCard
             criterion="1.3.1"
             level="A"
             title="Info and Relationships"
@@ -117,6 +134,11 @@ export default function IoStepperAccessibilityPage() {
           title="Best practices"
           description="Guidelines for building inclusive stepper experiences."
         />
+        <RuleCard label="Handle stepChange for back-navigation">
+          Listen to <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>stepChange</code> and
+          update your form state to navigate back to the selected step. Move focus to the step&apos;s associated
+          content region after the navigation so keyboard and screen reader users land in the right place.
+        </RuleCard>
         <RuleCard label="Keep one stepper per page">
           Multiple steppers on the same page can confuse users navigating by landmarks. If you need multiple progress
           indicators, consider using separate pages or a different pattern (e.g. a progress bar).

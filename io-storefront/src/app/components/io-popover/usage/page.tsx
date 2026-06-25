@@ -94,13 +94,10 @@ export default function IoPopoverUsagePage() {
         />
         <div className="space-y-3">
           <RuleCard label="Preferred placement">
-            Set <C>placement</C> to <C>top</C>, <C>bottom</C>, <C>left</C>, <C>right</C>, or <C>auto</C>. The component uses this as the preferred direction but overrides it automatically when the panel would overflow the viewport.
-          </RuleCard>
-          <RuleCard label="Automatic fallback">
-            When the preferred placement causes overflow, the component computes a fallback position using viewport coordinates from <C>getBoundingClientRect()</C>. No external positioning library is required.
+            Set <C>placement</C> to <C>top</C>, <C>bottom</C>, <C>left</C>, <C>right</C>, or <C>auto</C>. The component positions the panel relative to the trigger using viewport coordinates from <C>getBoundingClientRect()</C>. No external positioning library is required.
           </RuleCard>
           <RuleCard label="auto placement">
-            When set to <C>auto</C>, the component picks the direction with the most available space relative to the trigger at the time of opening. Prefer <C>auto</C> in constrained layouts or when the trigger position changes dynamically.
+            When set to <C>auto</C>, the panel opens below the trigger (equivalent to <C>placement=&quot;bottom&quot;</C>). Use an explicit placement value (<C>top</C>, <C>left</C>, <C>right</C>) when you need directional control in constrained layouts.
           </RuleCard>
           <RuleCard label="Fixed positioning">
             The panel uses <C>position: fixed</C> so it escapes overflow-hidden containers and sticky headers. This means it scrolls with the viewport, not with the page — the panel stays pinned to the trigger area until dismissed.

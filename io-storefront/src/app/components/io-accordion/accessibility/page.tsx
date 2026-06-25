@@ -58,7 +58,7 @@ export default function IoAccordionAccessibilityPage() {
             {
               attribute: 'aria-disabled',
               value: '<button>: "true" when disabled',
-              description: 'Set on the trigger button when the disabled prop is true. Screen readers announce the trigger as unavailable. The trigger remains in the tab sequence — aria-disabled does not remove elements from focus order. Users can still Tab to a disabled trigger but activation is blocked.',
+              description: 'Set on the trigger button when the disabled prop is true. Screen readers announce the trigger as unavailable. The native disabled attribute is NOT applied — the button intentionally remains in the tab sequence so keyboard users can discover it and understand it is unavailable. This is the recommended ARIA Authoring Practices Guide pattern for disclosed content.',
             },
           ]}
         />

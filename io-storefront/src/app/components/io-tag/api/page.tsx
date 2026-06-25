@@ -53,10 +53,24 @@ export default function IoTagApiPage() {
             [
               <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>&apos;default&apos;</InlineCode>{' | '}<InlineCode>&apos;blue&apos;</InlineCode>{' | '}<InlineCode>&apos;beige&apos;</InlineCode>
+                <InlineCode>IoTagColor</InlineCode>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(10 values)</span>
               </span>,
               <InlineCode key="d">&apos;default&apos;</InlineCode>,
-              'Colour palette applied to the tag background and text. Use consistently within a tag group to convey category or semantic meaning.',
+              <span key="desc">
+                Colour palette applied to the tag background and text. One of:{' '}
+                <InlineCode>default</InlineCode>{' '}
+                <InlineCode>blue</InlineCode>{' '}
+                <InlineCode>beige</InlineCode>{' '}
+                <InlineCode>dark</InlineCode>{' '}
+                <InlineCode>orange</InlineCode>{' '}
+                <InlineCode>rouge</InlineCode>{' '}
+                <InlineCode>success</InlineCode>{' '}
+                <InlineCode>warning</InlineCode>{' '}
+                <InlineCode>error</InlineCode>{' '}
+                <InlineCode>outline</InlineCode>.
+                Use semantic status colors (<InlineCode>success</InlineCode>, <InlineCode>warning</InlineCode>, <InlineCode>error</InlineCode>) with a visible label to avoid conveying state through colour alone.
+              </span>,
             ],
           ]}
         />

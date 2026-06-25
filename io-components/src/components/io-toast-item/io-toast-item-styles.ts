@@ -90,6 +90,8 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       justify-content: center;
       width: var(--io-toast-item-close-size);
       height: var(--io-toast-item-close-size);
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
       border: none;
       background: transparent;
       color: var(--io-text-secondary);

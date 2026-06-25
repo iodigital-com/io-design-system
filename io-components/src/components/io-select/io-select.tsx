@@ -585,7 +585,6 @@ export class IoSelect {
         role="option"
         aria-selected={String(sel)}
         aria-disabled={opt.disabled ? 'true' : undefined}
-        aria-checked={multiple ? String(sel) : undefined}
         class={getComboboxOptionClass(sel, opt.disabled ?? false, flatIndex === activeIndex, multiple)}
         onClick={opt.disabled ? undefined : () => this.selectOption(opt)}
       >

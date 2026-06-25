@@ -617,11 +617,16 @@ describe('io-select renderComboboxOption — multiple mode checkboxes', () => {
     expect(() => (c as any).renderComboboxOption(opt, 0)).not.toThrow();
   });
 
-  it('renders aria-checked attribute in multiple mode', () => {
+  it('renders aria-selected and not aria-checked in multiple mode', () => {
     const c = makeSelect({ custom: true, multiple: true });
     (c as any).selectedValues = ['a'];
     const opt = { value: 'a', label: 'Alpha' };
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
     expect(() => (c as any).renderComboboxOption(opt, 0)).not.toThrow();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const allProps = calls.flatMap(([, attrs]) => (attrs ? Object.keys(attrs) : []));
+    expect(allProps).not.toContain('aria-checked');
   });
 
   it('does not render single-mode check span in multiple mode', () => {

@@ -97,6 +97,9 @@ export class IoButtonGroup {
 
   componentWillLoad() {
     this.labelId = `io-button-group-label-${++_labelIdCounter}`;
+    if (!this.label) {
+      console.error('[io-button-group] A "label" prop is required for accessibility. The group has no accessible name.');
+    }
   }
 
   componentDidLoad() {

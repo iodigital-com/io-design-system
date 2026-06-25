@@ -40,8 +40,8 @@ describe('io-badge - default props and render contract', () => {
     expect(component.ariaLabel).toBe('New feature');
   });
 
-  it('stores ariaLabel as null when not provided', () => {
+  it('stores ariaLabel as undefined when not provided', () => {
     const component = new IoBadge();
-    expect(component.ariaLabel).toBeNull();
+    expect(component.ariaLabel).toBeUndefined();
   });
 });

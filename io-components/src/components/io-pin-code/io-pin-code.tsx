@@ -352,6 +352,7 @@ export class IoPinCode {
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
         aria-disabled={disabled ? 'true' : undefined}
+        aria-required={required ? 'true' : undefined}
       >
         <style>{getPinCodeStyles()}</style>
 

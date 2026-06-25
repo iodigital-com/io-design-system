@@ -4,6 +4,7 @@
  * Covers: syncFormValue, formResetCallback, checkValidity, reportValidity
  */
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoPinCode } from './io-pin-code';
 
@@ -209,29 +210,53 @@ describe('io-pin-code — FACE: blur event emission', () => {
 });
 
 describe('io-pin-code — FACE: faceError render (#814)', () => {
-  it('showFaceError is true when faceInvalid=true and message is absent', () => {
+  it('renders FACE error paragraph with role="alert" when faceInvalid=true and message absent', () => {
     const component = makeComponent('', true);
     (component as any).internals = makeInternals();
     (component as any).faceInvalid = true;
     component.message = undefined;
-    // render should not throw when showFaceError is true
-    expect(() => (component as any).render()).not.toThrow();
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const errorP = calls.find(([tag, attrs]) => tag === 'p' && attrs?.['role'] === 'alert');
+    expect(errorP).toBeDefined();
   });
 
-  it('render does not throw when faceInvalid=false and message is absent', () => {
+  it('aria-describedby on pin-code slots references faceErrorId when showFaceError', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).faceInvalid = true;
+    component.message = undefined;
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const slotsDiv = calls.find(([tag, attrs]) => tag === 'div' && typeof attrs?.['aria-describedby'] === 'string' && (attrs['aria-describedby'] as string).includes('face-error'));
+    expect(slotsDiv).toBeDefined();
+  });
+
+  it('does not render FACE error paragraph when faceInvalid=false', () => {
     const component = makeComponent('', true);
     (component as any).internals = makeInternals();
     (component as any).faceInvalid = false;
     component.message = undefined;
-    expect(() => (component as any).render()).not.toThrow();
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const errorP = calls.find(([tag, attrs]) => tag === 'p' && attrs?.['role'] === 'alert');
+    expect(errorP).toBeUndefined();
   });
 
-  it('render does not throw when both faceInvalid=true and message are set', () => {
+  it('does not render FACE error paragraph when message is set (prop error shows instead)', () => {
     const component = makeComponent('', true);
     (component as any).internals = makeInternals();
     (component as any).faceInvalid = true;
     component.message = 'Custom error';
-    expect(() => (component as any).render()).not.toThrow();
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    // When message is set, faceError paragraph is suppressed; message paragraph renders instead
+    const faceErrorPs = calls.filter(([tag, attrs]) => tag === 'p' && attrs?.['role'] === 'alert' && typeof attrs?.['id'] === 'string' && (attrs['id'] as string).includes('face-error'));
+    expect(faceErrorPs).toHaveLength(0);
   });
 });
 

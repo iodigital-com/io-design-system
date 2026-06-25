@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoProgress } from './io-progress';
 import { computePercentage } from './io-progress-utils';
@@ -138,18 +139,35 @@ describe('io-progress — render stability', () => {
 });
 
 describe('io-progress — indeterminate live region (#813)', () => {
-  it('does not throw when indeterminate=true', () => {
+  it('renders span with role="status" and aria-live="polite" when indeterminate', () => {
     const component = new IoProgress();
     component.indeterminate = true;
-    expect(() => component.render()).not.toThrow();
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const statusSpan = calls.find(([tag, attrs]) => tag === 'span' && attrs?.['role'] === 'status' && attrs?.['aria-live'] === 'polite');
+    expect(statusSpan).toBeDefined();
   });
 
-  it('valueText prop is accessible when set', () => {
+  it('live region renders fallback text "Loading…" when valueText is absent', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const statusSpan = calls.find(([tag, attrs]) => tag === 'span' && attrs?.['role'] === 'status');
+    expect(statusSpan?.[2]).toBe('Loading…');
+  });
+
+  it('live region renders provided valueText when set', () => {
     const component = new IoProgress();
     component.indeterminate = true;
     component.valueText = 'Processing…';
-    expect(component.valueText).toBe('Processing…');
-    expect(() => component.render()).not.toThrow();
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const statusSpan = calls.find(([tag, attrs]) => tag === 'span' && attrs?.['role'] === 'status');
+    expect(statusSpan?.[2]).toBe('Processing…');
   });
 });
 

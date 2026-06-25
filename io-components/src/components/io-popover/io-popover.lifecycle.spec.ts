@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import * as utils from './io-popover-utils';
 import { IoPopover } from './io-popover';
@@ -789,12 +790,14 @@ describe('io-popover — render()', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('renders aria-label on panel when ariaLabel is set and label is absent (#788)', () => {
+  it('renders aria-label on panel dialog div when ariaLabel is set and label is absent (#788)', () => {
     const c = makePopover();
     c.label = undefined;
     c.ariaLabel = 'Filter panel';
+    (h as ReturnType<typeof vi.fn>).mockClear();
     (c as any).render();
-    // Verify render does not throw and ariaLabel prop is accessible
-    expect(c.ariaLabel).toBe('Filter panel');
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const panelCall = calls.find(([tag, attrs]) => tag === 'div' && attrs?.['role'] === 'dialog' && attrs?.['aria-label'] === 'Filter panel');
+    expect(panelCall).toBeDefined();
   });
 });

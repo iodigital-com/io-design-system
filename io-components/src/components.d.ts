@@ -1904,6 +1904,10 @@ export namespace Components {
      */
     interface IoPopover {
         /**
+          * Accessible name for the popover dialog panel when `label` prop is not used.
+         */
+        "ariaLabel": string | undefined;
+        /**
           * Close the popover when clicking outside the panel
           * @default true
          */
@@ -2223,6 +2227,15 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label": string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name": string | undefined;
@@ -2356,8 +2369,9 @@ export namespace Components {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -4366,8 +4380,9 @@ declare global {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -6843,6 +6858,10 @@ declare namespace LocalJSX {
      */
     interface IoPopover {
         /**
+          * Accessible name for the popover dialog panel when `label` prop is not used.
+         */
+        "ariaLabel"?: string | undefined;
+        /**
           * Close the popover when clicking outside the panel
           * @default true
          */
@@ -7170,6 +7189,15 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label"?: string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name"?: string | undefined;
@@ -7311,8 +7339,9 @@ declare namespace LocalJSX {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -8540,6 +8569,7 @@ declare namespace LocalJSX {
         "closeOnClickOutside": boolean;
         "label": string;
         "description": string | undefined;
+        "ariaLabel": string | undefined;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -8596,6 +8626,8 @@ declare namespace LocalJSX {
     interface IoSegmentedControlAttributes {
         "value": string | undefined;
         "name": string | undefined;
+        "label": string | undefined;
+        "hideLabel": boolean;
         "disabled": boolean;
     }
     interface IoSelectAttributes {
@@ -9329,8 +9361,9 @@ declare module "@stencil/core" {
              * Bottom sheet overlay that slides up from the bottom of the viewport.
              * Use for contextual actions, confirmations, and secondary content that
              * needs more prominence than a popover but less than a full-screen modal.
-             * Focus trap uses document.activeElement — works for both Shadow DOM and
-             * slotted light-DOM children.
+             * Focus trap uses document.activeElement — reliable for both Shadow DOM
+             * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+             * host element, not the focused node, and must not be used here.
              * @example <io-sheet heading="Share" open>
              *   <p>Choose a sharing option.</p>
              *   <io-button slot="footer" variant="ghost">Cancel</io-button>

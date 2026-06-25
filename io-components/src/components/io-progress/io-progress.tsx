@@ -77,7 +77,7 @@ export class IoProgress {
         aria-valuenow={this.indeterminate ? undefined : this.value}
         aria-valuemin={this.min}
         aria-valuemax={this.max}
-        aria-valuetext={this.valueText ?? undefined}
+        aria-valuetext={this.indeterminate ? (this.valueText ?? 'Loading…') : this.valueText}
         aria-label={ariaLabel}
         aria-labelledby={this.labelledBy ?? undefined}
       >

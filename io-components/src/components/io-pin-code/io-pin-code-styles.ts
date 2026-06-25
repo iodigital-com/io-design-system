@@ -117,20 +117,6 @@ export function getPinCodeStyles(): string {
       color: var(--io-color-warning);
     }
 
-    /* ── Screen-reader only ──────────────────────────────────────── */
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
     /* Respect prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
       .pin-code__slot {

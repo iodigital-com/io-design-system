@@ -138,7 +138,6 @@ export class IoInputPassword {
     if (this.disabled) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
-    this.syncFormValue();
     this.change.emit(newVal);
   };
 

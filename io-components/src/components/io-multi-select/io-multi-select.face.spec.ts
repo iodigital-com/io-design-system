@@ -5,6 +5,7 @@
  * io-multi-select uses FormData to submit multiple values under the same name.
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoMultiSelect } from './io-multi-select';
 
@@ -162,6 +163,7 @@ describe('io-multi-select — aria-describedby wiring (#840)', () => {
     component = new IoMultiSelect();
     (component as any).el = document.createElement('io-multi-select');
     component.name = 'countries';
+    component.label = 'Countries';
     (component as any).internals = {
       setFormValue: vi.fn(),
       setValidity: vi.fn(),
@@ -169,64 +171,51 @@ describe('io-multi-select — aria-describedby wiring (#840)', () => {
     (component as any).componentWillLoad();
   });
 
-  it('render includes face-error id in describedBy when faceInvalid=true and no message', () => {
-    const internals = makeInternals();
-    (component as any).internals = internals;
+  function comboboxCall() {
+    (h as unknown as ReturnType<typeof vi.fn>).mockClear();
+    component.render();
+    return (h as unknown as ReturnType<typeof vi.fn>).mock.calls.find(
+      ([tag, attrs]: [unknown, Record<string, unknown>]) =>
+        tag === 'button' && attrs?.role === 'combobox',
+    );
+  }
+
+  it('render includes face-error id in aria-describedby when faceInvalid=true and no message', () => {
     (component as any).faceInvalid = true;
     (component as any).state = 'none';
     (component as any).message = undefined;
+    const call = comboboxCall();
+    expect(call).toBeDefined();
+    const describedBy = call![1]['aria-describedby'] as string | undefined;
     const fieldId = (component as any).fieldId as string;
-    // Invoke the private render-derived logic directly by inspecting what describedBy would be
-    const faceErrorId = `${fieldId}-face-error`;
-    const faceInvalid = (component as any).faceInvalid as boolean;
-    const state = (component as any).state as string;
-    const msg = (component as any).message as string | undefined;
-    const showFaceError = faceInvalid && state !== 'error' && !msg;
-    const describedBy = [
-      msg ? `${fieldId}-message` : '',
-      showFaceError ? faceErrorId : '',
-    ].filter(Boolean).join(' ') || undefined;
-    expect(describedBy).toBe(faceErrorId);
+    expect(describedBy).toContain(`${fieldId}-face-error`);
   });
 
-  it('render does not include face-error id when faceInvalid=false', () => {
-    const internals = makeInternals();
-    (component as any).internals = internals;
+  it('render omits face-error id in aria-describedby when faceInvalid=false', () => {
     (component as any).faceInvalid = false;
     (component as any).state = 'none';
     (component as any).message = undefined;
+    const call = comboboxCall();
+    expect(call).toBeDefined();
+    const describedBy = call![1]['aria-describedby'] as string | undefined;
     const fieldId = (component as any).fieldId as string;
-    const faceErrorId = `${fieldId}-face-error`;
-    const faceInvalid = (component as any).faceInvalid as boolean;
-    const state = (component as any).state as string;
-    const msg = (component as any).message as string | undefined;
-    const showFaceError = faceInvalid && state !== 'error' && !msg;
-    const describedBy = [
-      msg ? `${fieldId}-message` : '',
-      showFaceError ? faceErrorId : '',
-    ].filter(Boolean).join(' ') || undefined;
-    expect(describedBy).toBeUndefined();
+    if (describedBy !== undefined) {
+      expect(describedBy).not.toContain(`${fieldId}-face-error`);
+    } else {
+      expect(describedBy).toBeUndefined();
+    }
   });
 
-  it('render uses message id when message is present (not face-error id)', () => {
-    const internals = makeInternals();
-    (component as any).internals = internals;
+  it('render uses message id and omits face-error id when message present', () => {
     (component as any).faceInvalid = true;
     (component as any).state = 'error';
-    const message = 'This field has an error';
-    (component as any).message = message;
+    (component as any).message = 'This field has an error';
+    const call = comboboxCall();
+    expect(call).toBeDefined();
+    const describedBy = call![1]['aria-describedby'] as string | undefined;
     const fieldId = (component as any).fieldId as string;
-    const messageId = `${fieldId}-message`;
-    const faceErrorId = `${fieldId}-face-error`;
-    const faceInvalid = (component as any).faceInvalid as boolean;
-    const state = (component as any).state as string;
-    const showFaceError = faceInvalid && state !== 'error' && !message;
-    const describedBy = [
-      message ? messageId : '',
-      showFaceError ? faceErrorId : '',
-    ].filter(Boolean).join(' ') || undefined;
-    expect(describedBy).toBe(messageId);
-    expect(describedBy).not.toContain('face-error');
+    expect(describedBy).toContain(`${fieldId}-message`);
+    expect(describedBy ?? '').not.toContain(`${fieldId}-face-error`);
   });
 });
 

@@ -137,7 +137,6 @@ export class IoInputSearch {
     if (this.disabled) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
-    this.syncFormValue();
     this.change.emit(newVal);
   };
 
@@ -244,8 +243,9 @@ export class IoInputSearch {
               type="button"
               class={`search-clear${hasValue ? '' : ' search-clear--hidden'}`}
               aria-label={clearAriaLabel}
+              disabled={disabled || undefined}
               onClick={this.handleClear}
-              tabIndex={hasValue ? 0 : -1}
+              tabIndex={hasValue && !disabled ? 0 : -1}
             >
               <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <line x1="18" x2="6" y1="6" y2="18" />

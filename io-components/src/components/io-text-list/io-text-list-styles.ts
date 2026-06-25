@@ -7,9 +7,9 @@ export function getTextListStyles(): string {
 
     .text-list {
       margin: 0;
-      padding-inline-start: var(--io-space-5, 20px);
+      padding-inline-start: var(--io-space-5);
       font-weight: var(--io-font-weight-regular);
-      line-height: var(--io-line-height-base, 1.5);
+      line-height: var(--io-line-height-base);
     }
 
     ::slotted(li) {
@@ -18,12 +18,6 @@ export function getTextListStyles(): string {
 
     ::slotted(li:last-child) {
       margin-block-end: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .text-list {
-        transition: none;
-      }
     }
   `;
 }

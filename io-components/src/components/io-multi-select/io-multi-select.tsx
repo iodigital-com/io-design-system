@@ -612,7 +612,12 @@ export class IoMultiSelect {
       this.maxDisplay,
     );
 
-    const describedBy = message ? messageId : undefined;
+    const faceErrorId = `${fieldId}-face-error`;
+    const showFaceError = faceInvalid && state !== 'error' && !message;
+    const describedBy = [
+      message ? messageId : '',
+      showFaceError ? faceErrorId : '',
+    ].filter(Boolean).join(' ') || undefined;
     const wrapperClass = getMultiSelectWrapperClass(
       showError ? 'error' : showSuccess ? 'success' : 'none',
       disabled,

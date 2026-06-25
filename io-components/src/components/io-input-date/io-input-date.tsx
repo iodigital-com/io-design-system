@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, AttachInternals } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputDateStyles } from './io-input-date-styles';
 
@@ -45,6 +45,12 @@ export class IoInputDate {
   /** Disables the input */
   @Prop({ reflect: true }) disabled = false;
 
+  /** Makes the input read-only */
+  @Prop({ reflect: true }) readonly = false;
+
+  /** Shows a loading indicator */
+  @Prop() loading = false;
+
   /** Validation state */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
 
@@ -63,8 +69,14 @@ export class IoInputDate {
   /** Maximum selectable date (YYYY-MM-DD) */
   @Prop() max: string | undefined;
 
+  /** Step in days (or "any") */
+  @Prop() step: string | undefined;
+
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoInputDateSize = 'md';
+
+  @State() faceInvalid = false;
+  @State() private touched = false;
 
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
@@ -78,26 +90,68 @@ export class IoInputDate {
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
     this.defaultValue = this.value ?? '';
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  @Watch('required')
+  @Watch('min')
+  @Watch('max')
+  @Watch('step')
+  onValidityAffectingPropChange() {
+    this.syncFormValue();
+  }
+
+  private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
+    const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (native) {
+      if (!native.checkValidity()) {
+        this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceInvalid = this.touched;
+      } else {
+        this.internals?.setValidity?.({});
+        this.faceInvalid = false;
+      }
+    } else if (this.required && !this.value) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = this.touched;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
-    this.internals?.setFormValue?.(newVal);
+    this.syncFormValue();
     this.change.emit(newVal);
   };
 
   formResetCallback() {
     this.value = this.defaultValue;
-    this.internals?.setFormValue?.(this.defaultValue);
+    this.touched = false;
+    this.syncFormValue();
+    this.faceInvalid = false;
+  }
+
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity?.() ?? true;
+  }
+
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    this.touched = true;
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   private handleFocus = (ev: FocusEvent) => {
@@ -107,11 +161,13 @@ export class IoInputDate {
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
+    this.touched = true;
+    this.syncFormValue();
     this.blur.emit(ev);
   };
 
   render() {
-    const { label, name, value, required, disabled, state, message, helperText, hideLabel, size, min, max } = this;
+    const { label, name, value, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, min, max, step } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error';
@@ -119,9 +175,14 @@ export class IoInputDate {
     const showWarning = state === 'warning';
     const showMessage = (showError || showSuccess || showWarning) && !!message;
     const showDescription = !showMessage && !!helperText;
+
+    const showFaceError = this.touched && this.faceInvalid && !showError;
+    const faceErrorId = `${inputId}-face-error`;
+
     const describedBy = [
       showMessage ? errorId : '',
       showDescription ? helperId : '',
+      showFaceError ? faceErrorId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const wrapperClass = [
@@ -130,6 +191,7 @@ export class IoInputDate {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
+      readonly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
 
     const fieldClass = [
@@ -139,7 +201,7 @@ export class IoInputDate {
     ].filter(Boolean).join(' ');
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getInputDateStyles()}</style>
         <div class={wrapperClass}>
           <div class="input-field-row">
@@ -151,9 +213,11 @@ export class IoInputDate {
               value={value}
               required={required}
               disabled={disabled}
+              readOnly={readonly}
               min={min}
               max={max}
-              aria-invalid={showError ? 'true' : undefined}
+              step={step}
+              aria-invalid={(showError || (this.touched && this.faceInvalid)) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -215,6 +279,11 @@ export class IoInputDate {
         {showWarning && (
           <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
             {message}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="input-message input-message--error" role="alert">
+            Please fill in this field
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

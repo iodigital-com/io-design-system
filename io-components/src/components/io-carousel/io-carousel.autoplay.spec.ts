@@ -6,6 +6,8 @@ function makeCarousel(): IoCarousel {
   (c as any).el = {
     shadowRoot: null,
     querySelectorAll: vi.fn(() => []),
+    matches: vi.fn(() => false),
+    contains: vi.fn(() => false),
   };
   (c as any).headingId = 'test-heading';
   (c as any).autoplay = false;
@@ -126,7 +128,9 @@ describe('io-carousel — autoplay', () => {
     (c as any).autoplay = true;
     (c as any).isAutoplayInteractionPaused = true;
     (c as any).isAutoplayPaused = true;
-    (c as any).onFocusOut();
+    // Pass a FocusEvent with relatedTarget=null (focus left the carousel entirely).
+    // el.contains(null) returns false so the handler does not early-return.
+    (c as any).onFocusOut({ relatedTarget: null } as unknown as FocusEvent);
     expect((c as any).isAutoplayInteractionPaused).toBe(false);
     vi.advanceTimersByTime(5000);
     expect((c as any).onNext).toHaveBeenCalledTimes(1);

@@ -555,6 +555,16 @@ export namespace Components {
          */
         "alignHeader": IoCarouselAlignHeader;
         /**
+          * When true, slides advance automatically at the interval defined by autoplayInterval.
+          * @default false
+         */
+        "autoplay": boolean;
+        /**
+          * Milliseconds between automatic slide advances when autoplay=true.
+          * @default 5000
+         */
+        "autoplayInterval": number;
+        /**
           * Optional description text rendered below the heading and above the slide track.
          */
         "description"?: string;
@@ -2223,6 +2233,15 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label": string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name": string | undefined;
@@ -2356,8 +2375,9 @@ export namespace Components {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -4366,8 +4386,9 @@ declare global {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -5454,6 +5475,16 @@ declare namespace LocalJSX {
           * @default 'left'
          */
         "alignHeader"?: IoCarouselAlignHeader;
+        /**
+          * When true, slides advance automatically at the interval defined by autoplayInterval.
+          * @default false
+         */
+        "autoplay"?: boolean;
+        /**
+          * Milliseconds between automatic slide advances when autoplay=true.
+          * @default 5000
+         */
+        "autoplayInterval"?: number;
         /**
           * Optional description text rendered below the heading and above the slide track.
          */
@@ -7170,6 +7201,15 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label"?: string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name"?: string | undefined;
@@ -7311,8 +7351,9 @@ declare namespace LocalJSX {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -8300,6 +8341,8 @@ declare namespace LocalJSX {
         "description": string;
         "pagination": boolean;
         "alignHeader": IoCarouselAlignHeader;
+        "autoplay": boolean;
+        "autoplayInterval": number;
     }
     interface IoCheckboxAttributes {
         "label": string;
@@ -8596,6 +8639,8 @@ declare namespace LocalJSX {
     interface IoSegmentedControlAttributes {
         "value": string | undefined;
         "name": string | undefined;
+        "label": string | undefined;
+        "hideLabel": boolean;
         "disabled": boolean;
     }
     interface IoSelectAttributes {
@@ -9329,8 +9374,9 @@ declare module "@stencil/core" {
              * Bottom sheet overlay that slides up from the bottom of the viewport.
              * Use for contextual actions, confirmations, and secondary content that
              * needs more prominence than a popover but less than a full-screen modal.
-             * Focus trap uses document.activeElement — works for both Shadow DOM and
-             * slotted light-DOM children.
+             * Focus trap uses document.activeElement — reliable for both Shadow DOM
+             * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+             * host element, not the focused node, and must not be used here.
              * @example <io-sheet heading="Share" open>
              *   <p>Choose a sharing option.</p>
              *   <io-button slot="footer" variant="ghost">Cancel</io-button>

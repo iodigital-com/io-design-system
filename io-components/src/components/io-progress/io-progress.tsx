@@ -77,7 +77,7 @@ export class IoProgress {
         aria-valuenow={this.indeterminate ? undefined : this.value}
         aria-valuemin={this.min}
         aria-valuemax={this.max}
-        aria-valuetext={this.valueText ?? undefined}
+        aria-valuetext={this.indeterminate ? (this.valueText ?? 'Loading…') : this.valueText}
         aria-label={ariaLabel}
         aria-labelledby={this.labelledBy ?? undefined}
       >
@@ -88,6 +88,11 @@ export class IoProgress {
             style={{ width: this.indeterminate ? undefined : `${percentage}%` }}
           />
         </div>
+        {this.indeterminate && (
+          <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">
+            {this.valueText ?? 'Loading…'}
+          </span>
+        )}
         {this.showLabel && !this.indeterminate && (
           <p class="progress-label" aria-hidden="true">
             {percentage}%

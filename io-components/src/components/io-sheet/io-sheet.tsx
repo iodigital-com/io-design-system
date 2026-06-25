@@ -111,6 +111,12 @@ export class IoSheet {
   componentWillLoad() {
     const seed = Math.random().toString(36).slice(2);
     this.headingId = `io-sheet-heading-${seed}`;
+
+    if (!this.heading && !this.el.getAttribute('aria-label')) {
+      console.error(
+        '[io-sheet] Accessible name missing. Provide a "heading" prop or set aria-label on the host element.',
+      );
+    }
   }
 
   componentDidLoad() {

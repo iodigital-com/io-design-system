@@ -56,6 +56,12 @@ export default function IoPopoverApiPage() {
               <InlineCode key="d">undefined</InlineCode>,
               'Accessible label for the popover dialog. Rendered as aria-labelledby target inside the panel.',
             ],
+            [
+              <InlineCode key="n">ariaLabel</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Accessible name applied directly as aria-label on the panel dialog. Use when label is absent and a visible heading is not appropriate.',
+            ],
           ]}
         />
       </section>

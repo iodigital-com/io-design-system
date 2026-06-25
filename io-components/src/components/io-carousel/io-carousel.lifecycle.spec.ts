@@ -848,3 +848,35 @@ describe('io-carousel — boundary-disabled DOM assertions', () => {
     expect(nextBtn![1]['aria-label']).toBe('Volgende');
   });
 });
+
+// ── syncSlideAriaAttributes (#803) ────────────────────────────────────────────
+
+describe('io-carousel — syncSlideAriaAttributes (#803)', () => {
+  it('sets role="group" on each slotted slide', () => {
+    const slides = [makeSlide(0), makeSlide(300), makeSlide(600)];
+    const { c } = makeCarousel(slides);
+    (c as any).syncSlideAriaAttributes();
+    slides.forEach(s => expect(s.getAttribute('role')).toBe('group'));
+  });
+
+  it('sets aria-roledescription="slide" on each slotted slide', () => {
+    const slides = [makeSlide(0), makeSlide(300)];
+    const { c } = makeCarousel(slides);
+    (c as any).syncSlideAriaAttributes();
+    slides.forEach(s => expect(s.getAttribute('aria-roledescription')).toBe('slide'));
+  });
+
+  it('sets aria-label="Slide N of M" on each slotted slide', () => {
+    const slides = [makeSlide(0), makeSlide(300), makeSlide(600)];
+    const { c } = makeCarousel(slides);
+    (c as any).syncSlideAriaAttributes();
+    expect(slides[0].getAttribute('aria-label')).toBe('Slide 1 of 3');
+    expect(slides[1].getAttribute('aria-label')).toBe('Slide 2 of 3');
+    expect(slides[2].getAttribute('aria-label')).toBe('Slide 3 of 3');
+  });
+
+  it('is a no-op when there are no slides', () => {
+    const { c } = makeCarousel([]);
+    expect(() => (c as any).syncSlideAriaAttributes()).not.toThrow();
+  });
+});

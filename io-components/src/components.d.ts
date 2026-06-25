@@ -1914,6 +1914,10 @@ export namespace Components {
      */
     interface IoPopover {
         /**
+          * Accessible name for the popover dialog panel when `label` prop is not used.
+         */
+        "ariaLabel": string | undefined;
+        /**
           * Close the popover when clicking outside the panel
           * @default true
          */
@@ -6874,6 +6878,10 @@ declare namespace LocalJSX {
      */
     interface IoPopover {
         /**
+          * Accessible name for the popover dialog panel when `label` prop is not used.
+         */
+        "ariaLabel"?: string | undefined;
+        /**
           * Close the popover when clicking outside the panel
           * @default true
          */
@@ -8583,6 +8591,7 @@ declare namespace LocalJSX {
         "closeOnClickOutside": boolean;
         "label": string;
         "description": string | undefined;
+        "ariaLabel": string | undefined;
     }
     interface IoProgressAttributes {
         "value": number;

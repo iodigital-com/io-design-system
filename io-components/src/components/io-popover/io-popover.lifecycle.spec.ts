@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import * as utils from './io-popover-utils';
 import { IoPopover } from './io-popover';
@@ -598,6 +599,18 @@ describe('io-popover — componentWillLoad', () => {
     errorSpy.mockRestore();
   });
 
+  it('does not log console.error when ariaLabel prop is provided (no label) (#788)', () => {
+    const c = new IoPopover();
+    (c as any).el = document.createElement('io-popover');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    c.label = undefined;
+    c.ariaLabel = 'Filter panel';
+    (c as any).componentWillLoad();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it('assigns a labelId with the expected prefix', () => {
     const c = makePopover();
     expect((c as any).labelId as string).toMatch(/^io-popover-label-/);
@@ -775,5 +788,16 @@ describe('io-popover — render()', () => {
     const c = makePopover();
     c.label = undefined;
     expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('renders aria-label on panel dialog div when ariaLabel is set and label is absent (#788)', () => {
+    const c = makePopover();
+    c.label = undefined;
+    c.ariaLabel = 'Filter panel';
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (c as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const panelCall = calls.find(([tag, attrs]) => tag === 'div' && attrs?.['role'] === 'dialog' && attrs?.['aria-label'] === 'Filter panel');
+    expect(panelCall).toBeDefined();
   });
 });

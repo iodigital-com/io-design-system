@@ -288,9 +288,20 @@ export class IoCarousel {
     this.syncIndexFromScroll();
   };
 
+  private syncSlideAriaAttributes = (): void => {
+    const slides = this.slides;
+    const total = slides.length;
+    slides.forEach((slide, i) => {
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `Slide ${i + 1} of ${total}`);
+    });
+  };
+
   private onSlotChange = () => {
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
+    this.syncSlideAriaAttributes();
   };
 
   private onMouseDown = (ev: MouseEvent) => {
@@ -347,6 +358,7 @@ export class IoCarousel {
     this.setActiveIndex(this.activeSlideIndex, false);
     this.scrollToIndex(this.activeSlideIndex, 'auto');
     this.updateBoundaryState();
+    this.syncSlideAriaAttributes();
     // Seed live region so AT users know the initial slide position on mount.
     if (this.totalSlides > 0) {
       this.slideAnnouncement = `Slide ${this.activeSlideIndex + 1} of ${this.totalSlides}`;

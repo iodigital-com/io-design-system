@@ -68,6 +68,9 @@ export class IoPopover {
   /** Supplementary description shown inside the panel below the heading */
   @Prop() description: string | undefined;
 
+  /** Accessible name for the popover dialog panel when `label` prop is not used. */
+  @Prop() ariaLabel: string | undefined;
+
   // ── State ─────────────────────────────────────────────────────
 
   @State() private panelStyle: Record<string, string> = {};
@@ -84,8 +87,8 @@ export class IoPopover {
     this.labelId = createPopoverLabelId(seed);
     this.panelId = createPopoverPanelId(seed);
     this.descriptionId = `io-popover-desc-${seed}`;
-    if (!this.label) {
-      console.error('[io-popover] `label` prop is required for accessible dialog naming (WCAG 4.1.2).');
+    if (!this.label && !this.ariaLabel) {
+      console.error('[io-popover] `label` prop is required for accessible dialog naming (WCAG 4.1.2). Alternatively set `ariaLabel` for a non-visible accessible name.');
     }
   }
 
@@ -310,6 +313,7 @@ export class IoPopover {
       role: 'dialog',
       'aria-modal': 'true',
       'aria-labelledby': label ? labelId : undefined,
+      'aria-label': !label && this.ariaLabel ? this.ariaLabel : undefined,
       'aria-describedby': description ? this.descriptionId : undefined,
       'aria-hidden': ariaHidden,
       class: 'popover__panel',

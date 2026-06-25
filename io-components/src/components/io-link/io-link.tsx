@@ -139,7 +139,7 @@ export class IoLink {
           onClick={this.handleClick}
         >
           {hasExplicitIcon && this.renderIcon()}
-          <span class={hideLabel && hasExplicitIcon ? 'link__label link__label--hidden' : 'link__label'}>
+          <span class={hideLabel && (hasExplicitIcon || showExternalIcon) ? 'link__label link__label--hidden' : 'link__label'}>
             <slot />
           </span>
           {showExternalIcon && (

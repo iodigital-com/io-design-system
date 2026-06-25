@@ -142,6 +142,17 @@ describe('io-link — hideLabel prop', () => {
     component.hideLabel = true;
     expect(component.hideLabel).toBe(true);
   });
+
+  it('hides label when hideLabel is true with auto-rendered external icon', () => {
+    component.external = true;
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const spanCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'span' && (call[1] as Record<string, unknown>)?.['class']?.toString().includes('link__label--hidden')
+    );
+    expect(spanCall).toBeDefined();
+  });
 });
 
 describe('io-link — ariaCurrent prop (#791)', () => {

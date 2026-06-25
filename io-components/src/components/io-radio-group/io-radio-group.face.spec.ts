@@ -189,6 +189,77 @@ describe('io-radio-group — FACE / formAssociated', () => {
     });
   });
 
+  describe('formStateRestoreCallback', () => {
+    it('restores value from state string', () => {
+      const { c } = makeComponent('');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      (c as any).componentWillLoad();
+
+      (c as any).formStateRestoreCallback('phone');
+
+      expect(c.value).toBe('phone');
+    });
+
+    it('restores value to empty string when state is null', () => {
+      const { c } = makeComponent('email');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      (c as any).componentWillLoad();
+
+      (c as any).formStateRestoreCallback(null);
+
+      expect(c.value).toBe('');
+    });
+
+    it('calls setFormValue with restored value', () => {
+      const { c } = makeComponent('');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      (c as any).componentWillLoad();
+      internals.setFormValue.mockClear();
+
+      (c as any).formStateRestoreCallback('phone');
+
+      expect(internals.setFormValue).toHaveBeenCalledWith('phone');
+    });
+
+    it('calls setFormValue with null when restoring null state', () => {
+      const { c } = makeComponent('email');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      (c as any).componentWillLoad();
+      internals.setFormValue.mockClear();
+
+      (c as any).formStateRestoreCallback(null);
+
+      expect(internals.setFormValue).toHaveBeenCalledWith(null);
+    });
+
+    it('resyncs children checked state to restored value', () => {
+      const { c, host } = makeComponent('');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      (c as any).componentWillLoad();
+
+      const radioEmail = makeRadio('email');
+      const radioPhone = makeRadio('phone');
+      host.appendChild(radioEmail);
+      host.appendChild(radioPhone);
+
+      (c as any).formStateRestoreCallback('phone');
+
+      expect(radioPhone.checked).toBe(true);
+      expect(radioEmail.checked).toBe(false);
+    });
+
+    it('does not throw when internals is not available', () => {
+      const { c } = makeComponent('email');
+      (c as any).internals = undefined;
+      expect(() => (c as any).formStateRestoreCallback('phone')).not.toThrow();
+    });
+  });
+
   describe('double optional chaining safety', () => {
     it('componentWillLoad does not throw when internals is undefined', () => {
       const { c } = makeComponent('x');

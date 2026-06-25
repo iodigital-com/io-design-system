@@ -100,6 +100,11 @@ export class IoCheckboxGroup {
     this.syncChildren();
   }
 
+  @Watch('required')
+  onRequiredChange() {
+    this.syncChildren();
+  }
+
   @Watch('aria')
   onAriaChange() {
     applyAriaProp(this.safeAriaProp(), this.fieldsetEl ?? null);
@@ -148,11 +153,12 @@ export class IoCheckboxGroup {
 
   private syncChildren = () => {
     const checkboxes = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; value: string; state: string }>('io-checkbox'),
+      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; required: boolean; value: string; state: string }>('io-checkbox'),
     );
     for (const checkbox of checkboxes) {
       checkbox.name = this.name;
       checkbox.disabled = this.disabled;
+      checkbox.required = this.required;
       checkbox.state = this.error ? 'error' : 'none';
     }
   };

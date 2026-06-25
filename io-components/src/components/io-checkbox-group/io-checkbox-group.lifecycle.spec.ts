@@ -62,6 +62,22 @@ describe('io-checkbox-group — watcher methods', () => {
     (c as any).onDisabledChange();
     expect(cb.disabled).toBe(true);
   });
+
+  it('onRequiredChange propagates required=true to children', () => {
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: 'opts', checked: false, disabled: false, required: false, state: 'none' });
+    host.appendChild(cb);
+    c.required = true;
+    (c as any).onRequiredChange();
+    expect((cb as any).required).toBe(true);
+  });
+
+  it('onRequiredChange propagates required=false to children when cleared', () => {
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'a', name: 'opts', checked: false, disabled: false, required: true, state: 'none' });
+    host.appendChild(cb);
+    c.required = false;
+    (c as any).onRequiredChange();
+    expect((cb as any).required).toBe(false);
+  });
 });
 
 describe('io-checkbox-group — render() branch coverage', () => {
@@ -97,5 +113,45 @@ describe('io-checkbox-group — render() branch coverage', () => {
     c.disabled = true;
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
+  });
+});
+
+describe('io-checkbox-group — syncChildren required propagation (#804)', () => {
+  it('syncChildren propagates required=true to all child checkboxes', () => {
+    const { c, host } = makeComponent();
+    (c as any).componentWillLoad();
+    const cb1 = Object.assign(document.createElement('io-checkbox'), { name: '', disabled: false, required: false, state: 'none' });
+    const cb2 = Object.assign(document.createElement('io-checkbox'), { name: '', disabled: false, required: false, state: 'none' });
+    host.appendChild(cb1);
+    host.appendChild(cb2);
+    c.required = true;
+    (c as any).syncChildren();
+    expect((cb1 as any).required).toBe(true);
+    expect((cb2 as any).required).toBe(true);
+  });
+
+  it('syncChildren propagates required=false when group required is false', () => {
+    const { c, host } = makeComponent();
+    (c as any).componentWillLoad();
+    const cb = Object.assign(document.createElement('io-checkbox'), { name: '', disabled: false, required: true, state: 'none' });
+    host.appendChild(cb);
+    c.required = false;
+    (c as any).syncChildren();
+    expect((cb as any).required).toBe(false);
+  });
+
+  it('syncChildren preserves existing name/disabled/state propagation alongside required', () => {
+    const { c, host } = makeComponent();
+    (c as any).componentWillLoad();
+    const cb = Object.assign(document.createElement('io-checkbox'), { name: '', disabled: false, required: false, state: 'none' });
+    host.appendChild(cb);
+    c.required = true;
+    c.disabled = true;
+    c.error = true;
+    (c as any).syncChildren();
+    expect(cb.name).toBe('opts');
+    expect(cb.disabled).toBe(true);
+    expect((cb as any).required).toBe(true);
+    expect((cb as any).state).toBe('error');
   });
 });

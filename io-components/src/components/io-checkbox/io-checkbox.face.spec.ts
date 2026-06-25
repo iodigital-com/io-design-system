@@ -160,4 +160,48 @@ describe('io-checkbox — FACE', () => {
     (component as any).formStateRestoreCallback('yes');
     expect(internals.setFormValue).toHaveBeenCalledWith('yes');
   });
+
+  describe('indeterminate + required edge cases', () => {
+    it('indeterminate=true + checked=false + required=true → valueMissing', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      component.checked = false;
+      component.indeterminate = true;
+      (component as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith(
+        { valueMissing: true },
+        'Please check this box',
+      );
+    });
+
+    it('indeterminate=true + checked=false + required=true → faceInvalid=true', () => {
+      (component as any).internals = makeInternals();
+      component.required = true;
+      component.checked = false;
+      component.indeterminate = true;
+      (component as any).syncFormValue();
+      expect((component as any).faceInvalid).toBe(true);
+    });
+
+    it('indeterminate=true + checked=false + required=true → form value is null', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = true;
+      component.checked = false;
+      component.indeterminate = true;
+      (component as any).syncFormValue();
+      expect(internals.setFormValue).toHaveBeenCalledWith(null);
+    });
+
+    it('indeterminate=true + checked=false + required=false → valid (no valueMissing)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.required = false;
+      component.checked = false;
+      component.indeterminate = true;
+      (component as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith({});
+    });
+  });
 });

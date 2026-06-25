@@ -122,6 +122,13 @@ export class IoRadioGroup {
     this.syncChildren();
   }
 
+  formStateRestoreCallback(state: string | null): void {
+    this.value = state ?? '';
+    this.syncChildren();
+    this.updateTabStops();
+    this.syncFormValue();
+  }
+
   // ── Event Handlers ────────────────────────────────────────────
 
   /**

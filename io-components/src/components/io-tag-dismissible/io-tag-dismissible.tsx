@@ -44,6 +44,9 @@ export class IoTagDismissible {
   /** Optional leading icon name (from the io icon set) */
   @Prop() icon?: IoIconName;
 
+  /** When true, disables the dismiss button and prevents dismiss events */
+  @Prop({ reflect: true }) disabled = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the dismiss button is clicked or Delete/Backspace is pressed */
@@ -53,6 +56,7 @@ export class IoTagDismissible {
 
   @Listen('keydown')
   handleKeydown(ev: KeyboardEvent) {
+    if (this.disabled) return;
     if (ev.key === 'Delete' || ev.key === 'Backspace') {
       this.handleDismiss();
     }
@@ -61,18 +65,19 @@ export class IoTagDismissible {
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleDismiss = () => {
+    if (this.disabled) return;
     this.dismiss.emit();
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, variant, icon } = this;
+    const { label, variant, icon, disabled } = this;
 
     return (
-      <Host>
+      <Host aria-disabled={disabled ? 'true' : undefined}>
         <style>{getTagDismissibleStyles()}</style>
-        <span class={`tag-dismissible tag-dismissible--${variant}`}>
+        <span class={`tag-dismissible tag-dismissible--${variant}${disabled ? ' tag-dismissible--disabled' : ''}`}>
           <span class="tag-dismissible__label">
             {icon && (
               <io-icon name={icon} size="xs" aria-hidden="true" />
@@ -83,6 +88,7 @@ export class IoTagDismissible {
             type="button"
             class="tag-dismissible__dismiss"
             aria-label={`Remove ${label}`}
+            disabled={disabled}
             onClick={this.handleDismiss}
           >
             <svg

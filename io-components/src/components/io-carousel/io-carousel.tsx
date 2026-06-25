@@ -102,9 +102,6 @@ export class IoCarousel {
   /** Stable ID for the heading element — used in aria-labelledby. */
   private headingId = '';
 
-  /** True when the carousel is hovered (pointer over carousel). */
-  private isHovered = false;
-
   // ── Slot-change handlers ──────────────────────────────────────
 
   private handleHeadingSlotChange = (event: Event) => {
@@ -304,40 +301,6 @@ export class IoCarousel {
     this.dragStartScrollLeft = track.scrollLeft;
   };
 
-  private onMouseEnter = () => {
-    this.isHovered = true;
-  };
-
-  private onMouseLeave = () => {
-    this.isHovered = false;
-    if (!this.el.matches(':focus-within')) {
-      this.resumeAutoplay();
-    }
-  };
-
-  private onFocusOut = (ev: FocusEvent) => {
-    if (this.el.contains(ev.relatedTarget as Node)) return;
-    if (!this.isHovered) {
-      this.resumeAutoplay();
-    }
-  };
-
-  private handleVisibilityChange = () => {
-    if (document.hidden) {
-      this.pauseAutoplay();
-    } else {
-      this.resumeAutoplay();
-    }
-  };
-
-  private pauseAutoplay = () => {
-    // Pause implementation would go here
-  };
-
-  private resumeAutoplay = () => {
-    // Resume implementation would go here
-  };
-
   @Listen('mouseup', { target: 'window' })
   onMouseUp() {
     this.isDragging = false;
@@ -388,11 +351,6 @@ export class IoCarousel {
     if (this.totalSlides > 0) {
       this.slideAnnouncement = `Slide ${this.activeSlideIndex + 1} of ${this.totalSlides}`;
     }
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   // ── Render ───────────────────────────────────────────────────
@@ -466,9 +424,6 @@ export class IoCarousel {
             <div
               class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
               onMouseDown={this.onMouseDown}
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}
-              onFocusOut={this.onFocusOut}
               onScroll={this.onTrackScroll}
             >
               <slot onSlotchange={this.onSlotChange} />

@@ -41,7 +41,7 @@ export default function IoSegmentedControlApiPage() {
               <InlineCode key="n">hideLabel</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'When true, hides the visible label text. The label value is still used as aria-label for screen readers.',
+              'When true, visually hides the label span. The accessible name is still provided via aria-label on the group container regardless of this setting. The label prop must still be set.',
             ],
             [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,

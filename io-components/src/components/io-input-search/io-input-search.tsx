@@ -23,6 +23,7 @@ export class IoInputSearch {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -122,16 +123,20 @@ export class IoInputSearch {
     if (native) {
       if (!native.checkValidity()) {
         this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
+        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
+      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
@@ -171,6 +176,16 @@ export class IoInputSearch {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(isDisabled: boolean) {
+    this.disabled = isDisabled;
+  }
+
+  formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === 'string') {
+      this.value = state;
+    }
+  }
+
   @Method()
   async checkValidity(): Promise<boolean> {
     return this.internals?.checkValidity?.() ?? true;
@@ -179,10 +194,12 @@ export class IoInputSearch {
   @Method()
   async reportValidity(): Promise<boolean> {
     this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
   private handleClear = () => {
+    if (this.readonly) return;
     this.value = '';
     this.hasValue = false;
     this.clear.emit();
@@ -245,8 +262,9 @@ export class IoInputSearch {
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
-              disabled={disabled}
+              disabled={disabled || loading}
               readOnly={readonly}
+              aria-readonly={readonly ? 'true' : undefined}
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}
@@ -262,8 +280,9 @@ export class IoInputSearch {
               type="button"
               class={`search-clear${hasValue ? '' : ' search-clear--hidden'}`}
               aria-label={clearAriaLabel}
+              disabled={disabled || loading || undefined}
               onClick={this.handleClear}
-              tabIndex={hasValue ? 0 : -1}
+              tabIndex={hasValue && !disabled && !loading ? 0 : -1}
             >
               <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <line x1="18" x2="6" y1="6" y2="18" />
@@ -319,7 +338,7 @@ export class IoInputSearch {
         )}
         {showFaceError && (
           <p id={faceErrorId} class="input-message input-message--error" role="alert">
-            Please fill in this field
+            {this.faceErrorMessage}
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

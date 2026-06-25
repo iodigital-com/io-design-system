@@ -130,6 +130,87 @@ describe('io-input-password — FACE (#835)', () => {
     expect(internals.reportValidity).toHaveBeenCalled();
   });
 
+  it('reportValidity sets faceInvalid to true when required and empty', async () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    expect((component as any).faceInvalid).toBe(false);
+    await component.reportValidity();
+    expect((component as any).touched).toBe(true);
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
+  it('syncFormValue sets tooShort via native input and stores validation message', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).touched = true;
+    const mockNative = {
+      checkValidity: vi.fn().mockReturnValue(false),
+      validity: { tooShort: true },
+      validationMessage: 'Please lengthen this text.',
+    };
+    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockNative) };
+    Object.defineProperty((component as any).el, 'shadowRoot', {
+      get: () => mockShadowRoot,
+      configurable: true,
+    });
+    component.value = 'ab';
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { tooShort: true },
+      'Please lengthen this text.',
+      mockNative,
+    );
+    expect((component as any).faceInvalid).toBe(true);
+    expect((component as any).faceErrorMessage).toBe('Please lengthen this text.');
+  });
+
+  it('syncFormValue sets tooLong via native input', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).touched = true;
+    const mockNative = {
+      checkValidity: vi.fn().mockReturnValue(false),
+      validity: { tooLong: true },
+      validationMessage: 'Please shorten this text.',
+    };
+    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockNative) };
+    Object.defineProperty((component as any).el, 'shadowRoot', {
+      get: () => mockShadowRoot,
+      configurable: true,
+    });
+    component.value = 'this is too long';
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { tooLong: true },
+      'Please shorten this text.',
+      mockNative,
+    );
+    expect((component as any).faceInvalid).toBe(true);
+    expect((component as any).faceErrorMessage).toBe('Please shorten this text.');
+  });
+
+  it('syncFormValue clears faceErrorMessage when valid', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).faceErrorMessage = 'stale error';
+    const mockNative = {
+      checkValidity: vi.fn().mockReturnValue(true),
+      validity: {},
+      validationMessage: '',
+    };
+    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockNative) };
+    Object.defineProperty((component as any).el, 'shadowRoot', {
+      get: () => mockShadowRoot,
+      configurable: true,
+    });
+    component.value = 'valid-password';
+    (component as any).syncFormValue();
+    expect((component as any).faceErrorMessage).toBe('');
+    expect((component as any).faceInvalid).toBe(false);
+  });
+
   it('readonly prop defaults to false', () => {
     expect(component.readonly).toBe(false);
   });

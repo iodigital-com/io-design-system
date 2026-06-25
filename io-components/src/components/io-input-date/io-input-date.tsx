@@ -25,6 +25,7 @@ export class IoInputDate {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -108,16 +109,20 @@ export class IoInputDate {
     if (native) {
       if (!native.checkValidity()) {
         this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
+        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
+      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
@@ -143,6 +148,16 @@ export class IoInputDate {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(isDisabled: boolean) {
+    this.disabled = isDisabled;
+  }
+
+  formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === 'string') {
+      this.value = state;
+    }
+  }
+
   @Method()
   async checkValidity(): Promise<boolean> {
     return this.internals?.checkValidity?.() ?? true;
@@ -151,6 +166,7 @@ export class IoInputDate {
   @Method()
   async reportValidity(): Promise<boolean> {
     this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -212,8 +228,9 @@ export class IoInputDate {
               name={name}
               value={value}
               required={required}
-              disabled={disabled}
+              disabled={disabled || loading}
               readOnly={readonly}
+              aria-readonly={readonly ? 'true' : undefined}
               min={min}
               max={max}
               step={step}
@@ -283,7 +300,7 @@ export class IoInputDate {
         )}
         {showFaceError && (
           <p id={faceErrorId} class="input-message input-message--error" role="alert">
-            Please fill in this field
+            {this.faceErrorMessage}
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

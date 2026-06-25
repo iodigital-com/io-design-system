@@ -23,6 +23,7 @@ export class IoInputPassword {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -111,16 +112,20 @@ export class IoInputPassword {
     if (native) {
       if (!native.checkValidity()) {
         this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
+        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
+      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
@@ -158,6 +163,16 @@ export class IoInputPassword {
     this.faceInvalid = false;
   }
 
+  formDisabledCallback(isDisabled: boolean) {
+    this.disabled = isDisabled;
+  }
+
+  formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === 'string') {
+      this.value = state;
+    }
+  }
+
   @Method()
   async checkValidity(): Promise<boolean> {
     return this.internals?.checkValidity?.() ?? true;
@@ -166,6 +181,7 @@ export class IoInputPassword {
   @Method()
   async reportValidity(): Promise<boolean> {
     this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -222,8 +238,9 @@ export class IoInputPassword {
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
-              disabled={disabled}
+              disabled={disabled || loading}
               readOnly={readonly}
+              aria-readonly={readonly ? 'true' : undefined}
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}
@@ -238,6 +255,7 @@ export class IoInputPassword {
               type="button"
               class="password-toggle"
               aria-label={toggleLabel}
+              disabled={loading || undefined}
               onClick={this.toggleVisibility}
               tabIndex={0}
             >
@@ -306,7 +324,7 @@ export class IoInputPassword {
         )}
         {showFaceError && (
           <p id={faceErrorId} class="input-message input-message--error" role="alert">
-            Please fill in this field
+            {this.faceErrorMessage}
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

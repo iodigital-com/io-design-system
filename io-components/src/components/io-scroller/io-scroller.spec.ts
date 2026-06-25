@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { h } from '@stencil/core';
 import { IoScroller } from './io-scroller';
 import { getScrollerClass } from './io-scroller-utils';
 
@@ -180,6 +181,80 @@ describe('io-scroller — edge state methods', () => {
     (component as any).syncHostClasses();
     expect((component as any).el.classList.contains('has-fade-start')).toBe(false);
     expect((component as any).el.classList.contains('has-fade-end')).toBe(false);
+  });
+});
+
+describe('io-scroller — keyboard navigation (#850)', () => {
+  function getScrollRegionKeyDownHandler(component: IoScroller): ((ev: KeyboardEvent) => void) | undefined {
+    vi.mocked(h).mockClear();
+    component.render();
+    const regionCall = vi.mocked(h).mock.calls.find(([, attrs]) => (attrs as any)?.role === 'region');
+    return (regionCall?.[1] as any)?.onKeyDown;
+  }
+
+  it('scroll region has onKeyDown handler', () => {
+    const component = makeComponent();
+    const handler = getScrollRegionKeyDownHandler(component);
+    expect(typeof handler).toBe('function');
+  });
+
+  it('calls scrollBy(prev) on ArrowLeft', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft', cancelable: true });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+
+    handler(ev);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('prev');
+  });
+
+  it('calls scrollBy(prev) on ArrowUp', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowUp', cancelable: true });
+
+    handler(ev);
+
+    expect(spy).toHaveBeenCalledWith('prev');
+  });
+
+  it('calls scrollBy(next) on ArrowRight', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowRight', cancelable: true });
+    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
+
+    handler(ev);
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('next');
+  });
+
+  it('calls scrollBy(next) on ArrowDown', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true });
+
+    handler(ev);
+
+    expect(spy).toHaveBeenCalledWith('next');
+  });
+
+  it('does not call scrollBy on unhandled key', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+
+    handler(ev);
+
+    expect(spy).not.toHaveBeenCalled();
   });
 });
 

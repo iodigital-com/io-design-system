@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTable } from './io-table';
 
@@ -190,5 +191,28 @@ describe('io-table — scroll wrapper aria-label', () => {
     component.captionHidden = true;
     const regionLabel = component.caption || undefined;
     expect(regionLabel).toBe('Hidden caption');
+  });
+});
+
+describe('io-table — scroll wrapper keyboard reachability (#861)', () => {
+  it('table-wrapper div has tabIndex=0', () => {
+    const component = new IoTable();
+    component.caption = 'Users';
+    vi.mocked(h).mockClear();
+    component.render();
+    const wrapperCall = vi.mocked(h).mock.calls.find(([, attrs]) =>
+      (attrs as any)?.class === 'table-wrapper',
+    );
+    expect((wrapperCall?.[1] as any)?.tabIndex).toBe(0);
+  });
+
+  it('table-wrapper tabIndex=0 is present even when caption is empty', () => {
+    const component = new IoTable();
+    vi.mocked(h).mockClear();
+    component.render();
+    const wrapperCall = vi.mocked(h).mock.calls.find(([, attrs]) =>
+      (attrs as any)?.class === 'table-wrapper',
+    );
+    expect((wrapperCall?.[1] as any)?.tabIndex).toBe(0);
   });
 });

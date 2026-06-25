@@ -190,3 +190,77 @@ describe('io-sheet — render method', () => {
     expect(() => (component as any).render()).not.toThrow();
   });
 });
+
+describe('io-sheet — focus trap uses document.activeElement (#874)', () => {
+  let component: IoSheet;
+
+  beforeEach(() => {
+    component = new IoSheet();
+    (component as any).el = document.createElement('io-sheet');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('attachFocusTrap does not reference shadowRoot.activeElement', () => {
+    const panelEl = document.createElement('div');
+    const btn1 = document.createElement('button');
+    const btn2 = document.createElement('button');
+    panelEl.appendChild(btn1);
+    panelEl.appendChild(btn2);
+    (component as any).panelEl = panelEl;
+
+    (component as any).attachFocusTrap();
+
+    const handler = (component as any).focusTrapHandler as ((ev: KeyboardEvent) => void) | undefined;
+    expect(typeof handler).toBe('function');
+
+    // Simulate Tab when document.activeElement is the last button.
+    // Should wrap to first without throwing or needing shadowRoot.
+    vi.spyOn(document, 'activeElement', 'get').mockReturnValue(btn2 as Element);
+    const tabEv = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+    vi.spyOn(tabEv, 'preventDefault');
+    const focusSpy = vi.spyOn(btn1, 'focus');
+
+    handler!(tabEv);
+
+    expect((tabEv as any).preventDefault).toHaveBeenCalled();
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('attachFocusTrap wraps Shift+Tab from first to last', () => {
+    const panelEl = document.createElement('div');
+    const btn1 = document.createElement('button');
+    const btn2 = document.createElement('button');
+    panelEl.appendChild(btn1);
+    panelEl.appendChild(btn2);
+    (component as any).panelEl = panelEl;
+
+    (component as any).attachFocusTrap();
+
+    const handler = (component as any).focusTrapHandler as (ev: KeyboardEvent) => void;
+
+    vi.spyOn(document, 'activeElement', 'get').mockReturnValue(btn1 as Element);
+    const shiftTabEv = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true });
+    vi.spyOn(shiftTabEv, 'preventDefault');
+    const focusSpy = vi.spyOn(btn2, 'focus');
+
+    handler(shiftTabEv);
+
+    expect((shiftTabEv as any).preventDefault).toHaveBeenCalled();
+    expect(focusSpy).toHaveBeenCalled();
+  });
+
+  it('attachFocusTrap does not call detach when no existing handler', () => {
+    const panelEl = document.createElement('div');
+    panelEl.appendChild(document.createElement('button'));
+    (component as any).panelEl = panelEl;
+    (component as any).focusTrapHandler = undefined;
+
+    expect(() => (component as any).attachFocusTrap()).not.toThrow();
+    expect(typeof (component as any).focusTrapHandler).toBe('function');
+  });
+});

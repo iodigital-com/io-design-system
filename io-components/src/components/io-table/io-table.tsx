@@ -100,6 +100,7 @@ export class IoTable {
           class="table-wrapper"
           role="region"
           aria-label={regionLabel}
+          tabIndex={0}
         >
           <table>
             <caption class={captionClass}>{caption}</caption>

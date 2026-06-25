@@ -92,7 +92,7 @@ export class IoTag {
             <button
               type="button"
               class={`${tagClass} tag--removable-main`}
-              disabled={disabled}
+              aria-disabled={disabled ? 'true' : undefined}
               aria-pressed={String(selected)}
               onClick={this.handleToggle}
             >
@@ -102,7 +102,7 @@ export class IoTag {
               type="button"
               class={`tag tag--${size} tag--${color} tag__remove tag__remove--${size}${selected ? ' tag--selected' : ''}${disabled ? ' tag--disabled' : ''}`}
               aria-label={label ? `Remove ${label}` : 'Remove'}
-              disabled={disabled}
+              aria-disabled={disabled ? 'true' : undefined}
               onClick={this.handleRemove}
             >
               <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -120,7 +120,7 @@ export class IoTag {
         <button
           type="button"
           class={tagClass}
-          disabled={disabled}
+          aria-disabled={disabled ? 'true' : undefined}
           aria-pressed={String(selected)}
           onClick={this.handleToggle}
         >

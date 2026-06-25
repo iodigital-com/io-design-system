@@ -229,6 +229,15 @@ export class IoScroller {
           role="region"
           aria-label={regionLabel}
           tabIndex={(!this.atStart || !this.atEnd) ? 0 : undefined}
+          onKeyDown={(ev: KeyboardEvent) => {
+            if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') {
+              ev.preventDefault();
+              this.scrollBy('prev');
+            } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') {
+              ev.preventDefault();
+              this.scrollBy('next');
+            }
+          }}
           ref={(el) => {
             this.scrollContainer = el as HTMLDivElement;
           }}

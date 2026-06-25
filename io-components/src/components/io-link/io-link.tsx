@@ -81,6 +81,14 @@ export class IoLink {
     inner?.focus(options);
   }
 
+  // ── Lifecycle ────────────────────────────────────────────────
+
+  componentWillLoad() {
+    if (!this.href) {
+      console.error('[io-link] `href` prop is required. A link without a valid href is not keyboard-focusable and may render as an anchor with no destination (WCAG 4.1.2).');
+    }
+  }
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleClick = (ev: MouseEvent) => {

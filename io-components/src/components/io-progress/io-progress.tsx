@@ -62,6 +62,14 @@ export class IoProgress {
   /** When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec. */
   @Prop({ reflect: true }) indeterminate = false;
 
+  // ── Lifecycle ────────────────────────────────────────────────
+
+  componentWillLoad() {
+    if (!this.label && !this.labelledBy) {
+      console.error('[io-progress] A progressbar requires an accessible name for WCAG 4.1.2. Provide `label` or `labelledBy` prop (or set `aria-label` directly on the host element).');
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {

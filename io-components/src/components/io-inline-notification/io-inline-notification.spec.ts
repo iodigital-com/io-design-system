@@ -321,12 +321,12 @@ describe('io-inline-notification — action event emission', () => {
 describe('io-inline-notification — dismiss button touch target (WCAG 2.5.8)', () => {
   it('dismiss button styles include min-width token (WCAG 2.5.8)', () => {
     const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-width: var(--io-space-6)');
+    expect(css).toContain('min-width: var(--io-touch-target-min)');
   });
 
   it('dismiss button styles include min-height token (WCAG 2.5.8)', () => {
     const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-height: var(--io-space-6)');
+    expect(css).toContain('min-height: var(--io-touch-target-min)');
   });
 
   it('dismiss button styles include padding token (not zero)', () => {

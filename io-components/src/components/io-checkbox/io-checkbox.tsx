@@ -170,6 +170,11 @@ export class IoCheckbox {
     this.syncFormValue();
   }
 
+  @Watch('indeterminate')
+  onIndeterminateChange() {
+    this.syncFormValue();
+  }
+
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
     // Indeterminate state does not affect form value or validity — only checked/unchecked matters.

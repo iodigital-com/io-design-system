@@ -27,7 +27,7 @@ export class IoBadge {
   @Prop({ reflect: true }) size: IoBadgeSize = 'md';
 
   /** Accessible label for icon-only or abbreviated badges */
-  @Prop() ariaLabel: string | undefined;
+  @Prop({ attribute: 'aria-label' }) ariaLabel: string | undefined;
 
   render() {
     return (

@@ -172,6 +172,10 @@ export class IoCheckbox {
 
   @Watch('indeterminate')
   onIndeterminateChange() {
+    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (nativeInput) {
+      nativeInput.indeterminate = this.indeterminate;
+    }
     this.syncFormValue();
   }
 

@@ -39,8 +39,8 @@ export default function IoInputSearchAccessibilityPage() {
             },
             {
               attribute: 'aria-invalid',
-              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when error</span>,
-              description: 'Set to "true" when state="error".',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when error or FACE invalid</span>,
+              description: 'Set to "true" when state="error" or when native form validation fails after the field has been touched (lost focus). FACE invalidity is gated on blur — the field does not show invalid state before the user has interacted with it.',
             },
           ]}
         />

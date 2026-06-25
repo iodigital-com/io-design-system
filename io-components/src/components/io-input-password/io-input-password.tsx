@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, State, Element, Host, h, AttachInternals } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Element, Host, Watch, h, AttachInternals } from '@stencil/core';
 
 import { getInputPasswordStyles } from './io-input-password-styles';
 
@@ -26,7 +26,14 @@ export class IoInputPassword {
 
   private inputId!: string;
   private errorId!: string;
+  private faceErrorId!: string;
   private helperId!: string;
+
+  /** Mirrors FACE invalidity so the component re-renders when form validation state changes */
+  @State() faceInvalid = false;
+
+  /** True after the user has blurred the field at least once — gates eager FACE error display */
+  @State() private touched = false;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -43,8 +50,14 @@ export class IoInputPassword {
   /** Marks the input as required */
   @Prop() required = false;
 
+  /** Maximum number of characters */
+  @Prop() maxLength: number | undefined;
+
+  /** Minimum number of characters */
+  @Prop() minLength: number | undefined;
+
   /** Disables the input */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -77,9 +90,42 @@ export class IoInputPassword {
     const base = this.name ? `io-input-password-${this.name.replace(/[^a-z0-9_-]+/gi, '-')}-${uid}` : `io-input-password-${uid}`;
     this.inputId = base;
     this.errorId = `${base}-error`;
+    this.faceErrorId = `${base}-face-error`;
     this.helperId = `${base}-helper`;
     this.defaultValue = this.value ?? '';
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() { this.syncFormValue(); }
+
+  @Watch('required')
+  onRequiredChange() { this.syncFormValue(); }
+
+  @Watch('maxLength')
+  onMaxLengthChange() { this.syncFormValue(); }
+
+  @Watch('minLength')
+  onMinLengthChange() { this.syncFormValue(); }
+
+  private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
+    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (nativeInput) {
+      if (!nativeInput.checkValidity()) {
+        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+        this.faceInvalid = this.touched;
+      } else {
+        this.internals?.setValidity?.({});
+        this.faceInvalid = false;
+      }
+    } else if (this.required && !this.value) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = this.touched;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
   }
 
   private handleInput = (ev: InputEvent) => {
@@ -92,7 +138,6 @@ export class IoInputPassword {
     if (this.disabled) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
-    this.internals?.setFormValue?.(newVal);
     this.change.emit(newVal);
   };
 
@@ -103,12 +148,25 @@ export class IoInputPassword {
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
+    this.touched = true;
+    this.syncFormValue();
     this.blur.emit(ev);
   };
 
   formResetCallback() {
     this.value = this.defaultValue;
-    this.internals?.setFormValue?.(this.defaultValue);
+    this.touched = false;
+    this.faceInvalid = false;
+    this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  formStateRestoreCallback(state: string | null) {
+    this.value = state ?? '';
+    this.syncFormValue();
   }
 
   private toggleVisibility = () => {
@@ -116,16 +174,18 @@ export class IoInputPassword {
   };
 
   render() {
-    const { label, name, value, placeholder, required, disabled, state, message, helperText, hideLabel, size, autocomplete, showPassword } = this;
-    const { inputId, errorId, helperId } = this;
+    const { label, name, value, placeholder, required, disabled, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength } = this;
+    const { inputId, errorId, faceErrorId, helperId } = this;
 
-    const showError = state === 'error';
-    const showSuccess = state === 'success';
-    const showWarning = state === 'warning';
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
     const showMessage = (showError || showSuccess || showWarning) && !!message;
-    const showDescription = !showMessage && !!helperText;
+    const showFaceError = this.faceInvalid && state !== 'error' && !message;
+    const showDescription = !showMessage && !showFaceError && !!helperText;
     const describedBy = [
       showMessage ? errorId : '',
+      showFaceError ? faceErrorId : '',
       showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
@@ -160,7 +220,10 @@ export class IoInputPassword {
               required={required}
               disabled={disabled}
               autocomplete={autocomplete}
-              aria-invalid={showError ? 'true' : undefined}
+              maxLength={maxLength}
+              minLength={minLength}
+              aria-required={required ? 'true' : undefined}
+              aria-invalid={(showError) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -235,6 +298,11 @@ export class IoInputPassword {
         {showWarning && (
           <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
             {message}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="input-message input-message--error" role="alert">
+            Please fill in this field
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

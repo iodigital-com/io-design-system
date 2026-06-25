@@ -66,10 +66,10 @@ export default function IoToastAccessibilityPage() {
               attribute: 'aria-atomic',
               value: (
                 <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>
-                  false
+                  true
                 </code>
               ),
-              description: 'Only the changed content within the live region is announced, not the entire region. This ensures that only the new toast message is read, not the container or other elements.',
+              description: 'The entire live region content is announced as a single unit when it changes. Screen readers read the complete notification text in full each time a new toast appears.',
             },
             {
               attribute: 'aria-hidden (icon)',

@@ -57,6 +57,18 @@ export default function IoWordmarkApiPage() {
                 Override when a more specific announcement is needed.
               </span>,
             ],
+            [
+              <InlineCode key="n">href</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>undefined</span>,
+              'Navigation URL. When set, the host element renders as an anchor link wrapping the wordmark SVG.',
+            ],
+            [
+              <span key="n"><InlineCode>target</InlineCode></span>,
+              <InlineCode key="t">&apos;_self&apos; | &apos;_blank&apos; | &apos;_parent&apos; | &apos;_top&apos;</InlineCode>,
+              <InlineCode key="d">&apos;_self&apos;</InlineCode>,
+              'Specifies where to open the linked URL. Only meaningful when href is set.',
+            ],
           ]}
         />
       </section>

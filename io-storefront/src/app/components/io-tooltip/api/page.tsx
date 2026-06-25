@@ -179,8 +179,7 @@ import { IoButton } from '@iodigital-com/components-vue';
               <span key="c">WCAG 1.4.13 Content on Hover</span>,
               <span key="d">
                 The tooltip overlay is hoverable — moving the pointer from the trigger into the
-                tooltip keeps it visible. A 150 ms hide delay (configurable via{' '}
-                <InlineCode>--io-tooltip-hide-delay</InlineCode>) gives the pointer time to
+                tooltip keeps it visible. A built-in 150 ms hide delay gives the pointer time to
                 travel from trigger to tooltip without it dismissing. This allows users to copy
                 text or click links inside the tooltip.
               </span>,

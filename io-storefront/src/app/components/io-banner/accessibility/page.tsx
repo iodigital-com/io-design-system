@@ -21,6 +21,10 @@ export default function IoBannerAccessibilityPage() {
               key: <span className="flex items-center gap-1"><Kbd>Enter</Kbd><span style={{ color: 'var(--io-text-muted)' }}>/</span><Kbd>Space</Kbd></span>,
               action: 'Activate the focused dismiss button — closes the banner and emits the dismiss event.',
             },
+            {
+              key: <Kbd>Esc</Kbd>,
+              action: 'Closes the banner and emits the dismiss event when dismissible=true. Handled at document level — keyboard focus does not need to be on the banner.',
+            },
           ]}
         />
       </section>

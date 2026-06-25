@@ -119,6 +119,12 @@ export default function IoTooltipAccessibilityPage() {
             title="Name, Role, Value"
             note="The tooltip panel carries role=&quot;tooltip&quot; and an ID. The trigger carries aria-describedby pointing to that ID. Both roles and their relationship are exposed correctly to the accessibility tree."
           />
+          <ComplianceCard
+            criterion="1.4.13"
+            level="AA"
+            title="Content on Hover or Focus"
+            note="The tooltip overlay is hoverable — moving the pointer from the trigger into the tooltip keeps it visible. A built-in 150 ms hide delay allows the pointer to travel without the tooltip closing. The tooltip persists until the user moves focus away or presses Escape."
+          />
         </div>
       </section>
 

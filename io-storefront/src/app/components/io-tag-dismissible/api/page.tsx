@@ -33,11 +33,11 @@ export default function IoTagDismissibleApiPage() {
             [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>&apos;neutral&apos;</InlineCode>{' | '}<InlineCode>&apos;blue&apos;</InlineCode>{' | '}<InlineCode>&apos;beige&apos;</InlineCode>{' | '}
+                <InlineCode>&apos;default&apos;</InlineCode>{' | '}<InlineCode>&apos;blue&apos;</InlineCode>{' | '}<InlineCode>&apos;beige&apos;</InlineCode>{' | '}
                 <InlineCode>&apos;dark&apos;</InlineCode>{' | '}<InlineCode>&apos;orange&apos;</InlineCode>{' | '}<InlineCode>&apos;rouge&apos;</InlineCode>{' | '}
                 <InlineCode>&apos;success&apos;</InlineCode>{' | '}<InlineCode>&apos;warning&apos;</InlineCode>{' | '}<InlineCode>&apos;error&apos;</InlineCode>{' | '}<InlineCode>&apos;outline&apos;</InlineCode>
               </span>,
-              <InlineCode key="d">&apos;neutral&apos;</InlineCode>,
+              <InlineCode key="d">&apos;default&apos;</InlineCode>,
               'Colour variant of the chip. Controls background, border, and text colour. Use semantic variants (success/warning/error) when the chip communicates status.',
             ],
             [

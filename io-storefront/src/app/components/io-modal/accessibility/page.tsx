@@ -12,7 +12,7 @@ export default function IoModalAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="io-modal is built on the native <dialog> element. Focus trapping and ESC key handling are provided by the browser via showModal(). No custom JavaScript focus trap is required."
+          description="io-modal is built on the native <dialog> element opened via showModal(). The component additionally implements a custom Tab-key focus trap to ensure consistent behaviour across all browsers. ESC key dismissal is handled by both the browser and a custom listener."
         />
         <KeyboardTable
           rows={[

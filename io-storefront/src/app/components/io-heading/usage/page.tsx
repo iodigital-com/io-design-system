@@ -131,8 +131,8 @@ export default function IoHeadingUsagePage() {
           <RuleCard label="Why they are separate">
             A page may have multiple h3 elements at different visual weights — a compact sidebar h3 and a prominent article-body h3. Setting <C>tag=&quot;h3&quot;</C> on both but different <C>size</C> values keeps the DOM outline correct without sacrificing visual hierarchy.
           </RuleCard>
-          <RuleCard label="Default size per tag">
-            When <C>size</C> is omitted, io-heading applies a context-appropriate default: h1 → 4xl, h2 → 3xl, h3 → 2xl, h4 → xl, h5 → lg, h6 → md. Override via <C>size</C> whenever the layout requires a different weight.
+          <RuleCard label="Default size is 2xl for all heading levels">
+            When <C>size</C> is omitted, io-heading renders at <C>2xl</C> (24px) regardless of which <C>tag</C> is set. There is no automatic per-tag size mapping. Always supply an explicit <C>size</C> value when you need a heading to render at a different visual weight.
           </RuleCard>
           <RuleCard label="Accessibility invariant">
             Never use a lower heading level (<C>tag=&quot;h4&quot;</C>) with a large size to simulate the visual appearance of an h1. The DOM order must match the logical document hierarchy for screen reader navigation.

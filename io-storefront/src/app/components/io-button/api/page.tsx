@@ -112,6 +112,64 @@ export default function IoButtonApiPage() {
               <InlineCode key="d">&apos;right&apos;</InlineCode>,
               'Side on which the arrow icon is rendered relative to the label. Use "left" for back-navigation patterns.',
             ],
+            [
+              <InlineCode key="n">icon</InlineCode>,
+              <InlineCode key="t">IoIconName | undefined</InlineCode>,
+              '—',
+              'Name of a Lucide icon to render inside the button. The icon is hidden from assistive technologies (aria-hidden). Use with hideLabel or iconOnly for icon-only buttons.',
+            ],
+            [
+              <InlineCode key="n">iconSource</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Raw SVG string used as a custom icon when the built-in Lucide icon set does not contain the required icon. Takes precedence over icon when both are set.',
+            ],
+            [
+              <span key="n"><InlineCode>iconPosition</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;left&apos; | &apos;right&apos;</InlineCode>,
+              <InlineCode key="d">&apos;left&apos;</InlineCode>,
+              'Side on which the icon is rendered relative to the button label. Ignored when iconOnly is true.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label text while keeping it in the accessible name. Useful for icon-plus-text buttons where the label should be readable by screen readers but not visible.',
+            ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Reduces vertical padding to a compact preset without changing the size classification. Use in dense layouts such as toolbars or table action cells.',
+            ],
+            [
+              <span key="n"><InlineCode>name</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Name submitted with form data when the button is inside a form. Works with value to build key–value pairs. Only relevant when type="submit" or type="reset" and no href is set.',
+            ],
+            [
+              <span key="n"><InlineCode>value</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Value submitted with form data when the button is inside a form. Also used by io-button-group to identify the selected button. Works with name to build key–value pairs.',
+            ],
+            [
+              <span key="n"><InlineCode>form</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'ID of the form element the button is associated with. Allows the button to be placed outside the form element in the DOM while still submitting or resetting that form.',
+            ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
+                <InlineCode>Partial&lt;Record&lt;IoButtonAriaAttribute, string&gt;&gt;</InlineCode>
+              </span>,
+              '—',
+              <span key="desc">
+                Escape-hatch for additional ARIA attributes on the inner button or anchor element. Accepted keys: <InlineCode>aria-expanded</InlineCode>, <InlineCode>aria-pressed</InlineCode>, <InlineCode>aria-haspopup</InlineCode>, <InlineCode>aria-controls</InlineCode>, <InlineCode>aria-labelledby</InlineCode>, <InlineCode>aria-describedby</InlineCode>, <InlineCode>aria-label</InlineCode>, <InlineCode>aria-description</InlineCode>. Use for toggle buttons, disclosure triggers, and combobox patterns.
+              </span>,
+            ],
           ]}
         />
       </section>

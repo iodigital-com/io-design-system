@@ -56,6 +56,7 @@ describe('io-button — a11y (component ARIA attributes)', () => {
       c.disabled = true;
     });
     expect(attrs['aria-disabled']).toBe('true');
+    expect(attrs['role']).toBe('button');
   });
 
   it('disabled native button has both disabled property and aria-disabled', () => {
@@ -79,7 +80,7 @@ describe('io-button — a11y (component ARIA attributes)', () => {
     const el = document.createElement('div');
     el.innerHTML = `
       <div>
-        <a href="/path" aria-disabled="true" tabindex="0">Disabled link button</a>
+        <a aria-disabled="true" tabindex="0">Disabled link button</a>
       </div>
     `;
     await renderAndCheckA11y(el);

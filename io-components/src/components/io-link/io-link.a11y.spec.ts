@@ -106,4 +106,13 @@ describe('io-link — component external link aria-label', () => {
     expect(attrs['aria-disabled']).toBe('true');
     expect(attrs.href).toBeUndefined();
   });
+
+  it('does not add aria-label when external=true and link has no text content', () => {
+    const attrs = renderLink((c) => {
+      c.href = 'https://example.com';
+      c.external = true;
+      (c as any).el.textContent = '';
+    });
+    expect(attrs['aria-label']).toBeUndefined();
+  });
 });

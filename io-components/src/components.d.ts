@@ -555,6 +555,16 @@ export namespace Components {
          */
         "alignHeader": IoCarouselAlignHeader;
         /**
+          * When true, slides advance automatically at the interval defined by autoplayInterval.
+          * @default false
+         */
+        "autoplay": boolean;
+        /**
+          * Milliseconds between automatic slide advances when autoplay=true.
+          * @default 5000
+         */
+        "autoplayInterval": number;
+        /**
           * Optional description text rendered below the heading and above the slide track.
          */
         "description"?: string;
@@ -5480,6 +5490,16 @@ declare namespace LocalJSX {
          */
         "alignHeader"?: IoCarouselAlignHeader;
         /**
+          * When true, slides advance automatically at the interval defined by autoplayInterval.
+          * @default false
+         */
+        "autoplay"?: boolean;
+        /**
+          * Milliseconds between automatic slide advances when autoplay=true.
+          * @default 5000
+         */
+        "autoplayInterval"?: number;
+        /**
           * Optional description text rendered below the heading and above the slide track.
          */
         "description"?: string;
@@ -8349,6 +8369,8 @@ declare namespace LocalJSX {
         "description": string;
         "pagination": boolean;
         "alignHeader": IoCarouselAlignHeader;
+        "autoplay": boolean;
+        "autoplayInterval": number;
     }
     interface IoCheckboxAttributes {
         "label": string;

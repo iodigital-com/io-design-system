@@ -276,5 +276,47 @@ export function getCarouselStyles(): string {
         transition: none;
       }
     }
+
+    /* ── Autoplay control ───────────────────────────────── */
+
+    .carousel-autoplay {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--io-space-3);
+    }
+
+    .carousel-autoplay-btn {
+      appearance: none;
+      border: 1px solid var(--io-border);
+      border-radius: var(--io-border-radius-pill);
+      background: transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--io-text-secondary);
+      width: var(--io-touch-target-min, 44px);
+      height: var(--io-touch-target-min, 44px);
+      transition: color var(--io-motion-fast), border-color var(--io-motion-fast), background-color var(--io-motion-fast);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .carousel-autoplay-btn:hover {
+        color: var(--io-text-primary);
+        border-color: var(--io-color-primary);
+        background: var(--io-state-hover);
+      }
+    }
+
+    .carousel-autoplay-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-autoplay-btn {
+        transition: none;
+      }
+    }
   `;
 }

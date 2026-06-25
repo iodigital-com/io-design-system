@@ -75,6 +75,12 @@ export class IoCarousel {
   /** Alignment of the heading and description header area. */
   @Prop() alignHeader: IoCarouselAlignHeader = 'left';
 
+  /** When true, slides advance automatically at the interval defined by autoplayInterval. */
+  @Prop() autoplay = false;
+
+  /** Milliseconds between automatic slide advances when autoplay=true. */
+  @Prop() autoplayInterval = 5000;
+
   /** Emitted when the active slide index changes. */
   @Event({ eventName: 'update', bubbles: true, composed: true, cancelable: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
 
@@ -89,6 +95,8 @@ export class IoCarousel {
   @State() private isAtStart = true;
   /** True when the track is scrolled to the physical end. Used to disable next button when rewind=false. */
   @State() private isAtEnd = false;
+  /** True when autoplay is paused (user toggle, hover, or focus). */
+  @State() private isAutoplayPaused = false;
 
   // ── Private fields ────────────────────────────────────────────
 
@@ -101,6 +109,10 @@ export class IoCarousel {
 
   /** Stable ID for the heading element — used in aria-labelledby. */
   private headingId = '';
+
+  private autoplayTimer: ReturnType<typeof setInterval> | null = null;
+  private isAutoplayUserPaused = false;
+  private isAutoplayInteractionPaused = false;
 
   // ── Slot-change handlers ──────────────────────────────────────
 
@@ -350,6 +362,104 @@ export class IoCarousel {
     this.scrollToIndex(normalized, 'auto');
   }
 
+  // ── Autoplay ─────────────────────────────────────────────────
+
+  private startAutoplayTimer(): void {
+    this.stopAutoplayTimer();
+    this.autoplayTimer = setInterval(() => {
+      this.onNext();
+    }, this.autoplayInterval);
+  }
+
+  private stopAutoplayTimer(): void {
+    if (this.autoplayTimer !== null) {
+      clearInterval(this.autoplayTimer);
+      this.autoplayTimer = null;
+    }
+  }
+
+  private resumeAutoplay(): void {
+    if (!this.isAutoplayUserPaused && !this.isAutoplayInteractionPaused) {
+      this.isAutoplayPaused = false;
+      this.startAutoplayTimer();
+    }
+  }
+
+  private pauseAutoplayTimer(): void {
+    this.isAutoplayPaused = true;
+    this.stopAutoplayTimer();
+  }
+
+  private onAutoplayToggle = () => {
+    this.isAutoplayUserPaused = !this.isAutoplayUserPaused;
+    if (this.isAutoplayUserPaused) {
+      this.pauseAutoplayTimer();
+    } else {
+      this.resumeAutoplay();
+    }
+  };
+
+  @Listen('mouseenter')
+  onMouseEnter() {
+    if (!this.autoplay || this.isAutoplayUserPaused) return;
+    this.isAutoplayInteractionPaused = true;
+    this.pauseAutoplayTimer();
+  }
+
+  @Listen('mouseleave')
+  onMouseLeave() {
+    if (!this.autoplay || this.isAutoplayUserPaused) return;
+    this.isAutoplayInteractionPaused = false;
+    // Only resume if focus is not still inside the carousel
+    if (!this.el.matches(':focus-within')) {
+      this.resumeAutoplay();
+    }
+  }
+
+  @Listen('focusin')
+  onFocusIn() {
+    if (!this.autoplay || this.isAutoplayUserPaused) return;
+    this.isAutoplayInteractionPaused = true;
+    this.pauseAutoplayTimer();
+  }
+
+  @Listen('focusout')
+  onFocusOut(ev: FocusEvent) {
+    if (!this.autoplay || this.isAutoplayUserPaused) return;
+    // If focus moved to an element still inside the carousel, don't resume
+    if (this.el.contains(ev.relatedTarget as Node)) return;
+    this.isAutoplayInteractionPaused = false;
+    // Only resume if pointer is not hovering
+    if (!this.el.matches(':hover')) {
+      this.resumeAutoplay();
+    }
+  }
+
+  private handleVisibilityChange = () => {
+    if (document.hidden) {
+      this.isAutoplayInteractionPaused = true;
+      this.pauseAutoplayTimer();
+    } else {
+      this.isAutoplayInteractionPaused = false;
+      this.resumeAutoplay();
+    }
+  };
+
+  @Watch('autoplay')
+  onAutoplayChange(newValue: boolean) {
+    if (newValue) {
+      this.isAutoplayUserPaused = false;
+      this.isAutoplayInteractionPaused = false;
+      this.isAutoplayPaused = false;
+      this.startAutoplayTimer();
+    } else {
+      this.stopAutoplayTimer();
+      this.isAutoplayPaused = false;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+
   componentWillLoad() {
     this.headingId = `io-carousel-heading-${Math.random().toString(36).slice(2, 9)}`;
   }
@@ -363,6 +473,15 @@ export class IoCarousel {
     if (this.totalSlides > 0) {
       this.slideAnnouncement = `Slide ${this.activeSlideIndex + 1} of ${this.totalSlides}`;
     }
+    if (this.autoplay) {
+      this.startAutoplayTimer();
+    }
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+  }
+
+  disconnectedCallback() {
+    this.stopAutoplayTimer();
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   // ── Render ───────────────────────────────────────────────────
@@ -386,6 +505,8 @@ export class IoCarousel {
       pagination,
       alignHeader,
       activeSlideIndex,
+      autoplay,
+      isAutoplayPaused,
     } = this;
 
     const totalSlides = this.totalSlides;
@@ -413,7 +534,7 @@ export class IoCarousel {
           aria-labelledby={hasHeadingSlot || heading ? headingId : undefined}
           aria-roledescription="carousel"
         >
-          <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
+          <span aria-live={autoplay && !isAutoplayPaused ? 'off' : 'polite'} aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
 
           <div
             class={{
@@ -476,6 +597,28 @@ export class IoCarousel {
                   }}
                 />
               ))}
+            </div>
+          )}
+
+          {autoplay && (
+            <div class="carousel-autoplay">
+              <button
+                type="button"
+                class="carousel-autoplay-btn"
+                aria-label={isAutoplayPaused ? 'Play' : 'Pause'}
+                onClick={this.onAutoplayToggle}
+              >
+                {isAutoplayPaused ? (
+                  <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 2l10 6-10 6V2z" fill="currentColor" />
+                  </svg>
+                ) : (
+                  <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="2" width="4" height="12" rx="1" fill="currentColor" />
+                    <rect x="9" y="2" width="4" height="12" rx="1" fill="currentColor" />
+                  </svg>
+                )}
+              </button>
             </div>
           )}
         </div>

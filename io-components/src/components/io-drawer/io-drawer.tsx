@@ -41,6 +41,7 @@ export class IoDrawer {
   private dialogEl?: HTMLDialogElement;
   private headingId!: string;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
+  private inertedElements: Element[] = [];
 
   // ── Touch / swipe state ────────────────────────────────────────
   private touchStartY = 0;
@@ -170,11 +171,13 @@ export class IoDrawer {
     this.attachTransitionEndListener();
     if (this.open && this.dialogEl) {
       this.dialogEl.showModal();
+      this.applyInert();
     }
   }
 
   disconnectedCallback() {
     this.detachTransitionEndListener();
+    this.removeInert();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -196,10 +199,12 @@ export class IoDrawer {
         void (dialog as HTMLElement).offsetWidth; // force reflow
         dialog.showModal();
       }
+      this.applyInert();
     } else {
       if (dialog.open) {
         dialog.close();
       }
+      this.removeInert();
       // Only emit dismiss for user-initiated closes (close button, backdrop, ESC).
       if (this._userInitiatedClose) {
         this.dismissEvent.emit();
@@ -230,6 +235,20 @@ export class IoDrawer {
     if (!this.dialogEl || !this.transitionEndHandler) return;
     this.dialogEl.removeEventListener('transitionend', this.transitionEndHandler);
     this.transitionEndHandler = undefined;
+  }
+
+  private applyInert() {
+    this.inertedElements = Array.from(document.body.children).filter(
+      (el) => el !== this.el && !['SCRIPT', 'STYLE'].includes(el.tagName),
+    );
+    this.inertedElements.forEach((el) => {
+      if (!el.hasAttribute('inert')) el.setAttribute('inert', '');
+    });
+  }
+
+  private removeInert() {
+    this.inertedElements.forEach((el) => el.removeAttribute('inert'));
+    this.inertedElements = [];
   }
 
   // ── Handlers ─────────────────────────────────────────────────

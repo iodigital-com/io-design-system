@@ -337,3 +337,87 @@ describe('io-sheet — focus trap uses document.activeElement (#874)', () => {
     expect(focusSpy).toHaveBeenCalled();
   });
 });
+
+describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => {
+  it('motionVisibleEndEvent emits after transitionend when sheet is open', () => {
+    const c = new IoSheet();
+    const panelEl = document.createElement('div');
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).panelEl = panelEl;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (c as any).motionHiddenEndEvent = { emit: vi.fn() };
+    c.open = true;
+    (c as any).attachTransitionEndListener();
+
+    panelEl.dispatchEvent(new Event('transitionend'));
+
+    expect((c as any).motionVisibleEndEvent.emit).toHaveBeenCalledOnce();
+    expect((c as any).motionHiddenEndEvent.emit).not.toHaveBeenCalled();
+  });
+
+  it('motionHiddenEndEvent emits after transitionend when sheet is closed', () => {
+    const c = new IoSheet();
+    const panelEl = document.createElement('div');
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).panelEl = panelEl;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (c as any).motionHiddenEndEvent = { emit: vi.fn() };
+    c.open = false;
+    (c as any).attachTransitionEndListener();
+
+    panelEl.dispatchEvent(new Event('transitionend'));
+
+    expect((c as any).motionHiddenEndEvent.emit).toHaveBeenCalledOnce();
+    expect((c as any).motionVisibleEndEvent.emit).not.toHaveBeenCalled();
+  });
+
+  it('attachTransitionEndListener is a no-op when panelEl is absent', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).panelEl = undefined;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    expect(() => (c as any).attachTransitionEndListener()).not.toThrow();
+  });
+});
+
+describe('io-sheet — scroll-lock cleanup (#796)', () => {
+  it('saves and restores body overflow on open/close cycle', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (c as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+
+    // Pre-condition: some other overlay already set overflow
+    document.body.style.overflow = 'hidden';
+
+    (c as any).applyOpenState();
+    expect(document.body.style.overflow).toBe('hidden');
+    expect((c as any).savedBodyOverflow).toBe('hidden');
+
+    (c as any).applyClosedState();
+    // Should restore to the pre-open value, not blindly clear to ''
+    expect(document.body.style.overflow).toBe('hidden');
+
+    // Clean up
+    document.body.style.overflow = '';
+  });
+
+  it('restores empty string when body had no overflow before open', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (c as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+
+    document.body.style.overflow = '';
+    (c as any).applyOpenState();
+    (c as any).applyClosedState();
+
+    expect(document.body.style.overflow).toBe('');
+  });
+});

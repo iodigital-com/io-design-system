@@ -801,3 +801,62 @@ describe('io-popover — render()', () => {
     expect(panelCall).toBeDefined();
   });
 });
+
+// ── handleWindowScroll / handleWindowResize (#777) ───────────────────────────
+
+describe('io-popover — scroll/resize repositioning (#777)', () => {
+  it('handleWindowScroll does nothing when popover is closed', () => {
+    const c = makePopover();
+    const panel = withPanel(c);
+    c.open = false;
+    const removeSpy = vi.spyOn(panel, 'getAttribute');
+    (c as any).handleWindowScroll();
+    // No reposition call → panel aria-hidden is never touched (not opened)
+    expect(c.open).toBe(false);
+  });
+
+  it('handleWindowScroll calls repositionPanel when popover is open', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = true;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowScroll();
+    expect(repositionSpy).toHaveBeenCalledOnce();
+  });
+
+  it('handleWindowResize does nothing when popover is closed', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = false;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowResize();
+    expect(repositionSpy).not.toHaveBeenCalled();
+  });
+
+  it('handleWindowResize calls repositionPanel when popover is open', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = true;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowResize();
+    expect(repositionSpy).toHaveBeenCalledOnce();
+  });
+
+  it('repositionPanel calls applyFallbackOpen when useNativePopover=false', () => {
+    const c = makePopover();
+    withPanel(c);
+    const fallbackSpy = vi.spyOn(c as any, 'applyFallbackOpen').mockImplementation(() => {});
+    (c as any).useNativePopover = false;
+    (c as any).repositionPanel();
+    expect(fallbackSpy).toHaveBeenCalledOnce();
+  });
+
+  it('repositionPanel calls positionNativePanel when useNativePopover=true', () => {
+    const c = makePopover();
+    withPanel(c);
+    const nativeSpy = vi.spyOn(c as any, 'positionNativePanel').mockImplementation(() => {});
+    (c as any).useNativePopover = true;
+    (c as any).repositionPanel();
+    expect(nativeSpy).toHaveBeenCalledOnce();
+  });
+});

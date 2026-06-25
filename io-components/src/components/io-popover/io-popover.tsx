@@ -162,6 +162,18 @@ export class IoPopover {
     }
   }
 
+  @Listen('scroll', { target: 'window', capture: true })
+  handleWindowScroll() {
+    if (!this.open) return;
+    this.repositionPanel();
+  }
+
+  @Listen('resize', { target: 'window' })
+  handleWindowResize() {
+    if (!this.open) return;
+    this.repositionPanel();
+  }
+
   // ── Private helpers ───────────────────────────────────────────
 
   private applyOpenState() {
@@ -286,6 +298,14 @@ export class IoPopover {
     if (!this.panelEl || !this.focusTrapHandler) return;
     this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
     this.focusTrapHandler = undefined;
+  }
+
+  private repositionPanel() {
+    if (this.useNativePopover) {
+      this.positionNativePanel();
+    } else {
+      this.applyFallbackOpen();
+    }
   }
 
   private close() {

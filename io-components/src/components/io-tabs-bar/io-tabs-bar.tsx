@@ -158,6 +158,13 @@ export class IoTabsBar {
       btn.setAttribute('aria-selected', String(isActive));
       btn.setAttribute('tabindex', String(isActive ? 0 : -1));
     });
+    this.scrollActiveTabIntoView(buttons, activeIndex);
+  }
+
+  private scrollActiveTabIntoView(buttons: TabItem[], activeIndex: number) {
+    const activeBtn = buttons[activeIndex];
+    if (!activeBtn) return;
+    activeBtn.scrollIntoView?.({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
   }
 
   // ── Handlers ─────────────────────────────────────────────────

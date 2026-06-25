@@ -76,7 +76,9 @@ export class IoSheet {
   private backdropEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
+  private transitionEndHandler?: (ev: TransitionEvent) => void;
   private focusTrigger?: Element;
+  private savedBodyOverflow = '';
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -93,6 +95,12 @@ export class IoSheet {
 
   /** Emitted when the sheet is dismissed (close button, backdrop click, or Escape key) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
+
+  /** Emitted after the open animation/transition has completed */
+  @Event({ eventName: 'motionVisibleEnd' }) motionVisibleEndEvent!: EventEmitter<void>;
+
+  /** Emitted after the close animation/transition has completed */
+  @Event({ eventName: 'motionHiddenEnd' }) motionHiddenEndEvent!: EventEmitter<void>;
 
   // ── Public methods ────────────────────────────────────────────
 
@@ -120,6 +128,7 @@ export class IoSheet {
   }
 
   componentDidLoad() {
+    this.attachTransitionEndListener();
     if (this.open) {
       this.applyOpenState();
     }
@@ -127,7 +136,8 @@ export class IoSheet {
 
   disconnectedCallback() {
     this.detachFocusTrap();
-    document.body.style.overflow = '';
+    this.detachTransitionEndListener();
+    document.body.style.overflow = this.savedBodyOverflow;
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -160,6 +170,7 @@ export class IoSheet {
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
+    this.savedBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     this.attachFocusTrap();
@@ -176,7 +187,8 @@ export class IoSheet {
   }
 
   private applyClosedState() {
-    document.body.style.overflow = '';
+    document.body.style.overflow = this.savedBodyOverflow;
+    this.savedBodyOverflow = '';
     this.detachFocusTrap();
 
     // Restore focus to trigger
@@ -226,6 +238,24 @@ export class IoSheet {
     if (!this.panelEl || !this.focusTrapHandler) return;
     this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
     this.focusTrapHandler = undefined;
+  }
+
+  private attachTransitionEndListener() {
+    if (!this.panelEl) return;
+    this.transitionEndHandler = () => {
+      if (this.open) {
+        this.motionVisibleEndEvent.emit();
+      } else {
+        this.motionHiddenEndEvent.emit();
+      }
+    };
+    this.panelEl.addEventListener('transitionend', this.transitionEndHandler);
+  }
+
+  private detachTransitionEndListener() {
+    if (!this.panelEl || !this.transitionEndHandler) return;
+    this.panelEl.removeEventListener('transitionend', this.transitionEndHandler);
+    this.transitionEndHandler = undefined;
   }
 
   // ── Handlers ──────────────────────────────────────────────────

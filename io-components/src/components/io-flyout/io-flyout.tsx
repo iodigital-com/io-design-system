@@ -88,6 +88,9 @@ export class IoFlyout {
   /** Which side the flyout panel is anchored to */
   @Prop({ reflect: true }) position: IoFlyoutPosition = 'right';
 
+  /** Accessible label for the close button. Override to provide context when multiple overlays may be open. */
+  @Prop() closeLabel = 'Close flyout';
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Emitted when the flyout is dismissed (close button, backdrop click, or Escape key) */
@@ -132,7 +135,7 @@ export class IoFlyout {
     // It is provided by aria-labelledby (when heading prop is set) or
     // aria-label on the host (when heading is absent). Log an error when
     // neither is available so authors know the contract is not satisfied.
-    if (!this.heading) {
+    if (!this.heading && !this.el.getAttribute('aria-label')) {
       console.error(
         '[io-flyout] Accessible name missing. Provide a "heading" prop or set aria-label on the host element.',
       );
@@ -333,7 +336,7 @@ export class IoFlyout {
             <button
               type="button"
               class="flyout__close"
-              aria-label="Close"
+              aria-label={this.closeLabel}
               onClick={this.handleDismiss}
               innerHTML={closeIcon}
             />

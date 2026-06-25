@@ -5,3 +5,6 @@ export type IoLinkVariant =
 
 /** Text colour theme */
 export type IoLinkColor = 'blue' | 'black' | 'white';
+
+/** Valid aria-current attribute values for navigation links */
+export type IoLinkAriaCurrent = 'page' | 'step' | 'location' | 'date' | 'time' | boolean;

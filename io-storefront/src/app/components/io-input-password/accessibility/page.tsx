@@ -33,9 +33,14 @@ export default function IoInputPasswordAccessibilityPage() {
               description: 'The toggle button aria-label reflects the current action, not the current state. "Show password" means the password is currently hidden; "Hide password" means it is currently visible.',
             },
             {
+              attribute: 'aria-readonly',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when readonly</span>,
+              description: 'Set to "true" when readonly=true. Communicates read-only state to screen readers independently of the visual style.',
+            },
+            {
               attribute: 'aria-invalid',
-              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when error</span>,
-              description: 'Set to "true" when state="error". Screen readers announce the field as invalid.',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when error or FACE invalid</span>,
+              description: 'Set to "true" when state="error" or when native form validation fails (e.g. required, minLength, maxLength constraints after the field has been touched). Screen readers announce the field as invalid.',
             },
           ]}
         />

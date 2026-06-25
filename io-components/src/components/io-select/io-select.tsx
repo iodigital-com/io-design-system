@@ -631,8 +631,10 @@ export class IoSelect {
         });
         items.push(
           <li role="presentation" class="combobox-group">
-            <span id={groupHeadingId} class="combobox-group__label" aria-hidden="true">{group.label}</span>
-            {groupItems}
+            <span id={groupHeadingId} class="combobox-group__label">{group.label}</span>
+            <ul role="group" aria-labelledby={groupHeadingId} class="combobox-group__list">
+              {groupItems}
+            </ul>
           </li>
         );
       } else {

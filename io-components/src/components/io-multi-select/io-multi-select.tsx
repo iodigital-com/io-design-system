@@ -796,8 +796,8 @@ export class IoMultiSelect {
         )}
 
         {/* FACE error (when faceInvalid but no state='error' and no message) */}
-        {faceInvalid && state !== 'error' && !message && (
-          <p id={`${fieldId}-face-error`} class="multi-select-message multi-select-message--error" role="alert">
+        {showFaceError && (
+          <p id={faceErrorId} class="multi-select-message multi-select-message--error" role="alert">
             Please select at least one option
           </p>
         )}

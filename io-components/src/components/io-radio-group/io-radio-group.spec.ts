@@ -435,3 +435,29 @@ describe('io-radio-group — description prop', () => {
     expect(String(fieldsetProps?.['aria-describedby'] ?? '')).toContain('io-rg-desc-test');
   });
 });
+
+describe('io-radio-group — error paragraph semantics (#856)', () => {
+  it('error paragraph uses role="alert" and aria-atomic="true", not aria-live', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+    component.error = true;
+    component.errorMessage = 'Please select an option';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(([tag, attrs]) => tag === 'p' && (attrs?.class as string)?.includes('radio-group__error'));
+    expect(pCalls.length).toBe(1);
+    const errorProps = pCalls[0][1];
+    expect(errorProps?.['role']).toBe('alert');
+    expect(errorProps?.['aria-atomic']).toBe('true');
+    expect(errorProps?.['aria-live']).toBeUndefined();
+  });
+});

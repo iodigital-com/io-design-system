@@ -288,6 +288,12 @@ export function getSelectStyles(): string {
       overflow-y: auto;
     }
 
+    .combobox-group__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
     .combobox-filter {
       padding: var(--io-space-2) var(--io-space-3);
       border-bottom: var(--io-input-border-width) solid var(--io-border);

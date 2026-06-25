@@ -12,7 +12,7 @@ export default function IoSheetAccessibilityPage() {
       <section id="keyboard-interaction" className="space-y-6">
         <SectionHeader
           title="Keyboard interaction"
-          description="io-sheet implements a custom focus trap so keyboard focus stays within the panel while it is open. The Escape key closes the sheet (when dismissible) and returns focus to the trigger element."
+          description="io-sheet implements a custom focus trap so keyboard focus stays within the panel while it is open. The focus trap correctly handles nested web components (custom elements with Shadow DOM) as well as light-DOM content. The Escape key closes the sheet (when dismissible) and returns focus to the trigger element."
         />
         <KeyboardTable
           rows={[
@@ -90,7 +90,7 @@ export default function IoSheetAccessibilityPage() {
             criterion="2.1.1"
             level="A"
             title="Keyboard"
-            note="All sheet functionality is operable via keyboard. A JavaScript focus trap keeps Tab and Shift+Tab within the panel. Escape closes the sheet when dismissible=true."
+            note="All sheet functionality is operable via keyboard. A JavaScript focus trap keeps Tab and Shift+Tab within the panel, including when nested web components (Shadow DOM children) have focus. Escape closes the sheet when dismissible=true."
           />
           <ComplianceCard
             criterion="2.3.3"

@@ -104,6 +104,18 @@ export const inputPasswordPropDefinitions: PropDefinition[] = [
     description: 'Displays supporting guidance below the input.',
   },
   {
+    name: 'maxLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Maximum number of characters allowed.',
+  },
+  {
+    name: 'minLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Minimum number of characters required.',
+  },
+  {
     name: 'autocomplete',
     type: 'string',
     defaultValue: 'current-password',

@@ -39,6 +39,13 @@ export default function IoSegmentedControlAccessibilityPage() {
               description: 'Set on each io-segment. Screen readers announce whether the segment is the currently selected option.',
             },
             {
+              attribute: 'aria-label',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Value of the label prop</span>
+              ),
+              description: 'Set to the value of the label prop when it is non-empty. Omitted (not set to empty string) when label is absent so the group is not announced without a name. Always provide a label — role="group" without aria-label provides no context to screen reader users.',
+            },
+            {
               attribute: 'aria-disabled',
               value: (
                 <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>

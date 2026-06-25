@@ -37,6 +37,12 @@ export class IoSegmentedControl {
   /** HTML name attribute for form participation */
   @Prop() name: string | undefined;
 
+  /** Accessible label for the control group — required for WCAG 4.1.2 */
+  @Prop() label: string | undefined;
+
+  /** When true, visually hides the label span; the accessible name is still provided via aria-label on the host */
+  @Prop() hideLabel = false;
+
   /** Disables the entire control and all child segments */
   @Prop({ reflect: true }) disabled = false;
 
@@ -52,6 +58,9 @@ export class IoSegmentedControl {
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
+    if (!this.label) {
+      console.error('[io-segmented-control] label prop is required for accessibility (WCAG 4.1.2).');
+    }
     this.defaultValue = this.value;
     this.syncFormValue();
   }
@@ -176,17 +185,21 @@ export class IoSegmentedControl {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { disabled } = this;
+    const { disabled, label, hideLabel } = this;
 
     return (
       <Host
         role="group"
+        aria-label={label || undefined}
         aria-disabled={disabled ? 'true' : undefined}
       >
         <style>{getSegmentedControlStyles()}</style>
-        <div class="segmented-control" aria-label={undefined}>
+        <div class="segmented-control">
           <slot onSlotchange={this.syncChildren} />
         </div>
+        {label && !hideLabel && (
+          <span class="segmented-control__label" aria-hidden="true">{label}</span>
+        )}
       </Host>
     );
   }

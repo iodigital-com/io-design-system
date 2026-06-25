@@ -95,6 +95,18 @@ export const segmentedControlPropDefinitions: PropDefinition[] = [
     description: 'HTML name attribute for form participation. Submitted with the form as name=value.',
   },
   {
+    name: 'label',
+    type: 'string',
+    defaultValue: 'View mode',
+    description: 'Accessible label for the control group. Required for WCAG 4.1.2.',
+  },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, hides the visible label. The label prop is still used as aria-label.',
+  },
+  {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,

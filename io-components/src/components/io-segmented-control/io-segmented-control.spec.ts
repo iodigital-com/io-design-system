@@ -215,3 +215,42 @@ describe('io-segmented-control — render() ARIA', () => {
     expect(hostCalls[0]?.[1]?.['aria-disabled']).toBeUndefined();
   });
 });
+
+describe('io-segmented-control — label and accessible name (#859)', () => {
+  it('has undefined label prop by default', () => {
+    const component = new IoSegmentedControl();
+    expect(component.label).toBeUndefined();
+  });
+
+  it('has hideLabel=false by default', () => {
+    const component = new IoSegmentedControl();
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('wires label prop to aria-label on Host', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    component.label = 'View mode';
+    component.disabled = false;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'Host' || args[0] == null);
+    expect(hostCalls[0]?.[1]?.['aria-label']).toBe('View mode');
+  });
+
+  it('logs console.error when label is not provided', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    component.label = undefined;
+    component.componentWillLoad();
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('label'));
+    errorSpy.mockRestore();
+  });
+});

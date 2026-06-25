@@ -11,7 +11,16 @@ export function getSegmentedControlStyles(): string {
   return `
     :host {
       display: inline-flex;
+      flex-direction: column;
+      gap: var(--io-space-1);
       font-family: var(--io-font-primary);
+    }
+
+    /* ── Label ──────────────────────────────────────────────── */
+
+    .segmented-control__label {
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-default);
     }
 
     /* ── Bar container ──────────────────────────────────────── */

@@ -1,3 +1,4 @@
+import { h } from '@stencil/core';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 vi.mock('@floating-ui/dom', () => ({
@@ -234,5 +235,44 @@ describe('io-select combobox — isSelected', () => {
     (component as any).selectedValues = ['a', 'b'];
     expect((component as any).isSelected('a')).toBe(true);
     expect((component as any).isSelected('d')).toBe(false);
+  });
+});
+
+describe('io-select — group rendering accessibility (#839)', () => {
+  function makeGroupedComponent() {
+    const c = new IoSelect();
+    c.custom = true;
+    // filter defaults to false — renderListboxItems skips filteredOptions path
+    (c as any).fieldId = 'io-select-test';
+    (c as any).groups = [
+      {
+        label: 'Fruits',
+        options: [
+          { value: 'apple', label: 'Apple' },
+          { value: 'banana', label: 'Banana' },
+        ],
+      },
+    ];
+    return c;
+  }
+
+  it('group heading span has no aria-hidden attribute', () => {
+    const component = makeGroupedComponent();
+    vi.mocked(h).mockClear();
+    (component as any).renderListboxItems();
+    const calls = vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const spanCall = calls.find(([tag, attrs]) => tag === 'span' && (attrs?.class as string)?.includes('combobox-group__label'));
+    expect(spanCall).toBeDefined();
+    expect(spanCall?.[1]?.['aria-hidden']).toBeUndefined();
+  });
+
+  it('group items are wrapped in ul with role="group" and aria-labelledby', () => {
+    const component = makeGroupedComponent();
+    vi.mocked(h).mockClear();
+    (component as any).renderListboxItems();
+    const calls = vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const ulCall = calls.find(([tag, attrs]) => tag === 'ul' && attrs?.role === 'group');
+    expect(ulCall).toBeDefined();
+    expect(ulCall?.[1]?.['aria-labelledby']).toBeDefined();
   });
 });

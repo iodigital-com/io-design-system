@@ -32,6 +32,18 @@ export default function IoSegmentedControlApiPage() {
               'HTML name attribute for form participation. Submitted as name=value when the form is submitted.',
             ],
             [
+              <InlineCode key="n">label</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Accessible label for the control group. Required — provides the accessible name for the role="group" container (WCAG 4.1.2).',
+            ],
+            [
+              <InlineCode key="n">hideLabel</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, visually hides the label span. The accessible name is still provided via aria-label on the group container regardless of this setting. The label prop must still be set.',
+            ],
+            [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,

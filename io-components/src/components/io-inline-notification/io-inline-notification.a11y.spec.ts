@@ -1,17 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import axe from 'axe-core';
+import { h } from '@stencil/core';
 
 import { IoInlineNotification } from './io-inline-notification';
 import { getInlineNotificationStyles } from './io-inline-notification-styles';
 
+// error and warning both use role="alert" (assertive); info and success use role="status"
 function renderToHTML(props: Partial<IoInlineNotification> = {}): string {
   const variant = props.variant ?? 'info';
   const heading = props.heading ? `<strong>${props.heading}</strong>` : '';
   const dismissible = props.dismissible
     ? `<button type="button" aria-label="Dismiss ${variant} notification"></button>`
     : '';
-  const role = variant === 'error' ? 'alert' : 'status';
-  const ariaLive = variant === 'error' ? '' : ' aria-live="polite" aria-atomic="true"';
+  const isAssertive = variant === 'error' || variant === 'warning';
+  const role = isAssertive ? 'alert' : 'status';
+  const ariaLive = isAssertive ? '' : ' aria-live="polite" aria-atomic="true"';
   return `
     <div>
       <style>${getInlineNotificationStyles(variant)}</style>
@@ -57,4 +60,38 @@ describe('io-inline-notification — WCAG AA accessibility', () => {
     expect(result.violations).toHaveLength(0);
   });
 
+});
+
+describe('io-inline-notification — component role per variant', () => {
+  function renderComponent(variant: IoInlineNotification['variant']): Record<string, unknown> {
+    const c = new IoInlineNotification();
+    (c as any).el = document.createElement('io-inline-notification');
+    c.variant = variant!;
+    const hMock = h as unknown as ReturnType<typeof import('vitest').vi.fn>;
+    hMock.mockClear();
+    c.render();
+    // Host is first h() call (tag === undefined in Stencil mock environment)
+    const hostCall = hMock.mock.calls.find((call) => call[0] == null || call[0] === undefined);
+    return (hostCall?.[1] ?? {}) as Record<string, unknown>;
+  }
+
+  it('warning variant renders role="alert" on host', () => {
+    const props = renderComponent('warning');
+    expect(props.role).toBe('alert');
+  });
+
+  it('error variant renders role="alert" on host', () => {
+    const props = renderComponent('error');
+    expect(props.role).toBe('alert');
+  });
+
+  it('info variant renders role="status" on host', () => {
+    const props = renderComponent('info');
+    expect(props.role).toBe('status');
+  });
+
+  it('success variant renders role="status" on host', () => {
+    const props = renderComponent('success');
+    expect(props.role).toBe('status');
+  });
 });

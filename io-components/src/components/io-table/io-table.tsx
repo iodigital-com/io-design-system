@@ -90,7 +90,7 @@ export class IoTable {
     // Label the scroll region whenever a caption is provided so the role="region"
     // landmark has an accessible name — required by ARIA for landmarks to be
     // distinguishable by AT users (WCAG 1.3.1 / ARIA spec §5.3.7).
-    const regionLabel = caption || undefined;
+    const regionLabel = caption || 'Table';
     const captionClass = !caption || captionHidden ? 'sr-only' : undefined;
 
     return (

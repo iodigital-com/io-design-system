@@ -196,7 +196,13 @@ export class IoSheet {
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      const active = document.activeElement as HTMLElement | null;
+      // When a shadow-DOM child has focus, document.activeElement returns the
+      // host element. Fall back to :focus query within the shadow root to get
+      // the actual focused element so first/last comparisons work correctly.
+      let active = document.activeElement as HTMLElement | null;
+      if (active === this.el) {
+        active = (this.el.shadowRoot?.querySelector(':focus') as HTMLElement | null) ?? active;
+      }
 
       if (ev.shiftKey && active === first) {
         ev.preventDefault();

@@ -198,63 +198,124 @@ describe('io-scroller — keyboard navigation (#850)', () => {
     expect(typeof handler).toBe('function');
   });
 
-  it('calls scrollBy(prev) on ArrowLeft', () => {
+  // ── Horizontal mode ──────────────────────────────────────────
+
+  it('horizontal: calls scrollBy(prev) on ArrowLeft', () => {
     const component = makeComponent();
     const spy = vi.spyOn(component as any, 'scrollBy');
     const handler = getScrollRegionKeyDownHandler(component)!;
     const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft', cancelable: true });
-    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
-
+    vi.spyOn(ev, 'preventDefault');
     handler(ev);
-
-    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(ev.preventDefault).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('prev');
   });
 
-  it('calls scrollBy(prev) on ArrowUp', () => {
-    const component = makeComponent();
-    const spy = vi.spyOn(component as any, 'scrollBy');
-    const handler = getScrollRegionKeyDownHandler(component)!;
-    const ev = new KeyboardEvent('keydown', { key: 'ArrowUp', cancelable: true });
-
-    handler(ev);
-
-    expect(spy).toHaveBeenCalledWith('prev');
-  });
-
-  it('calls scrollBy(next) on ArrowRight', () => {
+  it('horizontal: calls scrollBy(next) on ArrowRight', () => {
     const component = makeComponent();
     const spy = vi.spyOn(component as any, 'scrollBy');
     const handler = getScrollRegionKeyDownHandler(component)!;
     const ev = new KeyboardEvent('keydown', { key: 'ArrowRight', cancelable: true });
-    const preventDefaultSpy = vi.spyOn(ev, 'preventDefault');
-
+    vi.spyOn(ev, 'preventDefault');
     handler(ev);
-
-    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(ev.preventDefault).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('next');
   });
 
-  it('calls scrollBy(next) on ArrowDown', () => {
+  it('horizontal: ignores ArrowUp (wrong axis)', () => {
     const component = makeComponent();
+    component.orientation = 'horizontal';
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    handler(new KeyboardEvent('keydown', { key: 'ArrowUp', cancelable: true }));
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('horizontal: ignores ArrowDown (wrong axis)', () => {
+    const component = makeComponent();
+    component.orientation = 'horizontal';
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    handler(new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true }));
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  // ── Vertical mode ────────────────────────────────────────────
+
+  it('vertical: calls scrollBy(prev) on ArrowUp', () => {
+    const component = makeComponent();
+    component.orientation = 'vertical';
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'ArrowUp', cancelable: true });
+    vi.spyOn(ev, 'preventDefault');
+    handler(ev);
+    expect(ev.preventDefault).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('prev');
+  });
+
+  it('vertical: calls scrollBy(next) on ArrowDown', () => {
+    const component = makeComponent();
+    component.orientation = 'vertical';
     const spy = vi.spyOn(component as any, 'scrollBy');
     const handler = getScrollRegionKeyDownHandler(component)!;
     const ev = new KeyboardEvent('keydown', { key: 'ArrowDown', cancelable: true });
-
+    vi.spyOn(ev, 'preventDefault');
     handler(ev);
-
+    expect(ev.preventDefault).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('next');
   });
 
-  it('does not call scrollBy on unhandled key', () => {
+  it('vertical: ignores ArrowLeft (wrong axis)', () => {
     const component = makeComponent();
+    component.orientation = 'vertical';
     const spy = vi.spyOn(component as any, 'scrollBy');
     const handler = getScrollRegionKeyDownHandler(component)!;
-    const ev = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
-
-    handler(ev);
-
+    handler(new KeyboardEvent('keydown', { key: 'ArrowLeft', cancelable: true }));
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('vertical: ignores ArrowRight (wrong axis)', () => {
+    const component = makeComponent();
+    component.orientation = 'vertical';
+    const spy = vi.spyOn(component as any, 'scrollBy');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    handler(new KeyboardEvent('keydown', { key: 'ArrowRight', cancelable: true }));
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  // ── Home / End ───────────────────────────────────────────────
+
+  it('calls scrollToExtent(start) on Home', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollToExtent');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'Home', cancelable: true });
+    vi.spyOn(ev, 'preventDefault');
+    handler(ev);
+    expect(ev.preventDefault).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('start');
+  });
+
+  it('calls scrollToExtent(end) on End', () => {
+    const component = makeComponent();
+    const spy = vi.spyOn(component as any, 'scrollToExtent');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    const ev = new KeyboardEvent('keydown', { key: 'End', cancelable: true });
+    vi.spyOn(ev, 'preventDefault');
+    handler(ev);
+    expect(ev.preventDefault).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('end');
+  });
+
+  it('does not call scrollBy or scrollToExtent on unhandled key', () => {
+    const component = makeComponent();
+    const scrollBySpy = vi.spyOn(component as any, 'scrollBy');
+    const scrollToExtentSpy = vi.spyOn(component as any, 'scrollToExtent');
+    const handler = getScrollRegionKeyDownHandler(component)!;
+    handler(new KeyboardEvent('keydown', { key: 'Enter', cancelable: true }));
+    expect(scrollBySpy).not.toHaveBeenCalled();
+    expect(scrollToExtentSpy).not.toHaveBeenCalled();
   });
 });
 

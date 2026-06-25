@@ -263,4 +263,38 @@ describe('io-sheet — focus trap uses document.activeElement (#874)', () => {
     expect(() => (component as any).attachFocusTrap()).not.toThrow();
     expect(typeof (component as any).focusTrapHandler).toBe('function');
   });
+
+  it('attachFocusTrap wraps Tab when document.activeElement is host but shadow child is last focusable', () => {
+    // In browsers, when a shadow-DOM child (e.g. close button) has focus,
+    // document.activeElement returns the host, not the shadow child.
+    // The fix: fall back to shadowRoot.querySelector(':focus') in that case.
+    const panelEl = document.createElement('div');
+    const firstBtn = document.createElement('button');
+    const shadowCloseBtn = document.createElement('button'); // last — simulates shadow close button
+    panelEl.appendChild(firstBtn);
+    panelEl.appendChild(shadowCloseBtn);
+
+    // Replace component.el with a mock that has a shadowRoot returning shadowCloseBtn on :focus
+    const hostEl = document.createElement('io-sheet');
+    const mockShadowRoot = { querySelector: (sel: string) => sel === ':focus' ? shadowCloseBtn : null };
+    Object.defineProperty(hostEl, 'shadowRoot', { get: () => mockShadowRoot });
+    (component as any).el = hostEl;
+    (component as any).panelEl = panelEl;
+
+    (component as any).attachFocusTrap();
+    const handler = (component as any).focusTrapHandler as (ev: KeyboardEvent) => void;
+
+    // Simulate: shadow close button (last) has focus → document.activeElement is the host
+    vi.spyOn(document, 'activeElement', 'get').mockReturnValue(hostEl as Element);
+    const focusSpy = vi.spyOn(firstBtn, 'focus');
+
+    const tabEv = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+    vi.spyOn(tabEv, 'preventDefault');
+    handler(tabEv);
+
+    // Without the fix: active === hostEl, not shadowCloseBtn (last) → no wrap
+    // With the fix: active resolves to shadowCloseBtn via :focus query → wraps to first
+    expect((tabEv as any).preventDefault).toHaveBeenCalled();
+    expect(focusSpy).toHaveBeenCalled();
+  });
 });

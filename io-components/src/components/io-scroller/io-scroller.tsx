@@ -194,6 +194,20 @@ export class IoScroller {
     }
   }
 
+  private scrollToExtent(direction: 'start' | 'end'): void {
+    const el = this.scrollContainer;
+    if (!el) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior = reducedMotion ? 'auto' : 'smooth';
+    const isVertical = this.orientation === 'vertical';
+    if (direction === 'start') {
+      el.scrollTo(isVertical ? { top: 0, behavior } : { left: 0, behavior });
+    } else {
+      const max = isVertical ? el.scrollHeight : el.scrollWidth;
+      el.scrollTo(isVertical ? { top: max, behavior } : { left: max, behavior });
+    }
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -230,12 +244,19 @@ export class IoScroller {
           aria-label={regionLabel}
           tabIndex={(!this.atStart || !this.atEnd) ? 0 : undefined}
           onKeyDown={(ev: KeyboardEvent) => {
-            if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') {
+            const isVertical = this.orientation === 'vertical';
+            if ((isVertical ? ev.key === 'ArrowUp' : ev.key === 'ArrowLeft')) {
               ev.preventDefault();
               this.scrollBy('prev');
-            } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') {
+            } else if ((isVertical ? ev.key === 'ArrowDown' : ev.key === 'ArrowRight')) {
               ev.preventDefault();
               this.scrollBy('next');
+            } else if (ev.key === 'Home') {
+              ev.preventDefault();
+              this.scrollToExtent('start');
+            } else if (ev.key === 'End') {
+              ev.preventDefault();
+              this.scrollToExtent('end');
             }
           }}
           ref={(el) => {

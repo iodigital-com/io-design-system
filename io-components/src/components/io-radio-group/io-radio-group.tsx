@@ -269,7 +269,7 @@ export class IoRadioGroup {
           )}
         </div>
         {error && errorMessage && (
-          <p id={this.errorId} class="radio-group__error" aria-live="polite">
+          <p id={this.errorId} class="radio-group__error" role="alert" aria-atomic="true">
             {errorMessage}
           </p>
         )}

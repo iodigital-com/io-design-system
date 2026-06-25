@@ -399,7 +399,10 @@ export class IoCarousel {
   onMouseLeave() {
     if (!this.autoplay || this.isAutoplayUserPaused) return;
     this.isAutoplayInteractionPaused = false;
-    this.resumeAutoplay();
+    // Only resume if focus is not still inside the carousel
+    if (!this.el.matches(':focus-within')) {
+      this.resumeAutoplay();
+    }
   }
 
   @Listen('focusin')
@@ -410,11 +413,26 @@ export class IoCarousel {
   }
 
   @Listen('focusout')
-  onFocusOut() {
+  onFocusOut(ev: FocusEvent) {
     if (!this.autoplay || this.isAutoplayUserPaused) return;
+    // If focus moved to an element still inside the carousel, don't resume
+    if (this.el.contains(ev.relatedTarget as Node)) return;
     this.isAutoplayInteractionPaused = false;
-    this.resumeAutoplay();
+    // Only resume if pointer is not hovering
+    if (!this.el.matches(':hover')) {
+      this.resumeAutoplay();
+    }
   }
+
+  private handleVisibilityChange = () => {
+    if (document.hidden) {
+      this.isAutoplayInteractionPaused = true;
+      this.pauseAutoplayTimer();
+    } else {
+      this.isAutoplayInteractionPaused = false;
+      this.resumeAutoplay();
+    }
+  };
 
   @Watch('autoplay')
   onAutoplayChange(newValue: boolean) {
@@ -446,10 +464,12 @@ export class IoCarousel {
     if (this.autoplay) {
       this.startAutoplayTimer();
     }
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   disconnectedCallback() {
     this.stopAutoplayTimer();
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   // ── Render ───────────────────────────────────────────────────

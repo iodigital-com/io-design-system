@@ -146,13 +146,13 @@ export default function IoButtonApiPage() {
               <span key="n"><InlineCode>name</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Name submitted with form data when the button is inside a form. Works with value to build key–value pairs. Only relevant when type="submit" or type="reset" and no href is set.',
+              'Gives this button a name in submitted form data. When set alongside value, a name–value pair is included when the form submits. Required for any form value submission — type="submit" triggers submission; type="button" does not submit form data regardless.',
             ],
             [
               <span key="n"><InlineCode>value</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Value submitted with form data when the button is inside a form. Also used by io-button-group to identify the selected button. Works with name to build key–value pairs.',
+              'Value included in submitted form data under the name key. Only submitted when name is also set. Also used by io-button-group to identify the selected button.',
             ],
             [
               <span key="n"><InlineCode>form</InlineCode><ReflectBadge /></span>,

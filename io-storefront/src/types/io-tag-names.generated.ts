@@ -59,6 +59,7 @@ export type IoTagNames =
   | 'io-tag'
   | 'io-tag-dismissible'
   | 'io-text'
+  | 'io-text-list'
   | 'io-textarea'
   | 'io-toast'
   | 'io-toast-item'

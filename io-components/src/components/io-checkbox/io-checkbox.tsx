@@ -172,6 +172,7 @@ export class IoCheckbox {
 
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
+    // indeterminate does not count as checked — required + indeterminate is still valueMissing
     this.internals?.setFormValue?.(this.checked ? this.value : null);
     if (this.required && !this.checked) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');

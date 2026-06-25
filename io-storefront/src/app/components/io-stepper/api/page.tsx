@@ -32,8 +32,50 @@ export default function IoStepperApiPage() {
               <InlineCode key="d">&apos;horizontal&apos;</InlineCode>,
               'Layout direction of the stepper. Horizontal flows left-to-right; vertical stacks top-to-bottom.',
             ],
+            [
+              <InlineCode key="n">ariaLabel</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Progress&apos;</InlineCode>,
+              'Accessible label applied to the inner nav landmark via aria-label. Localise this value for non-English applications so screen reader users hear the correct landmark announcement.',
+            ],
           ]}
         />
+      </section>
+
+      {/* io-stepper Events */}
+      <section id="io-stepper-events" className="space-y-4">
+        <SectionHeader
+          title="io-stepper events"
+          description="Custom events emitted by io-stepper. Listen via addEventListener or framework event binding."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Event', width: '160px' },
+            { label: 'Detail type', width: '260px' },
+            { label: 'Bubbles', width: '100px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">stepChange</InlineCode>,
+              <InlineCode key="t">{'{ activeStepIndex: number }'}</InlineCode>,
+              'No',
+              'Fired when the user activates a complete step button via click, Enter, or Space. The detail object contains activeStepIndex — the 0-based index of the selected step. Handle this event to navigate the user backward to a previous step in your application flow.',
+            ],
+          ]}
+        />
+        <CodeNote label="Usage">
+{`// Vanilla JS
+document.querySelector('io-stepper')
+  .addEventListener('stepChange', (e) => {
+    goToStep(e.detail.activeStepIndex);
+  });
+
+// React
+<IoStepper current={current} onStepChange={(e) => goToStep(e.detail.activeStepIndex)}>
+  ...
+</IoStepper>`}
+        </CodeNote>
       </section>
 
       {/* ── io-stepper Slots ─────────────────────────────────────── */}
@@ -97,9 +139,9 @@ import { IoStepper, IoStep } from '@iodigital-com/components-react';
             ],
             [
               <span key="n"><InlineCode>status</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;complete&apos; | &apos;current&apos; | &apos;upcoming&apos;</InlineCode>,
+              <InlineCode key="t">&apos;complete&apos; | &apos;current&apos; | &apos;upcoming&apos; | &apos;warning&apos;</InlineCode>,
               <InlineCode key="d">&apos;upcoming&apos;</InlineCode>,
-              'Completion status of this step. Set automatically by io-stepper via the current prop. Can also be set manually when using io-step without a parent io-stepper.',
+              'Completion status of this step. Set automatically by io-stepper via the current prop. Can also be set manually when using io-step without a parent io-stepper. The warning status renders a warning indicator on the step circle.',
             ],
             [
               <InlineCode key="n">index</InlineCode>,

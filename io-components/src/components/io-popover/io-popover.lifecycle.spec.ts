@@ -807,9 +807,8 @@ describe('io-popover — render()', () => {
 describe('io-popover — scroll/resize repositioning (#777)', () => {
   it('handleWindowScroll does nothing when popover is closed', () => {
     const c = makePopover();
-    const panel = withPanel(c);
+    withPanel(c);
     c.open = false;
-    const removeSpy = vi.spyOn(panel, 'getAttribute');
     (c as any).handleWindowScroll();
     // No reposition call → panel aria-hidden is never touched (not opened)
     expect(c.open).toBe(false);

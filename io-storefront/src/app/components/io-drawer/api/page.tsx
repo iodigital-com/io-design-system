@@ -65,6 +65,18 @@ export default function IoDrawerApiPage() {
               <InlineCode key="d">true</InlineCode>,
               'Controls visibility of the × dismiss button. When false, the drawer header has no close button and the user cannot dismiss via keyboard. Use false for guided-flow drawers where the consumer controls the close action.',
             ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">{'Record<string, string> | undefined'}</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>undefined</span>,
+              'Additional ARIA attributes spread onto the inner dialog element. Use for edge-case overrides such as aria-describedby.',
+            ],
+            [
+              <span key="n"><InlineCode>background</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;canvas&apos; | &apos;surface&apos;</InlineCode>,
+              <InlineCode key="d">&apos;canvas&apos;</InlineCode>,
+              'Background token applied to the drawer panel. canvas uses var(--io-bg-canvas); surface uses var(--io-bg-surface).',
+            ],
           ]}
         />
       </section>
@@ -115,6 +127,18 @@ export default function IoDrawerApiPage() {
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
               'Only fires when the user actively dismisses (× button, Escape key, backdrop click). Does NOT fire when open is set to false programmatically.',
+            ],
+            [
+              <InlineCode key="n">motionVisibleEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the open animation has completed. Use to focus content inside the drawer or start dependent animations.',
+            ],
+            [
+              <InlineCode key="n">motionHiddenEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the close animation has completed. Use to unmount content or reset state after the drawer is fully off-screen.',
             ],
           ]}
         />

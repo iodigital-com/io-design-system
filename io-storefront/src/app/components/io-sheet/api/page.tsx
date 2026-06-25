@@ -65,6 +65,18 @@ export default function IoSheetApiPage() {
               'No',
               'Emitted when the user dismisses the sheet via the close button, backdrop click, or Escape key. Does NOT fire when open is set to false programmatically.',
             ],
+            [
+              <InlineCode key="n">motionVisibleEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the open animation has completed. Use to focus content inside the sheet or start dependent animations.',
+            ],
+            [
+              <InlineCode key="n">motionHiddenEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the close animation has completed. Use to unmount content or reset state after the sheet is fully off-screen.',
+            ],
           ]}
         />
         <CodeNote label="Usage">

@@ -793,7 +793,7 @@ describe('io-popover — render()', () => {
     const c = makePopover();
     c.label = undefined;
     c.ariaLabel = 'Filter panel';
-    const result = (c as any).render() as { vchildren?: unknown[] };
+    (c as any).render();
     // Verify render does not throw and ariaLabel prop is accessible
     expect(c.ariaLabel).toBe('Filter panel');
   });

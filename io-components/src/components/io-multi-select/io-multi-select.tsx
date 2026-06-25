@@ -612,7 +612,12 @@ export class IoMultiSelect {
       this.maxDisplay,
     );
 
-    const describedBy = message ? messageId : undefined;
+    const faceErrorId = `${fieldId}-face-error`;
+    const showFaceError = faceInvalid && state !== 'error' && !message;
+    const describedBy = [
+      message ? messageId : '',
+      showFaceError ? faceErrorId : '',
+    ].filter(Boolean).join(' ') || undefined;
     const wrapperClass = getMultiSelectWrapperClass(
       showError ? 'error' : showSuccess ? 'success' : 'none',
       disabled,
@@ -791,8 +796,8 @@ export class IoMultiSelect {
         )}
 
         {/* FACE error (when faceInvalid but no state='error' and no message) */}
-        {faceInvalid && state !== 'error' && !message && (
-          <p id={`${fieldId}-face-error`} class="multi-select-message multi-select-message--error" role="alert">
+        {showFaceError && (
+          <p id={faceErrorId} class="multi-select-message multi-select-message--error" role="alert">
             Please select at least one option
           </p>
         )}

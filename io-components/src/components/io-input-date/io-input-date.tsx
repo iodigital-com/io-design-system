@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, AttachInternals } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Element, Host, Watch, h, AttachInternals } from '@stencil/core';
 
 import { getInputDateStyles } from './io-input-date-styles';
 
@@ -28,7 +28,14 @@ export class IoInputDate {
 
   private inputId!: string;
   private errorId!: string;
+  private faceErrorId!: string;
   private helperId!: string;
+
+  /** Mirrors FACE invalidity so the component re-renders when form validation state changes */
+  @State() faceInvalid = false;
+
+  /** True after the user has blurred the field at least once — gates eager FACE error display */
+  @State() private touched = false;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -43,7 +50,7 @@ export class IoInputDate {
   @Prop() required = false;
 
   /** Disables the input */
-  @Prop({ reflect: true }) disabled = false;
+  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -76,9 +83,58 @@ export class IoInputDate {
     const base = this.name ? `io-input-date-${this.name.replace(/[^a-z0-9_-]+/gi, '-')}-${uid}` : `io-input-date-${uid}`;
     this.inputId = base;
     this.errorId = `${base}-error`;
+    this.faceErrorId = `${base}-face-error`;
     this.helperId = `${base}-helper`;
     this.defaultValue = this.value ?? '';
+    this.syncFormValue();
+  }
+
+  @Watch('value')
+  onValueChange() { this.syncFormValue(); }
+
+  @Watch('required')
+  onRequiredChange() { this.syncFormValue(); }
+
+  @Watch('min')
+  onMinChange() { this.syncFormValue(); }
+
+  @Watch('max')
+  onMaxChange() { this.syncFormValue(); }
+
+  private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
+    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (nativeInput) {
+      if (!nativeInput.checkValidity()) {
+        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+        this.faceInvalid = this.touched;
+      } else {
+        this.internals?.setValidity?.({});
+        this.faceInvalid = false;
+      }
+    } else if (this.required && !this.value) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = this.touched;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
+  }
+
+  formResetCallback() {
+    this.value = this.defaultValue;
+    this.touched = false;
+    this.faceInvalid = false;
+    this.syncFormValue();
+  }
+
+  formDisabledCallback(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  formStateRestoreCallback(state: string | null) {
+    this.value = state ?? '';
+    this.syncFormValue();
   }
 
   private handleInput = (ev: InputEvent) => {
@@ -91,14 +147,9 @@ export class IoInputDate {
     if (this.disabled) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
-    this.internals?.setFormValue?.(newVal);
+    this.syncFormValue();
     this.change.emit(newVal);
   };
-
-  formResetCallback() {
-    this.value = this.defaultValue;
-    this.internals?.setFormValue?.(this.defaultValue);
-  }
 
   private handleFocus = (ev: FocusEvent) => {
     if (this.disabled) return;
@@ -107,20 +158,24 @@ export class IoInputDate {
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
+    this.touched = true;
+    this.syncFormValue();
     this.blur.emit(ev);
   };
 
   render() {
     const { label, name, value, required, disabled, state, message, helperText, hideLabel, size, min, max } = this;
-    const { inputId, errorId, helperId } = this;
+    const { inputId, errorId, faceErrorId, helperId } = this;
 
-    const showError = state === 'error';
-    const showSuccess = state === 'success';
-    const showWarning = state === 'warning';
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
     const showMessage = (showError || showSuccess || showWarning) && !!message;
-    const showDescription = !showMessage && !!helperText;
+    const showFaceError = this.faceInvalid && state !== 'error' && !message;
+    const showDescription = !showMessage && !showFaceError && !!helperText;
     const describedBy = [
       showMessage ? errorId : '',
+      showFaceError ? faceErrorId : '',
       showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
@@ -153,7 +208,8 @@ export class IoInputDate {
               disabled={disabled}
               min={min}
               max={max}
-              aria-invalid={showError ? 'true' : undefined}
+              aria-invalid={(showError) ? 'true' : undefined}
+              aria-required={required ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -215,6 +271,11 @@ export class IoInputDate {
         {showWarning && (
           <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
             {message}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="input-message input-message--error" role="alert">
+            Please fill in this field
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

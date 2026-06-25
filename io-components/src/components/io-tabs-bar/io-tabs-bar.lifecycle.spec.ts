@@ -235,3 +235,53 @@ describe('io-tabs-bar — setupListeners and teardownListeners', () => {
     expect(() => (c as any).teardownListeners()).not.toThrow();
   });
 });
+
+// ── scrollActiveTabIntoView (#795) ────────────────────────────────────────────
+
+describe('io-tabs-bar — scrollActiveTabIntoView (#795)', () => {
+  it('calls scrollIntoView on the active button', () => {
+    const btn0 = makeBtn('Tab 1');
+    const btn1 = makeBtn('Tab 2');
+    btn0.scrollIntoView = vi.fn();
+    btn1.scrollIntoView = vi.fn();
+
+    const c = makeComponent([]);
+    (c as any).buttons = [btn0, btn1];
+    (c as any).scrollActiveTabIntoView([btn0, btn1], 0);
+
+    expect(btn0.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+    expect(btn1.scrollIntoView).not.toHaveBeenCalled();
+  });
+
+  it('calls scrollIntoView on the second button when activeIndex=1', () => {
+    const btn0 = makeBtn('Tab 1');
+    const btn1 = makeBtn('Tab 2');
+    btn0.scrollIntoView = vi.fn();
+    btn1.scrollIntoView = vi.fn();
+
+    const c = makeComponent([]);
+    (c as any).scrollActiveTabIntoView([btn0, btn1], 1);
+
+    expect(btn1.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+    expect(btn0.scrollIntoView).not.toHaveBeenCalled();
+  });
+
+  it('does not throw when activeIndex is out of bounds', () => {
+    const btn0 = makeBtn('Tab 1');
+    const c = makeComponent([]);
+    expect(() => (c as any).scrollActiveTabIntoView([btn0], 5)).not.toThrow();
+  });
+
+  it('does not throw with empty buttons array', () => {
+    const c = makeComponent([]);
+    expect(() => (c as any).scrollActiveTabIntoView([], 0)).not.toThrow();
+  });
+});

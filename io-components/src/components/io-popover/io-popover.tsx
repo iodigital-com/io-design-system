@@ -50,6 +50,7 @@ export class IoPopover {
   private triggerEl?: HTMLElement | null;
   private useNativePopover = false;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
+  private _scrollRafId?: number;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -122,6 +123,9 @@ export class IoPopover {
 
   disconnectedCallback(): void {
     this.detachFocusTrap?.();
+    if (this._scrollRafId) {
+      cancelAnimationFrame(this._scrollRafId);
+    }
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -160,6 +164,23 @@ export class IoPopover {
     if (!isInsideHost) {
       this.close();
     }
+  }
+
+  @Listen('scroll', { target: 'window', capture: true })
+  handleWindowScroll() {
+    if (this._scrollRafId) return;
+    this._scrollRafId = requestAnimationFrame(() => {
+      this._scrollRafId = undefined;
+      if (this.open) {
+        this.repositionPanel();
+      }
+    });
+  }
+
+  @Listen('resize', { target: 'window' })
+  handleWindowResize() {
+    if (!this.open) return;
+    this.repositionPanel();
   }
 
   // ── Private helpers ───────────────────────────────────────────
@@ -286,6 +307,14 @@ export class IoPopover {
     if (!this.panelEl || !this.focusTrapHandler) return;
     this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
     this.focusTrapHandler = undefined;
+  }
+
+  private repositionPanel() {
+    if (this.useNativePopover) {
+      this.positionNativePanel();
+    } else {
+      this.applyFallbackOpen();
+    }
   }
 
   private close() {

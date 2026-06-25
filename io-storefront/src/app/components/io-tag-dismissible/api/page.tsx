@@ -46,6 +46,12 @@ export default function IoTagDismissibleApiPage() {
               <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>undefined</span>,
               'Optional leading icon rendered before the label. Accepts any name from the io icon set.',
             ],
+            [
+              <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, the dismiss button is visually muted and inert — click and keyboard events are suppressed without removing the button from the tab order.',
+            ],
           ]}
         />
       </section>

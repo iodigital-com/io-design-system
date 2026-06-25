@@ -801,3 +801,75 @@ describe('io-popover — render()', () => {
     expect(panelCall).toBeDefined();
   });
 });
+
+// ── handleWindowScroll / handleWindowResize (#777) ───────────────────────────
+
+describe('io-popover — scroll/resize repositioning (#777)', () => {
+  // handleWindowScroll uses requestAnimationFrame for throttling. The
+  // file-level stub no-ops rAF to prevent focus-call side-effects, so we
+  // override it here to run callbacks synchronously, then restore the no-op.
+  beforeEach(() => {
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+      cb(0);
+      return 1;
+    });
+  });
+
+  afterEach(() => {
+    vi.stubGlobal('requestAnimationFrame', (_cb: FrameRequestCallback) => 0);
+  });
+
+  it('handleWindowScroll does nothing when popover is closed', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = false;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowScroll();
+    expect(repositionSpy).not.toHaveBeenCalled();
+  });
+
+  it('handleWindowScroll calls repositionPanel when popover is open', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = true;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowScroll();
+    expect(repositionSpy).toHaveBeenCalledOnce();
+  });
+
+  it('handleWindowResize does nothing when popover is closed', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = false;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowResize();
+    expect(repositionSpy).not.toHaveBeenCalled();
+  });
+
+  it('handleWindowResize calls repositionPanel when popover is open', () => {
+    const c = makePopover();
+    withPanel(c);
+    c.open = true;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
+    (c as any).handleWindowResize();
+    expect(repositionSpy).toHaveBeenCalledOnce();
+  });
+
+  it('repositionPanel calls applyFallbackOpen when useNativePopover=false', () => {
+    const c = makePopover();
+    withPanel(c);
+    const fallbackSpy = vi.spyOn(c as any, 'applyFallbackOpen').mockImplementation(() => {});
+    (c as any).useNativePopover = false;
+    (c as any).repositionPanel();
+    expect(fallbackSpy).toHaveBeenCalledOnce();
+  });
+
+  it('repositionPanel calls positionNativePanel when useNativePopover=true', () => {
+    const c = makePopover();
+    withPanel(c);
+    const nativeSpy = vi.spyOn(c as any, 'positionNativePanel').mockImplementation(() => {});
+    (c as any).useNativePopover = true;
+    (c as any).repositionPanel();
+    expect(nativeSpy).toHaveBeenCalledOnce();
+  });
+});

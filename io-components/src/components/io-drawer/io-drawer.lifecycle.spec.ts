@@ -456,3 +456,89 @@ describe('io-drawer — componentWillLoad', () => {
     expect((c as any).headingId).toMatch(/^io-drawer-heading-[a-z0-9]+$/);
   });
 });
+
+// ─── inert management (#807) ──────────────────────────────────────────────────
+
+describe('io-drawer — inert management (#807)', () => {
+  it('applyInert sets inert on body children other than the host', () => {
+    const c = makeDrawer();
+    const hostEl = document.createElement('io-drawer');
+    (c as any).el = hostEl;
+    document.body.appendChild(hostEl);
+
+    const sibling = document.createElement('main');
+    document.body.appendChild(sibling);
+
+    (c as any).applyInert();
+
+    expect(sibling.hasAttribute('inert')).toBe(true);
+    expect(hostEl.hasAttribute('inert')).toBe(false);
+
+    document.body.removeChild(hostEl);
+    document.body.removeChild(sibling);
+  });
+
+  it('removeInert clears inert from previously inerted elements', () => {
+    const c = makeDrawer();
+    const hostEl = document.createElement('io-drawer');
+    (c as any).el = hostEl;
+    document.body.appendChild(hostEl);
+
+    const sibling = document.createElement('aside');
+    document.body.appendChild(sibling);
+
+    (c as any).applyInert();
+    expect(sibling.hasAttribute('inert')).toBe(true);
+
+    (c as any).removeInert();
+    expect(sibling.hasAttribute('inert')).toBe(false);
+
+    document.body.removeChild(hostEl);
+    document.body.removeChild(sibling);
+  });
+
+  it('removeInert is idempotent when no elements were inerted', () => {
+    const c = makeDrawer();
+    expect(() => (c as any).removeInert()).not.toThrow();
+  });
+
+  it('applyInert does not set inert on SCRIPT or STYLE elements', () => {
+    const c = makeDrawer();
+    const hostEl = document.createElement('io-drawer');
+    (c as any).el = hostEl;
+    document.body.appendChild(hostEl);
+
+    const script = document.createElement('script');
+    const style = document.createElement('style');
+    document.body.appendChild(script);
+    document.body.appendChild(style);
+
+    (c as any).applyInert();
+
+    expect(script.hasAttribute('inert')).toBe(false);
+    expect(style.hasAttribute('inert')).toBe(false);
+
+    document.body.removeChild(hostEl);
+    document.body.removeChild(script);
+    document.body.removeChild(style);
+    (c as any).removeInert();
+  });
+
+  it('onOpenChange(true) calls applyInert', () => {
+    const c = makeDrawer();
+    const dialogEl = makeDialogEl(false);
+    withShadowRoot(c, dialogEl);
+    const applyInertSpy = vi.spyOn(c as any, 'applyInert').mockImplementation(() => {});
+    (c as any).onOpenChange(true);
+    expect(applyInertSpy).toHaveBeenCalledOnce();
+  });
+
+  it('onOpenChange(false) calls removeInert', () => {
+    const c = makeDrawer();
+    const dialogEl = makeDialogEl(true);
+    withShadowRoot(c, dialogEl);
+    const removeInertSpy = vi.spyOn(c as any, 'removeInert').mockImplementation(() => {});
+    (c as any).onOpenChange(false);
+    expect(removeInertSpy).toHaveBeenCalledOnce();
+  });
+});

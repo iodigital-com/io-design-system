@@ -158,6 +158,18 @@ export class IoTabsBar {
       btn.setAttribute('aria-selected', String(isActive));
       btn.setAttribute('tabindex', String(isActive ? 0 : -1));
     });
+    this.scrollActiveTabIntoView(buttons, activeIndex);
+  }
+
+  private scrollActiveTabIntoView(buttons: TabItem[], activeIndex: number) {
+    const activeBtn = buttons[activeIndex];
+    if (!activeBtn) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    activeBtn.scrollIntoView?.({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
   }
 
   // ── Handlers ─────────────────────────────────────────────────

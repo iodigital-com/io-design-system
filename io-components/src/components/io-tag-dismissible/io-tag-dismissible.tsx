@@ -75,7 +75,7 @@ export class IoTagDismissible {
     const { label, variant, icon, disabled } = this;
 
     return (
-      <Host aria-disabled={disabled ? 'true' : undefined}>
+      <Host>
         <style>{getTagDismissibleStyles()}</style>
         <span class={`tag-dismissible tag-dismissible--${variant}${disabled ? ' tag-dismissible--disabled' : ''}`}>
           <span class="tag-dismissible__label">
@@ -88,6 +88,7 @@ export class IoTagDismissible {
             type="button"
             class="tag-dismissible__dismiss"
             aria-label={`Remove ${label}`}
+            aria-disabled={disabled ? 'true' : undefined}
             disabled={disabled}
             onClick={this.handleDismiss}
           >

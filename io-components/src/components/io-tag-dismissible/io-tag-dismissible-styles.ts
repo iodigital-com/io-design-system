@@ -172,6 +172,17 @@ export function getTagDismissibleStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* ── Disabled state ─────────────────────────────────────── */
+
+    :host([disabled]) {
+      cursor: not-allowed;
+    }
+
+    .tag-dismissible--disabled {
+      opacity: var(--io-opacity-disabled, 0.4);
+      pointer-events: none;
+    }
+
     /* ── Reduced motion ─────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

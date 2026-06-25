@@ -26,7 +26,7 @@ import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/typ
 import { IoInputDateSize } from "./components/io-input-date/types";
 import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
-import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
+import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
@@ -73,7 +73,7 @@ export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/typ
 export { IoInputDateSize } from "./components/io-input-date/types";
 export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
-export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
+export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
@@ -862,6 +862,11 @@ export namespace Components {
          */
         "close": () => Promise<void>;
         /**
+          * Accessible label for the close button. Override to provide context when multiple overlays may be open.
+          * @default 'Close flyout'
+         */
+        "closeLabel": string;
+        /**
           * Heading text displayed in the flyout header
          */
         "heading"?: string;
@@ -1487,6 +1492,11 @@ export namespace Components {
      * <io-link href="https://example.com" external>Open in new tab</io-link>
      */
     interface IoLink {
+        /**
+          * Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute.
+          * @default null
+         */
+        "ariaCurrent": IoLinkAriaCurrent | null;
         /**
           * Text colour
           * @default 'blue'
@@ -2223,6 +2233,15 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label": string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name": string | undefined;
@@ -2356,8 +2375,9 @@ export namespace Components {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -4366,8 +4386,9 @@ declare global {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -5763,6 +5784,11 @@ declare namespace LocalJSX {
      */
     interface IoFlyout {
         /**
+          * Accessible label for the close button. Override to provide context when multiple overlays may be open.
+          * @default 'Close flyout'
+         */
+        "closeLabel"?: string;
+        /**
           * Heading text displayed in the flyout header
          */
         "heading"?: string;
@@ -6412,6 +6438,11 @@ declare namespace LocalJSX {
      * <io-link href="https://example.com" external>Open in new tab</io-link>
      */
     interface IoLink {
+        /**
+          * Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute.
+          * @default null
+         */
+        "ariaCurrent"?: IoLinkAriaCurrent | null;
         /**
           * Text colour
           * @default 'blue'
@@ -7170,6 +7201,15 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Accessible label for the control group — required for WCAG 4.1.2
+         */
+        "label"?: string | undefined;
+        /**
           * HTML name attribute for form participation
          */
         "name"?: string | undefined;
@@ -7311,8 +7351,9 @@ declare namespace LocalJSX {
      * Bottom sheet overlay that slides up from the bottom of the viewport.
      * Use for contextual actions, confirmations, and secondary content that
      * needs more prominence than a popover but less than a full-screen modal.
-     * Focus trap uses document.activeElement — works for both Shadow DOM and
-     * slotted light-DOM children.
+     * Focus trap uses document.activeElement — reliable for both Shadow DOM
+     * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+     * host element, not the focused node, and must not be used here.
      * @example <io-sheet heading="Share" open>
      *   <p>Choose a sharing option.</p>
      *   <io-button slot="footer" variant="ghost">Cancel</io-button>
@@ -8345,6 +8386,7 @@ declare namespace LocalJSX {
         "open": boolean;
         "heading": string;
         "position": IoFlyoutPosition;
+        "closeLabel": string;
     }
     interface IoFormFieldAttributes {
         "label": string;
@@ -8476,6 +8518,7 @@ declare namespace LocalJSX {
         "icon": IoIconName;
         "iconSource": string;
         "hideLabel": boolean;
+        "ariaCurrent": IoLinkAriaCurrent | null;
     }
     interface IoModalAttributes {
         "open": boolean;
@@ -8596,6 +8639,8 @@ declare namespace LocalJSX {
     interface IoSegmentedControlAttributes {
         "value": string | undefined;
         "name": string | undefined;
+        "label": string | undefined;
+        "hideLabel": boolean;
         "disabled": boolean;
     }
     interface IoSelectAttributes {
@@ -9329,8 +9374,9 @@ declare module "@stencil/core" {
              * Bottom sheet overlay that slides up from the bottom of the viewport.
              * Use for contextual actions, confirmations, and secondary content that
              * needs more prominence than a popover but less than a full-screen modal.
-             * Focus trap uses document.activeElement — works for both Shadow DOM and
-             * slotted light-DOM children.
+             * Focus trap uses document.activeElement — reliable for both Shadow DOM
+             * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+             * host element, not the focused node, and must not be used here.
              * @example <io-sheet heading="Share" open>
              *   <p>Choose a sharing option.</p>
              *   <io-button slot="footer" variant="ghost">Cancel</io-button>

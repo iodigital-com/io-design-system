@@ -4,7 +4,7 @@ import { getLinkStyles } from './io-link-styles';
 import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
 import type { IoIconName } from '../../utils/icons';
 
-import type { IoLinkVariant, IoLinkColor } from './types';
+import type { IoLinkVariant, IoLinkColor, IoLinkAriaCurrent } from './types';
 
 /**
  * io-link
@@ -64,6 +64,9 @@ export class IoLink {
   /** Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance. */
   @Prop() hideLabel = false;
 
+  /** Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute. */
+  @Prop() ariaCurrent: IoLinkAriaCurrent | null = null;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on click. Not fired when disabled. */
@@ -104,7 +107,7 @@ export class IoLink {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, color, href, target, rel, external, disabled, download, hideLabel } = this;
+    const { variant, color, href, target, rel, external, disabled, download, hideLabel, ariaCurrent } = this;
     const resolvedTarget = resolveLinkTarget(target, external);
     const resolvedRel = resolveLinkRel(rel, resolvedTarget, external);
 
@@ -112,7 +115,13 @@ export class IoLink {
     const linkText = this.el.textContent?.trim() || '';
     const ariaLabel = external && linkText ? `${linkText}, opens in new tab` : undefined;
 
-    const hasIcon = Boolean(this.icon || this.iconSource);
+    const resolvedAriaCurrent = ariaCurrent !== null && ariaCurrent !== 'false'
+      ? ariaCurrent
+      : undefined;
+
+    const hasExplicitIcon = Boolean(this.icon || this.iconSource);
+    // Auto-render external-link icon when external=true and no explicit icon is set
+    const showExternalIcon = external && !hasExplicitIcon;
 
     return (
       <Host>
@@ -124,14 +133,18 @@ export class IoLink {
           rel={resolvedRel}
           download={download}
           aria-label={ariaLabel}
+          aria-current={resolvedAriaCurrent}
           aria-disabled={disabled ? 'true' : undefined}
           tabIndex={disabled ? 0 : undefined}
           onClick={this.handleClick}
         >
-          {hasIcon && this.renderIcon()}
-          <span class={hideLabel && (this.icon || this.iconSource) ? 'link__label link__label--hidden' : 'link__label'}>
+          {hasExplicitIcon && this.renderIcon()}
+          <span class={hideLabel && (hasExplicitIcon || showExternalIcon) ? 'link__label link__label--hidden' : 'link__label'}>
             <slot />
           </span>
+          {showExternalIcon && (
+            <io-icon class="link__icon" name="external-link" aria-hidden="true" />
+          )}
         </a>
       </Host>
     );

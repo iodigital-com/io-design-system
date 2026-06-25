@@ -157,6 +157,70 @@ describe('io-flyout — render contract', () => {
   });
 });
 
+describe('io-flyout — closeLabel prop (#816)', () => {
+  let component: IoFlyout;
+
+  beforeEach(() => {
+    component = new IoFlyout();
+    (component as any).el = document.createElement('io-flyout');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('has closeLabel "Close flyout" by default', () => {
+    expect(component.closeLabel).toBe('Close flyout');
+  });
+
+  it('accepts a custom closeLabel', () => {
+    component.closeLabel = 'Close navigation menu';
+    expect(component.closeLabel).toBe('Close navigation menu');
+  });
+});
+
+describe('io-flyout — componentWillLoad aria-label host check (#820)', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('does not log error when heading prop is set', () => {
+    const component = new IoFlyout();
+    const el = document.createElement('io-flyout');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    component.heading = 'Navigation';
+    const spy = vi.spyOn(console, 'error');
+    (component as any).componentWillLoad();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('does not log error when aria-label is set on host element', () => {
+    const component = new IoFlyout();
+    const el = document.createElement('io-flyout');
+    el.setAttribute('aria-label', 'Navigation panel');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    const spy = vi.spyOn(console, 'error');
+    (component as any).componentWillLoad();
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('logs error when neither heading nor aria-label is provided', () => {
+    const component = new IoFlyout();
+    const el = document.createElement('io-flyout');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    const spy = vi.spyOn(console, 'error');
+    (component as any).componentWillLoad();
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('[io-flyout]'),
+    );
+  });
+});
+
 describe('io-flyout — render method', () => {
   let component: IoFlyout;
 

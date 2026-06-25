@@ -142,6 +142,109 @@ describe('io-link — hideLabel prop', () => {
     component.hideLabel = true;
     expect(component.hideLabel).toBe(true);
   });
+
+  it('hides label when hideLabel is true with auto-rendered external icon', () => {
+    component.external = true;
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const spanCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'span' && (call[1] as Record<string, unknown>)?.['class']?.toString().includes('link__label--hidden')
+    );
+    expect(spanCall).toBeDefined();
+  });
+});
+
+describe('io-link — ariaCurrent prop (#791)', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('has no ariaCurrent by default', () => {
+    expect(component.ariaCurrent).toBeNull();
+  });
+
+  it('accepts ariaCurrent="page"', () => {
+    component.ariaCurrent = 'page';
+    expect(component.ariaCurrent).toBe('page');
+  });
+
+  it('accepts ariaCurrent="step"', () => {
+    component.ariaCurrent = 'step';
+    expect(component.ariaCurrent).toBe('step');
+  });
+
+  it('renders aria-current="page" on the anchor', () => {
+    component.ariaCurrent = 'page';
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(attrs['aria-current']).toBe('page');
+  });
+
+  it('renders aria-current="true" when ariaCurrent is "true"', () => {
+    component.ariaCurrent = 'true';
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(attrs['aria-current']).toBe('true');
+  });
+
+  it('does not render aria-current when ariaCurrent is "false"', () => {
+    component.ariaCurrent = 'false';
+    vi.mocked(h).mockClear();
+    component.render();
+    const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
+    const attrs = (aCall?.[1] ?? {}) as Record<string, unknown>;
+    expect(attrs['aria-current']).toBeUndefined();
+  });
+});
+
+describe('io-link — external icon auto-render (#821)', () => {
+  let component: IoLink;
+
+  beforeEach(() => {
+    component = new IoLink();
+    (component as any).el = document.createElement('io-link');
+    (component as any).click = { emit: vi.fn() };
+  });
+
+  it('renders external-link icon when external=true and no explicit icon', () => {
+    component.external = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const iconCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'io-icon' && (call[1] as Record<string, unknown>)?.['name'] === 'external-link',
+    );
+    expect(iconCall).toBeDefined();
+  });
+
+  it('does not auto-render external-link icon when external=false', () => {
+    component.external = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const iconCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'io-icon' && (call[1] as Record<string, unknown>)?.['name'] === 'external-link',
+    );
+    expect(iconCall).toBeUndefined();
+  });
+
+  it('does not auto-render external-link icon when explicit icon is set', () => {
+    component.external = true;
+    component.icon = 'arrow-right' as any;
+    vi.mocked(h).mockClear();
+    component.render();
+    const externalIconCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'io-icon' && (call[1] as Record<string, unknown>)?.['name'] === 'external-link',
+    );
+    expect(externalIconCall).toBeUndefined();
+  });
 });
 
 describe('io-link — disabled keyboard accessibility', () => {

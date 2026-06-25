@@ -7,4 +7,4 @@ export type IoLinkVariant =
 export type IoLinkColor = 'blue' | 'black' | 'white';
 
 /** Valid aria-current attribute values for navigation links */
-export type IoLinkAriaCurrent = 'page' | 'step' | 'location' | 'date' | 'time' | boolean;
+export type IoLinkAriaCurrent = 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false';

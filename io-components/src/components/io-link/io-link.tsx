@@ -64,8 +64,8 @@ export class IoLink {
   /** Hides the label text visually while keeping it available to screen readers. Requires icon or iconSource to be set for any visual affordance. */
   @Prop() hideLabel = false;
 
-  /** Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. */
-  @Prop() ariaCurrent?: IoLinkAriaCurrent;
+  /** Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute. */
+  @Prop() ariaCurrent: IoLinkAriaCurrent | null = null;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -115,8 +115,8 @@ export class IoLink {
     const linkText = this.el.textContent?.trim() || '';
     const ariaLabel = external && linkText ? `${linkText}, opens in new tab` : undefined;
 
-    const resolvedAriaCurrent = ariaCurrent !== undefined && ariaCurrent !== false
-      ? (ariaCurrent === true ? 'true' : ariaCurrent as string)
+    const resolvedAriaCurrent = ariaCurrent !== null && ariaCurrent !== 'false'
+      ? ariaCurrent
       : undefined;
 
     const hasExplicitIcon = Boolean(this.icon || this.iconSource);

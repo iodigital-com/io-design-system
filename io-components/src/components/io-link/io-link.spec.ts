@@ -154,7 +154,7 @@ describe('io-link — ariaCurrent prop (#791)', () => {
   });
 
   it('has no ariaCurrent by default', () => {
-    expect(component.ariaCurrent).toBeUndefined();
+    expect(component.ariaCurrent).toBeNull();
   });
 
   it('accepts ariaCurrent="page"', () => {
@@ -176,8 +176,8 @@ describe('io-link — ariaCurrent prop (#791)', () => {
     expect(attrs['aria-current']).toBe('page');
   });
 
-  it('renders aria-current="true" when ariaCurrent is boolean true', () => {
-    component.ariaCurrent = true;
+  it('renders aria-current="true" when ariaCurrent is "true"', () => {
+    component.ariaCurrent = 'true';
     vi.mocked(h).mockClear();
     component.render();
     const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');
@@ -185,8 +185,8 @@ describe('io-link — ariaCurrent prop (#791)', () => {
     expect(attrs['aria-current']).toBe('true');
   });
 
-  it('does not render aria-current when ariaCurrent is false', () => {
-    component.ariaCurrent = false;
+  it('does not render aria-current when ariaCurrent is "false"', () => {
+    component.ariaCurrent = 'false';
     vi.mocked(h).mockClear();
     component.render();
     const aCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'a');

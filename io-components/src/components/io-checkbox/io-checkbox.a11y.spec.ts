@@ -1,80 +1,126 @@
-import { describe, it } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
-/**
- * Axe tests — WCAG 2.1 AA — ARIA patterns used by io-checkbox
- *
- * Tests the native HTML patterns rendered inside io-checkbox's Shadow DOM
- * (input[type=checkbox] + label + aria-invalid/describedby). Full component-level
- * auditing against the Shadow DOM requires the Stencil render environment.
- */
+import { IoCheckbox } from './io-checkbox';
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
 
-describe('io-checkbox — a11y (ARIA patterns)', () => {
-  it('unchecked checkbox with visible label has no axe violations', async () => {
+function makeInternals() {
+  return { setFormValue: vi.fn(), setValidity: vi.fn(), reportValidity: vi.fn(), checkValidity: vi.fn() };
+}
+
+function renderCheckbox(setup: (c: IoCheckbox) => void): {
+  inputAttrs: Record<string, unknown>;
+  hostAttrs: Record<string, unknown>;
+  allCalls: Array<[unknown, unknown]>;
+} {
+  const c = new IoCheckbox();
+  const el = document.createElement('io-checkbox');
+  (c as any).el = el;
+  (c as any).internals = makeInternals();
+  (c as any).change = { emit: vi.fn() };
+  (c as any).blur = { emit: vi.fn() };
+  setup(c);
+  (c as any).componentWillLoad?.();
+
+  const hMock = h as unknown as ReturnType<typeof vi.fn>;
+  hMock.mockClear();
+  c.render();
+
+  const calls = hMock.mock.calls as Array<[unknown, unknown]>;
+  const inputCall = calls.find(([tag]) => tag === 'input');
+  const hostCall = calls.find(([tag]) => tag == null || tag === undefined);
+
+  return {
+    inputAttrs: (inputCall?.[1] ?? {}) as Record<string, unknown>,
+    hostAttrs: (hostCall?.[1] ?? {}) as Record<string, unknown>,
+    allCalls: calls,
+  };
+}
+
+describe('io-checkbox — a11y (component ARIA attributes)', () => {
+  it('renders required attribute on input when required=true', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      c.required = true;
+    });
+    expect(inputAttrs.required).toBe(true);
+  });
+
+  it('does not render required on input when required=false', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      c.required = false;
+    });
+    expect(inputAttrs.required).toBeFalsy();
+  });
+
+  it('renders aria-invalid="true" on input when error prop is set', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      (c as any).state = 'error';
+    });
+    expect(inputAttrs['aria-invalid']).toBe('true');
+  });
+
+  it('does not render aria-invalid when no error', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+    });
+    expect(inputAttrs['aria-invalid']).toBeUndefined();
+  });
+
+  it('renders aria-disabled="true" on input when loading=true', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      c.loading = true;
+    });
+    expect(inputAttrs['aria-disabled']).toBe('true');
+  });
+
+  it('renders aria-describedby when error message is visible', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      (c as any).state = 'error';
+      c.message = 'This field is required';
+    });
+    expect(inputAttrs['aria-describedby']).toBeDefined();
+    expect(String(inputAttrs['aria-describedby'])).toContain('message');
+  });
+
+  it('checked input reflects checked state', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      c.checked = true;
+    });
+    expect(inputAttrs.checked).toBe(true);
+  });
+
+  it('unchecked input does not have checked attr', () => {
+    const { inputAttrs } = renderCheckbox((c) => {
+      c.label = 'Accept terms';
+      c.checked = false;
+    });
+    expect(inputAttrs.checked).toBeFalsy();
+  });
+
+  it('checkbox accessible name HTML structure has no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
       <div>
-        <input type="checkbox" id="cb1" />
-        <label for="cb1">Accept terms</label>
+        <input type="checkbox" id="cb-a11y" />
+        <label for="cb-a11y">Accept terms and conditions</label>
       </div>
     `;
     await renderAndCheckA11y(el);
   });
 
-  it('checked checkbox with visible label has no axe violations', async () => {
+  it('checkbox error state HTML structure has no axe violations', async () => {
     const el = document.createElement('div');
     el.innerHTML = `
       <div>
-        <input type="checkbox" id="cb2" checked />
-        <label for="cb2">Accept terms</label>
-      </div>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('checkbox in error state with aria-describedby has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <div>
-        <input type="checkbox" id="cb3" aria-invalid="true" aria-describedby="cb3-error" />
-        <label for="cb3">Accept terms</label>
-        <p id="cb3-error" role="alert">This field is required</p>
-      </div>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('required checkbox has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <div>
-        <input type="checkbox" id="cb4" required />
-        <label for="cb4">Accept terms <span aria-hidden="true"> *</span></label>
-      </div>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('checkbox with helper text linked via aria-describedby has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <div>
-        <input type="checkbox" id="cb5" aria-describedby="cb5-helper" />
-        <label for="cb5">Accept terms</label>
-        <p id="cb5-helper">You can unsubscribe at any time.</p>
-      </div>
-    `;
-    await renderAndCheckA11y(el);
-  });
-
-  it('checkbox with visually hidden label (sr-only) has no axe violations', async () => {
-    const el = document.createElement('div');
-    el.innerHTML = `
-      <div>
-        <input type="checkbox" id="cb6" />
-        <label for="cb6" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0">
-          Accept terms
-        </label>
+        <input type="checkbox" id="cb-err" aria-invalid="true" aria-describedby="cb-err-msg" />
+        <label for="cb-err">Accept terms</label>
+        <p id="cb-err-msg" role="alert">This field is required</p>
       </div>
     `;
     await renderAndCheckA11y(el);

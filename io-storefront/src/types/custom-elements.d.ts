@@ -66,6 +66,7 @@ declare module 'react' {
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;
   'io-tag-dismissible': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagDismissibleElement>, HTMLIoTagDismissibleElement> & Partial<StencilJSX.IoTagDismissible>;
   'io-text': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextElement>, HTMLIoTextElement> & Partial<StencilJSX.IoText>;
+  'io-text-list': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextListElement>, HTMLIoTextListElement> & Partial<StencilJSX.IoTextList>;
   'io-textarea': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTextareaElement>, HTMLIoTextareaElement> & Partial<StencilJSX.IoTextarea>;
   'io-toast': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastElement>, HTMLIoToastElement> & Partial<StencilJSX.IoToast>;
   'io-toast-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoToastItemElement>, HTMLIoToastItemElement> & Partial<StencilJSX.IoToastItem>;

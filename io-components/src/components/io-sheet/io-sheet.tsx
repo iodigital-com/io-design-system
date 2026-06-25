@@ -49,8 +49,9 @@ function getSheetFocusableElements(panelEl: HTMLElement): HTMLElement[] {
  * Use for contextual actions, confirmations, and secondary content that
  * needs more prominence than a popover but less than a full-screen modal.
  *
- * Focus trap uses document.activeElement — works for both Shadow DOM and
- * slotted light-DOM children.
+ * Focus trap uses document.activeElement — reliable for both Shadow DOM
+ * and slotted light-DOM children. shadowRoot.activeElement returns the slot
+ * host element, not the focused node, and must not be used here.
  *
  * @example
  * <io-sheet heading="Share" open>
@@ -195,12 +196,13 @@ export class IoSheet {
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      // Prefer shadow activeElement for elements inside our shadow root;
-      // fall back to document.activeElement for slotted light-DOM children.
-      const shadowActive = this.el.shadowRoot?.activeElement;
-      const active = (shadowActive && !(shadowActive instanceof HTMLSlotElement))
-        ? shadowActive as HTMLElement
-        : document.activeElement as HTMLElement | null;
+      // When a shadow-DOM child has focus, document.activeElement returns the
+      // host element. Fall back to :focus query within the shadow root to get
+      // the actual focused element so first/last comparisons work correctly.
+      let active = document.activeElement as HTMLElement | null;
+      if (active === this.el) {
+        active = (this.el.shadowRoot?.querySelector(':focus') as HTMLElement | null) ?? active;
+      }
 
       if (ev.shiftKey && active === first) {
         ev.preventDefault();

@@ -30,10 +30,10 @@ export default function IoScrollerAccessibilityPage() {
             <tbody>
               {[
                 { key: 'Tab', action: 'Moves focus to the scroll region (when keyboard is the active input modality).' },
-                { key: 'ArrowLeft / ArrowRight', action: 'Scrolls horizontally when the scroll region has focus.' },
-                { key: 'ArrowUp / ArrowDown', action: 'Scrolls vertically when the scroll region has focus.' },
-                { key: 'Home', action: 'Scrolls to the start of the region.' },
-                { key: 'End', action: 'Scrolls to the end of the region.' },
+                { key: 'ArrowLeft / ArrowRight', action: 'Scrolls backward/forward on a horizontal scroller. Ignored on vertical scrollers.' },
+                { key: 'ArrowUp / ArrowDown', action: 'Scrolls backward/forward on a vertical scroller. Ignored on horizontal scrollers.' },
+                { key: 'Home', action: 'Scrolls to the start of the region along the active axis. Respects prefers-reduced-motion.' },
+                { key: 'End', action: 'Scrolls to the end of the region along the active axis. Respects prefers-reduced-motion.' },
               ].map(({ key, action }) => (
                 <tr key={key} style={{ borderBottom: '1px solid var(--io-border)' }}>
                   <td className="px-4 py-3" style={{ color: 'var(--io-text-primary)' }}>

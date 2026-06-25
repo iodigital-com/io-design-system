@@ -1277,7 +1277,7 @@ exports[`io-tag — render snapshots > renders default state 1`] = `
 exports[`io-tag — render snapshots > renders disabled state 1`] = `
 <io-tag disabled size="md" color="default" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <button type="button" class="tag tag--md tag--default tag--disabled" disabled aria-pressed="false">
+    <button type="button" class="tag tag--md tag--default tag--disabled" aria-disabled="true" aria-pressed="false">
       <slot></slot>
     </button>
   </mock:shadow-root>

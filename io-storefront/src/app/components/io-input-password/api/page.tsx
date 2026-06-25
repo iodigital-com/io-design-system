@@ -29,6 +29,8 @@ export default function IoInputPasswordApiPage() {
             [<InlineCode key="n">helperText</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Helper text shown when state is none.'],
             [<span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Visually hides the label.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
+            [<InlineCode key="n">maxLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Maximum number of characters. Forwarded as the native maxlength attribute.'],
+            [<InlineCode key="n">minLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Minimum number of characters. Forwarded as the native minlength attribute.'],
             [<InlineCode key="n">autocomplete</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;current-password&apos;</InlineCode>, 'Native autocomplete attribute. Use "new-password" on registration forms.'],
           ]}
         />

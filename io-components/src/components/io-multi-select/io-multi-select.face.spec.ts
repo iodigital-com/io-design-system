@@ -178,9 +178,12 @@ describe('io-multi-select — aria-describedby wiring (#840)', () => {
     const fieldId = (component as any).fieldId as string;
     // Invoke the private render-derived logic directly by inspecting what describedBy would be
     const faceErrorId = `${fieldId}-face-error`;
-    const showFaceError = true && 'none' !== 'error' && !(component as any).message;
+    const faceInvalid = (component as any).faceInvalid as boolean;
+    const state = (component as any).state as string;
+    const msg = (component as any).message as string | undefined;
+    const showFaceError = faceInvalid && state !== 'error' && !msg;
     const describedBy = [
-      (component as any).message ? `${fieldId}-message` : '',
+      msg ? `${fieldId}-message` : '',
       showFaceError ? faceErrorId : '',
     ].filter(Boolean).join(' ') || undefined;
     expect(describedBy).toBe(faceErrorId);
@@ -194,9 +197,12 @@ describe('io-multi-select — aria-describedby wiring (#840)', () => {
     (component as any).message = undefined;
     const fieldId = (component as any).fieldId as string;
     const faceErrorId = `${fieldId}-face-error`;
-    const showFaceError = false && 'none' !== 'error' && !(component as any).message;
+    const faceInvalid = (component as any).faceInvalid as boolean;
+    const state = (component as any).state as string;
+    const msg = (component as any).message as string | undefined;
+    const showFaceError = faceInvalid && state !== 'error' && !msg;
     const describedBy = [
-      (component as any).message ? `${fieldId}-message` : '',
+      msg ? `${fieldId}-message` : '',
       showFaceError ? faceErrorId : '',
     ].filter(Boolean).join(' ') || undefined;
     expect(describedBy).toBeUndefined();
@@ -212,7 +218,9 @@ describe('io-multi-select — aria-describedby wiring (#840)', () => {
     const fieldId = (component as any).fieldId as string;
     const messageId = `${fieldId}-message`;
     const faceErrorId = `${fieldId}-face-error`;
-    const showFaceError = true && 'error' !== 'error' && !message;
+    const faceInvalid = (component as any).faceInvalid as boolean;
+    const state = (component as any).state as string;
+    const showFaceError = faceInvalid && state !== 'error' && !message;
     const describedBy = [
       message ? messageId : '',
       showFaceError ? faceErrorId : '',

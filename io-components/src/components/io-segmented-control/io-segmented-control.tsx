@@ -40,7 +40,7 @@ export class IoSegmentedControl {
   /** Accessible label for the control group — required for WCAG 4.1.2 */
   @Prop() label: string | undefined;
 
-  /** When true, renders the label as screen-reader-only text */
+  /** When true, visually hides the label span; the accessible name is still provided via aria-label on the host */
   @Prop() hideLabel = false;
 
   /** Disables the entire control and all child segments */
@@ -190,16 +190,16 @@ export class IoSegmentedControl {
     return (
       <Host
         role="group"
-        aria-label={label}
+        aria-label={label || undefined}
         aria-disabled={disabled ? 'true' : undefined}
       >
         <style>{getSegmentedControlStyles()}</style>
-        {label && !hideLabel && (
-          <span class="segmented-control__label" aria-hidden="true">{label}</span>
-        )}
         <div class="segmented-control">
           <slot onSlotchange={this.syncChildren} />
         </div>
+        {label && !hideLabel && (
+          <span class="segmented-control__label" aria-hidden="true">{label}</span>
+        )}
       </Host>
     );
   }

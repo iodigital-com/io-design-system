@@ -44,7 +44,7 @@ describe('io-button — a11y (component ARIA attributes)', () => {
   });
 
   it('does not render aria-label when label prop is absent and slot text is used', () => {
-    const attrs = renderButton((c) => {
+    const attrs = renderButton((_c) => {
       // no label prop — accessible name comes from slot text
     });
     expect(attrs['aria-label']).toBeUndefined();

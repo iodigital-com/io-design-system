@@ -32,9 +32,14 @@ export default function IoInputDateAccessibilityPage() {
               description: 'The calendar icon is decorative and hidden from the accessibility tree.',
             },
             {
+              attribute: 'aria-readonly',
+              value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when readonly</span>,
+              description: 'Set to "true" when readonly=true. Communicates read-only state to screen readers independently of the visual style.',
+            },
+            {
               attribute: 'aria-invalid',
               value: <span style={{ color: 'var(--io-text-secondary)' }}>&quot;true&quot; when error or FACE invalid</span>,
-              description: 'Set to "true" when state="error" or when native form validation fails (required, min/max range) after the field has been touched (lost focus). FACE invalidity is gated on blur — the field does not show invalid state before the user has interacted with it.',
+              description: 'Set to "true" when state="error" or when native form validation fails (e.g. required, min/max range, or step constraints after the field has been touched). The browser-native validation message is surfaced as the visible error text.',
             },
             {
               attribute: 'aria-describedby',

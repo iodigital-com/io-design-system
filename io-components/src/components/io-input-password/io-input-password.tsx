@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, State, Element, Host, Watch, h, AttachInternals } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputPasswordStyles } from './io-input-password-styles';
 
@@ -23,17 +23,11 @@ export class IoInputPassword {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
-  private faceErrorId!: string;
   private helperId!: string;
-
-  /** Mirrors FACE invalidity so the component re-renders when form validation state changes */
-  @State() faceInvalid = false;
-
-  /** True after the user has blurred the field at least once — gates eager FACE error display */
-  @State() private touched = false;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -50,14 +44,20 @@ export class IoInputPassword {
   /** Marks the input as required */
   @Prop() required = false;
 
-  /** Maximum number of characters */
+  /** Disables the input */
+  @Prop({ reflect: true }) disabled = false;
+
+  /** Makes the input read-only */
+  @Prop({ reflect: true }) readonly = false;
+
+  /** Shows a loading indicator */
+  @Prop() loading = false;
+
+  /** Maximum number of characters allowed */
   @Prop() maxLength: number | undefined;
 
-  /** Minimum number of characters */
+  /** Minimum number of characters required */
   @Prop() minLength: number | undefined;
-
-  /** Disables the input */
-  @Prop({ mutable: true, reflect: true }) disabled = false;
 
   /** Validation state */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
@@ -80,6 +80,9 @@ export class IoInputPassword {
   /** Whether the password is currently visible as plain text */
   @State() showPassword = false;
 
+  @State() faceInvalid = false;
+  @State() private touched = false;
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -90,54 +93,54 @@ export class IoInputPassword {
     const base = this.name ? `io-input-password-${this.name.replace(/[^a-z0-9_-]+/gi, '-')}-${uid}` : `io-input-password-${uid}`;
     this.inputId = base;
     this.errorId = `${base}-error`;
-    this.faceErrorId = `${base}-face-error`;
     this.helperId = `${base}-helper`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
   }
 
   @Watch('value')
-  onValueChange() { this.syncFormValue(); }
-
   @Watch('required')
-  onRequiredChange() { this.syncFormValue(); }
-
   @Watch('maxLength')
-  onMaxLengthChange() { this.syncFormValue(); }
-
   @Watch('minLength')
-  onMinLengthChange() { this.syncFormValue(); }
+  onValidityAffectingPropChange() {
+    this.syncFormValue();
+  }
 
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
-    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
-    if (nativeInput) {
-      if (!nativeInput.checkValidity()) {
-        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+    const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (native) {
+      if (!native.checkValidity()) {
+        this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
+        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
+      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled) return;
+    if (this.disabled || this.readonly) return;
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
+    this.syncFormValue();
     this.change.emit(newVal);
   };
 
@@ -156,17 +159,30 @@ export class IoInputPassword {
   formResetCallback() {
     this.value = this.defaultValue;
     this.touched = false;
+    this.syncFormValue();
     this.faceInvalid = false;
-    this.syncFormValue();
   }
 
-  formDisabledCallback(disabled: boolean) {
-    this.disabled = disabled;
+  formDisabledCallback(isDisabled: boolean) {
+    this.disabled = isDisabled;
   }
 
-  formStateRestoreCallback(state: string | null) {
-    this.value = state ?? '';
+  formStateRestoreCallback(state: string | File | FormData | null) {
+    if (typeof state === 'string') {
+      this.value = state;
+    }
+  }
+
+  @Method()
+  async checkValidity(): Promise<boolean> {
+    return this.internals?.checkValidity?.() ?? true;
+  }
+
+  @Method()
+  async reportValidity(): Promise<boolean> {
+    this.touched = true;
     this.syncFormValue();
+    return this.internals?.reportValidity?.() ?? true;
   }
 
   private toggleVisibility = () => {
@@ -174,19 +190,22 @@ export class IoInputPassword {
   };
 
   render() {
-    const { label, name, value, placeholder, required, disabled, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength } = this;
-    const { inputId, errorId, faceErrorId, helperId } = this;
+    const { label, name, value, placeholder, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength } = this;
+    const { inputId, errorId, helperId } = this;
 
-    const showError = state === 'error' || this.faceInvalid;
-    const showSuccess = state === 'success' && !this.faceInvalid;
-    const showWarning = state === 'warning' && !this.faceInvalid;
+    const showError = state === 'error';
+    const showSuccess = state === 'success';
+    const showWarning = state === 'warning';
     const showMessage = (showError || showSuccess || showWarning) && !!message;
-    const showFaceError = this.faceInvalid && state !== 'error' && !message;
-    const showDescription = !showMessage && !showFaceError && !!helperText;
+    const showDescription = !showMessage && !!helperText;
+
+    const showFaceError = this.touched && this.faceInvalid && !showError;
+    const faceErrorId = `${inputId}-face-error`;
+
     const describedBy = [
       showMessage ? errorId : '',
-      showFaceError ? faceErrorId : '',
       showDescription ? helperId : '',
+      showFaceError ? faceErrorId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const wrapperClass = [
@@ -195,6 +214,7 @@ export class IoInputPassword {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
+      readonly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
 
     const fieldClass = [
@@ -206,7 +226,7 @@ export class IoInputPassword {
     const inputType = showPassword ? 'text' : 'password';
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getInputPasswordStyles()}</style>
         <div class={wrapperClass}>
           <div class="input-field-row">
@@ -218,12 +238,13 @@ export class IoInputPassword {
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
-              disabled={disabled}
-              autocomplete={autocomplete}
+              disabled={disabled || loading}
+              readOnly={readonly}
+              aria-readonly={readonly ? 'true' : undefined}
               maxLength={maxLength}
               minLength={minLength}
-              aria-required={required ? 'true' : undefined}
-              aria-invalid={(showError) ? 'true' : undefined}
+              autocomplete={autocomplete}
+              aria-invalid={(showError || (this.touched && this.faceInvalid)) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -234,6 +255,7 @@ export class IoInputPassword {
               type="button"
               class="password-toggle"
               aria-label={toggleLabel}
+              disabled={loading || undefined}
               onClick={this.toggleVisibility}
               tabIndex={0}
             >
@@ -302,7 +324,7 @@ export class IoInputPassword {
         )}
         {showFaceError && (
           <p id={faceErrorId} class="input-message input-message--error" role="alert">
-            Please fill in this field
+            {this.faceErrorMessage}
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

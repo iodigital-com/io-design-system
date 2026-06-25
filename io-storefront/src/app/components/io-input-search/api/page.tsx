@@ -30,7 +30,37 @@ export default function IoInputSearchApiPage() {
             [<span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Visually hides the label.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
             [<InlineCode key="n">autocomplete</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;off&apos;</InlineCode>, 'Native autocomplete attribute. Defaults to off for search fields.'],
+            [<span key="n"><InlineCode>readonly</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Makes the input read-only. The clear button is also suppressed when readonly.'],
+            [<InlineCode key="n">loading</InlineCode>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Shows a loading spinner. Disables the input and clear button while true.'],
+            [<InlineCode key="n">maxLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Maximum number of characters allowed. Native constraint — triggers tooLong FACE validation.'],
+            [<InlineCode key="n">minLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Minimum number of characters required. Native constraint — triggers tooShort FACE validation.'],
             [<InlineCode key="n">clearAriaLabel</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;Clear search&apos;</InlineCode>, 'Accessible label for the clear (×) button.'],
+          ]}
+        />
+      </section>
+
+      <section id="methods" className="space-y-4">
+        <SectionHeader
+          title="Methods"
+          description="Public @Method() calls exposed on the element reference. Call after the component has been upgraded."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Method', width: '160px' },
+            { label: 'Signature', width: '320px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Returns true if the field passes all form validation constraints. Does not show error UI.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Marks the field as touched, re-evaluates FACE validity, and returns the result. Shows error UI when invalid.',
+            ],
           ]}
         />
       </section>

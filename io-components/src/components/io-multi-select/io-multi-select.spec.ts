@@ -435,3 +435,64 @@ describe('io-multi-select — hideLabel render', () => {
     expect(listboxProps?.['aria-labelledby']).toBeUndefined();
   });
 });
+
+describe('io-multi-select — aria-describedby wiring for FACE error (#840)', () => {
+  let component: InstanceType<typeof import('./io-multi-select').IoMultiSelect>;
+
+  beforeEach(async () => {
+    const { IoMultiSelect } = await import('./io-multi-select');
+    component = new IoMultiSelect() as typeof component;
+    (component as any).el = document.createElement('io-multi-select');
+    component.label = 'Items';
+    (component as any).groups = [];
+    (component as any).flatOptions = [];
+    (component as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      checkValidity: vi.fn().mockReturnValue(true),
+      reportValidity: vi.fn().mockReturnValue(true),
+    };
+    (component as any).componentWillLoad();
+  });
+
+  it('trigger aria-describedby includes face-error id when faceInvalid=true and no message', () => {
+    (component as any).faceInvalid = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    const describedBy = triggerProps?.['aria-describedby'] as string | undefined;
+    expect(describedBy).toBeTruthy();
+    expect(describedBy).toContain('face-error');
+  });
+
+  it('trigger aria-describedby does not include face-error id when faceInvalid=false', () => {
+    (component as any).faceInvalid = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    const describedBy = triggerProps?.['aria-describedby'] as string | undefined;
+    expect(describedBy ?? '').not.toContain('face-error');
+  });
+
+  it('trigger aria-describedby does not include face-error when faceInvalid=true but state=error set', () => {
+    (component as any).faceInvalid = true;
+    component.state = 'error';
+    component.message = 'Required';
+    vi.mocked(h).mockClear();
+    component.render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    const describedBy = triggerProps?.['aria-describedby'] as string | undefined;
+    // face-error suppressed when state='error' + message present; messageId used instead
+    expect(describedBy ?? '').not.toContain('face-error');
+    expect(describedBy).toBeTruthy();
+  });
+});

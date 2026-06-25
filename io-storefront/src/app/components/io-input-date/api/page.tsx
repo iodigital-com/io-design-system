@@ -27,9 +27,38 @@ export default function IoInputDateApiPage() {
             [<InlineCode key="n">message</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;&apos;</InlineCode>, 'Validation message shown below the input.'],
             [<InlineCode key="n">helperText</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Helper text shown when state is none. Use to surface date constraints.'],
             [<span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Visually hides the label.'],
-            [<InlineCode key="n">min</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Minimum selectable date in YYYY-MM-DD format.'],
-            [<InlineCode key="n">max</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Maximum selectable date in YYYY-MM-DD format.'],
+            [<span key="n"><InlineCode>readonly</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Makes the input read-only. The native date picker is suppressed.'],
+            [<InlineCode key="n">loading</InlineCode>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Shows a loading spinner. Disables the input while true.'],
+            [<InlineCode key="n">min</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Minimum selectable date in YYYY-MM-DD format. Triggers rangeUnderflow FACE validation when violated.'],
+            [<InlineCode key="n">max</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Maximum selectable date in YYYY-MM-DD format. Triggers rangeOverflow FACE validation when violated.'],
+            [<InlineCode key="n">step</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Step interval in days, or "any". Triggers stepMismatch FACE validation when violated.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
+          ]}
+        />
+      </section>
+
+      <section id="methods" className="space-y-4">
+        <SectionHeader
+          title="Methods"
+          description="Public @Method() calls exposed on the element reference. Call after the component has been upgraded."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Method', width: '160px' },
+            { label: 'Signature', width: '320px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Returns true if the field passes all form validation constraints. Does not show error UI.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Marks the field as touched, re-evaluates FACE validity, and returns the result. Shows error UI when invalid.',
+            ],
           ]}
         />
       </section>

@@ -23,6 +23,9 @@ import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingW
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
+import { IoInputDateSize } from "./components/io-input-date/types";
+import { IoInputPasswordSize } from "./components/io-input-password/types";
+import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -67,6 +70,9 @@ export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingW
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
+export { IoInputDateSize } from "./components/io-input-date/types";
+export { IoInputPasswordSize } from "./components/io-input-password/types";
+export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
@@ -1212,6 +1218,263 @@ export namespace Components {
         "value": string;
     }
     /**
+     * io-input-date
+     * ==============
+     * Date input using the native browser date picker with min/max constraints.
+     * Follows the same underline-only visual pattern as io-input.
+     * The label is permanently floated because type=date always shows a value
+     * placeholder (dd/mm/yyyy) in the field area.
+     * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
+     */
+    interface IoInputDate {
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Maximum selectable date (YYYY-MM-DD)
+         */
+        "max": string | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message": string;
+        /**
+          * Minimum selectable date (YYYY-MM-DD)
+         */
+        "min": string | undefined;
+        /**
+          * Input name
+         */
+        "name": string | undefined;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly": boolean;
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoInputDateSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state": IoFieldState;
+        /**
+          * Step in days (or "any")
+         */
+        "step": string | undefined;
+        /**
+          * Current value (YYYY-MM-DD format)
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * io-input-password
+     * ==================
+     * Password input with a toggle button (eye/eye-off) in the suffix position.
+     * Follows the same underline-only visual pattern as io-input.
+     * @example <io-input-password label="Password" name="password" required />
+     */
+    interface IoInputPassword {
+        /**
+          * Native autocomplete attribute
+          * @default 'current-password'
+         */
+        "autocomplete": string;
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxLength": number | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message": string;
+        /**
+          * Minimum number of characters required
+         */
+        "minLength": number | undefined;
+        /**
+          * Input name
+         */
+        "name": string | undefined;
+        /**
+          * Placeholder text
+         */
+        "placeholder": string | undefined;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly": boolean;
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoInputPasswordSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state": IoFieldState;
+        /**
+          * Current value
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
+     * io-input-search
+     * ================
+     * Search input with a magnifier prefix icon and a clear button that appears
+     * when the field has a value. Suppresses the browser's native clear button.
+     * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
+     */
+    interface IoInputSearch {
+        /**
+          * Native autocomplete attribute
+          * @default 'off'
+         */
+        "autocomplete": string;
+        "checkValidity": () => Promise<boolean>;
+        /**
+          * Accessible label for the clear button
+          * @default 'Clear search'
+         */
+        "clearAriaLabel": string;
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText": string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxLength": number | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message": string;
+        /**
+          * Minimum number of characters required
+         */
+        "minLength": number | undefined;
+        /**
+          * Input name
+         */
+        "name": string | undefined;
+        /**
+          * Placeholder text
+         */
+        "placeholder": string | undefined;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly": boolean;
+        "reportValidity": () => Promise<boolean>;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size": IoInputSearchSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state": IoFieldState;
+        /**
+          * Current value
+          * @default ''
+         */
+        "value": string;
+    }
+    /**
      * io-link
      * ========
      * Animated underline hyperlink — io Digital's branded link element.
@@ -1646,6 +1909,10 @@ export namespace Components {
          */
         "closeOnClickOutside": boolean;
         /**
+          * Supplementary description shown inside the panel below the heading
+         */
+        "description": string | undefined;
+        /**
           * Accessible label for the popover dialog
          */
         "label"?: string;
@@ -1813,6 +2080,10 @@ export namespace Components {
      * </io-radio-group>
      */
     interface IoRadioGroup {
+        /**
+          * Supplementary description shown below the legend for additional context
+         */
+        "description": string | undefined;
         /**
           * Disables the entire group
           * @default false
@@ -1997,6 +2268,10 @@ export namespace Components {
          */
         "custom": boolean;
         /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content) — use this prop for plain-text contextual guidance that always remains visible.
+         */
+        "description": string | undefined;
+        /**
           * Disables the select
           * @default false
          */
@@ -2095,6 +2370,10 @@ export namespace Components {
      */
     interface IoSheet {
         /**
+          * Closes the sheet programmatically
+         */
+        "close": () => Promise<void>;
+        /**
           * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
           * @default true
          */
@@ -2108,6 +2387,10 @@ export namespace Components {
           * @default false
          */
         "open": boolean;
+        /**
+          * Opens the sheet programmatically
+         */
+        "show": () => Promise<void>;
     }
     /**
      * io-spinner
@@ -2698,6 +2981,10 @@ export namespace Components {
          */
         "counter": boolean;
         /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content) — use this prop for plain-text contextual guidance that always remains visible.
+         */
+        "description": string | undefined;
+        /**
           * Disables the textarea
           * @default false
          */
@@ -2961,6 +3248,18 @@ export interface IoInlineNotificationCustomEvent<T> extends CustomEvent<T> {
 export interface IoInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoInputElement;
+}
+export interface IoInputDateCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoInputDateElement;
+}
+export interface IoInputPasswordCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoInputPasswordElement;
+}
+export interface IoInputSearchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoInputSearchElement;
 }
 export interface IoLinkCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -3555,6 +3854,90 @@ declare global {
     var HTMLIoInputElement: {
         prototype: HTMLIoInputElement;
         new (): HTMLIoInputElement;
+    };
+    interface HTMLIoInputDateElementEventMap {
+        "input": InputEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
+    }
+    /**
+     * io-input-date
+     * ==============
+     * Date input using the native browser date picker with min/max constraints.
+     * Follows the same underline-only visual pattern as io-input.
+     * The label is permanently floated because type=date always shows a value
+     * placeholder (dd/mm/yyyy) in the field area.
+     * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
+     */
+    interface HTMLIoInputDateElement extends Components.IoInputDate, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoInputDateElementEventMap>(type: K, listener: (this: HTMLIoInputDateElement, ev: IoInputDateCustomEvent<HTMLIoInputDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoInputDateElementEventMap>(type: K, listener: (this: HTMLIoInputDateElement, ev: IoInputDateCustomEvent<HTMLIoInputDateElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoInputDateElement: {
+        prototype: HTMLIoInputDateElement;
+        new (): HTMLIoInputDateElement;
+    };
+    interface HTMLIoInputPasswordElementEventMap {
+        "input": InputEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
+    }
+    /**
+     * io-input-password
+     * ==================
+     * Password input with a toggle button (eye/eye-off) in the suffix position.
+     * Follows the same underline-only visual pattern as io-input.
+     * @example <io-input-password label="Password" name="password" required />
+     */
+    interface HTMLIoInputPasswordElement extends Components.IoInputPassword, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoInputPasswordElementEventMap>(type: K, listener: (this: HTMLIoInputPasswordElement, ev: IoInputPasswordCustomEvent<HTMLIoInputPasswordElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoInputPasswordElementEventMap>(type: K, listener: (this: HTMLIoInputPasswordElement, ev: IoInputPasswordCustomEvent<HTMLIoInputPasswordElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoInputPasswordElement: {
+        prototype: HTMLIoInputPasswordElement;
+        new (): HTMLIoInputPasswordElement;
+    };
+    interface HTMLIoInputSearchElementEventMap {
+        "input": InputEvent;
+        "change": string;
+        "focus": FocusEvent;
+        "blur": FocusEvent;
+        "clear": void;
+    }
+    /**
+     * io-input-search
+     * ================
+     * Search input with a magnifier prefix icon and a clear button that appears
+     * when the field has a value. Suppresses the browser's native clear button.
+     * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
+     */
+    interface HTMLIoInputSearchElement extends Components.IoInputSearch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoInputSearchElementEventMap>(type: K, listener: (this: HTMLIoInputSearchElement, ev: IoInputSearchCustomEvent<HTMLIoInputSearchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoInputSearchElementEventMap>(type: K, listener: (this: HTMLIoInputSearchElement, ev: IoInputSearchCustomEvent<HTMLIoInputSearchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoInputSearchElement: {
+        prototype: HTMLIoInputSearchElement;
+        new (): HTMLIoInputSearchElement;
     };
     interface HTMLIoLinkElementEventMap {
         "click": MouseEvent;
@@ -4560,6 +4943,9 @@ declare global {
         "io-icon": HTMLIoIconElement;
         "io-inline-notification": HTMLIoInlineNotificationElement;
         "io-input": HTMLIoInputElement;
+        "io-input-date": HTMLIoInputDateElement;
+        "io-input-password": HTMLIoInputPasswordElement;
+        "io-input-search": HTMLIoInputSearchElement;
         "io-link": HTMLIoLinkElement;
         "io-modal": HTMLIoModalElement;
         "io-multi-select": HTMLIoMultiSelectElement;
@@ -5735,6 +6121,285 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * io-input-date
+     * ==============
+     * Date input using the native browser date picker with min/max constraints.
+     * Follows the same underline-only visual pattern as io-input.
+     * The label is permanently floated because type=date always shows a value
+     * placeholder (dd/mm/yyyy) in the field area.
+     * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
+     */
+    interface IoInputDate {
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Maximum selectable date (YYYY-MM-DD)
+         */
+        "max"?: string | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message"?: string;
+        /**
+          * Minimum selectable date (YYYY-MM-DD)
+         */
+        "min"?: string | undefined;
+        /**
+          * Input name
+         */
+        "name"?: string | undefined;
+        "onBlur"?: (event: IoInputDateCustomEvent<FocusEvent>) => void;
+        "onChange"?: (event: IoInputDateCustomEvent<string>) => void;
+        "onFocus"?: (event: IoInputDateCustomEvent<FocusEvent>) => void;
+        "onInput"?: (event: IoInputDateCustomEvent<InputEvent>) => void;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoInputDateSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
+        /**
+          * Step in days (or "any")
+         */
+        "step"?: string | undefined;
+        /**
+          * Current value (YYYY-MM-DD format)
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * io-input-password
+     * ==================
+     * Password input with a toggle button (eye/eye-off) in the suffix position.
+     * Follows the same underline-only visual pattern as io-input.
+     * @example <io-input-password label="Password" name="password" required />
+     */
+    interface IoInputPassword {
+        /**
+          * Native autocomplete attribute
+          * @default 'current-password'
+         */
+        "autocomplete"?: string;
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxLength"?: number | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message"?: string;
+        /**
+          * Minimum number of characters required
+         */
+        "minLength"?: number | undefined;
+        /**
+          * Input name
+         */
+        "name"?: string | undefined;
+        "onBlur"?: (event: IoInputPasswordCustomEvent<FocusEvent>) => void;
+        "onChange"?: (event: IoInputPasswordCustomEvent<string>) => void;
+        "onFocus"?: (event: IoInputPasswordCustomEvent<FocusEvent>) => void;
+        "onInput"?: (event: IoInputPasswordCustomEvent<InputEvent>) => void;
+        /**
+          * Placeholder text
+         */
+        "placeholder"?: string | undefined;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoInputPasswordSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
+        /**
+          * Current value
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
+     * io-input-search
+     * ================
+     * Search input with a magnifier prefix icon and a clear button that appears
+     * when the field has a value. Suppresses the browser's native clear button.
+     * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
+     */
+    interface IoInputSearch {
+        /**
+          * Native autocomplete attribute
+          * @default 'off'
+         */
+        "autocomplete"?: string;
+        /**
+          * Accessible label for the clear button
+          * @default 'Clear search'
+         */
+        "clearAriaLabel"?: string;
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
+          * Helper text shown below the input when no error
+         */
+        "helperText"?: string | undefined;
+        /**
+          * Visually hides the label while keeping it accessible
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Label text — required for accessibility
+         */
+        "label": string;
+        /**
+          * Shows a loading indicator
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxLength"?: number | undefined;
+        /**
+          * Validation message shown below the input
+          * @default ''
+         */
+        "message"?: string;
+        /**
+          * Minimum number of characters required
+         */
+        "minLength"?: number | undefined;
+        /**
+          * Input name
+         */
+        "name"?: string | undefined;
+        "onBlur"?: (event: IoInputSearchCustomEvent<FocusEvent>) => void;
+        "onChange"?: (event: IoInputSearchCustomEvent<string>) => void;
+        /**
+          * Fired when the user clicks the clear button
+         */
+        "onClear"?: (event: IoInputSearchCustomEvent<void>) => void;
+        "onFocus"?: (event: IoInputSearchCustomEvent<FocusEvent>) => void;
+        "onInput"?: (event: IoInputSearchCustomEvent<InputEvent>) => void;
+        /**
+          * Placeholder text
+         */
+        "placeholder"?: string | undefined;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Field size aligned to io-button scale
+          * @default 'md'
+         */
+        "size"?: IoInputSearchSize;
+        /**
+          * Validation state
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
+        /**
+          * Current value
+          * @default ''
+         */
+        "value"?: string;
+    }
+    /**
      * io-link
      * ========
      * Animated underline hyperlink — io Digital's branded link element.
@@ -6183,6 +6848,10 @@ declare namespace LocalJSX {
          */
         "closeOnClickOutside"?: boolean;
         /**
+          * Supplementary description shown inside the panel below the heading
+         */
+        "description"?: string | undefined;
+        /**
           * Accessible label for the popover dialog
          */
         "label"?: string;
@@ -6346,6 +7015,10 @@ declare namespace LocalJSX {
      * </io-radio-group>
      */
     interface IoRadioGroup {
+        /**
+          * Supplementary description shown below the legend for additional context
+         */
+        "description"?: string | undefined;
         /**
           * Disables the entire group
           * @default false
@@ -6541,6 +7214,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "custom"?: boolean;
+        /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content) — use this prop for plain-text contextual guidance that always remains visible.
+         */
+        "description"?: string | undefined;
         /**
           * Disables the select
           * @default false
@@ -7295,6 +7972,10 @@ declare namespace LocalJSX {
          */
         "counter"?: boolean;
         /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content) — use this prop for plain-text contextual guidance that always remains visible.
+         */
+        "description"?: string | undefined;
+        /**
           * Disables the textarea
           * @default false
          */
@@ -7729,6 +8410,60 @@ declare namespace LocalJSX {
         "pattern": string;
         "compact": boolean;
     }
+    interface IoInputDateAttributes {
+        "label": string;
+        "name": string | undefined;
+        "value": string;
+        "required": boolean;
+        "disabled": boolean;
+        "readonly": boolean;
+        "loading": boolean;
+        "state": IoFieldState;
+        "message": string;
+        "helperText": string | undefined;
+        "hideLabel": boolean;
+        "min": string | undefined;
+        "max": string | undefined;
+        "step": string | undefined;
+        "size": IoInputDateSize;
+    }
+    interface IoInputPasswordAttributes {
+        "label": string;
+        "name": string | undefined;
+        "value": string;
+        "placeholder": string | undefined;
+        "required": boolean;
+        "disabled": boolean;
+        "readonly": boolean;
+        "loading": boolean;
+        "maxLength": number | undefined;
+        "minLength": number | undefined;
+        "state": IoFieldState;
+        "message": string;
+        "helperText": string | undefined;
+        "hideLabel": boolean;
+        "size": IoInputPasswordSize;
+        "autocomplete": string;
+    }
+    interface IoInputSearchAttributes {
+        "label": string;
+        "name": string | undefined;
+        "value": string;
+        "placeholder": string | undefined;
+        "required": boolean;
+        "disabled": boolean;
+        "readonly": boolean;
+        "loading": boolean;
+        "maxLength": number | undefined;
+        "minLength": number | undefined;
+        "state": IoFieldState;
+        "message": string;
+        "helperText": string | undefined;
+        "hideLabel": boolean;
+        "size": IoInputSearchSize;
+        "autocomplete": string;
+        "clearAriaLabel": string;
+    }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
         "color": IoLinkColor;
@@ -7804,6 +8539,7 @@ declare namespace LocalJSX {
         "open": boolean;
         "closeOnClickOutside": boolean;
         "label": string;
+        "description": string | undefined;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -7843,6 +8579,7 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string;
         "orientation": IoRadioGroupOrientation;
+        "description": string | undefined;
     }
     interface IoScrollerAttributes {
         "orientation": IoScrollerOrientation;
@@ -7878,6 +8615,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "form": string;
         "hideLabel": boolean;
+        "description": string | undefined;
     }
     interface IoSheetAttributes {
         "open": boolean;
@@ -8000,6 +8738,7 @@ declare namespace LocalJSX {
         "counter": boolean;
         "form": string | undefined;
         "wrap": IoTextareaWrap | undefined;
+        "description": string | undefined;
     }
     interface IoToastAttributes {
         "position": IoToastPosition;
@@ -8043,6 +8782,9 @@ declare namespace LocalJSX {
         "io-icon": Omit<IoIcon, keyof IoIconAttributes> & { [K in keyof IoIcon & keyof IoIconAttributes]?: IoIcon[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `attr:${K}`]?: IoIconAttributes[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `prop:${K}`]?: IoIcon[K] } & OneOf<"name", IoIcon["name"], IoIconAttributes["name"]>;
         "io-inline-notification": Omit<IoInlineNotification, keyof IoInlineNotificationAttributes> & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes]?: IoInlineNotification[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `attr:${K}`]?: IoInlineNotificationAttributes[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `prop:${K}`]?: IoInlineNotification[K] };
         "io-input": Omit<IoInput, keyof IoInputAttributes> & { [K in keyof IoInput & keyof IoInputAttributes]?: IoInput[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `attr:${K}`]?: IoInputAttributes[K] } & { [K in keyof IoInput & keyof IoInputAttributes as `prop:${K}`]?: IoInput[K] } & OneOf<"label", IoInput["label"], IoInputAttributes["label"]>;
+        "io-input-date": Omit<IoInputDate, keyof IoInputDateAttributes> & { [K in keyof IoInputDate & keyof IoInputDateAttributes]?: IoInputDate[K] } & { [K in keyof IoInputDate & keyof IoInputDateAttributes as `attr:${K}`]?: IoInputDateAttributes[K] } & { [K in keyof IoInputDate & keyof IoInputDateAttributes as `prop:${K}`]?: IoInputDate[K] } & OneOf<"label", IoInputDate["label"], IoInputDateAttributes["label"]>;
+        "io-input-password": Omit<IoInputPassword, keyof IoInputPasswordAttributes> & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes]?: IoInputPassword[K] } & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes as `attr:${K}`]?: IoInputPasswordAttributes[K] } & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes as `prop:${K}`]?: IoInputPassword[K] } & OneOf<"label", IoInputPassword["label"], IoInputPasswordAttributes["label"]>;
+        "io-input-search": Omit<IoInputSearch, keyof IoInputSearchAttributes> & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes]?: IoInputSearch[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `attr:${K}`]?: IoInputSearchAttributes[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `prop:${K}`]?: IoInputSearch[K] } & OneOf<"label", IoInputSearch["label"], IoInputSearchAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
         "io-multi-select": Omit<IoMultiSelect, keyof IoMultiSelectAttributes> & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes]?: IoMultiSelect[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `attr:${K}`]?: IoMultiSelectAttributes[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `prop:${K}`]?: IoMultiSelect[K] } & OneOf<"label", IoMultiSelect["label"], IoMultiSelectAttributes["label"]> & OneOf<"name", IoMultiSelect["name"], IoMultiSelectAttributes["name"]>;
@@ -8352,6 +9094,32 @@ declare module "@stencil/core" {
              * <io-input label="Search" type="search" placeholder="Search..." />
              */
             "io-input": LocalJSX.IntrinsicElements["io-input"] & JSXBase.HTMLAttributes<HTMLIoInputElement>;
+            /**
+             * io-input-date
+             * ==============
+             * Date input using the native browser date picker with min/max constraints.
+             * Follows the same underline-only visual pattern as io-input.
+             * The label is permanently floated because type=date always shows a value
+             * placeholder (dd/mm/yyyy) in the field area.
+             * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
+             */
+            "io-input-date": LocalJSX.IntrinsicElements["io-input-date"] & JSXBase.HTMLAttributes<HTMLIoInputDateElement>;
+            /**
+             * io-input-password
+             * ==================
+             * Password input with a toggle button (eye/eye-off) in the suffix position.
+             * Follows the same underline-only visual pattern as io-input.
+             * @example <io-input-password label="Password" name="password" required />
+             */
+            "io-input-password": LocalJSX.IntrinsicElements["io-input-password"] & JSXBase.HTMLAttributes<HTMLIoInputPasswordElement>;
+            /**
+             * io-input-search
+             * ================
+             * Search input with a magnifier prefix icon and a clear button that appears
+             * when the field has a value. Suppresses the browser's native clear button.
+             * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
+             */
+            "io-input-search": LocalJSX.IntrinsicElements["io-input-search"] & JSXBase.HTMLAttributes<HTMLIoInputSearchElement>;
             /**
              * io-link
              * ========

@@ -805,6 +805,20 @@ describe('io-popover — render()', () => {
 // ── handleWindowScroll / handleWindowResize (#777) ───────────────────────────
 
 describe('io-popover — scroll/resize repositioning (#777)', () => {
+  // handleWindowScroll uses requestAnimationFrame for throttling. The
+  // file-level stub no-ops rAF to prevent focus-call side-effects, so we
+  // override it here to run callbacks synchronously, then restore the no-op.
+  beforeEach(() => {
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+      cb(0);
+      return 1;
+    });
+  });
+
+  afterEach(() => {
+    vi.stubGlobal('requestAnimationFrame', (_cb: FrameRequestCallback) => 0);
+  });
+
   it('handleWindowScroll does nothing when popover is closed', () => {
     const c = makePopover();
     withPanel(c);

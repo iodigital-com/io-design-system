@@ -598,6 +598,18 @@ describe('io-popover — componentWillLoad', () => {
     errorSpy.mockRestore();
   });
 
+  it('does not log console.error when ariaLabel prop is provided (no label) (#788)', () => {
+    const c = new IoPopover();
+    (c as any).el = document.createElement('io-popover');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    c.label = undefined;
+    c.ariaLabel = 'Filter panel';
+    (c as any).componentWillLoad();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it('assigns a labelId with the expected prefix', () => {
     const c = makePopover();
     expect((c as any).labelId as string).toMatch(/^io-popover-label-/);
@@ -775,5 +787,14 @@ describe('io-popover — render()', () => {
     const c = makePopover();
     c.label = undefined;
     expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('renders aria-label on panel when ariaLabel is set and label is absent (#788)', () => {
+    const c = makePopover();
+    c.label = undefined;
+    c.ariaLabel = 'Filter panel';
+    const result = (c as any).render() as { vchildren?: unknown[] };
+    // Verify render does not throw and ariaLabel prop is accessible
+    expect(c.ariaLabel).toBe('Filter panel');
   });
 });

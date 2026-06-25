@@ -340,11 +340,15 @@ export class IoPinCode {
   render() {
     const { label, type, disabled, required, message, length, hideLabel } = this;
     const isError = this.state === 'error' || this.faceInvalid;
+    const showFaceError = this.faceInvalid && !message;
+    const faceErrorId = `${this.messageId}-face-error`;
 
     const showLabel = !hideLabel && !!label;
     const ariaLabelledBy = showLabel ? this.labelId : undefined;
     const ariaLabel = hideLabel && label ? label : undefined;
-    const ariaDescribedBy = message ? this.messageId : undefined;
+    const ariaDescribedBy = [message ? this.messageId : null, showFaceError ? faceErrorId : null]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
     return (
       <Host
@@ -399,6 +403,11 @@ export class IoPinCode {
             aria-atomic={isError ? undefined : 'true'}
           >
             {message}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="pin-code__message pin-code__message--error" role="alert">
+            Please complete the PIN
           </p>
         )}
       </Host>

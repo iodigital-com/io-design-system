@@ -191,6 +191,45 @@ describe('io-sheet — render method', () => {
   });
 });
 
+describe('io-sheet — componentWillLoad accessible name warning (#823)', () => {
+  it('logs console.error when heading and aria-label are both absent', () => {
+    const c = new IoSheet();
+    const el = document.createElement('io-sheet');
+    (c as any).el = el;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    c.heading = undefined;
+    (c as any).componentWillLoad();
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('[io-sheet]'));
+    errorSpy.mockRestore();
+  });
+
+  it('does not log console.error when heading prop is provided', () => {
+    const c = new IoSheet();
+    const el = document.createElement('io-sheet');
+    (c as any).el = el;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    c.heading = 'Share options';
+    (c as any).componentWillLoad();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it('does not log console.error when host has aria-label attribute', () => {
+    const c = new IoSheet();
+    const el = document.createElement('io-sheet');
+    el.setAttribute('aria-label', 'Share options');
+    (c as any).el = el;
+    (c as any).dismissEvent = { emit: vi.fn() };
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    c.heading = undefined;
+    (c as any).componentWillLoad();
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+});
+
 describe('io-sheet — focus trap uses document.activeElement (#874)', () => {
   let component: IoSheet;
 

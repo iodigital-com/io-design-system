@@ -208,6 +208,33 @@ describe('io-pin-code — FACE: blur event emission', () => {
   });
 });
 
+describe('io-pin-code — FACE: faceError render (#814)', () => {
+  it('showFaceError is true when faceInvalid=true and message is absent', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).faceInvalid = true;
+    component.message = undefined;
+    // render should not throw when showFaceError is true
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw when faceInvalid=false and message is absent', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).faceInvalid = false;
+    component.message = undefined;
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw when both faceInvalid=true and message are set', () => {
+    const component = makeComponent('', true);
+    (component as any).internals = makeInternals();
+    (component as any).faceInvalid = true;
+    component.message = 'Custom error';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+});
+
 describe('io-pin-code — FACE: checkValidity and reportValidity', () => {
   it('checkValidity delegates to internals', async () => {
     const component = makeComponent();

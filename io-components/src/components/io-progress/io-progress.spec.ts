@@ -137,6 +137,22 @@ describe('io-progress — render stability', () => {
   });
 });
 
+describe('io-progress — indeterminate live region (#813)', () => {
+  it('does not throw when indeterminate=true', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('valueText prop is accessible when set', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    component.valueText = 'Processing…';
+    expect(component.valueText).toBe('Processing…');
+    expect(() => component.render()).not.toThrow();
+  });
+});
+
 describe('io-progress — no interactive methods', () => {
   it('does not expose click or keyboard handlers', () => {
     const methodNames = Object.getOwnPropertyNames(IoProgress.prototype);

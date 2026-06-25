@@ -43,6 +43,18 @@ export default function IoCarouselApiPage() {
               <span key="desc">Accessible label applied to the carousel <InlineCode>role=&quot;region&quot;</InlineCode> via <InlineCode>aria-label</InlineCode>. Defaults to <InlineCode>&apos;Carousel&apos;</InlineCode>; override to a more descriptive value such as <InlineCode>&apos;Product gallery&apos;</InlineCode> for clearer screen reader context.</span>,
             ],
             [
+              <InlineCode key="name">autoplay</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              'When true, slides advance automatically at the interval defined by autoplayInterval. Pauses on hover, focus, and when the user manually navigates.',
+            ],
+            [
+              <InlineCode key="name">autoplayInterval</InlineCode>,
+              <InlineCode key="type">number</InlineCode>,
+              <InlineCode key="default">5000</InlineCode>,
+              'Milliseconds between automatic slide advances when autoplay=true.',
+            ],
+            [
               <InlineCode key="name">prevLabel</InlineCode>,
               <InlineCode key="type">string</InlineCode>,
               <InlineCode key="default">&apos;Previous&apos;</InlineCode>,

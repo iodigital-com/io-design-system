@@ -50,6 +50,7 @@ export class IoPopover {
   private triggerEl?: HTMLElement | null;
   private useNativePopover = false;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
+  private _scrollRafId?: number;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -122,6 +123,9 @@ export class IoPopover {
 
   disconnectedCallback(): void {
     this.detachFocusTrap?.();
+    if (this._scrollRafId) {
+      cancelAnimationFrame(this._scrollRafId);
+    }
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -164,8 +168,13 @@ export class IoPopover {
 
   @Listen('scroll', { target: 'window', capture: true })
   handleWindowScroll() {
-    if (!this.open) return;
-    this.repositionPanel();
+    if (this._scrollRafId) return;
+    this._scrollRafId = requestAnimationFrame(() => {
+      this._scrollRafId = undefined;
+      if (this.open) {
+        this.repositionPanel();
+      }
+    });
   }
 
   @Listen('resize', { target: 'window' })

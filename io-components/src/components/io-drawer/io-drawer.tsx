@@ -238,7 +238,7 @@ export class IoDrawer {
   }
 
   private applyInert() {
-    this.inertedElements = Array.from(document.body.children).filter(
+    this.inertedElements = Array.from(this.el.parentElement?.children ?? []).filter(
       (el) => el !== this.el && !['SCRIPT', 'STYLE'].includes(el.tagName),
     );
     this.inertedElements.forEach((el) => {

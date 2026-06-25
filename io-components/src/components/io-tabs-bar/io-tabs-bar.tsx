@@ -164,7 +164,12 @@ export class IoTabsBar {
   private scrollActiveTabIntoView(buttons: TabItem[], activeIndex: number) {
     const activeBtn = buttons[activeIndex];
     if (!activeBtn) return;
-    activeBtn.scrollIntoView?.({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    activeBtn.scrollIntoView?.({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
   }
 
   // ── Handlers ─────────────────────────────────────────────────

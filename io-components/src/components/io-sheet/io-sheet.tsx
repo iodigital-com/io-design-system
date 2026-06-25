@@ -76,7 +76,7 @@ export class IoSheet {
   private backdropEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
-  private transitionEndHandler?: (ev: TransitionEvent) => void;
+  private animationEndHandler?: (ev: AnimationEvent) => void;
   private focusTrigger?: Element;
   private savedBodyOverflow = '';
 
@@ -128,7 +128,7 @@ export class IoSheet {
   }
 
   componentDidLoad() {
-    this.attachTransitionEndListener();
+    this.attachAnimationEndListener();
     if (this.open) {
       this.applyOpenState();
     }
@@ -136,7 +136,7 @@ export class IoSheet {
 
   disconnectedCallback() {
     this.detachFocusTrap();
-    this.detachTransitionEndListener();
+    this.detachAnimationEndListener();
     document.body.style.overflow = this.savedBodyOverflow;
   }
 
@@ -240,22 +240,22 @@ export class IoSheet {
     this.focusTrapHandler = undefined;
   }
 
-  private attachTransitionEndListener() {
+  private attachAnimationEndListener() {
     if (!this.panelEl) return;
-    this.transitionEndHandler = () => {
+    this.animationEndHandler = () => {
       if (this.open) {
         this.motionVisibleEndEvent.emit();
       } else {
         this.motionHiddenEndEvent.emit();
       }
     };
-    this.panelEl.addEventListener('transitionend', this.transitionEndHandler);
+    this.panelEl.addEventListener('animationend', this.animationEndHandler);
   }
 
-  private detachTransitionEndListener() {
-    if (!this.panelEl || !this.transitionEndHandler) return;
-    this.panelEl.removeEventListener('transitionend', this.transitionEndHandler);
-    this.transitionEndHandler = undefined;
+  private detachAnimationEndListener() {
+    if (!this.panelEl || !this.animationEndHandler) return;
+    this.panelEl.removeEventListener('animationend', this.animationEndHandler);
+    this.animationEndHandler = undefined;
   }
 
   // ── Handlers ──────────────────────────────────────────────────

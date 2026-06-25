@@ -809,9 +809,9 @@ describe('io-popover — scroll/resize repositioning (#777)', () => {
     const c = makePopover();
     withPanel(c);
     c.open = false;
+    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
     (c as any).handleWindowScroll();
-    // No reposition call → panel aria-hidden is never touched (not opened)
-    expect(c.open).toBe(false);
+    expect(repositionSpy).not.toHaveBeenCalled();
   });
 
   it('handleWindowScroll calls repositionPanel when popover is open', () => {

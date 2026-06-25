@@ -339,7 +339,7 @@ describe('io-sheet — focus trap uses document.activeElement (#874)', () => {
 });
 
 describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => {
-  it('motionVisibleEndEvent emits after transitionend when sheet is open', () => {
+  it('motionVisibleEndEvent emits after animationend when sheet is open', () => {
     const c = new IoSheet();
     const panelEl = document.createElement('div');
     (c as any).el = document.createElement('io-sheet');
@@ -348,15 +348,15 @@ describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => 
     (c as any).motionVisibleEndEvent = { emit: vi.fn() };
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     c.open = true;
-    (c as any).attachTransitionEndListener();
+    (c as any).attachAnimationEndListener();
 
-    panelEl.dispatchEvent(new Event('transitionend'));
+    panelEl.dispatchEvent(new Event('animationend'));
 
     expect((c as any).motionVisibleEndEvent.emit).toHaveBeenCalledOnce();
     expect((c as any).motionHiddenEndEvent.emit).not.toHaveBeenCalled();
   });
 
-  it('motionHiddenEndEvent emits after transitionend when sheet is closed', () => {
+  it('motionHiddenEndEvent emits after animationend when sheet is closed', () => {
     const c = new IoSheet();
     const panelEl = document.createElement('div');
     (c as any).el = document.createElement('io-sheet');
@@ -365,20 +365,20 @@ describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => 
     (c as any).motionVisibleEndEvent = { emit: vi.fn() };
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     c.open = false;
-    (c as any).attachTransitionEndListener();
+    (c as any).attachAnimationEndListener();
 
-    panelEl.dispatchEvent(new Event('transitionend'));
+    panelEl.dispatchEvent(new Event('animationend'));
 
     expect((c as any).motionHiddenEndEvent.emit).toHaveBeenCalledOnce();
     expect((c as any).motionVisibleEndEvent.emit).not.toHaveBeenCalled();
   });
 
-  it('attachTransitionEndListener is a no-op when panelEl is absent', () => {
+  it('attachAnimationEndListener is a no-op when panelEl is absent', () => {
     const c = new IoSheet();
     (c as any).el = document.createElement('io-sheet');
     (c as any).panelEl = undefined;
     (c as any).dismissEvent = { emit: vi.fn() };
-    expect(() => (c as any).attachTransitionEndListener()).not.toThrow();
+    expect(() => (c as any).attachAnimationEndListener()).not.toThrow();
   });
 });
 

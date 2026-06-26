@@ -79,6 +79,13 @@ export default function IoPaginationApiPage() {
               <InlineCode key="default">false</InlineCode>,
               <span key="description">Dense layout for toolbar contexts. Hides page-number buttons and shows only prev/next controls.</span>,
             ],
+            [
+              <InlineCode key="property">showLastPage</InlineCode>,
+              <InlineCode key="attribute">show-last-page</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">When true, always renders the last page button at the trailing edge of the windowed range, even when it would otherwise be hidden by an ellipsis.</span>,
+            ],
           ]}
         />
       </section>

@@ -196,6 +196,7 @@ describe('io-pagination — pageRange ellipsis branches (total=10)', () => {
   beforeEach(() => {
     component = new IoPagination();
     (component as any).change = { emit: vi.fn() };
+    component.showLastPage = true; // test the full windowed range with last-page pinned
   });
 
   it('current=1 — shows start cluster with trailing ellipsis', () => {

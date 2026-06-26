@@ -2,7 +2,7 @@ import { Component, Event, EventEmitter, Listen, Prop, Host, h } from '@stencil/
 
 import { getTableStyles } from './io-table-styles';
 
-import type { IoTableSize, IoTableSortDetail } from './types';
+import type { IoTableLayout, IoTableSize, IoTableSortDetail } from './types';
 
 /**
  * io-table
@@ -55,6 +55,9 @@ export class IoTable {
 
   /** Reduces row padding to display more rows in the same vertical space. */
   @Prop({ reflect: true }) compact: boolean = false;
+
+  /** CSS table-layout algorithm — 'auto' sizes columns by content, 'fixed' distributes width equally. */
+  @Prop({ reflect: true }) layout: IoTableLayout = 'auto';
 
   // ── Events ────────────────────────────────────────────────────
 

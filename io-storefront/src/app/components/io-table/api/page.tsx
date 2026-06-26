@@ -62,6 +62,12 @@ export default function IoTableApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Further reduces cell padding beyond the sm size for dense information displays. Stacks with the size prop.',
             ],
+            [
+              <span key="n"><InlineCode>layout</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;auto&apos; | &apos;fixed&apos;</InlineCode>,
+              <InlineCode key="d">&apos;auto&apos;</InlineCode>,
+              "CSS table-layout algorithm. 'auto' sizes columns by content width; 'fixed' distributes column width equally and ignores content. Use 'fixed' for performance on large tables or when you need equal-width columns.",
+            ],
           ]}
         />
       </section>

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoTable } from './io-table';
+import { getTableStyles } from './io-table-styles';
 
 describe('io-table — default props', () => {
   let component: IoTable;
@@ -191,6 +192,34 @@ describe('io-table — scroll wrapper aria-label', () => {
     component.captionHidden = true;
     const regionLabel = component.caption || undefined;
     expect(regionLabel).toBe('Hidden caption');
+  });
+});
+
+describe('io-table — layout prop (#869)', () => {
+  let component: IoTable;
+
+  beforeEach(() => {
+    component = new IoTable();
+  });
+
+  it('layout defaults to auto', () => {
+    expect(component.layout).toBe('auto');
+  });
+
+  it('layout can be set to fixed', () => {
+    component.layout = 'fixed';
+    expect(component.layout).toBe('fixed');
+  });
+
+  it('renders with layout=fixed without throwing', () => {
+    component.layout = 'fixed';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('getTableStyles includes fixed table-layout rule (#869)', () => {
+    const styles = getTableStyles();
+    expect(styles).toContain("layout='fixed'");
+    expect(styles).toContain('table-layout: fixed');
   });
 });
 

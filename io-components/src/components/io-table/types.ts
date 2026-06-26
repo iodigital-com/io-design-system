@@ -1,6 +1,9 @@
 /** Sort direction for sortable table column headers. */
 export type IoTableSortDirection = 'ascending' | 'descending' | 'none';
 
+/** Table layout algorithm. */
+export type IoTableLayout = 'auto' | 'fixed';
+
 /** Size preset for the table — controls row density. */
 export type IoTableSize = 'sm' | 'md' | 'lg';
 

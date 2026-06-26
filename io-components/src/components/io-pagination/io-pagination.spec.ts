@@ -57,13 +57,15 @@ describe('io-pagination — pageRange', () => {
   });
 
   it('includes ellipsis before active range when current > 3', () => {
+    component.showLastPage = true;
     const range = (component as any).pageRange(6, 10);
     expect(range).toContain('…');
     expect(range[0]).toBe(1);
     expect(range[range.length - 1]).toBe(10);
   });
 
-  it('shows a fuller range near the start', () => {
+  it('shows a fuller range near the start (showLastPage=true)', () => {
+    component.showLastPage = true;
     const range = (component as any).pageRange(1, 12);
     expect(range).toEqual([1, 2, 3, 4, 5, '…', 12]);
   });
@@ -73,7 +75,8 @@ describe('io-pagination — pageRange', () => {
     expect(range).toEqual([1, '…', 8, 9, 10, 11, 12]);
   });
 
-  it('keeps token count stable across edge and middle ranges', () => {
+  it('keeps token count stable across edge and middle ranges when showLastPage=true', () => {
+    component.showLastPage = true;
     const startRange = (component as any).pageRange(1, 12);
     const middleRange = (component as any).pageRange(6, 12);
     const endRange = (component as any).pageRange(12, 12);
@@ -81,6 +84,31 @@ describe('io-pagination — pageRange', () => {
     expect(startRange).toHaveLength(7);
     expect(middleRange).toHaveLength(7);
     expect(endRange).toHaveLength(7);
+  });
+});
+
+describe('io-pagination — showLastPage prop (#832)', () => {
+  let component: IoPagination;
+
+  beforeEach(() => {
+    component = new IoPagination();
+    (component as any).change = { emit: vi.fn() };
+  });
+
+  it('showLastPage defaults to false', () => {
+    expect(component.showLastPage).toBe(false);
+  });
+
+  it('last page absent in range when showLastPage=false and page=1 totalPages=20', () => {
+    component.showLastPage = false;
+    const range = (component as any).pageRange(1, 20);
+    expect(range).not.toContain(20);
+  });
+
+  it('last page present in range when showLastPage=true and page=1 totalPages=20', () => {
+    component.showLastPage = true;
+    const range = (component as any).pageRange(1, 20);
+    expect(range[range.length - 1]).toBe(20);
   });
 });
 

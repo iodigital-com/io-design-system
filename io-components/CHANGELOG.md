@@ -1,5 +1,90 @@
 # @iodigital-com/components
 
+## 1.6.0
+
+### Minor Changes
+
+- e2faf01: feat(io-carousel): add autoplay with play/pause control (WCAG 2.2.2)
+- 6951a70: feat(io-text-list): add new list typography primitive component
+- 309e897: feat(a11y): full FACE lifecycle and new props for io-input-date, io-input-search, io-input-password, io-multi-select
+
+  - io-input-date: add full FACE validity (syncFormValue + @Watch + formResetCallback), readonly, loading, step props; add checkValidity/reportValidity methods; gate faceInvalid on touched; add FACE error element with aria-describedby (WCAG 3.3.1)
+  - io-input-search: add full FACE validity lifecycle, readonly, loading, maxLength, minLength props; gate faceInvalid on touched; add FACE error element (WCAG 3.3.1)
+  - io-input-password: add full FACE validity lifecycle, readonly, loading, maxLength, minLength props; gate faceInvalid on touched; add FACE error element (WCAG 3.3.1)
+  - io-multi-select: wire aria-describedby on combobox trigger to include face-error id when faceInvalid is active, so screen readers can announce FACE validation errors (WCAG 3.3.1, WCAG 4.1.2)
+
+- f0a064d: fix(a11y): correct selection component semantics (#839 #856 #859)
+
+  - io-select: remove aria-hidden="true" from combobox group heading span; wrap group options in `<ul role="group" aria-labelledby>` so grouped listbox items are programmatically associated (WCAG 1.3.1)
+  - io-radio-group: replace aria-live="polite" with role="alert" aria-atomic="true" on the error paragraph so screen readers announce validation errors immediately (WCAG 4.1.3)
+  - io-segmented-control: add `label` and `hideLabel` props; wire `aria-label` to the `role="group"` Host element; log console.error when label is absent (WCAG 4.1.2)
+
+- b37a650: fix(a11y): FACE validity, error association, and lifecycle callbacks for io-input-date, io-input-password, io-input-search, io-multi-select
+
+  - io-input-date: add full `syncFormValue()` with native validity derivation, `faceInvalid`/`touched` states, `@Watch` decorators for `value`/`required`/`min`/`max`, `formDisabledCallback`, `formStateRestoreCallback`; update render for `showFaceError` + `aria-describedby` wiring (closes #817, #845)
+  - io-input-password: add `maxLength`/`minLength` props, full FACE validity pattern matching io-input gold standard, `formDisabledCallback`, `formStateRestoreCallback` (closes #835)
+  - io-input-search: add full FACE validity pattern, fix clear button firing when `disabled=true` (closes #841)
+  - io-multi-select: wire `aria-describedby` on trigger to include `faceErrorId` when `faceInvalid=true` and no external message (closes #840)
+
+- cabed24: Batch 8 a11y improvements (#838, #848, #867):
+
+  - io-tabs-bar: add `labelledBy` prop for `aria-labelledby` support when an external heading labels the tab group (#838)
+  - io-input: include character counter live region ID in `aria-describedby` so screen readers announce count on focus and on change (#848)
+  - io-carousel: add `skipLabel` prop and visually-hidden skip link as first focusable element, allowing keyboard users to bypass the carousel (#867)
+
+- d4960b8: P2 batch 6: additive props — io-pagination showLastPage (#832), io-input-password toggle (#851), io-table layout (#869)
+- bee1f38: Add orientation and loading props to io-checkbox-group (#830, #833); add actionLabel, actionIcon, actionLoading props and action event to io-banner (#842)
+- 7d6846f: Batch 9 complex feature improvements (#827, #836, #847):
+
+  - io-pin-code: add `loading` prop (disables inputs, shows spinner, sets `aria-busy="true"`) and `form` prop (out-of-DOM form association via ElementInternals) (#827)
+  - io-breadcrumb: add `maxItems` prop — collapses long breadcrumb trails into first item + expand button + last items; expand button has descriptive `aria-label` for screen readers (WCAG 1.3.1) (#836)
+  - io-tabs-bar: add animated sliding `.indicator` element driven by Web Animations API; respects `prefers-reduced-motion`; replaces static `border-bottom-color` transition (#847)
+
+- f59f85b: P2 batch 5 — runtime/docs fixes: flyout backdrop token (#875), popover open event (#849), tabs update contract (#829)
+
+  - io-flyout: replace cross-component `--io-drawer-backdrop` with scoped `--io-flyout-backdrop` token
+  - io-popover: add `open` event emitted when panel transitions to open state (symmetric with `dismiss`)
+  - io-tabs: document that `update` fires only on user interaction, never on programmatic `activeTabIndex` changes
+
+- e61a928: Fix remaining issues: io-segmented-control per-segment disabled state; io-textarea counter sr-only live region; io-input-password aria-pressed on toggle; io-input formDisabledCallback + formStateRestoreCallback; io-switch hideLabel prop; fix slot docs for io-input and io-textarea; fix aria-disabled doc error for io-switch.
+- a45b20d: Remove `compact` prop from `io-button`. The compact density variant is not part of the iO button specification. Use the `size` prop (`sm`, `md`, `lg`) for button density control.
+
+### Patch Changes
+
+- 7de3ee8: fix(a11y): keyboard navigation and focus trap fixes for io-scroller, io-table, io-tag, and io-sheet
+
+  - io-scroller: implement Arrow key keyboard handlers on the scrollable region (WCAG 2.1.1)
+  - io-table: add tabIndex=0 to scroll wrapper so keyboard users can reach overflowed content (WCAG 2.1.1)
+  - io-tag: replace disabled attribute with aria-disabled to keep disabled tags in tab order (WCAG 2.1.1)
+  - io-sheet: simplify focus trap to use document.activeElement exclusively — shadowRoot.activeElement returns the slot host, not the focused node, causing incorrect Tab wrap behaviour (WCAG 2.1.2)
+
+- ecc544e: fix(a11y): small component accessibility fixes — label warnings, aria-label attribute mapping, indeterminate @Watch, and 44 px touch targets
+
+  - io-progress: add componentWillLoad console.error when neither label nor labelledBy is provided (WCAG 4.1.2)
+  - io-link: add componentWillLoad console.error when href prop is absent (WCAG 4.1.2)
+  - io-checkbox: add @Watch('indeterminate') to call syncFormValue() on programmatic indeterminate changes
+  - io-badge: change ariaLabel prop from string | null to string | undefined with attribute: 'aria-label' so aria-label HTML attribute is correctly mapped (matches io-wordmark pattern)
+  - io-banner: dismiss button min-width and min-height raised from --io-space-6 (24 px) to --io-touch-target-min (44 px) (WCAG 2.5.8)
+  - io-inline-notification: same dismiss button touch-target fix as io-banner
+
+- 09ef9b0: fix(a11y): remove invalid aria-checked from io-select option role, add missing-label warning to io-button-group, move aria-label to host element in io-badge, add aria-required to io-pin-code group role, enforce WCAG 2.5.8 touch target on io-toast-item close button
+- 61db49c: fix(p1-a11y): accessible name warnings, slide roles, FACE error text, indeterminate live region
+- c04ea7f: fix(p1-face): sync form control state — required propagation, formStateRestoreCallback, FACE edge cases
+
+  - io-checkbox-group: add @Watch('required') so runtime required changes re-sync children (#771)
+  - io-checkbox-group: propagate required prop to child io-checkbox elements in syncChildren (#804)
+  - io-radio-group: add formStateRestoreCallback for browser autofill and history state restore (#778)
+  - io-checkbox: add comment clarifying indeterminate + required = valueMissing; add FACE spec coverage (#794)
+
+- a9b5aa9: fix(p1-aria): io-link ariaCurrent prop, external icon, io-flyout closeLabel and accessible name warning
+
+  - io-link: add `ariaCurrent` prop forwarding `aria-current` to the anchor for active nav links (#791)
+  - io-link: auto-render `external-link` icon when `external=true` and no explicit icon is set (#821)
+  - io-flyout: add `closeLabel` prop (default `'Close flyout'`) for contextual close button label (#816)
+  - io-flyout: fix `componentWillLoad` warning — suppress when host `aria-label` is already set (#820)
+
+- 0935ed6: fix(p1-a11y): disabled prop for io-tag-dismissible, popover scroll/resize reposition, tabs-bar active tab scroll into view, sheet transition events + scroll-lock cleanup, drawer inert management
+
 ## 1.5.0
 
 ### Minor Changes
@@ -611,5 +696,3 @@
   ```diff
   + <IoModal open={isOpen} preventTopLayer={false} heading="Confirm">
   ```
-
-

@@ -107,6 +107,11 @@ describe('io-textarea — counter live region', () => {
         tag === 'span' && attrs?.['aria-live'] === 'polite',
     );
     expect(liveCall).toBeDefined();
+    // Verify the announced text includes current length (5), max (80), and "characters"
+    const announcedText = (liveCall as unknown[]).slice(2).map(String).join('');
+    expect(announcedText).toContain('5');
+    expect(announcedText).toContain('80');
+    expect(announcedText).toContain('characters');
   });
 
   it('does not render live region when counter=false', () => {

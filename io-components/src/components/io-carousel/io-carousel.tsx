@@ -441,6 +441,11 @@ export class IoCarousel {
     }
   }
 
+  private handleSkipLinkClick = (e: MouseEvent) => {
+    e.preventDefault();
+    this.el.shadowRoot?.querySelector<HTMLElement>('.carousel-skip-target')?.focus();
+  };
+
   private handleVisibilityChange = () => {
     if (document.hidden) {
       this.isAutoplayInteractionPaused = true;
@@ -536,7 +541,7 @@ export class IoCarousel {
     return (
       <Host>
         <style>{getCarouselStyles()}</style>
-        <a href={`#${this.skipTargetId}`} class="carousel-skip-link">{this.skipLabel}</a>
+        <a href={`#${this.skipTargetId}`} class="carousel-skip-link" onClick={this.handleSkipLinkClick}>{this.skipLabel}</a>
         <div
           role="region"
           aria-label={hasHeadingSlot || heading ? undefined : label}
@@ -631,7 +636,7 @@ export class IoCarousel {
             </div>
           )}
         </div>
-        <div id={this.skipTargetId} tabindex={-1} class="carousel-skip-target" aria-hidden="true" />
+        <div id={this.skipTargetId} tabindex={-1} class="carousel-skip-target" />
       </Host>
     );
   }

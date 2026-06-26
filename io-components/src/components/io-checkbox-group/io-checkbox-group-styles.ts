@@ -52,10 +52,32 @@ export function getCheckboxGroupStyles(): string {
 
     /* ── Options container ──────────────────────────────────── */
 
+    .checkbox-group__options-wrapper {
+      position: relative;
+    }
+
     .checkbox-group__options {
       display: flex;
       flex-direction: column;
       gap: var(--io-space-1);
+    }
+
+    :host([orientation='horizontal']) .checkbox-group__options {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--io-space-4);
+    }
+
+    /* ── Loading overlay ────────────────────────────────────── */
+
+    .checkbox-group__loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--io-overlay-loading-bg);
+      border-radius: var(--io-border-radius-sm);
     }
 
     /* ── Required indicator ─────────────────────────────────── */

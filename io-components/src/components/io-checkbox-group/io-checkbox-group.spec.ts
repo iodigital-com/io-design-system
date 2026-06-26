@@ -7,6 +7,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoCheckboxGroup } from './io-checkbox-group';
+import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
 
 function makeComponent(overrides: Partial<IoCheckboxGroup> = {}) {
   const c = new IoCheckboxGroup();
@@ -297,5 +298,66 @@ describe('io-checkbox-group — handleCheckboxChange', () => {
     (component as any).handleCheckboxChange(ev);
 
     expect(emitFn).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-checkbox-group — orientation prop (#830)', () => {
+  it('orientation defaults to vertical', () => {
+    const c = makeComponent({ label: 'Options' });
+    expect(c.orientation).toBe('vertical');
+  });
+
+  it('renders with orientation=horizontal without throwing', () => {
+    const c = makeComponent({ label: 'Options', orientation: 'horizontal' });
+    expect(() => c.render()).not.toThrow();
+  });
+
+  it('getCheckboxGroupStyles includes horizontal orientation rule', () => {
+    const styles: string = getCheckboxGroupStyles();
+    expect(styles).toContain("orientation='horizontal'");
+    expect(styles).toContain('flex-direction: row');
+  });
+});
+
+describe('io-checkbox-group — loading prop (#833)', () => {
+  it('loading defaults to false', () => {
+    const c = makeComponent({ label: 'Options' });
+    expect(c.loading).toBe(false);
+  });
+
+  it('renders io-spinner when loading=true', () => {
+    const c = makeComponent({ label: 'Options', loading: true });
+    vi.mocked(h).mockClear();
+    c.render();
+    const spinnerCall = vi.mocked(h).mock.calls.find(([tag]) => tag === 'io-spinner');
+    expect(spinnerCall).toBeDefined();
+  });
+
+  it('does not render io-spinner when loading=false', () => {
+    const c = makeComponent({ label: 'Options', loading: false });
+    vi.mocked(h).mockClear();
+    c.render();
+    const spinnerCall = vi.mocked(h).mock.calls.find(([tag]) => tag === 'io-spinner');
+    expect(spinnerCall).toBeUndefined();
+  });
+
+  it('sets aria-busy when loading=true', () => {
+    const c = makeComponent({ label: 'Options', loading: true });
+    vi.mocked(h).mockClear();
+    c.render();
+    const busyCall = vi.mocked(h).mock.calls.find(
+      ([, attrs]) => attrs && typeof attrs === 'object' && (attrs as Record<string, unknown>)['aria-busy'] === 'true',
+    );
+    expect(busyCall).toBeDefined();
+  });
+
+  it('does not set aria-busy when loading=false', () => {
+    const c = makeComponent({ label: 'Options', loading: false });
+    vi.mocked(h).mockClear();
+    c.render();
+    const busyCall = vi.mocked(h).mock.calls.find(
+      ([, attrs]) => attrs && typeof attrs === 'object' && (attrs as Record<string, unknown>)['aria-busy'] === 'true',
+    );
+    expect(busyCall).toBeUndefined();
   });
 });

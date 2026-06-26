@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoSwitch } from './io-switch';
 import { getSwitchStyles } from './io-switch-styles';
@@ -148,5 +149,52 @@ describe('io-switch — formDisabledCallback', () => {
     component.disabled = true;
     (component as any).formDisabledCallback(false);
     expect(component.disabled).toBe(false);
+  });
+});
+
+describe('io-switch — hideLabel prop', () => {
+  let component: IoSwitch;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    component = new IoSwitch();
+    (component as any).el = document.createElement('io-switch');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).fieldId = 'test-id';
+    component.label = 'Toggle';
+  });
+
+  it('hideLabel defaults to false', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('switch-text has sr-only class when hideLabel=true', () => {
+    component.hideLabel = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const calls = vi.mocked(h).mock.calls;
+    const srOnly = calls.find(
+      ([tag, attrs]: [string, Record<string, unknown>]) =>
+        tag === 'span' &&
+        typeof (attrs as Record<string, unknown>)?.class === 'string' &&
+        ((attrs as Record<string, unknown>).class as string).includes('switch-text--sr-only'),
+    );
+    expect(srOnly).toBeDefined();
+  });
+
+  it('switch-text does not have sr-only class when hideLabel=false', () => {
+    component.hideLabel = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const calls = vi.mocked(h).mock.calls;
+    const srOnly = calls.find(
+      ([tag, attrs]: [string, Record<string, unknown>]) =>
+        tag === 'span' &&
+        typeof (attrs as Record<string, unknown>)?.class === 'string' &&
+        ((attrs as Record<string, unknown>).class as string).includes('switch-text--sr-only'),
+    );
+    expect(srOnly).toBeUndefined();
   });
 });

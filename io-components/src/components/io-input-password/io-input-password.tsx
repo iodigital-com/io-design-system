@@ -259,6 +259,7 @@ export class IoInputPassword {
                 type="button"
                 class="password-toggle"
                 aria-label={toggleLabel}
+                aria-pressed={String(showPassword)}
                 disabled={loading || undefined}
                 onClick={this.toggleVisibility}
                 tabIndex={0}

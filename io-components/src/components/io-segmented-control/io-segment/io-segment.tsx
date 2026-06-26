@@ -43,6 +43,14 @@ export class IoSegment {
   /** Whether this segment is the currently selected option — set by parent */
   @State() selected = false;
 
+  // ── Lifecycle ─────────────────────────────────────────────────
+
+  componentWillLoad() {
+    // Stamp initial disabled state onto the host element so the parent can
+    // read it after syncChildren() has overwritten the @Prop.
+    (this.el as HTMLElement & { ownDisabled?: boolean }).ownDisabled = this.disabled;
+  }
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when this segment is activated by click or keyboard */

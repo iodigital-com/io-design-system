@@ -178,7 +178,9 @@ export class IoSegmentedControl {
     const segments = this.getSegments();
     segments.forEach(s => {
       s.selected = s.value === this.value;
-      s.disabled = this.disabled;
+      // When group is disabled, force all segments disabled.
+      // When group is enabled, respect each segment's own declared disabled state.
+      s.disabled = this.disabled || !!(s as unknown as { ownDisabled: boolean }).ownDisabled;
     });
   };
 

@@ -82,6 +82,12 @@ export default function IoSwitchApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Renders a smaller track and thumb for dense UI contexts. Override size via --io-switch-track-width-compact, --io-switch-track-height-compact, and --io-switch-thumb-size-compact.',
             ],
+            [
+              <InlineCode key="n">hideLabel</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label text using a clip-rect sr-only pattern while keeping it accessible to screen readers via the <label> association. Use when surrounding context makes the label redundant visually.',
+            ],
           ]}
         />
       </section>

@@ -219,4 +219,42 @@ describe('io-input — FACE', () => {
       expect((component as any).faceInvalid).toBe(false);
     });
   });
+
+  describe('formDisabledCallback', () => {
+    it('sets disabled=true when called with true', () => {
+      component.disabled = false;
+      component.formDisabledCallback(true);
+      expect(component.disabled).toBe(true);
+    });
+
+    it('sets disabled=false when called with false', () => {
+      component.disabled = true;
+      component.formDisabledCallback(false);
+      expect(component.disabled).toBe(false);
+    });
+  });
+
+  describe('formStateRestoreCallback', () => {
+    it('restores string value and calls setFormValue', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.formStateRestoreCallback('hello');
+      expect(component.value).toBe('hello');
+      expect(internals.setFormValue).toHaveBeenCalledWith('hello');
+    });
+
+    it('sets value to empty string when state is null', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.formStateRestoreCallback(null);
+      expect(component.value).toBe('');
+    });
+
+    it('sets value to empty string when state is a File', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.formStateRestoreCallback(new File([], 'test.txt'));
+      expect(component.value).toBe('');
+    });
+  });
 });

@@ -211,6 +211,18 @@ export function getTextareaStyles(): string {
       margin-top: var(--io-space-1);
     }
 
+    .textarea-counter-sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .textarea-field,
       .textarea-label { transition: none; }

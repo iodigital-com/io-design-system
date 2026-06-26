@@ -429,6 +429,11 @@ export class IoTextarea {
           </p>
         )}
         {showCounter && (
+          <span class="textarea-counter-sr" aria-live="polite" aria-atomic="true">
+            {currentLength} of {maxLength} characters
+          </span>
+        )}
+        {showCounter && (
           <div id={this.counterId} class="textarea-counter" aria-hidden="true">
             {currentLength} / {maxLength}
           </div>

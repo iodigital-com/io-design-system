@@ -27,9 +27,9 @@ export default function IoPinCodeApiPage() {
             ],
             [
               <InlineCode key="n">length</InlineCode>,
-              <InlineCode key="t">4 | 6</InlineCode>,
+              <InlineCode key="t">3 | 4 | 5 | 6</InlineCode>,
               <InlineCode key="d">4</InlineCode>,
-              'Number of digit slots.',
+              'Number of digit slots. Accepts 3, 4, 5, or 6.',
             ],
             [
               <InlineCode key="n">type</InlineCode>,

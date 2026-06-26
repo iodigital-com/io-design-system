@@ -53,6 +53,30 @@ export default function IoModalApiPage() {
               <InlineCode key="d">true</InlineCode>,
               'Controls visibility of the × dismiss button in the modal header. When false, the ESC key is also suppressed — the modal can only close via programmatic close(). Use false for critical-confirmation modals where accidental dismissal must be prevented. Always include at least one explicit action button in the footer slot.',
             ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Accessible description for the dialog. Linked via aria-describedby to the native <dialog> element. Supplements the heading for screen reader users.',
+            ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">{'Record<string, string> | undefined'}</InlineCode>,
+              '—',
+              'Arbitrary ARIA attributes applied to the inner <dialog> element. Keys may omit or include the aria- prefix. Example: <InlineCode>{\'{ owns: "step-panel" }\'}</InlineCode>.',
+            ],
+            [
+              <span key="n"><InlineCode>background</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;canvas&apos; | &apos;surface&apos; | &apos;elevated&apos;</InlineCode>,
+              <InlineCode key="d">&apos;canvas&apos;</InlineCode>,
+              'Background colour of the dialog panel. canvas uses the page background; surface uses the card/panel background; elevated uses a raised surface background.',
+            ],
+            [
+              <span key="n"><InlineCode>preventTopLayer</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">true</InlineCode>,
+              'When true, uses a CSS-based overlay instead of the native dialog top-layer behavior (showModal()). Set to false to allow the browser to render the modal in the top layer (useful in stacking-context environments).',
+            ],
           ]}
         />
       </section>
@@ -96,6 +120,18 @@ export default function IoModalApiPage() {
               <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
               'No',
               'Emitted after the modal closes — whether via backdrop click, ESC key, the built-in close button, or setting open to false. Use this to return focus to the trigger element, clean up state, or trigger follow-up actions.',
+            ],
+            [
+              <InlineCode key="n">motionVisibleEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the open entry animation completes. Use to run logic that depends on the modal being fully visible (e.g. auto-focus a field, start a timer).',
+            ],
+            [
+              <InlineCode key="n">motionHiddenEnd</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>void</span>,
+              'No',
+              'Emitted after the close exit animation completes. Use to unmount the modal from the DOM or reset internal state only after the animation finishes.',
             ],
           ]}
         />

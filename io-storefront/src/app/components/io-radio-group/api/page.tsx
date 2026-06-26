@@ -73,6 +73,18 @@ export default function IoRadioGroupApiPage() {
               <InlineCode key="d">&apos;vertical&apos;</InlineCode>,
               'Layout direction for the radio option list. horizontal wraps when the container is too narrow. Maps to aria-orientation on the fieldset element.',
             ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a loading overlay over the group and blocks all interaction. Use while async option data is being fetched.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Supplementary description rendered below the legend and helperText. Provides additional context for screen reader users via aria-describedby.',
+            ],
           ]}
         />
       </section>

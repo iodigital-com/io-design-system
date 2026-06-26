@@ -97,8 +97,8 @@ export default function IoPaginationApiPage() {
           rows={[
             [
               <InlineCode key="event">change</InlineCode>,
-              <InlineCode key="detail">{`{ page: number }`}</InlineCode>,
-              <span key="description">Fires when the user navigates to a different 1-based page.</span>,
+              <InlineCode key="detail">{`{ page: number; previousPage: number }`}</InlineCode>,
+              <span key="description">Fires when the user navigates to a different 1-based page. <InlineCode>previousPage</InlineCode> is the page number before navigation — useful for animation direction and undo patterns.</span>,
             ],
           ]}
         />

@@ -93,6 +93,16 @@ export default function IoIconApiPage() {
                 automatically in <InlineCode>:dir(rtl)</InlineCode> contexts.
               </span>,
             ],
+            [
+              <span key="n"><InlineCode>fixedWidth</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Forces the icon to occupy a fixed square bounding box equal to its <InlineCode>size</InlineCode> value.
+                Use when aligning icons of different intrinsic widths in a list or navigation — ensures consistent
+                horizontal rhythm without manual spacing.
+              </span>,
+            ],
           ]}
         />
       </section>

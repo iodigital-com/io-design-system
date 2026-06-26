@@ -101,6 +101,36 @@ export default function IoSelectApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Adds a search input inside the dropdown to filter options by label. Requires custom=true.',
             ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a loading spinner replacing the chevron and disables interaction while async data loads.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label while keeping it accessible via aria-labelledby. Requires a non-empty label prop for accessibility.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Supplementary description rendered below the field. Use for persistent contextual guidance separate from the validation message.',
+            ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">{'Record<string, string> | undefined'}</InlineCode>,
+              '—',
+              'Arbitrary ARIA attributes applied to the inner select or combobox element. Keys may omit or include the aria- prefix — both forms are accepted. Example: <InlineCode>{\'{ controls: "panel-id" }\'}</InlineCode>.',
+            ],
+            [
+              <InlineCode key="n">form</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Associates this field with a form element by ID, enabling out-of-DOM form participation (FACE formAssociated pattern).',
+            ],
           ]}
         />
       </section>
@@ -136,6 +166,12 @@ export default function IoSelectApiPage() {
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
               'Fires when the select loses focus. Recommended trigger point for field-level validation.',
+            ],
+            [
+              <InlineCode key="n">toggle</InlineCode>,
+              <InlineCode key="t">{'{ open: boolean }'}</InlineCode>,
+              'No',
+              'Fires when the custom dropdown opens or closes (custom=true only). detail.open is true when opening, false when closing.',
             ],
           ]}
         />
@@ -181,6 +217,16 @@ document.querySelector('io-select')
               <InlineCode key="n">setFocus</InlineCode>,
               <InlineCode key="s">(options?: FocusOptions) =&gt; Promise&lt;void&gt;</InlineCode>,
               'Programmatically moves focus to the inner select element. Use to return focus after a modal closes or to direct the user to a required field after a validation response.',
+            ],
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Returns true if the field satisfies all constraints. Does not trigger browser validation UI.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Returns true if valid; triggers browser validation UI if invalid.',
             ],
           ]}
         />

@@ -48,6 +48,14 @@ export default function IoTabsBarApiPage() {
                 <InlineCode>aria-label</InlineCode>. Recommended when multiple tablists appear on the same page.
               </span>,
             ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Reduces the tab bar height and font size for dense layout contexts such as toolbars or secondary navigation.
+              </span>,
+            ],
           ]}
         />
       </section>

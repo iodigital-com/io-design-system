@@ -94,3 +94,43 @@ describe('io-input-password — default props', () => {
     expect((component as any).showPassword).toBe(false);
   });
 });
+
+describe('io-input-password — toggle prop (#851)', () => {
+  let component: IoInputPassword;
+
+  beforeEach(() => {
+    component = new IoInputPassword();
+    (component as any).el = document.createElement('io-input-password');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).input = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn() };
+    component.label = 'Password';
+    (component as any).componentWillLoad();
+  });
+
+  it('toggle defaults to true', () => {
+    expect(component.toggle).toBe(true);
+  });
+
+  it('renders toggle button when toggle=true', () => {
+    component.toggle = true;
+    vi.mocked(h).mockClear();
+    component.render();
+    const toggleCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]) => tag === 'button' && (attrs as any)?.class === 'password-toggle',
+    );
+    expect(toggleCall).toBeDefined();
+  });
+
+  it('does not render toggle button when toggle=false', () => {
+    component.toggle = false;
+    vi.mocked(h).mockClear();
+    component.render();
+    const toggleCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]) => tag === 'button' && (attrs as any)?.class === 'password-toggle',
+    );
+    expect(toggleCall).toBeUndefined();
+  });
+});

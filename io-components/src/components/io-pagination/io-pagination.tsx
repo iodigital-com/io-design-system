@@ -69,6 +69,9 @@ export class IoPagination {
   /** Localisation strings. Override to internationalise navigation labels. */
   @Prop() intl?: IoPaginationIntl;
 
+  /** When true, always renders the last page button at the trailing edge of the range */
+  @Prop() showLastPage = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the user navigates to a new page */
@@ -177,7 +180,7 @@ export class IoPagination {
 
   /** Derives the visible page numbers / ellipsis markers to render */
   private pageRange(current: number, total: number): Array<number | '…'> {
-    return getPaginationRange(current, total);
+    return getPaginationRange(current, total, this.showLastPage);
   }
 
   private go(page: number) {

@@ -30,6 +30,10 @@ export function getTableStyles(): string {
       color: var(--io-text-primary);
     }
 
+    :host([layout='fixed']) table {
+      table-layout: fixed;
+    }
+
     caption {
       caption-side: top;
       text-align: left;

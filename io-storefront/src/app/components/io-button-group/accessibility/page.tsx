@@ -132,7 +132,7 @@ export default function IoButtonGroupAccessibilityPage() {
                 </span>
               ),
               description:
-                'Provides the accessible name for the group via a visible label element. The label span is always in the DOM; hideLabel visually hides it using a .sr-only class while keeping it accessible to screen readers. Strongly recommended — without it, screen readers cannot tell users what the group is for.',
+                'Provides the accessible name for the group via a visible label element. The label span is always in the DOM; hideLabel visually hides it using a .group-label--sr-only class while keeping it accessible to screen readers. Strongly recommended — without it, screen readers cannot tell users what the group is for.',
             },
             {
               attribute: 'aria-disabled (container)',

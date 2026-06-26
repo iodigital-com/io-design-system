@@ -28,7 +28,7 @@ export default function IoInlineNotificationApiPage() {
             [
               <InlineCode key="n">label</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="d">undefined</InlineCode>,
               'Accessible label applied as aria-label on the host live region. Use when multiple notifications appear on the same page simultaneously to give each a unique, distinguishable name (WCAG 4.1.2).',
             ],
             [

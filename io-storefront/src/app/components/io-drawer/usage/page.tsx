@@ -99,8 +99,8 @@ export default function IoDrawerUsagePage() {
           <RuleCard label="io-drawer — full-height, multi-placement, multi-size">
             Use <C>io-drawer</C> for complex panels that need flexible sizing (sm / md / lg / full), multi-placement support (left, right, bottom), or a native <C>{'<dialog>'}</C> element with built-in focus trapping and scroll locking. The right default. Bottom placement is suited to mobile action sheets requiring swipe-to-close.
           </RuleCard>
-          <RuleCard label="io-flyout — partial-height side panel">
-            Use <C>io-flyout</C> when you need a side panel at a fixed partial height (<C>min(480px, 90vw)</C>) — such as mega menus, navigation panels, or contextual toolbars. Prefer this over a right-placement drawer when the panel should not cover the full viewport height.
+          <RuleCard label="io-flyout — full-height side panel">
+            Use <C>io-flyout</C> when you need a full-height side panel at a fixed width (<C>480px</C>, 100vw on narrow viewports) — such as mega menus, navigation panels, or contextual toolbars. Prefer this over a right-placement drawer when the panel does not need flexible sizing.
           </RuleCard>
           <RuleCard label="io-sheet — bottom sheet (mobile-first)">
             Use <C>io-sheet</C> for bottom-anchored contextual actions, quick pickers, and share menus — especially in mobile-first contexts. It uses a custom <C>role=dialog</C> host (not native <C>{'<dialog>'}</C>) and is optimised for bottom sheet UX patterns. Prefer <C>io-drawer placement=bottom</C> if you need native dialog semantics or swipe-to-close.

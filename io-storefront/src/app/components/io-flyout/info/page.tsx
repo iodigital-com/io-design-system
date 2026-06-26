@@ -42,7 +42,7 @@ export default function IoFlyoutInfoPage() {
               Open a flyout on top of another flyout or drawer. Stacked overlay panels create confusing navigation hierarchies.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Use io-flyout when io-drawer&apos;s full-height, multi-size, and bottom-sheet patterns are needed. io-flyout is fixed at <C>min(480px, 90vw)</C> width.
+              Use io-flyout when io-drawer&apos;s multi-size (sm/md/lg/full), multi-placement, or bottom-sheet patterns are needed. io-flyout is fixed at <C>480px</C> width.
             </DoOrDontCard>
           </div>
         </div>
@@ -71,8 +71,8 @@ export default function IoFlyoutInfoPage() {
           description="Use this guide when deciding which side or contextual overlay to reach for."
         />
         <div className="space-y-3">
-          <RuleCard label="io-flyout — partial-height side panel (this component)">
-            Use when you need a side panel that does not cover the full viewport height. Fixed at <C>min(480px, 90vw)</C> width. Suited to mega menus, navigation panels, and contextual toolbars where maintaining background context is important.
+          <RuleCard label="io-flyout — full-height side panel (this component)">
+            Use when you need a full-height side panel anchored to the viewport edge. Fixed at <C>480px</C> width (100vw on narrow viewports). Suited to mega menus, navigation panels, and contextual toolbars where maintaining background context is important.
           </RuleCard>
           <RuleCard label="io-drawer — full-height or multi-size, multi-placement">
             Use when the panel needs flexible sizing (sm / md / lg / full), bottom-sheet placement, or native <C>{'<dialog>'}</C> semantics. Choose io-drawer for record detail views, edit forms, and any task requiring more vertical space than a flyout provides.

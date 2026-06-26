@@ -16,6 +16,7 @@ vi.stubGlobal('requestAnimationFrame', (_cb: FrameRequestCallback) => 0);
 function makePopover(): IoPopover {
   const c = new IoPopover();
   (c as any).el = document.createElement('io-popover');
+  (c as any).openEvent = { emit: vi.fn() };
   (c as any).dismissEvent = { emit: vi.fn() };
   (c as any).componentWillLoad();
   return c;
@@ -578,6 +579,7 @@ describe('io-popover — componentWillLoad', () => {
   it('logs console.error when label prop is missing', () => {
     const c = new IoPopover();
     (c as any).el = document.createElement('io-popover');
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     c.label = undefined;
@@ -591,6 +593,7 @@ describe('io-popover — componentWillLoad', () => {
   it('does not log console.error when label prop is provided', () => {
     const c = new IoPopover();
     (c as any).el = document.createElement('io-popover');
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     c.label = 'Quick actions';
@@ -602,6 +605,7 @@ describe('io-popover — componentWillLoad', () => {
   it('does not log console.error when ariaLabel prop is provided (no label) (#788)', () => {
     const c = new IoPopover();
     (c as any).el = document.createElement('io-popover');
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     c.label = undefined;
@@ -633,6 +637,7 @@ describe('io-popover — componentDidLoad with triggerEl', () => {
     const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
 
     (c as any).el = { shadowRoot: mockShadowRoot };
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
     (c as any).panelEl = document.createElement('div');
     (c as any).componentWillLoad();
@@ -654,6 +659,7 @@ describe('io-popover — componentDidLoad with triggerEl', () => {
     const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
 
     (c as any).el = { shadowRoot: mockShadowRoot };
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
 
     const panel = document.createElement('div');
@@ -673,6 +679,7 @@ describe('io-popover — componentDidLoad with triggerEl', () => {
   it('does not throw when shadowRoot is absent (SSR/test boundary)', () => {
     const c = new IoPopover();
     (c as any).el = { shadowRoot: null };
+    (c as any).openEvent = { emit: vi.fn() };
     (c as any).dismissEvent = { emit: vi.fn() };
     (c as any).panelEl = document.createElement('div');
     (c as any).componentWillLoad();

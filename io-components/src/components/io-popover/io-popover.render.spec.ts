@@ -15,6 +15,7 @@ import { getPanelFocusableElements } from './io-popover-utils';
 function makePopover(overrides: Partial<IoPopover> = {}): IoPopover {
   const c = new IoPopover();
   (c as any).el = document.createElement('io-popover');
+  (c as any).openEvent = { emit: vi.fn() };
   (c as any).dismissEvent = { emit: vi.fn() };
   Object.assign(c, overrides);
   (c as any).componentWillLoad();

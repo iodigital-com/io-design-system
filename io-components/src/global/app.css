@@ -1052,6 +1052,9 @@ io-table[compact] io-table-body-cell td {
   --io-drawer-width-lg:          clamp(480px, 60vw, 800px);
   --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
 
+  /* io-flyout */
+  --io-flyout-backdrop:          rgba(0, 0, 0, 0.5);
+
   /* io-wordmark — text variant */
   --io-wordmark-font-size-sm:         var(--io-font-size-sm);
   --io-wordmark-font-size-md:         20px;

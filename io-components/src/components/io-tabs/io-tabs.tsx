@@ -57,6 +57,7 @@ export class IoTabs {
 
   /**
    * Fires when the user activates a different tab (click, Enter, or Space).
+   * Does NOT fire when activeTabIndex is changed programmatically — only on direct user interaction.
    * Update your controlled state in the handler:
    *   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
    */

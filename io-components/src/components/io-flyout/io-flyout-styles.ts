@@ -9,7 +9,7 @@ export function getFlyoutStyles(): string {
     .flyout__backdrop {
       position: fixed;
       inset: 0;
-      background: var(--io-drawer-backdrop);
+      background: var(--io-flyout-backdrop);
       z-index: calc(var(--io-z-modal, 1000) - 1);
     }
 

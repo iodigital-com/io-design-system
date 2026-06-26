@@ -155,6 +155,12 @@ describe('io-flyout — render contract', () => {
     expect(styles).toContain('flyout__backdrop');
     expect(styles).toContain('position: fixed');
   });
+
+  it('backdrop uses --io-flyout-backdrop token, not --io-drawer-backdrop (#875)', () => {
+    const styles: string = getFlyoutStyles();
+    expect(styles).toContain('var(--io-flyout-backdrop)');
+    expect(styles).not.toContain('var(--io-drawer-backdrop)');
+  });
 });
 
 describe('io-flyout — closeLabel prop (#816)', () => {

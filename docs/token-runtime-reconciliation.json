@@ -1680,6 +1680,14 @@
       "notes": "Wave XI (#381) \u2014 Drawer width small=320px."
     },
     {
+      "runtimeCssVar": "--io-flyout-backdrop",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "P2 (#875) \u2014 Flyout backdrop overlay color=rgba(0,0,0,0.5). Replaces cross-component --io-drawer-backdrop usage."
+    },
+    {
       "runtimeCssVar": "--io-field-focus-offset-y",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

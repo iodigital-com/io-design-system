@@ -149,6 +149,34 @@ describe('io-tabs — onActiveTabIndexChange', () => {
     expect(component.activeTabIndex).toBe(0);
     expect(btn1.getAttribute('tabindex')).toBe('0');
   });
+
+  it('does not emit update when activeTabIndex is changed programmatically (#829)', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B');
+    const component = makeComponent([btn1, btn2]);
+    (component as any).syncFromSlot();
+
+    const updateEmit = (component as any).update.emit as ReturnType<typeof vi.fn>;
+    updateEmit.mockClear();
+
+    (component as any).onActiveTabIndexChange(1);
+
+    expect(updateEmit).not.toHaveBeenCalled();
+  });
+
+  it('emits update when a tab is clicked by user (#829)', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B');
+    const component = makeComponent([btn1, btn2]);
+    (component as any).syncFromSlot();
+
+    const updateEmit = (component as any).update.emit as ReturnType<typeof vi.fn>;
+    updateEmit.mockClear();
+
+    (component as any).handleTabClick(1);
+
+    expect(updateEmit).toHaveBeenCalledWith({ activeTabIndex: 1 });
+  });
 });
 
 describe('io-tabs — listener teardown', () => {

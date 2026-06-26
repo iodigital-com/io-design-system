@@ -50,7 +50,7 @@ export default function IoLinkApiPage() {
               <InlineCode key="n">target</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;_self&apos;</InlineCode>,
-              'HTML target attribute. Use "_blank" to open the link in a new tab. When using "_blank", also set external=true and a suitable rel.',
+              'HTML target attribute. Defaults to "_self". Overridden to "_blank" automatically when external=true — no need to set this manually for external links.',
             ],
             [
               <InlineCode key="n">rel</InlineCode>,
@@ -62,7 +62,7 @@ export default function IoLinkApiPage() {
               <InlineCode key="n">external</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Marks the link as external. Appends an external-link icon and applies rel="noopener noreferrer" automatically.',
+              'Marks the link as external. Automatically sets target="_blank" and rel="noopener noreferrer". Setting external=true alone is sufficient — no need to set target separately.',
             ],
             [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,

@@ -124,14 +124,15 @@ export default function IoButtonGroupAccessibilityPage() {
                 'Each button is announced as a checkbox with checked/unchecked state.',
             },
             {
-              attribute: 'aria-label',
+              attribute: 'aria-labelledby',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  On the container from the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code> prop
+                  On the container, referencing a visible <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&lt;span&gt;</code> rendered from the{' '}
+                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code> prop
                 </span>
               ),
               description:
-                'Provides the accessible name for the group. Strongly recommended — without it, screen readers cannot tell users what the group is for.',
+                'Provides the accessible name for the group via a visible label element. The label span is always in the DOM; hideLabel visually hides it using a .group-label--sr-only class while keeping it accessible to screen readers. Strongly recommended — without it, screen readers cannot tell users what the group is for.',
             },
             {
               attribute: 'aria-disabled (container)',
@@ -208,7 +209,7 @@ export default function IoButtonGroupAccessibilityPage() {
             criterion="4.1.2"
             level="A"
             title="Name, Role, Value"
-            note="Each trigger has role=radio or role=checkbox and selection state via aria-checked. The container has role=radiogroup or role=group with an accessible name from aria-label."
+            note="Each trigger has role=radio or role=checkbox and selection state via aria-checked. The container has role=radiogroup or role=group with an accessible name via aria-labelledby referencing the visible label element."
           />
         </div>
       </section>

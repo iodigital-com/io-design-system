@@ -53,8 +53,8 @@ export default function IoBannerAccessibilityPage() {
             },
           ]}
         />
-        <RuleCard label="Live region injection">
-          The host element carries <code className="font-mono text-xs">role="alert"</code> or <code className="font-mono text-xs">role="status"</code> at all times. When <code className="font-mono text-xs">open</code> changes to true, content is injected into the already-visible live region — this is the reliable ARIA announcement trigger across all major browser/AT combinations.
+        <RuleCard label="Conditional live region">
+          The ARIA role is placed on the inner <code className="font-mono text-xs">.banner</code> div, which is only rendered while <code className="font-mono text-xs">open=true</code>. The live region is created when the banner opens and removed when it closes — preventing stale announcements when the banner is hidden. Content is announced as the live region appears in the DOM.
         </RuleCard>
       </section>
 

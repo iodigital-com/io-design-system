@@ -4231,6 +4231,7 @@ declare global {
         new (): HTMLIoPinCodeElement;
     };
     interface HTMLIoPopoverElementEventMap {
+        "open": void;
         "dismiss": void;
     }
     /**
@@ -7006,6 +7007,10 @@ declare namespace LocalJSX {
          */
         "onDismiss"?: (event: IoPopoverCustomEvent<void>) => void;
         /**
+          * Emitted when the popover opens — trigger click while closed, or programmatic open via the open prop
+         */
+        "onOpen"?: (event: IoPopoverCustomEvent<void>) => void;
+        /**
           * Whether the popover is currently open
           * @default false
          */
@@ -7917,7 +7922,7 @@ declare namespace LocalJSX {
          */
         "labelledby"?: string;
         /**
-          * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
+          * Fires when the user activates a different tab (click, Enter, or Space). Does NOT fire when activeTabIndex is changed programmatically — only on direct user interaction. Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
         "onUpdate"?: (event: IoTabsCustomEvent<IoTabsUpdateDetail>) => void;
         /**

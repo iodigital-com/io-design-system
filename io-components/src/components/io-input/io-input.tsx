@@ -34,6 +34,9 @@ export class IoInput {
   private counterId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
+  private counterTimer?: ReturnType<typeof setTimeout>;
+
+  @State() private announcedCounter = '';
 
   @State() private hasPrefix = false;
   @State() private hasSuffix = false;
@@ -152,6 +155,14 @@ export class IoInput {
     if (this.hideLabel && !this.label) {
       console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
     }
+    if (this.counter && this.maxLength != null) {
+      const remaining = this.maxLength - (this.value ?? '').length;
+      this.announcedCounter = `${remaining} characters remaining`;
+    }
+  }
+
+  disconnectedCallback(): void {
+    if (this.counterTimer) clearTimeout(this.counterTimer);
   }
 
   formResetCallback() {
@@ -289,6 +300,13 @@ export class IoInput {
     }
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
+    if (this.counter && this.maxLength != null) {
+      if (this.counterTimer) clearTimeout(this.counterTimer);
+      const remaining = this.maxLength - (this.value ?? '').length;
+      this.counterTimer = setTimeout(() => {
+        this.announcedCounter = `${remaining} characters remaining`;
+      }, 1000);
+    }
   };
 
   private handleChange = (ev: Event) => {
@@ -331,12 +349,13 @@ export class IoInput {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const showMessage = (showError || showSuccess || showWarning) && (hasMessageSlot || !!message);
     const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
+    const showCounter = counter && maxLength != null;
+    const counterSrId = `${this.counterId}-sr`;
     const describedBy = [
       showMessage ? errorId : '',
       showDescription ? helperId : '',
+      showCounter ? counterSrId : '',
     ].filter(Boolean).join(' ') || undefined;
-
-    const showCounter = counter && maxLength != null;
     const currentLength = (value ?? '').length;
 
     const wrapperClass = [
@@ -487,8 +506,8 @@ export class IoInput {
           </div>
         )}
         {showCounter && (
-          <span class="input-counter-sr" aria-live="polite" aria-atomic="true">
-            {currentLength} of {maxLength} characters
+          <span id={counterSrId} class="input-counter-sr" aria-live="polite" aria-atomic="true">
+            {this.announcedCounter}
           </span>
         )}
       </Host>

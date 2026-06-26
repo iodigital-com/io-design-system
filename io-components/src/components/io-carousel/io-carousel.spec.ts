@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoCarousel } from './io-carousel';
 
@@ -570,5 +571,65 @@ describe('io-carousel — alignHeader prop', () => {
     component.alignHeader = 'left';
     const isCenterClass = component.alignHeader === 'center';
     expect(isCenterClass).toBe(false);
+  });
+});
+
+describe('io-carousel — skip link (#867)', () => {
+  function makeCarousel() {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    (c as any).update = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+    return c;
+  }
+
+  it('skipLabel defaults to "Skip carousel"', () => {
+    const c = makeCarousel();
+    expect(c.skipLabel).toBe('Skip carousel');
+  });
+
+  it('skipTargetId is generated in componentWillLoad', () => {
+    const c = makeCarousel();
+    expect((c as any).skipTargetId).toMatch(/^io-carousel-skip-/);
+  });
+
+  it('renders skip link with href pointing to skipTargetId', () => {
+    const c = makeCarousel();
+    vi.mocked(h).mockClear();
+    c.render();
+    const skipId = (c as any).skipTargetId;
+    const linkCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'a' &&
+        (attrs as Record<string, unknown>)?.['href'] === `#${skipId}`,
+    );
+    expect(linkCall).toBeDefined();
+  });
+
+  it('renders skip target div with matching id', () => {
+    const c = makeCarousel();
+    vi.mocked(h).mockClear();
+    c.render();
+    const skipId = (c as any).skipTargetId;
+    const targetCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'div' &&
+        (attrs as Record<string, unknown>)?.['id'] === skipId,
+    );
+    expect(targetCall).toBeDefined();
+  });
+
+  it('skip link text uses skipLabel prop', () => {
+    const c = makeCarousel();
+    c.skipLabel = 'Skip to content';
+    vi.mocked(h).mockClear();
+    c.render();
+    const skipId = (c as any).skipTargetId;
+    const linkCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'a' &&
+        (attrs as Record<string, unknown>)?.['href'] === `#${skipId}`,
+    );
+    expect(linkCall?.[2]).toBe('Skip to content');
   });
 });

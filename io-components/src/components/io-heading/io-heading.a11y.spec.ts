@@ -7,10 +7,11 @@
  * correct heading level for their page structure.
  *
  * WHY NATIVE ELEMENTS ARE USED HERE:
- * io-heading uses `shadow: false` and delegates all semantics to the host tag.
- * The component renders <Tag style={...}>{text}</Tag> — jsdom resolves this to
- * the host element, making renderAndCheckA11y(nativeEl) equivalent to testing
- * the component's rendered output for axe purposes.
+ * io-heading uses `shadow: false` and renders a native heading element
+ * (h1–h6) in the light DOM. Stencil's jsdom environment does not run the
+ * custom-element lifecycle, so these tests create the native output elements
+ * directly — equivalent to testing the component's final rendered HTML for
+ * axe purposes.
  *
  * COVERAGE GAP (intentional):
  * These tests do NOT cover inline styles, the resolveTag() fallback, or the

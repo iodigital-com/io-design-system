@@ -6,10 +6,11 @@
  * Accessibility comes from correct HTML semantics + token-driven contrast.
  *
  * WHY NATIVE ELEMENTS ARE USED HERE:
- * io-text uses `shadow: false` and delegates all semantics to the host tag.
- * The component renders <Tag style={...}><slot /></Tag> — jsdom resolves this
- * to the host element itself, making renderAndCheckA11y(nativeEl) equivalent
- * to testing the component's actual rendered output for axe purposes.
+ * io-text uses `shadow: false` and renders a native <Tag> element (p, span,
+ * div, blockquote, time) in the light DOM. Stencil's jsdom environment does
+ * not run the custom-element lifecycle, so these tests create the native
+ * output elements directly — equivalent to testing the component's final
+ * rendered HTML for axe purposes.
  *
  * COVERAGE GAP (intentional):
  * These tests do NOT cover inline styles injected by the component (font-size,

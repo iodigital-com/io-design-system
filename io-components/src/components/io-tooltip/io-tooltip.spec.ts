@@ -95,7 +95,15 @@ describe('io-tooltip — wrapper syncing', () => {
   });
 });
 
-describe('io-tooltip — overlay transition contract', () => {
+/**
+ * MIGRATION STUB TESTS — io-tooltip uses shadow: false; getTooltipStyles() is not applied
+ * in production. These tests validate the token contracts of the migration stub in
+ * io-tooltip-styles.ts so that if/when io-tooltip migrates to shadow DOM, the contract
+ * is already verified. See the comment in io-tooltip-styles.ts for full context.
+ *
+ * Actual overlay styles live in app.css (.io-tooltip-overlay selector).
+ */
+describe('io-tooltip — overlay transition contract (migration stub)', () => {
   it('fade transition uses --io-motion-overlay-fade semantic token', () => {
     const styles: string = getTooltipStyles();
     expect(styles).toContain('--io-motion-overlay-fade');

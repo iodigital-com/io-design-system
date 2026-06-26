@@ -17,7 +17,10 @@ import type { IoAvatarSize, IoAvatarColor, IoAvatarShape, IoAvatarRole } from '.
  * <io-avatar name="Jane Doe" color="blue" shape="circle" />
  * <io-avatar size="lg" />
  */
-@Component({ tag: 'io-avatar', shadow: true })
+@Component({
+  tag: 'io-avatar',
+  shadow: { delegatesFocus: true },
+})
 export class IoAvatar {
   /** Image URL. When loading fails the component falls back to initials or icon. */
   @Prop() src: string | undefined;

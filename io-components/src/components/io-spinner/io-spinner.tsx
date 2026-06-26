@@ -22,7 +22,7 @@ import type { IoSpinnerSize, IoSpinnerColor } from './types';
  */
 @Component({
   tag: 'io-spinner',
-  shadow: true,
+  shadow: { delegatesFocus: true },
 })
 export class IoSpinner {
   // ── Props ─────────────────────────────────────────────────────

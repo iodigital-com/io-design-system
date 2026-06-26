@@ -2,7 +2,7 @@
 
 exports[`io-spinner — render snapshots > renders default state 1`] = `
 <io-spinner role="status" aria-label="Loading" size="md" color="primary" class="hydrated">
-  <mock:shadow-root>
+  <mock:shadow-root shadowrootdelegatesfocus>
     <span class="spinner spinner--md spinner--primary" aria-hidden="true"></span>
   </mock:shadow-root>
 </io-spinner>
@@ -30,17 +30,17 @@ MockHTMLElement {
   "__style": undefined,
   "_childNodes": [
     <io-spinner role="status" aria-label="Loading" size="sm" color="primary" class="hydrated">
-  <mock:shadow-root>
+  <mock:shadow-root shadowrootdelegatesfocus>
     <span class="spinner spinner--sm spinner--primary" aria-hidden="true"></span>
   </mock:shadow-root>
 </io-spinner>,
     <io-spinner role="status" aria-label="Loading" size="md" color="white" class="hydrated">
-  <mock:shadow-root>
+  <mock:shadow-root shadowrootdelegatesfocus>
     <span class="spinner spinner--md spinner--white" aria-hidden="true"></span>
   </mock:shadow-root>
 </io-spinner>,
     <io-spinner role="status" aria-label="Loading" size="lg" color="current" class="hydrated">
-  <mock:shadow-root>
+  <mock:shadow-root shadowrootdelegatesfocus>
     <span class="spinner spinner--lg spinner--current" aria-hidden="true"></span>
   </mock:shadow-root>
 </io-spinner>,

@@ -5,6 +5,19 @@
  * HTML elements (p, span, div, blockquote, time) with no ARIA modifications.
  * Accessibility comes from correct HTML semantics + token-driven contrast.
  *
+ * WHY NATIVE ELEMENTS ARE USED HERE:
+ * io-text uses `shadow: false` and renders a native <Tag> element (p, span,
+ * div, blockquote, time) in the light DOM. Stencil's jsdom environment does
+ * not run the custom-element lifecycle, so these tests create the native
+ * output elements directly — equivalent to testing the component's final
+ * rendered HTML for axe purposes.
+ *
+ * COVERAGE GAP (intentional):
+ * These tests do NOT cover inline styles injected by the component (font-size,
+ * color tokens), conditional prop logic (ellipsis, hyphens), or the datetime
+ * attribute wiring. Token contrast and prop-driven style regressions require
+ * Lighthouse / visual regression tests, not axe-in-jsdom.
+ *
  * Uses vitest-axe registered globally via tests/unit/config/vitest.setup.ts.
  */
 import { describe, it } from 'vitest';

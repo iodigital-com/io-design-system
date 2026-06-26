@@ -6,6 +6,18 @@
  * The `tag` prop controls document outline semantics — users must choose the
  * correct heading level for their page structure.
  *
+ * WHY NATIVE ELEMENTS ARE USED HERE:
+ * io-heading uses `shadow: false` and renders a native heading element
+ * (h1–h6) in the light DOM. Stencil's jsdom environment does not run the
+ * custom-element lifecycle, so these tests create the native output elements
+ * directly — equivalent to testing the component's final rendered HTML for
+ * axe purposes.
+ *
+ * COVERAGE GAP (intentional):
+ * These tests do NOT cover inline styles, the resolveTag() fallback, or the
+ * console.error guard for missing tag prop. Token contrast and prop-driven
+ * style regressions require Lighthouse / visual regression tests.
+ *
  * Uses vitest-axe registered globally via tests/unit/config/vitest.setup.ts.
  */
 import { describe, it } from 'vitest';

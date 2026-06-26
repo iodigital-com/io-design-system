@@ -84,7 +84,7 @@ describe('io-heading — render does not throw', () => {
   });
 
   it('renders without throwing for all supported weights', () => {
-    const weights = ['regular', 'semibold', 'bold'] as const;
+    const weights = ['regular', 'medium', 'semibold', 'bold'] as const;
     for (const weight of weights) {
       const component = new IoHeading();
       component.tag = 'h2';
@@ -145,7 +145,7 @@ describe('io-heading — h() call arguments (style computation)', () => {
 
   it('passes font-weight token for each weight', () => {
     const hMock = vi.mocked(h);
-    const weights = ['regular', 'semibold', 'bold'] as const;
+    const weights = ['regular', 'medium', 'semibold', 'bold'] as const;
     for (const weight of weights) {
       hMock.mockClear();
       const component = new IoHeading();
@@ -299,5 +299,72 @@ describe('io-heading — h() call arguments (style computation)', () => {
       const [tagArg] = hMock.mock.calls[OUTER];
       expect(tagArg).toBe(tag);
     }
+  });
+});
+
+describe('io-heading — hyphens prop (#854)', () => {
+  const OUTER = 1;
+
+  it('has "none" as default hyphens value', () => {
+    const component = new IoHeading();
+    expect(component.hyphens).toBe('none');
+  });
+
+  it('passes hyphens style for each supported value', () => {
+    const hMock = vi.mocked(h);
+    const values = ['none', 'manual', 'auto', 'inherit'] as const;
+    for (const val of values) {
+      hMock.mockClear();
+      const component = new IoHeading();
+      component.tag = 'h2';
+      component.hyphens = val;
+      component.render();
+      const [, styleArg] = hMock.mock.calls[OUTER];
+      expect((styleArg as any).style.hyphens).toBe(val);
+    }
+  });
+
+  it('sets overflowWrap: break-word when hyphens is auto', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.hyphens = 'auto';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBe('break-word');
+  });
+
+  it('sets overflowWrap: break-word when hyphens is manual', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.hyphens = 'manual';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBe('break-word');
+  });
+
+  it('does not set overflowWrap when hyphens is none', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.hyphens = 'none';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBeUndefined();
+  });
+
+  it('does not set overflowWrap when hyphens is inherit', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const component = new IoHeading();
+    component.tag = 'h2';
+    component.hyphens = 'inherit';
+    component.render();
+    const [, styleArg] = hMock.mock.calls[OUTER];
+    expect((styleArg as any).style.overflowWrap).toBeUndefined();
   });
 });

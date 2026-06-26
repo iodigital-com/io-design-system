@@ -245,6 +245,18 @@ export function getTagStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* ── Compact density override ───────────────────────── */
+
+    .tag--compact.tag--sm {
+      padding-top: var(--io-tag-compact-padding-y);
+      padding-bottom: var(--io-tag-compact-padding-y);
+    }
+
+    .tag--compact.tag--md {
+      padding-top: var(--io-tag-compact-padding-y);
+      padding-bottom: var(--io-tag-compact-padding-y);
+    }
+
     /* ── Reduced motion ─────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

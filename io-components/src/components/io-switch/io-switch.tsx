@@ -57,6 +57,9 @@ export class IoSwitch {
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
 
+  /** Compact density — renders a smaller track and thumb for dense UI contexts */
+  @Prop({ reflect: true }) compact = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the switch state changes */

@@ -398,6 +398,11 @@
   --io-switch-thumb-offset-off:  2px;        /* thumb left offset when unchecked */
   --io-switch-thumb-offset-on:   calc(var(--io-switch-track-width) - var(--io-switch-thumb-size) - 2px); /* thumb offset when checked */
   --io-switch-thumb-shadow:      0 1px 3px rgba(0, 0, 0, 0.2); /* thumb elevation shadow */
+  --io-switch-track-width-compact:  2rem;          /* 32px — compact track width */
+  --io-switch-track-height-compact: 1.125rem;      /* 18px — compact track height */
+  --io-switch-thumb-size-compact:   0.875rem;      /* 14px — compact thumb diameter */
+
+  --io-tag-compact-padding-y:    var(--io-space-1); /* 4px — compact vertical padding override */
 
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-border-width:            1.5px;

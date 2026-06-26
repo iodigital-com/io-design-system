@@ -34,9 +34,9 @@ export default function IoHeadingApiPage() {
             ],
             [
               <span key="n"><InlineCode>weight</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;regular&apos; | &apos;semibold&apos; | &apos;bold&apos;</InlineCode>,
+              <InlineCode key="t">&apos;regular&apos; | &apos;medium&apos; | &apos;semibold&apos; | &apos;bold&apos;</InlineCode>,
               <InlineCode key="d">&apos;semibold&apos;</InlineCode>,
-              'Font weight using --io-font-weight-* tokens (400, 600, 700).',
+              'Font weight using --io-font-weight-* tokens (400, 500, 600, 700).',
             ],
             [
               <span key="n"><InlineCode>align</InlineCode><ReflectBadge /></span>,
@@ -55,6 +55,12 @@ export default function IoHeadingApiPage() {
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'When true, applies overflow: hidden, text-overflow: ellipsis, white-space: nowrap for single-line truncation.',
+            ],
+            [
+              <span key="n"><InlineCode>hyphens</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;manual&apos; | &apos;auto&apos; | &apos;inherit&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'CSS hyphens property for word breaking and hyphenation. auto and manual also set overflow-wrap: break-word to enable the soft-wrap opportunities.',
             ],
           ]}
         />

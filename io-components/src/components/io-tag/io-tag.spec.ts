@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { IoTag } from './io-tag';
+import { getTagStyles } from './io-tag-styles';
 
 describe('io-tag — default props', () => {
   let component: IoTag;
@@ -30,5 +31,17 @@ describe('io-tag — default props', () => {
 
   it('has color default by default', () => {
     expect(component.color).toBe('default');
+  });
+
+  it('is not compact by default', () => {
+    expect(component.compact).toBe(false);
+  });
+});
+
+describe('io-tag — compact density (#866)', () => {
+  it('compact CSS uses --io-tag-compact-padding-y token', () => {
+    const styles = getTagStyles();
+    expect(styles).toContain('.tag--compact');
+    expect(styles).toContain('var(--io-tag-compact-padding-y)');
   });
 });

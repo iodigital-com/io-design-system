@@ -19,7 +19,7 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFlyoutPosition } from "./components/io-flyout/types";
-import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
@@ -48,6 +48,7 @@ import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
+import { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -66,7 +67,7 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFlyoutPosition } from "./components/io-flyout/types";
-export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
@@ -95,6 +96,7 @@ export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
+export { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
@@ -222,9 +224,8 @@ export namespace Components {
     interface IoBadge {
         /**
           * Accessible label for icon-only or abbreviated badges
-          * @default null
          */
-        "ariaLabel": string | null;
+        "ariaLabel": string | undefined;
         /**
           * Size variant aligned with io-tag
           * @default 'md'
@@ -963,6 +964,11 @@ export namespace Components {
           * @default false
          */
         "ellipsis": boolean;
+        /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'none'
+         */
+        "hyphens": IoHeadingHyphens;
         /**
           * Font size using --io-font-size-* tokens
           * @default '2xl'
@@ -2555,6 +2561,11 @@ export namespace Components {
          */
         "checked": boolean;
         /**
+          * Compact density — renders a smaller track and thumb for dense UI contexts
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Disables the switch
           * @default false
          */
@@ -2877,6 +2888,11 @@ export namespace Components {
          */
         "color": IoTagColor;
         /**
+          * Compact density — reduces vertical padding for dense UI contexts
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Disables all interaction
           * @default false
          */
@@ -2920,6 +2936,11 @@ export namespace Components {
      * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
      */
     interface IoTagDismissible {
+        /**
+          * When true, disables the dismiss button and prevents dismiss events
+          * @default false
+         */
+        "disabled": boolean;
         /**
           * Optional leading icon name (from the io icon set)
          */
@@ -2985,6 +3006,41 @@ export namespace Components {
           * @default 'regular'
          */
         "weight": IoTextWeight;
+    }
+    /**
+     * io-text-list
+     * ============
+     * Token-driven list typography primitive for ordered and unordered lists.
+     * Renders a semantic <ul> or <ol> with consistent font size, weight, and
+     * color from the io design token system.
+     * Slot `<li>` items directly — the component applies spacing and inherited
+     * typography styles.
+     * @example <io-text-list>
+     *   <li>First item</li>
+     *   <li>Second item</li>
+     * </io-text-list>
+     * @example — ordered list with custom size
+     * <io-text-list tag="ol" size="sm" color="secondary">
+     * <li>Step one</li>
+     * <li>Step two</li>
+     * </io-text-list>
+     */
+    interface IoTextList {
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color": IoTextListColor;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default 'base'
+         */
+        "size": IoTextListSize;
+        /**
+          * HTML list tag to render
+          * @default 'ul'
+         */
+        "tag": IoTextListTag;
     }
     /**
      * io-textarea
@@ -4393,6 +4449,8 @@ declare global {
     };
     interface HTMLIoSheetElementEventMap {
         "dismiss": void;
+        "motionVisibleEnd": void;
+        "motionHiddenEnd": void;
     }
     /**
      * io-sheet
@@ -4847,6 +4905,30 @@ declare global {
         prototype: HTMLIoTextElement;
         new (): HTMLIoTextElement;
     };
+    /**
+     * io-text-list
+     * ============
+     * Token-driven list typography primitive for ordered and unordered lists.
+     * Renders a semantic <ul> or <ol> with consistent font size, weight, and
+     * color from the io design token system.
+     * Slot `<li>` items directly — the component applies spacing and inherited
+     * typography styles.
+     * @example <io-text-list>
+     *   <li>First item</li>
+     *   <li>Second item</li>
+     * </io-text-list>
+     * @example — ordered list with custom size
+     * <io-text-list tag="ol" size="sm" color="secondary">
+     * <li>Step one</li>
+     * <li>Step two</li>
+     * </io-text-list>
+     */
+    interface HTMLIoTextListElement extends Components.IoTextList, HTMLStencilElement {
+    }
+    var HTMLIoTextListElement: {
+        prototype: HTMLIoTextListElement;
+        new (): HTMLIoTextListElement;
+    };
     interface HTMLIoTextareaElementEventMap {
         "input": InputEvent;
         "change": string;
@@ -5013,6 +5095,7 @@ declare global {
         "io-tag": HTMLIoTagElement;
         "io-tag-dismissible": HTMLIoTagDismissibleElement;
         "io-text": HTMLIoTextElement;
+        "io-text-list": HTMLIoTextListElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
         "io-toast-item": HTMLIoToastItemElement;
@@ -5149,9 +5232,8 @@ declare namespace LocalJSX {
     interface IoBadge {
         /**
           * Accessible label for icon-only or abbreviated badges
-          * @default null
          */
-        "ariaLabel"?: string | null;
+        "ariaLabel"?: string | undefined;
         /**
           * Size variant aligned with io-tag
           * @default 'md'
@@ -5898,6 +5980,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "ellipsis"?: boolean;
+        /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'none'
+         */
+        "hyphens"?: IoHeadingHyphens;
         /**
           * Font size using --io-font-size-* tokens
           * @default '2xl'
@@ -7407,6 +7494,14 @@ declare namespace LocalJSX {
          */
         "onDismiss"?: (event: IoSheetCustomEvent<void>) => void;
         /**
+          * Emitted after the close animation/transition has completed
+         */
+        "onMotionHiddenEnd"?: (event: IoSheetCustomEvent<void>) => void;
+        /**
+          * Emitted after the open animation/transition has completed
+         */
+        "onMotionVisibleEnd"?: (event: IoSheetCustomEvent<void>) => void;
+        /**
           * Controls sheet visibility
           * @default false
          */
@@ -7544,6 +7639,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "checked"?: boolean;
+        /**
+          * Compact density — renders a smaller track and thumb for dense UI contexts
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Disables the switch
           * @default false
@@ -7895,6 +7995,11 @@ declare namespace LocalJSX {
          */
         "color"?: IoTagColor;
         /**
+          * Compact density — reduces vertical padding for dense UI contexts
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Disables all interaction
           * @default false
          */
@@ -7946,6 +8051,11 @@ declare namespace LocalJSX {
      * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
      */
     interface IoTagDismissible {
+        /**
+          * When true, disables the dismiss button and prevents dismiss events
+          * @default false
+         */
+        "disabled"?: boolean;
         /**
           * Optional leading icon name (from the io icon set)
          */
@@ -8015,6 +8125,41 @@ declare namespace LocalJSX {
           * @default 'regular'
          */
         "weight"?: IoTextWeight;
+    }
+    /**
+     * io-text-list
+     * ============
+     * Token-driven list typography primitive for ordered and unordered lists.
+     * Renders a semantic <ul> or <ol> with consistent font size, weight, and
+     * color from the io design token system.
+     * Slot `<li>` items directly — the component applies spacing and inherited
+     * typography styles.
+     * @example <io-text-list>
+     *   <li>First item</li>
+     *   <li>Second item</li>
+     * </io-text-list>
+     * @example — ordered list with custom size
+     * <io-text-list tag="ol" size="sm" color="secondary">
+     * <li>Step one</li>
+     * <li>Step two</li>
+     * </io-text-list>
+     */
+    interface IoTextList {
+        /**
+          * Text color using semantic --io-text-* tokens
+          * @default 'primary'
+         */
+        "color"?: IoTextListColor;
+        /**
+          * Font size using --io-font-size-* tokens
+          * @default 'base'
+         */
+        "size"?: IoTextListSize;
+        /**
+          * HTML list tag to render
+          * @default 'ul'
+         */
+        "tag"?: IoTextListTag;
     }
     /**
      * io-textarea
@@ -8302,7 +8447,7 @@ declare namespace LocalJSX {
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
         "size": IoBadgeSize;
-        "ariaLabel": string | null;
+        "ariaLabel": string | undefined;
     }
     interface IoBannerAttributes {
         "variant": IoBannerVariant;
@@ -8432,6 +8577,7 @@ declare namespace LocalJSX {
         "align": IoHeadingAlign;
         "color": IoHeadingColor;
         "ellipsis": boolean;
+        "hyphens": IoHeadingHyphens;
     }
     interface IoIconAttributes {
         "name": IoIconName;
@@ -8727,6 +8873,7 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
+        "compact": boolean;
     }
     interface IoTableAttributes {
         "caption": string;
@@ -8775,11 +8922,13 @@ declare namespace LocalJSX {
         "size": IoTagSize;
         "color": IoTagColor;
         "label": string;
+        "compact": boolean;
     }
     interface IoTagDismissibleAttributes {
         "label": string;
         "variant": IoTagColor;
         "icon": IoIconName;
+        "disabled": boolean;
     }
     interface IoTextAttributes {
         "tag": IoTextTag;
@@ -8790,6 +8939,11 @@ declare namespace LocalJSX {
         "ellipsis": boolean;
         "datetime": string;
         "hyphens": IoTextHyphens;
+    }
+    interface IoTextListAttributes {
+        "tag": IoTextListTag;
+        "size": IoTextListSize;
+        "color": IoTextListColor;
     }
     interface IoTextareaAttributes {
         "label": string;
@@ -8893,6 +9047,7 @@ declare namespace LocalJSX {
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
         "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] } & OneOf<"label", IoTagDismissible["label"], IoTagDismissibleAttributes["label"]>;
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
+        "io-text-list": Omit<IoTextList, keyof IoTextListAttributes> & { [K in keyof IoTextList & keyof IoTextListAttributes]?: IoTextList[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `attr:${K}`]?: IoTextListAttributes[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `prop:${K}`]?: IoTextList[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
         "io-toast-item": Omit<IoToastItem, keyof IoToastItemAttributes> & { [K in keyof IoToastItem & keyof IoToastItemAttributes]?: IoToastItem[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `attr:${K}`]?: IoToastItemAttributes[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `prop:${K}`]?: IoToastItem[K] };
@@ -9636,6 +9791,25 @@ declare module "@stencil/core" {
              * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
              */
             "io-text": LocalJSX.IntrinsicElements["io-text"] & JSXBase.HTMLAttributes<HTMLIoTextElement>;
+            /**
+             * io-text-list
+             * ============
+             * Token-driven list typography primitive for ordered and unordered lists.
+             * Renders a semantic <ul> or <ol> with consistent font size, weight, and
+             * color from the io design token system.
+             * Slot `<li>` items directly — the component applies spacing and inherited
+             * typography styles.
+             * @example <io-text-list>
+             *   <li>First item</li>
+             *   <li>Second item</li>
+             * </io-text-list>
+             * @example — ordered list with custom size
+             * <io-text-list tag="ol" size="sm" color="secondary">
+             * <li>Step one</li>
+             * <li>Step two</li>
+             * </io-text-list>
+             */
+            "io-text-list": LocalJSX.IntrinsicElements["io-text-list"] & JSXBase.HTMLAttributes<HTMLIoTextListElement>;
             /**
              * io-textarea
              * ============

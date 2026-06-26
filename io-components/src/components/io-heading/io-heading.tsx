@@ -1,6 +1,6 @@
 import { Component, Prop, h } from '@stencil/core';
 
-import type { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from './types';
+import type { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from './types';
 
 const HEADING_SIZE_TOKEN_MAP: Record<IoHeadingSize, string> = {
   sm: 'var(--io-font-size-sm)',
@@ -58,6 +58,9 @@ export class IoHeading {
   /** Single-line truncation with text-overflow: ellipsis */
   @Prop({ reflect: true }) ellipsis = false;
 
+  /** CSS hyphens property for word breaking and hyphenation */
+  @Prop({ reflect: true }) hyphens: IoHeadingHyphens = 'none';
+
   componentWillLoad() {
     if (!this.tag) {
       console.error('[io-heading] `tag` prop is required for correct document outline semantics (WCAG 1.3.1). Falling back to "h2".');
@@ -86,10 +89,15 @@ export class IoHeading {
       lineHeight: 'var(--io-line-height-heading)',
       color: this.resolveColor(),
       textAlign: this.align,
+      hyphens: this.hyphens,
     };
 
     if (tracking) {
       style['letterSpacing'] = tracking;
+    }
+
+    if ((this.hyphens === 'auto' || this.hyphens === 'manual') && !style['overflowWrap']) {
+      style['overflowWrap'] = 'break-word';
     }
 
     if (this.ellipsis) {

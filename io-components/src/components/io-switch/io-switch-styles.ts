@@ -154,6 +154,22 @@ export function getSwitchStyles(): string {
       color: var(--io-text-secondary);
     }
 
+    /* ── Compact density ────────────────────────────────── */
+
+    :host([compact]) .switch-control {
+      width: var(--io-switch-track-width-compact);
+      height: var(--io-switch-track-height-compact);
+    }
+
+    :host([compact]) .switch-thumb {
+      width: var(--io-switch-thumb-size-compact);
+      height: var(--io-switch-thumb-size-compact);
+    }
+
+    :host([compact]) .switch-track--checked .switch-thumb {
+      transform: translateY(-50%) translateX(calc(var(--io-switch-track-width-compact) - var(--io-switch-thumb-size-compact) - 2px));
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .switch-track { transition: none; }
       .switch-thumb { transition: none; }

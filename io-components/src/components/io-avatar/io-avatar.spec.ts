@@ -1,4 +1,5 @@
-import { beforeEach, describe, it, expect } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoAvatar } from './io-avatar';
 
@@ -63,5 +64,17 @@ describe('io-avatar — default props', () => {
     c.color = 'blue';
     c.shape = 'square';
     expect(() => c.render()).not.toThrow();
+  });
+});
+
+describe('io-avatar — img loading attribute (#871)', () => {
+  it('renders img with loading="lazy" when src is set', () => {
+    const hMock = vi.mocked(h);
+    hMock.mockClear();
+    const c = new IoAvatar();
+    c.src = 'https://example.com/avatar.jpg';
+    c.render();
+    const imgCall = hMock.mock.calls.find(([tag, attrs]) => tag === 'img' && (attrs as any)?.loading === 'lazy');
+    expect(imgCall).toBeDefined();
   });
 });

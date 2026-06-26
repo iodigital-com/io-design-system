@@ -5,6 +5,18 @@
  * HTML elements (p, span, div, blockquote, time) with no ARIA modifications.
  * Accessibility comes from correct HTML semantics + token-driven contrast.
  *
+ * WHY NATIVE ELEMENTS ARE USED HERE:
+ * io-text uses `shadow: false` and delegates all semantics to the host tag.
+ * The component renders <Tag style={...}><slot /></Tag> — jsdom resolves this
+ * to the host element itself, making renderAndCheckA11y(nativeEl) equivalent
+ * to testing the component's actual rendered output for axe purposes.
+ *
+ * COVERAGE GAP (intentional):
+ * These tests do NOT cover inline styles injected by the component (font-size,
+ * color tokens), conditional prop logic (ellipsis, hyphens), or the datetime
+ * attribute wiring. Token contrast and prop-driven style regressions require
+ * Lighthouse / visual regression tests, not axe-in-jsdom.
+ *
  * Uses vitest-axe registered globally via tests/unit/config/vitest.setup.ts.
  */
 import { describe, it } from 'vitest';

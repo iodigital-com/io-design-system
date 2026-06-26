@@ -21,7 +21,7 @@ import type { IoProgressColor, IoProgressSize } from './types';
  */
 @Component({
   tag: 'io-progress',
-  shadow: true,
+  shadow: { delegatesFocus: true },
 })
 export class IoProgress {
   @Element() el!: HTMLElement;

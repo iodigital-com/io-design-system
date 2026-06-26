@@ -39,6 +39,8 @@ export function computeFallbackPosition(
   placement: IoPopoverPlacement,
   gap: number = 8,
 ): { top: number; left: number } {
+  // 'auto' unconditionally resolves to 'bottom' — viewport-aware selection is not yet implemented.
+  // If smart detection is added in future, replace this line with space-measurement logic.
   const resolvedPlacement = placement === 'auto' ? 'bottom' : placement;
 
   switch (resolvedPlacement) {

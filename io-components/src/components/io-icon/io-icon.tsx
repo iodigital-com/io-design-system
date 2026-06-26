@@ -33,7 +33,7 @@ const COLOR_TOKEN_MAP: Record<Exclude<IoIconColor, 'inherit'>, string> = {
  */
 @Component({
   tag: 'io-icon',
-  shadow: true,
+  shadow: { delegatesFocus: true },
 })
 export class IoIcon {
   /** Name of the Lucide icon to render. */

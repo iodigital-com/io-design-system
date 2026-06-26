@@ -6,6 +6,17 @@
  * The `tag` prop controls document outline semantics — users must choose the
  * correct heading level for their page structure.
  *
+ * WHY NATIVE ELEMENTS ARE USED HERE:
+ * io-heading uses `shadow: false` and delegates all semantics to the host tag.
+ * The component renders <Tag style={...}>{text}</Tag> — jsdom resolves this to
+ * the host element, making renderAndCheckA11y(nativeEl) equivalent to testing
+ * the component's rendered output for axe purposes.
+ *
+ * COVERAGE GAP (intentional):
+ * These tests do NOT cover inline styles, the resolveTag() fallback, or the
+ * console.error guard for missing tag prop. Token contrast and prop-driven
+ * style regressions require Lighthouse / visual regression tests.
+ *
  * Uses vitest-axe registered globally via tests/unit/config/vitest.setup.ts.
  */
 import { describe, it } from 'vitest';

@@ -64,7 +64,7 @@ describe('computeFallbackPosition', () => {
     expect(pos.left).toBe(200 - 100 - 8); // left - panelWidth - gap
   });
 
-  it('resolves auto placement to bottom', () => {
+  it('auto defaults to bottom (viewport-aware selection not yet implemented)', () => {
     const rect = makeRect({});
     const autoPos = computeFallbackPosition(rect, 100, 50, 'auto', 8);
     const bottomPos = computeFallbackPosition(rect, 100, 50, 'bottom', 8);

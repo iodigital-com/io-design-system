@@ -918,6 +918,30 @@
     "description": "Horizontal translateX offset of the thumb when the switch is checked. Defaults to track-width minus thumb-size minus 2px."
   },
   {
+    "cssVar": "--io-switch-track-width-compact",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Track width when compact=true. Defaults to 2rem (32px)."
+  },
+  {
+    "cssVar": "--io-switch-track-height-compact",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Track height when compact=true. Defaults to 1.125rem (18px)."
+  },
+  {
+    "cssVar": "--io-switch-thumb-size-compact",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Thumb size when compact=true. Defaults to 0.875rem (14px)."
+  },
+  {
+    "cssVar": "--io-tag-compact-padding-y",
+    "classification": "public-api",
+    "component": "io-tag",
+    "description": "Vertical padding override applied to tags when compact=true. Defaults to var(--io-space-1) (4px)."
+  },
+  {
     "cssVar": "--io-pin-code-slot-size",
     "classification": "public-api",
     "component": "io-pin-code",

@@ -76,6 +76,12 @@ export default function IoSwitchApiPage() {
               '—',
               'Helper text shown below the switch when error is false. Hidden when the error state is active.',
             ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Renders a smaller track and thumb for dense UI contexts. Override size via --io-switch-track-width-compact, --io-switch-track-height-compact, and --io-switch-thumb-size-compact.',
+            ],
           ]}
         />
       </section>
@@ -217,6 +223,21 @@ document.querySelector('io-switch')
               <InlineCode key="n">--io-switch-thumb-offset-on</InlineCode>,
               <InlineCode key="d">calc(track-width - thumb-size - 2px)</InlineCode>,
               'Thumb left offset when the switch is on. Computed from track and thumb sizes.',
+            ],
+            [
+              <InlineCode key="n">--io-switch-track-width-compact</InlineCode>,
+              <InlineCode key="d">2rem</InlineCode>,
+              'Track width when compact=true.',
+            ],
+            [
+              <InlineCode key="n">--io-switch-track-height-compact</InlineCode>,
+              <InlineCode key="d">1.125rem</InlineCode>,
+              'Track height when compact=true.',
+            ],
+            [
+              <InlineCode key="n">--io-switch-thumb-size-compact</InlineCode>,
+              <InlineCode key="d">0.875rem</InlineCode>,
+              'Thumb width and height when compact=true.',
             ],
           ]}
         />

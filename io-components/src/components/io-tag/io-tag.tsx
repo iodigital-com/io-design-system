@@ -46,6 +46,9 @@ export class IoTag {
    *  Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove". */
   @Prop() label = '';
 
+  /** Compact density — reduces vertical padding for dense UI contexts */
+  @Prop({ reflect: true }) compact = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the tag is toggled. Payload is the new selected value. */
@@ -78,8 +81,8 @@ export class IoTag {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { selected, removable, disabled, size, color, label } = this;
-    const tagClass = getTagClassName(size, color, selected, disabled);
+    const { selected, removable, disabled, size, color, label, compact } = this;
+    const tagClass = getTagClassName(size, color, selected, disabled, compact);
 
     if (removable) {
       return (

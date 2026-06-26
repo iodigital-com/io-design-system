@@ -3112,6 +3112,38 @@
       "notes": "Wave XI (#342) \u2014 Switch pill track width=2.75rem (44px)."
     },
     {
+      "runtimeCssVar": "--io-switch-track-width-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "P2 (#844) \u2014 Switch compact track width=2rem (32px). Applied when compact=true."
+    },
+    {
+      "runtimeCssVar": "--io-switch-track-height-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "P2 (#844) \u2014 Switch compact track height=1.125rem (18px). Applied when compact=true."
+    },
+    {
+      "runtimeCssVar": "--io-switch-thumb-size-compact",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "P2 (#844) \u2014 Switch compact thumb size=0.875rem (14px). Applied when compact=true."
+    },
+    {
+      "runtimeCssVar": "--io-tag-compact-padding-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "P2 (#866) \u2014 Tag compact vertical padding override=var(--io-space-1) (4px). Applied when compact=true."
+    },
+    {
       "runtimeCssVar": "--io-table-row-selected-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

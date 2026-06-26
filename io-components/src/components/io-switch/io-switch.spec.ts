@@ -44,6 +44,10 @@ describe('io-switch — default props', () => {
     expect(component.loading).toBe(false);
   });
 
+  it('is not compact by default', () => {
+    expect(component.compact).toBe(false);
+  });
+
   it('setFocus resolves without throwing', async () => {
     const input = document.createElement('input');
     input.focus = vi.fn();
@@ -114,6 +118,14 @@ describe('io-switch — regression guards (Wave J)', () => {
     expect(styles).toContain('@media (forced-colors: active)');
     expect(styles).toContain('ButtonText');
     expect(styles).toContain('Highlight');
+  });
+
+  it('compact density uses --io-switch-track-width-compact and --io-switch-thumb-size-compact tokens (#844)', () => {
+    const styles = getSwitchStyles();
+    expect(styles).toContain(':host([compact])');
+    expect(styles).toContain('var(--io-switch-track-width-compact)');
+    expect(styles).toContain('var(--io-switch-track-height-compact)');
+    expect(styles).toContain('var(--io-switch-thumb-size-compact)');
   });
 });
 

@@ -100,6 +100,7 @@ export class IoAvatar {
               class="avatar-img"
               src={this.src}
               alt={this.alt}
+              loading="lazy"
               aria-hidden={effectiveRole === 'img' || this.alt === '' ? 'true' : undefined}
               onError={this.handleImgError}
             />

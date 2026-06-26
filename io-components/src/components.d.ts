@@ -19,7 +19,7 @@ import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFlyoutPosition } from "./components/io-flyout/types";
-import { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
@@ -67,7 +67,7 @@ export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/type
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFlyoutPosition } from "./components/io-flyout/types";
-export { IoHeadingAlign, IoHeadingColor, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
+export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
 export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/types";
@@ -964,6 +964,11 @@ export namespace Components {
           * @default false
          */
         "ellipsis": boolean;
+        /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'none'
+         */
+        "hyphens": IoHeadingHyphens;
         /**
           * Font size using --io-font-size-* tokens
           * @default '2xl'
@@ -2556,6 +2561,11 @@ export namespace Components {
          */
         "checked": boolean;
         /**
+          * Compact density — renders a smaller track and thumb for dense UI contexts
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Disables the switch
           * @default false
          */
@@ -2877,6 +2887,11 @@ export namespace Components {
           * @default 'default'
          */
         "color": IoTagColor;
+        /**
+          * Compact density — reduces vertical padding for dense UI contexts
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Disables all interaction
           * @default false
@@ -5966,6 +5981,11 @@ declare namespace LocalJSX {
          */
         "ellipsis"?: boolean;
         /**
+          * CSS hyphens property for word breaking and hyphenation
+          * @default 'none'
+         */
+        "hyphens"?: IoHeadingHyphens;
+        /**
           * Font size using --io-font-size-* tokens
           * @default '2xl'
          */
@@ -7620,6 +7640,11 @@ declare namespace LocalJSX {
          */
         "checked"?: boolean;
         /**
+          * Compact density — renders a smaller track and thumb for dense UI contexts
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Disables the switch
           * @default false
          */
@@ -7969,6 +7994,11 @@ declare namespace LocalJSX {
           * @default 'default'
          */
         "color"?: IoTagColor;
+        /**
+          * Compact density — reduces vertical padding for dense UI contexts
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Disables all interaction
           * @default false
@@ -8547,6 +8577,7 @@ declare namespace LocalJSX {
         "align": IoHeadingAlign;
         "color": IoHeadingColor;
         "ellipsis": boolean;
+        "hyphens": IoHeadingHyphens;
     }
     interface IoIconAttributes {
         "name": IoIconName;
@@ -8842,6 +8873,7 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
+        "compact": boolean;
     }
     interface IoTableAttributes {
         "caption": string;
@@ -8890,6 +8922,7 @@ declare namespace LocalJSX {
         "size": IoTagSize;
         "color": IoTagColor;
         "label": string;
+        "compact": boolean;
     }
     interface IoTagDismissibleAttributes {
         "label": string;

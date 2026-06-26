@@ -65,6 +65,9 @@ export class IoTabsBar {
   /** Optional accessible label for the tablist region. */
   @Prop() label?: string;
 
+  /** ID of an existing element that labels the tablist (alternative to label prop). When set, aria-labelledby is used instead of aria-label. */
+  @Prop() labelledBy?: string;
+
   /** When true, applies a compact layout with reduced padding. */
   @Prop({ reflect: true }) compact = false;
 
@@ -243,7 +246,8 @@ export class IoTabsBar {
           class="tablist"
           role="tablist"
           aria-orientation="horizontal"
-          aria-label={this.label || undefined}
+          aria-label={this.labelledBy ? undefined : (this.label || undefined)}
+          aria-labelledby={this.labelledBy || undefined}
         >
           <slot onSlotchange={this.onSlotChange} />
         </div>

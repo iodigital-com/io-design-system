@@ -32,6 +32,43 @@ export function getCarouselStyles(): string {
       border: 0;
     }
 
+    /* ── Skip link ──────────────────────────────────────── */
+
+    .carousel-skip-link {
+      position: absolute;
+      left: var(--io-space-2);
+      top: var(--io-space-2);
+      z-index: 1;
+      padding: var(--io-space-1) var(--io-space-2);
+      background: var(--io-bg-card);
+      color: var(--io-text-primary);
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      border-radius: var(--io-border-radius-sm);
+      text-decoration: none;
+      border: 1px solid var(--io-border-interactive);
+      /* Visually hidden until focused */
+      clip: rect(0, 0, 0, 0);
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .carousel-skip-link:focus {
+      clip: auto;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      white-space: normal;
+      box-shadow: var(--io-focus-ring-active);
+      outline: none;
+    }
+
+    .carousel-skip-target {
+      display: block;
+    }
+
     /* ── Outer wrap — provides space for nav buttons ─────── */
 
     .carousel-wrap {

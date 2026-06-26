@@ -506,3 +506,55 @@ describe('io-input — inputMode, pattern, compact props (#643)', () => {
     expect(srSpan).toBeUndefined();
   });
 });
+describe('io-input — counter live region aria-describedby (#848)', () => {
+  it('includes counter sr span id in aria-describedby when counter=true and maxLength set', () => {
+    const component = new IoInput();
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 50;
+    component.label = 'Name';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find(([tag]: [unknown]) => tag === 'input');
+    const describedBy: string | undefined = (inputCall?.[1] as any)?.['aria-describedby'];
+    const counterSrId = `${(component as any).counterId}-sr`;
+    expect(describedBy).toContain(counterSrId);
+  });
+
+  it('counter sr span has id matching counterSrId', () => {
+    const component = new IoInput();
+    (component as any).componentWillLoad();
+    component.counter = true;
+    component.maxLength = 50;
+    component.label = 'Name';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const counterSrId = `${(component as any).counterId}-sr`;
+    const srSpan = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'span' &&
+        (attrs as Record<string, unknown>)?.['id'] === counterSrId,
+    );
+    expect(srSpan).toBeDefined();
+  });
+
+  it('does not include counter id in aria-describedby when counter=false', () => {
+    const component = new IoInput();
+    (component as any).componentWillLoad();
+    component.counter = false;
+    component.maxLength = 50;
+    component.label = 'Name';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find(([tag]: [unknown]) => tag === 'input');
+    const describedBy: string | undefined = (inputCall?.[1] as any)?.['aria-describedby'];
+    const counterSrId = `${(component as any).counterId}-sr`;
+    expect(describedBy ?? '').not.toContain(counterSrId);
+  });
+});

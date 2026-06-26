@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { h } from '@stencil/core';
 
 import { IoTabsBar } from './io-tabs-bar';
 import { normalizeActiveTabIndex, getNextEnabledIndex } from './io-tabs-bar-utils';
@@ -551,3 +552,38 @@ describe('io-tabs-bar — anchor element support', () => {
   });
 });
 
+
+describe('io-tabs-bar — labelledBy prop (#838)', () => {
+  it('labelledBy defaults to undefined', () => {
+    const c = new IoTabsBar();
+    expect(c.labelledBy).toBeUndefined();
+  });
+
+  it('renders aria-labelledby on tablist when labelledBy is set', () => {
+    const c = makeComponent();
+    c.labelledBy = 'my-heading';
+    vi.mocked(h).mockClear();
+    c.render();
+    const tablistCall = vi.mocked(h).mock.calls.find(
+      ([, attrs]: [unknown, unknown]) =>
+        attrs && typeof attrs === 'object' &&
+        (attrs as Record<string, unknown>)['role'] === 'tablist',
+    );
+    expect((tablistCall?.[1] as any)?.['aria-labelledby']).toBe('my-heading');
+    expect((tablistCall?.[1] as any)?.['aria-label']).toBeUndefined();
+  });
+
+  it('uses aria-label (not aria-labelledby) when only label is set', () => {
+    const c = makeComponent();
+    c.label = 'Main navigation';
+    vi.mocked(h).mockClear();
+    c.render();
+    const tablistCall = vi.mocked(h).mock.calls.find(
+      ([, attrs]: [unknown, unknown]) =>
+        attrs && typeof attrs === 'object' &&
+        (attrs as Record<string, unknown>)['role'] === 'tablist',
+    );
+    expect((tablistCall?.[1] as any)?.['aria-label']).toBe('Main navigation');
+    expect((tablistCall?.[1] as any)?.['aria-labelledby']).toBeUndefined();
+  });
+});

@@ -81,6 +81,9 @@ export class IoCarousel {
   /** Milliseconds between automatic slide advances when autoplay=true. */
   @Prop() autoplayInterval = 5000;
 
+  /** Accessible label for the skip link that lets keyboard users bypass carousel slides. */
+  @Prop() skipLabel = 'Skip carousel';
+
   /** Emitted when the active slide index changes. */
   @Event({ eventName: 'update', bubbles: true, composed: true, cancelable: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
 
@@ -109,6 +112,9 @@ export class IoCarousel {
 
   /** Stable ID for the heading element — used in aria-labelledby. */
   private headingId = '';
+
+  /** Stable ID for the skip-link target placed after the carousel region. */
+  private skipTargetId = '';
 
   private autoplayTimer: ReturnType<typeof setInterval> | null = null;
   private isAutoplayUserPaused = false;
@@ -461,7 +467,9 @@ export class IoCarousel {
   // ─────────────────────────────────────────────────────────────
 
   componentWillLoad() {
-    this.headingId = `io-carousel-heading-${Math.random().toString(36).slice(2, 9)}`;
+    const suffix = Math.random().toString(36).slice(2, 9);
+    this.headingId = `io-carousel-heading-${suffix}`;
+    this.skipTargetId = `io-carousel-skip-${suffix}`;
   }
 
   componentDidLoad() {
@@ -528,6 +536,7 @@ export class IoCarousel {
     return (
       <Host>
         <style>{getCarouselStyles()}</style>
+        <a href={`#${this.skipTargetId}`} class="carousel-skip-link">{this.skipLabel}</a>
         <div
           role="region"
           aria-label={hasHeadingSlot || heading ? undefined : label}
@@ -622,6 +631,7 @@ export class IoCarousel {
             </div>
           )}
         </div>
+        <div id={this.skipTargetId} tabindex={-1} class="carousel-skip-target" aria-hidden="true" />
       </Host>
     );
   }

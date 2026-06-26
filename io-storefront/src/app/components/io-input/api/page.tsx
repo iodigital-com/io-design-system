@@ -110,6 +110,17 @@ export default function IoInputApiPage() {
               'Maximum number of characters. Forwarded as the native maxlength attribute.',
             ],
             [
+              <InlineCode key="n">counter</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                When <InlineCode>true</InlineCode> and <InlineCode>maxLength</InlineCode> is set,
+                renders a visible character counter below the field and a visually-hidden live
+                region that announces the current count to screen readers via{' '}
+                <InlineCode>aria-describedby</InlineCode>.
+              </span>,
+            ],
+            [
               <InlineCode key="n">min</InlineCode>,
               <InlineCode key="t">string | number | undefined</InlineCode>,
               '—',

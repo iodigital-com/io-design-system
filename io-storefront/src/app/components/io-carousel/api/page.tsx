@@ -66,6 +66,16 @@ export default function IoCarouselApiPage() {
               <InlineCode key="default">&apos;Next&apos;</InlineCode>,
               <span key="desc">Accessible label for the next-slide button. Override for localisation.</span>,
             ],
+            [
+              <InlineCode key="name">skipLabel</InlineCode>,
+              <InlineCode key="type">string</InlineCode>,
+              <InlineCode key="default">&apos;Skip carousel&apos;</InlineCode>,
+              <span key="desc">
+                Text for the visually-hidden skip link rendered as the first focusable element
+                inside the carousel. The link moves keyboard focus past the carousel to the
+                element following the component. Override for localisation.
+              </span>,
+            ],
           ]}
         />
       </section>

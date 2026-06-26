@@ -331,12 +331,13 @@ export class IoInput {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const showMessage = (showError || showSuccess || showWarning) && (hasMessageSlot || !!message);
     const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
+    const showCounter = counter && maxLength != null;
+    const counterSrId = `${this.counterId}-sr`;
     const describedBy = [
       showMessage ? errorId : '',
       showDescription ? helperId : '',
+      showCounter ? counterSrId : '',
     ].filter(Boolean).join(' ') || undefined;
-
-    const showCounter = counter && maxLength != null;
     const currentLength = (value ?? '').length;
 
     const wrapperClass = [
@@ -487,7 +488,7 @@ export class IoInput {
           </div>
         )}
         {showCounter && (
-          <span class="input-counter-sr" aria-live="polite" aria-atomic="true">
+          <span id={counterSrId} class="input-counter-sr" aria-live="polite" aria-atomic="true">
             {currentLength} of {maxLength} characters
           </span>
         )}

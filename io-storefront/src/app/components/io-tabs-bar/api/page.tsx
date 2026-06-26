@@ -46,6 +46,18 @@ export default function IoTabsBarApiPage() {
               <span key="desc">
                 Optional accessible label applied to the internal tablist via{' '}
                 <InlineCode>aria-label</InlineCode>. Recommended when multiple tablists appear on the same page.
+                Mutually exclusive with <InlineCode>labelledBy</InlineCode> — if both are set,{' '}
+                <InlineCode>labelledBy</InlineCode> takes precedence.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">labelledBy</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                ID of an external element whose text labels the tablist via{' '}
+                <InlineCode>aria-labelledby</InlineCode>. Use when a visible heading already describes
+                the tab group. Takes precedence over <InlineCode>label</InlineCode> when both are set.
               </span>,
             ],
             [

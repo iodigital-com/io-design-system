@@ -208,6 +208,7 @@ export class IoBanner {
               type="button"
               class={{ 'banner__action': true, 'banner__action--loading': this.actionLoading }}
               aria-busy={this.actionLoading ? 'true' : undefined}
+              disabled={this.actionLoading || undefined}
               onClick={this.handleAction}
             >
               {this.actionLabel}

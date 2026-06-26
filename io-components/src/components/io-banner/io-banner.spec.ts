@@ -263,4 +263,23 @@ describe('io-banner — action prop (#842)', () => {
     );
     expect((actionBtn?.[1] as any)?.['aria-busy']).toBe('true');
   });
+
+  it('action button is disabled when actionLoading=true', () => {
+    const c = new IoBanner();
+    c.open = true;
+    c.actionLabel = 'Learn more';
+    c.actionLoading = true;
+    hMock.mockClear();
+    (c as any).render();
+    const actionBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['class'] &&
+        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
+        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+    );
+    expect((actionBtn?.[1] as any)?.['disabled']).toBe(true);
+  });
 });

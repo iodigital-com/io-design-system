@@ -20,6 +20,18 @@ export default function IoInlineNotificationApiPage() {
           ]}
           rows={[
             [
+              <InlineCode key="n">headingTag</InlineCode>,
+              <InlineCode key="t">&apos;h1&apos; | &apos;h2&apos; | &apos;h3&apos; | &apos;h4&apos; | &apos;h5&apos; | &apos;h6&apos;</InlineCode>,
+              <InlineCode key="d">&apos;h5&apos;</InlineCode>,
+              'Controls the semantic HTML heading element rendered for the heading prop. Set this to match your document outline — e.g. h2 on a page where the notification appears in a main content area. Satisfies WCAG 1.3.1 Info and Relationships.',
+            ],
+            [
+              <InlineCode key="n">label</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Accessible label applied as aria-label on the host live region. Use when multiple notifications appear on the same page simultaneously to give each a unique, distinguishable name (WCAG 4.1.2).',
+            ],
+            [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;info&apos; | &apos;success&apos; | &apos;warning&apos; | &apos;error&apos;</InlineCode>,
               <InlineCode key="d">&apos;info&apos;</InlineCode>,

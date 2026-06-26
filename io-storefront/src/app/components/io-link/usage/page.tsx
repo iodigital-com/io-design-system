@@ -24,7 +24,7 @@ export default function IoLinkUsagePage() {
               Use <C>variant=&quot;inline&quot;</C> for links embedded within a paragraph or sentence of body text where the link inherits the surrounding font size.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Set <C>external</C> and <C>target=&quot;_blank&quot;</C> together when the link opens a new tab. The external flag appends a visual indicator and appropriate <C>rel</C> attributes.
+              Use <C>external=true</C> whenever the link leads outside the application — it automatically sets <C>target=&quot;_blank&quot;</C> and <C>rel=&quot;noopener noreferrer&quot;</C>. You do not need to set <C>target</C> separately.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use descriptive, action-oriented link text — &ldquo;Read the accessibility guide&rdquo; tells users where they are going; &ldquo;Click here&rdquo; does not.
@@ -90,8 +90,8 @@ export default function IoLinkUsagePage() {
           description="Set external=true whenever the link leads to a page outside the current application."
         />
         <div className="space-y-3">
-          <RuleCard label="Always pair external with target and rel">
-            When <C>external</C> is true, also set <C>target=&quot;_blank&quot;</C> and <C>rel=&quot;noopener noreferrer&quot;</C>. The <C>noopener</C> attribute prevents the new tab from accessing the opener window; <C>noreferrer</C> prevents referrer leakage.
+          <RuleCard label="external=true is sufficient for new-tab links">
+            Setting <C>external=true</C> automatically applies both <C>target=&quot;_blank&quot;</C> and <C>rel=&quot;noopener noreferrer&quot;</C>. The <C>noopener</C> attribute prevents the new tab from accessing the opener window; <C>noreferrer</C> prevents referrer leakage. There is no need to set <C>target</C> manually.
           </RuleCard>
           <RuleCard label="The external icon signals context change">
             The external icon (external link indicator) is rendered automatically when <C>external</C> is true. It tells sighted users the link opens in a new tab or leaves the application. This is especially important in dense navigation contexts.

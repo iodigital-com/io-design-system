@@ -48,6 +48,22 @@ export default function IoSheetInfoPage() {
         </div>
       </section>
 
+      {/* ── Choosing between sheet and drawer ────────────────────── */}
+      <section id="choosing-between-sheet-and-drawer" className="space-y-6">
+        <SectionHeader
+          title="Choosing between io-sheet and io-drawer"
+          description="Both components offer bottom overlay panels. Use this guide to pick the right one."
+        />
+        <div className="space-y-3">
+          <RuleCard label="io-sheet — bottom sheet (this component)">
+            Optimised for mobile-first bottom sheet UX. Uses a custom <C>role=dialog</C> host. Best for contextual actions, quick pickers, share menus, and sort/filter panels where a lightweight overlay is preferred.
+          </RuleCard>
+          <RuleCard label="io-drawer placement=bottom — native dialog bottom sheet">
+            Use when you need native <C>{'<dialog>'}</C> semantics, swipe-to-close gesture, or when the panel requires the full multi-size system (sm / md / lg / full height). Also prefer io-drawer when the same pattern is used on desktop with left/right drawers for visual consistency.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── Dismissal patterns ────────────────────────────────────── */}
       <section id="dismissal-patterns" className="space-y-6">
         <SectionHeader

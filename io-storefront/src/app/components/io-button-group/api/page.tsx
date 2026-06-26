@@ -66,7 +66,9 @@ export default function IoButtonGroupApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               <span key="desc">
-                Accessible label applied to the group container via <InlineCode>aria-label</InlineCode>.
+                Renders a visible label element above the group. The container references it via{' '}
+                <InlineCode>aria-labelledby</InlineCode>. Set <InlineCode>hideLabel</InlineCode> to visually
+                hide the label while keeping it accessible to screen readers.
                 Strongly recommended — without it, assistive technologies cannot identify the group purpose.
               </span>,
             ],

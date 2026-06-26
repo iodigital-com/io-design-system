@@ -64,6 +64,25 @@ export default function IoFlyoutInfoPage() {
         </div>
       </section>
 
+      {/* ── Choosing between overlays ────────────────────────────── */}
+      <section id="choosing-between-overlays" className="space-y-6">
+        <SectionHeader
+          title="Choosing between io-flyout, io-drawer, and io-popover"
+          description="Use this guide when deciding which side or contextual overlay to reach for."
+        />
+        <div className="space-y-3">
+          <RuleCard label="io-flyout — partial-height side panel (this component)">
+            Use when you need a side panel that does not cover the full viewport height. Fixed at <C>min(480px, 90vw)</C> width. Suited to mega menus, navigation panels, and contextual toolbars where maintaining background context is important.
+          </RuleCard>
+          <RuleCard label="io-drawer — full-height or multi-size, multi-placement">
+            Use when the panel needs flexible sizing (sm / md / lg / full), bottom-sheet placement, or native <C>{'<dialog>'}</C> semantics. Choose io-drawer for record detail views, edit forms, and any task requiring more vertical space than a flyout provides.
+          </RuleCard>
+          <RuleCard label="io-popover — small contextual panel">
+            Use when the overlay is small and contextually attached to a trigger element — for example, dropdown menus, colour pickers, and date pickers. Prefer io-popover over io-flyout when the content fits in a compact floating panel.
+          </RuleCard>
+        </div>
+      </section>
+
       {/* ── Triggering and dismissal ──────────────────────────────── */}
       <section id="triggering-and-dismissal" className="space-y-6">
         <SectionHeader

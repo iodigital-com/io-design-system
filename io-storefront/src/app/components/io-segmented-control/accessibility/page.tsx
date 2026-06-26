@@ -1,10 +1,74 @@
 'use client';
 
-import { SectionHeader, RuleCard, AriaTable, ComplianceCard } from '../../../../components/accessibility/AccessibilityPrimitives';
+import { SectionHeader, RuleCard, AriaTable, ComplianceCard, KeyboardTable, Kbd } from '../../../../components/accessibility/AccessibilityPrimitives';
 
 export default function IoSegmentedControlAccessibilityPage() {
   return (
     <div className="space-y-16">
+
+      {/* ── Keyboard interaction ─────────────────────────────────── */}
+      <section id="keyboard-interaction" className="space-y-6">
+        <SectionHeader
+          title="Keyboard interaction"
+          description="io-segmented-control uses the ARIA radio group keyboard pattern with roving tabindex. Only the selected (or first enabled) segment is in the page tab sequence."
+        />
+        <KeyboardTable
+          rows={[
+            {
+              key: <Kbd>Tab</Kbd>,
+              action: 'Moves focus into the control. Focus lands on the selected segment, or the first enabled segment if none is selected. Pressing Tab again moves focus out of the control entirely.',
+            },
+            {
+              key: (
+                <span className="flex items-center gap-1">
+                  <Kbd>Shift</Kbd>
+                  <span style={{ color: 'var(--io-text-muted)' }}>+</span>
+                  <Kbd>Tab</Kbd>
+                </span>
+              ),
+              action: 'Moves focus to the previous focusable element outside the control.',
+            },
+            {
+              key: (
+                <span className="flex items-center gap-1">
+                  <Kbd>Arrow Right</Kbd>
+                  <span style={{ color: 'var(--io-text-muted)' }}>/</span>
+                  <Kbd>Arrow Down</Kbd>
+                </span>
+              ),
+              action: 'Moves focus and selection to the next enabled segment. Wraps from the last segment to the first. Disabled segments are skipped.',
+            },
+            {
+              key: (
+                <span className="flex items-center gap-1">
+                  <Kbd>Arrow Left</Kbd>
+                  <span style={{ color: 'var(--io-text-muted)' }}>/</span>
+                  <Kbd>Arrow Up</Kbd>
+                </span>
+              ),
+              action: 'Moves focus and selection to the previous enabled segment. Wraps from the first segment to the last. Disabled segments are skipped.',
+            },
+            {
+              key: <Kbd>Home</Kbd>,
+              action: 'Moves focus and selection to the first enabled segment.',
+            },
+            {
+              key: <Kbd>End</Kbd>,
+              action: 'Moves focus and selection to the last enabled segment.',
+            },
+            {
+              key: (
+                <span className="flex items-center gap-1">
+                  <Kbd>Enter</Kbd>
+                  <span style={{ color: 'var(--io-text-muted)' }}>/</span>
+                  <Kbd>Space</Kbd>
+                </span>
+              ),
+              action: 'Activates the focused segment. Has no effect on disabled segments.',
+            },
+          ]}
+        />
+      </section>
 
       <section id="screen-reader-behaviour" className="space-y-6">
         <SectionHeader

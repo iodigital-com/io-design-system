@@ -38,6 +38,18 @@ export default function IoTooltipAccessibilityPage() {
               key: <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>focusout</span>,
               action: 'Tooltip hides when the trigger loses focus. There is no need to press Escape to dismiss — the tooltip is automatically hidden on blur.',
             },
+            {
+              key: <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>pointerover / hover</span>,
+              action: 'Tooltip appears when the pointer enters the trigger element. Sighted mouse users primarily interact with tooltips this way.',
+            },
+            {
+              key: <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>pointerout</span>,
+              action: 'Tooltip hides after a 150 ms delay when the pointer leaves the trigger. Moving the pointer directly onto the tooltip panel before the delay expires keeps the tooltip visible — this satisfies WCAG 1.4.13 (Content on Hover or Focus).',
+            },
+            {
+              key: <Kbd>Escape</Kbd>,
+              action: 'Dismisses the visible tooltip without moving keyboard focus. Works whether the tooltip was triggered by keyboard focus or pointer hover.',
+            },
           ]}
         />
       </section>

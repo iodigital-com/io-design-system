@@ -1,10 +1,30 @@
 'use client';
 
-import { AriaTable, ComplianceCard, RuleCard, SectionHeader } from '@/components/accessibility/AccessibilityPrimitives';
+import { AriaTable, ComplianceCard, KeyboardTable, RuleCard, SectionHeader } from '@/components/accessibility/AccessibilityPrimitives';
 
 export default function IoAvatarAccessibilityPage() {
   return (
     <div className="space-y-16">
+
+      {/* ── Keyboard interaction ─────────────────────────────────── */}
+      <section id="keyboard-interaction" className="space-y-6">
+        <SectionHeader
+          title="Keyboard interaction"
+          description="io-avatar is a non-interactive display component. It does not enter the tab order on its own."
+        />
+        <KeyboardTable
+          rows={[
+            {
+              key: <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>No tab stop</span>,
+              action: 'io-avatar is never focusable by itself. It does not receive keyboard focus and does not handle key events.',
+            },
+            {
+              key: <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Interactive parent</span>,
+              action: 'When placed inside an interactive element such as a link or button, focus and all keyboard events belong to the parent. The parent must carry an accessible name that describes the action — do not rely on the avatar\'s internal aria-label as the accessible name of the parent.',
+            },
+          ]}
+        />
+      </section>
 
       {/* ── Screen reader behaviour ──────────────────────────────── */}
       <section id="screen-reader-behaviour" className="space-y-6">

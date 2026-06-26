@@ -75,7 +75,7 @@ export default function IoModalApiPage() {
               <span key="n"><InlineCode>preventTopLayer</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">true</InlineCode>,
-              'When true, uses a CSS-based overlay instead of the native popover top-layer API. Set to false to allow the browser to render the modal in the top layer (useful in stacking-context environments).',
+              'When true, uses a CSS-based overlay instead of the native dialog top-layer behavior (showModal()). Set to false to allow the browser to render the modal in the top layer (useful in stacking-context environments).',
             ],
           ]}
         />

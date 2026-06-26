@@ -118,8 +118,8 @@ export default function IoMultiSelectApiPage() {
             ],
             [
               <InlineCode key="n">blur</InlineCode>,
-              <InlineCode key="t">void</InlineCode>,
-              'No',
+              <InlineCode key="t">FocusEvent</InlineCode>,
+              'Yes',
               'Fires when the trigger loses focus and the dropdown is closed. Use for form-library touched/dirty tracking.',
             ],
             [

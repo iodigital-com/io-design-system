@@ -130,12 +130,6 @@ export class IoButton {
   @Prop({ reflect: true }) iconPosition: 'left' | 'right' = 'left';
 
   /**
-   * Reduces vertical padding to a compact preset without changing the size classification.
-   * Equivalent to `sm` padding density but preserves the current `size` font-size and icon scale.
-   */
-  @Prop({ reflect: true }) compact = false;
-
-  /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
    * Keys should be semantically meaningful for buttons (e.g. `aria-expanded`, `aria-pressed`,
    * `aria-haspopup`, `aria-controls`). Keys may omit or include the `aria-` prefix.
@@ -380,7 +374,7 @@ export class IoButton {
   }
 
   render() {
-    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition, compact } = this;
+    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition } = this;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
@@ -389,7 +383,7 @@ export class IoButton {
     this.validatePropValues();
 
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
-    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly, compact });
+    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
     const accessibleLabel = this.getAccessibleLabel();
     this.warnIconOnlyLabelMissing();
 
@@ -397,7 +391,7 @@ export class IoButton {
     const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}${compact ? ' btn--compact' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
       ref: (el?: HTMLElement) => {
         this.btnEl = el;
         applyAriaProp(this.aria, el ?? null);

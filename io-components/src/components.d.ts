@@ -397,11 +397,6 @@ export namespace Components {
          */
         "color": IoButtonColor;
         /**
-          * Reduces vertical padding to a compact preset without changing the size classification. Equivalent to `sm` padding density but preserves the current `size` font-size and icon scale.
-          * @default false
-         */
-        "compact": boolean;
-        /**
           * Disables the button and applies reduced opacity
           * @default false
          */
@@ -5481,11 +5476,6 @@ declare namespace LocalJSX {
          */
         "color"?: IoButtonColor;
         /**
-          * Reduces vertical padding to a compact preset without changing the size classification. Equivalent to `sm` padding density but preserves the current `size` font-size and icon scale.
-          * @default false
-         */
-        "compact"?: boolean;
-        /**
           * Disables the button and applies reduced opacity
           * @default false
          */
@@ -8632,7 +8622,6 @@ declare namespace LocalJSX {
         "iconSource": string;
         "hideLabel": boolean;
         "iconPosition": 'left' | 'right';
-        "compact": boolean;
     }
     interface IoButtonGroupAttributes {
         "type": IoButtonGroupType;

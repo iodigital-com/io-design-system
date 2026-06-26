@@ -137,12 +137,6 @@ export default function IoButtonApiPage() {
               'Visually hides the label text while keeping it in the accessible name. Useful for icon-plus-text buttons where the label should be readable by screen readers but not visible.',
             ],
             [
-              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Reduces vertical padding to a compact preset without changing the size classification. Use in dense layouts such as toolbars or table action cells.',
-            ],
-            [
               <span key="n"><InlineCode>name</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',

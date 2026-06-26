@@ -260,11 +260,4 @@ export const buttonPropDefinitions: PropDefinition[] = [
     description: 'Renders a square icon-only button. Requires label or aria-label for accessibility.',
     group: 'State',
   },
-  {
-    name: 'compact',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Reduces vertical padding to a compact preset (--io-button-padding-y-compact) for dense UI layouts. Independent from the size prop.',
-    group: 'Appearance',
-  },
 ];

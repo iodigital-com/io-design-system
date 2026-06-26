@@ -77,6 +77,8 @@ export function getTabsBarStyles(): string {
       background: var(--io-tabs-indicator-color);
       pointer-events: none;
       will-change: left, width;
+      /* --io-tabs-bar-indicator-duration and --io-tabs-bar-indicator-easing are read via
+         JS getPropertyValue() on :host — they are public consumer override points defined in app.css */
       transition: none;
     }
 

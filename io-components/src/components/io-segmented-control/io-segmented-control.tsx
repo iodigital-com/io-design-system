@@ -180,7 +180,7 @@ export class IoSegmentedControl {
       s.selected = s.value === this.value;
       // When group is disabled, force all segments disabled.
       // When group is enabled, respect each segment's own declared disabled state.
-      s.disabled = this.disabled || !!(s as HTMLIoSegmentElement & { ownDisabled: boolean }).ownDisabled;
+      s.disabled = this.disabled || !!(s as unknown as { ownDisabled: boolean }).ownDisabled;
     });
   };
 

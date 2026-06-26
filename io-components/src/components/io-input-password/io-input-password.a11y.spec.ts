@@ -67,5 +67,29 @@ describe('io-input-password — a11y (ARIA patterns)', () => {
       const props = (labelCall?.[1] ?? {}) as Record<string, unknown>;
       expect(props['htmlFor']).toBe((component as any).inputId);
     });
+
+    it('toggle button has aria-pressed="false" when password is masked', () => {
+      (component as any).showPassword = false;
+      vi.mocked(h).mockClear();
+      component.render();
+      const btnCall = vi.mocked(h).mock.calls.find(
+        ([tag, attrs]: [string, Record<string, unknown>]) =>
+          tag === 'button' && (attrs as Record<string, unknown>)?.class === 'password-toggle',
+      );
+      const props = (btnCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-pressed']).toBe('false');
+    });
+
+    it('toggle button has aria-pressed="true" when password is visible', () => {
+      (component as any).showPassword = true;
+      vi.mocked(h).mockClear();
+      component.render();
+      const btnCall = vi.mocked(h).mock.calls.find(
+        ([tag, attrs]: [string, Record<string, unknown>]) =>
+          tag === 'button' && (attrs as Record<string, unknown>)?.class === 'password-toggle',
+      );
+      const props = (btnCall?.[1] ?? {}) as Record<string, unknown>;
+      expect(props['aria-pressed']).toBe('true');
+    });
   });
 });

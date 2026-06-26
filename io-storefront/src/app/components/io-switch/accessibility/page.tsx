@@ -59,14 +59,13 @@ export default function IoSwitchAccessibilityPage() {
               description: 'Reflects the checked state. Screen readers announce "on" when true and "off" when false (wording varies by browser/AT combination).',
             },
             {
-              attribute: 'aria-disabled',
+              attribute: 'disabled',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
-                  <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
-                  {' when disabled'}
+                  present when disabled
                 </span>
               ),
-              description: 'Set to "true" when the disabled prop is true. Communicates unavailability to assistive technologies.',
+              description: 'Native HTML disabled attribute set on the underlying <input type="checkbox"> when the disabled prop is true. The native attribute implicitly communicates unavailability to assistive technologies without requiring an explicit aria-disabled attribute.',
             },
             {
               attribute: 'aria-invalid',

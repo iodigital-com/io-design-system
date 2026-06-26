@@ -7,14 +7,16 @@ type SegmentLike = HTMLElement & {
   selected: boolean;
   disabled: boolean;
   tabIndex: number;
+  ownDisabled?: boolean;
 };
 
-function makeSegment(value: string): SegmentLike {
+function makeSegment(value: string, ownDisabled = false): SegmentLike {
   return Object.assign(document.createElement('io-segment'), {
     value,
     selected: false,
-    disabled: false,
+    disabled: ownDisabled,
     tabIndex: -1,
+    ownDisabled,
   }) as SegmentLike;
 }
 
@@ -85,6 +87,41 @@ describe('io-segmented-control — disabled state', () => {
     component.disabled = false;
     (component as any).syncChildren();
     expect(seg.disabled).toBe(false);
+  });
+
+  it('individually disabled segment stays disabled when group is enabled', () => {
+    const seg = makeSegment('map', true);
+    host.appendChild(seg);
+    component.disabled = false;
+
+    (component as any).syncChildren();
+
+    expect(seg.disabled).toBe(true);
+  });
+
+  it('individually disabled segment remains disabled when group is also disabled', () => {
+    const seg = makeSegment('map', true);
+    host.appendChild(seg);
+    component.disabled = true;
+
+    (component as any).syncChildren();
+
+    expect(seg.disabled).toBe(true);
+  });
+
+  it('re-enabling group does not re-enable individually disabled segments', () => {
+    const segOwn = makeSegment('map', true);
+    const segNormal = makeSegment('list', false);
+    host.appendChild(segOwn);
+    host.appendChild(segNormal);
+    component.disabled = true;
+    (component as any).syncChildren();
+
+    component.disabled = false;
+    (component as any).syncChildren();
+
+    expect(segOwn.disabled).toBe(true);
+    expect(segNormal.disabled).toBe(false);
   });
 
   it('still sets selected state correctly even when disabled', () => {

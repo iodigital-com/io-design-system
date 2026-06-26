@@ -60,6 +60,9 @@ export class IoSwitch {
   /** Compact density — renders a smaller track and thumb for dense UI contexts */
   @Prop({ reflect: true }) compact = false;
 
+  /** Visually hides the label while keeping it accessible to screen readers */
+  @Prop() hideLabel = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the switch state changes */
@@ -210,7 +213,7 @@ export class IoSwitch {
                 )}
               </span>
             </span>
-            <span class="switch-text">
+            <span class={this.hideLabel ? 'switch-text switch-text--sr-only' : 'switch-text'}>
               {label}
               {required && (
                 <span class="switch-required" aria-hidden="true">

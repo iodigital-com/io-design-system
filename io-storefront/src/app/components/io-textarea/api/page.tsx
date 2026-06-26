@@ -199,16 +199,28 @@ document.querySelector('io-textarea')
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="Content slots available on io-textarea."
+          description="io-textarea accepts three named slots for placing rich markup in positions that props only support plain text."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-textarea has no content slots.</strong>
-          {' '}All content is passed through props:{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>placeholder</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Custom label content. When slotted, replaces the plain-text label prop and allows rich markup such as links or inline icons inside the label.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Validation message content. When slotted in error/warning/success state, replaces the plain-text message prop.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Helper text content. Replaces the plain-text helperText prop when the field is not in an error state.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── CSS Custom Properties ─────────────────────────────────── */}

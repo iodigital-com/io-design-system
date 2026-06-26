@@ -38,10 +38,19 @@ export class IoSegment {
   /** Optional icon name to display alongside the label */
   @Prop() icon: IoIconName | undefined;
 
+  /** Own disabled state declared by consumer — captured before parent syncChildren overwrites it */
+  ownDisabled = false;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Whether this segment is the currently selected option — set by parent */
   @State() selected = false;
+
+  // ── Lifecycle ─────────────────────────────────────────────────
+
+  componentWillLoad() {
+    this.ownDisabled = this.disabled;
+  }
 
   // ── Events ────────────────────────────────────────────────────
 

@@ -9,13 +9,13 @@ import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, I
 import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoIconName } from "./utils/icons";
+import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
-import { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
+import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFlyoutPosition } from "./components/io-flyout/types";
@@ -42,7 +42,7 @@ import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./comp
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
-import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
+import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
@@ -57,13 +57,13 @@ export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, I
 export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoIconName } from "./utils/icons";
+export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
-export { IoCheckboxGroupChangeDetail } from "./components/io-checkbox-group/types";
+export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFlyoutPosition } from "./components/io-flyout/types";
@@ -90,7 +90,7 @@ export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./comp
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
-export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
+export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
@@ -257,6 +257,20 @@ export namespace Components {
      */
     interface IoBanner {
         /**
+          * Icon name for the action button (only rendered when actionLabel is set)
+          * @default 'arrow-right'
+         */
+        "actionIcon": IoIconName;
+        /**
+          * Label for an optional action button rendered before the dismiss button
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, suppresses the action event (use during async operations)
+          * @default false
+         */
+        "actionLoading": boolean;
+        /**
           * Optional description text rendered as a <p> below the heading
          */
         "description"?: string;
@@ -313,6 +327,10 @@ export namespace Components {
           * @default 'Breadcrumb'
          */
         "label": string;
+        /**
+          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals all items. Screen readers receive a descriptive label on the expand button indicating how many items are hidden (WCAG 1.3.1).
+         */
+        "maxItems"?: number;
     }
     /**
      * io-breadcrumb-item
@@ -599,6 +617,11 @@ export namespace Components {
          */
         "rewind": boolean;
         /**
+          * Accessible label for the skip link that lets keyboard users bypass carousel slides.
+          * @default 'Skip carousel'
+         */
+        "skipLabel": string;
+        /**
           * Number of slides to move per navigation step; use auto for slide-by-slide.
           * @default 1
          */
@@ -735,9 +758,19 @@ export namespace Components {
          */
         "label": string;
         /**
+          * Shows a loading spinner overlay and blocks interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
           * Name propagated to all slotted io-checkbox children
          */
         "name": string;
+        /**
+          * Layout direction of the checkbox options
+          * @default 'vertical'
+         */
+        "orientation": IoCheckboxGroupOrientation;
         /**
           * Marks the group as required
           * @default false
@@ -1400,6 +1433,11 @@ export namespace Components {
          */
         "state": IoFieldState;
         /**
+          * When false, hides the show/hide password toggle button
+          * @default true
+         */
+        "toggle": boolean;
+        /**
           * Current value
           * @default ''
          */
@@ -1837,6 +1875,11 @@ export namespace Components {
          */
         "prevLabel": string;
         /**
+          * When true, always renders the last page button at the trailing edge of the range
+          * @default false
+         */
+        "showLastPage": boolean;
+        /**
           * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
          */
         "totalItems"?: number;
@@ -1867,6 +1910,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
+         */
+        "form"?: string;
+        /**
           * Hides the visible label and collapses its space; aria-label is set on the group when a label value is provided
           * @default false
          */
@@ -1880,6 +1927,11 @@ export namespace Components {
           * @default 4
          */
         "length": IoPinCodeLength;
+        /**
+          * Disables all inputs and shows a loading spinner — use while verifying the OTP on the server
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Helper / validation message displayed below the slots
          */
@@ -2584,6 +2636,11 @@ export namespace Components {
          */
         "helperText": string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -2657,6 +2714,11 @@ export namespace Components {
           * @default false
          */
         "compact": boolean;
+        /**
+          * CSS table-layout algorithm — 'auto' sizes columns by content, 'fixed' distributes width equally.
+          * @default 'auto'
+         */
+        "layout": IoTableLayout;
         /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
@@ -2870,6 +2932,10 @@ export namespace Components {
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
+        /**
+          * ID of an existing element that labels the tablist (alternative to label prop). When set, aria-labelledby is used instead of aria-label.
+         */
+        "labelledBy"?: string;
     }
     /**
      * io-tag
@@ -3514,6 +3580,7 @@ declare global {
     };
     interface HTMLIoBannerElementEventMap {
         "dismiss": void;
+        "action": void;
     }
     /**
      * io-banner
@@ -4231,7 +4298,7 @@ declare global {
         new (): HTMLIoPinCodeElement;
     };
     interface HTMLIoPopoverElementEventMap {
-        "open": void;
+        "popoverOpen": void;
         "dismiss": void;
     }
     /**
@@ -5266,6 +5333,20 @@ declare namespace LocalJSX {
      */
     interface IoBanner {
         /**
+          * Icon name for the action button (only rendered when actionLabel is set)
+          * @default 'arrow-right'
+         */
+        "actionIcon"?: IoIconName;
+        /**
+          * Label for an optional action button rendered before the dismiss button
+         */
+        "actionLabel"?: string;
+        /**
+          * When true, suppresses the action event (use during async operations)
+          * @default false
+         */
+        "actionLoading"?: boolean;
+        /**
           * Optional description text rendered as a <p> below the heading
          */
         "description"?: string;
@@ -5287,6 +5368,10 @@ declare namespace LocalJSX {
           * @default 'h5'
          */
         "headingTag"?: IoBannerHeadingTag;
+        /**
+          * Emitted when the action button is clicked (suppressed when actionLoading=true)
+         */
+        "onAction"?: (event: IoBannerCustomEvent<void>) => void;
         /**
           * Emitted when the dismiss button is clicked or Escape is pressed
          */
@@ -5326,6 +5411,10 @@ declare namespace LocalJSX {
           * @default 'Breadcrumb'
          */
         "label"?: string;
+        /**
+          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals all items. Screen readers receive a descriptive label on the expand button indicating how many items are hidden (WCAG 1.3.1).
+         */
+        "maxItems"?: number;
     }
     /**
      * io-breadcrumb-item
@@ -5620,6 +5709,11 @@ declare namespace LocalJSX {
          */
         "rewind"?: boolean;
         /**
+          * Accessible label for the skip link that lets keyboard users bypass carousel slides.
+          * @default 'Skip carousel'
+         */
+        "skipLabel"?: string;
+        /**
           * Number of slides to move per navigation step; use auto for slide-by-slide.
           * @default 1
          */
@@ -5752,6 +5846,11 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
+          * Shows a loading spinner overlay and blocks interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
           * Name propagated to all slotted io-checkbox children
          */
         "name": string;
@@ -5759,6 +5858,11 @@ declare namespace LocalJSX {
           * Fires when any checkbox in the group changes, with all checked values
          */
         "onChange"?: (event: IoCheckboxGroupCustomEvent<IoCheckboxGroupChangeDetail>) => void;
+        /**
+          * Layout direction of the checkbox options
+          * @default 'vertical'
+         */
+        "orientation"?: IoCheckboxGroupOrientation;
         /**
           * Marks the group as required
           * @default false
@@ -6432,6 +6536,11 @@ declare namespace LocalJSX {
          */
         "state"?: IoFieldState;
         /**
+          * When false, hides the show/hide password toggle button
+          * @default true
+         */
+        "toggle"?: boolean;
+        /**
           * Current value
           * @default ''
          */
@@ -6893,6 +7002,11 @@ declare namespace LocalJSX {
          */
         "prevLabel"?: string;
         /**
+          * When true, always renders the last page button at the trailing edge of the range
+          * @default false
+         */
+        "showLastPage"?: boolean;
+        /**
           * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
          */
         "totalItems"?: number;
@@ -6919,7 +7033,7 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * The `id` of a `<form>` element to associate this element with.
+          * Associates this field with a <form> element by ID — enables out-of-DOM form participation
          */
         "form"?: string;
         /**
@@ -6936,6 +7050,11 @@ declare namespace LocalJSX {
           * @default 4
          */
         "length"?: IoPinCodeLength;
+        /**
+          * Disables all inputs and shows a loading spinner — use while verifying the OTP on the server
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Helper / validation message displayed below the slots
          */
@@ -7009,7 +7128,7 @@ declare namespace LocalJSX {
         /**
           * Emitted when the popover opens — trigger click while closed, or programmatic open via the open prop
          */
-        "onOpen"?: (event: IoPopoverCustomEvent<void>) => void;
+        "onPopoverOpen"?: (event: IoPopoverCustomEvent<void>) => void;
         /**
           * Whether the popover is currently open
           * @default false
@@ -7672,6 +7791,11 @@ declare namespace LocalJSX {
          */
         "helperText"?: string | undefined;
         /**
+          * Visually hides the label while keeping it accessible to screen readers
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Label text — required for accessibility
          */
         "label": string;
@@ -7745,6 +7869,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "compact"?: boolean;
+        /**
+          * CSS table-layout algorithm — 'auto' sizes columns by content, 'fixed' distributes width equally.
+          * @default 'auto'
+         */
+        "layout"?: IoTableLayout;
         /**
           * Emitted when a sortable column header is activated. Aggregates the bubbling `sort` event from io-table-head-cell so consumers can attach a single listener on io-table instead of one per column. Non-bubbling — stops at the io-table boundary.
          */
@@ -7978,6 +8107,10 @@ declare namespace LocalJSX {
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
+        /**
+          * ID of an existing element that labels the tablist (alternative to label prop). When set, aria-labelledby is used instead of aria-label.
+         */
+        "labelledBy"?: string;
         /**
           * Fires when the user activates a different tab (click, Enter, or Space). Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
@@ -8463,9 +8596,13 @@ declare namespace LocalJSX {
         "dismissible": boolean;
         "position": IoBannerPosition;
         "dismissLabel": string;
+        "actionLabel": string;
+        "actionIcon": IoIconName;
+        "actionLoading": boolean;
     }
     interface IoBreadcrumbAttributes {
         "label": string;
+        "maxItems": number;
     }
     interface IoBreadcrumbItemAttributes {
         "href": string;
@@ -8521,6 +8658,7 @@ declare namespace LocalJSX {
         "alignHeader": IoCarouselAlignHeader;
         "autoplay": boolean;
         "autoplayInterval": number;
+        "skipLabel": string;
     }
     interface IoCheckboxAttributes {
         "label": string;
@@ -8546,6 +8684,8 @@ declare namespace LocalJSX {
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
+        "orientation": IoCheckboxGroupOrientation;
+        "loading": boolean;
     }
     interface IoDividerAttributes {
         "orientation": IoDividerOrientation;
@@ -8667,6 +8807,7 @@ declare namespace LocalJSX {
         "hideLabel": boolean;
         "size": IoInputPasswordSize;
         "autocomplete": string;
+        "toggle": boolean;
     }
     interface IoInputSearchAttributes {
         "label": string;
@@ -8745,6 +8886,7 @@ declare namespace LocalJSX {
         "compact": boolean;
         "prevLabel": string;
         "nextLabel": string;
+        "showLastPage": boolean;
     }
     interface IoPinCodeAttributes {
         "label": string | undefined;
@@ -8755,6 +8897,8 @@ declare namespace LocalJSX {
         "name": string | undefined;
         "required": boolean;
         "disabled": boolean;
+        "loading": boolean;
+        "form": string;
         "state": IoPinCodeState;
         "message": string | undefined;
     }
@@ -8879,6 +9023,7 @@ declare namespace LocalJSX {
         "errorMessage": string | undefined;
         "helperText": string | undefined;
         "compact": boolean;
+        "hideLabel": boolean;
     }
     interface IoTableAttributes {
         "caption": string;
@@ -8888,6 +9033,7 @@ declare namespace LocalJSX {
         "striped": boolean;
         "bordered": boolean;
         "compact": boolean;
+        "layout": IoTableLayout;
     }
     interface IoTableBodyCellAttributes {
         "colspan": number | undefined;
@@ -8918,6 +9064,7 @@ declare namespace LocalJSX {
     interface IoTabsBarAttributes {
         "activeTabIndex": number;
         "label": string;
+        "labelledBy": string;
         "compact": boolean;
     }
     interface IoTagAttributes {

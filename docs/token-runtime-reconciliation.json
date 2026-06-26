@@ -3200,6 +3200,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-tabs-bar-indicator-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Duration of the sliding indicator animation in io-tabs-bar. Value: 250ms."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-bar-indicator-easing",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Easing function for the sliding indicator animation in io-tabs-bar. Value: ease-out."
+    },
+    {
       "runtimeCssVar": "--io-text-disabled",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

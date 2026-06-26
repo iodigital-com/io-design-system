@@ -190,9 +190,10 @@ export class IoTabsBar {
     const toBtn = this.buttons[toIndex];
     if (!toBtn) return;
 
+    const scrollLeft = (tablistEl as HTMLElement).scrollLeft;
     const listRect = tablistEl.getBoundingClientRect();
     const toRect = toBtn.getBoundingClientRect();
-    const toLeft = toRect.left - listRect.left;
+    const toLeft = toRect.left - listRect.left + scrollLeft;
     const toWidth = toRect.width;
 
     let fromLeft = toLeft;
@@ -200,12 +201,15 @@ export class IoTabsBar {
     const fromBtn = fromIndex !== undefined ? this.buttons[fromIndex] : undefined;
     if (fromBtn) {
       const fromRect = fromBtn.getBoundingClientRect();
-      fromLeft = fromRect.left - listRect.left;
+      fromLeft = fromRect.left - listRect.left + scrollLeft;
       fromWidth = fromRect.width;
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = prefersReducedMotion ? 0 : 250;
+    const style = getComputedStyle(this.el);
+    const durationRaw = style.getPropertyValue('--io-tabs-bar-indicator-duration').trim();
+    const easing = style.getPropertyValue('--io-tabs-bar-indicator-easing').trim() || 'ease-out';
+    const duration = prefersReducedMotion ? 0 : (parseFloat(durationRaw) || 250);
 
     indicator.style.left = `${toLeft}px`;
     indicator.style.width = `${toWidth}px`;
@@ -213,7 +217,7 @@ export class IoTabsBar {
     if (fromIndex !== undefined && !prefersReducedMotion && (fromLeft !== toLeft || fromWidth !== toWidth)) {
       indicator.animate(
         computeIndicatorKeyframes(fromLeft, fromWidth, toLeft, toWidth),
-        { duration, easing: 'ease-out', fill: 'forwards' },
+        { duration, easing, fill: 'forwards' },
       );
     }
   }

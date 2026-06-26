@@ -408,11 +408,13 @@
   --io-radio-border-width:            1.5px;
   --io-radio-border-error-width:      2px;
   --io-radio-dot-size:                8px;        /* inner filled dot when checked */
-  --io-tabs-track-color:         var(--io-border);
-  --io-tabs-indicator-color:     var(--io-color-primary);
-  --io-tabs-indicator-height:    2px;
-  --io-tabs-icon-size:           var(--io-icon-size-sm);  /* 16px — icon child inside tab button */
-  --io-tabs-icon-gap:            var(--io-space-1);       /* 4px — gap between icon and label */
+  --io-tabs-track-color:                  var(--io-border);
+  --io-tabs-indicator-color:              var(--io-color-primary);
+  --io-tabs-indicator-height:             2px;
+  --io-tabs-icon-size:                    var(--io-icon-size-sm);  /* 16px — icon child inside tab button */
+  --io-tabs-icon-gap:                     var(--io-space-1);       /* 4px — gap between icon and label */
+  --io-tabs-bar-indicator-duration:       250ms;
+  --io-tabs-bar-indicator-easing:         ease-out;
 
   /* Modal */
   --io-modal-width-sm:           400px;

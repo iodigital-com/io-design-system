@@ -99,8 +99,7 @@ export class IoBreadcrumb {
 
     if (!this.maxItems || !this.collapsed || total <= this.maxItems) {
       items.forEach(item => {
-        item.style.display = '';
-        item.removeAttribute('aria-hidden');
+        item.classList.remove('breadcrumb-item--hidden');
       });
       return;
     }
@@ -112,11 +111,9 @@ export class IoBreadcrumb {
 
     items.forEach((item, i) => {
       if (i >= hideStart && i < hideEnd) {
-        item.style.display = 'none';
-        item.setAttribute('aria-hidden', 'true');
+        item.classList.add('breadcrumb-item--hidden');
       } else {
-        item.style.display = '';
-        item.removeAttribute('aria-hidden');
+        item.classList.remove('breadcrumb-item--hidden');
       }
     });
 

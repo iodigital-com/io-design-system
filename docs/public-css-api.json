@@ -774,6 +774,18 @@
     "description": "Color of the inactive track border below the tab list. Override to match your surface."
   },
   {
+    "cssVar": "--io-tabs-bar-indicator-duration",
+    "classification": "public-api",
+    "component": "io-tabs-bar",
+    "description": "Duration of the sliding indicator animation when switching tabs. Set to 0ms to disable animation."
+  },
+  {
+    "cssVar": "--io-tabs-bar-indicator-easing",
+    "classification": "public-api",
+    "component": "io-tabs-bar",
+    "description": "CSS easing function for the sliding indicator animation."
+  },
+  {
     "cssVar": "--io-border-radius-xs",
     "classification": "internal",
     "component": "io-tabs",

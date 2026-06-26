@@ -94,12 +94,12 @@ describe('io-breadcrumb — maxItems collapse (#836)', () => {
 
     (c as any).applyVisibility();
 
-    // Items 1 and 2 (indices 1..2) should be hidden (5 items, maxItems=3, showLastCount=2, hideStart=1, hideEnd=3)
-    expect(items[0].style.display).toBe('');
-    expect(items[1].style.display).toBe('none');
-    expect(items[2].style.display).toBe('none');
-    expect(items[3].style.display).toBe('');
-    expect(items[4].style.display).toBe('');
+    // Items 1 and 2 (indices 1..2) should be visually hidden via class (5 items, maxItems=3, showLastCount=2, hideStart=1, hideEnd=3)
+    expect(items[0].classList.contains('breadcrumb-item--hidden')).toBe(false);
+    expect(items[1].classList.contains('breadcrumb-item--hidden')).toBe(true);
+    expect(items[2].classList.contains('breadcrumb-item--hidden')).toBe(true);
+    expect(items[3].classList.contains('breadcrumb-item--hidden')).toBe(false);
+    expect(items[4].classList.contains('breadcrumb-item--hidden')).toBe(false);
   });
 
   it('shows all items when not collapsed', () => {
@@ -113,12 +113,12 @@ describe('io-breadcrumb — maxItems collapse (#836)', () => {
     items.forEach(item => hostEl.appendChild(item));
 
     // Pre-hide some items
-    items[1].style.display = 'none';
-    items[2].style.display = 'none';
+    items[1].classList.add('breadcrumb-item--hidden');
+    items[2].classList.add('breadcrumb-item--hidden');
 
     (c as any).applyVisibility();
 
-    items.forEach(item => expect(item.style.display).toBe(''));
+    items.forEach(item => expect(item.classList.contains('breadcrumb-item--hidden')).toBe(false));
   });
 
   it('shows all items when maxItems not set', () => {
@@ -132,7 +132,7 @@ describe('io-breadcrumb — maxItems collapse (#836)', () => {
 
     (c as any).applyVisibility();
 
-    items.forEach(item => expect(item.style.display).toBe(''));
+    items.forEach(item => expect(item.classList.contains('breadcrumb-item--hidden')).toBe(false));
   });
 
   it('handleExpand sets collapsed to false', () => {

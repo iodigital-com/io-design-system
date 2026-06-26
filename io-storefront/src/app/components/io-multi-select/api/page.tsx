@@ -116,6 +116,18 @@ export default function IoMultiSelectApiPage() {
               'No',
               'Fires when the selection changes — on option toggle, chip removal, or clear all. Detail includes the full updated value array and the name prop.',
             ],
+            [
+              <InlineCode key="n">blur</InlineCode>,
+              <InlineCode key="t">void</InlineCode>,
+              'No',
+              'Fires when the trigger loses focus and the dropdown is closed. Use for form-library touched/dirty tracking.',
+            ],
+            [
+              <InlineCode key="n">toggle</InlineCode>,
+              <InlineCode key="t">{'{ open: boolean }'}</InlineCode>,
+              'No',
+              'Fires when the dropdown opens or closes. detail.open is true when opening, false when closing.',
+            ],
           ]}
         />
         <CodeNote label="Usage">

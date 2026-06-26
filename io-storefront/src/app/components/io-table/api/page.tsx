@@ -44,6 +44,24 @@ export default function IoTableApiPage() {
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
               'Row density preset. sm reduces cell padding for compact UIs; lg increases padding for spacious layouts.',
             ],
+            [
+              <span key="n"><InlineCode>striped</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Applies alternating row background colours to improve scanability in data-dense tables.',
+            ],
+            [
+              <span key="n"><InlineCode>bordered</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Adds visible borders between all cells. Useful when table data contains values that need clear column delineation.',
+            ],
+            [
+              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Further reduces cell padding beyond the sm size for dense information displays. Stacks with the size prop.',
+            ],
           ]}
         />
       </section>

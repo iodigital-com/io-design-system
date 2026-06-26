@@ -57,6 +57,12 @@ export default function IoPopoverApiPage() {
               'Accessible label for the popover dialog. Rendered as aria-labelledby target inside the panel.',
             ],
             [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Supplementary description for the popover panel. Rendered as an accessible description via aria-describedby. Use to provide additional context beyond the label.',
+            ],
+            [
               <InlineCode key="n">ariaLabel</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,

@@ -8,6 +8,7 @@ function makePopover(): IoPopover {
   const component = new IoPopover();
   (component as any).el = document.createElement('io-popover');
   const dismissEmit = vi.fn();
+  (component as any).openEvent = { emit: vi.fn() };
   (component as any).dismissEvent = { emit: dismissEmit };
   (component as any).componentWillLoad();
 

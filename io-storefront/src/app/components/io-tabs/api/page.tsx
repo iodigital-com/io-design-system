@@ -144,7 +144,7 @@ export default function IoTabsApiPage() {
               <InlineCode key="n">update</InlineCode>,
               <InlineCode key="t">{'{ activeTabIndex: number }'}</InlineCode>,
               'No',
-              'Fires when the user activates a different tab (via click, Enter, or Space). Update your controlled state with the emitted activeTabIndex.',
+              'Fires when the user activates a different tab (via click, Enter, or Space). Does NOT fire when activeTabIndex is changed programmatically — only on direct user interaction. Update your controlled state with the emitted activeTabIndex.',
             ],
           ]}
         />

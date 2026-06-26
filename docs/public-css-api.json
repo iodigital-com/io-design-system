@@ -594,6 +594,12 @@
     "description": "Thickness of the divider line."
   },
   {
+    "cssVar": "--io-flyout-backdrop",
+    "classification": "public-api",
+    "component": "io-flyout",
+    "description": "Background colour of the flyout backdrop overlay. Override to adjust overlay opacity or colour."
+  },
+  {
     "cssVar": "--io-input-border-width",
     "classification": "public-api",
     "component": "io-input",

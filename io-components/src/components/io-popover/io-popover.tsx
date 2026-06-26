@@ -78,6 +78,9 @@ export class IoPopover {
 
   // ── Events ────────────────────────────────────────────────────
 
+  /** Emitted when the popover opens — trigger click while closed, or programmatic open via the open prop */
+  @Event({ eventName: 'open' }) openEvent!: EventEmitter<void>;
+
   /** Emitted when the popover closes — Escape key, outside click, or trigger re-click while open */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
@@ -187,6 +190,8 @@ export class IoPopover {
 
   private applyOpenState() {
     if (!this.panelEl) return;
+
+    this.openEvent.emit();
 
     if (this.useNativePopover) {
       try {

@@ -9,6 +9,7 @@ import { getPopoverStyles } from './io-popover-styles';
 function makePopover(): IoPopover {
   const component = new IoPopover();
   (component as any).el = document.createElement('io-popover');
+  (component as any).openEvent = { emit: vi.fn() };
   (component as any).dismissEvent = { emit: vi.fn() };
   (component as any).componentWillLoad();
   return component;
@@ -187,5 +188,37 @@ describe('io-popover — description prop', () => {
       .filter(call => call[0] === 'div');
     const panelCall = divCalls.find(call => String(call[1]?.['aria-describedby'] ?? '').includes(descId));
     expect(panelCall).toBeDefined();
+  });
+});
+
+// ── open event (#849) ─────────────────────────────────────────────────────────
+
+describe('io-popover — open event (#849)', () => {
+  let component: IoPopover;
+
+  beforeEach(() => {
+    component = makePopover();
+    const panelEl = document.createElement('div');
+    panelEl.setAttribute('aria-hidden', 'true');
+    (component as any).panelEl = panelEl;
+    (component as any).useNativePopover = false;
+  });
+
+  it('emits open event when applyOpenState is called (trigger click while closed)', () => {
+    const openEmit = (component as any).openEvent.emit as ReturnType<typeof vi.fn>;
+    (component as any).applyOpenState();
+    expect(openEmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('emits open event when open prop is set to true via onOpenChange', () => {
+    const openEmit = (component as any).openEvent.emit as ReturnType<typeof vi.fn>;
+    (component as any).onOpenChange(true);
+    expect(openEmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not emit open event when panel closes via onOpenChange', () => {
+    const openEmit = (component as any).openEvent.emit as ReturnType<typeof vi.fn>;
+    (component as any).onOpenChange(false);
+    expect(openEmit).not.toHaveBeenCalled();
   });
 });

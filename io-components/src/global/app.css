@@ -1051,6 +1051,8 @@ io-table[compact] io-table-body-cell td {
   --io-drawer-width-md:          clamp(360px, 45vw, 600px);
   --io-drawer-width-lg:          clamp(480px, 60vw, 800px);
   --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
+
+  /* io-flyout */
   --io-flyout-backdrop:          rgba(0, 0, 0, 0.5);
 
   /* io-flyout */

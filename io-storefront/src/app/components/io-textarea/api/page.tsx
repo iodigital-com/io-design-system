@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote, CodeNote } from '@/components/api/ApiPrimitives';
+import { SectionHeader, InlineCode, ApiTable, ReflectBadge, CodeNote } from '@/components/api/ApiPrimitives';
 
 
 // ── Page ──────────────────────────────────────────────────────────────────────

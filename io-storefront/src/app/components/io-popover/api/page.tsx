@@ -80,7 +80,7 @@ export default function IoPopoverApiPage() {
           ]}
           rows={[
             [
-              <InlineCode key="n">open</InlineCode>,
+              <InlineCode key="n">popoverOpen</InlineCode>,
               <InlineCode key="p">void</InlineCode>,
               'Emitted when the popover opens — via trigger click while closed, or programmatic open prop change. Symmetric with dismiss.',
             ],

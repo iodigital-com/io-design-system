@@ -18,6 +18,13 @@ export function getBreadcrumbStyles(): string {
       align-items: center;
     }
 
+    /* ── Expand button (injected into light DOM, styled via ::slotted) ── */
+
+    ::slotted(.breadcrumb__expand-item) {
+      display: inline-flex;
+      align-items: center;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { transition: none; }
     }

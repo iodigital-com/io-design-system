@@ -34,6 +34,22 @@ export function getNextEnabledIndex(
 }
 
 /**
+ * Returns keyframes for the sliding tab indicator animation.
+ * Pure utility — no DOM access — unit-testable.
+ */
+export function computeIndicatorKeyframes(
+  fromLeft: number,
+  fromWidth: number,
+  toLeft: number,
+  toWidth: number,
+): Keyframe[] {
+  return [
+    { left: `${fromLeft}px`, width: `${fromWidth}px` },
+    { left: `${toLeft}px`, width: `${toWidth}px` },
+  ];
+}
+
+/**
  * Normalises a raw activeTabIndex value against the current tab item list.
  * - Clamps to valid range
  * - Skips disabled items by falling back to the first enabled item

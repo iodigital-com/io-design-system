@@ -62,6 +62,26 @@ export default function IoPinCodeApiPage() {
               'Disables all digit inputs. Adds aria-disabled to the host group.',
             ],
             [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Disables all digit inputs and shows a spinner adjacent to the slots — use
+                while the server is validating the OTP. Sets <InlineCode>aria-busy=&quot;true&quot;</InlineCode>{' '}
+                on the host group and blocks pointer events.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>form</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,
+              <span key="desc">
+                Associates this field with a <InlineCode>{'<form>'}</InlineCode> element
+                by ID — enables out-of-DOM form participation. Forwarded as the{' '}
+                <InlineCode>form</InlineCode> attribute on each digit input.
+              </span>,
+            ],
+            [
               <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
               <InlineCode key="d">&apos;none&apos;</InlineCode>,

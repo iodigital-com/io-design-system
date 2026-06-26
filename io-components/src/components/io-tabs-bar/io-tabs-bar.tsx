@@ -1,7 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
 
 import { getTabsBarStyles } from './io-tabs-bar-styles';
-import { getNextEnabledIndex, normalizeActiveTabIndex } from './io-tabs-bar-utils';
+import { computeIndicatorKeyframes, getNextEnabledIndex, normalizeActiveTabIndex } from './io-tabs-bar-utils';
 
 import type { IoTabsBarUpdateDetail } from './types';
 
@@ -83,6 +83,7 @@ export class IoTabsBar {
   // ── Private ───────────────────────────────────────────────────
 
   private slotEl: HTMLSlotElement | null = null;
+  private indicatorEl: HTMLElement | null = null;
   private buttons: TabItem[] = [];
   private clickHandlers: Map<TabItem, () => void> = new Map();
   private keyHandlers: Map<TabItem, EventListener> = new Map();
@@ -91,6 +92,7 @@ export class IoTabsBar {
 
   componentDidLoad() {
     this.slotEl = this.el.shadowRoot?.querySelector('slot') ?? null;
+    this.indicatorEl = this.el.shadowRoot?.querySelector('.indicator') ?? null;
     this.syncFromSlot();
   }
 
@@ -99,13 +101,14 @@ export class IoTabsBar {
   }
 
   @Watch('activeTabIndex')
-  onActiveTabIndexChange(newIndex: number) {
+  onActiveTabIndexChange(newIndex: number, oldIndex: number) {
     const normalized = normalizeActiveTabIndex(newIndex, this.buttons);
     if (normalized !== newIndex) {
       this.activeTabIndex = normalized;
       return;
     }
     this.applyAriaToButtons(this.buttons, normalized);
+    this.animateIndicator(normalized, oldIndex);
   }
 
   // ── Slot handling ─────────────────────────────────────────────
@@ -162,6 +165,8 @@ export class IoTabsBar {
       btn.setAttribute('tabindex', String(isActive ? 0 : -1));
     });
     this.scrollActiveTabIntoView(buttons, activeIndex);
+    // Position indicator without animation on initial sync
+    this.animateIndicator(activeIndex);
   }
 
   private scrollActiveTabIntoView(buttons: TabItem[], activeIndex: number) {
@@ -173,6 +178,44 @@ export class IoTabsBar {
       block: 'nearest',
       inline: 'nearest',
     });
+  }
+
+  animateIndicator(toIndex: number, fromIndex?: number) {
+    const indicator = this.indicatorEl;
+    if (!indicator) return;
+
+    const tablistEl = this.el.shadowRoot?.querySelector('.tablist');
+    if (!tablistEl) return;
+
+    const toBtn = this.buttons[toIndex];
+    if (!toBtn) return;
+
+    const listRect = tablistEl.getBoundingClientRect();
+    const toRect = toBtn.getBoundingClientRect();
+    const toLeft = toRect.left - listRect.left;
+    const toWidth = toRect.width;
+
+    let fromLeft = toLeft;
+    let fromWidth = toWidth;
+    const fromBtn = fromIndex !== undefined ? this.buttons[fromIndex] : undefined;
+    if (fromBtn) {
+      const fromRect = fromBtn.getBoundingClientRect();
+      fromLeft = fromRect.left - listRect.left;
+      fromWidth = fromRect.width;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = prefersReducedMotion ? 0 : 250;
+
+    indicator.style.left = `${toLeft}px`;
+    indicator.style.width = `${toWidth}px`;
+
+    if (fromIndex !== undefined && !prefersReducedMotion && (fromLeft !== toLeft || fromWidth !== toWidth)) {
+      indicator.animate(
+        computeIndicatorKeyframes(fromLeft, fromWidth, toLeft, toWidth),
+        { duration, easing: 'ease-out', fill: 'forwards' },
+      );
+    }
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -250,6 +293,7 @@ export class IoTabsBar {
           aria-labelledby={this.labelledBy || undefined}
         >
           <slot onSlotchange={this.onSlotChange} />
+          <span class="indicator" aria-hidden="true" />
         </div>
       </Host>
     );

@@ -23,6 +23,23 @@ export function getPinCodeStyles(): string {
       pointer-events: none;
     }
 
+    :host([loading]) {
+      pointer-events: none;
+    }
+
+    /* ── Slots wrapper (positions spinner) ──────────────────── */
+
+    .pin-code__slots-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--io-space-3);
+    }
+
+    .pin-code__spinner {
+      flex-shrink: 0;
+    }
+
     /* ── Label ──────────────────────────────────────────── */
 
     .pin-code__label {

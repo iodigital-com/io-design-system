@@ -70,3 +70,78 @@ describe('io-breadcrumb — label prop', () => {
     expect(attrs['aria-label']).toBe('Navigatie');
   });
 });
+
+// ── maxItems / collapse (#836) ────────────────────────────────────────────────
+
+describe('io-breadcrumb — maxItems collapse (#836)', () => {
+  function makeItems(count: number): HTMLElement[] {
+    return Array.from({ length: count }, (_, i) => {
+      const el = document.createElement('io-breadcrumb-item');
+      el.textContent = `Item ${i}`;
+      return el;
+    });
+  }
+
+  it('hides intermediate items when collapsed and itemCount > maxItems', () => {
+    const c = new IoBreadcrumb();
+    const hostEl = document.createElement('io-breadcrumb');
+    (c as any).el = hostEl;
+    c.maxItems = 3;
+    (c as any).collapsed = true;
+
+    const items = makeItems(5);
+    items.forEach(item => hostEl.appendChild(item));
+
+    (c as any).applyVisibility();
+
+    // Items 1 and 2 (indices 1..2) should be hidden (5 items, maxItems=3, showLastCount=2, hideStart=1, hideEnd=3)
+    expect(items[0].style.display).toBe('');
+    expect(items[1].style.display).toBe('none');
+    expect(items[2].style.display).toBe('none');
+    expect(items[3].style.display).toBe('');
+    expect(items[4].style.display).toBe('');
+  });
+
+  it('shows all items when not collapsed', () => {
+    const c = new IoBreadcrumb();
+    const hostEl = document.createElement('io-breadcrumb');
+    (c as any).el = hostEl;
+    c.maxItems = 3;
+    (c as any).collapsed = false;
+
+    const items = makeItems(5);
+    items.forEach(item => hostEl.appendChild(item));
+
+    // Pre-hide some items
+    items[1].style.display = 'none';
+    items[2].style.display = 'none';
+
+    (c as any).applyVisibility();
+
+    items.forEach(item => expect(item.style.display).toBe(''));
+  });
+
+  it('shows all items when maxItems not set', () => {
+    const c = new IoBreadcrumb();
+    const hostEl = document.createElement('io-breadcrumb');
+    (c as any).el = hostEl;
+    (c as any).collapsed = true;
+
+    const items = makeItems(5);
+    items.forEach(item => hostEl.appendChild(item));
+
+    (c as any).applyVisibility();
+
+    items.forEach(item => expect(item.style.display).toBe(''));
+  });
+
+  it('handleExpand sets collapsed to false', () => {
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).collapsed = true;
+
+    (c as any).handleExpand();
+
+    expect((c as any).collapsed).toBe(false);
+  });
+});

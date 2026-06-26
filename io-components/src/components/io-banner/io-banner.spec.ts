@@ -175,3 +175,92 @@ describe('io-banner — dismissLabel resolution', () => {
     expect((c as any).resolvedDismissLabel).toBe('Dismiss warning notification');
   });
 });
+
+describe('io-banner — action prop (#842)', () => {
+  it('actionLabel defaults to undefined', () => {
+    const c = new IoBanner();
+    expect(c.actionLabel).toBeUndefined();
+  });
+
+  it('actionIcon defaults to arrow-right', () => {
+    const c = new IoBanner();
+    expect(c.actionIcon).toBe('arrow-right');
+  });
+
+  it('actionLoading defaults to false', () => {
+    const c = new IoBanner();
+    expect(c.actionLoading).toBe(false);
+  });
+
+  it('renders action button when actionLabel set and open=true', () => {
+    const c = new IoBanner();
+    c.open = true;
+    c.actionLabel = 'Learn more';
+    hMock.mockClear();
+    (c as any).render();
+    const actionBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['class'] &&
+        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
+        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+    );
+    expect(actionBtn).toBeDefined();
+  });
+
+  it('does not render action button when actionLabel undefined', () => {
+    const c = new IoBanner();
+    c.open = true;
+    hMock.mockClear();
+    (c as any).render();
+    const actionBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['class'] &&
+        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
+        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+    );
+    expect(actionBtn).toBeUndefined();
+  });
+
+  it('emits action when actionLoading=false', () => {
+    const c = new IoBanner();
+    const emitFn = vi.fn();
+    (c as any).action = { emit: emitFn };
+    c.actionLoading = false;
+    (c as any).handleAction();
+    expect(emitFn).toHaveBeenCalledTimes(1);
+  });
+
+  it('suppresses action emit when actionLoading=true', () => {
+    const c = new IoBanner();
+    const emitFn = vi.fn();
+    (c as any).action = { emit: emitFn };
+    c.actionLoading = true;
+    (c as any).handleAction();
+    expect(emitFn).not.toHaveBeenCalled();
+  });
+
+  it('action button has aria-busy when actionLoading=true', () => {
+    const c = new IoBanner();
+    c.open = true;
+    c.actionLabel = 'Learn more';
+    c.actionLoading = true;
+    hMock.mockClear();
+    (c as any).render();
+    const actionBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['class'] &&
+        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
+        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+    );
+    expect((actionBtn?.[1] as any)?.['aria-busy']).toBe('true');
+  });
+});

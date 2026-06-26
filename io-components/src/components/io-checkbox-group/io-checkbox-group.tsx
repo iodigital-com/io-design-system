@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h }
 import { applyAriaProp } from '../../utils/aria-prop';
 import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
 
-import type { IoCheckboxGroupChangeDetail } from './types';
+import type { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from './types';
 
 /**
  * io-checkbox-group
@@ -48,6 +48,12 @@ export class IoCheckboxGroup {
 
   /** Helper text shown below the legend */
   @Prop() helperText = '';
+
+  /** Layout direction of the checkbox options */
+  @Prop({ reflect: true }) orientation: IoCheckboxGroupOrientation = 'vertical';
+
+  /** Shows a loading spinner overlay and blocks interaction */
+  @Prop({ reflect: true }) loading = false;
 
   /**
    * Arbitrary ARIA attributes to spread onto the fieldset element.
@@ -175,12 +181,12 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, helperText, error, errorMessage, required } = this;
+    const { label, disabled, loading, helperText, error, errorMessage, required } = this;
     const fieldsetClass = error ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
     const describedBy = error && errorMessage ? this.errorId : undefined;
 
     return (
-      <Host>
+      <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getCheckboxGroupStyles()}</style>
         <fieldset
           class={fieldsetClass}
@@ -196,8 +202,15 @@ export class IoCheckboxGroup {
           {helperText && (
             <span class="checkbox-group__helper">{helperText}</span>
           )}
-          <div class="checkbox-group__options">
-            <slot onSlotchange={this.syncChildren} />
+          <div class="checkbox-group__options-wrapper">
+            <div class="checkbox-group__options" inert={loading ? true : undefined}>
+              <slot onSlotchange={this.syncChildren} />
+            </div>
+            {loading && (
+              <div class="checkbox-group__loading-overlay" aria-hidden="true">
+                <io-spinner size="sm" />
+              </div>
+            )}
           </div>
         </fieldset>
         {error && errorMessage && (

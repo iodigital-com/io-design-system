@@ -67,6 +67,24 @@ export default function IoBannerApiPage() {
               <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>undefined</span>,
               'Override the accessible label for the dismiss button. Defaults to "Dismiss {heading}" or "Dismiss {variant} notification".',
             ],
+            [
+              <InlineCode key="n">actionLabel</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>undefined</span>,
+              'When set, renders an action button before the dismiss button. Emits the action event when clicked.',
+            ],
+            [
+              <InlineCode key="n">actionIcon</InlineCode>,
+              <InlineCode key="t">IoIconName</InlineCode>,
+              <InlineCode key="d">&apos;arrow-right&apos;</InlineCode>,
+              'Icon shown inside the action button. Only rendered when actionLabel is set.',
+            ],
+            [
+              <InlineCode key="n">actionLoading</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, suppresses the action event and shows the button in a loading state. Use during async operations triggered by the action.',
+            ],
           ]}
         />
       </section>
@@ -87,6 +105,11 @@ export default function IoBannerApiPage() {
               <InlineCode key="n">dismiss</InlineCode>,
               <InlineCode key="t">void</InlineCode>,
               'Emitted when the user clicks the dismiss button. The banner also sets open=false automatically.',
+            ],
+            [
+              <InlineCode key="n">action</InlineCode>,
+              <InlineCode key="t">void</InlineCode>,
+              'Emitted when the action button is clicked. Suppressed when actionLoading=true. Does not bubble.',
             ],
           ]}
         />

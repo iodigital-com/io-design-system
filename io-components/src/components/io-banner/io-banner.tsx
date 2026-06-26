@@ -2,6 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } 
 
 import { getBannerStyles } from './io-banner-styles';
 import type { IoBannerVariant, IoBannerPosition, IoBannerHeadingTag } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 /**
  * io-banner
@@ -60,8 +61,20 @@ export class IoBanner {
    */
   @Prop() dismissLabel?: string;
 
+  /** Label for an optional action button rendered before the dismiss button */
+  @Prop() actionLabel?: string;
+
+  /** Icon name for the action button (only rendered when actionLabel is set) */
+  @Prop() actionIcon: IoIconName = 'arrow-right';
+
+  /** When true, suppresses the action event (use during async operations) */
+  @Prop() actionLoading = false;
+
   /** Emitted when the dismiss button is clicked or Escape is pressed */
   @Event() dismiss!: EventEmitter<void>;
+
+  /** Emitted when the action button is clicked (suppressed when actionLoading=true) */
+  @Event({ bubbles: false }) action!: EventEmitter<void>;
 
   @State() private hasContent = false;
 
@@ -77,6 +90,10 @@ export class IoBanner {
   private handleDismiss = () => {
     this.open = false;
     this.dismiss.emit();
+  };
+
+  private handleAction = () => {
+    if (!this.actionLoading) this.action.emit();
   };
 
   private handleKeyDown = (e: KeyboardEvent): void => {
@@ -186,6 +203,17 @@ export class IoBanner {
               }} />
             </div>
           </div>
+          {this.actionLabel && (
+            <button
+              type="button"
+              class={{ 'banner__action': true, 'banner__action--loading': this.actionLoading }}
+              aria-busy={this.actionLoading ? 'true' : undefined}
+              onClick={this.handleAction}
+            >
+              {this.actionLabel}
+              <io-icon name={this.actionIcon} aria-hidden="true" />
+            </button>
+          )}
           {this.dismissible && (
             <button
               type="button"

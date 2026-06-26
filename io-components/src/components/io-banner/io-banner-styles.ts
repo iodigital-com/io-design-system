@@ -105,6 +105,38 @@ export function getBannerStyles(): string {
       display: none;
     }
 
+    .banner__action {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--io-space-1);
+      min-height: var(--io-touch-target-min);
+      padding: 0 var(--io-space-2);
+      background: transparent;
+      border: 1px solid var(--io-border-interactive);
+      border-radius: var(--io-border-radius-sm);
+      cursor: pointer;
+      font-size: var(--io-font-size-sm);
+      font-weight: var(--io-font-weight-medium);
+      color: var(--io-text-primary);
+      font-family: var(--io-font-primary);
+      transition: color var(--io-motion-fast), border-color var(--io-motion-fast);
+    }
+
+    .banner__action:hover {
+      border-color: var(--io-text-primary);
+    }
+
+    .banner__action:focus-visible {
+      box-shadow: var(--io-focus-ring-active);
+      outline: none;
+    }
+
+    .banner__action--loading {
+      cursor: wait;
+      opacity: var(--io-state-disabled-opacity);
+    }
+
     .banner__dismiss {
       flex-shrink: 0;
       display: flex;

@@ -61,6 +61,18 @@ export default function IoCheckboxGroupApiPage() {
               <InlineCode key="d">undefined</InlineCode>,
               'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
             ],
+            [
+              <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;vertical&apos; | &apos;horizontal&apos;</InlineCode>,
+              <InlineCode key="d">&apos;vertical&apos;</InlineCode>,
+              'Layout direction of the checkbox options. Horizontal wraps items in a row with additional gap.',
+            ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a loading spinner overlay over the options and blocks interaction via the inert attribute. Sets aria-busy="true" on the host.',
+            ],
           ]}
         />
       </section>

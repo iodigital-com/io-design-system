@@ -102,14 +102,13 @@ describe('io-pagination — showLastPage prop (#832)', () => {
   it('last page absent in range when showLastPage=false and page=1 totalPages=20', () => {
     component.showLastPage = false;
     const range = (component as any).pageRange(1, 20);
-    expect(range[range.length - 1]).not.toBe(20);
+    expect(range).not.toContain(20);
   });
 
   it('last page present in range when showLastPage=true and page=1 totalPages=20', () => {
     component.showLastPage = true;
     const range = (component as any).pageRange(1, 20);
     expect(range[range.length - 1]).toBe(20);
-    expect(range[range.length - 1]).toHaveProperty !== undefined;
   });
 });
 

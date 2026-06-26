@@ -17,14 +17,13 @@ export function getTagClassName(size: IoTagSize, color: IoTagColor, selected: bo
     .join(' ');
 }
 
-export function getTagGroupClassName(size: IoTagSize, color: IoTagColor, selected: boolean, disabled: boolean, compact?: boolean): string {
+export function getTagGroupClassName(size: IoTagSize, color: IoTagColor, selected: boolean, disabled: boolean): string {
   return [
     'tag-group',
     `tag-group--${size}`,
     `tag-group--${color}`,
     selected ? 'tag-group--selected' : '',
     disabled ? 'tag-group--disabled' : '',
-    compact ? 'tag-group--compact' : '',
   ]
     .filter(Boolean)
     .join(' ');

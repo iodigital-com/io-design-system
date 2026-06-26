@@ -89,7 +89,7 @@ export class IoTag {
         <Host>
           <style>{getTagStyles()}</style>
           <div
-            class={getTagGroupClassName(size, color, selected, disabled, compact)}
+            class={getTagGroupClassName(size, color, selected, disabled)}
             role="none"
           >
             <button

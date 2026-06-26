@@ -247,11 +247,7 @@ export function getTagStyles(): string {
 
     /* ── Compact density override ───────────────────────── */
 
-    .tag--compact.tag--sm {
-      padding-top: var(--io-tag-compact-padding-y);
-      padding-bottom: var(--io-tag-compact-padding-y);
-    }
-
+    .tag--compact.tag--sm,
     .tag--compact.tag--md {
       padding-top: var(--io-tag-compact-padding-y);
       padding-bottom: var(--io-tag-compact-padding-y);

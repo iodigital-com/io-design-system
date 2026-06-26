@@ -82,35 +82,10 @@ describe('io-button — default props', () => {
   });
 });
 
-describe('io-button — compact prop', () => {
-  let component: IoButton;
-
-  beforeEach(() => {
-    component = new IoButton();
-    (component as any).el = document.createElement('io-button');
-    (component as any).click = { emit: vi.fn() };
-  });
-
-  it('compact is false by default', () => {
-    expect(component.compact).toBe(false);
-  });
-
-  it('compact can be set to true', () => {
-    component.compact = true;
-    expect(component.compact).toBe(true);
-  });
-});
-
 describe('io-button — :host styles', () => {
   it(':host CSS includes align-self: flex-start to prevent flex stretch', () => {
     const styles = getButtonStyles();
     expect(styles).toContain('align-self: flex-start');
-  });
-
-  it('compact CSS rule reduces padding-top and padding-bottom via token', () => {
-    const styles = getButtonStyles();
-    expect(styles).toContain('.btn--compact');
-    expect(styles).toContain('var(--io-button-padding-y-compact)');
   });
 });
 

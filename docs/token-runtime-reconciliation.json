@@ -920,22 +920,6 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
-      "runtimeCssVar": "--io-button-padding-y-compact",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Compact density vertical padding override for io-button."
-    },
-    {
-      "runtimeCssVar": "--io-button-height-compact",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Compact density icon-only height override for io-button."
-    },
-    {
       "runtimeCssVar": "--io-carousel-scrollbar-height",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

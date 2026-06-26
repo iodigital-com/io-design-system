@@ -1,4 +1,4 @@
-import { Component, Element, Host, Prop, h } from '@stencil/core';
+import { Component, Element, Host, Prop, State, Watch, h } from '@stencil/core';
 
 import { getBreadcrumbStyles } from './io-breadcrumb-styles';
 
@@ -27,6 +27,17 @@ type BreadcrumbItem = Element & { current: boolean };
 export class IoBreadcrumb {
   @Element() el!: HTMLElement;
 
+  // ── Private fields ─────────────────────────────────────────
+  private expandLi: HTMLLIElement | null = null;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Whether intermediate items are currently collapsed */
+  @State() collapsed = true;
+
+  /** Number of slotted io-breadcrumb-item elements */
+  @State() itemCount = 0;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /**
@@ -34,6 +45,29 @@ export class IoBreadcrumb {
    * multiple breadcrumbs appear on the same page (WCAG 2.4.6 / 4.1.2).
    */
   @Prop() label = 'Breadcrumb';
+
+  /**
+   * Maximum visible items before collapsing intermediate items into an expand button.
+   * When set and the item count exceeds this value, items between the first and
+   * last (maxItems − 1) are hidden. Activating the expand button reveals all items.
+   * Screen readers receive a descriptive label on the expand button indicating how
+   * many items are hidden (WCAG 1.3.1).
+   */
+  @Prop() maxItems?: number;
+
+  // ── Watchers ──────────────────────────────────────────────────
+
+  @Watch('collapsed')
+  @Watch('maxItems')
+  onCollapseChange() {
+    this.applyVisibility();
+  }
+
+  // ── Lifecycle ─────────────────────────────────────────────────
+
+  disconnectedCallback() {
+    this.removeExpandButton();
+  }
 
   // ── Slot handling ─────────────────────────────────────────────
 
@@ -44,6 +78,73 @@ export class IoBreadcrumb {
     if (!items.some(it => it.current === true)) {
       items[items.length - 1].current = true;
     }
+
+    this.itemCount = items.length;
+    this.collapsed = true;
+    this.applyVisibility();
+  };
+
+  private removeExpandButton() {
+    if (this.expandLi) {
+      this.expandLi.remove();
+      this.expandLi = null;
+    }
+  }
+
+  private applyVisibility() {
+    const items = Array.from(this.el.querySelectorAll('io-breadcrumb-item')) as HTMLElement[];
+    const total = items.length;
+
+    this.removeExpandButton();
+
+    if (!this.maxItems || !this.collapsed || total <= this.maxItems) {
+      items.forEach(item => {
+        item.classList.remove('breadcrumb-item--hidden');
+      });
+      return;
+    }
+
+    const showLastCount = Math.max(this.maxItems - 1, 1);
+    const hideStart = 1;
+    const hideEnd = total - showLastCount;
+    const hiddenCount = hideEnd - hideStart;
+
+    items.forEach((item, i) => {
+      if (i >= hideStart && i < hideEnd) {
+        item.classList.add('breadcrumb-item--hidden');
+      } else {
+        item.classList.remove('breadcrumb-item--hidden');
+      }
+    });
+
+    // Inject expand button into light DOM after first item so slot projects it in correct position
+    if (hiddenCount > 0 && items[0]) {
+      this.expandLi = document.createElement('li');
+      this.expandLi.className = 'breadcrumb__expand-item';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('aria-label', `Show ${hiddenCount} hidden breadcrumb item${hiddenCount !== 1 ? 's' : ''}`);
+      btn.textContent = '…';
+      btn.style.cssText = [
+        'background:transparent',
+        'border:none',
+        'cursor:pointer',
+        'padding:0 var(--io-space-1,4px)',
+        'font-family:var(--io-font-primary,inherit)',
+        'font-size:var(--io-font-size-base,1rem)',
+        'color:var(--io-text-secondary)',
+        'line-height:1',
+        'display:inline-flex',
+        'align-items:center',
+      ].join(';');
+      btn.addEventListener('click', this.handleExpand);
+      this.expandLi.appendChild(btn);
+      items[0].insertAdjacentElement('afterend', this.expandLi);
+    }
+  }
+
+  private handleExpand = () => {
+    this.collapsed = false;
   };
 
   // ── Render ───────────────────────────────────────────────────

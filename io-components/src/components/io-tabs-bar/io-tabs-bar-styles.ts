@@ -22,6 +22,7 @@ export function getTabsBarStyles(): string {
       border-bottom: 1px solid var(--io-tabs-track-color);
       overflow-x: auto;
       scrollbar-width: none;
+      position: relative;
     }
 
     .tablist::-webkit-scrollbar {
@@ -63,7 +64,20 @@ export function getTabsBarStyles(): string {
     ::slotted(button[aria-selected="true"]),
     ::slotted(a[aria-selected="true"]) {
       color: var(--io-text-primary) !important;
-      border-bottom-color: var(--io-tabs-indicator-color) !important;
+    }
+
+    /* ── Sliding indicator ───────────────────────────────── */
+
+    .indicator {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: var(--io-tabs-indicator-height, 2px);
+      background: var(--io-tabs-indicator-color);
+      pointer-events: none;
+      will-change: left, width;
+      transition: none;
     }
 
     /* ── Hover ───────────────────────────────────────────── */

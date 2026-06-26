@@ -18,6 +18,27 @@ export function getBreadcrumbStyles(): string {
       align-items: center;
     }
 
+    /* ── Visually-hidden collapsed items — remain in AT tree for screen readers ── */
+
+    ::slotted(io-breadcrumb-item.breadcrumb-item--hidden) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ── Expand button (injected into light DOM, styled via ::slotted) ── */
+
+    ::slotted(.breadcrumb__expand-item) {
+      display: inline-flex;
+      align-items: center;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { transition: none; }
     }

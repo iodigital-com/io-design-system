@@ -316,3 +316,83 @@ describe('io-pin-code render() — input value falls back to empty string when d
     }
   });
 });
+
+// ── loading prop (#827) ───────────────────────────────────────────────────────
+
+describe('io-pin-code render() — loading prop (#827)', () => {
+  it('sets aria-busy="true" on Host when loading=true', () => {
+    const c = makeComponent({ loading: true });
+    const calls = renderCalls(c);
+
+    const hostCall = calls.find(([_tag, attrs]) => (attrs as Record<string, unknown>)?.role === 'group');
+    expect(hostCall).toBeDefined();
+    expect(hostCall![1]['aria-busy']).toBe('true');
+  });
+
+  it('does not set aria-busy when loading=false', () => {
+    const c = makeComponent({ loading: false });
+    const calls = renderCalls(c);
+
+    const hostCall = calls.find(([_tag, attrs]) => (attrs as Record<string, unknown>)?.role === 'group');
+    expect(hostCall).toBeDefined();
+    expect(hostCall![1]['aria-busy']).toBeUndefined();
+  });
+
+  it('disables all inputs when loading=true', () => {
+    const c = makeComponent({ loading: true });
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(
+      ([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.inputMode === 'numeric',
+    );
+    expect(inputCalls.length).toBeGreaterThan(0);
+    for (const inputCall of inputCalls) {
+      expect(inputCall[1].disabled).toBe(true);
+    }
+  });
+
+  it('renders io-spinner when loading=true', () => {
+    const c = makeComponent({ loading: true });
+    const calls = renderCalls(c);
+
+    const spinnerCall = calls.find(([tag]) => tag === 'io-spinner');
+    expect(spinnerCall).toBeDefined();
+  });
+
+  it('does not render io-spinner when loading=false', () => {
+    const c = makeComponent({ loading: false });
+    const calls = renderCalls(c);
+
+    const spinnerCall = calls.find(([tag]) => tag === 'io-spinner');
+    expect(spinnerCall).toBeUndefined();
+  });
+});
+
+// ── form prop (#827) ──────────────────────────────────────────────────────────
+
+describe('io-pin-code render() — form prop (#827)', () => {
+  it('passes form attribute to each input when form prop is set', () => {
+    const c = makeComponent({ form: 'my-form' });
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(
+      ([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.inputMode === 'numeric',
+    );
+    expect(inputCalls.length).toBeGreaterThan(0);
+    for (const inputCall of inputCalls) {
+      expect(inputCall[1].form).toBe('my-form');
+    }
+  });
+
+  it('does not pass form attribute when form prop is undefined', () => {
+    const c = makeComponent();
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(
+      ([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.inputMode === 'numeric',
+    );
+    for (const inputCall of inputCalls) {
+      expect(inputCall[1].form).toBeUndefined();
+    }
+  });
+});

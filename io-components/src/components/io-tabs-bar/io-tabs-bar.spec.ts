@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoTabsBar } from './io-tabs-bar';
-import { normalizeActiveTabIndex, getNextEnabledIndex } from './io-tabs-bar-utils';
+import { normalizeActiveTabIndex, getNextEnabledIndex, computeIndicatorKeyframes } from './io-tabs-bar-utils';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -585,5 +585,53 @@ describe('io-tabs-bar — labelledBy prop (#838)', () => {
     );
     expect((tablistCall?.[1] as any)?.['aria-label']).toBe('Main navigation');
     expect((tablistCall?.[1] as any)?.['aria-labelledby']).toBeUndefined();
+  });
+});
+
+// ── computeIndicatorKeyframes utility (#847) ──────────────────────────────────
+
+describe('computeIndicatorKeyframes — animated indicator utility (#847)', () => {
+  it('returns keyframes with correct from/to positions', () => {
+    const frames = computeIndicatorKeyframes(10, 80, 100, 120);
+    expect(frames).toHaveLength(2);
+    expect(frames[0]).toEqual({ left: '10px', width: '80px' });
+    expect(frames[1]).toEqual({ left: '100px', width: '120px' });
+  });
+
+  it('returns identical from/to keyframes when positions are the same', () => {
+    const frames = computeIndicatorKeyframes(50, 60, 50, 60);
+    expect(frames[0]).toEqual({ left: '50px', width: '60px' });
+    expect(frames[1]).toEqual({ left: '50px', width: '60px' });
+  });
+
+  it('handles zero position values', () => {
+    const frames = computeIndicatorKeyframes(0, 0, 0, 0);
+    expect(frames[0]).toEqual({ left: '0px', width: '0px' });
+  });
+});
+
+// ── onActiveTabIndexChange calls animateIndicator (#847) ─────────────────────
+
+describe('io-tabs-bar — onActiveTabIndexChange triggers animateIndicator (#847)', () => {
+  it('calls animateIndicator with new and old index', () => {
+    const b1 = makeButton('Tab 1');
+    const b2 = makeButton('Tab 2');
+    const component = makeComponent([b1, b2]);
+    (component as any).syncFromSlot();
+
+    const animateSpy = vi.spyOn(component as any, 'animateIndicator');
+    (component as any).onActiveTabIndexChange(1, 0);
+
+    expect(animateSpy).toHaveBeenCalledWith(1, 0);
+  });
+
+  it('does not call animateIndicator when index normalizes to different value', () => {
+    const component = makeComponent([]);
+    const animateSpy = vi.spyOn(component as any, 'animateIndicator');
+
+    // No buttons — normalizeActiveTabIndex returns 0, newIndex is 5 → triggers re-assignment, returns early
+    (component as any).onActiveTabIndexChange(5, 0);
+
+    expect(animateSpy).not.toHaveBeenCalled();
   });
 });

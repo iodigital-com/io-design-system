@@ -71,6 +71,12 @@ export class IoPinCode {
   /** Disables all inputs */
   @Prop({ mutable: true, reflect: true }) disabled = false;
 
+  /** Disables all inputs and shows a loading spinner — use while verifying the OTP on the server */
+  @Prop({ reflect: true }) loading = false;
+
+  /** Associates this field with a <form> element by ID — enables out-of-DOM form participation */
+  @Prop({ reflect: true }) form?: string;
+
   /** Visual validation state — aligns with other io form-field components */
   @Prop({ reflect: true }) state: IoPinCodeState = 'none';
 
@@ -201,7 +207,7 @@ export class IoPinCode {
   // ── Event handlers ────────────────────────────────────────────
 
   private handleKeydown = (ev: KeyboardEvent, index: number) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
 
     const key = ev.key;
 
@@ -253,7 +259,7 @@ export class IoPinCode {
   };
 
   private handleInput = (ev: InputEvent, index: number) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     const raw = input.value;
     // Only keep the last entered digit (handles mobile virtual keyboards)
@@ -271,7 +277,7 @@ export class IoPinCode {
   };
 
   private handlePaste = (ev: ClipboardEvent, startIndex: number) => {
-    if (this.disabled) return;
+    if (this.disabled || this.loading) return;
     ev.preventDefault();
     const text = ev.clipboardData?.getData('text') ?? '';
     const digits = text.replace(/\D/g, '').slice(0, this.length - startIndex).split('');
@@ -338,7 +344,8 @@ export class IoPinCode {
   }
 
   render() {
-    const { label, type, disabled, required, message, length, hideLabel } = this;
+    const { label, type, disabled, loading, form, required, message, length, hideLabel } = this;
+    const isDisabled = disabled || loading;
     const isError = this.state === 'error' || this.faceInvalid;
     const showFaceError = this.faceInvalid && !message;
     const faceErrorId = `${this.messageId}-face-error`;
@@ -355,7 +362,8 @@ export class IoPinCode {
         role="group"
         aria-labelledby={ariaLabelledBy}
         aria-label={ariaLabel}
-        aria-disabled={disabled ? 'true' : undefined}
+        aria-disabled={isDisabled ? 'true' : undefined}
+        aria-busy={loading ? 'true' : undefined}
       >
         <style>{getPinCodeStyles()}</style>
 
@@ -370,28 +378,32 @@ export class IoPinCode {
           </span>
         )}
 
-        <div class="pin-code__slots" aria-describedby={ariaDescribedBy}>
-          {Array.from({ length }).map((_, i) => (
-            <input
-              key={i}
-              ref={(el) => { this.inputRefs[i] = el as HTMLInputElement | null; }}
-              class={this.getSlotClass(i)}
-              type={type === 'password' ? 'password' : 'text'}
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength={1}
-              value={this.digits[i] ?? ''}
-              disabled={disabled}
-              autoComplete="one-time-code"
-              aria-label={this.digitLabels[i]}
-              aria-invalid={isError ? 'true' : undefined}
-              onKeyDown={(e) => this.handleKeydown(e as KeyboardEvent, i)}
-              onInput={(e) => this.handleInput(e as InputEvent, i)}
-              onPaste={(e) => this.handlePaste(e, i)}
-              onFocus={this.handleFocus}
-              onBlur={(e) => this.handleBlur(e as FocusEvent)}
-            />
-          ))}
+        <div class="pin-code__slots-wrapper">
+          <div class="pin-code__slots" aria-describedby={ariaDescribedBy}>
+            {Array.from({ length }).map((_, i) => (
+              <input
+                key={i}
+                ref={(el) => { this.inputRefs[i] = el as HTMLInputElement | null; }}
+                class={this.getSlotClass(i)}
+                type={type === 'password' ? 'password' : 'text'}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={1}
+                value={this.digits[i] ?? ''}
+                disabled={isDisabled}
+                form={form}
+                autoComplete="one-time-code"
+                aria-label={this.digitLabels[i]}
+                aria-invalid={isError ? 'true' : undefined}
+                onKeyDown={(e) => this.handleKeydown(e as KeyboardEvent, i)}
+                onInput={(e) => this.handleInput(e as InputEvent, i)}
+                onPaste={(e) => this.handlePaste(e, i)}
+                onFocus={this.handleFocus}
+                onBlur={(e) => this.handleBlur(e as FocusEvent)}
+              />
+            ))}
+          </div>
+          {loading && <io-spinner class="pin-code__spinner" aria-hidden="true" />}
         </div>
 
         {message && (

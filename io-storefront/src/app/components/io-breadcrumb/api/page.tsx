@@ -28,6 +28,17 @@ export default function IoBreadcrumbApiPage() {
               <InlineCode key="d">&apos;Breadcrumb&apos;</InlineCode>,
               "Accessible label applied as aria-label on the wrapping <nav> element. Override for non-English UIs or when multiple breadcrumbs appear on the same page to avoid duplicate unlabelled landmarks (WCAG 2.4.6 / 4.1.2).",
             ],
+            [
+              <InlineCode key="p">maxItems</InlineCode>,
+              <InlineCode key="t">number | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,
+              <span key="desc">
+                When set, items beyond this count are hidden and replaced with a focusable
+                expand button (<InlineCode>&hellip;</InlineCode>). The expand button
+                includes a descriptive <InlineCode>aria-label</InlineCode> indicating the
+                number of hidden items (WCAG 1.3.1). Activating it reveals the full trail.
+              </span>,
+            ],
           ]}
         />
       </section>

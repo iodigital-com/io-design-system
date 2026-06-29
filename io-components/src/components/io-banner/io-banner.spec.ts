@@ -107,12 +107,14 @@ describe('io-banner — ARIA role mapping', () => {
     },
   );
 
-  it('renders no ARIA role attributes when open=false', () => {
+  it('banner div is always rendered with a role attribute — visibility toggled via aria-hidden (#1076)', () => {
     const c = new IoBanner();
     c.variant = 'error';
     c.open = false;
     const attrs = bannerDivAttrs(c);
-    expect(attrs.role).toBeUndefined();
+    // #1076: live-region div is permanently mounted; aria-hidden hides it when closed
+    expect(attrs.role).toBe('alert');
+    expect(attrs['aria-hidden']).toBe('true');
   });
 });
 
@@ -148,11 +150,12 @@ describe('io-banner — slot content detection', () => {
     expect((c as any).hasContent).toBe(false);
   });
 
-  it('slot handler is absent when banner is closed (open=false)', () => {
+  it('slot handler is present even when banner is closed — banner div always mounted (#1076)', () => {
     const c = new IoBanner();
     c.open = false;
     const handler = getSlotchangeHandler(c);
-    expect(handler).toBeUndefined();
+    // #1076: the slot is always in the DOM so the live region is pre-established
+    expect(handler).toBeDefined();
   });
 });
 

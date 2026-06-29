@@ -6,7 +6,7 @@ exports[`io-radio — render snapshots > renders checked state 1`] = `
     <div class="radio-wrapper">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
         <span class="radio-control">
-          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="b" checked>
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="b" checked aria-describedby="io-radio-choice-4fzzzxjylrx-message io-radio-choice-4fzzzxjylrx-face-error">
           <span class="radio-custom radio-custom--checked" aria-hidden="true">
             <span class="radio-dot"></span>
           </span>
@@ -19,6 +19,8 @@ exports[`io-radio — render snapshots > renders checked state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
+    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>
@@ -34,7 +36,7 @@ exports[`io-radio — render snapshots > renders default state 1`] = `
     <div class="radio-wrapper">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
         <span class="radio-control">
-          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="a">
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="a" aria-describedby="io-radio-choice-4fzzzxjylrx-message io-radio-choice-4fzzzxjylrx-face-error">
           <span class="radio-custom" aria-hidden="true">
             <span class="radio-dot"></span>
           </span>
@@ -47,6 +49,8 @@ exports[`io-radio — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
+    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>
@@ -62,7 +66,7 @@ exports[`io-radio — render snapshots > renders disabled state 1`] = `
     <div class="radio-wrapper radio-wrapper--disabled">
       <label class="radio-label" for="io-radio-choice-4fzzzxjylrx">
         <span class="radio-control">
-          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="c" disabled>
+          <input id="io-radio-choice-4fzzzxjylrx" class="radio-native" type="radio" name="choice" value="c" disabled aria-describedby="io-radio-choice-4fzzzxjylrx-message io-radio-choice-4fzzzxjylrx-face-error">
           <span class="radio-custom" aria-hidden="true">
             <span class="radio-dot"></span>
           </span>
@@ -75,6 +79,8 @@ exports[`io-radio — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
+    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>

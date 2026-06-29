@@ -510,6 +510,12 @@
     "description": "Global medium shadow elevation."
   },
   {
+    "cssVar": "--io-checkbox-touch-target-min",
+    "classification": "public-api",
+    "component": "io-checkbox",
+    "description": "Minimum pointer/touch hit-zone for the checkbox control. The ::after pseudo-element expands to this size when the visual control is smaller. Defaults to 24px (WCAG 2.5.8 minimum)."
+  },
+  {
     "cssVar": "--io-checkbox-border-error-width",
     "classification": "public-api",
     "component": "io-checkbox",
@@ -856,6 +862,12 @@
     "classification": "internal",
     "component": "io-tooltip",
     "description": "Global overlay fade transition duration."
+  },
+  {
+    "cssVar": "--io-radio-touch-target-min",
+    "classification": "public-api",
+    "component": "io-radio",
+    "description": "Minimum pointer/touch hit-zone for the radio control. The ::after pseudo-element expands to this size when the visual control is smaller. Defaults to 24px (WCAG 2.5.8 minimum)."
   },
   {
     "cssVar": "--io-radio-border-error-width",

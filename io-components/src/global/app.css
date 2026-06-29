@@ -365,6 +365,7 @@
   --io-label-offset-top:         -2rem;
   --io-field-focus-offset-y:     -2px;
   --io-checkbox-size:            1rem;
+  --io-checkbox-touch-target-min: 24px;  /* #1092: minimum hit zone per WCAG 2.5.8 */
   --io-checkbox-radius:          2px;
   --io-form-checkbox-border-radius: var(--io-checkbox-radius);
   --io-checkbox-border-width:         1.5px;
@@ -405,6 +406,7 @@
   --io-tag-compact-padding-y:    var(--io-space-1); /* 4px — compact vertical padding override */
 
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
+  --io-radio-touch-target-min: 24px;    /* #1092: minimum hit zone per WCAG 2.5.8 */
   --io-radio-border-width:            1.5px;
   --io-radio-border-error-width:      2px;
   --io-radio-dot-size:                8px;        /* inner filled dot when checked */

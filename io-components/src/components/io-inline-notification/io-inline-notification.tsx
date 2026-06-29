@@ -101,14 +101,18 @@ export class IoInlineNotification {
     const HeadingTag = this.headingTag;
 
     return (
-      <Host
-        role={isAssertive ? 'alert' : 'status'}
-        aria-live={isAssertive ? 'assertive' : 'polite'}
-        aria-atomic="true"
-        aria-label={this.label || undefined}
-      >
+      <Host aria-label={this.label || undefined}>
         <style>{getInlineNotificationStyles(this.variant)}</style>
-        <div class={`inline-notification inline-notification--${this.variant}`}>
+        {/* #1024: Live region attributes moved from Host to the inner div.
+            A key based on variant forces a DOM re-mount when severity changes,
+            so screen readers see a fresh live region and re-announce. */}
+        <div
+          key={`inline-notification-${this.variant}`}
+          class={`inline-notification inline-notification--${this.variant}`}
+          role={isAssertive ? 'alert' : 'status'}
+          aria-live={isAssertive ? 'assertive' : 'polite'}
+          aria-atomic="true"
+        >
           <span class="inline-notification__icon" aria-hidden="true">
             {this.variant === 'info' && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

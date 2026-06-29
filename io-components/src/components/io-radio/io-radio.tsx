@@ -123,7 +123,10 @@ export class IoRadio {
 
     if (this.name) {
       const name = this.name;
-      document.querySelectorAll('io-radio').forEach((sibling) => {
+      // #941: scope sibling lookup to the closest io-radio-group when present so
+      // two groups on the same page with the same name do not interfere.
+      const scope = this.el.closest('io-radio-group') ?? document;
+      scope.querySelectorAll('io-radio').forEach((sibling) => {
         if (sibling !== this.el) {
           const s = sibling as HTMLElement & { name?: string; checked: boolean; syncFormValue?: () => void };
           if (s.name === name) {
@@ -165,8 +168,11 @@ export class IoRadio {
       // For a radio group, required is satisfied when *any* radio sharing the same
       // name is checked — not just this one. Without this check, form.checkValidity()
       // fails even when another radio in the group is selected.
-      const groupSatisfied = this.name
-        ? Array.from(document.querySelectorAll('io-radio')).some((r) => {
+      // #941: scope the sibling search to the closest io-radio-group when present
+      // so two separate groups with the same name do not satisfy each other's required.
+      const scope = this.el?.closest('io-radio-group') ?? (typeof document !== 'undefined' ? document : null);
+      const groupSatisfied = (this.name && scope)
+        ? Array.from(scope.querySelectorAll('io-radio')).some((r) => {
             const sibling = r as HTMLElement & { name?: string; checked?: boolean };
             return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
           })
@@ -208,12 +214,30 @@ export class IoRadio {
     this.change.emit({ value: this.value });
 
     // Mutual exclusion: when this radio becomes checked, deselect all other
-    // io-radio elements in the document that share the same name. Native
-    // <input type="radio"> handles this automatically within a single tree,
-    // but Shadow DOM boundaries prevent cross-component grouping.
+    // io-radio elements that share the same name. Native <input type="radio">
+    // handles this automatically within a single tree, but Shadow DOM boundaries
+    // prevent cross-component grouping.
+    // #941: scope to the closest io-radio-group when present; this ensures that
+    // two separate groups on the page sharing the same name do not interfere.
+    // When no ancestor group is found, fall back to document-wide query for
+    // backwards compatibility (deprecated usage — prints a dev warning below).
     if (input.checked && this.name) {
       const name = this.name;
-      document.querySelectorAll('io-radio').forEach((sibling) => {
+      const group = this.el.closest('io-radio-group');
+      if (!group) {
+        // Standalone io-radio without an io-radio-group parent. Document-wide
+        // mutual exclusion is kept for backwards compatibility but is deprecated
+        // because it breaks when two unrelated groups share the same name.
+        // Wrap io-radio elements in an io-radio-group to eliminate this warning.
+        if (typeof console !== 'undefined') {
+          console.warn(
+            `[io-radio] Mutual exclusion scoped to document because no ancestor <io-radio-group> was found (name="${name}"). ` +
+            'Wrap related radios in <io-radio-group> to avoid cross-group interference.',
+          );
+        }
+      }
+      const scope = group ?? document;
+      scope.querySelectorAll('io-radio').forEach((sibling) => {
         if (sibling !== this.el) {
           const s = sibling as HTMLElement & { name?: string; checked: boolean };
           if (s.name === name && s.checked) {
@@ -241,10 +265,13 @@ export class IoRadio {
     const showFaceError = this.faceInvalid && state !== 'error';
     const showMessage = showError && (hasMessageSlot || message);
 
+    // #1094: messageId and faceErrorId are always included in aria-describedby so
+    // the live-region relationship is established before any error occurs.
+    // The <p> wrappers are rendered unconditionally; only their inner text is gated.
     const describedBy = [
+      messageId,
+      faceErrorId,
       !hasState && !showFaceError && (hasDescriptionSlot || helperText) ? helperId : null,
-      hasState && (hasMessageSlot || message) ? messageId : null,
-      showFaceError ? faceErrorId : null,
     ]
       .filter((id): id is string => Boolean(id))
       .join(' ');
@@ -292,24 +319,36 @@ export class IoRadio {
             </span>
           </label>
         </div>
-        {showError && (
-          <p id={messageId} class={`radio-message radio-message--error${showMessage ? '' : ' radio-message--hidden'}`} role="alert">
+        {/* #1094: State message live-region is always mounted so aria-describedby
+            can reference it before an error occurs. Only inner content is gated. */}
+        <p
+          id={messageId}
+          class={[
+            'radio-message',
+            showError ? 'radio-message--error' : showSuccess ? 'radio-message--success' : showWarning ? 'radio-message--warning' : '',
+            showMessage ? '' : 'radio-message--hidden',
+          ].filter(Boolean).join(' ')}
+          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
+          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
+          aria-atomic={showMessage ? 'true' : undefined}
+        >
+          {showMessage && (
             <span class={hasMessageSlot ? 'radio-message__slot' : 'radio-message__slot radio-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {(showSuccess || showWarning) && message && (
-          <p id={messageId} class={`radio-message radio-message--${showSuccess ? 'success' : 'warning'}`} role="status">
-            {message}
-          </p>
-        )}
-        {showFaceError && (
-          <p id={faceErrorId} class="radio-message radio-message--error" role="alert">
-            Please select an option
-          </p>
-        )}
+          )}
+          {showMessage && !hasMessageSlot && message}
+        </p>
+        {/* #1094: FACE error live-region always mounted; inner text gated by showFaceError */}
+        <p
+          id={faceErrorId}
+          class={`radio-message radio-message--error${showFaceError ? '' : ' radio-message--hidden'}`}
+          role="alert"
+          aria-live="assertive"
+          aria-atomic={showFaceError ? 'true' : undefined}
+        >
+          {showFaceError && 'Please select an option'}
+        </p>
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`radio-helper${hasDescriptionSlot || helperText ? '' : ' radio-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'radio-description__slot' : 'radio-description__slot radio-description__slot--hidden'}>

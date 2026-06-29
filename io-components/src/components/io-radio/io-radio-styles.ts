@@ -53,6 +53,17 @@ export function getRadioStyles(): string {
       flex-shrink: 0;
     }
 
+    /* #1092: ::after extends the clickable hit zone to at least 24×24 px
+       (WCAG 2.5.8 Target Size Minimum) without affecting the visual indicator.
+       --io-radio-touch-target-min defaults to 24px per the WCAG minimum. */
+    .radio-control::after {
+      content: '';
+      position: absolute;
+      inset: calc(
+        -1 * max(0px, (var(--io-radio-touch-target-min, 24px) - var(--io-radio-size, 1rem)) / 2)
+      );
+    }
+
     /* Visually hidden but focusable native input */
     .radio-native {
       position: absolute;

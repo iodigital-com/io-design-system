@@ -134,12 +134,12 @@ describe('io-checkbox — named slots (label, description, message)', () => {
     const pCalls = vi.mocked(h).mock.calls.filter(
       (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-message'),
     );
-    // Filter out the face-error paragraph
-    const errorCalls = pCalls.filter(
-      (call) => !(call[2] as string[])?.includes('Please check this box'),
+    // #1094: Filter to the state-message paragraph (id ends with "-message", not "-face-error")
+    const messageCalls = pCalls.filter(
+      (call) => String((call[1] as Record<string, unknown>)?.id ?? '').endsWith('-message'),
     );
-    expect(errorCalls.length).toBeGreaterThan(0);
-    const pProps = errorCalls[0][1] as Record<string, unknown>;
+    expect(messageCalls.length).toBeGreaterThan(0);
+    const pProps = messageCalls[0][1] as Record<string, unknown>;
     expect(String(pProps['class'] ?? '')).not.toContain('checkbox-message--hidden');
   });
 

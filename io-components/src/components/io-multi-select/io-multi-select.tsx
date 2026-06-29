@@ -25,7 +25,6 @@ import {
   parseMultiSelectContent,
   getMultiSelectDisplayText,
 } from './io-multi-select-utils';
-import { getMatchingOptionIndex } from '../io-select/io-select-utils';
 import { syncFormState } from '../../utils/form/sync-form-state';
 
 import type { IoIconName } from '../../utils/icons';
@@ -35,6 +34,7 @@ import type {
   IoMultiSelectDirection,
   IoMultiSelectState,
   IoMultiSelectChangeDetail,
+  IoMultiSelectLimitReachedDetail,
 } from './types';
 
 /**
@@ -79,10 +79,8 @@ export class IoMultiSelect {
 
   /**
    * Currently selected values. Mutable — updated internally on user selection.
-   * Accepts string or number values. Numeric values are preserved in the `change` event
-   * but serialised to string by the browser's FormData API on form submission.
    */
-  @Prop({ mutable: true }) value: (string | number)[] = [];
+  @Prop({ mutable: true }) value: string[] = [];
 
   /** Placeholder shown in the trigger when nothing is selected. */
   @Prop() placeholder = 'Select options';
@@ -98,11 +96,24 @@ export class IoMultiSelect {
    * - 'none'    — default
    * - 'error'   — error border + red message
    * - 'success' — success border + green message
+   * - 'warning' — warning border + amber message
    */
   @Prop({ reflect: true }) state: IoMultiSelectState = 'none';
 
-  /** Message text shown below the trigger (error or helper). */
+  /** Message text shown below the trigger (error, success, warning, or helper). */
   @Prop() message: string | undefined;
+
+  /**
+   * Helper text shown below the trigger. Hidden in error state; replaced by the
+   * `slot="description"` slot when that slot has content.
+   */
+  @Prop() helperText: string | undefined;
+
+  /**
+   * Supplementary description rendered as a persistent `<p>` below the field.
+   * Always visible — not hidden in error state. Also settable via `slot="description"`.
+   */
+  @Prop() description: string | undefined;
 
   /**
    * When true, shows a search input inside the dropdown to filter options.
@@ -124,6 +135,14 @@ export class IoMultiSelect {
    */
   @Prop() maxDisplay = 3;
 
+  /**
+   * Maximum number of selections allowed.
+   * When a user tries to add a value beyond this cap, the selection is blocked
+   * and a `limitreached` event is emitted.
+   * Unset (undefined) means no limit.
+   */
+  @Prop() maxSelections: number | undefined;
+
   // ── State ─────────────────────────────────────────────────────────────────
 
   /** Mirrors FACE invalidity so the component re-renders on form validation. */
@@ -144,11 +163,14 @@ export class IoMultiSelect {
   /** Current filter query string. */
   @State() private filterQuery = '';
 
+  /** Whether the description slot has content. */
+  @State() private hasDescriptionSlot = false;
+
   // ── Events ────────────────────────────────────────────────────────────────
 
   /**
    * Fires when the selection changes.
-   * Detail: `{ value: string[], name: string }`
+   * Detail: `{ value: (string | number)[], name: string }`
    */
   @Event() change!: EventEmitter<IoMultiSelectChangeDetail>;
 
@@ -163,6 +185,12 @@ export class IoMultiSelect {
    * Detail: `{ open: boolean }`
    */
   @Event({ bubbles: false }) toggle!: EventEmitter<{ open: boolean }>;
+
+  /**
+   * Fires when the user tries to add a selection beyond `maxSelections`.
+   * Detail: `{ max: number, attempted: string | number }`
+   */
+  @Event() limitreached!: EventEmitter<IoMultiSelectLimitReachedDetail>;
 
   // ── Public methods ────────────────────────────────────────────────────────
 
@@ -196,6 +224,8 @@ export class IoMultiSelect {
   /** Typeahead: buffered key presses cleared after TYPEAHEAD_TIMEOUT ms of inactivity */
   private typeaheadBuffer = '';
   private typeaheadTimer: ReturnType<typeof setTimeout> | undefined;
+  /** SSR/hydration guard: re-parse timeout for late-arriving option children */
+  private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
   /** autoUpdate cleanup function for popover positioning */
   private autoUpdateCleanup?: () => void;
   /** True when browser supports native Popover API */
@@ -239,6 +269,10 @@ export class IoMultiSelect {
     this.removeClickOutside();
     this.autoUpdateCleanup?.();
     this.autoUpdateCleanup = undefined;
+    if (this.lateParseTimeout !== undefined) {
+      clearTimeout(this.lateParseTimeout);
+      this.lateParseTimeout = undefined;
+    }
     if (this.typeaheadTimer !== undefined) {
       clearTimeout(this.typeaheadTimer);
       this.typeaheadTimer = undefined;
@@ -401,11 +435,21 @@ export class IoMultiSelect {
   private toggleOption(opt: IoSelectOption) {
     if (opt.disabled) return;
     const current = this.value ?? [];
-    const next = current.includes(opt.value)
-      ? current.filter(v => v !== opt.value)
-      : [...current, opt.value];
-    this.value = next;
-    this.change.emit({ value: [...next], name: this.name });
+    if (current.includes(opt.value)) {
+      // Deselect — always allowed
+      const next = current.filter(v => v !== opt.value);
+      this.value = next;
+      this.change.emit({ value: [...next], name: this.name });
+    } else {
+      // Select — check maxSelections cap
+      if (this.maxSelections !== undefined && current.length >= this.maxSelections) {
+        this.limitreached.emit({ max: this.maxSelections, attempted: opt.value });
+        return;
+      }
+      const next = [...current, opt.value];
+      this.value = next;
+      this.change.emit({ value: [...next], name: this.name });
+    }
   }
 
   private removeChip(value: string | number) {
@@ -473,9 +517,18 @@ export class IoMultiSelect {
       this.typeaheadTimer = undefined;
     }, TYPEAHEAD_TIMEOUT);
 
-    const idx = getMatchingOptionIndex(this.filteredOptions, this.typeaheadBuffer, this.activeIndex);
-    if (idx >= 0) {
-      this.activeIndex = idx;
+    // Find the first non-disabled option whose label starts with the buffer.
+    // Start searching after the current activeIndex so repeated presses cycle through matches.
+    const opts = this.filteredOptions;
+    const buf = this.typeaheadBuffer;
+    const start = this.activeIndex >= 0 ? this.activeIndex + 1 : 0;
+    // Search from start to end, then wrap around from 0 to start
+    const searchOrder = [...opts.slice(start), ...opts.slice(0, start)];
+    const found = searchOrder.findIndex(o => !o.disabled && o.label.toLowerCase().startsWith(buf));
+    if (found >= 0) {
+      // Translate back to absolute index
+      const absIdx = (start + found) % opts.length;
+      this.activeIndex = absIdx;
     }
   }
 
@@ -596,12 +649,21 @@ export class IoMultiSelect {
     }
   };
 
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedNodes({ flatten: true }).length > 0;
+  };
+
   // ── Render helpers ────────────────────────────────────────────────────────
 
   private renderOption(opt: IoSelectOption, flatIndex: number) {
     const isSelected = (this.value ?? []).includes(opt.value);
     const isFocused = flatIndex === this.activeIndex;
     const listboxId = `${this.fieldId}-listbox`;
+    // When maxSelections is set and the limit is reached, disable unselected options
+    const atLimit = this.maxSelections !== undefined && (this.value ?? []).length >= this.maxSelections;
+    const isDisabledByLimit = atLimit && !isSelected;
+    const effectiveDisabled = opt.disabled || isDisabledByLimit;
 
     return (
       <li
@@ -609,9 +671,9 @@ export class IoMultiSelect {
         id={getMultiSelectOptionId(listboxId, flatIndex)}
         role="option"
         aria-selected={String(isSelected)}
-        aria-disabled={opt.disabled ? 'true' : undefined}
-        class={getMultiSelectOptionClass(isSelected, opt.disabled ?? false, isFocused)}
-        onClick={opt.disabled ? undefined : () => this.toggleOption(opt)}
+        aria-disabled={effectiveDisabled ? 'true' : undefined}
+        class={getMultiSelectOptionClass(isSelected, effectiveDisabled, isFocused)}
+        onClick={effectiveDisabled ? undefined : () => this.toggleOption(opt)}
       >
         <span class="multi-select-option__checkbox" aria-hidden="true">
           {isSelected && (
@@ -682,6 +744,7 @@ export class IoMultiSelect {
 
   /**
    * @slot - Default slot. io-option and io-optgroup children parsed at load time to build the option list.
+   * @slot description - Helper text content (rich HTML). Replaces `helperText` when present.
    */
   render() {
     const {
@@ -690,19 +753,25 @@ export class IoMultiSelect {
       disabled,
       state,
       message,
+      helperText,
+      description,
       isOpen,
       activeIndex,
       filterQuery,
       faceInvalid,
       hideLabel,
+      hasDescriptionSlot,
     } = this;
 
     const showError = state === 'error' || faceInvalid;
     const showSuccess = state === 'success' && !showError;
+    const showWarning = state === 'warning' && !showError;
+
     const messageClass = [
       'multi-select-message',
       showError ? 'multi-select-message--error' : '',
       showSuccess ? 'multi-select-message--success' : '',
+      showWarning ? 'multi-select-message--warning' : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -712,6 +781,7 @@ export class IoMultiSelect {
     const triggerId = `${fieldId}-trigger`;
     const listboxId = `${fieldId}-listbox`;
     const messageId = `${fieldId}-message`;
+    const descriptionId = `${fieldId}-description`;
 
     const activeOptId =
       activeIndex >= 0 ? getMultiSelectOptionId(listboxId, activeIndex) : undefined;
@@ -725,16 +795,37 @@ export class IoMultiSelect {
       this.maxDisplay,
     );
 
+    // Build aria-label for trigger when selection exists (e.g. "2 selected: Netherlands, Belgium")
+    const selectedLabels = selectedValues
+      .map(v => this.flatOptions.find(o => o.value === v)?.label ?? String(v));
+    const triggerAriaLabel = hideLabel && label
+      ? label
+      : selectedValues.length > 0
+        ? `${label}: ${selectedLabels.join(', ')}`
+        : undefined;
+
     const faceErrorId = `${fieldId}-face-error`;
     const showFaceError = faceInvalid && state !== 'error' && !message;
-    const describedBy = [
+
+    // maxSelections helper text: "X of Y selected"
+    const showMaxHelper = this.maxSelections !== undefined && selectedValues.length > 0;
+    const maxHelperId = `${fieldId}-max-helper`;
+
+    const describedByParts = [
       message ? messageId : '',
       showFaceError ? faceErrorId : '',
-    ].filter(Boolean).join(' ') || undefined;
+      description ? descriptionId : '',
+      showMaxHelper ? maxHelperId : '',
+    ].filter(Boolean);
+    const describedBy = describedByParts.length > 0 ? describedByParts.join(' ') : undefined;
+
     const wrapperClass = getMultiSelectWrapperClass(
-      showError ? 'error' : showSuccess ? 'success' : 'none',
+      showError ? 'error' : showSuccess ? 'success' : showWarning ? 'warning' : 'none',
       disabled,
     );
+
+    // showDescription: show helperText/description slot when not in error state
+    const showDescription = !showError && (hasDescriptionSlot || helperText);
 
     return (
       <Host>
@@ -806,46 +897,70 @@ export class IoMultiSelect {
             </div>
           )}
 
-          {/* Trigger button */}
-          <button
-            type="button"
-            id={triggerId}
-            ref={el => {
-              this.triggerEl = el as HTMLButtonElement;
-            }}
-            class="multi-select-trigger"
-            role="combobox"
-            aria-haspopup="listbox"
-            aria-expanded={String(isOpen)}
-            aria-labelledby={hideLabel ? undefined : labelId}
-            aria-label={hideLabel && label ? label : undefined}
-            aria-controls={listboxId}
-            aria-activedescendant={activeOptId}
-            aria-required={required ? 'true' : undefined}
-            aria-invalid={(showError) ? 'true' : undefined}
-            aria-describedby={describedBy}
-            disabled={disabled}
-            onClick={this.handleTriggerClick}
-            onKeyDown={this.handleTriggerKeyDown}
-            onBlur={this.handleTriggerBlur}
-          >
-            <span class="multi-select-trigger__text">
-              {displayText ?? (
-                <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
-              )}
-            </span>
-            <span class="multi-select-trigger__chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M4 6l4 4 4-4"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </button>
+          {/* Trigger row: combobox button + optional clear button (#1111) */}
+          <div class="multi-select-trigger-row">
+            <button
+              type="button"
+              id={triggerId}
+              ref={el => {
+                this.triggerEl = el as HTMLButtonElement;
+              }}
+              class="multi-select-trigger"
+              role="combobox"
+              aria-haspopup="listbox"
+              aria-expanded={String(isOpen)}
+              aria-labelledby={hideLabel ? undefined : labelId}
+              aria-label={triggerAriaLabel}
+              aria-controls={listboxId}
+              aria-activedescendant={activeOptId}
+              aria-required={required ? 'true' : undefined}
+              aria-invalid={(showError) ? 'true' : undefined}
+              aria-describedby={describedBy}
+              disabled={disabled}
+              onClick={this.handleTriggerClick}
+              onKeyDown={this.handleTriggerKeyDown}
+              onBlur={this.handleTriggerBlur}
+            >
+              <span class="multi-select-trigger__text">
+                {displayText ?? (
+                  <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
+                )}
+              </span>
+              <span class="multi-select-trigger__chevron" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M4 6l4 4 4-4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+
+            {/* Inline clear button adjacent to trigger (#1111) — shown when selections exist */}
+            {selectedValues.length > 0 && !disabled && (
+              <button
+                type="button"
+                class="multi-select-trigger__clear"
+                aria-label="Clear selection"
+                onClick={e => {
+                  e.stopPropagation();
+                  this.clearAll();
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path
+                    d="M2 2l10 10M12 2L2 12"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
 
           {/* Dropdown */}
           <div
@@ -893,7 +1008,7 @@ export class IoMultiSelect {
               )}
             </ul>
 
-            {/* Footer clear all */}
+            {/* Footer clear all (in dropdown) */}
             {selectedValues.length > 0 && (
               <div class="multi-select-footer">
                 <button
@@ -909,9 +1024,9 @@ export class IoMultiSelect {
           </div>
         </div>
 
-        {/* Message (error / success / helper) */}
+        {/* Message (error / success / warning / helper) */}
         {message && (
-          <p id={messageId} class={messageClass} role={showError ? 'alert' : undefined}>
+          <p id={messageId} class={messageClass} role={showError ? 'alert' : 'status'}>
             {message}
           </p>
         )}
@@ -920,6 +1035,35 @@ export class IoMultiSelect {
         {showFaceError && (
           <p id={faceErrorId} class="multi-select-message multi-select-message--error" role="alert">
             Please select at least one option
+          </p>
+        )}
+
+        {/* Helper text / description slot — hidden in error state */}
+        {showDescription && (
+          <span class="multi-select-description">
+            <span class={hasDescriptionSlot ? 'multi-select-description__slot' : 'multi-select-description__slot multi-select-description__slot--hidden'}>
+              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+            </span>
+            {!hasDescriptionSlot && helperText}
+          </span>
+        )}
+        {!showDescription && (
+          <span class="multi-select-description__slot multi-select-description__slot--hidden" aria-hidden="true">
+            <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+          </span>
+        )}
+
+        {/* Persistent description — always visible */}
+        {description && (
+          <p id={descriptionId} class="multi-select-description multi-select-description--persistent">
+            {description}
+          </p>
+        )}
+
+        {/* maxSelections helper text: "X of Y selected" */}
+        {showMaxHelper && (
+          <p id={maxHelperId} class="multi-select-message multi-select-message--limit" aria-live="polite">
+            {selectedValues.length} of {this.maxSelections} selected
           </p>
         )}
       </Host>

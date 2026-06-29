@@ -28,7 +28,7 @@ import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
-import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
+import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
@@ -76,7 +76,7 @@ export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
-export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
+export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
@@ -1744,6 +1744,10 @@ export namespace Components {
          */
         "checkValidity": () => Promise<boolean>;
         /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Always visible — not hidden in error state. Also settable via `slot="description"`.
+         */
+        "description": string | undefined;
+        /**
           * Disables the multi-select.
           * @default false
          */
@@ -1759,6 +1763,10 @@ export namespace Components {
          */
         "filter": boolean;
         /**
+          * Helper text shown below the trigger. Hidden in error state; replaced by the `slot="description"` slot when that slot has content.
+         */
+        "helperText": string | undefined;
+        /**
           * Hides the visible label and collapses its space; aria-label is set on the trigger/listbox when a label value is provided
           * @default false
          */
@@ -1773,7 +1781,11 @@ export namespace Components {
          */
         "maxDisplay": number;
         /**
-          * Message text shown below the trigger (error or helper).
+          * Maximum number of selections allowed. When a user tries to add a value beyond this cap, the selection is blocked and a `limitreached` event is emitted. Unset (undefined) means no limit.
+         */
+        "maxSelections": number | undefined;
+        /**
+          * Message text shown below the trigger (error, success, warning, or helper).
          */
         "message": string | undefined;
         /**
@@ -1799,7 +1811,7 @@ export namespace Components {
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
         /**
-          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message
+          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message - 'warning' — warning border + amber message
           * @default 'none'
          */
         "state": IoMultiSelectState;
@@ -4354,6 +4366,7 @@ declare global {
         "change": IoMultiSelectChangeDetail;
         "blur": FocusEvent;
         "toggle": { open: boolean };
+        "limitreached": IoMultiSelectLimitReachedDetail;
     }
     /**
      * io-multi-select
@@ -7105,6 +7118,10 @@ declare namespace LocalJSX {
      */
     interface IoMultiSelect {
         /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Always visible — not hidden in error state. Also settable via `slot="description"`.
+         */
+        "description"?: string | undefined;
+        /**
           * Disables the multi-select.
           * @default false
          */
@@ -7124,6 +7141,10 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
+          * Helper text shown below the trigger. Hidden in error state; replaced by the `slot="description"` slot when that slot has content.
+         */
+        "helperText"?: string | undefined;
+        /**
           * Hides the visible label and collapses its space; aria-label is set on the trigger/listbox when a label value is provided
           * @default false
          */
@@ -7138,7 +7159,11 @@ declare namespace LocalJSX {
          */
         "maxDisplay"?: number;
         /**
-          * Message text shown below the trigger (error or helper).
+          * Maximum number of selections allowed. When a user tries to add a value beyond this cap, the selection is blocked and a `limitreached` event is emitted. Unset (undefined) means no limit.
+         */
+        "maxSelections"?: number | undefined;
+        /**
+          * Message text shown below the trigger (error, success, warning, or helper).
          */
         "message"?: string | undefined;
         /**
@@ -7150,9 +7175,13 @@ declare namespace LocalJSX {
          */
         "onBlur"?: (event: IoMultiSelectCustomEvent<FocusEvent>) => void;
         /**
-          * Fires when the selection changes. Detail: `{ value: string[], name: string }`
+          * Fires when the selection changes. Detail: `{ value: (string | number)[], name: string }`
          */
         "onChange"?: (event: IoMultiSelectCustomEvent<IoMultiSelectChangeDetail>) => void;
+        /**
+          * Fires when the user tries to add a selection beyond `maxSelections`. Detail: `{ max: number, attempted: string | number }`
+         */
+        "onLimitreached"?: (event: IoMultiSelectCustomEvent<IoMultiSelectLimitReachedDetail>) => void;
         /**
           * Fires whenever the dropdown opens or closes. Detail: `{ open: boolean }`
          */
@@ -7168,7 +7197,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message
+          * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message - 'warning' — warning border + amber message
           * @default 'none'
          */
         "state"?: IoMultiSelectState;
@@ -9321,9 +9350,12 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "state": IoMultiSelectState;
         "message": string | undefined;
+        "helperText": string | undefined;
+        "description": string | undefined;
         "filter": boolean;
         "dropdownDirection": IoMultiSelectDirection;
         "maxDisplay": number;
+        "maxSelections": number | undefined;
     }
     interface IoOptgroupAttributes {
         "label": string;

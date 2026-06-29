@@ -31,7 +31,7 @@ import { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } fro
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
-import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
+import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoPopoverPlacement } from "./components/io-popover/types";
 import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
@@ -79,7 +79,7 @@ export { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } fro
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
-export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
+export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoPopoverPlacement } from "./components/io-popover/types";
 export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
@@ -1970,6 +1970,10 @@ export namespace Components {
          */
         "checkValidity": () => Promise<boolean>;
         /**
+          * Optional contextual description rendered between the label and the slots (e.g. "We sent a code to ja***@example.com"). Wired into aria-describedby.
+         */
+        "description": string | undefined;
+        /**
           * Disables all inputs
           * @default false
          */
@@ -2002,6 +2006,11 @@ export namespace Components {
          */
         "message": string | undefined;
         /**
+          * Character mode: 'numeric' (default) accepts only digits; 'alphanumeric' accepts letters and digits
+          * @default 'numeric'
+         */
+        "mode": IoPinCodeMode;
+        /**
           * HTML form field name
          */
         "name": string | undefined;
@@ -2028,6 +2037,10 @@ export namespace Components {
           * @default 'number'
          */
         "type": IoPinCodeType;
+        /**
+          * Override the default required-field validation message. When not set the built-in default is used.
+         */
+        "validationMessage": string | undefined;
         /**
           * Current PIN value — all filled digits concatenated
           * @default ''
@@ -7382,6 +7395,10 @@ declare namespace LocalJSX {
      */
     interface IoPinCode {
         /**
+          * Optional contextual description rendered between the label and the slots (e.g. "We sent a code to ja***@example.com"). Wired into aria-describedby.
+         */
+        "description"?: string | undefined;
+        /**
           * Disables all inputs
           * @default false
          */
@@ -7414,6 +7431,11 @@ declare namespace LocalJSX {
          */
         "message"?: string | undefined;
         /**
+          * Character mode: 'numeric' (default) accepts only digits; 'alphanumeric' accepts letters and digits
+          * @default 'numeric'
+         */
+        "mode"?: IoPinCodeMode;
+        /**
           * HTML form field name
          */
         "name"?: string | undefined;
@@ -7440,6 +7462,10 @@ declare namespace LocalJSX {
           * @default 'number'
          */
         "type"?: IoPinCodeType;
+        /**
+          * Override the default required-field validation message. When not set the built-in default is used.
+         */
+        "validationMessage"?: string | undefined;
         /**
           * Current PIN value — all filled digits concatenated
           * @default ''
@@ -9413,6 +9439,7 @@ declare namespace LocalJSX {
         "hideLabel": boolean;
         "length": IoPinCodeLength;
         "type": IoPinCodeType;
+        "mode": IoPinCodeMode;
         "value": string;
         "name": string | undefined;
         "required": boolean;
@@ -9421,6 +9448,8 @@ declare namespace LocalJSX {
         "form": string;
         "state": IoPinCodeState;
         "message": string | undefined;
+        "description": string | undefined;
+        "validationMessage": string | undefined;
     }
     interface IoPopoverAttributes {
         "placement": IoPopoverPlacement;

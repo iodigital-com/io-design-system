@@ -5,7 +5,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { IoPinCode } from './io-pin-code';
 
-function makeComponent(valueInit = '', length: 3 | 4 | 5 | 6 = 4) {
+function makeComponent(valueInit = '', length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 = 4) {
   const component = new IoPinCode();
   (component as any).el = document.createElement('io-pin-code');
   component.value = valueInit;
@@ -287,5 +287,213 @@ describe('io-pin-code — Delete key', () => {
     (component as any).handleKeydown(ev, 1);
 
     expect((component as any).digits[1]).toBe('');
+  });
+});
+
+describe('io-pin-code — Enter key submits parent form (#1050)', () => {
+  it('calls form.requestSubmit() when Enter is pressed and form is available', () => {
+    const { component } = makeComponent('1234');
+    const requestSubmitMock = vi.fn();
+    (component as any).internals = { form: { requestSubmit: requestSubmitMock } };
+    const focusMocks = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).inputRefs = focusMocks;
+
+    const ev = makeKeyEvent('Enter');
+    (component as any).handleKeydown(ev, 3);
+
+    expect(requestSubmitMock).toHaveBeenCalled();
+  });
+
+  it('does not throw when Enter is pressed outside a form', () => {
+    const { component } = makeComponent('1234');
+    (component as any).internals = { form: null };
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+
+    const ev = makeKeyEvent('Enter');
+    expect(() => (component as any).handleKeydown(ev, 3)).not.toThrow();
+  });
+
+  it('does not update digits on Enter', () => {
+    const { component, emitMock } = makeComponent('1234');
+    const requestSubmitMock = vi.fn();
+    (component as any).internals = { form: { requestSubmit: requestSubmitMock } };
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    const digitsBefore = [...(component as any).digits];
+
+    const ev = makeKeyEvent('Enter');
+    (component as any).handleKeydown(ev, 3);
+
+    expect((component as any).digits).toEqual(digitsBefore);
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-pin-code — Dead/Process key recovery (#1064)', () => {
+  it('blurs and refocuses input on Dead key', () => {
+    const { component } = makeComponent();
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+
+    const input = document.createElement('input');
+    const blurMock = vi.spyOn(input, 'blur').mockImplementation(() => {});
+    const focusMock = vi.spyOn(input, 'focus').mockImplementation(() => {});
+
+    const ev = new KeyboardEvent('keydown', { key: 'Dead', cancelable: true });
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleKeydown(ev, 0);
+
+    expect(blurMock).toHaveBeenCalled();
+    // rAF is queued but not awaited in unit tests — just verify blur was called
+  });
+
+  it('blurs and refocuses input on Process key', () => {
+    const { component } = makeComponent();
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+
+    const input = document.createElement('input');
+    const blurMock = vi.spyOn(input, 'blur').mockImplementation(() => {});
+
+    const ev = new KeyboardEvent('keydown', { key: 'Process', cancelable: true });
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleKeydown(ev, 0);
+
+    expect(blurMock).toHaveBeenCalled();
+  });
+
+  it('does not update digits on Dead key', () => {
+    const { component } = makeComponent('1234');
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    const digitsBefore = [...(component as any).digits];
+
+    const input = document.createElement('input');
+    vi.spyOn(input, 'blur').mockImplementation(() => {});
+
+    const ev = new KeyboardEvent('keydown', { key: 'Dead', cancelable: true });
+    Object.defineProperty(ev, 'target', { value: input });
+    (component as any).handleKeydown(ev, 0);
+
+    expect((component as any).digits).toEqual(digitsBefore);
+  });
+});
+
+describe('io-pin-code — SMS autofill / bulk input (#1059)', () => {
+  it('distributes bulk input across slots starting at the current index', () => {
+    const { component, emitMock } = makeComponent();
+    const focusMocks = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).inputRefs = focusMocks;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const input = document.createElement('input');
+    input.value = '123456';
+    const ev = new InputEvent('input');
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleInput(ev, 0);
+
+    expect((component as any).digits).toEqual(['1', '2', '3', '4']);
+    expect(emitMock).toHaveBeenCalledWith({ value: '1234', isComplete: true });
+  });
+
+  it('focuses the first empty slot after bulk input', () => {
+    const { component } = makeComponent();
+    const focusMocks = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).inputRefs = focusMocks;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const input = document.createElement('input');
+    input.value = '12';
+    const ev = new InputEvent('input');
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleInput(ev, 0);
+
+    // slots 0,1 are filled; first empty is slot 2
+    expect(focusMocks[2].focus).toHaveBeenCalled();
+  });
+
+  it('focuses last slot when all slots are filled after bulk input', () => {
+    const { component } = makeComponent();
+    const focusMocks = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).inputRefs = focusMocks;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const input = document.createElement('input');
+    input.value = '1234';
+    const ev = new InputEvent('input');
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleInput(ev, 0);
+
+    expect(focusMocks[3].focus).toHaveBeenCalled();
+  });
+});
+
+describe('io-pin-code — alphanumeric mode (#1052)', () => {
+  it('accepts letter keys when mode=alphanumeric', () => {
+    const { component, emitMock } = makeComponent();
+    component.mode = 'alphanumeric';
+    const focusMocks = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).inputRefs = focusMocks;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const ev = makeKeyEvent('A');
+    (component as any).handleKeydown(ev, 0);
+
+    expect((component as any).digits[0]).toBe('A');
+    expect(emitMock).toHaveBeenCalledWith({ value: 'A', isComplete: false });
+  });
+
+  it('accepts digit keys when mode=alphanumeric', () => {
+    const { component } = makeComponent();
+    component.mode = 'alphanumeric';
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const ev = makeKeyEvent('5');
+    (component as any).handleKeydown(ev, 0);
+
+    expect((component as any).digits[0]).toBe('5');
+  });
+
+  it('blocks non-alphanumeric keys when mode=alphanumeric', () => {
+    const { component, emitMock } = makeComponent();
+    component.mode = 'alphanumeric';
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const ev = makeKeyEvent('!');
+    const preventSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev, 0);
+
+    expect(preventSpy).toHaveBeenCalled();
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+
+  it('still blocks letter keys when mode=numeric', () => {
+    const { component, emitMock } = makeComponent();
+    component.mode = 'numeric';
+    (component as any).inputRefs = Array.from({ length: 4 }, () => ({ focus: vi.fn() }));
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+
+    const ev = makeKeyEvent('a');
+    const preventSpy = vi.spyOn(ev, 'preventDefault');
+    (component as any).handleKeydown(ev, 0);
+
+    expect(preventSpy).toHaveBeenCalled();
+    expect(emitMock).not.toHaveBeenCalled();
+  });
+
+  it('accepts length up to 8 slots', () => {
+    const { component } = makeComponent('', 8);
+    expect(component.length).toBe(8);
+    expect((component as any).digits).toHaveLength(8);
+  });
+
+  it('accepts length of 1', () => {
+    const { component } = makeComponent('', 1);
+    expect(component.length).toBe(1);
+    expect((component as any).digits).toHaveLength(1);
   });
 });

@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 
 import { getFlyoutStyles } from './io-flyout-styles';
+import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
 import type { IoFlyoutPosition } from './types';
 
 const FOCUSABLE_SELECTORS = [
@@ -75,6 +76,7 @@ export class IoFlyout {
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private focusTrigger?: Element;
+  private _scrollLockHeld = false;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -154,7 +156,10 @@ export class IoFlyout {
 
   disconnectedCallback() {
     this.detachFocusTrap();
-    document.body.style.overflow = '';
+    if (this._scrollLockHeld) {
+      releaseScrollLock();
+      this._scrollLockHeld = false;
+    }
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -172,7 +177,10 @@ export class IoFlyout {
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
-    document.body.style.overflow = 'hidden';
+    if (!this._scrollLockHeld) {
+      acquireScrollLock();
+      this._scrollLockHeld = true;
+    }
 
     if (this.panelEl) {
       this.panelEl.removeAttribute('aria-hidden');
@@ -189,7 +197,10 @@ export class IoFlyout {
   }
 
   private applyClosedState() {
-    document.body.style.overflow = '';
+    if (this._scrollLockHeld) {
+      releaseScrollLock();
+      this._scrollLockHeld = false;
+    }
     this.detachFocusTrap();
 
     if (this.panelEl) {

@@ -1,8 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 
 import { getDrawerStyles } from './io-drawer-styles';
-import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon, isBackdropClick } from './io-drawer-utils';
+import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon } from './io-drawer-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { supportsOverlayTransition } from '../../utils/top-layer/supportsOverlayTransition';
 
 import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 
@@ -53,11 +54,8 @@ export class IoDrawer {
   // Set to true before any user-action handler sets open=false so
   // onOpenChange can distinguish user-initiated closes from programmatic ones.
   private _userInitiatedClose = false;
-
-  // ── Focus restoration (WCAG 2.4.3) ───────────────────────────
-  // Capture the element that had focus when the drawer opened so focus
-  // can be returned to it on close (keyboard / screen-reader users).
-  private focusTrigger: Element | null = null;
+  private _pendingCloseTimeout?: ReturnType<typeof setTimeout>;
+  private _pendingCloseHandler?: () => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -181,6 +179,7 @@ export class IoDrawer {
   }
 
   disconnectedCallback() {
+    this._clearPendingClose();
     this.detachTransitionEndListener();
     this.removeInert();
   }
@@ -197,8 +196,7 @@ export class IoDrawer {
     const dialog = this.el?.shadowRoot?.querySelector<HTMLDialogElement>('dialog');
     if (!dialog) return;
     if (newVal) {
-      // Capture trigger BEFORE showModal() moves focus into the dialog (WCAG 2.4.3).
-      this.focusTrigger = document.activeElement;
+      this._clearPendingClose();
       if (!dialog.open) {
         // Restart the slide-in CSS animation on every open so subsequent opens
         // animate correctly (not just the first one after mount).
@@ -208,22 +206,76 @@ export class IoDrawer {
       }
       this.applyInert();
     } else {
-      if (dialog.open) {
-        dialog.close();
-      }
       this.removeInert();
       // Only emit dismiss for user-initiated closes (close button, backdrop, ESC).
       if (this._userInitiatedClose) {
         this.dismissEvent.emit();
       }
       this._userInitiatedClose = false;
-      // Restore focus to the element that opened the drawer (WCAG 2.4.3).
-      (this.focusTrigger as HTMLElement | null)?.focus?.();
-      this.focusTrigger = null;
+      // Defer dialog.close() on Safari/Firefox so the CSS exit transition completes
+      // before the dialog is removed from the top layer (#975).
+      if (dialog.open) {
+        if (supportsOverlayTransition()) {
+          dialog.close();
+        } else {
+          this._deferDialogClose(dialog);
+        }
+      }
     }
   }
 
   // ── Private Helpers ───────────────────────────────────────────
+
+  private _clearPendingClose() {
+    if (this._pendingCloseTimeout !== undefined) {
+      clearTimeout(this._pendingCloseTimeout);
+      this._pendingCloseTimeout = undefined;
+    }
+    if (this._pendingCloseHandler && this.dialogEl) {
+      this.dialogEl.removeEventListener('transitionend', this._pendingCloseHandler);
+      this._pendingCloseHandler = undefined;
+    }
+  }
+
+  private _deferDialogClose(dialog: HTMLDialogElement) {
+    const maxMs = this._getMaxTransitionDurationMs(dialog);
+    // No CSS transitions (e.g. jsdom) — close synchronously, nothing to defer.
+    if (maxMs === 0) {
+      if (dialog.open) dialog.close();
+      return;
+    }
+    this._clearPendingClose();
+    this._pendingCloseHandler = () => {
+      this._clearPendingClose();
+      if (dialog.open) dialog.close();
+    };
+    dialog.addEventListener('transitionend', this._pendingCloseHandler, { once: true });
+    this._pendingCloseTimeout = setTimeout(() => {
+      if (this._pendingCloseHandler) {
+        dialog.removeEventListener('transitionend', this._pendingCloseHandler);
+        this._pendingCloseHandler = undefined;
+      }
+      this._pendingCloseTimeout = undefined;
+      if (dialog.open) dialog.close();
+    }, maxMs + 50);
+  }
+
+  private _getMaxTransitionDurationMs(el: HTMLElement): number {
+    if (typeof window === 'undefined') return 0;
+    try {
+      const style = window.getComputedStyle(el);
+      const durations = (style.transitionDuration || '0s').split(',');
+      return durations.reduce((acc, d) => {
+        const trimmed = d.trim();
+        const val = parseFloat(trimmed);
+        if (isNaN(val)) return acc;
+        const ms = trimmed.endsWith('ms') ? val : val * 1000;
+        return Math.max(acc, ms);
+      }, 0);
+    } catch {
+      return 0;
+    }
+  }
 
   /**
    * Attach a transitionend listener to the dialog element so we can emit
@@ -263,12 +315,12 @@ export class IoDrawer {
 
   // ── Handlers ─────────────────────────────────────────────────
 
+  // ev.target === <dialog> means the click landed directly on the dialog padding
+  // (backdrop area), not on any content descendant — geometrically correct even
+  // at rounded corners where the bounding-rect check would give false negatives.
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
-    const dialog = ev.currentTarget as HTMLDialogElement;
-    const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
-    if (clickedBackdrop) {
+    if (ev.target === ev.currentTarget) {
       this._userInitiatedClose = true;
       this.open = false;
     }

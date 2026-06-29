@@ -58,12 +58,11 @@ describe('io-drawer — interaction restrictions', () => {
       (drawer as any).open = true;
       (drawer as any).closeOnBackdrop = true;
 
+      const dialogEl = document.createElement('div');
+      // target === currentTarget: click landed on dialog element itself (backdrop area)
       const fakeEvent = {
-        currentTarget: {
-          getBoundingClientRect: () => ({ left: 50, right: 350, top: 50, bottom: 550 }),
-        },
-        clientX: 10, // outside rect.left — backdrop area
-        clientY: 300,
+        target: dialogEl,
+        currentTarget: dialogEl,
       } as unknown as MouseEvent;
 
       // Act

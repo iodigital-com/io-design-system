@@ -15,6 +15,3 @@ export function getDrawerCloseIcon(): string {
   return getIconSvg('x', 20);
 }
 
-export function isBackdropClick(rect: DOMRect, clientX: number, clientY: number): boolean {
-  return clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom;
-}

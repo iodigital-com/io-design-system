@@ -63,6 +63,26 @@ export function getTagStyles(): string {
       border-color: var(--io-color-grey-6);
       color: var(--io-color-white);
     }
+
+    .tag--blue {
+      background: var(--io-color-primary-bg);
+      border-color: var(--io-color-primary);
+      color: var(--io-color-primary);
+    }
+
+    .tag--beige {
+      background: var(--io-color-off-white);
+      border-color: var(--io-color-beige);
+      color: var(--io-text-primary);
+    }
+
+    /* 'dark' variant: intentionally inverted — uses semantic strong tokens
+       so the background/foreground flip correctly in dark mode */
+    .tag--dark {
+      background: var(--io-tag-strong-bg);
+      border-color: var(--io-tag-strong-bg);
+      color: var(--io-tag-strong-fg);
+    }
     .tag--neutral.tag--frosted {
       background: color-mix(in srgb, var(--io-color-grey-6) 12%, transparent);
       border-color: var(--io-border);
@@ -324,6 +344,34 @@ export function getTagStyles(): string {
       .tag-group,
       .tag__remove {
         transition: none;
+      }
+    }
+
+    /* ── Forced colors (issue #1120) ────────────────────── */
+
+    @media (forced-colors: active) {
+      .tag {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+        background: ButtonFace;
+      }
+
+      .tag--selected {
+        border-color: Highlight;
+        color: HighlightText;
+        background: Highlight;
+      }
+
+      .tag:focus-visible,
+      .tag__remove:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+        box-shadow: none;
+      }
+
+      .tag--disabled {
+        color: GrayText;
+        border-color: GrayText;
       }
     }
   `;

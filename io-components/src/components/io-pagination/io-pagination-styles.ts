@@ -61,9 +61,9 @@ export function getPaginationStyles(): string {
     /* ── Number buttons ─────────────────────────────────── */
 
     .page-btn--number {
-      border: 1px solid var(--io-color-grey-4);
+      border: 1px solid var(--io-text-disabled);
       background: transparent;
-      color: var(--io-color-grey-4);
+      color: var(--io-text-disabled);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -87,9 +87,9 @@ export function getPaginationStyles(): string {
     /* ── Nav arrow buttons ──────────────────────────────── */
 
     .page-btn--nav {
-      border: 1px solid var(--io-color-grey-4);
+      border: 1px solid var(--io-text-disabled);
       background: var(--io-color-beige);
-      color: var(--io-color-black);
+      color: var(--io-text-primary);
     }
 
     @media (hover: hover) and (pointer: fine) {

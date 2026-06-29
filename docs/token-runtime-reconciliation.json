@@ -3632,6 +3632,22 @@
       "notes": "Banner stack order. Fallback: --io-z-toast."
     },
     {
+      "runtimeCssVar": "--io-tag-strong-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic background for dark/strong tag and badge variant. Remapped in dark-mode theme blocks to --io-color-dark-text-primary."
+    },
+    {
+      "runtimeCssVar": "--io-tag-strong-fg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Semantic foreground for dark/strong tag and badge variant. Remapped in dark-mode theme blocks to --io-color-dark-bg-base."
+    },
+    {
       "runtimeCssVar": "--io-space-fluid-2xs",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

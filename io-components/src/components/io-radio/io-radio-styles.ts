@@ -210,5 +210,39 @@ export function getRadioStyles(): string {
       .radio-custom,
       .radio-dot { transition: none; }
     }
+
+    /* ============================================================
+       FORCED COLORS (issue #1120 — WCAG 1.4.1 / 1.4.11 / 2.4.7)
+       ============================================================ */
+
+    @media (forced-colors: active) {
+      .radio-custom {
+        border: 1px solid ButtonText;
+        background: Field;
+        forced-color-adjust: none;
+      }
+
+      .radio-custom--checked {
+        border-color: Highlight;
+        background: Field;
+      }
+
+      .radio-dot {
+        background: Highlight;
+      }
+
+      .radio-wrapper:focus-within .radio-custom {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+      }
+
+      :host([disabled]) .radio-custom {
+        border-color: GrayText;
+      }
+
+      :host([disabled]) .radio-dot {
+        background: GrayText;
+      }
+    }
   `;
 }

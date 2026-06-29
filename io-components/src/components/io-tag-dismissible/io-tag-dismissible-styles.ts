@@ -42,13 +42,15 @@ export function getTagDismissibleStyles(): string {
     .tag-dismissible--beige {
       background: var(--io-color-off-white);
       border-color: var(--io-color-beige);
-      color: var(--io-color-grey-6);
+      color: var(--io-text-primary);
     }
 
+    /* 'dark' variant: intentionally inverted — uses semantic strong tokens
+       so the background/foreground flip correctly in dark mode */
     .tag-dismissible--dark {
-      background: var(--io-color-grey-6);
-      border-color: var(--io-color-grey-6);
-      color: var(--io-color-white);
+      background: var(--io-tag-strong-bg);
+      border-color: var(--io-tag-strong-bg);
+      color: var(--io-tag-strong-fg);
     }
 
     .tag-dismissible--orange {
@@ -126,11 +128,17 @@ export function getTagDismissibleStyles(): string {
       color: var(--io-color-primary);
     }
 
-    .tag-dismissible--dark .tag-dismissible__dismiss,
     .tag-dismissible--orange .tag-dismissible__dismiss,
     .tag-dismissible--rouge .tag-dismissible__dismiss {
       border-left-color: var(--io-color-white-alpha-30);
       color: var(--io-color-white);
+    }
+
+    /* dark variant: divider and icon use the strong-fg semantic token so
+       they remain legible when strong-bg flips in dark mode */
+    .tag-dismissible--dark .tag-dismissible__dismiss {
+      border-left-color: color-mix(in srgb, var(--io-tag-strong-fg) 30%, transparent);
+      color: var(--io-tag-strong-fg);
     }
 
     .tag-dismissible--success .tag-dismissible__dismiss {
@@ -159,7 +167,11 @@ export function getTagDismissibleStyles(): string {
         background: var(--io-state-hover);
       }
 
-      .tag-dismissible--dark .tag-dismissible__dismiss:hover,
+      .tag-dismissible--dark .tag-dismissible__dismiss:hover {
+        opacity: 0.85;
+        color: var(--io-tag-strong-fg);
+      }
+
       .tag-dismissible--orange .tag-dismissible__dismiss:hover,
       .tag-dismissible--rouge .tag-dismissible__dismiss:hover {
         opacity: 0.85;

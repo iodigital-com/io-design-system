@@ -132,9 +132,28 @@ export function getButtonStyles(): string {
     }
 
     /* ── Focus visible ──────────────────────────────────── */
-
+    /*
+     * Issue #1086: WCAG 2.4.11 — focus ring must achieve ≥3:1 contrast against
+     * the element it surrounds. The previous box-shadow approach placed the inner
+     * ring (#7D0034) directly on the button fill (e.g. #0000D2 blue), giving only
+     * ~1.5:1 contrast.
+     *
+     * Fix: use outline + outline-offset: 3px so the ring sits in the PAGE
+     * background (white / #181818 dark), where:
+     *   #7D0034 vs white (#fff)    = 8.0:1 ✓
+     *   #ff9eb5 vs dark (#181818) = 9.5:1 ✓ (dark-mode focus inner)
+     *
+     * CSS :focus-visible already restricts the ring to keyboard navigation in
+     * modern browsers. The outer outline (3px, page-bg facing) + the inner
+     * box-shadow (2px via --io-focus-ring-active) together form the double-ring
+     * that was previously fully box-shadow based. initFocusVisible() still
+     * controls --io-focus-ring-active so pointer clicks suppress the inner ring;
+     * the outer outline is scoped to :focus-visible which browsers already
+     * suppress for pointer input on non-form elements.
+     */
     .btn:focus-visible {
-      outline: none;
+      outline: 3px solid var(--io-focus-inner);
+      outline-offset: 3px;
       box-shadow: var(--io-focus-ring-active);
     }
 
@@ -570,6 +589,45 @@ export function getButtonStyles(): string {
     :host-context([dir="rtl"]) .btn--link::after {
       left: auto;
       right: 0;
+    }
+
+    /* ============================================================
+       FORCED COLORS (issue #1120 — WCAG 1.4.1 / 1.4.11 / 2.4.7)
+       Windows High Contrast Mode strips custom colors and shadows.
+       Restore interactive boundaries with system color keywords.
+       ============================================================ */
+
+    @media (forced-colors: active) {
+      .btn {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+        background: ButtonFace;
+        forced-color-adjust: none;
+      }
+
+      .btn--solid {
+        border-color: ButtonText;
+        color: ButtonText;
+        background: ButtonFace;
+      }
+
+      :host([variant="solid"]) .btn:hover,
+      .btn--solid:hover {
+        border-color: Highlight;
+        color: Highlight;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 3px;
+        box-shadow: none;
+      }
+
+      :host([disabled]) .btn,
+      .btn--disabled {
+        color: GrayText;
+        border-color: GrayText;
+      }
     }
   `;
 }

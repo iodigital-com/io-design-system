@@ -221,5 +221,36 @@ export function getCheckboxStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .checkbox-custom { transition: none; }
     }
+
+    /* ============================================================
+       FORCED COLORS (issue #1120 — WCAG 1.4.1 / 1.4.11 / 2.4.7)
+       ============================================================ */
+
+    @media (forced-colors: active) {
+      .checkbox-custom {
+        border: 1px solid ButtonText;
+        background: Field;
+        forced-color-adjust: none;
+      }
+
+      .checkbox-custom--checked {
+        background: Highlight;
+        border-color: Highlight;
+      }
+
+      .checkbox-custom--checked .checkbox-icon {
+        color: HighlightText;
+      }
+
+      .checkbox-wrapper:focus-within .checkbox-custom {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+      }
+
+      :host([disabled]) .checkbox-custom {
+        border-color: GrayText;
+        background: Field;
+      }
+    }
   `;
 }

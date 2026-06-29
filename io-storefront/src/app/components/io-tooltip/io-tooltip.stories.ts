@@ -4,7 +4,7 @@ import type { Story } from '@/models/story';
 export const tooltipStory: Story<'io-button'> = {
   state: {
     properties: {
-      content: '',
+      content: 'Tooltip text',
       placement: 'top',
     },
   },
@@ -13,7 +13,7 @@ export const tooltipStory: Story<'io-button'> = {
       tag: 'io-button' as const,
       properties: {
         size: 'sm',
-        'io-tooltip': (properties?.content as string) ?? '',
+        'io-tooltip': (properties?.content as string) ?? 'Tooltip text',
         'io-tooltip-placement': (properties?.placement as string) ?? 'top',
       },
       children: ['Hover me'],
@@ -89,7 +89,7 @@ export const tooltipPropDefinitions: PropDefinition[] = [
   {
     name: 'content',
     type: 'string',
-    defaultValue: '',
+    defaultValue: 'Tooltip text',
   },
   {
     name: 'placement',

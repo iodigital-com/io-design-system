@@ -150,7 +150,7 @@ export const checkboxGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'errorMessage',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Error message shown below the group when error is true.',
   },
   {

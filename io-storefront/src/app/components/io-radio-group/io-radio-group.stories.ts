@@ -177,7 +177,7 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'errorMessage',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Error message shown below the group when error is true.',
   },
   {
@@ -190,7 +190,7 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'description',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Supplementary description shown below the legend for additional context.',
   },
 ];

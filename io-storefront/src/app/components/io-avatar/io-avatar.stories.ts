@@ -89,7 +89,7 @@ export const avatarPropDefinitions: PropDefinition[] = [
   {
     name: 'src',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Image URL. When loading fails the component falls back to initials or the person icon.',
   },
   {
@@ -101,7 +101,7 @@ export const avatarPropDefinitions: PropDefinition[] = [
   {
     name: 'name',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Full name used to derive initials ("Jane Doe" → "JD").',
   },
   {

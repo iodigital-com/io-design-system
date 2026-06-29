@@ -231,7 +231,7 @@ export const popoverPropDefinitions: PropDefinition[] = [
   {
     name: 'description',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Supplementary description shown inside the panel below the heading.',
     group: 'Content',
   },

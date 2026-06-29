@@ -129,7 +129,7 @@ export const textPropDefinitions: PropDefinition[] = [
   {
     name: 'datetime',
     type: 'string',
-    defaultValue: undefined,
+    defaultValue: '',
     description: 'Machine-readable date/time value for tag="time". Maps to the HTML datetime attribute.',
   },
 ];

@@ -139,7 +139,7 @@ describe('io-popover applyOpenState() — rAF callback', () => {
     rafSpy.mockRestore();
   });
 
-  it('focuses first focusable element in shadowRoot when it is non-null', () => {
+  it('focuses first focusable element in shadowRoot when opened by keyboard (#987)', () => {
     const rafSpy = vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation(
       (cb: FrameRequestCallback) => {
         cb(0);
@@ -148,6 +148,8 @@ describe('io-popover applyOpenState() — rAF callback', () => {
     );
 
     const c = makePopover();
+    // Simulate keyboard-triggered open — only then should focus move into panel
+    (c as any)._openedByKeyboard = true;
 
     // Create a mock shadowRoot with a focusable button
     const focusableSpy = vi.fn();

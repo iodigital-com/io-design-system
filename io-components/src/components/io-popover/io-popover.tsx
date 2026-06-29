@@ -7,14 +7,17 @@ import {
   Element,
   Host,
   Watch,
+  Listen,
   h,
 } from '@stencil/core';
+import type { AutoUpdateOptions } from '@floating-ui/dom';
+import { autoUpdate } from '@floating-ui/dom';
 
 import { getPopoverStyles } from './io-popover-styles';
 import {
+  applyFloatingPosition,
   createPopoverLabelId,
   createPopoverPanelId,
-  computeFallbackPosition,
   getFirstFocusable,
   getPanelFocusableElements,
   supportsPopoverApi,
@@ -26,8 +29,7 @@ import type { IoPopoverPlacement } from './types';
  * ==========
  * Click-triggered floating content panel with accessible dialog semantics.
  *
- * Uses the native Popover API (`popover="auto"`) where available, falling back
- * to manual absolute positioning. No runtime positioning library required.
+ * Uses @floating-ui/dom for viewport-aware positioning (flip, shift, autoUpdate, arrow).
  *
  * @example
  * <io-popover label="Quick actions" placement="bottom">
@@ -43,13 +45,20 @@ export class IoPopover {
   @Element() el!: HTMLElement;
 
   private panelEl?: HTMLDivElement;
+  private arrowEl?: HTMLDivElement;
   private labelId!: string;
   private panelId!: string;
   private descriptionId!: string;
   private triggerEl?: HTMLElement | null;
   private useNativePopover = false;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
-  private _scrollRafId?: number;
+  private cleanupAutoUpdate?: () => void;
+
+  /**
+   * Tracks whether the most recent trigger interaction was keyboard-initiated.
+   * Used to decide whether to move focus into the panel on open (#987).
+   */
+  private _openedByKeyboard = false;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -70,6 +79,12 @@ export class IoPopover {
 
   /** Accessible name for the popover dialog panel when `label` prop is not used. */
   @Prop() ariaLabel: string | undefined;
+
+  /**
+   * Whether to render the directional arrow indicator pointing toward the trigger.
+   * Defaults to true.
+   */
+  @Prop() arrow = true;
 
   // ── State ─────────────────────────────────────────────────────
 
@@ -101,17 +116,29 @@ export class IoPopover {
       ?.assignedElements({ flatten: true })[0] as HTMLElement | null;
 
     if (this.triggerEl) {
-      this.triggerEl.setAttribute('aria-haspopup', 'dialog');
+      // Preserve any consumer-authored aria-haspopup (e.g. 'menu') — only default to 'dialog'
+      if (!this.triggerEl.hasAttribute('aria-haspopup')) {
+        this.triggerEl.setAttribute('aria-haspopup', 'dialog');
+      }
       this.triggerEl.setAttribute('aria-expanded', String(this.open));
       this.triggerEl.setAttribute('aria-controls', this.panelId);
 
-      // Also set on the inner focusable control if it's a custom element with shadowRoot
-      const innerBtn = (this.triggerEl as HTMLElement).shadowRoot?.querySelector(
+      // Mirror all three aria attributes onto the inner focusable control (#979)
+      const innerBtn = (this.triggerEl as HTMLElement).shadowRoot?.querySelector<HTMLElement>(
         'button, a, [role="button"]',
       );
       if (innerBtn) {
-        innerBtn.setAttribute('aria-haspopup', 'dialog');
+        if (!innerBtn.hasAttribute('aria-haspopup')) {
+          innerBtn.setAttribute('aria-haspopup', this.triggerEl.getAttribute('aria-haspopup') ?? 'dialog');
+        }
+        innerBtn.setAttribute('aria-expanded', String(this.open));
+        innerBtn.setAttribute('aria-controls', this.panelId);
       }
+
+      // Track keyboard vs pointer to determine focus behaviour on open (#987)
+      this.triggerEl.addEventListener('mousedown', this._handleTriggerPointerDown);
+      this.triggerEl.addEventListener('pointerdown', this._handleTriggerPointerDown);
+      this.triggerEl.addEventListener('keydown', this._handleTriggerKeyDown);
     }
 
     if (this.panelEl) {
@@ -125,9 +152,12 @@ export class IoPopover {
 
   disconnectedCallback(): void {
     this.detachFocusTrap?.();
-    this.detachWindowListeners();
-    if (this._scrollRafId) {
-      cancelAnimationFrame(this._scrollRafId);
+    this.stopAutoUpdate();
+
+    if (this.triggerEl) {
+      this.triggerEl.removeEventListener('mousedown', this._handleTriggerPointerDown);
+      this.triggerEl.removeEventListener('pointerdown', this._handleTriggerPointerDown);
+      this.triggerEl.removeEventListener('keydown', this._handleTriggerKeyDown);
     }
   }
 
@@ -143,88 +173,97 @@ export class IoPopover {
 
     if (this.triggerEl) {
       this.triggerEl.setAttribute('aria-expanded', String(newVal));
+
+      // Keep inner focusable in sync (#979)
+      const innerBtn = (this.triggerEl as HTMLElement).shadowRoot?.querySelector<HTMLElement>(
+        'button, a, [role="button"]',
+      );
+      if (innerBtn) {
+        innerBtn.setAttribute('aria-expanded', String(newVal));
+      }
     }
   }
 
-  // ── Private helpers ───────────────────────────────────────────
+  // ── Global listeners ──────────────────────────────────────────
 
-  private handleKeydown = (ev: KeyboardEvent) => {
+  @Listen('keydown', { target: 'window' })
+  handleKeydown(ev: KeyboardEvent) {
     if (!this.open) return;
     if (ev.key === 'Escape') {
       ev.stopPropagation();
       this.close();
     }
-  };
+  }
 
-  private handleWindowClick = (ev: MouseEvent) => {
+  @Listen('click', { target: 'window', capture: true })
+  handleWindowClick(ev: MouseEvent) {
     if (!this.open) return;
     if (!this.closeOnClickOutside) return;
+
     const target = ev.composedPath()[0] as Node;
-    if (!this.el.contains(target)) {
+    const isInsideHost = this.el.contains(target);
+    if (!isInsideHost) {
       this.close();
+    }
+  }
+
+  // ── Private event handlers ────────────────────────────────────
+
+  /**
+   * Called on mousedown / pointerdown on the trigger — marks the next open
+   * as mouse-initiated so we do NOT move focus into the panel (#987).
+   */
+  private _handleTriggerPointerDown = () => {
+    this._openedByKeyboard = false;
+  };
+
+  /**
+   * Called on keydown on the trigger — marks the next open as keyboard-
+   * initiated so we DO move focus into the panel on Enter/Space (#987).
+   */
+  private _handleTriggerKeyDown = (ev: KeyboardEvent) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      this._openedByKeyboard = true;
     }
   };
 
-  private handleWindowScroll = () => {
-    if (this._scrollRafId) return;
-    this._scrollRafId = requestAnimationFrame(() => {
-      this._scrollRafId = undefined;
-      if (this.open) this.repositionPanel();
-    });
-  };
-
-  private handleWindowResize = () => {
-    if (!this.open) return;
-    this.repositionPanel();
-  };
-
-  private attachWindowListeners() {
-    this.detachWindowListeners();
-    window.addEventListener('keydown', this.handleKeydown);
-    window.addEventListener('click', this.handleWindowClick, { capture: true });
-    window.addEventListener('scroll', this.handleWindowScroll, { capture: true });
-    window.addEventListener('resize', this.handleWindowResize);
-  }
-
-  private detachWindowListeners() {
-    window.removeEventListener('keydown', this.handleKeydown);
-    window.removeEventListener('click', this.handleWindowClick, { capture: true });
-    window.removeEventListener('scroll', this.handleWindowScroll, { capture: true });
-    window.removeEventListener('resize', this.handleWindowResize);
-  }
-
+  // ── Private helpers ───────────────────────────────────────────
 
   private applyOpenState() {
     if (!this.panelEl) return;
 
     this.openEvent.emit();
-    this.attachWindowListeners();
 
     if (this.useNativePopover) {
       try {
         (this.panelEl as HTMLElement & { showPopover?: () => void }).showPopover?.();
-        this.positionNativePanel();
       } catch {
         // Fallback silently if native popover API errors
-        this.applyFallbackOpen();
       }
-    } else {
-      this.applyFallbackOpen();
     }
+
+    this.panelEl.removeAttribute('aria-hidden');
+
+    // Wire autoUpdate — repositions on scroll, resize, and DOM mutations (#988)
+    this.startAutoUpdate();
 
     this.attachFocusTrap();
 
-    requestAnimationFrame(() => {
-      const shadow = this.el?.shadowRoot;
-      if (!shadow) return;
-      const firstFocusable = getFirstFocusable(shadow);
-      firstFocusable?.focus();
-    });
+    // Only move focus into panel when opened by keyboard (#987)
+    if (this._openedByKeyboard) {
+      requestAnimationFrame(() => {
+        const shadow = this.el?.shadowRoot;
+        if (!shadow) return;
+        const firstFocusable = getFirstFocusable(shadow);
+        firstFocusable?.focus();
+      });
+    }
   }
 
   private applyClosedState() {
     this.detachFocusTrap();
-    this.detachWindowListeners();
+    this.stopAutoUpdate();
+
     if (!this.panelEl) return;
 
     if (this.useNativePopover) {
@@ -242,54 +281,50 @@ export class IoPopover {
     this.triggerEl?.focus();
   }
 
-  private applyFallbackOpen() {
-    if (!this.panelEl) return;
-    this.panelEl.removeAttribute('aria-hidden');
+  /**
+   * Starts floating-ui autoUpdate, which calls positionPanel() whenever
+   * the trigger or panel moves (scroll, resize, DOM changes). (#988)
+   */
+  private startAutoUpdate() {
+    if (!this.triggerEl || !this.panelEl) return;
+    this.stopAutoUpdate();
 
-    const triggerEl = this.el?.shadowRoot
-      ?.querySelector<HTMLSlotElement>('.popover__trigger slot')
-      ?.assignedElements({ flatten: true })[0] as HTMLElement | null;
+    const trigger = this.triggerEl;
+    const panel = this.panelEl;
 
-    if (!triggerEl) return;
+    // autoUpdate requires both elements to be in the DOM.
+    // In tests / SSR neither may be attached — guard gracefully.
+    const options: Partial<AutoUpdateOptions> = { animationFrame: false };
 
-    const triggerRect = triggerEl.getBoundingClientRect();
-    const panelRect = this.panelEl.getBoundingClientRect();
-
-    const { top, left } = computeFallbackPosition(
-      triggerRect,
-      panelRect.width || 200,
-      panelRect.height || 100,
-      this.placement,
-    );
-
-    this.panelStyle = {
-      position: 'fixed',
-      top: `${top}px`,
-      left: `${left}px`,
-    };
+    try {
+      this.cleanupAutoUpdate = autoUpdate(trigger, panel, () => {
+        void this.positionPanel();
+      }, options);
+    } catch {
+      // autoUpdate unavailable (e.g. jsdom) — fall back to a single compute
+      void this.positionPanel();
+    }
   }
 
-  private positionNativePanel() {
-    if (!this.panelEl) return;
+  /**
+   * Cancels the autoUpdate subscription. Safe to call when no subscription
+   * is active.
+   */
+  private stopAutoUpdate() {
+    if (this.cleanupAutoUpdate) {
+      this.cleanupAutoUpdate();
+      this.cleanupAutoUpdate = undefined;
+    }
+  }
 
-    const triggerEl = this.el?.shadowRoot
-      ?.querySelector<HTMLSlotElement>('.popover__trigger slot')
-      ?.assignedElements({ flatten: true })[0] as HTMLElement | null;
+  /**
+   * Computes and applies the panel's floating position via @floating-ui/dom. (#988)
+   */
+  private async positionPanel(): Promise<void> {
+    if (!this.triggerEl || !this.panelEl) return;
 
-    if (!triggerEl) return;
-
-    const triggerRect = triggerEl.getBoundingClientRect();
-    const panelRect = this.panelEl.getBoundingClientRect();
-
-    const { top, left } = computeFallbackPosition(
-      triggerRect,
-      panelRect.width || 200,
-      panelRect.height || 100,
-      this.placement,
-    );
-
-    this.panelEl.style.top = `${top}px`;
-    this.panelEl.style.left = `${left}px`;
+    const arrowEl = this.arrow ? this.arrowEl : undefined;
+    await applyFloatingPosition(this.triggerEl, this.panelEl, this.placement, arrowEl);
   }
 
   private attachFocusTrap() {
@@ -322,14 +357,6 @@ export class IoPopover {
     this.focusTrapHandler = undefined;
   }
 
-  private repositionPanel() {
-    if (this.useNativePopover) {
-      this.positionNativePanel();
-    } else {
-      this.applyFallbackOpen();
-    }
-  }
-
   private close() {
     this.open = false;
     this.dismissEvent.emit();
@@ -347,7 +374,7 @@ export class IoPopover {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, labelId, panelId, open, panelStyle, description } = this;
+    const { label, labelId, panelId, open, panelStyle, description, arrow: showArrow } = this;
     const ariaHidden = open ? undefined : 'true';
 
     const panelProps: Record<string, unknown> = {
@@ -379,6 +406,13 @@ export class IoPopover {
             <p id={this.descriptionId} class="popover__description">{description}</p>
           )}
           <slot />
+          {showArrow && (
+            <div
+              class="popover__arrow"
+              ref={(el: HTMLDivElement) => (this.arrowEl = el)}
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Host>
     );

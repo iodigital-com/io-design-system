@@ -67,6 +67,43 @@ export function getPopoverStyles(): string {
       margin: var(--io-space-1) 0 0;
     }
 
+    /* ── Arrow ───────────────────────────────────────────────── */
+
+    .popover__arrow {
+      position: absolute;
+      width: var(--io-popover-arrow-size, 12px);
+      height: var(--io-popover-arrow-size, 12px);
+      background: var(--io-bg-surface);
+      border: 1px solid var(--io-border);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Rotate the arrow square to form a diamond/chevron per placement */
+    .popover__arrow[data-placement="top"] {
+      transform: rotate(45deg);
+      border-top: none;
+      border-left: none;
+    }
+
+    .popover__arrow[data-placement="bottom"] {
+      transform: rotate(45deg);
+      border-bottom: none;
+      border-right: none;
+    }
+
+    .popover__arrow[data-placement="left"] {
+      transform: rotate(45deg);
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .popover__arrow[data-placement="right"] {
+      transform: rotate(45deg);
+      border-right: none;
+      border-top: none;
+    }
+
     /* ── Reduced motion ──────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

@@ -1381,5 +1381,11 @@
     "classification": "internal",
     "component": "global",
     "description": "Density contract: gap between items in interactive component groups. Default: 8px. Compact: 4px. Comfortable: 12px."
+  },
+  {
+    "cssVar": "--io-popover-arrow-size",
+    "classification": "public-api",
+    "component": "io-popover",
+    "description": "Width and height of the directional arrow indicator. Defaults to 12px."
   }
 ]

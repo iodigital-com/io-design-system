@@ -31,7 +31,7 @@ export default function IoRadioApiPage() {
             ],
             [
               <InlineCode key="n">name</InlineCode>,
-              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'HTML name attribute. Set the same name on every io-radio in a group to enable mutual exclusivity and arrow-key navigation.',
             ],
@@ -73,7 +73,7 @@ export default function IoRadioApiPage() {
             ],
             [
               <InlineCode key="n">helperText</InlineCode>,
-              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'Helper text shown below the radio when state is none. Hidden when any validation state is active.',
             ],
@@ -85,7 +85,7 @@ export default function IoRadioApiPage() {
             ],
             [
               <span key="n"><InlineCode>form</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'Associates this field with a <form> element by its ID, enabling out-of-DOM form participation.',
             ],

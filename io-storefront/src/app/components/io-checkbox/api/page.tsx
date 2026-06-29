@@ -31,7 +31,7 @@ export default function IoCheckboxApiPage() {
             ],
             [
               <InlineCode key="n">name</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
               '—',
               'HTML name attribute. Used for form submission and to generate the internal input id.',
             ],
@@ -79,13 +79,13 @@ export default function IoCheckboxApiPage() {
             ],
             [
               <InlineCode key="n">message</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Validation message shown below the checkbox when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
               <InlineCode key="n">helperText</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
               '—',
               'Helper text shown below the checkbox when state is none. Hidden when any validation state is active.',
             ],
@@ -103,7 +103,7 @@ export default function IoCheckboxApiPage() {
             ],
             [
               <InlineCode key="n">form</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="t">string |<InlineCode key="t">string</InlineCode>,
               '—',
               'Associates this field with a form element by ID — enables out-of-DOM form participation via the FACE API.',
             ],

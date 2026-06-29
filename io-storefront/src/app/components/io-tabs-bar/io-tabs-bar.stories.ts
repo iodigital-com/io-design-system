@@ -35,6 +35,8 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
     properties: {
       activeTabIndex: DEFAULT_ACTIVE_TAB_INDEX,
       compact: false,
+      label: '',
+      labelledBy: '',
     },
   },
   generator: ({ properties } = {}) => [
@@ -46,6 +48,8 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
       properties: {
         activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ...(properties?.compact ? { compact: true } : {}),
+        label: (properties?.label as string) || undefined,
+        labelledBy: (properties?.labelledBy as string) || undefined,
       },
       events: {
         onUpdate: {

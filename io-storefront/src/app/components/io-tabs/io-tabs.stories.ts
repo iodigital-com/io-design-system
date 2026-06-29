@@ -31,6 +31,7 @@ export const tabsStory: Story<'io-tabs'> = {
     properties: {
       activeTabIndex: DEFAULT_ACTIVE_TAB_INDEX,
       size: 'small',
+      label: '',
     },
   },
   generator: ({ properties } = {}) => [
@@ -43,6 +44,7 @@ export const tabsStory: Story<'io-tabs'> = {
         activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         size: (properties?.size as string) ?? 'small',
         compact: (properties?.compact as boolean) ?? false,
+        label: (properties?.label as string) || undefined,
         labelledby: (properties?.labelledby as string) ?? undefined,
         panelIds: (properties?.panelIds as string[]) ?? undefined,
       },

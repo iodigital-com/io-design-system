@@ -14,6 +14,7 @@ export const linkStory: Story<'io-link'> = {
       iconSource: undefined,
       hideLabel: false,
       label: 'Learn more',
+      ariaCurrent: null,
     },
   },
   generator: ({ properties } = {}) => {
@@ -32,6 +33,7 @@ export const linkStory: Story<'io-link'> = {
           ...(attrs['icon'] != null ? { icon: attrs['icon'] } : {}),
           ...(attrs['iconSource'] ? { iconSource: attrs['iconSource'] } : {}),
           ...(attrs['hideLabel'] ? { hideLabel: true } : {}),
+          ...(attrs['ariaCurrent'] != null ? { ariaCurrent: attrs['ariaCurrent'] } : {}),
         },
         children: [content],
       },

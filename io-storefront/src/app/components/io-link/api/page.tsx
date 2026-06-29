@@ -74,7 +74,7 @@ export default function IoLinkApiPage() {
               <InlineCode key="n">icon</InlineCode>,
               <InlineCode key="t">IoIconName</InlineCode>,
               '—',
-              'Lucide icon rendered before the link label. Set to none to suppress. Pass iconSource for a custom inline SVG.',
+              'Lucide icon rendered before the link label. Omit or set to undefined to show no icon. Pass iconSource for a custom inline SVG.',
             ],
             [
               <InlineCode key="n">iconSource</InlineCode>,
@@ -93,7 +93,7 @@ export default function IoLinkApiPage() {
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>&apos;page&apos;</InlineCode>{' | '}<InlineCode>&apos;step&apos;</InlineCode>{' | '}<InlineCode>&apos;location&apos;</InlineCode>{' | '}<InlineCode>&apos;date&apos;</InlineCode>{' | '}<InlineCode>&apos;time&apos;</InlineCode>{' | '}<InlineCode>&apos;true&apos;</InlineCode>{' | '}<InlineCode>&apos;false&apos;</InlineCode>{' | null'}
               </span>,
-              '—',
+              <InlineCode key="d">null</InlineCode>,
               'Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or "false" removes the attribute.',
             ],
           ]}

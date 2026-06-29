@@ -484,27 +484,28 @@ The commented-out target block and full activation instructions are in
 
 ## Component Stability
 
-### Wave XIV / Global beta reset (2026-06-17)
+### Current state (v1.6.0 — 2026-06-29)
 
-All 40 storefront components marked `status: 'beta'` in `sitemap.ts`. This is a deliberate product decision.
-Storefront docs updated: `io-pagination` added `compact` prop; `io-inline-notification` added `actionLabel`, `actionIcon`, `actionLoading` props and `action` event.
+All 46 storefront components are `status: 'beta'` in `sitemap.ts`. This is a deliberate product decision — do not change to `stable` without explicit instruction.
 
-### Wave XIII promotions (2026-05-28)
+**46 storefront components:**
+io-accordion, io-avatar, io-badge, io-banner, io-breadcrumb, io-button, io-button-group, io-carousel, io-checkbox, io-checkbox-group, io-divider, io-drawer, io-flyout, io-heading, io-icon, io-inline-notification, io-input, io-input-date, io-input-password, io-input-search, io-link, io-modal, io-multi-select, io-pagination, io-pin-code, io-popover, io-progress, io-radio, io-radio-group, io-scroller, io-segmented-control, io-select, io-sheet, io-spinner, io-stepper, io-switch, io-table, io-tabs, io-tabs-bar, io-tag, io-tag-dismissible, io-text, io-text-list, io-textarea, io-toast, io-tooltip, io-wordmark
 
-All 9 components that were introduced in Wave XI as beta have been promoted to **stable** in Wave XIII after audit confirmed no P0/P1 blockers.
+**Internal (no storefront):** io-toast-item, io-optgroup, io-option
+**Hidden (no nav):** io-breadcrumb-item, io-form-field
+**Removed:** io-skeleton, io-file-upload, io-alert (PR #510), io-inline-banner (PR #511)
 
-| Component | FACE | Key notes |
-|---|---|---|
-| ~~`io-alert`~~ | — | **Removed in PR #510** — replaced by `io-banner` + `io-inline-notification` |
-| `io-carousel` | No | Full spec suite + keyboard/lifecycle/render; no snap — scroll is free |
-| `io-heading` | No | Non-interactive — click/disabled specs intentionally absent; spec + a11y required |
-| `io-multi-select` | Yes | Complete spec suite inc. face; `position:fixed` dropdown via floating-ui strategy |
-| `io-pin-code` | Yes | Complete spec suite inc. face; auto-advance + paste distribution |
-| `io-popover` | No | No `disabled` prop by design — click + a11y specs required; focus trap uses `document.activeElement` |
-| `io-scroller` | No | Non-interactive container — click/disabled specs intentionally absent; spec + a11y required |
-| `io-switch` | Yes | Complete spec suite inc. face + watch; `formResetCallback` clears `faceInvalid` before sync |
-| `io-tabs-bar` | No | Promoted Wave J — listed here for completeness |
-| `io-text` | No | Non-interactive passive element — click/disabled specs intentionally absent; spec + a11y required |
+### Non-interactive components (spec file rules)
+
+These components have no `disabled` prop and emit no events — omit `.click.spec.ts` and `.disabled.spec.ts` by design. `.spec.ts` and `.a11y.spec.ts` are still required.
+
+| Component | Reason |
+|---|---|
+| `io-heading` | Non-interactive display element |
+| `io-text` | Non-interactive passive element |
+| `io-scroller` | Non-interactive container |
+| `io-text-list` | Non-interactive list primitive |
+| `io-popover` | No `disabled` prop by design — popover state is open/closed |
 
 ## Do Not Commit
 

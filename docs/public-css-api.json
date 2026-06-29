@@ -354,6 +354,18 @@
     "description": "Duration of one full loading spinner rotation."
   },
   {
+    "cssVar": "--io-spinner-duration",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Duration of one full rotation of the standalone spinner animation."
+  },
+  {
+    "cssVar": "--io-spinner-duration-reduced",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Animation duration when prefers-reduced-motion is active (slowed, not stopped)."
+  },
+  {
     "cssVar": "--io-button-xl-padding-y",
     "classification": "public-api",
     "component": "io-button",

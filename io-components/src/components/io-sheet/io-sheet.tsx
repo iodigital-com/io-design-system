@@ -7,7 +7,6 @@ import {
   Host,
   Method,
   Watch,
-  Listen,
   h,
 } from '@stencil/core';
 
@@ -151,21 +150,6 @@ export class IoSheet {
     }
   }
 
-  // ── Global listeners ──────────────────────────────────────────
-
-  /**
-   * Close on Escape key when sheet is open and dismissible.
-   */
-  @Listen('keydown', { target: 'document' })
-  handleKeydown(ev: KeyboardEvent) {
-    if (!this.open) return;
-    if (!this.dismissible) return;
-    if (ev.key === 'Escape') {
-      ev.stopPropagation();
-      this.handleDismiss();
-    }
-  }
-
   // ── Private helpers ───────────────────────────────────────────
 
   private applyOpenState() {
@@ -260,6 +244,14 @@ export class IoSheet {
 
   // ── Handlers ──────────────────────────────────────────────────
 
+  private handleKeydown = (ev: KeyboardEvent) => {
+    if (!this.open || !this.dismissible) return;
+    if (ev.key === 'Escape') {
+      ev.stopPropagation();
+      this.handleDismiss();
+    }
+  };
+
   private handleDismiss = () => {
     this.open = false;
     this.dismissEvent.emit();
@@ -288,6 +280,7 @@ export class IoSheet {
       <Host
         role="dialog"
         aria-modal="true"
+        onKeyDown={this.handleKeydown}
         {...(heading ? { 'aria-labelledby': headingId } : {})}
       >
         <style>{getSheetStyles()}</style>

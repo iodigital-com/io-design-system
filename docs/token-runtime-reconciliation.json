@@ -3633,6 +3633,7 @@
     },
     {
       "runtimeCssVar": "--io-tag-strong-bg",
+      "runtimeCssVar": "--io-input-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3641,6 +3642,10 @@
     },
     {
       "runtimeCssVar": "--io-tag-strong-fg",
+      "notes": "Error border-bottom width for io-input. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-textarea-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3649,6 +3654,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-2xs",
+      "notes": "Error border-bottom width for io-textarea. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-select-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3657,6 +3666,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-xs",
+      "notes": "Error border-bottom width for io-select. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-multi-select-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3665,6 +3678,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-xl",
+      "notes": "Error border-bottom width for io-multi-select. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-switch-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3673,6 +3690,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-2xl",
+      "notes": "Reserved consumer override for io-switch border width in error state."
+    },
+    {
+      "runtimeCssVar": "--io-input-date-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3681,6 +3702,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-2xl",
+      "notes": "Error border-bottom width for io-input-date. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-input-search-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3689,6 +3714,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-3xl",
+      "notes": "Error border-bottom width for io-input-search. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-input-password-border-error-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3862,6 +3891,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Horizontal enter offset for end-edge overlays (reserved). Default: 100%."
+    },
+    {
+      "runtimeCssVar": "--io-input-password-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Error border-bottom width for io-input-password. WCAG 1.4.1 non-color indicator."
     }
   ]
 }

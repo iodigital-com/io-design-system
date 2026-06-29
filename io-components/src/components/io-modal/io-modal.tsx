@@ -4,7 +4,7 @@ import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
-import type { IoModalAriaProps, IoModalBackground, IoModalSize } from './types';
+import type { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from './types';
 
 /**
  * io-modal
@@ -98,6 +98,27 @@ export class IoModal {
    * @default true
    */
   @Prop() dismissButton = true;
+
+  /**
+   * When `true`, the modal expands to fill the full viewport below
+   * `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal
+   * reverts to the `size` variant. Useful for the mobile-takeover pattern:
+   * full-screen on phones, centered dialog on desktop.
+   *
+   * @default false
+   */
+  @Prop({ reflect: true }) fullscreen = false;
+
+  /**
+   * Visual treatment of the backdrop overlay.
+   * - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs
+   * - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for
+   *            auto-appearing dialogs (e.g. cookie consent). Avoids expensive
+   *            GPU compositing on low-end devices.
+   *
+   * @default 'blur'
+   */
+  @Prop({ reflect: true }) backdrop: IoModalBackdrop = 'blur';
 
   /**
    * When `true` (default), the native `<dialog>` is opened with `show()`
@@ -515,7 +536,7 @@ export class IoModal {
    * @slot footer - Action area rendered at the bottom of the dialog. Typically 1–2 io-button elements.
    */
   render() {
-    const { size, background, heading, headingId, description } = this;
+    const { size, background, backdrop, fullscreen, heading, headingId, description } = this;
     const closeIcon = getModalCloseIcon();
     const descriptionId = description ? `${headingId}-description` : undefined;
 
@@ -525,7 +546,7 @@ export class IoModal {
           this.dialogEl = el;
           applyAriaProp(this.aria, el ?? null);
         }}
-        class={`modal--${size} modal--bg-${background}`}
+        class={`modal--${size} modal--bg-${background}${fullscreen ? ' modal--fullscreen' : ''}`}
         aria-labelledby={heading ? headingId : undefined}
         aria-describedby={descriptionId}
         aria-modal="true"
@@ -568,7 +589,7 @@ export class IoModal {
              the shadow DOM element to intercept pointer events intended for
              slotted light-DOM children (slot="footer" IoButton elements). */
           <div
-            class="modal__backdrop"
+            class={`modal__backdrop modal__backdrop--${backdrop}`}
             ref={(el?: HTMLDivElement) => { this.backdropEl = el; }}
           >
             {dialog}

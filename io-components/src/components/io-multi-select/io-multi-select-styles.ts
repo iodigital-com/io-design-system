@@ -154,6 +154,7 @@ export function getMultiSelectStyles(): string {
 
     .multi-select-wrapper--error .multi-select-trigger {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-multi-select-border-error-width);
     }
 
     .multi-select-wrapper--success .multi-select-trigger {

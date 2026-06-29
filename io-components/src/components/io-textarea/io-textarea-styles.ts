@@ -140,6 +140,7 @@ export function getTextareaStyles(): string {
 
     .textarea-wrapper--state-error .textarea-field {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-textarea-border-error-width);
     }
 
     .textarea-wrapper--state-success .textarea-field {

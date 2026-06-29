@@ -82,6 +82,16 @@ export function getSwitchStyles(): string {
       background-color: var(--io-color-error);
     }
 
+    /* Error state forced-colors / high-contrast: use border width token for non-color indicator.
+       WCAG 1.4.1 — error must not rely on color alone in high-contrast contexts. */
+    @media (forced-colors: active) {
+      .switch-wrapper--error .switch-track:not(.switch-track--checked),
+      :host(:invalid) .switch-track:not(.switch-track--checked) {
+        border-width: var(--io-switch-border-error-width);
+        border-color: LinkText;
+      }
+    }
+
     /* ── Hover states (WCAG 1.4.11) ─────────────────────── */
 
     @media (hover: hover) and (pointer: fine) {

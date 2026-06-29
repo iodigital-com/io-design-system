@@ -16,3 +16,11 @@ export type IoModalBackground = 'canvas' | 'surface' | 'elevated';
 export type IoModalAriaProps = Partial<
   Record<'aria-label' | 'aria-labelledby' | 'aria-describedby', string>
 >;
+
+/**
+ * Backdrop visual treatment for io-modal.
+ * - blur:    backdrop-filter blur (default) — for user-initiated dialogs
+ * - shading: solid overlay color without backdrop-filter — for auto-appearing dialogs
+ *            (e.g. cookie consent), avoids expensive GPU compositing on low-end devices
+ */
+export type IoModalBackdrop = 'blur' | 'shading';

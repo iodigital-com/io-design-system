@@ -1153,6 +1153,55 @@
   },
 
   {
+    "cssVar": "--io-input-border-error-width",
+    "classification": "public-api",
+    "component": "io-input",
+    "description": "Border-bottom width applied when the input field is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-textarea-border-error-width",
+    "classification": "public-api",
+    "component": "io-textarea",
+    "description": "Border-bottom width applied when the textarea is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-select-border-error-width",
+    "classification": "public-api",
+    "component": "io-select",
+    "description": "Border-bottom width applied when the select field is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-multi-select-border-error-width",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Border-bottom width applied when the multi-select trigger is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-switch-border-error-width",
+    "classification": "public-api",
+    "component": "io-switch",
+    "description": "Reserved consumer override for switch border width in error state. Available for future border-based error indicator variants. Default 2px."
+  },
+  {
+    "cssVar": "--io-input-date-border-error-width",
+    "classification": "public-api",
+    "component": "io-input-date",
+    "description": "Border-bottom width applied when the date input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-input-search-border-error-width",
+    "classification": "public-api",
+    "component": "io-input-search",
+    "description": "Border-bottom width applied when the search input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+  {
+    "cssVar": "--io-input-password-border-error-width",
+    "classification": "public-api",
+    "component": "io-input-password",
+    "description": "Border-bottom width applied when the password input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
+  },
+
+  {
     "cssVar": "--io-space-fluid-2xs",
     "classification": "internal",
     "component": "global",
@@ -1489,5 +1538,101 @@
     "classification": "internal",
     "component": "io-tag",
     "description": "Semantic foreground for the dark/strong tag variant. Flips to a dark tint in dark mode. Used by io-tag, io-tag-dismissible, and io-badge dark variants."
+  },
+  {
+    "cssVar": "--io-color-semantic-red",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-error-dark. Retained for backward compatibility only. Use --io-color-error-dark instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-error-dark"
+  },
+  {
+    "cssVar": "--io-color-system-interactive-blue",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-system-blue. Retained for backward compatibility only. Use --io-color-system-blue instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-system-blue"
+  },
+  {
+    "cssVar": "--io-color-state-error",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-error. Retained for backward compatibility only. Use --io-color-error instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-error"
+  },
+  {
+    "cssVar": "--io-color-state-error-soft",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-error-soft. Retained for backward compatibility only. Use --io-color-error-soft instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-error-soft"
+  },
+  {
+    "cssVar": "--io-color-state-info",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-info. Retained for backward compatibility only. Use --io-color-info instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-info"
+  },
+  {
+    "cssVar": "--io-color-state-info-soft",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-info-soft. Retained for backward compatibility only. Use --io-color-info-soft instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-info-soft"
+  },
+  {
+    "cssVar": "--io-color-state-success",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-success. Retained for backward compatibility only. Use --io-color-success instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-success"
+  },
+  {
+    "cssVar": "--io-color-state-success-soft",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-success-soft. Retained for backward compatibility only. Use --io-color-success-soft instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-success-soft"
+  },
+  {
+    "cssVar": "--io-color-state-warning",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-warning. Retained for backward compatibility only. Use --io-color-warning instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-warning"
+  },
+  {
+    "cssVar": "--io-color-state-warning-soft",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-color-warning-soft. Retained for backward compatibility only. Use --io-color-warning-soft instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-color-warning-soft"
+  },
+  {
+    "cssVar": "--io-color-focus-dark-red",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-focus-inner. Retained for backward compatibility only. Use --io-focus-inner instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-focus-inner"
+  },
+  {
+    "cssVar": "--io-color-focus-light-pink",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "Naming-convergence alias for --io-focus-outer. Retained for backward compatibility only. Use --io-focus-outer instead.",
+    "deprecatedSince": "2024-01-01",
+    "replacedBy": "--io-focus-outer"
   }
 ]

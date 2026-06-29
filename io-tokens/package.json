@@ -1,0 +1,47 @@
+{
+  "name": "@iodigital-com/tokens",
+  "version": "0.1.0",
+  "description": "io Digital Design System — Typed design token constants for JS/TS consumers",
+  "license": "MIT",
+  "homepage": "https://io-design-system-showcase.web.app",
+  "bugs": {
+    "url": "https://github.com/iodigital-com/io-design-system/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iodigital-com/io-design-system.git",
+    "directory": "io-tokens"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com",
+    "provenance": true
+  },
+  "files": [
+    "dist/"
+  ],
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./meta": {
+      "types": "./dist/types/meta.d.ts",
+      "import": "./dist/meta.js",
+      "require": "./dist/meta.cjs.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest run",
+    "type-check": "tsc --noEmit --project tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.8"
+  }
+}

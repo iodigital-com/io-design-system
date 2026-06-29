@@ -300,6 +300,45 @@ npm run token-doc-coverage:check  # validates token documentation coverage
 
 And add entries to `docs/token-runtime-reconciliation.json` for each new `--io-*` variable used in component style functions.
 
+### Per-component typed CSS-variable constants (`css-variables.ts`)
+
+Every component that exposes public-api CSS custom property overrides should ship a
+`css-variables.ts` file in its component directory alongside `io-{name}-styles.ts`.
+This file exports each override token as a typed TypeScript constant:
+
+```ts
+// io-components/src/components/io-button/css-variables.ts
+
+/** Spinner animation duration. Default: 600ms. */
+export const cssVarButtonSpinnerDuration = '--io-button-spinner-duration' as const;
+
+/** Spinner border width. Default: 2px. */
+export const cssVarButtonSpinnerBorderWidth = '--io-button-spinner-border-width' as const;
+```
+
+**Naming convention:** `cssVar{ComponentName}{PropName}` in camelCase.
+
+**Why:** String literals for CSS variable names are fragile — a rename requires a
+project-wide search and silently misses interpolations. Typed constants are rename-safe
+and serve as a single source of truth for storefront API doc auto-generation.
+
+**Rules:**
+1. Export only `public-api` tokens (consumer overrides), not `internal` tokens.
+2. Add a JSDoc comment describing the token's purpose and default value.
+3. Reference these constants from `io-{name}-styles.ts` where practical.
+4. The `docs/tokens-meta.json` is generated from `docs/public-css-api.json` — run
+   `npx tsx scripts/generate-tokens-meta.ts` after changing token descriptions.
+
+**When to add `css-variables.ts`:**
+- When creating a new component that exposes at least one public-api CSS override.
+- When adding a new public-api token to an existing component.
+- Start with high-traffic components (`io-button`, `io-toast`, `io-modal`) — already done.
+
+Components that currently have `css-variables.ts`:
+- `io-button` — spinner, arrow, padding tokens
+- `io-toast` / `io-toast-item` — max-width, blur, animation tokens
+- `io-modal` — width and max-height tokens
+
 ---
 
 ## Commit messages

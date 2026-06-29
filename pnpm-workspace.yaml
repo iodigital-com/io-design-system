@@ -1,5 +1,6 @@
 packages:
   - 'io-components'
+  - 'io-tokens'
   - 'io-storefront'
   - 'io-components-react'
   - 'io-components-vue'

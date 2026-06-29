@@ -130,6 +130,7 @@ export function getInputSearchStyles(): string {
 
     .input-wrapper--state-error .input-field {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-input-search-border-error-width);
     }
 
     .input-wrapper--state-success .input-field {

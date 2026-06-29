@@ -21,7 +21,7 @@ export default function IoAccordionLayout({ children }: { children: ReactNode })
     <div>
       <PageHeader
         title="Accordion"
-        description="PDS-style disclosure with one accordion per content section, animated plus/minus icon, and heading slot support."
+        description="Disclosure with one accordion per content section, animated plus/minus icon, and heading slot support."
         tabs={TABS}
         category="Component"
         status={status}

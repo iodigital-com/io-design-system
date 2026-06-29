@@ -17,7 +17,7 @@ export default function IoAccordionUsagePage() {
               Use for FAQ sections, progressive disclosure of complex information, and reducing visual noise on dense content pages.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use one <C>io-accordion</C> per content section, following the PDS disclosure pattern.
+              Use one <C>io-accordion</C> per content section, following the io Design System disclosure pattern.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use the <C>heading</C> prop for simple labels, or the <C>heading</C> slot when richer heading markup is needed.

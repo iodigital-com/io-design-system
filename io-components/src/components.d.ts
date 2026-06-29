@@ -17,7 +17,7 @@ import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
@@ -27,7 +27,7 @@ import { IoInputDateSize } from "./components/io-input-date/types";
 import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+import { IoModalAriaProps, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -65,7 +65,7 @@ export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
@@ -75,7 +75,7 @@ export { IoInputDateSize } from "./components/io-input-date/types";
 export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+export { IoModalAriaProps, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -823,10 +823,10 @@ export namespace Components {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoDrawerAriaProps;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -1620,17 +1620,17 @@ export namespace Components {
      */
     interface IoModal {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-modal .aria={{ 'aria-label': 'Confirm deletion' }}>...</io-modal>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoModalAriaProps;
         /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
          */
         "background": IoModalBackground;
         /**
-          * Programmatically close the modal. No-op if already closed. Equivalent to setting `open = false`. Emits the `dismiss` event.
+          * Programmatically close the modal. No-op if already closed. Does NOT emit the `dismiss` event (programmatic close is silent). Equivalent to setting `open = false`.
           * @example   const modal = document.querySelector('io-modal');   modal.close();
          */
         "close": () => Promise<void>;
@@ -5910,10 +5910,10 @@ declare namespace LocalJSX {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoDrawerAriaProps;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -6728,10 +6728,10 @@ declare namespace LocalJSX {
      */
     interface IoModal {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-modal .aria={{ 'aria-label': 'Confirm deletion' }}>...</io-modal>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoModalAriaProps;
         /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -6756,7 +6756,7 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
-          * Emitted after the modal closes (any close path: user-initiated or programmatic)
+          * Emitted when the modal is dismissed by a user action (close button, backdrop click, or ESC key). NOT emitted on programmatic close via the `open` prop or `close()` method.
          */
         "onDismiss"?: (event: IoModalCustomEvent<void>) => void;
         /**

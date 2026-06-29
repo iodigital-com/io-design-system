@@ -28,12 +28,32 @@ describe('io-modal — click handling', () => {
     expect(component.open).toBe(false);
   });
 
+  it('close button click sets _userInitiatedClose to true before openChanged runs', () => {
+    // handleCloseClick sets _userInitiatedClose=true then open=false
+    // @Watch doesn't fire in unit tests, so we check the flag directly
+    (component as any).handleCloseClick();
+    // Flag should be true before openChanged resets it
+    expect((component as any)._userInitiatedClose).toBe(true);
+  });
+
   it('backdrop click sets open to false when closeOnBackdrop is true', () => {
     const dialogEl = (component as any).dialogEl as HTMLDialogElement;
     // target === currentTarget: click landed on dialog element itself (backdrop area)
     const ev = { target: dialogEl, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(false);
+  });
+
+  it('backdrop click sets _userInitiatedClose to true (dismiss emits when openChanged propagates)', () => {
+    const dialogEl = (component as any).dialogEl as HTMLDialogElement;
+    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue({
+      left: 100, right: 400, top: 100, bottom: 400,
+      width: 300, height: 300, x: 100, y: 100, toJSON: () => ({}),
+    });
+    const ev = { clientX: 10, clientY: 10, currentTarget: dialogEl } as unknown as MouseEvent;
+    (component as any).handleDialogClick(ev);
+    // Flag set by handler; openChanged (not auto-fired in unit tests) emits dismiss
+    expect((component as any)._userInitiatedClose).toBe(true);
   });
 
   it('inside click does not close the modal', () => {
@@ -43,6 +63,55 @@ describe('io-modal — click handling', () => {
     const ev = { target: innerEl, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(true);
+  });
+});
+
+describe('io-modal — dismiss event semantics (#1011)', () => {
+  let component: IoModal;
+  let dialogEl: HTMLDialogElement;
+  let emitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoModal();
+    emitSpy = vi.fn();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: emitSpy };
+    (component as any).componentWillLoad();
+    component.open = true;
+
+    dialogEl = document.createElement('div') as unknown as HTMLDialogElement;
+    dialogEl.open = true;
+    dialogEl.show = vi.fn(() => { dialogEl.open = true; });
+    dialogEl.showModal = vi.fn(() => { dialogEl.open = true; });
+    dialogEl.close = vi.fn(() => { dialogEl.open = false; });
+    (component as any).dialogEl = dialogEl;
+  });
+
+  it('close button (handleCloseClick) emits dismiss (user-initiated, when openChanged propagates)', () => {
+    (component as any).handleCloseClick();
+    // Simulate @Watch propagation — _userInitiatedClose was set to true by handleCloseClick
+    (component as any).openChanged(false);
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('handleCancel (ESC on native dialog) emits dismiss (user-initiated, when openChanged propagates)', () => {
+    const ev = { preventDefault: vi.fn() } as unknown as Event;
+    (component as any).handleCancel(ev);
+    // Simulate @Watch propagation — _userInitiatedClose was set to true by handleCancel
+    (component as any).openChanged(false);
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('programmatic close() does NOT emit dismiss', async () => {
+    await component.close();
+    // Simulate @Watch propagation — _userInitiatedClose stays false
+    (component as any).openChanged(false);
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('setting open=false directly does NOT emit dismiss', () => {
+    (component as any).openChanged(false);
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 });
 

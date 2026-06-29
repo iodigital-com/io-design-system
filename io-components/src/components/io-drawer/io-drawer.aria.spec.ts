@@ -1,7 +1,7 @@
 /**
  * io-drawer — aria prop tests
  *
- * Verifies that the `aria?: Record<string, string>` prop correctly injects
+ * Verifies that the narrowed `aria?: IoDrawerAriaProps` prop correctly injects
  * ARIA attributes onto the native <dialog> element.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -33,30 +33,40 @@ describe('io-drawer — aria prop', () => {
     expect(component.aria).toBeUndefined();
   });
 
-  it('accepts a custom aria record', () => {
-    component.aria = { controls: 'main-content' };
-    expect(component.aria).toEqual({ controls: 'main-content' });
+  it('accepts an aria-label record', () => {
+    component.aria = { 'aria-label': 'Navigation settings' };
+    expect(component.aria).toEqual({ 'aria-label': 'Navigation settings' });
+  });
+
+  it('accepts an aria-labelledby record', () => {
+    component.aria = { 'aria-labelledby': 'heading-id' };
+    expect(component.aria).toEqual({ 'aria-labelledby': 'heading-id' });
+  });
+
+  it('accepts an aria-describedby record', () => {
+    component.aria = { 'aria-describedby': 'desc-id' };
+    expect(component.aria).toEqual({ 'aria-describedby': 'desc-id' });
   });
 
   it('calls applyAriaProp when aria watch fires', () => {
     const mockDialog = document.createElement('dialog') as HTMLDialogElement;
     (component as any).dialogEl = mockDialog;
-    component.aria = { controls: 'filter-results' };
+    component.aria = { 'aria-label': 'Filter results' };
 
     (component as any).onAriaChange();
 
     expect(applyAriaProp).toHaveBeenCalledWith(
-      { controls: 'filter-results' },
+      { 'aria-label': 'Filter results' },
       mockDialog,
     );
   });
 
   it('calls applyAriaProp with null when dialogEl is not set', () => {
     (component as any).dialogEl = undefined;
-    component.aria = { controls: 'panel' };
+    component.aria = { 'aria-label': 'Panel' };
 
     (component as any).onAriaChange();
 
-    expect(applyAriaProp).toHaveBeenCalledWith({ controls: 'panel' }, null);
+    expect(applyAriaProp).toHaveBeenCalledWith({ 'aria-label': 'Panel' }, null);
   });
 });

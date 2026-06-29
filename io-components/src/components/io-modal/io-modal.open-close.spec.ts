@@ -32,18 +32,30 @@ describe('io-modal — open/close', () => {
     expect(dialogEl.showModal).not.toHaveBeenCalled();
   });
 
-  it('openChanged(false) calls dialog.close and emits dismiss', () => {
+  it('openChanged(false) calls dialog.close', () => {
     dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect(dialogEl.close).toHaveBeenCalled();
+  });
+
+  it('openChanged(false) does NOT emit dismiss when programmatic (no user-initiated flag)', () => {
+    dialogEl.open = true;
+    (component as any).openChanged(false);
+    expect(ioDismissEmit).not.toHaveBeenCalled();
+  });
+
+  it('openChanged(false) emits dismiss when _userInitiatedClose=true', () => {
+    dialogEl.open = true;
+    (component as any)._userInitiatedClose = true;
     (component as any).openChanged(false);
     expect(dialogEl.close).toHaveBeenCalled();
     expect(ioDismissEmit).toHaveBeenCalled();
   });
 
-  it('openChanged(false) emits dismiss even if dialog is already closed', () => {
+  it('openChanged(false) does not call dialog.close when dialog is already closed', () => {
     dialogEl.open = false;
     (component as any).openChanged(false);
     expect(dialogEl.close).not.toHaveBeenCalled();
-    expect(ioDismissEmit).toHaveBeenCalled();
   });
 
   it('openChanged(true) does not call dialog.show() if dialog is already open', () => {
@@ -101,13 +113,13 @@ describe('io-modal — open/close', () => {
     expect(component.open).toBe(false);
   });
 
-  it('close() triggers dismiss when openChanged is propagated', async () => {
+  it('close() does NOT emit dismiss (programmatic close is silent, #1011)', async () => {
     component.open = true;
     dialogEl.open = true;
     await component.close();
-    // Simulate @Watch propagation
+    // Simulate @Watch propagation — _userInitiatedClose stays false for close()
     (component as any).openChanged(component.open);
-    expect(ioDismissEmit).toHaveBeenCalled();
+    expect(ioDismissEmit).not.toHaveBeenCalled();
   });
 
   it('close() is a no-op when already closed', async () => {
@@ -285,7 +297,7 @@ describe('io-modal — render() ref callback (lines 330-331)', () => {
     (c as any).motionVisibleEndEvent = { emit: vi.fn() };
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     (c as any).componentWillLoad();
-    c.aria = { labelledby: 'heading-id' };
+    c.aria = { 'aria-labelledby': 'heading-id' };
 
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -309,7 +321,7 @@ describe('io-modal — render() ref callback (lines 330-331)', () => {
     (c as any).motionVisibleEndEvent = { emit: vi.fn() };
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     (c as any).componentWillLoad();
-    c.aria = { controls: 'step-panel' };
+    c.aria = { 'aria-label': 'Step dialog' };
 
     const dialog = document.createElement('dialog') as unknown as HTMLDialogElement;
     const setAttrSpy = vi.spyOn(dialog as any, 'setAttribute');
@@ -319,8 +331,10 @@ describe('io-modal — render() ref callback (lines 330-331)', () => {
       (c as any).dialogEl = el;
       if (el && c.aria) {
         for (const [key, value] of Object.entries(c.aria)) {
-          const attrName = key.startsWith('aria-') ? key : `aria-${key}`;
-          el.setAttribute(attrName, value);
+          if (value !== undefined) {
+            const attrName = key.startsWith('aria-') ? key : `aria-${key}`;
+            el.setAttribute(attrName, value);
+          }
         }
       }
     };
@@ -328,7 +342,7 @@ describe('io-modal — render() ref callback (lines 330-331)', () => {
     refFn(dialog);
 
     expect((c as any).dialogEl).toBe(dialog);
-    expect(setAttrSpy).toHaveBeenCalledWith('aria-controls', 'step-panel');
+    expect(setAttrSpy).toHaveBeenCalledWith('aria-label', 'Step dialog');
   });
 
   it('ref callback clears dialogEl when called with undefined', () => {
@@ -357,11 +371,11 @@ describe('io-modal — render() ref callback (lines 330-331)', () => {
     const dialog = document.createElement('dialog') as unknown as HTMLDialogElement;
     const setAttrSpy = vi.spyOn(dialog as any, 'setAttribute');
     (c as any).dialogEl = dialog;
-    c.aria = { owns: 'owned-panel' };
+    c.aria = { 'aria-describedby': 'desc-panel' };
 
     (c as any).onAriaChange();
 
-    expect(setAttrSpy).toHaveBeenCalledWith('aria-owns', 'owned-panel');
+    expect(setAttrSpy).toHaveBeenCalledWith('aria-describedby', 'desc-panel');
   });
 
   it('disconnectedCallback cleans up focus trap and transition listener', () => {

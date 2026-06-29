@@ -98,7 +98,7 @@ export function normaliseAriaKey(rawKey: string): string | null {
  * @param targetEl - The native element (e.g. `<button>`, `<input>`, `<dialog>`) to apply attributes to.
  */
 export function applyAriaProp(
-  ariaProp: Record<string, string> | undefined,
+  ariaProp: Record<string, string | undefined> | undefined,
   targetEl: HTMLElement | null | undefined,
 ): void {
   if (!ariaProp || !targetEl) return;
@@ -106,6 +106,7 @@ export function applyAriaProp(
   const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
 
   for (const [rawKey, value] of Object.entries(ariaProp)) {
+    if (value === undefined) continue;
     const normalised = normaliseAriaKey(rawKey);
     if (!normalised) {
       if (!isProd) {

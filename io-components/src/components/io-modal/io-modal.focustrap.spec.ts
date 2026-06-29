@@ -342,10 +342,18 @@ describe('io-modal — openChanged(false)', () => {
     expect(removeSpy).toHaveBeenCalled();
   });
 
-  it('emits dismiss event', () => {
+  it('emits dismiss event when _userInitiatedClose is true', () => {
     const emitSpy = (component as any).dismissEvent.emit as ReturnType<typeof vi.fn>;
+    (component as any)._userInitiatedClose = true;
     (component as any).openChanged(false);
     expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('does NOT emit dismiss event on programmatic close (_userInitiatedClose=false)', () => {
+    const emitSpy = (component as any).dismissEvent.emit as ReturnType<typeof vi.fn>;
+    // _userInitiatedClose defaults to false
+    (component as any).openChanged(false);
+    expect(emitSpy).not.toHaveBeenCalled();
   });
 
   it('restores focus to focusTrigger (HTMLElement)', () => {
@@ -404,11 +412,10 @@ describe('io-modal — render() description branch', () => {
   });
 });
 
-// ── setupFocusTrap: auto-focus first element ──────────────────────────────────
+// ── setupFocusTrap: no setTimeout auto-focus (#984) ──────────────────────────
 
-describe('io-modal — setupFocusTrap: auto-focuses first element via setTimeout', () => {
-  it('schedules focus on first element when it is not already active', () => {
-    vi.useFakeTimers();
+describe('io-modal — setupFocusTrap: no setTimeout auto-focus (issue #984)', () => {
+  it('does NOT call focus on first element — dialog.focus() in openChanged handles initial focus', () => {
     const component = makeModal();
     const dialogEl = makeDialogEl();
     (component as any).dialogEl = dialogEl;
@@ -419,36 +426,10 @@ describe('io-modal — setupFocusTrap: auto-focuses first element via setTimeout
     dialogEl.appendChild(btn1);
     dialogEl.appendChild(btn2);
 
+    // setupFocusTrap must not call any focus() calls — initial focus is handled
+    // deterministically by dialogEl.focus() before setupFocusTrap is called.
     (component as any).setupFocusTrap();
-    vi.runAllTimers();
 
-    expect(btn1.focus).toHaveBeenCalled();
-    vi.useRealTimers();
-  });
-
-  it('does not schedule focus when first element is already the active element', () => {
-    vi.useFakeTimers();
-    const component = makeModal();
-    const dialogEl = makeDialogEl();
-    (component as any).dialogEl = dialogEl;
-
-    const btn1 = document.createElement('button');
-    const btn2 = document.createElement('button');
-    btn1.focus = vi.fn();
-    dialogEl.appendChild(btn1);
-    dialogEl.appendChild(btn2);
-
-    // Make btn1 the active element
-    Object.defineProperty(dialogEl.ownerDocument, 'activeElement', {
-      value: btn1,
-      configurable: true,
-    });
-
-    (component as any).setupFocusTrap();
-    vi.runAllTimers();
-
-    // focus called zero extra times from trap setup
     expect(btn1.focus).not.toHaveBeenCalled();
-    vi.useRealTimers();
   });
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoModal } from './io-modal';
 
@@ -10,10 +10,13 @@ function makeDialogEl() {
   return el;
 }
 
-describe('io-modal — applyBackgroundInert / removeBackgroundInert', () => {
+// ── applyBackgroundInert / removeBackgroundInert (preventTopLayer=true, default) ──
+
+describe('io-modal — applyBackgroundInert (preventTopLayer=true): walks document.body.children', () => {
   let component: IoModal;
-  let container: HTMLDivElement;
   let modalEl: HTMLElement;
+  let sibling1: HTMLDivElement;
+  let sibling2: HTMLDivElement;
 
   beforeEach(() => {
     component = new IoModal();
@@ -21,68 +24,120 @@ describe('io-modal — applyBackgroundInert / removeBackgroundInert', () => {
     (component as any).componentWillLoad();
     (component as any).dialogEl = makeDialogEl();
 
-    container = document.createElement('div');
-    const sibling1 = document.createElement('div');
-    const sibling2 = document.createElement('div');
+    sibling1 = document.createElement('div');
+    sibling2 = document.createElement('div');
     modalEl = document.createElement('io-modal');
-    container.appendChild(sibling1);
-    container.appendChild(modalEl);
-    container.appendChild(sibling2);
-    document.body.appendChild(container);
+
+    document.body.appendChild(sibling1);
+    document.body.appendChild(modalEl);
+    document.body.appendChild(sibling2);
 
     (component as any).el = modalEl;
     (component as any).inertElements = [];
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
+    document.body.removeChild(sibling1);
+    if (document.body.contains(modalEl)) document.body.removeChild(modalEl);
+    if (document.body.contains(sibling2)) document.body.removeChild(sibling2);
+    sibling1.removeAttribute('inert');
+    sibling2.removeAttribute('inert');
   });
 
-  it('applyBackgroundInert sets inert on sibling elements', () => {
+  it('sets inert on document.body children (not just parent siblings)', () => {
     (component as any).applyBackgroundInert();
-    const sibling1 = container.children[0] as HTMLElement;
-    const sibling2 = container.children[2] as HTMLElement;
     expect(sibling1.hasAttribute('inert')).toBe(true);
     expect(sibling2.hasAttribute('inert')).toBe(true);
   });
 
-  it('applyBackgroundInert does not set inert on the modal itself', () => {
+  it('does not set inert on the modal element itself', () => {
     (component as any).applyBackgroundInert();
     expect(modalEl.hasAttribute('inert')).toBe(false);
   });
 
-  it('applyBackgroundInert does not double-apply inert', () => {
-    const sibling = container.children[0] as HTMLElement;
-    sibling.setAttribute('inert', '');
+  it('does not double-apply inert when element already has inert', () => {
+    sibling1.setAttribute('inert', '');
     (component as any).applyBackgroundInert();
-    // inertElements should not include sibling that already had inert
-    expect((component as any).inertElements).not.toContain(sibling);
+    // sibling1 already had inert so it should not be tracked
+    expect((component as any).inertElements).not.toContain(sibling1);
   });
 
-  it('removeBackgroundInert removes inert from all tracked siblings', () => {
+  it('honours data-io-allow-during-modal escape hatch — skips those elements', () => {
+    sibling1.setAttribute('data-io-allow-during-modal', 'true');
+    (component as any).applyBackgroundInert();
+    expect(sibling1.hasAttribute('inert')).toBe(false);
+    expect(sibling2.hasAttribute('inert')).toBe(true);
+  });
+});
+
+describe('io-modal — removeBackgroundInert', () => {
+  let component: IoModal;
+  let modalEl: HTMLElement;
+  let sibling: HTMLDivElement;
+
+  beforeEach(() => {
+    component = new IoModal();
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    (component as any).dialogEl = makeDialogEl();
+
+    sibling = document.createElement('div');
+    modalEl = document.createElement('io-modal');
+
+    document.body.appendChild(sibling);
+    document.body.appendChild(modalEl);
+
+    (component as any).el = modalEl;
+    (component as any).inertElements = [];
+  });
+
+  afterEach(() => {
+    if (document.body.contains(sibling)) document.body.removeChild(sibling);
+    if (document.body.contains(modalEl)) document.body.removeChild(modalEl);
+    sibling.removeAttribute('inert');
+  });
+
+  it('removes inert from all tracked elements', () => {
     (component as any).applyBackgroundInert();
     (component as any).removeBackgroundInert();
-    const sibling1 = container.children[0] as HTMLElement;
-    const sibling2 = container.children[2] as HTMLElement;
-    expect(sibling1.hasAttribute('inert')).toBe(false);
-    expect(sibling2.hasAttribute('inert')).toBe(false);
+    expect(sibling.hasAttribute('inert')).toBe(false);
   });
 
-  it('removeBackgroundInert clears the inertElements array', () => {
+  it('clears the inertElements array', () => {
     (component as any).applyBackgroundInert();
     (component as any).removeBackgroundInert();
     expect((component as any).inertElements).toHaveLength(0);
   });
+});
 
-  it('applyBackgroundInert is a no-op when el has no parentElement', () => {
-    const c = new IoModal();
-    (c as any).el = document.createElement('io-modal'); // not attached
-    (c as any).inertElements = [];
-    (c as any).dismissEvent = { emit: vi.fn() };
-    expect(() => (c as any).applyBackgroundInert()).not.toThrow();
-    expect((c as any).inertElements).toHaveLength(0);
+// ── applyBackgroundInert is a no-op when preventTopLayer=false ────────────────
+
+describe('io-modal — applyBackgroundInert is a no-op when preventTopLayer=false', () => {
+  it('does not touch any siblings when using native showModal() inertness', () => {
+    const component = new IoModal();
+    (component as any).dismissEvent = { emit: vi.fn() };
+
+    const sibling = document.createElement('div');
+    const modalEl = document.createElement('io-modal');
+    document.body.appendChild(sibling);
+    document.body.appendChild(modalEl);
+
+    (component as any).el = modalEl;
+    (component as any).inertElements = [];
+    component.preventTopLayer = false;
+
+    (component as any).componentWillLoad();
+    (component as any).applyBackgroundInert();
+
+    expect(sibling.hasAttribute('inert')).toBe(false);
+    expect((component as any).inertElements).toHaveLength(0);
+
+    document.body.removeChild(sibling);
+    document.body.removeChild(modalEl);
   });
 });
+
+// ── setupFocusTrap / clearFocusTrap ──────────────────────────────────────────
 
 describe('io-modal — setupFocusTrap / clearFocusTrap', () => {
   let component: IoModal;
@@ -141,6 +196,31 @@ describe('io-modal — setupFocusTrap / clearFocusTrap', () => {
 
   it('clearFocusTrap is a no-op when no handler is registered', () => {
     expect(() => (component as any).clearFocusTrap()).not.toThrow();
+  });
+
+  it('picks up contenteditable elements as focusable (#1083)', () => {
+    const addListenerSpy = vi.spyOn(dialogEl, 'addEventListener');
+    const editable = document.createElement('div');
+    editable.setAttribute('contenteditable', 'true');
+    const btn = document.createElement('button');
+    dialogEl.appendChild(btn);
+    dialogEl.appendChild(editable);
+
+    (component as any).setupFocusTrap();
+
+    expect(addListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+  });
+
+  it('picks up summary elements as focusable (#1083)', () => {
+    const addListenerSpy = vi.spyOn(dialogEl, 'addEventListener');
+    const summary = document.createElement('summary');
+    const btn = document.createElement('button');
+    dialogEl.appendChild(btn);
+    dialogEl.appendChild(summary);
+
+    (component as any).setupFocusTrap();
+
+    expect(addListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 });
 

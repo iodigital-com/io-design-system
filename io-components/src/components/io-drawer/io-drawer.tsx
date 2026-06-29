@@ -5,7 +5,7 @@ import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon } from './io-
 import { applyAriaProp } from '../../utils/aria-prop';
 import { supportsOverlayTransition } from '../../utils/top-layer/supportsOverlayTransition';
 
-import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
+import type { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 
 const SWIPE_CLOSE_THRESHOLD = 80;
 
@@ -86,13 +86,15 @@ export class IoDrawer {
 
   /**
    * Custom ARIA attributes to inject onto the native `<dialog>` element.
-   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   * Restricted to attributes that are meaningful on a dialog: `aria-label`,
+   * `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with
+   * a `console.warn` in development.
    *
    * @example
-   * // Sets aria-controls="main-content" on the native <dialog>
-   * <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+   * // Sets aria-label on the native <dialog> when no heading prop is used
+   * <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
    */
-  @Prop() aria?: Record<string, string>;
+  @Prop() aria?: IoDrawerAriaProps;
 
   /**
    * Background surface level for the drawer panel.
@@ -162,7 +164,7 @@ export class IoDrawer {
     // Check the `aria` prop (not the host element attribute) because io-drawer
     // uses Shadow DOM — host aria-* attributes are NOT forwarded to the internal
     // <dialog>. The `aria` prop is the only way to supply aria-label to the dialog.
-    const hasAriaLabel = Boolean(this.aria?.['label'] ?? this.aria?.['aria-label']);
+    const hasAriaLabel = Boolean(this.aria?.['aria-label'] ?? this.aria?.['aria-labelledby']);
     if (!hasHeading && !hasAriaLabel) {
       console.error(
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',

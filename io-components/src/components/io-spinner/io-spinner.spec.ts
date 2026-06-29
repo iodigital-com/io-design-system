@@ -41,6 +41,10 @@ describe('io-spinner — default props', () => {
   it('has no aria prop by default', () => {
     expect(component.aria).toBeUndefined();
   });
+
+  it('has inline context by default', () => {
+    expect(component.context).toBe('inline');
+  });
 });
 
 describe('io-spinner — interaction model consistency', () => {
@@ -82,21 +86,78 @@ describe('io-spinner — interaction model consistency', () => {
   });
 });
 
-describe('io-spinner — inherit size', () => {
+describe('io-spinner — size scale', () => {
+  it('accepts xs as a valid size value', () => {
+    const component = new IoSpinner();
+    component.size = 'xs';
+    expect(component.size).toBe('xs');
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('accepts sm as a valid size value', () => {
+    const component = new IoSpinner();
+    component.size = 'sm';
+    expect(component.size).toBe('sm');
+  });
+
+  it('accepts md as a valid size value', () => {
+    const component = new IoSpinner();
+    component.size = 'md';
+    expect(component.size).toBe('md');
+  });
+
+  it('accepts lg as a valid size value', () => {
+    const component = new IoSpinner();
+    component.size = 'lg';
+    expect(component.size).toBe('lg');
+  });
+
+  it('accepts xl as a valid size value (#1022)', () => {
+    const component = new IoSpinner();
+    component.size = 'xl';
+    expect(component.size).toBe('xl');
+    expect(() => component.render()).not.toThrow();
+  });
+
   it('accepts inherit as a valid size value', () => {
     const component = new IoSpinner();
     component.size = 'inherit';
     expect(component.size).toBe('inherit');
-  });
-
-  it('renders without throwing when size is inherit', () => {
-    const component = new IoSpinner();
-    component.size = 'inherit';
     expect(() => component.render()).not.toThrow();
   });
 });
 
-describe('io-spinner — aria prop', () => {
+describe('io-spinner — context prop (#1001)', () => {
+  it('context=inline renders role="status"', () => {
+    const component = new IoSpinner();
+    component.context = 'inline';
+    const attrs = hostAttrs(component);
+    expect(attrs['role']).toBe('status');
+  });
+
+  it('context=blocking renders role="alert"', () => {
+    const component = new IoSpinner();
+    component.context = 'blocking';
+    const attrs = hostAttrs(component);
+    expect(attrs['role']).toBe('alert');
+  });
+
+  it('context=inline sets aria-live="polite"', () => {
+    const component = new IoSpinner();
+    component.context = 'inline';
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-live']).toBe('polite');
+  });
+
+  it('context=blocking sets aria-live="assertive"', () => {
+    const component = new IoSpinner();
+    component.context = 'blocking';
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-live']).toBe('assertive');
+  });
+});
+
+describe('io-spinner — aria prop (deprecated, #1013)', () => {
   it('uses label prop for aria-label when aria prop is not set', () => {
     const component = new IoSpinner();
     component.label = 'Saving changes';
@@ -105,7 +166,7 @@ describe('io-spinner — aria prop', () => {
     expect(attrs['aria-label']).toBe('Saving changes');
   });
 
-  it('aria.aria-label takes precedence over the label prop', () => {
+  it('aria.aria-label takes precedence over the label prop (backward compat)', () => {
     const component = new IoSpinner();
     component.label = 'Loading';
     component.aria = { 'aria-label': 'Uploading file' };
@@ -114,7 +175,7 @@ describe('io-spinner — aria prop', () => {
     expect(attrs['aria-label']).toBe('Uploading file');
   });
 
-  it('spreads aria-describedby onto the Host when provided', () => {
+  it('spreads aria-describedby onto the Host when provided via deprecated aria prop', () => {
     const component = new IoSpinner();
     component.aria = { 'aria-describedby': 'desc-id' };
 
@@ -122,12 +183,12 @@ describe('io-spinner — aria prop', () => {
     expect(attrs['aria-describedby']).toBe('desc-id');
   });
 
-  it('spreads aria-live onto the Host when provided', () => {
+  it('overrides aria-live via deprecated aria prop', () => {
     const component = new IoSpinner();
-    component.aria = { 'aria-live': 'polite' };
+    component.aria = { 'aria-live': 'assertive' };
 
     const attrs = hostAttrs(component);
-    expect(attrs['aria-live']).toBe('polite');
+    expect(attrs['aria-live']).toBe('assertive');
   });
 
   it('spreads aria-atomic onto the Host when provided', () => {
@@ -175,5 +236,37 @@ describe('io-spinner — aria prop', () => {
     const attrs = hostAttrs(component);
     // normalizeSpinnerLabel(undefined) returns 'Loading'
     expect(attrs['aria-label']).toBe('Loading');
+  });
+});
+
+describe('io-spinner — SVG rendering (#1028)', () => {
+  it('renders svg element with aria-hidden', () => {
+    const component = new IoSpinner();
+    hMock.mockClear();
+    component.render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const svgCall = calls.find(([tag]) => tag === 'svg');
+    expect(svgCall).toBeDefined();
+    expect(svgCall?.[1]?.['aria-hidden']).toBe('true');
+  });
+
+  it('renders track and arc circles inside SVG', () => {
+    const component = new IoSpinner();
+    hMock.mockClear();
+    component.render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const circleTrack = calls.find(([tag, attrs]) => tag === 'circle' && (attrs?.['class'] as string)?.includes('spinner__track'));
+    const circleArc = calls.find(([tag, attrs]) => tag === 'circle' && (attrs?.['class'] as string)?.includes('spinner__arc'));
+    expect(circleTrack).toBeDefined();
+    expect(circleArc).toBeDefined();
+  });
+
+  it('includes stroke-dasharray on the arc circle', () => {
+    const component = new IoSpinner();
+    hMock.mockClear();
+    component.render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const arcCall = calls.find(([tag, attrs]) => tag === 'circle' && (attrs?.['class'] as string)?.includes('spinner__arc'));
+    expect(arcCall?.[1]?.['stroke-dasharray']).toBeDefined();
   });
 });

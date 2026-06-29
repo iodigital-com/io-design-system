@@ -4,6 +4,9 @@
  * Returns a <style> string for the progress component's Shadow DOM.
  * ALL values reference var(--io-*) custom properties — never hardcoded.
  *
+ * Indeterminate animation uses two-stage primary/secondary bars to produce
+ * continuous motion without a visible gap between cycles (issue #1016).
+ *
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
@@ -21,6 +24,7 @@ export function getProgressStyles(): string {
       background: var(--io-progress-track-bg);
       border-radius: var(--io-border-radius-pill);
       overflow: hidden;
+      position: relative;
     }
 
     /* ── Size variants ───────────────────────────────────────────── */
@@ -49,28 +53,73 @@ export function getProgressStyles(): string {
 
     .progress-fill--static { transition: none; }
 
-    /* ── Indeterminate animation ──────────────────────────────────– */
+    /* ── Indeterminate — two-stage animation to eliminate gap (#1016) ── */
 
-    @keyframes io-progress-indeterminate {
+    /*
+     * Primary bar: grows from 0 to 60% width while translating across the track.
+     * Secondary bar: follows with a 0.5s delay to fill the visual gap.
+     * Both share --io-progress-indeterminate-duration for WCAG 2.2.2 compliance.
+     */
+
+    @keyframes io-progress-primary {
       0% {
+        width: 0%;
         transform: translateX(-100%);
       }
+      30% {
+        width: 60%;
+      }
       100% {
-        transform: translateX(100%);
+        width: 60%;
+        transform: translateX(200%);
+      }
+    }
+
+    @keyframes io-progress-secondary {
+      0% {
+        width: 0%;
+        transform: translateX(-100%);
+      }
+      60% {
+        width: 30%;
+      }
+      100% {
+        width: 30%;
+        transform: translateX(400%);
       }
     }
 
     .progress-fill--indeterminate {
-      width: 30% !important;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0% !important;
       transform-origin: left;
-      animation: io-progress-indeterminate 1200ms linear infinite;
+      animation: io-progress-primary var(--io-progress-indeterminate-duration, 1s) linear infinite;
+    }
+
+    .progress-fill--indeterminate-secondary {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      border-radius: var(--io-border-radius-pill);
+      transform-origin: left;
+      animation: io-progress-secondary var(--io-progress-indeterminate-duration, 1s) linear infinite;
+      animation-delay: calc(var(--io-progress-indeterminate-duration, 1s) * 0.5);
     }
 
     /* ── Reduced motion ──────────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
       .progress-fill { transition: none; }
-      .progress-fill--indeterminate { animation: none; }
+      .progress-fill--indeterminate,
+      .progress-fill--indeterminate-secondary {
+        animation: none;
+        /* Show static half-filled bar as reduced-motion affordance */
+        width: 50% !important;
+        transform: none;
+      }
     }
 
     /* ── Screen-reader only ──────────────────────────────────────── */

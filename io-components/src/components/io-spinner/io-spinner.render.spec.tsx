@@ -9,11 +9,19 @@ describe('io-spinner — render snapshots', () => {
   it('renders sizes and colors', async () => {
     const { root } = await render(
       <div>
+        <io-spinner size="xs" color="primary" />
         <io-spinner size="sm" color="primary" />
         <io-spinner size="md" color="white" />
         <io-spinner size="lg" color="current" />
+        <io-spinner size="xl" color="primary" />
+        <io-spinner size="inherit" color="primary" />
       </div>
     );
+    expect(root).toMatchSnapshot();
+  });
+
+  it('renders blocking context', async () => {
+    const { root } = await render(<io-spinner context="blocking" label="Processing" />);
     expect(root).toMatchSnapshot();
   });
 });

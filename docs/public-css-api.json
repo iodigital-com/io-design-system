@@ -1522,10 +1522,28 @@
     "description": "Horizontal translate offset for overlays that enter from the end edge (reserved). Default: 100%."
   },
   {
+    "cssVar": "--io-spinner-size",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Custom size override for the spinner SVG. Overrides the size prop's preset dimensions. Use for non-standard sizes (e.g. 2rem). Unset by default so the size class preset takes effect."
+  },
+  {
+    "cssVar": "--io-spinner-color",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Custom arc stroke color override. Overrides the color prop's preset color. Use for theme integration without changing the color prop. Unset by default so the color class preset takes effect."
+  },
+  {
+    "cssVar": "--io-spinner-track-color",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Custom track (background ring) stroke color override. Defaults to the arc color at 20% opacity. Use to set a distinct track color for theme integration."
+  },
+  {
     "cssVar": "--io-spinner-duration",
     "classification": "public-api",
     "component": "io-spinner",
-    "description": "Duration of one full spinner rotation. Override to adjust spin speed."
+    "description": "Animation duration of the spinner rotation. Defaults to 0.7s. Consumers can increase this for WCAG 2.2.2 compliance or decorative contexts."
   },
   {
     "cssVar": "--io-tag-strong-bg",
@@ -1796,5 +1814,11 @@
     "classification": "internal",
     "component": "global",
     "description": "Font weight 800 (extra-bold). Deprecated: the design system uses only regular/semibold/bold. Scheduled for removal; migrate to --io-font-weight-bold (700)."
+  },
+  {
+    "cssVar": "--io-progress-indeterminate-duration",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Duration of one indeterminate animation cycle. Defaults to 1s. Consumers can increase this for WCAG 2.2.2 compliance."
   }
 ]

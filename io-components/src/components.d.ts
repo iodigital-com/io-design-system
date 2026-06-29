@@ -39,7 +39,7 @@ import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
-import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
+import { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
@@ -87,7 +87,7 @@ export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
-export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
+export { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
@@ -2100,6 +2100,7 @@ export namespace Components {
      * @example <io-progress value="60"></io-progress>
      * <io-progress value="75" color="success" size="lg" show-label></io-progress>
      * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     * <io-progress indeterminate label="Loading"></io-progress>
      */
     interface IoProgress {
         /**
@@ -2620,25 +2621,32 @@ export namespace Components {
     /**
      * io-spinner
      * ==========
-     * Animated loading indicator. Pure CSS — no JS animation.
-     * Renders a spinning ring that communicates an async operation in progress.
+     * Animated loading indicator. SVG-based two-circle (track + arc) animation.
+     * Renders a spinning arc that communicates an async operation in progress.
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
-     * // JSX / framework usage (dot-property binding):
-     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * <io-spinner context="blocking" label="Processing payment"></io-spinner>
+     * // Deprecated (still works with console.warn):
      * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
+     * // Preferred:
+     * // <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface IoSpinner {
         /**
-          * Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
+          * @deprecated Pass aria-* attributes directly on the host element instead. E.g. <io-spinner aria-label="Saving"> instead of <io-spinner aria={{ 'aria-label': 'Saving' }}>. This prop will be removed in a future minor release.  Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
          */
         "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
         /**
-          * Color of the spinner ring
+          * Color of the spinner arc
           * @default 'primary'
          */
         "color": IoSpinnerColor;
+        /**
+          * Context of the spinner: 'inline' (default) uses role="status" aria-live="polite", 'blocking' uses role="alert" aria-live="assertive" for modal/page-blocking spinners.
+          * @default 'inline'
+         */
+        "context": IoSpinnerContext;
         /**
           * Accessible label announced by screen readers
           * @default 'Loading'
@@ -4568,6 +4576,7 @@ declare global {
      * @example <io-progress value="60"></io-progress>
      * <io-progress value="75" color="success" size="lg" show-label></io-progress>
      * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     * <io-progress indeterminate label="Loading"></io-progress>
      */
     interface HTMLIoProgressElement extends Components.IoProgress, HTMLStencilElement {
     }
@@ -4807,14 +4816,16 @@ declare global {
     /**
      * io-spinner
      * ==========
-     * Animated loading indicator. Pure CSS — no JS animation.
-     * Renders a spinning ring that communicates an async operation in progress.
+     * Animated loading indicator. SVG-based two-circle (track + arc) animation.
+     * Renders a spinning arc that communicates an async operation in progress.
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
-     * // JSX / framework usage (dot-property binding):
-     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * <io-spinner context="blocking" label="Processing payment"></io-spinner>
+     * // Deprecated (still works with console.warn):
      * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
+     * // Preferred:
+     * // <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface HTMLIoSpinnerElement extends Components.IoSpinner, HTMLStencilElement {
     }
@@ -7533,6 +7544,7 @@ declare namespace LocalJSX {
      * @example <io-progress value="60"></io-progress>
      * <io-progress value="75" color="success" size="lg" show-label></io-progress>
      * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+     * <io-progress indeterminate label="Loading"></io-progress>
      */
     interface IoProgress {
         /**
@@ -8073,25 +8085,32 @@ declare namespace LocalJSX {
     /**
      * io-spinner
      * ==========
-     * Animated loading indicator. Pure CSS — no JS animation.
-     * Renders a spinning ring that communicates an async operation in progress.
+     * Animated loading indicator. SVG-based two-circle (track + arc) animation.
+     * Renders a spinning arc that communicates an async operation in progress.
      * Use inside io-button (loading state), page transitions, or lazy content areas.
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
-     * // JSX / framework usage (dot-property binding):
-     * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+     * <io-spinner context="blocking" label="Processing payment"></io-spinner>
+     * // Deprecated (still works with console.warn):
      * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
+     * // Preferred:
+     * // <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface IoSpinner {
         /**
-          * Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
+          * @deprecated Pass aria-* attributes directly on the host element instead. E.g. <io-spinner aria-label="Saving"> instead of <io-spinner aria={{ 'aria-label': 'Saving' }}>. This prop will be removed in a future minor release.  Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
          */
         "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
         /**
-          * Color of the spinner ring
+          * Color of the spinner arc
           * @default 'primary'
          */
         "color"?: IoSpinnerColor;
+        /**
+          * Context of the spinner: 'inline' (default) uses role="status" aria-live="polite", 'blocking' uses role="alert" aria-live="assertive" for modal/page-blocking spinners.
+          * @default 'inline'
+         */
+        "context"?: IoSpinnerContext;
         /**
           * Accessible label announced by screen readers
           * @default 'Loading'
@@ -9554,6 +9573,7 @@ declare namespace LocalJSX {
         "size": IoSpinnerSize;
         "color": IoSpinnerColor;
         "label": string;
+        "context": IoSpinnerContext;
     }
     interface IoStepAttributes {
         "label": string;
@@ -10198,6 +10218,7 @@ declare module "@stencil/core" {
              * @example <io-progress value="60"></io-progress>
              * <io-progress value="75" color="success" size="lg" show-label></io-progress>
              * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+             * <io-progress indeterminate label="Loading"></io-progress>
              */
             "io-progress": LocalJSX.IntrinsicElements["io-progress"] & JSXBase.HTMLAttributes<HTMLIoProgressElement>;
             /**
@@ -10325,14 +10346,16 @@ declare module "@stencil/core" {
             /**
              * io-spinner
              * ==========
-             * Animated loading indicator. Pure CSS — no JS animation.
-             * Renders a spinning ring that communicates an async operation in progress.
+             * Animated loading indicator. SVG-based two-circle (track + arc) animation.
+             * Renders a spinning arc that communicates an async operation in progress.
              * Use inside io-button (loading state), page transitions, or lazy content areas.
              * @example <io-spinner></io-spinner>
              * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
-             * // JSX / framework usage (dot-property binding):
-             * // <IoSpinner aria={{ 'aria-live': 'polite', 'aria-atomic': 'true' }} />
+             * <io-spinner context="blocking" label="Processing payment"></io-spinner>
+             * // Deprecated (still works with console.warn):
              * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
+             * // Preferred:
+             * // <io-spinner aria-label="Uploading file"></io-spinner>
              */
             "io-spinner": LocalJSX.IntrinsicElements["io-spinner"] & JSXBase.HTMLAttributes<HTMLIoSpinnerElement>;
             /**

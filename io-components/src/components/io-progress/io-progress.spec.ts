@@ -4,6 +4,25 @@ import { h } from '@stencil/core';
 import { IoProgress } from './io-progress';
 import { computePercentage } from './io-progress-utils';
 
+const hMock = h as unknown as ReturnType<typeof vi.fn>;
+
+/**
+ * Extract Host attrs from a rendered component.
+ * Looks specifically for the Host call with role="progressbar" to avoid
+ * matching the indeterminate live-region span (role="status").
+ */
+function hostAttrs(component: IoProgress): Record<string, unknown> {
+  hMock.mockClear();
+  (component as any).render();
+  const call = hMock.mock.calls.find(
+    ([, attrs]: [unknown, unknown]) =>
+      attrs &&
+      typeof attrs === 'object' &&
+      (attrs as Record<string, unknown>)['role'] === 'progressbar',
+  ) as [unknown, Record<string, unknown>] | undefined;
+  return call?.[1] ?? {};
+}
+
 describe('io-progress — default props', () => {
   let component: IoProgress;
 
@@ -135,6 +154,52 @@ describe('io-progress — render stability', () => {
     const component = new IoProgress();
     component.indeterminate = true;
     expect(() => component.render()).not.toThrow();
+  });
+});
+
+describe('io-progress — aria-busy (#1021)', () => {
+  it('sets aria-busy="true" on Host when indeterminate', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-busy']).toBe('true');
+  });
+
+  it('does not set aria-busy when determinate', () => {
+    const component = new IoProgress();
+    component.indeterminate = false;
+    component.value = 50;
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-busy']).toBeUndefined();
+  });
+});
+
+describe('io-progress — aria-valuenow throttling (#1021)', () => {
+  it('sets aria-valuenow to rounded integer percentage', () => {
+    const component = new IoProgress();
+    component.value = 67;
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-valuenow']).toBe(67);
+  });
+
+  it('does not include aria-valuenow when indeterminate', () => {
+    const component = new IoProgress();
+    component.indeterminate = true;
+    const attrs = hostAttrs(component);
+    expect(attrs['aria-valuenow']).toBeUndefined();
+  });
+
+  it('rounds sub-integer percentage changes to integer', () => {
+    const component = new IoProgress();
+    // 67.3 rounds to 67
+    component.value = 67.3;
+    const attrs1 = hostAttrs(component);
+    expect(attrs1['aria-valuenow']).toBe(67);
+
+    // 67.8 rounds to 68
+    component.value = 67.8;
+    const attrs2 = hostAttrs(component);
+    expect(attrs2['aria-valuenow']).toBe(68);
   });
 });
 

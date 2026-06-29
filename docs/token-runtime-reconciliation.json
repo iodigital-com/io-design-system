@@ -3632,6 +3632,46 @@
       "notes": "Banner stack order. Fallback: --io-z-toast."
     },
     {
+      "runtimeCssVar": "--io-spinner-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-spinner custom size override. Unset by default so size class preset takes effect."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-spinner arc stroke color override. Unset by default so color class preset takes effect."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-track-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-spinner track ring stroke color override. Unset by default; defers to color class at 20% opacity."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-spinner rotation animation duration. Default 0.7s."
+    },
+    {
+      "runtimeCssVar": "--io-progress-indeterminate-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-progress indeterminate animation cycle duration. Default 1s."
+    },
+    {
       "runtimeCssVar": "--io-tag-strong-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

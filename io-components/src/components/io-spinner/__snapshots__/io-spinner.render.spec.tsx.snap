@@ -1,9 +1,23 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`io-spinner — render snapshots > renders default state 1`] = `
-<io-spinner role="status" aria-label="Loading" size="md" color="primary" class="hydrated">
+exports[`io-spinner — render snapshots > renders blocking context 1`] = `
+<io-spinner role="alert" aria-label="Processing" aria-live="assertive" aria-atomic="true" size="md" color="primary" context="blocking" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="spinner spinner--md spinner--primary" aria-hidden="true"></span>
+    <svg class="spinner spinner--md spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="10.75" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="10.75" fill="none" stroke-dasharray="50.65818153913541 16.886060513045138" stroke-dashoffset="0"></circle>
+    </svg>
+  </mock:shadow-root>
+</io-spinner>
+`;
+
+exports[`io-spinner — render snapshots > renders default state 1`] = `
+<io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="md" color="primary" context="inline" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <svg class="spinner spinner--md spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="10.75" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="10.75" fill="none" stroke-dasharray="50.65818153913541 16.886060513045138" stroke-dashoffset="0"></circle>
+    </svg>
   </mock:shadow-root>
 </io-spinner>
 `;
@@ -29,19 +43,52 @@ MockHTMLElement {
   "__shadowRoot": null,
   "__style": undefined,
   "_childNodes": [
-    <io-spinner role="status" aria-label="Loading" size="sm" color="primary" class="hydrated">
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="xs" color="primary" context="inline" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="spinner spinner--sm spinner--primary" aria-hidden="true"></span>
+    <svg class="spinner spinner--xs spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="11.25" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="11.25" fill="none" stroke-dasharray="53.014376029327764 17.671458676442587" stroke-dashoffset="0"></circle>
+    </svg>
   </mock:shadow-root>
 </io-spinner>,
-    <io-spinner role="status" aria-label="Loading" size="md" color="white" class="hydrated">
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="sm" color="primary" context="inline" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="spinner spinner--md spinner--white" aria-hidden="true"></span>
+    <svg class="spinner spinner--sm spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="11" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="11" fill="none" stroke-dasharray="51.83627878423158 17.27875959474386" stroke-dashoffset="0"></circle>
+    </svg>
   </mock:shadow-root>
 </io-spinner>,
-    <io-spinner role="status" aria-label="Loading" size="lg" color="current" class="hydrated">
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="md" color="white" context="inline" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
-    <span class="spinner spinner--lg spinner--current" aria-hidden="true"></span>
+    <svg class="spinner spinner--md spinner--white" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="10.75" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="10.75" fill="none" stroke-dasharray="50.65818153913541 16.886060513045138" stroke-dashoffset="0"></circle>
+    </svg>
+  </mock:shadow-root>
+</io-spinner>,
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="lg" color="current" context="inline" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <svg class="spinner spinner--lg spinner--current" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="10.5" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="10.5" fill="none" stroke-dasharray="49.480084294039244 16.493361431346415" stroke-dashoffset="0"></circle>
+    </svg>
+  </mock:shadow-root>
+</io-spinner>,
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="xl" color="primary" context="inline" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <svg class="spinner spinner--xl spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="10.25" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="10.25" fill="none" stroke-dasharray="48.30198704894306 16.10066234964769" stroke-dashoffset="0"></circle>
+    </svg>
+  </mock:shadow-root>
+</io-spinner>,
+    <io-spinner role="status" aria-label="Loading" aria-live="polite" aria-atomic="true" size="inherit" color="primary" context="inline" class="hydrated">
+  <mock:shadow-root shadowrootdelegatesfocus>
+    <svg class="spinner spinner--inherit spinner--primary" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle class="spinner__track" cx="12" cy="12" r="11" fill="none"></circle>
+      <circle class="spinner__arc" cx="12" cy="12" r="11" fill="none" stroke-dasharray="51.83627878423158 17.27875959474386" stroke-dashoffset="0"></circle>
+    </svg>
   </mock:shadow-root>
 </io-spinner>,
   ],

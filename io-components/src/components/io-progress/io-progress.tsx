@@ -1,4 +1,4 @@
-import { Component, Prop, Host, Element, h } from '@stencil/core';
+import { Component, Prop, State, Host, Element, h } from '@stencil/core';
 
 import { getProgressStyles } from './io-progress-styles';
 import {
@@ -18,6 +18,7 @@ import type { IoProgressColor, IoProgressSize } from './types';
  * <io-progress value="60"></io-progress>
  * <io-progress value="75" color="success" size="lg" show-label></io-progress>
  * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
+ * <io-progress indeterminate label="Loading"></io-progress>
  */
 @Component({
   tag: 'io-progress',
@@ -64,6 +65,15 @@ export class IoProgress {
   /** When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec. */
   @Prop({ reflect: true }) indeterminate = false;
 
+  // ── Internal state ────────────────────────────────────────────
+
+  /**
+   * Last integer percentage announced to screen readers.
+   * aria-valuenow only updates when Math.round(percentage) changes to avoid
+   * excessive announcements during smooth transitions (issue #1021).
+   */
+  @State() private _lastAnnouncedValue: number | undefined = undefined;
+
   // ── Lifecycle ────────────────────────────────────────────────
 
   componentWillLoad() {
@@ -80,18 +90,29 @@ export class IoProgress {
     // Compute normalized percentage using min/max range
     const percentage = this.indeterminate ? 0 : computePercentage(this.value, this.min, this.max);
 
+    // Throttle aria-valuenow: only update on integer percentage change (#1021)
+    let announcedValue: number | undefined;
+    if (!this.indeterminate) {
+      const rounded = Math.round(percentage);
+      if (this._lastAnnouncedValue !== rounded) {
+        this._lastAnnouncedValue = rounded;
+      }
+      announcedValue = this._lastAnnouncedValue;
+    }
+
     // Determine aria-label: labelledBy takes precedence, falls back to label prop
     const ariaLabel = this.labelledBy ? undefined : this.label ?? undefined;
 
     return (
       <Host
         role="progressbar"
-        aria-valuenow={this.indeterminate ? undefined : this.value}
+        aria-valuenow={this.indeterminate ? undefined : announcedValue}
         aria-valuemin={this.min}
         aria-valuemax={this.max}
         aria-valuetext={this.indeterminate ? (this.valueText ?? 'Loading…') : this.valueText}
         aria-label={ariaLabel}
         aria-labelledby={this.labelledBy ?? undefined}
+        aria-busy={this.indeterminate ? 'true' : undefined}
       >
         <style>{getProgressStyles()}</style>
         <div class={getProgressWrapperClass(this.size, this.indeterminate)}>
@@ -99,6 +120,9 @@ export class IoProgress {
             class={getProgressFillClass(this.color, this.animated, this.indeterminate)}
             style={{ width: this.indeterminate ? undefined : `${percentage}%` }}
           />
+          {this.indeterminate && (
+            <div class={`progress-fill progress-fill--${this.color} progress-fill--indeterminate-secondary`} />
+          )}
         </div>
         {this.indeterminate && (
           <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">

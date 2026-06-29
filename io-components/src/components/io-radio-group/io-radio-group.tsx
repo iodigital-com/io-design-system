@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, Att
 
 import { getRadioGroupStyles } from './io-radio-group-styles';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from './types';
 
 /**
@@ -31,7 +32,7 @@ export class IoRadioGroup {
   @Prop() label!: string;
 
   /** Name propagated to all slotted io-radio children */
-  @Prop() name!: string;
+  @Prop() name: string | undefined;
 
   /** Currently selected value */
   @Prop({ mutable: true }) value = '';
@@ -45,10 +46,24 @@ export class IoRadioGroup {
   /** Shows a loading spinner overlay and blocks interaction */
   @Prop({ reflect: true }) loading = false;
 
-  /** Puts the group in error state */
+  /**
+   * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+   */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
+
+  /** Validation message shown below the group when state is non-'none' */
+  @Prop() message: string | undefined;
+
+  /**
+   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
+   * Puts the group in error state. Emits a console.warn in non-production builds.
+   */
   @Prop({ reflect: true }) error = false;
 
-  /** Error message shown below the group when error is true */
+  /**
+   * @deprecated Use `message` instead. Will be removed in the next minor release.
+   * Error message shown below the group when error is true.
+   */
   @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
@@ -78,6 +93,16 @@ export class IoRadioGroup {
     this.errorId = `io-rg-error-${suffix}`;
     this.descriptionId = `io-rg-desc-${suffix}`;
     this.defaultValue = this.value;
+    if (!this.name) {
+      console.error('[io-radio-group] The "name" prop is required for form participation and accessibility. Provide a unique name for this group.');
+    }
+    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (!isProd && this.error) {
+      console.warn('[io-radio-group] The "error" prop is deprecated. Use state="error" instead.');
+    }
+    if (!isProd && this.errorMessage !== undefined) {
+      console.warn('[io-radio-group] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
+    }
     this.syncFormValue();
   }
 
@@ -229,7 +254,9 @@ export class IoRadioGroup {
       r.disabled = this.disabled;
     });
     for (const radio of radios) {
-      radio.name = this.name;
+      if (this.name !== undefined) {
+        radio.name = this.name;
+      }
       radio.checked = radio.value === this.value;
       radio.required = this.required;
     }
@@ -238,10 +265,15 @@ export class IoRadioGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, description, error, errorMessage, orientation, required } = this;
-    const fieldsetClass = error ? 'radio-group radio-group--error' : 'radio-group';
+    const { label, disabled, loading, helperText, description, error, errorMessage, state, message, orientation, required } = this;
+    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
+    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
+    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
+    const effectiveMessage = message ?? errorMessage;
+    const isError = effectiveState === 'error';
+    const fieldsetClass = isError ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = [
-      error && errorMessage ? this.errorId : '',
+      isError && effectiveMessage ? this.errorId : '',
       description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
@@ -253,7 +285,7 @@ export class IoRadioGroup {
             class={fieldsetClass}
             disabled={disabled}
             role="radiogroup"
-            aria-invalid={error ? 'true' : undefined}
+            aria-invalid={isError ? 'true' : undefined}
             aria-describedby={describedBy}
             aria-orientation={orientation}
             aria-required={required ? 'true' : undefined}
@@ -275,9 +307,9 @@ export class IoRadioGroup {
             </div>
           )}
         </div>
-        {error && errorMessage && (
+        {isError && effectiveMessage && (
           <p id={this.errorId} class="radio-group__error" role="alert" aria-atomic="true">
-            {errorMessage}
+            {effectiveMessage}
           </p>
         )}
       </Host>

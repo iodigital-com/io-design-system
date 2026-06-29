@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 import { getSwitchStyles } from './io-switch-styles';
 import { resolveSwitchId, getSwitchWrapperClass, getSwitchTrackClass } from './io-switch-utils';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoSwitchChangeDetail } from './types';
 
 /**
@@ -48,10 +49,24 @@ export class IoSwitch {
   /** Shows a loading spinner and blocks interaction */
   @Prop({ reflect: true }) loading = false;
 
-  /** Puts the switch in error state */
+  /**
+   * Validation state of the switch — 'none' | 'error' | 'success' | 'warning'.
+   */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
+
+  /** Validation message shown below the switch when state is non-'none' */
+  @Prop() message: string | undefined;
+
+  /**
+   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
+   * Puts the switch in error state. Emits a console.warn in non-production builds.
+   */
   @Prop({ reflect: true }) error = false;
 
-  /** Error message shown below the switch */
+  /**
+   * @deprecated Use `message` instead. Will be removed in the next minor release.
+   * Error message shown below the switch when error is true.
+   */
   @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below (replaced by error when error=true) */
@@ -109,6 +124,13 @@ export class IoSwitch {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSwitchId(this.name, this.fallbackId);
     this.defaultChecked = this.checked;
+    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (!isProd && this.error) {
+      console.warn('[io-switch] The "error" prop is deprecated. Use state="error" instead.');
+    }
+    if (!isProd && this.errorMessage !== undefined) {
+      console.warn('[io-switch] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
+    }
     this.syncFormValue();
   }
 
@@ -166,16 +188,26 @@ export class IoSwitch {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, loading, error, errorMessage, helperText } = this;
+    const { label, name, value, checked, required, disabled, loading, error, errorMessage, state, message, helperText } = this;
+    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
+    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
+    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
+    const effectiveMessage = message ?? errorMessage;
+    const isError = effectiveState === 'error';
+
     const inputId = this.fieldId;
     const errorId = `${inputId}-error`;
     const helperId = `${inputId}-helper`;
-    const faceErrorId = `${inputId}-face-error`;
-    const showFaceError = this.faceInvalid && !error;
+    // FACE-only error: triggered by FACE but no consumer error state provided
+    const showFaceOnlyError = this.faceInvalid && !isError;
+    // Single combined error block
+    const showErrorBlock = isError || showFaceOnlyError;
+    const errorMessageToShow = isError && effectiveMessage ? effectiveMessage : (showFaceOnlyError ? 'Please check this switch' : '');
+    const showErrorMessage = showErrorBlock && !!errorMessageToShow;
+
     const describedBy = [
-      !error && !showFaceError && helperText ? helperId : null,
-      error && errorMessage ? errorId : null,
-      showFaceError ? faceErrorId : null,
+      !showErrorBlock && helperText ? helperId : null,
+      showErrorMessage ? errorId : null,
     ]
       .filter((id): id is string => Boolean(id))
       .join(' ');
@@ -183,7 +215,7 @@ export class IoSwitch {
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getSwitchStyles()}</style>
-        <div class={getSwitchWrapperClass(disabled, error || this.faceInvalid)}>
+        <div class={getSwitchWrapperClass(disabled, isError || this.faceInvalid)}>
           <label class="switch-label" htmlFor={inputId}>
             <span class="switch-control">
               <input
@@ -196,7 +228,7 @@ export class IoSwitch {
                 checked={checked}
                 disabled={disabled}
                 required={required}
-                aria-invalid={(error || this.faceInvalid) ? 'true' : undefined}
+                aria-invalid={(isError || this.faceInvalid) ? 'true' : undefined}
                 aria-describedby={describedBy || undefined}
                 onChange={this.handleChange}
                 onBlur={this.handleBlur}
@@ -223,17 +255,12 @@ export class IoSwitch {
             </span>
           </label>
         </div>
-        {error && errorMessage && (
+        {showErrorBlock && (
           <p id={errorId} class="switch-error" role="alert">
-            {errorMessage}
+            {errorMessageToShow}
           </p>
         )}
-        {showFaceError && (
-          <p id={faceErrorId} class="switch-error" role="alert">
-            Please check this switch
-          </p>
-        )}
-        {!error && !this.faceInvalid && helperText && (
+        {!showErrorBlock && helperText && (
           <p id={helperId} class="switch-helper">
             {helperText}
           </p>

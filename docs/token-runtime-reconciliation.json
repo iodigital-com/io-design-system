@@ -3633,6 +3633,7 @@
     },
     {
       "runtimeCssVar": "--io-tag-strong-bg",
+      "runtimeCssVar": "--io-blur-sm",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3641,6 +3642,10 @@
     },
     {
       "runtimeCssVar": "--io-tag-strong-fg",
+      "notes": "Blur scale primitive \u2014 small (8px). Use with frosted-glass UI patterns."
+    },
+    {
+      "runtimeCssVar": "--io-blur-md",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3649,6 +3654,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-2xs",
+      "notes": "Blur scale primitive \u2014 medium (16px). Use with frosted-glass UI patterns."
+    },
+    {
+      "runtimeCssVar": "--io-blur-lg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3657,6 +3666,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-xs",
+      "notes": "Blur scale primitive \u2014 large (32px). Alias: --io-blur-frosted."
+    },
+    {
+      "runtimeCssVar": "--io-blur-frosted",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3665,6 +3678,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-xl",
+      "notes": "Named alias for --io-blur-lg (32px). Recommended default for frosted-glass UI. Pairs with --io-color-{state}-frosted tokens."
+    },
+    {
+      "runtimeCssVar": "--io-color-error-medium",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3673,6 +3690,10 @@
     },
     {
       "runtimeCssVar": "--io-space-fluid-2xl",
+      "notes": "Error state medium intensity. WCAG AA text color on light surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-color-error-low",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3681,6 +3702,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-2xl",
+      "notes": "Error state low intensity (~18% alpha). Subdued border/background variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-error-frosted",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3689,6 +3714,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-3xl",
+      "notes": "Error state frosted intensity (~55% alpha). Background behind backdrop-filter: blur(). Pair with --io-blur-frosted."
+    },
+    {
+      "runtimeCssVar": "--io-color-error-frosted-soft",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3697,6 +3726,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-4xl",
+      "notes": "Error state frosted-soft intensity (~35% alpha). :hover companion for frosted variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-success-medium",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3705,6 +3738,10 @@
     },
     {
       "runtimeCssVar": "--io-border-radius-full",
+      "notes": "Success state medium intensity. WCAG AA text color on light surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-color-success-low",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3713,6 +3750,10 @@
     },
     {
       "runtimeCssVar": "--io-line-height-dynamic",
+      "notes": "Success state low intensity (~18% alpha). Subdued border/background variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-success-frosted",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3721,6 +3762,10 @@
     },
     {
       "runtimeCssVar": "--io-density-spacing-y",
+      "notes": "Success state frosted intensity (~55% alpha). Background behind backdrop-filter: blur(). Pair with --io-blur-frosted."
+    },
+    {
+      "runtimeCssVar": "--io-color-success-frosted-soft",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3729,6 +3774,10 @@
     },
     {
       "runtimeCssVar": "--io-density-spacing-x",
+      "notes": "Success state frosted-soft intensity (~35% alpha). :hover companion for frosted variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-warning-medium",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3737,6 +3786,10 @@
     },
     {
       "runtimeCssVar": "--io-density-font-size",
+      "notes": "Warning state medium intensity. WCAG AA text color on light surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-color-warning-low",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3745,6 +3798,10 @@
     },
     {
       "runtimeCssVar": "--io-density-line-height",
+      "notes": "Warning state low intensity (~18% alpha). Subdued border/background variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-warning-frosted",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3753,6 +3810,10 @@
     },
     {
       "runtimeCssVar": "--io-density-border-radius",
+      "notes": "Warning state frosted intensity (~55% alpha). Background behind backdrop-filter: blur(). Pair with --io-blur-frosted."
+    },
+    {
+      "runtimeCssVar": "--io-color-warning-frosted-soft",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3761,6 +3822,10 @@
     },
     {
       "runtimeCssVar": "--io-density-gap",
+      "notes": "Warning state frosted-soft intensity (~35% alpha). :hover companion for frosted variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-info-medium",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3769,6 +3834,10 @@
     },
     {
       "runtimeCssVar": "--io-duration-xs",
+      "notes": "Info state medium intensity. WCAG AA text color on light surfaces."
+    },
+    {
+      "runtimeCssVar": "--io-color-info-low",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3777,6 +3846,10 @@
     },
     {
       "runtimeCssVar": "--io-duration-sm",
+      "notes": "Info state low intensity (~18% alpha). Subdued border/background variant."
+    },
+    {
+      "runtimeCssVar": "--io-color-info-frosted",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3785,6 +3858,10 @@
     },
     {
       "runtimeCssVar": "--io-duration-md",
+      "notes": "Info state frosted intensity (~55% alpha). Background behind backdrop-filter: blur(). Pair with --io-blur-frosted."
+    },
+    {
+      "runtimeCssVar": "--io-color-info-frosted-soft",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3793,6 +3870,10 @@
     },
     {
       "runtimeCssVar": "--io-duration-lg",
+      "notes": "Info state frosted-soft intensity (~35% alpha). :hover companion for frosted variant."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-stops-fade-black",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3801,6 +3882,10 @@
     },
     {
       "runtimeCssVar": "--io-duration-xl",
+      "notes": "Reusable 16-step opacity ramp from transparent to black. Use in linear-gradient() for scrim/overlay composition."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-stops-fade-white",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3926,6 +4011,14 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Error border-bottom width for io-input-password. WCAG 1.4.1 non-color indicator."
+    },
+    {
+      "runtimeCssVar": "--io-gradient-stops-fade-white",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Reusable 16-step opacity ramp from transparent to white. Use in linear-gradient() for scrim/overlay composition."
     }
   ]
 }

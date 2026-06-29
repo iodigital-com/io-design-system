@@ -477,7 +477,7 @@
     "cssVar": "--io-font-weight-medium",
     "classification": "internal",
     "component": "io-button",
-    "description": "Global medium font weight."
+    "description": "Global medium font weight. [deprecated: use --io-font-weight-regular, --io-font-weight-semibold, or --io-font-weight-bold instead]"
   },
   {
     "cssVar": "--io-motion-easing-bounce",
@@ -1634,5 +1634,167 @@
     "description": "Naming-convergence alias for --io-focus-outer. Retained for backward compatibility only. Use --io-focus-outer instead.",
     "deprecatedSince": "2024-01-01",
     "replacedBy": "--io-focus-outer"
+  },
+  {
+    "cssVar": "--io-blur-sm",
+    "classification": "internal",
+    "component": "global",
+    "description": "Blur scale primitive \u2014 small (8px). Use as backdrop-filter: blur(var(--io-blur-sm)) for subtle glassmorphism."
+  },
+  {
+    "cssVar": "--io-blur-md",
+    "classification": "internal",
+    "component": "global",
+    "description": "Blur scale primitive \u2014 medium (16px). Use as backdrop-filter: blur(var(--io-blur-md)) for moderate frosted-glass effects."
+  },
+  {
+    "cssVar": "--io-blur-lg",
+    "classification": "internal",
+    "component": "global",
+    "description": "Blur scale primitive \u2014 large (32px). Alias: --io-blur-frosted."
+  },
+  {
+    "cssVar": "--io-blur-frosted",
+    "classification": "internal",
+    "component": "global",
+    "description": "Named frosted-glass blur (32px). Recommended default for frosted overlay UI. Pair with --io-color-{state}-frosted tokens and backdrop-filter: blur()."
+  },
+  {
+    "cssVar": "--io-gradient-stops-fade-black",
+    "classification": "internal",
+    "component": "global",
+    "description": "Reusable 16-step opacity ramp from transparent to black. Compose new gradients: linear-gradient(to bottom, var(--io-gradient-stops-fade-black))."
+  },
+  {
+    "cssVar": "--io-gradient-stops-fade-white",
+    "classification": "internal",
+    "component": "global",
+    "description": "Reusable 16-step opacity ramp from transparent to white. Compose new gradients: linear-gradient(to top, var(--io-gradient-stops-fade-white))."
+  },
+  {
+    "cssVar": "--io-color-error-medium",
+    "classification": "internal",
+    "component": "global",
+    "description": "Error state medium intensity. Equivalent to base --io-color-error. Use for text and icon on light surfaces (WCAG AA)."
+  },
+  {
+    "cssVar": "--io-color-error-low",
+    "classification": "internal",
+    "component": "global",
+    "description": "Error state low intensity (~18% alpha). Use for subdued error borders and background fills."
+  },
+  {
+    "cssVar": "--io-color-error-frosted",
+    "classification": "internal",
+    "component": "global",
+    "description": "Error state frosted intensity (~55% alpha). Use as background behind backdrop-filter: blur(var(--io-blur-frosted)) for glassmorphism error panels."
+  },
+  {
+    "cssVar": "--io-color-error-frosted-soft",
+    "classification": "internal",
+    "component": "global",
+    "description": "Error state frosted-soft intensity (~35% alpha). :hover companion for --io-color-error-frosted."
+  },
+  {
+    "cssVar": "--io-color-success-medium",
+    "classification": "internal",
+    "component": "global",
+    "description": "Success state medium intensity. Use for text and icon on light surfaces (WCAG AA)."
+  },
+  {
+    "cssVar": "--io-color-success-low",
+    "classification": "internal",
+    "component": "global",
+    "description": "Success state low intensity (~18% alpha). Use for subdued success borders and background fills."
+  },
+  {
+    "cssVar": "--io-color-success-frosted",
+    "classification": "internal",
+    "component": "global",
+    "description": "Success state frosted intensity (~55% alpha). Use as background behind backdrop-filter: blur(var(--io-blur-frosted)) for glassmorphism success panels."
+  },
+  {
+    "cssVar": "--io-color-success-frosted-soft",
+    "classification": "internal",
+    "component": "global",
+    "description": "Success state frosted-soft intensity (~35% alpha). :hover companion for --io-color-success-frosted."
+  },
+  {
+    "cssVar": "--io-color-warning-medium",
+    "classification": "internal",
+    "component": "global",
+    "description": "Warning state medium intensity. Use for text and icon on light surfaces (WCAG AA)."
+  },
+  {
+    "cssVar": "--io-color-warning-low",
+    "classification": "internal",
+    "component": "global",
+    "description": "Warning state low intensity (~18% alpha). Use for subdued warning borders and background fills."
+  },
+  {
+    "cssVar": "--io-color-warning-frosted",
+    "classification": "internal",
+    "component": "global",
+    "description": "Warning state frosted intensity (~55% alpha). Use as background behind backdrop-filter: blur(var(--io-blur-frosted)) for glassmorphism warning panels."
+  },
+  {
+    "cssVar": "--io-color-warning-frosted-soft",
+    "classification": "internal",
+    "component": "global",
+    "description": "Warning state frosted-soft intensity (~35% alpha). :hover companion for --io-color-warning-frosted."
+  },
+  {
+    "cssVar": "--io-color-info-medium",
+    "classification": "internal",
+    "component": "global",
+    "description": "Info state medium intensity. Use for text and icon on light surfaces (WCAG AA)."
+  },
+  {
+    "cssVar": "--io-color-info-low",
+    "classification": "internal",
+    "component": "global",
+    "description": "Info state low intensity (~18% alpha). Use for subdued info borders and background fills."
+  },
+  {
+    "cssVar": "--io-color-info-frosted",
+    "classification": "internal",
+    "component": "global",
+    "description": "Info state frosted intensity (~55% alpha). Use as background behind backdrop-filter: blur(var(--io-blur-frosted)) for glassmorphism info panels."
+  },
+  {
+    "cssVar": "--io-color-info-frosted-soft",
+    "classification": "internal",
+    "component": "global",
+    "description": "Info state frosted-soft intensity (~35% alpha). :hover companion for --io-color-info-frosted."
+  },
+  {
+    "cssVar": "--io-font-weight-extra-light",
+    "classification": "internal",
+    "component": "global",
+    "description": "Font weight 200 (extra-light). Deprecated: the design system uses only regular/semibold/bold. Scheduled for removal; migrate to --io-font-weight-regular (400)."
+  },
+  {
+    "cssVar": "--io-font-weight-light",
+    "classification": "internal",
+    "component": "global",
+    "description": "Font weight 300 (light). Deprecated: the design system uses only regular/semibold/bold. Scheduled for removal; migrate to --io-font-weight-regular (400)."
+  },
+  {
+    "cssVar": "--io-font-weight-regular",
+    "classification": "internal",
+    "component": "global",
+    "description": "Font weight 400 (regular). One of the three canonical weights (regular/semibold/bold) used by the design system."
+  },
+  {
+    "cssVar": "--io-font-weight-bold",
+    "classification": "internal",
+    "component": "global",
+    "description": "Font weight 700 (bold). One of the three canonical weights (regular/semibold/bold) used by the design system."
+  },
+  {
+    "cssVar": "--io-font-weight-extra-bold",
+    "classification": "internal",
+    "component": "global",
+    "description": "Font weight 800 (extra-bold). Deprecated: the design system uses only regular/semibold/bold. Scheduled for removal; migrate to --io-font-weight-bold (700)."
   }
 ]

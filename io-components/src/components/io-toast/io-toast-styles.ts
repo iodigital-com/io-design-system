@@ -1,7 +1,22 @@
 export function getToastStyles(): string {
   return `
+    /* Assertive live region: visually hidden but present in the accessibility tree */
+    .toast__assertive-region {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     :host {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      gap: var(--io-space-2);
       position: fixed;
       z-index: var(--io-z-toast);
       width: var(--io-toast-max-width);

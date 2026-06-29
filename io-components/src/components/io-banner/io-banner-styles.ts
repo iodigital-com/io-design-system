@@ -5,6 +5,12 @@ export function getBannerStyles(): string {
       font-family: var(--io-font-primary);
     }
 
+    /* The live-region wrapper is always in the DOM (issue #1076).
+       aria-hidden="true" + display:none hides it from both layout and a11y tree. */
+    .banner[aria-hidden='true'] {
+      display: none;
+    }
+
     .banner {
       position: fixed;
       top: var(--io-banner-top, var(--io-space-4));
@@ -43,11 +49,31 @@ export function getBannerStyles(): string {
       }
     }
 
+    /* Exit animation (issue #1012) — applied while _dismissing is true */
+    .banner--dismissing {
+      animation: io-banner-out var(--io-motion-overlay-exit, var(--io-motion-base, 200ms)) var(--io-motion-overlay-easing, ease-in) both;
+    }
+
+    @keyframes io-banner-out {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(calc(-100% - var(--io-space-4)));
+      }
+    }
+
     /* Bottom position override — flip inset and animation direction */
     :host([position='bottom']) .banner {
       top: auto;
       bottom: var(--io-banner-bottom, var(--io-space-4));
       animation-name: io-banner-in-bottom;
+    }
+
+    :host([position='bottom']) .banner--dismissing {
+      animation-name: io-banner-out-bottom;
     }
 
     @keyframes io-banner-in-bottom {
@@ -58,6 +84,17 @@ export function getBannerStyles(): string {
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes io-banner-out-bottom {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(calc(100% + var(--io-space-4)));
       }
     }
 
@@ -190,8 +227,10 @@ export function getBannerStyles(): string {
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .banner {
+      .banner,
+      .banner--dismissing {
         animation: none;
+        transition: none;
       }
       .banner__dismiss {
         transition: none;

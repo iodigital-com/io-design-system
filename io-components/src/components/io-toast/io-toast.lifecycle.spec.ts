@@ -44,9 +44,9 @@ describe('io-toast-utils — getToastItemVariant null branch', () => {
   });
 });
 
-// ── render(): persistent=true fires the 'alertdialog' / 'assertive' branch ───
+// ── render(): persistent/error messages populate the assertive region ─────────
 
-describe('io-toast — render() persistent message: alertdialog / assertive branch', () => {
+describe('io-toast — render() persistent message: separate alert region (issue #1003)', () => {
   let component: IoToast;
 
   beforeEach(() => {
@@ -54,33 +54,37 @@ describe('io-toast — render() persistent message: alertdialog / assertive bran
     (component as any).el = document.createElement('io-toast');
   });
 
-  it('does not throw when currentMsg has variant="error" (persistent)', () => {
-    (component as any).currentMsg = { id: 1, text: 'Error!', variant: 'error' };
+  it('does not throw when visibleMsgs contains variant="error" (persistent)', () => {
+    (component as any).visibleMsgs = [{ id: 1, text: 'Error!', variant: 'error' }];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('does not throw when currentMsg has persistent=true', () => {
-    (component as any).currentMsg = {
-      id: 2,
-      text: 'Requires action',
-      variant: 'info',
-      persistent: true,
-    };
+  it('does not throw when visibleMsgs contains persistent=true', () => {
+    (component as any).visibleMsgs = [
+      {
+        id: 2,
+        text: 'Requires action',
+        variant: 'info',
+        persistent: true,
+      },
+    ];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('does not throw when currentMsg has variant="error" and persistent=true', () => {
-    (component as any).currentMsg = {
-      id: 3,
-      text: 'Critical failure',
-      variant: 'error',
-      persistent: true,
-    };
+  it('does not throw when visibleMsgs contains variant="error" and persistent=true', () => {
+    (component as any).visibleMsgs = [
+      {
+        id: 3,
+        text: 'Critical failure',
+        variant: 'error',
+        persistent: true,
+      },
+    ];
     expect(() => component.render()).not.toThrow();
   });
 });
 
-// ── render(): non-persistent message fires the 'status' / 'polite' branch ────
+// ── render(): non-persistent messages render in the polite status host ────────
 
 describe('io-toast — render() non-persistent message: status / polite branch', () => {
   let component: IoToast;
@@ -90,20 +94,20 @@ describe('io-toast — render() non-persistent message: status / polite branch',
     (component as any).el = document.createElement('io-toast');
   });
 
-  it('does not throw when currentMsg has variant="success" (non-persistent)', () => {
-    (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
+  it('does not throw when visibleMsgs contains variant="success" (non-persistent)', () => {
+    (component as any).visibleMsgs = [{ id: 1, text: 'Saved', variant: 'success' }];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('does not throw when currentMsg is null (no active toast)', () => {
-    (component as any).currentMsg = null;
+  it('does not throw when visibleMsgs is empty (no active toast)', () => {
+    (component as any).visibleMsgs = [];
     expect(() => component.render()).not.toThrow();
   });
 });
 
-// ── isToastPersistent drives render() ARIA role/aria-live ─────────────────────
+// ── isToastPersistent drives assertive region content ────────────────────────
 
-describe('io-toast — isToastPersistent integration with render()', () => {
+describe('io-toast — isToastPersistent integration with render() (issue #1003)', () => {
   let component: IoToast;
 
   beforeEach(() => {
@@ -111,34 +115,31 @@ describe('io-toast — isToastPersistent integration with render()', () => {
     (component as any).el = document.createElement('io-toast');
   });
 
-  it('isToastPersistent is true for error variant — covers alertdialog branch', () => {
+  it('isToastPersistent is true for error variant', () => {
     const entry: IoToastEntry = { id: 1, text: 'Error', variant: 'error' };
     expect(isToastPersistent(entry)).toBe(true);
 
-    (component as any).currentMsg = entry;
+    (component as any).visibleMsgs = [entry];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('isToastPersistent is false for success variant — covers status branch', () => {
+  it('isToastPersistent is false for success variant', () => {
     const entry: IoToastEntry = { id: 2, text: 'Done', variant: 'success' };
     expect(isToastPersistent(entry)).toBe(false);
 
-    (component as any).currentMsg = entry;
+    (component as any).visibleMsgs = [entry];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('isToastPersistent is false when currentMsg is null — covers falsy branch', () => {
-    // persistent = this.currentMsg ? isToastPersistent(...) : false
-    // When currentMsg is null, the false branch of the ternary fires
-    (component as any).currentMsg = null;
-    // Render should use 'status' and 'polite' (non-persistent defaults)
+  it('renders without throwing when visibleMsgs is empty', () => {
+    (component as any).visibleMsgs = [];
     expect(() => component.render()).not.toThrow();
   });
 });
 
-// ── dismiss() when queue is empty (if(next) false branch) ────────────────────
+// ── dismiss() when queue is empty ────────────────────────────────────────────
 
-describe('io-toast-manager — dismiss() with empty queue (if(next) false)', () => {
+describe('io-toast-manager — dismiss() with empty queue', () => {
   let manager: IoToastManagerClass;
   let refresh: ReturnType<typeof vi.fn>;
 
@@ -154,29 +155,26 @@ describe('io-toast-manager — dismiss() with empty queue (if(next) false)', () 
     manager.unregister();
   });
 
-  it('setTimeout fires but next is undefined — no show() called', () => {
+  it('removes the toast and no more toasts visible after dismiss', () => {
     manager.addToast({ text: 'Only toast' });
     expect(manager.getCurrent()?.text).toBe('Only toast');
 
-    // Dismiss — queue is empty, so next will be undefined after shift()
     manager.dismiss();
     expect(manager.getCurrent()).toBeNull();
 
-    // Advance past DISMISS_DELAY (200ms) — the if(next) branch is false
+    // Advance past DISMISS_DELAY (200ms) — no queued item to show
     vi.advanceTimersByTime(300);
-
-    // current remains null — no second toast was shown
     expect(manager.getCurrent()).toBeNull();
   });
 
-  it('refresh is called with null immediately on dismiss', () => {
+  it('refresh is called with empty array immediately on dismiss', () => {
     manager.addToast({ text: 'Only toast' });
     refresh.mockClear();
 
     manager.dismiss();
 
-    // refresh(null) called immediately
-    expect(refresh).toHaveBeenCalledWith(null);
+    // refresh([]) called immediately (stacked API uses array)
+    expect(refresh).toHaveBeenCalledWith([]);
   });
 
   it('refresh is not called again after DISMISS_DELAY when queue is empty', () => {
@@ -186,12 +184,11 @@ describe('io-toast-manager — dismiss() with empty queue (if(next) false)', () 
 
     vi.advanceTimersByTime(300);
 
-    // No additional refresh calls since next was undefined
+    // No additional refresh calls since queue was empty
     expect(refresh.mock.calls.length).toBe(callCountAfterDismiss);
   });
 
   it('dismiss() on empty current does not throw', () => {
-    // No toast added — current is null, queue is empty
     expect(() => manager.dismiss()).not.toThrow();
   });
 
@@ -204,9 +201,9 @@ describe('io-toast-manager — dismiss() with empty queue (if(next) false)', () 
   });
 });
 
-// ── dismiss() when queue has items (if(next) true branch — for completeness) ──
+// ── dismiss() when queue has items ───────────────────────────────────────────
 
-describe('io-toast-manager — dismiss() with queued item (if(next) true)', () => {
+describe('io-toast-manager — dismiss() with queued item', () => {
   let manager: IoToastManagerClass;
   let refresh: ReturnType<typeof vi.fn>;
 
@@ -214,6 +211,8 @@ describe('io-toast-manager — dismiss() with queued item (if(next) true)', () =
     vi.useFakeTimers();
     manager = new IoToastManagerClass();
     refresh = vi.fn();
+    // Set maxVisible to 1 so that the second toast is actually queued
+    manager.maxVisible = 1;
     manager.register(refresh);
   });
 
@@ -233,14 +232,16 @@ describe('io-toast-manager — dismiss() with queued item (if(next) true)', () =
     expect(manager.getCurrent()?.text).toBe('Second');
   });
 
-  it('refresh is called with the next toast entry after DISMISS_DELAY', () => {
+  it('refresh is called with array containing the next toast after DISMISS_DELAY', () => {
     manager.addToast({ text: 'First' });
     manager.addToast({ text: 'Second' });
     manager.dismiss();
     refresh.mockClear();
 
     vi.advanceTimersByTime(300);
-    expect(refresh).toHaveBeenCalledWith(expect.objectContaining({ text: 'Second' }));
+    expect(refresh).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ text: 'Second' })]),
+    );
   });
 });
 
@@ -293,7 +294,7 @@ describe('io-toast — lifecycle with persistent message registration', () => {
 
   it('render does not throw after connectedCallback with error variant message', () => {
     component.connectedCallback();
-    (component as any).currentMsg = { id: 1, text: 'Auth failed', variant: 'error' };
+    (component as any).visibleMsgs = [{ id: 1, text: 'Auth failed', variant: 'error' }];
     expect(() => component.render()).not.toThrow();
     component.disconnectedCallback();
   });

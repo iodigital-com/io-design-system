@@ -14,6 +14,18 @@ import type { IoToastMessage, IoToastEntry, IoToastPosition } from './types';
  *
  * Only one <io-toast> element may exist per page (singleton pattern).
  *
+ * ARIA live-region strategy (issue #1003):
+ *   - Host always carries role="status" aria-live="polite" so the live region
+ *     is stable — screen readers register it on mount and never lose track of it.
+ *   - A secondary <div role="alert" aria-live="assertive"> is rendered
+ *     unconditionally inside the host. Its text content is populated only when
+ *     a persistent/error toast is active, triggering an assertive announcement
+ *     without mutating the host's role attribute.
+ *
+ * Stacked toasts (issue #994):
+ *   - Up to `maxVisible` (default 3) toasts are shown simultaneously.
+ *   - Each <io-toast-item> carries its own role="status" for independent a11y.
+ *
  * @example
  * <!-- App shell -->
  * <io-toast id="toast"></io-toast>
@@ -39,13 +51,13 @@ export class IoToast {
    */
   @Prop({ reflect: true }) position: IoToastPosition = 'bottom-end';
 
-  @State() private currentMsg: IoToastEntry | null = null;
+  @State() private visibleMsgs: IoToastEntry[] = [];
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   connectedCallback() {
-    toastManager.register((msg) => {
-      this.currentMsg = msg;
+    toastManager.register((msgs) => {
+      this.visibleMsgs = msgs;
     });
   }
 
@@ -61,35 +73,64 @@ export class IoToast {
     toastManager.addToast(message);
   }
 
-  private handleItemDismiss = () => {
-    toastManager.dismiss();
+  /**
+   * Dismiss a specific toast by id, or the oldest visible one when no id given.
+   */
+  @Method()
+  async dismissToast(id?: number): Promise<void> {
+    toastManager.dismiss(id);
+  }
+
+  /** Dismiss all visible and queued toasts immediately. */
+  @Method()
+  async dismissAll(): Promise<void> {
+    toastManager.dismissAll();
+  }
+
+  private handleItemDismiss = (id: number) => {
+    toastManager.dismiss(id);
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const persistent = this.currentMsg ? isToastPersistent(this.currentMsg) : false;
-    const liveRole = persistent ? 'alertdialog' : 'status';
-    const liveValue = persistent ? 'assertive' : 'polite';
+    // Collect text of any currently-visible persistent/error toasts so the
+    // assertive live region can announce them without mutating the host role.
+    const assertiveText = this.visibleMsgs
+      .filter((m) => isToastPersistent(m))
+      .map((m) => m.text)
+      .join(' ');
 
     return (
       <Host
-        role={liveRole}
-        aria-live={liveValue}
+        role="status"
+        aria-live="polite"
         aria-atomic="true"
         data-position={this.position}
       >
         <style>{getToastStyles()}</style>
-        {this.currentMsg && (
+
+        {/* Assertive region: always present, populated only for persistent/error toasts */}
+        <div
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          class="toast__assertive-region"
+        >
+          {assertiveText}
+        </div>
+
+        {/* Stacked toast items — each carries its own status live region */}
+        {this.visibleMsgs.map((msg) => (
           <io-toast-item
-            key={this.currentMsg.id}
-            text={this.currentMsg.text}
-            variant={getToastItemVariant(this.currentMsg)}
-            actionLabel={this.currentMsg.actionLabel}
-            actionHref={this.currentMsg.actionHref}
-            onDismiss={this.handleItemDismiss}
+            key={msg.id}
+            text={msg.text}
+            variant={getToastItemVariant(msg)}
+            actionLabel={msg.actionLabel}
+            actionHref={msg.actionHref}
+            onDismiss={() => this.handleItemDismiss(msg.id)}
           />
-        )}
+        ))}
       </Host>
     );
   }

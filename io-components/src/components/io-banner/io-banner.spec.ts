@@ -52,6 +52,10 @@ describe('io-banner — default props', () => {
   it('has no items prop', () => {
     expect((c as any).items).toBeUndefined();
   });
+
+  it('_dismissing defaults to false', () => {
+    expect((c as any)._dismissing).toBe(false);
+  });
 });
 
 describe('io-banner — render does not throw per variant', () => {
@@ -62,9 +66,48 @@ describe('io-banner — render does not throw per variant', () => {
   });
 });
 
+describe('io-banner — live region always mounted (issue #1076)', () => {
+  function bannerDivAttrs(c: IoBanner): Record<string, unknown> {
+    hMock.mockClear();
+    (c as any).render();
+    const call = hMock.mock.calls.findLast(
+      ([, attrs]: [unknown, unknown]) => attrs && typeof attrs === 'object' && 'role' in (attrs as Record<string, unknown>),
+    ) as [unknown, Record<string, unknown>] | undefined;
+    return call?.[1] ?? {};
+  }
+
+  it('banner div is always rendered even when open=false', () => {
+    const c = new IoBanner();
+    c.open = false;
+    hMock.mockClear();
+    (c as any).render();
+    // The .banner div must be present — aria-hidden='true' hides it instead of v-if
+    const divWithRole = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'div' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        'role' in (attrs as Record<string, unknown>),
+    );
+    expect(divWithRole).toBeDefined();
+  });
+
+  it('sets aria-hidden="true" when open=false', () => {
+    const c = new IoBanner();
+    c.open = false;
+    const attrs = bannerDivAttrs(c);
+    expect(attrs['aria-hidden']).toBe('true');
+  });
+
+  it('does not set aria-hidden when open=true', () => {
+    const c = new IoBanner();
+    c.open = true;
+    const attrs = bannerDivAttrs(c);
+    expect(attrs['aria-hidden']).toBeUndefined();
+  });
+});
+
 describe('io-banner — ARIA role mapping', () => {
-  // Role is on the inner .banner div (only rendered when open=true) so the live region
-  // only exists while the banner is visible — prevents spurious announcements when closed.
   function bannerDivAttrs(c: IoBanner): Record<string, unknown> {
     hMock.mockClear();
     (c as any).render();
@@ -107,7 +150,7 @@ describe('io-banner — ARIA role mapping', () => {
     },
   );
 
-  it('banner div is always rendered with a role attribute — visibility toggled via aria-hidden (#1076)', () => {
+  it('banner div has aria-hidden="true" when open=false (not removed from DOM, issue #1076)', () => {
     const c = new IoBanner();
     c.variant = 'error';
     c.open = false;
@@ -150,11 +193,12 @@ describe('io-banner — slot content detection', () => {
     expect((c as any).hasContent).toBe(false);
   });
 
-  it('slot handler is present even when banner is closed — banner div always mounted (#1076)', () => {
+  it('slot handler is present even when banner is closed (live region always mounted, issue #1076)', () => {
     const c = new IoBanner();
     c.open = false;
-    const handler = getSlotchangeHandler(c);
+    // The slot is inside the always-mounted banner div, so slotchange handler is always present
     // #1076: the slot is always in the DOM so the live region is pre-established
+    const handler = getSlotchangeHandler(c);
     expect(handler).toBeDefined();
   });
 });

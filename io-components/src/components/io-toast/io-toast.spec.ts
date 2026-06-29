@@ -46,17 +46,22 @@ describe('io-toast — registration', () => {
     expect(methodNames).not.toContain('didAddToast');
   });
 
-  it('render remains stable with and without an active message', () => {
+  it('render remains stable with and without active messages', () => {
     expect(() => component.render()).not.toThrow();
-    (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
+    (component as any).visibleMsgs = [{ id: 1, text: 'Saved', variant: 'success' }];
     expect(() => component.render()).not.toThrow();
   });
 
-  it('renders with aria-atomic="true" for atomic screen-reader announcements', () => {
+  it('renders host with aria-atomic="true" for atomic screen-reader announcements', () => {
     vi.mocked(h).mockClear();
     component.render();
+    // The host has role="status" + aria-live="polite" + aria-atomic="true"
     const hostCall = vi.mocked(h).mock.calls.find(
-      (call) => call[1] && typeof call[1] === 'object' && 'aria-atomic' in (call[1] as object),
+      (call) =>
+        call[1] &&
+        typeof call[1] === 'object' &&
+        (call[1] as Record<string, unknown>)['role'] === 'status' &&
+        'aria-atomic' in (call[1] as object),
     );
     expect((hostCall?.[1] as Record<string, unknown>)?.['aria-atomic']).toBe('true');
   });
@@ -96,6 +101,40 @@ describe('io-toast — persistent/error ARIA', () => {
     expect(isToastPersistent({ id: 1, text: 'X', variant: 'success' })).toBe(false);
     expect(isToastPersistent({ id: 2, text: 'X', variant: 'info' })).toBe(false);
     expect(isToastPersistent({ id: 3, text: 'X' })).toBe(false);
+  });
+
+  it('host always carries role="status" (never mutates to alertdialog, issue #1003)', () => {
+    const component = new IoToast();
+    vi.mocked(h).mockClear();
+    // With a persistent/error message
+    (component as any).visibleMsgs = [{ id: 1, text: 'Error!', variant: 'error', persistent: true }];
+    component.render();
+    // The Host call uses the 'Host' tag (not a string). Find it by aria-live="polite" + role="status"
+    const hostCall = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[1] &&
+        typeof call[1] === 'object' &&
+        (call[1] as Record<string, unknown>)['role'] === 'status' &&
+        (call[1] as Record<string, unknown>)['aria-live'] === 'polite',
+    );
+    expect(hostCall).toBeDefined();
+    expect((hostCall?.[1] as Record<string, unknown>)?.['role']).toBe('status');
+    expect((hostCall?.[1] as Record<string, unknown>)?.['aria-live']).toBe('polite');
+  });
+
+  it('renders a separate role="alert" assertive region (issue #1003)', () => {
+    const component = new IoToast();
+    vi.mocked(h).mockClear();
+    (component as any).visibleMsgs = [{ id: 1, text: 'Error!', variant: 'error' }];
+    component.render();
+    const alertCall = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[1] &&
+        typeof call[1] === 'object' &&
+        (call[1] as Record<string, unknown>)['role'] === 'alert',
+    );
+    expect(alertCall).toBeDefined();
+    expect((alertCall?.[1] as Record<string, unknown>)?.['aria-live']).toBe('assertive');
   });
 });
 

@@ -167,7 +167,7 @@ export default function GettingStarted() {
               background: 'var(--io-accent-bg)',
             }}
           >
-            io Design System · v1.0
+            io Design System · v1.6
           </span>
 
           <h1
@@ -178,7 +178,7 @@ export default function GettingStarted() {
               color: 'var(--io-text-primary)',
             }}
           >
-            37 components.<br />
+            46 components.<br />
             One token system.<br />
             Any framework.
           </h1>

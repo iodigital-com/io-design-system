@@ -408,6 +408,14 @@ export const sitemap: NavSection[] = [
         related: ['io-heading', 'io-link', 'io-badge'],
       },
       {
+        label: 'Text List',
+        href: '/components/io-text-list/configurator',
+        status: 'beta',
+        slug: 'io-text-list',
+        description: 'Token-driven list typography primitive for ordered and unordered lists.',
+        related: ['io-text', 'io-heading'],
+      },
+      {
         label: 'Textarea',
         href: '/components/io-textarea/configurator',
         status: 'beta',

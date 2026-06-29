@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoCheckbox } from './io-checkbox';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 describe('io-checkbox — named slots (label, description, message)', () => {
   let component: IoCheckbox;
@@ -124,36 +125,35 @@ describe('io-checkbox — named slots (label, description, message)', () => {
     expect((component as any).hasMessageSlot).toBe(true);
   });
 
-  it('renders message paragraph when message slot is occupied and error is true', () => {
+  it('renders StateMessage when message slot is occupied and error is true', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = true;
     component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
-    const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-message'),
+    const stateMessageCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === StateMessage,
     );
-    // #1094: Filter to the state-message paragraph (id ends with "-message", not "-face-error")
-    const messageCalls = pCalls.filter(
-      (call) => String((call[1] as Record<string, unknown>)?.id ?? '').endsWith('-message'),
-    );
-    expect(messageCalls.length).toBeGreaterThan(0);
-    const pProps = messageCalls[0][1] as Record<string, unknown>;
-    expect(String(pProps['class'] ?? '')).not.toContain('checkbox-message--hidden');
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('error');
+    expect(props['visible']).toBe(true);
   });
 
-  it('hides error paragraph when error is true but no slot or errorMessage', () => {
+  it('hides StateMessage when error is true but no slot or errorMessage', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = false;
     component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
-    const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-message--hidden'),
+    const stateMessageCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === StateMessage,
     );
-    expect(pCalls.length).toBeGreaterThan(0);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['visible']).toBe(false);
   });
 
   // ── backward compatibility ────────────────────────────────────
@@ -184,21 +184,20 @@ describe('io-checkbox — named slots (label, description, message)', () => {
     expect(String(pProps['class'] ?? '')).not.toContain('--hidden');
   });
 
-  it('renders errorMessage prop when no message slot and error is true', () => {
+  it('renders StateMessage with visible=true when no slot but message prop and error is true', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = false;
     component.message = 'Required';
     vi.mocked(h).mockClear();
     component.render();
 
-    const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-message'),
+    const stateMessageCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === StateMessage,
     );
-    expect(pCalls.length).toBeGreaterThan(0);
-    // At least one should not be hidden
-    const nonHiddenCalls = pCalls.filter(
-      (call) => !String((call[1] as Record<string, unknown>)?.class ?? '').includes('--hidden'),
-    );
-    expect(nonHiddenCalls.length).toBeGreaterThan(0);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('error');
+    expect(props['message']).toBe('Required');
+    expect(props['visible']).toBe(true);
   });
 });

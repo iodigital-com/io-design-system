@@ -82,7 +82,7 @@ export function getCheckboxGroupStyles(): string {
 
     /* ── Required indicator ─────────────────────────────────── */
 
-    .checkbox-group__required {
+    .io-required {
       color: var(--io-color-error);
       margin-inline-start: var(--io-space-1);
     }

@@ -175,7 +175,7 @@ export function getCheckboxStyles(): string {
       border-width: 0;
     }
 
-    .checkbox-required {
+    .io-required {
       color: var(--io-color-error);
     }
 

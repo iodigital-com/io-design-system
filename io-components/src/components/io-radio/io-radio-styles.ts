@@ -163,7 +163,7 @@ export function getRadioStyles(): string {
       border-width: 0;
     }
 
-    .radio-required {
+    .io-required {
       color: var(--io-color-error);
     }
 

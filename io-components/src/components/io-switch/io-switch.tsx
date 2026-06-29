@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 
 import { getSwitchStyles } from './io-switch-styles';
 import { resolveSwitchId, getSwitchWrapperClass, getSwitchTrackClass } from './io-switch-utils';
+import { syncFormState } from '../../utils/form/sync-form-state';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoSwitchChangeDetail } from './types';
@@ -161,14 +162,14 @@ export class IoSwitch {
 
   private syncFormValue() {
     // Unchecked switch: null = excluded from FormData (matches native checkbox behaviour)
-    this.internals?.setFormValue?.(this.checked ? this.value : null);
-    if (this.required && !this.checked) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please check this switch');
-      this.faceInvalid = true;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const isInvalid = this.required && !this.checked;
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue: this.checked ? this.value : null,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please check this switch' : '',
+      disabled: this.disabled,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   // ── Handlers ─────────────────────────────────────────────────

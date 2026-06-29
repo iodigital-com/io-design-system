@@ -1,5 +1,6 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
+import { IO_FIELD_STATES } from '@/utils/field-state';
 
 export const checkboxStory: Story<'io-checkbox'> = {
   state: {
@@ -145,7 +146,7 @@ export const checkboxPropDefinitions: PropDefinition[] = [
   {
     name: 'state',
     type: 'select',
-    options: ['none', 'error', 'success', 'warning'],
+    options: [...IO_FIELD_STATES],
     defaultValue: 'none',
     description: 'Validation state — controls border color and message color.',
   },

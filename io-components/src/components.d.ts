@@ -1167,7 +1167,8 @@ export namespace Components {
          */
         "autoComplete": string | undefined;
         /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -3286,7 +3287,12 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+         */
+        "autoComplete": string | undefined;
+        /**
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -6485,7 +6491,8 @@ declare namespace LocalJSX {
          */
         "autoComplete"?: string | undefined;
         /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -8707,7 +8714,12 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+         */
+        "autoComplete"?: string | undefined;
+        /**
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -9531,6 +9543,7 @@ declare namespace LocalJSX {
         "rows": number;
         "size": IoTextareaSize;
         "autocomplete": string | undefined;
+        "autoComplete": string | undefined;
         "hideLabel": boolean;
         "resize": IoTextareaResize;
         "spellCheck": boolean | undefined;

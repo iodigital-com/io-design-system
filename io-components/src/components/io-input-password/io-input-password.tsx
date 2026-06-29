@@ -24,7 +24,6 @@ export class IoInputPassword {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
-  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -116,20 +115,16 @@ export class IoInputPassword {
     if (native) {
       if (!native.checkValidity()) {
         this.internals?.setValidity?.(native.validity, native.validationMessage, native);
-        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
-        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
-      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
-      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
@@ -209,19 +204,11 @@ export class IoInputPassword {
     const { label, name, value, placeholder, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle } = this;
     const { inputId, errorId, helperId } = this;
 
-    const showError = state === 'error';
-    const showSuccess = state === 'success';
-    const showWarning = state === 'warning';
-    // faceInvalid contributes to showError when there is no consumer-provided error state
-    const showFaceOnlyError = this.touched && this.faceInvalid && !showError;
-    // Combined error display: either consumer state=error or FACE-triggered error
-    const showErrorBlock = showError || showFaceOnlyError;
-    // The error message shown: consumer message takes precedence, then native validation message
-    const errorMessageToShow = showError && message ? message : (showFaceOnlyError ? this.faceErrorMessage : '');
-    const showMessage = showErrorBlock && !!errorMessageToShow;
-    const showSuccessMessage = showSuccess && !!message;
-    const showWarningMessage = showWarning && !!message;
-    const showDescription = !showErrorBlock && !showSuccessMessage && !showWarningMessage && !!helperText;
+    const showError = state === 'error' || this.faceInvalid;
+    const showSuccess = state === 'success' && !this.faceInvalid;
+    const showWarning = state === 'warning' && !this.faceInvalid;
+    const showMessage = (showError || showSuccess || showWarning) && !!message;
+    const showDescription = !showMessage && !!helperText;
 
     const describedBy = [
       showMessage ? errorId : '',
@@ -266,7 +253,7 @@ export class IoInputPassword {
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}
-              aria-invalid={(showError || showFaceOnlyError) ? 'true' : undefined}
+              aria-invalid={showError ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -333,18 +320,16 @@ export class IoInputPassword {
             {required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {showErrorBlock && (
-          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
-            {errorMessageToShow}
-          </p>
-        )}
-        {showSuccess && (
-          <p id={errorId} class={`input-message input-message--success${showSuccessMessage ? '' : ' input-error--hidden'}`} role="status">
-            {message}
-          </p>
-        )}
-        {showWarning && (
-          <p id={errorId} class={`input-message input-message--warning${showWarningMessage ? '' : ' input-error--hidden'}`} role="status">
+        {(showError || showSuccess || showWarning) && (
+          <p
+            id={errorId}
+            class={[
+              'input-message',
+              showError ? 'input-message--error' : showSuccess ? 'input-message--success' : 'input-message--warning',
+              showMessage ? '' : 'input-error--hidden',
+            ].filter(Boolean).join(' ')}
+            role={showError ? 'alert' : 'status'}
+          >
             {message}
           </p>
         )}

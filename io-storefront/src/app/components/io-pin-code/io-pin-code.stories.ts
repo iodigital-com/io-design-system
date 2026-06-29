@@ -1,5 +1,6 @@
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
+import { IO_FIELD_STATES } from '@/utils/field-state';
 
 export const pinCodeStory: Story<'io-pin-code'> = {
   state: {
@@ -76,7 +77,7 @@ export const pinCodePropDefinitions: PropDefinition[] = [
   {
     name: 'state',
     type: 'select',
-    options: ['none', 'error', 'success', 'warning'],
+    options: [...IO_FIELD_STATES],
     defaultValue: 'none',
     description: 'Visual validation state.',
   },

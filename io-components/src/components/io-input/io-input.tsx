@@ -4,6 +4,9 @@ import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { syncFormState } from '../../utils/form/sync-form-state';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
@@ -36,7 +39,6 @@ export class IoInput {
   private counterId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
-
   @State() private announcedCounter = '';
 
   @State() private hasPrefix = false;
@@ -102,7 +104,10 @@ export class IoInput {
   /** Native step value (date/time/number) */
   @Prop() step: string | number | undefined;
 
-  /** Autocomplete attribute (legacy — prefer autoComplete) */
+  /**
+   * Autocomplete attribute.
+   * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+   */
   @Prop() autocomplete: string | undefined;
 
   /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off') */
@@ -172,8 +177,8 @@ export class IoInput {
       console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
     }
     if (this.counter && this.maxLength != null) {
-      const currentLen = (this.value ?? '').length;
-      this.announcedCounter = `${currentLen} of ${this.maxLength} characters`;
+      const currentLength = (this.value ?? '').length;
+      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
     }
   }
 
@@ -182,6 +187,7 @@ export class IoInput {
       this.nativeInputEl.removeEventListener('wheel', this.handleWheel);
     }
   }
+
 
   formResetCallback() {
     this.value = this.defaultValue;
@@ -245,26 +251,14 @@ export class IoInput {
   }
 
   private syncFormValue() {
-    this.internals?.setFormValue?.(this.value ?? '');
-    // Derive validity from the native <input> when available so constraints like
-    // maxLength, minLength, min, max, step, and typeMismatch are reflected automatically.
-    // Falls back to required-only check before the shadow root exists.
     const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
-    if (nativeInput) {
-      if (!nativeInput.checkValidity()) {
-        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
-        this.faceInvalid = this.touched;
-      } else {
-        this.internals?.setValidity?.({});
-        this.faceInvalid = false;
-      }
-    } else if (this.required && !this.value) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
-      this.faceInvalid = this.touched;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const { faceInvalid } = syncFormState(this.internals, nativeInput, {
+      formValue: this.value ?? '',
+      required: this.required,
+      disabled: this.disabled,
+      touched: this.touched,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   handleSlotChange(ev: Event) {
@@ -318,6 +312,8 @@ export class IoInput {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
+    this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -330,8 +326,8 @@ export class IoInput {
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
     if (this.counter && this.maxLength != null) {
-      const currentLen = (this.value ?? '').length;
-      this.announcedCounter = `${currentLen} of ${this.maxLength} characters`;
+      const currentLength = (this.value ?? '').length;
+      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
     }
   };
 
@@ -574,33 +570,24 @@ export class IoInput {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="input-required" aria-hidden="true"> *</span>}
+                {required && <Required />}
               </span>
             )}
             {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {/* #1094: Error live-region is always mounted so aria-describedby can
-            reference it before any error occurs. The role/hidden class gate the
-            announcement; only the inner text is conditionally rendered. */}
-        <p
-          id={errorId}
-          class={[
-            'input-message',
-            showError ? 'input-message--error' : showSuccess ? 'input-message--success' : showWarning ? 'input-message--warning' : '',
-            showMessage ? '' : 'input-error--hidden',
-          ].filter(Boolean).join(' ')}
-          role={showError ? 'alert' : showSuccess || showWarning ? 'status' : undefined}
-          aria-live={showError ? 'assertive' : showSuccess || showWarning ? 'polite' : undefined}
-          aria-atomic={showMessage ? 'true' : undefined}
-        >
-          {showMessage && (
-            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-          )}
-          {showMessage && !hasMessageSlot && message}
-        </p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={errorId}
+            classPrefix="input"
+            visible={showMessage}
+            hiddenClass="input-error--hidden"
+            onSlotChange={this.handleMessageSlotChange}
+          />
+        )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
           <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
             <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />

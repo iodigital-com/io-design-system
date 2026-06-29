@@ -558,3 +558,31 @@ describe('io-input — counter live region aria-describedby (#848)', () => {
     expect(describedBy ?? '').not.toContain(counterSrId);
   });
 });
+
+describe('io-input — counter SR wording (#921)', () => {
+  it('sets announcedCounter to "{n} of {max} characters" on componentWillLoad', () => {
+    const component = new IoInput();
+    (component as any).el = document.createElement('io-input');
+    component.counter = true;
+    component.maxLength = 50;
+    component.value = 'hello';
+    (component as any).componentWillLoad();
+    expect((component as any).announcedCounter).toBe('5 of 50 characters');
+  });
+
+  it('updates announcedCounter immediately on handleInput without debounce', () => {
+    const component = new IoInput();
+    (component as any).el = document.createElement('io-input');
+    (component as any).input = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    component.counter = true;
+    component.maxLength = 20;
+    component.value = '';
+    (component as any).componentWillLoad();
+
+    const ev = new InputEvent('input');
+    Object.defineProperty(ev, 'target', { value: { value: 'hello world' } });
+    (component as any).handleInput(ev);
+    expect((component as any).announcedCounter).toBe('11 of 20 characters');
+  });
+});

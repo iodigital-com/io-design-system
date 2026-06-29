@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 import { getPinCodeStyles } from './io-pin-code-styles';
 import { splitDigits, joinDigits, buildDigitLabel, isPinComplete } from './io-pin-code-utils';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { syncFormState } from '../../utils/form/sync-form-state';
 
 import type { IoPinCodeLength, IoPinCodeType, IoPinCodeState, IoPinCodeChangeDetail } from './types';
 
@@ -176,18 +177,16 @@ export class IoPinCode {
 
   private syncFormValue() {
     const pinValue = joinDigits(this.digits);
-    this.internals?.setFormValue?.(pinValue || null);
-
     const isComplete = isPinComplete(this.digits);
-    const isValid = !this.required || isComplete;
-
-    if (!isValid) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please complete the PIN');
-      this.faceInvalid = this.touched;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const isInvalid = this.required && !isComplete;
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue: pinValue || null,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please complete the PIN' : '',
+      disabled: this.disabled,
+      touched: this.touched,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   private updateDigit(index: number, digit: string) {

@@ -79,7 +79,7 @@ export function getTextareaStyles(): string {
       padding-top: 0;
     }
 
-    .textarea-required {
+    .io-required {
       color: var(--io-color-error);
     }
 

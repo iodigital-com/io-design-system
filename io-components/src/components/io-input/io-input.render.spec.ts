@@ -16,6 +16,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -527,26 +529,26 @@ describe('io-input — render() label and required indicator', () => {
     expect(labelCall?.[1]?.['htmlFor']).toBe(ids.inputId);
   });
 
-  it('renders the required star span when required=true', () => {
+  it('renders the Required component when required=true', () => {
     c.required = true;
     vi.mocked(h).mockClear();
     c.render();
 
-    const spanCall = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'span' && call[1]?.class === 'input-required',
+    const requiredCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === Required,
     );
-    expect(spanCall).toBeDefined();
+    expect(requiredCall).toBeDefined();
   });
 
-  it('does not render the required star span when required=false', () => {
+  it('does not render the Required component when required=false', () => {
     c.required = false;
     vi.mocked(h).mockClear();
     c.render();
 
-    const spanCall = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'span' && call[1]?.class === 'input-required',
+    const requiredCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === Required,
     );
-    expect(spanCall).toBeUndefined();
+    expect(requiredCall).toBeUndefined();
   });
 });
 
@@ -559,17 +561,17 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c = makeInput();
   });
 
-  it('renders message paragraph when state=error and message is set', () => {
+  it('renders StateMessage with state=error when state=error and message is set', () => {
     c.state = 'error';
     c.message = 'Something went wrong';
     vi.mocked(h).mockClear();
     c.render();
 
-    const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
-    );
-    expect(errorPara).toBeDefined();
-    expect(errorPara?.[1]?.['role']).toBe('alert');
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('error');
+    expect(props['visible']).toBe(true);
   });
 
   it('does not render error paragraph when state=none', () => {
@@ -585,16 +587,16 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(errorPara).toBeUndefined();
   });
 
-  it('renders error paragraph as hidden when state=error but message is absent', () => {
+  it('renders StateMessage with visible=false when state=error but message is absent', () => {
     c.state = 'error';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
-    const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-error--hidden'),
-    );
-    expect(errorPara).toBeDefined();
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['visible']).toBe(false);
   });
 
   it('renders helper paragraph when showError=false and helperText is set', () => {
@@ -639,55 +641,55 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeUndefined();
   });
 
-  it('renders error paragraph when faceInvalid=true and message is set', () => {
+  it('renders StateMessage with state=error when faceInvalid=true and message is set', () => {
     (c as any).faceInvalid = true;
     c.message = 'Field is invalid';
     vi.mocked(h).mockClear();
     c.render();
 
-    const errorPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
-    );
-    expect(errorPara).toBeDefined();
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('error');
+    expect(props['visible']).toBe(true);
   });
 
-  it('renders success message paragraph with role=status when state=success and message is set', () => {
+  it('renders StateMessage with state=success when state=success and message is set', () => {
     c.state = 'success';
     c.message = 'Saved successfully';
     vi.mocked(h).mockClear();
     c.render();
 
-    const successPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
-    );
-    expect(successPara).toBeDefined();
-    expect(successPara?.[1]?.['role']).toBe('status');
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('success');
+    expect(props['visible']).toBe(true);
   });
 
-  it('renders warning message paragraph with role=status when state=warning and message is set', () => {
+  it('renders StateMessage with state=warning when state=warning and message is set', () => {
     c.state = 'warning';
     c.message = 'Check your entry';
     vi.mocked(h).mockClear();
     c.render();
 
-    const warningPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--warning'),
-    );
-    expect(warningPara).toBeDefined();
-    expect(warningPara?.[1]?.['role']).toBe('status');
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['state']).toBe('warning');
+    expect(props['visible']).toBe(true);
   });
 
-  it('renders success message as hidden when state=success but message is absent', () => {
+  it('renders StateMessage with visible=false when state=success but message is absent', () => {
     c.state = 'success';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
-    const successPara = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
-    );
-    expect(successPara).toBeDefined();
-    expect((successPara?.[1]?.class as string)).toContain('input-error--hidden');
+    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
+    expect(stateMessageCall).toBeDefined();
+    const props = stateMessageCall![1] as Record<string, unknown>;
+    expect(props['visible']).toBe(false);
   });
 
   it('does not render success paragraph when state=none', () => {

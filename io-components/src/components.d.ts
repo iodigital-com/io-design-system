@@ -873,10 +873,10 @@ export namespace Components {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
          */
-        "aria"?: IoDrawerAriaProps;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -1690,10 +1690,15 @@ export namespace Components {
      */
     interface IoModal {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-modal .aria={{ 'aria-label': 'Confirm deletion' }}>...</io-modal>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: IoModalAriaProps;
+        "aria"?: Record<string, string>;
+        /**
+          * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
+          * @default 'blur'
+         */
+        "backdrop": IoModalBackdrop;
         /**
           * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
           * @default 'blur'
@@ -1705,7 +1710,7 @@ export namespace Components {
          */
         "background": IoModalBackground;
         /**
-          * Programmatically close the modal. No-op if already closed. Does NOT emit the `dismiss` event (programmatic close is silent). Equivalent to setting `open = false`.
+          * Programmatically close the modal. No-op if already closed. Equivalent to setting `open = false`. Emits the `dismiss` event.
           * @example   const modal = document.querySelector('io-modal');   modal.close();
          */
         "close": () => Promise<void>;
@@ -6332,10 +6337,10 @@ declare namespace LocalJSX {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
          */
-        "aria"?: IoDrawerAriaProps;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -7170,10 +7175,15 @@ declare namespace LocalJSX {
      */
     interface IoModal {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-modal .aria={{ 'aria-label': 'Confirm deletion' }}>...</io-modal>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: IoModalAriaProps;
+        "aria"?: Record<string, string>;
+        /**
+          * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
+          * @default 'blur'
+         */
+        "backdrop"?: IoModalBackdrop;
         /**
           * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
           * @default 'blur'
@@ -7208,7 +7218,7 @@ declare namespace LocalJSX {
          */
         "heading"?: string;
         /**
-          * Emitted when the modal is dismissed by a user action (close button, backdrop click, or ESC key). NOT emitted on programmatic close via the `open` prop or `close()` method.
+          * Emitted after the modal closes (any close path: user-initiated or programmatic)
          */
         "onDismiss"?: (event: IoModalCustomEvent<void>) => void;
         /**

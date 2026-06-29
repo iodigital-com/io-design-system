@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoSheet } from './io-sheet';
 import { getSheetStyles } from './io-sheet-styles';
-import { _resetScrollLock } from '../../utils/scroll-lock';
+import { SWIPE_CLOSE_THRESHOLD } from '../../utils/swipe-to-dismiss';
 
 describe('io-sheet — default props', () => {
   let component: IoSheet;
@@ -386,18 +386,99 @@ describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => 
   });
 });
 
+describe('io-sheet — swipe-to-dismiss (#982)', () => {
+  it('SWIPE_CLOSE_THRESHOLD is 80', () => {
+    expect(SWIPE_CLOSE_THRESHOLD).toBe(80);
+  });
+
+  it('attachSwipeHandlers attaches touchstart/touchmove/touchend to handle element', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+
+    const handleEl = document.createElement('div');
+    const addEventSpy = vi.spyOn(handleEl, 'addEventListener');
+    (c as any).handleEl = handleEl;
+
+    (c as any).attachSwipeHandlers();
+
+    const events = addEventSpy.mock.calls.map(call => call[0]);
+    expect(events).toContain('touchstart');
+    expect(events).toContain('touchmove');
+    expect(events).toContain('touchend');
+  });
+
+  it('detachSwipeHandlers removes all listeners', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+
+    const handleEl = document.createElement('div');
+    const removeEventSpy = vi.spyOn(handleEl, 'removeEventListener');
+    (c as any).handleEl = handleEl;
+
+    (c as any).attachSwipeHandlers();
+    (c as any).detachSwipeHandlers();
+
+    const events = removeEventSpy.mock.calls.map(call => call[0]);
+    expect(events).toContain('touchstart');
+    expect(events).toContain('touchmove');
+    expect(events).toContain('touchend');
+  });
+
+  it('swipe below threshold does not dismiss', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    const emitSpy = vi.fn();
+    (c as any).dismissEvent = { emit: emitSpy };
+    (c as any).componentWillLoad();
+    c.open = true;
+
+    const handleEl = document.createElement('div');
+    (c as any).handleEl = handleEl;
+    (c as any).attachSwipeHandlers();
+
+    const handlers = (c as any).swipeHandlers;
+    handlers.touchstart({ touches: [{ clientY: 100 }] } as unknown as TouchEvent);
+    handlers.touchend({ changedTouches: [{ clientY: 100 + SWIPE_CLOSE_THRESHOLD - 1 }] } as unknown as TouchEvent);
+
+    expect(emitSpy).not.toHaveBeenCalled();
+    expect(c.open).toBe(true);
+  });
+
+  it('swipe above threshold dismisses the sheet', () => {
+    const c = new IoSheet();
+    (c as any).el = document.createElement('io-sheet');
+    const emitSpy = vi.fn();
+    (c as any).dismissEvent = { emit: emitSpy };
+    (c as any).componentWillLoad();
+    c.open = true;
+
+    const handleEl = document.createElement('div');
+    (c as any).handleEl = handleEl;
+    (c as any).attachSwipeHandlers();
+
+    const handlers = (c as any).swipeHandlers;
+    handlers.touchstart({ touches: [{ clientY: 100 }] } as unknown as TouchEvent);
+    handlers.touchend({ changedTouches: [{ clientY: 100 + SWIPE_CLOSE_THRESHOLD }] } as unknown as TouchEvent);
+
+    expect(emitSpy).toHaveBeenCalledOnce();
+    expect(c.open).toBe(false);
+  });
+
+  it('styles contain cursor:grab on the handle', () => {
+    const styles: string = getSheetStyles();
+    const handleIdx = styles.indexOf('.sheet__handle {');
+    const handleBlock = styles.slice(handleIdx, handleIdx + 400);
+    expect(handleBlock).toContain('cursor: grab');
+    expect(handleBlock).toContain('touch-action: none');
+  });
+});
+
 describe('io-sheet — scroll-lock cleanup (#796)', () => {
-  beforeEach(() => {
-    _resetScrollLock();
-    document.body.style.overflow = '';
-  });
-
-  afterEach(() => {
-    _resetScrollLock();
-    document.body.style.overflow = '';
-  });
-
-  it('preserves pre-existing overflow value on open/close cycle', () => {
+  it('saves and restores body overflow on open/close cycle', () => {
     const c = new IoSheet();
     (c as any).el = document.createElement('io-sheet');
     (c as any).dismissEvent = { emit: vi.fn() };
@@ -405,15 +486,19 @@ describe('io-sheet — scroll-lock cleanup (#796)', () => {
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     (c as any).componentWillLoad();
 
-    // Pre-condition: another overlay already set overflow (without using scroll-lock util)
+    // Pre-condition: some other overlay already set overflow
     document.body.style.overflow = 'hidden';
 
     (c as any).applyOpenState();
     expect(document.body.style.overflow).toBe('hidden');
+    expect((c as any).savedBodyOverflow).toBe('hidden');
 
     (c as any).applyClosedState();
     // Should restore to the pre-open value, not blindly clear to ''
     expect(document.body.style.overflow).toBe('hidden');
+
+    // Clean up
+    document.body.style.overflow = '';
   });
 
   it('restores empty string when body had no overflow before open', () => {

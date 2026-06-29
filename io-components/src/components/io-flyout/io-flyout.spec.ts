@@ -7,6 +7,7 @@ describe('io-flyout — default props', () => {
   let component: IoFlyout;
 
   beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     component = new IoFlyout();
     (component as any).el = document.createElement('io-flyout');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -21,8 +22,10 @@ describe('io-flyout — default props', () => {
     expect(component.open).toBe(false);
   });
 
-  it('defaults to right position', () => {
+  it('defaults to right position (legacy, normalised to end at load)', () => {
     expect(component.position).toBe('right');
+    // resolvedPosition is normalised
+    expect((component as any).resolvedPosition).toBe('end');
   });
 
   it('has no heading by default', () => {
@@ -45,6 +48,7 @@ describe('io-flyout — show/close methods', () => {
   let component: IoFlyout;
 
   beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     component = new IoFlyout();
     (component as any).el = document.createElement('io-flyout');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -83,6 +87,7 @@ describe('io-flyout — position prop', () => {
   let component: IoFlyout;
 
   beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     component = new IoFlyout();
     (component as any).el = document.createElement('io-flyout');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -93,14 +98,58 @@ describe('io-flyout — position prop', () => {
     vi.restoreAllMocks();
   });
 
-  it('accepts left position', () => {
-    component.position = 'left';
-    expect(component.position).toBe('left');
+  it('accepts start position (logical)', () => {
+    component.position = 'start';
+    expect(component.position).toBe('start');
   });
 
-  it('accepts right position', () => {
+  it('accepts end position (logical)', () => {
+    component.position = 'end';
+    expect(component.position).toBe('end');
+  });
+
+  it('normalises legacy left to start and emits console.warn', () => {
+    const warnSpy = vi.spyOn(console, 'warn');
+    component.position = 'left';
+    (component as any).onPositionChange('left');
+    expect((component as any).resolvedPosition).toBe('start');
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('position="left" is deprecated'));
+  });
+
+  it('normalises legacy right to end and emits console.warn', () => {
+    const warnSpy = vi.spyOn(console, 'warn');
     component.position = 'right';
-    expect(component.position).toBe('right');
+    (component as any).onPositionChange('right');
+    expect((component as any).resolvedPosition).toBe('end');
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('position="right" is deprecated'));
+  });
+
+  it('resolvedPosition defaults to end (right default)', () => {
+    expect((component as any).resolvedPosition).toBe('end');
+  });
+});
+
+describe('io-flyout — RTL logical CSS (#981)', () => {
+  it('styles use inset-inline-end for the end panel', () => {
+    const styles: string = getFlyoutStyles();
+    expect(styles).toContain('flyout__panel--end');
+    const endIdx = styles.indexOf('.flyout__panel--end');
+    const endBlock = styles.slice(endIdx, endIdx + 200);
+    expect(endBlock).toContain('inset-inline-end: 0');
+  });
+
+  it('styles use inset-inline-start for the start panel', () => {
+    const styles: string = getFlyoutStyles();
+    expect(styles).toContain('flyout__panel--start');
+    const startIdx = styles.indexOf('.flyout__panel--start');
+    const startBlock = styles.slice(startIdx, startIdx + 200);
+    expect(startBlock).toContain('inset-inline-start: 0');
+  });
+
+  it('styles include RTL translateX inversion for end panel', () => {
+    const styles: string = getFlyoutStyles();
+    // Should have translateX(-100%) for RTL end panel
+    expect(styles).toContain('translateX(-100%)');
   });
 });
 
@@ -167,6 +216,7 @@ describe('io-flyout — closeLabel prop (#816)', () => {
   let component: IoFlyout;
 
   beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     component = new IoFlyout();
     (component as any).el = document.createElement('io-flyout');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -193,6 +243,7 @@ describe('io-flyout — componentWillLoad aria-label host check (#820)', () => {
   });
 
   it('does not log error when heading prop is set', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     const component = new IoFlyout();
     const el = document.createElement('io-flyout');
     (component as any).el = el;
@@ -204,6 +255,7 @@ describe('io-flyout — componentWillLoad aria-label host check (#820)', () => {
   });
 
   it('does not log error when aria-label is set on host element', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     const component = new IoFlyout();
     const el = document.createElement('io-flyout');
     el.setAttribute('aria-label', 'Navigation panel');
@@ -215,6 +267,7 @@ describe('io-flyout — componentWillLoad aria-label host check (#820)', () => {
   });
 
   it('logs error when neither heading nor aria-label is provided', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     const component = new IoFlyout();
     const el = document.createElement('io-flyout');
     (component as any).el = el;
@@ -231,6 +284,7 @@ describe('io-flyout — render method', () => {
   let component: IoFlyout;
 
   beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
     component = new IoFlyout();
     (component as any).el = document.createElement('io-flyout');
     (component as any).dismissEvent = { emit: vi.fn() };
@@ -255,13 +309,27 @@ describe('io-flyout — render method', () => {
     expect(() => (component as any).render()).not.toThrow();
   });
 
-  it('render does not throw with position=left', () => {
-    component.position = 'left';
+  it('render does not throw with position=start', () => {
+    component.position = 'start';
+    (component as any).resolvedPosition = 'start';
     expect(() => (component as any).render()).not.toThrow();
   });
 
-  it('render does not throw with position=right', () => {
+  it('render does not throw with position=end', () => {
+    component.position = 'end';
+    (component as any).resolvedPosition = 'end';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw with legacy position=left (normalised to start)', () => {
+    component.position = 'left';
+    (component as any).resolvedPosition = 'start';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('render does not throw with legacy position=right (normalised to end)', () => {
     component.position = 'right';
+    (component as any).resolvedPosition = 'end';
     expect(() => (component as any).render()).not.toThrow();
   });
 });

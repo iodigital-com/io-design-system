@@ -85,6 +85,12 @@ export function getSheetStyles(): string {
       border-radius: var(--io-border-radius-pill, 100px);
       margin: var(--io-space-3) auto var(--io-space-2);
       flex-shrink: 0;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .sheet__handle:active {
+      cursor: grabbing;
     }
 
     /* ── Header ──────────────────────────────────────────────── */

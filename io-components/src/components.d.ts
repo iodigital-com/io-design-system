@@ -29,7 +29,7 @@ import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
-import { IoOptionSelectDetail } from "./components/io-option/types";
+import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoPopoverPlacement } from "./components/io-popover/types";
@@ -77,7 +77,7 @@ export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
 export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
-export { IoOptionSelectDetail } from "./components/io-option/types";
+export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoPopoverPlacement } from "./components/io-popover/types";
@@ -1755,10 +1755,10 @@ export namespace Components {
          */
         "state": IoMultiSelectState;
         /**
-          * Currently selected values. Mutable — updated internally on user selection.
+          * Currently selected values. Mutable — updated internally on user selection. Accepts string or number values. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
           * @default []
          */
-        "value": string[];
+        "value": (string | number)[];
     }
     /**
      * io-optgroup
@@ -2431,10 +2431,10 @@ export namespace Components {
          */
         "state": IoFieldState;
         /**
-          * Selected value (single mode)
+          * Selected value (single mode). Accepts string or number. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
           * @default ''
          */
-        "value": string;
+        "value": string | number | null;
     }
     /**
      * io-sheet
@@ -4207,6 +4207,7 @@ declare global {
     };
     interface HTMLIoOptionElementEventMap {
         "optionSelect": IoOptionSelectDetail;
+        "optionConnect": IoOptionConnectDetail;
     }
     /**
      * io-option
@@ -6869,10 +6870,10 @@ declare namespace LocalJSX {
          */
         "state"?: IoMultiSelectState;
         /**
-          * Currently selected values. Mutable — updated internally on user selection.
+          * Currently selected values. Mutable — updated internally on user selection. Accepts string or number values. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
           * @default []
          */
-        "value"?: string[];
+        "value"?: (string | number)[];
     }
     /**
      * io-optgroup
@@ -6925,6 +6926,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "multipleMode"?: boolean;
+        /**
+          * Fires when this option connects to the DOM, enabling the parent io-select / io-multi-select to register it without a setTimeout polling hack. Composed and bubbles so it crosses the parent's Shadow DOM boundary.
+         */
+        "onOptionConnect"?: (event: IoOptionCustomEvent<IoOptionConnectDetail>) => void;
         /**
           * Fires when the option is activated (click or keyboard Enter/Space from parent)
          */
@@ -7569,10 +7574,10 @@ declare namespace LocalJSX {
          */
         "state"?: IoFieldState;
         /**
-          * Selected value (single mode)
+          * Selected value (single mode). Accepts string or number. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
           * @default ''
          */
-        "value"?: string;
+        "value"?: string | number | null;
     }
     /**
      * io-sheet

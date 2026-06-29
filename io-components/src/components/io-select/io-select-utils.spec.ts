@@ -9,6 +9,7 @@ import {
   getComboboxWrapperClass,
   getComboboxOptionClass,
   parseSelectContent,
+  getMatchingOptionIndex,
 } from './io-select-utils';
 
 describe('sanitizeNameSegment', () => {
@@ -310,4 +311,75 @@ describe('parseSelectContent', () => {
     expect(groups[0].disabled).toBe(true);
     expect(flatOptions[0].disabled).toBe(true);
   });
+
+  it('parses numeric value from JS property', () => {
+    const host = document.createElement('div');
+    const opt = document.createElement('io-option');
+    (opt as HTMLElement & { value?: unknown }).value = 42;
+    opt.setAttribute('label', 'The Answer');
+    host.appendChild(opt);
+    const { flatOptions } = parseSelectContent(host);
+    expect(flatOptions[0].value).toBe(42);
+  });
+
+  it('parses icon and description from JS properties when set', () => {
+    const host = document.createElement('div');
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    (opt as HTMLElement & { icon?: unknown }).icon = 'check';
+    (opt as HTMLElement & { description?: unknown }).description = 'A country';
+    opt.setAttribute('label', 'Netherlands');
+    host.appendChild(opt);
+    const { flatOptions } = parseSelectContent(host);
+    expect(flatOptions[0].icon).toBe('check');
+    expect(flatOptions[0].description).toBe('A country');
+  });
 });
+
+describe('getMatchingOptionIndex', () => {
+  const OPTIONS = [
+    { value: 'nl', label: 'Netherlands' },
+    { value: 'be', label: 'Belgium' },
+    { value: 'de', label: 'Germany' },
+    { value: 'at', label: 'Austria', disabled: true },
+    { value: 'au', label: 'Australia' },
+  ];
+
+  it('returns -1 for empty search string', () => {
+    expect(getMatchingOptionIndex(OPTIONS, '', 0)).toBe(-1);
+  });
+
+  it('returns -1 for empty options array', () => {
+    expect(getMatchingOptionIndex([], 'n', 0)).toBe(-1);
+  });
+
+  it('finds first option matching single letter', () => {
+    // Search 'b' starting from index -1 (before list) — wraps to Belgium at 1
+    expect(getMatchingOptionIndex(OPTIONS, 'b', -1)).toBe(1);
+  });
+
+  it('finds option matching multi-char prefix', () => {
+    expect(getMatchingOptionIndex(OPTIONS, 'ne', -1)).toBe(0); // Netherlands
+  });
+
+  it('skips disabled options', () => {
+    // 'a' would match Austria (index 3, disabled) and Australia (index 4, enabled)
+    const idx = getMatchingOptionIndex(OPTIONS, 'a', -1);
+    expect(idx).toBe(4); // Australia
+    expect(OPTIONS[idx].disabled).toBeFalsy();
+  });
+
+  it('is case-insensitive', () => {
+    expect(getMatchingOptionIndex(OPTIONS, 'GE', -1)).toBe(2); // Germany
+  });
+
+  it('wraps around from the current active index', () => {
+    // Currently at index 0 (Netherlands), search 'b' should wrap to Belgium (1)
+    expect(getMatchingOptionIndex(OPTIONS, 'b', 0)).toBe(1);
+  });
+
+  it('returns -1 when no option matches', () => {
+    expect(getMatchingOptionIndex(OPTIONS, 'xyz', -1)).toBe(-1);
+  });
+});
+

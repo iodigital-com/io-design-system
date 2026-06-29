@@ -1,5 +1,5 @@
-import { Component, Prop, State, Watch, Event, EventEmitter, Method, Element, Host, AttachInternals, h } from '@stencil/core';
-import { computePosition } from '@floating-ui/dom';
+import { Component, Prop, State, Watch, Event, EventEmitter, Method, Element, Host, AttachInternals, Listen, h } from '@stencil/core';
+import { computePosition, autoUpdate } from '@floating-ui/dom';
 
 import { getSelectStyles } from './io-select-styles';
 import {
@@ -10,6 +10,7 @@ import {
   getComboboxWrapperClass,
   getComboboxOptionClass,
   parseSelectContent,
+  getMatchingOptionIndex,
 } from './io-select-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
@@ -59,8 +60,12 @@ export class IoSelect {
   /** Input name */
   @Prop() name: string | undefined;
 
-  /** Selected value (single mode) */
-  @Prop({ mutable: true }) value = '';
+  /**
+   * Selected value (single mode).
+   * Accepts string or number. Numeric values are preserved in the `change` event
+   * but serialised to string by the browser's FormData API on form submission.
+   */
+  @Prop({ mutable: true }) value: string | number | null = '';
 
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoSelectSize = 'md';
@@ -146,7 +151,7 @@ export class IoSelect {
   @State() private isOpen = false;
   @State() private activeIndex = -1;
   @State() private filterQuery = '';
-  @State() private selectedValues: string[] = [];
+  @State() private selectedValues: (string | number)[] = [];
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -191,14 +196,20 @@ export class IoSelect {
 
   private fallbackId!: string;
   private fieldId!: string;
-  private defaultValue = '';
-  private defaultSelectedValues: string[] = [];
+  private defaultValue: string | number | null = '';
+  private defaultSelectedValues: (string | number)[] = [];
   private nativeSelectEl?: HTMLSelectElement;
   private triggerEl?: HTMLButtonElement;
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
   private clickOutsideHandler?: (ev: PointerEvent) => void;
-  private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
+  /** Typeahead: buffered key presses cleared after TYPEAHEAD_TIMEOUT ms of inactivity */
+  private typeaheadBuffer = '';
+  private typeaheadTimer: ReturnType<typeof setTimeout> | undefined;
+  /** autoUpdate cleanup function for popover positioning */
+  private autoUpdateCleanup?: () => void;
+  /** True when browser supports native Popover API */
+  private readonly hasPopoverSupport = typeof HTMLElement !== 'undefined' && 'popover' in HTMLElement.prototype;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -240,11 +251,7 @@ export class IoSelect {
   }
 
   formStateRestoreCallback(state: string | null, _mode: 'restore' | 'autocomplete'): void {
-    if (typeof state === 'string') {
-      this.value = state;
-    } else {
-      this.value = undefined as unknown as string;
-    }
+    this.value = typeof state === 'string' ? state : null;
     this.touched = false;
     this.faceInvalid = false;
     this.syncFormValue();
@@ -288,11 +295,13 @@ export class IoSelect {
         this.internals?.setFormValue?.(null);
       } else {
         const fd = new FormData();
-        this.selectedValues.forEach(v => fd.append(this.name!, v));
+        // FormData always serialises values to strings (numeric values become e.g. "42").
+        this.selectedValues.forEach(v => fd.append(this.name!, String(v)));
         this.internals?.setFormValue?.(fd);
       }
     } else {
-      this.internals?.setFormValue?.(this.value ?? '');
+      // FormData serialises to string; numeric values become e.g. "42".
+      this.internals?.setFormValue?.(this.value != null ? String(this.value) : '');
     }
     if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
@@ -307,25 +316,33 @@ export class IoSelect {
     const parsed = parseSelectContent(this.el);
     this.groups = parsed.groups;
     this.flatOptions = parsed.flatOptions;
+    // Note: late-arriving options (SSR/hydration race) are now handled by the
+    // @Listen('optionConnect') handler below rather than a setTimeout fallback.
+  }
 
-    // Guard against the SSR/hydration race: when Stencil's beforeInteractive script
-    // upgrades elements before React has run, <io-option> children have no value
-    // property yet (React ref callbacks haven't fired). Re-parse after one macro-task
-    // tick to give React time to commit and fire its ref callbacks.
-    if (this.flatOptions.length === 0 && this.el.children.length > 0) {
-      this.lateParseTimeout = setTimeout(() => {
-        const late = parseSelectContent(this.el);
-        this.groups = late.groups;
-        this.flatOptions = late.flatOptions;
-      }, 0);
-    }
+  /**
+   * Handles the `optionConnect` event dispatched by io-option in connectedCallback.
+   * This replaces the fragile setTimeout SSR-race hack: when a child io-option
+   * connects after componentDidLoad (e.g. React ref callbacks firing late), this
+   * listener fires and re-parses the option list.
+   *
+   * The event bubbles and is composed so it reaches this host regardless of
+   * whether options are in a Shadow DOM sub-tree.
+   */
+  @Listen('optionConnect')
+  handleOptionConnect() {
+    const parsed = parseSelectContent(this.el);
+    this.groups = parsed.groups;
+    this.flatOptions = parsed.flatOptions;
   }
 
   disconnectedCallback() {
     this.removeClickOutside();
-    if (this.lateParseTimeout !== undefined) {
-      clearTimeout(this.lateParseTimeout);
-      this.lateParseTimeout = undefined;
+    this.autoUpdateCleanup?.();
+    this.autoUpdateCleanup = undefined;
+    if (this.typeaheadTimer !== undefined) {
+      clearTimeout(this.typeaheadTimer);
+      this.typeaheadTimer = undefined;
     }
   }
 
@@ -336,8 +353,20 @@ export class IoSelect {
     if (!this.custom) return;
     this.toggle.emit({ open: newVal });
     if (newVal) {
-      this.attachClickOutside();
-      void this.positionDropdown();
+      // Show dropdown — native Popover API when supported, otherwise manual positioning
+      if (this.hasPopoverSupport && this.dropdownEl) {
+        (this.dropdownEl as HTMLDivElement & { showPopover?: () => void }).showPopover?.();
+        // autoUpdate: continuously reposition on scroll/resize
+        if (this.triggerEl && this.dropdownEl) {
+          this.autoUpdateCleanup = autoUpdate(this.triggerEl, this.dropdownEl, () => {
+            void this.positionDropdown();
+          });
+        }
+      } else {
+        this.attachClickOutside();
+        void this.positionDropdown();
+      }
+
       if (this.filter) {
         setTimeout(() => this.filterInputEl?.focus(), 0);
       } else {
@@ -350,9 +379,21 @@ export class IoSelect {
         this.activeIndex = firstSelected >= 0 ? firstSelected : Math.max(firstEnabled, -1);
       }
     } else {
-      this.removeClickOutside();
+      // Hide dropdown
+      if (this.hasPopoverSupport && this.dropdownEl) {
+        (this.dropdownEl as HTMLDivElement & { hidePopover?: () => void }).hidePopover?.();
+        this.autoUpdateCleanup?.();
+        this.autoUpdateCleanup = undefined;
+      } else {
+        this.removeClickOutside();
+      }
       this.activeIndex = -1;
       this.filterQuery = '';
+      this.typeaheadBuffer = '';
+      if (this.typeaheadTimer !== undefined) {
+        clearTimeout(this.typeaheadTimer);
+        this.typeaheadTimer = undefined;
+      }
       setTimeout(() => this.triggerEl?.focus(), 0);
     }
   }
@@ -369,7 +410,8 @@ export class IoSelect {
     if (this.multiple) {
       if (this.selectedValues.length === 0) return '';
       if (this.selectedValues.length === 1) {
-        return this.flatOptions.find(o => o.value === this.selectedValues[0])?.label ?? this.selectedValues[0];
+        const v = this.selectedValues[0];
+        return this.flatOptions.find(o => o.value === v)?.label ?? String(v);
       }
       return `${this.selectedValues.length} selected`;
     }
@@ -378,7 +420,7 @@ export class IoSelect {
     return this.flatOptions.find(o => o.value === this.value)?.label ?? '';
   }
 
-  private isSelected(value: string): boolean {
+  private isSelected(value: string | number): boolean {
     return this.multiple ? this.selectedValues.includes(value) : this.value === value;
   }
 
@@ -386,10 +428,13 @@ export class IoSelect {
 
   private async positionDropdown(): Promise<void> {
     if (!this.triggerEl || !this.dropdownEl) return;
+    // Use 'fixed' strategy when rendering in the top-layer (native Popover API),
+    // 'absolute' for the legacy inline-positioned fallback.
+    const strategy = this.hasPopoverSupport ? 'fixed' : 'absolute';
     const { x, y } = await computePosition(this.triggerEl, this.dropdownEl, {
       middleware: getComboboxMiddleware(),
       placement: 'bottom-start',
-      strategy: 'absolute',
+      strategy,
     });
     Object.assign(this.dropdownEl.style, {
       left: `${x}px`,
@@ -426,7 +471,7 @@ export class IoSelect {
       // keep dropdown open in multiple mode
     } else {
       this.value = opt.value;
-      this.change.emit({ value: this.value, name: this.name });
+      this.change.emit({ value: this.value!, name: this.name });
       this.isOpen = false;
     }
   }
@@ -446,6 +491,51 @@ export class IoSelect {
     }
     if (!opts[next]?.disabled) {
       this.activeIndex = next;
+    }
+  }
+
+  /**
+   * PageUp / PageDown: move active index by `pageSize` (clamped to list bounds).
+   * Skips disabled options by linear scan toward the target boundary.
+   */
+  private moveActiveByPage(pageSize: number) {
+    const opts = this.filteredOptions;
+    if (opts.length === 0) return;
+    const current = this.activeIndex < 0 ? 0 : this.activeIndex;
+    const raw = current + pageSize;
+    const clamped = Math.max(0, Math.min(opts.length - 1, raw));
+    // Scan from the clamped index back toward current to find a non-disabled option
+    const direction = pageSize > 0 ? -1 : 1;
+    let candidate = clamped;
+    let attempts = Math.abs(pageSize) + 1;
+    while (opts[candidate]?.disabled && attempts-- > 0) {
+      candidate += direction;
+      if (candidate < 0 || candidate >= opts.length) break;
+    }
+    if (candidate >= 0 && candidate < opts.length && !opts[candidate]?.disabled) {
+      this.activeIndex = candidate;
+    }
+  }
+
+  /**
+   * Typeahead: accumulate pressed characters; after TYPEAHEAD_TIMEOUT ms of
+   * inactivity the buffer resets. Jumps to the first non-disabled option whose
+   * label starts with the current buffer (case-insensitive).
+   */
+  private handleTypeahead(char: string) {
+    const TYPEAHEAD_TIMEOUT = 500;
+    if (this.typeaheadTimer !== undefined) {
+      clearTimeout(this.typeaheadTimer);
+    }
+    this.typeaheadBuffer += char.toLowerCase();
+    this.typeaheadTimer = setTimeout(() => {
+      this.typeaheadBuffer = '';
+      this.typeaheadTimer = undefined;
+    }, TYPEAHEAD_TIMEOUT);
+
+    const idx = getMatchingOptionIndex(this.filteredOptions, this.typeaheadBuffer, this.activeIndex);
+    if (idx >= 0) {
+      this.activeIndex = idx;
     }
   }
 
@@ -519,6 +609,14 @@ export class IoSelect {
         ev.preventDefault();
         this.moveActive(-1);
         break;
+      case 'PageDown':
+        ev.preventDefault();
+        this.moveActiveByPage(10);
+        break;
+      case 'PageUp':
+        ev.preventDefault();
+        this.moveActiveByPage(-10);
+        break;
       case 'Home':
         ev.preventDefault();
         this.activeIndex = this.filteredOptions.findIndex(o => !o.disabled);
@@ -540,6 +638,13 @@ export class IoSelect {
       }
       case 'Tab':
         this.isOpen = false;
+        break;
+      default:
+        // Typeahead: single printable character → buffer and jump to matching option
+        if (ev.key.length === 1 && !ev.ctrlKey && !ev.altKey && !ev.metaKey) {
+          ev.preventDefault();
+          this.handleTypeahead(ev.key);
+        }
         break;
     }
   };
@@ -597,7 +702,18 @@ export class IoSelect {
             )}
           </span>
         )}
-        <span class="combobox-option__label">{opt.label}</span>
+        {opt.icon && (
+          <span class="combobox-option__icon" aria-hidden="true">
+            {/* Cast to any — IoIconName is a large union; consumers pass valid names */}
+            <io-icon name={opt.icon as any} />
+          </span>
+        )}
+        <span class="combobox-option__content">
+          <span class="combobox-option__label">{opt.label}</span>
+          {opt.description && (
+            <span class="combobox-option__description">{opt.description}</span>
+          )}
+        </span>
         {!multiple && sel && (
           <span class="combobox-option__check" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -859,6 +975,7 @@ export class IoSelect {
             ref={el => { this.dropdownEl = el as HTMLDivElement; }}
             class="combobox-dropdown"
             data-open={isOpen ? 'true' : undefined}
+            {...(this.hasPopoverSupport ? { popover: 'manual' } : {})}
           >
             {this.filter && (
               <div class="combobox-filter">

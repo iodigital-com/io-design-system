@@ -212,7 +212,7 @@ describe('io-heading — h() call arguments (style computation)', () => {
     expect((styleArg as any).style.color).toBe('var(--io-color-primary)');
   });
 
-  it('applies --io-line-height-heading to all sizes', () => {
+  it('applies --io-line-height-dynamic to all sizes', () => {
     const hMock = vi.mocked(h);
     const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const;
     for (const size of sizes) {
@@ -222,7 +222,7 @@ describe('io-heading — h() call arguments (style computation)', () => {
       component.size = size;
       component.render();
       const [, styleArg] = hMock.mock.calls[OUTER];
-      expect((styleArg as any).style.lineHeight).toBe('var(--io-line-height-heading)');
+      expect((styleArg as any).style.lineHeight).toBe('var(--io-line-height-dynamic)');
     }
   });
 

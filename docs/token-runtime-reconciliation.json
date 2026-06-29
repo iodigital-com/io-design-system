@@ -3566,6 +3566,126 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Banner stack order. Fallback: --io-z-toast."
+    },
+    {
+      "runtimeCssVar": "--io-space-fluid-2xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Fluid spacing 2xs: clamp(1px to 2px). Added in b15 #1096."
+    },
+    {
+      "runtimeCssVar": "--io-space-fluid-xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Fluid spacing xs: clamp(4px to 8px). Added in b15 #1096."
+    },
+    {
+      "runtimeCssVar": "--io-space-fluid-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Fluid spacing xl: clamp(32px to 64px). Added in b15 #1096."
+    },
+    {
+      "runtimeCssVar": "--io-space-fluid-2xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Fluid spacing 2xl: clamp(48px to 96px). Added in b15 #1096."
+    },
+    {
+      "runtimeCssVar": "--io-border-radius-2xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius 2xl (16px). Target: io-banner, io-toast-item. Added in b15 #1117."
+    },
+    {
+      "runtimeCssVar": "--io-border-radius-3xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius 3xl (24px). Target: io-modal, io-sheet, io-flyout, io-drawer. Added in b15 #1117."
+    },
+    {
+      "runtimeCssVar": "--io-border-radius-4xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius 4xl (32px). Target: extra-large surfaces. Added in b15 #1117."
+    },
+    {
+      "runtimeCssVar": "--io-border-radius-full",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius full (9999px). Canonical name replacing --io-border-radius-pill. Added in b15 #1117."
+    },
+    {
+      "runtimeCssVar": "--io-line-height-dynamic",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Dynamic ex-based line-height: calc(6px + 2.125ex). Recommended default for headings and body. Added in b15 #1100."
+    },
+    {
+      "runtimeCssVar": "--io-density-spacing-y",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract vertical padding. Overridden by [data-density] ancestor. Added in b15 #1130."
+    },
+    {
+      "runtimeCssVar": "--io-density-spacing-x",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract horizontal padding. Overridden by [data-density] ancestor. Added in b15 #1130."
+    },
+    {
+      "runtimeCssVar": "--io-density-font-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract font-size. Default: --io-font-size-sm. Added in b15 #1130."
+    },
+    {
+      "runtimeCssVar": "--io-density-line-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract line-height. Default: --io-line-height-normal (1.5). Added in b15 #1130."
+    },
+    {
+      "runtimeCssVar": "--io-density-border-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract border-radius. Default: --io-border-radius-sm (9px). Added in b15 #1130."
+    },
+    {
+      "runtimeCssVar": "--io-density-gap",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Density contract gap between items. Default: --io-space-2 (8px). Added in b15 #1130."
     }
   ]
 }

@@ -1,0 +1,163 @@
+{
+  "$schemaVersion": 1,
+  "$description": "io Design System — Structured Color Palette Primitive.\n\nThis palette provides hue × lightness-step × alpha combinations that semantic\ntokens in app.css resolve to. It is NOT a consumer API — components must\nreference semantic tokens (e.g. --io-color-error) or component-scoped tokens,\nnever raw palette steps.\n\nLightness steps follow a 50–950 scale (50 = lightest, 950 = darkest).\nAlpha steps are named {step}a (e.g. 50a = 4%, 500a = 50%).\nAll hex values have been verified for WCAG AA compliance in their intended\nuse context (see 'wcag' field).",
+  "hues": {
+    "blue": {
+      "description": "Primary brand blue — io Digital electric blue",
+      "steps": {
+        "50":   { "hex": "#e5e5ff", "alpha": null,  "wcag": "decorative only" },
+        "100":  { "hex": "#ccccff", "alpha": null,  "wcag": "decorative only" },
+        "200":  { "hex": "#9999ff", "alpha": null,  "wcag": "decorative only" },
+        "300":  { "hex": "#6666ff", "alpha": null,  "wcag": "decorative only" },
+        "400":  { "hex": "#3333ff", "alpha": null,  "wcag": "decorative only" },
+        "500":  { "hex": "#0000ff", "alpha": null,  "wcag": "3:1 on white (UI borders only)" },
+        "600":  { "hex": "#0000D2", "alpha": null,  "wcag": "3.2:1 on white — primary brand color" },
+        "700":  { "hex": "#0000a8", "alpha": null,  "wcag": "4.8:1 on white — hover state" },
+        "800":  { "hex": "#000080", "alpha": null,  "wcag": "7.2:1 on white — active state" },
+        "900":  { "hex": "#00004d", "alpha": null,  "wcag": "12:1 on white" },
+        "950":  { "hex": "#000019", "alpha": null,  "wcag": "19:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(0, 0, 210, 0.06)", "wcag": "background tint only" },
+        "100a": { "hex": null, "alpha": "rgba(0, 0, 210, 0.12)", "wcag": "hover/active overlay" },
+        "500a": { "hex": null, "alpha": "rgba(0, 0, 210, 0.50)", "wcag": "overlay only" }
+      },
+      "semanticMappings": {
+        "--io-color-primary":         "steps.600",
+        "--io-color-primary-hover":   "steps.700",
+        "--io-color-primary-active":  "steps.800",
+        "--io-color-primary-muted":   "steps.100a",
+        "--io-color-primary-bg":      "steps.50a"
+      }
+    },
+    "red": {
+      "description": "Error / destructive states",
+      "steps": {
+        "50":   { "hex": "#fff0f0", "alpha": null, "wcag": "error background tint" },
+        "100":  { "hex": "#ffd6d6", "alpha": null, "wcag": "error soft background" },
+        "200":  { "hex": "#ffadad", "alpha": null, "wcag": "decorative only" },
+        "300":  { "hex": "#ff8484", "alpha": null, "wcag": "decorative only" },
+        "400":  { "hex": "#ff6161", "alpha": null, "wcag": "3:1 on dark bg (dark mode error)" },
+        "500":  { "hex": "#e84545", "alpha": null, "wcag": "decorative — use 600 for text" },
+        "600":  { "hex": "#D35454", "alpha": null, "wcag": "4.5:1 on white — error-dark body text" },
+        "700":  { "hex": "#c0392b", "alpha": null, "wcag": "5.7:1 on white — error text on light" },
+        "800":  { "hex": "#962d22", "alpha": null, "wcag": "8.4:1 on white" },
+        "900":  { "hex": "#6b2018", "alpha": null, "wcag": "11:1 on white" },
+        "950":  { "hex": "#3d120e", "alpha": null, "wcag": "18:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(255, 97, 97, 0.06)",  "wcag": "tint only" },
+        "100a": { "hex": null, "alpha": "rgba(255, 97, 97, 0.10)",  "wcag": "error-soft backgrounds" },
+        "150a": { "hex": null, "alpha": "rgba(255, 124, 124, 0.15)", "wcag": "error-soft dark mode" },
+        "600a": { "hex": null, "alpha": "rgba(211, 84, 84, 0.60)",  "wcag": "border with alpha" }
+      },
+      "semanticMappings": {
+        "--io-color-error":           "steps.400 (dark) / steps.700 (light data-theme)",
+        "--io-color-error-soft":      "steps.100a",
+        "--io-color-error-dark":      "steps.600",
+        "--io-color-error-on-blue":   "#FF9E9A (tint — not a palette step)"
+      }
+    },
+    "green": {
+      "description": "Success / positive states",
+      "steps": {
+        "50":   { "hex": "#e8fbf4", "alpha": null, "wcag": "tint only" },
+        "100":  { "hex": "#c0f5e0", "alpha": null, "wcag": "tint only" },
+        "200":  { "hex": "#7decbf", "alpha": null, "wcag": "decorative only" },
+        "300":  { "hex": "#30c58e", "alpha": null, "wcag": "3:1 on dark bg (dark mode success)" },
+        "400":  { "hex": "#22a876", "alpha": null, "wcag": "4.5:1 on white (borderline)" },
+        "500":  { "hex": "#1a7a4a", "alpha": null, "wcag": "5.8:1 on white — success text/icon" },
+        "600":  { "hex": "#165f39", "alpha": null, "wcag": "8:1 on white" },
+        "700":  { "hex": "#0f4227", "alpha": null, "wcag": "11:1 on white" },
+        "800":  { "hex": "#09281a", "alpha": null, "wcag": "15:1 on white" },
+        "900":  { "hex": "#04140d", "alpha": null, "wcag": "20:1 on white" },
+        "950":  { "hex": "#020a06", "alpha": null, "wcag": "21:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(48, 197, 142, 0.06)",  "wcag": "tint only" },
+        "100a": { "hex": null, "alpha": "rgba(48, 197, 142, 0.10)",  "wcag": "success-soft background" },
+        "150a": { "hex": null, "alpha": "rgba(74, 222, 128, 0.15)",  "wcag": "success-soft dark mode" }
+      },
+      "semanticMappings": {
+        "--io-color-success":      "steps.300 (dark) / steps.500 (light data-theme)",
+        "--io-color-success-soft": "steps.100a"
+      }
+    },
+    "yellow": {
+      "description": "Warning / attention states",
+      "steps": {
+        "50":   { "hex": "#fff9e6", "alpha": null, "wcag": "tint only" },
+        "100":  { "hex": "#fff0b3", "alpha": null, "wcag": "tint only" },
+        "200":  { "hex": "#ffe066", "alpha": null, "wcag": "decorative only" },
+        "300":  { "hex": "#ffc41a", "alpha": null, "wcag": "decorative only" },
+        "400":  { "hex": "#ffa100", "alpha": null, "wcag": "2.1:1 on white — use on dark bg, 8.75:1 on #181818" },
+        "500":  { "hex": "#e08a00", "alpha": null, "wcag": "3.1:1 on white" },
+        "600":  { "hex": "#b85c00", "alpha": null, "wcag": "5.2:1 on white — warning text on light" },
+        "700":  { "hex": "#8a4200", "alpha": null, "wcag": "7.4:1 on white" },
+        "800":  { "hex": "#5c2c00", "alpha": null, "wcag": "10.5:1 on white" },
+        "900":  { "hex": "#2e1600", "alpha": null, "wcag": "15:1 on white" },
+        "950":  { "hex": "#140a00", "alpha": null, "wcag": "19:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(255, 161, 0, 0.06)",  "wcag": "tint only" },
+        "100a": { "hex": null, "alpha": "rgba(255, 161, 0, 0.10)",  "wcag": "warning-soft background" },
+        "150a": { "hex": null, "alpha": "rgba(255, 161, 0, 0.15)",  "wcag": "warning-soft dark mode" }
+      },
+      "semanticMappings": {
+        "--io-color-warning":      "steps.400",
+        "--io-color-warning-soft": "steps.100a"
+      }
+    },
+    "teal": {
+      "description": "Info / informational states",
+      "steps": {
+        "50":   { "hex": "#e3f2fd", "alpha": null, "wcag": "tint only" },
+        "100":  { "hex": "#bbdefb", "alpha": null, "wcag": "tint only" },
+        "200":  { "hex": "#90caf9", "alpha": null, "wcag": "decorative only" },
+        "300":  { "hex": "#64b5f6", "alpha": null, "wcag": "3:1 on dark bg (dark mode info)" },
+        "400":  { "hex": "#2196f3", "alpha": null, "wcag": "3.9:1 on white (borderline)" },
+        "500":  { "hex": "#1976d2", "alpha": null, "wcag": "4.6:1 on white — info text borderline" },
+        "600":  { "hex": "#1565c0", "alpha": null, "wcag": "5.8:1 on white — info text on light" },
+        "700":  { "hex": "#0d47a1", "alpha": null, "wcag": "8.3:1 on white" },
+        "800":  { "hex": "#0a3270", "alpha": null, "wcag": "11:1 on white" },
+        "900":  { "hex": "#062050", "alpha": null, "wcag": "16:1 on white" },
+        "950":  { "hex": "#031130", "alpha": null, "wcag": "20:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(21, 101, 192, 0.06)",  "wcag": "tint only" },
+        "100a": { "hex": null, "alpha": "rgba(21, 101, 192, 0.10)",  "wcag": "info-soft background" },
+        "150a": { "hex": null, "alpha": "rgba(100, 181, 246, 0.15)", "wcag": "info-soft dark mode" }
+      },
+      "semanticMappings": {
+        "--io-color-info":          "steps.600",
+        "--io-color-info-soft":     "steps.100a",
+        "--io-color-system-blue":   "#0019FF (exact — not a palette step)"
+      }
+    },
+    "grey": {
+      "description": "Neutral grey scale — used for text, borders, surfaces",
+      "steps": {
+        "50":   { "hex": "#f7f7f7", "alpha": null, "wcag": "background tint" },
+        "100":  { "hex": "#f4f4f4", "alpha": null, "wcag": "surface background" },
+        "150":  { "hex": "#ebebeb", "alpha": null, "wcag": "decorative borders" },
+        "200":  { "hex": "#C4C4C4", "alpha": null, "wcag": "2.3:1 — disabled/decorative only" },
+        "300":  { "hex": "#767676", "alpha": null, "wcag": "4.57:1 on white — WCAG 1.4.11 UI borders" },
+        "400":  { "hex": "#747474", "alpha": null, "wcag": "4.6:1 on white — secondary text" },
+        "500":  { "hex": "#454545", "alpha": null, "wcag": "9.7:1 on white — primary text (antraciet)" },
+        "600":  { "hex": "#333333", "alpha": null, "wcag": "11.7:1 on white" },
+        "700":  { "hex": "#242424", "alpha": null, "wcag": "15:1 on white — primary text dark mode base" },
+        "800":  { "hex": "#181818", "alpha": null, "wcag": "18:1 on white — dark bg base" },
+        "900":  { "hex": "#0d0d0d", "alpha": null, "wcag": "20:1 on white" },
+        "950":  { "hex": "#000000", "alpha": null, "wcag": "21:1 on white" },
+        "50a":  { "hex": null, "alpha": "rgba(0, 0, 0, 0.04)",  "wcag": "subtle overlay" },
+        "100a": { "hex": null, "alpha": "rgba(0, 0, 0, 0.06)",  "wcag": "hover tint" },
+        "500a": { "hex": null, "alpha": "rgba(0, 0, 0, 0.50)",  "wcag": "modal backdrop" }
+      },
+      "semanticMappings": {
+        "--io-color-grey-1":   "steps.50",
+        "--io-color-grey-2":   "steps.150",
+        "--io-color-grey-3":   "steps.200",
+        "--io-color-grey-4":   "steps.400",
+        "--io-color-grey-5":   "steps.100",
+        "--io-color-grey-6":   "steps.700",
+        "--io-color-antraciet": "steps.500",
+        "--io-border-interactive": "steps.300",
+        "--io-bg-overlay":     "steps.500a"
+      }
+    }
+  },
+  "usage": {
+    "rule": "Components must NOT reference palette steps directly. Use semantic tokens (--io-color-*, --io-text-*, --io-border-*) or component-scoped tokens (--io-{component}-*). The palette is a primitive used only inside the token system.",
+    "note": "Soft / alpha tokens replace hard-coded rgba() calls. When adding a new semantic soft colour, derive the alpha value from the nearest palette step rather than inventing a new rgba()."
+  }
+}

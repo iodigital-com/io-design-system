@@ -1,3 +1,5 @@
+import { getTransition } from '../../utils/motion';
+
 export function getModalStyles(): string {
   return `
     :host {
@@ -110,7 +112,7 @@ export function getModalStyles(): string {
       border-radius: var(--io-border-radius-sm);
       cursor: pointer;
       flex-shrink: 0;
-      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
+      transition: ${getTransition('color', 'sm', 'out')}, ${getTransition('background-color', 'sm', 'out')};
     }
 
     .modal__close:focus-visible {
@@ -140,7 +142,7 @@ export function getModalStyles(): string {
     @keyframes io-modal-in {
       from {
         opacity: 0;
-        transform: translateY(var(--io-motion-entrance-offset-y));
+        transform: translateY(var(--io-motion-entrance-offset-up));
       }
       to {
         opacity: 1;

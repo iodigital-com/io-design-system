@@ -7,6 +7,8 @@
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
+import { getTransition } from '../../utils/motion';
+
 export function getButtonStyles(): string {
   return `
     :host {
@@ -37,10 +39,10 @@ export function getButtonStyles(): string {
       text-decoration: none;
       border-radius: var(--io-border-radius-pill);
       position: relative;
-      transition: background-color 500ms var(--io-motion-easing-snappy),
-                  border-color     500ms var(--io-motion-easing-snappy),
-                  color            500ms var(--io-motion-easing-snappy),
-                  opacity          500ms var(--io-motion-easing-snappy);
+      transition: ${getTransition('background-color', 'lg', 'in-out')},
+                  ${getTransition('border-color', 'lg', 'in-out')},
+                  ${getTransition('color', 'lg', 'in-out')},
+                  ${getTransition('opacity', 'lg', 'in-out')};
       white-space: nowrap;
       -webkit-font-smoothing: antialiased;
     }
@@ -405,7 +407,7 @@ export function getButtonStyles(): string {
       width: 0;
       height: var(--io-button-link-underline-height);
       background-color: var(--io-color-primary);
-      transition: width var(--io-motion-base) var(--io-motion-easing-bounce);
+      transition: ${getTransition('width', 'md', 'in-out')};
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -423,7 +425,7 @@ export function getButtonStyles(): string {
       width: var(--io-button-arrow-width-default);
       height: var(--io-button-arrow-height-default);
       flex-shrink: 0;
-      transition: transform 500ms var(--io-motion-easing-snappy);
+      transition: ${getTransition('transform', 'lg', 'in-out')};
     }
 
     .btn__arrow svg {
@@ -463,12 +465,12 @@ export function getButtonStyles(): string {
     .btn__label {
       display: inline-flex;
       align-items: center;
-      transition: opacity 150ms ease;
+      transition: ${getTransition('opacity', 'xs', 'out')};
     }
 
     io-icon,
     .btn__icon-wrap {
-      transition: opacity 150ms ease;
+      transition: ${getTransition('opacity', 'xs', 'out')};
     }
 
     /* Visually hidden label for icon+hideLabel mode — preserves accessible text */

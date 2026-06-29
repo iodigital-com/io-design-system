@@ -79,15 +79,15 @@
   },
   {
     "cssVar": "--io-motion-base",
-    "classification": "internal",
+    "classification": "deprecated",
     "component": "io-accordion",
-    "description": "Global base motion duration and easing."
+    "description": "Deprecated shorthand \u2014 use var(--io-duration-md) with an easing token instead. Kept for one release cycle."
   },
   {
     "cssVar": "--io-motion-slow",
-    "classification": "internal",
+    "classification": "deprecated",
     "component": "io-accordion",
-    "description": "Global slow motion used for panel open/close."
+    "description": "Deprecated shorthand \u2014 use var(--io-duration-lg) with var(--io-ease-in-out) instead. Kept for one release cycle."
   },
   {
     "cssVar": "--io-space-16",
@@ -481,15 +481,15 @@
   },
   {
     "cssVar": "--io-motion-easing-bounce",
-    "classification": "internal",
+    "classification": "deprecated",
     "component": "io-button",
-    "description": "Global bounce easing curve."
+    "description": "Deprecated component-internal easing. Will be removed in a future token cleanup."
   },
   {
     "cssVar": "--io-motion-easing-snappy",
-    "classification": "internal",
+    "classification": "deprecated",
     "component": "io-button",
-    "description": "Global snappy cubic-bezier easing curve."
+    "description": "Deprecated component-internal easing. Will be removed in a future token cleanup."
   },
   {
     "cssVar": "--io-size-button-lg",
@@ -889,9 +889,9 @@
   },
   {
     "cssVar": "--io-motion-easing-ease-out",
-    "classification": "internal",
+    "classification": "deprecated",
     "component": "io-toast-item",
-    "description": "Global ease-out cubic-bezier easing."
+    "description": "Deprecated \u2014 use var(--io-ease-out) instead. Kept for one release cycle."
   },
   {
     "cssVar": "--io-toast-max-width",
@@ -1387,5 +1387,95 @@
     "classification": "public-api",
     "component": "io-popover",
     "description": "Width and height of the directional arrow indicator. Defaults to 12px."
+  },
+  {
+    "cssVar": "--io-duration-xs",
+    "classification": "internal",
+    "component": "global",
+    "description": "Extra-small duration (100ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
+  },
+  {
+    "cssVar": "--io-duration-sm",
+    "classification": "internal",
+    "component": "global",
+    "description": "Small duration (200ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
+  },
+  {
+    "cssVar": "--io-duration-md",
+    "classification": "internal",
+    "component": "global",
+    "description": "Medium duration (300ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
+  },
+  {
+    "cssVar": "--io-duration-lg",
+    "classification": "internal",
+    "component": "global",
+    "description": "Large duration (500ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
+  },
+  {
+    "cssVar": "--io-duration-xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Extra-large duration (1200ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
+  },
+  {
+    "cssVar": "--io-ease-in",
+    "classification": "internal",
+    "component": "global",
+    "description": "Standard ease-in cubic-bezier (0,0,0.2,1). Bare easing value for use with duration tokens."
+  },
+  {
+    "cssVar": "--io-ease-out",
+    "classification": "internal",
+    "component": "global",
+    "description": "Standard ease-out cubic-bezier (0.4,0,1,1). Bare easing value for use with duration tokens."
+  },
+  {
+    "cssVar": "--io-ease-in-out",
+    "classification": "internal",
+    "component": "global",
+    "description": "Standard ease-in-out cubic-bezier (0.4,0,0.2,1). Bare easing value for use with duration tokens."
+  },
+  {
+    "cssVar": "--io-transition-duration",
+    "classification": "internal",
+    "component": "global",
+    "description": "Consumer/test override hook. Set to 0s to collapse all component transitions atomically. Consumed via var(--io-transition-duration, var(--io-duration-*)). Vitest setup injects 0s globally. Classified as internal since it is a consumer-set override hook, not declared in app.css."
+  },
+  {
+    "cssVar": "--io-animation-duration",
+    "classification": "internal",
+    "component": "global",
+    "description": "Consumer/test override hook. Set to 0s to collapse all component animations atomically. Consumed via var(--io-animation-duration, var(--io-duration-*)). Vitest setup injects 0s globally. Classified as internal since it is a consumer-set override hook, not declared in app.css."
+  },
+  {
+    "cssVar": "--io-motion-entrance-offset-up",
+    "classification": "internal",
+    "component": "global",
+    "description": "Vertical translate offset for overlays that enter from below (e.g. io-modal). Default: 12px."
+  },
+  {
+    "cssVar": "--io-motion-entrance-offset-down",
+    "classification": "internal",
+    "component": "global",
+    "description": "Vertical translate offset for overlays that enter from above (reserved). Default: 12px."
+  },
+  {
+    "cssVar": "--io-motion-entrance-offset-start",
+    "classification": "internal",
+    "component": "global",
+    "description": "Horizontal translate offset for overlays that enter from the start edge (e.g. io-drawer, io-sheet). Default: 100%."
+  },
+  {
+    "cssVar": "--io-motion-entrance-offset-end",
+    "classification": "internal",
+    "component": "global",
+    "description": "Horizontal translate offset for overlays that enter from the end edge (reserved). Default: 100%."
+  },
+  {
+    "cssVar": "--io-spinner-duration",
+    "classification": "public-api",
+    "component": "io-spinner",
+    "description": "Duration of one full spinner rotation. Override to adjust spin speed."
   }
 ]

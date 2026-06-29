@@ -85,7 +85,7 @@ export const multiSelectStoryPreselected: Story<'io-multi-select'> = {
   generator: () => [
     {
       tag: 'io-multi-select' as const,
-      properties: { name: 'countries', label: 'Countries', value: 'nl,de' },
+      properties: { name: 'countries', label: 'Countries', value: ['nl', 'de'] },
       children: DEFAULT_CHILDREN,
     },
   ],
@@ -107,7 +107,7 @@ export const multiSelectStoryMaxDisplay: Story<'io-multi-select'> = {
   generator: () => [
     {
       tag: 'io-multi-select' as const,
-      properties: { name: 'countries', label: 'Countries', value: 'nl,be,de,fr,es', maxDisplay: 2 },
+      properties: { name: 'countries', label: 'Countries', value: ['nl', 'be', 'de', 'fr', 'es'], maxDisplay: 2 },
       children: DEFAULT_CHILDREN,
     },
   ],
@@ -118,7 +118,7 @@ export const multiSelectStoryDisabled: Story<'io-multi-select'> = {
   generator: () => [
     {
       tag: 'io-multi-select' as const,
-      properties: { name: 'countries', label: 'Countries', value: 'nl,be', disabled: true },
+      properties: { name: 'countries', label: 'Countries', value: ['nl', 'be'], disabled: true },
       children: DEFAULT_CHILDREN,
     },
   ],
@@ -179,7 +179,7 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
     name: 'maxDisplay',
     type: 'number',
     defaultValue: 3,
-    description: 'Max number of selected chips shown before a "+N more" overflow indicator.',
+    description: 'Max number of selected labels shown in the trigger before collapsing to "{N} selected".',
   },
   {
     name: 'hideLabel',

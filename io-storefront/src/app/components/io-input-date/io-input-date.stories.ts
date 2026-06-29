@@ -12,6 +12,9 @@ export const inputDateStory: Story<'io-input-date'> = {
       helperText: '',
       min: '',
       max: '',
+      required: false,
+      loading: false,
+      readonly: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -131,5 +134,29 @@ export const inputDatePropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the field as required.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading indicator and disables the input.',
+  },
+  {
+    name: 'readonly',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Makes the input read-only.',
+  },
+  {
+    name: 'step',
+    type: 'string',
+    defaultValue: '',
+    description: 'Step interval in days, or "any".',
   },
 ];

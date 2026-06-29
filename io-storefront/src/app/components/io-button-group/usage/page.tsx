@@ -55,10 +55,14 @@ export default function IoButtonGroupUsagePage() {
           Single words or very short phrases work best (Day, Week, Month). Avoid sentences or phrases
           longer than three words — they make the group too wide and harder to scan.
         </RuleCard>
-        <RuleCard label="Always provide an aria-label on the group">
+        <RuleCard label="Always provide a label on the group">
           The <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>{' '}
-          prop sets <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-label</code>{' '}
-          on the container. Without it, screen readers announce the group without context. Example:
+          prop renders a visible <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&lt;span&gt;</code>{' '}
+          element above the group. The group container references it via{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-labelledby</code>.
+          Without it, screen readers announce the group without context. Use{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>hideLabel</code>{' '}
+          to visually hide the label while keeping it accessible. Example labels:
           "View period", "Working days", "Sort order".
         </RuleCard>
       </section>

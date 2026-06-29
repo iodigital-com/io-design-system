@@ -414,6 +414,12 @@ export const iconPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Forces the host element width to match the icon size. Use in nav menus and icon lists for consistent column alignment.',
   },
+  {
+    name: 'flip',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Mirrors the icon horizontally via scaleX(-1). Use for explicit RTL overrides.',
+  },
 ];
 
 export const iconStoryColors: Story<'io-icon'> = {

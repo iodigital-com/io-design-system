@@ -35,6 +35,8 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
     properties: {
       activeTabIndex: DEFAULT_ACTIVE_TAB_INDEX,
       compact: false,
+      label: '',
+      labelledBy: '',
     },
   },
   generator: ({ properties } = {}) => [
@@ -46,6 +48,8 @@ export const tabsBarStory: Story<'io-tabs-bar'> = {
       properties: {
         activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         ...(properties?.compact ? { compact: true } : {}),
+        label: (properties?.label as string) || undefined,
+        labelledBy: (properties?.labelledBy as string) || undefined,
       },
       events: {
         onUpdate: {
@@ -96,6 +100,12 @@ export const tabsBarPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Accessible aria-label for the tablist region — set when the surrounding context does not already label the navigation.',
+  },
+  {
+    name: 'labelledBy',
+    type: 'string',
+    defaultValue: '',
+    description: 'ID of an external element whose text labels the tablist via aria-labelledby. Takes precedence over label when both are set.',
   },
   {
     name: 'compact',

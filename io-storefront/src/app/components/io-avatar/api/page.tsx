@@ -72,8 +72,8 @@ export default function IoAvatarApiPage() {
             ],
             [
               <InlineCode key="n">role</InlineCode>,
-              <InlineCode key="t">IoAvatarRole</InlineCode>,
-              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>auto</span>,
+              <InlineCode key="t">IoAvatarRole | &apos;&apos;</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
               <span key="desc">
                 ARIA role on the host element. Defaults to <InlineCode>presentation</InlineCode> when an image is visible
                 (the <InlineCode>img</InlineCode> element carries its own accessible name via <InlineCode>alt</InlineCode>) and to{' '}

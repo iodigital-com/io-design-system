@@ -96,7 +96,7 @@ export default function IoSpinnerApiPage() {
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-spinner has no content slots.</strong>
-          {' '}The component renders a self-contained SVG animation. All configuration is passed through props:{' '}
+          {' '}The component renders a self-contained CSS animation. All configuration is passed through props:{' '}
           <InlineCode>size</InlineCode>,{' '}
           <InlineCode>color</InlineCode>, and{' '}
           <InlineCode>label</InlineCode>.

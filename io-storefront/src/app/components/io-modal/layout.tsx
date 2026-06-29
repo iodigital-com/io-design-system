@@ -18,7 +18,7 @@ export default function IoModalLayout({ children }: { children: ReactNode }) {
     <div>
       <PageHeader
         title="Modal"
-        description="Focuses attention on a critical task or confirmation. Rendered as a native dialog element — focus trapping and ESC are built-in."
+        description="Focuses attention on a critical task or confirmation. By default (preventTopLayer=true), the component manages its own backdrop, focus trap, and ESC key — identical behavior to the native dialog API but compatible with all JavaScript frameworks."
         tabs={TABS}
         category="Component"
       />

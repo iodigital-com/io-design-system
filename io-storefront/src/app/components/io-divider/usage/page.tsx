@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, RuleCard } from '../../../../components/accessibility/AccessibilityPrimitives';
+import { SectionHeader, RuleCard } from '@/components/usage/UsagePrimitives';
 
 export default function IoDividerUsagePage() {
   return (

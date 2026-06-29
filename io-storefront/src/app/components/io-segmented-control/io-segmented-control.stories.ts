@@ -6,6 +6,7 @@ export const segmentedControlStory: Story<'io-segmented-control'> = {
     properties: {
       value: 'list',
       name: 'view',
+      label: 'View mode',
       disabled: false,
     },
   },

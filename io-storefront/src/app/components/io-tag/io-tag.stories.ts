@@ -9,6 +9,8 @@ export const tagStory: Story<'io-tag'> = {
       disabled: false,
       size: 'md',
       color: 'default',
+      label: '',
+      compact: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -20,6 +22,8 @@ export const tagStory: Story<'io-tag'> = {
         disabled: (properties?.disabled as boolean) ?? false,
         size: (properties?.size as string) ?? 'md',
         color: (properties?.color as string) ?? 'default',
+        label: (properties?.label as string) ?? '',
+        compact: (properties?.compact as boolean) ?? false,
       },
       children: ['Design system'],
     },
@@ -94,7 +98,7 @@ export const tagPropDefinitions: PropDefinition[] = [
   {
     name: 'color',
     type: 'select',
-    options: ['default', 'blue', 'beige'],
+    options: ['default', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
     defaultValue: 'default',
   },
 ];

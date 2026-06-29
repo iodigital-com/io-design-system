@@ -56,7 +56,13 @@ export default function IoSwitchApiPage() {
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Disables the switch. Renders at reduced opacity and blocks all pointer events. Sets aria-disabled="true" on the input.',
+              'Disables the switch. Renders at reduced opacity and blocks all pointer events. Sets the native disabled attribute on the input element.',
+            ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a loading spinner overlaid on the track and blocks all interaction. Use during async operations triggered by the switch.',
             ],
             [
               <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
@@ -111,6 +117,12 @@ export default function IoSwitchApiPage() {
               <InlineCode key="t">{'{ checked: boolean; value: string }'}</InlineCode>,
               'No',
               'Fires when the user toggles the switch. The detail contains the new checked state and the current value string.',
+            ],
+            [
+              <InlineCode key="n">blur</InlineCode>,
+              <InlineCode key="t">FocusEvent</InlineCode>,
+              'No',
+              'Fires when the switch loses focus. Use for validation-on-blur patterns. Not emitted when the switch is disabled or loading.',
             ],
           ]}
         />

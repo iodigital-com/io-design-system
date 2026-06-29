@@ -62,7 +62,7 @@ export const pinCodePropDefinitions: PropDefinition[] = [
   {
     name: 'length',
     type: 'select',
-    options: ['4', '6'],
+    options: ['3', '4', '5', '6'],
     defaultValue: '4',
     description: 'Number of digit slots.',
   },

@@ -112,11 +112,11 @@ export default function IoDrawerUsagePage() {
       <section id="triggering-and-dismissal" className="space-y-6">
         <SectionHeader
           title="Triggering and dismissal"
-          description="io-drawer is controlled via the open prop or the show()/close() methods. Dismissal can happen via ESC, backdrop click, or the built-in close button — all of which set open to false and emit the dismiss event."
+          description="io-drawer is controlled via the open prop or the show()/close() methods. The dismiss event fires only when the user actively dismisses the drawer — via ESC, backdrop click, or the built-in close button. Programmatic close() calls and setting open to false do not emit dismiss."
         />
         <div className="space-y-3">
           <RuleCard label="Use show() and close() for programmatic control">
-            Call <C>show()</C> to open the drawer and <C>close()</C> to close it. Setting the <C>open</C> prop directly also works. Both paths emit the <C>dismiss</C> event on close.
+            Call <C>show()</C> to open the drawer and <C>close()</C> to close it. Setting the <C>open</C> prop directly also works. Programmatic closes do NOT emit the <C>dismiss</C> event — only user-initiated dismissals do.
           </RuleCard>
           <RuleCard label="Always provide a close action in the footer">
             Every drawer must include a way for the user to dismiss it without completing the primary action. Place a ghost-variant Cancel button in the <C>footer</C> slot that sets <C>open</C> to false. Do not rely solely on backdrop clicks or the ESC key.

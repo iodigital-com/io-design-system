@@ -106,7 +106,10 @@ export const breadcrumbStoryTargetBlank: Story<'io-breadcrumb'> = {
 // Alias used by the Configurator tab (no configurable props — structure is slot-driven).
 export const breadcrumbStory = breadcrumbStoryDefault;
 
-export const breadcrumbPropDefinitions: PropDefinition[] = [];
+export const breadcrumbPropDefinitions: PropDefinition[] = [
+  { name: 'label', type: 'string', defaultValue: 'Breadcrumb', description: 'Accessible label for the nav landmark.' },
+  { name: 'maxItems', type: 'number', description: 'Maximum visible items before collapsing intermediate items into an expand button.' },
+];
 
 export const breadcrumbStoryLong: Story<'io-breadcrumb'> = {
   state: {

@@ -195,7 +195,7 @@ export const popoverStoryWithActions: Story<'io-popover'> = {
         },
         {
           tag: 'io-button' as const,
-          properties: { size: 'sm', variant: 'ghost', color: 'red', style: 'display:block;width:100%;text-align:left' },
+          properties: { size: 'sm', variant: 'ghost', color: 'rouge', style: 'display:block;width:100%;text-align:left' },
           children: ['Delete'],
         },
       ],
@@ -234,5 +234,12 @@ export const popoverPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Supplementary description shown inside the panel below the heading.',
     group: 'Content',
+  },
+  {
+    name: 'ariaLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label for the popover.',
+    group: 'Accessibility',
   },
 ];

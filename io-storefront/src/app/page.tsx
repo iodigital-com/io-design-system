@@ -102,7 +102,7 @@ const STEPS = [
 const EXPLORE_PATHS = [
   {
     title: 'Components',
-    description: '37 interactive components with live configurator and full API docs.',
+    description: '46 components with live configurator and full API docs.',
     href: '/components',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -293,7 +293,7 @@ export default function GettingStarted() {
 
       {/* ── All components ────────────────────────────────────────── */}
       <section>
-        <SectionHeading badge="37">All components</SectionHeading>
+        <SectionHeading badge="46">All components</SectionHeading>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {ALL_COMPONENTS.map(({ name, tag, href }) => (
             <Link

@@ -112,22 +112,26 @@ export default function IoTabsUsagePage() {
       <section id="vs-io-tabs-bar" className="space-y-6">
         <SectionHeader
           title="io-tabs vs io-tabs-bar"
-          description="The design system ships two tab components. Choose the one that matches where your content lives — on the page or in a URL router."
+          description="The design system ships two tab components. Both are navigation controls — neither renders panel content. The difference is how their tab buttons are provided."
         />
         <div className="space-y-3">
-          <RuleCard label="io-tabs: slot-based panel management">
-            <C>io-tabs</C> is a complete tab widget. You slot button labels and panel content directly
-            into the component. Stencil manages which panel is visible based on the active tab.
-            Use this when all content lives on the same page and you do not want your router involved.
+          <RuleCard label="io-tabs: slot-based navigation control">
+            <C>io-tabs</C> accepts plain <C>&lt;button&gt;</C> elements via its default slot as the tab
+            buttons. It applies <C>role=&quot;tab&quot;</C>, <C>aria-selected</C>, and roving{' '}
+            <C>tabindex</C> to those slotted buttons automatically. The component does not render
+            panel content — consumers listen for the <C>update</C> event and show or hide panels
+            themselves. Use this when you want full control over the button markup and do not need
+            built-in link-based navigation.
           </RuleCard>
-          <RuleCard label="io-tabs-bar: navigation strip only">
-            <C>io-tabs-bar</C> renders only the visual tab bar. It emits an <C>update</C> event
-            when the user clicks a tab, and your application (or router) is responsible for rendering
-            the corresponding panel. Use this when each tab corresponds to a URL route — for example,
-            Next.js App Router, React Router, or Angular Router.
+          <RuleCard label="io-tabs-bar: navigation strip with built-in tab items">
+            <C>io-tabs-bar</C> renders its own internal tab button elements from a data prop or
+            slot. It emits an <C>update</C> event when the user clicks a tab, and your application
+            (or router) is responsible for rendering the corresponding panel. Use this when each
+            tab corresponds to a URL route — for example, Next.js App Router, React Router, or
+            Angular Router.
           </RuleCard>
           <RuleCard label="Quick decision guide">
-            Content lives entirely on one page with no URL change? → <C>io-tabs</C>.{' '}
+            Need full control over slot content and button markup? → <C>io-tabs</C>.{' '}
             Each tab maps to a different URL or route segment? → <C>io-tabs-bar</C>.{' '}
             See the{' '}
             <a

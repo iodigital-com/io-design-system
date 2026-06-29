@@ -87,11 +87,15 @@ export default function IoTabsBarApiPage() {
             [
               <span key="s" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>default</span>,
               <span key="d">
-                One <InlineCode>{'<button type="button">'}</InlineCode> per tab. The component
-                assigns <InlineCode>role=&quot;tab&quot;</InlineCode>,{' '}
+                One <InlineCode>{'<button type="button">'}</InlineCode> or{' '}
+                <InlineCode>{'<a href="...">'}</InlineCode> per tab. Use{' '}
+                <InlineCode>{'<a>'}</InlineCode> elements for router link patterns where each tab
+                corresponds to a navigable route. The component assigns{' '}
+                <InlineCode>role=&quot;tab&quot;</InlineCode>,{' '}
                 <InlineCode>aria-selected</InlineCode>, and <InlineCode>tabindex</InlineCode> to
-                each button automatically. Add the HTML <InlineCode>disabled</InlineCode> attribute
-                to prevent a tab from being activated.
+                each element automatically. Add the HTML <InlineCode>disabled</InlineCode> attribute
+                to a button, or <InlineCode>aria-disabled=&quot;true&quot;</InlineCode> to an anchor,
+                to prevent it from being activated.
               </span>,
             ],
           ]}
@@ -254,12 +258,31 @@ export class ProductTabBarComponent {
             [
               <InlineCode key="n">--io-tabs-icon-size</InlineCode>,
               <InlineCode key="d">var(--io-icon-size-sm)</InlineCode>,
-              'Size of icon elements placed inside tab buttons.',
+              <span key="desc">
+                Size of icon elements placed inside tab buttons. Note: this token is not yet
+                registered in <InlineCode>docs/public-css-api.json</InlineCode> — treat as an
+                internal token subject to change.
+              </span>,
             ],
             [
               <InlineCode key="n">--io-tabs-icon-gap</InlineCode>,
               <InlineCode key="d">var(--io-space-1)</InlineCode>,
-              'Gap between an icon and the tab label text.',
+              <span key="desc">
+                Gap between an icon and the tab label text. Note: registered in{' '}
+                <InlineCode>docs/public-css-api.json</InlineCode> under{' '}
+                <InlineCode>component: &quot;io-tabs&quot;</InlineCode> — applies to all tabs
+                components including io-tabs-bar.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">--io-tabs-bar-indicator-duration</InlineCode>,
+              <InlineCode key="d">250ms</InlineCode>,
+              'Duration of the sliding indicator animation when switching tabs. Set to 0ms to disable animation.',
+            ],
+            [
+              <InlineCode key="n">--io-tabs-bar-indicator-easing</InlineCode>,
+              <InlineCode key="d">ease-out</InlineCode>,
+              'CSS easing function for the sliding indicator animation.',
             ],
           ]}
         />

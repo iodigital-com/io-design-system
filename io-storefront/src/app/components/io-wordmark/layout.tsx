@@ -21,7 +21,7 @@ export default function IoWordmarkLayout({ children }: { children: ReactNode }) 
     <div>
       <PageHeader
         title="Wordmark"
-        description='Brand wordmark rendering "io" in brand blue and "digital" in the current text colour. Token-driven sizes: sm, md, lg, xl.'
+        description='Brand identity component with two variants: the geometric iO mark symbol and the full lockup wordmark. Token-driven sizes: sm, md, lg, xl, inherit.'
         tabs={TABS}
         category="Component"
         status={status}

@@ -143,7 +143,7 @@ export const stepperPropDefinitions: PropDefinition[] = [
   {
     name: 'current',
     type: 'number',
-    defaultValue: 2,
+    defaultValue: 1,
     description: 'The 1-based index of the current active step.',
     group: 'Behaviour',
   },

@@ -76,6 +76,30 @@ export default function IoCarouselApiPage() {
                 element following the component. Override for localisation.
               </span>,
             ],
+            [
+              <InlineCode key="name">heading</InlineCode>,
+              <InlineCode key="type">string | undefined</InlineCode>,
+              <InlineCode key="default">undefined</InlineCode>,
+              <span key="desc">Optional heading text rendered above the slide track. When set, <InlineCode>aria-labelledby</InlineCode> is used on the carousel region instead of <InlineCode>aria-label</InlineCode>.</span>,
+            ],
+            [
+              <InlineCode key="name">description</InlineCode>,
+              <InlineCode key="type">string | undefined</InlineCode>,
+              <InlineCode key="default">undefined</InlineCode>,
+              <span key="desc">Optional description text rendered below the heading and above the slide track. Hidden when not set.</span>,
+            ],
+            [
+              <InlineCode key="name">pagination</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="desc">When true, renders dot indicators below the slides, each synced to <InlineCode>activeSlideIndex</InlineCode>.</span>,
+            ],
+            [
+              <InlineCode key="name">alignHeader</InlineCode>,
+              <InlineCode key="type">&apos;left&apos; | &apos;center&apos;</InlineCode>,
+              <InlineCode key="default">&apos;left&apos;</InlineCode>,
+              <span key="desc">Alignment of the heading and description header area.</span>,
+            ],
           ]}
         />
       </section>
@@ -138,7 +162,7 @@ export default function IoCarouselApiPage() {
           rows={[
             [
               <InlineCode key="event">update</InlineCode>,
-              <InlineCode key="detail">{`{ activeIndex: number; totalSlides: number }`}</InlineCode>,
+              <InlineCode key="detail">{`{ activeIndex: number; previousIndex: number; totalSlides: number }`}</InlineCode>,
               <span key="desc">Emitted when navigation or scrolling changes the active slide index. Bubbles and crosses the Shadow DOM boundary (<InlineCode>bubbles: true, composed: true</InlineCode>) — framework wrapper listeners (React <InlineCode>onUpdate</InlineCode>, Angular <InlineCode>(update)</InlineCode>, Vue <InlineCode>@update</InlineCode>) receive it reliably.</span>,
             ],
           ]}
@@ -208,7 +232,7 @@ function ProductGallery() {
   const carouselRef = useRef<HTMLElement>(null);
 
   const handleUpdate = useCallback(
-    (e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
+    (e: CustomEvent<{ activeIndex: number; previousIndex: number; totalSlides: number }>) => {
       // e.detail.activeIndex — update your UI state here
     },
     [],
@@ -250,7 +274,7 @@ import { IoCarousel } from '@iodigital-com/components-angular';
   \`,
 })
 export class ProductGalleryComponent {
-  onUpdate(_e: CustomEvent<{ activeIndex: number; totalSlides: number }>) {
+  onUpdate(_e: CustomEvent<{ activeIndex: number; previousIndex: number; totalSlides: number }>) {
     // _e.detail.activeIndex — update your component state here
   }
 }`}
@@ -269,7 +293,7 @@ export class ProductGalleryComponent {
 </template>
 
 <script setup lang="ts">
-const onUpdate = (_e: CustomEvent<{ activeIndex: number; totalSlides: number }>) => {
+const onUpdate = (_e: CustomEvent<{ activeIndex: number; previousIndex: number; totalSlides: number }>) => {
   // _e.detail.activeIndex — update your UI state here
 };
 </script>`}

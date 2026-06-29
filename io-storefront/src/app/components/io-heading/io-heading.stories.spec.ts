@@ -204,7 +204,7 @@ describe('io-heading storefront stories', () => {
 
     it('returns one element per weight variant', () => {
       const els = headingStoryWeights.generator?.() ?? [];
-      expect(els.length).toBe(3);
+      expect(els.length).toBe(4);
     });
 
     it('each element is an io-heading', () => {

@@ -189,17 +189,17 @@ describe('io-radio storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('radio has error true', () => {
+    it('radio has state error', () => {
       const els = radioStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.error).toBe(true);
+      expect(first.properties.state).toBe('error');
     });
 
-    it('radio has errorMessage', () => {
+    it('radio has message', () => {
       const els = radioStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(typeof first.properties.errorMessage).toBe('string');
-      expect((first.properties.errorMessage as string).length).toBeGreaterThan(0);
+      expect(typeof first.properties.message).toBe('string');
+      expect((first.properties.message as string).length).toBeGreaterThan(0);
     });
   });
 

@@ -92,6 +92,12 @@ export default function IoTextUsagePage() {
           <RuleCard label="success / warning / error — Semantic feedback">
             Use alongside status indicators, form validation messages, and system alerts. Always pair with descriptive text.
           </RuleCard>
+          <RuleCard label="info — Informational context">
+            Use for informational callouts and neutral guidance that does not indicate success, warning, or error. Maps to <C>--io-color-info</C>.
+          </RuleCard>
+          <RuleCard label="inherit — Parent color passthrough">
+            Use when the text color should be inherited from a parent element rather than set by a token. Useful inside custom-colored containers.
+          </RuleCard>
         </div>
       </section>
 

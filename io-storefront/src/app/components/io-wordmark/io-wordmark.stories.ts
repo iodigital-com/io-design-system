@@ -93,7 +93,7 @@ export const wordmarkPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md', 'lg', 'xl'],
+    options: ['sm', 'md', 'lg', 'xl', 'inherit'],
     defaultValue: 'md',
     description: 'Controls SVG height for mark and lockup variants.',
   },

@@ -48,6 +48,11 @@ export const paginationStoryFull: Story<'io-pagination'> = {
 export const paginationPropDefinitions: PropDefinition[] = [
   { name: 'page', type: 'number', defaultValue: 1 },
   { name: 'totalPages', type: 'number', defaultValue: 5 },
+  { name: 'totalItems', type: 'number', defaultValue: 0, description: 'Total items in the dataset (Pattern B). Provide with perPage to let the component derive totalPages.' },
+  { name: 'perPage', type: 'number', defaultValue: 10, description: 'Items shown per page (Pattern B). Provide with totalItems to derive the page count.' },
   { name: 'compact', type: 'boolean', defaultValue: false, description: 'Reduces button height to ~32px for dense UI contexts like toolbars and sidebars.' },
+  { name: 'showLastPage', type: 'boolean', defaultValue: false, description: 'When true, always renders the last page button at the trailing edge of the range.' },
+  { name: 'prevLabel', type: 'string', defaultValue: 'Previous page', description: 'aria-label for the previous button.' },
+  { name: 'nextLabel', type: 'string', defaultValue: 'Next page', description: 'aria-label for the next button.' },
   { name: 'intl', type: 'string', defaultValue: '', description: 'JSON object (IoPaginationIntl) to localise nav/page/prev/next labels. Example: {"root":"Paginación","page":"Página","prev":"Anterior","next":"Siguiente"}' },
 ];

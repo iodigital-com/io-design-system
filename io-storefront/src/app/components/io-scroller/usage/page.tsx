@@ -25,7 +25,7 @@ export default function IoScrollerUsagePage() {
               Provide a meaningful <C>label</C> prop so screen reader users understand what the scroll region contains — e.g. <C>&quot;Navigation tabs&quot;</C> or <C>&quot;Image strip&quot;</C>.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Set <C>show-scrollbar</C> to <C>true</C> in contexts where a visible scrollbar helps users understand that the region is scrollable, such as data tables on desktop.
+              Set <C>showScrollbar</C> to <C>true</C> in contexts where a visible scrollbar helps users understand that the region is scrollable, such as data tables on desktop.
             </DoOrDontCard>
           </div>
           <div className="space-y-3">
@@ -92,8 +92,8 @@ export default function IoScrollerUsagePage() {
           <RuleCard label="Default — hidden scrollbar for clean mobile-first UIs">
             The native scrollbar is hidden by default. The gradient fades serve as the scroll affordance. This is appropriate for touch-friendly UIs and mobile-first layouts.
           </RuleCard>
-          <RuleCard label="show-scrollbar=true for desktop-first or precision scroll contexts">
-            Enable the native scrollbar when users are on pointer devices and the scrollbar provides useful positional context — for example, long navigation lists or data tables. The scrollbar is always shown regardless of input modality when <C>show-scrollbar</C> is <C>true</C>.
+          <RuleCard label="showScrollbar=true for desktop-first or precision scroll contexts">
+            Enable the native scrollbar when users are on pointer devices and the scrollbar provides useful positional context — for example, long navigation lists or data tables. The scrollbar is always shown regardless of input modality when <C>showScrollbar</C> is <C>true</C>.
           </RuleCard>
         </div>
       </section>
@@ -109,7 +109,7 @@ export default function IoScrollerUsagePage() {
             The <C>label</C> prop sets <C>aria-label</C> on the scroll region. Without it, assistive technologies announce a generic label with no context. Provide a description that reflects the purpose of the content — e.g. <C>&quot;Category filters&quot;</C> or <C>&quot;Image carousel&quot;</C>.
           </RuleCard>
           <RuleCard label="Keyboard users can focus and scroll the region">
-            The scroll container has <C>tabindex=&quot;0&quot;</C> when the keyboard is the active input modality. Users can navigate to the scroller with Tab, then scroll with Arrow keys.
+            The scroll container receives <C>tabindex=&quot;0&quot;</C> when there is scrollable content in either direction (i.e. the content is not already at both the start and end edges). Users can navigate to the scroller with Tab, then scroll with Arrow keys, Home, and End.
           </RuleCard>
           <RuleCard label="Ensure the content inside is independently accessible">
             <C>io-scroller</C> provides the scroll container. The items inside must each be keyboard and screen reader accessible in their own right. Do not rely on scroll position to determine whether an item is interactive.

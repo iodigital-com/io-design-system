@@ -21,7 +21,7 @@ export default function IoTextLayout({ children }: { children: ReactNode }) {
     <div>
       <PageHeader
         title="Text"
-        description="Light DOM typography primitive for body text. Renders semantic HTML (p, span, div, blockquote, time) with token-driven font size, weight, color, and alignment."
+        description="Light DOM typography primitive for body text. Renders semantic HTML (p, span, div, blockquote, time, address, figcaption, cite, legend) with token-driven font size, weight, color, and alignment."
         tabs={TABS}
         category="Component"
         status={status}

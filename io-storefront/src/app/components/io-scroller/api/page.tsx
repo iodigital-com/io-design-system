@@ -51,6 +51,15 @@ export default function IoScrollerApiPage() {
                 or <InlineCode>&quot;Image strip&quot;</InlineCode>.
               </span>,
             ],
+            [
+              <InlineCode key="n">compact</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                When <InlineCode>true</InlineCode>, reduces the internal gap between slotted items
+                for dense layout contexts. Reflected as an attribute.
+              </span>,
+            ],
           ]}
         />
       </section>

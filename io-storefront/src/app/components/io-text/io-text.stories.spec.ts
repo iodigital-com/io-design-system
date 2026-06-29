@@ -214,7 +214,7 @@ describe('io-text storefront stories', () => {
     it('generator returns 7 elements (one per color)', () => {
       const els = textStoryColors.generator?.();
       expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBe(7);
+      expect(els!.length).toBe(9);
     });
 
     it('each element is an io-text', () => {

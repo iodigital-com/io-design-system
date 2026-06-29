@@ -114,7 +114,7 @@ export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'type',
     type: 'select',
-    options: ['text', 'email', 'password', 'number', 'tel', 'url', 'date', 'time'],
+    options: ['text', 'email', 'password', 'search', 'number', 'tel', 'url', 'date', 'time'],
     defaultValue: 'text',
     description: 'Defines the native input type and keyboard behavior.',
   },

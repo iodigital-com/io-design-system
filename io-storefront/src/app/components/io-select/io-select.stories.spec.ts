@@ -78,10 +78,10 @@ describe('io-select storefront stories', () => {
       expect(first.properties.required).toBe(true);
     });
 
-    it('generator forwards error from properties', () => {
-      const els = selectStory.generator?.({ properties: { error: true } }) ?? [];
+    it('generator forwards state from properties', () => {
+      const els = selectStory.generator?.({ properties: { state: 'error' } }) ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.error).toBe(true);
+      expect(first.properties.state).toBe('error');
     });
 
     it('generator omits placeholder when empty string', () => {
@@ -203,17 +203,17 @@ describe('io-select storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('has error true', () => {
+    it('has state error', () => {
       const els = selectStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.error).toBe(true);
+      expect(first.properties.state).toBe('error');
     });
 
-    it('has errorMessage', () => {
+    it('has message', () => {
       const els = selectStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(typeof first.properties.errorMessage).toBe('string');
-      expect((first.properties.errorMessage as string).length).toBeGreaterThan(0);
+      expect(typeof first.properties.message).toBe('string');
+      expect((first.properties.message as string).length).toBeGreaterThan(0);
     });
   });
 

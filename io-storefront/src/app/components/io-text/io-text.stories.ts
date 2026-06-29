@@ -33,7 +33,7 @@ export const textStorySizes: Story<'io-text'> = {
 export const textStoryColors: Story<'io-text'> = {
   state: { properties: {} },
   generator: () =>
-    (['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error'] as const).map((color) => ({
+    (['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'info', 'inherit'] as const).map((color) => ({
       tag: 'io-text' as const,
       properties: { color, tag: 'p', size: 'base', weight: 'regular' },
       children: [`Color: ${color}`],
@@ -125,5 +125,11 @@ export const textPropDefinitions: PropDefinition[] = [
     options: ['none', 'manual', 'auto', 'inherit'],
     defaultValue: 'inherit',
     description: 'CSS hyphenation behaviour. auto uses the browser hyphenation dictionary; manual respects soft-hyphens (­) only. Also sets overflow-wrap: break-word when auto or manual.',
+  },
+  {
+    name: 'datetime',
+    type: 'string',
+    defaultValue: '',
+    description: 'Machine-readable date/time value for tag="time". Maps to the HTML datetime attribute.',
   },
 ];

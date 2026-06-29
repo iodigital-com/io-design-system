@@ -82,7 +82,7 @@ export default function IoRadioGroupApiPage() {
             [
               <InlineCode key="n">description</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="d">undefined</InlineCode>,
               'Supplementary description rendered below the legend and helperText. Provides additional context for screen reader users via aria-describedby.',
             ],
           ]}

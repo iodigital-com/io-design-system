@@ -76,6 +76,7 @@ export const tableStory: Story<'io-table'> = {
       striped: false,
       bordered: false,
       compact: false,
+      layout: 'auto',
     },
   },
   generator: ({ properties } = {}) => {
@@ -91,6 +92,7 @@ export const tableStory: Story<'io-table'> = {
           striped: attrs.striped ?? false,
           bordered: attrs.bordered ?? false,
           compact: attrs.compact ?? false,
+          layout: attrs.layout ?? 'auto',
         },
         children: [
           buildHead(HEAD_LABELS, [...HEAD_KEYS]),
@@ -140,6 +142,12 @@ export const tablePropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Reduces row padding to display more rows in the same vertical space.',
+  },
+  {
+    name: 'layout',
+    type: 'select',
+    options: ['auto', 'fixed'],
+    defaultValue: 'auto',
   },
 ];
 

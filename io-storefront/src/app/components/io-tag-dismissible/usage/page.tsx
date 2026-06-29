@@ -65,7 +65,7 @@ export default function IoTagDismissibleUsagePage() {
           description="Variants communicate semantic meaning or category. Use consistently within a set of chips."
         />
         <div className="space-y-3">
-          <RuleCard label="neutral — default">
+          <RuleCard label="default">
             Use for general-purpose dismissible chips with no semantic colour coding. Works on all standard background surfaces.
           </RuleCard>
           <RuleCard label="blue, beige, dark, orange, rouge — brand colours">

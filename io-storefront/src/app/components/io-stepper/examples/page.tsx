@@ -5,6 +5,7 @@ import {
   stepperStoryVertical,
   stepperStoryStatuses,
   stepperStoryFiveSteps,
+  stepperStoryWarning,
 } from '../io-stepper.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -58,6 +59,18 @@ export default function IoStepperExamplesPage() {
         />
         <ComponentStory
           story={stepperStoryFiveSteps}
+          previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
+        />
+      </section>
+
+      {/* ── Warning status ───────────────────────────────────── */}
+      <section>
+        <ExamplesSectionHeader
+          title="Warning status"
+          description="Use the warning status when a step requires attention before the user can proceed — for example, when a previous step has validation errors or incomplete data."
+        />
+        <ComponentStory
+          story={stepperStoryWarning}
           previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
         />
       </section>

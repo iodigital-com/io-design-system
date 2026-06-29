@@ -18,7 +18,7 @@ export default function IoTagDismissibleLayout({ children }: { children: ReactNo
     <div>
       <PageHeader
         title="Tag Dismissible"
-        description="Display chip with a built-in dismiss button. Separate from io-tag to keep toggle and dismiss concerns distinct. 24×24 px touch target (WCAG 2.5.8)."
+        description="Display chip with a built-in dismiss button. Separate from io-tag to keep toggle and dismiss concerns distinct. 44x44 px minimum touch target (WCAG 2.5.8)."
         tabs={TABS}
         category="Component"
       />

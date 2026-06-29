@@ -14,6 +14,7 @@ export const linkStory: Story<'io-link'> = {
       iconSource: undefined,
       hideLabel: false,
       label: 'Learn more',
+      ariaCurrent: null,
     },
   },
   generator: ({ properties } = {}) => {
@@ -32,6 +33,7 @@ export const linkStory: Story<'io-link'> = {
           ...(attrs['icon'] != null ? { icon: attrs['icon'] } : {}),
           ...(attrs['iconSource'] ? { iconSource: attrs['iconSource'] } : {}),
           ...(attrs['hideLabel'] ? { hideLabel: true } : {}),
+          ...(attrs['ariaCurrent'] != null ? { ariaCurrent: attrs['ariaCurrent'] } : {}),
         },
         children: [content],
       },
@@ -150,5 +152,12 @@ export const linkPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Visually hides the link text while keeping it accessible to screen readers. Use with icon for icon-only links.',
+  },
+  {
+    name: 'ariaCurrent',
+    type: 'select',
+    options: ['page', 'step', 'location', 'date', 'time', 'true', 'false'],
+    defaultValue: '',
+    description: 'Maps to aria-current on the anchor. Use "page" for active navigation links.',
   },
 ];

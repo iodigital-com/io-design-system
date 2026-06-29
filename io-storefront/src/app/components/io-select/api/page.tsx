@@ -73,8 +73,8 @@ export default function IoSelectApiPage() {
             ],
             [
               <InlineCode key="n">message</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Validation message shown below the select when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
@@ -152,7 +152,7 @@ export default function IoSelectApiPage() {
             [
               <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">string | string[]</InlineCode>,
-              'No',
+              'Yes',
               'Fires when the selected value changes. Detail is the new value string (single mode) or array of selected values (multiple mode).',
             ],
             [
@@ -236,14 +236,30 @@ document.querySelector('io-select')
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="io-option and io-optgroup are the slot children of io-select. Place them as direct children to define the available options and groups."
+          description="io-option and io-optgroup are the slot children of io-select. Named slots allow rich content to replace plain-text props."
         />
         <ApiTable
           columns={[
-            { label: 'Element', width: '200px' },
+            { label: 'Slot', width: '200px' },
             { label: 'Description' },
           ]}
           rows={[
+            [
+              <span key="n"><InlineCode>(default)</InlineCode></span>,
+              'io-option and io-optgroup children. Place them as direct children to define the available options and groups.',
+            ],
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Custom label content. Replaces the plain-text label prop when rich markup is needed.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Description text. Replaces the plain-text helperText prop when rich markup is needed.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Validation message content. Replaces the plain-text message prop in error state.',
+            ],
             [
               <InlineCode key="n">io-option</InlineCode>,
               <span key="d">

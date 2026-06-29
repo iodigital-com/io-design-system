@@ -231,6 +231,28 @@ export const buttonPropDefinitions: PropDefinition[] = [
     description: 'Renders a Lucide icon inside the button alongside the label. Independent of the branded arrow.',
     group: 'Content',
   },
+  {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
+    description: 'Custom SVG string for a non-library icon. Mutually exclusive with icon.',
+    group: 'Content',
+  },
+  {
+    name: 'iconPosition',
+    type: 'select',
+    options: ['left', 'right'],
+    defaultValue: 'left',
+    description: 'Side on which the icon is rendered relative to the label.',
+    group: 'Content',
+  },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Hides the text label visually. Requires label prop for accessible name.',
+    group: 'Content',
+  },
   // ── State ─────────────────────────────────────────────────
   {
     name: 'disabled',

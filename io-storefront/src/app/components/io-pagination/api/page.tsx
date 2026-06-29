@@ -77,7 +77,7 @@ export default function IoPaginationApiPage() {
               <InlineCode key="attribute">compact</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
-              <span key="description">Dense layout for toolbar contexts. Hides page-number buttons and shows only prev/next controls.</span>,
+              <span key="description">Reduces button size to ~32px height for dense UI contexts (toolbars, sidebars).</span>,
             ],
             [
               <InlineCode key="property">showLastPage</InlineCode>,
@@ -85,6 +85,17 @@ export default function IoPaginationApiPage() {
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
               <span key="description">When true, always renders the last page button at the trailing edge of the windowed range, even when it would otherwise be hidden by an ellipsis.</span>,
+            ],
+            [
+              <InlineCode key="property">intl</InlineCode>,
+              <InlineCode key="attribute">—</InlineCode>,
+              <InlineCode key="type">IoPaginationIntl | undefined</InlineCode>,
+              <InlineCode key="default">undefined</InlineCode>,
+              <span key="description">
+                Localisation strings. Override any key to internationalise navigation labels.
+                Shape: <InlineCode>{`{ root?: string; prev?: string; next?: string; page?: string }`}</InlineCode>.
+                When a key is omitted the component falls back to the corresponding prop (<InlineCode>prevLabel</InlineCode>, <InlineCode>nextLabel</InlineCode>) or its built-in default.
+              </span>,
             ],
           ]}
         />

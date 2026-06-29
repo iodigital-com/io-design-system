@@ -60,7 +60,7 @@ export default function IoStepperApiPage() {
               <InlineCode key="n">stepChange</InlineCode>,
               <InlineCode key="t">{'{ activeStepIndex: number }'}</InlineCode>,
               'No',
-              'Fired when the user activates a complete step button via click, Enter, or Space. The detail object contains activeStepIndex — the 0-based index of the selected step. Handle this event to navigate the user backward to a previous step in your application flow.',
+              'Fired when the user clicks a complete step button. The detail object contains activeStepIndex — the 0-based index of the selected step. Handle this event to navigate the user backward to a previous step in your application flow.',
             ],
           ]}
         />
@@ -160,6 +160,12 @@ import { IoStepper, IoStep } from '@iodigital-com/components-react';
               <InlineCode key="t">&apos;horizontal&apos; | &apos;vertical&apos;</InlineCode>,
               <InlineCode key="d">&apos;horizontal&apos;</InlineCode>,
               'Inherited orientation from the parent io-stepper. Adjusts internal layout of the step item.',
+            ],
+            [
+              <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations.',
             ],
           ]}
         />

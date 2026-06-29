@@ -167,9 +167,15 @@ export const textareaPropDefinitions: PropDefinition[] = [
     description: 'Sets the initial visible row count.',
   },
   {
+    name: 'maxLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Maximum character count. Required for the counter prop to display.',
+  },
+  {
     name: 'resize',
     type: 'select',
-    options: ['none', 'vertical', 'auto'],
+    options: ['none', 'vertical', 'horizontal', 'both', 'auto'],
     defaultValue: 'vertical',
     description: 'Controls whether and how the textarea can be resized.',
   },

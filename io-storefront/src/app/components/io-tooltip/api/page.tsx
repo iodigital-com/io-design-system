@@ -10,6 +10,60 @@ export default function IoTooltipApiPage() {
   return (
     <div className="space-y-16">
 
+      {/* ── Component Props ──────────────────────────────────────── */}
+      <section id="component-props" className="space-y-4">
+        <SectionHeader
+          title="Component Props"
+          description="@Prop() declarations on the <io-tooltip> compatibility wrapper. These map directly to the global attribute API on the slotted trigger element."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '160px' },
+            { label: 'Type', width: '260px' },
+            { label: 'Default', width: '110px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <span key="n"><InlineCode>content</InlineCode></span>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Tooltip text content. Maps to the io-tooltip attribute on the first child trigger element.',
+            ],
+            [
+              <span key="n"><InlineCode>placement</InlineCode></span>,
+              <span key="t" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                <InlineCode>&apos;top&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;top-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;top-end&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;bottom&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;bottom-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;bottom-end&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;left&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;left-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;left-end&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;right&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;right-start&apos;</InlineCode>
+                {' | '}
+                <InlineCode>&apos;right-end&apos;</InlineCode>
+              </span>,
+              <InlineCode key="d">&apos;top&apos;</InlineCode>,
+              'Preferred placement of the tooltip relative to the trigger. Maps to the io-tooltip-placement attribute on the first child trigger element.',
+            ],
+          ]}
+        />
+      </section>
+
       {/* ── Properties ───────────────────────────────────────────── */}
       <section id="properties" className="space-y-4">
         <SectionHeader
@@ -92,6 +146,20 @@ export default function IoTooltipApiPage() {
         <SectionHeader
           title="Compatibility Wrapper"
           description="Legacy <io-tooltip> remains as a non-breaking wrapper that maps props to trigger attributes."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <span key="n" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic', fontSize: '0.8rem' }}>
+                (default)
+              </span>,
+              'The trigger element that receives the tooltip. The wrapper maps its content and placement props to io-tooltip and io-tooltip-placement attributes on this first child.',
+            ],
+          ]}
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>Prefer attributes on trigger elements.</strong>

@@ -122,4 +122,34 @@ export const inputSearchPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the field as required for form submission.',
+  },
+  {
+    name: 'readonly',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Makes the input read-only — value is visible but not editable.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading indicator and disables the input while a search is in progress.',
+  },
+  {
+    name: 'maxLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Maximum number of characters allowed in the field.',
+  },
+  {
+    name: 'minLength',
+    type: 'number',
+    defaultValue: undefined,
+    description: 'Minimum number of characters required in the field.',
+  },
 ];

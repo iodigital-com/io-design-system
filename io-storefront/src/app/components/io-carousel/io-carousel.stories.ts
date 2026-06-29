@@ -219,4 +219,22 @@ export const carouselPropDefinitions: PropDefinition[] = [
     defaultValue: 'left',
     description: 'Alignment of the heading and description header area.',
   },
+  {
+    name: 'autoplay',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, slides advance automatically at the interval defined by autoplayInterval.',
+  },
+  {
+    name: 'autoplayInterval',
+    type: 'number',
+    defaultValue: 5000,
+    description: 'Milliseconds between automatic slide advances when autoplay=true.',
+  },
+  {
+    name: 'skipLabel',
+    type: 'string',
+    defaultValue: 'Skip carousel',
+    description: 'Accessible label for the skip link that lets keyboard users bypass carousel slides.',
+  },
 ];

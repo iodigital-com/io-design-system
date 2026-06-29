@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputSearchStyles } from './io-input-search-styles';
+import { implicitSubmit } from '../../utils/form/implicit-submit';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputSearchSize } from './types';
@@ -169,6 +170,10 @@ export class IoInputSearch {
     this.blur.emit(ev);
   };
 
+  private handleKeyDown = (ev: KeyboardEvent) => {
+    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
+  };
+
   formResetCallback() {
     this.value = this.defaultValue;
     this.touched = false;
@@ -274,6 +279,7 @@ export class IoInputSearch {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
+              onKeyDown={this.handleKeyDown}
             />
             {/* Clear button — only visible when there is a value */}
             <button

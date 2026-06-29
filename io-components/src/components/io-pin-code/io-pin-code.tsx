@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 
 import { getPinCodeStyles } from './io-pin-code-styles';
 import { splitDigits, joinDigits, buildDigitLabel, isPinComplete } from './io-pin-code-utils';
+import { implicitSubmit } from '../../utils/form/implicit-submit';
 
 import type { IoPinCodeLength, IoPinCodeType, IoPinCodeState, IoPinCodeChangeDetail } from './types';
 
@@ -242,6 +243,13 @@ export class IoPinCode {
 
     if (key === 'Tab') {
       // Allow natural tab behaviour
+      return;
+    }
+
+    if (key === 'Enter') {
+      // Delegate to the shared implicit-submit utility so pressing Enter in any
+      // pin-code slot submits the associated form (matching native input behaviour).
+      implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
       return;
     }
 

@@ -1,6 +1,7 @@
 import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputDateStyles } from './io-input-date-styles';
+import { implicitSubmit } from '../../utils/form/implicit-submit';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputDateSize } from './types';
@@ -182,6 +183,10 @@ export class IoInputDate {
     this.blur.emit(ev);
   };
 
+  private handleKeyDown = (ev: KeyboardEvent) => {
+    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
+  };
+
   render() {
     const { label, name, value, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, min, max, step } = this;
     const { inputId, errorId, helperId } = this;
@@ -240,6 +245,7 @@ export class IoInputDate {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
+              onKeyDown={this.handleKeyDown}
             />
             {/* Calendar icon — decorative */}
             <span class="date-suffix" aria-hidden="true">

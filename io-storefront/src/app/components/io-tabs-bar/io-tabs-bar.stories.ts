@@ -98,6 +98,12 @@ export const tabsBarPropDefinitions: PropDefinition[] = [
     description: 'Accessible aria-label for the tablist region — set when the surrounding context does not already label the navigation.',
   },
   {
+    name: 'labelledBy',
+    type: 'string',
+    defaultValue: '',
+    description: 'ID of an external element whose text labels the tablist via aria-labelledby. Takes precedence over label when both are set.',
+  },
+  {
     name: 'compact',
     type: 'boolean',
     defaultValue: false,

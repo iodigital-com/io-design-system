@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote, CodeNote } from '@/components/api/ApiPrimitives';
+import { SectionHeader, InlineCode, ApiTable, ReflectBadge, CodeNote } from '@/components/api/ApiPrimitives';
 
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -68,7 +68,7 @@ export default function IoRadioApiPage() {
             [
               <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Validation message shown below the radio when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
@@ -76,6 +76,24 @@ export default function IoRadioApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'Helper text shown below the radio when state is none. Hidden when any validation state is active.',
+            ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a loading spinner in place of the radio control and disables interaction.',
+            ],
+            [
+              <span key="n"><InlineCode>form</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Associates this field with a <form> element by its ID, enabling out-of-DOM form participation.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label while keeping it accessible to screen readers. Requires a non-empty label prop.',
             ],
           ]}
         />
@@ -97,9 +115,9 @@ export default function IoRadioApiPage() {
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">{'{ checked: boolean; value: string }'}</InlineCode>,
-              'No',
-              'Fires when the user selects this radio option. The detail contains checked: true and the value string of the selected option. Use this to update external state for the entire group.',
+              <InlineCode key="t">{'{ value: string }'}</InlineCode>,
+              'Yes',
+              'Fires when the user selects this radio option. The detail contains the value string of the selected option. Use this to update external state for the entire group.',
             ],
           ]}
         />
@@ -146,6 +164,16 @@ document.querySelectorAll('io-radio[name="delivery"]')
               <InlineCode key="s">(options?: FocusOptions) =&gt; Promise&lt;void&gt;</InlineCode>,
               'Programmatically moves focus to the native radio input element. Use to return focus after a modal closes or to direct the user to a required field.',
             ],
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity without showing browser validation UI. Returns true if valid.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity and shows browser validation UI if invalid. Returns true if valid.',
+            ],
           ]}
         />
       </section>
@@ -156,13 +184,26 @@ document.querySelectorAll('io-radio[name="delivery"]')
           title="Slots"
           description="Content slots available on io-radio."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-radio has no content slots.</strong>
-          {' '}All content is passed through props:{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Rich label content. Overrides the label prop when slotted content is present. Wrap decorative icons in aria-hidden="true".',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Rich helper text content, shown when state is none. Use when the helper text needs a link or formatted markup.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Rich validation message content. Overrides the message prop when slotted. Retains role="alert" when in error state.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── CSS Custom Properties ─────────────────────────────────── */}

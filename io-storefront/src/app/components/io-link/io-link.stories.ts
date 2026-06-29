@@ -151,4 +151,11 @@ export const linkPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Visually hides the link text while keeping it accessible to screen readers. Use with icon for icon-only links.',
   },
+  {
+    name: 'ariaCurrent',
+    type: 'select',
+    options: ['page', 'step', 'location', 'date', 'time', 'true', 'false'],
+    defaultValue: '',
+    description: 'Maps to aria-current on the anchor. Use "page" for active navigation links.',
+  },
 ];

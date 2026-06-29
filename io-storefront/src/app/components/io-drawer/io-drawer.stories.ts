@@ -72,6 +72,7 @@ export const drawerPropDefinitions: PropDefinition[] = [
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg', 'full'], defaultValue: 'md', group: 'Appearance' },
   { name: 'closeOnBackdrop', type: 'boolean', defaultValue: true, group: 'Behaviour' },
   { name: 'closeLabel', type: 'string', defaultValue: 'Close drawer', group: 'Accessibility' },
+  { name: 'background', type: 'select', options: ['canvas', 'surface', 'elevated'], defaultValue: 'canvas', group: 'Appearance' },
   {
     name: 'dismissButton',
     type: 'boolean',

@@ -70,7 +70,7 @@ export default function IoTextListAccessibilityPage() {
             criterion="1.4.3"
             level="AA"
             title="Contrast (Minimum)"
-            note="All semantic color tokens (primary, secondary, success, warning, error) meet the 4.5:1 contrast ratio for normal text against standard page backgrounds in both light and dark mode."
+            note="All semantic color tokens (primary, secondary, success, warning, error, info) meet the 4.5:1 contrast ratio for normal text against standard page backgrounds in both light and dark mode."
           />
           <ComplianceCard
             criterion="1.4.1"

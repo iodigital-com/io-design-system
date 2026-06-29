@@ -212,7 +212,7 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
             [
               <InlineCode key="n">dismiss</InlineCode>,
               <InlineCode key="t">void</InlineCode>,
-              'Yes',
+              'No',
               'Fires when the user clicks the dismiss (×) button. io-toast listens to this event internally to dequeue the current message.',
             ],
             [

@@ -88,6 +88,12 @@ export default function IoPinCodeApiPage() {
               'Visual validation state. Applies coloured slot borders and message text.',
             ],
             [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Hides the visible label and collapses its space. Provide a non-empty label value for screen-reader accessibility — the label becomes aria-label on the group.',
+            ],
+            [
               <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,

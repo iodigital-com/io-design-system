@@ -109,7 +109,7 @@ export default function IoSwitchUsagePage() {
             Do not show errors before the user has interacted with the switch. Trigger validation on form submit or on the explicit <C>change</C> event — not on mount or on every render.
           </RuleCard>
           <RuleCard label="formResetCallback">
-            io-switch responds to form reset. When the parent form is reset, the switch reverts to its initial <C>checked</C> value and clears any <C>error</C> state. You do not need to handle form reset manually.
+            io-switch responds to form reset. When the parent form is reset, the switch reverts to its initial <C>checked</C> value and clears any FACE validation state (the error prop is externally controlled and is not reset). You do not need to handle form reset manually.
           </RuleCard>
         </div>
       </section>

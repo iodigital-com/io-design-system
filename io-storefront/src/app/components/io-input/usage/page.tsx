@@ -162,7 +162,7 @@ export default function IoInputUsagePage() {
       <section id="named-slots" className="space-y-6">
         <SectionHeader
           title="Rich content via named slots"
-          description="Use named slots to embed rich HTML inside the label, description, or message areas. Slot content overrides the corresponding prop (label, helperText, errorMessage) when provided — the prop still serves as a fallback when no slot content exists."
+          description="Use named slots to embed rich HTML inside the label, description, or message areas. Slot content overrides the corresponding prop (label, helperText, message) when provided — the prop still serves as a fallback when no slot content exists."
         />
         <div className="space-y-3">
           <RuleCard label="label slot — rich labels with icons or badges">
@@ -172,7 +172,7 @@ export default function IoInputUsagePage() {
             Use the <C>description</C> slot to render links, code snippets, or multi-line guidance below the field. The slot replaces the <C>helperText</C> prop. The <C>aria-describedby</C> association is maintained automatically — the slot container always carries the helper element id.
           </RuleCard>
           <RuleCard label="message slot — rich error content">
-            Use the <C>message</C> slot when your error message needs a link to documentation, a code span, or other inline HTML. The slot replaces the <C>errorMessage</C> prop. The container retains <C>role=&quot;alert&quot;</C> so screen readers announce the message on change.
+            Use the <C>message</C> slot when your error message needs a link to documentation, a code span, or other inline HTML. The slot replaces the <C>message</C> prop. The container retains <C>role=&quot;alert&quot;</C> so screen readers announce the message on change.
           </RuleCard>
           <DoOrDontCard type="do">
             Provide the <C>label</C> prop even when using the <C>label</C> slot — it acts as the accessible fallback during server-side render and before slot content hydrates.

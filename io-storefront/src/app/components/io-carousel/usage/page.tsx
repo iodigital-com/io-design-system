@@ -41,7 +41,7 @@ export default function IoCarouselUsagePage() {
       <section id="behaviour" className="space-y-6">
         <SectionHeader
           title="Behaviour"
-          description="Carousel scrolls horizontally via button clicks and mouse drag. No auto-play, no snap-to-slide."
+          description="Carousel scrolls horizontally via button clicks and mouse drag. Supports optional auto-play. No snap-to-slide."
         />
         <div className="space-y-3">
           <RuleCard label="Prev / Next buttons">
@@ -86,7 +86,7 @@ export default function IoCarouselUsagePage() {
           description="Control how many slides are visible and how far the carousel advances per button click."
         />
         <div className="space-y-3">
-          <RuleCard label="auto (default)">
+          <RuleCard label="auto">
             The component scrolls by roughly 90% of the track width per click. Use this when child widths vary or you want free-form scrolling.
           </RuleCard>
           <RuleCard label="Numeric value (1–n)">

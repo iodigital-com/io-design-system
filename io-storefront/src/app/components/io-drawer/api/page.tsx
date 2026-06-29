@@ -73,9 +73,9 @@ export default function IoDrawerApiPage() {
             ],
             [
               <span key="n"><InlineCode>background</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;canvas&apos; | &apos;surface&apos;</InlineCode>,
+              <InlineCode key="t">&apos;canvas&apos; | &apos;surface&apos; | &apos;elevated&apos;</InlineCode>,
               <InlineCode key="d">&apos;canvas&apos;</InlineCode>,
-              'Background token applied to the drawer panel. canvas uses var(--io-bg-canvas); surface uses var(--io-bg-surface).',
+              'Background token applied to the drawer panel. canvas uses var(--io-bg-page); surface uses var(--io-bg-surface); elevated uses var(--io-bg-elevated).',
             ],
           ]}
         />
@@ -143,7 +143,7 @@ export default function IoDrawerApiPage() {
           ]}
         />
         <CodeNote label="Accessible name required">
-          {`// A console.error is logged in development when the drawer has no accessible name.\n// Provide at least one of: heading prop, heading slot, aria-label, or aria-labelledby.`}
+          {`// A console.error is logged in development when the drawer has no accessible name.\n// Provide at least one of: heading prop, aria-label (via aria prop), or aria-labelledby.`}
         </CodeNote>
         <CodeNote label="Usage">
 {`// Vanilla JS

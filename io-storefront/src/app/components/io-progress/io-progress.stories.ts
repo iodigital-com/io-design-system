@@ -129,19 +129,19 @@ export const progressPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description: 'Accessible aria-label for screen readers.',
   },
   {
     name: 'labelledBy',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description: 'ID of an external heading element that labels this progress bar. Sets aria-labelledby.',
   },
   {
     name: 'valueText',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description: 'Human-readable text alternative to the numeric aria-valuenow (e.g. "Step 2 of 5"). Sets aria-valuetext.',
   },
   {

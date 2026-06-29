@@ -35,11 +35,11 @@ export default function IoInlineNotificationApiPage() {
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;info&apos; | &apos;success&apos; | &apos;warning&apos; | &apos;error&apos;</InlineCode>,
               <InlineCode key="d">&apos;info&apos;</InlineCode>,
-              'Severity level. Controls icon, colour tokens, and aria live region role (polite for info/success/warning, assertive for error).',
+              'Severity level. Controls icon, colour tokens, and aria live region role (assertive for error/warning, polite for info/success).',
             ],
             [
               <InlineCode key="n">heading</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               'Optional bold heading rendered above the slotted body content.',
             ],
@@ -51,7 +51,7 @@ export default function IoInlineNotificationApiPage() {
             ],
             [
               <InlineCode key="n">dismissLabel</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               'Override the accessible label for the dismiss button. Defaults to "Dismiss {heading}" or "Dismiss {variant} notification".',
             ],

@@ -66,7 +66,7 @@ export const textListStorySizes: Story<'io-text-list'> = {
 export const textListStoryColors: Story<'io-text-list'> = {
   state: { properties: {} },
   generator: () =>
-    (['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error'] as const).map((color) => ({
+    (['primary', 'secondary', 'disabled', 'inverse', 'success', 'warning', 'error', 'info', 'inherit'] as const).map((color) => ({
       tag: 'io-text-list' as const,
       properties: { color, tag: 'ul', size: 'base' },
       children: [

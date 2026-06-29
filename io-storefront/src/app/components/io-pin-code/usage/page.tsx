@@ -86,8 +86,8 @@ export default function IoPinCodeUsagePage() {
           Pressing Backspace on an empty slot deletes the previous digit and moves focus back one slot.
           Pressing Backspace on a filled slot clears that slot without moving focus.
         </RuleCard>
-        <RuleCard label="Programmatic focus via focusFirst()">
-          Call the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>focusFirst()</code> method
+        <RuleCard label="Programmatic focus via setFocus()">
+          Call the <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>setFocus()</code> method
           to programmatically focus the first empty slot (or the last slot if all are filled). Useful after
           displaying an error state to bring the user back to the input.
         </RuleCard>

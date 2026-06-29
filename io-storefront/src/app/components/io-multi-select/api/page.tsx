@@ -75,6 +75,12 @@ export default function IoMultiSelectApiPage() {
               'Message text shown below the trigger. Styled as error (red) when state is error, success (green) when state is success, otherwise muted. Rendered with role="alert" in error state.',
             ],
             [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Hides the visible label and collapses its space. The label value is still used as the accessible name via aria-label on the trigger and listbox.',
+            ],
+            [
               <span key="n"><InlineCode>filter</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
@@ -113,7 +119,7 @@ export default function IoMultiSelectApiPage() {
             [
               <InlineCode key="n">change</InlineCode>,
               <InlineCode key="t">{'{ value: string[], name: string }'}</InlineCode>,
-              'No',
+              'Yes',
               'Fires when the selection changes — on option toggle, chip removal, or clear all. Detail includes the full updated value array and the name prop.',
             ],
             [

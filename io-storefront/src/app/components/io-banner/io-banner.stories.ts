@@ -9,6 +9,10 @@ export const bannerStory: Story<'io-banner'> = {
       heading: '',
       open: false,
       dismissible: false,
+      dismissLabel: '',
+      actionLabel: '',
+      actionIcon: '',
+      actionLoading: false,
     },
   },
   generator: ({ properties } = {}) => {
@@ -29,6 +33,10 @@ export const bannerStory: Story<'io-banner'> = {
           heading: props['heading'] ?? '',
           open: props['open'] ?? false,
           dismissible: props['dismissible'] ?? false,
+          dismissLabel: props['dismissLabel'] ?? '',
+          actionLabel: props['actionLabel'] ?? '',
+          actionIcon: props['actionIcon'] ?? '',
+          actionLoading: props['actionLoading'] ?? false,
         },
         children: ['Scheduled maintenance on Saturday 10:00–12:00 UTC. Services may be briefly interrupted.'],
         events: {
@@ -84,5 +92,29 @@ export const bannerPropDefinitions: PropDefinition[] = [
     options: ['top', 'bottom'],
     defaultValue: 'top',
     description: 'Viewport edge where the banner is fixed (top or bottom).',
+  },
+  {
+    name: 'dismissLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label for the dismiss button (overrides the default).',
+  },
+  {
+    name: 'actionLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Label for the optional action button. When set, an action button is rendered.',
+  },
+  {
+    name: 'actionIcon',
+    type: 'string',
+    defaultValue: '',
+    description: 'Icon name rendered inside the action button.',
+  },
+  {
+    name: 'actionLoading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, renders the action button in a loading state.',
   },
 ];

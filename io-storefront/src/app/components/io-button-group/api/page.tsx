@@ -74,29 +74,53 @@ export default function IoButtonGroupApiPage() {
             ],
             [
               <span key="n">
-                <InlineCode>size</InlineCode>
-                <ReflectBadge />
-              </span>,
-              <InlineCode key="t">IoButtonGroupSize</InlineCode>,
-              <InlineCode key="d">&apos;md&apos;</InlineCode>,
-              <span key="desc">
-                Size preset propagated to all slotted <InlineCode>io-button</InlineCode> children.
-                Accepts <InlineCode>&apos;sm&apos;</InlineCode>, <InlineCode>&apos;md&apos;</InlineCode> (default), or{' '}
-                <InlineCode>&apos;lg&apos;</InlineCode>. The value is reflected to the host attribute and forwarded
-                via the <InlineCode>slotchange</InlineCode> event and{' '}
-                <InlineCode>@Watch(&apos;size&apos;)</InlineCode> so both initial render and dynamic changes
-                propagate correctly.
-              </span>,
-            ],
-            [
-              <span key="n">
-                <InlineCode>compact</InlineCode>
+                <InlineCode>hideLabel</InlineCode>
                 <ReflectBadge />
               </span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               <span key="desc">
-                Reduces height and padding for compact contexts like toolbars.
+                Visually hides the label while keeping it accessible to screen readers.
+                Only has an effect when <InlineCode>label</InlineCode> is set. Use this when
+                the group purpose is clear from visual context but must still be named for
+                assistive technology.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">required</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Marks the group as required. Renders a required asterisk (<InlineCode>*</InlineCode>)
+                next to the label when <InlineCode>label</InlineCode> is provided.
+              </span>,
+            ],
+            [
+              <span key="n">
+                <InlineCode>direction</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">IoButtonGroupDirection</InlineCode>,
+              <InlineCode key="d">&apos;row&apos;</InlineCode>,
+              <span key="desc">
+                Layout direction. <InlineCode>&apos;row&apos;</InlineCode> lays buttons out horizontally
+                (default). <InlineCode>&apos;column&apos;</InlineCode> stacks buttons vertically and
+                makes them full-width.
+              </span>,
+            ],
+            [
+              <span key="n">
+                <InlineCode>variant</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">IoButtonGroupVariant</InlineCode>,
+              <InlineCode key="d">&apos;primary&apos;</InlineCode>,
+              <span key="desc">
+                Visual variant controlling the active-state color scheme.{' '}
+                <InlineCode>&apos;primary&apos;</InlineCode> uses brand blue fill with white text —
+                suitable for navigation and primary selection controls.{' '}
+                <InlineCode>&apos;secondary&apos;</InlineCode> uses a white/surface fill with a subtle
+                shadow and dark text — suitable for property selectors and toolbar controls.
               </span>,
             ],
           ]}
@@ -263,12 +287,22 @@ function WeekdayFilter() {
               </span>,
             ],
             [
-              <InlineCode key="n">IoButtonGroupSize</InlineCode>,
-              <InlineCode key="d">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>,
+              <InlineCode key="n">IoButtonGroupDirection</InlineCode>,
+              <InlineCode key="d">&apos;row&apos; | &apos;column&apos;</InlineCode>,
               <span key="desc">
-                Size preset for the button group. Intentionally excludes <InlineCode>&apos;xl&apos;</InlineCode>{' '}
-                (available on standalone <InlineCode>io-button</InlineCode>) because an extra-large segmented
-                control is rarely appropriate for UI toolbars or filter groups.
+                Layout direction for the button group. <InlineCode>&apos;row&apos;</InlineCode> arranges
+                buttons horizontally (default). <InlineCode>&apos;column&apos;</InlineCode> stacks them
+                vertically at full width.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">IoButtonGroupVariant</InlineCode>,
+              <InlineCode key="d">&apos;primary&apos; | &apos;secondary&apos;</InlineCode>,
+              <span key="desc">
+                Visual variant controlling the active-state color scheme.{' '}
+                <InlineCode>&apos;primary&apos;</InlineCode> — brand blue fill, white text (navigation, primary
+                controls). <InlineCode>&apos;secondary&apos;</InlineCode> — white/surface fill with shadow,
+                dark text (property selectors, toolbar controls).
               </span>,
             ],
           ]}

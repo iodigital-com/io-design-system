@@ -65,6 +65,12 @@ export default function IoTextApiPage() {
               </span>,
             ],
             [
+              <span key="n"><InlineCode>datetime</InlineCode></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">Machine-readable date/time value for <InlineCode>tag=&quot;time&quot;</InlineCode>. Maps to the HTML <InlineCode>datetime</InlineCode> attribute. Required by WCAG 1.3.1 when the visible text alone does not express a machine-parseable date.</span>,
+            ],
+            [
               <span key="n"><InlineCode>ellipsis</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,

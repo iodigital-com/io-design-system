@@ -52,7 +52,7 @@ export const badgePropDefinitions: PropDefinition[] = [
   {
     name: 'ariaLabel',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description: 'Accessible label for decorative badges. Only set when badge conveys meaning not expressed by its text content.',
   },
 ];

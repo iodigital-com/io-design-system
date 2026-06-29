@@ -8,7 +8,7 @@ import { RelatedComponents } from '@/components/RelatedComponents';
 const TABS: PageTab[] = [
   { label: 'Configurator', href: '/components/io-sheet/configurator' },
   { label: 'Examples', href: '/components/io-sheet/examples' },
-  { label: 'Info', href: '/components/io-sheet/info' },
+  { label: 'Usage', href: '/components/io-sheet/usage' },
   { label: 'Accessibility', href: '/components/io-sheet/accessibility' },
   { label: 'API', href: '/components/io-sheet/api' },
 ];

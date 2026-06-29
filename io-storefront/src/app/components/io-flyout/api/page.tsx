@@ -41,6 +41,12 @@ export default function IoFlyoutApiPage() {
               <span key="d" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>undefined</span>,
               'Text displayed in the flyout header. Used as the accessible name for the dialog via aria-labelledby. Omit to use the header slot for custom heading markup.',
             ],
+            [
+              <InlineCode key="n">closeLabel</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">Close flyout</InlineCode>,
+              'Accessible label for the close button. Override to provide context when multiple overlays may be open simultaneously.',
+            ],
           ]}
         />
       </section>

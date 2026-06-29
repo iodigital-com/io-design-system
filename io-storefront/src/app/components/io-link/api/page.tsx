@@ -73,7 +73,7 @@ export default function IoLinkApiPage() {
             [
               <InlineCode key="n">icon</InlineCode>,
               <InlineCode key="t">IoIconName</InlineCode>,
-              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              '—',
               'Lucide icon rendered before the link label. Set to none to suppress. Pass iconSource for a custom inline SVG.',
             ],
             [
@@ -83,10 +83,18 @@ export default function IoLinkApiPage() {
               'Raw SVG string for a custom icon. When set, overrides the icon prop.',
             ],
             [
-              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="n">hideLabel</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'Applies a visually-hidden clip pattern to the label span, keeping the link accessible while showing only the icon.',
+            ],
+            [
+              <InlineCode key="n">ariaCurrent</InlineCode>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
+                <InlineCode>&apos;page&apos;</InlineCode>{' | '}<InlineCode>&apos;step&apos;</InlineCode>{' | '}<InlineCode>&apos;location&apos;</InlineCode>{' | '}<InlineCode>&apos;date&apos;</InlineCode>{' | '}<InlineCode>&apos;time&apos;</InlineCode>{' | '}<InlineCode>&apos;true&apos;</InlineCode>{' | '}<InlineCode>&apos;false&apos;</InlineCode>{' | null'}
+              </span>,
+              '—',
+              'Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or "false" removes the attribute.',
             ],
           ]}
         />

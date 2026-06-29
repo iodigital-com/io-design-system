@@ -120,7 +120,7 @@ export default function IoStepperUsagePage() {
           title="Step statuses"
           description="Each step communicates its position in the flow through a distinct visual treatment."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <RuleCard label="complete">
             A filled circle with a checkmark SVG. The connector line to the next step is also filled with brand
             blue to reinforce forward progress.
@@ -131,6 +131,11 @@ export default function IoStepperUsagePage() {
           </RuleCard>
           <RuleCard label="upcoming">
             A muted circle with reduced opacity on the label. Signals that this step has not been reached yet.
+          </RuleCard>
+          <RuleCard label="warning">
+            A circle with a warning triangle icon. Use when a step requires attention before the user can proceed —
+            for example, when a previous step has validation errors or incomplete data that must be resolved.
+            The step remains non-interactive unless it is also <C>complete</C>.
           </RuleCard>
         </div>
       </section>

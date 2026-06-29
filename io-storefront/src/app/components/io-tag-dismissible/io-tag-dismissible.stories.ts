@@ -5,7 +5,7 @@ export const tagDismissibleStory: Story<'io-tag-dismissible'> = {
   state: {
     properties: {
       label: 'React',
-      variant: 'neutral',
+      variant: 'default',
     },
   },
   generator: ({ properties } = {}) => [
@@ -13,7 +13,7 @@ export const tagDismissibleStory: Story<'io-tag-dismissible'> = {
       tag: 'io-tag-dismissible' as const,
       properties: {
         label: (properties?.label as string) ?? 'React',
-        variant: (properties?.variant as string) ?? 'neutral',
+        variant: (properties?.variant as string) ?? 'default',
         ...(properties?.icon ? { icon: properties.icon as string } : {}),
       },
     },
@@ -21,18 +21,18 @@ export const tagDismissibleStory: Story<'io-tag-dismissible'> = {
 };
 
 export const tagDismissibleStoryDefault: Story<'io-tag-dismissible'> = {
-  state: { properties: { variant: 'neutral' } },
+  state: { properties: { variant: 'default' } },
   generator: () => [
-    { tag: 'io-tag-dismissible' as const, properties: { label: 'React', variant: 'neutral' } },
-    { tag: 'io-tag-dismissible' as const, properties: { label: 'TypeScript', variant: 'neutral' } },
-    { tag: 'io-tag-dismissible' as const, properties: { label: 'Accessibility', variant: 'neutral' } },
+    { tag: 'io-tag-dismissible' as const, properties: { label: 'React', variant: 'default' } },
+    { tag: 'io-tag-dismissible' as const, properties: { label: 'TypeScript', variant: 'default' } },
+    { tag: 'io-tag-dismissible' as const, properties: { label: 'Accessibility', variant: 'default' } },
   ],
 };
 
 export const tagDismissibleStoryVariants: Story<'io-tag-dismissible'> = {
   state: { properties: {} },
   generator: () => [
-    { tag: 'io-tag-dismissible' as const, properties: { label: 'Neutral', variant: 'neutral' } },
+    { tag: 'io-tag-dismissible' as const, properties: { label: 'Default', variant: 'default' } },
     { tag: 'io-tag-dismissible' as const, properties: { label: 'Blue', variant: 'blue' } },
     { tag: 'io-tag-dismissible' as const, properties: { label: 'Beige', variant: 'beige' } },
     { tag: 'io-tag-dismissible' as const, properties: { label: 'Success', variant: 'success' } },
@@ -45,7 +45,7 @@ export const tagDismissibleStoryWithIcon: Story<'io-tag-dismissible'> = {
   state: { properties: { icon: 'tag' } },
   generator: () => [
     { tag: 'io-tag-dismissible' as const, properties: { label: 'Design', variant: 'blue', icon: 'tag' } },
-    { tag: 'io-tag-dismissible' as const, properties: { label: 'Engineering', variant: 'neutral', icon: 'code' } },
+    { tag: 'io-tag-dismissible' as const, properties: { label: 'Engineering', variant: 'default', icon: 'code' } },
   ],
 };
 
@@ -58,7 +58,7 @@ export const tagDismissiblePropDefinitions: PropDefinition[] = [
   {
     name: 'variant',
     type: 'select',
-    options: ['neutral', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
-    defaultValue: 'neutral',
+    options: ['default', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
+    defaultValue: 'default',
   },
 ];

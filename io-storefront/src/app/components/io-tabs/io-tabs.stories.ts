@@ -92,12 +92,20 @@ export const tabsPropDefinitions: PropDefinition[] = [
     description: 'Reduces tab padding for dense layouts.',
   },
   {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label for the tablist region. Applied as aria-label when labelledby is not set.',
+  },
+  {
     name: 'labelledby',
     type: 'string',
     defaultValue: '',
     description: 'ID of an element that labels this tab group. Sets aria-labelledby on the tablist element.',
   },
   {
+    // Source prop is string[]|undefined. The configurator cannot handle array types,
+    // so this is kept as 'string' to allow a single panel ID as a demo value.
     name: 'panelIds',
     type: 'string',
     defaultValue: '',

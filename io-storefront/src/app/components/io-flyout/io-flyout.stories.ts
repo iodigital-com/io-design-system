@@ -57,6 +57,7 @@ export const flyoutStory: Story<'io-flyout'> = {
 export const flyoutPropDefinitions: PropDefinition[] = [
   { name: 'heading', type: 'string', defaultValue: 'Navigation', group: 'Content' },
   { name: 'position', type: 'select', options: ['left', 'right'], defaultValue: 'right', group: 'Appearance' },
+  { name: 'closeLabel', type: 'string', defaultValue: 'Close flyout', group: 'Accessibility' },
 ];
 
 // ── Static example stories ────────────────────────────────────────────────

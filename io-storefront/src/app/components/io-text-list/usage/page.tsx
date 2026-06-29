@@ -114,6 +114,12 @@ export default function IoTextListUsagePage() {
           <RuleCard label="success / warning / error — Semantic feedback">
             Use alongside status indicators and system alerts. Always pair with descriptive text, never rely on color alone.
           </RuleCard>
+          <RuleCard label="info — Informational content">
+            Use for informational or neutral advisory lists. Maps to <C>--io-text-info</C>. Always pair with descriptive text, never rely on color alone.
+          </RuleCard>
+          <RuleCard label="inherit — Inherits from parent">
+            Defers text color to the parent element. Use when the list is nested inside a component that already sets a color context.
+          </RuleCard>
         </div>
       </section>
 

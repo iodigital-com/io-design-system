@@ -150,7 +150,20 @@ export const checkboxGroupPropDefinitions: PropDefinition[] = [
   {
     name: 'errorMessage',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description: 'Error message shown below the group when error is true.',
+  },
+  {
+    name: 'orientation',
+    type: 'select',
+    options: ['vertical', 'horizontal'],
+    defaultValue: 'vertical',
+    description: 'Layout direction of the checkbox options.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading spinner overlay and blocks interaction.',
   },
 ];

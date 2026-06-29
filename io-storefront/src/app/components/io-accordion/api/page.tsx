@@ -45,7 +45,7 @@ export default function IoAccordionApiPage() {
               <InlineCode key="attribute">compact</InlineCode>,
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
-              <span key="description">Dense layout mode — reduces trigger padding and font size independent of the <InlineCode>size</InlineCode> preset. Useful for space-constrained UI contexts. Reflects to attribute.</span>,
+              <span key="description">Dense layout mode — reduces trigger padding independently of the <InlineCode>size</InlineCode> preset. Useful for space-constrained UI contexts. Reflects to attribute.</span>,
             ],
             [
               <span key="property"><InlineCode>alignMarker</InlineCode><ReflectBadge /></span>,
@@ -81,6 +81,20 @@ export default function IoAccordionApiPage() {
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
               <span key="description">When <InlineCode>false</InlineCode> (default), opening this accordion dispatches a coordination event so sibling accordions in the same parent auto-close. Set to <InlineCode>true</InlineCode> to allow multiple panels to remain open simultaneously. Reflects to attribute.</span>,
+            ],
+            [
+              <span key="property"><InlineCode>background</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">background</InlineCode>,
+              <InlineCode key="type">'transparent' | 'surface' | 'canvas'</InlineCode>,
+              <InlineCode key="default">'transparent'</InlineCode>,
+              <span key="description">Background fill variant for the accordion host element. <InlineCode>transparent</InlineCode> (default): no background fill. <InlineCode>surface</InlineCode>: <InlineCode>var(--io-bg-surface)</InlineCode> — subtle fill for card/nested layouts. <InlineCode>canvas</InlineCode>: <InlineCode>var(--io-bg-page)</InlineCode> — page-level fill. Reflects to attribute.</span>,
+            ],
+            [
+              <span key="property"><InlineCode>sticky</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">sticky</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">When <InlineCode>true</InlineCode>, the accordion trigger becomes <InlineCode>position: sticky; top: 0</InlineCode> so it remains visible while scrolling through long expanded content. Only meaningful when <InlineCode>background</InlineCode> is <InlineCode>surface</InlineCode> or <InlineCode>canvas</InlineCode> — using <InlineCode>sticky</InlineCode> with a transparent background causes content to bleed through. Reflects to attribute.</span>,
             ],
           ]}
         />

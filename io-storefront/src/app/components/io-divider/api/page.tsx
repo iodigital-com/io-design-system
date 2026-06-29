@@ -37,6 +37,21 @@ export default function IoDividerApiPage() {
               </span>,
             ],
             [
+              <span key="n">
+                <InlineCode>color</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">&apos;subtle&apos; | &apos;default&apos; | &apos;strong&apos;</InlineCode>,
+              <InlineCode key="d">&apos;default&apos;</InlineCode>,
+              <span key="desc">
+                Color contrast level of the divider line. <InlineCode>subtle</InlineCode> renders at 50% opacity
+                of <InlineCode>--io-border</InlineCode> (very light separation).{' '}
+                <InlineCode>default</InlineCode> uses <InlineCode>--io-border</InlineCode> (standard decorative border).{' '}
+                <InlineCode>strong</InlineCode> uses <InlineCode>--io-border-hover</InlineCode> (more prominent separation).
+                All variants adapt automatically to dark mode via existing semantic tokens.
+              </span>,
+            ],
+            [
               <InlineCode key="n">label</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,

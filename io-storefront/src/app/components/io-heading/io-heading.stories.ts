@@ -43,7 +43,7 @@ export const headingStoryLevels: Story<'io-heading'> = {
 export const headingStoryWeights: Story<'io-heading'> = {
   state: { properties: {} },
   generator: () =>
-    (['regular', 'semibold', 'bold'] as const).map((weight) => ({
+    (['regular', 'medium', 'semibold', 'bold'] as const).map((weight) => ({
       tag: 'io-heading' as const,
       properties: { weight, tag: 'h2', size: '2xl', color: 'primary' },
       children: [`Weight: ${weight} — Heading text example`],
@@ -120,7 +120,7 @@ export const headingPropDefinitions: PropDefinition[] = [
   {
     name: 'weight',
     type: 'select',
-    options: ['regular', 'semibold', 'bold'],
+    options: ['regular', 'medium', 'semibold', 'bold'],
     defaultValue: 'semibold',
     description: 'Font weight using --io-font-weight-* tokens.',
   },
@@ -143,5 +143,12 @@ export const headingPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'When true, truncates text with an ellipsis on a single line.',
+  },
+  {
+    name: 'hyphens',
+    type: 'select',
+    options: ['none', 'manual', 'auto', 'inherit'],
+    defaultValue: 'none',
+    description: 'CSS hyphens behaviour for long words.',
   },
 ];

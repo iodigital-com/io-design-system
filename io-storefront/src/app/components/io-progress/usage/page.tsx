@@ -31,7 +31,7 @@ export default function IoProgressUsagePage() {
           <div className="space-y-3">
             <SubsectionTitle>Don&apos;t</SubsectionTitle>
             <DoOrDontCard type="dont">
-              Use for indeterminate operations where you cannot calculate a real percentage. Use <C>io-spinner</C> instead.
+              Use io-progress when there is no completion percentage to show at all. If the operation has no measurable progress, use <C>io-spinner</C> instead.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Use progress and spinner simultaneously in the same loading region. Choose one indicator per zone.

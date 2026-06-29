@@ -77,6 +77,12 @@ export default function IoTagApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Compact density — reduces vertical padding for dense UI contexts. Override the padding via --io-tag-compact-padding-y.',
             ],
+            [
+              <InlineCode key="n">label</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              <span key="desc">Accessible label for the tag content. Used to build the remove button&apos;s <InlineCode>aria-label</InlineCode> when <InlineCode>removable</InlineCode> is true — announces &quot;Remove [label]&quot; instead of &quot;Remove&quot;. Recommended whenever <InlineCode>removable=true</InlineCode>.</span>,
+            ],
           ]}
         />
       </section>
@@ -99,7 +105,7 @@ export default function IoTagApiPage() {
               <InlineCode key="n">toggle</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               'No',
-              'Fires when the tag is clicked and not disabled and not removable. The detail is the new selected value (true if now selected, false if now deselected).',
+              'Fires when the main tag button is clicked (whether or not the tag is removable) and the tag is not disabled. The detail is the new selected value (true if now selected, false if now deselected). On a removable tag, clicking the main label area fires toggle; clicking the remove icon fires remove instead.',
             ],
             [
               <InlineCode key="n">remove</InlineCode>,

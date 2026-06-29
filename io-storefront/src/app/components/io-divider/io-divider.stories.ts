@@ -241,7 +241,7 @@ export const dividerPropDefinitions: PropDefinition[] = [
   {
     name: 'label',
     type: 'string',
-    defaultValue: '',
+    defaultValue: undefined,
     description:
       'Optional visible label rendered at the center of the divider line. Also sets aria-label on the separator landmark. When using the default slot, slot content takes precedence over the label prop text.',
   },

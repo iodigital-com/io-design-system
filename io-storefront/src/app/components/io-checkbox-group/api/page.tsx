@@ -73,6 +73,12 @@ export default function IoCheckboxGroupApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Shows a loading spinner overlay over the options and blocks interaction via the inert attribute. Sets aria-busy="true" on the host.',
             ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">{'Record<string, string>'}</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Arbitrary ARIA attributes spread onto the fieldset element. Keys may omit or include the aria- prefix. Component-managed attributes (aria-invalid, aria-describedby when error is active) take precedence and cannot be overridden.',
+            ],
           ]}
         />
       </section>

@@ -97,7 +97,7 @@ export default function IoIconUsagePage() {
       <section id="available-icons" className="space-y-6">
         <SectionHeader
           title="Available icons"
-          description="51 icons are registered in the io Design System icon set. All are derived from Lucide and pre-extracted to avoid runtime imports."
+          description="455 icons are registered in the io Design System icon set. All are derived from Lucide and pre-extracted to avoid runtime imports."
         />
         <div className="space-y-3">
           <RuleCard label="Actions">

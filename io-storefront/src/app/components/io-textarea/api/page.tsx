@@ -63,10 +63,10 @@ export default function IoTextareaApiPage() {
             [
               <InlineCode key="n">resize</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>&apos;none&apos;</InlineCode>{' | '}<InlineCode>&apos;vertical&apos;</InlineCode>{' | '}<InlineCode>&apos;auto&apos;</InlineCode>
+                <InlineCode>&apos;none&apos;</InlineCode>{' | '}<InlineCode>&apos;vertical&apos;</InlineCode>{' | '}<InlineCode>&apos;horizontal&apos;</InlineCode>{' | '}<InlineCode>&apos;both&apos;</InlineCode>{' | '}<InlineCode>&apos;auto&apos;</InlineCode>
               </span>,
               <InlineCode key="d">&apos;vertical&apos;</InlineCode>,
-              'Controls resize behaviour. none hides the resize handle; vertical allows user-controlled height resizing; auto grows the textarea height with content.',
+              'Controls resize behaviour. none hides the resize handle; vertical allows user-controlled height resizing; horizontal allows width resizing; both allows both directions; auto grows the textarea height with content.',
             ],
             [
               <InlineCode key="n">maxLength</InlineCode>,
@@ -100,8 +100,8 @@ export default function IoTextareaApiPage() {
             ],
             [
               <InlineCode key="n">message</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Validation message shown below the textarea when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
@@ -109,6 +109,66 @@ export default function IoTextareaApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'Helper text shown below the textarea when state is none. Hidden when any validation state is active.',
+            ],
+            [
+              <span key="n"><InlineCode>readOnly</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Makes the field read-only — value is not editable but the field stays in tab order and can be submitted.',
+            ],
+            [
+              <InlineCode key="n">minLength</InlineCode>,
+              <InlineCode key="t">number | undefined</InlineCode>,
+              '—',
+              'Minimum number of characters. Wired to native minlength attribute and FACE tooShort validity.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the label while keeping it accessible to screen readers. Requires a non-empty label value.',
+            ],
+            [
+              <InlineCode key="n">loading</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows an inline spinner and disables the field while true.',
+            ],
+            [
+              <InlineCode key="n">counter</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Shows a {currentLength} / {maxLength} character counter below the field. Only visible when maxLength is also set.',
+            ],
+            [
+              <InlineCode key="n">form</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Associates this element with a form by id, allowing it to be placed outside the form element in the DOM.',
+            ],
+            [
+              <InlineCode key="n">wrap</InlineCode>,
+              <InlineCode key="t">&apos;soft&apos; | &apos;hard&apos; | &apos;off&apos; | undefined</InlineCode>,
+              '—',
+              'Controls how newlines are submitted — maps to the native wrap attribute.',
+            ],
+            [
+              <InlineCode key="n">spellCheck</InlineCode>,
+              <InlineCode key="t">boolean | undefined</InlineCode>,
+              '—',
+              'Native spellcheck attribute — passed through as-is to the inner textarea.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Supplementary plain-text description rendered below the field. Always visible regardless of validation state. For rich HTML content use the description slot.',
+            ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">Record&lt;string, string&gt; | undefined</InlineCode>,
+              '—',
+              'Custom ARIA attributes injected onto the native textarea element. Keys may omit or include the aria- prefix.',
             ],
           ]}
         />
@@ -190,6 +250,16 @@ document.querySelector('io-textarea')
               <InlineCode key="n">setFocus</InlineCode>,
               <InlineCode key="s">(options?: FocusOptions) =&gt; Promise&lt;void&gt;</InlineCode>,
               'Programmatically moves focus to the inner textarea element. Use to return focus after a modal closes or to direct the user to a required field after a validation response.',
+            ],
+            [
+              <InlineCode key="n">checkValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity without showing browser validation UI. Returns true if the field is valid.',
+            ],
+            [
+              <InlineCode key="n">reportValidity</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;boolean&gt;</InlineCode>,
+              'Checks validity and shows browser validation UI if invalid. Returns true if the field is valid.',
             ],
           ]}
         />

@@ -67,4 +67,16 @@ export const inlineNotificationPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'When true, the action button shows a loading spinner and the action event is suppressed.',
   },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label applied as aria-label on the host live region. Use when multiple notifications appear on the same page simultaneously.',
+  },
+  {
+    name: 'dismissLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Override the accessible label for the dismiss button. Defaults to "Dismiss {heading}" or "Dismiss {variant} notification".',
+  },
 ];

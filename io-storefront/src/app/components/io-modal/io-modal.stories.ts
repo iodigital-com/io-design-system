@@ -67,6 +67,9 @@ export const modalPropDefinitions: PropDefinition[] = [
   { name: 'heading', type: 'string', defaultValue: 'Modal heading', group: 'Content' },
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md', group: 'Appearance' },
   { name: 'closeOnBackdrop', type: 'boolean', defaultValue: true, group: 'Behaviour' },
+  { name: 'background', type: 'select', options: ['canvas', 'surface', 'elevated'], defaultValue: 'canvas', group: 'Appearance' },
+  { name: 'preventTopLayer', type: 'boolean', defaultValue: true, group: 'Behaviour' },
+  { name: 'description', type: 'string', defaultValue: '', group: 'Content' },
   {
     name: 'dismissButton',
     type: 'boolean',

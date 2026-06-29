@@ -27,7 +27,7 @@ export default function IoIconApiPage() {
               <InlineCode key="t">IoIconName</InlineCode>,
               <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic', fontSize: '0.8rem' }}>required</span>,
               <span key="desc">
-                The icon to render. Must be one of the 51 registered names from the io icon registry.
+                The icon to render. Must be one of the 455 registered names from the io icon registry.
                 See the <strong>Usage</strong> tab for the full list of available names.
                 Ignored when <InlineCode>iconSource</InlineCode> is set.
               </span>,
@@ -51,7 +51,7 @@ export default function IoIconApiPage() {
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
+              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
               <span key="desc">
                 Rendered icon size. Maps to design-token pixel values:{' '}
@@ -127,7 +127,7 @@ export default function IoIconApiPage() {
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>io-icon exposes no public methods.</strong>
-          {' '}All behaviour is driven entirely through the three props above. There is no imperative API.
+          {' '}All behaviour is driven entirely through its props. There is no imperative API.
         </EmptyNote>
       </section>
 

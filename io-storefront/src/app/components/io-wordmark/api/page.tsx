@@ -43,7 +43,7 @@ export default function IoWordmarkApiPage() {
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</InlineCode>,
+              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
               'Controls SVG height for mark and lockup variants.',
             ],

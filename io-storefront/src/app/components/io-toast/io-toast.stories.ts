@@ -108,13 +108,13 @@ export const toastPropDefinitions: PropDefinition[] = [
   {
     name: 'duration',
     type: 'number',
-    defaultValue: 5000,
+    defaultValue: 6000,
     description: 'Auto-dismiss delay ms. 0 = no auto-dismiss.',
   },
   {
-    name: 'dismissible',
+    name: 'persistent',
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: false,
   },
   {
     name: 'actionLabel',

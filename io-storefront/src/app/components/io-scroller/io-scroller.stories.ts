@@ -192,4 +192,10 @@ export const scrollerPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Accessible aria-label for the scroll region. Defaults to a generic description.',
   },
+  {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, reduces internal gap between slotted items for dense layout contexts.',
+  },
 ];

@@ -212,10 +212,10 @@ describe('io-text-list storefront stories', () => {
       expect(() => textListStoryColors.generator?.()).not.toThrow();
     });
 
-    it('generator returns 7 elements (one per color)', () => {
+    it('generator returns 9 elements (one per color)', () => {
       const els = textListStoryColors.generator?.();
       expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBe(7);
+      expect(els!.length).toBe(9);
     });
 
     it('each element is an io-text-list', () => {

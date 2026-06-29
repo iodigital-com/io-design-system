@@ -93,9 +93,22 @@ export const wordmarkPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md', 'lg', 'xl'],
+    options: ['sm', 'md', 'lg', 'xl', 'inherit'],
     defaultValue: 'md',
     description: 'Controls SVG height for mark and lockup variants.',
+  },
+  {
+    name: 'href',
+    type: 'string',
+    defaultValue: '',
+    description: 'Navigation URL. When set, renders as an anchor link wrapping the wordmark SVG.',
+  },
+  {
+    name: 'target',
+    type: 'select',
+    options: ['_self', '_blank', '_parent', '_top'],
+    defaultValue: '_self',
+    description: 'Specifies where to open the linked URL. Only meaningful when href is set.',
   },
   {
     name: 'ariaLabel',

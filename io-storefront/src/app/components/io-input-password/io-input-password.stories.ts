@@ -127,4 +127,28 @@ export const inputPasswordPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'toggle',
+    type: 'boolean',
+    defaultValue: true,
+    description: 'When false, hides the show/hide password toggle button.',
+  },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the input as required for form submission.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading indicator and disables the input.',
+  },
+  {
+    name: 'readonly',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Makes the input read-only.',
+  },
 ];

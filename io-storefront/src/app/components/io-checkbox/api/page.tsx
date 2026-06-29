@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote, CodeNote } from '@/components/api/ApiPrimitives';
+import { SectionHeader, InlineCode, ApiTable, ReflectBadge, CodeNote } from '@/components/api/ApiPrimitives';
 
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ export default function IoCheckboxApiPage() {
             [
               <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Validation message shown below the checkbox when state is not none. Rendered with role="alert" and linked via aria-describedby.',
             ],
             [
@@ -204,13 +204,26 @@ document.querySelector('io-checkbox')
           title="Slots"
           description="Content slots available on io-checkbox."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>io-checkbox has no content slots.</strong>
-          {' '}All content is passed through props:{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>.
-        </EmptyNote>
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Overrides the label prop with arbitrary content. The slot is hidden when not assigned so there is no visible gap — the label prop is used as fallback when no slotted content is present.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Replaces the helperText prop with arbitrary content. Shown below the checkbox when state is none and no validation message is active.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Overrides the message prop with arbitrary content. Shown below the checkbox when state is error. Use for rich error messages with links or icons.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── CSS Custom Properties ─────────────────────────────────── */}

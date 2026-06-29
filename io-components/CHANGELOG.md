@@ -1,5 +1,11 @@
 # @iodigital-com/components
 
+## 1.7.0
+
+### Minor Changes
+
+- d125be7: Remove `compact` prop from `io-button`. The compact density variant is not part of the iO button specification. Use the `size` prop (`sm`, `md`, `lg`) for button density control.
+
 ## 1.6.0
 
 ### Minor Changes

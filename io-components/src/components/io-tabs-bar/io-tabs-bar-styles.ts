@@ -14,7 +14,7 @@ export function getTabsBarStyles(): string {
       font-family: var(--io-font-primary);
     }
 
-    /* ── Tab list ────────────────────────────────────────── */
+    /* ── Tab list / nav wrapper ──────────────────────────── */
 
     .tablist {
       display: flex;
@@ -23,10 +23,70 @@ export function getTabsBarStyles(): string {
       overflow-x: auto;
       scrollbar-width: none;
       position: relative;
+      /* Edge-fade mask tokens (issue #961) */
+      --_fade-size: var(--io-tabs-bar-fade-size, 3rem);
+      --_fade-color: var(--io-tabs-bar-fade-color, var(--io-surface-primary, #fff));
     }
 
     .tablist::-webkit-scrollbar {
       display: none;
+    }
+
+    /* ── Edge-fade mask (issue #961) ─────────────────────── */
+
+    .tablist--fade-start:not(.tablist--fade-end) {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size)
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size)
+      );
+    }
+
+    .tablist--fade-end:not(.tablist--fade-start) {
+      -webkit-mask-image: linear-gradient(
+        to left,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size)
+      );
+      mask-image: linear-gradient(
+        to left,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size)
+      );
+    }
+
+    .tablist--fade-start.tablist--fade-end {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size),
+        var(--_fade-color) calc(100% - var(--_fade-size)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        var(--_fade-color) var(--_fade-size),
+        var(--_fade-color) calc(100% - var(--_fade-size)),
+        transparent 100%
+      );
+    }
+
+    /* ── Overflow sentinel elements (issue #961) ─────────── */
+
+    .sentinel-start,
+    .sentinel-end {
+      display: block;
+      flex-shrink: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+      align-self: center;
     }
 
     /* ── Slotted tab button / anchor (base) ─────────────── */

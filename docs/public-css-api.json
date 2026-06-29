@@ -786,6 +786,30 @@
     "description": "CSS easing function for the sliding indicator animation."
   },
   {
+    "cssVar": "--io-tabs-bar-fade-size",
+    "classification": "public-api",
+    "component": "io-tabs-bar",
+    "description": "Width of the edge-fade gradient mask shown when tab content overflows the visible area. Increase to widen the fade; set to 0 to disable."
+  },
+  {
+    "cssVar": "--io-tabs-bar-fade-color",
+    "classification": "public-api",
+    "component": "io-tabs-bar",
+    "description": "Surface color used by the edge-fade mask gradient. Must match the background color behind the component to produce a seamless fade."
+  },
+  {
+    "cssVar": "--io-tabs-close-button-size",
+    "classification": "public-api",
+    "component": "io-tabs",
+    "description": "Size of the dismiss affordance inside a closeable tab. Drives both width and height of the close hit area."
+  },
+  {
+    "cssVar": "--io-tabs-close-button-color",
+    "classification": "public-api",
+    "component": "io-tabs",
+    "description": "Icon color of the close button inside a closeable tab."
+  },
+  {
     "cssVar": "--io-border-radius-xs",
     "classification": "internal",
     "component": "io-tabs",

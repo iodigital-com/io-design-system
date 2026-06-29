@@ -368,6 +368,14 @@ export const sitemap: NavSection[] = [
         related: ['io-checkbox', 'io-pagination', 'io-spinner'],
       },
       {
+        label: 'Tab Panel',
+        href: '/components/io-tab-panel/configurator',
+        status: 'beta',
+        slug: 'io-tab-panel',
+        description: 'Companion panel component for io-tabs. Declares a tab pane with a label prop — io-tabs auto-wires all ARIA relationships, removing the need for manual panelIds management.',
+        related: ['io-tabs', 'io-tabs-bar'],
+      },
+      {
         label: 'Tabs',
         href: '/components/io-tabs/configurator',
         status: 'beta',

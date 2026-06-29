@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, State, Host, Watch, h } from '@stencil/core';
 
 import { getTabsBarStyles } from './io-tabs-bar-styles';
 import { computeIndicatorKeyframes, getNextEnabledIndex, normalizeActiveTabIndex } from './io-tabs-bar-utils';
@@ -24,29 +24,29 @@ function isTabItemDisabled(item: TabItem): boolean {
  * (e.g. Next.js App Router, Angular Router) rather than through slot-based
  * panel switching. The consumer owns route/content transitions; io-tabs-bar
  * provides the visual tab strip with active indicator, keyboard navigation,
- * and ARIA tablist semantics.
+ * and ARIA semantics.
  *
- * Place <button> or <a> children inside the component. The component applies
- * role="tab", aria-selected, and tabindex automatically. Control the
- * active tab via the activeTabIndex prop and respond to the update event.
+ * Place <button> or <a> children inside the component. The component detects
+ * the child type and automatically applies the correct ARIA pattern:
+ * - <button> children: role="tablist" container, role="tab" + aria-selected on each button
+ * - <a> children: <nav> landmark wrapper, aria-current="page" on the active anchor
  *
- * Use <a> elements for navigation tab patterns where each tab is a route link.
- * Use <button> elements for in-page tab switching.
+ * Control the active tab via the activeTabIndex prop and respond to the update event.
  *
  * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
  * Disabled buttons (via the HTML disabled attribute) are skipped.
  * Disabled anchors (via aria-disabled="true") are skipped.
  *
- * @example
+ * @example — button tablist pattern (in-page tab switching)
  * <io-tabs-bar active-tab-index="0" label="Main navigation">
  *   <button type="button">Overview</button>
  *   <button type="button">Details</button>
  *   <button type="button" disabled>Settings</button>
  * </io-tabs-bar>
  *
- * @example — anchor navigation pattern
+ * @example — anchor navigation pattern (route navigation)
  * <io-tabs-bar active-tab-index="0" label="Site navigation">
- *   <a href="/overview" aria-current="page">Overview</a>
+ *   <a href="/overview">Overview</a>
  *   <a href="/details">Details</a>
  * </io-tabs-bar>
  */
@@ -62,7 +62,7 @@ export class IoTabsBar {
   /** 0-based index of the active tab (controlled). */
   @Prop({ mutable: true, reflect: true }) activeTabIndex = 0;
 
-  /** Optional accessible label for the tablist region. */
+  /** Optional accessible label for the tablist / nav region. */
   @Prop() label?: string;
 
   /** ID of an existing element that labels the tablist (alternative to label prop). When set, aria-labelledby is used instead of aria-label. */
@@ -80,24 +80,89 @@ export class IoTabsBar {
    */
   @Event() update!: EventEmitter<IoTabsBarUpdateDetail>;
 
+  // ── State ─────────────────────────────────────────────────────
+
+  /** True when slotted children are <a> anchors (navigation mode). False for button tablist mode. */
+  @State() private isNavMode = false;
+
+  /** True when the scroll container has overflowed content before the visible start. */
+  @State() private isFadeStart = false;
+
+  /** True when the scroll container has overflowed content beyond the visible end. */
+  @State() private isFadeEnd = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private slotEl: HTMLSlotElement | null = null;
   private indicatorEl: HTMLElement | null = null;
+  private tablistEl: HTMLElement | null = null;
   private buttons: TabItem[] = [];
   private clickHandlers: Map<TabItem, () => void> = new Map();
   private keyHandlers: Map<TabItem, EventListener> = new Map();
+  private resizeObserver?: ResizeObserver;
+  private sentinelStart: HTMLElement | null = null;
+  private sentinelEnd: HTMLElement | null = null;
+  private intersectionObserver?: IntersectionObserver;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentDidLoad() {
     this.slotEl = this.el.shadowRoot?.querySelector('slot') ?? null;
     this.indicatorEl = this.el.shadowRoot?.querySelector('.indicator') ?? null;
+    this.tablistEl = this.el.shadowRoot?.querySelector('.tablist') ?? null;
+    this.sentinelStart = this.el.shadowRoot?.querySelector('.sentinel-start') ?? null;
+    this.sentinelEnd = this.el.shadowRoot?.querySelector('.sentinel-end') ?? null;
     this.syncFromSlot();
+    this.setupResizeObserver();
+    this.setupIntersectionObserver();
   }
 
   disconnectedCallback() {
     this.teardownListeners();
+    this.resizeObserver?.disconnect();
+    this.intersectionObserver?.disconnect();
+  }
+
+  // ── ResizeObserver (issue #968) ────────────────────────────────
+
+  private setupResizeObserver() {
+    if (typeof ResizeObserver === 'undefined') return;
+    if (!this.tablistEl) return;
+    this.resizeObserver = new ResizeObserver(() => {
+      this.scrollActiveTabIntoView(this.buttons, this.activeTabIndex);
+      this.updateFadeState();
+    });
+    this.resizeObserver.observe(this.tablistEl);
+  }
+
+  // ── IntersectionObserver / edge-fade (issue #961) ─────────────
+
+  private setupIntersectionObserver() {
+    if (typeof IntersectionObserver === 'undefined') return;
+    if (!this.tablistEl || !this.sentinelStart || !this.sentinelEnd) return;
+
+    this.intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === this.sentinelStart) {
+            this.isFadeStart = !entry.isIntersecting;
+          } else if (entry.target === this.sentinelEnd) {
+            this.isFadeEnd = !entry.isIntersecting;
+          }
+        }
+      },
+      { root: this.tablistEl, threshold: 0.01 },
+    );
+
+    this.intersectionObserver.observe(this.sentinelStart);
+    this.intersectionObserver.observe(this.sentinelEnd);
+  }
+
+  private updateFadeState() {
+    if (!this.tablistEl) return;
+    const el = this.tablistEl;
+    this.isFadeStart = el.scrollLeft > 1;
+    this.isFadeEnd = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
   }
 
   @Watch('activeTabIndex')
@@ -125,6 +190,11 @@ export class IoTabsBar {
     this.buttons = assigned.filter(
       (el): el is TabItem => el.tagName === 'BUTTON' || el.tagName === 'A',
     );
+
+    // Detect mode: if ALL tab items are <a> elements → navigation mode (#978).
+    // Mixed or all-button → tablist mode.
+    this.isNavMode =
+      this.buttons.length > 0 && this.buttons.every((item) => item.tagName === 'A');
 
     const normalized = normalizeActiveTabIndex(this.activeTabIndex, this.buttons);
     if (normalized !== this.activeTabIndex) {
@@ -158,15 +228,38 @@ export class IoTabsBar {
   }
 
   private applyAriaToButtons(buttons: TabItem[], activeIndex: number) {
-    buttons.forEach((btn, index) => {
-      const isActive = index === activeIndex && !isTabItemDisabled(btn);
-      btn.setAttribute('role', 'tab');
-      btn.setAttribute('aria-selected', String(isActive));
-      btn.setAttribute('tabindex', String(isActive ? 0 : -1));
-    });
+    if (this.isNavMode) {
+      // Navigation mode (#978): <a> children — use <nav> landmark + aria-current
+      buttons.forEach((item, index) => {
+        const isActive = index === activeIndex && !isTabItemDisabled(item);
+        // Remove tablist-specific attributes that don't belong on nav links
+        item.removeAttribute('role');
+        item.removeAttribute('aria-selected');
+        // aria-current="page" on the active link; remove on others
+        if (isActive) {
+          item.setAttribute('aria-current', 'page');
+        } else {
+          item.removeAttribute('aria-current');
+        }
+        // Roving tabindex still applies for keyboard nav
+        item.setAttribute('tabindex', String(isActive ? 0 : -1));
+      });
+    } else {
+      // Tablist mode: <button> (or mixed) children — standard tablist + aria-selected
+      buttons.forEach((btn, index) => {
+        const isActive = index === activeIndex && !isTabItemDisabled(btn);
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.setAttribute('tabindex', String(isActive ? 0 : -1));
+        // Clean up any nav-mode attributes from a previous mode
+        btn.removeAttribute('aria-current');
+      });
+    }
     this.scrollActiveTabIntoView(buttons, activeIndex);
     // Position indicator without animation on initial sync
-    this.animateIndicator(activeIndex);
+    if (!this.isNavMode) {
+      this.animateIndicator(activeIndex);
+    }
   }
 
   private scrollActiveTabIntoView(buttons: TabItem[], activeIndex: number) {
@@ -286,17 +379,47 @@ export class IoTabsBar {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
+    const ariaLabel = this.labelledBy ? undefined : (this.label || undefined);
+    const ariaLabelledBy = this.labelledBy || undefined;
+
+    const tablistClass = {
+      tablist: true,
+      'tablist--fade-start': this.isFadeStart,
+      'tablist--fade-end': this.isFadeEnd,
+    };
+
+    if (this.isNavMode) {
+      // Navigation mode (#978): wrap in <nav> landmark; no tablist role.
+      return (
+        <Host>
+          <style>{getTabsBarStyles()}</style>
+          <nav
+            class={tablistClass}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledBy}
+          >
+            <span class="sentinel-start" aria-hidden="true" />
+            <slot onSlotchange={this.onSlotChange} />
+            <span class="sentinel-end" aria-hidden="true" />
+          </nav>
+        </Host>
+      );
+    }
+
+    // Tablist mode (default): standard role="tablist" with sliding indicator.
     return (
       <Host>
         <style>{getTabsBarStyles()}</style>
         <div
-          class="tablist"
+          class={tablistClass}
           role="tablist"
           aria-orientation="horizontal"
-          aria-label={this.labelledBy ? undefined : (this.label || undefined)}
-          aria-labelledby={this.labelledBy || undefined}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
         >
+          <span class="sentinel-start" aria-hidden="true" />
           <slot onSlotchange={this.onSlotChange} />
+          <span class="sentinel-end" aria-hidden="true" />
           <span class="indicator" aria-hidden="true" />
         </div>
       </Host>

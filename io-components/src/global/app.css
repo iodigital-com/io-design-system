@@ -415,6 +415,9 @@
   --io-tabs-icon-gap:                     var(--io-space-1);       /* 4px — gap between icon and label */
   --io-tabs-bar-indicator-duration:       250ms;
   --io-tabs-bar-indicator-easing:         ease-out;
+  --io-tabs-bar-fade-size:                3rem;         /* Width of the edge-fade gradient on overflowed tab bars */
+  --io-tabs-close-button-size:            var(--io-space-4);  /* 16px — close button target inside a closeable tab */
+  --io-tabs-close-button-color:           var(--io-text-secondary); /* Color of the close button icon */
 
   /* Modal */
   --io-modal-width-sm:           400px;

@@ -491,7 +491,7 @@ function makeComponentWithItems(items: Array<HTMLButtonElement | HTMLAnchorEleme
   return component;
 }
 
-describe('io-tabs-bar — anchor element support', () => {
+describe('io-tabs-bar — anchor element support (legacy tablist mode — mixed/button-default)', () => {
   it('recognizes <a> elements as tab items', () => {
     const a1 = makeAnchor('Home');
     const a2 = makeAnchor('About');
@@ -500,23 +500,62 @@ describe('io-tabs-bar — anchor element support', () => {
     expect((component as any).buttons).toHaveLength(2);
   });
 
-  it('applies role=tab to slotted anchor elements', () => {
+  it('anchor-only children enable nav mode (#978)', () => {
     const a1 = makeAnchor('Home');
     const a2 = makeAnchor('About');
     const component = makeComponentWithItems([a1, a2]);
     (component as any).syncFromSlot();
-    expect(a1.getAttribute('role')).toBe('tab');
-    expect(a2.getAttribute('role')).toBe('tab');
+    expect((component as any).isNavMode).toBe(true);
   });
 
-  it('sets aria-selected on anchor tab items', () => {
+  it('mixed button+anchor children disable nav mode (#978)', () => {
+    const btn = makeButton('Button Tab');
+    const a = makeAnchor('Anchor Tab');
+    const component = makeComponentWithItems([btn, a]);
+    (component as any).syncFromSlot();
+    expect((component as any).isNavMode).toBe(false);
+  });
+
+  it('button-only children disable nav mode', () => {
+    const btn1 = makeButton('A');
+    const btn2 = makeButton('B');
+    const component = makeComponentWithItems([btn1, btn2]);
+    (component as any).syncFromSlot();
+    expect((component as any).isNavMode).toBe(false);
+  });
+
+  it('nav mode: sets aria-current=page on active anchor, no role=tab, no aria-selected (#978)', () => {
+    const a1 = makeAnchor('Home');
+    const a2 = makeAnchor('About');
+    const component = makeComponentWithItems([a1, a2]);
+    component.activeTabIndex = 0;
+    (component as any).syncFromSlot();
+    // Active anchor gets aria-current=page
+    expect(a1.getAttribute('aria-current')).toBe('page');
+    expect(a2.getAttribute('aria-current')).toBe(null);
+    // No tablist attributes
+    expect(a1.getAttribute('role')).toBeNull();
+    expect(a1.getAttribute('aria-selected')).toBeNull();
+  });
+
+  it('nav mode: second anchor active gets aria-current=page (#978)', () => {
     const a1 = makeAnchor('Home');
     const a2 = makeAnchor('About');
     const component = makeComponentWithItems([a1, a2]);
     component.activeTabIndex = 1;
     (component as any).syncFromSlot();
-    expect(a1.getAttribute('aria-selected')).toBe('false');
-    expect(a2.getAttribute('aria-selected')).toBe('true');
+    expect(a1.getAttribute('aria-current')).toBeNull();
+    expect(a2.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('tablist mode: sets role=tab and aria-selected on anchors when mixed (#978)', () => {
+    const btn = makeButton('Button Tab');
+    const a = makeAnchor('Anchor Tab');
+    const component = makeComponentWithItems([btn, a]);
+    (component as any).syncFromSlot();
+    expect(btn.getAttribute('role')).toBe('tab');
+    expect(a.getAttribute('role')).toBe('tab');
+    expect(btn.getAttribute('aria-selected')).not.toBeNull();
   });
 
   it('skips anchor elements with aria-disabled="true"', () => {
@@ -528,16 +567,6 @@ describe('io-tabs-bar — anchor element support', () => {
     (component as any).syncFromSlot();
     // Should normalize away from disabled anchor
     expect(component.activeTabIndex).toBe(0);
-  });
-
-  it('supports mixed button and anchor tab items', () => {
-    const btn = makeButton('Button Tab');
-    const a = makeAnchor('Anchor Tab');
-    const component = makeComponentWithItems([btn, a]);
-    (component as any).syncFromSlot();
-    expect((component as any).buttons).toHaveLength(2);
-    expect(btn.getAttribute('role')).toBe('tab');
-    expect(a.getAttribute('role')).toBe('tab');
   });
 
   it('does not emit update event when clicking a disabled anchor', () => {

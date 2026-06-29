@@ -47,21 +47,28 @@ export class IoRadioGroup {
   @Prop({ reflect: true }) loading = false;
 
   /**
-   * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+   * Validation state — controls border/message color.
+   * Mirrors the Wave-XI IoFieldState API used by all child io-radio components.
+   * Propagated to children via syncChildren().
    */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Validation message shown below the group when state is non-'none' */
-  @Prop() message: string | undefined;
+  /**
+   * Validation/helper message shown below the group.
+   * Replaces the legacy errorMessage prop when state is set explicitly.
+   */
+  @Prop() message = '';
 
   /**
-   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
-   * Puts the group in error state. Emits a console.warn in non-production builds.
+   * @deprecated Use `error={true}` with `state="error"` instead.
+   * Kept for one minor cycle for backwards compatibility.
+   * Puts the group in error state.
    */
   @Prop({ reflect: true }) error = false;
 
   /**
-   * @deprecated Use `message` instead. Will be removed in the next minor release.
+   * @deprecated Use `message` instead.
+   * Kept for one minor cycle for backwards compatibility.
    * Error message shown below the group when error is true.
    */
   @Prop() errorMessage: string | undefined;
@@ -79,6 +86,7 @@ export class IoRadioGroup {
 
   private errorId!: string;
   private descriptionId!: string;
+  private legendId!: string;
   private defaultValue?: string;
 
   // ── Events ────────────────────────────────────────────────────
@@ -92,6 +100,7 @@ export class IoRadioGroup {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-rg-error-${suffix}`;
     this.descriptionId = `io-rg-desc-${suffix}`;
+    this.legendId = `io-rg-legend-${suffix}`;
     this.defaultValue = this.value;
     if (!this.name) {
       console.error('[io-radio-group] The "name" prop is required for form participation and accessibility. Provide a unique name for this group.');
@@ -130,6 +139,16 @@ export class IoRadioGroup {
 
   @Watch('required')
   onRequiredChange() {
+    this.syncChildren();
+  }
+
+  @Watch('state')
+  onStateChange() {
+    this.syncChildren();
+  }
+
+  @Watch('error')
+  onErrorChange() {
     this.syncChildren();
   }
 
@@ -232,9 +251,9 @@ export class IoRadioGroup {
     }
   }
 
-  private getRadios(): Array<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }> {
+  private getRadios(): Array<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean; state: IoFieldState }> {
     return Array.from(
-      this.el.querySelectorAll<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean }>('io-radio'),
+      this.el.querySelectorAll<HTMLElement & { value: string; checked: boolean; name: string; disabled: boolean; tabIndex: number; required: boolean; state: IoFieldState }>('io-radio'),
     );
   }
 
@@ -250,6 +269,9 @@ export class IoRadioGroup {
 
   private syncChildren = () => {
     const radios = this.getRadios();
+    // Resolve the effective state: explicit state prop takes precedence;
+    // legacy error=true maps to 'error' for one-cycle backwards compat.
+    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     radios.forEach(r => {
       r.disabled = this.disabled;
     });
@@ -259,21 +281,24 @@ export class IoRadioGroup {
       }
       radio.checked = radio.value === this.value;
       radio.required = this.required;
+      radio.state = effectiveState;
     }
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, description, error, errorMessage, state, message, orientation, required } = this;
-    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
-    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
-    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
-    const effectiveMessage = message ?? errorMessage;
-    const isError = effectiveState === 'error';
-    const fieldsetClass = isError ? 'radio-group radio-group--error' : 'radio-group';
+    const { label, disabled, loading, helperText, description, error, errorMessage, orientation, required, state, message } = this;
+    // Resolve effective error/message: new state API takes precedence over legacy error prop.
+    const effectiveError = state === 'error' || error;
+    // Legacy errorMessage only shows when error=true (legacy behaviour preserved).
+    // New message prop shows when state is not 'none'.
+    const effectiveMessage = message || (error ? errorMessage : undefined);
+    const messageId = `${this.errorId}-msg`;
+
+    const fieldsetClass = effectiveError ? 'radio-group radio-group--error' : 'radio-group';
     const describedBy = [
-      isError && effectiveMessage ? this.errorId : '',
+      effectiveError && effectiveMessage ? messageId : '',
       description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
@@ -285,12 +310,13 @@ export class IoRadioGroup {
             class={fieldsetClass}
             disabled={disabled}
             role="radiogroup"
-            aria-invalid={isError ? 'true' : undefined}
+            aria-labelledby={this.legendId}
+            aria-invalid={effectiveError ? 'true' : undefined}
             aria-describedby={describedBy}
             aria-orientation={orientation}
             aria-required={required ? 'true' : undefined}
           >
-            <legend class="radio-group__legend">{label}</legend>
+            <legend id={this.legendId} class="radio-group__legend">{label}</legend>
             {description && (
               <p id={this.descriptionId} class="radio-group__description">{description}</p>
             )}
@@ -307,8 +333,13 @@ export class IoRadioGroup {
             </div>
           )}
         </div>
-        {isError && effectiveMessage && (
-          <p id={this.errorId} class="radio-group__error" role="alert" aria-atomic="true">
+        {effectiveMessage && (
+          <p
+            id={messageId}
+            class={`radio-group__error radio-group__message--${effectiveError ? 'error' : state}`}
+            role={effectiveError ? 'alert' : 'status'}
+            aria-atomic="true"
+          >
             {effectiveMessage}
           </p>
         )}

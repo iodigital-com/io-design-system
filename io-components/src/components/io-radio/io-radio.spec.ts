@@ -135,3 +135,71 @@ describe('io-radio — formDisabledCallback', () => {
     expect(component.disabled).toBe(false);
   });
 });
+
+describe('io-radio — group-scoped mutual exclusion (#941)', () => {
+  it('isGroupSatisfied returns false when no sibling with same name is checked in scope', () => {
+    const c = new IoRadio();
+    const el = document.createElement('io-radio');
+    (c as any).el = el;
+    (c as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    c.name = 'choice';
+    c.required = true;
+    c.checked = false;
+    (c as any).componentWillLoad();
+    // No sibling appended — should be unsatisfied
+    expect((c as any).isGroupSatisfied()).toBe(false);
+  });
+
+  it('isGroupSatisfied returns true when a sibling within same io-radio-group is checked', () => {
+    const group = document.createElement('io-radio-group');
+    document.body.appendChild(group);
+
+    const el = document.createElement('io-radio');
+    (el as any).name = 'choice';
+    group.appendChild(el);
+
+    const c = new IoRadio();
+    (c as any).el = el;
+    (c as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    c.name = 'choice';
+    c.checked = false;
+    (c as any).componentWillLoad();
+
+    // Add a checked sibling inside the same group
+    const sibling = Object.assign(document.createElement('io-radio'), { name: 'choice', checked: true });
+    group.appendChild(sibling);
+
+    expect((c as any).isGroupSatisfied()).toBe(true);
+
+    document.body.removeChild(group);
+  });
+
+  it('isGroupSatisfied does not find siblings from a different group with same name', () => {
+    // Group A
+    const groupA = document.createElement('io-radio-group');
+    document.body.appendChild(groupA);
+
+    const elA = document.createElement('io-radio');
+    (elA as any).name = 'gender';
+    groupA.appendChild(elA);
+
+    const cA = new IoRadio();
+    (cA as any).el = elA;
+    (cA as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    cA.name = 'gender';
+    cA.checked = false;
+    (cA as any).componentWillLoad();
+
+    // Group B — separate group, also has name="gender", one is checked
+    const groupB = document.createElement('io-radio-group');
+    document.body.appendChild(groupB);
+    const checkedInB = Object.assign(document.createElement('io-radio'), { name: 'gender', checked: true });
+    groupB.appendChild(checkedInB);
+
+    // groupA's radio should NOT see groupB's checked sibling
+    expect((cA as any).isGroupSatisfied()).toBe(false);
+
+    document.body.removeChild(groupA);
+    document.body.removeChild(groupB);
+  });
+});

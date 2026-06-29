@@ -11,8 +11,18 @@ import type { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from './
  * io-checkbox-group
  * ==================
  * Wraps io-checkbox items in a semantic fieldset/legend and automatically
- * propagates the `name` and `disabled` props to all slotted children.
+ * propagates the `name`, `disabled`, and `state` props to all slotted children.
  * Emits change with the array of all currently checked values.
+ *
+ * ## Presentational-only contract
+ *
+ * io-checkbox-group is **presentational-only** for form purposes:
+ * - It does NOT implement `formAssociated` and has NO ElementInternals / FACE registration.
+ * - It does NOT add a FormData entry itself — each child io-checkbox submits its own value.
+ * - `required` means "propagate required to all children" — group-level required is
+ *   satisfied when each child individually satisfies its own required constraint.
+ * - Consumers expecting group-level FormData entry or a single validation anchor
+ *   should use io-radio-group (which IS formAssociated) or implement their own wrapper.
  *
  * @example
  * <io-checkbox-group label="Preferred notifications" name="notifications">
@@ -43,22 +53,28 @@ export class IoCheckboxGroup {
   @Prop({ reflect: true }) disabled = false;
 
   /**
-   * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
-   * Propagates to all slotted io-checkbox children when non-'none'.
+   * Validation state — controls border/message color.
+   * Mirrors the Wave-XI IoFieldState API used by all child io-checkbox components.
+   * Propagated to children via syncChildren().
    */
   @Prop({ reflect: true }) state: IoFieldState = 'none';
 
-  /** Validation message shown below the group when state is non-'none' */
-  @Prop() message: string | undefined;
+  /**
+   * Validation/helper message shown below the group.
+   * Replaces the legacy errorMessage prop when state is set explicitly.
+   */
+  @Prop() message = '';
 
   /**
-   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
-   * Puts the group in error state. Emits a console.warn in non-production builds.
+   * @deprecated Use `state="error"` instead.
+   * Kept for one minor cycle for backwards compatibility.
+   * Puts the group in error state.
    */
   @Prop({ reflect: true }) error = false;
 
   /**
-   * @deprecated Use `message` instead. Will be removed in the next minor release.
+   * @deprecated Use `message` instead.
+   * Kept for one minor cycle for backwards compatibility.
    * Error message shown below the group when error is true.
    */
   @Prop() errorMessage: string | undefined;
@@ -89,6 +105,7 @@ export class IoCheckboxGroup {
   // ── Private ───────────────────────────────────────────────────
 
   private errorId!: string;
+  private legendId!: string;
   private fieldsetEl?: HTMLFieldSetElement;
 
   // ── Events ────────────────────────────────────────────────────
@@ -101,16 +118,7 @@ export class IoCheckboxGroup {
   componentWillLoad() {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-cg-error-${suffix}`;
-    if (!this.name) {
-      console.error('[io-checkbox-group] The "name" prop is required for form participation and accessibility. Provide a unique name for this group.');
-    }
-    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-    if (!isProd && this.error) {
-      console.warn('[io-checkbox-group] The "error" prop is deprecated. Use state="error" instead.');
-    }
-    if (!isProd && this.errorMessage !== undefined) {
-      console.warn('[io-checkbox-group] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
-    }
+    this.legendId = `io-cg-legend-${suffix}`;
   }
 
   componentDidLoad() {
@@ -218,21 +226,19 @@ export class IoCheckboxGroup {
   }
 
   private syncChildren = () => {
-    // Resolve effective state: new `state` prop takes precedence, `error` is deprecated alias
-    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     const checkboxes = Array.from(
-      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; required: boolean; value: string; state: string }>('io-checkbox'),
+      this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; required: boolean; value: string; state: IoFieldState }>('io-checkbox'),
     );
+    // Resolve the effective state: explicit state prop takes precedence;
+    // legacy error=true maps to 'error' for one-cycle backwards compat.
+    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     for (const checkbox of checkboxes) {
       if (this.name !== undefined) {
         checkbox.name = this.name;
       }
       checkbox.disabled = this.disabled;
       checkbox.required = this.required;
-      // Only override child state when the group has a non-'none' state; preserve per-child state otherwise
-      if (effectiveState !== 'none') {
-        checkbox.state = effectiveState;
-      }
+      checkbox.state = effectiveState;
     }
   };
 
@@ -248,14 +254,16 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, error, errorMessage, state, message, required } = this;
-    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
-    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
-    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
-    const effectiveMessage = message ?? errorMessage;
-    const isError = effectiveState === 'error';
-    const fieldsetClass = isError ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
-    const describedBy = isError && effectiveMessage ? this.errorId : undefined;
+    const { label, disabled, loading, helperText, error, errorMessage, required, state, message } = this;
+    // Resolve effective error/message: new state API takes precedence over legacy error prop.
+    const effectiveError = state === 'error' || error;
+    // Legacy errorMessage only shows when error=true (legacy behaviour preserved).
+    // New message prop shows when state is not 'none'.
+    const effectiveMessage = message || (error ? errorMessage : undefined);
+    const messageId = `${this.errorId}-msg`;
+
+    const fieldsetClass = effectiveError ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
+    const describedBy = effectiveError && effectiveMessage ? messageId : undefined;
 
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
@@ -263,11 +271,12 @@ export class IoCheckboxGroup {
         <fieldset
           class={fieldsetClass}
           disabled={disabled}
-          aria-invalid={isError ? 'true' : undefined}
+          aria-labelledby={this.legendId}
+          aria-invalid={effectiveError ? 'true' : undefined}
           aria-describedby={describedBy}
           ref={(el) => { this.fieldsetEl = el as HTMLFieldSetElement | undefined; }}
         >
-          <legend class="checkbox-group__legend">
+          <legend id={this.legendId} class="checkbox-group__legend">
             {label}
             {required && <Required />}
           </legend>
@@ -285,8 +294,13 @@ export class IoCheckboxGroup {
             )}
           </div>
         </fieldset>
-        {isError && effectiveMessage && (
-          <p id={this.errorId} class="checkbox-group__error" role="alert" aria-atomic="true">
+        {effectiveMessage && (
+          <p
+            id={messageId}
+            class={`checkbox-group__error checkbox-group__message--${effectiveError ? 'error' : state}`}
+            role={effectiveError ? 'alert' : 'status'}
+            aria-atomic="true"
+          >
             {effectiveMessage}
           </p>
         )}

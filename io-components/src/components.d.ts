@@ -734,8 +734,16 @@ export namespace Components {
      * io-checkbox-group
      * ==================
      * Wraps io-checkbox items in a semantic fieldset/legend and automatically
-     * propagates the `name` and `disabled` props to all slotted children.
+     * propagates the `name`, `disabled`, and `state` props to all slotted children.
      * Emits change with the array of all currently checked values.
+     * ## Presentational-only contract
+     * io-checkbox-group is **presentational-only** for form purposes:
+     * - It does NOT implement `formAssociated` and has NO ElementInternals / FACE registration.
+     * - It does NOT add a FormData entry itself — each child io-checkbox submits its own value.
+     * - `required` means "propagate required to all children" — group-level required is
+     *   satisfied when each child individually satisfies its own required constraint.
+     * - Consumers expecting group-level FormData entry or a single validation anchor
+     *   should use io-radio-group (which IS formAssociated) or implement their own wrapper.
      * @example <io-checkbox-group label="Preferred notifications" name="notifications">
      *   <io-checkbox label="Email" value="email" />
      *   <io-checkbox label="SMS" value="sms" />
@@ -754,12 +762,12 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
+          * @deprecated Use `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
           * @default false
          */
         "error": boolean;
         /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
+          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
          */
         "errorMessage": string | undefined;
         /**
@@ -777,9 +785,10 @@ export namespace Components {
          */
         "loading": boolean;
         /**
-          * Validation message shown below the group when state is non-'none'
+          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * @default ''
          */
-        "message": string | undefined;
+        "message": string;
         /**
           * Name propagated to all slotted io-checkbox children
          */
@@ -795,7 +804,7 @@ export namespace Components {
          */
         "required": boolean;
         /**
-          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'. Propagates to all slotted io-checkbox children when non-'none'.
+          * Validation state — controls border/message color. Mirrors the Wave-XI IoFieldState API used by all child io-checkbox components. Propagated to children via syncChildren().
           * @default 'none'
          */
         "state": IoFieldState;
@@ -2233,12 +2242,12 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
+          * @deprecated Use `error={true}` with `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
           * @default false
          */
         "error": boolean;
         /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
+          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
          */
         "errorMessage": string | undefined;
         /**
@@ -2256,9 +2265,10 @@ export namespace Components {
          */
         "loading": boolean;
         /**
-          * Validation message shown below the group when state is non-'none'
+          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * @default ''
          */
-        "message": string | undefined;
+        "message": string;
         /**
           * Name propagated to all slotted io-radio children
          */
@@ -2274,7 +2284,7 @@ export namespace Components {
          */
         "required": boolean;
         /**
-          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+          * Validation state — controls border/message color. Mirrors the Wave-XI IoFieldState API used by all child io-radio components. Propagated to children via syncChildren().
           * @default 'none'
          */
         "state": IoFieldState;
@@ -3978,8 +3988,16 @@ declare global {
      * io-checkbox-group
      * ==================
      * Wraps io-checkbox items in a semantic fieldset/legend and automatically
-     * propagates the `name` and `disabled` props to all slotted children.
+     * propagates the `name`, `disabled`, and `state` props to all slotted children.
      * Emits change with the array of all currently checked values.
+     * ## Presentational-only contract
+     * io-checkbox-group is **presentational-only** for form purposes:
+     * - It does NOT implement `formAssociated` and has NO ElementInternals / FACE registration.
+     * - It does NOT add a FormData entry itself — each child io-checkbox submits its own value.
+     * - `required` means "propagate required to all children" — group-level required is
+     *   satisfied when each child individually satisfies its own required constraint.
+     * - Consumers expecting group-level FormData entry or a single validation anchor
+     *   should use io-radio-group (which IS formAssociated) or implement their own wrapper.
      * @example <io-checkbox-group label="Preferred notifications" name="notifications">
      *   <io-checkbox label="Email" value="email" />
      *   <io-checkbox label="SMS" value="sms" />
@@ -6085,8 +6103,16 @@ declare namespace LocalJSX {
      * io-checkbox-group
      * ==================
      * Wraps io-checkbox items in a semantic fieldset/legend and automatically
-     * propagates the `name` and `disabled` props to all slotted children.
+     * propagates the `name`, `disabled`, and `state` props to all slotted children.
      * Emits change with the array of all currently checked values.
+     * ## Presentational-only contract
+     * io-checkbox-group is **presentational-only** for form purposes:
+     * - It does NOT implement `formAssociated` and has NO ElementInternals / FACE registration.
+     * - It does NOT add a FormData entry itself — each child io-checkbox submits its own value.
+     * - `required` means "propagate required to all children" — group-level required is
+     *   satisfied when each child individually satisfies its own required constraint.
+     * - Consumers expecting group-level FormData entry or a single validation anchor
+     *   should use io-radio-group (which IS formAssociated) or implement their own wrapper.
      * @example <io-checkbox-group label="Preferred notifications" name="notifications">
      *   <io-checkbox label="Email" value="email" />
      *   <io-checkbox label="SMS" value="sms" />
@@ -6105,12 +6131,12 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
+          * @deprecated Use `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
           * @default false
          */
         "error"?: boolean;
         /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
+          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
          */
         "errorMessage"?: string | undefined;
         /**
@@ -6128,9 +6154,10 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
-          * Validation message shown below the group when state is non-'none'
+          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * @default ''
          */
-        "message"?: string | undefined;
+        "message"?: string;
         /**
           * Name propagated to all slotted io-checkbox children
          */
@@ -6150,7 +6177,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'. Propagates to all slotted io-checkbox children when non-'none'.
+          * Validation state — controls border/message color. Mirrors the Wave-XI IoFieldState API used by all child io-checkbox components. Propagated to children via syncChildren().
           * @default 'none'
          */
         "state"?: IoFieldState;
@@ -7631,12 +7658,12 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
+          * @deprecated Use `error={true}` with `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
           * @default false
          */
         "error"?: boolean;
         /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
+          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
          */
         "errorMessage"?: string | undefined;
         /**
@@ -7658,9 +7685,10 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
-          * Validation message shown below the group when state is non-'none'
+          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * @default ''
          */
-        "message"?: string | undefined;
+        "message"?: string;
         /**
           * Name propagated to all slotted io-radio children
          */
@@ -7680,7 +7708,7 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+          * Validation state — controls border/message color. Mirrors the Wave-XI IoFieldState API used by all child io-radio components. Propagated to children via syncChildren().
           * @default 'none'
          */
         "state"?: IoFieldState;
@@ -9165,7 +9193,7 @@ declare namespace LocalJSX {
         "required": boolean;
         "disabled": boolean;
         "state": IoFieldState;
-        "message": string | undefined;
+        "message": string;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
@@ -9438,7 +9466,7 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "loading": boolean;
         "state": IoFieldState;
-        "message": string | undefined;
+        "message": string;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
@@ -9860,8 +9888,16 @@ declare module "@stencil/core" {
              * io-checkbox-group
              * ==================
              * Wraps io-checkbox items in a semantic fieldset/legend and automatically
-             * propagates the `name` and `disabled` props to all slotted children.
+             * propagates the `name`, `disabled`, and `state` props to all slotted children.
              * Emits change with the array of all currently checked values.
+             * ## Presentational-only contract
+             * io-checkbox-group is **presentational-only** for form purposes:
+             * - It does NOT implement `formAssociated` and has NO ElementInternals / FACE registration.
+             * - It does NOT add a FormData entry itself — each child io-checkbox submits its own value.
+             * - `required` means "propagate required to all children" — group-level required is
+             *   satisfied when each child individually satisfies its own required constraint.
+             * - Consumers expecting group-level FormData entry or a single validation anchor
+             *   should use io-radio-group (which IS formAssociated) or implement their own wrapper.
              * @example <io-checkbox-group label="Preferred notifications" name="notifications">
              *   <io-checkbox label="Email" value="email" />
              *   <io-checkbox label="SMS" value="sms" />

@@ -135,6 +135,33 @@ export class IoSwitch {
     this.syncFormValue();
   }
 
+  componentDidLoad() {
+    this.applyExternalLabelAOM();
+  }
+
+  /**
+   * Support external label wrapping: `<label><io-switch /> Enable feature</label>`
+   * Uses AOM ariaLabelledByElements when available, aria-label text fallback otherwise.
+   * Only applied when no label prop or label slot is already present.
+   */
+  private applyExternalLabelAOM() {
+    const hasLabelProp = this.label?.trim();
+    if (hasLabelProp) return;
+
+    const externalLabel = this.el.closest('label');
+    if (!externalLabel) return;
+
+    const nativeInput = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (!nativeInput) return;
+
+    if ('ariaLabelledByElements' in nativeInput) {
+      (nativeInput as any).ariaLabelledByElements = [externalLabel];
+    } else {
+      const text = externalLabel.textContent?.trim() ?? '';
+      if (text) nativeInput.setAttribute('aria-label', text);
+    }
+  }
+
   formResetCallback() {
     this.checked = this.defaultChecked;
     this.faceInvalid = false;

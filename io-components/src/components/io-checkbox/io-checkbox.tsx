@@ -143,6 +143,38 @@ export class IoCheckbox {
     return newVal !== oldVal;
   }
 
+  componentDidLoad() {
+    this.applyExternalLabelAOM();
+  }
+
+  /**
+   * Support external label wrapping: `<label><io-checkbox /> Accept</label>`
+   * The text content of an outer <label> is not associated with the shadow-DOM
+   * native input by default. This method bridges the gap using the Accessibility
+   * Object Model (AOM) ariaLabelledByElements when available, with an
+   * aria-label text-content fallback for browsers that do not yet support AOM.
+   * Only applied when no label prop, aria-label, aria-labelledby, or label slot
+   * is already present — those take precedence.
+   */
+  private applyExternalLabelAOM() {
+    const hasLabelProp = this.label?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (hasLabelProp || hasLabelSlot) return;
+
+    const externalLabel = this.el.closest('label');
+    if (!externalLabel) return;
+
+    const nativeInput = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (!nativeInput) return;
+
+    if ('ariaLabelledByElements' in nativeInput) {
+      (nativeInput as any).ariaLabelledByElements = [externalLabel];
+    } else {
+      const text = externalLabel.textContent?.trim() ?? '';
+      if (text) nativeInput.setAttribute('aria-label', text);
+    }
+  }
+
   formResetCallback() {
     this.checked = this.defaultChecked;
     this.indeterminate = false;

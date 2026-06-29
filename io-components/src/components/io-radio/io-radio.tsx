@@ -123,10 +123,49 @@ export class IoRadio {
     }
   }
 
+  componentDidLoad() {
+    this.applyExternalLabelAOM();
+  }
+
+  /**
+   * Support external label wrapping: `<label><io-radio /> Option A</label>`
+   * Uses AOM ariaLabelledByElements when available, aria-label text fallback otherwise.
+   * Only applied when no label prop or label slot is already present.
+   */
+  private applyExternalLabelAOM() {
+    const hasLabelProp = this.label?.trim();
+    const hasLabelSlot = !!this.el.querySelector('[slot="label"]');
+    if (hasLabelProp || hasLabelSlot) return;
+
+    const externalLabel = this.el.closest('label');
+    if (!externalLabel) return;
+
+    const nativeInput = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (!nativeInput) return;
+
+    if ('ariaLabelledByElements' in nativeInput) {
+      (nativeInput as any).ariaLabelledByElements = [externalLabel];
+    } else {
+      const text = externalLabel.textContent?.trim() ?? '';
+      if (text) nativeInput.setAttribute('aria-label', text);
+    }
+  }
+
   formResetCallback() {
     this.checked = this.defaultChecked;
     this.syncFormValue();
 
+    // Prefer scoped group-level reset to avoid document-wide side effects (#941).
+    // When inside an io-radio-group, the group's own formResetCallback handles
+    // sibling re-evaluation — no cross-group interference.
+    const group = this.el.closest('io-radio-group') as HTMLElement & { formResetCallback?: () => void } | null;
+    if (group) {
+      // The group owns mutual-exclusion; individual radio reset is sufficient.
+      return;
+    }
+
+    // Fallback: standalone radios (not inside io-radio-group) still need
+    // document-scoped sibling re-evaluation for backwards compatibility.
     if (this.name) {
       const name = this.name;
       // #941: scope sibling lookup to the closest io-radio-group when present so
@@ -152,6 +191,11 @@ export class IoRadio {
     this.disabled = disabled;
   }
 
+  formStateRestoreCallback(state: string | null) {
+    this.checked = state !== null;
+    this.syncFormValue();
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();
@@ -169,26 +213,42 @@ export class IoRadio {
 
   private syncFormValue() {
     // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
-    // For a radio group, required is satisfied when *any* radio sharing the same
-    // name is checked — not just this one. Without this check, form.checkValidity()
-    // fails even when another radio in the group is selected.
-    // #941: scope the sibling search to the closest io-radio-group when present
-    // so two separate groups with the same name do not satisfy each other's required.
-    const scope = this.el?.closest('io-radio-group') ?? (typeof document !== 'undefined' ? document : null);
-    const groupSatisfied = this.required && !this.checked && this.name && scope
-      ? Array.from(scope.querySelectorAll('io-radio')).some((r) => {
-          const sibling = r as HTMLElement & { name?: string; checked?: boolean };
-          return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
-        })
-      : false;
-    const isInvalid = this.required && !this.checked && !groupSatisfied;
-    const { faceInvalid } = syncFormState(this.internals, null, {
-      formValue: this.checked ? this.value : null,
-      validity: isInvalid ? { valueMissing: true } : {},
-      validationMessage: isInvalid ? 'Please select an option' : '',
-      disabled: this.disabled,
+    this.internals?.setFormValue?.(this.checked ? this.value : null);
+    if (this.required && !this.checked) {
+      // For a radio group, required is satisfied when *any* radio sharing the same
+      // name is checked — not just this one. Without this check, form.checkValidity()
+      // fails even when another radio in the group is selected.
+      // Prefer group-scoped lookup when inside io-radio-group to avoid cross-group
+      // interference between unrelated groups with the same name (#941).
+      const groupSatisfied = this.name ? this.isGroupSatisfied() : false;
+      if (!groupSatisfied) {
+        this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
+        this.faceInvalid = true;
+      } else {
+        this.internals?.setValidity?.({});
+        this.faceInvalid = false;
+      }
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
+  }
+
+  /**
+   * Returns true if any sibling radio with the same name is checked.
+   * When inside an io-radio-group, only searches within that group to prevent
+   * cross-group interference (#941). Falls back to document scope for
+   * standalone radios (backwards compat).
+   */
+  private isGroupSatisfied(): boolean {
+    const name = this.name;
+    if (!name) return false;
+    const group = this.el.closest('io-radio-group');
+    const scope: Element = group ?? document.documentElement;
+    return Array.from(scope.querySelectorAll('io-radio')).some((r) => {
+      const sibling = r as HTMLElement & { name?: string; checked?: boolean };
+      return sibling !== this.el && sibling.name === name && sibling.checked === true;
     });
-    this.faceInvalid = faceInvalid;
   }
 
   private handleLabelSlotChange = (ev: Event) => {
@@ -220,37 +280,37 @@ export class IoRadio {
     this.change.emit({ value: this.value });
 
     // Mutual exclusion: when this radio becomes checked, deselect all other
-    // io-radio elements that share the same name. Native <input type="radio">
-    // handles this automatically within a single tree, but Shadow DOM boundaries
-    // prevent cross-component grouping.
-    // #941: scope to the closest io-radio-group when present; this ensures that
-    // two separate groups on the page sharing the same name do not interfere.
-    // When no ancestor group is found, fall back to document-wide query for
-    // backwards compatibility (deprecated usage — prints a dev warning below).
+    // io-radio elements that share the same name.
+    // When inside an io-radio-group, scope to the group to prevent two unrelated
+    // groups with identical name attributes from interfering (#941).
+    // For standalone radios (no ancestor group), fall back to document scope.
     if (input.checked && this.name) {
       const name = this.name;
       const group = this.el.closest('io-radio-group');
-      if (!group) {
-        // Standalone io-radio without an io-radio-group parent. Document-wide
-        // mutual exclusion is kept for backwards compatibility but is deprecated
-        // because it breaks when two unrelated groups share the same name.
-        // Wrap io-radio elements in an io-radio-group to eliminate this warning.
-        if (typeof console !== 'undefined') {
-          console.warn(
-            `[io-radio] Mutual exclusion scoped to document because no ancestor <io-radio-group> was found (name="${name}"). ` +
-            'Wrap related radios in <io-radio-group> to avoid cross-group interference.',
-          );
-        }
-      }
-      const scope = group ?? document;
-      scope.querySelectorAll('io-radio').forEach((sibling) => {
-        if (sibling !== this.el) {
-          const s = sibling as HTMLElement & { name?: string; checked: boolean };
-          if (s.name === name && s.checked) {
-            s.checked = false;
+      if (group) {
+        // Group-scoped: only affect siblings within the same group
+        group.querySelectorAll('io-radio').forEach((sibling) => {
+          if (sibling !== this.el) {
+            const s = sibling as HTMLElement & { name?: string; checked: boolean };
+            if (s.name === name && s.checked) {
+              s.checked = false;
+            }
           }
+        });
+      } else {
+        // Standalone fallback: document-wide (deprecated, kept for backwards compat)
+        if (process.env.NODE_ENV !== 'test') {
+          console.warn('[io-radio] Using document-wide mutual exclusion for standalone radios. Wrap in io-radio-group for proper scoping.');
         }
-      });
+        document.querySelectorAll('io-radio').forEach((sibling) => {
+          if (sibling !== this.el) {
+            const s = sibling as HTMLElement & { name?: string; checked: boolean };
+            if (s.name === name && s.checked) {
+              s.checked = false;
+            }
+          }
+        });
+      }
     }
   };
 

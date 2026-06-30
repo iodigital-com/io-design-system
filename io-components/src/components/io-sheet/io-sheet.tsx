@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 
 import { getSheetStyles } from './io-sheet-styles';
+import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
 
 const FOCUSABLE_SELECTORS = [
   'a[href]',
@@ -77,7 +78,7 @@ export class IoSheet {
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private animationEndHandler?: (ev: AnimationEvent) => void;
   private focusTrigger?: Element;
-  private savedBodyOverflow = '';
+  private _scrollLockHeld = false;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -136,7 +137,10 @@ export class IoSheet {
   disconnectedCallback() {
     this.detachFocusTrap();
     this.detachAnimationEndListener();
-    document.body.style.overflow = this.savedBodyOverflow;
+    if (this._scrollLockHeld) {
+      releaseScrollLock();
+      this._scrollLockHeld = false;
+    }
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -154,8 +158,10 @@ export class IoSheet {
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
-    this.savedBodyOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    if (!this._scrollLockHeld) {
+      acquireScrollLock();
+      this._scrollLockHeld = true;
+    }
 
     this.attachFocusTrap();
 
@@ -171,8 +177,10 @@ export class IoSheet {
   }
 
   private applyClosedState() {
-    document.body.style.overflow = this.savedBodyOverflow;
-    this.savedBodyOverflow = '';
+    if (this._scrollLockHeld) {
+      releaseScrollLock();
+      this._scrollLockHeld = false;
+    }
     this.detachFocusTrap();
 
     // Restore focus to trigger

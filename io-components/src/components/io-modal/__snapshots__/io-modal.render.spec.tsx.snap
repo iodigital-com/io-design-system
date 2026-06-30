@@ -278,9 +278,7 @@ MockHTMLElement {
             },
             "__namespaceURI": "http://www.w3.org/1999/xhtml",
             "__shadowRoot": null,
-            "__style": MockCSSStyleDeclaration {
-              "_styles": Map {},
-            },
+            "__style": undefined,
             "_childNodes": [
               _MockTextNode {
                 "_childNodes": [],
@@ -495,9 +493,7 @@ MockHTMLElement {
               },
               "__namespaceURI": "http://www.w3.org/1999/xhtml",
               "__shadowRoot": null,
-              "__style": MockCSSStyleDeclaration {
-                "_styles": Map {},
-              },
+              "__style": undefined,
               "_childNodes": [
                 _MockTextNode {
                   "_childNodes": [],
@@ -539,9 +535,7 @@ MockHTMLElement {
       },
       "__namespaceURI": "http://www.w3.org/1999/xhtml",
       "__shadowRoot": null,
-      "__style": MockCSSStyleDeclaration {
-        "_styles": Map {},
-      },
+      "__style": undefined,
       "_childNodes": [
         _MockTextNode {
           "_childNodes": [],

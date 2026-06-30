@@ -245,13 +245,12 @@ describe('io-drawer — handleDialogClick (lifecycle file supplemental)', () => 
     expect(c.open).toBe(true);
   });
 
-  it('sets open=false when click is outside dialog bounds and closeOnBackdrop=true', () => {
+  it('sets open=false when click lands on dialog backdrop (target === currentTarget)', () => {
     const c = makeDrawer({ open: true, closeOnBackdrop: true });
     const dialogEl = makeDialogEl(true);
-    // Coordinates outside the rect returned by makeDialogEl (left:100, right:400, top:100, bottom:400)
+    // target === currentTarget: click landed directly on dialog element (backdrop area)
     const ev = {
-      clientX: 10,
-      clientY: 10,
+      target: dialogEl,
       currentTarget: dialogEl,
     } as unknown as MouseEvent;
 

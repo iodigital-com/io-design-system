@@ -1,8 +1,10 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, State, Watch, h } from '@stencil/core';
 
 import { getModalStyles } from './io-modal-styles';
-import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
+import { createModalHeadingId, getModalCloseIcon } from './io-modal-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
+import { supportsOverlayTransition } from '../../utils/top-layer/supportsOverlayTransition';
 
 import type { IoModalBackground, IoModalSize } from './types';
 
@@ -46,6 +48,9 @@ export class IoModal {
   private backdropEl?: HTMLDivElement;
   private backdropHostHandler?: (ev: MouseEvent) => void;
   private escHandler?: (ev: KeyboardEvent) => void;
+  private _scrollLockHeld = false;
+  private _pendingCloseTimeout?: ReturnType<typeof setTimeout>;
+  private _pendingCloseHandler?: () => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -192,7 +197,8 @@ export class IoModal {
         this.dialogEl.inert = false;
       }
       this.dialogEl.focus();           // Safari: explicit focus prevents transition bug
-      document.body.style.overflow = 'hidden';
+      acquireScrollLock();
+      this._scrollLockHeld = true;
       this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       this.applyBackgroundInert();
       this.setupFocusTrap();
@@ -200,7 +206,11 @@ export class IoModal {
   }
 
   disconnectedCallback() {
-    document.body.style.overflow = '';
+    this._clearPendingClose();
+    if (this._scrollLockHeld) {
+      releaseScrollLock();
+      this._scrollLockHeld = false;
+    }
     this.clearFocusTrap();
     this.removeBackgroundInert();
     this.detachTransitionEndListener();
@@ -236,7 +246,10 @@ export class IoModal {
         this.dialogEl.scrollTop = 0;     // reset scroll position on each open
       }
 
-      document.body.style.overflow = 'hidden';
+      if (!this._scrollLockHeld) {
+        acquireScrollLock();
+        this._scrollLockHeld = true;
+      }
 
       // Apply inert to background elements to prevent screen reader navigation
       this.applyBackgroundInert();
@@ -244,18 +257,15 @@ export class IoModal {
       // Set up focus trap for keyboard navigation
       this.setupFocusTrap();
     } else {
-      if (this.dialogEl.open) {
-        this.dialogEl.close();
-      }
-
-      document.body.style.overflow = '';
-
       this.detachBackdropHostListener();
       this.detachEscHandler();
       this.clearFocusTrap();
-
-      // Remove inert from background elements
       this.removeBackgroundInert();
+
+      if (this._scrollLockHeld) {
+        releaseScrollLock();
+        this._scrollLockHeld = false;
+      }
 
       // Restore focus to trigger element
       if (this.focusTrigger && this.focusTrigger instanceof HTMLElement) {
@@ -263,6 +273,16 @@ export class IoModal {
       }
 
       this.dismissEvent.emit();
+
+      // Close the native dialog — defer in top-layer mode on browsers without
+      // allow-discrete so the CSS exit transition completes before removal.
+      if (this.dialogEl.open) {
+        if (this.preventTopLayer || supportsOverlayTransition()) {
+          this.dialogEl.close();
+        } else {
+          this._deferDialogClose(this.dialogEl);
+        }
+      }
     }
   }
 
@@ -272,6 +292,57 @@ export class IoModal {
    * Attach a transitionend listener to the dialog element so we can emit
    * motionVisibleEnd / motionHiddenEnd after CSS transitions complete.
    */
+  private _clearPendingClose() {
+    if (this._pendingCloseTimeout !== undefined) {
+      clearTimeout(this._pendingCloseTimeout);
+      this._pendingCloseTimeout = undefined;
+    }
+    if (this._pendingCloseHandler && this.dialogEl) {
+      this.dialogEl.removeEventListener('transitionend', this._pendingCloseHandler);
+      this._pendingCloseHandler = undefined;
+    }
+  }
+
+  private _deferDialogClose(dialog: HTMLDialogElement) {
+    const maxMs = this._getMaxTransitionDurationMs(dialog);
+    // No CSS transitions (e.g. jsdom) — close synchronously, nothing to defer.
+    if (maxMs === 0) {
+      if (dialog.open) dialog.close();
+      return;
+    }
+    this._clearPendingClose();
+    this._pendingCloseHandler = () => {
+      this._clearPendingClose();
+      if (dialog.open) dialog.close();
+    };
+    dialog.addEventListener('transitionend', this._pendingCloseHandler, { once: true });
+    this._pendingCloseTimeout = setTimeout(() => {
+      if (this._pendingCloseHandler) {
+        dialog.removeEventListener('transitionend', this._pendingCloseHandler);
+        this._pendingCloseHandler = undefined;
+      }
+      this._pendingCloseTimeout = undefined;
+      if (dialog.open) dialog.close();
+    }, maxMs + 50);
+  }
+
+  private _getMaxTransitionDurationMs(el: HTMLElement): number {
+    if (typeof window === 'undefined') return 0;
+    try {
+      const style = window.getComputedStyle(el);
+      const durations = (style.transitionDuration || '0s').split(',');
+      return durations.reduce((acc, d) => {
+        const trimmed = d.trim();
+        const val = parseFloat(trimmed);
+        if (isNaN(val)) return acc;
+        const ms = trimmed.endsWith('ms') ? val : val * 1000;
+        return Math.max(acc, ms);
+      }, 0);
+    } catch {
+      return 0;
+    }
+  }
+
   private attachTransitionEndListener() {
     if (!this.dialogEl) return;
     this.transitionEndHandler = () => {
@@ -429,12 +500,12 @@ export class IoModal {
 
   // ── Handlers ─────────────────────────────────────────────────
 
+  // ev.target === <dialog> means the click landed directly on the dialog padding
+  // (backdrop area), not on any content descendant — geometrically correct even
+  // at rounded corners where the bounding-rect check would give false negatives.
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
-    const dialog = ev.currentTarget as HTMLDialogElement;
-    const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
-    if (clickedBackdrop) {
+    if (ev.target === ev.currentTarget) {
       this.open = false;
     }
   };

@@ -43,25 +43,17 @@ describe('io-modal — keyboard / cancel event', () => {
 
   it('backdrop click sets open to false when closeOnBackdrop is true', () => {
     const dialogEl = (component as any).dialogEl as HTMLDialogElement;
-    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue({
-      left: 100, right: 400, top: 100, bottom: 400,
-      width: 300, height: 300, x: 100, y: 100, toJSON: () => ({}),
-    });
-
-    // Click outside the dialog bounds (backdrop area)
-    const ev = { clientX: 10, clientY: 10, currentTarget: dialogEl } as unknown as MouseEvent;
+    // target === currentTarget: click landed directly on dialog padding (backdrop area)
+    const ev = { target: dialogEl, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(false);
   });
 
   it('click inside dialog does not close when closeOnBackdrop is true', () => {
     const dialogEl = (component as any).dialogEl as HTMLDialogElement;
-    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue({
-      left: 100, right: 400, top: 100, bottom: 400,
-      width: 300, height: 300, x: 100, y: 100, toJSON: () => ({}),
-    });
-
-    const ev = { clientX: 200, clientY: 200, currentTarget: dialogEl } as unknown as MouseEvent;
+    const innerEl = document.createElement('button');
+    // target !== currentTarget: click landed on an inner content element
+    const ev = { target: innerEl, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(true);
   });
@@ -69,12 +61,7 @@ describe('io-modal — keyboard / cancel event', () => {
   it('backdrop click does not close when closeOnBackdrop is false', () => {
     component.closeOnBackdrop = false;
     const dialogEl = (component as any).dialogEl as HTMLDialogElement;
-    vi.spyOn(dialogEl, 'getBoundingClientRect').mockReturnValue({
-      left: 100, right: 400, top: 100, bottom: 400,
-      width: 300, height: 300, x: 100, y: 100, toJSON: () => ({}),
-    });
-
-    const ev = { clientX: 10, clientY: 10, currentTarget: dialogEl } as unknown as MouseEvent;
+    const ev = { target: dialogEl, currentTarget: dialogEl } as unknown as MouseEvent;
     (component as any).handleDialogClick(ev);
     expect(component.open).toBe(true);
   });

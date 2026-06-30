@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoSheet } from './io-sheet';
 import { getSheetStyles } from './io-sheet-styles';
+import { _resetScrollLock } from '../../utils/scroll-lock';
 
 describe('io-sheet — default props', () => {
   let component: IoSheet;
@@ -383,7 +384,17 @@ describe('io-sheet — motionVisibleEnd / motionHiddenEnd events (#796)', () => 
 });
 
 describe('io-sheet — scroll-lock cleanup (#796)', () => {
-  it('saves and restores body overflow on open/close cycle', () => {
+  beforeEach(() => {
+    _resetScrollLock();
+    document.body.style.overflow = '';
+  });
+
+  afterEach(() => {
+    _resetScrollLock();
+    document.body.style.overflow = '';
+  });
+
+  it('preserves pre-existing overflow value on open/close cycle', () => {
     const c = new IoSheet();
     (c as any).el = document.createElement('io-sheet');
     (c as any).dismissEvent = { emit: vi.fn() };
@@ -391,19 +402,15 @@ describe('io-sheet — scroll-lock cleanup (#796)', () => {
     (c as any).motionHiddenEndEvent = { emit: vi.fn() };
     (c as any).componentWillLoad();
 
-    // Pre-condition: some other overlay already set overflow
+    // Pre-condition: another overlay already set overflow (without using scroll-lock util)
     document.body.style.overflow = 'hidden';
 
     (c as any).applyOpenState();
     expect(document.body.style.overflow).toBe('hidden');
-    expect((c as any).savedBodyOverflow).toBe('hidden');
 
     (c as any).applyClosedState();
     // Should restore to the pre-open value, not blindly clear to ''
     expect(document.body.style.overflow).toBe('hidden');
-
-    // Clean up
-    document.body.style.overflow = '';
   });
 
   it('restores empty string when body had no overflow before open', () => {

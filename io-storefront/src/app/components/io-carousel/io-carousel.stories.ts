@@ -142,6 +142,21 @@ export const carouselStory: Story<'io-carousel'> = {
   },
 };
 
+export const carouselStoryResponsive: Story<'io-carousel'> = {
+  generator: () => [
+    {
+      tag: 'io-carousel' as const,
+      properties: {
+        slidesPerPage: { sm: 1, md: 2, lg: 3 },
+        rewind: false,
+        activeSlideIndex: 0,
+        pagination: true,
+      },
+      children: SLIDES_FULL,
+    },
+  ],
+};
+
 export const carouselStoryMore: Story<'io-carousel'> = {
   generator: () => [
     {

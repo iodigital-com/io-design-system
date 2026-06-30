@@ -123,6 +123,21 @@ export function getCarouselStyles(): string {
       flex: 0 0 auto;
     }
 
+    /*
+     * When slidesPerPage is a number > 1, .carousel-track gets the
+     * modifier class --fixed-spp and .carousel-wrap gets the CSS custom
+     * property --io-carousel-slides-per-page via inline style.
+     * Each slide is sized to fill exactly 1/N of the visible track width,
+     * accounting for (N-1) gaps between slides.
+     * gap = --io-space-4 (16px).
+     */
+    .carousel-track--fixed-spp ::slotted(*) {
+      flex: 0 0 calc(
+        (100% - (var(--io-carousel-slides-per-page) - 1) * var(--io-space-4)) /
+          var(--io-carousel-slides-per-page)
+      );
+    }
+
     /* ── Navigation buttons ─────────────────────────────── */
 
     .carousel-btn {

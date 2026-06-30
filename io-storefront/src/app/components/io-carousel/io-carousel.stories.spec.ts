@@ -3,6 +3,7 @@ import {
   carouselStory,
   carouselPropDefinitions,
   carouselStoryMore,
+  carouselStoryResponsive,
 } from './io-carousel.stories';
 
 describe('io-carousel storefront stories', () => {
@@ -136,6 +137,25 @@ describe('io-carousel storefront stories', () => {
   });
 
   // ── Named stories ───────────────────────────────────────────────────────
+  describe('carouselStoryResponsive', () => {
+    it('generator returns non-empty array', () => {
+      const els = carouselStoryResponsive.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('root element is io-carousel', () => {
+      const els = carouselStoryResponsive.generator?.() ?? [];
+      expect((els[0] as { tag: string }).tag).toBe('io-carousel');
+    });
+
+    it('slidesPerPage property is a responsive map', () => {
+      const els = carouselStoryResponsive.generator?.() ?? [];
+      const el = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(typeof el.properties.slidesPerPage).toBe('object');
+    });
+  });
+
   describe('carouselStoryMore', () => {
     it('generator returns non-empty array', () => {
       const els = carouselStoryMore.generator?.();

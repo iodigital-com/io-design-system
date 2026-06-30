@@ -1,7 +1,18 @@
 import { Component, Prop, Element, Host, h, State, Listen, Event, EventEmitter, Watch } from '@stencil/core';
 
 import { getCarouselStyles } from './io-carousel-styles';
-import { clampSlideIndex, getCarouselFallbackDistance, getCarouselStepSize, getCarouselTargetIndex, normalizeSlidesPerPage, shouldUseTargetScroll } from './io-carousel-utils';
+import {
+  clampSlideIndex,
+  getCarouselFallbackDistance,
+  getCarouselPageCount,
+  getCarouselStepSize,
+  getCarouselTargetIndex,
+  getPageStartIndex,
+  isResponsiveSlidesPerPage,
+  normalizeSlidesPerPage,
+  resolveEffectiveSlidesPerPage,
+  shouldUseTargetScroll,
+} from './io-carousel-utils';
 
 import type { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
 
@@ -54,7 +65,19 @@ export class IoCarousel {
    */
   @Prop() label = 'Carousel';
 
-  /** Number of slides to move per navigation step; use auto for slide-by-slide. */
+  /**
+   * Controls how many slides are visible at once and how many to move per
+   * navigation step. Accepts:
+   * - A number: the same count on all viewports (e.g. `3`).
+   * - `'auto'`: each slide occupies its natural width; navigation moves one
+   *   slide at a time.
+   * - A responsive map `{ sm?, md?, lg?, xl? }`: resolved at runtime using
+   *   `matchMedia`. Each key is a min-width breakpoint (sm=640px, md=768px,
+   *   lg=1024px, xl=1280px). The largest matching key wins. Falls back to 1
+   *   when no key matches.
+   *
+   * @example <io-carousel slides-per-page='{"sm":1,"md":2,"lg":3}'> ... </io-carousel>
+   */
   @Prop() slidesPerPage: IoCarouselSlidesPerPage = 1;
 
   /** Rewinds from last to first (and first to last) when navigating. */
@@ -100,6 +123,13 @@ export class IoCarousel {
   @State() private isAtEnd = false;
   /** True when autoplay is paused (user toggle, hover, or focus). */
   @State() private isAutoplayPaused = false;
+  /**
+   * The resolved number of slides visible at once for the current viewport.
+   * Re-computed on resize and on slidesPerPage prop change.
+   * Drives pagination page count and the CSS custom property that sets
+   * each slide's width when a numeric count is active.
+   */
+  @State() private effectiveSlidesPerPage: number | 'auto' = 1;
 
   // ── Private fields ────────────────────────────────────────────
 
@@ -171,6 +201,11 @@ export class IoCarousel {
 
   private get stepSize(): number {
     return getCarouselStepSize(this.normalizedSlidesPerPage);
+  }
+
+  /** Recomputes the effective slides-per-page and stores it in state. */
+  private syncEffectiveSlidesPerPage(): void {
+    this.effectiveSlidesPerPage = resolveEffectiveSlidesPerPage(this.slidesPerPage);
   }
 
   private getSlideLeft(index: number): number {
@@ -347,7 +382,16 @@ export class IoCarousel {
 
   @Listen('resize', { target: 'window' })
   onResize() {
+    // Re-evaluate responsive breakpoints on viewport change.
+    if (isResponsiveSlidesPerPage(this.slidesPerPage)) {
+      this.syncEffectiveSlidesPerPage();
+    }
     this.scrollToIndex(this.activeSlideIndex, 'auto');
+  }
+
+  @Watch('slidesPerPage')
+  onSlidesPerPageChange() {
+    this.syncEffectiveSlidesPerPage();
   }
 
   @Watch('activeSlideIndex')
@@ -475,6 +519,7 @@ export class IoCarousel {
     const suffix = Math.random().toString(36).slice(2, 9);
     this.headingId = `io-carousel-heading-${suffix}`;
     this.skipTargetId = `io-carousel-skip-${suffix}`;
+    this.syncEffectiveSlidesPerPage();
   }
 
   componentDidLoad() {
@@ -520,9 +565,14 @@ export class IoCarousel {
       activeSlideIndex,
       autoplay,
       isAutoplayPaused,
+      effectiveSlidesPerPage,
     } = this;
 
     const totalSlides = this.totalSlides;
+    const pageCount = getCarouselPageCount(totalSlides, effectiveSlidesPerPage);
+    // The active page index — which "page" is the current active slide on?
+    const numericSPP = effectiveSlidesPerPage === 'auto' ? 1 : effectiveSlidesPerPage;
+    const activePageIndex = Math.floor(activeSlideIndex / numericSPP);
 
     const isPrevDisabled = !rewind && isAtStart;
     const isNextDisabled = !rewind && isAtEnd;
@@ -531,6 +581,14 @@ export class IoCarousel {
     // localization — callers already customize those props for their language.
     const prevAriaLabel = prevLabel;
     const nextAriaLabel = nextLabel;
+
+    // CSS custom property drives flex-basis of slotted items when a numeric
+    // slidesPerPage > 1 is active (carousel shows N slides at once).
+    // gap is --io-space-4 (16px) so we account for (N-1) gaps.
+    const hasFixedSlidesPerPage = effectiveSlidesPerPage !== 'auto' && effectiveSlidesPerPage > 1;
+    const slidesPerPageStyle = hasFixedSlidesPerPage
+      ? ({ '--io-carousel-slides-per-page': String(effectiveSlidesPerPage) } as Record<string, string>)
+      : undefined;
 
     const arrowSvg = (
       <svg viewBox="0 0 26 16" width="20" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -567,9 +625,13 @@ export class IoCarousel {
             </div>
           </div>
 
-          <div class="carousel-wrap">
+          <div class="carousel-wrap" style={slidesPerPageStyle}>
             <div
-              class={`carousel-track${isDragging ? ' carousel-track--dragging' : ''}`}
+              class={{
+                'carousel-track': true,
+                'carousel-track--dragging': isDragging,
+                'carousel-track--fixed-spp': hasFixedSlidesPerPage,
+              }}
               onMouseDown={this.onMouseDown}
               onScroll={this.onTrackScroll}
             >
@@ -598,16 +660,17 @@ export class IoCarousel {
             </div>
           </div>
 
-          {pagination && totalSlides > 0 && (
+          {pagination && pageCount > 0 && (
             <div class="carousel-pagination" role="group" aria-label="Slide navigation">
-              {Array.from({ length: totalSlides }, (_, i) => (
+              {Array.from({ length: pageCount }, (_, pageIdx) => (
                 <button
                   type="button"
-                  class={{ 'carousel-dot': true, 'carousel-dot--active': i === activeSlideIndex }}
-                  aria-label={`Go to slide ${i + 1}`}
-                  aria-current={i === activeSlideIndex ? 'true' : undefined}
+                  class={{ 'carousel-dot': true, 'carousel-dot--active': pageIdx === activePageIndex }}
+                  aria-label={pageCount === totalSlides ? `Go to slide ${pageIdx + 1}` : `Go to page ${pageIdx + 1}`}
+                  aria-current={pageIdx === activePageIndex ? 'true' : undefined}
                   onClick={() => {
-                    this.scrollToIndex(i, this.scrollBehavior);
+                    const slideIndex = getPageStartIndex(pageIdx, numericSPP);
+                    this.scrollToIndex(slideIndex, this.scrollBehavior);
                   }}
                 />
               ))}

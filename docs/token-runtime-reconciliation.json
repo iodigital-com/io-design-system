@@ -3232,6 +3232,30 @@
       "notes": "Easing function for the sliding indicator animation in io-tabs-bar. Value: ease-out."
     },
     {
+      "runtimeCssVar": "--io-tabs-bar-fade-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width of the edge-fade gradient mask in io-tabs-bar. Value: 3rem."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-close-button-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon color of the close button inside a closeable io-tabs tab. Value: var(--io-text-secondary)."
+    },
+    {
+      "runtimeCssVar": "--io-tabs-close-button-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Size of the dismiss affordance inside a closeable io-tabs tab. Value: var(--io-space-4)."
+    },
+    {
       "runtimeCssVar": "--io-text-disabled",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

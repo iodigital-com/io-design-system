@@ -47,6 +47,7 @@ export type IoTagNames =
   | 'io-step'
   | 'io-stepper'
   | 'io-switch'
+  | 'io-tab-panel'
   | 'io-table'
   | 'io-table-body'
   | 'io-table-body-cell'

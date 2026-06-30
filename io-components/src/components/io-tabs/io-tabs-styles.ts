@@ -104,6 +104,45 @@ export function getTabsStyles(): string {
       padding: var(--io-space-2) var(--io-space-3) !important;
     }
 
+    /* ── Closeable tab — close button (issue #949) ───────── */
+
+    /* The close button is injected into light DOM inside the slotted <button>.
+       We target it via ::slotted(button) > .tab-close-btn in supporting browsers.
+       Fallback: the class alone when the cascaded rule can't reach inside slotted. */
+
+    ::slotted(button) .tab-close-btn,
+    .tab-close-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: var(--io-tabs-close-button-size) !important;
+      height: var(--io-tabs-close-button-size) !important;
+      padding: 0 !important;
+      margin-left: var(--io-space-1) !important;
+      color: var(--io-tabs-close-button-color) !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: var(--io-border-radius-xs) !important;
+      cursor: pointer !important;
+      line-height: 1 !important;
+      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      ::slotted(button) .tab-close-btn:hover,
+      .tab-close-btn:hover {
+        color: var(--io-text-primary) !important;
+        background: var(--io-state-hover) !important;
+      }
+    }
+
+    ::slotted(button) .tab-close-btn:focus-visible,
+    .tab-close-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
     /* ── Reduced motion ──────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

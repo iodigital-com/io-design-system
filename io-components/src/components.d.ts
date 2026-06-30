@@ -43,7 +43,7 @@ import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
+import { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagColor, IoTagSize } from "./components/io-tag/types";
 import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
@@ -91,7 +91,7 @@ export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
-export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
+export { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagColor, IoTagSize } from "./components/io-tag/types";
 export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
@@ -2695,6 +2695,46 @@ export namespace Components {
         "value": string;
     }
     /**
+     * io-tab-panel
+     * ============
+     * Companion panel component for io-tabs.
+     * Declares a single tab pane with a `label` prop that io-tabs reads to generate
+     * the corresponding tab button. Consumers no longer need to manage `panelIds`,
+     * `role="tabpanel"`, `hidden`, `tabindex`, or `aria-labelledby` manually.
+     * io-tabs scans slotted io-tab-panel children, auto-generates the tab button
+     * strip, and wires up all ARIA relationships.
+     * When used standalone (outside io-tabs), it renders as a plain tabpanel region.
+     * The `hidden` and `labelledBy` props allow direct control when needed.
+     * @example — inside io-tabs (recommended)
+     * <io-tabs>
+     * <io-tab-panel label="Overview">Overview content</io-tab-panel>
+     * <io-tab-panel label="Details">Details content</io-tab-panel>
+     * </io-tabs>
+     * @example — standalone (with explicit ARIA wiring)
+     * <io-tab-panel label="Overview" labelled-by="tab-overview">
+     * Overview content
+     * </io-tab-panel>
+     */
+    interface IoTabPanel {
+        /**
+          * When true, the panel is hidden (display: none). io-tabs sets this automatically based on the active tab index. Consumers can also set it directly when using the panel standalone.
+          * @default false
+         */
+        "hidden": boolean;
+        /**
+          * Label for the corresponding tab button. When io-tabs renders the tab strip, this text becomes the button label. Also used as the accessible name of the panel region when labelledBy is not set.
+         */
+        "label": string;
+        /**
+          * ID of the tab button that controls this panel (aria-labelledby target). Set by io-tabs automatically. Consumers may also set it directly.
+         */
+        "labelledBy"?: string;
+        /**
+          * Explicit ID override for the panel element. If not set, io-tabs generates a stable ID for ARIA wiring.
+         */
+        "panelId"?: string;
+    }
+    /**
      * io-table
      * =========
      * Accessible data table with a declarative slot-based API.
@@ -2889,6 +2929,11 @@ export namespace Components {
          */
         "activeTabIndex": number;
         /**
+          * When true, every tab renders an inline close (dismiss) button. Individual tabs can also opt in via the `data-closeable` attribute without setting this prop (per-tab opt-in). Fires a `tabClose` event with `{ index }` when clicked or activated via Enter/Space.
+          * @default false
+         */
+        "closeable": boolean;
+        /**
           * When true, reduces tab button padding using density tokens.
           * @default false
          */
@@ -2919,23 +2964,24 @@ export namespace Components {
      * (e.g. Next.js App Router, Angular Router) rather than through slot-based
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
-     * and ARIA tablist semantics.
-     * Place <button> or <a> children inside the component. The component applies
-     * role="tab", aria-selected, and tabindex automatically. Control the
-     * active tab via the activeTabIndex prop and respond to the update event.
-     * Use <a> elements for navigation tab patterns where each tab is a route link.
-     * Use <button> elements for in-page tab switching.
+     * and ARIA semantics.
+     * Place <button> or <a> children inside the component. The component detects
+     * the child type and automatically applies the correct ARIA pattern:
+     * - <button> children: role="tablist" container, role="tab" + aria-selected on each button
+     * - <a> children: <nav> landmark wrapper, aria-current="page" on the active anchor
+     * Control the active tab via the activeTabIndex prop and respond to the update event.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
      * Disabled anchors (via aria-disabled="true") are skipped.
-     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
-     *   <button type="button">Overview</button>
-     *   <button type="button">Details</button>
-     *   <button type="button" disabled>Settings</button>
+     * @example — button tablist pattern (in-page tab switching)
+     * <io-tabs-bar active-tab-index="0" label="Main navigation">
+     * <button type="button">Overview</button>
+     * <button type="button">Details</button>
+     * <button type="button" disabled>Settings</button>
      * </io-tabs-bar>
-     * @example — anchor navigation pattern
+     * @example — anchor navigation pattern (route navigation)
      * <io-tabs-bar active-tab-index="0" label="Site navigation">
-     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/overview">Overview</a>
      * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
@@ -2951,7 +2997,7 @@ export namespace Components {
          */
         "compact": boolean;
         /**
-          * Optional accessible label for the tablist region.
+          * Optional accessible label for the tablist / nav region.
          */
         "label"?: string;
         /**
@@ -4683,6 +4729,33 @@ declare global {
         prototype: HTMLIoSwitchElement;
         new (): HTMLIoSwitchElement;
     };
+    /**
+     * io-tab-panel
+     * ============
+     * Companion panel component for io-tabs.
+     * Declares a single tab pane with a `label` prop that io-tabs reads to generate
+     * the corresponding tab button. Consumers no longer need to manage `panelIds`,
+     * `role="tabpanel"`, `hidden`, `tabindex`, or `aria-labelledby` manually.
+     * io-tabs scans slotted io-tab-panel children, auto-generates the tab button
+     * strip, and wires up all ARIA relationships.
+     * When used standalone (outside io-tabs), it renders as a plain tabpanel region.
+     * The `hidden` and `labelledBy` props allow direct control when needed.
+     * @example — inside io-tabs (recommended)
+     * <io-tabs>
+     * <io-tab-panel label="Overview">Overview content</io-tab-panel>
+     * <io-tab-panel label="Details">Details content</io-tab-panel>
+     * </io-tabs>
+     * @example — standalone (with explicit ARIA wiring)
+     * <io-tab-panel label="Overview" labelled-by="tab-overview">
+     * Overview content
+     * </io-tab-panel>
+     */
+    interface HTMLIoTabPanelElement extends Components.IoTabPanel, HTMLStencilElement {
+    }
+    var HTMLIoTabPanelElement: {
+        prototype: HTMLIoTabPanelElement;
+        new (): HTMLIoTabPanelElement;
+    };
     interface HTMLIoTableElementEventMap {
         "sortChange": IoTableSortDetail;
     }
@@ -4843,6 +4916,7 @@ declare global {
     };
     interface HTMLIoTabsElementEventMap {
         "update": IoTabsUpdateDetail;
+        "tabClose": IoTabsCloseDetail;
     }
     /**
      * io-tabs
@@ -4884,23 +4958,24 @@ declare global {
      * (e.g. Next.js App Router, Angular Router) rather than through slot-based
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
-     * and ARIA tablist semantics.
-     * Place <button> or <a> children inside the component. The component applies
-     * role="tab", aria-selected, and tabindex automatically. Control the
-     * active tab via the activeTabIndex prop and respond to the update event.
-     * Use <a> elements for navigation tab patterns where each tab is a route link.
-     * Use <button> elements for in-page tab switching.
+     * and ARIA semantics.
+     * Place <button> or <a> children inside the component. The component detects
+     * the child type and automatically applies the correct ARIA pattern:
+     * - <button> children: role="tablist" container, role="tab" + aria-selected on each button
+     * - <a> children: <nav> landmark wrapper, aria-current="page" on the active anchor
+     * Control the active tab via the activeTabIndex prop and respond to the update event.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
      * Disabled anchors (via aria-disabled="true") are skipped.
-     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
-     *   <button type="button">Overview</button>
-     *   <button type="button">Details</button>
-     *   <button type="button" disabled>Settings</button>
+     * @example — button tablist pattern (in-page tab switching)
+     * <io-tabs-bar active-tab-index="0" label="Main navigation">
+     * <button type="button">Overview</button>
+     * <button type="button">Details</button>
+     * <button type="button" disabled>Settings</button>
      * </io-tabs-bar>
-     * @example — anchor navigation pattern
+     * @example — anchor navigation pattern (route navigation)
      * <io-tabs-bar active-tab-index="0" label="Site navigation">
-     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/overview">Overview</a>
      * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
@@ -5174,6 +5249,7 @@ declare global {
         "io-step": HTMLIoStepElement;
         "io-stepper": HTMLIoStepperElement;
         "io-switch": HTMLIoSwitchElement;
+        "io-tab-panel": HTMLIoTabPanelElement;
         "io-table": HTMLIoTableElement;
         "io-table-body": HTMLIoTableBodyElement;
         "io-table-body-cell": HTMLIoTableBodyCellElement;
@@ -7877,6 +7953,46 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     /**
+     * io-tab-panel
+     * ============
+     * Companion panel component for io-tabs.
+     * Declares a single tab pane with a `label` prop that io-tabs reads to generate
+     * the corresponding tab button. Consumers no longer need to manage `panelIds`,
+     * `role="tabpanel"`, `hidden`, `tabindex`, or `aria-labelledby` manually.
+     * io-tabs scans slotted io-tab-panel children, auto-generates the tab button
+     * strip, and wires up all ARIA relationships.
+     * When used standalone (outside io-tabs), it renders as a plain tabpanel region.
+     * The `hidden` and `labelledBy` props allow direct control when needed.
+     * @example — inside io-tabs (recommended)
+     * <io-tabs>
+     * <io-tab-panel label="Overview">Overview content</io-tab-panel>
+     * <io-tab-panel label="Details">Details content</io-tab-panel>
+     * </io-tabs>
+     * @example — standalone (with explicit ARIA wiring)
+     * <io-tab-panel label="Overview" labelled-by="tab-overview">
+     * Overview content
+     * </io-tab-panel>
+     */
+    interface IoTabPanel {
+        /**
+          * When true, the panel is hidden (display: none). io-tabs sets this automatically based on the active tab index. Consumers can also set it directly when using the panel standalone.
+          * @default false
+         */
+        "hidden"?: boolean;
+        /**
+          * Label for the corresponding tab button. When io-tabs renders the tab strip, this text becomes the button label. Also used as the accessible name of the panel region when labelledBy is not set.
+         */
+        "label": string;
+        /**
+          * ID of the tab button that controls this panel (aria-labelledby target). Set by io-tabs automatically. Consumers may also set it directly.
+         */
+        "labelledBy"?: string;
+        /**
+          * Explicit ID override for the panel element. If not set, io-tabs generates a stable ID for ARIA wiring.
+         */
+        "panelId"?: string;
+    }
+    /**
      * io-table
      * =========
      * Accessible data table with a declarative slot-based API.
@@ -8087,6 +8203,11 @@ declare namespace LocalJSX {
          */
         "activeTabIndex"?: number;
         /**
+          * When true, every tab renders an inline close (dismiss) button. Individual tabs can also opt in via the `data-closeable` attribute without setting this prop (per-tab opt-in). Fires a `tabClose` event with `{ index }` when clicked or activated via Enter/Space.
+          * @default false
+         */
+        "closeable"?: boolean;
+        /**
           * When true, reduces tab button padding using density tokens.
           * @default false
          */
@@ -8099,6 +8220,10 @@ declare namespace LocalJSX {
           * ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div.
          */
         "labelledby"?: string;
+        /**
+          * Fires when a close button is clicked on a closeable tab. Payload: `{ index }` — 0-based index of the closed tab. The consumer is responsible for removing the tab from their data and updating `activeTabIndex` if needed.
+         */
+        "onTabClose"?: (event: IoTabsCustomEvent<IoTabsCloseDetail>) => void;
         /**
           * Fires when the user activates a different tab (click, Enter, or Space). Does NOT fire when activeTabIndex is changed programmatically — only on direct user interaction. Update your controlled state in the handler:   element.addEventListener('update', e => { myIndex = e.detail.activeTabIndex; });
          */
@@ -8121,23 +8246,24 @@ declare namespace LocalJSX {
      * (e.g. Next.js App Router, Angular Router) rather than through slot-based
      * panel switching. The consumer owns route/content transitions; io-tabs-bar
      * provides the visual tab strip with active indicator, keyboard navigation,
-     * and ARIA tablist semantics.
-     * Place <button> or <a> children inside the component. The component applies
-     * role="tab", aria-selected, and tabindex automatically. Control the
-     * active tab via the activeTabIndex prop and respond to the update event.
-     * Use <a> elements for navigation tab patterns where each tab is a route link.
-     * Use <button> elements for in-page tab switching.
+     * and ARIA semantics.
+     * Place <button> or <a> children inside the component. The component detects
+     * the child type and automatically applies the correct ARIA pattern:
+     * - <button> children: role="tablist" container, role="tab" + aria-selected on each button
+     * - <a> children: <nav> landmark wrapper, aria-current="page" on the active anchor
+     * Control the active tab via the activeTabIndex prop and respond to the update event.
      * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
      * Disabled buttons (via the HTML disabled attribute) are skipped.
      * Disabled anchors (via aria-disabled="true") are skipped.
-     * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
-     *   <button type="button">Overview</button>
-     *   <button type="button">Details</button>
-     *   <button type="button" disabled>Settings</button>
+     * @example — button tablist pattern (in-page tab switching)
+     * <io-tabs-bar active-tab-index="0" label="Main navigation">
+     * <button type="button">Overview</button>
+     * <button type="button">Details</button>
+     * <button type="button" disabled>Settings</button>
      * </io-tabs-bar>
-     * @example — anchor navigation pattern
+     * @example — anchor navigation pattern (route navigation)
      * <io-tabs-bar active-tab-index="0" label="Site navigation">
-     * <a href="/overview" aria-current="page">Overview</a>
+     * <a href="/overview">Overview</a>
      * <a href="/details">Details</a>
      * </io-tabs-bar>
      */
@@ -8153,7 +8279,7 @@ declare namespace LocalJSX {
          */
         "compact"?: boolean;
         /**
-          * Optional accessible label for the tablist region.
+          * Optional accessible label for the tablist / nav region.
          */
         "label"?: string;
         /**
@@ -9079,6 +9205,12 @@ declare namespace LocalJSX {
         "compact": boolean;
         "hideLabel": boolean;
     }
+    interface IoTabPanelAttributes {
+        "label": string;
+        "hidden": boolean;
+        "labelledBy": string;
+        "panelId": string;
+    }
     interface IoTableAttributes {
         "caption": string;
         "captionHidden": boolean;
@@ -9114,6 +9246,7 @@ declare namespace LocalJSX {
         "size": IoTabsSize;
         "compact": boolean;
         "labelledby": string;
+        "closeable": boolean;
     }
     interface IoTabsBarAttributes {
         "activeTabIndex": number;
@@ -9241,6 +9374,7 @@ declare namespace LocalJSX {
         "io-step": Omit<IoStep, keyof IoStepAttributes> & { [K in keyof IoStep & keyof IoStepAttributes]?: IoStep[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `attr:${K}`]?: IoStepAttributes[K] } & { [K in keyof IoStep & keyof IoStepAttributes as `prop:${K}`]?: IoStep[K] } & OneOf<"label", IoStep["label"], IoStepAttributes["label"]>;
         "io-stepper": Omit<IoStepper, keyof IoStepperAttributes> & { [K in keyof IoStepper & keyof IoStepperAttributes]?: IoStepper[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `attr:${K}`]?: IoStepperAttributes[K] } & { [K in keyof IoStepper & keyof IoStepperAttributes as `prop:${K}`]?: IoStepper[K] };
         "io-switch": Omit<IoSwitch, keyof IoSwitchAttributes> & { [K in keyof IoSwitch & keyof IoSwitchAttributes]?: IoSwitch[K] } & { [K in keyof IoSwitch & keyof IoSwitchAttributes as `attr:${K}`]?: IoSwitchAttributes[K] } & { [K in keyof IoSwitch & keyof IoSwitchAttributes as `prop:${K}`]?: IoSwitch[K] } & OneOf<"label", IoSwitch["label"], IoSwitchAttributes["label"]>;
+        "io-tab-panel": Omit<IoTabPanel, keyof IoTabPanelAttributes> & { [K in keyof IoTabPanel & keyof IoTabPanelAttributes]?: IoTabPanel[K] } & { [K in keyof IoTabPanel & keyof IoTabPanelAttributes as `attr:${K}`]?: IoTabPanelAttributes[K] } & { [K in keyof IoTabPanel & keyof IoTabPanelAttributes as `prop:${K}`]?: IoTabPanel[K] } & OneOf<"label", IoTabPanel["label"], IoTabPanelAttributes["label"]>;
         "io-table": Omit<IoTable, keyof IoTableAttributes> & { [K in keyof IoTable & keyof IoTableAttributes]?: IoTable[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `attr:${K}`]?: IoTableAttributes[K] } & { [K in keyof IoTable & keyof IoTableAttributes as `prop:${K}`]?: IoTable[K] };
         "io-table-body": IoTableBody;
         "io-table-body-cell": Omit<IoTableBodyCell, keyof IoTableBodyCellAttributes> & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes]?: IoTableBodyCell[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `attr:${K}`]?: IoTableBodyCellAttributes[K] } & { [K in keyof IoTableBodyCell & keyof IoTableBodyCellAttributes as `prop:${K}`]?: IoTableBodyCell[K] };
@@ -9834,6 +9968,28 @@ declare module "@stencil/core" {
              */
             "io-switch": LocalJSX.IntrinsicElements["io-switch"] & JSXBase.HTMLAttributes<HTMLIoSwitchElement>;
             /**
+             * io-tab-panel
+             * ============
+             * Companion panel component for io-tabs.
+             * Declares a single tab pane with a `label` prop that io-tabs reads to generate
+             * the corresponding tab button. Consumers no longer need to manage `panelIds`,
+             * `role="tabpanel"`, `hidden`, `tabindex`, or `aria-labelledby` manually.
+             * io-tabs scans slotted io-tab-panel children, auto-generates the tab button
+             * strip, and wires up all ARIA relationships.
+             * When used standalone (outside io-tabs), it renders as a plain tabpanel region.
+             * The `hidden` and `labelledBy` props allow direct control when needed.
+             * @example — inside io-tabs (recommended)
+             * <io-tabs>
+             * <io-tab-panel label="Overview">Overview content</io-tab-panel>
+             * <io-tab-panel label="Details">Details content</io-tab-panel>
+             * </io-tabs>
+             * @example — standalone (with explicit ARIA wiring)
+             * <io-tab-panel label="Overview" labelled-by="tab-overview">
+             * Overview content
+             * </io-tab-panel>
+             */
+            "io-tab-panel": LocalJSX.IntrinsicElements["io-tab-panel"] & JSXBase.HTMLAttributes<HTMLIoTabPanelElement>;
+            /**
              * io-table
              * =========
              * Accessible data table with a declarative slot-based API.
@@ -9936,23 +10092,24 @@ declare module "@stencil/core" {
              * (e.g. Next.js App Router, Angular Router) rather than through slot-based
              * panel switching. The consumer owns route/content transitions; io-tabs-bar
              * provides the visual tab strip with active indicator, keyboard navigation,
-             * and ARIA tablist semantics.
-             * Place <button> or <a> children inside the component. The component applies
-             * role="tab", aria-selected, and tabindex automatically. Control the
-             * active tab via the activeTabIndex prop and respond to the update event.
-             * Use <a> elements for navigation tab patterns where each tab is a route link.
-             * Use <button> elements for in-page tab switching.
+             * and ARIA semantics.
+             * Place <button> or <a> children inside the component. The component detects
+             * the child type and automatically applies the correct ARIA pattern:
+             * - <button> children: role="tablist" container, role="tab" + aria-selected on each button
+             * - <a> children: <nav> landmark wrapper, aria-current="page" on the active anchor
+             * Control the active tab via the activeTabIndex prop and respond to the update event.
              * Keyboard: Arrow Left/Right move focus; Enter/Space activate; Home/End jump.
              * Disabled buttons (via the HTML disabled attribute) are skipped.
              * Disabled anchors (via aria-disabled="true") are skipped.
-             * @example <io-tabs-bar active-tab-index="0" label="Main navigation">
-             *   <button type="button">Overview</button>
-             *   <button type="button">Details</button>
-             *   <button type="button" disabled>Settings</button>
+             * @example — button tablist pattern (in-page tab switching)
+             * <io-tabs-bar active-tab-index="0" label="Main navigation">
+             * <button type="button">Overview</button>
+             * <button type="button">Details</button>
+             * <button type="button" disabled>Settings</button>
              * </io-tabs-bar>
-             * @example — anchor navigation pattern
+             * @example — anchor navigation pattern (route navigation)
              * <io-tabs-bar active-tab-index="0" label="Site navigation">
-             * <a href="/overview" aria-current="page">Overview</a>
+             * <a href="/overview">Overview</a>
              * <a href="/details">Details</a>
              * </io-tabs-bar>
              */

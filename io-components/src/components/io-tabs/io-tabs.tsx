@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, h } from '@
 import { getTabsStyles } from './io-tabs-styles';
 import { getNextEnabledIndex } from './io-tabs-utils';
 
-import type { IoTabsUpdateDetail, IoTabsSize } from './types';
+import type { IoTabsUpdateDetail, IoTabsSize, IoTabsCloseDetail } from './types';
 
 /**
  * io-tabs
@@ -53,6 +53,14 @@ export class IoTabs {
    */
   @Prop() panelIds?: string[];
 
+  /**
+   * When true, every tab renders an inline close (dismiss) button.
+   * Individual tabs can also opt in via the `data-closeable` attribute
+   * without setting this prop (per-tab opt-in).
+   * Fires a `tabClose` event with `{ index }` when clicked or activated via Enter/Space.
+   */
+  @Prop({ reflect: true }) closeable = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /**
@@ -63,12 +71,24 @@ export class IoTabs {
    */
   @Event() update!: EventEmitter<IoTabsUpdateDetail>;
 
+  /**
+   * Fires when a close button is clicked on a closeable tab.
+   * Payload: `{ index }` — 0-based index of the closed tab.
+   * The consumer is responsible for removing the tab from their data and
+   * updating `activeTabIndex` if needed.
+   */
+  @Event() tabClose!: EventEmitter<IoTabsCloseDetail>;
+
   // ── Private ───────────────────────────────────────────────────
 
   private slotEl: HTMLSlotElement | null = null;
   private buttons: HTMLButtonElement[] = [];
   private clickHandlers: Map<HTMLButtonElement, () => void> = new Map();
   private keyHandlers: Map<HTMLButtonElement, (ev: KeyboardEvent) => void> = new Map();
+  /** Tracks injected close button elements and their event handlers. */
+  private closeButtons: Map<HTMLButtonElement, HTMLButtonElement> = new Map();
+  private closeClickHandlers: Map<HTMLButtonElement, (ev: MouseEvent) => void> = new Map();
+  private closeKeyHandlers: Map<HTMLButtonElement, (ev: KeyboardEvent) => void> = new Map();
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -153,6 +173,20 @@ export class IoTabs {
     }
     this.clickHandlers.clear();
     this.keyHandlers.clear();
+    // Teardown close button listeners and remove injected close buttons
+    for (const [closeBtn, handler] of this.closeClickHandlers) {
+      closeBtn.removeEventListener('click', handler);
+    }
+    for (const [closeBtn, handler] of this.closeKeyHandlers) {
+      closeBtn.removeEventListener('keydown', handler);
+    }
+    this.closeClickHandlers.clear();
+    this.closeKeyHandlers.clear();
+    // Remove injected close button elements from their parent tabs
+    for (const [, closeBtn] of this.closeButtons) {
+      closeBtn.parentElement?.removeChild(closeBtn);
+    }
+    this.closeButtons.clear();
   }
 
   private applyAriaToButtons(buttons: HTMLButtonElement[], activeIndex: number) {
@@ -184,7 +218,56 @@ export class IoTabs {
           btn.setAttribute('aria-label', visibleText);
         }
       }
+
+      // Closeable tabs (issue #949): inject a close button if closeable prop is true
+      // or the tab has data-closeable attribute.
+      const isCloseable = this.closeable || btn.hasAttribute('data-closeable');
+      const existingClose = this.closeButtons.get(btn);
+      if (isCloseable && !existingClose) {
+        this.injectCloseButton(btn, index);
+      } else if (!isCloseable && existingClose) {
+        // Remove previously injected close button if no longer closeable
+        const clickH = this.closeClickHandlers.get(existingClose);
+        const keyH = this.closeKeyHandlers.get(existingClose);
+        if (clickH) existingClose.removeEventListener('click', clickH);
+        if (keyH) existingClose.removeEventListener('keydown', keyH);
+        this.closeClickHandlers.delete(existingClose);
+        this.closeKeyHandlers.delete(existingClose);
+        existingClose.parentElement?.removeChild(existingClose);
+        this.closeButtons.delete(btn);
+      }
     });
+  }
+
+  private injectCloseButton(tab: HTMLButtonElement, index: number) {
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'tab-close-btn';
+    const tabLabel = tab.getAttribute('aria-label') || tab.textContent?.trim() || `Tab ${index + 1}`;
+    closeBtn.setAttribute('aria-label', `Close ${tabLabel}`);
+    closeBtn.setAttribute('tabindex', '-1');
+    // Use a simple × character as the icon; styled to match io-tag-dismissible pattern
+    closeBtn.innerHTML = `<svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+
+    const clickHandler = (ev: MouseEvent) => {
+      ev.stopPropagation();
+      this.handleTabClose(index);
+    };
+    const keyHandler = (ev: KeyboardEvent) => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.handleTabClose(index);
+      }
+    };
+
+    closeBtn.addEventListener('click', clickHandler);
+    closeBtn.addEventListener('keydown', keyHandler);
+    this.closeClickHandlers.set(closeBtn, clickHandler);
+    this.closeKeyHandlers.set(closeBtn, keyHandler);
+    this.closeButtons.set(tab, closeBtn);
+
+    tab.appendChild(closeBtn);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -196,6 +279,19 @@ export class IoTabs {
 
     this.activeTabIndex = index;
     this.update.emit({ activeTabIndex: index });
+  }
+
+  private handleTabClose(index: number) {
+    this.tabClose.emit({ index });
+    // Move focus to adjacent enabled tab if the closed tab was active
+    if (index === this.activeTabIndex) {
+      const enabled = this.getEnabledButtons().filter(({ index: i }) => i !== index);
+      if (enabled.length > 0) {
+        // Prefer the tab after, fall back to the tab before
+        const next = enabled.find(({ index: i }) => i > index) ?? enabled[enabled.length - 1];
+        next.btn.focus();
+      }
+    }
   }
 
   private handleKeyDown(ev: KeyboardEvent, index: number) {

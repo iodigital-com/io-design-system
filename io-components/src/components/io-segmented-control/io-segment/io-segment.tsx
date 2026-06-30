@@ -8,8 +8,18 @@ import type { IoIconName } from '../../../utils/icons';
  * io-segment
  * ===========
  * A single option within an io-segmented-control bar.
- * Renders as a button with role="radio" semantics — selected state and
- * tabIndex are managed by the parent io-segmented-control.
+ * Renders as a button with role="radio" on the inner button — selected state
+ * and tabIndex are managed by the parent io-segmented-control.
+ *
+ * The Host element is purely structural (no ARIA role). All radio semantics
+ * live on the inner button so screen readers announce a single element and
+ * avoid double-announcement (Host role + button role). The parent fieldset
+ * carries role="radiogroup" to wire the group semantics.
+ *
+ * #1084 — previously `role="radio" aria-checked` were on the Host while the
+ * inner button was also focusable. That caused NVDA/VoiceOver to announce
+ * "radio button, button" twice per item. Moving role+aria-checked onto the
+ * button and making the Host presentational fixes the double-announcement.
  *
  * Do not use standalone — always nest inside io-segmented-control.
  *
@@ -95,17 +105,17 @@ export class IoSegment {
       .join(' ');
 
     return (
-      <Host
-        role="radio"
-        aria-checked={String(selected)}
-        aria-disabled={disabled ? 'true' : undefined}
-      >
+      // Host carries no ARIA role — all semantics live on the inner button
+      // to prevent double-announcement by screen readers (#1084).
+      <Host>
         <style>{getSegmentStyles()}</style>
         <button
           type="button"
+          role="radio"
           class={btnClass}
           disabled={disabled}
           tabIndex={this.el.tabIndex ?? -1}
+          aria-checked={String(selected)}
           aria-label={label}
           onClick={this.handleClick}
           onKeyDown={this.handleKeydown}

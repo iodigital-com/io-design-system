@@ -408,6 +408,10 @@
   --io-radio-border-width:            1.5px;
   --io-radio-border-error-width:      2px;
   --io-radio-dot-size:                8px;        /* inner filled dot when checked */
+
+  /* Segmented control — error border width (#1074 WCAG 1.4.1) */
+  --io-segmented-control-border-error-width: 2px;
+
   --io-tabs-track-color:                  var(--io-border);
   --io-tabs-indicator-color:              var(--io-color-primary);
   --io-tabs-indicator-height:             2px;

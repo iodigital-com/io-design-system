@@ -25,12 +25,17 @@ describe('io-segment — default props', () => {
   });
 });
 
-describe('io-segment — render()', () => {
+/**
+ * #1084 — role="radio" and aria-checked now live on the inner <button>,
+ * not on the Host element. The Host carries no ARIA role to prevent
+ * double-announcement by screen readers (radio + button).
+ */
+describe('io-segment — render() ARIA (#1084)', () => {
   beforeEach(() => {
     vi.mocked(h).mockClear();
   });
 
-  it('renders with role="radio" on Host', () => {
+  it('Host has no role attribute (prevents double-announcement)', () => {
     const component = new IoSegment();
     const el = document.createElement('io-segment');
     (component as any).el = el;
@@ -40,16 +45,31 @@ describe('io-segment — render()', () => {
 
     component.render();
 
-    // In the test mock, Host is resolved to undefined, so we check for
-    // h() calls where the first arg is null/undefined (the Host sentinel)
     const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
       .filter(args => args[0] === 'Host' || args[0] == null);
 
-    expect(hostCalls.length).toBeGreaterThanOrEqual(1);
-    expect(hostCalls[0]?.[1]?.['role']).toBe('radio');
+    // Host must not carry role="radio" — role lives on the inner button
+    expect(hostCalls[0]?.[1]?.['role']).toBeUndefined();
   });
 
-  it('renders aria-checked="true" when selected', () => {
+  it('inner button has role="radio"', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'list';
+    component.label = 'List';
+
+    component.render();
+
+    const buttonCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'button');
+
+    expect(buttonCalls.length).toBeGreaterThanOrEqual(1);
+    expect(buttonCalls[0]?.[1]?.['role']).toBe('radio');
+  });
+
+  it('inner button has aria-checked="true" when selected', () => {
     const component = new IoSegment();
     const el = document.createElement('io-segment');
     (component as any).el = el;
@@ -58,15 +78,16 @@ describe('io-segment — render()', () => {
     component.value = 'grid';
     component.label = 'Grid';
 
+    vi.mocked(h).mockClear();
     component.render();
 
-    const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
-      .filter(args => args[0] === 'Host' || args[0] == null);
+    const buttonCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'button');
 
-    expect(hostCalls[0]?.[1]?.['aria-checked']).toBe('true');
+    expect(buttonCalls[0]?.[1]?.['aria-checked']).toBe('true');
   });
 
-  it('renders aria-checked="false" when not selected', () => {
+  it('inner button has aria-checked="false" when not selected', () => {
     const component = new IoSegment();
     const el = document.createElement('io-segment');
     (component as any).el = el;
@@ -75,15 +96,16 @@ describe('io-segment — render()', () => {
     component.value = 'grid';
     component.label = 'Grid';
 
+    vi.mocked(h).mockClear();
     component.render();
 
-    const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
-      .filter(args => args[0] === 'Host' || args[0] == null);
+    const buttonCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'button');
 
-    expect(hostCalls[0]?.[1]?.['aria-checked']).toBe('false');
+    expect(buttonCalls[0]?.[1]?.['aria-checked']).toBe('false');
   });
 
-  it('sets aria-disabled on Host when disabled', () => {
+  it('Host has no aria-disabled (disabled state handled by native button disabled attr)', () => {
     const component = new IoSegment();
     const el = document.createElement('io-segment');
     (component as any).el = el;
@@ -92,12 +114,33 @@ describe('io-segment — render()', () => {
     component.label = 'Map';
     component.disabled = true;
 
+    vi.mocked(h).mockClear();
     component.render();
 
     const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
       .filter(args => args[0] === 'Host' || args[0] == null);
 
-    expect(hostCalls[0]?.[1]?.['aria-disabled']).toBe('true');
+    // The Host no longer carries aria-disabled; the button's native `disabled`
+    // attribute communicates the state to AT.
+    expect(hostCalls[0]?.[1]?.['aria-disabled']).toBeUndefined();
+  });
+
+  it('inner button has disabled attribute when disabled', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'map';
+    component.label = 'Map';
+    component.disabled = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const buttonCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'button');
+
+    expect(buttonCalls[0]?.[1]?.['disabled']).toBe(true);
   });
 });
 

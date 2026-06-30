@@ -936,6 +936,14 @@
       "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
+      "runtimeCssVar": "--io-segmented-control-border-error-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Segmented control error state border width \u2014 2px non-color indicator for WCAG 1.4.1 (#1074)."
+    },
+    {
       "runtimeCssVar": "--io-checkbox-border-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

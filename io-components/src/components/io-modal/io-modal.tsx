@@ -475,11 +475,14 @@ export class IoModal {
   // ev.target === <dialog> means the click landed directly on the dialog padding
   // (backdrop area), not on any content descendant — geometrically correct even
   // at rounded corners where the bounding-rect check would give false negatives.
+  // Coordinate-based check (isBackdropClick) is used as a secondary gate to
+  // handle edge cases where ev.target may differ (e.g. synthetic events in tests).
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
+    const targetIsDialog = ev.target === dialog;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
+    const clickedBackdrop = targetIsDialog || isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
       this._userInitiatedClose = true;
       this.open = false;

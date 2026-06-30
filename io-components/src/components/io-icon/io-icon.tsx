@@ -1,21 +1,16 @@
 import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
-import { ensureIconSymbol } from '../../utils/icon-sprite';
-import { ICON_NODES, escapeAttr } from '../../utils/icons';
-
-import { getIconStyles } from './io-icon-styles';
-
-import type { IoIconColor, IoIconSize } from './types';
 import type { IoIconName } from '../../utils/icons';
+import { getIconSvg, getIconUseRef, ensureIconSprite, escapeAttr } from '../../utils/icons';
+import { getIconStyles } from './io-icon-styles';
+import type { IoIconColor, IoIconSize } from './types';
 
 const svgCache = new Map<string, string>();
 
 const COLOR_TOKEN_MAP: Record<Exclude<IoIconColor, 'inherit'>, string> = {
   primary: 'var(--io-color-primary)',
-  'contrast-higher': 'var(--io-text-contrast-higher)',
   'contrast-high': 'var(--io-text-primary)',
   'contrast-medium': 'var(--io-text-secondary)',
-  'contrast-lower': 'var(--io-text-contrast-lower)',
   success: 'var(--io-color-success)',
   warning: 'var(--io-color-warning)',
   error: 'var(--io-color-error)',
@@ -101,6 +96,12 @@ export class IoIcon {
     return token ? { '--io-icon-color': token } : undefined;
   }
 
+  /** Size in px used for width/height attributes on the rendered SVG. */
+  private get svgSize(): number {
+    const sizeMap: Record<string, number> = { sm: 16, md: 20, lg: 24 };
+    return sizeMap[this.size] ?? 20;
+  }
+
   render() {
     if (this.iconSource) {
       if (!this.fetchedSvg) return null;
@@ -112,20 +113,26 @@ export class IoIcon {
       );
     }
 
-    if (!ICON_NODES[this.name]) return null;
+    // Named icon: use sprite deduplication when the document is available.
+    // ensureIconSprite injects the <symbol> once into the document body so all
+    // instances of the same icon share one copy of the SVG path data.
+    // Falls back to inline SVG (SSR / jsdom test environments).
+    const size = this.svgSize;
+    const spriteAvailable = ensureIconSprite(this.name);
+    const svgMarkup = spriteAvailable
+      ? getIconUseRef(this.name, size, this.label)
+      : (() => {
+          const svg = getIconSvg(this.name, size);
+          if (!svg) return null;
+          return this.patchAria(svg);
+        })();
 
-    ensureIconSymbol(this.name);
-
-    const ariaAttrs = this.label
-      ? { role: 'img', 'aria-label': this.label }
-      : { 'aria-hidden': 'true' };
+    if (!svgMarkup) return null;
 
     return (
       <Host style={this.hostStyle}>
         <style>{getIconStyles()}</style>
-        <svg {...ariaAttrs}>
-          <use href={`#io-icon-${this.name}`} />
-        </svg>
+        <span innerHTML={svgMarkup} />
       </Host>
     );
   }

@@ -44,6 +44,7 @@ export type IoTagNames =
   | 'io-pagination'
   | 'io-pin-code'
   | 'io-popover'
+  | 'io-product-tile'
   | 'io-progress'
   | 'io-radio'
   | 'io-radio-group'

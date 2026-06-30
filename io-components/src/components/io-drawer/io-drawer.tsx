@@ -1,9 +1,9 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 
 import { getDrawerStyles } from './io-drawer-styles';
-import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon, isBackdropClick } from './io-drawer-utils';
+import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon } from './io-drawer-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import { applyDialogInert, removeDialogInert } from '../../utils/dialog-utils';
+import { isBackdropClick, lockBodyScroll, unlockBodyScroll } from '../../utils/dialog';
 
 import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 
@@ -166,12 +166,6 @@ export class IoDrawer {
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',
       );
     }
-
-    if (this.placement === 'bottom' && !this.dismissButton && !this.closeOnBackdrop) {
-      console.error(
-        '[io-drawer] Inaccessible configuration: placement="bottom" with dismissButton=false and closeOnBackdrop=false leaves swipe-to-dismiss as the only close path, which is inaccessible for users who cannot perform swipe gestures (WCAG 2.5.7, 2.1.1). Set dismissButton=true or closeOnBackdrop=true.',
-      );
-    }
   }
 
   componentDidLoad() {
@@ -245,11 +239,17 @@ export class IoDrawer {
   }
 
   private applyInert() {
-    this.inertedElements = applyDialogInert(this.el);
+    this.inertedElements = Array.from(this.el.parentElement?.children ?? []).filter(
+      (el) => el !== this.el && !['SCRIPT', 'STYLE'].includes(el.tagName),
+    );
+    this.inertedElements.forEach((el) => {
+      if (!el.hasAttribute('inert')) el.setAttribute('inert', '');
+    });
   }
 
   private removeInert() {
-    removeDialogInert(this.inertedElements);
+    this.inertedElements.forEach((el) => el.removeAttribute('inert'));
+    this.inertedElements = [];
   }
 
   // ── Handlers ─────────────────────────────────────────────────
@@ -257,9 +257,8 @@ export class IoDrawer {
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
-    const isTarget = ev.target === ev.currentTarget;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isTarget || isBackdropClick(rect, ev.clientX, ev.clientY);
+    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
       this._userInitiatedClose = true;
       this.open = false;

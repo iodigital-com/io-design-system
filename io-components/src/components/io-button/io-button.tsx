@@ -1,16 +1,14 @@
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core';
 
-import { type BreakpointCustomizable, resolveBreakpoint } from '../../utils/breakpoint';
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
+import { parseBreakpointValue, isBreakpointMap, generateBreakpointCss } from '../../utils/breakpoint-customizable';
+import type { BreakpointCustomizable } from '../../utils/breakpoint-customizable';
 
-import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonIconPosition, IoButtonAriaAttribute } from './types';
-
-/** One render tick in ms — used to clear the "Loading finished" announcement. */
-const LOADING_FINISHED_CLEAR_MS = 1000;
+import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonAriaAttribute } from './types';
 
 /** Shared path data for the iO brand arrow SVG — avoids duplication across render sites. */
 const BRAND_ARROW_PATH = 'M17.825.575l-1.237 1.238L21.9 7.125H.75v1.75H21.9l-5.312 5.312 1.237 1.237L25.25 8 17.825.575z';
@@ -63,17 +61,13 @@ export class IoButton {
   @Prop({ reflect: true }) color: IoButtonColor = 'blue';
 
   /**
-   * Size preset. Accepts a fixed value or a responsive breakpoint map.
-   * When a scalar value is used, it is reflected as an HTML attribute (e.g. `size="md"`),
-   * enabling CSS selectors like `io-button[size="lg"]`. Object/responsive values are not
-   * reflected — pass them via JavaScript property binding only.
+   * Size preset. Accepts a static value or a breakpoint map for responsive sizing.
    *
    * @example
-   * // Fixed scalar
-   * <io-button size="md">Button</io-button>
-   *
-   * // Responsive — sm on mobile, lg on large+ viewports (JS/JSX only)
-   * <io-button .size={{ base: 'sm', l: 'lg' }}>Button</io-button>
+   * <!-- Static -->
+   * <io-button size="lg">Label</io-button>
+   * <!-- Responsive — sm on mobile, lg on desktop -->
+   * <io-button .size={{ base: 'sm', lg: 'lg' }}>Label</io-button>
    */
   @Prop({ reflect: true }) size: BreakpointCustomizable<IoButtonSize> = 'md';
 
@@ -94,24 +88,11 @@ export class IoButton {
   /** Rel attribute — only used when href is set */
   @Prop() rel: string | undefined;
 
-  /**
-   * Maps to the native anchor `download` attribute when `href` is set.
-   * Pass `true` to prompt save with the server filename, or a string to override the filename.
-   * Has no effect in button mode.
-   */
-  @Prop() download?: string | boolean;
-
   /** Disables the button and applies reduced opacity */
   @Prop({ reflect: true }) disabled = false;
 
   /** Shows a loading spinner and disables interaction */
   @Prop({ reflect: true }) loading = false;
-
-  /** Screen-reader announcement while loading. Localizable. Defaults to "Loading". */
-  @Prop() loadingDescription = 'Loading';
-
-  /** Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished". */
-  @Prop() loadingFinishedDescription = 'Loading finished';
 
   /** Stretches button to fill its container width */
   @Prop() fullWidth = false;
@@ -137,7 +118,7 @@ export class IoButton {
    */
   @Prop({ reflect: true }) form: string | undefined;
 
-  /** Renders a square icon-only button and suppresses text label rendering. Requires label prop or host aria-label for accessibility. */
+  /** Renders a square icon-only button and suppresses text label rendering */
   @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
 
   /** Direction of the optional animated arrow icon. Omit to hide the arrow. */
@@ -153,34 +134,19 @@ export class IoButton {
   @Prop() iconSource?: string;
 
   /**
-   * Hides the text label visually (icon-only mode with accessible label via `label` prop).
-   * Accepts a fixed boolean or a responsive breakpoint map of 'true'/'false' strings.
-   * Boolean values are reflected as the `hide-label` HTML attribute; object/responsive values
-   * are not reflected and must be set via JavaScript property binding.
+   * Hides the text label visually. Accepts a static boolean or a breakpoint map.
    *
    * @example
-   * // Always hidden
-   * <io-button hide-label>Button</io-button>
-   *
-   * // Icon-only on mobile, show label on large+ viewports (JS/JSX only)
-   * <io-button .hideLabel={{ base: 'true', l: 'false' }}>Button</io-button>
+   * <!-- Icon-only on mobile, icon+label on desktop (≥lg) -->
+   * <io-button icon="search" .hideLabel={{ base: true, lg: false }}>Search</io-button>
    */
-  @Prop({ reflect: true }) hideLabel: BreakpointCustomizable<'true' | 'false'> | boolean = false;
+  @Prop({ reflect: true }) hideLabel: BreakpointCustomizable<boolean> = false;
 
   /**
-   * Side on which the icon is rendered relative to the label. Defaults to 'left'.
-   * Accepts a fixed value or a responsive breakpoint map.
-   * Scalar values are reflected as the `icon-position` HTML attribute; object/responsive
-   * values are not reflected and must be set via JavaScript property binding.
-   *
-   * @example
-   * // Always left
-   * <io-button icon-position="left">Button</io-button>
-   *
-   * // Left on mobile, right on large+ viewports (JS/JSX only)
-   * <io-button .iconPosition={{ base: 'left', l: 'right' }}>Button</io-button>
+   * Side on which the icon is rendered relative to the label. Accepts a static value
+   * or a breakpoint map for responsive positioning.
    */
-  @Prop({ reflect: true }) iconPosition: BreakpointCustomizable<IoButtonIconPosition> = 'left';
+  @Prop({ reflect: true }) iconPosition: BreakpointCustomizable<'left' | 'right'> = 'left';
 
   /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
@@ -198,16 +164,9 @@ export class IoButton {
   private readonly loadingId: string;
   private _implicitSubmitHandler?: (ev: KeyboardEvent) => void;
   private _implicitSubmitForm?: HTMLFormElement;
-  private _loadingFinishedTimer?: ReturnType<typeof setTimeout>;
 
-  /**
-   * True once `loading` has transitioned to true at least once after mount.
-   * Guards the live-region: prevents a "Loading finished" announcement on initial render.
-   */
-  @State() private initialLoading = false;
-
-  /** True for one tick after loading transitions true→false, to announce completion to AT. */
-  @State() private loadingFinished = false;
+  /** True once `loading` has transitioned to true at least once after mount. Guards live-region announcement. */
+  @State() private loadingTransitioned = false;
 
   constructor() {
     this.loadingId = `io-btn-loading-${++_idCounter}`;
@@ -248,10 +207,6 @@ export class IoButton {
 
   disconnectedCallback(): void {
     this.detachImplicitSubmitListener();
-    if (this._loadingFinishedTimer !== undefined) {
-      clearTimeout(this._loadingFinishedTimer);
-      this._loadingFinishedTimer = undefined;
-    }
   }
 
   // ── Watchers ─────────────────────────────────────────────────
@@ -265,22 +220,7 @@ export class IoButton {
 
   @Watch('loading')
   onLoadingChange(newVal: boolean): void {
-    if (newVal) {
-      this.initialLoading = true;
-      // Clear any pending "Loading finished" announcement from a previous cycle.
-      if (this._loadingFinishedTimer !== undefined) {
-        clearTimeout(this._loadingFinishedTimer);
-        this._loadingFinishedTimer = undefined;
-      }
-      this.loadingFinished = false;
-    } else if (this.initialLoading) {
-      // loading went false after it was true — announce completion.
-      this.loadingFinished = true;
-      this._loadingFinishedTimer = setTimeout(() => {
-        this.loadingFinished = false;
-        this._loadingFinishedTimer = undefined;
-      }, LOADING_FINISHED_CLEAR_MS);
-    }
+    if (newVal) this.loadingTransitioned = true;
   }
 
   @Watch('aria')
@@ -401,9 +341,9 @@ export class IoButton {
   }
 
   private warnIconOnlyLabelMissing(): void {
-    if (!this.iconOnly) return;
-
-    if (this.hasWarnedIconOnlyLabel || this.getAccessibleLabel()) return;
+    if (!this.iconOnly || this.hasWarnedIconOnlyLabel || this.getAccessibleLabel()) {
+      return;
+    }
 
     const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
     if (!isStencilProd) {
@@ -412,18 +352,7 @@ export class IoButton {
     this.hasWarnedIconOnlyLabel = true;
   }
 
-  private warnHideLabelNoIcon(resolvedHideLabel: boolean): void {
-    if (!resolvedHideLabel || this.iconOnly) return;
-    const hasIcon = Boolean(this.icon || this.iconSource);
-    if (!hasIcon) {
-      const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-      if (!isStencilProd) {
-        console.error('io-button: `hideLabel=true` requires an `icon` or `iconSource` prop so the button remains recognisable. Add an icon.');
-      }
-    }
-  }
-
-  private validatePropValues(resolvedSize: IoButtonSize): void {
+  private validatePropValues(): void {
     const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
     if (isStencilProd) return;
 
@@ -433,26 +362,99 @@ export class IoButton {
     if (!VALID_COLORS.includes(this.color)) {
       console.warn(`io-button: Invalid value "${this.color}" for prop "color". Expected: ${VALID_COLORS.join(' | ')}.`);
     }
-    if (!VALID_SIZES.includes(resolvedSize)) {
-      console.warn(`io-button: Invalid resolved value "${resolvedSize}" for prop "size". Expected: ${VALID_SIZES.join(' | ')}.`);
+    // Only validate size when it is a static (non-map) value
+    const sizeVal = this.resolvedSize;
+    if (!VALID_SIZES.includes(sizeVal)) {
+      console.warn(`io-button: Invalid value "${sizeVal}" for prop "size". Expected: ${VALID_SIZES.join(' | ')}.`);
     }
+  }
+
+  // ── Breakpoint-customizable prop resolution ───────────────────
+
+  /** Returns the base/default IoButtonSize from the `size` prop (handles breakpoint maps). */
+  private get resolvedSize(): IoButtonSize {
+    const parsed = parseBreakpointValue(this.size);
+    if (isBreakpointMap<IoButtonSize>(parsed)) {
+      return (parsed.base as IoButtonSize) ?? 'md';
+    }
+    return (parsed as IoButtonSize) ?? 'md';
+  }
+
+  /** Returns the base/default hideLabel value from the `hideLabel` prop. */
+  private get resolvedHideLabel(): boolean {
+    const parsed = parseBreakpointValue(this.hideLabel);
+    if (isBreakpointMap<boolean>(parsed)) {
+      return parsed.base ?? false;
+    }
+    return (parsed as boolean) ?? false;
+  }
+
+  /** Returns the base/default iconPosition value from the `iconPosition` prop. */
+  private get resolvedIconPosition(): 'left' | 'right' {
+    const parsed = parseBreakpointValue(this.iconPosition);
+    if (isBreakpointMap<'left' | 'right'>(parsed)) {
+      return parsed.base ?? 'left';
+    }
+    return (parsed as 'left' | 'right') ?? 'left';
+  }
+
+  /**
+   * Generates extra `<style>` content for breakpoint-customizable props.
+   * Only produces output when one or more props are breakpoint maps.
+   */
+  private get breakpointStyles(): string {
+    const parts: string[] = [];
+
+    const sizeVal = parseBreakpointValue(this.size);
+    if (isBreakpointMap<IoButtonSize>(sizeVal)) {
+      const SIZE_PROPS: Record<IoButtonSize, string> = {
+        sm: 'padding: var(--io-space-1) var(--io-space-5); font-size: var(--io-font-size-sm); height: auto;',
+        md: 'padding: var(--io-spacing-component-y) var(--io-spacing-component-x); font-size: var(--io-font-size-base); height: auto;',
+        lg: 'padding: var(--io-space-2) var(--io-space-8); font-size: var(--io-font-size-base); height: var(--io-space-12);',
+        xl: 'padding: var(--io-button-xl-padding-y) var(--io-space-10); font-size: var(--io-font-size-lg); height: var(--io-space-14);',
+      };
+      parts.push(generateBreakpointCss<IoButtonSize>(sizeVal, (v) => `.btn { ${SIZE_PROPS[v] ?? ''} }`));
+    }
+
+    const hideLabelVal = parseBreakpointValue(this.hideLabel);
+    if (isBreakpointMap<boolean>(hideLabelVal)) {
+      parts.push(generateBreakpointCss<boolean>(
+        hideLabelVal,
+        (v) => v
+          ? '.btn__label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }'
+          : '.btn__label { position: static; width: auto; height: auto; padding: inherit; margin: 0; overflow: visible; clip: auto; white-space: normal; }',
+      ));
+    }
+
+    const iconPosVal = parseBreakpointValue(this.iconPosition);
+    if (isBreakpointMap<'left' | 'right'>(iconPosVal)) {
+      parts.push(generateBreakpointCss<'left' | 'right'>(
+        iconPosVal,
+        (v) => v === 'right'
+          ? '.btn { flex-direction: row-reverse; }'
+          : '.btn { flex-direction: row; }',
+      ));
+    }
+
+    return parts.join('\n');
   }
 
   // ── Render helpers ───────────────────────────────────────────
 
-  private renderIcon(resolvedSize: IoButtonSize) {
+  private renderIcon() {
     if (!this.icon && !this.iconSource) return null;
 
     if (this.iconSource) {
       return <span class="btn__icon-wrap" aria-hidden="true" innerHTML={this.iconSource} />;
     }
 
+    const resolvedSize = this.resolvedSize;
     return <io-icon name={this.icon!} size={ICON_SIZE_MAP[resolvedSize] ?? 'sm'} aria-hidden="true" />;
   }
 
-  private renderIconOnlyContent(resolvedSize: IoButtonSize) {
+  private renderIconOnlyContent() {
     if (this.icon || this.iconSource) {
-      return <span class="btn__icon">{this.renderIcon(resolvedSize)}</span>;
+      return <span class="btn__icon">{this.renderIcon()}</span>;
     }
     return (
       <span class="btn__icon btn__icon--brand-arrow" aria-hidden="true">
@@ -464,52 +466,28 @@ export class IoButton {
   }
 
   render() {
-    // Resolve responsive (BreakpointCustomizable) props to their current scalar value.
-    const resolvedSize = resolveBreakpoint<IoButtonSize>(
-      this.size as BreakpointCustomizable<IoButtonSize>,
-      'md',
-    );
-    const resolvedHideLabel = (() => {
-      const raw = this.hideLabel;
-      if (typeof raw === 'boolean') return raw;
-      // String form from HTML attributes or breakpoint object
-      const resolved = resolveBreakpoint<'true' | 'false'>(
-        raw as BreakpointCustomizable<'true' | 'false'>,
-        'false',
-      );
-      return resolved === 'true';
-    })();
-    const resolvedIconPosition = resolveBreakpoint<IoButtonIconPosition>(
-      this.iconPosition as BreakpointCustomizable<IoButtonIconPosition>,
-      'left',
-    );
-
     const { variant, color, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement } = this;
-    const size = resolvedSize;
-    const hideLabel = resolvedHideLabel;
-    const iconPosition = resolvedIconPosition;
-
+    // Resolve breakpoint-customizable props to their base values for initial render.
+    const size = this.resolvedSize;
+    const hideLabel = this.resolvedHideLabel;
+    const iconPosition = this.resolvedIconPosition;
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
     const arrow = rawArrow === 'none' || rawArrow === null ? undefined : this.arrow;
 
-    this.validatePropValues(size);
-    this.warnHideLabelNoIcon(hideLabel);
-
-    // Effective icon-only mode: either the iconOnly prop, or hideLabel + has icon.
-    const hasIcon = Boolean(this.icon || this.iconSource);
-    const effectiveIconOnly = iconOnly || (hideLabel && hasIcon);
+    this.validatePropValues();
 
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
-    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly: effectiveIconOnly });
+    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
     const accessibleLabel = this.getAccessibleLabel();
     this.warnIconOnlyLabelMissing();
 
     const Tag = href ? 'a' : 'button';
+    const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${effectiveIconOnly ? ' btn--icon-only' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
       ref: (el?: HTMLElement) => {
         this.btnEl = el;
         applyAriaProp(this.aria, el ?? null);
@@ -522,18 +500,7 @@ export class IoButton {
     if (href) {
       innerProps['href'] = disabled || loading ? undefined : href;
       innerProps['target'] = target;
-      // Auto-apply noopener noreferrer when target=_blank and rel is not already set,
-      // matching io-wordmark behaviour and preventing tabnabbing attacks.
-      if (target === '_blank' && !rel) {
-        innerProps['rel'] = 'noopener noreferrer';
-      } else {
-        innerProps['rel'] = rel;
-      }
-      // download prop: boolean true → empty string (browser uses server filename);
-      // string → explicit filename override.
-      if (this.download !== undefined && this.download !== false) {
-        innerProps['download'] = this.download === true ? '' : this.download;
-      }
+      innerProps['rel'] = rel;
       // Keep disabled/loading anchors in the tab order so keyboard users can discover them.
       // href is cleared to prevent activation; tabIndex={0} restores focusability.
       if (disabled || loading) {
@@ -548,35 +515,27 @@ export class IoButton {
       innerProps['aria-label'] = accessibleLabel;
     }
 
-    if (loading && this.initialLoading) {
+    if (loading && this.loadingTransitioned) {
       innerProps['aria-describedby'] = this.loadingId;
     }
 
-    // Determine live-region text:
-    // - 'Loading' while loading=true (and has been seen at least once)
-    // - 'Loading finished' for one tick after loading goes false
-    // - '' otherwise (no spurious announcement)
-    let liveRegionText = '';
-    if (loading && this.initialLoading) {
-      liveRegionText = 'Loading';
-    } else if (this.loadingFinished) {
-      liveRegionText = 'Loading finished';
-    }
-
-    const labelSlot = effectiveIconOnly
-      ? this.renderIconOnlyContent(size)
+    const labelSlot = iconOnly
+      ? this.renderIconOnlyContent()
       : (
         <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
           <slot />
         </span>
       );
 
+    const bpStyles = this.breakpointStyles;
+
     return (
       <Host class={classList}>
         <style>{getButtonStyles()}</style>
+        {bpStyles && <style>{bpStyles}</style>}
         <Tag {...innerProps}>
           {loading && <span class="btn__spinner" aria-hidden="true" />}
-          {!effectiveIconOnly && arrow !== undefined && arrowPlacement === 'left' && (
+          {!iconOnly && arrow !== undefined && arrowPlacement === 'left' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"
@@ -586,10 +545,10 @@ export class IoButton {
               </svg>
             </span>
           )}
-          {hasIcon && !effectiveIconOnly && iconPosition === 'left' && this.renderIcon(size)}
+          {hasIcon && !iconOnly && iconPosition === 'left' && this.renderIcon()}
           {labelSlot}
-          {hasIcon && !effectiveIconOnly && iconPosition === 'right' && this.renderIcon(size)}
-          {!effectiveIconOnly && arrow !== undefined && arrowPlacement === 'right' && (
+          {hasIcon && !iconOnly && iconPosition === 'right' && this.renderIcon()}
+          {!iconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"
@@ -600,8 +559,7 @@ export class IoButton {
             </span>
           )}
         </Tag>
-        {/* Loading live region — sibling to button so it's outside the interactive element's accessible subtree.
-            Announces 'Loading' on start and 'Loading finished' once on completion. */}
+        {/* Loading live region — sibling to button so it's outside the interactive element's accessible subtree */}
         <span
           id={this.loadingId}
           role="status"
@@ -609,7 +567,7 @@ export class IoButton {
           aria-atomic="true"
           class="btn__loading-sr"
         >
-          {liveRegionText}
+          {loading && this.loadingTransitioned ? 'Loading' : ''}
         </span>
       </Host>
     );

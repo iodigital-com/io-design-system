@@ -355,6 +355,14 @@ export const sitemap: NavSection[] = [
         related: ['io-tooltip', 'io-modal', 'io-drawer'],
       },
       {
+        label: 'Product Tile',
+        href: '/components/io-product-tile/configurator',
+        status: 'beta',
+        slug: 'io-product-tile',
+        description: 'Commerce tile primitive for product listings. Heading, sale price with screen-reader-accessible original price, optional wishlist/like toggle, and image slot.',
+        related: ['io-badge', 'io-button', 'io-tag'],
+      },
+      {
         label: 'Progress',
         href: '/components/io-progress/configurator',
         status: 'beta',

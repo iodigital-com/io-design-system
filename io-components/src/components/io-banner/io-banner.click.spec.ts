@@ -31,7 +31,6 @@ describe('io-banner — dismiss interaction (issue #1012: double-emit guard)', (
   });
 
   it('does not call handleDismiss twice on rapid calls (_dismissing guard)', () => {
-    const spy = vi.spyOn(c as any, 'handleDismiss');
     (c as any).handleDismiss();
     expect((c as any)._dismissing).toBe(true);
     // Second call should be ignored

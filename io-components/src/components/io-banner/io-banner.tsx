@@ -230,7 +230,7 @@ export class IoBanner {
           aria-atomic={this.isAssertive ? undefined : 'true'}
           aria-hidden={bannerHidden ? 'true' : undefined}
           style={{ display: this.open ? undefined : 'none' }}
-          onTransitionend={this.handleTransitionEnd}
+          onTransitionEnd={this.handleTransitionEnd}
         >
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (

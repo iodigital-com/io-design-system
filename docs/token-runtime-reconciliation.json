@@ -2080,6 +2080,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-icon-size-2xs",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale \u2014 8px (0.5rem). Used by io-icon component in dense/chip contexts."
+    },
+    {
       "runtimeCssVar": "--io-icon-size-xs",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -2118,6 +2126,54 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Icon size scale — 32px (2rem). Used by io-icon component."
+    },
+    {
+      "runtimeCssVar": "--io-icon-size-2xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale \u2014 40px (2.5rem). Used for feature cards and empty-state illustrations."
+    },
+    {
+      "runtimeCssVar": "--io-icon-size-3xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale \u2014 48px (3rem). Used for hero sections."
+    },
+    {
+      "runtimeCssVar": "--io-icon-size-4xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale \u2014 64px (4rem). Used for hero CTAs and large empty-state illustrations."
+    },
+    {
+      "runtimeCssVar": "--io-icon-size-5xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Icon size scale \u2014 80px (5rem). Used for full-page hero illustrations."
+    },
+    {
+      "runtimeCssVar": "--io-text-contrast-higher",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Absolute maximum contrast neutral (#000000). Used by io-icon contrast-higher color value."
+    },
+    {
+      "runtimeCssVar": "--io-text-contrast-lower",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Lowest visible neutral contrast (#C4C4C4). Used by io-icon contrast-lower color value."
     },
     {
       "runtimeCssVar": "--io-input-border-width",

@@ -21,17 +21,27 @@ export function getIconStyles(): string {
     }
     span { display: contents; }
     svg { display: block; }
+    :host([size="2xs"]) svg { width: var(--io-icon-size, var(--io-icon-size-2xs, 8px)); height: var(--io-icon-size, var(--io-icon-size-2xs, 8px)); }
     :host([size="xs"]) svg { width: var(--io-icon-size, var(--io-icon-size-xs, 12px)); height: var(--io-icon-size, var(--io-icon-size-xs, 12px)); }
     :host([size="sm"]) svg { width: var(--io-icon-size, var(--io-icon-size-sm, 16px)); height: var(--io-icon-size, var(--io-icon-size-sm, 16px)); }
     :host([size="md"]) svg { width: var(--io-icon-size, var(--io-icon-size-md, 20px)); height: var(--io-icon-size, var(--io-icon-size-md, 20px)); }
     :host([size="lg"]) svg { width: var(--io-icon-size, var(--io-icon-size-lg, 24px)); height: var(--io-icon-size, var(--io-icon-size-lg, 24px)); }
     :host([size="xl"]) svg { width: var(--io-icon-size, var(--io-icon-size-xl, 32px)); height: var(--io-icon-size, var(--io-icon-size-xl, 32px)); }
+    :host([size="2xl"]) svg { width: var(--io-icon-size, var(--io-icon-size-2xl, 40px)); height: var(--io-icon-size, var(--io-icon-size-2xl, 40px)); }
+    :host([size="3xl"]) svg { width: var(--io-icon-size, var(--io-icon-size-3xl, 48px)); height: var(--io-icon-size, var(--io-icon-size-3xl, 48px)); }
+    :host([size="4xl"]) svg { width: var(--io-icon-size, var(--io-icon-size-4xl, 64px)); height: var(--io-icon-size, var(--io-icon-size-4xl, 64px)); }
+    :host([size="5xl"]) svg { width: var(--io-icon-size, var(--io-icon-size-5xl, 80px)); height: var(--io-icon-size, var(--io-icon-size-5xl, 80px)); }
     :host([size="inherit"]) svg { width: var(--io-icon-size, 1em); height: var(--io-icon-size, 1em); }
+    :host([fixed-width][size="2xs"]) { width: var(--io-icon-size, var(--io-icon-size-2xs, 8px)); }
     :host([fixed-width][size="xs"]) { width: var(--io-icon-size, var(--io-icon-size-xs, 12px)); }
     :host([fixed-width][size="sm"]) { width: var(--io-icon-size, var(--io-icon-size-sm, 16px)); }
     :host([fixed-width][size="md"]) { width: var(--io-icon-size, var(--io-icon-size-md, 20px)); }
     :host([fixed-width][size="lg"]) { width: var(--io-icon-size, var(--io-icon-size-lg, 24px)); }
     :host([fixed-width][size="xl"]) { width: var(--io-icon-size, var(--io-icon-size-xl, 32px)); }
+    :host([fixed-width][size="2xl"]) { width: var(--io-icon-size, var(--io-icon-size-2xl, 40px)); }
+    :host([fixed-width][size="3xl"]) { width: var(--io-icon-size, var(--io-icon-size-3xl, 48px)); }
+    :host([fixed-width][size="4xl"]) { width: var(--io-icon-size, var(--io-icon-size-4xl, 64px)); }
+    :host([fixed-width][size="5xl"]) { width: var(--io-icon-size, var(--io-icon-size-5xl, 80px)); }
     :host([fixed-width][size="inherit"]) { width: var(--io-icon-size, 1em); }
     :host([name="arrow-right"]:dir(rtl)) svg,
     :host([name="arrow-left"]:dir(rtl)) svg,

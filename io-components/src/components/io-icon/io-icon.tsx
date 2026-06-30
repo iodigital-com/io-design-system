@@ -9,8 +9,10 @@ const svgCache = new Map<string, string>();
 
 const COLOR_TOKEN_MAP: Record<Exclude<IoIconColor, 'inherit'>, string> = {
   primary: 'var(--io-color-primary)',
+  'contrast-higher': 'var(--io-text-contrast-higher)',
   'contrast-high': 'var(--io-text-primary)',
   'contrast-medium': 'var(--io-text-secondary)',
+  'contrast-lower': 'var(--io-text-contrast-lower)',
   success: 'var(--io-color-success)',
   warning: 'var(--io-color-warning)',
   error: 'var(--io-color-error)',

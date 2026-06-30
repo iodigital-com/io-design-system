@@ -32,7 +32,7 @@ export const iconStoryAllIcons: Story<'io-icon'> = {
 export const iconStorySizes: Story<'io-icon'> = {
   state: { properties: { name: 'search' } },
   generator: () =>
-    (['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => ({
+    (['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'] as const).map((size) => ({
       tag: 'io-icon' as const,
       properties: { name: 'search', size, label: size },
     })),
@@ -386,19 +386,19 @@ export const iconPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: [...IO_ICON_NAMES],
     defaultValue: 'search',
-    description: 'The icon to render. Must be one of the 455 registered icon names.',
+    description: 'The icon to render. Must be one of the registered icon names.',
   },
   {
     name: 'color',
     type: 'select',
-    options: ['inherit', 'primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info'],
+    options: ['inherit', 'primary', 'contrast-higher', 'contrast-high', 'contrast-medium', 'contrast-lower', 'success', 'warning', 'error', 'info'],
     defaultValue: 'inherit',
     description: 'Semantic color token applied to the icon. inherit uses CSS currentColor from the parent element.',
   },
   {
     name: 'size',
     type: 'select',
-    options: ['xs', 'sm', 'md', 'lg', 'xl', 'inherit'],
+    options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', 'inherit'],
     defaultValue: 'md',
     description: 'Rendered size of the icon. "inherit" scales the icon to match the parent element\'s font-size.',
   },
@@ -425,7 +425,7 @@ export const iconPropDefinitions: PropDefinition[] = [
 export const iconStoryColors: Story<'io-icon'> = {
   state: { properties: { name: 'heart', size: 'md' } },
   generator: () =>
-    (['primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info'] as const).map(
+    (['primary', 'contrast-higher', 'contrast-high', 'contrast-medium', 'contrast-lower', 'success', 'warning', 'error', 'info'] as const).map(
       (color) => ({ tag: 'io-icon' as const, properties: { name: 'heart', size: 'md', color }, children: [] }),
     ),
 };

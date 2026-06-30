@@ -1635,7 +1635,49 @@
     "cssVar": "--io-icon-color",
     "classification": "public-api",
     "component": "io-icon",
-    "description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info)."
+    "description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-higher, contrast-high, contrast-medium, contrast-lower, success, warning, error, info)."
+  },
+  {
+    "cssVar": "--io-icon-size-2xs",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Icon size for the 2xs step (8px). Used for dense table-cell or chip contexts."
+  },
+  {
+    "cssVar": "--io-icon-size-2xl",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Icon size for the 2xl step (40px). Used for feature cards and empty-state illustrations."
+  },
+  {
+    "cssVar": "--io-icon-size-3xl",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Icon size for the 3xl step (48px). Used for feature cards and hero sections."
+  },
+  {
+    "cssVar": "--io-icon-size-4xl",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Icon size for the 4xl step (64px). Used for hero CTAs and large empty-state illustrations."
+  },
+  {
+    "cssVar": "--io-icon-size-5xl",
+    "classification": "public-api",
+    "component": "io-icon",
+    "description": "Icon size for the 5xl step (80px). Used for hero sections and full-page illustrations."
+  },
+  {
+    "cssVar": "--io-text-contrast-higher",
+    "classification": "internal",
+    "component": "io-icon",
+    "description": "Absolute black (#000000) contrast stop. Highest contrast neutral, for maximum legibility on light backgrounds."
+  },
+  {
+    "cssVar": "--io-text-contrast-lower",
+    "classification": "internal",
+    "component": "io-icon",
+    "description": "Lowest visible neutral contrast stop (--io-color-grey-3, #C4C4C4). Used for subtle decorative icons on light backgrounds."
   },
 
   {

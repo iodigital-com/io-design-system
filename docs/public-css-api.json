@@ -1560,6 +1560,12 @@
     "description": "Global z-index for the toast layer."
   },
   {
+    "cssVar": "--io-multi-select-trigger-clear-size",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Width and height of the inline clear-all icon button rendered inside the trigger when a selection exists. Must meet WCAG 2.5.8 touch target minimum (44x44px). Defaults to var(--io-touch-target-min)."
+  },
+  {
     "cssVar": "--io-breadcrumb-separator",
     "classification": "public-api",
     "component": "io-breadcrumb",

@@ -196,32 +196,31 @@ export function getMultiSelectStyles(): string {
       color: var(--io-text-secondary);
     }
 
-    /* ── Inline clear button adjacent to trigger (#1111) ──────── */
+    /* ── Inline clear button inside trigger (#1111) ──────────── */
 
     .multi-select-trigger__clear {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      /* WCAG 2.5.8: minimum 44x44px touch target */
+      /* WCAG 2.5.8: 44×44 minimum touch target */
       min-width: var(--io-touch-target-min);
       min-height: var(--io-touch-target-min);
-      width: var(--io-touch-target-min);
-      height: var(--io-touch-target-min);
+      width: var(--io-multi-select-trigger-clear-size, var(--io-touch-target-min));
+      height: var(--io-multi-select-trigger-clear-size, var(--io-touch-target-min));
       padding: 0;
       margin: 0;
       border: none;
-      border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
-      border-radius: 0;
+      border-radius: 50%;
       background: transparent;
       color: var(--io-text-secondary);
       cursor: pointer;
-      transition: background-color var(--io-motion-fast), color var(--io-motion-fast), border-bottom-width var(--io-motion-fast);
+      transition: background-color var(--io-motion-fast), color var(--io-motion-fast);
     }
 
     .multi-select-trigger__clear:hover {
-      background: var(--io-color-primary-muted);
-      color: var(--io-color-primary);
+      background: var(--io-option-hover-bg);
+      color: var(--io-text-primary);
     }
 
     .multi-select-trigger__clear:focus-visible {
@@ -230,6 +229,7 @@ export function getMultiSelectStyles(): string {
     }
 
     /* ── Chevron — rotates 180° when open (#1075) ──────────────── */
+
 
     .multi-select-trigger__chevron {
       flex-shrink: 0;
@@ -377,17 +377,19 @@ export function getMultiSelectStyles(): string {
       letter-spacing: 0.05em;
     }
 
-    /* ── Footer actions (clear all) ────────────────────────────── */
+    /* ── Footer actions (select all / clear all) ────────────────── */
 
     .multi-select-footer {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: var(--io-space-3);
       padding: var(--io-space-2) var(--io-space-3);
       border-top: var(--io-input-border-width) solid var(--io-border);
     }
 
-    .multi-select-clear-btn {
+    .multi-select-clear-btn,
+    .multi-select-select-all-btn {
       background: none;
       border: none;
       padding: 0;
@@ -399,10 +401,20 @@ export function getMultiSelectStyles(): string {
       text-underline-offset: 2px;
     }
 
-    .multi-select-clear-btn:focus-visible {
+    .multi-select-clear-btn:focus-visible,
+    .multi-select-select-all-btn:focus-visible {
       outline: none;
       box-shadow: var(--io-focus-ring-active);
       border-radius: var(--io-border-radius-xs);
+    }
+
+    /* ── maxSelections helper text ─────────────────────────────── */
+
+    .multi-select-limit-text {
+      padding: var(--io-space-1) var(--io-space-3);
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+      text-align: right;
     }
 
     /* ── Message text (error / success / warning / helper) ─────── */

@@ -1,5 +1,11 @@
 [
   {
+    "cssVar": "--io-segmented-control-border-error-width",
+    "classification": "public-api",
+    "component": "io-segmented-control",
+    "description": "Border width applied to the segmented-control bar in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color). Default: 2px."
+  },
+  {
     "cssVar": "--io-accordion-max-height",
     "classification": "deprecated",
     "component": "io-accordion",

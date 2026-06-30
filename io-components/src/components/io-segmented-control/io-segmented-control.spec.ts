@@ -39,6 +39,26 @@ describe('io-segmented-control — default props', () => {
   it('is not disabled by default', () => {
     expect(component.disabled).toBe(false);
   });
+
+  it('has required=false by default (#1074)', () => {
+    expect(component.required).toBe(false);
+  });
+
+  it('has error=false by default (#1074)', () => {
+    expect(component.error).toBe(false);
+  });
+
+  it('has undefined errorMessage by default (#1074)', () => {
+    expect(component.errorMessage).toBeUndefined();
+  });
+
+  it('has noWrap=false by default (#1072)', () => {
+    expect(component.noWrap).toBe(false);
+  });
+
+  it('has columns="auto" by default (#1063)', () => {
+    expect(component.columns).toBe('auto');
+  });
 });
 
 describe('io-segmented-control — syncChildren', () => {
@@ -162,35 +182,88 @@ describe('io-segmented-control — updateTabStops', () => {
   });
 });
 
-describe('io-segmented-control — render() ARIA', () => {
+describe('io-segmented-control — render() ARIA (#1080)', () => {
   beforeEach(() => {
     vi.mocked(h).mockClear();
   });
 
-  it('renders with role="group" on Host', () => {
+  it('renders an inner fieldset with role="radiogroup"', () => {
     const component = new IoSegmentedControl();
     (component as any).el = document.createElement('io-segmented-control');
     (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
     component.value = 'a';
     component.disabled = false;
+    component.label = 'Test';
 
     component.render();
 
-    // In the test mock, Host is resolved to undefined, so we check the first
-    // h() call argument that is either 'Host' (string) or undefined (mock sentinel)
-    const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
-      .filter(args => args[0] === 'Host' || args[0] == null);
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset');
 
-    expect(hostCalls.length).toBeGreaterThanOrEqual(1);
-    expect(hostCalls[0]?.[1]?.['role']).toBe('group');
+    expect(fieldsetCalls.length).toBeGreaterThanOrEqual(1);
+    expect(fieldsetCalls[0]?.[1]?.['role']).toBe('radiogroup');
   });
 
-  it('sets aria-disabled="true" on Host when disabled', () => {
+  it('sets aria-required="true" on fieldset when required (#1074)', () => {
     const component = new IoSegmentedControl();
     (component as any).el = document.createElement('io-segmented-control');
     (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
+    component.required = true;
+    component.label = 'Test';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset');
+
+    expect(fieldsetCalls[0]?.[1]?.['aria-required']).toBe('true');
+  });
+
+  it('omits aria-required when not required', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
+    component.required = false;
+    component.label = 'Test';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset');
+
+    expect(fieldsetCalls[0]?.[1]?.['aria-required']).toBeUndefined();
+  });
+
+  it('sets aria-invalid="true" on fieldset when error=true (#1074)', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
+    component.error = true;
+    component.label = 'Test';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'fieldset');
+
+    expect(fieldsetCalls[0]?.[1]?.['aria-invalid']).toBe('true');
+  });
+
+  it('renders aria-disabled="true" on Host when disabled', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
     component.value = undefined;
     component.disabled = true;
+    component.label = 'Test';
 
     component.render();
 
@@ -204,8 +277,10 @@ describe('io-segmented-control — render() ARIA', () => {
     const component = new IoSegmentedControl();
     (component as any).el = document.createElement('io-segmented-control');
     (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
     component.value = undefined;
     component.disabled = false;
+    component.label = 'Test';
 
     component.render();
 
@@ -216,7 +291,7 @@ describe('io-segmented-control — render() ARIA', () => {
   });
 });
 
-describe('io-segmented-control — label and accessible name (#859)', () => {
+describe('io-segmented-control — label and accessible name', () => {
   it('has undefined label prop by default', () => {
     const component = new IoSegmentedControl();
     expect(component.label).toBeUndefined();
@@ -225,21 +300,6 @@ describe('io-segmented-control — label and accessible name (#859)', () => {
   it('has hideLabel=false by default', () => {
     const component = new IoSegmentedControl();
     expect(component.hideLabel).toBe(false);
-  });
-
-  it('wires label prop to aria-label on Host', () => {
-    const component = new IoSegmentedControl();
-    (component as any).el = document.createElement('io-segmented-control');
-    (component as any).change = { emit: vi.fn() };
-    component.label = 'View mode';
-    component.disabled = false;
-
-    vi.mocked(h).mockClear();
-    component.render();
-
-    const hostCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
-      .filter(args => args[0] === 'Host' || args[0] == null);
-    expect(hostCalls[0]?.[1]?.['aria-label']).toBe('View mode');
   });
 
   it('logs console.error when label is not provided', () => {
@@ -252,5 +312,58 @@ describe('io-segmented-control — label and accessible name (#859)', () => {
     component.componentWillLoad();
     expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('label'));
     errorSpy.mockRestore();
+  });
+});
+
+describe('io-segmented-control — noWrap (#1072)', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('wraps slot in io-scroller when noWrap=true', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
+    component.noWrap = true;
+    component.label = 'Test';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const scrollerCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'io-scroller');
+
+    expect(scrollerCalls.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('does not render io-scroller when noWrap=false', () => {
+    const component = new IoSegmentedControl();
+    (component as any).el = document.createElement('io-segmented-control');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).errorId = 'test-error-id';
+    component.noWrap = false;
+    component.label = 'Test';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const scrollerCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'io-scroller');
+
+    expect(scrollerCalls.length).toBe(0);
+  });
+});
+
+describe('io-segmented-control — columns (#1063)', () => {
+  it('has columns="auto" by default', () => {
+    const component = new IoSegmentedControl();
+    expect(component.columns).toBe('auto');
+  });
+
+  it('accepts a numeric columns value', () => {
+    const component = new IoSegmentedControl();
+    component.columns = 3;
+    expect(component.columns).toBe(3);
   });
 });

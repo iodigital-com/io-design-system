@@ -6,6 +6,7 @@
  * - onValueChange calls setFormValue
  * - formResetCallback restores defaultValue and resyncs children
  * - formDisabledCallback propagates disabled to children
+ * - required + error prop validation (#1074)
  */
 import { describe, it, expect, vi } from 'vitest';
 
@@ -41,6 +42,7 @@ function makeComponent(initialValue?: string) {
   const c = new IoSegmentedControl();
   (c as any).el = host;
   (c as any).change = { emit: vi.fn() };
+  (c as any).errorId = 'test-error-id';
   c.value = initialValue;
   c.disabled = false;
   return { c, host };
@@ -179,6 +181,61 @@ describe('io-segmented-control — FACE / formAssociated', () => {
 
       expect(c.disabled).toBe(false);
       expect(seg.disabled).toBe(false);
+    });
+  });
+
+  describe('required validation (#1074)', () => {
+    it('sets valueMissing validity when required and no value', () => {
+      const { c } = makeComponent(undefined);
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      c.required = true;
+      (c as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith(
+        { valueMissing: true },
+        'Please select an option.',
+      );
+    });
+
+    it('sets faceInvalid=true when required and no value', () => {
+      const { c } = makeComponent(undefined);
+      (c as any).internals = makeInternals();
+      c.required = true;
+      (c as any).syncFormValue();
+      expect((c as any).faceInvalid).toBe(true);
+    });
+
+    it('clears validity when required and value is set', () => {
+      const { c } = makeComponent('list');
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      c.required = true;
+      (c as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith({});
+    });
+
+    it('sets faceInvalid=false when required and value is set', () => {
+      const { c } = makeComponent('list');
+      (c as any).internals = makeInternals();
+      c.required = true;
+      (c as any).syncFormValue();
+      expect((c as any).faceInvalid).toBe(false);
+    });
+
+    it('clears validity when not required', () => {
+      const { c } = makeComponent(undefined);
+      const internals = makeInternals();
+      (c as any).internals = internals;
+      c.required = false;
+      (c as any).syncFormValue();
+      expect(internals.setValidity).toHaveBeenCalledWith({});
+    });
+
+    it('does not throw when internals is undefined', () => {
+      const { c } = makeComponent(undefined);
+      (c as any).internals = undefined;
+      c.required = true;
+      expect(() => (c as any).syncFormValue()).not.toThrow();
     });
   });
 

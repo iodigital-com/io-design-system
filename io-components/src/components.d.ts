@@ -37,7 +37,7 @@ import { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 import { IoScrollerOrientation } from "./components/io-scroller/types";
-import { IoSegmentedControlChangeDetail } from "./components/io-segmented-control/types";
+import { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 import { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -85,7 +85,7 @@ export { IoProgressColor, IoProgressSize } from "./components/io-progress/types"
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
-export { IoSegmentedControlChangeDetail } from "./components/io-segmented-control/types";
+export { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
 export { IoSpinnerColor, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
@@ -2269,8 +2269,16 @@ export namespace Components {
      * io-segment
      * ===========
      * A single option within an io-segmented-control bar.
-     * Renders as a button with role="radio" semantics — selected state and
-     * tabIndex are managed by the parent io-segmented-control.
+     * Renders as a button with role="radio" on the inner button — selected state
+     * and tabIndex are managed by the parent io-segmented-control.
+     * The Host element is purely structural (no ARIA role). All radio semantics
+     * live on the inner button so screen readers announce a single element and
+     * avoid double-announcement (Host role + button role). The parent fieldset
+     * carries role="radiogroup" to wire the group semantics.
+     * #1084 — previously `role="radio" aria-checked` were on the Host while the
+     * inner button was also focusable. That caused NVDA/VoiceOver to announce
+     * "radio button, button" twice per item. Moving role+aria-checked onto the
+     * button and making the Host presentational fixes the double-announcement.
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
@@ -2304,8 +2312,16 @@ export namespace Components {
      * FACE-compliant exclusive-selection bar. A styled radio group with a unified
      * horizontal bar visual layout. Parent component that manages selection state
      * and keyboard navigation across slotted io-segment children.
-     * Uses role="group" on the host with roving tabindex across child segments.
-     * @example <io-segmented-control name="view" value="list">
+     * #1080 — wraps segments in an inner <fieldset role="radiogroup"> with
+     * <legend> to align semantics with io-radio-group. The Host element carries
+     * no ARIA role; the fieldset provides the group semantics.
+     * #1074 — adds `required`, `error`, and `errorMessage` props to mirror the
+     * io error-prop standard and FACE validity wiring.
+     * #1072 — adds `noWrap` prop that wraps the slot in <io-scroller> for
+     * horizontal scrolling when there are many segments.
+     * #1063 — adds `columns` prop that switches the bar from flex to a CSS grid
+     * so segments become equal-width cells.
+     * @example <io-segmented-control name="view" label="View mode" value="list">
      *   <io-segment value="list" label="List" />
      *   <io-segment value="grid" label="Grid" />
      *   <io-segment value="map" label="Map" />
@@ -2313,12 +2329,26 @@ export namespace Components {
      */
     interface IoSegmentedControl {
         /**
+          * Number of equal-width columns. When `'auto'` (default) the bar uses flex and segments size to their content. When a number is provided the bar switches to a CSS grid with that many equal-width tracks. #1063
+          * @default 'auto'
+         */
+        "columns": IoSegmentedControlColumns;
+        /**
           * Disables the entire control and all child segments
           * @default false
          */
         "disabled": boolean;
         /**
-          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * Puts the control in error state. Applies error styling to the bar and legend. Pair with `errorMessage` to render a visible error text node. #1074
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown below the bar when `error=true`. When omitted, error styling is applied but no DOM node is rendered. #1074
+         */
+        "errorMessage": string | undefined;
+        /**
+          * When true, visually hides the legend; the accessible name is still provided by the legend text
           * @default false
          */
         "hideLabel": boolean;
@@ -2330,6 +2360,16 @@ export namespace Components {
           * HTML name attribute for form participation
          */
         "name": string | undefined;
+        /**
+          * When true, wraps the segments in an <io-scroller> so many segments scroll horizontally with native momentum instead of wrapping to a second row. #1072
+          * @default false
+         */
+        "noWrap": boolean;
+        /**
+          * Marks the control as required in form validation. When no segment is selected, FACE validity is set to `valueMissing`. #1074
+          * @default false
+         */
+        "required": boolean;
         /**
           * Currently selected segment value
          */
@@ -4493,8 +4533,16 @@ declare global {
      * io-segment
      * ===========
      * A single option within an io-segmented-control bar.
-     * Renders as a button with role="radio" semantics — selected state and
-     * tabIndex are managed by the parent io-segmented-control.
+     * Renders as a button with role="radio" on the inner button — selected state
+     * and tabIndex are managed by the parent io-segmented-control.
+     * The Host element is purely structural (no ARIA role). All radio semantics
+     * live on the inner button so screen readers announce a single element and
+     * avoid double-announcement (Host role + button role). The parent fieldset
+     * carries role="radiogroup" to wire the group semantics.
+     * #1084 — previously `role="radio" aria-checked` were on the Host while the
+     * inner button was also focusable. That caused NVDA/VoiceOver to announce
+     * "radio button, button" twice per item. Moving role+aria-checked onto the
+     * button and making the Host presentational fixes the double-announcement.
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
@@ -4522,8 +4570,16 @@ declare global {
      * FACE-compliant exclusive-selection bar. A styled radio group with a unified
      * horizontal bar visual layout. Parent component that manages selection state
      * and keyboard navigation across slotted io-segment children.
-     * Uses role="group" on the host with roving tabindex across child segments.
-     * @example <io-segmented-control name="view" value="list">
+     * #1080 — wraps segments in an inner <fieldset role="radiogroup"> with
+     * <legend> to align semantics with io-radio-group. The Host element carries
+     * no ARIA role; the fieldset provides the group semantics.
+     * #1074 — adds `required`, `error`, and `errorMessage` props to mirror the
+     * io error-prop standard and FACE validity wiring.
+     * #1072 — adds `noWrap` prop that wraps the slot in <io-scroller> for
+     * horizontal scrolling when there are many segments.
+     * #1063 — adds `columns` prop that switches the bar from flex to a CSS grid
+     * so segments become equal-width cells.
+     * @example <io-segmented-control name="view" label="View mode" value="list">
      *   <io-segment value="list" label="List" />
      *   <io-segment value="grid" label="Grid" />
      *   <io-segment value="map" label="Map" />
@@ -7503,8 +7559,16 @@ declare namespace LocalJSX {
      * io-segment
      * ===========
      * A single option within an io-segmented-control bar.
-     * Renders as a button with role="radio" semantics — selected state and
-     * tabIndex are managed by the parent io-segmented-control.
+     * Renders as a button with role="radio" on the inner button — selected state
+     * and tabIndex are managed by the parent io-segmented-control.
+     * The Host element is purely structural (no ARIA role). All radio semantics
+     * live on the inner button so screen readers announce a single element and
+     * avoid double-announcement (Host role + button role). The parent fieldset
+     * carries role="radiogroup" to wire the group semantics.
+     * #1084 — previously `role="radio" aria-checked` were on the Host while the
+     * inner button was also focusable. That caused NVDA/VoiceOver to announce
+     * "radio button, button" twice per item. Moving role+aria-checked onto the
+     * button and making the Host presentational fixes the double-announcement.
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
@@ -7538,8 +7602,16 @@ declare namespace LocalJSX {
      * FACE-compliant exclusive-selection bar. A styled radio group with a unified
      * horizontal bar visual layout. Parent component that manages selection state
      * and keyboard navigation across slotted io-segment children.
-     * Uses role="group" on the host with roving tabindex across child segments.
-     * @example <io-segmented-control name="view" value="list">
+     * #1080 — wraps segments in an inner <fieldset role="radiogroup"> with
+     * <legend> to align semantics with io-radio-group. The Host element carries
+     * no ARIA role; the fieldset provides the group semantics.
+     * #1074 — adds `required`, `error`, and `errorMessage` props to mirror the
+     * io error-prop standard and FACE validity wiring.
+     * #1072 — adds `noWrap` prop that wraps the slot in <io-scroller> for
+     * horizontal scrolling when there are many segments.
+     * #1063 — adds `columns` prop that switches the bar from flex to a CSS grid
+     * so segments become equal-width cells.
+     * @example <io-segmented-control name="view" label="View mode" value="list">
      *   <io-segment value="list" label="List" />
      *   <io-segment value="grid" label="Grid" />
      *   <io-segment value="map" label="Map" />
@@ -7547,16 +7619,30 @@ declare namespace LocalJSX {
      */
     interface IoSegmentedControl {
         /**
+          * Number of equal-width columns. When `'auto'` (default) the bar uses flex and segments size to their content. When a number is provided the bar switches to a CSS grid with that many equal-width tracks. #1063
+          * @default 'auto'
+         */
+        "columns"?: IoSegmentedControlColumns;
+        /**
           * Disables the entire control and all child segments
           * @default false
          */
         "disabled"?: boolean;
         /**
+          * Puts the control in error state. Applies error styling to the bar and legend. Pair with `errorMessage` to render a visible error text node. #1074
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown below the bar when `error=true`. When omitted, error styling is applied but no DOM node is rendered. #1074
+         */
+        "errorMessage"?: string | undefined;
+        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
         /**
-          * When true, visually hides the label span; the accessible name is still provided via aria-label on the host
+          * When true, visually hides the legend; the accessible name is still provided by the legend text
           * @default false
          */
         "hideLabel"?: boolean;
@@ -7569,9 +7655,19 @@ declare namespace LocalJSX {
          */
         "name"?: string | undefined;
         /**
+          * When true, wraps the segments in an <io-scroller> so many segments scroll horizontally with native momentum instead of wrapping to a second row. #1072
+          * @default false
+         */
+        "noWrap"?: boolean;
+        /**
           * Fires when the selected segment changes
          */
         "onChange"?: (event: IoSegmentedControlCustomEvent<IoSegmentedControlChangeDetail>) => void;
+        /**
+          * Marks the control as required in form validation. When no segment is selected, FACE validity is set to `valueMissing`. #1074
+          * @default false
+         */
+        "required"?: boolean;
         /**
           * Currently selected segment value
          */
@@ -9146,6 +9242,11 @@ declare namespace LocalJSX {
         "label": string | undefined;
         "hideLabel": boolean;
         "disabled": boolean;
+        "required": boolean;
+        "error": boolean;
+        "errorMessage": string | undefined;
+        "noWrap": boolean;
+        "columns": string;
     }
     interface IoSelectAttributes {
         "label": string;
@@ -9851,8 +9952,16 @@ declare module "@stencil/core" {
              * io-segment
              * ===========
              * A single option within an io-segmented-control bar.
-             * Renders as a button with role="radio" semantics — selected state and
-             * tabIndex are managed by the parent io-segmented-control.
+             * Renders as a button with role="radio" on the inner button — selected state
+             * and tabIndex are managed by the parent io-segmented-control.
+             * The Host element is purely structural (no ARIA role). All radio semantics
+             * live on the inner button so screen readers announce a single element and
+             * avoid double-announcement (Host role + button role). The parent fieldset
+             * carries role="radiogroup" to wire the group semantics.
+             * #1084 — previously `role="radio" aria-checked` were on the Host while the
+             * inner button was also focusable. That caused NVDA/VoiceOver to announce
+             * "radio button, button" twice per item. Moving role+aria-checked onto the
+             * button and making the Host presentational fixes the double-announcement.
              * Do not use standalone — always nest inside io-segmented-control.
              * @example <io-segment value="list" label="List" />
              * <io-segment value="grid" label="Grid" icon="grid" />
@@ -9864,8 +9973,16 @@ declare module "@stencil/core" {
              * FACE-compliant exclusive-selection bar. A styled radio group with a unified
              * horizontal bar visual layout. Parent component that manages selection state
              * and keyboard navigation across slotted io-segment children.
-             * Uses role="group" on the host with roving tabindex across child segments.
-             * @example <io-segmented-control name="view" value="list">
+             * #1080 — wraps segments in an inner <fieldset role="radiogroup"> with
+             * <legend> to align semantics with io-radio-group. The Host element carries
+             * no ARIA role; the fieldset provides the group semantics.
+             * #1074 — adds `required`, `error`, and `errorMessage` props to mirror the
+             * io error-prop standard and FACE validity wiring.
+             * #1072 — adds `noWrap` prop that wraps the slot in <io-scroller> for
+             * horizontal scrolling when there are many segments.
+             * #1063 — adds `columns` prop that switches the bar from flex to a CSS grid
+             * so segments become equal-width cells.
+             * @example <io-segmented-control name="view" label="View mode" value="list">
              *   <io-segment value="list" label="List" />
              *   <io-segment value="grid" label="Grid" />
              *   <io-segment value="map" label="Map" />

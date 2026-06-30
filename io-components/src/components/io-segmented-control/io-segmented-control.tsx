@@ -1,8 +1,8 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, State, h } from '@stencil/core';
 
 import { getSegmentedControlStyles } from './io-segmented-control-styles';
 
-import type { IoSegmentedControlChangeDetail } from './types';
+import type { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from './types';
 
 /**
  * io-segmented-control
@@ -11,10 +11,21 @@ import type { IoSegmentedControlChangeDetail } from './types';
  * horizontal bar visual layout. Parent component that manages selection state
  * and keyboard navigation across slotted io-segment children.
  *
- * Uses role="group" on the host with roving tabindex across child segments.
+ * #1080 — wraps segments in an inner <fieldset role="radiogroup"> with
+ * <legend> to align semantics with io-radio-group. The Host element carries
+ * no ARIA role; the fieldset provides the group semantics.
+ *
+ * #1074 — adds `required`, `error`, and `errorMessage` props to mirror the
+ * io error-prop standard and FACE validity wiring.
+ *
+ * #1072 — adds `noWrap` prop that wraps the slot in <io-scroller> for
+ * horizontal scrolling when there are many segments.
+ *
+ * #1063 — adds `columns` prop that switches the bar from flex to a CSS grid
+ * so segments become equal-width cells.
  *
  * @example
- * <io-segmented-control name="view" value="list">
+ * <io-segmented-control name="view" label="View mode" value="list">
  *   <io-segment value="list" label="List" />
  *   <io-segment value="grid" label="Grid" />
  *   <io-segment value="map" label="Map" />
@@ -40,15 +51,60 @@ export class IoSegmentedControl {
   /** Accessible label for the control group — required for WCAG 4.1.2 */
   @Prop() label: string | undefined;
 
-  /** When true, visually hides the label span; the accessible name is still provided via aria-label on the host */
+  /** When true, visually hides the legend; the accessible name is still provided by the legend text */
   @Prop() hideLabel = false;
 
   /** Disables the entire control and all child segments */
   @Prop({ reflect: true }) disabled = false;
 
+  /**
+   * Marks the control as required in form validation. When no segment is
+   * selected, FACE validity is set to `valueMissing`.
+   * #1074
+   */
+  @Prop() required = false;
+
+  /**
+   * Puts the control in error state. Applies error styling to the bar and
+   * legend. Pair with `errorMessage` to render a visible error text node.
+   * #1074
+   */
+  @Prop({ reflect: true }) error = false;
+
+  /**
+   * Error message shown below the bar when `error=true`. When omitted,
+   * error styling is applied but no DOM node is rendered.
+   * #1074
+   */
+  @Prop() errorMessage: string | undefined;
+
+  /**
+   * When true, wraps the segments in an <io-scroller> so many segments scroll
+   * horizontally with native momentum instead of wrapping to a second row.
+   * #1072
+   */
+  @Prop({ reflect: true }) noWrap = false;
+
+  /**
+   * Number of equal-width columns. When `'auto'` (default) the bar uses flex
+   * and segments size to their content. When a number is provided the bar
+   * switches to a CSS grid with that many equal-width tracks.
+   * #1063
+   */
+  @Prop({ reflect: true }) columns: IoSegmentedControlColumns = 'auto';
+
   // ── Private ───────────────────────────────────────────────────
 
   private defaultValue?: string;
+  private errorId!: string;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  /**
+   * Mirrors FACE invalidity so the component re-renders on form validation
+   * state changes (WCAG 4.1.3). #1074
+   */
+  @State() faceInvalid = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -61,6 +117,8 @@ export class IoSegmentedControl {
     if (!this.label) {
       console.error('[io-segmented-control] label prop is required for accessibility (WCAG 4.1.2).');
     }
+    const suffix = Math.random().toString(36).slice(2);
+    this.errorId = `io-sc-error-${suffix}`;
     this.defaultValue = this.value;
     this.syncFormValue();
   }
@@ -80,6 +138,11 @@ export class IoSegmentedControl {
   @Watch('disabled')
   onDisabledChange() {
     this.syncChildren();
+  }
+
+  @Watch('required')
+  onRequiredChange() {
+    this.syncFormValue();
   }
 
   // ── FACE callbacks ────────────────────────────────────────────
@@ -155,7 +218,17 @@ export class IoSegmentedControl {
   private syncFormValue(): void {
     const hasValue = this.value !== undefined && this.value !== '';
     this.internals?.setFormValue?.(hasValue ? this.value! : null);
-    this.internals?.setValidity?.({});
+
+    if (this.required && !hasValue) {
+      this.internals?.setValidity?.(
+        { valueMissing: true },
+        'Please select an option.',
+      );
+      this.faceInvalid = true;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
   }
 
   private getSegments(): Array<HTMLElement & { value: string; selected: boolean; disabled: boolean; tabIndex: number }> {
@@ -187,20 +260,59 @@ export class IoSegmentedControl {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { disabled, label, hideLabel } = this;
+    const { disabled, label, hideLabel, error, errorMessage, required, noWrap, columns, faceInvalid } = this;
+
+    const showFaceError = faceInvalid && !error;
+    const faceErrorId = `${this.errorId}-face`;
+
+    const describedBy = [
+      error && errorMessage ? this.errorId : '',
+      showFaceError ? faceErrorId : '',
+    ].filter(Boolean).join(' ') || undefined;
+
+    const fieldsetClass = [
+      'segmented-control',
+      error ? 'segmented-control--error' : '',
+    ].filter(Boolean).join(' ');
+
+    // Render the slot, optionally wrapped in io-scroller for noWrap mode (#1072)
+    const slotContent = noWrap
+      ? <io-scroller class="segmented-control__scroller"><slot onSlotchange={this.syncChildren} /></io-scroller>
+      : <slot onSlotchange={this.syncChildren} />;
 
     return (
-      <Host
-        role="group"
-        aria-label={label || undefined}
-        aria-disabled={disabled ? 'true' : undefined}
-      >
-        <style>{getSegmentedControlStyles()}</style>
-        <div class="segmented-control">
-          <slot onSlotchange={this.syncChildren} />
-        </div>
-        {label && !hideLabel && (
-          <span class="segmented-control__label" aria-hidden="true">{label}</span>
+      <Host aria-disabled={disabled ? 'true' : undefined}>
+        <style>{getSegmentedControlStyles({ columns })}</style>
+        {/*
+          #1080 — inner <fieldset role="radiogroup"> aligns semantics with
+          io-radio-group. The Host carries no ARIA role. aria-required and
+          aria-invalid live on the fieldset.
+        */}
+        <fieldset
+          class={fieldsetClass}
+          disabled={disabled}
+          role="radiogroup"
+          aria-required={required ? 'true' : undefined}
+          aria-invalid={(error || faceInvalid) ? 'true' : undefined}
+          aria-describedby={describedBy}
+        >
+          <legend class={hideLabel ? 'segmented-control__legend segmented-control__legend--hidden' : 'segmented-control__legend'}>
+            {label}
+            {required && <span class="segmented-control__required" aria-hidden="true">&nbsp;*</span>}
+          </legend>
+          <div class="segmented-control__bar">
+            {slotContent}
+          </div>
+        </fieldset>
+        {error && errorMessage && (
+          <p id={this.errorId} class="segmented-control__error" role="alert" aria-atomic="true">
+            {errorMessage}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="segmented-control__error" role="alert" aria-atomic="true">
+            Please select an option.
+          </p>
         )}
       </Host>
     );

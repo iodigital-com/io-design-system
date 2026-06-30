@@ -7,3 +7,12 @@ export type IoModalSize = 'sm' | 'md' | 'lg';
  * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
  */
 export type IoModalBackground = 'canvas' | 'surface' | 'elevated';
+
+/**
+ * Allowed ARIA attribute keys for the io-modal `aria` prop.
+ * Restricted to attributes that are meaningful on a `<dialog>` element.
+ * Consumers who need other aria attributes should use the host element directly.
+ */
+export type IoModalAriaProps = Partial<
+  Record<'aria-label' | 'aria-labelledby' | 'aria-describedby', string>
+>;

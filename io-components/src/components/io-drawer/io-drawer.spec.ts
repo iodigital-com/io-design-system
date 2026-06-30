@@ -541,10 +541,12 @@ describe('io-drawer — componentWillLoad accessible label warning', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('does NOT log console.error when the aria prop supplies a label key', () => {
+  it('does NOT log console.error when the aria prop supplies an aria-label key (#1014: narrowed type)', () => {
     // The host element attribute is NOT forwarded to the internal <dialog> in
     // Shadow DOM — only the `aria` prop reaches the dialog. The warning must
-    // check the prop, not the host attribute.
+    // check the prop, not the host attribute. Since #1014 narrowed the type to
+    // only 'aria-label' | 'aria-labelledby' | 'aria-describedby', bare 'label'
+    // is no longer a valid key — use 'aria-label' instead.
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const component = new IoDrawer();
     const el = document.createElement('io-drawer');
@@ -552,7 +554,7 @@ describe('io-drawer — componentWillLoad accessible label warning', () => {
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).motionVisibleEndEvent = { emit: vi.fn() };
     (component as any).motionHiddenEndEvent = { emit: vi.fn() };
-    component.aria = { label: 'Settings panel' };
+    component.aria = { 'aria-label': 'Settings panel' };
 
     (component as any).componentWillLoad();
 

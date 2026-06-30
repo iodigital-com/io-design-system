@@ -8,3 +8,11 @@ export type IoDrawerSize = 'sm' | 'md' | 'lg' | 'full';
  * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
  */
 export type IoDrawerBackground = 'canvas' | 'surface' | 'elevated';
+
+/**
+ * Allowed ARIA attribute keys for the io-drawer `aria` prop.
+ * Restricted to attributes that are meaningful on a `<dialog>` element.
+ */
+export type IoDrawerAriaProps = Partial<
+  Record<'aria-label' | 'aria-labelledby' | 'aria-describedby', string>
+>;

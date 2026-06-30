@@ -28,30 +28,40 @@ describe('io-modal — aria prop', () => {
     expect(component.aria).toBeUndefined();
   });
 
-  it('accepts a custom aria record', () => {
-    component.aria = { owns: 'panel-id' };
-    expect(component.aria).toEqual({ owns: 'panel-id' });
+  it('accepts an aria-label record', () => {
+    component.aria = { 'aria-label': 'Confirm deletion' };
+    expect(component.aria).toEqual({ 'aria-label': 'Confirm deletion' });
+  });
+
+  it('accepts an aria-labelledby record', () => {
+    component.aria = { 'aria-labelledby': 'heading-id' };
+    expect(component.aria).toEqual({ 'aria-labelledby': 'heading-id' });
+  });
+
+  it('accepts an aria-describedby record', () => {
+    component.aria = { 'aria-describedby': 'desc-id' };
+    expect(component.aria).toEqual({ 'aria-describedby': 'desc-id' });
   });
 
   it('calls applyAriaProp when aria watch fires', () => {
     const mockDialog = document.createElement('dialog') as HTMLDialogElement;
     (component as any).dialogEl = mockDialog;
-    component.aria = { owns: 'step-panel' };
+    component.aria = { 'aria-label': 'Step dialog' };
 
     (component as any).onAriaChange();
 
     expect(applyAriaProp).toHaveBeenCalledWith(
-      { owns: 'step-panel' },
+      { 'aria-label': 'Step dialog' },
       mockDialog,
     );
   });
 
   it('calls applyAriaProp with null when dialogEl is not set', () => {
     (component as any).dialogEl = undefined;
-    component.aria = { owns: 'panel' };
+    component.aria = { 'aria-label': 'Panel' };
 
     (component as any).onAriaChange();
 
-    expect(applyAriaProp).toHaveBeenCalledWith({ owns: 'panel' }, null);
+    expect(applyAriaProp).toHaveBeenCalledWith({ 'aria-label': 'Panel' }, null);
   });
 });

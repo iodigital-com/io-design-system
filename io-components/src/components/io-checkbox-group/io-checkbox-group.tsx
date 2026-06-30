@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h }
 import { applyAriaProp } from '../../utils/aria-prop';
 import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
 
+import type { IoFieldState } from '../../utils/field-state';
 import type { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from './types';
 
 /**
@@ -32,7 +33,7 @@ export class IoCheckboxGroup {
   @Prop() label!: string;
 
   /** Name propagated to all slotted io-checkbox children */
-  @Prop() name!: string;
+  @Prop() name: string | undefined;
 
   /** Marks the group as required */
   @Prop() required = false;
@@ -40,10 +41,25 @@ export class IoCheckboxGroup {
   /** Disables the entire group */
   @Prop({ reflect: true }) disabled = false;
 
-  /** Puts the group in error state */
+  /**
+   * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+   * Propagates to all slotted io-checkbox children when non-'none'.
+   */
+  @Prop({ reflect: true }) state: IoFieldState = 'none';
+
+  /** Validation message shown below the group when state is non-'none' */
+  @Prop() message: string | undefined;
+
+  /**
+   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
+   * Puts the group in error state. Emits a console.warn in non-production builds.
+   */
   @Prop({ reflect: true }) error = false;
 
-  /** Error message shown below the group when error is true */
+  /**
+   * @deprecated Use `message` instead. Will be removed in the next minor release.
+   * Error message shown below the group when error is true.
+   */
   @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
@@ -84,6 +100,16 @@ export class IoCheckboxGroup {
   componentWillLoad() {
     const suffix = Math.random().toString(36).slice(2);
     this.errorId = `io-cg-error-${suffix}`;
+    if (!this.name) {
+      console.error('[io-checkbox-group] The "name" prop is required for form participation and accessibility. Provide a unique name for this group.');
+    }
+    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (!isProd && this.error) {
+      console.warn('[io-checkbox-group] The "error" prop is deprecated. Use state="error" instead.');
+    }
+    if (!isProd && this.errorMessage !== undefined) {
+      console.warn('[io-checkbox-group] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
+    }
   }
 
   componentDidLoad() {
@@ -98,6 +124,11 @@ export class IoCheckboxGroup {
 
   @Watch('disabled')
   onDisabledChange() {
+    this.syncChildren();
+  }
+
+  @Watch('state')
+  onStateChange() {
     this.syncChildren();
   }
 
@@ -137,35 +168,70 @@ export class IoCheckboxGroup {
    * Returns a filtered copy of `this.aria` that omits component-managed
    * attributes so they cannot be accidentally overridden by consumers.
    *
-   * - `aria-invalid` is always managed by the `error` prop.
+   * Always blocked (component-managed):
+   * - `aria-invalid` — controlled by the `error` prop.
+   * - `aria-required` — a fieldset's required state is conveyed via legend
+   *   indicator and child props; `aria-required` on `<fieldset>` is not valid.
+   * - `role` — the fieldset role is fixed and must not be overridden.
+   *
+   * Conditionally blocked:
    * - `aria-describedby` is managed by the component when `error` is active
-   *   (to preserve the error-message linkage).
+   *   (to preserve the error-message linkage) and cannot be overridden in that state.
    */
   private safeAriaProp(): Record<string, string> | undefined {
     if (!this.aria) return undefined;
-    const blocked = new Set(['aria-invalid', 'invalid']);
-    if (this.error) {
-      blocked.add('aria-describedby');
-      blocked.add('describedby');
+
+    const alwaysBlocked = new Set(['aria-invalid', 'invalid', 'aria-required', 'required', 'role']);
+    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
+    const conditionalBlocked = new Set<string>();
+    if (effectiveState === 'error') {
+      conditionalBlocked.add('aria-describedby');
+      conditionalBlocked.add('describedby');
     }
+
+    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
     const filtered: Record<string, string> = {};
     for (const [key, value] of Object.entries(this.aria)) {
-      if (!blocked.has(key.toLowerCase())) {
-        filtered[key] = value;
+      const lower = key.toLowerCase();
+      if (alwaysBlocked.has(lower)) {
+        if (!isProd) {
+          console.warn(
+            `[io-checkbox-group] aria prop: "${key}" is component-managed and cannot be overridden. ` +
+            `Use the component's dedicated props instead.`,
+          );
+        }
+        continue;
       }
+      if (conditionalBlocked.has(lower)) {
+        if (!isProd) {
+          console.warn(
+            `[io-checkbox-group] aria prop: "${key}" is managed by the component when error is active ` +
+            `and cannot be overridden in that state.`,
+          );
+        }
+        continue;
+      }
+      filtered[key] = value;
     }
     return Object.keys(filtered).length > 0 ? filtered : undefined;
   }
 
   private syncChildren = () => {
+    // Resolve effective state: new `state` prop takes precedence, `error` is deprecated alias
+    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     const checkboxes = Array.from(
       this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; required: boolean; value: string; state: string }>('io-checkbox'),
     );
     for (const checkbox of checkboxes) {
-      checkbox.name = this.name;
+      if (this.name !== undefined) {
+        checkbox.name = this.name;
+      }
       checkbox.disabled = this.disabled;
       checkbox.required = this.required;
-      checkbox.state = this.error ? 'error' : 'none';
+      // Only override child state when the group has a non-'none' state; preserve per-child state otherwise
+      if (effectiveState !== 'none') {
+        checkbox.state = effectiveState;
+      }
     }
   };
 
@@ -181,9 +247,14 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, error, errorMessage, required } = this;
-    const fieldsetClass = error ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
-    const describedBy = error && errorMessage ? this.errorId : undefined;
+    const { label, disabled, loading, helperText, error, errorMessage, state, message, required } = this;
+    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
+    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
+    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
+    const effectiveMessage = message ?? errorMessage;
+    const isError = effectiveState === 'error';
+    const fieldsetClass = isError ? 'checkbox-group checkbox-group--error' : 'checkbox-group';
+    const describedBy = isError && effectiveMessage ? this.errorId : undefined;
 
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
@@ -191,7 +262,7 @@ export class IoCheckboxGroup {
         <fieldset
           class={fieldsetClass}
           disabled={disabled}
-          aria-invalid={error ? 'true' : undefined}
+          aria-invalid={isError ? 'true' : undefined}
           aria-describedby={describedBy}
           ref={(el) => { this.fieldsetEl = el as HTMLFieldSetElement | undefined; }}
         >
@@ -213,9 +284,9 @@ export class IoCheckboxGroup {
             )}
           </div>
         </fieldset>
-        {error && errorMessage && (
+        {isError && effectiveMessage && (
           <p id={this.errorId} class="checkbox-group__error" role="alert" aria-atomic="true">
-            {errorMessage}
+            {effectiveMessage}
           </p>
         )}
       </Host>

@@ -197,21 +197,27 @@ export class IoInputDate {
     const showError = state === 'error';
     const showSuccess = state === 'success';
     const showWarning = state === 'warning';
-    const showMessage = (showError || showSuccess || showWarning) && !!message;
-    const showDescription = !showMessage && !!helperText;
-
-    const showFaceError = this.touched && this.faceInvalid && !showError;
-    const faceErrorId = `${inputId}-face-error`;
+    // faceInvalid contributes to showError when there is no consumer-provided error state
+    const showFaceOnlyError = this.touched && this.faceInvalid && !showError;
+    // Combined error display: either consumer state=error or FACE-triggered error
+    const showErrorBlock = showError || showFaceOnlyError;
+    // The error message shown: consumer message takes precedence, then native validation message
+    const errorMessageToShow = showError && message ? message : (showFaceOnlyError ? this.faceErrorMessage : '');
+    const showMessage = showErrorBlock && !!errorMessageToShow;
+    const showSuccessMessage = showSuccess && !!message;
+    const showWarningMessage = showWarning && !!message;
+    const showDescription = !showErrorBlock && !showSuccessMessage && !showWarningMessage && !!helperText;
 
     const describedBy = [
       showMessage ? errorId : '',
+      showSuccessMessage ? errorId : '',
+      showWarningMessage ? errorId : '',
       showDescription ? helperId : '',
-      showFaceError ? faceErrorId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const wrapperClass = [
       'input-wrapper',
-      showError ? 'input-wrapper--state-error' : '',
+      showErrorBlock ? 'input-wrapper--state-error' : '',
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
@@ -242,7 +248,7 @@ export class IoInputDate {
               min={min}
               max={max}
               step={step}
-              aria-invalid={(showError || (this.touched && this.faceInvalid)) ? 'true' : undefined}
+              aria-invalid={(showError || showFaceOnlyError) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -291,24 +297,19 @@ export class IoInputDate {
             {required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {showError && (
+        {showErrorBlock && (
           <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
-            {message}
+            {errorMessageToShow}
           </p>
         )}
         {showSuccess && (
-          <p id={errorId} class={`input-message input-message--success${showMessage ? '' : ' input-error--hidden'}`} role="status">
+          <p id={errorId} class={`input-message input-message--success${showSuccessMessage ? '' : ' input-error--hidden'}`} role="status">
             {message}
           </p>
         )}
         {showWarning && (
-          <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
+          <p id={errorId} class={`input-message input-message--warning${showWarningMessage ? '' : ' input-error--hidden'}`} role="status">
             {message}
-          </p>
-        )}
-        {showFaceError && (
-          <p id={faceErrorId} class="input-message input-message--error" role="alert">
-            {this.faceErrorMessage}
           </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>

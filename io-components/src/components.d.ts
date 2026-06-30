@@ -735,12 +735,12 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the group in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error": boolean;
         /**
-          * Error message shown below the group when error is true
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
          */
         "errorMessage": string | undefined;
         /**
@@ -758,9 +758,13 @@ export namespace Components {
          */
         "loading": boolean;
         /**
+          * Validation message shown below the group when state is non-'none'
+         */
+        "message": string | undefined;
+        /**
           * Name propagated to all slotted io-checkbox children
          */
-        "name": string;
+        "name": string | undefined;
         /**
           * Layout direction of the checkbox options
           * @default 'vertical'
@@ -771,6 +775,11 @@ export namespace Components {
           * @default false
          */
         "required": boolean;
+        /**
+          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'. Propagates to all slotted io-checkbox children when non-'none'.
+          * @default 'none'
+         */
+        "state": IoFieldState;
     }
     /**
      * io-divider
@@ -2167,12 +2176,12 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the group in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error": boolean;
         /**
-          * Error message shown below the group when error is true
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
          */
         "errorMessage": string | undefined;
         /**
@@ -2190,9 +2199,13 @@ export namespace Components {
          */
         "loading": boolean;
         /**
+          * Validation message shown below the group when state is non-'none'
+         */
+        "message": string | undefined;
+        /**
           * Name propagated to all slotted io-radio children
          */
-        "name": string;
+        "name": string | undefined;
         /**
           * Layout orientation — 'vertical' (default) or 'horizontal'
           * @default 'vertical'
@@ -2203,6 +2216,11 @@ export namespace Components {
           * @default false
          */
         "required": boolean;
+        /**
+          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Currently selected value
           * @default ''
@@ -2618,12 +2636,12 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Puts the switch in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the switch in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error": boolean;
         /**
-          * Error message shown below the switch
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the switch when error is true.
          */
         "errorMessage": string | undefined;
         /**
@@ -2645,6 +2663,10 @@ export namespace Components {
          */
         "loading": boolean;
         /**
+          * Validation message shown below the switch when state is non-'none'
+         */
+        "message": string | undefined;
+        /**
           * Input name
          */
         "name": string | undefined;
@@ -2661,6 +2683,11 @@ export namespace Components {
           * Programmatically move focus to the switch
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Validation state of the switch — 'none' | 'error' | 'success' | 'warning'.
+          * @default 'none'
+         */
+        "state": IoFieldState;
         /**
           * Value submitted with the form
           * @default 'on'
@@ -5818,12 +5845,12 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the group in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error"?: boolean;
         /**
-          * Error message shown below the group when error is true
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
          */
         "errorMessage"?: string | undefined;
         /**
@@ -5841,9 +5868,13 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
+          * Validation message shown below the group when state is non-'none'
+         */
+        "message"?: string | undefined;
+        /**
           * Name propagated to all slotted io-checkbox children
          */
-        "name": string;
+        "name"?: string | undefined;
         /**
           * Fires when any checkbox in the group changes, with all checked values
          */
@@ -5858,6 +5889,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'. Propagates to all slotted io-checkbox children when non-'none'.
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
     }
     /**
      * io-divider
@@ -7285,12 +7321,12 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the group in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the group in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error"?: boolean;
         /**
-          * Error message shown below the group when error is true
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the group when error is true.
          */
         "errorMessage"?: string | undefined;
         /**
@@ -7312,9 +7348,13 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
+          * Validation message shown below the group when state is non-'none'
+         */
+        "message"?: string | undefined;
+        /**
           * Name propagated to all slotted io-radio children
          */
-        "name": string;
+        "name"?: string | undefined;
         /**
           * Fires when a radio in the group is selected
          */
@@ -7329,6 +7369,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state of the group — 'none' | 'error' | 'success' | 'warning'.
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Currently selected value
           * @default ''
@@ -7764,12 +7809,12 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Puts the switch in error state
+          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the switch in error state. Emits a console.warn in non-production builds.
           * @default false
          */
         "error"?: boolean;
         /**
-          * Error message shown below the switch
+          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the switch when error is true.
          */
         "errorMessage"?: string | undefined;
         /**
@@ -7795,6 +7840,10 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
+          * Validation message shown below the switch when state is non-'none'
+         */
+        "message"?: string | undefined;
+        /**
           * Input name
          */
         "name"?: string | undefined;
@@ -7811,6 +7860,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "required"?: boolean;
+        /**
+          * Validation state of the switch — 'none' | 'error' | 'success' | 'warning'.
+          * @default 'none'
+         */
+        "state"?: IoFieldState;
         /**
           * Value submitted with the form
           * @default 'on'
@@ -8667,9 +8721,11 @@ declare namespace LocalJSX {
     }
     interface IoCheckboxGroupAttributes {
         "label": string;
-        "name": string;
+        "name": string | undefined;
         "required": boolean;
         "disabled": boolean;
+        "state": IoFieldState;
+        "message": string | undefined;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
@@ -8928,11 +8984,13 @@ declare namespace LocalJSX {
     }
     interface IoRadioGroupAttributes {
         "label": string;
-        "name": string;
+        "name": string | undefined;
         "value": string;
         "required": boolean;
         "disabled": boolean;
         "loading": boolean;
+        "state": IoFieldState;
+        "message": string | undefined;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string;
@@ -9008,6 +9066,8 @@ declare namespace LocalJSX {
         "required": boolean;
         "disabled": boolean;
         "loading": boolean;
+        "state": IoFieldState;
+        "message": string | undefined;
         "error": boolean;
         "errorMessage": string | undefined;
         "helperText": string | undefined;
@@ -9144,7 +9204,7 @@ declare namespace LocalJSX {
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
-        "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]> & OneOf<"name", IoCheckboxGroup["name"], IoCheckboxGroupAttributes["name"]>;
+        "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
         "io-flyout": Omit<IoFlyout, keyof IoFlyoutAttributes> & { [K in keyof IoFlyout & keyof IoFlyoutAttributes]?: IoFlyout[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `attr:${K}`]?: IoFlyoutAttributes[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `prop:${K}`]?: IoFlyout[K] };
@@ -9166,7 +9226,7 @@ declare namespace LocalJSX {
         "io-popover": Omit<IoPopover, keyof IoPopoverAttributes> & { [K in keyof IoPopover & keyof IoPopoverAttributes]?: IoPopover[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `attr:${K}`]?: IoPopoverAttributes[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `prop:${K}`]?: IoPopover[K] };
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
-        "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]> & OneOf<"name", IoRadioGroup["name"], IoRadioGroupAttributes["name"]>;
+        "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]>;
         "io-scroller": Omit<IoScroller, keyof IoScrollerAttributes> & { [K in keyof IoScroller & keyof IoScrollerAttributes]?: IoScroller[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `attr:${K}`]?: IoScrollerAttributes[K] } & { [K in keyof IoScroller & keyof IoScrollerAttributes as `prop:${K}`]?: IoScroller[K] };
         "io-segment": Omit<IoSegment, keyof IoSegmentAttributes> & { [K in keyof IoSegment & keyof IoSegmentAttributes]?: IoSegment[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `attr:${K}`]?: IoSegmentAttributes[K] } & { [K in keyof IoSegment & keyof IoSegmentAttributes as `prop:${K}`]?: IoSegment[K] } & OneOf<"value", IoSegment["value"], IoSegmentAttributes["value"]> & OneOf<"label", IoSegment["label"], IoSegmentAttributes["label"]>;
         "io-segmented-control": Omit<IoSegmentedControl, keyof IoSegmentedControlAttributes> & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes]?: IoSegmentedControl[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `attr:${K}`]?: IoSegmentedControlAttributes[K] } & { [K in keyof IoSegmentedControl & keyof IoSegmentedControlAttributes as `prop:${K}`]?: IoSegmentedControl[K] };

@@ -194,10 +194,11 @@ describe('io-checkbox-group — syncChildren', () => {
     expect(cb.state).toBe('error');
   });
 
-  it('clears error state on children when error=false', () => {
+  it('preserves existing child state when group error=false and state="none"', () => {
+    // Issue #954: group in non-error state must NOT reset per-child state
     const component = new IoCheckboxGroup();
     const host = document.createElement('io-checkbox-group');
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: '', checked: false, disabled: false, state: 'error' });
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: '', checked: false, disabled: false, state: 'warning' });
     host.appendChild(cb);
     (component as any).el = host;
     (component as any).change = { emit: vi.fn() };
@@ -207,7 +208,24 @@ describe('io-checkbox-group — syncChildren', () => {
 
     (component as any).syncChildren();
 
-    expect(cb.state).toBe('none');
+    // Child's own warning state must be preserved when group is in the default 'none' state
+    expect(cb.state).toBe('warning');
+  });
+
+  it('forces all children to error when group error=true', () => {
+    const component = new IoCheckboxGroup();
+    const host = document.createElement('io-checkbox-group');
+    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: '', checked: false, disabled: false, state: 'warning' });
+    host.appendChild(cb);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'g';
+    component.disabled = false;
+    component.error = true;
+
+    (component as any).syncChildren();
+
+    expect(cb.state).toBe('error');
   });
 
   it('does not throw when no children are present', () => {

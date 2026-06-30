@@ -396,5 +396,37 @@ export function getSelectStyles(): string {
       .combobox-option,
       .combobox-option__checkbox { transition: none; }
     }
+
+    /* ============================================================
+       FORCED COLORS (issue #1120 — WCAG 1.4.1 / 1.4.11 / 2.4.7)
+       ============================================================ */
+
+    @media (forced-colors: active) {
+      .select-field,
+      .combobox-trigger {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+        background: Field;
+      }
+
+      .select-field:focus,
+      .select-field:focus-visible,
+      .combobox-trigger:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 1px;
+        box-shadow: none;
+      }
+
+      .combobox-option--selected .combobox-option__checkbox {
+        background-color: Highlight;
+        border-color: Highlight;
+      }
+
+      :host([disabled]) .select-field,
+      :host([disabled]) .combobox-trigger {
+        color: GrayText;
+        border-color: GrayText;
+      }
+    }
   `;
 }

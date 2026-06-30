@@ -1477,5 +1477,17 @@
     "classification": "public-api",
     "component": "io-spinner",
     "description": "Duration of one full spinner rotation. Override to adjust spin speed."
+  },
+  {
+    "cssVar": "--io-tag-strong-bg",
+    "classification": "internal",
+    "component": "io-tag",
+    "description": "Semantic background for the dark/strong tag variant. Flips to a light tint in dark mode. Used by io-tag, io-tag-dismissible, and io-badge dark variants."
+  },
+  {
+    "cssVar": "--io-tag-strong-fg",
+    "classification": "internal",
+    "component": "io-tag",
+    "description": "Semantic foreground for the dark/strong tag variant. Flips to a dark tint in dark mode. Used by io-tag, io-tag-dismissible, and io-badge dark variants."
   }
 ]

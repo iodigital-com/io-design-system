@@ -357,5 +357,29 @@ export function getInputStyles(): string {
     :host-context([dir="rtl"]) .input-field-row {
       direction: inherit;
     }
+
+    /* ============================================================
+       FORCED COLORS (issue #1120 — WCAG 1.4.1 / 1.4.11 / 2.4.7)
+       ============================================================ */
+
+    @media (forced-colors: active) {
+      .input-field {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+        background: Field;
+      }
+
+      .input-field:focus,
+      .input-field:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 1px;
+        box-shadow: none;
+      }
+
+      :host([disabled]) .input-field {
+        color: GrayText;
+        border-color: GrayText;
+      }
+    }
   `;
 }

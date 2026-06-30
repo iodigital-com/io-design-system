@@ -55,7 +55,10 @@ export function getSheetStyles(): string {
     .sheet__handle {
       width: var(--io-sheet-handle-width, 32px);
       height: var(--io-sheet-handle-height, 4px);
-      background: var(--io-sheet-handle-color, var(--io-color-grey-3));
+      /* --io-sheet-handle-color is the consumer override point.
+         Default uses --io-border-hover (semantic, flips in dark mode)
+         instead of the primitive --io-color-grey-3 which does not flip. */
+      background: var(--io-sheet-handle-color, var(--io-border-hover));
       border-radius: var(--io-border-radius-pill, 100px);
       margin: var(--io-space-3) auto var(--io-space-2);
       flex-shrink: 0;

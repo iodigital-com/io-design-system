@@ -45,6 +45,20 @@ export function getBadgeStyles(): string {
 
     /* ── Semantic variant × appearance combinations ─────── */
 
+    .badge--beige {
+      background-color: var(--io-color-beige);
+      color: var(--io-text-primary);
+      border-color: var(--io-color-beige);
+    }
+
+    /* 'dark' variant: intentionally inverted — uses semantic strong tokens
+       so the background/foreground flip correctly in dark mode */
+    .badge--dark {
+      background-color: var(--io-tag-strong-bg);
+      color: var(--io-tag-strong-fg);
+      border-color: var(--io-tag-strong-bg);
+    }
+
     /* neutral */
     .badge--neutral.badge--soft {
       background-color: var(--io-state-hover);
@@ -253,6 +267,16 @@ export function getBadgeStyles(): string {
 
     @media (prefers-reduced-motion: reduce) {
       .badge { transition: none; }
+    }
+
+    /* ── Forced colors (issue #1120) ────────────────────── */
+
+    @media (forced-colors: active) {
+      .badge {
+        border: 1px solid ButtonText;
+        color: ButtonText;
+        background: ButtonFace;
+      }
     }
   `;
 }

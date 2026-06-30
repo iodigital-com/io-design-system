@@ -1210,3 +1210,19 @@ MockHTMLElement {
   "s-hn": "DIV",
 }
 `;
+
+exports[`io-tooltip — render snapshots > renders with dark theme (explicit) 1`] = `
+<io-tooltip class="hydrated">
+  <button type="button" __self="[object global]" __source="[object Object]">
+    Trigger
+  </button>
+</io-tooltip>
+`;
+
+exports[`io-tooltip — render snapshots > renders with light theme 1`] = `
+<io-tooltip class="hydrated">
+  <button type="button" __self="[object global]" __source="[object Object]">
+    Trigger
+  </button>
+</io-tooltip>
+`;

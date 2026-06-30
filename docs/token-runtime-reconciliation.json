@@ -4462,6 +4462,94 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Width and height of io-wordmark badge variant at xl scale."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-max-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Maximum width of the tooltip overlay panel. Consumer override point. Default: 20rem."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Background colour of the tooltip overlay. Dark theme default: --io-color-grey-6 (#242424). WCAG 1.4.3 contrast: white text on #242424 = 15.8:1."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Text colour of the tooltip overlay. Dark theme default: --io-color-white (#ffffff). WCAG 1.4.3 satisfied against dark background."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-light-bg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Background colour for light theme tooltip. Default: --io-color-white (#ffffff). Used via [data-tooltip-theme='light'] selector."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-light-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Text colour for light theme tooltip. Default: --io-text-primary. Used via [data-tooltip-theme='light'] selector."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-show-delay",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Delay before the tooltip appears on hover. Default: 500ms. Read by tooltip-attribute.ts at runtime."
+    },
+    {
+      "runtimeCssVar": "--io-tooltip-hide-delay",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Delay before the tooltip hides after pointer leaves. Default: 150ms. Satisfies WCAG 1.4.13 by allowing pointer to reach the tooltip panel."
+    },
+    {
+      "runtimeCssVar": "--io-progress-circle-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Diameter of circular progress indicator \u2014 sm size variant. Default: 3rem (48px)."
+    },
+    {
+      "runtimeCssVar": "--io-progress-circle-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Diameter of circular progress indicator \u2014 md size variant. Default: 5rem (80px)."
+    },
+    {
+      "runtimeCssVar": "--io-progress-circle-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Diameter of circular progress indicator \u2014 lg size variant. Default: 7rem (112px)."
+    },
+    {
+      "runtimeCssVar": "--io-progress-circle-thickness",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px)."
     }
   ]
 }

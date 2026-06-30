@@ -855,6 +855,28 @@
      Set to 0s to disable the transition without needing the `animated` prop. */
   --io-progress-transition-duration: var(--io-motion-base);
 
+  /* io-progress circular / step tokens */
+  --io-progress-circle-size-sm:  3rem;       /* 48px */
+  --io-progress-circle-size-md:  5rem;       /* 80px */
+  --io-progress-circle-size-lg:  7rem;       /* 112px */
+  --io-progress-circle-thickness: 0.375rem;  /* 6px — stroke width */
+
+  /* ============================================================
+     15. TOOLTIP COMPONENT TOKENS
+     ============================================================ */
+
+  /* Background / foreground (dark theme default) */
+  --io-tooltip-bg:           var(--io-color-grey-6, #242424);
+  --io-tooltip-color:        var(--io-color-white, #ffffff);
+  /* Light theme overrides (applied via [data-tooltip-theme="light"]) */
+  --io-tooltip-light-bg:     var(--io-color-white, #ffffff);
+  --io-tooltip-light-color:  var(--io-text-primary);
+  /* Max width */
+  --io-tooltip-max-width:    20rem;
+  /* Interaction delays */
+  --io-tooltip-show-delay:   500ms;
+  --io-tooltip-hide-delay:   150ms;
+
   /* ============================================================
      13. PIN CODE
      ============================================================ */
@@ -1185,17 +1207,17 @@ io-table[compact] io-table-body-cell td {
    inset: auto;
    margin: 0;
    z-index: var(--io-z-tooltip);
-   background: var(--io-bg-card);
-   border: 1px solid var(--io-border);
+   background: var(--io-tooltip-bg, var(--io-color-grey-6, #242424));
+   border: 1px solid transparent;
    border-radius: var(--io-border-radius-sm);
    box-shadow: var(--io-shadow-md);
-   color: var(--io-text-primary);
+   color: var(--io-tooltip-color, var(--io-color-white, #ffffff));
    font-family: var(--io-font-primary);
    font-size: var(--io-font-size-xs);
    line-height: var(--io-line-height-normal);
    padding: var(--io-space-2) var(--io-space-3);
    width: max-content;
-   max-width: 240px;
+   max-width: var(--io-tooltip-max-width, 20rem);
    white-space: normal;
    word-break: break-word;
    /* pointer-events intentionally omitted — tooltip must be hoverable (WCAG 1.4.13) */
@@ -1204,6 +1226,14 @@ io-table[compact] io-table-body-cell td {
    transition:
       opacity var(--io-motion-fast),
       visibility var(--io-motion-fast);
+}
+
+/* Light theme variant — applied when data-tooltip-theme="light" on the overlay */
+.io-tooltip-overlay[data-tooltip-theme='light'] {
+   background: var(--io-tooltip-light-bg, var(--io-color-white, #ffffff));
+   color: var(--io-tooltip-light-color, var(--io-text-primary));
+   border-color: var(--io-border);
+   box-shadow: var(--io-shadow-md);
 }
 
 .io-tooltip-overlay[data-visible='true'] {
@@ -1288,6 +1318,14 @@ io-table[compact] io-table-body-cell td {
   --io-button-group-compact-active-shadow: 0 1px 2px rgba(0,0,0,0.30);
   --io-progress-track-bg:        var(--io-color-dark-bg-raised);
   --io-table-row-selected-bg:    var(--io-color-dark-accent-bg);
+
+  /* Tooltip dark mode overrides */
+  /* Dark theme tooltip (bg = very dark, text = white) — unchanged in dark mode */
+  --io-tooltip-bg:               var(--io-color-grey-6, #242424);
+  --io-tooltip-color:            var(--io-color-white, #ffffff);
+  /* Light theme tooltip variant needs a dark-mode equivalent */
+  --io-tooltip-light-bg:         var(--io-color-dark-bg-raised);
+  --io-tooltip-light-color:      var(--io-color-dark-text-primary);
 
   /* Avatar — grey variant needs dark-surface bg + light text */
   --io-avatar-bg-grey:           var(--io-color-dark-bg-raised);
@@ -1638,6 +1676,10 @@ io-table[compact] io-table-body-cell td {
   --io-table-row-selected-bg:    var(--io-color-dark-accent-bg);
   --io-avatar-bg-grey:           var(--io-color-dark-bg-raised);
   --io-avatar-text-grey:         var(--io-color-dark-text-primary);
+  --io-tooltip-bg:               var(--io-color-grey-6, #242424);
+  --io-tooltip-color:            var(--io-color-white, #ffffff);
+  --io-tooltip-light-bg:         var(--io-color-dark-bg-raised);
+  --io-tooltip-light-color:      var(--io-color-dark-text-primary);
 
   /* ── Missing dark-mode overrides (issue #1145) ────────────── */
   --io-bg-overlay:               rgba(0, 0, 0, 0.7);

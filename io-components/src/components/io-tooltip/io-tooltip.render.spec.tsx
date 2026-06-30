@@ -21,4 +21,22 @@ describe('io-tooltip — render snapshots', () => {
     );
     expect(root).toMatchSnapshot();
   });
+
+  it('renders with light theme', async () => {
+    const { root } = await render(
+      <io-tooltip content="Light tooltip" theme="light">
+        <button type="button">Trigger</button>
+      </io-tooltip>
+    );
+    expect(root).toMatchSnapshot();
+  });
+
+  it('renders with dark theme (explicit)', async () => {
+    const { root } = await render(
+      <io-tooltip content="Dark tooltip" theme="dark">
+        <button type="button">Trigger</button>
+      </io-tooltip>
+    );
+    expect(root).toMatchSnapshot();
+  });
 });

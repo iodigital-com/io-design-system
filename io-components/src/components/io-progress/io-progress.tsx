@@ -3,22 +3,34 @@ import { Component, Prop, State, Host, Element, h } from '@stencil/core';
 import { getProgressStyles } from './io-progress-styles';
 import {
   computePercentage,
+  computeCircleCircumference,
+  computeCircleDashoffset,
+  computeStepsFilled,
   getProgressWrapperClass,
   getProgressFillClass,
 } from './io-progress-utils';
-import type { IoProgressColor, IoProgressSize } from './types';
+import type { IoProgressColor, IoProgressShape, IoProgressSize } from './types';
+
+// SVG viewBox size for the circular variant — fixed coordinate space.
+const SVG_SIZE = 48;
+// Radius must leave room for the stroke: radius = (SVG_SIZE / 2) - (strokeWidth / 2)
+// We use a stroke-width of 6 in SVG user-units (matches the CSS token default).
+const SVG_RADIUS = 21;
 
 /**
  * io-progress
  * ===========
- * Linear progress bar for determinate loading states.
- * Use for file uploads, multi-step forms, and wizard flows.
+ * Progress indicator for determinate and indeterminate loading states.
+ * Supports three shapes: linear (default), circular, and step.
  *
- * @example
- * <io-progress value="60"></io-progress>
- * <io-progress value="75" color="success" size="lg" show-label></io-progress>
- * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
- * <io-progress indeterminate label="Loading"></io-progress>
+ * @example Linear
+ * <io-progress value="60" label="Upload progress"></io-progress>
+ *
+ * @example Circular
+ * <io-progress shape="circular" value="75" color="success" label="Loading"></io-progress>
+ *
+ * @example Step — max controls the number of segments
+ * <io-progress shape="step" value="3" min="0" max="5" label="Step 3 of 5"></io-progress>
  */
 @Component({
   tag: 'io-progress',
@@ -39,7 +51,15 @@ export class IoProgress {
   @Prop({ reflect: true }) size: IoProgressSize = 'md';
 
   /**
-   * When true, the fill width transitions smoothly on value change.
+   * Shape variant.
+   * - `'linear'` (default) — horizontal bar.
+   * - `'circular'` — SVG ring. Size controlled by `--io-progress-circle-size-{sm,md,lg}`.
+   * - `'step'` — segmented bar; each segment maps to one unit between `min` and `max`.
+   */
+  @Prop({ reflect: true }) shape: IoProgressShape = 'linear';
+
+  /**
+   * When true, the fill transitions smoothly on value change.
    * Disabled automatically when prefers-reduced-motion is active.
    */
   @Prop() animated = true;
@@ -84,6 +104,105 @@ export class IoProgress {
     }
   }
 
+  // ── Private helpers ──────────────────────────────────────────
+
+  private renderLinear(percentage: number) {
+    return [
+      <div class={getProgressWrapperClass(this.size, this.indeterminate)}>
+        <div
+          class={getProgressFillClass(this.color, this.animated, this.indeterminate)}
+          style={{ width: this.indeterminate ? undefined : `${percentage}%` }}
+        />
+      </div>,
+      this.indeterminate && (
+        <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">
+          {this.valueText ?? 'Loading…'}
+        </span>
+      ),
+      this.showLabel && !this.indeterminate && (
+        <p class="progress-label" aria-hidden="true">
+          {percentage}%
+        </p>
+      ),
+    ];
+  }
+
+  private renderCircular(percentage: number) {
+    const circumference = computeCircleCircumference(SVG_RADIUS);
+    const dashoffset = this.indeterminate ? circumference * 0.25 : computeCircleDashoffset(SVG_RADIUS, percentage);
+
+    const fillClass = [
+      'progress-circular__fill',
+      `progress-circular__fill--${this.color}`,
+      !this.animated && 'progress-circular__fill--static',
+    ].filter(Boolean).join(' ');
+
+    const wrapperClass = [
+      'progress-circular',
+      `progress-circular--${this.size}`,
+      this.indeterminate && 'progress-circular--indeterminate',
+    ].filter(Boolean).join(' ');
+
+    return (
+      <div class={wrapperClass}>
+        <svg
+          class="progress-circular__svg"
+          viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle
+            class="progress-circular__track"
+            cx={SVG_SIZE / 2}
+            cy={SVG_SIZE / 2}
+            r={SVG_RADIUS}
+            stroke-dasharray={`${circumference} ${circumference}`}
+            stroke-dashoffset="0"
+          />
+          <circle
+            class={fillClass}
+            cx={SVG_SIZE / 2}
+            cy={SVG_SIZE / 2}
+            r={SVG_RADIUS}
+            stroke-dasharray={`${circumference} ${circumference}`}
+            stroke-dashoffset={dashoffset}
+          />
+        </svg>
+        {this.indeterminate && (
+          <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">
+            {this.valueText ?? 'Loading…'}
+          </span>
+        )}
+        {this.showLabel && !this.indeterminate && (
+          <p class="progress-circular__label" aria-hidden="true">
+            {percentage}%
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  private renderStep() {
+    const totalSteps = Math.max(1, this.max - this.min);
+    const filledSteps = computeStepsFilled(this.value, this.min, this.max);
+
+    const steps = [];
+    for (let i = 0; i < totalSteps; i++) {
+      const isFilled = i < filledSteps;
+      const stepClass = [
+        'progress-step',
+        isFilled ? `progress-step--filled progress-step--${this.color}` : '',
+      ].filter(Boolean).join(' ');
+      steps.push(<div class={stepClass} />);
+    }
+
+    return (
+      <div class={`progress-steps progress-steps--${this.size}`}>
+        {steps}
+      </div>
+    );
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
@@ -115,25 +234,12 @@ export class IoProgress {
         aria-busy={this.indeterminate ? 'true' : undefined}
       >
         <style>{getProgressStyles()}</style>
-        <div class={getProgressWrapperClass(this.size, this.indeterminate)}>
-          <div
-            class={getProgressFillClass(this.color, this.animated, this.indeterminate)}
-            style={{ width: this.indeterminate ? undefined : `${percentage}%` }}
-          />
-          {this.indeterminate && (
-            <div class={`progress-fill progress-fill--${this.color} progress-fill--indeterminate-secondary`} />
-          )}
-        </div>
-        {this.indeterminate && (
-          <span role="status" aria-live="polite" aria-atomic="true" class="sr-only">
-            {this.valueText ?? 'Loading…'}
-          </span>
-        )}
-        {this.showLabel && !this.indeterminate && (
-          <p class="progress-label" aria-hidden="true">
-            {percentage}%
-          </p>
-        )}
+        {this.shape === 'circular'
+          ? this.renderCircular(percentage)
+          : this.shape === 'step'
+            ? this.renderStep()
+            : this.renderLinear(percentage)
+        }
       </Host>
     );
   }

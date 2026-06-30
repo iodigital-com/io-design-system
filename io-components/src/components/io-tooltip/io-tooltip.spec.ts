@@ -24,6 +24,10 @@ describe('io-tooltip — default props', () => {
     expect(component.placement).toBe('top');
   });
 
+  it('theme defaults to dark', () => {
+    expect(component.theme).toBe('dark');
+  });
+
   it('maps props to trigger attributes on load', () => {
     component.content = 'Hello';
     component.placement = 'bottom';
@@ -31,6 +35,22 @@ describe('io-tooltip — default props', () => {
 
     expect(trigger.getAttribute('io-tooltip')).toBe('Hello');
     expect(trigger.getAttribute('io-tooltip-placement')).toBe('bottom');
+  });
+
+  it('does not set io-tooltip-theme for dark theme (default)', () => {
+    component.content = 'Hello';
+    component.theme = 'dark';
+    component.componentDidLoad();
+
+    expect(trigger.hasAttribute('io-tooltip-theme')).toBe(false);
+  });
+
+  it('sets io-tooltip-theme="light" on trigger for light theme', () => {
+    component.content = 'Hello';
+    component.theme = 'light';
+    component.componentDidLoad();
+
+    expect(trigger.getAttribute('io-tooltip-theme')).toBe('light');
   });
 });
 describe('io-tooltip — wrapper syncing', () => {
@@ -119,5 +139,25 @@ describe('io-tooltip — overlay transition contract (migration stub)', () => {
   it('does not set pointer-events: none — tooltip panel must be hoverable (WCAG 1.4.13)', () => {
     const styles: string = getTooltipStyles();
     expect(styles).not.toContain('pointer-events: none');
+  });
+
+  it('uses --io-tooltip-max-width token for max-width', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('--io-tooltip-max-width');
+  });
+
+  it('uses --io-tooltip-bg token for background', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('--io-tooltip-bg');
+  });
+
+  it('uses --io-tooltip-color token for text color', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('--io-tooltip-color');
+  });
+
+  it('has light theme variant class', () => {
+    const styles: string = getTooltipStyles();
+    expect(styles).toContain('.tooltip--light');
   });
 });

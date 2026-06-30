@@ -144,5 +144,122 @@ export function getProgressStyles(): string {
       font-size: var(--io-font-size-sm, 12px);
       line-height: var(--io-line-height-normal, 1.5);
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       CIRCULAR VARIANT
+       ════════════════════════════════════════════════════════════ */
+
+    .progress-circular {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--io-space-2);
+    }
+
+    .progress-circular__svg {
+      display: block;
+      /* rotate -90deg so stroke starts at the top (12 o'clock) */
+      transform: rotate(-90deg);
+    }
+
+    .progress-circular__track {
+      fill: none;
+      stroke: var(--io-progress-track-bg);
+      stroke-width: var(--io-progress-circle-thickness, 6);
+    }
+
+    .progress-circular__fill {
+      fill: none;
+      stroke-width: var(--io-progress-circle-thickness, 6);
+      stroke-linecap: round;
+      transition: stroke-dashoffset var(--io-motion-base, 300ms ease);
+    }
+
+    .progress-circular__fill--static {
+      transition: none;
+    }
+
+    /* ── Circular size variants ──────────────────────────────────── */
+
+    .progress-circular--sm .progress-circular__svg {
+      width: var(--io-progress-circle-size-sm, 3rem);
+      height: var(--io-progress-circle-size-sm, 3rem);
+    }
+
+    .progress-circular--md .progress-circular__svg {
+      width: var(--io-progress-circle-size-md, 5rem);
+      height: var(--io-progress-circle-size-md, 5rem);
+    }
+
+    .progress-circular--lg .progress-circular__svg {
+      width: var(--io-progress-circle-size-lg, 7rem);
+      height: var(--io-progress-circle-size-lg, 7rem);
+    }
+
+    /* ── Circular color fills (stroke) ──────────────────────────── */
+
+    .progress-circular__fill--blue    { stroke: var(--io-progress-fill-blue); }
+    .progress-circular__fill--orange  { stroke: var(--io-progress-fill-orange); }
+    .progress-circular__fill--success { stroke: var(--io-progress-fill-success); }
+    .progress-circular__fill--warning { stroke: var(--io-progress-fill-warning); }
+    .progress-circular__fill--error   { stroke: var(--io-progress-fill-error); }
+
+    /* ── Circular indeterminate ──────────────────────────────────── */
+
+    @keyframes io-progress-circular-spin {
+      to { transform: rotate(270deg); }
+    }
+
+    .progress-circular--indeterminate .progress-circular__svg {
+      transform: rotate(-90deg);
+      animation: io-progress-circular-spin 1200ms linear infinite;
+    }
+
+    /* ── Circular label ──────────────────────────────────────────── */
+
+    .progress-circular__label {
+      margin: 0;
+      text-align: center;
+      color: var(--io-text-secondary);
+      font-size: var(--io-font-size-sm, 12px);
+      line-height: var(--io-line-height-normal, 1.5);
+    }
+
+    /* ── Reduced motion for circular ─────────────────────────────── */
+
+    @media (prefers-reduced-motion: reduce) {
+      .progress-circular__fill { transition: none; }
+      .progress-circular--indeterminate .progress-circular__svg { animation: none; }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       STEP VARIANT
+       ════════════════════════════════════════════════════════════ */
+
+    .progress-steps {
+      display: flex;
+      gap: var(--io-space-1);
+      align-items: center;
+    }
+
+    .progress-step {
+      flex: 1;
+      border-radius: var(--io-border-radius-pill);
+      background: var(--io-progress-track-bg);
+    }
+
+    /* ── Step size variants ──────────────────────────────────────── */
+
+    .progress-steps--sm .progress-step { height: var(--io-progress-height-sm, 4px); }
+    .progress-steps--md .progress-step { height: var(--io-progress-height-md, 8px); }
+    .progress-steps--lg .progress-step { height: var(--io-progress-height-lg, 12px); }
+
+    /* ── Step color fills ────────────────────────────────────────── */
+
+    .progress-step--filled.progress-step--blue    { background: var(--io-progress-fill-blue); }
+    .progress-step--filled.progress-step--orange  { background: var(--io-progress-fill-orange); }
+    .progress-step--filled.progress-step--success { background: var(--io-progress-fill-success); }
+    .progress-step--filled.progress-step--warning { background: var(--io-progress-fill-warning); }
+    .progress-step--filled.progress-step--error   { background: var(--io-progress-fill-error); }
   `;
 }

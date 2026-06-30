@@ -182,9 +182,9 @@ export class IoBreadcrumb {
     this.popoverOpen = !this.popoverOpen;
     this.triggerBtn?.setAttribute('aria-expanded', String(this.popoverOpen));
     if (this.popoverOpen) {
-      (this.popoverEl as any).open = true;
+      this.popoverEl.open = true;
     } else {
-      (this.popoverEl as any).open = false;
+      this.popoverEl.open = false;
     }
   };
 
@@ -249,9 +249,9 @@ export class IoBreadcrumb {
       ].join(';');
 
       // Build popover with hidden items as links
-      const popover = document.createElement('io-popover') as HTMLIoPopoverElement & { open?: boolean };
+      const popover = document.createElement('io-popover') as HTMLIoPopoverElement & { open?: boolean; triggerEl?: HTMLButtonElement };
       popover.setAttribute('placement', 'bottom-start');
-      (popover as any).triggerEl = btn;
+      popover.triggerEl = btn;
 
       // Build a menu list of the hidden items
       const menu = document.createElement('ul');
@@ -300,7 +300,7 @@ export class IoBreadcrumb {
 
       // Wire events
       btn.addEventListener('click', this.handleTriggerClick);
-      popover.addEventListener('ioPopoverClose' as any, this.handlePopoverClose);
+      popover.addEventListener('dismiss', this.handlePopoverClose);
 
       this.triggerBtn = btn;
       this.popoverEl = popover as HTMLIoPopoverElement;

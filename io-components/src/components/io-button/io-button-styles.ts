@@ -39,12 +39,22 @@ export function getButtonStyles(): string {
       text-decoration: none;
       border-radius: var(--io-border-radius-pill);
       position: relative;
-      transition: ${getTransition('background-color', 'lg', 'in-out')},
-                  ${getTransition('border-color', 'lg', 'in-out')},
-                  ${getTransition('color', 'lg', 'in-out')},
-                  ${getTransition('opacity', 'lg', 'in-out')};
+      transition: background-color var(--io-duration-lg) var(--io-ease-snappy),
+                  border-color     var(--io-duration-lg) var(--io-ease-snappy),
+                  color            var(--io-duration-lg) var(--io-ease-snappy),
+                  opacity          var(--io-duration-lg) var(--io-ease-snappy),
+                  transform        var(--io-duration-xs) var(--io-ease-out);
       white-space: nowrap;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Active press feedback ──────────────────────────── */
+
+    /* scale(0.98) press feedback — distinct from translateY (which is prohibited).
+       Applies only when not disabled/loading, composing cleanly with focus-visible
+       and arrow transforms. Reduced-motion resets this via the transition:none rule. */
+    .btn:active:not(.btn--disabled):not(.btn--loading) {
+      transform: scale(0.98);
     }
 
     /* ── Size variants ──────────────────────────────────── */
@@ -91,6 +101,10 @@ export function getButtonStyles(): string {
     .btn--sm.btn--icon-only {
       width: var(--io-size-button-sm);
       height: var(--io-size-button-sm);
+      /* WCAG 2.5.5 AA floor: ensure sm icon-only never renders below 24x24px
+         even when --io-size-button-sm is overridden by a consumer. */
+      min-width: var(--io-button-sm-icon-only-min, 24px);
+      min-height: var(--io-button-sm-icon-only-min, 24px);
     }
 
     .btn--lg.btn--icon-only {
@@ -444,7 +458,7 @@ export function getButtonStyles(): string {
       width: var(--io-button-arrow-width-default);
       height: var(--io-button-arrow-height-default);
       flex-shrink: 0;
-      transition: ${getTransition('transform', 'lg', 'in-out')};
+      transition: transform var(--io-duration-lg) var(--io-ease-snappy);
     }
 
     .btn__arrow svg {
@@ -484,12 +498,44 @@ export function getButtonStyles(): string {
     .btn__label {
       display: inline-flex;
       align-items: center;
-      transition: ${getTransition('opacity', 'xs', 'out')};
+      transition: opacity var(--io-duration-xs) var(--io-ease-standard);
     }
 
     io-icon,
     .btn__icon-wrap {
-      transition: ${getTransition('opacity', 'xs', 'out')};
+      transition: opacity var(--io-duration-xs) var(--io-ease-standard);
+    }
+
+    /* #1043 — size the iconSource wrapper to match io-icon's size map.
+       data-size mirrors ICON_SIZE_MAP so iconSource SVGs share the same
+       dimensions as named icons at each button size. */
+    .btn__icon-wrap[data-size="sm"] {
+      width: var(--io-icon-size-sm);
+      height: var(--io-icon-size-sm);
+    }
+
+    .btn__icon-wrap[data-size="md"] {
+      width: var(--io-icon-size-md);
+      height: var(--io-icon-size-md);
+    }
+
+    .btn__icon-wrap[data-size="lg"] {
+      width: var(--io-icon-size-lg);
+      height: var(--io-icon-size-lg);
+    }
+
+    .btn__icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+      color: currentColor;
+    }
+
+    .btn__icon-wrap svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
     }
 
     /* Visually hidden label for icon+hideLabel mode — preserves accessible text */
@@ -545,10 +591,15 @@ export function getButtonStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .btn,
       .btn::after,
+      .btn__label,
       .btn__arrow,
       io-icon,
       .btn__icon-wrap {
         transition: none;
+      }
+      /* Also suppress :active scale in reduced-motion environments */
+      .btn:active:not(.btn--disabled):not(.btn--loading) {
+        transform: none;
       }
       .btn__spinner {
         animation: none;

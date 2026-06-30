@@ -420,6 +420,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * Download attribute for anchor mode. - `true` / empty string → triggers download with server-provided filename - string → triggers download and suggests the given filename - Only applies when `href` is set.
+         */
+        "download"?: string | boolean;
+        /**
           * Associates the button with a form element by its ID. Allows the button to submit/reset a form it is not a descendant of.
          */
         "form": string | undefined;
@@ -442,7 +446,7 @@ export namespace Components {
          */
         "icon"?: IoIconName;
         /**
-          * Renders a square icon-only button and suppresses text label rendering
+          * @deprecated Use `hideLabel` instead — it preserves accessible text via sr-only and renders a square icon-only layout when an icon/iconSource is present. `iconOnly` will be removed in the next minor bump after this deprecation period. Migration: replace `iconOnly` with `hideLabel` and ensure `label` prop is set.
           * @default false
          */
         "iconOnly": boolean;
@@ -5809,6 +5813,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * Download attribute for anchor mode. - `true` / empty string → triggers download with server-provided filename - string → triggers download and suggests the given filename - Only applies when `href` is set.
+         */
+        "download"?: string | boolean;
+        /**
           * Associates the button with a form element by its ID. Allows the button to submit/reset a form it is not a descendant of.
          */
         "form"?: string | undefined;
@@ -5831,7 +5839,7 @@ declare namespace LocalJSX {
          */
         "icon"?: IoIconName;
         /**
-          * Renders a square icon-only button and suppresses text label rendering
+          * @deprecated Use `hideLabel` instead — it preserves accessible text via sr-only and renders a square icon-only layout when an icon/iconSource is present. `iconOnly` will be removed in the next minor bump after this deprecation period. Migration: replace `iconOnly` with `hideLabel` and ensure `label` prop is set.
           * @default false
          */
         "iconOnly"?: boolean;
@@ -9175,6 +9183,7 @@ declare namespace LocalJSX {
         "href": string | undefined;
         "target": string | undefined;
         "rel": string | undefined;
+        "download": string;
         "disabled": boolean;
         "loading": boolean;
         "fullWidth": boolean;

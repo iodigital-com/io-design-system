@@ -1,32 +1,27 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { IoHeading } from './io-heading';
 
 describe('io-heading — componentWillLoad / resolveTag', () => {
-  let errorSpy: ReturnType<typeof vi.spyOn>;
-
-  afterEach(() => {
-    errorSpy?.mockRestore();
-  });
-
-  it('logs console.error when tag prop is undefined', () => {
-    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  it('logs console.warn when tag prop is undefined', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const c = new IoHeading();
     // tag is undefined by default (no prop assignment)
     (c as any).componentWillLoad();
 
-    expect(errorSpy).toHaveBeenCalledOnce();
-    expect(errorSpy.mock.calls[0][0]).toContain('[io-heading]');
-    expect(errorSpy.mock.calls[0][0]).toContain('`tag` prop is required');
+    expect(warnSpy).toHaveBeenCalledOnce();
+    expect(warnSpy.mock.calls[0][0]).toContain('[io-heading]');
+    warnSpy.mockRestore();
   });
 
-  it('does not log console.error when tag prop is set', () => {
-    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  it('does not log console.warn when tag prop is set', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const c = new IoHeading();
     c.tag = 'h1';
     (c as any).componentWillLoad();
 
-    expect(errorSpy).not.toHaveBeenCalled();
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it('resolveTag returns "h2" when tag is undefined', () => {

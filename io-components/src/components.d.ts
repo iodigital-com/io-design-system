@@ -17,6 +17,7 @@ import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
+import { BreakpointValue } from "./utils/breakpoint";
 import { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 import { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
@@ -67,6 +68,7 @@ export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
+export { BreakpointValue } from "./utils/breakpoint";
 export { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
 export { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
@@ -868,10 +870,10 @@ export namespace Components {
          */
         "label": string | undefined;
         /**
-          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).
+          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).  Accepts a scalar string or a breakpoint object for responsive layouts:   orientation="horizontal"   :orientation="{ base: 'horizontal', l: 'vertical' }"   orientation='{"base":"horizontal","l":"vertical"}'  Note: when a `label` prop or slot content is present, the labeled layout always renders horizontally regardless of the resolved orientation.
           * @default 'horizontal'
          */
-        "orientation": IoDividerOrientation;
+        "orientation": IoDividerOrientation | BreakpointValue<IoDividerOrientation>;
     }
     /**
      * io-drawer
@@ -1046,11 +1048,14 @@ export namespace Components {
      * ==========
      * Light DOM typography primitive for headings.
      * Renders h1–h6 with token-driven font size, weight, color, and alignment.
-     * The `tag` prop is required for correct document outline semantics.
-     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * When `tag` is omitted, the component infers a heading level from `size`
+     * (e.g. 4xl → h1, 2xl → h2) and logs a dev-mode warning. If a heading
+     * element is already present as a direct parent, the component downgrades
+     * to `div` to avoid nesting headings.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
      * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     * <io-heading size="5xl">Hero Heading (tag inferred as h1)</io-heading>
      */
     interface IoHeading {
         /**
@@ -1074,12 +1079,12 @@ export namespace Components {
          */
         "hyphens": IoHeadingHyphens;
         /**
-          * Font size using --io-font-size-* tokens
+          * Font size using --io-font-size-* tokens. Accepts a scalar string ('sm'–'6xl') for a fixed size, or a breakpoint object for responsive sizing:   size="2xl"   :size="{ base: 'lg', l: '4xl' }"   size='{"base":"lg","l":"4xl"}'
           * @default '2xl'
          */
-        "size": IoHeadingSize;
+        "size": IoHeadingSize | BreakpointValue<IoHeadingSize>;
         /**
-          * Semantic HTML heading tag — required for correct document outline
+          * Semantic HTML heading tag. When omitted, the tag is inferred from size.
          */
         "tag": IoHeadingTag | undefined;
         /**
@@ -3420,11 +3425,15 @@ export namespace Components {
      * io-text
      * =======
      * Light DOM typography primitive for body text.
-     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
-     * font size, weight, color, and alignment.
+     * Renders semantic HTML (p, span, div, blockquote, time, address, figcaption,
+     * cite, legend) with token-driven font size, weight, color, and alignment.
+     * When a tag value cannot be legally nested inside the same tag in the ancestor
+     * chain, the component downgrades to `div` to avoid invalid HTML.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-text size="base" weight="regular">Body paragraph</io-text>
      * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     * <io-text tag="address">123 Main St</io-text>
+     * <io-text tag="figcaption">Caption text</io-text>
      */
     interface IoText {
         /**
@@ -3453,10 +3462,10 @@ export namespace Components {
          */
         "hyphens": IoTextHyphens;
         /**
-          * Font size using --io-font-size-* tokens
+          * Font size using --io-font-size-* tokens. Accepts a scalar string ('xs'–'xl' or 'inherit') for a fixed size, or a breakpoint object for responsive sizing:   size="sm"   :size="{ base: 'sm', l: 'lg' }"   size='{"base":"sm","l":"lg"}'
           * @default 'base'
          */
-        "size": IoTextSize;
+        "size": IoTextSize | BreakpointValue<IoTextSize>;
         /**
           * HTML tag to render
           * @default 'p'
@@ -4382,11 +4391,14 @@ declare global {
      * ==========
      * Light DOM typography primitive for headings.
      * Renders h1–h6 with token-driven font size, weight, color, and alignment.
-     * The `tag` prop is required for correct document outline semantics.
-     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * When `tag` is omitted, the component infers a heading level from `size`
+     * (e.g. 4xl → h1, 2xl → h2) and logs a dev-mode warning. If a heading
+     * element is already present as a direct parent, the component downgrades
+     * to `div` to avoid nesting headings.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
      * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     * <io-heading size="5xl">Hero Heading (tag inferred as h1)</io-heading>
      */
     interface HTMLIoHeadingElement extends Components.IoHeading, HTMLStencilElement {
     }
@@ -5524,11 +5536,15 @@ declare global {
      * io-text
      * =======
      * Light DOM typography primitive for body text.
-     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
-     * font size, weight, color, and alignment.
+     * Renders semantic HTML (p, span, div, blockquote, time, address, figcaption,
+     * cite, legend) with token-driven font size, weight, color, and alignment.
+     * When a tag value cannot be legally nested inside the same tag in the ancestor
+     * chain, the component downgrades to `div` to avoid invalid HTML.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-text size="base" weight="regular">Body paragraph</io-text>
      * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     * <io-text tag="address">123 Main St</io-text>
+     * <io-text tag="figcaption">Caption text</io-text>
      */
     interface HTMLIoTextElement extends Components.IoText, HTMLStencilElement {
     }
@@ -6531,10 +6547,10 @@ declare namespace LocalJSX {
          */
         "label"?: string | undefined;
         /**
-          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).
+          * Orientation of the separator. `horizontal` (default) renders a horizontal rule. `vertical` renders a vertical line (useful in flex row containers).  Accepts a scalar string or a breakpoint object for responsive layouts:   orientation="horizontal"   :orientation="{ base: 'horizontal', l: 'vertical' }"   orientation='{"base":"horizontal","l":"vertical"}'  Note: when a `label` prop or slot content is present, the labeled layout always renders horizontally regardless of the resolved orientation.
           * @default 'horizontal'
          */
-        "orientation"?: IoDividerOrientation;
+        "orientation"?: IoDividerOrientation | BreakpointValue<IoDividerOrientation>;
     }
     /**
      * io-drawer
@@ -6705,11 +6721,14 @@ declare namespace LocalJSX {
      * ==========
      * Light DOM typography primitive for headings.
      * Renders h1–h6 with token-driven font size, weight, color, and alignment.
-     * The `tag` prop is required for correct document outline semantics.
-     * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+     * When `tag` is omitted, the component infers a heading level from `size`
+     * (e.g. 4xl → h1, 2xl → h2) and logs a dev-mode warning. If a heading
+     * element is already present as a direct parent, the component downgrades
+     * to `div` to avoid nesting headings.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
      * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+     * <io-heading size="5xl">Hero Heading (tag inferred as h1)</io-heading>
      */
     interface IoHeading {
         /**
@@ -6733,12 +6752,12 @@ declare namespace LocalJSX {
          */
         "hyphens"?: IoHeadingHyphens;
         /**
-          * Font size using --io-font-size-* tokens
+          * Font size using --io-font-size-* tokens. Accepts a scalar string ('sm'–'6xl') for a fixed size, or a breakpoint object for responsive sizing:   size="2xl"   :size="{ base: 'lg', l: '4xl' }"   size='{"base":"lg","l":"4xl"}'
           * @default '2xl'
          */
-        "size"?: IoHeadingSize;
+        "size"?: IoHeadingSize | BreakpointValue<IoHeadingSize>;
         /**
-          * Semantic HTML heading tag — required for correct document outline
+          * Semantic HTML heading tag. When omitted, the tag is inferred from size.
          */
         "tag"?: IoHeadingTag | undefined;
         /**
@@ -9198,11 +9217,15 @@ declare namespace LocalJSX {
      * io-text
      * =======
      * Light DOM typography primitive for body text.
-     * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
-     * font size, weight, color, and alignment.
+     * Renders semantic HTML (p, span, div, blockquote, time, address, figcaption,
+     * cite, legend) with token-driven font size, weight, color, and alignment.
+     * When a tag value cannot be legally nested inside the same tag in the ancestor
+     * chain, the component downgrades to `div` to avoid invalid HTML.
      * Uses light DOM intentionally — typography must be stylable from outside.
      * @example <io-text size="base" weight="regular">Body paragraph</io-text>
      * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+     * <io-text tag="address">123 Main St</io-text>
+     * <io-text tag="figcaption">Caption text</io-text>
      */
     interface IoText {
         /**
@@ -9231,10 +9254,10 @@ declare namespace LocalJSX {
          */
         "hyphens"?: IoTextHyphens;
         /**
-          * Font size using --io-font-size-* tokens
+          * Font size using --io-font-size-* tokens. Accepts a scalar string ('xs'–'xl' or 'inherit') for a fixed size, or a breakpoint object for responsive sizing:   size="sm"   :size="{ base: 'sm', l: 'lg' }"   size='{"base":"sm","l":"lg"}'
           * @default 'base'
          */
-        "size"?: IoTextSize;
+        "size"?: IoTextSize | BreakpointValue<IoTextSize>;
         /**
           * HTML tag to render
           * @default 'p'
@@ -9708,7 +9731,7 @@ declare namespace LocalJSX {
         "loading": boolean;
     }
     interface IoDividerAttributes {
-        "orientation": IoDividerOrientation;
+        "orientation": IoDividerOrientation | BreakpointValue<IoDividerOrientation>;
         "color": IoDividerColor;
         "label": string | undefined;
     }
@@ -9738,7 +9761,7 @@ declare namespace LocalJSX {
     }
     interface IoHeadingAttributes {
         "tag": IoHeadingTag | undefined;
-        "size": IoHeadingSize;
+        "size": IoHeadingSize | BreakpointValue<IoHeadingSize>;
         "weight": IoHeadingWeight;
         "align": IoHeadingAlign;
         "color": IoHeadingColor;
@@ -10160,7 +10183,7 @@ declare namespace LocalJSX {
     }
     interface IoTextAttributes {
         "tag": IoTextTag;
-        "size": IoTextSize;
+        "size": IoTextSize | BreakpointValue<IoTextSize>;
         "weight": IoTextWeight;
         "align": IoTextAlign;
         "color": IoTextColor;
@@ -10536,11 +10559,14 @@ declare module "@stencil/core" {
              * ==========
              * Light DOM typography primitive for headings.
              * Renders h1–h6 with token-driven font size, weight, color, and alignment.
-             * The `tag` prop is required for correct document outline semantics.
-             * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+             * When `tag` is omitted, the component infers a heading level from `size`
+             * (e.g. 4xl → h1, 2xl → h2) and logs a dev-mode warning. If a heading
+             * element is already present as a direct parent, the component downgrades
+             * to `div` to avoid nesting headings.
              * Uses light DOM intentionally — typography must be stylable from outside.
              * @example <io-heading tag="h1" size="4xl">Page Title</io-heading>
              * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+             * <io-heading size="5xl">Hero Heading (tag inferred as h1)</io-heading>
              */
             "io-heading": LocalJSX.IntrinsicElements["io-heading"] & JSXBase.HTMLAttributes<HTMLIoHeadingElement>;
             /**
@@ -11117,11 +11143,15 @@ declare module "@stencil/core" {
              * io-text
              * =======
              * Light DOM typography primitive for body text.
-             * Renders semantic HTML (p, span, div, blockquote, time) with token-driven
-             * font size, weight, color, and alignment.
+             * Renders semantic HTML (p, span, div, blockquote, time, address, figcaption,
+             * cite, legend) with token-driven font size, weight, color, and alignment.
+             * When a tag value cannot be legally nested inside the same tag in the ancestor
+             * chain, the component downgrades to `div` to avoid invalid HTML.
              * Uses light DOM intentionally — typography must be stylable from outside.
              * @example <io-text size="base" weight="regular">Body paragraph</io-text>
              * <io-text tag="span" size="sm" color="secondary">Secondary label</io-text>
+             * <io-text tag="address">123 Main St</io-text>
+             * <io-text tag="figcaption">Caption text</io-text>
              */
             "io-text": LocalJSX.IntrinsicElements["io-text"] & JSXBase.HTMLAttributes<HTMLIoTextElement>;
             /**

@@ -7,6 +7,7 @@ import {
   textStoryWeights,
   textStoryAlign,
   textStoryEllipsis,
+  textStorySemanticTags,
 } from './io-text.stories';
 
 describe('io-text storefront stories', () => {
@@ -116,8 +117,13 @@ describe('io-text storefront stories', () => {
       const def = textPropDefinitions.find((d) => d.name === 'tag');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(((def as unknown as { options: string[] })).options).toContain('p');
-      expect(((def as unknown as { options: string[] })).options).toContain('span');
+      const options = (def as unknown as { options: string[] }).options;
+      expect(options).toContain('p');
+      expect(options).toContain('span');
+      expect(options).toContain('address');
+      expect(options).toContain('figcaption');
+      expect(options).toContain('cite');
+      expect(options).toContain('legend');
       expect(def!.defaultValue).toBe('p');
     });
 
@@ -292,6 +298,26 @@ describe('io-text storefront stories', () => {
       const text = wrapper.children?.find((c) => (c as { tag: string }).tag === 'io-text');
       expect(text).toBeDefined();
       expect((text as { properties: Record<string, unknown> }).properties.ellipsis).toBe(true);
+    });
+  });
+
+  describe('textStorySemanticTags', () => {
+    it('does not throw', () => {
+      expect(() => textStorySemanticTags.generator?.()).not.toThrow();
+    });
+
+    it('returns one element per semantic tag', () => {
+      const els = textStorySemanticTags.generator?.() ?? [];
+      expect(els.length).toBe(4);
+    });
+
+    it('elements cover address, figcaption, cite, legend', () => {
+      const els = textStorySemanticTags.generator?.() ?? [];
+      const tags = els.map((el) => (el as { properties: Record<string, unknown> }).properties.tag);
+      expect(tags).toContain('address');
+      expect(tags).toContain('figcaption');
+      expect(tags).toContain('cite');
+      expect(tags).toContain('legend');
     });
   });
 });

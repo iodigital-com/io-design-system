@@ -335,7 +335,7 @@ describe('io-pin-code — Dead/Process key recovery (#1064)', () => {
 
     const input = document.createElement('input');
     const blurMock = vi.spyOn(input, 'blur').mockImplementation(() => {});
-    const focusMock = vi.spyOn(input, 'focus').mockImplementation(() => {});
+    const _focusMock = vi.spyOn(input, 'focus').mockImplementation(() => {});
 
     const ev = new KeyboardEvent('keydown', { key: 'Dead', cancelable: true });
     Object.defineProperty(ev, 'target', { value: input });

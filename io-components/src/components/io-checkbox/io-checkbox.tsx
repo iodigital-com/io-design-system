@@ -256,7 +256,6 @@ export class IoCheckbox {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
     const showFaceError = this.faceInvalid && state !== 'error';
-    const showMessage = showError && (hasMessageSlot || message);
 
     // #1094: messageId and faceErrorId are always included in aria-describedby so
     // the live-region relationship is established before any error occurs.

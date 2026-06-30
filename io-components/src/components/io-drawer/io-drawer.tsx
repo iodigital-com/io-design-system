@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h }
 import { getDrawerStyles } from './io-drawer-styles';
 import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon } from './io-drawer-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import { isBackdropClick, lockBodyScroll, unlockBodyScroll } from '../../utils/dialog';
+import { isBackdropClick } from '../../utils/dialog';
 
 import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 

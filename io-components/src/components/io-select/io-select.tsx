@@ -14,6 +14,7 @@ import {
 } from './io-select-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 
+import type { IoIconName } from '../../utils/icons';
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeDetail, IoSelectToggleDetail } from './types';
 
@@ -704,8 +705,7 @@ export class IoSelect {
         )}
         {opt.icon && (
           <span class="combobox-option__icon" aria-hidden="true">
-            {/* Cast to any — IoIconName is a large union; consumers pass valid names */}
-            <io-icon name={opt.icon as any} />
+            <io-icon name={opt.icon as IoIconName} />
           </span>
         )}
         <span class="combobox-option__content">

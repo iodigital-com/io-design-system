@@ -27,6 +27,7 @@ import {
 } from './io-multi-select-utils';
 import { getMatchingOptionIndex } from '../io-select/io-select-utils';
 
+import type { IoIconName } from '../../utils/icons';
 import type {
   IoSelectOption,
   IoSelectOptionGroup,
@@ -626,8 +627,7 @@ export class IoMultiSelect {
         </span>
         {opt.icon && (
           <span class="multi-select-option__icon" aria-hidden="true">
-            {/* Cast to any — IoIconName is a large union; consumers pass valid names */}
-            <io-icon name={opt.icon as any} />
+            <io-icon name={opt.icon as IoIconName} />
           </span>
         )}
         <span class="multi-select-option__content">

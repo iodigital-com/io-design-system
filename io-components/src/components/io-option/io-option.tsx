@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, Listen } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
 import { getOptionStyles } from './io-option-styles';
 import { getOptionClass } from './io-option-utils';

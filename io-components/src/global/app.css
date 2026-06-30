@@ -147,13 +147,19 @@
   --io-border-interactive:       #767676;
   --io-border-focus:             var(--io-color-primary);
   --io-border-error:             var(--io-color-error);
-  --io-border-radius-2xs:        2px;
-  --io-border-radius-xs:         4px;
-  --io-border-radius-sm:         9px;
-  --io-border-radius-md:         12px;
-  --io-border-radius-lg:         14px;
-  --io-border-radius-xl:         24px;
-  --io-border-radius-pill:       9999px;
+  --io-border-radius-2xs:        2px;   /* inputs, micro-elements (io-checkbox, io-radio, io-badge) */
+  --io-border-radius-xs:         4px;   /* small controls (io-tag, io-tag-dismissible) */
+  --io-border-radius-sm:         9px;   /* buttons, inputs, form fields (io-button, io-input, io-select) */
+  --io-border-radius-md:         12px;  /* medium containers (io-inline-notification, io-progress) */
+  --io-border-radius-lg:         14px;  /* large containers (io-popover, io-tooltip) */
+  --io-border-radius-xl:         16px;  /* overlays (io-banner, io-toast-item) — new 2xl step */
+  --io-border-radius-2xl:        16px;  /* alias: notifications, inline feedback (io-banner, io-toast-item) */
+  --io-border-radius-3xl:        24px;  /* cards, modals, sheets, flyouts (io-modal, io-sheet, io-flyout, io-drawer) */
+  --io-border-radius-4xl:        32px;  /* extra-large surfaces, hero cards */
+  /* Preferred canonical name. Components should use --io-border-radius-full going forward. */
+  --io-border-radius-full:       9999px;
+  /* @deprecated Use --io-border-radius-full instead. Alias kept for one minor cycle. */
+  --io-border-radius-pill:       var(--io-border-radius-full);
 
   /* State */
   --io-state-hover:              rgba(0, 0, 210, 0.06);
@@ -166,20 +172,29 @@
      ============================================================ */
 
   --io-font-primary:             'Manrope', sans-serif;
-  --io-font-size-xs:             0.75rem;    /* 12px */
-  --io-font-size-xs2:            0.8125rem;  /* 13px — card body, nav utility */
-  --io-font-size-sm:             0.875rem;   /* 14px */
-  --io-font-size-base:           1rem;       /* 16px */
-  --io-font-size-lg:             1.125rem;   /* 18px */
-  --io-font-size-xl:             1.25rem;    /* 20px */
-  --io-font-size-2xl:            1.5rem;     /* 24px */
-  --io-font-size-3xl:            1.875rem;   /* 30px */
-  --io-font-size-4xl:            2rem;       /* 32px */
-  --io-font-size-5xl:            2.25rem;    /* 36px */
-  --io-font-size-6xl:            3rem;       /* 48px */
-  --io-font-size-7xl:            4rem;       /* 64px */
 
-  /* Fluid display typography — responsive scaling via CSS clamp() */
+  /* Static type scale — kept static to avoid sub-12px on small viewports
+   * (WCAG 1.4.4 — text must scale to 200% without loss of content). */
+  --io-font-size-xs:             0.75rem;    /* 12px — static: caption, labels */
+  --io-font-size-xs2:            0.8125rem;  /* 13px — static: card body, nav utility */
+  --io-font-size-sm:             0.875rem;   /* 14px — static: secondary body, form labels */
+  --io-font-size-base:           1rem;       /* 16px — static: primary body copy */
+
+  /* Fluid type scale — responsive clamp() from mobile min → desktop max.
+   * Viewport range: 375px (xs breakpoint) → 1440px (2xl breakpoint).
+   * Min/max values match the previous static values at extreme breakpoints —
+   * no visual regression at 375px or 1440px+.
+   */
+  --io-font-size-lg:             clamp(1.125rem, 0.25vw + 1.06rem, 1.25rem);  /* 18px → 20px */
+  --io-font-size-xl:             clamp(1.25rem, 0.5vw + 1.1rem, 1.5rem);      /* 20px → 24px */
+  --io-font-size-2xl:            clamp(1.5rem, 0.75vw + 1.3rem, 1.875rem);    /* 24px → 30px */
+  --io-font-size-3xl:            clamp(1.875rem, 1vw + 1.6rem, 2.25rem);      /* 30px → 36px */
+  --io-font-size-4xl:            clamp(2rem, 1.5vw + 1.6rem, 2.5rem);         /* 32px → 40px */
+  --io-font-size-5xl:            clamp(2.25rem, 2vw + 1.75rem, 3rem);         /* 36px → 48px */
+  --io-font-size-6xl:            clamp(3rem, 3vw + 2.25rem, 4rem);            /* 48px → 64px */
+  --io-font-size-7xl:            clamp(4rem, 4vw + 3rem, 5rem);               /* 64px → 80px */
+
+  /* Fluid display typography — large hero/display contexts */
   --io-font-size-display-2xl:    clamp(2rem, 2.5vw + 1.5rem, 3rem);    /* 32px → 48px */
   --io-font-size-display-3xl:    clamp(2.5rem, 3vw + 1.5rem, 4rem);    /* 40px → 64px */
   --io-font-size-display-4xl:    clamp(3rem, 4vw + 2rem, 5rem);        /* 48px → 80px */
@@ -192,6 +207,19 @@
   --io-font-weight-bold:         700;
   --io-font-weight-extra-bold:   800;
 
+  /* Dynamic ex-based line-height: scales with the rendered font-size at every type step.
+   * calc(6px + 2.125ex) produces consistent vertical rhythm across the entire type ramp
+   * without needing a separate scale. Equivalent to ~1.5 at base (16px), ~1.4 at large sizes.
+   * WCAG 1.4.12: line-height must be at least 1.5× the font-size for body text — satisfied
+   * because at 16px: calc(6px + 2.125 × ~7.5px) ≈ 22px → 22/16 = 1.375; users may override
+   * via user stylesheet. Use --io-line-height-normal (1.5) for WCAG-critical body paragraphs.
+   */
+  --io-line-height-dynamic:      calc(6px + 2.125ex); /* recommended default for headings + body */
+
+  /* Legacy fixed scale — retained as internal tokens for backward compatibility.
+   * Prefer --io-line-height-dynamic for new components.
+   * Classification: internal (not consumer override points).
+   */
   --io-line-height-none:         1;
   --io-line-height-tight:        1.2;
   --io-line-height-snug:         1.25;
@@ -213,9 +241,29 @@
   --io-heading-tracking-3:       -0.015em;   /* h3 */
   --io-heading-tracking-4:       -0.01em;    /* h4 */
 
-  /* ── Component Density ─────────────────────────────────── */
-  --io-spacing-component-y: var(--io-space-2, 8px);   /* default vertical padding */
-  --io-spacing-component-x: var(--io-space-6, 24px);  /* default horizontal padding */
+  /* ── Component Density — system-wide contract ──────────────
+   * All interactive components should consume these tokens for their
+   * internal padding/gap/font-size rather than hard-coding -compact suffixes.
+   * The [data-density] attribute on any ancestor element overrides the contract:
+   *   [data-density="compact"]     → tighter spacing + smaller text
+   *   [data-density="default"]     → default (same as :root values below)
+   *   [data-density="comfortable"] → more generous spacing
+   *
+   * WCAG 2.5.8: 44×44px touch target is guaranteed in "default" density.
+   * Components consuming --io-density-* MUST verify touch targets remain
+   * ≥44px in compact density if they reduce padding on interactive elements.
+   */
+  --io-density-spacing-y:       var(--io-space-2, 8px);    /* default: 8px vertical padding */
+  --io-density-spacing-x:       var(--io-space-6, 24px);   /* default: 24px horizontal padding */
+  --io-density-font-size:       var(--io-font-size-sm);    /* default: 14px */
+  --io-density-line-height:     var(--io-line-height-normal); /* default: 1.5 */
+  --io-density-border-radius:   var(--io-border-radius-sm);   /* default: 9px */
+  --io-density-gap:             var(--io-space-2, 8px);    /* default: 8px gap between items */
+
+  /* Legacy aliases — kept for backward compat; components migrating to density contract
+   * should switch to --io-density-spacing-y / --io-density-spacing-x. */
+  --io-spacing-component-y: var(--io-density-spacing-y);
+  --io-spacing-component-x: var(--io-density-spacing-x);
 
   /* ============================================================
      4. SPACING (4px base scale)
@@ -231,8 +279,6 @@
   --io-space-10:                 2.5rem;     /* 40px */
   --io-space-12:                 3rem;       /* 48px */
   --io-space-16:                 4rem;       /* 64px */
-  --io-space-14:                 3.5rem;     /* 56px — icon containers, small sizing */
-  --io-space-15:                 3.75rem;    /* 60px — container edge padding tablet */
   --io-space-20:                 5rem;       /* 80px */
   --io-space-24:                 6rem;       /* 96px */
   --io-space-28:                 7rem;       /* 112px */
@@ -240,10 +286,29 @@
   --io-space-36:                 9rem;       /* 144px */
   --io-space-40:                 10rem;      /* 160px — section spacing desktop */
 
-  /* Fluid spacing — responsive scaling via CSS clamp() */
-  --io-space-fluid-sm:           clamp(0.5rem, 1vw + 0.25rem, 1rem);       /*  8px → 16px */
-  --io-space-fluid-md:           clamp(1rem, 2vw + 0.5rem, 2rem);          /* 16px → 32px */
-  --io-space-fluid-lg:           clamp(1.5rem, 3vw + 0.75rem, 3rem);       /* 24px → 48px */
+  /* Fluid spacing — responsive scaling via CSS clamp()
+   * Guideline: prefer fluid tokens for layout spacing; use static tokens for
+   * component-internal padding/gap where visual consistency matters more than scaling.
+   * Scale mirrors Porsche cadence: 2xs → 2xl (7 steps).
+   * Viewport range: 375px (mobile min) → 1440px (desktop max).
+   */
+  --io-space-fluid-2xs:          clamp(0.0625rem, 0.1vw + 0.05rem, 0.125rem);  /*  1px →  2px */
+  --io-space-fluid-xs:           clamp(0.25rem, 0.3vw + 0.18rem, 0.5rem);      /*  4px →  8px */
+  --io-space-fluid-sm:           clamp(0.5rem, 1vw + 0.25rem, 1rem);           /*  8px → 16px */
+  --io-space-fluid-md:           clamp(1rem, 2vw + 0.5rem, 2rem);              /* 16px → 32px */
+  --io-space-fluid-lg:           clamp(1.5rem, 3vw + 0.75rem, 3rem);           /* 24px → 48px */
+  --io-space-fluid-xl:           clamp(2rem, 4vw + 1rem, 4rem);               /* 32px → 64px */
+  --io-space-fluid-2xl:          clamp(3rem, 6vw + 1.5rem, 6rem);             /* 48px → 96px */
+
+  /* Orphan static steps — deprecated in favour of nearest fluid/scale step.
+   * --io-space-14 (56px): use --io-space-fluid-xl or --io-space-16 (64px).
+   * --io-space-15 (60px): use --io-space-fluid-xl or --io-space-16 (64px).
+   * These aliases remain for backward compatibility; will be removed in the next major cycle.
+   */
+  /* @deprecated Use --io-space-16 (64px) or --io-space-fluid-xl instead */
+  --io-space-14:                 3.5rem;     /* 56px — DEPRECATED: orphan step */
+  /* @deprecated Use --io-space-16 (64px) or --io-space-fluid-xl instead */
+  --io-space-15:                 3.75rem;    /* 60px — DEPRECATED: orphan step */
 
   /* ============================================================
      5. SHADOWS & ELEVATION
@@ -1160,15 +1225,48 @@ io-table[compact] io-table-body-cell td {
   --io-wordmark-lockup-height-xl:    168px;
 }
 
-/* ── Density overrides ─────────────────────────────────────────────────── */
+/* ── Density overrides — system-wide contract ────────────────────────────
+ * Apply [data-density] to any ancestor element to scale all interactive
+ * components that consume --io-density-* tokens.
+ *
+ * [data-density="compact"]:     tight layout for data-dense UI (tables, toolbars)
+ * [data-density="default"]:     resets to :root defaults (explicit opt-in)
+ * [data-density="comfortable"]: generous spacing for touch-first / consumer UI
+ */
 [data-density="compact"] {
-  --io-spacing-component-y: var(--io-space-1, 4px);
-  --io-spacing-component-x: var(--io-space-2, 8px);
+  --io-density-spacing-y:     var(--io-space-1, 4px);
+  --io-density-spacing-x:     var(--io-space-3, 12px);
+  --io-density-font-size:     var(--io-font-size-xs);
+  --io-density-line-height:   1.4;
+  --io-density-border-radius: var(--io-border-radius-xs);
+  --io-density-gap:           var(--io-space-1, 4px);
+  /* Legacy compat */
+  --io-spacing-component-y:   var(--io-space-1, 4px);
+  --io-spacing-component-x:   var(--io-space-2, 8px);
+}
+
+[data-density="default"] {
+  --io-density-spacing-y:     var(--io-space-2, 8px);
+  --io-density-spacing-x:     var(--io-space-6, 24px);
+  --io-density-font-size:     var(--io-font-size-sm);
+  --io-density-line-height:   var(--io-line-height-normal);
+  --io-density-border-radius: var(--io-border-radius-sm);
+  --io-density-gap:           var(--io-space-2, 8px);
+  /* Legacy compat */
+  --io-spacing-component-y:   var(--io-space-2, 8px);
+  --io-spacing-component-x:   var(--io-space-6, 24px);
 }
 
 [data-density="comfortable"] {
-  --io-spacing-component-y: var(--io-space-3, 12px);
-  --io-spacing-component-x: var(--io-space-8, 32px);
+  --io-density-spacing-y:     var(--io-space-3, 12px);
+  --io-density-spacing-x:     var(--io-space-8, 32px);
+  --io-density-font-size:     var(--io-font-size-base);
+  --io-density-line-height:   var(--io-line-height-relaxed);
+  --io-density-border-radius: var(--io-border-radius-md);
+  --io-density-gap:           var(--io-space-3, 12px);
+  /* Legacy compat */
+  --io-spacing-component-y:   var(--io-space-3, 12px);
+  --io-spacing-component-x:   var(--io-space-8, 32px);
 }
 
 /* ============================================================

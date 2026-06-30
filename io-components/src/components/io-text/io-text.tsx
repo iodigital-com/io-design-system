@@ -76,6 +76,7 @@ export class IoText {
     const style: Record<string, string> = {
       fontSize,
       fontWeight: `var(--io-font-weight-${this.weight})`,
+      lineHeight: 'var(--io-line-height-dynamic)',
       color: this.resolveColor(),
       textAlign: this.align,
       hyphens: this.hyphens,

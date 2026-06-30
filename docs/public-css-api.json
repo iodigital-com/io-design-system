@@ -1102,5 +1102,236 @@
     "classification": "public-api",
     "component": "io-icon",
     "description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info)."
+  },
+
+  {
+    "cssVar": "--io-space-fluid-2xs",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing 2xs: clamp(1px → 2px). Use for micro-gap in dense icon clusters."
+  },
+  {
+    "cssVar": "--io-space-fluid-xs",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing xs: clamp(4px → 8px). Use for tight inline gaps."
+  },
+  {
+    "cssVar": "--io-space-fluid-sm",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing sm: clamp(8px → 16px). Use for component-level gutters."
+  },
+  {
+    "cssVar": "--io-space-fluid-md",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing md: clamp(16px → 32px). Use for section-level gutters."
+  },
+  {
+    "cssVar": "--io-space-fluid-lg",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing lg: clamp(24px → 48px). Use for layout block spacing."
+  },
+  {
+    "cssVar": "--io-space-fluid-xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing xl: clamp(32px → 64px). Use for page section separators."
+  },
+  {
+    "cssVar": "--io-space-fluid-2xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid spacing 2xl: clamp(48px → 96px). Use for hero/major section separators."
+  },
+  {
+    "cssVar": "--io-space-14",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "DEPRECATED. Orphan static step (56px). Use --io-space-16 (64px) or --io-space-fluid-xl instead."
+  },
+  {
+    "cssVar": "--io-space-15",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "DEPRECATED. Orphan static step (60px). Use --io-space-16 (64px) or --io-space-fluid-xl instead."
+  },
+
+  {
+    "cssVar": "--io-border-radius-2xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Border radius 2xl (16px). Target components: io-banner, io-toast-item — overlays and inline feedback.",
+    "usage": "io-banner, io-toast-item"
+  },
+  {
+    "cssVar": "--io-border-radius-3xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Border radius 3xl (24px). Target components: io-modal, io-sheet, io-flyout, io-drawer — card-like containers and dialogs.",
+    "usage": "io-modal, io-sheet, io-flyout, io-drawer"
+  },
+  {
+    "cssVar": "--io-border-radius-4xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Border radius 4xl (32px). Target components: extra-large surfaces and hero card containers.",
+    "usage": "hero-card, large-surface"
+  },
+  {
+    "cssVar": "--io-border-radius-full",
+    "classification": "internal",
+    "component": "global",
+    "description": "Border radius full (9999px). Fully rounded — pill shapes, switch tracks. Preferred canonical name; --io-border-radius-pill is a deprecated alias.",
+    "usage": "io-switch, io-tag, io-button (pill variant)"
+  },
+  {
+    "cssVar": "--io-border-radius-pill",
+    "classification": "deprecated",
+    "component": "global",
+    "description": "DEPRECATED. Use --io-border-radius-full instead. Alias kept for one minor cycle for backward compatibility."
+  },
+
+  {
+    "cssVar": "--io-font-size-lg",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size lg: clamp(18px → 20px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size xl: clamp(20px → 24px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-2xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 2xl: clamp(24px → 30px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-3xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 3xl: clamp(30px → 36px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-4xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 4xl: clamp(32px → 40px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-5xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 5xl: clamp(36px → 48px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-6xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 6xl: clamp(48px → 64px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+  {
+    "cssVar": "--io-font-size-7xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Fluid font size 7xl: clamp(64px → 80px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+  },
+
+  {
+    "cssVar": "--io-line-height-dynamic",
+    "classification": "internal",
+    "component": "global",
+    "description": "Dynamic ex-based line-height: calc(6px + 2.125ex). Scales with rendered font-size at every type step for consistent vertical rhythm. Recommended default for headings and body. Used by io-heading and io-text."
+  },
+  {
+    "cssVar": "--io-line-height-none",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height none (1). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-tight",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height tight (1.2). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-snug",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height snug (1.25). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-normal",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height normal (1.5). Use for WCAG 1.4.12-critical body paragraphs requiring guaranteed 1.5× ratio."
+  },
+  {
+    "cssVar": "--io-line-height-relaxed",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height relaxed (1.6). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-loose",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height loose (1.75). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-display",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height display (1.1). Prefer --io-line-height-dynamic for new components."
+  },
+  {
+    "cssVar": "--io-line-height-heading",
+    "classification": "internal",
+    "component": "global",
+    "description": "Legacy line-height heading (1.2). io-heading has migrated to --io-line-height-dynamic. Retained as fallback alias."
+  },
+
+  {
+    "cssVar": "--io-density-spacing-y",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: vertical padding for interactive components. Overridden by [data-density] on any ancestor. Default: 8px. Compact: 4px. Comfortable: 12px."
+  },
+  {
+    "cssVar": "--io-density-spacing-x",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: horizontal padding for interactive components. Overridden by [data-density] on any ancestor. Default: 24px. Compact: 12px. Comfortable: 32px."
+  },
+  {
+    "cssVar": "--io-density-font-size",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: font-size for interactive components. Default: 14px (--io-font-size-sm). Compact: 12px. Comfortable: 16px."
+  },
+  {
+    "cssVar": "--io-density-line-height",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: line-height for interactive components. Default: 1.5 (normal). Compact: 1.4. Comfortable: 1.6 (relaxed)."
+  },
+  {
+    "cssVar": "--io-density-border-radius",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: border-radius for interactive components. Default: 9px (sm). Compact: 4px (xs). Comfortable: 12px (md)."
+  },
+  {
+    "cssVar": "--io-density-gap",
+    "classification": "internal",
+    "component": "global",
+    "description": "Density contract: gap between items in interactive component groups. Default: 8px. Compact: 4px. Comfortable: 12px."
   }
 ]

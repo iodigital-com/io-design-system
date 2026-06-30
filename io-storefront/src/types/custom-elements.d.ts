@@ -13,6 +13,7 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
+  'io-app-shell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
   'io-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBannerElement>, HTMLIoBannerElement> & Partial<StencilJSX.IoBanner>;
@@ -20,6 +21,7 @@ declare module 'react' {
   'io-breadcrumb-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbItemElement>, HTMLIoBreadcrumbItemElement> & Partial<StencilJSX.IoBreadcrumbItem>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
+  'io-button-tile': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
   'io-checkbox-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxGroupElement>, HTMLIoCheckboxGroupElement> & Partial<StencilJSX.IoCheckboxGroup>;
@@ -34,8 +36,11 @@ declare module 'react' {
   'io-input-date': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputDateElement>, HTMLIoInputDateElement> & Partial<StencilJSX.IoInputDate>;
   'io-input-password': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputPasswordElement>, HTMLIoInputPasswordElement> & Partial<StencilJSX.IoInputPassword>;
   'io-input-search': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputSearchElement>, HTMLIoInputSearchElement> & Partial<StencilJSX.IoInputSearch>;
+  'io-grid': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+  'io-grid-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-link-pure': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkPureElement>, HTMLIoLinkPureElement> & Partial<StencilJSX.IoLinkPure>;
+  'io-link-tile': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
   'io-multi-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoMultiSelectElement>, HTMLIoMultiSelectElement> & Partial<StencilJSX.IoMultiSelect>;
   'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptgroupElement>, HTMLIoOptgroupElement> & Partial<StencilJSX.IoOptgroup>;

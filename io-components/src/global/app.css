@@ -438,6 +438,14 @@
   --io-ease-standard:            ease;
   --io-ease-snappy:              cubic-bezier(0.075, 0.82, 0.165, 1);
 
+  /* Two-phase overlay transitions (issue #1137):
+     Enter: longer duration + ease-in (decelerate into resting position)
+     Exit:  shorter duration + ease-out (accelerate out of view) */
+  --io-duration-overlay-enter:   300ms;
+  --io-duration-overlay-exit:    200ms;
+  --io-ease-overlay-enter:       cubic-bezier(0, 0, 0.2, 1);
+  --io-ease-overlay-exit:        cubic-bezier(0.4, 0, 1, 1);
+
   /* Overlay transition contract — semantic aliases for consistent enter/exit */
   --io-motion-overlay-enter:     var(--io-motion-base);
   --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
@@ -629,10 +637,11 @@
   --io-tabs-close-button-color:           var(--io-text-secondary); /* Color of the close button icon */
 
   /* Modal */
-  --io-modal-width-sm:           400px;
-  --io-modal-width-md:           560px;
-  --io-modal-width-lg:           768px;
-  --io-modal-max-height:         90vh;
+  --io-modal-width-sm:                    400px;
+  --io-modal-width-md:                    560px;
+  --io-modal-width-lg:                    768px;
+  --io-modal-max-height:                  90vh;
+  --io-modal-fullscreen-breakpoint:       640px;
 
   /* Toast */
   --io-toast-max-width:          400px;
@@ -1428,6 +1437,7 @@ io-table[compact] io-table-body-cell td {
 
   /* io-flyout */
   --io-flyout-backdrop:          rgba(0, 0, 0, 0.5);
+  --io-flyout-sticky-top:        0px;
 
   /* io-wordmark — text variant */
   --io-wordmark-font-size-sm:         var(--io-font-size-sm);

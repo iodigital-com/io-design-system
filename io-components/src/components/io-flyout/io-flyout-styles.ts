@@ -29,7 +29,11 @@ export function getFlyoutStyles(): string {
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
       border: 1px solid var(--io-border);
-      transition: transform var(--io-motion-overlay-enter, 0.25s ease);
+      /* Two-phase transition: exit uses shorter duration + ease-out */
+      transition:
+        transform var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1)),
+        opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
+      opacity: 0;
     }
 
     /* ── Position variants ────────────────────────────────────── */
@@ -55,6 +59,11 @@ export function getFlyoutStyles(): string {
     .flyout__panel--open.flyout__panel--right,
     .flyout__panel--open.flyout__panel--left {
       transform: translateX(0);
+      opacity: 1;
+      /* Enter: longer duration + ease-in (decelerate into resting position) */
+      transition:
+        transform var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)),
+        opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     /* ── Hidden state ─────────────────────────────────────────── */
@@ -116,6 +125,37 @@ export function getFlyoutStyles(): string {
       min-width: 0;
     }
 
+    /* ── Sticky footer layout ────────────────────────────────── */
+
+    /*
+     * When footerBehavior=sticky (default), the panel uses a flex column
+     * layout where the header is sticky at top, body scrolls, and footer
+     * is sticky at bottom. The panel itself does NOT scroll — only the body.
+     */
+
+    .flyout__panel--footer-sticky {
+      overflow: hidden;
+    }
+
+    .flyout__panel--footer-sticky .flyout__header {
+      position: sticky;
+      top: var(--io-flyout-sticky-top, 0);
+      background: inherit;
+      z-index: 1;
+    }
+
+    .flyout__panel--footer-sticky .flyout__body {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .flyout__panel--footer-sticky .flyout__footer {
+      position: sticky;
+      bottom: 0;
+      background: inherit;
+      z-index: 1;
+    }
+
     /* ── Body ────────────────────────────────────────────────── */
 
     .flyout__body {
@@ -134,6 +174,26 @@ export function getFlyoutStyles(): string {
       padding: var(--io-space-4) var(--io-space-6);
       border-top: 1px solid var(--io-border);
       flex-shrink: 0;
+    }
+
+    /* Scroll shadow when footer is pinned (content still scrollable) */
+
+    .flyout__footer--pinned {
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ── Sub-footer ──────────────────────────────────────────── */
+
+    .flyout__sub-footer {
+      padding: var(--io-space-4) var(--io-space-6);
+      border-top: 1px solid var(--io-border);
+      flex-shrink: 0;
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-secondary);
+    }
+
+    .flyout__sub-footer--hidden {
+      display: none;
     }
 
     /* ── Hover (pointer devices only) ────────────────────────── */
@@ -156,8 +216,10 @@ export function getFlyoutStyles(): string {
     /* ── Reduced motion ──────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      .flyout__panel {
-        transition: none;
+      .flyout__panel,
+      .flyout__panel--open.flyout__panel--right,
+      .flyout__panel--open.flyout__panel--left {
+        transition-duration: 0ms;
       }
     }
   `;

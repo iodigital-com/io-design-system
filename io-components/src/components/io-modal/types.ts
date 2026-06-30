@@ -1,6 +1,13 @@
 export type IoModalSize = 'sm' | 'md' | 'lg';
 
 /**
+ * When true, the modal expands to fill the full viewport at or below
+ * --io-modal-fullscreen-breakpoint (default 640px), while remaining
+ * centered at larger breakpoints.
+ */
+export type IoModalFullscreen = boolean;
+
+/**
  * Background surface level for the io-modal panel.
  * - canvas:   var(--io-bg-page) — default page background
  * - surface:  var(--io-bg-surface) — slightly elevated surface

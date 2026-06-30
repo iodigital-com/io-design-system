@@ -100,23 +100,16 @@ export class IoModal {
   @Prop() dismissButton = true;
 
   /**
-   * When `true`, the modal expands to fill the full viewport below
-   * `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal
-   * reverts to the `size` variant. Useful for the mobile-takeover pattern:
-   * full-screen on phones, centered dialog on desktop.
+   * When `true`, the modal expands to fill the full viewport at or below
+   * `--io-modal-fullscreen-breakpoint` (default 640px). At larger viewports
+   * the modal remains centered and respects the `size` prop.
    *
    * @default false
    */
   @Prop({ reflect: true }) fullscreen = false;
 
   /**
-   * Visual treatment of the backdrop overlay.
-   * - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs
-   * - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for
-   *            auto-appearing dialogs (e.g. cookie consent). Avoids expensive
-   *            GPU compositing on low-end devices.
-   *
-   * @default 'blur'
+   * @default 'blur' (kept for API compat)
    */
   @Prop({ reflect: true }) backdrop: IoModalBackdrop = 'blur';
 

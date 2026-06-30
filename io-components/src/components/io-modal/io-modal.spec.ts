@@ -48,17 +48,23 @@ describe('io-modal — default props', () => {
 });
 
 describe('io-modal — overlay transition contract', () => {
-  it('enter animation uses --io-motion-overlay-enter semantic token', () => {
+  it('enter transition uses --io-duration-overlay-enter and --io-ease-overlay-enter tokens', () => {
     const styles: string = getModalStyles();
-    expect(styles).toContain('--io-motion-overlay-enter');
-    expect(styles).toContain('--io-motion-overlay-easing');
+    expect(styles).toContain('--io-duration-overlay-enter');
+    expect(styles).toContain('--io-ease-overlay-enter');
   });
 
-  it('prefers-reduced-motion guard disables all animations', () => {
+  it('exit transition uses --io-duration-overlay-exit and --io-ease-overlay-exit tokens', () => {
+    const styles: string = getModalStyles();
+    expect(styles).toContain('--io-duration-overlay-exit');
+    expect(styles).toContain('--io-ease-overlay-exit');
+  });
+
+  it('prefers-reduced-motion guard collapses all transitions to 0ms', () => {
     const styles: string = getModalStyles();
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
     const rmIdx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
-    expect(styles.slice(rmIdx)).toContain('animation: none');
+    expect(styles.slice(rmIdx)).toContain('transition-duration: 0ms');
   });
 });
 

@@ -2,7 +2,7 @@ import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } 
 
 import { getBannerStyles } from './io-banner-styles';
 import { getNotificationIconName } from '../../utils/notification-icons';
-import type { IoBannerVariant, IoBannerPosition, IoBannerHeadingTag } from './types';
+import type { IoBannerVariant, IoBannerPosition, IoBannerPositionValue, IoBannerHeadingTag } from './types';
 import type { IoIconName } from '../../utils/icons';
 
 /**
@@ -69,8 +69,16 @@ export class IoBanner {
   /** When true, renders a dismiss button that emits the `dismiss` event and closes the banner */
   @Prop() dismissible = false;
 
-  /** Screen position of the fixed banner — top or bottom of the viewport */
-  @Prop({ reflect: true }) position: IoBannerPosition = 'top';
+  /**
+   * Screen position of the banner. Accepts a flat string or a responsive
+   * breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which
+   * matches the Porsche reference pattern: bottom on mobile, top on desktop.
+   *
+   * @example
+   * position="top"
+   * :position="{ base: 'bottom', s: 'top' }"
+   */
+  @Prop() position: IoBannerPosition = { base: 'bottom', s: 'top' };
 
   /**
    * Accessible label for the dismiss button. Defaults to "Dismiss {heading}" when heading is set,
@@ -113,6 +121,31 @@ export class IoBanner {
    * Focus is restored here when the banner closes.
    */
   private _openerEl: HTMLElement | null = null;
+
+  private popoverEl?: HTMLDivElement;
+
+  /**
+   * Resolve the flat position value for the current viewport.
+   * When position is an object, prefer the most specific matching key
+   * based on the current window width. Falls back to 'top'.
+   */
+  private get resolvedPosition(): IoBannerPositionValue {
+    const pos = this.position;
+    if (typeof pos === 'string') return pos as IoBannerPositionValue;
+
+    // Breakpoint widths: base=0, s=640, m=1024, l=1280
+    if (typeof window === 'undefined') return (pos.base ?? 'top') as IoBannerPositionValue;
+    const w = window.innerWidth;
+    if (w >= 1280 && pos.l) return pos.l;
+    if (w >= 1024 && pos.m) return pos.m;
+    if (w >= 640 && pos.s) return pos.s;
+    return (pos.base ?? 'top') as IoBannerPositionValue;
+  }
+
+  /** Returns the CSS classes to apply on the inner banner div based on resolved position */
+  private get bannerPositionClass(): string {
+    return `banner--position-${this.resolvedPosition}`;
+  }
 
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
@@ -203,6 +236,20 @@ export class IoBanner {
   }
 
   componentDidRender(): void {
+    // Manage popover visibility via the Popover API for top-layer rendering.
+    // This escapes z-index stacking contexts set by <dialog>, <select>, etc.
+    if (this.popoverEl) {
+      const popEl = this.popoverEl as HTMLDivElement & {
+        showPopover?: () => void;
+        hidePopover?: () => void;
+      };
+      if (this.open) {
+        try { popEl.showPopover?.(); } catch (_) { /* polyfill missing */ }
+      } else {
+        try { popEl.hidePopover?.(); } catch (_) { /* already hidden */ }
+      }
+    }
+
     if (this._shouldFocusDismiss && this.open && this.dismissible) {
       this._shouldFocusDismiss = false;
       this.el?.shadowRoot?.querySelector<HTMLButtonElement>('.banner__dismiss')?.focus();
@@ -230,16 +277,13 @@ export class IoBanner {
     return (
       <Host>
         <style>{getBannerStyles()}</style>
-        {/* #1076: The live-region wrapper is always mounted so the browser can
-            register it before the first open. Visibility toggled via aria-hidden
-            and display:none — matches the WAI-ARIA Authoring Practices guidance
-            for pre-established live regions. */}
         <div
-          class={{
-            banner: true,
-            [`banner--${this.variant}`]: true,
-            'banner--dismissing': this._dismissing,
-          }}
+          class="banner__popover"
+          popover="manual"
+          ref={(el?: HTMLDivElement) => { this.popoverEl = el; }}
+        >
+        {this.open && <div
+          class={`banner banner--${this.variant} ${this.bannerPositionClass}`}
           role={this.isAssertive ? 'alert' : 'status'}
           aria-live={this.isAssertive ? undefined : 'polite'}
           aria-atomic={this.isAssertive ? undefined : 'true'}
@@ -293,6 +337,7 @@ export class IoBanner {
               onClick={this.handleDismiss}
             />
           )}
+        </div>}
         </div>
       </Host>
     );

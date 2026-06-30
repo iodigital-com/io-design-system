@@ -99,16 +99,19 @@ describe('io-sheet — render contract', () => {
     expect(styles).toContain('sheet__panel');
   });
 
-  it('styles contain io-sheet-in keyframe animation', () => {
+  it('styles contain two-phase transitions for enter and exit', () => {
     const styles: string = getSheetStyles();
-    expect(styles).toContain('@keyframes io-sheet-in');
+    expect(styles).toContain('--io-duration-overlay-exit');
+    expect(styles).toContain('--io-duration-overlay-enter');
     expect(styles).toContain('translateY(100%)');
     expect(styles).toContain('translateY(0)');
   });
 
-  it('styles contain io-bg-card token for background', () => {
+  it('styles contain background variant classes', () => {
     const styles: string = getSheetStyles();
-    expect(styles).toContain('var(--io-bg-card)');
+    expect(styles).toContain('sheet__panel--bg-canvas');
+    expect(styles).toContain('sheet__panel--bg-surface');
+    expect(styles).toContain('sheet__panel--bg-elevated');
   });
 
   it('styles contain io-shadow-lg token for box-shadow', () => {
@@ -136,7 +139,7 @@ describe('io-sheet — render contract', () => {
     const styles: string = getSheetStyles();
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
     const idx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
-    expect(styles.slice(idx)).toContain('animation: none');
+    expect(styles.slice(idx)).toContain('transition-duration: 0ms');
   });
 
   it('styles contain panel anchored to bottom', () => {

@@ -41,8 +41,8 @@ describe('io-banner — default props', () => {
     expect(c.headingTag).toBe('h5');
   });
 
-  it('defaults position to top', () => {
-    expect(c.position).toBe('top');
+  it('defaults position to responsive object { base: bottom, s: top }', () => {
+    expect(c.position).toEqual({ base: 'bottom', s: 'top' });
   });
 
   it('has no description by default', () => {

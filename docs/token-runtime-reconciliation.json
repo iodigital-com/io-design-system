@@ -3785,6 +3785,7 @@
     },
     {
       "runtimeCssVar": "--io-spinner-size",
+      "runtimeCssVar": "--io-duration-overlay-enter",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3793,6 +3794,10 @@
     },
     {
       "runtimeCssVar": "--io-spinner-color",
+      "notes": "Two-phase overlay enter duration. Defaults to 300ms."
+    },
+    {
+      "runtimeCssVar": "--io-duration-overlay-exit",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3801,6 +3806,10 @@
     },
     {
       "runtimeCssVar": "--io-spinner-track-color",
+      "notes": "Two-phase overlay exit duration. Defaults to 200ms."
+    },
+    {
+      "runtimeCssVar": "--io-ease-overlay-enter",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -3809,6 +3818,10 @@
     },
     {
       "runtimeCssVar": "--io-progress-indeterminate-duration",
+      "notes": "Overlay enter easing curve. Defaults to cubic-bezier(0, 0, 0.2, 1)."
+    },
+    {
+      "runtimeCssVar": "--io-ease-overlay-exit",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -4022,6 +4035,7 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Vertical enter offset for upward-entering overlays (io-modal). Default: 12px."
+      "notes": "Overlay exit easing curve. Defaults to cubic-bezier(0.4, 0, 1, 1)."
     },
     {
       "runtimeCssVar": "--io-motion-entrance-offset-down",
@@ -4033,6 +4047,10 @@
     },
     {
       "runtimeCssVar": "--io-motion-entrance-offset-start",
+      "notes": "Initial Y offset for overlay enter transitions. Defaults to 12px."
+    },
+    {
+      "runtimeCssVar": "--io-modal-fullscreen-breakpoint",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -4041,6 +4059,10 @@
     },
     {
       "runtimeCssVar": "--io-motion-entrance-offset-end",
+      "notes": "Breakpoint below which the modal fills the viewport when fullscreen=true. Defaults to 640px."
+    },
+    {
+      "runtimeCssVar": "--io-flyout-sticky-top",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
@@ -4302,6 +4324,7 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Standard easing function (ease)."
+      "notes": "Top offset for sticky flyout header. Defaults to 0px."
     }
   ]
 }

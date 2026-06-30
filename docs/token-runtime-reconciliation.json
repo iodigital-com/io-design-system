@@ -2813,7 +2813,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Spinner animation duration. Value: 0.7s."
+      "notes": "Duration of one full spinner rotation. Default: 700ms. Public API token for io-spinner."
     },
     {
       "runtimeCssVar": "--io-spinner-duration-reduced",
@@ -3846,14 +3846,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Horizontal enter offset for end-edge overlays (reserved). Default: 100%."
-    },
-    {
-      "runtimeCssVar": "--io-spinner-duration",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Duration of one full spinner rotation. Default: 700ms. Public API token for io-spinner."
     }
   ]
 }

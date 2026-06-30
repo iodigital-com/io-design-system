@@ -356,8 +356,11 @@ export class IoTextarea {
     const hasState = showError || showSuccess || showWarning;
     const showMessage = showError && (hasMessageSlot || message);
     const showDescription = !showError && (hasDescriptionSlot || helperText);
+    // #1094: messageId is always referenced so the live-region relationship is
+    // established when the textarea receives focus, before any error occurs.
+    // The <p> wrapper is rendered unconditionally; only its inner text is gated.
     const describedBy = [
-      showMessage ? messageId : '',
+      messageId,
       showDescription ? helperId : '',
       description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
@@ -415,19 +418,27 @@ export class IoTextarea {
             </div>
           )}
         </div>
-        {showError && (
-          <p id={messageId} class={`textarea-message textarea-message--error${showMessage ? '' : ' textarea-message--hidden'}`} role="alert">
+        {/* #1094: Message live-region is always mounted so aria-describedby can
+            reference it before any error occurs. Only inner content is gated. */}
+        <p
+          id={messageId}
+          class={[
+            'textarea-message',
+            showError ? 'textarea-message--error' : showSuccess ? 'textarea-message--success' : showWarning ? 'textarea-message--warning' : '',
+            (showMessage || (showSuccess && message) || (showWarning && message)) ? '' : 'textarea-message--hidden',
+          ].filter(Boolean).join(' ')}
+          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
+          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
+          aria-atomic={(showMessage || ((showSuccess || showWarning) && message)) ? 'true' : undefined}
+        >
+          {showMessage && (
             <span class={hasMessageSlot ? 'textarea-message__slot' : 'textarea-message__slot textarea-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {(showSuccess || showWarning) && message && (
-          <p id={messageId} class={`textarea-message textarea-message--${showSuccess ? 'success' : 'warning'}`} role="status">
-            {message}
-          </p>
-        )}
+          )}
+          {showMessage && !hasMessageSlot && message}
+          {(showSuccess || showWarning) && message && !showMessage && message}
+        </p>
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`textarea-helper${showDescription ? '' : ' textarea-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'textarea-description__slot' : 'textarea-description__slot textarea-description__slot--hidden'}>

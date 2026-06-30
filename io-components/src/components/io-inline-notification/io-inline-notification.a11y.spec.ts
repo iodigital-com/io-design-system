@@ -63,6 +63,7 @@ describe('io-inline-notification — WCAG AA accessibility', () => {
 });
 
 describe('io-inline-notification — component role per variant', () => {
+  // #1024: role/aria-live moved off Host onto the inner .inline-notification div.
   function renderComponent(variant: IoInlineNotification['variant']): Record<string, unknown> {
     const c = new IoInlineNotification();
     (c as any).el = document.createElement('io-inline-notification');
@@ -70,27 +71,33 @@ describe('io-inline-notification — component role per variant', () => {
     const hMock = h as unknown as ReturnType<typeof import('vitest').vi.fn>;
     hMock.mockClear();
     c.render();
-    // Host is first h() call (tag === undefined in Stencil mock environment)
-    const hostCall = hMock.mock.calls.find((call) => call[0] == null || call[0] === undefined);
-    return (hostCall?.[1] ?? {}) as Record<string, unknown>;
+    // Find the inner div call that carries role (not the Host call)
+    const divCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'div' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        'role' in (attrs as Record<string, unknown>),
+    );
+    return (divCall?.[1] ?? {}) as Record<string, unknown>;
   }
 
-  it('warning variant renders role="alert" on host', () => {
+  it('warning variant renders role="alert" on inner div (#1024)', () => {
     const props = renderComponent('warning');
     expect(props.role).toBe('alert');
   });
 
-  it('error variant renders role="alert" on host', () => {
+  it('error variant renders role="alert" on inner div (#1024)', () => {
     const props = renderComponent('error');
     expect(props.role).toBe('alert');
   });
 
-  it('info variant renders role="status" on host', () => {
+  it('info variant renders role="status" on inner div (#1024)', () => {
     const props = renderComponent('info');
     expect(props.role).toBe('status');
   });
 
-  it('success variant renders role="status" on host', () => {
+  it('success variant renders role="status" on inner div (#1024)', () => {
     const props = renderComponent('success');
     expect(props.role).toBe('status');
   });

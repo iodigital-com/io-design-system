@@ -48,6 +48,19 @@ export function getCheckboxStyles(): string {
       flex-shrink: 0;
     }
 
+    /* #1092: ::after extends the clickable hit zone to at least 24×24 px
+       (WCAG 2.5.8 Target Size Minimum) without affecting the visual indicator.
+       The inset is computed as half the deficit between the minimum and the
+       actual size so the tap target stays centred on the visual element.
+       --io-checkbox-touch-target-min defaults to 24px per the WCAG minimum. */
+    .checkbox-control::after {
+      content: '';
+      position: absolute;
+      inset: calc(
+        -1 * max(0px, (var(--io-checkbox-touch-target-min, 24px) - var(--io-checkbox-size, 1rem) * var(--_io-checkbox-scaling, 1)) / 2)
+      );
+    }
+
     /* Visually hidden but focusable native input — always in DOM for stable form refs */
     .checkbox-native {
       position: absolute;

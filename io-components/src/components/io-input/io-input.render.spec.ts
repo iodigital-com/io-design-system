@@ -454,14 +454,17 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(describedBy).toContain('-error');
   });
 
-  it('does not set aria-describedby when state=error but message is absent', () => {
+  it('aria-describedby always references errorId (live-region pre-established, #1094)', () => {
+    // #1094: errorId is always included so the live-region relationship exists
+    // in the accessibility tree before any error occurs.
     c.state = 'error';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
     const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
-    expect(inputCall?.[1]?.['aria-describedby']).toBeUndefined();
+    const describedBy = inputCall?.[1]?.['aria-describedby'] as string | undefined;
+    expect(describedBy).toContain('-error');
   });
 
   it('sets aria-describedby to helperId when state=none and helperText is present', () => {
@@ -476,7 +479,8 @@ describe('io-input — render() aria-describedby computation', () => {
     expect(describedBy).toContain('-helper');
   });
 
-  it('does not set aria-describedby when state=none and no helperText', () => {
+  it('aria-describedby references errorId even when state=none and no helperText (#1094)', () => {
+    // #1094: errorId is always in aria-describedby so the live-region is pre-established.
     c.state = 'none';
     (c as any).faceInvalid = false;
     c.helperText = undefined;
@@ -484,7 +488,11 @@ describe('io-input — render() aria-describedby computation', () => {
     c.render();
 
     const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
-    expect(inputCall?.[1]?.['aria-describedby']).toBeUndefined();
+    const describedBy = inputCall?.[1]?.['aria-describedby'] as string | undefined;
+    // errorId is always present; helperId and counterId are absent when unused
+    expect(describedBy).toContain('-error');
+    expect(describedBy).not.toContain('-helper');
+    expect(describedBy).not.toContain('-sr');
   });
 
   it('does not include helperId when state=error and message is shown', () => {

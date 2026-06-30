@@ -26,7 +26,7 @@ MockHTMLElement {
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
         <span class="checkbox-control">
-          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" checked>
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" checked aria-describedby="io-checkbox-4fzzzxjylrx-message io-checkbox-4fzzzxjylrx-face-error">
           <span class="checkbox-custom checkbox-custom--checked" aria-hidden="true">
             <svg class="checkbox-icon" viewBox="0 0 10 8" fill="none" aria-hidden="true">
               <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -41,6 +41,8 @@ MockHTMLElement {
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
+    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -53,7 +55,7 @@ MockHTMLElement {
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
         <span class="checkbox-control">
-          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" aria-describedby="io-checkbox-4fzzzxjylrx-message io-checkbox-4fzzzxjylrx-face-error">
           <span class="checkbox-custom checkbox-custom--indeterminate" aria-hidden="true">
             <svg class="checkbox-icon" viewBox="0 0 10 2" fill="none" aria-hidden="true">
               <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
@@ -68,6 +70,8 @@ MockHTMLElement {
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
+    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -1243,7 +1247,7 @@ exports[`io-checkbox — render snapshots > renders default state 1`] = `
     <div class="checkbox-wrapper">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
         <span class="checkbox-control">
-          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" aria-describedby="io-checkbox-4fzzzxjylrx-message io-checkbox-4fzzzxjylrx-face-error">
           <span class="checkbox-custom" aria-hidden="true"></span>
         </span>
         <span class="checkbox-text">
@@ -1254,6 +1258,8 @@ exports[`io-checkbox — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
+    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -1269,7 +1275,7 @@ exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
     <div class="checkbox-wrapper checkbox-wrapper--disabled">
       <label class="checkbox-label" for="io-checkbox-4fzzzxjylrx">
         <span class="checkbox-control">
-          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" disabled aria-describedby="io-checkbox-4fzzzxjylrx-helper">
+          <input id="io-checkbox-4fzzzxjylrx" class="checkbox-native" type="checkbox" value="on" disabled aria-describedby="io-checkbox-4fzzzxjylrx-message io-checkbox-4fzzzxjylrx-face-error io-checkbox-4fzzzxjylrx-helper">
           <span class="checkbox-custom" aria-hidden="true"></span>
         </span>
         <span class="checkbox-text">
@@ -1280,6 +1286,8 @@ exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
+    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>

@@ -64,21 +64,27 @@ describe('io-inline-notification — render does not throw per variant', () => {
 });
 
 describe('io-inline-notification — ARIA role mapping', () => {
-  function hostAttrs(c: IoInlineNotification): Record<string, unknown> {
+  // #1024: Live region attributes are on the inner .inline-notification div, not the Host.
+  function innerDivAttrs(c: IoInlineNotification): Record<string, unknown> {
     hMock.mockClear();
     (c as any).render();
-    const hostCall = hMock.mock.calls.findLast(
-      ([, attrs]: [unknown, unknown]) => attrs && typeof attrs === 'object' && 'role' in (attrs as Record<string, unknown>),
+    // Find the div call that carries role
+    const divCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'div' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        'role' in (attrs as Record<string, unknown>),
     ) as [unknown, Record<string, unknown>] | undefined;
-    return hostCall?.[1] ?? {};
+    return divCall?.[1] ?? {};
   }
 
   it.each(['error', 'warning'] as const)(
-    'uses role="alert" + aria-live="assertive" for %s variant (WCAG 4.1.3)',
+    'uses role="alert" + aria-live="assertive" on inner div for %s variant (#1024)',
     (variant) => {
       const c = new IoInlineNotification();
       c.variant = variant;
-      const attrs = hostAttrs(c);
+      const attrs = innerDivAttrs(c);
       expect(attrs.role).toBe('alert');
       expect(attrs['aria-live']).toBe('assertive');
       expect(attrs['aria-atomic']).toBe('true');
@@ -86,16 +92,34 @@ describe('io-inline-notification — ARIA role mapping', () => {
   );
 
   it.each(['info', 'success'] as const)(
-    'uses role="status" + aria-live="polite" for %s variant',
+    'uses role="status" + aria-live="polite" on inner div for %s variant (#1024)',
     (variant) => {
       const c = new IoInlineNotification();
       c.variant = variant;
-      const attrs = hostAttrs(c);
+      const attrs = innerDivAttrs(c);
       expect(attrs.role).toBe('status');
       expect(attrs['aria-live']).toBe('polite');
       expect(attrs['aria-atomic']).toBe('true');
     },
   );
+
+  it('Host element does NOT carry role or aria-live (#1024)', () => {
+    const c = new IoInlineNotification();
+    c.variant = 'error';
+    hMock.mockClear();
+    (c as any).render();
+    // Host call: first h() call where tag is the Host component symbol
+    // We look for any call where 'role' appears alongside a host-like signature.
+    // The simplest check: no Host call with role='alert'/'status'.
+    const hostCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        typeof tag !== 'string' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        'role' in (attrs as Record<string, unknown>),
+    );
+    expect(hostCall).toBeUndefined();
+  });
 });
 
 describe('io-inline-notification — slot content detection', () => {

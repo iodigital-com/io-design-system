@@ -255,10 +255,13 @@ export class IoCheckbox {
     const showFaceError = this.faceInvalid && state !== 'error';
     const showMessage = showError && (hasMessageSlot || message);
 
+    // #1094: messageId and faceErrorId are always included in aria-describedby so
+    // the live-region relationship is established before any error occurs.
+    // The <p> wrappers are rendered unconditionally; only their inner text is gated.
     const describedBy = [
+      messageId,
+      faceErrorId,
       !hasState && !showFaceError && (hasDescriptionSlot || helperText) ? helperId : null,
-      hasState && (hasMessageSlot || message) ? messageId : null,
-      showFaceError ? faceErrorId : null,
     ]
       .filter((id): id is string => Boolean(id))
       .join(' ');
@@ -320,24 +323,36 @@ export class IoCheckbox {
             </span>
           </label>
         </div>
-        {showError && (
-          <p id={messageId} class={`checkbox-message checkbox-message--error${showMessage ? '' : ' checkbox-message--hidden'}`} role="alert">
+        {/* #1094: State message live-region is always mounted so aria-describedby
+            can reference it before an error occurs. Only inner content is gated. */}
+        <p
+          id={messageId}
+          class={[
+            'checkbox-message',
+            showError ? 'checkbox-message--error' : showSuccess ? 'checkbox-message--success' : showWarning ? 'checkbox-message--warning' : '',
+            showMessage ? '' : 'checkbox-message--hidden',
+          ].filter(Boolean).join(' ')}
+          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
+          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
+          aria-atomic={showMessage ? 'true' : undefined}
+        >
+          {showMessage && (
             <span class={hasMessageSlot ? 'checkbox-message__slot' : 'checkbox-message__slot checkbox-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {(showSuccess || showWarning) && message && (
-          <p id={messageId} class={`checkbox-message checkbox-message--${showSuccess ? 'success' : 'warning'}`} role="status">
-            {message}
-          </p>
-        )}
-        {showFaceError && (
-          <p id={faceErrorId} class="checkbox-message checkbox-message--error" role="alert">
-            Please check this box
-          </p>
-        )}
+          )}
+          {showMessage && !hasMessageSlot && message}
+        </p>
+        {/* #1094: FACE error live-region always mounted; inner text gated by showFaceError */}
+        <p
+          id={faceErrorId}
+          class={`checkbox-message checkbox-message--error${showFaceError ? '' : ' checkbox-message--hidden'}`}
+          role="alert"
+          aria-live="assertive"
+          aria-atomic={showFaceError ? 'true' : undefined}
+        >
+          {showFaceError && 'Please check this box'}
+        </p>
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`checkbox-helper${hasDescriptionSlot || helperText ? '' : ' checkbox-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'checkbox-description__slot' : 'checkbox-description__slot checkbox-description__slot--hidden'}>

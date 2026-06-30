@@ -158,11 +158,17 @@ export class IoBanner {
     return (
       <Host>
         <style>{getBannerStyles()}</style>
-        {this.open && <div
+        {/* #1076: The live-region wrapper is always mounted so the browser can
+            register it before the first open. Visibility toggled via aria-hidden
+            and display:none — matches the WAI-ARIA Authoring Practices guidance
+            for pre-established live regions. */}
+        <div
           class={`banner banner--${this.variant}`}
           role={this.isAssertive ? 'alert' : 'status'}
           aria-live={this.isAssertive ? undefined : 'polite'}
           aria-atomic={this.isAssertive ? undefined : 'true'}
+          aria-hidden={this.open ? undefined : 'true'}
+          style={{ display: this.open ? undefined : 'none' }}
         >
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (
@@ -228,7 +234,7 @@ export class IoBanner {
               </svg>
             </button>
           )}
-        </div>}
+        </div>
       </Host>
     );
   }

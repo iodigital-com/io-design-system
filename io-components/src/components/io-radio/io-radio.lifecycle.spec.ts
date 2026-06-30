@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoRadio } from './io-radio';
 
@@ -84,6 +84,16 @@ describe('io-radio — syncFormValue: no-name branch (groupSatisfied=false)', ()
 });
 
 describe('io-radio — handleChange: mutual exclusion', () => {
+  // Suppress the deprecation console.warn that fires when io-radio is used without
+  // an ancestor io-radio-group (the document-wide fallback path).
+  beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('deselects same-name siblings in document when checked', () => {
     const component = new IoRadio();
     const elA = document.createElement('io-radio');
@@ -175,6 +185,49 @@ describe('io-radio — handleChange: mutual exclusion', () => {
 
     document.body.removeChild(elA);
     document.body.removeChild(sibling);
+  });
+
+  // #941: Two separate io-radio-groups with the same name must NOT interfere.
+  it('does not deselect sibling in a different io-radio-group with same name (#941)', () => {
+    // Build two io-radio-group containers
+    const groupA = document.createElement('io-radio-group');
+    const groupB = document.createElement('io-radio-group');
+    document.body.appendChild(groupA);
+    document.body.appendChild(groupB);
+
+    // Radio inside groupA
+    const component = new IoRadio();
+    const elA = document.createElement('io-radio');
+    (component as any).el = elA;
+    // Simulate closest('io-radio-group') returning groupA
+    elA.closest = (selector: string) => selector === 'io-radio-group' ? groupA : null;
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = makeInternals();
+    (component as any).label = 'A';
+    component.value = 'yes';
+    component.name = 'answer';
+    (component as any).componentWillLoad();
+    groupA.appendChild(elA);
+
+    // Radio inside groupB — same name, should NOT be deselected
+    const siblingB = document.createElement('io-radio') as HTMLElement & { name: string; checked: boolean };
+    siblingB.name = 'answer';
+    siblingB.checked = true;
+    groupB.appendChild(siblingB);
+
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.checked = true;
+    const ev = new Event('change');
+    Object.defineProperty(ev, 'target', { value: input });
+
+    (component as any).handleChange(ev);
+
+    // groupB sibling should remain checked — it belongs to a different group
+    expect(siblingB.checked).toBe(true);
+
+    document.body.removeChild(groupA);
+    document.body.removeChild(groupB);
   });
 });
 

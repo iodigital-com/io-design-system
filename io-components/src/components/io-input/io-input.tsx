@@ -368,8 +368,11 @@ export class IoInput {
     const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
     const showCounter = counter && maxLength != null;
     const counterSrId = `${this.counterId}-sr`;
+    // #1094: errorId is always referenced so the live-region relationship is
+    // established when the input receives focus, before any error occurs.
+    // The <p> wrapper is rendered unconditionally; only its inner text is gated.
     const describedBy = [
-      showMessage ? errorId : '',
+      errorId,
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
     ].filter(Boolean).join(' ') || undefined;
@@ -487,30 +490,27 @@ export class IoInput {
             {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {showError && (
-          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+        {/* #1094: Error live-region is always mounted so aria-describedby can
+            reference it before any error occurs. The role/hidden class gate the
+            announcement; only the inner text is conditionally rendered. */}
+        <p
+          id={errorId}
+          class={[
+            'input-message',
+            showError ? 'input-message--error' : showSuccess ? 'input-message--success' : showWarning ? 'input-message--warning' : '',
+            showMessage ? '' : 'input-error--hidden',
+          ].filter(Boolean).join(' ')}
+          role={showError ? 'alert' : showSuccess || showWarning ? 'status' : undefined}
+          aria-live={showError ? 'assertive' : showSuccess || showWarning ? 'polite' : undefined}
+          aria-atomic={showMessage ? 'true' : undefined}
+        >
+          {showMessage && (
             <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {showSuccess && (
-          <p id={errorId} class={`input-message input-message--success${showMessage ? '' : ' input-error--hidden'}`} role="status">
-            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {showWarning && (
-          <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
-            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
+          )}
+          {showMessage && !hasMessageSlot && message}
+        </p>
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
           <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
             <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />

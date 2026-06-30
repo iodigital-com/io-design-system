@@ -8,7 +8,7 @@ exports[`io-input — render snapshots > renders default state 1`] = `
         <span class="input-slot input-slot--prefix input-slot--hidden">
           <slot name="prefix"></slot>
         </span>
-        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value placeholder="name@example.com" inputmode="text">
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value placeholder="name@example.com" inputmode="text" aria-describedby="io-input-4fzzzxjylrx-error">
         <span class="input-slot input-slot--suffix input-slot--hidden">
           <slot name="suffix"></slot>
         </span>
@@ -22,6 +22,7 @@ exports[`io-input — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -39,7 +40,7 @@ exports[`io-input — render snapshots > renders disabled state 1`] = `
         <span class="input-slot input-slot--prefix input-slot--hidden">
           <slot name="prefix"></slot>
         </span>
-        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value="Read only" placeholder=" " disabled inputmode="text">
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="text" value="Read only" placeholder=" " disabled inputmode="text" aria-describedby="io-input-4fzzzxjylrx-error">
         <span class="input-slot input-slot--suffix input-slot--hidden">
           <slot name="suffix"></slot>
         </span>
@@ -53,6 +54,7 @@ exports[`io-input — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -90,7 +92,7 @@ MockHTMLElement {
         <span class="input-slot input-slot--prefix input-slot--hidden">
           <slot name="prefix"></slot>
         </span>
-        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="email" value placeholder=" " inputmode="text">
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="email" value placeholder=" " inputmode="text" aria-describedby="io-input-4fzzzxjylrx-error">
         <span class="input-slot input-slot--suffix input-slot--hidden">
           <slot name="suffix"></slot>
         </span>
@@ -104,6 +106,7 @@ MockHTMLElement {
         </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -118,7 +121,7 @@ MockHTMLElement {
         <span class="input-slot input-slot--prefix input-slot--hidden">
           <slot name="prefix"></slot>
         </span>
-        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="search" value placeholder=" " inputmode="text">
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="search" value placeholder=" " inputmode="text" aria-describedby="io-input-4fzzzxjylrx-error">
         <span class="input-slot input-slot--suffix input-slot--hidden">
           <slot name="suffix"></slot>
         </span>
@@ -132,6 +135,7 @@ MockHTMLElement {
         </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -146,7 +150,7 @@ MockHTMLElement {
         <span class="input-slot input-slot--prefix input-slot--hidden">
           <slot name="prefix"></slot>
         </span>
-        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="tel" value placeholder=" " inputmode="text">
+        <input id="io-input-4fzzzxjylrx" class="input-field input-field--md" type="tel" value placeholder=" " inputmode="text" aria-describedby="io-input-4fzzzxjylrx-error">
         <span class="input-slot input-slot--suffix input-slot--hidden">
           <slot name="suffix"></slot>
         </span>
@@ -160,6 +164,7 @@ MockHTMLElement {
         </span>
       </label>
     </div>
+    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>

@@ -8,7 +8,8 @@ describe('io-tag-dismissible — dismiss event', () => {
 
   beforeEach(() => {
     component = new IoTagDismissible();
-    (component as any).label = 'React';
+    component.label = 'React';
+    (component as any).el = document.createElement('io-tag-dismissible');
     dismissMock = vi.fn();
     (component as any).dismiss = { emit: dismissMock };
   });
@@ -38,6 +39,12 @@ describe('io-tag-dismissible — dismiss event', () => {
   it('does not emit dismiss on other keys', () => {
     const ev = new KeyboardEvent('keydown', { key: 'Enter' });
     component.handleKeydown(ev);
+    expect(dismissMock).not.toHaveBeenCalled();
+  });
+
+  it('does not emit dismiss when disabled', () => {
+    component.disabled = true;
+    (component as any).handleDismiss();
     expect(dismissMock).not.toHaveBeenCalled();
   });
 });

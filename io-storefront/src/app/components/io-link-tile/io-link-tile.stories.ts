@@ -27,14 +27,14 @@ export const linkTileStory: Story<'io-link-tile'> = {
 };
 
 export const linkTilePropDefinitions: PropDefinition[] = [
-  { key: 'href', type: 'string', default: '/components/io-link' },
-  { key: 'label', type: 'string', default: 'Explore io-link' },
-  { key: 'description', type: 'string', default: 'Animated underline hyperlink component.' },
-  { key: 'aspectRatio', type: 'select', options: ['1/1', '4/3', '3/4', '16/9'], default: '4/3' },
-  { key: 'align', type: 'select', options: ['top', 'bottom'], default: 'bottom' },
-  { key: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'md' },
-  { key: 'weight', type: 'select', options: ['regular', 'medium', 'semibold', 'bold'], default: 'semibold' },
-  { key: 'gradient', type: 'boolean', default: true },
+  { name: 'href', type: 'string', defaultValue: '/components/io-link' },
+  { name: 'label', type: 'string', defaultValue: 'Explore io-link' },
+  { name: 'description', type: 'string', defaultValue: 'Animated underline hyperlink component.' },
+  { name: 'aspectRatio', type: 'select', options: ['1/1', '4/3', '3/4', '16/9'], defaultValue: '4/3' },
+  { name: 'align', type: 'select', options: ['top', 'bottom'], defaultValue: 'bottom' },
+  { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
+  { name: 'weight', type: 'select', options: ['regular', 'medium', 'semibold', 'bold'], defaultValue: 'semibold' },
+  { name: 'gradient', type: 'boolean', defaultValue: true },
 ];
 
 export const linkTileStoryAspectRatios: Story<'io-link-tile'> = {

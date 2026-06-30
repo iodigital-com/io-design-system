@@ -40,16 +40,16 @@ export default function IoGridUsagePage() {
           description="All gap values use clamp() for fluid scaling. Choose the preset that matches the visual weight of the content."
         />
         <div className="space-y-3">
-          <RuleCard title="none — 0px">
+          <RuleCard label="none — 0px">
             For pixel-perfect tile grids or image mosaics where cells should abut without spacing.
           </RuleCard>
-          <RuleCard title="sm — 8–16px fluid">
+          <RuleCard label="sm — 8–16px fluid">
             Compact UI grids such as icon arrays, tag clouds, or dense data tables.
           </RuleCard>
-          <RuleCard title="md — 16–36px fluid (default)">
+          <RuleCard label="md — 16–36px fluid (default)">
             The standard gap for card grids, form field layouts, and content sections.
           </RuleCard>
-          <RuleCard title="lg — 24–48px fluid">
+          <RuleCard label="lg — 24–48px fluid">
             Marketing layouts, hero sections, and feature rows where generous whitespace is intentional.
           </RuleCard>
         </div>
@@ -61,16 +61,16 @@ export default function IoGridUsagePage() {
           description="The 12-column base allows clean division into halves (6), thirds (4), quarters (3), and sixths (2)."
         />
         <div className="space-y-3">
-          <RuleCard title="Full width — colSpan 12">
+          <RuleCard label="Full width — colSpan 12">
             Use for hero sections, banners, or any element that should span the full container width.
           </RuleCard>
-          <RuleCard title="Half — colSpan 6">
+          <RuleCard label="Half — colSpan 6">
             Use for two-column layouts. Classic for marketing split panels and side-by-side comparisons.
           </RuleCard>
-          <RuleCard title="Third — colSpan 4">
+          <RuleCard label="Third — colSpan 4">
             Use for three-card feature rows or three-column form layouts.
           </RuleCard>
-          <RuleCard title="Sidebar — colSpan 3 + colSpan 9">
+          <RuleCard label="Sidebar — colSpan 3 + colSpan 9">
             Classic sidebar/main split. Good for filter panels, navigation drawers, and inspector panels.
           </RuleCard>
         </div>

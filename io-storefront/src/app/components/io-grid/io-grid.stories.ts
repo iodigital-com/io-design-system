@@ -26,10 +26,10 @@ export const gridStory: Story<'io-grid'> = {
 };
 
 export const gridPropDefinitions: PropDefinition[] = [
-  { key: 'gap', type: 'select', options: ['none', 'sm', 'md', 'lg'], default: 'md' },
-  { key: 'columns', type: 'number', default: 12 },
-  { key: 'align', type: 'select', options: ['start', 'center', 'end', 'stretch'], default: 'start' },
-  { key: 'justify', type: 'select', options: ['start', 'center', 'end', 'stretch'], default: 'stretch' },
+  { name: 'gap', type: 'select', options: ['none', 'sm', 'md', 'lg'], defaultValue: 'md' },
+  { name: 'columns', type: 'number', defaultValue: 12 },
+  { name: 'align', type: 'select', options: ['start', 'center', 'end', 'stretch'], defaultValue: 'start' },
+  { name: 'justify', type: 'select', options: ['start', 'center', 'end', 'stretch'], defaultValue: 'stretch' },
 ];
 
 export const gridStoryHalves: Story<'io-grid'> = {

@@ -58,7 +58,7 @@ export default function IoLinkTileAccessibilityPage() {
           title="Focus ring"
           description="The focus ring appears on the host element when focused via keyboard."
         />
-        <RuleCard title="Uses --io-focus-ring-active">
+        <RuleCard label="Uses --io-focus-ring-active">
           The tile host renders the standard io focus ring on :focus-visible. Never override this without providing an equivalent visible focus indicator.
         </RuleCard>
       </section>

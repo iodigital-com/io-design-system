@@ -51,16 +51,16 @@ export default function IoAppShellAccessibilityPage() {
           description="The shell establishes correct landmark regions for screen reader navigation."
         />
         <div className="space-y-3">
-          <RuleCard title="banner (header)">
+          <RuleCard label="banner (header)">
             The header element uses role=banner. Place brand identity and primary site controls here.
           </RuleCard>
-          <RuleCard title="navigation (sidebar-start)">
+          <RuleCard label="navigation (sidebar-start)">
             The sidebar-start uses an aside with aria-label=&quot;Primary navigation&quot;. Add a matching aria-label to any nav element you slot in.
           </RuleCard>
-          <RuleCard title="main">
+          <RuleCard label="main">
             The default slot renders inside a main element with the id connected to the skip link.
           </RuleCard>
-          <RuleCard title="contentinfo (footer)">
+          <RuleCard label="contentinfo (footer)">
             The footer element uses the semantic footer landmark.
           </RuleCard>
         </div>

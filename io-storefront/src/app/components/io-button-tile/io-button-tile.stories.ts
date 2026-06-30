@@ -28,15 +28,15 @@ export const buttonTileStory: Story<'io-button-tile'> = {
 };
 
 export const buttonTilePropDefinitions: PropDefinition[] = [
-  { key: 'label', type: 'string', default: 'Add to dashboard' },
-  { key: 'description', type: 'string', default: 'Click to add this widget.' },
-  { key: 'aspectRatio', type: 'select', options: ['1/1', '4/3', '3/4', '16/9'], default: '4/3' },
-  { key: 'align', type: 'select', options: ['top', 'bottom'], default: 'bottom' },
-  { key: 'size', type: 'select', options: ['sm', 'md', 'lg'], default: 'md' },
-  { key: 'weight', type: 'select', options: ['regular', 'medium', 'semibold', 'bold'], default: 'semibold' },
-  { key: 'gradient', type: 'boolean', default: true },
-  { key: 'disabled', type: 'boolean', default: false },
-  { key: 'loading', type: 'boolean', default: false },
+  { name: 'label', type: 'string', defaultValue: 'Add to dashboard' },
+  { name: 'description', type: 'string', defaultValue: 'Click to add this widget.' },
+  { name: 'aspectRatio', type: 'select', options: ['1/1', '4/3', '3/4', '16/9'], defaultValue: '4/3' },
+  { name: 'align', type: 'select', options: ['top', 'bottom'], defaultValue: 'bottom' },
+  { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
+  { name: 'weight', type: 'select', options: ['regular', 'medium', 'semibold', 'bold'], defaultValue: 'semibold' },
+  { name: 'gradient', type: 'boolean', defaultValue: true },
+  { name: 'disabled', type: 'boolean', defaultValue: false },
+  { name: 'loading', type: 'boolean', defaultValue: false },
 ];
 
 export const buttonTileStoryStates: Story<'io-button-tile'> = {

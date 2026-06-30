@@ -33,9 +33,9 @@ describe('io-grid storefront stories', () => {
       expect(gridPropDefinitions.length).toBeGreaterThan(0);
     });
 
-    it('each entry has a key and type', () => {
+    it('each entry has a name and type', () => {
       for (const def of gridPropDefinitions) {
-        expect(typeof def.key).toBe('string');
+        expect(typeof def.name).toBe('string');
         expect(typeof def.type).toBe('string');
       }
     });

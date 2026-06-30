@@ -40,28 +40,28 @@ export default function IoAppShellUsagePage() {
           description="io-app-shell composes a complete application frame via named slots."
         />
         <div className="space-y-3">
-          <RuleCard title="header-start">
+          <RuleCard label="header-start">
             Brand logo, wordmark, or hamburger menu toggle. Fixed to the left of the header.
           </RuleCard>
-          <RuleCard title="title">
+          <RuleCard label="title">
             Application or page title displayed in the header centre area.
           </RuleCard>
-          <RuleCard title="header-end">
+          <RuleCard label="header-end">
             Right-aligned header actions: user menu, notifications, theme toggle.
           </RuleCard>
-          <RuleCard title="sidebar-start">
+          <RuleCard label="sidebar-start">
             Primary navigation. Automatically becomes a mobile overlay below the lg breakpoint. Includes focus trap and scroll lock when open.
           </RuleCard>
-          <RuleCard title="(default)">
+          <RuleCard label="(default)">
             Main content area. Connected to the skip link anchor for keyboard accessibility.
           </RuleCard>
-          <RuleCard title="sidebar-end">
+          <RuleCard label="sidebar-end">
             Optional secondary panel (properties inspector, filter panel). Controlled by sidebarEndOpen.
           </RuleCard>
-          <RuleCard title="footer">
+          <RuleCard label="footer">
             Sticky footer rendered below the body layout.
           </RuleCard>
-          <RuleCard title="background">
+          <RuleCard label="background">
             Fixed background media (hero images, gradient canvases). Rendered behind all other content with z-index: -1.
           </RuleCard>
         </div>

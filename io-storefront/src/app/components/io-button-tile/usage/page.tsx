@@ -40,10 +40,10 @@ export default function IoButtonTileUsagePage() {
           description="Choose the right variant based on what happens when the user activates the tile."
         />
         <div className="space-y-3">
-          <RuleCard title="Use io-link-tile when...">
+          <RuleCard label="Use io-link-tile when...">
             The tile leads to another page or resource via an anchor href. Search engines can crawl it. Right-click → Open in new tab works.
           </RuleCard>
-          <RuleCard title="Use io-button-tile when...">
+          <RuleCard label="Use io-button-tile when...">
             The tile activates a JavaScript action: opens a modal, adds an item to a collection, starts a process, or toggles UI state.
           </RuleCard>
         </div>

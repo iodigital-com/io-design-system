@@ -37,6 +37,6 @@ export const appShellStory: Story<'io-app-shell'> = {
 };
 
 export const appShellPropDefinitions: PropDefinition[] = [
-  { key: 'sidebarStartOpen', type: 'boolean', default: true },
-  { key: 'sidebarEndOpen', type: 'boolean', default: false },
+  { name: 'sidebarStartOpen', type: 'boolean', defaultValue: true },
+  { name: 'sidebarEndOpen', type: 'boolean', defaultValue: false },
 ];

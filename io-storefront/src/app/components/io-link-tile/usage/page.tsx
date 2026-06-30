@@ -40,10 +40,10 @@ export default function IoLinkTileUsagePage() {
           description="The default slot accepts img, picture, or video elements. The tile handles aspect ratio and object-fit automatically."
         />
         <div className="space-y-3">
-          <RuleCard title="Always provide alt text">
+          <RuleCard label="Always provide alt text">
             When placing an image in the default slot, include an alt attribute. Since the image is aria-hidden inside the tile, the accessible name comes from the label prop — but alt text still serves as a fallback and is required for valid HTML.
           </RuleCard>
-          <RuleCard title="Use responsive images">
+          <RuleCard label="Use responsive images">
             Use a picture element with multiple srcset sources for art direction across breakpoints. The tile's CSS object-fit: cover handles cropping automatically.
           </RuleCard>
         </div>

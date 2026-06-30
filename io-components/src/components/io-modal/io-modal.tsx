@@ -317,6 +317,11 @@ export class IoModal {
    * (not just the modal's parent siblings, which misses outer `<header>` etc.) and
    * skip elements that have `data-io-allow-during-modal="true"` — this escape hatch
    * lets io-toast and similar live-region elements remain interactive (#992).
+   *
+   * We also skip any element that is an ancestor of io-modal. Applying inert to
+   * an ancestor propagates inertness to all its descendants, which would make
+   * io-modal itself and its slotted footer buttons inert in framework apps where
+   * io-modal is nested inside a React/Vue/Angular root div (#1180).
    */
   private applyBackgroundInert() {
     // Native showModal() inertness handles everything — no manual walk needed.
@@ -329,6 +334,9 @@ export class IoModal {
       const el = child as HTMLElement;
       // Honour escape hatch: toasts and other live-region elements can opt-out.
       if (el.hasAttribute('data-io-allow-during-modal')) return;
+      // Skip ancestors of io-modal — inert propagates to all descendants, so
+      // making an ancestor inert would also block footer button clicks inside the modal.
+      if (el.contains(this.el)) return;
       if (!el.hasAttribute('inert')) {
         el.setAttribute('inert', '');
         this.inertElements.push(el);

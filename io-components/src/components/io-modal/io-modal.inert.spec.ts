@@ -68,6 +68,29 @@ describe('io-modal — applyBackgroundInert (preventTopLayer=true): walks docume
     expect(sibling1.hasAttribute('inert')).toBe(false);
     expect(sibling2.hasAttribute('inert')).toBe(true);
   });
+
+  it('skips ancestor elements that contain io-modal — prevents footer buttons from becoming inert (#1180)', () => {
+    // Simulate React/Vue/Angular where io-modal is nested inside a framework root div
+    const frameworkRoot = document.createElement('div');
+    // Move modalEl from body into frameworkRoot, make frameworkRoot the body child
+    document.body.removeChild(modalEl);
+    frameworkRoot.appendChild(modalEl);
+    document.body.appendChild(frameworkRoot);
+
+    (component as any).el = modalEl;
+    (component as any).applyBackgroundInert();
+
+    // The framework root contains io-modal, so it must NOT get inert
+    // (making it inert would propagate to io-modal's slotted footer buttons)
+    expect(frameworkRoot.hasAttribute('inert')).toBe(false);
+    // Other siblings that do NOT contain io-modal still get inert
+    expect(sibling1.hasAttribute('inert')).toBe(true);
+    expect(sibling2.hasAttribute('inert')).toBe(true);
+
+    document.body.removeChild(frameworkRoot);
+    // Restore modalEl for afterEach cleanup
+    document.body.appendChild(modalEl);
+  });
 });
 
 describe('io-modal — removeBackgroundInert', () => {

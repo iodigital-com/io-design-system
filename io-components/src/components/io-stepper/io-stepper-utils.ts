@@ -16,6 +16,7 @@ export function getStepAriaLabel(index: number, label: string, status: IoStepSta
     status === 'complete' ? 'complete' :
     status === 'current'  ? 'current'  :
     status === 'warning'  ? 'warning'  :
+    status === 'error'    ? 'error'    :
     'upcoming';
   return `Step ${index}: ${label}, ${statusLabel}`;
 }

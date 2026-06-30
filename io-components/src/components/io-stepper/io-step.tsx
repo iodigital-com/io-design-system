@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Host, Watch, h } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Host, Watch, h, State } from '@stencil/core';
 
 import { getStepStyles } from './io-stepper-styles';
 import { getStepClass, getStepAriaLabel } from './io-stepper-utils';
@@ -22,6 +22,7 @@ import type { IoStepStatus, IoStepperOrientation } from './types';
  * <io-step label="Details" status="current"></io-step>
  * <io-step label="Review" status="upcoming"></io-step>
  * <io-step label="Verify" status="warning"></io-step>
+ * <io-step label="Payment" status="error"></io-step>
  */
 @Component({
   tag: 'io-step',
@@ -58,8 +59,15 @@ export class IoStep {
    * When true, the step is non-interactive regardless of status.
    * Applies aria-disabled="true" and suppresses click events.
    * Use to block navigation during async operations.
+   * Note: combining status="current" with disabled=true is contradictory —
+   * a console.error is logged (current step must remain focusable).
    */
   @Prop({ reflect: true }) disabled = false;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  /** Whether the description slot has content — drives DOM visibility. */
+  @State() private hasDescription = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -72,6 +80,14 @@ export class IoStep {
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
+  componentWillLoad() {
+    // Warn on contradictory current+disabled state (#973).
+    // Current step must remain focusable per WAI-ARIA stepper guidance.
+    if (this.status === 'current' && this.disabled) {
+      console.error('[io-step] status="current" and disabled=true are mutually exclusive. The current step must remain focusable.');
+    }
+  }
+
   @Watch('total')
   onTotalChange() {
     // Re-render happens automatically via prop change
@@ -83,6 +99,11 @@ export class IoStep {
   }
 
   // ── Handlers ─────────────────────────────────────────────────
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescription = slot.assignedNodes({ flatten: true }).length > 0;
+  };
 
   private handleClick = () => {
     if (this.disabled || this.status !== 'complete') return;
@@ -97,6 +118,7 @@ export class IoStep {
     const isCurrent = status === 'current';
     const isComplete = status === 'complete';
     const isWarning = status === 'warning';
+    const isError = status === 'error';
     // Only complete (and non-disabled) steps are interactive
     const isInteractive = isComplete && !disabled;
 
@@ -147,11 +169,26 @@ export class IoStep {
                     />
                     <circle cx="8" cy="11" r="0.75" fill="currentColor" />
                   </svg>
+                ) : isError ? (
+                  <svg class="step__error-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M5 5L11 11M11 5L5 11"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                 ) : (
                   index > 0 ? index : ''
                 )}
               </div>
-              <span class="step__label" aria-hidden="true">{label}</span>
+              <span class="step__label-group">
+                <span class="step__label" aria-hidden="true">{label}</span>
+                <span class={`step__description${this.hasDescription ? '' : ' step__description--empty'}`}>
+                  <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+                </span>
+              </span>
             </div>
             {/* Connector line — hidden for last step via CSS */}
             <div class="step__connector" aria-hidden="true" />

@@ -2480,5 +2480,17 @@
     "classification": "public-api",
     "component": "io-link-pure",
     "description": "Color of the text and underline when io-link-pure is in the active (current nav item) state. Defaults to var(--io-color-primary)."
+  },
+  {
+    "cssVar": "--io-step-error-color",
+    "classification": "public-api",
+    "component": "io-step",
+    "description": "Color applied to the step circle border, icon, and label when status='error'. Defaults to --io-text-error. Override to theme error steps independently."
+  },
+  {
+    "cssVar": "--io-step-description-color",
+    "classification": "public-api",
+    "component": "io-step",
+    "description": "Text color for content slotted into the description slot (secondary text below the step label). Defaults to --io-text-secondary."
   }
 ]

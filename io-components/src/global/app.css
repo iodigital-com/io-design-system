@@ -872,6 +872,8 @@
   --io-stepper-circle-border-width: 2px;        /* step circle border thickness */
   --io-stepper-connector-offset:    1rem;       /* 16px — aligns connector to circle centre */
   --io-stepper-connector-width:     2px;        /* horizontal connector height / vertical connector width */
+  --io-step-error-color:            var(--io-text-error, var(--io-color-error)); /* public-api: error status circle/label color */
+  --io-step-description-color:      var(--io-text-secondary);                   /* public-api: description slot text color */
 
   /* ── Table ───────────────────────────────────────────── */
   --io-table-row-selected-bg:    var(--io-color-primary-muted);

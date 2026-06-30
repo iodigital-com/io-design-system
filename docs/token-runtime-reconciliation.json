@@ -3160,6 +3160,22 @@
       "notes": "Wave XI (#384) — Connector height/width=2px."
     },
     {
+      "runtimeCssVar": "--io-step-error-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "B38 (#955) \u2014 Step error status circle/label color. Defaults to --io-text-error."
+    },
+    {
+      "runtimeCssVar": "--io-step-description-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "B38 (#962) \u2014 Description slot text color. Defaults to --io-text-secondary."
+    },
+    {
       "runtimeCssVar": "--io-surface-elevated",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

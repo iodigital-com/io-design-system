@@ -540,14 +540,24 @@ export namespace Components {
     /**
      * io-button-group
      * ================
-     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Flexible button group component supporting three distinct interaction patterns:
+     * - `type="single"` (default) — segmented control / radiogroup: exactly one item active at a time.
+     * - `type="multiple"` — checkbox group: any number of items may be active.
+     * - `type="toolbar"` — independent action cluster: no selection model, no roving tabindex.
+     *                      Use for Save/Cancel/Delete clusters and icon toolbars.
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
-     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation
+     * (for single/multiple types only).
      * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     * @example <io-button-group type="toolbar" label="Document actions">
+     *   <io-button value="save">Save</io-button>
+     *   <io-button value="cancel">Cancel</io-button>
+     *   <io-button value="delete">Delete</io-button>
      * </io-button-group>
      */
     interface IoButtonGroup {
@@ -2538,6 +2548,10 @@ export namespace Components {
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
+     * <io-segment value="map" label="Map" icon-source="/icons/map.svg" />
+     * <io-segment value="all" label="All" hide-label>
+     *   <io-badge slot="badge">12</io-badge>
+     * </io-segment>
      */
     interface IoSegment {
         /**
@@ -2546,9 +2560,18 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * When true, renders only the icon (or iconSource image) and uses the `label` prop as the button's `aria-label` for screen readers. The label is visually hidden but announced by AT. Requires either `icon` or `iconSource` to be set.
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
           * Optional icon name to display alongside the label
          */
         "icon": IoIconName | undefined;
+        /**
+          * URL to a custom SVG or image for the segment icon. Takes precedence over the `icon` prop when both are set. Use for brand icons or third-party glyphs not in the built-in icon set.
+         */
+        "iconSource": string | undefined;
         /**
           * Accessible label text for this segment
          */
@@ -3806,14 +3829,19 @@ export namespace Components {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with two variants:
+     * Reusable iO brand identity component with three variants:
      * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
+     * - variant="badge"   — Square brand mark for app icons, social avatars, and watermarks.
+     *                       Renders the iO mark centered on a filled square/rounded background.
+     *                       Supports size scale and blue/black/white/beige color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" href="/" />
+     * <io-wordmark variant="badge" color="blue" size="md" />
+     * <io-wordmark size="inherit" style="height: 48px" />
      */
     interface IoWordmark {
         /**
@@ -4197,14 +4225,24 @@ declare global {
     /**
      * io-button-group
      * ================
-     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Flexible button group component supporting three distinct interaction patterns:
+     * - `type="single"` (default) — segmented control / radiogroup: exactly one item active at a time.
+     * - `type="multiple"` — checkbox group: any number of items may be active.
+     * - `type="toolbar"` — independent action cluster: no selection model, no roving tabindex.
+     *                      Use for Save/Cancel/Delete clusters and icon toolbars.
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
-     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation
+     * (for single/multiple types only).
      * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     * @example <io-button-group type="toolbar" label="Document actions">
+     *   <io-button value="save">Save</io-button>
+     *   <io-button value="cancel">Cancel</io-button>
+     *   <io-button value="delete">Delete</io-button>
      * </io-button-group>
      */
     interface HTMLIoButtonGroupElement extends Components.IoButtonGroup, HTMLStencilElement {
@@ -4994,6 +5032,10 @@ declare global {
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
+     * <io-segment value="map" label="Map" icon-source="/icons/map.svg" />
+     * <io-segment value="all" label="All" hide-label>
+     *   <io-badge slot="badge">12</io-badge>
+     * </io-segment>
      */
     interface HTMLIoSegmentElement extends Components.IoSegment, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoSegmentElementEventMap>(type: K, listener: (this: HTMLIoSegmentElement, ev: IoSegmentCustomEvent<HTMLIoSegmentElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5729,14 +5771,19 @@ declare global {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with two variants:
+     * Reusable iO brand identity component with three variants:
      * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
+     * - variant="badge"   — Square brand mark for app icons, social avatars, and watermarks.
+     *                       Renders the iO mark centered on a filled square/rounded background.
+     *                       Supports size scale and blue/black/white/beige color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" href="/" />
+     * <io-wordmark variant="badge" color="blue" size="md" />
+     * <io-wordmark size="inherit" style="height: 48px" />
      */
     interface HTMLIoWordmarkElement extends Components.IoWordmark, HTMLStencilElement {
     }
@@ -6256,14 +6303,24 @@ declare namespace LocalJSX {
     /**
      * io-button-group
      * ================
-     * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+     * Flexible button group component supporting three distinct interaction patterns:
+     * - `type="single"` (default) — segmented control / radiogroup: exactly one item active at a time.
+     * - `type="multiple"` — checkbox group: any number of items may be active.
+     * - `type="toolbar"` — independent action cluster: no selection model, no roving tabindex.
+     *                      Use for Save/Cancel/Delete clusters and icon toolbars.
      * Place `<io-button value="...">Label</io-button>` children inside the component.
      * The group reads their values/labels at load time and renders internal buttons with
-     * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+     * full styling control, shared-border layout, and roving tabindex keyboard navigation
+     * (for single/multiple types only).
      * @example <io-button-group value="week" type="single" label="View period">
      *   <io-button value="day">Day</io-button>
      *   <io-button value="week">Week</io-button>
      *   <io-button value="month">Month</io-button>
+     * </io-button-group>
+     * @example <io-button-group type="toolbar" label="Document actions">
+     *   <io-button value="save">Save</io-button>
+     *   <io-button value="cancel">Cancel</io-button>
+     *   <io-button value="delete">Delete</io-button>
      * </io-button-group>
      */
     interface IoButtonGroup {
@@ -8313,6 +8370,10 @@ declare namespace LocalJSX {
      * Do not use standalone — always nest inside io-segmented-control.
      * @example <io-segment value="list" label="List" />
      * <io-segment value="grid" label="Grid" icon="grid" />
+     * <io-segment value="map" label="Map" icon-source="/icons/map.svg" />
+     * <io-segment value="all" label="All" hide-label>
+     *   <io-badge slot="badge">12</io-badge>
+     * </io-segment>
      */
     interface IoSegment {
         /**
@@ -8321,9 +8382,18 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * When true, renders only the icon (or iconSource image) and uses the `label` prop as the button's `aria-label` for screen readers. The label is visually hidden but announced by AT. Requires either `icon` or `iconSource` to be set.
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
           * Optional icon name to display alongside the label
          */
         "icon"?: IoIconName | undefined;
+        /**
+          * URL to a custom SVG or image for the segment icon. Takes precedence over the `icon` prop when both are set. Use for brand icons or third-party glyphs not in the built-in icon set.
+         */
+        "iconSource"?: string | undefined;
         /**
           * Accessible label text for this segment
          */
@@ -9645,14 +9715,19 @@ declare namespace LocalJSX {
     /**
      * io-wordmark
      * ===========
-     * Reusable iO brand identity component with two variants:
+     * Reusable iO brand identity component with three variants:
      * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
      *                       Supports size scale and all four color values (incl. beige).
      * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
      *                       Supports size scale and blue/black/white color values.
+     * - variant="badge"   — Square brand mark for app icons, social avatars, and watermarks.
+     *                       Renders the iO mark centered on a filled square/rounded background.
+     *                       Supports size scale and blue/black/white/beige color values.
      * @example <io-wordmark />
      * <io-wordmark variant="mark" color="blue" size="lg" />
      * <io-wordmark variant="lockup" color="black" size="md" href="/" />
+     * <io-wordmark variant="badge" color="blue" size="md" />
+     * <io-wordmark size="inherit" style="height: 48px" />
      */
     interface IoWordmark {
         /**
@@ -10133,6 +10208,8 @@ declare namespace LocalJSX {
         "label": string;
         "disabled": boolean;
         "icon": IoIconName | undefined;
+        "iconSource": string | undefined;
+        "hideLabel": boolean;
     }
     interface IoSegmentedControlAttributes {
         "value": string | undefined;
@@ -10527,14 +10604,24 @@ declare module "@stencil/core" {
             /**
              * io-button-group
              * ================
-             * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+             * Flexible button group component supporting three distinct interaction patterns:
+             * - `type="single"` (default) — segmented control / radiogroup: exactly one item active at a time.
+             * - `type="multiple"` — checkbox group: any number of items may be active.
+             * - `type="toolbar"` — independent action cluster: no selection model, no roving tabindex.
+             *                      Use for Save/Cancel/Delete clusters and icon toolbars.
              * Place `<io-button value="...">Label</io-button>` children inside the component.
              * The group reads their values/labels at load time and renders internal buttons with
-             * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+             * full styling control, shared-border layout, and roving tabindex keyboard navigation
+             * (for single/multiple types only).
              * @example <io-button-group value="week" type="single" label="View period">
              *   <io-button value="day">Day</io-button>
              *   <io-button value="week">Week</io-button>
              *   <io-button value="month">Month</io-button>
+             * </io-button-group>
+             * @example <io-button-group type="toolbar" label="Document actions">
+             *   <io-button value="save">Save</io-button>
+             *   <io-button value="cancel">Cancel</io-button>
+             *   <io-button value="delete">Delete</io-button>
              * </io-button-group>
              */
             "io-button-group": LocalJSX.IntrinsicElements["io-button-group"] & JSXBase.HTMLAttributes<HTMLIoButtonGroupElement>;
@@ -10927,6 +11014,10 @@ declare module "@stencil/core" {
              * Do not use standalone — always nest inside io-segmented-control.
              * @example <io-segment value="list" label="List" />
              * <io-segment value="grid" label="Grid" icon="grid" />
+             * <io-segment value="map" label="Map" icon-source="/icons/map.svg" />
+             * <io-segment value="all" label="All" hide-label>
+             *   <io-badge slot="badge">12</io-badge>
+             * </io-segment>
              */
             "io-segment": LocalJSX.IntrinsicElements["io-segment"] & JSXBase.HTMLAttributes<HTMLIoSegmentElement>;
             /**
@@ -11336,14 +11427,19 @@ declare module "@stencil/core" {
             /**
              * io-wordmark
              * ===========
-             * Reusable iO brand identity component with two variants:
+             * Reusable iO brand identity component with three variants:
              * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
              *                       Supports size scale and all four color values (incl. beige).
              * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
              *                       Supports size scale and blue/black/white color values.
+             * - variant="badge"   — Square brand mark for app icons, social avatars, and watermarks.
+             *                       Renders the iO mark centered on a filled square/rounded background.
+             *                       Supports size scale and blue/black/white/beige color values.
              * @example <io-wordmark />
              * <io-wordmark variant="mark" color="blue" size="lg" />
              * <io-wordmark variant="lockup" color="black" size="md" href="/" />
+             * <io-wordmark variant="badge" color="blue" size="md" />
+             * <io-wordmark size="inherit" style="height: 48px" />
              */
             "io-wordmark": LocalJSX.IntrinsicElements["io-wordmark"] & JSXBase.HTMLAttributes<HTMLIoWordmarkElement>;
         }

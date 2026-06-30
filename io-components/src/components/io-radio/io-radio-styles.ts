@@ -92,14 +92,14 @@ export function getRadioStyles(): string {
       transition: border-color var(--io-motion-fast);
     }
 
-    /* Inner dot — visible when checked */
+    /* Inner dot — scales in on check, scales out on uncheck */
     .radio-dot {
       width: var(--io-radio-dot-size);
       height: var(--io-radio-dot-size);
       border-radius: 50%;
       background: var(--io-color-primary);
       transform: scale(0);
-      transition: transform var(--io-motion-fast);
+      transition: transform var(--io-duration-xs) var(--io-ease-out);
     }
 
     .radio-custom--checked {
@@ -201,8 +201,11 @@ export function getRadioStyles(): string {
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .radio-custom,
-      .radio-dot { transition: none; }
+      .radio-custom { transition: none; }
+      .radio-dot {
+        transition: none;
+        /* Snap to final state — no animation under reduced-motion */
+      }
     }
 
     /* ============================================================

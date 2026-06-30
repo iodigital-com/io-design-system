@@ -2528,5 +2528,11 @@
     "classification": "public-api",
     "component": "io-scroller",
     "description": "Top offset used when sticky=true to keep the scroll indicator buttons visible during long scrolls. Defaults to 0. Override when the scroller is used inside a layout with a sticky header."
+  },
+  {
+    "cssVar": "--io-progress-transition-duration",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Duration (and optional easing) of the fill-width transition when the progress value changes. Defaults to var(--io-motion-base) (300ms ease). Set to 0s to disable the transition without using the animated prop."
   }
 ]

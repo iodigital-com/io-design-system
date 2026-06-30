@@ -110,6 +110,13 @@ export function getCheckboxStyles(): string {
       width: var(--io-checkbox-icon-size);
       height: auto;
       display: block;
+      transform: scale(0);
+      transition: transform var(--io-duration-xs) var(--io-ease-out);
+    }
+
+    .checkbox-custom--checked .checkbox-icon,
+    .checkbox-custom--indeterminate .checkbox-icon {
+      transform: scale(1);
     }
 
     /* Hover: tint border when unchecked */
@@ -214,6 +221,7 @@ export function getCheckboxStyles(): string {
 
     @media (prefers-reduced-motion: reduce) {
       .checkbox-custom { transition: none; }
+      .checkbox-icon { transition: none; }
     }
 
     /* ============================================================

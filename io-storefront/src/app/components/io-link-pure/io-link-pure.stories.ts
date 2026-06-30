@@ -18,7 +18,7 @@ export const linkPureStory: Story<'io-link-pure'> = {
   },
   generator: ({ properties } = {}) => {
     const { label = 'Read the docs', ...attrs } = (properties ?? {}) as Record<string, unknown> & { label?: string };
-    if (attrs['icon'] === 'none') attrs['icon'] = null;
+    const iconValue = attrs['icon'] === 'none' ? null : (attrs['icon'] as string | undefined);
     return [
       {
         tag: 'io-link-pure' as const,
@@ -30,7 +30,7 @@ export const linkPureStory: Story<'io-link-pure'> = {
           stretch: (attrs['stretch'] as boolean) ?? false,
           disabled: (attrs['disabled'] as boolean) ?? false,
           hideLabel: (attrs['hideLabel'] as boolean) ?? false,
-          ...(attrs['icon'] != null ? { icon: attrs['icon'] } : {}),
+          icon: iconValue,
         },
         children: [label as string],
       },

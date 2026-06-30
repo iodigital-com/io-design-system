@@ -122,7 +122,7 @@ export namespace Components {
          */
         "allowMultiple": boolean;
         /**
-          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill - `frosted`: `backdrop-filter: blur(12px)` — for accordions placed over image/video backdrops
           * @default 'transparent'
          */
         "background": IoAccordionBackground;
@@ -132,7 +132,7 @@ export namespace Components {
          */
         "compact": boolean;
         /**
-          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
+          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`, only the first in DOM order remains open after mount (coordinated in `componentDidLoad`).
           * @default false
          */
         "defaultExpanded": boolean;
@@ -151,6 +151,11 @@ export namespace Components {
           * @default 'h3'
          */
         "headingTag": IoAccordionHeadingTag;
+        /**
+          * When `true`, indents the panel content to visually align with the summary text column (past the expand/collapse icon). Useful when `alignMarker="start"`.  Drives via `--io-accordion-indent` token. Register in `docs/public-css-api.json`.
+          * @default false
+         */
+        "indent": boolean;
         /**
           * Open state for the accordion item
           * @default false
@@ -5189,7 +5194,7 @@ declare namespace LocalJSX {
          */
         "allowMultiple"?: boolean;
         /**
-          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill
+          * Background fill variant for the accordion host element. - `transparent` (default): no background fill - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts - `canvas`: `var(--io-bg-page)` — page-level fill - `frosted`: `backdrop-filter: blur(12px)` — for accordions placed over image/video backdrops
           * @default 'transparent'
          */
         "background"?: IoAccordionBackground;
@@ -5199,7 +5204,7 @@ declare namespace LocalJSX {
          */
         "compact"?: boolean;
         /**
-          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple` is `false` (the default) will leave all of them open at initial render, because coordination events are not dispatched during `componentWillLoad`. Only one `defaultExpanded` accordion per group is recommended when `allowMultiple` is `false`.
+          * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`, only the first in DOM order remains open after mount (coordinated in `componentDidLoad`).
           * @default false
          */
         "defaultExpanded"?: boolean;
@@ -5218,6 +5223,11 @@ declare namespace LocalJSX {
           * @default 'h3'
          */
         "headingTag"?: IoAccordionHeadingTag;
+        /**
+          * When `true`, indents the panel content to visually align with the summary text column (past the expand/collapse icon). Useful when `alignMarker="start"`.  Drives via `--io-accordion-indent` token. Register in `docs/public-css-api.json`.
+          * @default false
+         */
+        "indent"?: boolean;
         /**
           * Fires when accordion open state is toggled
          */
@@ -8562,6 +8572,7 @@ declare namespace LocalJSX {
         "sticky": boolean;
         "defaultExpanded": boolean;
         "allowMultiple": boolean;
+        "indent": boolean;
     }
     interface IoAvatarAttributes {
         "src": string | undefined;

@@ -30,7 +30,8 @@ export function getAccordionStyles(): string {
     .accordion-trigger {
       position: relative;
       display: flex;
-      width: 100%;
+      flex: 1 1 auto;
+      min-width: 0;
       align-items: center;
       justify-content: space-between;
       gap: var(--io-space-4);
@@ -49,7 +50,15 @@ export function getAccordionStyles(): string {
 
     /* ── Title ──────────────────────────────────────────── */
 
+    /*
+     * The heading element acts as a flex row:
+     * [summary-before slot][trigger button][summary-after slot]
+     * summary-before and summary-after are rendered outside the trigger
+     * button so interactive children (edit/delete buttons) remain independently operable.
+     */
     .accordion-heading {
+      display: flex;
+      align-items: center;
       margin: 0;
     }
 
@@ -242,6 +251,19 @@ export function getAccordionStyles(): string {
     /* transparent is the default — no fill needed */
     :host([background="transparent"]) {
       background-color: transparent;
+    }
+
+    /* frosted — semi-transparent blur for accordions over image/video backdrops */
+    :host([background="frosted"]) {
+      background-color: var(--io-accordion-bg-frosted, color-mix(in srgb, var(--io-bg-surface) 70%, transparent));
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    }
+
+    /* ── Indent prop — align panel content with summary text ─ */
+
+    .accordion-panel-inner--indent {
+      padding-inline-start: var(--io-accordion-indent, calc(var(--io-space-6) + var(--io-space-4)));
     }
 
     /* ── Sticky trigger ──────────────────────────────────── */

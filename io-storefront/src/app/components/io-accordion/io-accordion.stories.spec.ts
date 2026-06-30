@@ -15,6 +15,9 @@ import {
   accordionStoryStickyWithSurface,
   accordionStoryCompact,
   accordionStoryAlignMarkerStart,
+  accordionStoryFrostedBackground,
+  accordionStoryIndent,
+  accordionStorySummarySlots,
 } from './io-accordion.stories';
 
 describe('io-accordion storefront stories', () => {
@@ -426,6 +429,72 @@ describe('io-accordion storefront stories', () => {
       const els = accordionStoryAlignMarkerStart.generator?.() ?? [];
       const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
       expect(accordion.properties['align-marker']).toBe('start');
+    });
+  });
+
+  describe('accordionStoryFrostedBackground', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStoryFrostedBackground.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('story sets background to frosted inside a wrapper div', () => {
+      const els = accordionStoryFrostedBackground.generator?.() ?? [];
+      const wrapper = els[0] as { tag: string; children: unknown[] };
+      const accordion = wrapper.children[0] as { tag: string; properties: Record<string, unknown> };
+      expect(accordion.properties['background']).toBe('frosted');
+    });
+  });
+
+  describe('accordionStoryIndent', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStoryIndent.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('story sets indent to true', () => {
+      const els = accordionStoryIndent.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(accordion.properties['indent']).toBe(true);
+    });
+  });
+
+  describe('accordionStorySummarySlots', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStorySummarySlots.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('story includes a summary slot child', () => {
+      const els = accordionStorySummarySlots.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; children: Array<{ tag: string; properties: Record<string, unknown> }> };
+      const summaryChild = accordion.children.find((c) => c.properties?.['slot'] === 'summary');
+      expect(summaryChild).toBeDefined();
+    });
+
+    it('story includes a summary-after slot child', () => {
+      const els = accordionStorySummarySlots.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; children: Array<{ tag: string; properties: Record<string, unknown> }> };
+      const afterChild = accordion.children.find((c) => c.properties?.['slot'] === 'summary-after');
+      expect(afterChild).toBeDefined();
+    });
+  });
+
+  describe('accordionPropDefinitions — new props', () => {
+    it('includes indent prop', () => {
+      const def = accordionPropDefinitions.find((d) => d.name === 'indent');
+      expect(def).toBeDefined();
+      expect(def?.type).toBe('boolean');
+      expect(def?.defaultValue).toBe(false);
+    });
+
+    it('background select options include frosted', () => {
+      const def = accordionPropDefinitions.find((d) => d.name === 'background');
+      const options = (def as unknown as { options: string[] })?.options;
+      expect(options).toContain('frosted');
     });
   });
 });

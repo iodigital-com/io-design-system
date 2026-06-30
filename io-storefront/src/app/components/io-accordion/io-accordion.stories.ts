@@ -3,7 +3,7 @@ import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
 type IoAccordionSize = 'sm' | 'md' | 'lg';
-type IoAccordionBackground = 'transparent' | 'surface' | 'canvas';
+type IoAccordionBackground = 'transparent' | 'surface' | 'canvas' | 'frosted';
 type IoAccordionAlignMarker = 'start' | 'end';
 
 export const accordionSingleOpenCode: FrameworkCode = {
@@ -175,6 +175,7 @@ export const accordionStory: Story<'io-accordion'> = {
       'allow-multiple': false,
       background: 'transparent',
       sticky: false,
+      indent: false,
       'use-heading-slot': false,
     },
   },
@@ -193,6 +194,7 @@ export const accordionStory: Story<'io-accordion'> = {
           'allow-multiple': (properties?.['allow-multiple'] as boolean) ?? false,
           background: (properties?.background as IoAccordionBackground) ?? 'transparent',
           sticky: (properties?.sticky as boolean) ?? false,
+          indent: (properties?.indent as boolean) ?? false,
           ...(useHeadingSlot
             ? {}
             : {
@@ -514,6 +516,90 @@ export const accordionStoryStickyWithSurface: Story<'io-accordion'> = {
   ],
 };
 
+export const accordionStoryFrostedBackground: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Frosted background', background: 'frosted', open: true } },
+  generator: () => [
+    {
+      tag: 'div' as const,
+      properties: {
+        style: 'background: linear-gradient(135deg, #0000D2 0%, #7D0034 100%); padding: var(--io-space-4);',
+      },
+      children: [
+        {
+          tag: 'io-accordion' as const,
+          properties: { heading: 'Frosted background', background: 'frosted', open: true },
+          events: {
+            onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+          },
+          children: [
+            {
+              tag: 'p' as const,
+              children: ['The frosted variant applies backdrop-filter: blur for legibility over image or video backdrops. Text contrast is maintained via the semi-transparent surface fill.'],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStoryIndent: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Indented panel', 'align-marker': 'start' as IoAccordionAlignMarker, indent: true, open: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: {
+        heading: 'Indented panel',
+        'align-marker': 'start' as IoAccordionAlignMarker,
+        indent: true,
+        open: true,
+      },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'p' as const,
+          children: ['With indent=true, the panel content aligns with the trigger label text — past the expand/collapse icon. Combine with alignMarker="start" for a clean optical column.'],
+        },
+      ],
+    },
+  ],
+};
+
+export const accordionStorySummarySlots: Story<'io-accordion'> = {
+  state: { properties: { open: true } },
+  generator: () => [
+    {
+      tag: 'io-accordion' as const,
+      properties: { open: true },
+      events: {
+        onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
+      },
+      children: [
+        {
+          tag: 'span' as const,
+          properties: { slot: 'summary' },
+          children: ['Rich summary content'],
+        },
+        {
+          tag: 'button' as const,
+          properties: {
+            slot: 'summary-after',
+            style: 'margin-inline-start: var(--io-space-2); cursor: pointer;',
+            'aria-label': 'Edit section',
+          },
+          children: ['Edit'],
+        },
+        {
+          tag: 'p' as const,
+          children: ['The summary slot replaces the heading slot for free-form trigger content. The summary-after slot renders an independently operable action button outside the trigger.'],
+        },
+      ],
+    },
+  ],
+};
+
 export const accordionPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false },
   { name: 'heading', type: 'string', defaultValue: 'Some Heading' },
@@ -555,14 +641,20 @@ export const accordionPropDefinitions: PropDefinition[] = [
     name: 'background',
     type: 'select',
     defaultValue: 'transparent',
-    options: ['transparent', 'surface', 'canvas'],
-    description: 'Background fill for the accordion host. transparent = no fill, surface = var(--io-bg-surface), canvas = var(--io-bg-page).',
+    options: ['transparent', 'surface', 'canvas', 'frosted'],
+    description: 'Background fill for the accordion host. transparent = no fill, surface = var(--io-bg-surface), canvas = var(--io-bg-page), frosted = semi-transparent blur for image/video backdrops.',
   },
   {
     name: 'sticky',
     type: 'boolean',
     defaultValue: false,
     description: 'When true, the accordion trigger becomes position: sticky. Meaningful only with background="surface" or background="canvas".',
+  },
+  {
+    name: 'indent',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, indents panel content to align with the summary text column past the expand/collapse icon. Useful with alignMarker="start".',
   },
   {
     name: 'use-heading-slot',

@@ -144,6 +144,18 @@
     "description": "top offset for the sticky trigger header when sticky is enabled. Defaults to 0."
   },
   {
+    "cssVar": "--io-accordion-bg-frosted",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "Background color for the frosted background variant. Defaults to a 70% opacity mix of --io-bg-surface. Combine with backdrop-filter for legibility over image/video backdrops."
+  },
+  {
+    "cssVar": "--io-accordion-indent",
+    "classification": "public-api",
+    "component": "io-accordion",
+    "description": "Inline-start padding applied to .accordion-panel-inner when indent=true. Aligns panel content with the summary text column past the expand/collapse icon."
+  },
+  {
     "cssVar": "--io-accent-bg",
     "classification": "internal",
     "component": "io-badge",

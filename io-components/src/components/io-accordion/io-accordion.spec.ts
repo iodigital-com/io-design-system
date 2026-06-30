@@ -292,6 +292,57 @@ describe('io-accordion — compact prop', () => {
   });
 });
 
+describe('io-accordion — indent prop', () => {
+  it('defaults indent to false', () => {
+    const component = new IoAccordion();
+    expect(component.indent).toBe(false);
+  });
+
+  it('accepts indent=true', () => {
+    const component = new IoAccordion();
+    component.indent = true;
+    expect(component.indent).toBe(true);
+  });
+
+  it('CSS includes .accordion-panel-inner--indent with padding-inline-start token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('.accordion-panel-inner--indent');
+    expect(styles).toContain('var(--io-accordion-indent,');
+    expect(styles).toContain('padding-inline-start');
+  });
+});
+
+describe('io-accordion — frosted background', () => {
+  it('accepts background value frosted', () => {
+    const component = new IoAccordion();
+    component.background = 'frosted';
+    expect(component.background).toBe('frosted');
+  });
+
+  it('CSS includes :host([background="frosted"]) with backdrop-filter', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([background="frosted"])');
+    expect(styles).toContain('backdrop-filter:');
+  });
+
+  it('CSS uses --io-accordion-bg-frosted token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-accordion-bg-frosted,');
+  });
+});
+
+describe('io-accordion — summary slots layout', () => {
+  it('CSS accordion-heading has display: flex for summary-before/after layout', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('display: flex');
+  });
+
+  it('CSS accordion-trigger has flex: 1 1 auto so it fills remaining space', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain('flex: 1 1 auto');
+  });
+});
+
 describe('io-accordion — alignMarker prop', () => {
   it('defaults alignMarker to end', () => {
     const component = new IoAccordion();

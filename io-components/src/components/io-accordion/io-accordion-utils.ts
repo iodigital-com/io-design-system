@@ -19,3 +19,16 @@ export function getAccordionItemClass(options: {
   if (disabled) classes.push('accordion-item--disabled');
   return classes.join(' ');
 }
+
+/**
+ * Returns all sibling `io-accordion` elements sharing the same parent element
+ * as the given host. Used for ArrowUp/Down/Home/End keyboard navigation.
+ *
+ * @param host - The `io-accordion` element to find siblings for.
+ * @returns Array of sibling `io-accordion` elements in DOM order, including `host`.
+ */
+export function getSiblingTriggers(host: HTMLElement): HTMLElement[] {
+  const parent = host.parentElement;
+  if (!parent) return [];
+  return Array.from(parent.querySelectorAll<HTMLElement>(':scope > io-accordion'));
+}

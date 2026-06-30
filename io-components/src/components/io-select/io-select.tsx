@@ -182,6 +182,11 @@ export class IoSelect {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
+    // Force touched so FACE error UI surfaces even before the user has blurred
+    // the field — matches native <select> behaviour where reportValidity() always
+    // shows the validation state regardless of interaction history.
+    this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 

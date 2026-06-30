@@ -1177,12 +1177,12 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form.
          */
         "autoComplete": string | undefined;
         /**
-          * Autocomplete attribute.
-          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -3355,12 +3355,21 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
+<<<<<<< HEAD
           * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
          */
         "autoComplete": string | undefined;
         /**
           * Autocomplete attribute.
           * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+=======
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
+         */
+        "autoComplete": string | undefined;
+        /**
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
+>>>>>>> 5049e06a (fix(io-input, io-textarea, io-select): b28 input fixes and FACE alignment)
          */
         "autocomplete": string | undefined;
         /**
@@ -6582,12 +6591,12 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form.
          */
         "autoComplete"?: string | undefined;
         /**
-          * Autocomplete attribute.
-          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -8871,12 +8880,21 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
+<<<<<<< HEAD
           * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
          */
         "autoComplete"?: string | undefined;
         /**
           * Autocomplete attribute.
           * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+=======
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
+         */
+        "autoComplete"?: string | undefined;
+        /**
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
+>>>>>>> 5049e06a (fix(io-input, io-textarea, io-select): b28 input fixes and FACE alignment)
          */
         "autocomplete"?: string | undefined;
         /**

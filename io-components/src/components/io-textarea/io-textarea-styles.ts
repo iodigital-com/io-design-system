@@ -228,5 +228,26 @@ export function getTextareaStyles(): string {
       .textarea-field,
       .textarea-label { transition: none; }
     }
+
+    /* ── Forced Colors (High Contrast Mode) ─────────────────────
+       In HCM the browser strips custom colors so error/success/warning
+       state changes (border-color only) become invisible. */
+    @media (forced-colors: active) {
+      /* Error: thick Highlight outline */
+      .textarea-wrapper--state-error .textarea-field {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+        border-bottom-color: Highlight;
+      }
+
+      /* Disabled: GrayText + full opacity */
+      .textarea-wrapper--disabled {
+        opacity: 1;
+      }
+      .textarea-wrapper--disabled .textarea-field {
+        border-bottom-color: GrayText;
+        color: GrayText;
+      }
+    }
   `;
 }

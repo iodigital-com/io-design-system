@@ -429,6 +429,31 @@ export function getSelectStyles(): string {
         color: GrayText;
         border-color: GrayText;
       }
+
+      /* Error state: thick Highlight outline */
+      .select-wrapper--state-error .select-field,
+      .select-wrapper--state-error .combobox-trigger {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+        border-bottom-color: Highlight;
+      }
+
+      /* Disabled wrapper: restore full opacity */
+      .select-wrapper--disabled {
+        opacity: 1;
+      }
+
+      /* Combobox dropdown border in HCM */
+      .combobox-dropdown {
+        border-color: ButtonText;
+      }
+
+      /* Chevron must remain visible */
+      .select-chevron,
+      .combobox-trigger__chevron {
+        forced-color-adjust: none;
+        color: ButtonText;
+      }
     }
   `;
 }

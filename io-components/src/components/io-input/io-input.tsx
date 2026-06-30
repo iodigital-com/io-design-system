@@ -105,12 +105,12 @@ export class IoInput {
   @Prop() step: string | number | undefined;
 
   /**
-   * Autocomplete attribute.
-   * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+   * Autocomplete attribute (lowercase form).
+   * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
    */
   @Prop() autocomplete: string | undefined;
 
-  /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off') */
+  /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form. */
   @Prop() autoComplete: string | undefined;
 
   /** Native spellcheck attribute — passed through as-is */
@@ -312,6 +312,9 @@ export class IoInput {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
+    // Force touched so FACE error UI surfaces even before the user has blurred
+    // the field — matches native <input> behaviour where reportValidity() always
+    // shows the validation state regardless of interaction history.
     this.touched = true;
     this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
@@ -576,17 +579,26 @@ export class IoInput {
             {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
+        {/* Single state-message element — avoids duplicate-id collisions and prevents
+            aria-describedby pointing to a hidden element. Role switches between
+            'alert' (error) and 'status' (success/warning) as per WCAG 4.1.3. */}
         {(showError || showSuccess || showWarning) && (
-          <StateMessage
-            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
-            message={message}
-            hasSlot={hasMessageSlot}
-            messageId={errorId}
-            classPrefix="input"
-            visible={showMessage}
-            hiddenClass="input-error--hidden"
-            onSlotChange={this.handleMessageSlotChange}
-          />
+          <p
+            id={errorId}
+            class={[
+              'input-message',
+              showError ? 'input-message--error' : '',
+              showSuccess ? 'input-message--success' : '',
+              showWarning ? 'input-message--warning' : '',
+              !showMessage ? 'input-error--hidden' : '',
+            ].filter(Boolean).join(' ')}
+            role={showError ? 'alert' : 'status'}
+          >
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
         )}
         <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
           <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>

@@ -20,9 +20,14 @@ export default function IoCarouselApiPage() {
           rows={[
             [
               <InlineCode key="name">slidesPerPage</InlineCode>,
-              <InlineCode key="type">number | &apos;auto&apos;</InlineCode>,
+              <span key="type"><InlineCode>number | &apos;auto&apos; |</InlineCode><br /><InlineCode>{'{ sm?, md?, lg?, xl? }'}</InlineCode></span>,
               <InlineCode key="default">1</InlineCode>,
-              <span key="desc">Number of slides to move per navigation step. Set <InlineCode>&apos;auto&apos;</InlineCode> to move slide-by-slide.</span>,
+              <span key="desc">
+                Controls how many slides are visible at once and how many to advance per step.
+                Accepts a number (same count on all viewports), <InlineCode>&apos;auto&apos;</InlineCode> (natural width, move one at a time),
+                or a responsive breakpoint map <InlineCode>{'{ sm?, md?, lg?, xl? }'}</InlineCode> resolved via <InlineCode>matchMedia</InlineCode> —
+                sm=640px, md=768px, lg=1024px, xl=1280px. The largest matching key wins; falls back to 1.
+              </span>,
             ],
             [
               <InlineCode key="name">rewind</InlineCode>,

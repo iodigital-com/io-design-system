@@ -574,6 +574,130 @@ describe('io-carousel — alignHeader prop', () => {
   });
 });
 
+describe('io-carousel — responsive slidesPerPage', () => {
+  beforeEach(() => {
+    window.matchMedia = vi.fn().mockImplementation(() => ({ matches: false }));
+  });
+
+  it('effectiveSlidesPerPage defaults to 1 when slidesPerPage=1', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.componentWillLoad();
+    expect((component as any).effectiveSlidesPerPage).toBe(1);
+  });
+
+  it('effectiveSlidesPerPage is "auto" when slidesPerPage="auto"', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.slidesPerPage = 'auto';
+    component.componentWillLoad();
+    expect((component as any).effectiveSlidesPerPage).toBe('auto');
+  });
+
+  it('effectiveSlidesPerPage resolves responsive map at componentWillLoad', () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query === '(min-width: 768px)' || query === '(min-width: 640px)',
+    }));
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.slidesPerPage = { sm: 1, md: 2, lg: 3 };
+    component.componentWillLoad();
+    expect((component as any).effectiveSlidesPerPage).toBe(2);
+  });
+
+  it('onSlidesPerPageChange recomputes effectiveSlidesPerPage', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.slidesPerPage = 3;
+    (component as any).onSlidesPerPageChange();
+    expect((component as any).effectiveSlidesPerPage).toBe(3);
+  });
+
+  it('onResize recomputes effectiveSlidesPerPage for responsive maps', () => {
+    const matchSpy = vi.fn().mockImplementation(() => ({ matches: false }));
+    window.matchMedia = matchSpy;
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.slidesPerPage = { md: 2 };
+    (component as any).effectiveSlidesPerPage = 1;
+    // Simulate viewport change: now md matches
+    matchSpy.mockImplementation((query: string) => ({
+      matches: query === '(min-width: 768px)' || query === '(min-width: 640px)',
+    }));
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollLeft', { value: 0 });
+    (track as any).scrollTo = vi.fn();
+    const slot = document.createElement('slot');
+    (component as any).el = {
+      shadowRoot: {
+        querySelector: vi.fn((sel: string) => {
+          if (sel === '.carousel-track') return track;
+          if (sel === 'slot') return slot;
+          return null;
+        }),
+      },
+    };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    (component as any).getSlideLeft = vi.fn(() => 0);
+    component.onResize();
+    expect((component as any).effectiveSlidesPerPage).toBe(2);
+  });
+
+  it('onResize does not call syncEffectiveSlidesPerPage for numeric slidesPerPage', () => {
+    const component = new IoCarousel();
+    component.slidesPerPage = 2;
+    const syncSpy = vi.spyOn(component as any, 'syncEffectiveSlidesPerPage');
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'scrollLeft', { value: 0 });
+    (track as any).scrollTo = vi.fn();
+    const slot = document.createElement('slot');
+    (component as any).el = {
+      shadowRoot: {
+        querySelector: vi.fn((sel: string) => {
+          if (sel === '.carousel-track') return track;
+          if (sel === 'slot') return slot;
+          return null;
+        }),
+      },
+    };
+    Object.defineProperty(component as any, 'totalSlides', { get: () => 4 });
+    (component as any).getSlideLeft = vi.fn(() => 0);
+    component.onResize();
+    expect(syncSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-carousel — pagination page count', () => {
+  it('shows one dot per slide when slidesPerPage=1', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.pagination = true;
+    (component as any).effectiveSlidesPerPage = 1;
+    const totalSlides = 4;
+    // pageCount = ceil(4 / 1) = 4
+    expect(Math.ceil(totalSlides / 1)).toBe(4);
+  });
+
+  it('groups slides into pages when slidesPerPage > 1', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    component.pagination = true;
+    (component as any).effectiveSlidesPerPage = 3;
+    const totalSlides = 7;
+    // pageCount = ceil(7 / 3) = 3
+    expect(Math.ceil(totalSlides / 3)).toBe(3);
+  });
+
+  it('active page index is activeSlideIndex / slidesPerPage (floor)', () => {
+    const component = new IoCarousel();
+    (component as any).el = { shadowRoot: null };
+    (component as any).effectiveSlidesPerPage = 3;
+    component.activeSlideIndex = 4;
+    const activePageIndex = Math.floor(4 / 3);
+    expect(activePageIndex).toBe(1);
+  });
+});
+
 describe('io-carousel — skip link (#867)', () => {
   function makeCarousel() {
     const c = new IoCarousel();

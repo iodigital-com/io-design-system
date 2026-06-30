@@ -522,6 +522,12 @@
     "description": "Height of the custom horizontal scrollbar track of the carousel. Override to adjust scrollbar visual weight."
   },
   {
+    "cssVar": "--io-carousel-slides-per-page",
+    "classification": "internal",
+    "component": "io-carousel",
+    "description": "Internal counter set by the component via inline style when slidesPerPage is a number > 1. Used in calc() to size each slide to fill exactly 1/N of the visible track. Do not override directly — use the slidesPerPage prop."
+  },
+  {
     "cssVar": "--io-bg-card",
     "classification": "internal",
     "component": "io-carousel",

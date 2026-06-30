@@ -76,11 +76,10 @@ describe('io-button — default props', () => {
     component.iconOnly = true;
 
     expect(() => component.render()).not.toThrow();
-    // Two warnings: deprecation of iconOnly + missing accessible label
+    // Two warnings: deprecated iconOnly prop + missing accessible label
     expect(warnSpy).toHaveBeenCalledTimes(2);
-    const messages = warnSpy.mock.calls.map((c) => c[0] as string);
-    expect(messages.some((m) => m.includes('deprecated'))).toBe(true);
-    expect(messages.some((m) => m.includes('accessible label'))).toBe(true);
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('accessible label'));
 
     warnSpy.mockRestore();
   });

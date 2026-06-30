@@ -2354,5 +2354,53 @@
     "classification": "internal",
     "component": "io-tooltip",
     "description": "Global z-index for the tooltip layer."
+  },
+  {
+    "cssVar": "--io-control-size-xs",
+    "classification": "internal",
+    "component": "global",
+    "description": "Canonical interactive control height scale — xs (24px). Used for chips, compact UI elements. Resolves to 1.5rem."
+  },
+  {
+    "cssVar": "--io-control-size-sm",
+    "classification": "internal",
+    "component": "global",
+    "description": "Canonical interactive control height scale — sm (32px). Used for small controls, stepper circles. Resolves to 2rem."
+  },
+  {
+    "cssVar": "--io-control-size-md",
+    "classification": "internal",
+    "component": "global",
+    "description": "Canonical interactive control height scale — md (40px). Default input and button height. Resolves to 2.5rem."
+  },
+  {
+    "cssVar": "--io-control-size-lg",
+    "classification": "internal",
+    "component": "global",
+    "description": "Canonical interactive control height scale — lg (48px). Large controls, pin-code slots. Resolves to 3rem."
+  },
+  {
+    "cssVar": "--io-control-size-xl",
+    "classification": "internal",
+    "component": "global",
+    "description": "Canonical interactive control height scale — xl (64px). XL button, hero controls. Resolves to 4rem."
+  },
+  {
+    "cssVar": "--io-skeleton-duration",
+    "classification": "internal",
+    "component": "global",
+    "description": "Animation duration for the .io-skeleton global utility shimmer. Consumer override point defined in app.css. Defaults to 1.6s."
+  },
+  {
+    "cssVar": "--io-skeleton-bg-start",
+    "classification": "internal",
+    "component": "global",
+    "description": "Start/end color of the .io-skeleton shimmer gradient. Consumer override point defined in app.css. Defaults to --io-color-grey-2."
+  },
+  {
+    "cssVar": "--io-skeleton-bg-end",
+    "classification": "internal",
+    "component": "global",
+    "description": "Peak (lighter) color of the .io-skeleton shimmer gradient. Consumer override point defined in app.css. Defaults to --io-color-grey-5."
   }
 ]

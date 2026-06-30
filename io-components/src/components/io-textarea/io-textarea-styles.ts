@@ -7,6 +7,8 @@
  * GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getTextareaStyles(): string {
   return `
     :host {
@@ -63,15 +65,7 @@ export function getTextareaStyles(): string {
 
     /* Visually hide label while keeping it accessible to screen readers */
     .textarea-label--sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
+      ${getSrOnlyStyles()}
     }
 
     /* Collapse the label space entirely when hideLabel=true */
@@ -213,15 +207,7 @@ export function getTextareaStyles(): string {
     }
 
     .textarea-counter-sr {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      ${getSrOnlyStyles()}
     }
 
     @media (prefers-reduced-motion: reduce) {

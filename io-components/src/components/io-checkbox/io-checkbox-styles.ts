@@ -7,6 +7,8 @@
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getCheckboxStyles(): string {
   return `
     :host {
@@ -164,15 +166,7 @@ export function getCheckboxStyles(): string {
 
     /* Visually hide label text while keeping it accessible to screen readers */
     .checkbox-text--sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
+      ${getSrOnlyStyles()}
     }
 
     .io-required {

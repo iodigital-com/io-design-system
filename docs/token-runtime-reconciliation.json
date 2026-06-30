@@ -896,6 +896,38 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-button-transition-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Base transition duration for button hover/focus animations."
+    },
+    {
+      "runtimeCssVar": "--io-button-active-transition-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Transition duration for button :active press state."
+    },
+    {
+      "runtimeCssVar": "--io-button-label-transition-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Transition duration for button label opacity (used in loading state)."
+    },
+    {
+      "runtimeCssVar": "--io-button-sm-icon-only-min",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Minimum size for small icon-only button variant."
+    },
+    {
       "runtimeCssVar": "--io-button-spinner-border-width",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
@@ -3417,11 +3449,75 @@
     },
     {
       "runtimeCssVar": "--io-touch-target-min-size",
+      "disposition": "removed",
+      "documentationScope": "retired",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Removed duplicate. Use --io-touch-target-min instead (defined in :root section 10)."
+    },
+    {
+      "runtimeCssVar": "--io-control-size-xs",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
+      "notes": "Canonical interactive control height scale — xs (24px). Used for chips, compact UI."
+    },
+    {
+      "runtimeCssVar": "--io-control-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Canonical interactive control height scale — sm (32px). Used for small controls."
+    },
+    {
+      "runtimeCssVar": "--io-control-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Canonical interactive control height scale — md (40px). Default input/button height."
+    },
+    {
+      "runtimeCssVar": "--io-control-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Canonical interactive control height scale — lg (48px). Large controls, pin-code slots."
+    },
+    {
+      "runtimeCssVar": "--io-control-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Canonical interactive control height scale — xl (64px). XL button, hero controls."
+    },
+    {
+      "runtimeCssVar": "--io-skeleton-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Animation duration for .io-skeleton shimmer. Defaults to 1.6s."
+    },
+    {
+      "runtimeCssVar": "--io-skeleton-bg-start",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Start/end color of .io-skeleton shimmer gradient. Defaults to --io-color-grey-2."
+    },
+    {
+      "runtimeCssVar": "--io-skeleton-bg-end",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Peak (lighter) color of .io-skeleton shimmer gradient. Defaults to --io-color-grey-5."
     },
     {
       "runtimeCssVar": "--io-wordmark-font-size-lg",
@@ -4190,14 +4286,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Reusable 16-step opacity ramp from transparent to white. Use in linear-gradient() for scrim/overlay composition."
-    },
-    {
-      "runtimeCssVar": "--io-button-sm-icon-only-min",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "Minimum size floor for sm icon-only buttons (WCAG 2.5.5 AA = 24px)."
     },
     {
       "runtimeCssVar": "--io-ease-snappy",

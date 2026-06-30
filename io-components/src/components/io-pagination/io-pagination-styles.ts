@@ -7,6 +7,8 @@
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getPaginationStyles(): string {
   return `
     :host {
@@ -17,15 +19,7 @@ export function getPaginationStyles(): string {
     /* ── Visually hidden live region ────────────────────── */
 
     .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      ${getSrOnlyStyles()}
     }
 
     /* ── Container ──────────────────────────────────────── */

@@ -521,7 +521,21 @@
   --io-icon-size-4xl:            4rem;       /* 64px */
   --io-icon-size-5xl:            5rem;       /* 80px */
 
-   /* Shared control sizing (button/input/select/textarea) */
+  /* ── Canonical interactive control height scale ─────────
+     All interactive element heights (buttons, inputs, chips,
+     option rows, stepper circles, pin slots) derive from
+     this single scale. The values align with the spacing-static
+     scale: xs=24px, sm=32px, md=40px, lg=48px, xl=64px.
+     WCAG 2.5.8 requires a minimum of 44×44px — the md size
+     (40px) is deliberately close; provide adequate spacing so
+     the 44px touch target is met via padding / margin.        */
+  --io-control-size-xs:          1.5rem;     /* 24px — chips, compact UI */
+  --io-control-size-sm:          2rem;       /* 32px — small controls, stepper circle */
+  --io-control-size-md:          2.5rem;     /* 40px — default input / button height */
+  --io-control-size-lg:          3rem;       /* 48px — large controls, pin-code slots */
+  --io-control-size-xl:          4rem;       /* 64px — XL button, hero controls */
+
+   /* Shared control sizing (button/input/select/textarea) — kept for backwards compat */
    --io-size-button-sm:           31px;
    --io-size-button-md:           42px;
    --io-size-button-lg:           50px;
@@ -637,6 +651,12 @@
   --io-button-arrow-shift-forward: 6px;
   --io-button-arrow-shift-down:  5px;
   --io-button-spinner-border-width: 2px;
+  /* Transition duration tokens — replace hardcoded ms values */
+  --io-button-transition-duration:        500ms;
+  --io-button-active-transition-duration: 80ms;
+  --io-button-label-transition-duration:  150ms;
+  /* WCAG 2.5.5 AA floor: sm icon-only cannot be overridden below 24×24 px */
+  --io-button-sm-icon-only-min:           24px;
 
   /* Divider */
   --io-divider-color:              var(--io-border);
@@ -697,20 +717,20 @@
   --io-button-group-secondary-active-bg:    var(--io-color-white);
   --io-button-group-secondary-active-color: var(--io-color-grey-6);
   --io-button-group-secondary-active-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
-  --io-button-group-transition:        background-color var(--io-duration-lg) var(--io-ease-snappy),
-                                       color var(--io-duration-lg) var(--io-ease-snappy),
-                                       border-color var(--io-duration-lg) var(--io-ease-snappy);
+  --io-button-group-transition:        background-color var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                                       color var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                                       border-color var(--io-button-transition-duration) var(--io-motion-easing-snappy);
 
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
 
   /* Multi-Select */
-  --io-multi-select-chip-height:       24px;  /* height of selected-value chips */
+  --io-multi-select-chip-height:       var(--io-control-size-xs);  /* 24px — selected-value chips */
   --io-multi-select-chip-max-width:    160px; /* max width of selected-value chips before truncation */
-  --io-multi-select-chip-remove-size:  24px;  /* min-width/height of chip remove button (WCAG 2.5.8) */
+  --io-multi-select-chip-remove-size:  var(--io-control-size-xs);  /* 24px — chip remove button (WCAG 2.5.8) */
 
   /* ── Pin Code ────────────────────────────────────────── */
-  --io-pin-code-slot-size:               3rem;
+  --io-pin-code-slot-size:               var(--io-control-size-lg);  /* 48px — pin slot size */
   --io-pin-code-slot-radius:             var(--io-border-radius-sm);
   --io-pin-code-slot-border-width:       1.5px;
   --io-pin-code-slot-border-error-width: 2px;
@@ -765,6 +785,11 @@
   --io-accordion-px:             initial;
   --io-accordion-summary-top:    initial;
  
+  /* ── Skeleton loading utility ─────────────────────── */
+  --io-skeleton-duration:          1.6s;
+  --io-skeleton-bg-start:          var(--io-color-grey-2);  /* base shimmer color */
+  --io-skeleton-bg-end:            var(--io-color-grey-5);  /* peak (lighter) shimmer color */
+
   /* Banner — fixed overlay card positioning overrides */
   --io-banner-max-w:             var(--io-breakpoint-md);
   --io-banner-top:               var(--io-space-4);
@@ -809,7 +834,7 @@
      13. PIN CODE
      ============================================================ */
 
-  --io-pin-code-slot-size:              3rem;
+  --io-pin-code-slot-size:              var(--io-control-size-lg);  /* 48px — pin slot */
   --io-pin-code-slot-radius:            var(--io-border-radius-sm);
   --io-pin-code-slot-border-width:      1.5px;
   --io-pin-code-slot-border-error-width: 2px;
@@ -829,12 +854,12 @@
   --io-accent:                   var(--io-color-primary);
   --io-accent-text:              var(--io-color-primary);
   --io-accent-bg:                var(--io-color-primary-bg);
-  --io-touch-target-min-size:    44px;
+  /* --io-touch-target-min-size removed — use --io-touch-target-min (defined in :root section 10) */
   --io-font-family-base:         var(--io-font-primary);
   --io-font-weight-semibold:     600;
 
   /* ── Stepper ─────────────────────────────────────────── */
-  --io-stepper-circle-size:         2rem;       /* 32px — step circle diameter */
+  --io-stepper-circle-size:         var(--io-control-size-sm);  /* 32px — step circle diameter */
   --io-stepper-circle-border-width: 2px;        /* step circle border thickness */
   --io-stepper-connector-offset:    1rem;       /* 16px — aligns connector to circle centre */
   --io-stepper-connector-width:     2px;        /* horizontal connector height / vertical connector width */
@@ -1250,6 +1275,10 @@ io-table[compact] io-table-body-cell td {
   /* Strong tag/badge semantic tokens — inverted on dark surfaces */
   --io-tag-strong-bg:            var(--io-color-dark-text-primary);
   --io-tag-strong-fg:            var(--io-color-dark-bg-base);
+
+  /* Skeleton shimmer — darker gradient endpoints for dark surfaces */
+  --io-skeleton-bg-start:        var(--io-color-dark-bg-hover);     /* #333333 */
+  --io-skeleton-bg-end:          var(--io-color-dark-bg-surface);   /* #222222 */
 
   color-scheme: dark;
 }
@@ -1735,8 +1764,145 @@ body {
    ============================================================ */
 
 /* ============================================================
-   BASE RESET
+   GLOBAL UTILITY CLASSES
+   These classes are defined outside @layer io so they are available
+   to consumers in the global document scope (not Shadow DOM).
    ============================================================ */
+
+/* ── Screen-reader only ──────────────────────────────────── */
+/* Hides content visually while keeping it accessible to AT. */
+/* Shadow DOM: use getSrOnlyStyles() from utils/sr-only.ts   */
+
+.io-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Focus-visible utility ───────────────────────────────── */
+/* Applies the canonical io focus ring to any element.        */
+/* Uses :focus-visible so ring only shows for keyboard users. */
+
+.io-focus-visible:focus {
+  outline: none;
+}
+
+.io-focus-visible:focus-visible {
+  outline: none;
+  box-shadow: var(--io-focus-ring-active);
+}
+
+/* ── Skeleton loading shimmer ────────────────────────────── */
+/* Apply to any element to render a token-driven shimmer.     */
+/* Tokens: --io-skeleton-duration, --io-skeleton-bg-start,   */
+/*         --io-skeleton-bg-end                               */
+
+@keyframes io-skeleton {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.io-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--io-skeleton-bg-start, #ebebeb) 25%,
+    var(--io-skeleton-bg-end, #f4f4f4) 50%,
+    var(--io-skeleton-bg-start, #ebebeb) 75%
+  );
+  background-size: 400% 100%;
+  animation: io-skeleton var(--io-skeleton-duration, 1.6s) ease-in-out infinite;
+  border-radius: var(--io-border-radius-sm);
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .io-skeleton {
+    animation: none;
+    background: var(--io-skeleton-bg-start, #ebebeb);
+  }
+}
+
+/* ── Prose text helpers ──────────────────────────────────── */
+/* Class-based typography helpers that match the type scale.  */
+
+.io-prose-heading-xs {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-xs, 0.75rem);
+  font-weight: var(--io-font-weight-bold, 700);
+  line-height: var(--io-line-height-tight, 1.2);
+}
+
+.io-prose-heading-sm {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-sm, 0.875rem);
+  font-weight: var(--io-font-weight-bold, 700);
+  line-height: var(--io-line-height-tight, 1.2);
+}
+
+.io-prose-heading-md {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-base, 1rem);
+  font-weight: var(--io-font-weight-bold, 700);
+  line-height: var(--io-line-height-tight, 1.2);
+}
+
+.io-prose-heading-lg {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-lg, 1.25rem);
+  font-weight: var(--io-font-weight-bold, 700);
+  line-height: var(--io-line-height-tight, 1.2);
+}
+
+.io-prose-heading-xl {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-xl, 1.5rem);
+  font-weight: var(--io-font-weight-bold, 700);
+  line-height: var(--io-line-height-tight, 1.2);
+}
+
+.io-prose-text-xs {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-xs, 0.75rem);
+  font-weight: var(--io-font-weight-normal, 400);
+  line-height: var(--io-line-height-normal, 1.5);
+}
+
+.io-prose-text-sm {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-sm, 0.875rem);
+  font-weight: var(--io-font-weight-normal, 400);
+  line-height: var(--io-line-height-normal, 1.5);
+}
+
+.io-prose-text-md {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-base, 1rem);
+  font-weight: var(--io-font-weight-normal, 400);
+  line-height: var(--io-line-height-normal, 1.5);
+}
+
+.io-prose-text-lg {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-lg, 1.25rem);
+  font-weight: var(--io-font-weight-normal, 400);
+  line-height: var(--io-line-height-normal, 1.5);
+}
+
+.io-prose-text-xl {
+  font-family: var(--io-font-primary);
+  font-size: var(--io-font-size-xl, 1.5rem);
+  font-weight: var(--io-font-weight-normal, 400);
+  line-height: var(--io-line-height-normal, 1.5);
+}
+
+/* ── BASE RESET ─────────────────────────────────────────── */
 
 *, *::before, *::after {
   box-sizing: border-box;

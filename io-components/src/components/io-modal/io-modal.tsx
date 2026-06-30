@@ -320,31 +320,45 @@ export class IoModal {
 
   /**
    * Set up focus trap: Tab/Shift+Tab within modal cycles through focusable elements.
-   * Browser's native dialog focus trap may not work reliably in jsdom, so implement manual trap.
+   * Includes both shadow-DOM elements and slotted light-DOM children (e.g. slot="footer"
+   * io-button elements) which querySelectorAll alone does not traverse (#972).
    */
   private setupFocusTrap() {
     if (!this.dialogEl) return;
 
     this.clearFocusTrap();
 
-    // Get all focusable elements within the modal (in shadow DOM and slots)
     const focusableSelector =
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    const focusableElements = Array.from(
-      this.dialogEl.querySelectorAll(focusableSelector)
-    ) as HTMLElement[];
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    // Shadow-DOM focusables (close button, etc.)
+    const shadowFocusable = Array.from(
+      this.dialogEl.querySelectorAll<HTMLElement>(focusableSelector),
+    );
+
+    // Slotted light-DOM focusables (e.g. <io-button slot="footer">)
+    const slots = Array.from(this.dialogEl.querySelectorAll('slot')) as HTMLSlotElement[];
+    const slottedFocusable = slots.flatMap((slot) =>
+      Array.from(slot.assignedElements({ flatten: true })).flatMap((el) => {
+        const matches: HTMLElement[] = [];
+        if ((el as HTMLElement).matches?.(focusableSelector)) matches.push(el as HTMLElement);
+        matches.push(...Array.from(el.querySelectorAll<HTMLElement>(focusableSelector)));
+        return matches;
+      }),
+    );
+
+    const focusableElements = [...shadowFocusable, ...slottedFocusable];
 
     if (focusableElements.length === 0) return;
 
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
-    // Auto-focus first focusable element when modal opens
-    // (browser's showModal may not focus correctly in all cases)
+    // Auto-focus first focusable element when modal opens.
+    // setTimeout(0) defers focus until after current call stack — prevents Tab
+    // key being consumed by the opener element instead of the modal (#984).
     if (firstElement && firstElement !== this.dialogEl.ownerDocument?.activeElement) {
-      setTimeout(() => {
-        firstElement.focus();
-      }, 0);
+      setTimeout(() => firstElement.focus(), 0);
     }
 
     if (firstElement === lastElement) {

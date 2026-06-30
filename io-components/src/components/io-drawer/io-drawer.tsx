@@ -54,6 +54,11 @@ export class IoDrawer {
   // onOpenChange can distinguish user-initiated closes from programmatic ones.
   private _userInitiatedClose = false;
 
+  // ── Focus restoration (WCAG 2.4.3) ───────────────────────────
+  // Capture the element that had focus when the drawer opened so focus
+  // can be returned to it on close (keyboard / screen-reader users).
+  private focusTrigger: Element | null = null;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /** Controls drawer visibility; synced to showModal/close */
@@ -192,6 +197,8 @@ export class IoDrawer {
     const dialog = this.el?.shadowRoot?.querySelector<HTMLDialogElement>('dialog');
     if (!dialog) return;
     if (newVal) {
+      // Capture trigger BEFORE showModal() moves focus into the dialog (WCAG 2.4.3).
+      this.focusTrigger = document.activeElement;
       if (!dialog.open) {
         // Restart the slide-in CSS animation on every open so subsequent opens
         // animate correctly (not just the first one after mount).
@@ -210,6 +217,9 @@ export class IoDrawer {
         this.dismissEvent.emit();
       }
       this._userInitiatedClose = false;
+      // Restore focus to the element that opened the drawer (WCAG 2.4.3).
+      (this.focusTrigger as HTMLElement | null)?.focus?.();
+      this.focusTrigger = null;
     }
   }
 

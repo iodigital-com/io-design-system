@@ -114,6 +114,7 @@ describe('io-popover — a11y', () => {
     const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
 
     (component as any).el = { shadowRoot: mockShadowRoot };
+    (component as any).openEvent = { emit: vi.fn() };
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).panelEl = document.createElement('div');
     (component as any).componentWillLoad();
@@ -133,6 +134,7 @@ describe('io-popover — a11y', () => {
     const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
 
     (component as any).el = { shadowRoot: mockShadowRoot };
+    (component as any).openEvent = { emit: vi.fn() };
     (component as any).dismissEvent = { emit: vi.fn() };
     (component as any).panelEl = document.createElement('div');
     (component as any).componentWillLoad();

@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
 import {
-  createPopoverLabelId,
+  buildPopoverMiddleware,
   computeFallbackPosition,
+  createPopoverLabelId,
   getFirstFocusable,
   getPanelFocusableElements,
+  toFloatingUiPlacement,
 } from './io-popover-utils';
 
 // ── createPopoverLabelId ──────────────────────────────────────────────────────
@@ -18,6 +20,51 @@ describe('createPopoverLabelId', () => {
     const a = createPopoverLabelId('111');
     const b = createPopoverLabelId('222');
     expect(a).not.toBe(b);
+  });
+});
+
+// ── toFloatingUiPlacement ────────────────────────────────────────────────────
+
+describe('toFloatingUiPlacement', () => {
+  it('maps auto to bottom', () => {
+    expect(toFloatingUiPlacement('auto')).toBe('bottom');
+  });
+
+  it('passes through top', () => {
+    expect(toFloatingUiPlacement('top')).toBe('top');
+  });
+
+  it('passes through bottom', () => {
+    expect(toFloatingUiPlacement('bottom')).toBe('bottom');
+  });
+
+  it('passes through left', () => {
+    expect(toFloatingUiPlacement('left')).toBe('left');
+  });
+
+  it('passes through right', () => {
+    expect(toFloatingUiPlacement('right')).toBe('right');
+  });
+});
+
+// ── buildPopoverMiddleware ────────────────────────────────────────────────────
+
+describe('buildPopoverMiddleware', () => {
+  it('returns at least 3 middleware (offset, flip, shift) when no arrow element', () => {
+    const mw = buildPopoverMiddleware(16);
+    expect(mw.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('returns one more middleware when an arrow element is provided', () => {
+    const arrowEl = document.createElement('div');
+    const withArrow = buildPopoverMiddleware(16, arrowEl);
+    const withoutArrow = buildPopoverMiddleware(16);
+    expect(withArrow.length).toBe(withoutArrow.length + 1);
+  });
+
+  it('uses default gap of 16 when not specified', () => {
+    // Function should not throw with default arg
+    expect(() => buildPopoverMiddleware()).not.toThrow();
   });
 });
 

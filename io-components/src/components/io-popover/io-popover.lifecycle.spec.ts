@@ -247,7 +247,7 @@ describe('io-popover — applyOpenState', () => {
     expect(showPopover).toHaveBeenCalled();
   });
 
-  it('falls back to applyFallbackOpen silently when native showPopover throws', () => {
+  it('catches error from native showPopover silently and still removes aria-hidden', () => {
     const c = makePopover();
     const panel = withPanel(c);
     panel.setAttribute('aria-hidden', 'true');
@@ -256,7 +256,7 @@ describe('io-popover — applyOpenState', () => {
     });
     (c as any).useNativePopover = true;
     expect(() => (c as any).applyOpenState()).not.toThrow();
-    // applyFallbackOpen removes aria-hidden as the fallback path
+    // aria-hidden is removed regardless of native popover error
     expect(panel.getAttribute('aria-hidden')).toBeNull();
   });
 });
@@ -308,48 +308,39 @@ describe('io-popover — applyClosedState', () => {
   });
 });
 
-// ── applyFallbackOpen ──────────────────────────────────────────────────────────
+// ── positionPanel (floating-ui) ───────────────────────────────────────────────
 
-describe('io-popover — applyFallbackOpen', () => {
-  it('returns early and does not throw when panelEl is absent', () => {
+describe('io-popover — positionPanel (floating-ui, #988)', () => {
+  it('returns early when panelEl is absent', async () => {
     const c = makePopover();
     (c as any).panelEl = undefined;
-    expect(() => (c as any).applyFallbackOpen()).not.toThrow();
+    (c as any).triggerEl = document.createElement('button');
+    await expect((c as any).positionPanel()).resolves.toBeUndefined();
   });
 
-  it('removes aria-hidden from panel even when no triggerEl is found in shadow', () => {
+  it('returns early when triggerEl is absent', async () => {
     const c = makePopover();
-    const panel = withPanel(c);
-    panel.setAttribute('aria-hidden', 'true');
-    // el has no shadowRoot — triggerEl query returns undefined → early return after removeAttribute
-    (c as any).applyFallbackOpen();
-    expect(panel.getAttribute('aria-hidden')).toBeNull();
+    withPanel(c);
+    (c as any).triggerEl = undefined;
+    await expect((c as any).positionPanel()).resolves.toBeUndefined();
   });
 
-  it('sets panelStyle with fixed positioning when triggerEl is found in shadow', () => {
+  it('does not throw when both triggerEl and panelEl are present', async () => {
     const c = makePopover();
     const panel = withPanel(c);
-
     const triggerEl = document.createElement('button');
+    (c as any).triggerEl = triggerEl;
+
     triggerEl.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 100, bottom: 140, left: 200, right: 300,
-      width: 100, height: 40,
+      top: 100, bottom: 140, left: 200, right: 300, width: 100, height: 40,
+      x: 200, y: 100, toJSON: () => ({}),
     } as DOMRect);
-
     panel.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 0, bottom: 0, left: 0, right: 0, width: 150, height: 80,
+      top: 0, bottom: 0, left: 0, right: 0, width: 200, height: 80,
+      x: 0, y: 0, toJSON: () => ({}),
     } as DOMRect);
 
-    const mockSlot = { assignedElements: vi.fn().mockReturnValue([triggerEl]) };
-    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
-    (c as any).el = { shadowRoot: mockShadowRoot, contains: vi.fn().mockReturnValue(true) };
-
-    (c as any).applyFallbackOpen();
-
-    const style = (c as any).panelStyle as Record<string, string>;
-    expect(style.position).toBe('fixed');
-    expect(style.top).toMatch(/px$/);
-    expect(style.left).toMatch(/px$/);
+    await expect((c as any).positionPanel()).resolves.toBeUndefined();
   });
 });
 
@@ -687,47 +678,36 @@ describe('io-popover — componentDidLoad with triggerEl', () => {
   });
 });
 
-// ── positionNativePanel ────────────────────────────────────────────────────────
+// ── autoUpdate lifecycle (#988) ────────────────────────────────────────────────
 
-describe('io-popover — positionNativePanel', () => {
-  it('returns early and does not throw when panelEl is absent', () => {
+describe('io-popover — autoUpdate lifecycle (#988)', () => {
+  it('stopAutoUpdate is a no-op when no cleanup is registered', () => {
     const c = makePopover();
+    (c as any).cleanupAutoUpdate = undefined;
+    expect(() => (c as any).stopAutoUpdate()).not.toThrow();
+  });
+
+  it('stopAutoUpdate calls and clears the cleanup function', () => {
+    const c = makePopover();
+    const cleanup = vi.fn();
+    (c as any).cleanupAutoUpdate = cleanup;
+    (c as any).stopAutoUpdate();
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect((c as any).cleanupAutoUpdate).toBeUndefined();
+  });
+
+  it('startAutoUpdate does not throw when triggerEl is absent', () => {
+    const c = makePopover();
+    withPanel(c);
+    (c as any).triggerEl = undefined;
+    expect(() => (c as any).startAutoUpdate()).not.toThrow();
+  });
+
+  it('startAutoUpdate does not throw when panelEl is absent', () => {
+    const c = makePopover();
+    (c as any).triggerEl = document.createElement('button');
     (c as any).panelEl = undefined;
-    expect(() => (c as any).positionNativePanel()).not.toThrow();
-  });
-
-  it('returns early without setting style when no triggerEl is found in shadow', () => {
-    const c = makePopover();
-    const panel = withPanel(c);
-    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(null) };
-    (c as any).el = { shadowRoot: mockShadowRoot };
-    (c as any).positionNativePanel();
-    expect(panel.style.top).toBe('');
-    expect(panel.style.left).toBe('');
-  });
-
-  it('sets panel style.top and style.left when triggerEl is found', () => {
-    const c = makePopover();
-    const panel = withPanel(c);
-
-    const triggerEl = document.createElement('button');
-    triggerEl.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 50, bottom: 90, left: 100, right: 200,
-      width: 100, height: 40,
-    } as DOMRect);
-
-    panel.getBoundingClientRect = vi.fn().mockReturnValue({
-      top: 0, bottom: 0, left: 0, right: 0, width: 120, height: 60,
-    } as DOMRect);
-
-    const mockSlot = { assignedElements: vi.fn().mockReturnValue([triggerEl]) };
-    const mockShadowRoot = { querySelector: vi.fn().mockReturnValue(mockSlot) };
-    (c as any).el = { shadowRoot: mockShadowRoot, contains: vi.fn().mockReturnValue(true) };
-
-    (c as any).positionNativePanel();
-
-    expect(panel.style.top).toMatch(/\d+px/);
-    expect(panel.style.left).toMatch(/\d+px/);
+    expect(() => (c as any).startAutoUpdate()).not.toThrow();
   });
 });
 
@@ -809,74 +789,30 @@ describe('io-popover — render()', () => {
   });
 });
 
-// ── handleWindowScroll / handleWindowResize (#777) ───────────────────────────
+// ── autoUpdate replaces manual scroll/resize handlers (#988) ─────────────────
 
-describe('io-popover — scroll/resize repositioning (#777)', () => {
-  // handleWindowScroll uses requestAnimationFrame for throttling. The
-  // file-level stub no-ops rAF to prevent focus-call side-effects, so we
-  // override it here to run callbacks synchronously, then restore the no-op.
-  beforeEach(() => {
-    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
-      cb(0);
-      return 1;
-    });
-  });
-
-  afterEach(() => {
-    vi.stubGlobal('requestAnimationFrame', (_cb: FrameRequestCallback) => 0);
-  });
-
-  it('handleWindowScroll does nothing when popover is closed', () => {
+describe('io-popover — autoUpdate replaces scroll/resize handlers (#988)', () => {
+  it('applyOpenState calls startAutoUpdate (no throw even with minimal stubs)', () => {
     const c = makePopover();
     withPanel(c);
-    c.open = false;
-    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
-    (c as any).handleWindowScroll();
-    expect(repositionSpy).not.toHaveBeenCalled();
+    const startSpy = vi.spyOn(c as any, 'startAutoUpdate').mockImplementation(() => {});
+    (c as any).applyOpenState();
+    expect(startSpy).toHaveBeenCalledOnce();
   });
 
-  it('handleWindowScroll calls repositionPanel when popover is open', () => {
+  it('applyClosedState calls stopAutoUpdate', () => {
     const c = makePopover();
     withPanel(c);
-    c.open = true;
-    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
-    (c as any).handleWindowScroll();
-    expect(repositionSpy).toHaveBeenCalledOnce();
+    const stopSpy = vi.spyOn(c as any, 'stopAutoUpdate').mockImplementation(() => {});
+    (c as any).applyClosedState();
+    expect(stopSpy).toHaveBeenCalledOnce();
   });
 
-  it('handleWindowResize does nothing when popover is closed', () => {
+  it('disconnectedCallback calls stopAutoUpdate', () => {
     const c = makePopover();
     withPanel(c);
-    c.open = false;
-    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
-    (c as any).handleWindowResize();
-    expect(repositionSpy).not.toHaveBeenCalled();
-  });
-
-  it('handleWindowResize calls repositionPanel when popover is open', () => {
-    const c = makePopover();
-    withPanel(c);
-    c.open = true;
-    const repositionSpy = vi.spyOn(c as any, 'repositionPanel').mockImplementation(() => {});
-    (c as any).handleWindowResize();
-    expect(repositionSpy).toHaveBeenCalledOnce();
-  });
-
-  it('repositionPanel calls applyFallbackOpen when useNativePopover=false', () => {
-    const c = makePopover();
-    withPanel(c);
-    const fallbackSpy = vi.spyOn(c as any, 'applyFallbackOpen').mockImplementation(() => {});
-    (c as any).useNativePopover = false;
-    (c as any).repositionPanel();
-    expect(fallbackSpy).toHaveBeenCalledOnce();
-  });
-
-  it('repositionPanel calls positionNativePanel when useNativePopover=true', () => {
-    const c = makePopover();
-    withPanel(c);
-    const nativeSpy = vi.spyOn(c as any, 'positionNativePanel').mockImplementation(() => {});
-    (c as any).useNativePopover = true;
-    (c as any).repositionPanel();
-    expect(nativeSpy).toHaveBeenCalledOnce();
+    const stopSpy = vi.spyOn(c as any, 'stopAutoUpdate').mockImplementation(() => {});
+    (c as any).disconnectedCallback();
+    expect(stopSpy).toHaveBeenCalledOnce();
   });
 });

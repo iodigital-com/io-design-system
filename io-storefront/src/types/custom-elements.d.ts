@@ -13,7 +13,7 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
-  'io-ai-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+  'io-ai-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAiTagElement>, HTMLIoAiTagElement> & Partial<StencilJSX.IoAiTag>;
   'io-app-shell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAppShellElement>, HTMLIoAppShellElement> & Partial<StencilJSX.IoAppShell>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
@@ -22,14 +22,14 @@ declare module 'react' {
   'io-breadcrumb-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbItemElement>, HTMLIoBreadcrumbItemElement> & Partial<StencilJSX.IoBreadcrumbItem>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
-  'io-button-pure': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+  'io-button-pure': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonPureElement>, HTMLIoButtonPureElement> & Partial<StencilJSX.IoButtonPure>;
   'io-button-tile': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonTileElement>, HTMLIoButtonTileElement> & Partial<StencilJSX.IoButtonTile>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
   'io-checkbox-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxGroupElement>, HTMLIoCheckboxGroupElement> & Partial<StencilJSX.IoCheckboxGroup>;
   'io-divider': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDividerElement>, HTMLIoDividerElement> & Partial<StencilJSX.IoDivider>;
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
-  'io-flag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+  'io-flag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFlagElement>, HTMLIoFlagElement> & Partial<StencilJSX.IoFlag>;
   'io-flyout': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFlyoutElement>, HTMLIoFlyoutElement> & Partial<StencilJSX.IoFlyout>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
   'io-grid': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoGridElement>, HTMLIoGridElement> & Partial<StencilJSX.IoGrid>;

@@ -87,7 +87,7 @@ export default function IoAccordionApiPage() {
               <InlineCode key="attribute">background</InlineCode>,
               <InlineCode key="type">'transparent' | 'surface' | 'canvas'</InlineCode>,
               <InlineCode key="default">'transparent'</InlineCode>,
-              <span key="description">Background fill variant for the accordion host element. <InlineCode>transparent</InlineCode> (default): no background fill. <InlineCode>surface</InlineCode>: <InlineCode>var(--io-bg-surface)</InlineCode> — subtle fill for card/nested layouts. <InlineCode>canvas</InlineCode>: <InlineCode>var(--io-bg-page)</InlineCode> — page-level fill. Reflects to attribute.</span>,
+              <span key="description">Background fill variant for the accordion host element. <InlineCode>transparent</InlineCode> (default): no background fill. <InlineCode>surface</InlineCode>: <InlineCode>var(--io-bg-surface)</InlineCode> — subtle fill. <InlineCode>canvas</InlineCode>: <InlineCode>var(--io-bg-page)</InlineCode> — page-level fill. <InlineCode>frosted</InlineCode>: semi-transparent with <InlineCode>backdrop-filter: blur</InlineCode> for legibility over image/video backdrops. Reflects to attribute.</span>,
             ],
             [
               <span key="property"><InlineCode>sticky</InlineCode><ReflectBadge /></span>,
@@ -95,6 +95,13 @@ export default function IoAccordionApiPage() {
               <InlineCode key="type">boolean</InlineCode>,
               <InlineCode key="default">false</InlineCode>,
               <span key="description">When <InlineCode>true</InlineCode>, the accordion trigger becomes <InlineCode>position: sticky; top: 0</InlineCode> so it remains visible while scrolling through long expanded content. Only meaningful when <InlineCode>background</InlineCode> is <InlineCode>surface</InlineCode> or <InlineCode>canvas</InlineCode> — using <InlineCode>sticky</InlineCode> with a transparent background causes content to bleed through. Reflects to attribute.</span>,
+            ],
+            [
+              <span key="property"><InlineCode>indent</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="attribute">indent</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">When <InlineCode>true</InlineCode>, indents the panel content to visually align with the summary text column past the expand/collapse icon. Useful when <InlineCode>alignMarker="start"</InlineCode> so body copy lines up with the trigger label. Overridable via <InlineCode>--io-accordion-indent</InlineCode>. Reflects to attribute.</span>,
             ],
           ]}
         />
@@ -133,8 +140,20 @@ export default function IoAccordionApiPage() {
           ]}
           rows={[
             [
+              <InlineCode key="slot">summary</InlineCode>,
+              <span key="description">Free-form trigger content rendered inside the trigger button. Use instead of <InlineCode>heading</InlineCode> slot for rich markup.</span>,
+            ],
+            [
               <InlineCode key="slot">heading</InlineCode>,
-              <span key="description">Named slot. Replaces the <InlineCode>heading</InlineCode> prop with rich heading content.</span>,
+              <span key="description">Named slot (deprecated — use <InlineCode>summary</InlineCode> instead). Replaces the <InlineCode>heading</InlineCode> prop with rich heading content.</span>,
+            ],
+            [
+              <InlineCode key="slot">summary-before</InlineCode>,
+              <span key="description">Rendered as a flex sibling <em>before</em> the trigger button in the heading row. Interactive children (buttons, links) remain independently operable because they live outside the trigger button.</span>,
+            ],
+            [
+              <InlineCode key="slot">summary-after</InlineCode>,
+              <span key="description">Rendered as a flex sibling <em>after</em> the trigger button in the heading row. Use for inline action buttons (edit, delete) that must not interfere with the expand/collapse click target.</span>,
             ],
             [
               <span key="slot">(default)</span>,
@@ -176,6 +195,16 @@ export default function IoAccordionApiPage() {
               <InlineCode key="n">--io-accordion-summary-top</InlineCode>,
               <InlineCode key="d">0</InlineCode>,
               'Top offset for the sticky trigger heading. Set to the height of a fixed app header to prevent the sticky header from hiding behind it.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-bg-frosted</InlineCode>,
+              <InlineCode key="d">color-mix(in srgb, var(--io-bg-surface) 70%, transparent)</InlineCode>,
+              'Background color for the frosted background variant. Override to adjust the opacity or tint of the blur layer.',
+            ],
+            [
+              <InlineCode key="n">--io-accordion-indent</InlineCode>,
+              <InlineCode key="d">calc(var(--io-space-6) + var(--io-space-4))</InlineCode>,
+              'Inline-start padding applied to panel content when indent=true. Aligns body copy with the summary text column past the expand/collapse icon.',
             ],
             [
               <InlineCode key="n">--io-accordion-icon-bar-thickness</InlineCode>,

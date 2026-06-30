@@ -7,13 +7,16 @@ import {
   accordionStory,
   accordionStoryCanvasBackground,
   accordionStoryDefaultExpanded,
+  accordionStoryFrostedBackground,
   accordionStoryGroupMultiOpen,
+  accordionStoryIndent,
   accordionStoryOpen,
   accordionStorySlottedHeading,
   accordionStorySizeLg,
   accordionStorySizeMd,
   accordionStorySizeSm,
   accordionStoryStickyWithSurface,
+  accordionStorySummarySlots,
   accordionStorySurfaceBackground,
 } from '../io-accordion.stories';
 
@@ -170,6 +173,27 @@ export default function IoAccordionExamplesPage() {
           description="Combine sticky=true with background='surface' or 'canvas' to keep the trigger visible while scrolling through long expanded content."
         />
         <ComponentStory story={accordionStoryStickyWithSurface} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Frosted background"
+          description="Use background='frosted' to apply backdrop-filter: blur for accordions placed over image or video backdrops. Text contrast is maintained via the semi-transparent surface fill."
+        />
+        <ComponentStory story={accordionStoryFrostedBackground} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Indent panel content"
+          description="Use indent=true with alignMarker='start' to align panel body copy with the trigger label — past the expand/collapse icon."
+        />
+        <ComponentStory story={accordionStoryIndent} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Summary and summary-after slots"
+          description="Use the summary slot for free-form trigger content. The summary-after slot renders action buttons outside the trigger button so they receive independent focus and click events."
+        />
+        <ComponentStory story={accordionStorySummarySlots} />
       </section>
       <section>
         <ExamplesSectionHeader

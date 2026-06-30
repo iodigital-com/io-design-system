@@ -15,8 +15,9 @@ export type IoAccordionSize = 'sm' | 'md' | 'lg';
  * - `transparent`: no background fill (default)
  * - `surface`: uses `var(--io-bg-surface)` — subtle fill for card/nested layouts
  * - `canvas`: uses `var(--io-bg-page)` — page-level fill
+ * - `frosted`: uses `backdrop-filter: blur` — for accordions placed over image/video backdrops
  */
-export type IoAccordionBackground = 'transparent' | 'surface' | 'canvas';
+export type IoAccordionBackground = 'transparent' | 'surface' | 'canvas' | 'frosted';
 
 /** Position of the expand/collapse marker icon relative to the trigger title */
 export type IoAccordionAlignMarker = 'start' | 'end';

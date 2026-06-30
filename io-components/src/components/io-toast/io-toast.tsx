@@ -128,6 +128,9 @@ export class IoToast {
             variant={getToastItemVariant(msg)}
             actionLabel={msg.actionLabel}
             actionHref={msg.actionHref}
+            actions={msg.actions}
+            showProgress={msg.showProgress}
+            duration={msg.duration ?? 6000}
             onDismiss={() => this.handleItemDismiss(msg.id)}
           />
         ))}

@@ -162,10 +162,15 @@ describe('io-banner — ARIA role mapping', () => {
 });
 
 describe('io-banner — slot content detection', () => {
-  function getSlotchangeHandler(c: IoBanner): ((e: Event) => void) | undefined {
+  // Find the default slot (no name attribute)
+  function getDefaultSlotchangeHandler(c: IoBanner): ((e: Event) => void) | undefined {
     hMock.mockClear();
     (c as any).render();
-    const slotCall = hMock.mock.calls.find(([tag]: [unknown]) => tag === 'slot');
+    const slotCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'slot' &&
+        (!attrs || typeof attrs !== 'object' || !('name' in (attrs as Record<string, unknown>))),
+    );
     return (slotCall?.[1] as Record<string, unknown>)?.['onSlotchange'] as ((e: Event) => void) | undefined;
   }
 
@@ -177,7 +182,7 @@ describe('io-banner — slot content detection', () => {
   it('sets hasContent true when slot has assigned nodes', () => {
     const c = new IoBanner();
     c.open = true;
-    const handler = getSlotchangeHandler(c);
+    const handler = getDefaultSlotchangeHandler(c);
     const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([document.createTextNode('text')]) };
     handler?.({ target: fakeSlot } as unknown as Event);
     expect((c as any).hasContent).toBe(true);
@@ -187,7 +192,7 @@ describe('io-banner — slot content detection', () => {
     const c = new IoBanner();
     c.open = true;
     (c as any).hasContent = true;
-    const handler = getSlotchangeHandler(c);
+    const handler = getDefaultSlotchangeHandler(c);
     const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([]) };
     handler?.({ target: fakeSlot } as unknown as Event);
     expect((c as any).hasContent).toBe(false);
@@ -198,7 +203,7 @@ describe('io-banner — slot content detection', () => {
     c.open = false;
     // The slot is inside the always-mounted banner div, so slotchange handler is always present
     // #1076: the slot is always in the DOM so the live region is pre-established
-    const handler = getSlotchangeHandler(c);
+    const handler = getDefaultSlotchangeHandler(c);
     expect(handler).toBeDefined();
   });
 });
@@ -239,37 +244,36 @@ describe('io-banner — action prop (#842)', () => {
     expect(c.actionLoading).toBe(false);
   });
 
-  it('renders action button when actionLabel set and open=true', () => {
+  it('renders io-button action when actionLabel set and open=true', () => {
     const c = new IoBanner();
     c.open = true;
     c.actionLabel = 'Learn more';
     hMock.mockClear();
     (c as any).render();
+    // Action is now rendered as <io-button variant="ghost">
     const actionBtn = hMock.mock.calls.find(
       ([tag, attrs]: [unknown, unknown]) =>
-        tag === 'button' &&
+        tag === 'io-button' &&
         typeof attrs === 'object' &&
         attrs !== null &&
-        (attrs as Record<string, unknown>)['class'] &&
-        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
-        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+        (attrs as Record<string, unknown>)['variant'] === 'ghost' &&
+        (attrs as Record<string, unknown>)['loading'] === false,
     );
     expect(actionBtn).toBeDefined();
   });
 
-  it('does not render action button when actionLabel undefined', () => {
+  it('does not render io-button action when actionLabel undefined', () => {
     const c = new IoBanner();
     c.open = true;
     hMock.mockClear();
     (c as any).render();
+    // With no actionLabel, no io-button with loading prop should appear
     const actionBtn = hMock.mock.calls.find(
       ([tag, attrs]: [unknown, unknown]) =>
-        tag === 'button' &&
+        tag === 'io-button' &&
         typeof attrs === 'object' &&
         attrs !== null &&
-        (attrs as Record<string, unknown>)['class'] &&
-        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
-        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+        'loading' in (attrs as Record<string, unknown>),
     );
     expect(actionBtn).toBeUndefined();
   });
@@ -292,7 +296,7 @@ describe('io-banner — action prop (#842)', () => {
     expect(emitFn).not.toHaveBeenCalled();
   });
 
-  it('action button has aria-busy when actionLoading=true', () => {
+  it('action io-button has loading=true when actionLoading=true', () => {
     const c = new IoBanner();
     c.open = true;
     c.actionLabel = 'Learn more';
@@ -301,32 +305,20 @@ describe('io-banner — action prop (#842)', () => {
     (c as any).render();
     const actionBtn = hMock.mock.calls.find(
       ([tag, attrs]: [unknown, unknown]) =>
-        tag === 'button' &&
+        tag === 'io-button' &&
         typeof attrs === 'object' &&
         attrs !== null &&
-        (attrs as Record<string, unknown>)['class'] &&
-        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
-        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
+        (attrs as Record<string, unknown>)['loading'] === true,
     );
-    expect((actionBtn?.[1] as any)?.['aria-busy']).toBe('true');
+    expect((actionBtn?.[1] as any)?.['loading']).toBe(true);
   });
 
-  it('action button is disabled when actionLoading=true', () => {
+  it('action io-button suppresses action via handleAction guard when loading', () => {
     const c = new IoBanner();
-    c.open = true;
-    c.actionLabel = 'Learn more';
+    const emitFn = vi.fn();
+    (c as any).action = { emit: emitFn };
     c.actionLoading = true;
-    hMock.mockClear();
-    (c as any).render();
-    const actionBtn = hMock.mock.calls.find(
-      ([tag, attrs]: [unknown, unknown]) =>
-        tag === 'button' &&
-        typeof attrs === 'object' &&
-        attrs !== null &&
-        (attrs as Record<string, unknown>)['class'] &&
-        typeof (attrs as Record<string, unknown>)['class'] === 'object' &&
-        ((attrs as Record<string, unknown>)['class'] as Record<string, unknown>)['banner__action'],
-    );
-    expect((actionBtn?.[1] as any)?.['disabled']).toBe(true);
+    (c as any).handleAction();
+    expect(emitFn).not.toHaveBeenCalled();
   });
 });

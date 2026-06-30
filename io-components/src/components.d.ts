@@ -11,6 +11,7 @@ import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-
 import { IoIconName } from "./utils/icons";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoIconName } from "./utils/icons";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
@@ -50,7 +51,7 @@ import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types
 import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
-import { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
+import { IoToastAction, IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
@@ -59,6 +60,7 @@ export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-
 export { IoIconName } from "./utils/icons";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoIconName } from "./utils/icons";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
@@ -98,7 +100,7 @@ export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types
 export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
-export { IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
+export { IoToastAction, IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
 export { IoTooltipPlacement } from "./components/io-tooltip/types";
 export { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export namespace Components {
@@ -272,13 +274,17 @@ export namespace Components {
      * <io-banner variant="success" open dismissible>
      *   Your changes have been saved.
      * </io-banner>
+     * <io-banner variant="info" open>
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
+     * </io-banner>
      */
     interface IoBanner {
         /**
           * Icon name for the action button (only rendered when actionLabel is set)
           * @default 'arrow-right'
          */
-        "actionIcon": IoIconName;
+        "actionIcon": string;
         /**
           * Label for an optional action button rendered before the dismiss button
          */
@@ -1117,13 +1123,17 @@ export namespace Components {
      * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
      *   Your trip is ready to be logged.
      * </io-inline-notification>
+     * <io-inline-notification variant="info">
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
         /**
           * Icon rendered on the action button. Defaults to 'arrow-right'.
           * @default 'arrow-right'
          */
-        "actionIcon": IoIconName;
+        "actionIcon": string;
         /**
           * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
          */
@@ -3512,18 +3522,34 @@ export namespace Components {
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, optional CTA, and a
+     * Displays a single notification row with icon, text, optional CTA(s), and a
      * dismiss button.
      */
     interface IoToastItem {
         /**
           * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * @deprecated Use `actions` for richer action support.
          */
         "actionHref"?: string;
         /**
           * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
+          * @deprecated Use `actions` for richer action support.
          */
         "actionLabel"?: string;
+        /**
+          * Array of up to 2 action items to render beside the toast text. Supersedes `actionLabel`/`actionHref` when provided. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
+         */
+        "actions"?: IoToastAction[];
+        /**
+          * Duration in milliseconds passed from the parent toast manager. Drives the progress bar animation duration.
+          * @default 6000
+         */
+        "duration"?: number;
+        /**
+          * When true, renders a progress bar that animates over `duration` ms to indicate the auto-dismiss countdown. Has no effect when the toast is persistent.
+          * @default false
+         */
+        "showProgress"?: boolean;
         /**
           * Notification text
           * @default ''
@@ -3839,6 +3865,10 @@ declare global {
      * </io-banner>
      * <io-banner variant="success" open dismissible>
      *   Your changes have been saved.
+     * </io-banner>
+     * <io-banner variant="info" open>
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
      * </io-banner>
      */
     interface HTMLIoBannerElement extends Components.IoBanner, HTMLStencilElement {
@@ -4216,6 +4246,10 @@ declare global {
      * </io-inline-notification>
      * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
      *   Your trip is ready to be logged.
+     * </io-inline-notification>
+     * <io-inline-notification variant="info">
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
      * </io-inline-notification>
      */
     interface HTMLIoInlineNotificationElement extends Components.IoInlineNotification, HTMLStencilElement {
@@ -5363,13 +5397,13 @@ declare global {
     };
     interface HTMLIoToastItemElementEventMap {
         "dismiss": void;
-        "action": void;
+        "action": number;
     }
     /**
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, optional CTA, and a
+     * Displays a single notification row with icon, text, optional CTA(s), and a
      * dismiss button.
      */
     interface HTMLIoToastItemElement extends Components.IoToastItem, HTMLStencilElement {
@@ -5662,13 +5696,17 @@ declare namespace LocalJSX {
      * <io-banner variant="success" open dismissible>
      *   Your changes have been saved.
      * </io-banner>
+     * <io-banner variant="info" open>
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
+     * </io-banner>
      */
     interface IoBanner {
         /**
           * Icon name for the action button (only rendered when actionLabel is set)
           * @default 'arrow-right'
          */
-        "actionIcon"?: IoIconName;
+        "actionIcon"?: string;
         /**
           * Label for an optional action button rendered before the dismiss button
          */
@@ -6519,13 +6557,17 @@ declare namespace LocalJSX {
      * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
      *   Your trip is ready to be logged.
      * </io-inline-notification>
+     * <io-inline-notification variant="info">
+     *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+     *   Extended details below.
+     * </io-inline-notification>
      */
     interface IoInlineNotification {
         /**
           * Icon rendered on the action button. Defaults to 'arrow-right'.
           * @default 'arrow-right'
          */
-        "actionIcon"?: IoIconName;
+        "actionIcon"?: string;
         /**
           * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
          */
@@ -9033,26 +9075,42 @@ declare namespace LocalJSX {
      * io-toast-item
      * ==============
      * Internal component rendered by <io-toast>. Not intended for direct use.
-     * Displays a single notification row with icon, text, optional CTA, and a
+     * Displays a single notification row with icon, text, optional CTA(s), and a
      * dismiss button.
      */
     interface IoToastItem {
         /**
           * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
+          * @deprecated Use `actions` for richer action support.
          */
         "actionHref"?: string;
         /**
           * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
+          * @deprecated Use `actions` for richer action support.
          */
         "actionLabel"?: string;
         /**
-          * Fires when the action button is clicked (only when `actionLabel` is set and `actionHref` is not). Bubbles and is composed so consumers can listen on `<io-toast>` or any ancestor — no need to reach into `shadowRoot`.
+          * Array of up to 2 action items to render beside the toast text. Supersedes `actionLabel`/`actionHref` when provided. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
          */
-        "onAction"?: (event: IoToastItemCustomEvent<void>) => void;
+        "actions"?: IoToastAction[];
+        /**
+          * Duration in milliseconds passed from the parent toast manager. Drives the progress bar animation duration.
+          * @default 6000
+         */
+        "duration"?: number;
+        /**
+          * Fires when an action button is clicked (only for button actions without an href). Bubbles and is composed so consumers can listen on `<io-toast>` or any ancestor. The event detail carries the zero-based index of the action that was clicked.
+         */
+        "onAction"?: (event: IoToastItemCustomEvent<number>) => void;
         /**
           * Fires when the user dismisses the toast
          */
         "onDismiss"?: (event: IoToastItemCustomEvent<void>) => void;
+        /**
+          * When true, renders a progress bar that animates over `duration` ms to indicate the auto-dismiss countdown. Has no effect when the toast is persistent.
+          * @default false
+         */
+        "showProgress"?: boolean;
         /**
           * Notification text
           * @default ''
@@ -9172,7 +9230,7 @@ declare namespace LocalJSX {
         "position": IoBannerPosition;
         "dismissLabel": string;
         "actionLabel": string;
-        "actionIcon": IoIconName;
+        "actionIcon": string;
         "actionLoading": boolean;
     }
     interface IoBreadcrumbAttributes {
@@ -9317,7 +9375,7 @@ declare namespace LocalJSX {
         "dismissible": boolean;
         "dismissLabel": string;
         "actionLabel": string;
-        "actionIcon": IoIconName;
+        "actionIcon": string;
         "label": string;
         "actionLoading": boolean;
     }
@@ -9741,6 +9799,8 @@ declare namespace LocalJSX {
         "variant": IoToastVariant;
         "actionLabel": string;
         "actionHref": string;
+        "showProgress": boolean;
+        "duration": number;
     }
     interface IoTooltipAttributes {
         "content": string;
@@ -9869,6 +9929,10 @@ declare module "@stencil/core" {
              * </io-banner>
              * <io-banner variant="success" open dismissible>
              *   Your changes have been saved.
+             * </io-banner>
+             * <io-banner variant="info" open>
+             *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+             *   Extended details below.
              * </io-banner>
              */
             "io-banner": LocalJSX.IntrinsicElements["io-banner"] & JSXBase.HTMLAttributes<HTMLIoBannerElement>;
@@ -10084,6 +10148,10 @@ declare module "@stencil/core" {
              * </io-inline-notification>
              * <io-inline-notification variant="info" action-label="Log Trip" action-icon="arrow-right">
              *   Your trip is ready to be logged.
+             * </io-inline-notification>
+             * <io-inline-notification variant="info">
+             *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+             *   Extended details below.
              * </io-inline-notification>
              */
             "io-inline-notification": LocalJSX.IntrinsicElements["io-inline-notification"] & JSXBase.HTMLAttributes<HTMLIoInlineNotificationElement>;
@@ -10668,7 +10736,7 @@ declare module "@stencil/core" {
              * io-toast-item
              * ==============
              * Internal component rendered by <io-toast>. Not intended for direct use.
-             * Displays a single notification row with icon, text, optional CTA, and a
+             * Displays a single notification row with icon, text, optional CTA(s), and a
              * dismiss button.
              */
             "io-toast-item": LocalJSX.IntrinsicElements["io-toast-item"] & JSXBase.HTMLAttributes<HTMLIoToastItemElement>;

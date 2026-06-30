@@ -475,7 +475,7 @@ export class IoMultiSelect {
   private selectAllVisible() {
     const candidates = this.filteredOptions.filter(o => !o.disabled);
     const current = this.value ?? [];
-    let next = [...current];
+    const next = [...current];
     for (const opt of candidates) {
       if (next.includes(opt.value)) continue;
       if (this.maxSelections !== undefined && next.length >= this.maxSelections) {

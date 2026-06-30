@@ -2504,5 +2504,29 @@
     "classification": "public-api",
     "component": "io-input-date",
     "description": "Background color of the calendar trigger button on hover. Defaults to --io-color-neutral-100."
+  },
+  {
+    "cssVar": "--io-table-empty-min-height",
+    "classification": "public-api",
+    "component": "io-table",
+    "description": "Minimum height of the empty-state region rendered when io-table has no body rows. Defaults to 120px. Override to control the visual size of the empty state."
+  },
+  {
+    "cssVar": "--io-table-loading-bg",
+    "classification": "public-api",
+    "component": "io-table",
+    "description": "Background colour of the loading overlay that covers the table body when the loading prop is true. Defaults to a semi-transparent page background. Override to match your table's surface colour."
+  },
+  {
+    "cssVar": "--io-table-row-selected-bg",
+    "classification": "public-api",
+    "component": "io-table",
+    "description": "Background colour of a selected body row in io-table-body-row. Defaults to --io-color-primary-muted. Override to change the selection highlight colour."
+  },
+  {
+    "cssVar": "--io-scroller-indicator-sticky-offset",
+    "classification": "public-api",
+    "component": "io-scroller",
+    "description": "Top offset used when sticky=true to keep the scroll indicator buttons visible during long scrolls. Defaults to 0. Override when the scroller is used inside a layout with a sticky header."
   }
 ]

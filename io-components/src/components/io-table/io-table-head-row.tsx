@@ -1,6 +1,6 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
-import type { IoTableHeadRowSelectAllDetail } from './types';
+import type { IoTableHeadRowSelectAllDetail, IoTableSelectionState } from './types';
 
 /**
  * io-table-head-row
@@ -9,7 +9,7 @@ import type { IoTableHeadRowSelectAllDetail } from './types';
  * Uses shadow: false so the table formatting context is preserved.
  *
  * @example
- * <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+ * <io-table-head-row selectable selection-state="some">
  *   <io-table-head-cell>Name</io-table-head-cell>
  * </io-table-head-row>
  */
@@ -23,20 +23,47 @@ export class IoTableHeadRow {
   /** Renders the select-all checkbox header cell. */
   @Prop() selectable: boolean = false;
 
-  /** Controlled checked state of the select-all checkbox. */
+  /**
+   * Tri-state selection state of the select-all checkbox.
+   * `'none'` — no rows selected (unchecked).
+   * `'some'` — some rows selected (indeterminate).
+   * `'all'`  — all rows selected (checked).
+   *
+   * When provided, this prop drives both `checked` and `indeterminate`.
+   * If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
+   */
+  @Prop() selectionState: IoTableSelectionState | undefined;
+
+  /**
+   * Controlled checked state of the select-all checkbox.
+   * @deprecated Prefer `selectionState` for clearer tri-state semantics.
+   */
   @Prop() selectAllChecked: boolean = false;
 
-  /** Renders the checkbox in an indeterminate state when true and selectAllChecked is false. */
+  /**
+   * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
+   * @deprecated Prefer `selectionState` for clearer tri-state semantics.
+   */
   @Prop() selectAllIndeterminate: boolean = false;
 
   /** Emitted when the select-all checkbox changes. */
   @Event() selectAll!: EventEmitter<IoTableHeadRowSelectAllDetail>;
 
+  private get isChecked(): boolean {
+    if (this.selectionState !== undefined) return this.selectionState === 'all';
+    return this.selectAllChecked;
+  }
+
+  private get isIndeterminate(): boolean {
+    if (this.selectionState !== undefined) return this.selectionState === 'some';
+    return this.selectAllIndeterminate && !this.selectAllChecked;
+  }
+
   componentDidRender() {
     if (!this.selectable) return;
     const cb = this.el.querySelector<HTMLInputElement>('.th--checkbox input[type="checkbox"]');
     if (cb) {
-      cb.indeterminate = this.selectAllIndeterminate && !this.selectAllChecked;
+      cb.indeterminate = this.isIndeterminate;
     }
   }
 
@@ -46,7 +73,7 @@ export class IoTableHeadRow {
   };
 
   render() {
-    const { selectable, selectAllChecked } = this;
+    const { selectable } = this;
 
     return (
       <Host>
@@ -56,7 +83,7 @@ export class IoTableHeadRow {
               <input
                 type="checkbox"
                 aria-label="Select all rows"
-                checked={selectAllChecked}
+                checked={this.isChecked}
                 onChange={this.handleSelectAll}
               />
             </th>

@@ -979,6 +979,25 @@ io-table-head-cell th {
   white-space: nowrap;
 }
 
+/* multiline — allows header text to wrap instead of truncating */
+io-table-head-cell th.th--multiline {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* sr-only — visually hides slot content but preserves it for screen readers */
+io-table-head-cell .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ── Sticky header ─────────────────────────────────────────── */
 
 io-table[sticky] io-table-head-cell th {

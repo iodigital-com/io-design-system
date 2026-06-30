@@ -244,4 +244,100 @@ describe('io-scroller render() — scroll indicator buttons', () => {
     expect(prevBtn).toBeDefined();
     expect(nextBtn).toBeDefined();
   });
+
+  it('adds scroller__indicator--sticky class to prev button when sticky=true', () => {
+    const c = makeComponent({ sticky: true });
+    (c as any).atStart = false;
+    const calls = renderCalls(c);
+
+    const prevBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--prev'),
+    );
+    expect(prevBtn).toBeDefined();
+    expect(String(prevBtn![1].class)).toContain('scroller__indicator--sticky');
+  });
+
+  it('adds scroller__indicator--sticky class to next button when sticky=true', () => {
+    const c = makeComponent({ sticky: true });
+    (c as any).atEnd = false;
+    const calls = renderCalls(c);
+
+    const nextBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--next'),
+    );
+    expect(nextBtn).toBeDefined();
+    expect(String(nextBtn![1].class)).toContain('scroller__indicator--sticky');
+  });
+
+  it('does not add sticky class when sticky=false', () => {
+    const c = makeComponent({ sticky: false });
+    (c as any).atStart = false;
+    const calls = renderCalls(c);
+
+    const prevBtn = calls.find(
+      ([tag, attrs]) =>
+        tag === 'button' && String(attrs?.class).includes('indicator--prev'),
+    );
+    expect(prevBtn).toBeDefined();
+    expect(String(prevBtn![1].class)).not.toContain('scroller__indicator--sticky');
+  });
+});
+
+// ── ARIA pass-through ─────────────────────────────────────────────────────────
+
+describe('io-scroller render() — ARIA pass-through', () => {
+  it('uses scrollRole as role on container when provided', () => {
+    const c = makeComponent({ scrollRole: 'tablist' });
+    const calls = renderCalls(c);
+
+    const containerDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(containerDiv).toBeDefined();
+  });
+
+  it('defaults to role="region" when scrollRole is not provided', () => {
+    const c = makeComponent();
+    const calls = renderCalls(c);
+
+    const containerDiv = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'region',
+    );
+    expect(containerDiv).toBeDefined();
+  });
+
+  it('uses scrollAriaLabel on container when provided', () => {
+    const c = makeComponent({ scrollAriaLabel: 'Navigation tabs' });
+    const calls = renderCalls(c);
+
+    const containerDiv = calls.find(
+      ([tag, attrs]) =>
+        tag === 'div' && (attrs as Record<string, unknown>)?.['aria-label'] === 'Navigation tabs',
+    );
+    expect(containerDiv).toBeDefined();
+  });
+
+  it('uses scrollAriaOrientation on container when provided', () => {
+    const c = makeComponent({ scrollAriaOrientation: 'vertical' });
+    const calls = renderCalls(c);
+
+    const containerDiv = calls.find(
+      ([tag, attrs]) =>
+        tag === 'div' && (attrs as Record<string, unknown>)?.['aria-orientation'] === 'vertical',
+    );
+    expect(containerDiv).toBeDefined();
+  });
+
+  it('derives aria-orientation from orientation prop when scrollAriaOrientation is not provided', () => {
+    const c = makeComponent({ orientation: 'horizontal' });
+    const calls = renderCalls(c);
+
+    const containerDiv = calls.find(
+      ([tag, attrs]) =>
+        tag === 'div' && (attrs as Record<string, unknown>)?.['aria-orientation'] === 'horizontal',
+    );
+    expect(containerDiv).toBeDefined();
+  });
 });

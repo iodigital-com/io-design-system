@@ -15,6 +15,15 @@ import { getSrOnlyStyles } from '../../utils/sr-only';
 
 export function getTableStyles(): string {
   return `
+    /*
+     * Public CSS API tokens (documented here for governance — consumed in
+     * src/global/app.css since sub-components use shadow: false):
+     *
+     *   --io-table-row-selected-bg    — selected body row background
+     *   --io-table-empty-min-height   — min-height of empty-state region
+     *   --io-table-loading-bg         — loading overlay background
+     */
+
     :host {
       display: block;
       font-family: var(--io-font-primary);
@@ -23,6 +32,7 @@ export function getTableStyles(): string {
     .table-wrapper {
       overflow-x: auto;
       width: 100%;
+      position: relative;
     }
 
     table {
@@ -49,6 +59,38 @@ export function getTableStyles(): string {
 
     .sr-only {
       ${getSrOnlyStyles()}
+    }
+
+    /* ── Empty state ─────────────────────────────────────── */
+
+    /* Rendered in place of the tbody when no io-table-body-row children exist.
+       --io-table-empty-min-height is a public API token so consumers can
+       control the minimum height of the empty state region. */
+
+    .table-empty-state {
+      min-height: var(--io-table-empty-min-height, 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--io-text-secondary);
+      font-size: var(--io-font-size-sm, 14px);
+      padding: var(--io-space-6, 24px) var(--io-space-4, 16px);
+    }
+
+    /* ── Loading overlay ─────────────────────────────────── */
+
+    /* Absolutely-positioned overlay so the table layout does not shift.
+       --io-table-loading-bg is a public API token for overlay background.
+       aria-busy="true" is applied to the table-wrapper for AT. */
+
+    .table-loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--io-table-loading-bg, color-mix(in srgb, var(--io-bg-page) 80%, transparent));
     }
   `;
 }

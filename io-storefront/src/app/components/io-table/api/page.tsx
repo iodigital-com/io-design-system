@@ -68,6 +68,40 @@ export default function IoTableApiPage() {
               <InlineCode key="d">&apos;auto&apos;</InlineCode>,
               "CSS table-layout algorithm. 'auto' sizes columns by content width; 'fixed' distributes column width equally and ignores content. Use 'fixed' for performance on large tables or when you need equal-width columns.",
             ],
+            [
+              <span key="n"><InlineCode>loading</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              "When true, overlays the table body with the 'loading' named slot content and applies aria-busy='true' to the scroll wrapper. The table layout does not shift — the overlay is absolutely positioned. Use with a spinner or skeleton in the loading slot.",
+            ],
+          ]}
+        />
+      </section>
+
+      {/* ── io-table Slots ───────────────────────────────────────── */}
+      <section id="io-table-slots" className="space-y-4">
+        <SectionHeader
+          title="io-table — Slots"
+          description="Named slots for empty-state and loading overlay content."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '180px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">(default)</InlineCode>,
+              'Slot for io-table-head, io-table-body, and other table structure elements.',
+            ],
+            [
+              <InlineCode key="n">empty</InlineCode>,
+              'Rendered in the table body region when io-table-body has no io-table-body-row children. Detected automatically via slotchange. Use for zero-state messages, illustrations, or CTAs.',
+            ],
+            [
+              <InlineCode key="n">loading</InlineCode>,
+              'Rendered as an absolutely-positioned overlay above the table body when the loading prop is true. Use for spinners, skeleton rows, or any loading indicator. aria-busy="true" is applied automatically to the scroll wrapper.',
+            ],
           ]}
         />
       </section>
@@ -96,13 +130,25 @@ export default function IoTableApiPage() {
               <InlineCode key="n">sortDirection</InlineCode>,
               <InlineCode key="t">&apos;ascending&apos; | &apos;descending&apos; | &apos;none&apos;</InlineCode>,
               <InlineCode key="d">&apos;none&apos;</InlineCode>,
-              'Consumer-controlled sort direction for this column. Update in response to the sort event.',
+              'Consumer-controlled sort direction for this column. Update in response to the sort event. See the Accessibility tab for details on the tri-state design.',
             ],
             [
               <InlineCode key="n">sortKey</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Identifier passed back in the sort event detail. Use it to know which column was sorted.',
+              'Identifier passed back in the sort event detail. Use it to know which column was sorted. Prefer a field name like \'name\' or \'email\' over a numeric index.',
+            ],
+            [
+              <InlineCode key="n">hideLabel</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Visually hides the column header label using a .sr-only wrapper while keeping it accessible to screen readers. Use for columns where the visual context (e.g. a select-all checkbox) makes the label redundant visually but an accessible name is still required.',
+            ],
+            [
+              <InlineCode key="n">multiline</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Allows the column header text to wrap onto multiple lines. By default, headers truncate with an ellipsis. Set to true for long column headings in fixed-layout tables.',
             ],
           ]}
         />
@@ -117,8 +163,8 @@ export default function IoTableApiPage() {
         <ApiTable
           columns={[
             { label: 'Name', width: '220px' },
-            { label: 'Type', width: '200px' },
-            { label: 'Default', width: '100px' },
+            { label: 'Type', width: '240px' },
+            { label: 'Default', width: '120px' },
             { label: 'Description' },
           ]}
           rows={[
@@ -129,16 +175,22 @@ export default function IoTableApiPage() {
               'Renders a select-all checkbox <th> before the slotted head cells.',
             ],
             [
+              <InlineCode key="n">selectionState</InlineCode>,
+              <InlineCode key="t">&apos;none&apos; | &apos;some&apos; | &apos;all&apos;</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'Preferred tri-state API. none = checkbox unchecked, some = indeterminate, all = checked. When set, this overrides selectAllChecked and selectAllIndeterminate.',
+            ],
+            [
               <InlineCode key="n">selectAllChecked</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Controlled checked state of the select-all checkbox.',
+              'Controlled checked state of the select-all checkbox. Superseded by selectionState when that prop is set.',
             ],
             [
               <InlineCode key="n">selectAllIndeterminate</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Renders the checkbox in an indeterminate state when true and selectAllChecked is false. Communicates partial selection to screen readers via aria-checked="mixed".',
+              'Renders the checkbox in an indeterminate state when true and selectAllChecked is false. Communicates partial selection to screen readers via aria-checked="mixed". Superseded by selectionState when that prop is set.',
             ],
           ]}
         />
@@ -320,7 +372,15 @@ bodyRows.forEach((row, i) => {
           rows={[
             [
               <InlineCode key="n">--io-table-row-selected-bg</InlineCode>,
-              'Background colour of a selected body row. Defaults to --io-color-primary-muted (light) / --io-color-dark-accent-bg (dark).',
+              'Background colour of a selected body row. Defaults to --io-color-primary-muted.',
+            ],
+            [
+              <InlineCode key="n">--io-table-empty-min-height</InlineCode>,
+              'Minimum height of the empty-state region when no rows are present. Defaults to 120px. Override to control the visual size of the zero-state area.',
+            ],
+            [
+              <InlineCode key="n">--io-table-loading-bg</InlineCode>,
+              'Background colour of the loading overlay. Defaults to a semi-transparent page background (color-mix). Override to match your table\'s surface colour.',
             ],
             [
               <InlineCode key="n">--io-border</InlineCode>,

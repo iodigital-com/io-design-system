@@ -21,6 +21,74 @@ describe('io-table-head-row — default props', () => {
   it('has selectAllIndeterminate false by default', () => {
     expect(component.selectAllIndeterminate).toBe(false);
   });
+
+  it('has selectionState undefined by default', () => {
+    expect(component.selectionState).toBeUndefined();
+  });
+});
+
+describe('io-table-head-row — selectionState prop', () => {
+  let component: IoTableHeadRow;
+
+  beforeEach(() => {
+    component = new IoTableHeadRow();
+    (component as any).selectAll = { emit: vi.fn() };
+  });
+
+  it('isChecked returns true when selectionState is all', () => {
+    component.selectionState = 'all';
+    expect((component as any).isChecked).toBe(true);
+  });
+
+  it('isChecked returns false when selectionState is some', () => {
+    component.selectionState = 'some';
+    expect((component as any).isChecked).toBe(false);
+  });
+
+  it('isChecked returns false when selectionState is none', () => {
+    component.selectionState = 'none';
+    expect((component as any).isChecked).toBe(false);
+  });
+
+  it('isIndeterminate returns true when selectionState is some', () => {
+    component.selectionState = 'some';
+    expect((component as any).isIndeterminate).toBe(true);
+  });
+
+  it('isIndeterminate returns false when selectionState is all', () => {
+    component.selectionState = 'all';
+    expect((component as any).isIndeterminate).toBe(false);
+  });
+
+  it('isIndeterminate returns false when selectionState is none', () => {
+    component.selectionState = 'none';
+    expect((component as any).isIndeterminate).toBe(false);
+  });
+
+  it('isChecked falls back to selectAllChecked when selectionState is undefined', () => {
+    component.selectionState = undefined;
+    component.selectAllChecked = true;
+    expect((component as any).isChecked).toBe(true);
+  });
+
+  it('isIndeterminate falls back to selectAllIndeterminate when selectionState is undefined', () => {
+    component.selectionState = undefined;
+    component.selectAllIndeterminate = true;
+    component.selectAllChecked = false;
+    expect((component as any).isIndeterminate).toBe(true);
+  });
+
+  it('renders with selectionState=some without throwing', () => {
+    component.selectable = true;
+    component.selectionState = 'some';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with selectionState=all without throwing', () => {
+    component.selectable = true;
+    component.selectionState = 'all';
+    expect(() => component.render()).not.toThrow();
+  });
 });
 
 describe('io-table-head-row — render', () => {

@@ -11,6 +11,8 @@ import type { IoTableSortDirection, IoTableSortDetail } from './types';
  *
  * @example
  * <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+ * @example
+ * <io-table-head-cell hide-label>Select</io-table-head-cell>
  */
 @Component({
   tag: 'io-table-head-cell',
@@ -30,6 +32,20 @@ export class IoTableHeadCell {
 
   /** Identifier passed back in the `sort` event detail. */
   @Prop() sortKey: string = '';
+
+  /**
+   * Visually hides the column label while keeping it accessible to screen readers.
+   * Use for columns where the visual context (e.g. a checkbox or icon) makes
+   * the label redundant, but an accessible name is still required by WCAG.
+   */
+  @Prop() hideLabel: boolean = false;
+
+  /**
+   * Allows the column header text to wrap onto multiple lines.
+   * By default, headers truncate with an ellipsis (`white-space: nowrap`).
+   * Set to `true` to remove the truncation and allow natural line wrapping.
+   */
+  @Prop() multiline: boolean = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -51,7 +67,7 @@ export class IoTableHeadCell {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { sortable, sortDirection } = this;
+    const { sortable, sortDirection, hideLabel, multiline } = this;
 
     // Only emit aria-sort when the column is actively sorted (not for unsorted sortable columns)
     // ARIA spec: aria-sort should be omitted entirely when sortDirection === 'none'
@@ -59,15 +75,14 @@ export class IoTableHeadCell {
       ? sortDirection
       : undefined;
 
-    const thClass = sortable
-      ? [
-          'th--sortable',
-          sortDirection !== 'none' ? 'th--sort-active' : '',
-          sortDirection === 'descending' ? 'th--sort-desc' : '',
-        ]
-          .filter(Boolean)
-          .join(' ')
-      : undefined;
+    const thClass = [
+      sortable ? 'th--sortable' : '',
+      sortable && sortDirection !== 'none' ? 'th--sort-active' : '',
+      sortable && sortDirection === 'descending' ? 'th--sort-desc' : '',
+      multiline ? 'th--multiline' : '',
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
     const sortIcon = (
       <span class="sort-icon" aria-hidden="true">
@@ -77,6 +92,12 @@ export class IoTableHeadCell {
         </svg>
       </span>
     );
+
+    // hideLabel wraps slot content in a .sr-only span so it is visually hidden
+    // but still announced by screen readers (provides accessible name to the <th>).
+    const slotContent = hideLabel
+      ? <span class="sr-only"><slot /></span>
+      : <slot />;
 
     return (
       <Host>
@@ -96,11 +117,11 @@ export class IoTableHeadCell {
               class="th__sort-btn"
               onClick={this.handleSort}
             >
-              <slot />
+              {slotContent}
               {sortIcon}
             </button>
           ) : (
-            <slot />
+            slotContent
           )}
         </th>
       </Host>

@@ -45,7 +45,7 @@ import { IoSheetBackground } from "./components/io-sheet/types";
 import { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
-import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
+import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 import { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
@@ -96,7 +96,7 @@ export { IoSheetBackground } from "./components/io-sheet/types";
 export { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
-export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
+export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
 export { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
@@ -2499,10 +2499,27 @@ export namespace Components {
          */
         "orientation": IoScrollerOrientation;
         /**
+          * ARIA `aria-label` pass-through for the scroll container element. When set, overrides the auto-generated label derived from the `label` prop.
+         */
+        "scrollAriaLabel": string | undefined;
+        /**
+          * ARIA `aria-orientation` pass-through for the scroll container element. Forwarded verbatim — use `"horizontal"` or `"vertical"`. When omitted, `aria-orientation` is derived from the `orientation` prop.
+         */
+        "scrollAriaOrientation": 'horizontal' | 'vertical' | undefined;
+        /**
+          * ARIA `role` pass-through for the scroll container element. When set, the role is forwarded to the inner scroll `<div>` instead of the default `"region"` role. Use this when composing io-scroller inside another component that requires a specific role (e.g. `"tablist"`).
+         */
+        "scrollRole": string | undefined;
+        /**
           * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
           * @default false
          */
         "showScrollbar": boolean;
+        /**
+          * When `true`, the scroll indicator buttons use `position: sticky` so they remain visible during long scrolls. Reflected as an attribute so CSS can target it. Use `--io-scroller-indicator-sticky-offset` to adjust the top/bottom offset when the scroller is inside a layout with a sticky header.
+          * @default false
+         */
+        "sticky": boolean;
     }
     /**
      * io-segment
@@ -3042,6 +3059,8 @@ export namespace Components {
      * Accessible data table with a declarative slot-based API.
      * Compose with io-table-head, io-table-head-row, io-table-head-cell,
      * io-table-body, io-table-body-row, and io-table-body-cell.
+     * Supports an `empty` named slot rendered when no body rows are present,
+     * and a `loading` named slot overlaid via the `loading` prop.
      * @example <io-table caption="Users" sticky size="md">
      *   <io-table-head>
      *     <io-table-head-row>
@@ -3055,6 +3074,7 @@ export namespace Components {
      *       <io-table-body-cell>Admin</io-table-body-cell>
      *     </io-table-body-row>
      *   </io-table-body>
+     *   <div slot="empty">No results found.</div>
      * </io-table>
      */
     interface IoTable {
@@ -3083,6 +3103,11 @@ export namespace Components {
           * @default 'auto'
          */
         "layout": IoTableLayout;
+        /**
+          * When `true`, overlays the table body with the `loading` slot content and applies `aria-busy="true"` to the table wrapper for assistive technology. The table layout does not shift — the loading overlay is absolutely positioned.
+          * @default false
+         */
+        "loading": boolean;
         /**
           * Size preset — controls row/cell padding density.
           * @default 'md'
@@ -3165,8 +3190,19 @@ export namespace Components {
      * When sortable, the header activates a sort cycle and emits a `sort` event.
      * Uses shadow: false so the table formatting context is preserved.
      * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     * @example <io-table-head-cell hide-label>Select</io-table-head-cell>
      */
     interface IoTableHeadCell {
+        /**
+          * Visually hides the column label while keeping it accessible to screen readers. Use for columns where the visual context (e.g. a checkbox or icon) makes the label redundant, but an accessible name is still required by WCAG.
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Allows the column header text to wrap onto multiple lines. By default, headers truncate with an ellipsis (`white-space: nowrap`). Set to `true` to remove the truncation and allow natural line wrapping.
+          * @default false
+         */
+        "multiline": boolean;
         /**
           * Current sort direction for this column. Consumer-controlled — update in response to the `sort` event.
           * @default 'none'
@@ -3188,18 +3224,20 @@ export namespace Components {
      * ==================
      * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
      * Uses shadow: false so the table formatting context is preserved.
-     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     * @example <io-table-head-row selectable selection-state="some">
      *   <io-table-head-cell>Name</io-table-head-cell>
      * </io-table-head-row>
      */
     interface IoTableHeadRow {
         /**
           * Controlled checked state of the select-all checkbox.
+          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
           * @default false
          */
         "selectAllChecked": boolean;
         /**
           * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
+          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
           * @default false
          */
         "selectAllIndeterminate": boolean;
@@ -3208,6 +3246,10 @@ export namespace Components {
           * @default false
          */
         "selectable": boolean;
+        /**
+          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).  When provided, this prop drives both `checked` and `indeterminate`. If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
+         */
+        "selectionState": IoTableSelectionState | undefined;
     }
     /**
      * io-tabs
@@ -5230,6 +5272,8 @@ declare global {
      * Accessible data table with a declarative slot-based API.
      * Compose with io-table-head, io-table-head-row, io-table-head-cell,
      * io-table-body, io-table-body-row, and io-table-body-cell.
+     * Supports an `empty` named slot rendered when no body rows are present,
+     * and a `loading` named slot overlaid via the `loading` prop.
      * @example <io-table caption="Users" sticky size="md">
      *   <io-table-head>
      *     <io-table-head-row>
@@ -5243,6 +5287,7 @@ declare global {
      *       <io-table-body-cell>Admin</io-table-body-cell>
      *     </io-table-body-row>
      *   </io-table-body>
+     *   <div slot="empty">No results found.</div>
      * </io-table>
      */
     interface HTMLIoTableElement extends Components.IoTable, HTMLStencilElement {
@@ -5338,6 +5383,7 @@ declare global {
      * When sortable, the header activates a sort cycle and emits a `sort` event.
      * Uses shadow: false so the table formatting context is preserved.
      * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     * @example <io-table-head-cell hide-label>Select</io-table-head-cell>
      */
     interface HTMLIoTableHeadCellElement extends Components.IoTableHeadCell, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTableHeadCellElementEventMap>(type: K, listener: (this: HTMLIoTableHeadCellElement, ev: IoTableHeadCellCustomEvent<HTMLIoTableHeadCellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5361,7 +5407,7 @@ declare global {
      * ==================
      * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
      * Uses shadow: false so the table formatting context is preserved.
-     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     * @example <io-table-head-row selectable selection-state="some">
      *   <io-table-head-cell>Name</io-table-head-cell>
      * </io-table-head-row>
      */
@@ -8228,10 +8274,27 @@ declare namespace LocalJSX {
          */
         "orientation"?: IoScrollerOrientation;
         /**
+          * ARIA `aria-label` pass-through for the scroll container element. When set, overrides the auto-generated label derived from the `label` prop.
+         */
+        "scrollAriaLabel"?: string | undefined;
+        /**
+          * ARIA `aria-orientation` pass-through for the scroll container element. Forwarded verbatim — use `"horizontal"` or `"vertical"`. When omitted, `aria-orientation` is derived from the `orientation` prop.
+         */
+        "scrollAriaOrientation"?: 'horizontal' | 'vertical' | undefined;
+        /**
+          * ARIA `role` pass-through for the scroll container element. When set, the role is forwarded to the inner scroll `<div>` instead of the default `"region"` role. Use this when composing io-scroller inside another component that requires a specific role (e.g. `"tablist"`).
+         */
+        "scrollRole"?: string | undefined;
+        /**
           * When `false` (default), the native scrollbar is hidden and fades serve as the scroll affordance. Set to `true` to show the native scrollbar alongside the fade indicators.
           * @default false
          */
         "showScrollbar"?: boolean;
+        /**
+          * When `true`, the scroll indicator buttons use `position: sticky` so they remain visible during long scrolls. Reflected as an attribute so CSS can target it. Use `--io-scroller-indicator-sticky-offset` to adjust the top/bottom offset when the scroller is inside a layout with a sticky header.
+          * @default false
+         */
+        "sticky"?: boolean;
     }
     /**
      * io-segment
@@ -8795,6 +8858,8 @@ declare namespace LocalJSX {
      * Accessible data table with a declarative slot-based API.
      * Compose with io-table-head, io-table-head-row, io-table-head-cell,
      * io-table-body, io-table-body-row, and io-table-body-cell.
+     * Supports an `empty` named slot rendered when no body rows are present,
+     * and a `loading` named slot overlaid via the `loading` prop.
      * @example <io-table caption="Users" sticky size="md">
      *   <io-table-head>
      *     <io-table-head-row>
@@ -8808,6 +8873,7 @@ declare namespace LocalJSX {
      *       <io-table-body-cell>Admin</io-table-body-cell>
      *     </io-table-body-row>
      *   </io-table-body>
+     *   <div slot="empty">No results found.</div>
      * </io-table>
      */
     interface IoTable {
@@ -8836,6 +8902,11 @@ declare namespace LocalJSX {
           * @default 'auto'
          */
         "layout"?: IoTableLayout;
+        /**
+          * When `true`, overlays the table body with the `loading` slot content and applies `aria-busy="true"` to the table wrapper for assistive technology. The table layout does not shift — the loading overlay is absolutely positioned.
+          * @default false
+         */
+        "loading"?: boolean;
         /**
           * Emitted when a sortable column header is activated. Aggregates the bubbling `sort` event from io-table-head-cell so consumers can attach a single listener on io-table instead of one per column. Non-bubbling — stops at the io-table boundary.
          */
@@ -8926,8 +8997,19 @@ declare namespace LocalJSX {
      * When sortable, the header activates a sort cycle and emits a `sort` event.
      * Uses shadow: false so the table formatting context is preserved.
      * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+     * @example <io-table-head-cell hide-label>Select</io-table-head-cell>
      */
     interface IoTableHeadCell {
+        /**
+          * Visually hides the column label while keeping it accessible to screen readers. Use for columns where the visual context (e.g. a checkbox or icon) makes the label redundant, but an accessible name is still required by WCAG.
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Allows the column header text to wrap onto multiple lines. By default, headers truncate with an ellipsis (`white-space: nowrap`). Set to `true` to remove the truncation and allow natural line wrapping.
+          * @default false
+         */
+        "multiline"?: boolean;
         /**
           * Emitted when a sortable column header is activated.
          */
@@ -8953,7 +9035,7 @@ declare namespace LocalJSX {
      * ==================
      * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
      * Uses shadow: false so the table formatting context is preserved.
-     * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+     * @example <io-table-head-row selectable selection-state="some">
      *   <io-table-head-cell>Name</io-table-head-cell>
      * </io-table-head-row>
      */
@@ -8964,11 +9046,13 @@ declare namespace LocalJSX {
         "onSelectAll"?: (event: IoTableHeadRowCustomEvent<IoTableHeadRowSelectAllDetail>) => void;
         /**
           * Controlled checked state of the select-all checkbox.
+          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
           * @default false
          */
         "selectAllChecked"?: boolean;
         /**
           * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
+          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
           * @default false
          */
         "selectAllIndeterminate"?: boolean;
@@ -8977,6 +9061,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "selectable"?: boolean;
+        /**
+          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).  When provided, this prop drives both `checked` and `indeterminate`. If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
+         */
+        "selectionState"?: IoTableSelectionState | undefined;
     }
     /**
      * io-tabs
@@ -10035,6 +10123,10 @@ declare namespace LocalJSX {
         "showScrollbar": boolean;
         "label": string | undefined;
         "compact": boolean;
+        "sticky": boolean;
+        "scrollRole": string | undefined;
+        "scrollAriaOrientation": 'horizontal' | 'vertical' | undefined;
+        "scrollAriaLabel": string | undefined;
     }
     interface IoSegmentAttributes {
         "value": string;
@@ -10131,6 +10223,7 @@ declare namespace LocalJSX {
         "bordered": boolean;
         "compact": boolean;
         "layout": IoTableLayout;
+        "loading": boolean;
     }
     interface IoTableBodyCellAttributes {
         "colspan": number | undefined;
@@ -10145,9 +10238,12 @@ declare namespace LocalJSX {
         "sortable": boolean;
         "sortDirection": IoTableSortDirection;
         "sortKey": string;
+        "hideLabel": boolean;
+        "multiline": boolean;
     }
     interface IoTableHeadRowAttributes {
         "selectable": boolean;
+        "selectionState": IoTableSelectionState | undefined;
         "selectAllChecked": boolean;
         "selectAllIndeterminate": boolean;
     }
@@ -10981,6 +11077,8 @@ declare module "@stencil/core" {
              * Accessible data table with a declarative slot-based API.
              * Compose with io-table-head, io-table-head-row, io-table-head-cell,
              * io-table-body, io-table-body-row, and io-table-body-cell.
+             * Supports an `empty` named slot rendered when no body rows are present,
+             * and a `loading` named slot overlaid via the `loading` prop.
              * @example <io-table caption="Users" sticky size="md">
              *   <io-table-head>
              *     <io-table-head-row>
@@ -10994,6 +11092,7 @@ declare module "@stencil/core" {
              *       <io-table-body-cell>Admin</io-table-body-cell>
              *     </io-table-body-row>
              *   </io-table-body>
+             *   <div slot="empty">No results found.</div>
              * </io-table>
              */
             "io-table": LocalJSX.IntrinsicElements["io-table"] & JSXBase.HTMLAttributes<HTMLIoTableElement>;
@@ -11042,6 +11141,7 @@ declare module "@stencil/core" {
              * When sortable, the header activates a sort cycle and emits a `sort` event.
              * Uses shadow: false so the table formatting context is preserved.
              * @example <io-table-head-cell sortable sort-direction="ascending" sort-key="name">Name</io-table-head-cell>
+             * @example <io-table-head-cell hide-label>Select</io-table-head-cell>
              */
             "io-table-head-cell": LocalJSX.IntrinsicElements["io-table-head-cell"] & JSXBase.HTMLAttributes<HTMLIoTableHeadCellElement>;
             /**
@@ -11049,7 +11149,7 @@ declare module "@stencil/core" {
              * ==================
              * Renders a <tr> inside io-table-head, with an optional select-all checkbox.
              * Uses shadow: false so the table formatting context is preserved.
-             * @example <io-table-head-row selectable select-all-checked={allChecked} select-all-indeterminate={someChecked}>
+             * @example <io-table-head-row selectable selection-state="some">
              *   <io-table-head-cell>Name</io-table-head-cell>
              * </io-table-head-row>
              */

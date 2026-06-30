@@ -22,6 +22,10 @@ export type IoMultiSelectState = 'none' | 'error' | 'success';
 
 /** Payload emitted via the `change` event. */
 export type IoMultiSelectChangeDetail = {
-  value: string[];
+  /**
+   * The selected values. Preserves original string | number types set on each option.
+   * Note: FormData submission always serialises values to strings.
+   */
+  value: (string | number)[];
   name: string;
 };

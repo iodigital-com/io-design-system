@@ -74,26 +74,51 @@ export function resolveMultiSelectId(name: string | undefined, fallback: string)
 // ── Slot content parsing (mirrors io-select parseSelectContent) ───────────────
 
 function readOption(el: Element): IoSelectOption | null {
-  const elAny = el as HTMLElement & { value?: unknown; label?: unknown; disabled?: unknown };
-  const value =
-    (typeof elAny.value === 'string' && elAny.value !== ''
-      ? elAny.value
-      : el.getAttribute('value')) ?? '';
-  if (value === '') return null;
+  const elAny = el as HTMLElement & {
+    value?: unknown;
+    label?: unknown;
+    disabled?: unknown;
+    icon?: unknown;
+    description?: unknown;
+  };
+
+  const rawValue = (elAny.value !== undefined && elAny.value !== '' && elAny.value !== null)
+    ? elAny.value
+    : el.getAttribute('value');
+  const value: string | number | null =
+    typeof rawValue === 'number'
+      ? rawValue
+      : (typeof rawValue === 'string' && rawValue !== '') ? rawValue : null;
+
+  if (value === null) return null;
 
   const label =
     (typeof elAny.label === 'string' && elAny.label !== ''
       ? elAny.label
       : el.getAttribute('label')) ??
     el.textContent?.trim() ??
-    value;
+    String(value);
 
   const disabled =
     typeof elAny.disabled === 'boolean'
       ? elAny.disabled
       : el.hasAttribute('disabled');
 
-  return { value, label, disabled };
+  const icon =
+    typeof elAny.icon === 'string' && elAny.icon !== '' ? elAny.icon : (el.getAttribute('icon') ?? undefined);
+
+  const description =
+    typeof elAny.description === 'string' && elAny.description !== ''
+      ? elAny.description
+      : (el.getAttribute('description') ?? undefined);
+
+  return {
+    value,
+    label,
+    disabled,
+    ...(icon ? { icon } : {}),
+    ...(description ? { description } : {}),
+  };
 }
 
 export function parseMultiSelectContent(host: HTMLElement): {
@@ -159,20 +184,21 @@ export function parseMultiSelectContent(host: HTMLElement): {
  * - >maxDisplay selected: returns "{N} selected"
  */
 export function getMultiSelectDisplayText(
-  selectedValues: string[],
+  selectedValues: (string | number)[],
   flatOptions: IoSelectOption[],
   maxDisplay: number,
 ): string | null {
   if (selectedValues.length === 0) return null;
 
   if (selectedValues.length === 1) {
-    const label = flatOptions.find(o => o.value === selectedValues[0])?.label ?? selectedValues[0];
+    const v = selectedValues[0];
+    const label = flatOptions.find(o => o.value === v)?.label ?? String(v);
     return label;
   }
 
   if (selectedValues.length <= maxDisplay) {
     return selectedValues
-      .map(v => flatOptions.find(o => o.value === v)?.label ?? v)
+      .map(v => flatOptions.find(o => o.value === v)?.label ?? String(v))
       .join(', ');
   }
 

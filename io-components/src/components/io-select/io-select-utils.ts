@@ -62,15 +62,58 @@ export function getComboboxOptionClass(selected: boolean, disabled: boolean, foc
   ].filter(Boolean).join(' ');
 }
 
+// ── Keyboard navigation helpers ──────────────────────────────────────────────
+
+/**
+ * Typeahead search: returns the index of the first non-disabled option whose
+ * label (case-insensitive) starts with `searchStr`.
+ *
+ * Search order: starts from `startIndex + 1` and wraps around so the current
+ * option is only re-matched if no other option matches first (matches native
+ * select behaviour and APG combobox pattern).
+ *
+ * @returns The matching index, or -1 if no match found.
+ */
+export function getMatchingOptionIndex(
+  options: { label: string; value: string | number; disabled?: boolean }[],
+  searchStr: string,
+  startIndex: number,
+): number {
+  if (!searchStr || options.length === 0) return -1;
+  const search = searchStr.toLowerCase();
+  const len = options.length;
+  // Start scanning from the option after the current active one (wrap-around)
+  for (let i = 1; i <= len; i++) {
+    const idx = (startIndex + i) % len;
+    const opt = options[idx];
+    if (!opt.disabled && opt.label.toLowerCase().startsWith(search)) {
+      return idx;
+    }
+  }
+  return -1;
+}
+
 // ── Slot-based option parsing ────────────────────────────────────────────────
 
 function readOption(el: Element): IoSelectOption | null {
-  const elAny = el as HTMLElement & { value?: unknown; label?: unknown; disabled?: unknown };
-  const value =
-    (typeof elAny.value === 'string' && elAny.value !== ''
-      ? elAny.value
-      : el.getAttribute('value')) ?? '';
-  if (value === '') return null;
+  const elAny = el as HTMLElement & {
+    value?: unknown;
+    label?: unknown;
+    disabled?: unknown;
+    icon?: unknown;
+    description?: unknown;
+  };
+
+  // Prefer the JS property (supports number); fall back to the HTML attribute (always string).
+  const rawValue = (elAny.value !== undefined && elAny.value !== '' && elAny.value !== null)
+    ? elAny.value
+    : el.getAttribute('value');
+  const value: string | number | null =
+    typeof rawValue === 'number'
+      ? rawValue
+      : (typeof rawValue === 'string' && rawValue !== '') ? rawValue : null;
+
+  if (value === null) return null;
 
   const label =
     (typeof elAny.label === 'string' && elAny.label !== ''
@@ -80,7 +123,21 @@ function readOption(el: Element): IoSelectOption | null {
   const disabled =
     typeof elAny.disabled === 'boolean' ? elAny.disabled : el.hasAttribute('disabled');
 
-  return { value, label, ...(disabled ? { disabled: true } : {}) };
+  const icon =
+    typeof elAny.icon === 'string' && elAny.icon !== '' ? elAny.icon : (el.getAttribute('icon') ?? undefined);
+
+  const description =
+    typeof elAny.description === 'string' && elAny.description !== ''
+      ? elAny.description
+      : (el.getAttribute('description') ?? undefined);
+
+  return {
+    value,
+    label,
+    ...(disabled ? { disabled: true } : {}),
+    ...(icon ? { icon } : {}),
+    ...(description ? { description } : {}),
+  };
 }
 
 /**

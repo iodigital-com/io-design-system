@@ -56,36 +56,44 @@ describe('io-multi-select — componentDidLoad', () => {
     expect((c as any).flatOptions.length).toBeGreaterThan(0);
   });
 
-  it('schedules a late-parse timeout when flatOptions is empty but children exist', () => {
-    vi.useFakeTimers();
+  it('does not schedule a setTimeout (uses event-based registration instead)', () => {
+    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
     const c = makeComponent();
-    // Add a child element that won't be parsed as an option yet (simulates SSR)
     const div = document.createElement('div');
     (c as any).el.appendChild(div);
+    const callsBefore = setTimeoutSpy.mock.calls.length;
     (c as any).componentDidLoad();
-    expect((c as any).lateParseTimeout).toBeDefined();
-    vi.runAllTimers();
-    vi.useRealTimers();
+    // No new setTimeout calls from componentDidLoad
+    expect(setTimeoutSpy.mock.calls.length).toBe(callsBefore);
+    setTimeoutSpy.mockRestore();
   });
 
-  it('does not schedule a timeout when children list is empty', () => {
+  it('handleOptionConnect re-parses options on late child connect', () => {
     const c = makeComponent();
-    (c as any).componentDidLoad();
-    expect((c as any).lateParseTimeout).toBeUndefined();
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    opt.setAttribute('label', 'Netherlands');
+    (c as any).el.appendChild(opt);
+    expect(() => (c as any).handleOptionConnect()).not.toThrow();
   });
 });
 
 // ── disconnectedCallback ──────────────────────────────────────────────────────
 
 describe('io-multi-select — disconnectedCallback', () => {
-  it('clears lateParseTimeout on disconnect', () => {
+  it('clears typeaheadTimer on disconnect', () => {
     vi.useFakeTimers();
     const c = makeComponent();
-    const timeoutId = setTimeout(() => {}, 1000);
-    (c as any).lateParseTimeout = timeoutId;
+    const timeoutId = setTimeout(() => {}, 500);
+    (c as any).typeaheadTimer = timeoutId;
     (c as any).disconnectedCallback();
-    expect((c as any).lateParseTimeout).toBeUndefined();
+    expect((c as any).typeaheadTimer).toBeUndefined();
     vi.useRealTimers();
+  });
+
+  it('does not throw when no timers are pending', () => {
+    const c = makeComponent();
+    expect(() => (c as any).disconnectedCallback()).not.toThrow();
   });
 
   it('removes clickOutsideHandler on disconnect', () => {

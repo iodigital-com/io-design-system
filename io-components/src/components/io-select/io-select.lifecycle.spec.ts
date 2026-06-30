@@ -147,17 +147,19 @@ describe('io-select — syncFormValue: multiple required branch', () => {
 });
 
 describe('io-select — disconnectedCallback', () => {
-  it('clears lateParseTimeout if one is pending', () => {
+  it('does not throw on disconnect (no lateParseTimeout field anymore)', () => {
     const c = makeSelect();
-    (c as any).lateParseTimeout = 999;
     expect(() => c.disconnectedCallback()).not.toThrow();
-    expect((c as any).lateParseTimeout).toBeUndefined();
   });
 
-  it('does not throw when no lateParseTimeout', () => {
+  it('clears typeaheadTimer on disconnect', () => {
+    vi.useFakeTimers();
     const c = makeSelect();
-    (c as any).lateParseTimeout = undefined;
-    expect(() => c.disconnectedCallback()).not.toThrow();
+    const id = setTimeout(() => {}, 500);
+    (c as any).typeaheadTimer = id;
+    c.disconnectedCallback();
+    expect((c as any).typeaheadTimer).toBeUndefined();
+    vi.useRealTimers();
   });
 
   it('removes clickOutside handler on disconnect', () => {

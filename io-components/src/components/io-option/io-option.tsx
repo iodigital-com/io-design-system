@@ -3,7 +3,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil
 import { getOptionStyles } from './io-option-styles';
 import { getOptionClass } from './io-option-utils';
 
-import type { IoOptionSelectDetail } from './types';
+import type { IoOptionSelectDetail, IoOptionConnectDetail } from './types';
 
 /**
  * io-option
@@ -44,6 +44,20 @@ export class IoOption {
 
   /** Fires when the option is activated (click or keyboard Enter/Space from parent) */
   @Event() optionSelect!: EventEmitter<IoOptionSelectDetail>;
+
+  /**
+   * Fires when this option connects to the DOM, enabling the parent io-select /
+   * io-multi-select to register it without a setTimeout polling hack.
+   * Composed and bubbles so it crosses the parent's Shadow DOM boundary.
+   */
+  @Event({ bubbles: true, composed: true }) optionConnect!: EventEmitter<IoOptionConnectDetail>;
+
+  connectedCallback() {
+    // Notify parent io-select / io-multi-select that this option is available.
+    // The event bubbles and is composed so it escapes any Shadow DOM boundary
+    // between this element and the nearest io-select / io-multi-select ancestor.
+    this.optionConnect.emit({ value: this.value, label: this.label, disabled: this.disabled });
+  }
 
   private handleClick = () => {
     if (this.disabled) return;

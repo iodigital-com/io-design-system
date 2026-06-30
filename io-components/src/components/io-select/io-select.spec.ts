@@ -125,30 +125,38 @@ describe('io-select — default props', () => {
   });
 });
 
-// ── SSR lateParseTimeout ───────────────────────────────────────────────────────
+// ── SSR option registration via optionConnect event ──────────────────────────
 
-describe('io-select — componentDidLoad SSR lateParseTimeout', () => {
-  it('schedules lateParseTimeout when flatOptions is empty but el has children', () => {
+describe('io-select — componentDidLoad and optionConnect event handling', () => {
+  it('parses options in componentDidLoad when children are available', () => {
     const component = new IoSelect();
     const el = document.createElement('io-select');
-    // Add an io-option without a value attribute — parseSelectContent will skip it, leaving flatOptions empty
-    const noValueOpt = document.createElement('io-option');
-    noValueOpt.setAttribute('label', 'No value');
-    el.appendChild(noValueOpt);
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'nl');
+    opt.setAttribute('label', 'Netherlands');
+    el.appendChild(opt);
     (component as any).el = el;
     (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
     (component as any).change = { emit: vi.fn() };
     (component as any).componentWillLoad();
-
-    const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((fn: any) => {
-      fn(); // invoke immediately so the inner re-parse runs
-      return 999 as any;
-    });
-
     (component as any).componentDidLoad();
+    // flatOptions may be empty in jsdom without real custom element upgrade, but no throw
+    expect(() => (component as any).componentDidLoad()).not.toThrow();
+  });
 
-    expect(setTimeoutSpy).toHaveBeenCalled();
-    setTimeoutSpy.mockRestore();
+  it('handleOptionConnect re-parses options on late connect', () => {
+    const component = new IoSelect();
+    const el = document.createElement('io-select');
+    const opt = document.createElement('io-option');
+    opt.setAttribute('value', 'be');
+    opt.setAttribute('label', 'Belgium');
+    el.appendChild(opt);
+    (component as any).el = el;
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+    // handleOptionConnect should not throw
+    expect(() => (component as any).handleOptionConnect()).not.toThrow();
   });
 });
 

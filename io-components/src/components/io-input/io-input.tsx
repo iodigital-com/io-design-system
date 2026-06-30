@@ -7,10 +7,10 @@ import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
 import { LoadingMessage } from '../../utils/common/loading-message';
+import { renderErrorIcon, renderSuccessIcon, renderWarningIcon } from '../../utils/input-base';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
-import type { IoIconName } from '../../utils/icons';
 
 let idCounter = 0;
 
@@ -41,6 +41,8 @@ export class IoInput {
   private loadingId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
+  private counterTimer?: ReturnType<typeof setTimeout>;
+
   @State() private announcedCounter = '';
 
   @State() private hasPrefix = false;
@@ -109,13 +111,10 @@ export class IoInput {
   /** Native step value (date/time/number) */
   @Prop() step: string | number | undefined;
 
-  /**
-   * Autocomplete attribute (lowercase form).
-   * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
-   */
+  /** Autocomplete attribute (legacy — prefer autoComplete) */
   @Prop() autocomplete: string | undefined;
 
-  /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form. */
+  /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off') */
   @Prop() autoComplete: string | undefined;
 
   /** Native spellcheck attribute — passed through as-is */
@@ -181,6 +180,7 @@ export class IoInput {
    */
   @Prop() description: string | undefined;
 
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -199,17 +199,14 @@ export class IoInput {
       console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
     }
     if (this.counter && this.maxLength != null) {
-      const currentLength = (this.value ?? '').length;
-      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
+      const remaining = this.maxLength - (this.value ?? '').length;
+      this.announcedCounter = `${remaining} characters remaining`;
     }
   }
 
   disconnectedCallback(): void {
-    if (this.nativeInputEl) {
-      this.nativeInputEl.removeEventListener('wheel', this.handleWheel);
-    }
+    if (this.counterTimer) clearTimeout(this.counterTimer);
   }
-
 
   formResetCallback() {
     this.value = this.defaultValue;
@@ -278,14 +275,26 @@ export class IoInput {
   }
 
   private syncFormValue() {
+    this.internals?.setFormValue?.(this.value ?? '');
+    // Derive validity from the native <input> when available so constraints like
+    // maxLength, minLength, min, max, step, and typeMismatch are reflected automatically.
+    // Falls back to required-only check before the shadow root exists.
     const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
-    const { faceInvalid } = syncFormState(this.internals, nativeInput, {
-      formValue: this.value ?? '',
-      required: this.required,
-      disabled: this.disabled,
-      touched: this.touched,
-    });
-    this.faceInvalid = faceInvalid;
+    if (nativeInput) {
+      if (!nativeInput.checkValidity()) {
+        this.internals?.setValidity?.(nativeInput.validity, nativeInput.validationMessage, nativeInput);
+        this.faceInvalid = this.touched;
+      } else {
+        this.internals?.setValidity?.({});
+        this.faceInvalid = false;
+      }
+    } else if (this.required && !this.value) {
+      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceInvalid = this.touched;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
   }
 
   handleSlotChange(ev: Event) {
@@ -339,11 +348,6 @@ export class IoInput {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
-    // Force touched so FACE error UI surfaces even before the user has blurred
-    // the field — matches native <input> behaviour where reportValidity() always
-    // shows the validation state regardless of interaction history.
-    this.touched = true;
-    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -351,13 +355,14 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
     if (this.counter && this.maxLength != null) {
-      const currentLength = (this.value ?? '').length;
-      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
+      if (this.counterTimer) clearTimeout(this.counterTimer);
+      const remaining = this.maxLength - (this.value ?? '').length;
+      this.counterTimer = setTimeout(() => {
+        this.announcedCounter = `${remaining} characters remaining`;
+      }, 1000);
     }
   };
 
@@ -365,8 +370,6 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.change.emit((ev.target as HTMLInputElement).value);
   };
 
@@ -374,8 +377,6 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.focus.emit(ev);
   };
 
@@ -383,45 +384,9 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.touched = true;
     this.syncFormValue();
     this.blur.emit(ev);
-  };
-
-  private handleKeyDown = (ev: KeyboardEvent) => {
-    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
-  };
-
-  /**
-   * Prevent scroll-wheel from changing value on number inputs.
-   * This fires only when the input is focused (passive: false required to call preventDefault).
-   */
-  private handleWheel = (ev: WheelEvent) => {
-    if (this.type === 'number') {
-      ev.preventDefault();
-    }
-  };
-
-  private handleStepUp = () => {
-    if (this.disabled || this.loading) return;
-    const input = this.nativeInputEl;
-    if (!input) return;
-    input.stepUp();
-    this.value = input.value;
-    this.input.emit(new InputEvent('input'));
-    this.change.emit(input.value);
-  };
-
-  private handleStepDown = () => {
-    if (this.disabled || this.loading) return;
-    const input = this.nativeInputEl;
-    if (!input) return;
-    input.stepDown();
-    this.value = input.value;
-    this.input.emit(new InputEvent('input'));
-    this.change.emit(input.value);
   };
 
   /**
@@ -445,11 +410,8 @@ export class IoInput {
     const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
     const showCounter = counter && maxLength != null;
     const counterSrId = `${this.counterId}-sr`;
-    // #1094: errorId is always referenced so the live-region relationship is
-    // established when the input receives focus, before any error occurs.
-    // The <p> wrapper is rendered unconditionally; only its inner text is gated.
     const describedBy = [
-      errorId,
+      showMessage ? errorId : '',
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
       description ? this.descriptionId : '',
@@ -471,7 +433,7 @@ export class IoInput {
     const fieldClass = [
       'input-field',
       `input-field--${size}`,
-      (hasPrefix || showIndicator) ? 'input-field--has-prefix' : '',
+      hasPrefix ? 'input-field--has-prefix' : '',
       hasSuffix ? 'input-field--has-suffix' : '',
     ]
       .filter(Boolean)
@@ -483,26 +445,15 @@ export class IoInput {
         <div class={wrapperClass}>
           {/* Flex row: prefix slot, input, suffix slot / loading spinner, state icon */}
           <div class="input-field-row">
-            <span class={`input-slot input-slot--prefix${(hasPrefix || showIndicator) ? '' : ' input-slot--hidden'}`}>
-              {showIndicator && (
-                <io-icon name={indicator} aria-hidden="true" class="input-indicator-icon" />
-              )}
+            <span class={`input-slot input-slot--prefix${hasPrefix ? '' : ' input-slot--hidden'}`}>
               <slot name="prefix" onSlotchange={this.handleSlotChange} />
             </span>
             <input
               id={inputId}
               class={fieldClass}
               ref={(el?: HTMLInputElement) => {
-                // Remove previous wheel listener before reassigning
-                if (this.nativeInputEl && this.nativeInputEl !== el) {
-                  this.nativeInputEl.removeEventListener('wheel', this.handleWheel);
-                }
                 this.nativeInputEl = el;
                 applyAriaProp(this.aria, el ?? null);
-                // Attach non-passive wheel listener to suppress scroll-value-change on number inputs
-                if (el && type === 'number') {
-                  el.addEventListener('wheel', this.handleWheel, { passive: false });
-                }
               }}
               type={type}
               name={name}
@@ -528,70 +479,19 @@ export class IoInput {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
-              onKeyDown={this.handleKeyDown}
             />
             {loading ? (
               <div class="input-wrapper__loading" aria-hidden="true">
                 <io-spinner size="sm" />
               </div>
-            ) : showStepper ? (
-              <span class="input-stepper">
-                <button
-                  type="button"
-                  class="input-stepper__btn input-stepper__decrement"
-                  aria-label="Decrement"
-                  tabIndex={-1}
-                  disabled={isDisabled}
-                  onClick={this.handleStepDown}
-                >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  class="input-stepper__btn input-stepper__increment"
-                  aria-label="Increment"
-                  tabIndex={-1}
-                  disabled={isDisabled}
-                  onClick={this.handleStepUp}
-                >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                  </svg>
-                </button>
-              </span>
             ) : (
               <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
                 <slot name="suffix" onSlotchange={this.handleSlotChange} />
               </span>
             )}
-            {showError && (
-              <div class="input-state-icon input-state-icon--error" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" x2="12" y1="8" y2="12" />
-                  <line x1="12" x2="12.01" y1="16" y2="16" />
-                </svg>
-              </div>
-            )}
-            {showSuccess && (
-              <div class="input-state-icon input-state-icon--success" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
-            )}
-            {showWarning && (
-              <div class="input-state-icon input-state-icon--warning" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                  <path d="M12 9v4" />
-                  <path d="M12 17h.01" />
-                </svg>
-              </div>
-            )}
+            {showError && renderErrorIcon()}
+            {showSuccess && renderSuccessIcon()}
+            {showWarning && renderWarningIcon()}
           </div>
           {/* Label sits outside the row so it can use absolute positioning
               within the wrapper for the floating-label effect */}
@@ -602,27 +502,30 @@ export class IoInput {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <Required />}
+                {required && <span class="input-required" aria-hidden="true"> *</span>}
               </span>
             )}
             {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {/* Single state-message element — avoids duplicate-id collisions and prevents
-            aria-describedby pointing to a hidden element. Role switches between
-            'alert' (error) and 'status' (success/warning) as per WCAG 4.1.3. */}
-        {(showError || showSuccess || showWarning) && (
-          <p
-            id={errorId}
-            class={[
-              'input-message',
-              showError ? 'input-message--error' : '',
-              showSuccess ? 'input-message--success' : '',
-              showWarning ? 'input-message--warning' : '',
-              !showMessage ? 'input-error--hidden' : '',
-            ].filter(Boolean).join(' ')}
-            role={showError ? 'alert' : 'status'}
-          >
+        {showError && (
+          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {showSuccess && (
+          <p id={errorId} class={`input-message input-message--success${showMessage ? '' : ' input-error--hidden'}`} role="status">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {showWarning && (
+          <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
             <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
               <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>

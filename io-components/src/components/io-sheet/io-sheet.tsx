@@ -5,49 +5,20 @@ import {
   EventEmitter,
   Element,
   Host,
-  Listen,
   Method,
   Watch,
+  Listen,
   h,
 } from '@stencil/core';
 
 import { getSheetStyles } from './io-sheet-styles';
-import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
 import {
-  attachSwipeToDismiss,
-  detachSwipeToDismiss,
-  type SwipeToDismissHandlers,
-} from '../../utils/swipe-to-dismiss';
-import type { IoSheetBackground } from './types';
-
-const FOCUSABLE_SELECTORS = [
-  'a[href]',
-  'button:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(', ');
-
-/**
- * Returns all focusable elements inside the sheet panel, including both
- * shadow DOM elements and slotted light DOM elements.
- */
-function getSheetFocusableElements(panelEl: HTMLElement): HTMLElement[] {
-  const shadowFocusable = Array.from(panelEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
-
-  const slots = Array.from(panelEl.querySelectorAll('slot')) as HTMLSlotElement[];
-  const slottedFocusable = slots.flatMap(slot =>
-    Array.from(slot.assignedElements({ flatten: true })).flatMap(el => {
-      const matches: HTMLElement[] = [];
-      if ((el as HTMLElement).matches(FOCUSABLE_SELECTORS)) matches.push(el as HTMLElement);
-      matches.push(...Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)));
-      return matches;
-    }),
-  );
-
-  return [...shadowFocusable, ...slottedFocusable];
-}
+  getPanelFocusableElements,
+  lockBodyScroll,
+  unlockBodyScroll,
+  attachDialogFocusTrap,
+  detachDialogFocusTrap,
+} from '../../utils/dialog-utils';
 
 /**
  * io-sheet
@@ -81,13 +52,10 @@ export class IoSheet {
 
   private panelEl?: HTMLDivElement;
   private backdropEl?: HTMLDivElement;
-  private handleEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private animationEndHandler?: (ev: AnimationEvent) => void;
   private focusTrigger?: Element;
-  private _scrollLockHeld = false;
-  private swipeHandlers?: SwipeToDismissHandlers;
   private savedBodyOverflow = '';
 
   // ── Props ─────────────────────────────────────────────────────
@@ -98,42 +66,8 @@ export class IoSheet {
   /** Heading text displayed in the sheet header */
   @Prop() heading?: string;
 
-  /**
-   * @deprecated Use `dismissButton` and `disableBackdropClick` instead.
-   * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet.
-   * This prop is kept for one minor version for backwards compatibility.
-   */
+  /** When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet */
   @Prop() dismissible = true;
-
-  /**
-   * When true (default), the close (×) button is rendered in the sheet header
-   * and pressing ESC will close the sheet. Set to false to hide the close button
-   * and suppress ESC dismissal — useful for confirmation flows where the user must
-   * explicitly choose an action.
-   *
-   * @default true
-   */
-  @Prop() dismissButton = true;
-
-  /**
-   * When true, clicking the backdrop will NOT dismiss the sheet. The close button
-   * and ESC key are still controlled by `dismissButton`.
-   * Useful for confirmation flows that must not be accidentally dismissed.
-   *
-   * @default false
-   */
-  @Prop() disableBackdropClick = false;
-
-  /**
-   * Background surface level for the sheet panel.
-   * Matches sibling overlay APIs (io-modal, io-drawer, io-flyout).
-   * - canvas:   var(--io-bg-page) — default page background
-   * - surface:  var(--io-bg-surface) — slightly elevated surface
-   * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
-   *
-   * @default 'canvas'
-   */
-  @Prop({ reflect: true }) background: IoSheetBackground = 'canvas';
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -169,14 +103,6 @@ export class IoSheet {
         '[io-sheet] Accessible name missing. Provide a "heading" prop or set aria-label on the host element.',
       );
     }
-
-    // Deprecation warning for legacy dismissible prop when it was explicitly set to false.
-    // (default true is safe — new dismissButton=true matches the old behaviour)
-    if (!this.dismissible) {
-      console.warn(
-        '[io-sheet] The "dismissible" prop is deprecated. Use "dismissButton" and "disableBackdropClick" instead.',
-      );
-    }
   }
 
   componentDidLoad() {
@@ -189,11 +115,7 @@ export class IoSheet {
   disconnectedCallback() {
     this.detachFocusTrap();
     this.detachAnimationEndListener();
-    this.detachSwipeHandlers();
-    if (this._scrollLockHeld) {
-      releaseScrollLock();
-      this._scrollLockHeld = false;
-    }
+    unlockBodyScroll(this.savedBodyOverflow);
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -210,36 +132,26 @@ export class IoSheet {
   // ── Global listeners ──────────────────────────────────────────
 
   /**
-   * Close on Escape key when sheet is open and dismiss is enabled.
-   * Respects both legacy `dismissible` prop and new `dismissButton` prop.
+   * Close on Escape key when sheet is open and dismissible.
    */
   @Listen('keydown', { target: 'document' })
   handleKeydown(ev: KeyboardEvent) {
     if (!this.open) return;
-    // Support both legacy dismissible and new dismissButton prop.
-    // dismissButton takes precedence; fall back to dismissible for BC.
-    const canDismiss = this.dismissButton && this.dismissible;
-    if (!canDismiss) return;
+    if (!this.dismissible) return;
     if (ev.key === 'Escape') {
       ev.stopPropagation();
       this.handleDismiss();
     }
   }
 
-
   // ── Private helpers ───────────────────────────────────────────
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
-    // Save current body overflow before locking scroll so it can be restored
     this.savedBodyOverflow = document.body.style.overflow;
-    if (!this._scrollLockHeld) {
-      acquireScrollLock();
-      this._scrollLockHeld = true;
-    }
+    lockBodyScroll();
 
     this.attachFocusTrap();
-    this.attachSwipeHandlers();
 
     requestAnimationFrame(() => {
       const focusable = this.getFocusableElements();
@@ -253,14 +165,9 @@ export class IoSheet {
   }
 
   private applyClosedState() {
-    if (this._scrollLockHeld) {
-      releaseScrollLock();
-      this._scrollLockHeld = false;
-    }
+    unlockBodyScroll(this.savedBodyOverflow);
+    this.savedBodyOverflow = '';
     this.detachFocusTrap();
-    this.detachSwipeHandlers();
-    // Restore body overflow to what it was before we opened
-    document.body.style.overflow = this.savedBodyOverflow;
 
     // Restore focus to trigger
     if (this.focusTrigger instanceof HTMLElement) {
@@ -270,7 +177,7 @@ export class IoSheet {
 
   private getFocusableElements(): HTMLElement[] {
     if (!this.panelEl) return [];
-    return getSheetFocusableElements(this.panelEl);
+    return getPanelFocusableElements(this.panelEl);
   }
 
   private attachFocusTrap() {
@@ -278,36 +185,27 @@ export class IoSheet {
     // Always call detach first to prevent listener leak on re-open
     this.detachFocusTrap();
 
-    this.focusTrapHandler = (ev: KeyboardEvent) => {
-      if (ev.key !== 'Tab') return;
-      const focusable = this.getFocusableElements();
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      // When a shadow-DOM child has focus, document.activeElement returns the
-      // host element. Fall back to :focus query within the shadow root to get
-      // the actual focused element so first/last comparisons work correctly.
+    // When a shadow-DOM child has focus, document.activeElement returns the
+    // host element. Fall back to :focus query within the shadow root to get
+    // the actual focused element so first/last comparisons work correctly.
+    const getActiveElement = (): HTMLElement | null => {
       let active = document.activeElement as HTMLElement | null;
       if (active === this.el) {
-        active = (this.el.shadowRoot?.querySelector(':focus') as HTMLElement | null) ?? active;
+        active =
+          (this.el.shadowRoot?.querySelector(':focus') as HTMLElement | null) ?? active;
       }
-
-      if (ev.shiftKey && active === first) {
-        ev.preventDefault();
-        last.focus();
-      } else if (!ev.shiftKey && active === last) {
-        ev.preventDefault();
-        first.focus();
-      }
+      return active;
     };
 
-    this.panelEl.addEventListener('keydown', this.focusTrapHandler);
+    this.focusTrapHandler = attachDialogFocusTrap(
+      this.panelEl,
+      () => this.getFocusableElements(),
+      { getActiveElement },
+    );
   }
 
   private detachFocusTrap() {
-    if (!this.panelEl || !this.focusTrapHandler) return;
-    this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
+    detachDialogFocusTrap(this.panelEl, this.focusTrapHandler);
     this.focusTrapHandler = undefined;
   }
 
@@ -329,21 +227,6 @@ export class IoSheet {
     this.animationEndHandler = undefined;
   }
 
-  private attachSwipeHandlers() {
-    if (!this.handleEl) return;
-    this.detachSwipeHandlers();
-    this.swipeHandlers = attachSwipeToDismiss({
-      el: this.handleEl,
-      onDismiss: this.handleDismiss,
-    });
-  }
-
-  private detachSwipeHandlers() {
-    if (!this.handleEl || !this.swipeHandlers) return;
-    detachSwipeToDismiss(this.handleEl, this.swipeHandlers);
-    this.swipeHandlers = undefined;
-  }
-
   // ── Handlers ──────────────────────────────────────────────────
 
   private handleDismiss = () => {
@@ -352,9 +235,7 @@ export class IoSheet {
   };
 
   private handleBackdropClick = (ev: MouseEvent) => {
-    // New prop: disableBackdropClick takes priority.
-    // Legacy: dismissible=false also disables backdrop click.
-    if (this.disableBackdropClick || !this.dismissible) return;
+    if (!this.dismissible) return;
     if (ev.target === this.backdropEl) {
       this.handleDismiss();
     }
@@ -368,10 +249,7 @@ export class IoSheet {
    * @slot footer - Action area at the bottom of the sheet. Typically 1–2 io-button elements.
    */
   render() {
-    const { heading, headingId, background } = this;
-    // Resolve effective dismiss-button visibility:
-    // Legacy dismissible=false overrides dismissButton for backwards compat.
-    const showDismissButton = this.dismissButton && this.dismissible;
+    const { heading, headingId, dismissible } = this;
 
     const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
@@ -393,11 +271,11 @@ export class IoSheet {
 
         {/* Panel */}
         <div
-          class={`sheet__panel sheet__panel--bg-${background}`}
+          class="sheet__panel"
           tabIndex={-1}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >
-          <div class="sheet__handle" aria-hidden="true" ref={(el?: HTMLDivElement) => { this.handleEl = el; }} />
+          <div class="sheet__handle" aria-hidden="true" />
 
           <div class="sheet__header">
             <div class="sheet__header-slot">
@@ -409,7 +287,7 @@ export class IoSheet {
                 )}
               </slot>
             </div>
-            {showDismissButton && (
+            {dismissible && (
               <button
                 type="button"
                 class="sheet__close"

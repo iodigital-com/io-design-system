@@ -1,11 +1,11 @@
 import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, h } from '@stencil/core';
 
 import { getDrawerStyles } from './io-drawer-styles';
-import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon } from './io-drawer-utils';
+import { createDrawerHeadingId, getDrawerClass, getDrawerCloseIcon, isBackdropClick } from './io-drawer-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import { supportsOverlayTransition } from '../../utils/top-layer/supportsOverlayTransition';
+import { applyDialogInert, removeDialogInert } from '../../utils/dialog-utils';
 
-import type { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
+import type { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from './types';
 
 const SWIPE_CLOSE_THRESHOLD = 80;
 
@@ -54,8 +54,6 @@ export class IoDrawer {
   // Set to true before any user-action handler sets open=false so
   // onOpenChange can distinguish user-initiated closes from programmatic ones.
   private _userInitiatedClose = false;
-  private _pendingCloseTimeout?: ReturnType<typeof setTimeout>;
-  private _pendingCloseHandler?: () => void;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -86,15 +84,13 @@ export class IoDrawer {
 
   /**
    * Custom ARIA attributes to inject onto the native `<dialog>` element.
-   * Restricted to attributes that are meaningful on a dialog: `aria-label`,
-   * `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with
-   * a `console.warn` in development.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
    *
    * @example
-   * // Sets aria-label on the native <dialog> when no heading prop is used
-   * <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
+   * // Sets aria-controls="main-content" on the native <dialog>
+   * <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
    */
-  @Prop() aria?: IoDrawerAriaProps;
+  @Prop() aria?: Record<string, string>;
 
   /**
    * Background surface level for the drawer panel.
@@ -164,19 +160,10 @@ export class IoDrawer {
     // Check the `aria` prop (not the host element attribute) because io-drawer
     // uses Shadow DOM — host aria-* attributes are NOT forwarded to the internal
     // <dialog>. The `aria` prop is the only way to supply aria-label to the dialog.
-    const hasAriaLabel = Boolean(this.aria?.['aria-label'] ?? this.aria?.['aria-labelledby']);
+    const hasAriaLabel = Boolean(this.aria?.['label'] ?? this.aria?.['aria-label']);
     if (!hasHeading && !hasAriaLabel) {
       console.error(
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',
-      );
-    }
-
-    // WCAG 2.5.7 / 2.1.1 — when placement='bottom', swipe gesture is the only
-    // close path if both dismissButton and closeOnBackdrop are disabled.
-    // Emit a console.error so authors know the configuration is inaccessible.
-    if (this.placement === 'bottom' && !this.dismissButton && !this.closeOnBackdrop) {
-      console.error(
-        '[io-drawer] Inaccessible configuration: placement="bottom" with dismissButton=false and closeOnBackdrop=false leaves swipe gesture as the only close path, violating WCAG 2.5.7 (Dragging Movements) and 2.1.1 (Keyboard). Enable at least dismissButton or closeOnBackdrop.',
       );
     }
   }
@@ -190,7 +177,6 @@ export class IoDrawer {
   }
 
   disconnectedCallback() {
-    this._clearPendingClose();
     this.detachTransitionEndListener();
     this.removeInert();
   }
@@ -207,7 +193,6 @@ export class IoDrawer {
     const dialog = this.el?.shadowRoot?.querySelector<HTMLDialogElement>('dialog');
     if (!dialog) return;
     if (newVal) {
-      this._clearPendingClose();
       if (!dialog.open) {
         // Restart the slide-in CSS animation on every open so subsequent opens
         // animate correctly (not just the first one after mount).
@@ -217,76 +202,19 @@ export class IoDrawer {
       }
       this.applyInert();
     } else {
+      if (dialog.open) {
+        dialog.close();
+      }
       this.removeInert();
       // Only emit dismiss for user-initiated closes (close button, backdrop, ESC).
       if (this._userInitiatedClose) {
         this.dismissEvent.emit();
       }
       this._userInitiatedClose = false;
-      // Defer dialog.close() on Safari/Firefox so the CSS exit transition completes
-      // before the dialog is removed from the top layer (#975).
-      if (dialog.open) {
-        if (supportsOverlayTransition()) {
-          dialog.close();
-        } else {
-          this._deferDialogClose(dialog);
-        }
-      }
     }
   }
 
   // ── Private Helpers ───────────────────────────────────────────
-
-  private _clearPendingClose() {
-    if (this._pendingCloseTimeout !== undefined) {
-      clearTimeout(this._pendingCloseTimeout);
-      this._pendingCloseTimeout = undefined;
-    }
-    if (this._pendingCloseHandler && this.dialogEl) {
-      this.dialogEl.removeEventListener('transitionend', this._pendingCloseHandler);
-      this._pendingCloseHandler = undefined;
-    }
-  }
-
-  private _deferDialogClose(dialog: HTMLDialogElement) {
-    const maxMs = this._getMaxTransitionDurationMs(dialog);
-    // No CSS transitions (e.g. jsdom) — close synchronously, nothing to defer.
-    if (maxMs === 0) {
-      if (dialog.open) dialog.close();
-      return;
-    }
-    this._clearPendingClose();
-    this._pendingCloseHandler = () => {
-      this._clearPendingClose();
-      if (dialog.open) dialog.close();
-    };
-    dialog.addEventListener('transitionend', this._pendingCloseHandler, { once: true });
-    this._pendingCloseTimeout = setTimeout(() => {
-      if (this._pendingCloseHandler) {
-        dialog.removeEventListener('transitionend', this._pendingCloseHandler);
-        this._pendingCloseHandler = undefined;
-      }
-      this._pendingCloseTimeout = undefined;
-      if (dialog.open) dialog.close();
-    }, maxMs + 50);
-  }
-
-  private _getMaxTransitionDurationMs(el: HTMLElement): number {
-    if (typeof window === 'undefined') return 0;
-    try {
-      const style = window.getComputedStyle(el);
-      const durations = (style.transitionDuration || '0s').split(',');
-      return durations.reduce((acc, d) => {
-        const trimmed = d.trim();
-        const val = parseFloat(trimmed);
-        if (isNaN(val)) return acc;
-        const ms = trimmed.endsWith('ms') ? val : val * 1000;
-        return Math.max(acc, ms);
-      }, 0);
-    } catch {
-      return 0;
-    }
-  }
 
   /**
    * Attach a transitionend listener to the dialog element so we can emit
@@ -311,27 +239,21 @@ export class IoDrawer {
   }
 
   private applyInert() {
-    this.inertedElements = Array.from(this.el.parentElement?.children ?? []).filter(
-      (el) => el !== this.el && !['SCRIPT', 'STYLE'].includes(el.tagName),
-    );
-    this.inertedElements.forEach((el) => {
-      if (!el.hasAttribute('inert')) el.setAttribute('inert', '');
-    });
+    this.inertedElements = applyDialogInert(this.el);
   }
 
   private removeInert() {
-    this.inertedElements.forEach((el) => el.removeAttribute('inert'));
-    this.inertedElements = [];
+    removeDialogInert(this.inertedElements);
   }
 
   // ── Handlers ─────────────────────────────────────────────────
 
-  // ev.target === <dialog> means the click landed directly on the dialog padding
-  // (backdrop area), not on any content descendant — geometrically correct even
-  // at rounded corners where the bounding-rect check would give false negatives.
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
-    if (ev.target === ev.currentTarget) {
+    const dialog = ev.currentTarget as HTMLDialogElement;
+    const rect = dialog.getBoundingClientRect();
+    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
+    if (clickedBackdrop) {
       this._userInitiatedClose = true;
       this.open = false;
     }

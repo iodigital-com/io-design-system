@@ -6,43 +6,20 @@ import {
   Method,
   Element,
   Host,
-  State,
   Watch,
+  Listen,
   h,
 } from '@stencil/core';
 
 import { getFlyoutStyles } from './io-flyout-styles';
-import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
-import type { IoFlyoutPosition, IoFlyoutFooterBehavior } from './types';
-
-const FOCUSABLE_SELECTORS = [
-  'a[href]',
-  'button:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(', ');
-
-/**
- * Returns all focusable elements inside the flyout panel, including both
- * shadow DOM elements and slotted light DOM elements.
- */
-function getFlyoutFocusableElements(panelEl: HTMLElement): HTMLElement[] {
-  const shadowFocusable = Array.from(panelEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS));
-
-  const slots = Array.from(panelEl.querySelectorAll('slot')) as HTMLSlotElement[];
-  const slottedFocusable = slots.flatMap(slot =>
-    Array.from(slot.assignedElements({ flatten: true })).flatMap(el => {
-      const matches: HTMLElement[] = [];
-      if ((el as HTMLElement).matches(FOCUSABLE_SELECTORS)) matches.push(el as HTMLElement);
-      matches.push(...Array.from(el.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)));
-      return matches;
-    }),
-  );
-
-  return [...shadowFocusable, ...slottedFocusable];
-}
+import {
+  getPanelFocusableElements,
+  lockBodyScroll,
+  unlockBodyScroll,
+  attachDialogFocusTrap,
+  detachDialogFocusTrap,
+} from '../../utils/dialog-utils';
+import type { IoFlyoutPosition } from './types';
 
 /**
  * io-flyout
@@ -74,16 +51,9 @@ export class IoFlyout {
 
   private panelEl?: HTMLDivElement;
   private backdropEl?: HTMLDivElement;
-  private footerEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private focusTrigger?: Element;
-  private _scrollLockHeld = false;
-  private footerObserver?: IntersectionObserver;
-
-  @State() private footerPinned = false;
-  @State() private hasSubFooterSlot = false;
-  @State() private resolvedPosition: 'start' | 'end' = 'end';
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -98,15 +68,6 @@ export class IoFlyout {
 
   /** Accessible label for the close button. Override to provide context when multiple overlays may be open. */
   @Prop() closeLabel = 'Close flyout';
-
-  /**
-   * Controls footer stickiness behaviour.
-   * - sticky: header and footer remain in view while content scrolls (default)
-   * - fixed:  header and footer are always visible, unaffected by scroll
-   *
-   * @default 'sticky'
-   */
-  @Prop({ reflect: true }) footerBehavior: IoFlyoutFooterBehavior = 'sticky';
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -148,9 +109,6 @@ export class IoFlyout {
     const seed = Math.random().toString(36).slice(2);
     this.headingId = `io-flyout-heading-${seed}`;
 
-    // Normalise legacy position values on first load
-    this.resolvedPosition = this.normalisePosition(this.position);
-
     // WCAG 4.1.2 — the flyout dialog must have an accessible name.
     // It is provided by aria-labelledby (when heading prop is set) or
     // aria-label on the host (when heading is absent). Log an error when
@@ -163,7 +121,6 @@ export class IoFlyout {
   }
 
   componentDidLoad() {
-    this.attachFooterObserver();
     if (this.open) {
       this.applyOpenState();
     } else {
@@ -176,11 +133,7 @@ export class IoFlyout {
 
   disconnectedCallback() {
     this.detachFocusTrap();
-    if (this._scrollLockHeld) {
-      releaseScrollLock();
-      this._scrollLockHeld = false;
-    }
-    this.detachFooterObserver();
+    unlockBodyScroll();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -194,31 +147,25 @@ export class IoFlyout {
     }
   }
 
-  @Watch('position')
-  onPositionChange(newVal: IoFlyoutPosition) {
-    this.resolvedPosition = this.normalisePosition(newVal);
+  // ── Global listeners ──────────────────────────────────────────
+
+  /**
+   * Close on Escape key when flyout is open.
+   */
+  @Listen('keydown', { target: 'document' })
+  handleKeydown(ev: KeyboardEvent) {
+    if (!this.open) return;
+    if (ev.key === 'Escape') {
+      ev.stopPropagation();
+      this.handleDismiss();
+    }
   }
 
   // ── Private helpers ───────────────────────────────────────────
 
-  private normalisePosition(pos: IoFlyoutPosition): 'start' | 'end' {
-    if (pos === 'left') {
-      console.warn('[io-flyout] position="left" is deprecated. Use position="start" instead.');
-      return 'start';
-    }
-    if (pos === 'right') {
-      console.warn('[io-flyout] position="right" is deprecated. Use position="end" instead.');
-      return 'end';
-    }
-    return pos;
-  }
-
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
-    if (!this._scrollLockHeld) {
-      acquireScrollLock();
-      this._scrollLockHeld = true;
-    }
+    lockBodyScroll();
 
     if (this.panelEl) {
       this.panelEl.removeAttribute('aria-hidden');
@@ -235,10 +182,7 @@ export class IoFlyout {
   }
 
   private applyClosedState() {
-    if (this._scrollLockHeld) {
-      releaseScrollLock();
-      this._scrollLockHeld = false;
-    }
+    unlockBodyScroll();
     this.detachFocusTrap();
 
     if (this.panelEl) {
@@ -257,83 +201,22 @@ export class IoFlyout {
   private getFocusableElements(): HTMLElement[] {
     if (!this.panelEl) return [];
     // Include both shadow DOM and slotted light-DOM children
-    return getFlyoutFocusableElements(this.panelEl);
+    return getPanelFocusableElements(this.panelEl);
   }
 
   private attachFocusTrap() {
     if (!this.panelEl) return;
     // Always call detach first to prevent listener leak on re-open
     this.detachFocusTrap();
-
-    this.focusTrapHandler = (ev: KeyboardEvent) => {
-      if (ev.key !== 'Tab') return;
-      const focusable = this.getFocusableElements();
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      // Use document.activeElement — works for both Shadow DOM and slotted
-      // light-DOM children (shadowRoot.activeElement returns the slot host)
-      const active = document.activeElement as HTMLElement | null;
-
-      if (ev.shiftKey && active === first) {
-        ev.preventDefault();
-        last.focus();
-      } else if (!ev.shiftKey && active === last) {
-        ev.preventDefault();
-        first.focus();
-      }
-    };
-
-    this.panelEl.addEventListener('keydown', this.focusTrapHandler);
+    this.focusTrapHandler = attachDialogFocusTrap(this.panelEl, () => this.getFocusableElements());
   }
 
   private detachFocusTrap() {
-    if (!this.panelEl || !this.focusTrapHandler) return;
-    this.panelEl.removeEventListener('keydown', this.focusTrapHandler);
+    detachDialogFocusTrap(this.panelEl, this.focusTrapHandler);
     this.focusTrapHandler = undefined;
   }
 
-  /**
-   * IntersectionObserver: adds .flyout__footer--pinned when the footer element
-   * is partially out of the scroll container (i.e. content is still scrollable),
-   * adding a scroll shadow so consumers can visually indicate clipped content.
-   */
-  private attachFooterObserver() {
-    if (!this.footerEl || !this.panelEl || typeof IntersectionObserver === 'undefined') return;
-    this.detachFooterObserver();
-
-    this.footerObserver = new IntersectionObserver(
-      ([entry]) => {
-        // footer is "pinned" when it is fully visible but the panel still has overflow
-        this.footerPinned = entry.intersectionRatio < 1;
-      },
-      { root: this.panelEl, threshold: 1.0 },
-    );
-    this.footerObserver.observe(this.footerEl);
-  }
-
-  private detachFooterObserver() {
-    if (this.footerObserver) {
-      this.footerObserver.disconnect();
-      this.footerObserver = undefined;
-    }
-  }
-
-  private handleSubFooterSlotChange = (ev: Event) => {
-    const slot = ev.target as HTMLSlotElement;
-    this.hasSubFooterSlot = slot.assignedNodes({ flatten: true }).length > 0;
-  };
-
   // ── Handlers ──────────────────────────────────────────────────
-
-  private handleKeydown = (ev: KeyboardEvent) => {
-    if (!this.open) return;
-    if (ev.key === 'Escape') {
-      ev.stopPropagation();
-      this.handleDismiss();
-    }
-  };
 
   private handleDismiss = () => {
     this.open = false;
@@ -352,23 +235,13 @@ export class IoFlyout {
    * @slot - Default slot. Body content of the flyout panel.
    * @slot header - Replaces the built-in heading area.
    * @slot footer - Action area at the bottom of the flyout. Typically 1–2 io-button elements.
-   * @slot sub-footer - Secondary footer area rendered after the main footer (e.g. legal text, FAQ links).
    */
   render() {
-    const { open, position, heading, headingId, footerBehavior } = this;
+    const { open, position, heading, headingId } = this;
     const panelClass = [
       'flyout__panel',
       `flyout__panel--${position}`,
-      `flyout__panel--${this.resolvedPosition}`,
       open ? 'flyout__panel--open' : '',
-      `flyout__panel--footer-${footerBehavior}`,
-    ]
-      .filter(Boolean)
-      .join(' ');
-
-    const footerClass = [
-      'flyout__footer',
-      this.footerPinned ? 'flyout__footer--pinned' : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -383,7 +256,7 @@ export class IoFlyout {
     const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
     return (
-      <Host onKeyDown={this.handleKeydown}>
+      <Host>
         <style>{getFlyoutStyles()}</style>
 
         {/* Backdrop — only rendered when open */}
@@ -429,15 +302,8 @@ export class IoFlyout {
             <slot />
           </div>
 
-          <div
-            class={footerClass}
-            ref={(el?: HTMLDivElement) => { this.footerEl = el; }}
-          >
+          <div class="flyout__footer">
             <slot name="footer" />
-          </div>
-
-          <div class={`flyout__sub-footer${this.hasSubFooterSlot ? '' : ' flyout__sub-footer--hidden'}`}>
-            <slot name="sub-footer" onSlotchange={this.handleSubFooterSlotChange} />
           </div>
         </div>
       </Host>

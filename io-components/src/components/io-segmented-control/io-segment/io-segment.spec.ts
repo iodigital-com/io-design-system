@@ -20,6 +20,14 @@ describe('io-segment — default props', () => {
     expect(component.icon).toBeUndefined();
   });
 
+  it('has undefined iconSource by default', () => {
+    expect(component.iconSource).toBeUndefined();
+  });
+
+  it('has hideLabel=false by default', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
   it('selected state is false by default', () => {
     expect((component as any).selected).toBe(false);
   });
@@ -173,6 +181,91 @@ describe('io-segment — handleClick', () => {
     (component as any).handleClick();
 
     expect(emitFn).not.toHaveBeenCalled();
+  });
+});
+
+describe('io-segment — iconSource prop', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('renders img element when iconSource is set', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'map';
+    component.label = 'Map';
+    component.iconSource = '/icons/map.svg';
+
+    component.render();
+
+    const imgCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'img');
+    expect(imgCalls.length).toBeGreaterThan(0);
+    expect(imgCalls[0]?.[1]?.['src']).toBe('/icons/map.svg');
+  });
+
+  it('iconSource takes precedence over icon when both are set', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'map';
+    component.label = 'Map';
+    component.icon = 'grid' as any;
+    component.iconSource = '/icons/map.svg';
+
+    component.render();
+
+    // Should have img (from iconSource), not io-icon (from icon)
+    const imgCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'img');
+    const iconCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'io-icon');
+    expect(imgCalls.length).toBeGreaterThan(0);
+    expect(iconCalls.length).toBe(0);
+  });
+});
+
+describe('io-segment — hideLabel prop', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('renders button with aria-label=label when hideLabel=true', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'grid';
+    component.label = 'Grid';
+    component.icon = 'grid' as any;
+    component.hideLabel = true;
+
+    component.render();
+
+    const btnCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'button');
+    expect(btnCalls[0]?.[1]?.['aria-label']).toBe('Grid');
+  });
+
+  it('does not render visible label span when hideLabel=true', () => {
+    const component = new IoSegment();
+    const el = document.createElement('io-segment');
+    (component as any).el = el;
+    (component as any).segmentSelect = { emit: vi.fn() };
+    component.value = 'grid';
+    component.label = 'Grid';
+    component.icon = 'grid' as any;
+    component.hideLabel = true;
+
+    component.render();
+
+    // When hideLabel=true the label span class should not appear
+    const spanCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(args => args[0] === 'span' && (args[1] as any)?.class === 'segment__label');
+    expect(spanCalls.length).toBe(0);
   });
 });
 

@@ -89,6 +89,36 @@ export function getSegmentStyles(): string {
       flex-shrink: 0;
     }
 
+    /* Custom icon source image — matches built-in io-icon sizing */
+    .segment__icon-source {
+      display: block;
+      width: var(--io-segment-icon-source-size);
+      height: var(--io-segment-icon-source-size);
+      object-fit: contain;
+    }
+
+    /* ── Icon-only (hideLabel) ──────────────────────────────── */
+
+    .segment--icon-only {
+      /* Ensure square touch target when no label is rendered */
+      min-width: var(--io-touch-target-min);
+      padding-left: var(--io-space-2);
+      padding-right: var(--io-space-2);
+    }
+
+    /* ── Badge slot ─────────────────────────────────────────── */
+
+    .segment__badge {
+      display: inline-flex;
+      align-items: center;
+      color: var(--io-segment-badge-color);
+    }
+
+    /* Hide the named slot element from layout — it is exposed via .segment__badge */
+    slot[name="badge"] {
+      display: none;
+    }
+
     /* ── Reduced motion ─────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {

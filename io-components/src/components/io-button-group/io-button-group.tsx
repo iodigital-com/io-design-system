@@ -10,17 +10,30 @@ import type { IoButtonGroupItem, IoButtonGroupChangeDetail, IoButtonGroupDirecti
 /**
  * io-button-group
  * ================
- * Segmented control for single-select (radiogroup) and multi-select (checkbox group) patterns.
+ * Flexible button group component supporting three distinct interaction patterns:
+ *
+ * - `type="single"` (default) — segmented control / radiogroup: exactly one item active at a time.
+ * - `type="multiple"` — checkbox group: any number of items may be active.
+ * - `type="toolbar"` — independent action cluster: no selection model, no roving tabindex.
+ *                      Use for Save/Cancel/Delete clusters and icon toolbars.
  *
  * Place `<io-button value="...">Label</io-button>` children inside the component.
  * The group reads their values/labels at load time and renders internal buttons with
- * full styling control, shared-border layout, and roving tabindex keyboard navigation.
+ * full styling control, shared-border layout, and roving tabindex keyboard navigation
+ * (for single/multiple types only).
  *
  * @example
  * <io-button-group value="week" type="single" label="View period">
  *   <io-button value="day">Day</io-button>
  *   <io-button value="week">Week</io-button>
  *   <io-button value="month">Month</io-button>
+ * </io-button-group>
+ *
+ * @example
+ * <io-button-group type="toolbar" label="Document actions">
+ *   <io-button value="save">Save</io-button>
+ *   <io-button value="cancel">Cancel</io-button>
+ *   <io-button value="delete">Delete</io-button>
  * </io-button-group>
  */
 @Component({
@@ -134,12 +147,18 @@ export class IoButtonGroup {
 
   @Watch('type')
   onTypeChange(newType: IoButtonGroupType) {
+    if (newType === 'toolbar') {
+      // Toolbar has no selection model — clear value and reset focus index
+      this.value = '';
+      this.initFocusIndex();
+      return;
+    }
     if (newType === 'single') {
-      // Switch from multiple to single — keep only the first active value
+      // Switch from multiple/toolbar to single — keep only the first active value
       const actives = this.getActiveValues();
       this.value = actives.length > 0 ? actives[0] : '';
     } else {
-      // Switch from single to multiple — wrap string in array
+      // Switch from single/toolbar to multiple — wrap string in array
       const current = this.value;
       this.value = typeof current === 'string' && current !== '' ? [current] : [];
     }
@@ -185,7 +204,10 @@ export class IoButtonGroup {
     const item = this.items[index];
     if (!item || item.disabled || this.disabled) return;
 
-    if (this.type === 'single') {
+    if (this.type === 'toolbar') {
+      // Toolbar: emit change with the clicked item value but no selection state
+      this.change.emit({ value: item.value });
+    } else if (this.type === 'single') {
       this.value = item.value;
       this.change.emit({ value: item.value });
     } else {
@@ -204,14 +226,19 @@ export class IoButtonGroup {
     const enabled = this.getEnabledItems();
     if (enabled.length === 0) return;
 
-    // Activate on Enter or Space in both modes
+    // Activate on Enter or Space in all modes
     if (ev.key === 'Enter' || ev.key === ' ') {
       ev.preventDefault();
       this.handleItemClick(index);
       return;
     }
 
-    // Navigation keys
+    // Toolbar type: no roving tabindex navigation — Tab key handles focus movement natively.
+    // Arrow keys are not intercepted in toolbar mode (ARIA toolbar pattern is optional here
+    // since each button is independently focusable via Tab).
+    if (this.type === 'toolbar') return;
+
+    // Navigation keys (single / multiple modes)
     const currentEnabledIndex = enabled.findIndex(e => e.index === index);
     const fallbackIndex = (() => {
       if (currentEnabledIndex >= 0) return null; // handled by getNextEnabledGroupIndex
@@ -254,6 +281,7 @@ export class IoButtonGroup {
     // When all items are disabled no item should be in the tab order.
     const hasEnabledItems = this.getEnabledItems().length > 0;
     const labelId = label ? this.labelId : undefined;
+    const isToolbar = type === 'toolbar';
 
     return (
       <Host>
@@ -278,7 +306,7 @@ export class IoButtonGroup {
           aria-disabled={disabled ? 'true' : undefined}
         >
           {items.map((item, index) => {
-            const active = this.isActive(item.value);
+            const active = !isToolbar && this.isActive(item.value);
             const itemDisabled = disabled || !!item.disabled;
             return (
               <button
@@ -288,11 +316,14 @@ export class IoButtonGroup {
                 // (allowed roles list for <button>). The native button provides
                 // baseline keyboard and focus semantics; the ARIA role conveys selection
                 // semantics to AT. Using <button> instead of <div> is intentional.
-                role={type === 'single' ? 'radio' : 'checkbox'}
-                aria-checked={active ? 'true' : 'false'}
+                // toolbar type uses the implicit role="button" — no override needed.
+                role={isToolbar ? undefined : type === 'single' ? 'radio' : 'checkbox'}
+                aria-checked={isToolbar ? undefined : (active ? 'true' : 'false')}
                 aria-label={item.ariaLabel || undefined}
                 aria-disabled={itemDisabled ? 'true' : undefined}
-                tabIndex={hasEnabledItems && index === focusIndex ? 0 : -1}
+                // toolbar: each button is individually focusable (tabIndex=0)
+                // single/multiple: roving tabindex — only focusIndex is in tab order
+                tabIndex={isToolbar ? (itemDisabled ? -1 : 0) : (hasEnabledItems && index === focusIndex ? 0 : -1)}
                 disabled={itemDisabled || undefined}
                 onClick={() => this.handleItemClick(index)}
                 onKeyDown={(ev: KeyboardEvent) => this.handleKeyDown(ev, index)}

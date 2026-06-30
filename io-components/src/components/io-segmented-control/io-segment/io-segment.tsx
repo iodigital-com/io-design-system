@@ -26,6 +26,10 @@ import type { IoIconName } from '../../../utils/icons';
  * @example
  * <io-segment value="list" label="List" />
  * <io-segment value="grid" label="Grid" icon="grid" />
+ * <io-segment value="map" label="Map" icon-source="/icons/map.svg" />
+ * <io-segment value="all" label="All" hide-label>
+ *   <io-badge slot="badge">12</io-badge>
+ * </io-segment>
  */
 @Component({
   tag: 'io-segment',
@@ -48,10 +52,28 @@ export class IoSegment {
   /** Optional icon name to display alongside the label */
   @Prop() icon: IoIconName | undefined;
 
+  /**
+   * URL to a custom SVG or image for the segment icon.
+   * Takes precedence over the `icon` prop when both are set.
+   * Use for brand icons or third-party glyphs not in the built-in icon set.
+   */
+  @Prop() iconSource: string | undefined;
+
+  /**
+   * When true, renders only the icon (or iconSource image) and uses the
+   * `label` prop as the button's `aria-label` for screen readers.
+   * The label is visually hidden but announced by AT.
+   * Requires either `icon` or `iconSource` to be set.
+   */
+  @Prop({ reflect: true }) hideLabel = false;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** Whether this segment is the currently selected option — set by parent */
   @State() selected = false;
+
+  /** Whether slotted badge content is present */
+  @State() private hasBadge = false;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -59,6 +81,7 @@ export class IoSegment {
     // Stamp initial disabled state onto the host element so the parent can
     // read it after syncChildren() has overwritten the @Prop.
     (this.el as HTMLElement & { ownDisabled?: boolean }).ownDisabled = this.disabled;
+    this.hasBadge = this.el.querySelector('[slot="badge"]') !== null;
   }
 
   // ── Events ────────────────────────────────────────────────────
@@ -91,24 +114,67 @@ export class IoSegment {
     }
   };
 
+  private handleBadgeSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasBadge = slot.assignedNodes({ flatten: true }).length > 0;
+  };
+
+  // ── Private helpers ───────────────────────────────────────────
+
+  private renderIcon() {
+    const { icon, iconSource } = this;
+    if (iconSource) {
+      return (
+        <span class="segment__icon" aria-hidden="true">
+          <img src={iconSource} class="segment__icon-source" alt="" />
+        </span>
+      );
+    }
+    if (icon) {
+      return (
+        <span class="segment__icon" aria-hidden="true">
+          <io-icon name={icon} size="sm" />
+        </span>
+      );
+    }
+    return null;
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
+  /**
+   * @slot badge - Optional numeric/badge content rendered after the label (e.g. counts, notifications).
+   *              Slotted content is excluded from the button's aria-label to avoid duplicate announcements.
+   */
   render() {
-    const { label, disabled, icon, selected } = this;
+    const { label, disabled, selected, hideLabel, hasBadge } = this;
+    const hasIcon = !!(this.icon || this.iconSource);
 
     const btnClass = [
       'segment',
       selected ? 'segment--selected' : '',
       disabled ? 'segment--disabled' : '',
+      hideLabel ? 'segment--icon-only' : '',
     ]
       .filter(Boolean)
       .join(' ');
+
+    // When hideLabel is true, use label as aria-label on the button and suppress
+    // visible label text. When badge content exists, aria-label is set explicitly
+    // so screen readers read the label only (not badge text).
+    const buttonAriaLabel = hideLabel
+      ? label
+      : hasBadge
+        ? label
+        : undefined;
 
     return (
       // Host carries no ARIA role — all semantics live on the inner button
       // to prevent double-announcement by screen readers (#1084).
       <Host>
         <style>{getSegmentStyles()}</style>
+        {/* Hidden badge slot — must exist in DOM for slotchange detection */}
+        <slot name="badge" onSlotchange={this.handleBadgeSlotChange} />
         <button
           type="button"
           role="radio"
@@ -116,16 +182,17 @@ export class IoSegment {
           disabled={disabled}
           tabIndex={this.el.tabIndex ?? -1}
           aria-checked={String(selected)}
-          aria-label={label}
+          aria-label={buttonAriaLabel}
           onClick={this.handleClick}
           onKeyDown={this.handleKeydown}
         >
-          {icon && (
-            <span class="segment__icon" aria-hidden="true">
-              <io-icon name={icon} size="sm" />
+          {hasIcon && this.renderIcon()}
+          {!hideLabel && <span class="segment__label">{label}</span>}
+          {hasBadge && (
+            <span class="segment__badge" aria-hidden="true" data-slot="badge">
+              <slot name="badge" />
             </span>
           )}
-          {label}
         </button>
       </Host>
     );

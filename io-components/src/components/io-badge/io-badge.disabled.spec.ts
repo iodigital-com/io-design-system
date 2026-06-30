@@ -9,20 +9,32 @@ describe('io-badge - disabled behavior (not applicable)', () => {
     component.variant = 'warning';
 
     expect(() => component.render()).not.toThrow();
-    expect(getBadgeClassName(component.variant, component.size)).toBe('badge badge--warning badge--md');
+    expect(getBadgeClassName(component.variant, component.appearance, component.size)).toBe('badge badge--warning badge--soft badge--md');
     expect(component.click).toBeUndefined();
     expect(component.toggle).toBeUndefined();
   });
 
   it('keeps passive rendering behavior across semantic variants', () => {
     const component = new IoBadge();
-    const variants = ['beige', 'blue', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'] as const;
+    const variants = ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle'] as const;
 
     expect(() => {
-    for (const variant of variants) {
-      component.variant = variant;
-      component.render();
-    }
+      for (const variant of variants) {
+        component.variant = variant;
+        component.render();
+      }
+    }).not.toThrow();
+  });
+
+  it('keeps passive rendering behavior across deprecated brand-colour variants', () => {
+    const component = new IoBadge();
+    const legacyVariants = ['beige', 'blue', 'dark', 'orange', 'rouge', 'outline'] as const;
+
+    expect(() => {
+      for (const variant of legacyVariants) {
+        component.variant = variant;
+        component.render();
+      }
     }).not.toThrow();
   });
 });

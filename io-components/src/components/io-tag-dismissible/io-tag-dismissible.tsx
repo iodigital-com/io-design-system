@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core';
 
 import { getTagDismissibleStyles } from './io-tag-dismissible-styles';
 import type { IoTagColor } from './types';
@@ -14,9 +14,16 @@ import type { IoIconName } from '../../utils/icons';
  * can be removed — e.g. applied filters, multi-select value chips, or
  * active category pills.
  *
+ * Modes:
+ * 1. Simple text chip: `<io-tag-dismissible label="React" />`
+ * 2. Rich content chip: `<io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>`
+ *    — label is optional when slot content is provided.
+ *
  * Accessibility:
  * - The dismiss button carries `aria-label="Remove {label}"` so screen
  *   reader users hear an unambiguous action label.
+ * - When `label` is omitted, the dismiss button's aria-label falls back to
+ *   the slot's text content, then to "Remove" as a last resort.
  * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
  *   matching common dismissible chip patterns.
  * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
@@ -24,19 +31,24 @@ import type { IoIconName } from '../../utils/icons';
  * @example
  * <io-tag-dismissible label="React"></io-tag-dismissible>
  * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+ * <io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>
  */
 @Component({
   tag: 'io-tag-dismissible',
   shadow: { delegatesFocus: true },
 })
 export class IoTagDismissible {
+  @Element() el!: HTMLElement;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /**
    * Visible label text for the chip — also used to build the dismiss
-   * button's accessible name ("Remove {label}"). Required.
+   * button's accessible name ("Remove {label}").
+   * Optional: when omitted, the default slot is rendered as chip content
+   * and the dismiss button's aria-label is derived from slot text content.
    */
-  @Prop() label!: string;
+  @Prop() label?: string;
 
   /** Colour variant of the chip */
   @Prop({ reflect: true }) variant: IoTagColor = 'default';
@@ -62,6 +74,20 @@ export class IoTagDismissible {
     }
   }
 
+  // ── Helpers ──────────────────────────────────────────────────
+
+  /**
+   * Derives the dismiss button's accessible name.
+   * Priority: label prop → slot text content → 'Remove'
+   */
+  private getDismissLabel(): string {
+    if (this.label) return `Remove ${this.label}`;
+    // Fallback: use the host's visible text content from slotted nodes
+    const slotText = this.el?.textContent?.trim();
+    if (slotText) return `Remove ${slotText}`;
+    return 'Remove';
+  }
+
   // ── Handlers ─────────────────────────────────────────────────
 
   private handleDismiss = () => {
@@ -82,12 +108,12 @@ export class IoTagDismissible {
             {icon && (
               <io-icon name={icon} size="xs" aria-hidden="true" />
             )}
-            {label}
+            {label !== undefined ? label : <slot />}
           </span>
           <button
             type="button"
             class="tag-dismissible__dismiss"
-            aria-label={`Remove ${label}`}
+            aria-label={this.getDismissLabel()}
             aria-disabled={disabled ? 'true' : undefined}
             disabled={disabled}
             onClick={this.handleDismiss}

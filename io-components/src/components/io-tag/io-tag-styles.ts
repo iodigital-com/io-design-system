@@ -50,65 +50,132 @@ export function getTagStyles(): string {
       min-height: var(--io-space-10);
     }
 
-    /* ── Colour variants (unselected state) ─────────────── */
+    /* ── Semantic variant × appearance combinations ─────── */
 
-    .tag--default {
+    /* neutral */
+    .tag--neutral.tag--soft {
       background: transparent;
       border-color: var(--io-border);
+      color: var(--io-text-primary);
     }
-
-    .tag--blue {
-      background: var(--io-color-primary-bg);
-      border-color: var(--io-color-primary);
-      color: var(--io-color-primary);
-    }
-
-    .tag--beige {
-      background: var(--io-color-off-white);
-      border-color: var(--io-color-beige);
-      color: var(--io-color-grey-6);
-    }
-
-    .tag--dark {
+    .tag--neutral.tag--solid {
       background: var(--io-color-grey-6);
       border-color: var(--io-color-grey-6);
       color: var(--io-color-white);
     }
-
-    .tag--orange {
-      background: var(--io-color-orange);
-      border-color: var(--io-color-orange);
-      color: var(--io-color-white);
+    .tag--neutral.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-grey-6) 12%, transparent);
+      border-color: var(--io-border);
+      backdrop-filter: blur(8px);
+      color: var(--io-text-primary);
     }
 
-    .tag--rouge {
-      background: var(--io-color-rouge);
-      border-color: var(--io-color-rouge);
+    /* primary */
+    .tag--primary.tag--soft {
+      background: var(--io-color-primary-bg);
+      border-color: var(--io-color-primary);
+      color: var(--io-color-primary);
+    }
+    .tag--primary.tag--solid {
+      background: var(--io-color-primary);
+      border-color: var(--io-color-primary);
       color: var(--io-color-white);
     }
+    .tag--primary.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-primary) 12%, transparent);
+      border-color: color-mix(in srgb, var(--io-color-primary) 40%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-primary);
+    }
 
-    .tag--success {
+    /* info */
+    .tag--info.tag--soft {
+      background: color-mix(in srgb, var(--io-color-info, #0077CC) 12%, transparent);
+      border-color: var(--io-color-info, #0077CC);
+      color: var(--io-color-info, #0077CC);
+    }
+    .tag--info.tag--solid {
+      background: var(--io-color-info, #0077CC);
+      border-color: var(--io-color-info, #0077CC);
+      color: var(--io-color-white);
+    }
+    .tag--info.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-info, #0077CC) 12%, transparent);
+      border-color: color-mix(in srgb, var(--io-color-info, #0077CC) 40%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-info, #0077CC);
+    }
+
+    /* success */
+    .tag--success.tag--soft {
       background: var(--io-color-success-soft);
       border-color: var(--io-color-success);
       color: var(--io-color-success);
     }
+    .tag--success.tag--solid {
+      background: var(--io-color-success);
+      border-color: var(--io-color-success);
+      color: var(--io-color-white);
+    }
+    .tag--success.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-success) 12%, transparent);
+      border-color: color-mix(in srgb, var(--io-color-success) 40%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-success);
+    }
 
-    .tag--warning {
+    /* warning */
+    .tag--warning.tag--soft {
       background: var(--io-color-warning-soft);
       border-color: var(--io-color-warning);
       color: var(--io-color-warning);
     }
+    .tag--warning.tag--solid {
+      background: var(--io-color-warning);
+      border-color: var(--io-color-warning);
+      color: var(--io-color-white);
+    }
+    .tag--warning.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-warning) 12%, transparent);
+      border-color: color-mix(in srgb, var(--io-color-warning) 40%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-warning);
+    }
 
-    .tag--error {
+    /* error */
+    .tag--error.tag--soft {
       background: var(--io-color-error-soft);
       border-color: var(--io-color-error);
       color: var(--io-color-error);
     }
+    .tag--error.tag--solid {
+      background: var(--io-color-error);
+      border-color: var(--io-color-error);
+      color: var(--io-color-white);
+    }
+    .tag--error.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-error) 12%, transparent);
+      border-color: color-mix(in srgb, var(--io-color-error) 40%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-error);
+    }
 
-    .tag--outline {
-      background: transparent;
-      border-color: var(--io-border);
-      color: var(--io-text-primary);
+    /* subtle */
+    .tag--subtle.tag--soft {
+      background: var(--io-color-off-white);
+      border-color: var(--io-color-beige);
+      color: var(--io-color-grey-6);
+    }
+    .tag--subtle.tag--solid {
+      background: var(--io-color-beige);
+      border-color: var(--io-color-beige);
+      color: var(--io-color-grey-6);
+    }
+    .tag--subtle.tag--frosted {
+      background: color-mix(in srgb, var(--io-color-beige) 30%, transparent);
+      border-color: var(--io-color-beige);
+      backdrop-filter: blur(8px);
+      color: var(--io-color-grey-6);
     }
 
     /* ── Selected state ─────────────────────────────────── */
@@ -122,41 +189,38 @@ export function getTagStyles(): string {
     /* ── Hover states ───────────────────────────────────── */
 
     @media (hover: hover) and (pointer: fine) {
-      .tag--default:hover:not(.tag--disabled):not(.tag--selected) {
+      .tag--neutral.tag--soft:hover:not(.tag--disabled):not(.tag--selected) {
         background: var(--io-state-hover);
         border-color: var(--io-border-hover);
       }
-
-      .tag--blue:hover:not(.tag--disabled):not(.tag--selected) {
-        background: var(--io-color-primary-muted);
-      }
-
-      .tag--beige:hover:not(.tag--disabled):not(.tag--selected) {
-        background: var(--io-color-beige);
-      }
-
-      .tag--dark:hover:not(.tag--disabled):not(.tag--selected) {
+      .tag--neutral.tag--solid:hover:not(.tag--disabled):not(.tag--selected),
+      .tag--neutral.tag--frosted:hover:not(.tag--disabled):not(.tag--selected) {
         opacity: 0.85;
       }
 
-      .tag--orange:hover:not(.tag--disabled):not(.tag--selected) {
-        background: var(--io-color-orange-hover);
-        border-color: var(--io-color-orange-hover);
+      .tag--primary.tag--soft:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-color-primary-muted);
+      }
+      .tag--primary.tag--solid:hover:not(.tag--disabled):not(.tag--selected),
+      .tag--primary.tag--frosted:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-color-primary-hover);
+        border-color: var(--io-color-primary-hover);
+        color: var(--io-color-white);
       }
 
-      .tag--rouge:hover:not(.tag--disabled):not(.tag--selected) {
-        background: var(--io-color-rouge-hover);
-        border-color: var(--io-color-rouge-hover);
-      }
-
+      .tag--info:hover:not(.tag--disabled):not(.tag--selected),
       .tag--success:hover:not(.tag--disabled):not(.tag--selected),
       .tag--warning:hover:not(.tag--disabled):not(.tag--selected),
       .tag--error:hover:not(.tag--disabled):not(.tag--selected) {
         opacity: 0.85;
       }
 
-      .tag--outline:hover:not(.tag--disabled):not(.tag--selected) {
-        background: var(--io-state-hover);
+      .tag--subtle.tag--soft:hover:not(.tag--disabled):not(.tag--selected) {
+        background: var(--io-color-beige);
+      }
+      .tag--subtle.tag--solid:hover:not(.tag--disabled):not(.tag--selected),
+      .tag--subtle.tag--frosted:hover:not(.tag--disabled):not(.tag--selected) {
+        opacity: 0.85;
       }
 
       .tag--selected:hover:not(.tag--disabled) {

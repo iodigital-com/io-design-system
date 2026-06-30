@@ -1,18 +1,23 @@
 import { describe, it, expect } from 'vitest';
 
 import { IoBadge } from './io-badge';
-import { getBadgeClassName } from './io-badge-utils';
+import { getBadgeClassName, DEPRECATED_BADGE_COLOR_MAP } from './io-badge-utils';
 
 describe('io-badge - default props and render contract', () => {
-  it('has blue as the default variant', () => {
+  it('has primary as the default variant', () => {
     const component = new IoBadge();
-    expect(component.variant).toBe('blue');
+    expect(component.variant).toBe('primary');
   });
 
-  it('maps variant to expected class name', () => {
-    expect(getBadgeClassName('success', 'sm')).toBe('badge badge--success badge--sm');
-    expect(getBadgeClassName('outline', 'md')).toBe('badge badge--outline badge--md');
-    expect(getBadgeClassName('blue', 'lg')).toBe('badge badge--blue badge--lg');
+  it('has soft as the default appearance', () => {
+    const component = new IoBadge();
+    expect(component.appearance).toBe('soft');
+  });
+
+  it('maps variant+appearance to expected class name', () => {
+    expect(getBadgeClassName('success', 'soft', 'sm')).toBe('badge badge--success badge--soft badge--sm');
+    expect(getBadgeClassName('neutral', 'solid', 'md')).toBe('badge badge--neutral badge--solid badge--md');
+    expect(getBadgeClassName('primary', 'frosted', 'lg')).toBe('badge badge--primary badge--frosted badge--lg');
   });
 
   it('uses md as the default size', () => {
@@ -20,8 +25,8 @@ describe('io-badge - default props and render contract', () => {
     expect(component.size).toBe('md');
   });
 
-  it('renders without throwing for each supported variant', () => {
-    const variants = ['beige', 'blue', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'] as const;
+  it('renders without throwing for each supported semantic variant', () => {
+    const variants = ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle'] as const;
 
     for (const variant of variants) {
       const component = new IoBadge();
@@ -30,8 +35,18 @@ describe('io-badge - default props and render contract', () => {
     }
   });
 
+  it('renders without throwing for deprecated brand-colour variants', () => {
+    const legacyVariants = ['beige', 'blue', 'dark', 'orange', 'rouge', 'outline'] as const;
+
+    for (const variant of legacyVariants) {
+      const component = new IoBadge();
+      component.variant = variant;
+      expect(() => component.render()).not.toThrow();
+    }
+  });
+
   it('includes badge--lg class when size is lg', () => {
-    expect(getBadgeClassName('success', 'lg')).toBe('badge badge--success badge--lg');
+    expect(getBadgeClassName('success', 'soft', 'lg')).toBe('badge badge--success badge--soft badge--lg');
   });
 
   it('stores ariaLabel prop when provided', () => {
@@ -43,5 +58,22 @@ describe('io-badge - default props and render contract', () => {
   it('stores ariaLabel as undefined when not provided', () => {
     const component = new IoBadge();
     expect(component.ariaLabel).toBeUndefined();
+  });
+
+  it('has no icon by default', () => {
+    const component = new IoBadge();
+    expect(component.icon).toBeUndefined();
+  });
+
+  it('has no iconSource by default', () => {
+    const component = new IoBadge();
+    expect(component.iconSource).toBeUndefined();
+  });
+
+  it('DEPRECATED_BADGE_COLOR_MAP covers all legacy color names', () => {
+    const legacyColors = ['blue', 'beige', 'dark', 'orange', 'rouge', 'outline'];
+    for (const color of legacyColors) {
+      expect(DEPRECATED_BADGE_COLOR_MAP[color]).toBeDefined();
+    }
   });
 });

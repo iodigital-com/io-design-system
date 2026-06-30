@@ -7,9 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
-import { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
+import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoIconName } from "./utils/icons";
+import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -45,7 +45,7 @@ import { IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
-import { IoTagColor, IoTagSize } from "./components/io-tag/types";
+import { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
 import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
@@ -55,9 +55,9 @@ import { IoTooltipPlacement } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
-export { IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
-export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
+export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoIconName } from "./utils/icons";
+export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
 export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -93,7 +93,7 @@ export { IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
-export { IoTagColor, IoTagSize } from "./components/io-tag/types";
+export { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
 export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
 export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
@@ -216,24 +216,37 @@ export namespace Components {
     /**
      * io-badge
      * =========
-     * Small label/tag for categorizing content or showing status.
-     * @example <io-badge variant="blue">New</io-badge>
-     * <io-badge variant="success">Active</io-badge>
-     * <io-badge variant="error">Error</io-badge>
+     * Small non-interactive label for categorizing content or showing status.
+     * @example <io-badge variant="primary">New</io-badge>
+     * <io-badge variant="success" appearance="solid">Active</io-badge>
+     * <io-badge variant="error" icon="alert-circle">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Appearance modifier — controls the fill/blend style. - solid: fully-filled background (default for badges) - soft: translucent tinted background - frosted: backdrop-filter blur over a semi-transparent fill
+          * @default 'soft'
+         */
+        "appearance": IoBadgeAppearance;
         /**
           * Accessible label for icon-only or abbreviated badges
          */
         "ariaLabel": string | undefined;
         /**
-          * Size variant aligned with io-tag
+          * Optional leading icon name (from the io icon set). Renders with `aria-hidden="true"` and `size="xs"`.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG URL for the leading icon. When set alongside `icon`, this URL takes precedence as the icon source.
+         */
+        "iconSource"?: string;
+        /**
+          * Size variant: sm (compact), md (default), lg (prominent)
           * @default 'md'
          */
         "size": IoBadgeSize;
         /**
-          * Color/semantic variant
-          * @default 'blue'
+          * Semantic colour variant. Replaces legacy brand-colour names (beige, rouge, etc.). Legacy values are still accepted for backwards compatibility.
+          * @default 'primary'
          */
         "variant": IoBadgeVariant;
     }
@@ -2938,13 +2951,24 @@ export namespace Components {
      * Interactive toggle chip / filter pill.
      * Used for filter bars, multi-select interfaces, and category labels.
      * Distinct from io-badge (which is non-interactive status text).
+     * Modes:
+     * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
+     * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
+     *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
+     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
-     * <io-tag selected>Amsterdam</io-tag>
-     * <io-tag removable>React</io-tag>
+     * <io-tag variant="primary" selected>Amsterdam</io-tag>
+     * <io-tag variant="info" appearance="soft">React</io-tag>
      */
     interface IoTag {
         /**
-          * Background colour of the unselected state
+          * Appearance modifier — controls background fill style. - solid: full filled background - soft: translucent tinted background (default) - frosted: backdrop-filter blur with translucent fill
+          * @default 'soft'
+         */
+        "appearance": IoTagAppearance;
+        /**
+          * @deprecated Use `variant` instead. Background colour of the unselected state. Brand-colour names will be mapped to semantic variants with a console.warn.
           * @default 'default'
          */
         "color": IoTagColor;
@@ -2959,12 +2983,20 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Accessible label for the tag content — used to build the remove button's aria-label. Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove".
+          * Optional leading icon name (from the io icon set). Renders with `aria-hidden="true"` and `size="xs"`.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG URL for the leading icon. When set alongside `icon`, this URL takes precedence as the icon source.
+         */
+        "iconSource"?: string;
+        /**
+          * Accessible label for the tag content — used to build the remove button's aria-label.
           * @default ''
          */
         "label": string;
         /**
-          * Renders a remove (×) button alongside the tag
+          * @deprecated Use `<io-tag-dismissible>` instead. Renders a remove (×) button alongside the tag. Will emit a console.warn in dev mode when used.
           * @default false
          */
         "removable": boolean;
@@ -2978,6 +3010,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoTagSize;
+        /**
+          * Semantic colour variant. Replaces `color` — use this in new code.
+          * @default 'neutral'
+         */
+        "variant": IoTagVariant;
     }
     /**
      * io-tag-dismissible
@@ -2987,14 +3024,21 @@ export namespace Components {
      * label with a dedicated dismiss action. Use it wherever a selected value
      * can be removed — e.g. applied filters, multi-select value chips, or
      * active category pills.
+     * Modes:
+     * 1. Simple text chip: `<io-tag-dismissible label="React" />`
+     * 2. Rich content chip: `<io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>`
+     *    — label is optional when slot content is provided.
      * Accessibility:
      * - The dismiss button carries `aria-label="Remove {label}"` so screen
      *   reader users hear an unambiguous action label.
+     * - When `label` is omitted, the dismiss button's aria-label falls back to
+     *   the slot's text content, then to "Remove" as a last resort.
      * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
      *   matching common dismissible chip patterns.
      * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
      * @example <io-tag-dismissible label="React"></io-tag-dismissible>
      * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     * <io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>
      */
     interface IoTagDismissible {
         /**
@@ -3007,9 +3051,9 @@ export namespace Components {
          */
         "icon"?: IoIconName;
         /**
-          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Optional: when omitted, the default slot is rendered as chip content and the dismiss button's aria-label is derived from slot text content.
          */
-        "label": string;
+        "label"?: string;
         /**
           * Colour variant of the chip
           * @default 'default'
@@ -3562,10 +3606,10 @@ declare global {
     /**
      * io-badge
      * =========
-     * Small label/tag for categorizing content or showing status.
-     * @example <io-badge variant="blue">New</io-badge>
-     * <io-badge variant="success">Active</io-badge>
-     * <io-badge variant="error">Error</io-badge>
+     * Small non-interactive label for categorizing content or showing status.
+     * @example <io-badge variant="primary">New</io-badge>
+     * <io-badge variant="success" appearance="solid">Active</io-badge>
+     * <io-badge variant="error" icon="alert-circle">Error</io-badge>
      */
     interface HTMLIoBadgeElement extends Components.IoBadge, HTMLStencilElement {
     }
@@ -4900,9 +4944,15 @@ declare global {
      * Interactive toggle chip / filter pill.
      * Used for filter bars, multi-select interfaces, and category labels.
      * Distinct from io-badge (which is non-interactive status text).
+     * Modes:
+     * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
+     * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
+     *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
+     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
-     * <io-tag selected>Amsterdam</io-tag>
-     * <io-tag removable>React</io-tag>
+     * <io-tag variant="primary" selected>Amsterdam</io-tag>
+     * <io-tag variant="info" appearance="soft">React</io-tag>
      */
     interface HTMLIoTagElement extends Components.IoTag, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTagElementEventMap>(type: K, listener: (this: HTMLIoTagElement, ev: IoTagCustomEvent<HTMLIoTagElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4929,14 +4979,21 @@ declare global {
      * label with a dedicated dismiss action. Use it wherever a selected value
      * can be removed — e.g. applied filters, multi-select value chips, or
      * active category pills.
+     * Modes:
+     * 1. Simple text chip: `<io-tag-dismissible label="React" />`
+     * 2. Rich content chip: `<io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>`
+     *    — label is optional when slot content is provided.
      * Accessibility:
      * - The dismiss button carries `aria-label="Remove {label}"` so screen
      *   reader users hear an unambiguous action label.
+     * - When `label` is omitted, the dismiss button's aria-label falls back to
+     *   the slot's text content, then to "Remove" as a last resort.
      * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
      *   matching common dismissible chip patterns.
      * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
      * @example <io-tag-dismissible label="React"></io-tag-dismissible>
      * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     * <io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>
      */
     interface HTMLIoTagDismissibleElement extends Components.IoTagDismissible, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoTagDismissibleElementEventMap>(type: K, listener: (this: HTMLIoTagDismissibleElement, ev: IoTagDismissibleCustomEvent<HTMLIoTagDismissibleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5287,24 +5344,37 @@ declare namespace LocalJSX {
     /**
      * io-badge
      * =========
-     * Small label/tag for categorizing content or showing status.
-     * @example <io-badge variant="blue">New</io-badge>
-     * <io-badge variant="success">Active</io-badge>
-     * <io-badge variant="error">Error</io-badge>
+     * Small non-interactive label for categorizing content or showing status.
+     * @example <io-badge variant="primary">New</io-badge>
+     * <io-badge variant="success" appearance="solid">Active</io-badge>
+     * <io-badge variant="error" icon="alert-circle">Error</io-badge>
      */
     interface IoBadge {
+        /**
+          * Appearance modifier — controls the fill/blend style. - solid: fully-filled background (default for badges) - soft: translucent tinted background - frosted: backdrop-filter blur over a semi-transparent fill
+          * @default 'soft'
+         */
+        "appearance"?: IoBadgeAppearance;
         /**
           * Accessible label for icon-only or abbreviated badges
          */
         "ariaLabel"?: string | undefined;
         /**
-          * Size variant aligned with io-tag
+          * Optional leading icon name (from the io icon set). Renders with `aria-hidden="true"` and `size="xs"`.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG URL for the leading icon. When set alongside `icon`, this URL takes precedence as the icon source.
+         */
+        "iconSource"?: string;
+        /**
+          * Size variant: sm (compact), md (default), lg (prominent)
           * @default 'md'
          */
         "size"?: IoBadgeSize;
         /**
-          * Color/semantic variant
-          * @default 'blue'
+          * Semantic colour variant. Replaces legacy brand-colour names (beige, rouge, etc.). Legacy values are still accepted for backwards compatibility.
+          * @default 'primary'
          */
         "variant"?: IoBadgeVariant;
     }
@@ -8112,13 +8182,24 @@ declare namespace LocalJSX {
      * Interactive toggle chip / filter pill.
      * Used for filter bars, multi-select interfaces, and category labels.
      * Distinct from io-badge (which is non-interactive status text).
+     * Modes:
+     * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
+     * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
+     *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
+     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
-     * <io-tag selected>Amsterdam</io-tag>
-     * <io-tag removable>React</io-tag>
+     * <io-tag variant="primary" selected>Amsterdam</io-tag>
+     * <io-tag variant="info" appearance="soft">React</io-tag>
      */
     interface IoTag {
         /**
-          * Background colour of the unselected state
+          * Appearance modifier — controls background fill style. - solid: full filled background - soft: translucent tinted background (default) - frosted: backdrop-filter blur with translucent fill
+          * @default 'soft'
+         */
+        "appearance"?: IoTagAppearance;
+        /**
+          * @deprecated Use `variant` instead. Background colour of the unselected state. Brand-colour names will be mapped to semantic variants with a console.warn.
           * @default 'default'
          */
         "color"?: IoTagColor;
@@ -8133,7 +8214,15 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Accessible label for the tag content — used to build the remove button's aria-label. Recommended when `removable` is true so screen readers announce "Remove [label]" instead of "Remove".
+          * Optional leading icon name (from the io icon set). Renders with `aria-hidden="true"` and `size="xs"`.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG URL for the leading icon. When set alongside `icon`, this URL takes precedence as the icon source.
+         */
+        "iconSource"?: string;
+        /**
+          * Accessible label for the tag content — used to build the remove button's aria-label.
           * @default ''
          */
         "label"?: string;
@@ -8146,7 +8235,7 @@ declare namespace LocalJSX {
          */
         "onToggle"?: (event: IoTagCustomEvent<boolean>) => void;
         /**
-          * Renders a remove (×) button alongside the tag
+          * @deprecated Use `<io-tag-dismissible>` instead. Renders a remove (×) button alongside the tag. Will emit a console.warn in dev mode when used.
           * @default false
          */
         "removable"?: boolean;
@@ -8160,6 +8249,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoTagSize;
+        /**
+          * Semantic colour variant. Replaces `color` — use this in new code.
+          * @default 'neutral'
+         */
+        "variant"?: IoTagVariant;
     }
     /**
      * io-tag-dismissible
@@ -8169,14 +8263,21 @@ declare namespace LocalJSX {
      * label with a dedicated dismiss action. Use it wherever a selected value
      * can be removed — e.g. applied filters, multi-select value chips, or
      * active category pills.
+     * Modes:
+     * 1. Simple text chip: `<io-tag-dismissible label="React" />`
+     * 2. Rich content chip: `<io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>`
+     *    — label is optional when slot content is provided.
      * Accessibility:
      * - The dismiss button carries `aria-label="Remove {label}"` so screen
      *   reader users hear an unambiguous action label.
+     * - When `label` is omitted, the dismiss button's aria-label falls back to
+     *   the slot's text content, then to "Remove" as a last resort.
      * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
      *   matching common dismissible chip patterns.
      * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
      * @example <io-tag-dismissible label="React"></io-tag-dismissible>
      * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+     * <io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>
      */
     interface IoTagDismissible {
         /**
@@ -8189,9 +8290,9 @@ declare namespace LocalJSX {
          */
         "icon"?: IoIconName;
         /**
-          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Required.
+          * Visible label text for the chip — also used to build the dismiss button's accessible name ("Remove {label}"). Optional: when omitted, the default slot is rendered as chip content and the dismiss button's aria-label is derived from slot text content.
          */
-        "label": string;
+        "label"?: string;
         /**
           * Fires when the dismiss button is clicked or Delete/Backspace is pressed
          */
@@ -8574,8 +8675,11 @@ declare namespace LocalJSX {
     }
     interface IoBadgeAttributes {
         "variant": IoBadgeVariant;
+        "appearance": IoBadgeAppearance;
         "size": IoBadgeSize;
         "ariaLabel": string | undefined;
+        "icon": IoIconName;
+        "iconSource": string;
     }
     interface IoBannerAttributes {
         "variant": IoBannerVariant;
@@ -9061,9 +9165,13 @@ declare namespace LocalJSX {
         "removable": boolean;
         "disabled": boolean;
         "size": IoTagSize;
+        "variant": IoTagVariant;
+        "appearance": IoTagAppearance;
         "color": IoTagColor;
         "label": string;
         "compact": boolean;
+        "icon": IoIconName;
+        "iconSource": string;
     }
     interface IoTagDismissibleAttributes {
         "label": string;
@@ -9186,7 +9294,7 @@ declare namespace LocalJSX {
         "io-tabs": Omit<IoTabs, keyof IoTabsAttributes> & { [K in keyof IoTabs & keyof IoTabsAttributes]?: IoTabs[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `attr:${K}`]?: IoTabsAttributes[K] } & { [K in keyof IoTabs & keyof IoTabsAttributes as `prop:${K}`]?: IoTabs[K] };
         "io-tabs-bar": Omit<IoTabsBar, keyof IoTabsBarAttributes> & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes]?: IoTabsBar[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `attr:${K}`]?: IoTabsBarAttributes[K] } & { [K in keyof IoTabsBar & keyof IoTabsBarAttributes as `prop:${K}`]?: IoTabsBar[K] };
         "io-tag": Omit<IoTag, keyof IoTagAttributes> & { [K in keyof IoTag & keyof IoTagAttributes]?: IoTag[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `attr:${K}`]?: IoTagAttributes[K] } & { [K in keyof IoTag & keyof IoTagAttributes as `prop:${K}`]?: IoTag[K] };
-        "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] } & OneOf<"label", IoTagDismissible["label"], IoTagDismissibleAttributes["label"]>;
+        "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] };
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-text-list": Omit<IoTextList, keyof IoTextListAttributes> & { [K in keyof IoTextList & keyof IoTextListAttributes]?: IoTextList[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `attr:${K}`]?: IoTextListAttributes[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `prop:${K}`]?: IoTextList[K] };
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
@@ -9224,10 +9332,10 @@ declare module "@stencil/core" {
             /**
              * io-badge
              * =========
-             * Small label/tag for categorizing content or showing status.
-             * @example <io-badge variant="blue">New</io-badge>
-             * <io-badge variant="success">Active</io-badge>
-             * <io-badge variant="error">Error</io-badge>
+             * Small non-interactive label for categorizing content or showing status.
+             * @example <io-badge variant="primary">New</io-badge>
+             * <io-badge variant="success" appearance="solid">Active</io-badge>
+             * <io-badge variant="error" icon="alert-circle">Error</io-badge>
              */
             "io-badge": LocalJSX.IntrinsicElements["io-badge"] & JSXBase.HTMLAttributes<HTMLIoBadgeElement>;
             /**
@@ -9898,9 +10006,15 @@ declare module "@stencil/core" {
              * Interactive toggle chip / filter pill.
              * Used for filter bars, multi-select interfaces, and category labels.
              * Distinct from io-badge (which is non-interactive status text).
+             * Modes:
+             * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
+             * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
+             *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
+             * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+             * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
              * @example <io-tag>Design</io-tag>
-             * <io-tag selected>Amsterdam</io-tag>
-             * <io-tag removable>React</io-tag>
+             * <io-tag variant="primary" selected>Amsterdam</io-tag>
+             * <io-tag variant="info" appearance="soft">React</io-tag>
              */
             "io-tag": LocalJSX.IntrinsicElements["io-tag"] & JSXBase.HTMLAttributes<HTMLIoTagElement>;
             /**
@@ -9911,14 +10025,21 @@ declare module "@stencil/core" {
              * label with a dedicated dismiss action. Use it wherever a selected value
              * can be removed — e.g. applied filters, multi-select value chips, or
              * active category pills.
+             * Modes:
+             * 1. Simple text chip: `<io-tag-dismissible label="React" />`
+             * 2. Rich content chip: `<io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>`
+             *    — label is optional when slot content is provided.
              * Accessibility:
              * - The dismiss button carries `aria-label="Remove {label}"` so screen
              *   reader users hear an unambiguous action label.
+             * - When `label` is omitted, the dismiss button's aria-label falls back to
+             *   the slot's text content, then to "Remove" as a last resort.
              * - Delete and Backspace keyboard shortcuts on the host fire dismiss,
              *   matching common dismissible chip patterns.
              * - Dismiss button meets WCAG 2.5.8 minimum touch target (var(--io-touch-target-min)).
              * @example <io-tag-dismissible label="React"></io-tag-dismissible>
              * <io-tag-dismissible label="TypeScript" variant="blue"></io-tag-dismissible>
+             * <io-tag-dismissible>Region: <strong>EU</strong></io-tag-dismissible>
              */
             "io-tag-dismissible": LocalJSX.IntrinsicElements["io-tag-dismissible"] & JSXBase.HTMLAttributes<HTMLIoTagDismissibleElement>;
             /**

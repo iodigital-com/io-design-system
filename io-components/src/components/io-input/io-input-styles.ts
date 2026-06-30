@@ -235,6 +235,19 @@ export function getInputStyles(): string {
       ${getSrOnlyStyles()}
     }
 
+    /* Visually hidden sr-only live region for loading state — announced by screen readers */
+    .input-loading-sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
     .input-wrapper__loading {
       display: flex;
       align-items: center;

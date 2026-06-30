@@ -5,6 +5,7 @@ import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } fr
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
 import { StateMessage } from '../common/state-message/StateMessage';
+import { isParentGroupRequired } from '../../utils/form/is-parent-group-required';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from './types';
@@ -349,7 +350,7 @@ export class IoCheckbox {
                 <slot name="label" onSlotchange={this.handleLabelSlotChange} />
               </span>
               {!hasLabelSlot && label}
-              {required && <Required />}
+              {required && !isParentGroupRequired(this.el) && <Required />}
             </span>
           </label>
         </div>

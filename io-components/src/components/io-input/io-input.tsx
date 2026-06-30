@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { implicitSubmit } from '../../utils/form/implicit-submit';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
@@ -349,6 +350,10 @@ export class IoInput {
     this.blur.emit(ev);
   };
 
+  private handleKeyDown = (ev: KeyboardEvent) => {
+    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
+  };
+
   /**
    * @slot prefix - Content placed before the input field. Typically an icon or short text.
    * @slot suffix - Content placed after the input field. Typically an icon, unit label, or action button.
@@ -438,6 +443,7 @@ export class IoInput {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
+              onKeyDown={this.handleKeyDown}
             />
             {loading ? (
               <div class="input-wrapper__loading" aria-hidden="true">

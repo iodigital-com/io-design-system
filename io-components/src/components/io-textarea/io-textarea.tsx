@@ -309,6 +309,48 @@ export class IoTextarea {
     this.blur.emit(ev);
   };
 
+  /**
+   * Ctrl+Enter (or Cmd+Enter on macOS) in a textarea triggers implicit form submission.
+   * Plain Enter inserts a newline — this is intentional and must NOT submit the form.
+   */
+  private handleKeyDown = (ev: KeyboardEvent) => {
+    if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
+      // Delegate to implicitSubmit but temporarily swap target tag to 'INPUT'
+      // so the textarea guard inside the utility is bypassed.
+      // We achieve this by calling the utility logic directly via a synthetic event
+      // with ctrlKey/metaKey already handled here rather than inside the utility.
+      if (ev.isComposing || ev.defaultPrevented) return;
+      if (this.disabled || this.loading) return;
+      const form = this.internals?.form;
+      if (!form) return;
+      ev.preventDefault();
+
+      const ioSubmitBtns = Array.from(form.querySelectorAll('io-button')).filter((btn) => {
+        const el = btn as HTMLElement & { type?: string };
+        return el.type === 'submit' || el.getAttribute('type') === 'submit';
+      });
+      const nativeSubmitters = Array.from(form.elements).filter((el) => {
+        const tag = el.tagName.toLowerCase();
+        return (
+          (tag === 'button' || tag === 'input') &&
+          (el as HTMLButtonElement | HTMLInputElement).type === 'submit'
+        );
+      });
+      const allSubmitters = [...nativeSubmitters, ...ioSubmitBtns].sort((a, b) => {
+        const pos = a.compareDocumentPosition(b);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
+
+      if (allSubmitters.length > 0) {
+        (allSubmitters[0] as HTMLElement).click();
+      } else {
+        form.requestSubmit();
+      }
+    }
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   /**
@@ -399,6 +441,7 @@ export class IoTextarea {
             onChange={this.handleChange}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
+            onKeyDown={this.handleKeyDown}
           />
           <label htmlFor={textareaId} class={hideLabel ? 'textarea-label textarea-label--sr-only' : 'textarea-label'}>
             <span class={hasLabelSlot ? 'textarea-label__slot' : 'textarea-label__slot textarea-label__slot--hidden'}>

@@ -244,9 +244,9 @@ export class IoBanner {
         hidePopover?: () => void;
       };
       if (this.open) {
-        try { popEl.showPopover?.(); } catch (_) { /* polyfill missing */ }
+        try { popEl.showPopover?.(); } catch { /* polyfill missing */ }
       } else {
-        try { popEl.hidePopover?.(); } catch (_) { /* already hidden */ }
+        try { popEl.hidePopover?.(); } catch { /* already hidden */ }
       }
     }
 

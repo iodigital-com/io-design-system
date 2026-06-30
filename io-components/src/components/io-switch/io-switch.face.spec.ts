@@ -150,4 +150,35 @@ describe('io-switch — FACE', () => {
     expect(c.checked).toBe(true);
     expect(internals.setFormValue).toHaveBeenLastCalledWith('on');
   });
+
+  describe('formStateRestoreCallback (#952)', () => {
+    it('restores checked=true when state is non-null', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.checked = false;
+      (component as any).formStateRestoreCallback('on');
+      expect(component.checked).toBe(true);
+    });
+
+    it('restores checked=false when state is null (bfcache restore for unchecked)', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      component.checked = true;
+      (component as any).formStateRestoreCallback(null);
+      expect(component.checked).toBe(false);
+    });
+
+    it('calls syncFormValue after restoring state', () => {
+      const internals = makeInternals();
+      (component as any).internals = internals;
+      (component as any).formStateRestoreCallback('on');
+      expect(internals.setFormValue).toHaveBeenCalled();
+    });
+
+    it('is a plain synchronous method — not async, not @Method', () => {
+      // formStateRestoreCallback must be synchronous (browser lifecycle)
+      const result = (component as any).formStateRestoreCallback('on');
+      expect(result).toBeUndefined();
+    });
+  });
 });

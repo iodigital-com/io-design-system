@@ -1409,6 +1409,11 @@ export namespace Components {
          */
         "name": string | undefined;
         /**
+          * Accessible label for the calendar trigger button. Defaults to 'Open date picker'. Override for localisation.
+          * @default 'Open date picker'
+         */
+        "pickerLabel": string;
+        /**
           * Makes the input read-only
           * @default false
          */
@@ -7078,6 +7083,11 @@ declare namespace LocalJSX {
         "onFocus"?: (event: IoInputDateCustomEvent<FocusEvent>) => void;
         "onInput"?: (event: IoInputDateCustomEvent<InputEvent>) => void;
         /**
+          * Accessible label for the calendar trigger button. Defaults to 'Open date picker'. Override for localisation.
+          * @default 'Open date picker'
+         */
+        "pickerLabel"?: string;
+        /**
           * Makes the input read-only
           * @default false
          */
@@ -9812,6 +9822,7 @@ declare namespace LocalJSX {
         "max": string | undefined;
         "step": string | undefined;
         "size": IoInputDateSize;
+        "pickerLabel": string;
     }
     interface IoInputPasswordAttributes {
         "label": string;

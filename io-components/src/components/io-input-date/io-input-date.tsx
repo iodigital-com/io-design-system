@@ -1,7 +1,7 @@
 import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputDateStyles } from './io-input-date-styles';
-import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { hasShowPickerSupport } from '../../utils/has-show-picker-support';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputDateSize } from './types';
@@ -26,6 +26,8 @@ export class IoInputDate {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
+  private nativeInputEl: HTMLInputElement | null = null;
 
   private inputId!: string;
   private errorId!: string;
@@ -76,8 +78,15 @@ export class IoInputDate {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoInputDateSize = 'md';
 
+  /**
+   * Accessible label for the calendar trigger button.
+   * Defaults to 'Open date picker'. Override for localisation.
+   */
+  @Prop() pickerLabel = 'Open date picker';
+
   @State() faceInvalid = false;
   @State() private touched = false;
+  @State() private showPickerSupported = false;
 
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
@@ -91,6 +100,7 @@ export class IoInputDate {
     this.errorId = `${base}-error`;
     this.helperId = `${base}-helper`;
     this.defaultValue = this.value ?? '';
+    this.showPickerSupported = hasShowPickerSupport();
     this.syncFormValue();
   }
 
@@ -186,12 +196,13 @@ export class IoInputDate {
     this.blur.emit(ev);
   };
 
-  private handleKeyDown = (ev: KeyboardEvent) => {
-    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
+  private handlePickerTrigger = () => {
+    if (this.disabled || this.loading || this.readonly) return;
+    this.nativeInputEl?.showPicker?.();
   };
 
   render() {
-    const { label, name, value, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, min, max, step } = this;
+    const { label, name, value, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, min, max, step, pickerLabel } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error' || this.faceInvalid;
@@ -244,17 +255,35 @@ export class IoInputDate {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
-              onKeyDown={this.handleKeyDown}
+              ref={(el) => { this.nativeInputEl = el ?? null; }}
             />
-            {/* Calendar icon — decorative */}
-            <span class="date-suffix" aria-hidden="true">
-              <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                <line x1="16" x2="16" y1="2" y2="6" />
-                <line x1="8" x2="8" y1="2" y2="6" />
-                <line x1="3" x2="21" y1="10" y2="10" />
-              </svg>
-            </span>
+            {/* Calendar icon — interactive trigger (supported) or decorative fallback */}
+            {this.showPickerSupported ? (
+              <button
+                type="button"
+                class="date-trigger"
+                aria-label={pickerLabel}
+                disabled={disabled || loading || readonly}
+                tabIndex={0}
+                onClick={this.handlePickerTrigger}
+              >
+                <svg aria-hidden="true" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                  <line x1="16" x2="16" y1="2" y2="6" />
+                  <line x1="8" x2="8" y1="2" y2="6" />
+                  <line x1="3" x2="21" y1="10" y2="10" />
+                </svg>
+              </button>
+            ) : (
+              <span class="date-suffix" aria-hidden="true">
+                <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                  <line x1="16" x2="16" y1="2" y2="6" />
+                  <line x1="8" x2="8" y1="2" y2="6" />
+                  <line x1="3" x2="21" y1="10" y2="10" />
+                </svg>
+              </span>
+            )}
             {showError && (
               <div class="input-state-icon input-state-icon--error" aria-hidden="true">
                 <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">

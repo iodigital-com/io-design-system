@@ -227,3 +227,47 @@ describe('io-switch render() — describedBy combinations', () => {
     expect(describedBy).toContain('helper');
   });
 });
+
+describe('io-switch render() — loading aria-live message (#952)', () => {
+  it('renders switch-loading-message span', () => {
+    const c = makeSwitch();
+    const calls = renderAndGetCalls(c);
+    const msgSpan = calls.find(([tag, attrs]) => tag === 'span' && String(attrs?.class).includes('switch-loading-message'));
+    expect(msgSpan).toBeDefined();
+  });
+
+  it('loading-message span has role=status and aria-live=polite', () => {
+    const c = makeSwitch();
+    const calls = renderAndGetCalls(c);
+    const msgSpan = calls.find(([tag, attrs]) => tag === 'span' && String(attrs?.class).includes('switch-loading-message'));
+    expect(msgSpan![1]['role']).toBe('status');
+    expect(msgSpan![1]['aria-live']).toBe('polite');
+  });
+
+  it('loading message text is empty when loading=false', () => {
+    const c = makeSwitch();
+    const calls = renderAndGetCalls(c);
+    const msgSpan = calls.find(([tag, attrs]) => tag === 'span' && String(attrs?.class).includes('switch-loading-message'));
+    // Children should be empty string
+    expect(msgSpan![2]).toBe('');
+  });
+
+  it('loading message text is "Loading" when loading=true and initialLoadingSeen=true', () => {
+    const c = makeSwitch();
+    c.loading = true;
+    (c as any).initialLoadingSeen = true;
+    const calls = renderAndGetCalls(c);
+    const msgSpan = calls.find(([tag, attrs]) => tag === 'span' && String(attrs?.class).includes('switch-loading-message'));
+    expect(msgSpan![2]).toBe('Loading');
+  });
+
+  it('aria-describedby includes loading message id when loading is active', () => {
+    const c = makeSwitch();
+    c.loading = true;
+    (c as any).initialLoadingSeen = true;
+    const calls = renderAndGetCalls(c);
+    const inputCall = calls.find(([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.type === 'checkbox');
+    const describedBy = inputCall![1]['aria-describedby'] as string;
+    expect(describedBy).toContain('loading');
+  });
+});

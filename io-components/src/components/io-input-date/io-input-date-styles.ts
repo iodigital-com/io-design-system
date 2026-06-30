@@ -126,13 +126,50 @@ export function getInputDateStyles(): string {
       border-bottom-color: var(--io-color-state-warning);
     }
 
-    /* Calendar icon — decorative, non-interactive */
+    /* Calendar icon — decorative fallback (no showPicker support) */
     .date-suffix {
       display: flex;
       align-items: center;
       flex-shrink: 0;
       color: var(--io-text-secondary);
       pointer-events: none;
+    }
+
+    /* Calendar trigger button — interactive (showPicker supported) */
+    .date-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
+      padding: 0 var(--io-space-2);
+      background: transparent;
+      border: none;
+      border-radius: var(--io-border-radius-sm);
+      cursor: pointer;
+      color: var(--io-input-date-trigger-color, var(--io-text-secondary));
+      transition: color var(--io-motion-base), background-color var(--io-motion-base);
+    }
+
+    .date-trigger:hover:not(:disabled) {
+      background-color: var(--io-input-date-trigger-bg-hover, var(--io-color-neutral-100));
+      color: var(--io-text-primary);
+    }
+
+    .date-trigger:focus-visible {
+      outline: var(--io-focus-ring-active);
+      outline-offset: 2px;
+    }
+
+    .date-trigger:disabled {
+      opacity: var(--io-state-disabled-opacity);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .date-trigger { transition: none; }
     }
 
     .input-state-icon {

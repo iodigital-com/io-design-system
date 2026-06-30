@@ -69,6 +69,9 @@ export class IoRadio {
   /** Fires when the checked state changes */
   @Event({ bubbles: true, composed: true }) change!: EventEmitter<IoRadioChangeDetail>;
 
+  /** Fires when the radio loses focus — parity with io-checkbox and io-switch */
+  @Event() blur!: EventEmitter<FocusEvent>;
+
   // ── Methods ───────────────────────────────────────────────────
 
   /** Programmatically move focus to the radio */
@@ -207,6 +210,11 @@ export class IoRadio {
 
   // ── Handlers ─────────────────────────────────────────────────
 
+  private handleBlur = (ev: FocusEvent) => {
+    if (this.disabled || this.loading) return;
+    this.blur.emit(ev);
+  };
+
   private handleChange = (ev: Event) => {
     if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
@@ -300,6 +308,7 @@ export class IoRadio {
                   aria-invalid={showError ? 'true' : undefined}
                   aria-describedby={describedBy || undefined}
                   onChange={this.handleChange}
+                  onBlur={this.handleBlur}
                 />
                 <span class={getRadioCustomClass(checked)} aria-hidden="true">
                   <span class="radio-dot" />

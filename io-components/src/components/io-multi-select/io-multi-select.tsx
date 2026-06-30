@@ -506,6 +506,12 @@ export class IoMultiSelect {
         if (ev.key === 'ArrowUp') {
           this.activeIndex = this.filteredOptions.length - 1;
         }
+      } else if (ev.key === 'Backspace' && (this.value ?? []).length > 0) {
+        // Backspace on closed trigger removes the last selected chip
+        ev.preventDefault();
+        const current = this.value ?? [];
+        const last = current[current.length - 1];
+        if (last !== undefined) this.removeChip(last);
       }
       return;
     }
@@ -758,9 +764,13 @@ export class IoMultiSelect {
             </label>
           )}
 
-          {/* Selected chips */}
+          {/* Selected chips — rendered outside the combobox trigger to preserve valid ARIA structure.
+              Remove buttons use tabIndex=-1 so they are not in the sequential tab order;
+              chip removal is accessible via the trigger's Backspace handler (removes last chip)
+              or by mouse-clicking the × button. Screen readers hear the chip list via the
+              trigger's aria-label which includes the selected count. */}
           {selectedValues.length > 0 && (
-            <div class="multi-select-chips" aria-label="Selected options">
+            <div class="multi-select-chips" role="group" aria-label="Selected options" aria-live="polite" aria-atomic="false">
               {selectedValues.map(v => {
                 const chipLabel = this.flatOptions.find(o => o.value === v)?.label ?? String(v);
                 return (
@@ -772,9 +782,12 @@ export class IoMultiSelect {
                       type="button"
                       class="multi-select-chip__remove"
                       aria-label={`Remove ${chipLabel}`}
+                      tabIndex={-1}
                       onClick={e => {
                         e.stopPropagation();
                         this.removeChip(v);
+                        // Return focus to trigger after chip removal
+                        setTimeout(() => this.triggerEl?.focus(), 0);
                       }}
                     >
                       <svg

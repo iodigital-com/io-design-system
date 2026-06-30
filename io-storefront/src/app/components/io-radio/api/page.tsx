@@ -119,6 +119,12 @@ export default function IoRadioApiPage() {
               'Yes',
               'Fires when the user selects this radio option. The detail contains the value string of the selected option. Use this to update external state for the entire group.',
             ],
+            [
+              <InlineCode key="n">blur</InlineCode>,
+              <InlineCode key="t">FocusEvent</InlineCode>,
+              'No',
+              'Fires when the radio loses focus. Useful for touched/dirty tracking in form libraries. Parity with io-checkbox and io-switch.',
+            ],
           ]}
         />
         <CodeNote label="Usage">

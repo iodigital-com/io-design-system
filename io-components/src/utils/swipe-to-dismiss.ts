@@ -37,7 +37,7 @@ export function attachSwipeToDismiss(options: SwipeToDismissOptions): SwipeToDis
     touchstart: (ev: TouchEvent) => {
       startY = ev.touches[0]?.clientY ?? 0;
     },
-    touchmove: (_ev: TouchEvent) => {
+    touchmove: () => {
       // Reserved for future drag-feedback visual
     },
     touchend: (ev: TouchEvent) => {

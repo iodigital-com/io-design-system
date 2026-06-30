@@ -23,7 +23,7 @@ export function getSpinnerStyles(): string {
       border-style: solid;
       border-color: transparent;
       border-top-color: currentColor;
-      animation: io-spin var(--io-spinner-duration) linear infinite;
+      animation: io-spin var(--io-animation-duration, var(--io-spinner-duration)) linear infinite;
       flex-shrink: 0;
     }
 

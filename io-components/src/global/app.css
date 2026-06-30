@@ -333,24 +333,72 @@
      6. MOTION
      ============================================================ */
 
+  /* ── 6a. Duration scale (bare time values — compose with easing) ── */
+  --io-duration-xs:              100ms;
+  --io-duration-sm:              200ms;
+  --io-duration-md:              300ms;
+  --io-duration-lg:              500ms;
+  --io-duration-xl:              1200ms;
+
+  /* ── 6b. Easing scale (bare cubic-bezier values) ─────────────── */
+  --io-ease-in:                  cubic-bezier(0, 0, 0.2, 1);
+  --io-ease-out:                 cubic-bezier(0.4, 0, 1, 1);
+  --io-ease-in-out:              cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── 6c. Consumer/test override hooks ────────────────────────── */
+  /* Set both to 0s in Vitest setup or consumer CSS to skip all motion */
+  /* (see: --io-transition-duration and --io-animation-duration)      */
+
+  /* ── 6d. Component-specific public tokens ────────────────────── */
+  --io-button-spinner-duration:  600ms;
+  --io-toast-item-enter-duration: 250ms;
+
+  /* ── 6e. Entrance direction offsets ─────────────────────────── */
+  /* Per-direction offsets for overlay entrance keyframes. */
+  --io-motion-entrance-offset-up:    12px;  /* modal slides up from below */
+  --io-motion-entrance-offset-down:  12px;  /* (reserved: panels entering from top) */
+  --io-motion-entrance-offset-start: 100%;  /* drawer/sheet slides from start edge */
+  --io-motion-entrance-offset-end:   100%;  /* (reserved: panels entering from end) */
+  /* @deprecated — use --io-motion-entrance-offset-up instead */
+  --io-motion-entrance-offset-y: var(--io-motion-entrance-offset-up);
+
+  /* ── 6f. Legacy composed aliases — @deprecated ───────────────── */
+  /* These aliases compose duration + easing into a single shorthand.    */
+  /* They will be removed in the next major motion token cleanup cycle.  */
+  /* Migrate to: transition: prop var(--io-duration-sm) var(--io-ease-out) */
   --io-motion-fast:              200ms ease;
   --io-motion-base:              300ms ease;
   --io-motion-slow:              500ms ease-in-out;
   --io-motion-extra-slow:        1200ms ease-in-out;
+  /* @deprecated easing aliases — prefer --io-ease-{in,out,in-out} */
   --io-motion-easing-standard:   ease;
-  --io-button-spinner-duration:  600ms;
-  --io-toast-item-enter-duration: 250ms;
   --io-motion-easing-in-out:     ease-in-out;
   --io-motion-easing-snappy:     cubic-bezier(0.075, 0.82, 0.165, 1);
   --io-motion-easing-bounce:     cubic-bezier(0.645, 0.045, 0.355, 1);
   --io-motion-easing-ease-out:   cubic-bezier(0.4, 0, 0.2, 1);
 
-   /* Overlay transition contract — semantic aliases for consistent enter/exit */
-   --io-motion-overlay-enter:     var(--io-motion-base);
-   --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
-   --io-motion-overlay-fade:      var(--io-motion-fast);
-   --io-motion-entrance-offset-y: 12px;
+  /* Overlay transition contract — semantic aliases for consistent enter/exit */
+  --io-motion-overlay-enter:     var(--io-motion-base);
+  --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
+  --io-motion-overlay-fade:      var(--io-motion-fast);
+}
 
+/* ── Global prefers-reduced-motion override ─────────────────────────────── */
+/* Collapses all duration tokens to 0ms when the user prefers reduced motion. */
+/* Components using var(--io-duration-*) via getTransition() automatically   */
+/* inherit this without needing per-component @media blocks.                 */
+/* WCAG 2.3.3 — Animation from Interactions (Level AAA).                     */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --io-duration-xs: 0ms;
+    --io-duration-sm: 0ms;
+    --io-duration-md: 0ms;
+    --io-duration-lg: 0ms;
+    --io-duration-xl: 0ms;
+  }
+}
+
+:root {
   /* ============================================================
      7. Z-INDEX SCALE
      ============================================================ */
@@ -521,7 +569,7 @@
   --io-divider-label-size:         var(--io-font-size-sm);
 
   /* Spinner */
-  --io-spinner-duration:           0.7s;
+  --io-spinner-duration:           700ms;   /* public-api: one full rotation duration */
   --io-spinner-duration-reduced:   1500ms;
   --io-spinner-border-width-sm:    1.5px;
   --io-spinner-border-width-md:    2px;

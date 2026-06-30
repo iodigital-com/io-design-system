@@ -500,7 +500,7 @@ export const accordionStoryStickyWithSurface: Story<'io-accordion'> = {
         background: 'surface',
         sticky: true,
         open: true,
-        style: 'max-height: 120px; overflow-y: auto;',
+        style: { maxHeight: '120px', overflowY: 'auto' },
       },
       events: {
         onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
@@ -522,7 +522,10 @@ export const accordionStoryFrostedBackground: Story<'io-accordion'> = {
     {
       tag: 'div' as const,
       properties: {
-        style: 'background: linear-gradient(135deg, #0000D2 0%, #7D0034 100%); padding: var(--io-space-4);',
+        style: {
+          background: 'linear-gradient(135deg, var(--io-color-primary) 0%, var(--io-focus-inner) 100%)',
+          padding: 'var(--io-space-4)',
+        },
       },
       children: [
         {
@@ -586,7 +589,7 @@ export const accordionStorySummarySlots: Story<'io-accordion'> = {
           tag: 'button' as const,
           properties: {
             slot: 'summary-after',
-            style: 'margin-inline-start: var(--io-space-2); cursor: pointer;',
+            style: { marginInlineStart: 'var(--io-space-2)', cursor: 'pointer' },
             'aria-label': 'Edit section',
           },
           children: ['Edit'],

@@ -2611,8 +2611,79 @@
     "cssVar": "--io-progress-circle-thickness",
     "classification": "public-api",
     "component": "io-progress",
-    "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px).",
-"description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info)."
+    "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px)."
+  },
+  {
+    "cssVar": "--io-ai-tag-padding-y",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Vertical padding inside the AI Tag badge pill."
+  },
+  {
+    "cssVar": "--io-ai-tag-padding-x",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Horizontal padding inside the AI Tag badge pill."
+  },
+  {
+    "cssVar": "--io-ai-tag-color",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Text and icon colour of the AI Tag badge."
+  },
+  {
+    "cssVar": "--io-ai-tag-bg",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Background fill of the AI Tag badge."
+  },
+  {
+    "cssVar": "--io-ai-tag-border-color",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Border colour of the AI Tag badge pill."
+  },
+  {
+    "cssVar": "--io-ai-tag-font-size",
+    "classification": "public-api",
+    "component": "io-ai-tag",
+    "description": "Font size of the AI Tag label text."
+  },
+  {
+    "cssVar": "--io-button-pure-color",
+    "classification": "public-api",
+    "component": "io-button-pure",
+    "description": "Text colour of the button-pure."
+  },
+  {
+    "cssVar": "--io-button-pure-hover-color",
+    "classification": "public-api",
+    "component": "io-button-pure",
+    "description": "Text colour of button-pure on hover."
+  },
+  {
+    "cssVar": "--io-button-pure-active-color",
+    "classification": "public-api",
+    "component": "io-button-pure",
+    "description": "Text colour of button-pure in the active/pressed state."
+  },
+  {
+    "cssVar": "--io-button-pure-underline-color",
+    "classification": "public-api",
+    "component": "io-button-pure",
+    "description": "Colour of the text underline decoration."
+  },
+  {
+    "cssVar": "--io-button-pure-underline-offset",
+    "classification": "public-api",
+    "component": "io-button-pure",
+    "description": "Vertical offset of the text underline from the baseline."
+  },
+  {
+    "cssVar": "--io-flag-border-radius",
+    "classification": "public-api",
+    "component": "io-flag",
+    "description": "Border radius of the flag image. Override to adjust rounding on flag thumbnails."
   },
   {
     "cssVar": "--io-grid-columns",

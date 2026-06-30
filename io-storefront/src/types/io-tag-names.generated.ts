@@ -6,6 +6,7 @@
 
 export type IoTagNames =
   | 'io-accordion'
+  | 'io-ai-tag'
   | 'io-app-shell'
   | 'io-avatar'
   | 'io-badge'
@@ -14,12 +15,14 @@ export type IoTagNames =
   | 'io-breadcrumb-item'
   | 'io-button'
   | 'io-button-group'
+  | 'io-button-pure'
   | 'io-button-tile'
   | 'io-carousel'
   | 'io-checkbox'
   | 'io-checkbox-group'
   | 'io-divider'
   | 'io-drawer'
+  | 'io-flag'
   | 'io-flyout'
   | 'io-form-field'
   | 'io-grid'

@@ -229,4 +229,16 @@ export const inputPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Reduces input height and padding for dense layouts.',
   },
+  {
+    name: 'indicator',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional Lucide icon name rendered as a leading indicator in the prefix area (e.g. "search", "mail").',
+  },
+  {
+    name: 'stepper',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true and type="number", renders +/- stepper buttons and suppresses native spin buttons.',
+  },
 ];

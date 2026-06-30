@@ -6,6 +6,7 @@ import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 let idCounter = 0;
 
@@ -34,7 +35,6 @@ export class IoInput {
   private counterId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
-  private counterTimer?: ReturnType<typeof setTimeout>;
 
   @State() private announcedCounter = '';
 
@@ -141,6 +141,21 @@ export class IoInput {
   /** Compact variant — reduces the field height and vertical padding for dense layouts */
   @Prop({ reflect: true }) compact = false;
 
+  /**
+   * Optional icon name to render as a leading indicator inside the prefix area.
+   * When set, the icon is rendered before any slotted prefix content.
+   * Accepts any valid IoIconName (a Lucide icon key).
+   * @example indicator="search"
+   */
+  @Prop() indicator?: IoIconName;
+
+  /**
+   * When true and `type="number"`, renders custom increment/decrement stepper buttons
+   * alongside the input. Also suppresses the native browser spin buttons.
+   * @default false
+   */
+  @Prop({ reflect: true }) stepper = false;
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -156,13 +171,15 @@ export class IoInput {
       console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
     }
     if (this.counter && this.maxLength != null) {
-      const remaining = this.maxLength - (this.value ?? '').length;
-      this.announcedCounter = `${remaining} characters remaining`;
+      const currentLen = (this.value ?? '').length;
+      this.announcedCounter = `${currentLen} of ${this.maxLength} characters`;
     }
   }
 
   disconnectedCallback(): void {
-    if (this.counterTimer) clearTimeout(this.counterTimer);
+    if (this.nativeInputEl) {
+      this.nativeInputEl.removeEventListener('wheel', this.handleWheel);
+    }
   }
 
   formResetCallback() {
@@ -310,11 +327,8 @@ export class IoInput {
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
     if (this.counter && this.maxLength != null) {
-      if (this.counterTimer) clearTimeout(this.counterTimer);
-      const remaining = this.maxLength - (this.value ?? '').length;
-      this.counterTimer = setTimeout(() => {
-        this.announcedCounter = `${remaining} characters remaining`;
-      }, 1000);
+      const currentLen = (this.value ?? '').length;
+      this.announcedCounter = `${currentLen} of ${this.maxLength} characters`;
     }
   };
 
@@ -342,6 +356,36 @@ export class IoInput {
   };
 
   /**
+   * Prevent scroll-wheel from changing value on number inputs.
+   * This fires only when the input is focused (passive: false required to call preventDefault).
+   */
+  private handleWheel = (ev: WheelEvent) => {
+    if (this.type === 'number') {
+      ev.preventDefault();
+    }
+  };
+
+  private handleStepUp = () => {
+    if (this.disabled || this.loading) return;
+    const input = this.nativeInputEl;
+    if (!input) return;
+    input.stepUp();
+    this.value = input.value;
+    this.input.emit(new InputEvent('input'));
+    this.change.emit(input.value);
+  };
+
+  private handleStepDown = () => {
+    if (this.disabled || this.loading) return;
+    const input = this.nativeInputEl;
+    if (!input) return;
+    input.stepDown();
+    this.value = input.value;
+    this.input.emit(new InputEvent('input'));
+    this.change.emit(input.value);
+  };
+
+  /**
    * @slot prefix - Content placed before the input field. Typically an icon or short text.
    * @slot suffix - Content placed after the input field. Typically an icon, unit label, or action button.
    * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
@@ -349,7 +393,9 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern } = this;
+    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
+    const showIndicator = !!indicator;
+    const showStepper = stepper && type === 'number';
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;
@@ -381,7 +427,7 @@ export class IoInput {
     const fieldClass = [
       'input-field',
       `input-field--${size}`,
-      hasPrefix ? 'input-field--has-prefix' : '',
+      (hasPrefix || showIndicator) ? 'input-field--has-prefix' : '',
       hasSuffix ? 'input-field--has-suffix' : '',
     ]
       .filter(Boolean)
@@ -393,15 +439,26 @@ export class IoInput {
         <div class={wrapperClass}>
           {/* Flex row: prefix slot, input, suffix slot / loading spinner, state icon */}
           <div class="input-field-row">
-            <span class={`input-slot input-slot--prefix${hasPrefix ? '' : ' input-slot--hidden'}`}>
+            <span class={`input-slot input-slot--prefix${(hasPrefix || showIndicator) ? '' : ' input-slot--hidden'}`}>
+              {showIndicator && (
+                <io-icon name={indicator} aria-hidden="true" class="input-indicator-icon" />
+              )}
               <slot name="prefix" onSlotchange={this.handleSlotChange} />
             </span>
             <input
               id={inputId}
               class={fieldClass}
               ref={(el?: HTMLInputElement) => {
+                // Remove previous wheel listener before reassigning
+                if (this.nativeInputEl && this.nativeInputEl !== el) {
+                  this.nativeInputEl.removeEventListener('wheel', this.handleWheel);
+                }
                 this.nativeInputEl = el;
                 applyAriaProp(this.aria, el ?? null);
+                // Attach non-passive wheel listener to suppress scroll-value-change on number inputs
+                if (el && type === 'number') {
+                  el.addEventListener('wheel', this.handleWheel, { passive: false });
+                }
               }}
               type={type}
               name={name}
@@ -432,6 +489,33 @@ export class IoInput {
               <div class="input-wrapper__loading" aria-hidden="true">
                 <io-spinner size="sm" />
               </div>
+            ) : showStepper ? (
+              <span class="input-stepper">
+                <button
+                  type="button"
+                  class="input-stepper__btn input-stepper__decrement"
+                  aria-label="Decrement"
+                  tabIndex={-1}
+                  disabled={isDisabled}
+                  onClick={this.handleStepDown}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="input-stepper__btn input-stepper__increment"
+                  aria-label="Increment"
+                  tabIndex={-1}
+                  disabled={isDisabled}
+                  onClick={this.handleStepUp}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </span>
             ) : (
               <span class={`input-slot input-slot--suffix${hasSuffix ? '' : ' input-slot--hidden'}`}>
                 <slot name="suffix" onSlotchange={this.handleSlotChange} />

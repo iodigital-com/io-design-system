@@ -253,6 +253,58 @@ export function getInputStyles(): string {
       .input-label { transition: none; }
     }
 
+    /* ── Stepper variant (type=number) ──────────────────────────── */
+
+    /* Hide native browser spin buttons when stepper prop is used */
+    :host([stepper]) .input-field {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    :host([stepper]) .input-field::-webkit-inner-spin-button,
+    :host([stepper]) .input-field::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+    .input-stepper {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      gap: 0;
+    }
+
+    .input-stepper__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--io-space-5);
+      height: var(--io-space-3);
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--io-text-secondary);
+      cursor: pointer;
+      transition: color var(--io-motion-fast);
+    }
+
+    .input-stepper__btn:hover:not(:disabled) {
+      color: var(--io-text-primary);
+    }
+
+    .input-stepper__btn:disabled {
+      opacity: var(--io-state-disabled-opacity);
+      cursor: not-allowed;
+    }
+
+    /* ── Indicator icon ─────────────────────────────────────────── */
+
+    .input-indicator-icon {
+      flex-shrink: 0;
+      color: var(--io-text-secondary);
+    }
+
     /* ── Compact variant ─────────────────────────────────────── */
 
     /* Compact: reduces field height and vertical padding for dense layouts.

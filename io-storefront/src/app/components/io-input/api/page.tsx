@@ -207,6 +207,18 @@ export default function IoInputApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Reduces padding and height for dense form layouts.',
             ],
+            [
+              <InlineCode key="n">indicator</InlineCode>,
+              <InlineCode key="t">IoIconName | undefined</InlineCode>,
+              '—',
+              'Optional icon rendered as a leading indicator in the prefix area. Accepts any valid IoIconName (Lucide icon key). Useful for type-based visual cues such as "search" or "mail".',
+            ],
+            [
+              <span key="n"><InlineCode>stepper</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true and type="number", renders custom +/- stepper buttons and suppresses the native browser spin buttons. Scroll-wheel value changes are always prevented for number inputs.',
+            ],
           ]}
         />
       </section>

@@ -54,6 +54,7 @@ declare module 'react' {
   'io-step': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepElement>, HTMLIoStepElement> & Partial<StencilJSX.IoStep>;
   'io-stepper': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoStepperElement>, HTMLIoStepperElement> & Partial<StencilJSX.IoStepper>;
   'io-switch': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoSwitchElement>, HTMLIoSwitchElement> & Partial<StencilJSX.IoSwitch>;
+  'io-tab-panel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabPanelElement>, HTMLIoTabPanelElement> & Partial<StencilJSX.IoTabPanel>;
   'io-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableElement>, HTMLIoTableElement> & Partial<StencilJSX.IoTable>;
   'io-table-body': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyElement>, HTMLIoTableBodyElement> & Partial<StencilJSX.IoTableBody>;
   'io-table-body-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableBodyCellElement>, HTMLIoTableBodyCellElement> & Partial<StencilJSX.IoTableBodyCell>;
@@ -61,7 +62,6 @@ declare module 'react' {
   'io-table-head': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadElement>, HTMLIoTableHeadElement> & Partial<StencilJSX.IoTableHead>;
   'io-table-head-cell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadCellElement>, HTMLIoTableHeadCellElement> & Partial<StencilJSX.IoTableHeadCell>;
   'io-table-head-row': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTableHeadRowElement>, HTMLIoTableHeadRowElement> & Partial<StencilJSX.IoTableHeadRow>;
-  'io-tab-panel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
   'io-tabs': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsElement>, HTMLIoTabsElement> & Partial<StencilJSX.IoTabs>;
   'io-tabs-bar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTabsBarElement>, HTMLIoTabsBarElement> & Partial<StencilJSX.IoTabsBar>;
   'io-tag': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoTagElement>, HTMLIoTagElement> & Partial<StencilJSX.IoTag>;

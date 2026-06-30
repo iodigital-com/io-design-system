@@ -409,7 +409,7 @@ export class IoPopover {
           {showArrow && (
             <div
               class="popover__arrow"
-              ref={(el: HTMLDivElement) => (this.arrowEl = el)}
+              ref={(el?: HTMLDivElement) => { if (el) this.arrowEl = el; }}
               aria-hidden="true"
             />
           )}

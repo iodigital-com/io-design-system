@@ -1995,11 +1995,11 @@ export namespace Components {
      * io-popover
      * ==========
      * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
+     * Uses
+     * @floating-ui /dom for viewport-aware positioning (flip, shift, autoUpdate, arrow).
      * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
+     * <io-button slot="trigger">Open</io-button>
+     * <p>Popover body content.</p>
      * </io-popover>
      */
     interface IoPopover {
@@ -2007,6 +2007,11 @@ export namespace Components {
           * Accessible name for the popover dialog panel when `label` prop is not used.
          */
         "ariaLabel": string | undefined;
+        /**
+          * Whether to render the directional arrow indicator pointing toward the trigger. Defaults to true.
+          * @default true
+         */
+        "arrow": boolean;
         /**
           * Close the popover when clicking outside the panel
           * @default true
@@ -4463,11 +4468,11 @@ declare global {
      * io-popover
      * ==========
      * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
+     * Uses
+     * @floating-ui /dom for viewport-aware positioning (flip, shift, autoUpdate, arrow).
      * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
+     * <io-button slot="trigger">Open</io-button>
+     * <p>Popover body content.</p>
      * </io-popover>
      */
     interface HTMLIoPopoverElement extends Components.IoPopover, HTMLStencilElement {
@@ -7339,11 +7344,11 @@ declare namespace LocalJSX {
      * io-popover
      * ==========
      * Click-triggered floating content panel with accessible dialog semantics.
-     * Uses the native Popover API (`popover="auto"`) where available, falling back
-     * to manual absolute positioning. No runtime positioning library required.
+     * Uses
+     * @floating-ui /dom for viewport-aware positioning (flip, shift, autoUpdate, arrow).
      * @example <io-popover label="Quick actions" placement="bottom">
-     *   <io-button slot="trigger">Open</io-button>
-     *   <p>Popover body content.</p>
+     * <io-button slot="trigger">Open</io-button>
+     * <p>Popover body content.</p>
      * </io-popover>
      */
     interface IoPopover {
@@ -7351,6 +7356,11 @@ declare namespace LocalJSX {
           * Accessible name for the popover dialog panel when `label` prop is not used.
          */
         "ariaLabel"?: string | undefined;
+        /**
+          * Whether to render the directional arrow indicator pointing toward the trigger. Defaults to true.
+          * @default true
+         */
+        "arrow"?: boolean;
         /**
           * Close the popover when clicking outside the panel
           * @default true
@@ -9296,6 +9306,7 @@ declare namespace LocalJSX {
         "label": string;
         "description": string | undefined;
         "ariaLabel": string | undefined;
+        "arrow": boolean;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -10010,11 +10021,11 @@ declare module "@stencil/core" {
              * io-popover
              * ==========
              * Click-triggered floating content panel with accessible dialog semantics.
-             * Uses the native Popover API (`popover="auto"`) where available, falling back
-             * to manual absolute positioning. No runtime positioning library required.
+             * Uses
+             * @floating-ui /dom for viewport-aware positioning (flip, shift, autoUpdate, arrow).
              * @example <io-popover label="Quick actions" placement="bottom">
-             *   <io-button slot="trigger">Open</io-button>
-             *   <p>Popover body content.</p>
+             * <io-button slot="trigger">Open</io-button>
+             * <p>Popover body content.</p>
              * </io-popover>
              */
             "io-popover": LocalJSX.IntrinsicElements["io-popover"] & JSXBase.HTMLAttributes<HTMLIoPopoverElement>;

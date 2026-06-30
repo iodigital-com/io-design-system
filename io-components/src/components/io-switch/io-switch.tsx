@@ -155,7 +155,7 @@ export class IoSwitch {
     if (!nativeInput) return;
 
     if ('ariaLabelledByElements' in nativeInput) {
-      (nativeInput as any).ariaLabelledByElements = [externalLabel];
+      (nativeInput as HTMLInputElement & { ariaLabelledByElements: Element[] }).ariaLabelledByElements = [externalLabel];
     } else {
       const text = externalLabel.textContent?.trim() ?? '';
       if (text) nativeInput.setAttribute('aria-label', text);

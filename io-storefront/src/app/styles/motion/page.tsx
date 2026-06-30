@@ -572,6 +572,187 @@ export default function MotionPage() {
         />
       </section>
 
+      <section id="per-component-conventions" className="space-y-6">
+        <SectionHeader
+          title="Per-component conventions"
+          description="Standard token choices used across the component library. Match these when building custom overlays or animations."
+        />
+        <div className="overflow-x-auto">
+          <table
+            className="w-full text-xs"
+            style={{ borderCollapse: 'separate', borderSpacing: '0' }}
+          >
+            <thead>
+              <tr style={{ background: 'var(--io-bg-raised)' }}>
+                {['Component', 'Enter', 'Exit', 'Easing', 'Notes'].map((col) => (
+                  <th
+                    key={col}
+                    className="text-left px-4 py-3 font-semibold"
+                    style={{
+                      color: 'var(--io-text-muted)',
+                      borderBottom: '1px solid var(--io-border)',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                {
+                  component: 'io-modal',
+                  enter: '--io-motion-base (300ms)',
+                  exit: '--io-motion-base (300ms)',
+                  easing: '--io-motion-easing-ease-out',
+                  notes: 'Fade + translateY(12px) entry via --io-motion-entrance-offset-y',
+                },
+                {
+                  component: 'io-drawer',
+                  enter: '--io-motion-base (300ms)',
+                  exit: '--io-motion-base (300ms)',
+                  easing: '--io-motion-easing-ease-out',
+                  notes: 'Slides in from anchor edge; uses --io-motion-overlay-enter token',
+                },
+                {
+                  component: 'io-flyout / io-sheet',
+                  enter: '--io-motion-base (300ms)',
+                  exit: '--io-motion-base (300ms)',
+                  easing: '--io-motion-easing-ease-out',
+                  notes: 'Same overlay token group as drawer',
+                },
+                {
+                  component: 'io-popover',
+                  enter: '--io-motion-fast (200ms)',
+                  exit: '--io-motion-fast (200ms)',
+                  easing: '--io-motion-easing-standard',
+                  notes: 'Small surface — fast timing keeps it snappy',
+                },
+                {
+                  component: 'io-toast-item',
+                  enter: '--io-toast-item-enter-duration (250ms)',
+                  exit: '--io-toast-item-enter-duration (250ms)',
+                  easing: '--io-motion-easing-ease-out',
+                  notes: 'Slide-in from bottom + opacity',
+                },
+                {
+                  component: 'io-spinner',
+                  enter: 'linear (continuous)',
+                  exit: '—',
+                  easing: 'linear',
+                  notes: 'Rotation uses --io-button-spinner-duration (600ms)',
+                },
+                {
+                  component: 'io-tooltip',
+                  enter: '--io-motion-fast (200ms)',
+                  exit: '--io-motion-fast (200ms)',
+                  easing: '--io-motion-easing-standard',
+                  notes: 'Opacity-only fade; no translate',
+                },
+                {
+                  component: 'io-accordion',
+                  enter: '--io-motion-base (300ms)',
+                  exit: '--io-motion-base (300ms)',
+                  easing: '--io-motion-easing-in-out',
+                  notes: 'Height expansion uses ease-in-out for symmetry',
+                },
+              ].map((row) => (
+                <tr
+                  key={row.component}
+                  style={{ borderBottom: '1px solid var(--io-border)' }}
+                >
+                  <td className="px-4 py-3 font-mono font-semibold" style={{ color: 'var(--io-text-primary)' }}>
+                    {row.component}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: 'var(--io-text-secondary)' }}>
+                    {row.enter}
+                  </td>
+                  <td className="px-4 py-3" style={{ color: 'var(--io-text-secondary)' }}>
+                    {row.exit}
+                  </td>
+                  <td className="px-4 py-3 font-mono text-xs" style={{ color: 'var(--io-accent-text)' }}>
+                    {row.easing}
+                  </td>
+                  <td className="px-4 py-3 text-xs" style={{ color: 'var(--io-text-muted)' }}>
+                    {row.notes}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="override-variables" className="space-y-6">
+        <SectionHeader
+          title="Consumer override variables"
+          description="Escape-hatch tokens that let consumers adjust global motion timing without patching component internals."
+        />
+        <div className="space-y-4">
+          <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
+            The three global motion tokens are the primary override surface. Redefine them on{' '}
+            <code style={{ fontSize: '0.85em' }}>:root</code> inside{' '}
+            <code style={{ fontSize: '0.85em' }}>@layer brand</code> to scale motion globally
+            without modifying per-component tokens.
+          </p>
+          <div className="space-y-2">
+            {[
+              {
+                token: '--io-motion-fast',
+                defaultVal: '200ms ease',
+                desc: 'Override to speed up or slow down all micro-interaction transitions.',
+              },
+              {
+                token: '--io-motion-base',
+                defaultVal: '300ms ease',
+                desc: 'Override to adjust the default transition tempo across all components.',
+              },
+              {
+                token: '--io-motion-slow',
+                defaultVal: '500ms ease-in-out',
+                desc: 'Override for structural panel and accordion animations.',
+              },
+            ].map(({ token, defaultVal, desc }) => (
+              <div
+                key={token}
+                className="grid gap-4 px-5 py-4 rounded-lg"
+                style={{
+                  border: '1px solid var(--io-border)',
+                  background: 'var(--io-bg-raised)',
+                  gridTemplateColumns: '260px 160px 1fr',
+                }}
+              >
+                <code className="text-xs font-mono font-semibold" style={{ color: 'var(--io-text-primary)' }}>
+                  {token}
+                </code>
+                <code className="text-xs font-mono" style={{ color: 'var(--io-accent-text)' }}>
+                  {defaultVal}
+                </code>
+                <span className="text-xs" style={{ color: 'var(--io-text-secondary)' }}>
+                  {desc}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
+            For a completely motion-free experience (beyond{' '}
+            <code style={{ fontSize: '0.85em' }}>prefers-reduced-motion</code>), set all three tokens
+            to <code style={{ fontSize: '0.85em' }}>0ms</code> in your brand layer:
+          </p>
+          <pre
+            className="text-xs font-mono p-4 rounded-lg overflow-x-auto"
+            style={{ background: 'var(--io-bg-raised)', color: 'var(--io-text-primary)', border: '1px solid var(--io-border)' }}
+          >{`@layer brand {
+  :root {
+    --io-motion-fast: 0ms;
+    --io-motion-base: 0ms;
+    --io-motion-slow: 0ms;
+  }
+}`}</pre>
+        </div>
+      </section>
+
       <section id="dos-and-donts" className="space-y-6">
         <SectionHeader
           title="Do and don't"

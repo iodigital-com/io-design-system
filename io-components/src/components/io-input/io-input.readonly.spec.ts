@@ -15,11 +15,11 @@ describe('io-input — readonly + prefix/suffix slots', () => {
   // ── readonly prop ───────────────────────────────────────────────
 
   it('defaults readonly to false', () => {
-    expect(component.readonly).toBe(false);
+    expect(component.readOnly).toBe(false);
   });
 
   it('passes readOnly to the native input element', () => {
-    component.readonly = true;
+    component.readOnly = true;
     vi.mocked(h).mockClear();
     component.render();
 
@@ -29,7 +29,7 @@ describe('io-input — readonly + prefix/suffix slots', () => {
   });
 
   it('sets aria-readonly="true" when readonly', () => {
-    component.readonly = true;
+    component.readOnly = true;
     vi.mocked(h).mockClear();
     component.render();
 
@@ -39,7 +39,7 @@ describe('io-input — readonly + prefix/suffix slots', () => {
   });
 
   it('does not set aria-readonly when not readonly', () => {
-    component.readonly = false;
+    component.readOnly = false;
     vi.mocked(h).mockClear();
     component.render();
 
@@ -49,7 +49,7 @@ describe('io-input — readonly + prefix/suffix slots', () => {
   });
 
   it('adds input-wrapper--readonly class when readonly', () => {
-    component.readonly = true;
+    component.readOnly = true;
     vi.mocked(h).mockClear();
     component.render();
 
@@ -62,7 +62,7 @@ describe('io-input — readonly + prefix/suffix slots', () => {
   it('readonly field does not prevent handleInput from being wired', () => {
     // readonly prop is passed to the input — browser prevents typing natively.
     // The component does NOT intercept events for readonly (browser handles it).
-    component.readonly = true;
+    component.readOnly = true;
     vi.mocked(h).mockClear();
     component.render();
 

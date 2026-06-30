@@ -246,7 +246,7 @@ describe('io-input — render() wrapper class branches', () => {
   });
 
   it('applies input-wrapper--readonly class when readonly=true', () => {
-    c.readonly = true;
+    c.readOnly = true;
     vi.mocked(h).mockClear();
     c.render();
 
@@ -259,7 +259,7 @@ describe('io-input — render() wrapper class branches', () => {
   it('combines state-error, disabled, and readonly wrapper classes simultaneously', () => {
     c.state = 'error';
     c.disabled = true;
-    c.readonly = true;
+    c.readOnly = true;
     vi.mocked(h).mockClear();
     c.render();
 

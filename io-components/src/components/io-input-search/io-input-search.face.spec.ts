@@ -209,7 +209,7 @@ describe('io-input-search — FACE (#841)', () => {
   });
 
   it('readonly prop defaults to false', () => {
-    expect(component.readonly).toBe(false);
+    expect(component.readOnly).toBe(false);
   });
 
   it('loading prop defaults to false', () => {
@@ -225,7 +225,7 @@ describe('io-input-search — FACE (#841)', () => {
   });
 
   it('handleInput is blocked when readonly', () => {
-    component.readonly = true;
+    component.readOnly = true;
     const ev = new InputEvent('input');
     Object.defineProperty(ev, 'target', { value: { value: 'test' } });
     const inputEmit = vi.fn();
@@ -235,7 +235,7 @@ describe('io-input-search — FACE (#841)', () => {
   });
 
   it('handleChange is blocked when readonly', () => {
-    component.readonly = true;
+    component.readOnly = true;
     const ev = new Event('change');
     Object.defineProperty(ev, 'target', { value: { value: 'test' } });
     const changeEmit = vi.fn();

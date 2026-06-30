@@ -7,7 +7,6 @@ import {
   Element,
   Host,
   Watch,
-  Listen,
   h,
 } from '@stencil/core';
 
@@ -126,6 +125,7 @@ export class IoPopover {
 
   disconnectedCallback(): void {
     this.detachFocusTrap?.();
+    this.detachWindowListeners();
     if (this._scrollRafId) {
       cancelAnimationFrame(this._scrollRafId);
     }
@@ -146,52 +146,59 @@ export class IoPopover {
     }
   }
 
-  // ── Global listeners ──────────────────────────────────────────
+  // ── Private helpers ───────────────────────────────────────────
 
-  @Listen('keydown', { target: 'window' })
-  handleKeydown(ev: KeyboardEvent) {
+  private handleKeydown = (ev: KeyboardEvent) => {
     if (!this.open) return;
     if (ev.key === 'Escape') {
       ev.stopPropagation();
       this.close();
     }
-  }
+  };
 
-  @Listen('click', { target: 'window', capture: true })
-  handleWindowClick(ev: MouseEvent) {
+  private handleWindowClick = (ev: MouseEvent) => {
     if (!this.open) return;
     if (!this.closeOnClickOutside) return;
-
     const target = ev.composedPath()[0] as Node;
-    const isInsideHost = this.el.contains(target);
-    if (!isInsideHost) {
+    if (!this.el.contains(target)) {
       this.close();
     }
-  }
+  };
 
-  @Listen('scroll', { target: 'window', capture: true })
-  handleWindowScroll() {
+  private handleWindowScroll = () => {
     if (this._scrollRafId) return;
     this._scrollRafId = requestAnimationFrame(() => {
       this._scrollRafId = undefined;
-      if (this.open) {
-        this.repositionPanel();
-      }
+      if (this.open) this.repositionPanel();
     });
-  }
+  };
 
-  @Listen('resize', { target: 'window' })
-  handleWindowResize() {
+  private handleWindowResize = () => {
     if (!this.open) return;
     this.repositionPanel();
+  };
+
+  private attachWindowListeners() {
+    this.detachWindowListeners();
+    window.addEventListener('keydown', this.handleKeydown);
+    window.addEventListener('click', this.handleWindowClick, { capture: true });
+    window.addEventListener('scroll', this.handleWindowScroll, { capture: true });
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
-  // ── Private helpers ───────────────────────────────────────────
+  private detachWindowListeners() {
+    window.removeEventListener('keydown', this.handleKeydown);
+    window.removeEventListener('click', this.handleWindowClick, { capture: true });
+    window.removeEventListener('scroll', this.handleWindowScroll, { capture: true });
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
 
   private applyOpenState() {
     if (!this.panelEl) return;
 
     this.openEvent.emit();
+    this.attachWindowListeners();
 
     if (this.useNativePopover) {
       try {
@@ -217,6 +224,7 @@ export class IoPopover {
 
   private applyClosedState() {
     this.detachFocusTrap();
+    this.detachWindowListeners();
     if (!this.panelEl) return;
 
     if (this.useNativePopover) {

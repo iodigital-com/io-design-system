@@ -447,6 +447,8 @@
   --io-divider-label-size:         var(--io-font-size-sm);
 
   /* Spinner */
+  --io-spinner-duration:           0.7s;
+  --io-spinner-duration-reduced:   1500ms;
   --io-spinner-border-width-sm:    1.5px;
   --io-spinner-border-width-md:    2px;
   --io-spinner-border-width-lg:    3px;

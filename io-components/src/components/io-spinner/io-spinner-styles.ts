@@ -23,7 +23,7 @@ export function getSpinnerStyles(): string {
       border-style: solid;
       border-color: transparent;
       border-top-color: currentColor;
-      animation: io-spin 0.7s linear infinite;
+      animation: io-spin var(--io-spinner-duration) linear infinite;
       flex-shrink: 0;
     }
 
@@ -49,7 +49,7 @@ export function getSpinnerStyles(): string {
     /* ── Reduced motion — slow instead of stop ───────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      .spinner { animation-duration: 1500ms; }
+      .spinner { animation-duration: var(--io-spinner-duration-reduced); }
     }
 
     /* ── Windows High Contrast Mode (forced-colors) ──────── */

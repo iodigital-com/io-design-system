@@ -153,6 +153,8 @@ export class IoSwitch {
 
   private handleChange = (ev: Event) => {
     if (this.disabled || this.loading) return;
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     const input = ev.target as HTMLInputElement;
     this.checked = input.checked;
     this.change.emit({ checked: input.checked, value: this.value });

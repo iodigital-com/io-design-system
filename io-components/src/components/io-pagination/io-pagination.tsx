@@ -228,6 +228,7 @@ export class IoPagination {
               aria-label={resolvedPrevLabel}
               disabled={page === 1}
               onClick={() => this.go(page - 1)}
+              onKeyDown={(ev: KeyboardEvent) => { if (ev.key === ' ') ev.preventDefault(); }}
             >
               {arrowLeft}
             </button>
@@ -242,6 +243,7 @@ export class IoPagination {
                     aria-label={`${resolvedPagePrefix} ${p}`}
                     aria-current={p === page ? 'page' : undefined}
                     onClick={() => this.go(p as number)}
+                    onKeyDown={(ev: KeyboardEvent) => { if (ev.key === ' ') ev.preventDefault(); }}
                   >
                     {p}
                   </button>
@@ -254,6 +256,7 @@ export class IoPagination {
               aria-label={resolvedNextLabel}
               disabled={page === totalPages}
               onClick={() => this.go(page + 1)}
+              onKeyDown={(ev: KeyboardEvent) => { if (ev.key === ' ') ev.preventDefault(); }}
             >
               {arrowRight}
             </button>

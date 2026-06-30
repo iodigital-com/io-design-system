@@ -143,6 +143,8 @@ export class IoInputSearch {
 
   private handleInput = (ev: InputEvent) => {
     if (this.disabled || this.readonly) return;
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     const newValue = (ev.target as HTMLInputElement).value;
     this.value = newValue;
     this.hasValue = newValue.length > 0;
@@ -151,6 +153,8 @@ export class IoInputSearch {
 
   private handleChange = (ev: Event) => {
     if (this.disabled || this.readonly) return;
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     const newVal = (ev.target as HTMLInputElement).value;
     this.value = newVal;
     this.syncFormValue();
@@ -159,11 +163,15 @@ export class IoInputSearch {
 
   private handleFocus = (ev: FocusEvent) => {
     if (this.disabled) return;
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.touched = true;
     this.syncFormValue();
     this.blur.emit(ev);

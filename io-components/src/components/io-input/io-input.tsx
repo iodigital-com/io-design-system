@@ -307,6 +307,8 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.value = (ev.target as HTMLInputElement).value;
     this.input.emit(ev);
     if (this.counter && this.maxLength != null) {
@@ -322,6 +324,8 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.change.emit((ev.target as HTMLInputElement).value);
   };
 
@@ -329,6 +333,8 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.focus.emit(ev);
   };
 
@@ -336,6 +342,8 @@ export class IoInput {
     if (this.disabled || this.loading) {
       return;
     }
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     this.touched = true;
     this.syncFormValue();
     this.blur.emit(ev);

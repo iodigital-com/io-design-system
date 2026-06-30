@@ -3784,6 +3784,22 @@
       "notes": "Banner stack order. Fallback: --io-z-toast."
     },
     {
+      "runtimeCssVar": "--io-link-active-underline-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-link active state underline and text color. Consumer override point. Defaults to --io-color-primary."
+    },
+    {
+      "runtimeCssVar": "--io-link-pure-active-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-link-pure active state text and underline color. Consumer override point. Defaults to --io-color-primary."
+    },
+    {
       "runtimeCssVar": "--io-spinner-size",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

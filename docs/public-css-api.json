@@ -2468,5 +2468,17 @@
     "classification": "internal",
     "component": "global",
     "description": "Peak (lighter) color of the .io-skeleton shimmer gradient. Consumer override point defined in app.css. Defaults to --io-color-grey-5."
+  },
+  {
+    "cssVar": "--io-link-active-underline-color",
+    "classification": "public-api",
+    "component": "io-link",
+    "description": "Color of the underline and text when the link is in the active (current nav item) state. Defaults to var(--io-color-primary)."
+  },
+  {
+    "cssVar": "--io-link-pure-active-color",
+    "classification": "public-api",
+    "component": "io-link-pure",
+    "description": "Color of the text and underline when io-link-pure is in the active (current nav item) state. Defaults to var(--io-color-primary)."
   }
 ]

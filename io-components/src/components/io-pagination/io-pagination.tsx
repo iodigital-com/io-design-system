@@ -72,6 +72,27 @@ export class IoPagination {
   /** When true, always renders the last page button at the trailing edge of the range */
   @Prop() showLastPage = false;
 
+  /**
+   * When provided, renders a per-page selector before the previous arrow button.
+   * Example: `[10, 25, 50]` — selecting an option emits `change` with the new `perPage` value.
+   * When absent (default) the selector is not rendered.
+   */
+  @Prop() perPageOptions?: number[];
+
+  /**
+   * When true, renders a "Go to page" input that emits `change` on Enter.
+   * The input validates the entered value against totalPages and ignores out-of-range input.
+   * Defaults to `false` to keep the default rendering unchanged.
+   */
+  @Prop() showPageJump = false;
+
+  /**
+   * When true, renders a "Showing X–Y of N" range indicator before the nav controls.
+   * Requires `totalItems` and `perPage` (Pattern B) or derives from `page × perPage` context.
+   * Defaults to `false`.
+   */
+  @Prop() showRange = false;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires when the user navigates to a new page */
@@ -81,6 +102,9 @@ export class IoPagination {
 
   /** Polite announcement for assistive technology when the page changes */
   @State() private liveMessage = '';
+
+  /** Current value in the page-jump input field */
+  @State() private jumpValue = '';
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -192,10 +216,49 @@ export class IoPagination {
     this.change.emit({ page, previousPage });
   }
 
+  /** Computes the start item index for the range display (1-based) */
+  private get rangeStart(): number {
+    const safePerPage = (this.perPage != null && this.perPage > 0) ? this.perPage : 1;
+    return (this.page - 1) * safePerPage + 1;
+  }
+
+  /** Computes the end item index for the range display (1-based, capped at totalItems) */
+  private get rangeEnd(): number {
+    const safePerPage = (this.perPage != null && this.perPage > 0) ? this.perPage : 1;
+    const total = this.totalItems ?? (this.computedTotalPages * safePerPage);
+    return Math.min(this.page * safePerPage, total);
+  }
+
+  private handlePerPageChange = (ev: Event) => {
+    const select = ev.target as HTMLSelectElement;
+    const newPerPage = Number(select.value);
+    if (!Number.isFinite(newPerPage) || newPerPage <= 0) return;
+    const previousPage = this.page;
+    this.page = 1;
+    this.change.emit({ page: 1, previousPage, perPage: newPerPage });
+  };
+
+  private handleJumpKeyDown = (ev: KeyboardEvent) => {
+    if (ev.key !== 'Enter') return;
+    const value = parseInt(this.jumpValue, 10);
+    const totalPages = this.computedTotalPages;
+    if (!Number.isFinite(value) || value < 1 || value > totalPages) {
+      this.jumpValue = '';
+      return;
+    }
+    this.go(value);
+    this.jumpValue = '';
+  };
+
+  private handleJumpInput = (ev: Event) => {
+    const input = ev.target as HTMLInputElement;
+    this.jumpValue = input.value;
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { page, prevLabel, nextLabel, navId, intl } = this;
+    const { page, prevLabel, nextLabel, navId, intl, showRange, showPageJump, perPageOptions, jumpValue } = this;
     const totalPages = this.computedTotalPages;
     const pages = this.pageRange(page, totalPages);
 
@@ -203,6 +266,10 @@ export class IoPagination {
     const resolvedPrevLabel = intl?.prev ?? prevLabel;
     const resolvedNextLabel = intl?.next ?? nextLabel;
     const resolvedPagePrefix = intl?.page ?? 'Page';
+    const resolvedPerPageLabel = intl?.perPageLabel ?? 'Per page';
+    const resolvedGoToPageLabel = intl?.goToPageLabel ?? 'Go to page';
+    const resolvedRangeWord = intl?.range ?? 'Showing';
+    const resolvedOfWord = intl?.of ?? 'of';
 
     const arrowLeft = (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
@@ -216,10 +283,43 @@ export class IoPagination {
       </svg>
     );
 
+    const totalItems = this.totalItems;
+    const perPage = this.perPage;
+    const hasRangeData = totalItems != null && perPage != null && perPage > 0;
+
     return (
       <Host>
         <style>{getPaginationStyles()}</style>
         <span aria-live="polite" aria-atomic="true" class="sr-only">{this.liveMessage}</span>
+
+        {/* Per-page selector */}
+        {perPageOptions && perPageOptions.length > 0 && (
+          <div class="pagination-addon pagination-addon--per-page">
+            <label class="pagination-addon__label" htmlFor={`${navId}-per-page`}>
+              {resolvedPerPageLabel}
+            </label>
+            <select
+              id={`${navId}-per-page`}
+              class="pagination-addon__select"
+              aria-label={resolvedPerPageLabel}
+              onChange={this.handlePerPageChange}
+            >
+              {perPageOptions.map(opt => (
+                <option key={opt} value={opt} selected={opt === perPage}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Range display */}
+        {showRange && hasRangeData && (
+          <span class="pagination-range" aria-live="polite" aria-atomic="true">
+            {resolvedRangeWord} {this.rangeStart}–{this.rangeEnd} {resolvedOfWord} {totalItems}
+          </span>
+        )}
+
         <nav aria-label={resolvedNavLabel} id={navId}>
           <div class="pagination">
             <button
@@ -262,6 +362,26 @@ export class IoPagination {
             </button>
           </div>
         </nav>
+
+        {/* Page jump input */}
+        {showPageJump && (
+          <div class="pagination-addon pagination-addon--jump">
+            <label class="pagination-addon__label" htmlFor={`${navId}-jump`}>
+              {resolvedGoToPageLabel}
+            </label>
+            <input
+              id={`${navId}-jump`}
+              class="pagination-addon__input"
+              type="number"
+              min="1"
+              max={totalPages}
+              value={jumpValue}
+              aria-label={resolvedGoToPageLabel}
+              onInput={this.handleJumpInput}
+              onKeyDown={this.handleJumpKeyDown}
+            />
+          </div>
+        )}
       </Host>
     );
   }

@@ -158,5 +158,67 @@ export function getPaginationStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .page-btn { transition: none; }
     }
+
+    /* ── Per-page / page-jump addons ────────────────────────── */
+
+    .pagination-addon {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--io-space-2);
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-secondary);
+    }
+
+    .pagination-addon__label {
+      white-space: nowrap;
+    }
+
+    .pagination-addon__select {
+      height: var(--io-space-10);
+      padding: 0 var(--io-space-2);
+      border: 1px solid var(--io-border-interactive);
+      border-radius: var(--io-border-radius-sm);
+      background: transparent;
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-primary);
+      cursor: pointer;
+    }
+
+    .pagination-addon__select:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    .pagination-addon__input {
+      width: var(--io-space-16);
+      height: var(--io-space-10);
+      padding: 0 var(--io-space-2);
+      border: 1px solid var(--io-border-interactive);
+      border-radius: var(--io-border-radius-sm);
+      background: transparent;
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-primary);
+      text-align: center;
+      /* Remove spinner arrows in Chrome/Safari */
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+
+    .pagination-addon__input:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    /* ── Range display ──────────────────────────────────────── */
+
+    .pagination-range {
+      display: inline-block;
+      font-family: var(--io-font-primary);
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-secondary);
+    }
   `;
 }

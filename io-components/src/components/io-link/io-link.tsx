@@ -4,7 +4,7 @@ import { getLinkStyles } from './io-link-styles';
 import { getLinkClassName, resolveLinkRel, resolveLinkTarget, shouldBlockLinkClick } from './io-link-utils';
 import type { IoIconName } from '../../utils/icons';
 
-import type { IoLinkVariant, IoLinkColor, IoLinkAriaCurrent } from './types';
+import type { IoLinkVariant, IoLinkColor, IoLinkAriaCurrent, IoLinkUnderline } from './types';
 
 /**
  * io-link
@@ -67,6 +67,25 @@ export class IoLink {
   /** Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute. */
   @Prop() ariaCurrent: IoLinkAriaCurrent | null = null;
 
+  /**
+   * Marks the link as the active/current navigation item.
+   * Applies `.link--active` visual treatment and defaults `aria-current` to `'page'`
+   * (overridable via the `ariaCurrent` prop). Reflects to a host attribute.
+   */
+  @Prop({ reflect: true }) active = false;
+
+  /**
+   * Explicit underline override that decouples underline state from `variant`.
+   * When set, takes precedence over the variant-driven underline behaviour.
+   *
+   * - `'always'` — underline visible at rest regardless of variant
+   * - `'hover'`  — underline appears only on hover
+   * - `'none'`   — underline suppressed in all states
+   *
+   * When undefined (default) the variant controls underline behaviour as before.
+   */
+  @Prop({ reflect: true }) underline?: IoLinkUnderline;
+
   // ── Events ────────────────────────────────────────────────────
 
   /** Fires on click. Not fired when disabled. */
@@ -115,7 +134,7 @@ export class IoLink {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { variant, color, href, target, rel, external, disabled, download, hideLabel, ariaCurrent } = this;
+    const { variant, color, href, target, rel, external, disabled, download, hideLabel, ariaCurrent, active, underline } = this;
     const resolvedTarget = resolveLinkTarget(target, external);
     const resolvedRel = resolveLinkRel(rel, resolvedTarget, external);
 
@@ -123,8 +142,10 @@ export class IoLink {
     const linkText = this.el.textContent?.trim() || '';
     const ariaLabel = external && linkText ? `${linkText}, opens in new tab` : undefined;
 
-    const resolvedAriaCurrent = ariaCurrent !== null && ariaCurrent !== 'false'
-      ? ariaCurrent
+    // active=true defaults aria-current to 'page'; explicit ariaCurrent overrides this
+    const effectiveAriaCurrent = active && ariaCurrent === null ? 'page' : ariaCurrent;
+    const resolvedAriaCurrent = effectiveAriaCurrent !== null && effectiveAriaCurrent !== 'false'
+      ? effectiveAriaCurrent
       : undefined;
 
     const hasExplicitIcon = Boolean(this.icon || this.iconSource);
@@ -135,7 +156,7 @@ export class IoLink {
       <Host>
         <style>{getLinkStyles()}</style>
         <a
-          class={getLinkClassName(variant, color, disabled)}
+          class={getLinkClassName(variant, color, disabled, active, underline)}
           href={disabled ? undefined : href}
           target={resolvedTarget}
           rel={resolvedRel}

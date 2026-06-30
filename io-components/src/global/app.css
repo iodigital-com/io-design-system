@@ -1640,6 +1640,12 @@ io-table[compact] io-table-body-cell td {
   --io-avatar-text-grey:         var(--io-color-grey-6);
   --io-tag-strong-bg:            var(--io-color-grey-6);
   --io-tag-strong-fg:            var(--io-color-white);
+
+  /* Link */
+  --io-link-active-underline-color: var(--io-color-primary);
+
+  /* Link Pure */
+  --io-link-pure-active-color: var(--io-color-primary);
 }
 
 /* ============================================================

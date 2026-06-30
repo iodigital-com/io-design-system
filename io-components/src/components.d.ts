@@ -27,7 +27,8 @@ import { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/typ
 import { IoInputDateSize } from "./components/io-input-date/types";
 import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
-import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
+import { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
+import { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
 import { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
@@ -77,7 +78,8 @@ export { IoInputMode, IoInputSize, IoInputType } from "./components/io-input/typ
 export { IoInputDateSize } from "./components/io-input-date/types";
 export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
-export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
+export { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
+export { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
 export { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
@@ -1612,6 +1614,11 @@ export namespace Components {
      */
     interface IoLink {
         /**
+          * Marks the link as the active/current navigation item. Applies `.link--active` visual treatment and defaults `aria-current` to `'page'` (overridable via the `ariaCurrent` prop). Reflects to a host attribute.
+          * @default false
+         */
+        "active": boolean;
+        /**
           * Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute.
           * @default null
          */
@@ -1666,10 +1673,91 @@ export namespace Components {
          */
         "target": string | undefined;
         /**
+          * Explicit underline override that decouples underline state from `variant`. When set, takes precedence over the variant-driven underline behaviour.  - `'always'` — underline visible at rest regardless of variant - `'hover'`  — underline appears only on hover - `'none'`   — underline suppressed in all states  When undefined (default) the variant controls underline behaviour as before.
+         */
+        "underline"?: IoLinkUnderline;
+        /**
           * Underline animation behaviour
           * @default 'standalone'
          */
         "variant": IoLinkVariant;
+    }
+    /**
+     * io-link-pure
+     * =============
+     * Icon + label tertiary CTA link. No underline at rest, underline on hover.
+     * Renders a native `<a>` anchor element (or `<button>` when no `href` is set).
+     * Shares anchor/external/disabled/icon plumbing with io-link but is purpose-built
+     * for navigation, card CTAs, list actions, and icon-only affordances.
+     * @example <io-link-pure href="/docs" icon="arrow-right">Read the docs</io-link-pure>
+     * <io-link-pure href="/profile" icon="user" hide-label>Profile</io-link-pure>
+     * <io-link-pure href="/dashboard" icon="layout-dashboard" stretch>Dashboard</io-link-pure>
+     */
+    interface IoLinkPure {
+        /**
+          * Marks the link as the active/current navigation item. Applies active visual treatment and sets aria-current="page" by default.
+          * @default false
+         */
+        "active": boolean;
+        /**
+          * Icon position relative to the label.
+          * @default 'start'
+         */
+        "alignLabel": IoLinkPureAlignLabel;
+        /**
+          * Disables the link — removes href and blocks click.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Downloadable file name. Enables download behavior on click.
+         */
+        "download": string | undefined;
+        /**
+          * Automatically sets target="_blank" and rel="noopener noreferrer".
+          * @default false
+         */
+        "external": boolean;
+        /**
+          * Hides the label text visually while keeping it accessible to screen readers. The visible label becomes the element's aria-label. Requires `icon` or `iconSource` to be set for any visual affordance.
+          * @default false
+         */
+        "hideLabel": boolean;
+        /**
+          * Destination URL. When absent the component renders as a `<button>` element.
+         */
+        "href"?: string;
+        /**
+          * Name of a Lucide icon to render.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG source string for a non-library icon. Takes precedence over `icon`.
+         */
+        "iconSource"?: string;
+        /**
+          * Rel attribute. Overridden to 'noopener noreferrer' when external is true.
+         */
+        "rel": string | undefined;
+        /**
+          * Programmatically move focus to the link.
+         */
+        "setFocus": (options?: FocusOptions) => Promise<void>;
+        /**
+          * Text size variant.
+          * @default 'md'
+         */
+        "size": IoLinkPureSize;
+        /**
+          * When true, the component fills its container width. The label and icon are pushed to opposite ends of the container.
+          * @default false
+         */
+        "stretch": boolean;
+        /**
+          * Link target. Overridden to '_blank' when external is true.
+          * @default '_self'
+         */
+        "target": string | undefined;
     }
     /**
      * io-modal
@@ -1962,6 +2050,10 @@ export namespace Components {
          */
         "perPage"?: number;
         /**
+          * When provided, renders a per-page selector before the previous arrow button. Example: `[10, 25, 50]` — selecting an option emits `change` with the new `perPage` value. When absent (default) the selector is not rendered.
+         */
+        "perPageOptions"?: number[];
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
@@ -1971,6 +2063,16 @@ export namespace Components {
           * @default false
          */
         "showLastPage": boolean;
+        /**
+          * When true, renders a "Go to page" input that emits `change` on Enter. The input validates the entered value against totalPages and ignores out-of-range input. Defaults to `false` to keep the default rendering unchanged.
+          * @default false
+         */
+        "showPageJump": boolean;
+        /**
+          * When true, renders a "Showing X–Y of N" range indicator before the nav controls. Requires `totalItems` and `perPage` (Pattern B) or derives from `page × perPage` context. Defaults to `false`.
+          * @default false
+         */
+        "showRange": boolean;
         /**
           * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
          */
@@ -3711,6 +3813,10 @@ export interface IoLinkCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoLinkElement;
 }
+export interface IoLinkPureCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoLinkPureElement;
+}
 export interface IoModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoModalElement;
@@ -4430,6 +4536,34 @@ declare global {
     var HTMLIoLinkElement: {
         prototype: HTMLIoLinkElement;
         new (): HTMLIoLinkElement;
+    };
+    interface HTMLIoLinkPureElementEventMap {
+        "click": MouseEvent;
+    }
+    /**
+     * io-link-pure
+     * =============
+     * Icon + label tertiary CTA link. No underline at rest, underline on hover.
+     * Renders a native `<a>` anchor element (or `<button>` when no `href` is set).
+     * Shares anchor/external/disabled/icon plumbing with io-link but is purpose-built
+     * for navigation, card CTAs, list actions, and icon-only affordances.
+     * @example <io-link-pure href="/docs" icon="arrow-right">Read the docs</io-link-pure>
+     * <io-link-pure href="/profile" icon="user" hide-label>Profile</io-link-pure>
+     * <io-link-pure href="/dashboard" icon="layout-dashboard" stretch>Dashboard</io-link-pure>
+     */
+    interface HTMLIoLinkPureElement extends Components.IoLinkPure, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoLinkPureElementEventMap>(type: K, listener: (this: HTMLIoLinkPureElement, ev: IoLinkPureCustomEvent<HTMLIoLinkPureElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoLinkPureElementEventMap>(type: K, listener: (this: HTMLIoLinkPureElement, ev: IoLinkPureCustomEvent<HTMLIoLinkPureElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoLinkPureElement: {
+        prototype: HTMLIoLinkPureElement;
+        new (): HTMLIoLinkPureElement;
     };
     interface HTMLIoModalElementEventMap {
         "dismiss": void;
@@ -5502,6 +5636,7 @@ declare global {
         "io-input-password": HTMLIoInputPasswordElement;
         "io-input-search": HTMLIoInputSearchElement;
         "io-link": HTMLIoLinkElement;
+        "io-link-pure": HTMLIoLinkPureElement;
         "io-modal": HTMLIoModalElement;
         "io-multi-select": HTMLIoMultiSelectElement;
         "io-optgroup": HTMLIoOptgroupElement;
@@ -7092,6 +7227,11 @@ declare namespace LocalJSX {
      */
     interface IoLink {
         /**
+          * Marks the link as the active/current navigation item. Applies `.link--active` visual treatment and defaults `aria-current` to `'page'` (overridable via the `ariaCurrent` prop). Reflects to a host attribute.
+          * @default false
+         */
+        "active"?: boolean;
+        /**
           * Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or 'false' removes the attribute.
           * @default null
          */
@@ -7146,10 +7286,91 @@ declare namespace LocalJSX {
          */
         "target"?: string | undefined;
         /**
+          * Explicit underline override that decouples underline state from `variant`. When set, takes precedence over the variant-driven underline behaviour.  - `'always'` — underline visible at rest regardless of variant - `'hover'`  — underline appears only on hover - `'none'`   — underline suppressed in all states  When undefined (default) the variant controls underline behaviour as before.
+         */
+        "underline"?: IoLinkUnderline;
+        /**
           * Underline animation behaviour
           * @default 'standalone'
          */
         "variant"?: IoLinkVariant;
+    }
+    /**
+     * io-link-pure
+     * =============
+     * Icon + label tertiary CTA link. No underline at rest, underline on hover.
+     * Renders a native `<a>` anchor element (or `<button>` when no `href` is set).
+     * Shares anchor/external/disabled/icon plumbing with io-link but is purpose-built
+     * for navigation, card CTAs, list actions, and icon-only affordances.
+     * @example <io-link-pure href="/docs" icon="arrow-right">Read the docs</io-link-pure>
+     * <io-link-pure href="/profile" icon="user" hide-label>Profile</io-link-pure>
+     * <io-link-pure href="/dashboard" icon="layout-dashboard" stretch>Dashboard</io-link-pure>
+     */
+    interface IoLinkPure {
+        /**
+          * Marks the link as the active/current navigation item. Applies active visual treatment and sets aria-current="page" by default.
+          * @default false
+         */
+        "active"?: boolean;
+        /**
+          * Icon position relative to the label.
+          * @default 'start'
+         */
+        "alignLabel"?: IoLinkPureAlignLabel;
+        /**
+          * Disables the link — removes href and blocks click.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Downloadable file name. Enables download behavior on click.
+         */
+        "download"?: string | undefined;
+        /**
+          * Automatically sets target="_blank" and rel="noopener noreferrer".
+          * @default false
+         */
+        "external"?: boolean;
+        /**
+          * Hides the label text visually while keeping it accessible to screen readers. The visible label becomes the element's aria-label. Requires `icon` or `iconSource` to be set for any visual affordance.
+          * @default false
+         */
+        "hideLabel"?: boolean;
+        /**
+          * Destination URL. When absent the component renders as a `<button>` element.
+         */
+        "href"?: string;
+        /**
+          * Name of a Lucide icon to render.
+         */
+        "icon"?: IoIconName;
+        /**
+          * Custom SVG source string for a non-library icon. Takes precedence over `icon`.
+         */
+        "iconSource"?: string;
+        /**
+          * Fires on click. Not fired when disabled.
+         */
+        "onClick"?: (event: IoLinkPureCustomEvent<MouseEvent>) => void;
+        /**
+          * Rel attribute. Overridden to 'noopener noreferrer' when external is true.
+         */
+        "rel"?: string | undefined;
+        /**
+          * Text size variant.
+          * @default 'md'
+         */
+        "size"?: IoLinkPureSize;
+        /**
+          * When true, the component fills its container width. The label and icon are pushed to opposite ends of the container.
+          * @default false
+         */
+        "stretch"?: boolean;
+        /**
+          * Link target. Overridden to '_blank' when external is true.
+          * @default '_self'
+         */
+        "target"?: string | undefined;
     }
     /**
      * io-modal
@@ -7464,6 +7685,10 @@ declare namespace LocalJSX {
          */
         "perPage"?: number;
         /**
+          * When provided, renders a per-page selector before the previous arrow button. Example: `[10, 25, 50]` — selecting an option emits `change` with the new `perPage` value. When absent (default) the selector is not rendered.
+         */
+        "perPageOptions"?: number[];
+        /**
           * Visually label the prev button (used by aria-label)
           * @default 'Previous page'
          */
@@ -7473,6 +7698,16 @@ declare namespace LocalJSX {
           * @default false
          */
         "showLastPage"?: boolean;
+        /**
+          * When true, renders a "Go to page" input that emits `change` on Enter. The input validates the entered value against totalPages and ignores out-of-range input. Defaults to `false` to keep the default rendering unchanged.
+          * @default false
+         */
+        "showPageJump"?: boolean;
+        /**
+          * When true, renders a "Showing X–Y of N" range indicator before the nav controls. Requires `totalItems` and `perPage` (Pattern B) or derives from `page × perPage` context. Defaults to `false`.
+          * @default false
+         */
+        "showRange"?: boolean;
         /**
           * Total number of items in the dataset (Pattern B). Provide together with `perPage` to let the component compute `totalPages`. Takes precedence over an explicit `totalPages` prop when both are set.
          */
@@ -9523,6 +9758,23 @@ declare namespace LocalJSX {
         "iconSource": string;
         "hideLabel": boolean;
         "ariaCurrent": IoLinkAriaCurrent | null;
+        "active": boolean;
+        "underline": IoLinkUnderline;
+    }
+    interface IoLinkPureAttributes {
+        "href": string;
+        "target": string | undefined;
+        "rel": string | undefined;
+        "external": boolean;
+        "download": string | undefined;
+        "disabled": boolean;
+        "alignLabel": IoLinkPureAlignLabel;
+        "stretch": boolean;
+        "active": boolean;
+        "size": IoLinkPureSize;
+        "icon": IoIconName;
+        "iconSource": string;
+        "hideLabel": boolean;
     }
     interface IoModalAttributes {
         "open": boolean;
@@ -9575,6 +9827,8 @@ declare namespace LocalJSX {
         "prevLabel": string;
         "nextLabel": string;
         "showLastPage": boolean;
+        "showPageJump": boolean;
+        "showRange": boolean;
     }
     interface IoPinCodeAttributes {
         "label": string | undefined;
@@ -9887,6 +10141,7 @@ declare namespace LocalJSX {
         "io-input-password": Omit<IoInputPassword, keyof IoInputPasswordAttributes> & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes]?: IoInputPassword[K] } & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes as `attr:${K}`]?: IoInputPasswordAttributes[K] } & { [K in keyof IoInputPassword & keyof IoInputPasswordAttributes as `prop:${K}`]?: IoInputPassword[K] } & OneOf<"label", IoInputPassword["label"], IoInputPasswordAttributes["label"]>;
         "io-input-search": Omit<IoInputSearch, keyof IoInputSearchAttributes> & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes]?: IoInputSearch[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `attr:${K}`]?: IoInputSearchAttributes[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `prop:${K}`]?: IoInputSearch[K] } & OneOf<"label", IoInputSearch["label"], IoInputSearchAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
+        "io-link-pure": Omit<IoLinkPure, keyof IoLinkPureAttributes> & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes]?: IoLinkPure[K] } & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes as `attr:${K}`]?: IoLinkPureAttributes[K] } & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes as `prop:${K}`]?: IoLinkPure[K] };
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
         "io-multi-select": Omit<IoMultiSelect, keyof IoMultiSelectAttributes> & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes]?: IoMultiSelect[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `attr:${K}`]?: IoMultiSelectAttributes[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `prop:${K}`]?: IoMultiSelect[K] } & OneOf<"label", IoMultiSelect["label"], IoMultiSelectAttributes["label"]> & OneOf<"name", IoMultiSelect["name"], IoMultiSelectAttributes["name"]>;
         "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
@@ -10252,6 +10507,18 @@ declare module "@stencil/core" {
              * <io-link href="https://example.com" external>Open in new tab</io-link>
              */
             "io-link": LocalJSX.IntrinsicElements["io-link"] & JSXBase.HTMLAttributes<HTMLIoLinkElement>;
+            /**
+             * io-link-pure
+             * =============
+             * Icon + label tertiary CTA link. No underline at rest, underline on hover.
+             * Renders a native `<a>` anchor element (or `<button>` when no `href` is set).
+             * Shares anchor/external/disabled/icon plumbing with io-link but is purpose-built
+             * for navigation, card CTAs, list actions, and icon-only affordances.
+             * @example <io-link-pure href="/docs" icon="arrow-right">Read the docs</io-link-pure>
+             * <io-link-pure href="/profile" icon="user" hide-label>Profile</io-link-pure>
+             * <io-link-pure href="/dashboard" icon="layout-dashboard" stretch>Dashboard</io-link-pure>
+             */
+            "io-link-pure": LocalJSX.IntrinsicElements["io-link-pure"] & JSXBase.HTMLAttributes<HTMLIoLinkPureElement>;
             /**
              * io-modal
              * =========

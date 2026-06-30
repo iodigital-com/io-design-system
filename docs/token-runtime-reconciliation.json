@@ -2784,6 +2784,22 @@
       "notes": "Spinner border width for sm size. Value: 1.5px."
     },
     {
+      "runtimeCssVar": "--io-spinner-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner animation duration. Value: 0.7s."
+    },
+    {
+      "runtimeCssVar": "--io-spinner-duration-reduced",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Spinner animation duration for reduced-motion preference. Value: 1500ms."
+    },
+    {
       "runtimeCssVar": "--io-space-1",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

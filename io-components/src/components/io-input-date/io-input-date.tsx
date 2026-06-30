@@ -2,6 +2,8 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 
 import { getInputDateStyles } from './io-input-date-styles';
 import { hasShowPickerSupport } from '../../utils/has-show-picker-support';
+import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputDateSize } from './types';
@@ -49,7 +51,7 @@ export class IoInputDate {
   @Prop({ reflect: true }) disabled = false;
 
   /** Makes the input read-only */
-  @Prop({ reflect: true }) readonly = false;
+  @Prop({ reflect: true }) readOnly = false;
 
   /** Shows a loading indicator */
   @Prop() loading = false;
@@ -84,6 +86,15 @@ export class IoInputDate {
    */
   @Prop() pickerLabel = 'Open date picker';
 
+  /**
+   * Custom ARIA attributes to inject onto the native `<input>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * <io-input-date .aria={{ describedby: 'date-hint' }} label="Birth date" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   @State() faceInvalid = false;
   @State() private touched = false;
   @State() private showPickerSupported = false;
@@ -113,6 +124,11 @@ export class IoInputDate {
     this.syncFormValue();
   }
 
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.nativeInputEl ?? null);
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
@@ -134,7 +150,7 @@ export class IoInputDate {
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     this.value = (ev.target as HTMLInputElement).value;
@@ -142,7 +158,7 @@ export class IoInputDate {
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     const newVal = (ev.target as HTMLInputElement).value;
@@ -197,12 +213,16 @@ export class IoInputDate {
   };
 
   private handlePickerTrigger = () => {
-    if (this.disabled || this.loading || this.readonly) return;
+    if (this.disabled || this.loading || this.readOnly) return;
     this.nativeInputEl?.showPicker?.();
   };
 
+  private handleKeyDown = (ev: KeyboardEvent) => {
+    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
+  };
+
   render() {
-    const { label, name, value, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, min, max, step, pickerLabel } = this;
+    const { label, name, value, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, min, max, step, pickerLabel } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error' || this.faceInvalid;
@@ -222,7 +242,7 @@ export class IoInputDate {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
-      readonly ? 'input-wrapper--readonly' : '',
+      readOnly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
 
     const fieldClass = [
@@ -239,13 +259,17 @@ export class IoInputDate {
             <input
               id={inputId}
               class={fieldClass}
+              ref={(el: HTMLInputElement | undefined) => {
+                this.nativeInputEl = el ?? null;
+                applyAriaProp(this.aria, el ?? null);
+              }}
               type="date"
               name={name}
               value={value}
               required={required}
               disabled={disabled || loading}
-              readOnly={readonly}
-              aria-readonly={readonly ? 'true' : undefined}
+              readOnly={readOnly}
+              aria-readonly={readOnly ? 'true' : undefined}
               min={min}
               max={max}
               step={step}
@@ -255,7 +279,7 @@ export class IoInputDate {
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
-              ref={(el) => { this.nativeInputEl = el ?? null; }}
+              onKeyDown={this.handleKeyDown}
             />
             {/* Calendar icon — interactive trigger (supported) or decorative fallback */}
             {this.showPickerSupported ? (
@@ -263,7 +287,7 @@ export class IoInputDate {
                 type="button"
                 class="date-trigger"
                 aria-label={pickerLabel}
-                disabled={disabled || loading || readonly}
+                disabled={disabled || loading || readOnly}
                 tabIndex={0}
                 onClick={this.handlePickerTrigger}
               >

@@ -442,6 +442,14 @@ export function getMultiSelectStyles(): string {
       color: var(--io-text-secondary);
     }
 
+    /* ── Helper text ───────────────────────────────────────────── */
+
+    .multi-select-helper {
+      margin: var(--io-space-1) 0 0;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+    }
+
     /* ── Helper text / description slot ────────────────────────── */
 
     .multi-select-description {
@@ -460,6 +468,7 @@ export function getMultiSelectStyles(): string {
     .multi-select-description__slot--hidden {
       display: none;
     }
+
 
     /* ── Reduced-motion overrides ──────────────────────────────── */
 

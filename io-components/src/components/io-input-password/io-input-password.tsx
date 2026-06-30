@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 
 import { getInputPasswordStyles } from './io-input-password-styles';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputPasswordSize } from './types';
@@ -28,6 +29,7 @@ export class IoInputPassword {
   private inputId!: string;
   private errorId!: string;
   private helperId!: string;
+  private nativeInputEl?: HTMLInputElement;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -48,7 +50,7 @@ export class IoInputPassword {
   @Prop({ reflect: true }) disabled = false;
 
   /** Makes the input read-only */
-  @Prop({ reflect: true }) readonly = false;
+  @Prop({ reflect: true }) readOnly = false;
 
   /** Shows a loading indicator */
   @Prop() loading = false;
@@ -80,6 +82,15 @@ export class IoInputPassword {
   /** When false, hides the show/hide password toggle button */
   @Prop() toggle = true;
 
+  /**
+   * Custom ARIA attributes to inject onto the native `<input>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * <io-input-password .aria={{ describedby: 'hint-id' }} label="Password" />
+   */
+  @Prop() aria?: Record<string, string>;
+
   /** Whether the password is currently visible as plain text */
   @State() showPassword = false;
 
@@ -109,6 +120,11 @@ export class IoInputPassword {
     this.syncFormValue();
   }
 
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.nativeInputEl ?? null);
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
@@ -130,7 +146,7 @@ export class IoInputPassword {
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     this.value = (ev.target as HTMLInputElement).value;
@@ -138,7 +154,7 @@ export class IoInputPassword {
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     const newVal = (ev.target as HTMLInputElement).value;
@@ -201,7 +217,7 @@ export class IoInputPassword {
   };
 
   render() {
-    const { label, name, value, placeholder, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle } = this;
+    const { label, name, value, placeholder, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error' || this.faceInvalid;
@@ -221,7 +237,7 @@ export class IoInputPassword {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
-      readonly ? 'input-wrapper--readonly' : '',
+      readOnly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
 
     const fieldClass = [
@@ -240,14 +256,18 @@ export class IoInputPassword {
             <input
               id={inputId}
               class={fieldClass}
+              ref={(el?: HTMLInputElement) => {
+                this.nativeInputEl = el;
+                applyAriaProp(this.aria, el ?? null);
+              }}
               type={inputType}
               name={name}
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
               disabled={disabled || loading}
-              readOnly={readonly}
-              aria-readonly={readonly ? 'true' : undefined}
+              readOnly={readOnly}
+              aria-readonly={readOnly ? 'true' : undefined}
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}

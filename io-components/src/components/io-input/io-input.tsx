@@ -36,6 +36,7 @@ export class IoInput {
   private fallbackId!: string;
   private inputId!: string;
   private counterId!: string;
+  private descriptionId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
   @State() private announcedCounter = '';
@@ -74,7 +75,7 @@ export class IoInput {
   @Prop() required = false;
 
   /** Makes the field read-only — value is not editable but the field stays in tab order */
-  @Prop({ reflect: true }) readonly = false;
+  @Prop({ reflect: true }) readOnly = false;
 
   /** Disables the input */
   @Prop({ reflect: true }) disabled = false;
@@ -161,6 +162,14 @@ export class IoInput {
    */
   @Prop({ reflect: true }) stepper = false;
 
+  /**
+   * Supplementary description rendered as a persistent `<p>` below the field.
+   * Always visible, regardless of validation state. Distinct from `helperText`
+   * (which is hidden in error state) and from the `slot="description"` slot
+   * (which accepts rich HTML content).
+   */
+  @Prop() description: string | undefined;
+
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
   @Event() focus!: EventEmitter<FocusEvent>;
@@ -170,6 +179,7 @@ export class IoInput {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.inputId = resolveInputId(this.name, this.fallbackId);
     this.counterId = `io-input-counter-${++idCounter}`;
+    this.descriptionId = `io-input-desc-${this.fallbackId}`;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
     if (this.hideLabel && !this.label) {
@@ -404,7 +414,7 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readonly, disabled, state, message, helperText, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
+    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
     const showIndicator = !!indicator;
     const showStepper = stepper && type === 'number';
     const { inputId, errorId, helperId } = this.getInputIds();
@@ -424,6 +434,7 @@ export class IoInput {
       errorId,
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
+      description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
     const currentLength = (value ?? '').length;
 
@@ -433,7 +444,7 @@ export class IoInput {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       isDisabled ? 'input-wrapper--disabled' : '',
-      readonly ? 'input-wrapper--readonly' : '',
+      readOnly ? 'input-wrapper--readonly' : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -479,7 +490,7 @@ export class IoInput {
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
-              readOnly={readonly}
+              readOnly={readOnly}
               disabled={isDisabled}
               maxLength={maxLength}
               minLength={minLength}
@@ -492,7 +503,7 @@ export class IoInput {
               inputmode={inputMode}
               pattern={pattern}
               aria-invalid={showError ? 'true' : undefined}
-              aria-readonly={readonly ? 'true' : undefined}
+              aria-readonly={readOnly ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
@@ -614,6 +625,9 @@ export class IoInput {
           <span id={counterSrId} class="input-counter-sr" aria-live="polite" aria-atomic="true">
             {this.announcedCounter}
           </span>
+        )}
+        {description && (
+          <p id={this.descriptionId} class="input-description">{description}</p>
         )}
       </Host>
     );

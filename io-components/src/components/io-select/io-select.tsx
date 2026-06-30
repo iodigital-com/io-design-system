@@ -141,6 +141,7 @@ export class IoSelect {
   @State() private hasLabelSlot = false;
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
+  @State() private hasSelectedSlot = false;
 
   @State() private descriptionId = '';
 
@@ -563,6 +564,11 @@ export class IoSelect {
     this.hasMessageSlot = slot.assignedElements().length > 0;
   };
 
+  private handleSelectedSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasSelectedSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers (native mode) ────────────────────────────────────
 
   private handleChange = (ev: Event) => {
@@ -777,6 +783,7 @@ export class IoSelect {
    * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
    * @slot message - Validation message content. Replaces the plain-text `message` prop in error state.
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
+   * @slot selected - Custom selected-value content rendered inside the combobox trigger (custom mode only). When slotted, replaces the default display value text.
    */
   render() {
     if (this.custom) {
@@ -965,7 +972,12 @@ export class IoSelect {
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
           >
-            <span class="combobox-trigger__text">{this.displayValue || <span class="combobox-trigger__placeholder">{this.placeholder}</span>}</span>
+            <span class="combobox-trigger__text">
+              <span class={this.hasSelectedSlot ? 'combobox-trigger__selected-slot' : 'combobox-trigger__selected-slot combobox-trigger__selected-slot--hidden'}>
+                <slot name="selected" onSlotchange={this.handleSelectedSlotChange} />
+              </span>
+              {!this.hasSelectedSlot && (this.displayValue || <span class="combobox-trigger__placeholder">{this.placeholder}</span>)}
+            </span>
             {loading ? (
               <span class="combobox-trigger__chevron select-loading-indicator" aria-hidden="true">
                 <io-spinner size="sm" />

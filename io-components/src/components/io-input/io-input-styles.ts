@@ -210,6 +210,12 @@ export function getInputStyles(): string {
       display: none;
     }
 
+    .input-description {
+      margin: var(--io-space-1) 0 0;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+    }
+
     .input-label__slot--hidden,
     .input-message__slot--hidden,
     .input-description__slot--hidden {

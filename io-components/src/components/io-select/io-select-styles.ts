@@ -183,7 +183,8 @@ export function getSelectStyles(): string {
 
     .select-label__slot--hidden,
     .select-message__slot--hidden,
-    .select-description__slot--hidden {
+    .select-description__slot--hidden,
+    .combobox-trigger__selected-slot--hidden {
       display: none;
     }
 

@@ -151,6 +151,15 @@ export class IoMultiSelect {
    */
   @Prop() maxSelections: number | undefined;
 
+  /** Helper text shown below the trigger (replaces message when no error/warning). */
+  @Prop() helperText: string | undefined;
+
+  /**
+   * Supplementary description rendered as a persistent `<p>` below the field.
+   * Always visible, regardless of validation state.
+   */
+  @Prop() description: string | undefined;
+
   // ── State ─────────────────────────────────────────────────────────────────
 
   /** Mirrors FACE invalidity so the component re-renders on form validation. */
@@ -784,7 +793,7 @@ export class IoMultiSelect {
     const showError = state === 'error' || faceInvalid;
     const showSuccess = state === 'success' && !showError;
     const showWarning = state === 'warning' && !showError;
-
+    const showMessage = (showError || showSuccess || showWarning) && !!message;
     const messageClass = [
       'multi-select-message',
       showError ? 'multi-select-message--error' : '',
@@ -799,6 +808,7 @@ export class IoMultiSelect {
     const triggerId = `${fieldId}-trigger`;
     const listboxId = `${fieldId}-listbox`;
     const messageId = `${fieldId}-message`;
+    const helperId = `${fieldId}-helper`;
     const descriptionId = `${fieldId}-description`;
 
     const activeOptId =
@@ -830,12 +840,13 @@ export class IoMultiSelect {
     const maxHelperId = `${fieldId}-max-helper`;
 
     const describedByParts = [
-      message ? messageId : '',
+      showMessage ? messageId : '',
       showFaceError ? faceErrorId : '',
       description ? descriptionId : '',
       showMaxHelper ? maxHelperId : '',
     ].filter(Boolean);
     const describedBy = describedByParts.length > 0 ? describedByParts.join(' ') : undefined;
+
 
     const wrapperClass = getMultiSelectWrapperClass(
       showError ? 'error' : showSuccess ? 'success' : showWarning ? 'warning' : 'none',
@@ -1057,8 +1068,8 @@ export class IoMultiSelect {
           </div>
         </div>
 
-        {/* Message (error / success / warning / helper) */}
-        {message && (
+        {/* Message (error / success / warning) */}
+        {(showError || showSuccess || showWarning) && message && (
           <p id={messageId} class={messageClass} role={showError ? 'alert' : 'status'}>
             {message}
           </p>

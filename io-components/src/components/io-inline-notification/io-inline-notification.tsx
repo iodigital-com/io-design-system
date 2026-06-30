@@ -3,6 +3,7 @@ import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/c
 import { getInlineNotificationStyles } from './io-inline-notification-styles';
 import { getNotificationIconName } from '../../utils/notification-icons';
 import type { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 /**
  * io-inline-notification
@@ -62,7 +63,7 @@ export class IoInlineNotification {
   @Prop() actionLabel?: string;
 
   /** Icon rendered on the action button. Defaults to 'arrow-right'. */
-  @Prop() actionIcon = 'arrow-right';
+  @Prop() actionIcon: IoIconName = 'arrow-right';
 
   /**
    * Accessible label for the notification live region (aria-label on the host element).

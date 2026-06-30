@@ -3,6 +3,7 @@ import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } 
 import { getBannerStyles } from './io-banner-styles';
 import { getNotificationIconName } from '../../utils/notification-icons';
 import type { IoBannerVariant, IoBannerPosition, IoBannerHeadingTag } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 /**
  * io-banner
@@ -81,7 +82,7 @@ export class IoBanner {
   @Prop() actionLabel?: string;
 
   /** Icon name for the action button (only rendered when actionLabel is set) */
-  @Prop() actionIcon = 'arrow-right';
+  @Prop() actionIcon: IoIconName = 'arrow-right';
 
   /** When true, suppresses the action event (use during async operations) */
   @Prop() actionLoading = false;

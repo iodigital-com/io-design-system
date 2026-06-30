@@ -10,8 +10,8 @@ import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoIconName } from "./utils/icons";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoIconName } from "./utils/icons";
+import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
@@ -59,8 +59,8 @@ export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoIconName } from "./utils/icons";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoIconName } from "./utils/icons";
+export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
@@ -284,7 +284,7 @@ export namespace Components {
           * Icon name for the action button (only rendered when actionLabel is set)
           * @default 'arrow-right'
          */
-        "actionIcon": string;
+        "actionIcon": IoIconName;
         /**
           * Label for an optional action button rendered before the dismiss button
          */
@@ -1133,7 +1133,7 @@ export namespace Components {
           * Icon rendered on the action button. Defaults to 'arrow-right'.
           * @default 'arrow-right'
          */
-        "actionIcon": string;
+        "actionIcon": IoIconName;
         /**
           * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
          */
@@ -5706,7 +5706,7 @@ declare namespace LocalJSX {
           * Icon name for the action button (only rendered when actionLabel is set)
           * @default 'arrow-right'
          */
-        "actionIcon"?: string;
+        "actionIcon"?: IoIconName;
         /**
           * Label for an optional action button rendered before the dismiss button
          */
@@ -6567,7 +6567,7 @@ declare namespace LocalJSX {
           * Icon rendered on the action button. Defaults to 'arrow-right'.
           * @default 'arrow-right'
          */
-        "actionIcon"?: string;
+        "actionIcon"?: IoIconName;
         /**
           * Label for the optional inline call-to-action button. When omitted, no action button is rendered.
          */
@@ -9230,7 +9230,7 @@ declare namespace LocalJSX {
         "position": IoBannerPosition;
         "dismissLabel": string;
         "actionLabel": string;
-        "actionIcon": string;
+        "actionIcon": IoIconName;
         "actionLoading": boolean;
     }
     interface IoBreadcrumbAttributes {
@@ -9375,7 +9375,7 @@ declare namespace LocalJSX {
         "dismissible": boolean;
         "dismissLabel": string;
         "actionLabel": string;
-        "actionIcon": string;
+        "actionIcon": IoIconName;
         "label": string;
         "actionLoading": boolean;
     }

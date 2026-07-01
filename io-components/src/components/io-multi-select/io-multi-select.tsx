@@ -216,7 +216,7 @@ export class IoMultiSelect {
 
   private fallbackId!: string;
   private fieldId!: string;
-  private defaultValue: (string | number)[] = [];
+  private defaultValue: string[] = [];
   private triggerEl?: HTMLButtonElement;
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
@@ -341,7 +341,7 @@ export class IoMultiSelect {
         setTimeout(() => this.filterInputEl?.focus(), 0);
       } else {
         const opts = this.filteredOptions;
-        const firstSelected = opts.findIndex(o => (this.value ?? []).includes(o.value));
+        const firstSelected = opts.findIndex(o => (this.value ?? []).includes(String(o.value)));
         const firstEnabled = opts.findIndex(o => !o.disabled);
         this.activeIndex = firstSelected >= 0 ? firstSelected : Math.max(firstEnabled, -1);
       }
@@ -435,25 +435,27 @@ export class IoMultiSelect {
   private toggleOption(opt: IoSelectOption) {
     if (opt.disabled) return;
     const current = this.value ?? [];
-    if (current.includes(opt.value)) {
+    const optValueStr = String(opt.value);
+    if (current.includes(optValueStr)) {
       // Deselect — always allowed
-      const next = current.filter(v => v !== opt.value);
+      const next = current.filter(v => v !== optValueStr);
       this.value = next;
       this.change.emit({ value: [...next], name: this.name });
     } else {
       // Select — check maxSelections cap
       if (this.maxSelections !== undefined && current.length >= this.maxSelections) {
-        this.limitreached.emit({ max: this.maxSelections, attempted: opt.value });
+        this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
         return;
       }
-      const next = [...current, opt.value];
+      const next = [...current, optValueStr];
       this.value = next;
       this.change.emit({ value: [...next], name: this.name });
     }
   }
 
   private removeChip(value: string | number) {
-    const next = (this.value ?? []).filter(v => v !== value);
+    const valueStr = String(value);
+    const next = (this.value ?? []).filter(v => v !== valueStr);
     this.value = next;
     this.change.emit({ value: [...next], name: this.name });
   }
@@ -657,7 +659,7 @@ export class IoMultiSelect {
   // ── Render helpers ────────────────────────────────────────────────────────
 
   private renderOption(opt: IoSelectOption, flatIndex: number) {
-    const isSelected = (this.value ?? []).includes(opt.value);
+    const isSelected = (this.value ?? []).includes(String(opt.value));
     const isFocused = flatIndex === this.activeIndex;
     const listboxId = `${this.fieldId}-listbox`;
     // When maxSelections is set and the limit is reached, disable unselected options

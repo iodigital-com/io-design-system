@@ -117,6 +117,21 @@ export class IoMultiSelect {
 
   /**
    * When true, shows a search input inside the dropdown to filter options.
+   * Client-side filtering by label text as the user types.
+   * @default false
+   */
+  @Prop({ reflect: true }) filterable = false;
+
+  /**
+   * Placeholder text for the filter search input.
+   * Only relevant when `filterable=true`.
+   * @default 'Search...'
+   */
+  @Prop() filterPlaceholder = 'Search...';
+
+  /**
+   * @deprecated Use `filterable` instead. Retained for backward compatibility.
+   * When true, shows a search input inside the dropdown to filter options.
    * @default false
    */
   @Prop({ reflect: true }) filter = false;
@@ -348,7 +363,7 @@ export class IoMultiSelect {
         void this.positionDropdown();
       }
 
-      if (this.filter) {
+      if (this.isFilterEnabled) {
         setTimeout(() => this.filterInputEl?.focus(), 0);
       } else {
         const opts = this.filteredOptions;
@@ -395,8 +410,13 @@ export class IoMultiSelect {
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
+  /** True when either `filterable` or the deprecated `filter` prop is set. */
+  private get isFilterEnabled(): boolean {
+    return this.filterable || this.filter;
+  }
+
   private get filteredOptions(): IoSelectOption[] {
-    if (!this.filter || !this.filterQuery) return this.flatOptions;
+    if (!this.isFilterEnabled || !this.filterQuery) return this.flatOptions;
     const q = this.filterQuery.toLowerCase();
     return this.flatOptions.filter(o => o.label.toLowerCase().includes(q));
   }
@@ -630,7 +650,7 @@ export class IoMultiSelect {
         break;
       default: {
         // Typeahead: printable single characters while filter input is not active
-        if (!this.filter && ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
+        if (!this.isFilterEnabled && ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
           ev.preventDefault();
           this.handleTypeahead(ev.key);
         }
@@ -720,7 +740,7 @@ export class IoMultiSelect {
   }
 
   private renderListboxItems() {
-    const isFiltering = this.filter && this.filterQuery.length > 0;
+    const isFiltering = this.isFilterEnabled && this.filterQuery.length > 0;
     const selectedCount = (this.value ?? []).length;
     const atLimit = this.maxSelections !== undefined && selectedCount >= this.maxSelections;
 
@@ -987,8 +1007,8 @@ export class IoMultiSelect {
             data-open={isOpen ? 'true' : undefined}
             {...(this.hasPopoverSupport ? { popover: 'manual' } : {})}
           >
-            {/* Filter input */}
-            {this.filter && (
+            {/* Filter input — shown when filterable=true (or deprecated filter=true) */}
+            {this.isFilterEnabled && (
               <div class="multi-select-filter">
                 <input
                   ref={el => {
@@ -996,6 +1016,7 @@ export class IoMultiSelect {
                   }}
                   type="text"
                   class="multi-select-filter__input"
+                  placeholder={this.filterPlaceholder}
                   aria-label="Filter options"
                   aria-autocomplete="list"
                   aria-controls={listboxId}

@@ -1596,6 +1596,12 @@
     "description": "Width and height of the inline clear-all icon button rendered inside the trigger when a selection exists. Must meet WCAG 2.5.8 touch target minimum (44x44px). Defaults to var(--io-touch-target-min)."
   },
   {
+    "cssVar": "--io-multi-select-filter-height",
+    "classification": "public-api",
+    "component": "io-multi-select",
+    "description": "Minimum height of the filter search input area shown when filterable=true. Defaults to var(--io-combobox-filter-height)."
+  },
+  {
     "cssVar": "--io-breadcrumb-separator",
     "classification": "public-api",
     "component": "io-breadcrumb",

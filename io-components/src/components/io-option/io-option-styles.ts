@@ -39,6 +39,14 @@ export function getOptionStyles(): string {
       gap: var(--io-space-3);
     }
 
+    .option__icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      font-size: var(--io-icon-size-md);
+      line-height: 1;
+    }
+
     .option__label {
       flex: 1;
     }

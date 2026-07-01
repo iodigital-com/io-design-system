@@ -2536,6 +2536,14 @@
       "notes": "Width and height of the chip remove button in io-multi-select. WCAG 2.5.8 minimum 24x24px touch target."
     },
     {
+      "runtimeCssVar": "--io-multi-select-filter-height",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Minimum height of the filter search input area in io-multi-select when filterable=true. Defaults to var(--io-combobox-filter-height)."
+    },
+    {
       "runtimeCssVar": "--io-option-hover-bg",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

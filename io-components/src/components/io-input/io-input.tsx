@@ -6,6 +6,7 @@ import { applyAriaProp } from '../../utils/aria-prop';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
+import { LoadingMessage } from '../../utils/common/loading-message';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
@@ -37,6 +38,7 @@ export class IoInput {
   private inputId!: string;
   private counterId!: string;
   private descriptionId!: string;
+  private loadingId!: string;
   private defaultValue = '';
   private nativeInputEl?: HTMLInputElement;
   @State() private announcedCounter = '';
@@ -52,6 +54,9 @@ export class IoInput {
 
   /** True after the user has blurred the field at least once — gates eager FACE error display */
   @State() private touched = false;
+
+  /** Guards the loading live-region: set to true once loading has been true at least once */
+  @State() private initialLoading = false;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -119,6 +124,12 @@ export class IoInput {
   /** Shows an inline spinner and disables the field while true */
   @Prop() loading = false;
 
+  /** Screen-reader announcement while loading. Localizable. Defaults to "Loading". */
+  @Prop() loadingDescription = 'Loading';
+
+  /** Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished". */
+  @Prop() loadingFinishedDescription = 'Loading finished';
+
   /** Shows {currentLength} / {maxLength} character counter below the field */
   @Prop() counter = false;
 
@@ -180,6 +191,8 @@ export class IoInput {
     this.inputId = resolveInputId(this.name, this.fallbackId);
     this.counterId = `io-input-counter-${++idCounter}`;
     this.descriptionId = `io-input-desc-${this.fallbackId}`;
+    this.loadingId = `io-input-loading-${++idCounter}`;
+    if (this.loading) this.initialLoading = true;
     this.defaultValue = this.value ?? '';
     this.syncFormValue();
     if (this.hideLabel && !this.label) {
@@ -252,6 +265,11 @@ export class IoInput {
   @Watch('pattern')
   onPatternChange() {
     this.syncFormValue();
+  }
+
+  @Watch('loading')
+  onLoadingChange(newVal: boolean): void {
+    if (newVal) this.initialLoading = true;
   }
 
   @Watch('aria')
@@ -435,6 +453,7 @@ export class IoInput {
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
       description ? this.descriptionId : '',
+      loading && this.initialLoading ? this.loadingId : '',
     ].filter(Boolean).join(' ') || undefined;
     const currentLength = (value ?? '').length;
 
@@ -629,6 +648,14 @@ export class IoInput {
         {description && (
           <p id={this.descriptionId} class="input-description">{description}</p>
         )}
+        <LoadingMessage
+          id={this.loadingId}
+          loading={loading}
+          initialLoading={this.initialLoading}
+          loadingDescription={this.loadingDescription}
+          loadingFinishedDescription={this.loadingFinishedDescription}
+          class="input-loading-sr"
+        />
       </Host>
     );
   }

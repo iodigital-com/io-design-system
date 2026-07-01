@@ -254,22 +254,22 @@ describe('io-button — componentShouldUpdate', () => {
 });
 
 describe('io-button — onLoadingChange / loading a11y', () => {
-  it('loadingTransitioned starts false', () => {
+  it('initialLoading starts false', () => {
     const c = makeButton();
-    expect((c as any).loadingTransitioned).toBe(false);
+    expect((c as any).initialLoading).toBe(false);
   });
 
-  it('sets loadingTransitioned=true when loading transitions to true', () => {
+  it('sets initialLoading=true when loading transitions to true', () => {
     const c = makeButton();
     (c as any).onLoadingChange(true);
-    expect((c as any).loadingTransitioned).toBe(true);
+    expect((c as any).initialLoading).toBe(true);
   });
 
-  it('does not reset loadingTransitioned when loading goes back to false', () => {
+  it('does not reset initialLoading when loading goes back to false', () => {
     const c = makeButton();
     (c as any).onLoadingChange(true);
     (c as any).onLoadingChange(false);
-    expect((c as any).loadingTransitioned).toBe(true);
+    expect((c as any).initialLoading).toBe(true);
   });
 
   it('loadingFinished starts false', () => {

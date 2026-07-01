@@ -501,6 +501,16 @@ export namespace Components {
          */
         "loading": boolean;
         /**
+          * Screen-reader announcement while loading. Localizable. Defaults to "Loading".
+          * @default 'Loading'
+         */
+        "loadingDescription": string;
+        /**
+          * Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished".
+          * @default 'Loading finished'
+         */
+        "loadingFinishedDescription": string;
+        /**
           * The name submitted as form data when type="submit". Only relevant when button is associated with a form.
          */
         "name": string | undefined;
@@ -1290,6 +1300,16 @@ export namespace Components {
           * @default false
          */
         "loading": boolean;
+        /**
+          * Screen-reader announcement while loading. Localizable. Defaults to "Loading".
+          * @default 'Loading'
+         */
+        "loadingDescription": string;
+        /**
+          * Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished".
+          * @default 'Loading finished'
+         */
+        "loadingFinishedDescription": string;
         /**
           * Native maximum value (date/time/number)
          */
@@ -6298,6 +6318,16 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
+          * Screen-reader announcement while loading. Localizable. Defaults to "Loading".
+          * @default 'Loading'
+         */
+        "loadingDescription"?: string;
+        /**
+          * Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished".
+          * @default 'Loading finished'
+         */
+        "loadingFinishedDescription"?: string;
+        /**
           * The name submitted as form data when type="submit". Only relevant when button is associated with a form.
          */
         "name"?: string | undefined;
@@ -7095,6 +7125,16 @@ declare namespace LocalJSX {
           * @default false
          */
         "loading"?: boolean;
+        /**
+          * Screen-reader announcement while loading. Localizable. Defaults to "Loading".
+          * @default 'Loading'
+         */
+        "loadingDescription"?: string;
+        /**
+          * Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished".
+          * @default 'Loading finished'
+         */
+        "loadingFinishedDescription"?: string;
         /**
           * Native maximum value (date/time/number)
          */
@@ -9883,6 +9923,8 @@ declare namespace LocalJSX {
         "download": string;
         "disabled": boolean;
         "loading": boolean;
+        "loadingDescription": string;
+        "loadingFinishedDescription": string;
         "fullWidth": boolean;
         "label": string | undefined;
         "value": string | undefined;
@@ -10031,6 +10073,8 @@ declare namespace LocalJSX {
         "autoComplete": string | undefined;
         "spellCheck": boolean | undefined;
         "loading": boolean;
+        "loadingDescription": string;
+        "loadingFinishedDescription": string;
         "counter": boolean;
         "form": string | undefined;
         "hideLabel": boolean;

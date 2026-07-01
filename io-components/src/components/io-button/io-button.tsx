@@ -3,6 +3,7 @@ import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method,
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { LoadingMessage } from '../../utils/common/loading-message';
 import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
 
@@ -94,6 +95,12 @@ export class IoButton {
   /** Shows a loading spinner and disables interaction */
   @Prop({ reflect: true }) loading = false;
 
+  /** Screen-reader announcement while loading. Localizable. Defaults to "Loading". */
+  @Prop() loadingDescription = 'Loading';
+
+  /** Screen-reader announcement when loading completes. Localizable. Defaults to "Loading finished". */
+  @Prop() loadingFinishedDescription = 'Loading finished';
+
   /** Stretches button to fill its container width */
   @Prop() fullWidth = false;
 
@@ -162,8 +169,11 @@ export class IoButton {
   private _implicitSubmitForm?: HTMLFormElement;
   private _loadingFinishedTimer?: ReturnType<typeof setTimeout>;
 
-  /** True once `loading` has transitioned to true at least once after mount. Guards live-region announcement. */
-  @State() private loadingTransitioned = false;
+  /**
+   * True once `loading` has transitioned to true at least once after mount.
+   * Guards the live-region: prevents a "Loading finished" announcement on initial render.
+   */
+  @State() private initialLoading = false;
 
   /** True for one tick after loading transitions true→false, to announce completion to AT. */
   @State() private loadingFinished = false;
@@ -225,14 +235,14 @@ export class IoButton {
   @Watch('loading')
   onLoadingChange(newVal: boolean): void {
     if (newVal) {
-      this.loadingTransitioned = true;
+      this.initialLoading = true;
       // Clear any pending "Loading finished" announcement from a previous cycle.
       if (this._loadingFinishedTimer !== undefined) {
         clearTimeout(this._loadingFinishedTimer);
         this._loadingFinishedTimer = undefined;
       }
       this.loadingFinished = false;
-    } else if (this.loadingTransitioned) {
+    } else if (this.initialLoading) {
       // loading went false after it was true — announce completion.
       this.loadingFinished = true;
       this._loadingFinishedTimer = setTimeout(() => {
@@ -498,7 +508,7 @@ export class IoButton {
       innerProps['aria-label'] = accessibleLabel;
     }
 
-    if (loading && this.loadingTransitioned) {
+    if (loading && this.initialLoading) {
       innerProps['aria-describedby'] = this.loadingId;
     }
 
@@ -507,7 +517,7 @@ export class IoButton {
     // - 'Loading finished' for one tick after loading goes false
     // - '' otherwise (no spurious announcement)
     let liveRegionText = '';
-    if (loading && this.loadingTransitioned) {
+    if (loading && this.initialLoading) {
       liveRegionText = 'Loading';
     } else if (this.loadingFinished) {
       liveRegionText = 'Loading finished';

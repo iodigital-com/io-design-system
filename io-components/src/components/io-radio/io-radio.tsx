@@ -4,6 +4,7 @@ import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
 import { Required } from '../common/required/Required';
 import { StateMessage } from '../common/state-message/StateMessage';
+import { isParentGroupRequired } from '../../utils/form/is-parent-group-required';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoRadioChangeDetail } from './types';
@@ -376,7 +377,7 @@ export class IoRadio {
                 <slot name="label" onSlotchange={this.handleLabelSlotChange} />
               </span>
               {!hasLabelSlot && label}
-              {required && <Required />}
+              {required && !isParentGroupRequired(this.el) && <Required />}
             </span>
           </label>
         </div>

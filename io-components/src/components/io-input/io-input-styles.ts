@@ -308,7 +308,13 @@ export function getInputStyles(): string {
 
     .input-indicator-icon {
       flex-shrink: 0;
-      color: var(--io-text-secondary);
+      display: flex;
+      align-items: center;
+      color: var(--io-input-indicator-color, var(--io-text-secondary));
+      width: var(--io-input-indicator-size, 1.25rem);
+      height: var(--io-input-indicator-size, 1.25rem);
+    }
+
     /* ── Forced Colors (High Contrast Mode) ─────────────────────
        In HCM the browser strips custom colors so error/success/warning
        state changes (border-color only) become invisible. These rules

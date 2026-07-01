@@ -3,12 +3,10 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 import { getInputSearchStyles } from './io-input-search-styles';
 import { applyAriaProp } from '../../utils/aria-prop';
 import {
-  renderErrorIcon,
-  renderSuccessIcon,
-  renderWarningIcon,
   buildInputWrapperClass,
   buildInputDescribedBy,
 } from '../../utils/input-base';
+import { StateIcon } from '../common/state-icon/StateIcon';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputSearchSize } from './types';
@@ -343,9 +341,9 @@ export class IoInputSearch {
                 <line x1="6" x2="18" y1="6" y2="18" />
               </svg>
             </button>
-            {showError && renderErrorIcon()}
-            {showSuccess && renderSuccessIcon()}
-            {showWarning && renderWarningIcon()}
+            {showError && <StateIcon state="error" />}
+            {showSuccess && <StateIcon state="success" />}
+            {showWarning && <StateIcon state="warning" />}
           </div>
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : `input-label input-label--has-prefix`}>
             <span class={hasLabelSlot ? 'input-label__slot' : 'input-label__slot input-label__slot--hidden'}>

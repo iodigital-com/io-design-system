@@ -3,12 +3,10 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 import { getInputPasswordStyles } from './io-input-password-styles';
 import { applyAriaProp } from '../../utils/aria-prop';
 import {
-  renderErrorIcon,
-  renderSuccessIcon,
-  renderWarningIcon,
   buildInputWrapperClass,
   buildInputDescribedBy,
 } from '../../utils/input-base';
+import { StateIcon } from '../common/state-icon/StateIcon';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputPasswordSize } from './types';
@@ -335,9 +333,9 @@ export class IoInputPassword {
                 )}
               </button>
             )}
-            {showError && renderErrorIcon()}
-            {showSuccess && renderSuccessIcon()}
-            {showWarning && renderWarningIcon()}
+            {showError && <StateIcon state="error" />}
+            {showSuccess && <StateIcon state="success" />}
+            {showWarning && <StateIcon state="warning" />}
           </div>
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label'}>
             <span class={hasLabelSlot ? 'input-label__slot' : 'input-label__slot input-label__slot--hidden'}>

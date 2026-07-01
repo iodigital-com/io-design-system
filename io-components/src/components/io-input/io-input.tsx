@@ -4,14 +4,32 @@ import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
+import { getIconSvg } from '../../utils/icons';
 import { Required } from '../common/required/Required';
 import { LoadingMessage } from '../../utils/common/loading-message';
-import { renderErrorIcon, renderSuccessIcon, renderWarningIcon } from '../../utils/input-base';
+import { StateIcon } from '../common/state-icon/StateIcon';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';
 
 let idCounter = 0;
+
+/** Maps input type to the auto-selected indicator icon when indicator=true */
+const TYPE_ICON_MAP: Partial<Record<string, IoIconName>> = {
+  email: 'mail',
+  tel: 'phone',
+  url: 'link',
+};
+
+/** Returns the effective indicator icon name: explicit name or auto-selected from type */
+function resolveIndicatorIcon(indicator: IoIconName | undefined, type: string): IoIconName | undefined {
+  if (!indicator) return undefined;
+  // If indicator is `true` (boolean), auto-select from type
+  if ((indicator as unknown) === true) {
+    return TYPE_ICON_MAP[type];
+  }
+  return indicator;
+}
 
 /**
  * io-input
@@ -396,7 +414,11 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern } = this;
+<<<<<<< HEAD
+    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
+    const indicatorIcon = resolveIndicatorIcon(indicator, type);
+    const showIndicator = !!indicatorIcon;
+    const showStepper = stepper && type === 'number';
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;
@@ -408,7 +430,7 @@ export class IoInput {
     const showCounter = counter && maxLength != null;
     const counterSrId = `${this.counterId}-sr`;
     const describedBy = [
-      errorId,
+      showMessage ? errorId : '',
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
       description ? this.descriptionId : '',
@@ -430,7 +452,7 @@ export class IoInput {
     const fieldClass = [
       'input-field',
       `input-field--${size}`,
-      hasPrefix ? 'input-field--has-prefix' : '',
+      hasPrefix || showIndicator ? 'input-field--has-prefix' : '',
       hasSuffix ? 'input-field--has-suffix' : '',
     ]
       .filter(Boolean)
@@ -440,8 +462,11 @@ export class IoInput {
       <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getInputStyles()}</style>
         <div class={wrapperClass}>
-          {/* Flex row: prefix slot, input, suffix slot / loading spinner, state icon */}
+          {/* Flex row: indicator icon, prefix slot, input, suffix slot / loading spinner, state icon */}
           <div class="input-field-row">
+            {showIndicator && indicatorIcon && (
+              <span class="input-indicator-icon" aria-hidden="true" innerHTML={getIconSvg(indicatorIcon, 20)} />
+            )}
             <span class={`input-slot input-slot--prefix${hasPrefix ? '' : ' input-slot--hidden'}`}>
               <slot name="prefix" onSlotchange={this.handleSlotChange} />
             </span>
@@ -486,9 +511,9 @@ export class IoInput {
                 <slot name="suffix" onSlotchange={this.handleSlotChange} />
               </span>
             )}
-            {showError && renderErrorIcon()}
-            {showSuccess && renderSuccessIcon()}
-            {showWarning && renderWarningIcon()}
+            {showError && <StateIcon state="error" />}
+            {showSuccess && <StateIcon state="success" />}
+            {showWarning && <StateIcon state="warning" />}
           </div>
           {/* Label sits outside the row so it can use absolute positioning
               within the wrapper for the floating-label effect */}
@@ -499,10 +524,10 @@ export class IoInput {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <Required />}
+                {required && <span class="input-required" aria-hidden="true"> *</span>}
               </span>
             )}
-            {hasLabelSlot && required && <Required />}
+            {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
         {showError && (

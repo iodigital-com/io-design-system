@@ -4035,7 +4035,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Vertical enter offset for upward-entering overlays (io-modal). Default: 12px."
-      "notes": "Overlay exit easing curve. Defaults to cubic-bezier(0.4, 0, 1, 1)."
     },
     {
       "runtimeCssVar": "--io-motion-entrance-offset-down",
@@ -4324,7 +4323,6 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Standard easing function (ease)."
-      "notes": "Top offset for sticky flyout header. Defaults to 0px."
     }
   ]
 }

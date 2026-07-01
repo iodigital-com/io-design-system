@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Element,
   Host,
+  Listen,
   Method,
   Watch,
   h,
@@ -315,14 +316,6 @@ export class IoSheet {
 
   // ── Handlers ──────────────────────────────────────────────────
 
-  private handleKeydown = (ev: KeyboardEvent) => {
-    if (!this.open || !this.dismissible) return;
-    if (ev.key === 'Escape') {
-      ev.stopPropagation();
-      this.handleDismiss();
-    }
-  };
-
   private handleDismiss = () => {
     this.open = false;
     this.dismissEvent.emit();
@@ -356,7 +349,6 @@ export class IoSheet {
       <Host
         role="dialog"
         aria-modal="true"
-        onKeyDown={this.handleKeydown}
         {...(heading ? { 'aria-labelledby': headingId } : {})}
       >
         <style>{getSheetStyles()}</style>

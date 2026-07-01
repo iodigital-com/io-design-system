@@ -65,13 +65,13 @@ export default function IoCheckboxGroupApiPage() {
               <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              <span key="desc"><span style={{ color: 'var(--io-color-warning, #b45309)', fontWeight: 600 }}>Deprecated.</span> Use <InlineCode>state=&quot;error&quot;</InlineCode> instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.</span>,
+              'Puts the group in error state. Use state="error" for the recommended validation API.',
             ],
             [
               <InlineCode key="n">errorMessage</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
-              <span key="desc"><span style={{ color: 'var(--io-color-warning, #b45309)', fontWeight: 600 }}>Deprecated.</span> Use <InlineCode>message</InlineCode> instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.</span>,
+              'Error message shown below the group when error is true. Use the message prop alongside state for the recommended validation API.',
             ],
             [
               <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,

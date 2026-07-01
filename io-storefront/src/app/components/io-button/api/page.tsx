@@ -116,10 +116,7 @@ export default function IoButtonApiPage() {
               <span key="n"><InlineCode>iconOnly</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              <span key="desc">
-                <span className="inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded mr-1.5" style={{ background: 'var(--io-color-warning-subtle, #fff3cd)', color: 'var(--io-color-warning-text, #856404)', border: '1px solid var(--io-color-warning-border, #ffc107)' }}>Deprecated</span>
-                Use <InlineCode>hideLabel</InlineCode> together with the <InlineCode>icon</InlineCode> prop instead. <InlineCode>iconOnly</InlineCode> will be removed in a future minor release. Renders a square icon-only button and suppresses visible label text. Requires <InlineCode>label</InlineCode> prop or host <InlineCode>aria-label</InlineCode> for accessibility.
-              </span>,
+              'Renders a square icon-only button and suppresses visible label text. Requires label prop or host aria-label for accessibility.',
             ],
             [
               <span key="n"><InlineCode>arrow</InlineCode><ReflectBadge /></span>,

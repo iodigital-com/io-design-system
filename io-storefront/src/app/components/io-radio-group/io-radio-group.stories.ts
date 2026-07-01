@@ -187,13 +187,13 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     name: 'error',
     type: 'boolean',
     defaultValue: false,
-    description: '[Deprecated] Use state="error" instead. Puts the group in error state.',
+    description: 'Puts the group in error state. Use state="error" for the recommended validation API.',
   },
   {
     name: 'errorMessage',
     type: 'string',
     defaultValue: '',
-    description: '[Deprecated] Use the message prop instead. Error message shown below the group when error is true.',
+    description: 'Error message shown below the group when error is true. Use the message prop alongside state for the recommended validation API.',
   },
   {
     name: 'orientation',

@@ -204,10 +204,10 @@ export default function IoInputApiPage() {
               'Native step interval for number/date/time inputs.',
             ],
             [
-              <span key="n"><InlineCode>autocomplete</InlineCode> <span className="text-xs" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>deprecated</span></span>,
+              <InlineCode key="n">autocomplete</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              <span key="desc">Legacy lowercase alias for the autocomplete attribute. Prefer <InlineCode>autoComplete</InlineCode> (camelCase). When both are set, <InlineCode>autoComplete</InlineCode> takes precedence.</span>,
+              'Lowercase alias for the autocomplete attribute. When both autocomplete and autoComplete are set, autoComplete takes precedence.',
             ],
             [
               <InlineCode key="n">inputMode</InlineCode>,

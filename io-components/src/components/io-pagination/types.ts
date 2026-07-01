@@ -4,6 +4,8 @@ export interface IoPaginationChangeDetail {
   page: number;
   /** 1-based page number before the navigation occurred */
   previousPage: number;
+  /** New per-page value when the user changed the per-page selector. Absent on regular page nav. */
+  perPage?: number;
 }
 
 /**
@@ -19,6 +21,14 @@ export type IoPaginationIntl = {
   next?: string;
   /** Prefix prepended to the page number for page button aria-labels. Defaults to `'Page'`. */
   page?: string;
+  /** Label for the per-page selector. Defaults to `'Per page'`. */
+  perPageLabel?: string;
+  /** Label for the go-to-page input. Defaults to `'Go to page'`. */
+  goToPageLabel?: string;
+  /** Prefix text for the range display. Defaults to `'Showing'`. */
+  range?: string;
+  /** Connector text between range and total. Defaults to `'of'`. */
+  of?: string;
 };
 
 /**

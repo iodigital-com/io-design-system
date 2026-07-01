@@ -248,7 +248,15 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-link',
         description: 'Inline and standalone hyperlink. Three colour options, external link support, and an animated underline on hover.',
-        related: ['io-button', 'io-tooltip', 'io-tabs'],
+        related: ['io-link-pure', 'io-button', 'io-tooltip'],
+      },
+      {
+        label: 'Link Pure',
+        href: '/components/io-link-pure/configurator',
+        status: 'beta',
+        slug: 'io-link-pure',
+        description: 'Icon + label tertiary CTA link with no underline at rest. Use for navigation, card CTAs, list actions, and icon-only affordances.',
+        related: ['io-link', 'io-button', 'io-icon'],
       },
       {
         label: 'Modal',

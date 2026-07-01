@@ -1,4 +1,4 @@
-import type { IoLinkColor, IoLinkVariant } from './types';
+import type { IoLinkColor, IoLinkUnderline, IoLinkVariant } from './types';
 
 export function shouldBlockLinkClick(disabled: boolean): boolean {
   return disabled;
@@ -16,7 +16,7 @@ export function resolveLinkRel(rel: string | undefined, target: string | undefin
       // If user provided rel, ensure we have security properties and preserve their intent
       const hasNoopener = /\bnoopener\b/.test(rel);
       const hasNoreferrer = /\bnoreferrer\b/.test(rel);
-      
+
       if (hasNoopener && hasNoreferrer) {
         // Already has security properties
         return rel;
@@ -39,6 +39,16 @@ export function resolveLinkRel(rel: string | undefined, target: string | undefin
   return rel;
 }
 
-export function getLinkClassName(variant: IoLinkVariant, color: IoLinkColor, disabled: boolean): string {
-  return `link link--${variant} link--${color}${disabled ? ' link--disabled' : ''}`;
+export function getLinkClassName(
+  variant: IoLinkVariant,
+  color: IoLinkColor,
+  disabled: boolean,
+  active = false,
+  underline?: IoLinkUnderline,
+): string {
+  const classes = [`link`, `link--${variant}`, `link--${color}`];
+  if (disabled) classes.push('link--disabled');
+  if (active) classes.push('link--active');
+  if (underline) classes.push(`link--underline-${underline}`);
+  return classes.join(' ');
 }

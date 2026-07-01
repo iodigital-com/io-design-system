@@ -28,6 +28,7 @@ export type IoTagNames =
   | 'io-input-password'
   | 'io-input-search'
   | 'io-link'
+  | 'io-link-pure'
   | 'io-modal'
   | 'io-multi-select'
   | 'io-optgroup'

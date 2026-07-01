@@ -35,6 +35,7 @@ declare module 'react' {
   'io-input-password': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputPasswordElement>, HTMLIoInputPasswordElement> & Partial<StencilJSX.IoInputPassword>;
   'io-input-search': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputSearchElement>, HTMLIoInputSearchElement> & Partial<StencilJSX.IoInputSearch>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
+  'io-link-pure': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkPureElement>, HTMLIoLinkPureElement> & Partial<StencilJSX.IoLinkPure>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
   'io-multi-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoMultiSelectElement>, HTMLIoMultiSelectElement> & Partial<StencilJSX.IoMultiSelect>;
   'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptgroupElement>, HTMLIoOptgroupElement> & Partial<StencilJSX.IoOptgroup>;

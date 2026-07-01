@@ -101,6 +101,41 @@ export function getLinkStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* Active / current-nav-item state */
+    .link--active::after {
+      background-color: var(--io-link-active-underline-color, var(--io-color-primary));
+      transform: scaleX(1);
+    }
+
+    .link--active {
+      color: var(--io-link-active-underline-color, var(--io-color-primary));
+      font-weight: var(--io-font-weight-bold);
+    }
+
+    /* Underline override modifiers — take precedence over variant-driven behaviour */
+
+    /* always: underline visible at rest, variant animation still applies on hover */
+    .link--underline-always::after {
+      transform: scaleX(1);
+    }
+
+    /* hover: underline only on hover (same as standalone, regardless of variant) */
+    .link--underline-hover::after {
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .link--underline-hover:hover:not(.link--disabled)::after {
+        transform: scaleX(1);
+      }
+    }
+
+    /* none: suppress underline entirely */
+    .link--underline-none::after {
+      display: none;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .link::after {
         transition: none;

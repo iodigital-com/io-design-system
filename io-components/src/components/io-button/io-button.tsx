@@ -1,12 +1,13 @@
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core';
 
+import { type BreakpointCustomizable, resolveBreakpoint } from '../../utils/breakpoint';
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
 
-import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonAriaAttribute } from './types';
+import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonIconPosition, IoButtonAriaAttribute } from './types';
 
 /** One render tick in ms — used to clear the "Loading finished" announcement. */
 const LOADING_FINISHED_CLEAR_MS = 1000;
@@ -61,8 +62,20 @@ export class IoButton {
   /** Color theme */
   @Prop({ reflect: true }) color: IoButtonColor = 'blue';
 
-  /** Size preset */
-  @Prop({ reflect: true }) size: IoButtonSize = 'md';
+  /**
+   * Size preset. Accepts a fixed value or a responsive breakpoint map.
+   * When a scalar value is used, it is reflected as an HTML attribute (e.g. `size="md"`),
+   * enabling CSS selectors like `io-button[size="lg"]`. Object/responsive values are not
+   * reflected — pass them via JavaScript property binding only.
+   *
+   * @example
+   * // Fixed scalar
+   * <io-button size="md">Button</io-button>
+   *
+   * // Responsive — sm on mobile, lg on large+ viewports (JS/JSX only)
+   * <io-button .size={{ base: 'sm', l: 'lg' }}>Button</io-button>
+   */
+  @Prop({ reflect: true }) size: BreakpointCustomizable<IoButtonSize> = 'md';
 
   /**
    * Native button type.
@@ -143,11 +156,35 @@ export class IoButton {
   /** Custom SVG string for a non-library icon (mutually exclusive with `icon`). */
   @Prop() iconSource?: string;
 
-  /** Hides the text label visually (icon-only mode with accessible label via `label` prop). */
-  @Prop({ reflect: true }) hideLabel = false;
+  /**
+   * Hides the text label visually (icon-only mode with accessible label via `label` prop).
+   * Accepts a fixed boolean or a responsive breakpoint map of 'true'/'false' strings.
+   * Boolean values are reflected as the `hide-label` HTML attribute; object/responsive values
+   * are not reflected and must be set via JavaScript property binding.
+   *
+   * @example
+   * // Always hidden
+   * <io-button hide-label>Button</io-button>
+   *
+   * // Icon-only on mobile, show label on large+ viewports (JS/JSX only)
+   * <io-button .hideLabel={{ base: 'true', l: 'false' }}>Button</io-button>
+   */
+  @Prop({ reflect: true }) hideLabel: BreakpointCustomizable<'true' | 'false'> | boolean = false;
 
-  /** Side on which the icon is rendered relative to the label. Defaults to 'left'. */
-  @Prop({ reflect: true }) iconPosition: 'left' | 'right' = 'left';
+  /**
+   * Side on which the icon is rendered relative to the label. Defaults to 'left'.
+   * Accepts a fixed value or a responsive breakpoint map.
+   * Scalar values are reflected as the `icon-position` HTML attribute; object/responsive
+   * values are not reflected and must be set via JavaScript property binding.
+   *
+   * @example
+   * // Always left
+   * <io-button icon-position="left">Button</io-button>
+   *
+   * // Left on mobile, right on large+ viewports (JS/JSX only)
+   * <io-button .iconPosition={{ base: 'left', l: 'right' }}>Button</io-button>
+   */
+  @Prop({ reflect: true }) iconPosition: BreakpointCustomizable<IoButtonIconPosition> = 'left';
 
   /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).
@@ -394,8 +431,8 @@ export class IoButton {
     this.hasWarnedIconOnlyLabel = true;
   }
 
-  private warnHideLabelNoIcon(): void {
-    if (!this.hideLabel || this.iconOnly) return;
+  private warnHideLabelNoIcon(resolvedHideLabel: boolean): void {
+    if (!resolvedHideLabel || this.iconOnly) return;
     const hasIcon = Boolean(this.icon || this.iconSource);
     if (!hasIcon) {
       const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
@@ -405,7 +442,7 @@ export class IoButton {
     }
   }
 
-  private validatePropValues(): void {
+  private validatePropValues(resolvedSize: IoButtonSize): void {
     const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
     if (isStencilProd) return;
 
@@ -415,26 +452,26 @@ export class IoButton {
     if (!VALID_COLORS.includes(this.color)) {
       console.warn(`io-button: Invalid value "${this.color}" for prop "color". Expected: ${VALID_COLORS.join(' | ')}.`);
     }
-    if (!VALID_SIZES.includes(this.size)) {
-      console.warn(`io-button: Invalid value "${this.size}" for prop "size". Expected: ${VALID_SIZES.join(' | ')}.`);
+    if (!VALID_SIZES.includes(resolvedSize)) {
+      console.warn(`io-button: Invalid resolved value "${resolvedSize}" for prop "size". Expected: ${VALID_SIZES.join(' | ')}.`);
     }
   }
 
   // ── Render helpers ───────────────────────────────────────────
 
-  private renderIcon() {
+  private renderIcon(resolvedSize: IoButtonSize) {
     if (!this.icon && !this.iconSource) return null;
 
     if (this.iconSource) {
       return <span class="btn__icon-wrap" aria-hidden="true" innerHTML={this.iconSource} />;
     }
 
-    return <io-icon name={this.icon!} size={ICON_SIZE_MAP[this.size] ?? 'sm'} aria-hidden="true" />;
+    return <io-icon name={this.icon!} size={ICON_SIZE_MAP[resolvedSize] ?? 'sm'} aria-hidden="true" />;
   }
 
-  private renderIconOnlyContent() {
+  private renderIconOnlyContent(resolvedSize: IoButtonSize) {
     if (this.icon || this.iconSource) {
-      return <span class="btn__icon">{this.renderIcon()}</span>;
+      return <span class="btn__icon">{this.renderIcon(resolvedSize)}</span>;
     }
     return (
       <span class="btn__icon btn__icon--brand-arrow" aria-hidden="true">
@@ -446,15 +483,39 @@ export class IoButton {
   }
 
   render() {
-    const { variant, color, size, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement, hideLabel, iconPosition } = this;
+    // Resolve responsive (BreakpointCustomizable) props to their current scalar value.
+    const resolvedSize = resolveBreakpoint<IoButtonSize>(
+      this.size as BreakpointCustomizable<IoButtonSize>,
+      'md',
+    );
+    const resolvedHideLabel = (() => {
+      const raw = this.hideLabel;
+      if (typeof raw === 'boolean') return raw;
+      // String form from HTML attributes or breakpoint object
+      const resolved = resolveBreakpoint<'true' | 'false'>(
+        raw as BreakpointCustomizable<'true' | 'false'>,
+        'false',
+      );
+      return resolved === 'true';
+    })();
+    const resolvedIconPosition = resolveBreakpoint<IoButtonIconPosition>(
+      this.iconPosition as BreakpointCustomizable<IoButtonIconPosition>,
+      'left',
+    );
+
+    const { variant, color, disabled, loading, fullWidth, href, target, rel, type, iconOnly, arrowPlacement } = this;
+    const size = resolvedSize;
+    const hideLabel = resolvedHideLabel;
+    const iconPosition = resolvedIconPosition;
+
     // 'none' and null are UI sentinels — treat as undefined so no arrow is rendered.
     // null arrives when React explicitly resets the DOM property (vs. deleting the prop).
     const rawArrow = this.arrow as string | null | undefined;
     const arrow = rawArrow === 'none' || rawArrow === null ? undefined : this.arrow;
 
-    this.validatePropValues();
+    this.validatePropValues(size);
     this.warnIconOnlyDeprecated();
-    this.warnHideLabelNoIcon();
+    this.warnHideLabelNoIcon(hideLabel);
 
     // Effective icon-only mode: either the legacy iconOnly prop, or hideLabel + has icon.
     const hasIcon = Boolean(this.icon || this.iconSource);
@@ -523,7 +584,7 @@ export class IoButton {
     }
 
     const labelSlot = effectiveIconOnly
-      ? this.renderIconOnlyContent()
+      ? this.renderIconOnlyContent(size)
       : (
         <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
           <slot />
@@ -545,9 +606,9 @@ export class IoButton {
               </svg>
             </span>
           )}
-          {hasIcon && !effectiveIconOnly && iconPosition === 'left' && this.renderIcon()}
+          {hasIcon && !effectiveIconOnly && iconPosition === 'left' && this.renderIcon(size)}
           {labelSlot}
-          {hasIcon && !effectiveIconOnly && iconPosition === 'right' && this.renderIcon()}
+          {hasIcon && !effectiveIconOnly && iconPosition === 'right' && this.renderIcon(size)}
           {!effectiveIconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}

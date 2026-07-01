@@ -444,6 +444,7 @@ describe('io-radio-group — error paragraph semantics (#856)', () => {
     (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
     (component as any).errorId = 'io-rg-error-test';
     (component as any).descriptionId = 'io-rg-desc-test';
+    (component as any).legendId = 'io-rg-legend-test';
     component.label = 'Contact';
     component.name = 'contact';
     component.error = true;
@@ -459,5 +460,171 @@ describe('io-radio-group — error paragraph semantics (#856)', () => {
     expect(errorProps?.['role']).toBe('alert');
     expect(errorProps?.['aria-atomic']).toBe('true');
     expect(errorProps?.['aria-live']).toBeUndefined();
+  });
+});
+
+describe('io-radio-group — aria-labelledby on fieldset (#1154)', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('generates a legendId in componentWillLoad', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    component.label = 'Contact';
+    component.name = 'contact';
+    (component as any).componentWillLoad();
+    const id = (component as any).legendId as string;
+    expect(id).toMatch(/^io-rg-legend-/);
+  });
+
+  it('fieldset has aria-labelledby pointing to legendId', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    (component as any).legendId = 'io-rg-legend-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const fieldsetCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'fieldset');
+    const fieldsetProps = fieldsetCalls[0]?.[1] as Record<string, unknown>;
+    expect(fieldsetProps?.['aria-labelledby']).toBe('io-rg-legend-test');
+  });
+
+  it('legend element has id matching legendId', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    (component as any).legendId = 'io-rg-legend-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const legendCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>]>)
+      .filter(call => call[0] === 'legend');
+    const legendProps = legendCalls[0]?.[1] as Record<string, unknown>;
+    expect(legendProps?.['id']).toBe('io-rg-legend-test');
+  });
+});
+
+describe('io-radio-group — state/message API (#1152)', () => {
+  beforeEach(() => {
+    vi.mocked(h).mockClear();
+  });
+
+  it('state defaults to "none"', () => {
+    const component = new IoRadioGroup();
+    expect(component.state).toBe('none');
+  });
+
+  it('message defaults to empty string', () => {
+    const component = new IoRadioGroup();
+    expect(component.message).toBe('');
+  });
+
+  it('propagates state="error" to child radios via syncChildren', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), {
+      value: 'a', name: '', checked: false, disabled: false, required: false, state: 'none',
+    });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'choice';
+    component.state = 'error';
+
+    (component as any).syncChildren();
+
+    expect((radio as any).state).toBe('error');
+  });
+
+  it('propagates state="success" to child radios via syncChildren', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), {
+      value: 'a', name: '', checked: false, disabled: false, required: false, state: 'none',
+    });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'choice';
+    component.state = 'success';
+
+    (component as any).syncChildren();
+
+    expect((radio as any).state).toBe('success');
+  });
+
+  it('legacy error=true maps to state="error" for children', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), {
+      value: 'a', name: '', checked: false, disabled: false, required: false, state: 'none',
+    });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'choice';
+    component.error = true;
+
+    (component as any).syncChildren();
+
+    expect((radio as any).state).toBe('error');
+  });
+
+  it('explicit state prop takes precedence over legacy error prop', () => {
+    const component = new IoRadioGroup();
+    const host = document.createElement('io-radio-group');
+    const radio = Object.assign(document.createElement('io-radio'), {
+      value: 'a', name: '', checked: false, disabled: false, required: false, state: 'none',
+    });
+    host.appendChild(radio);
+    (component as any).el = host;
+    (component as any).change = { emit: vi.fn() };
+    component.name = 'choice';
+    component.state = 'warning';
+    component.error = true;
+
+    (component as any).syncChildren();
+
+    // state="warning" takes precedence over error=true
+    expect((radio as any).state).toBe('warning');
+  });
+
+  it('renders message paragraph with role="status" when state="success"', () => {
+    const component = new IoRadioGroup();
+    (component as any).el = document.createElement('io-radio-group');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (component as any).errorId = 'io-rg-error-test';
+    (component as any).descriptionId = 'io-rg-desc-test';
+    (component as any).legendId = 'io-rg-legend-test';
+    component.label = 'Contact';
+    component.name = 'contact';
+    component.state = 'success';
+    component.message = 'Looks good!';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const pCalls = (vi.mocked(h).mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>)
+      .filter(([tag, attrs]) => tag === 'p' && (attrs?.class as string)?.includes('radio-group__error'));
+    expect(pCalls.length).toBe(1);
+    expect(pCalls[0][1]?.['role']).toBe('status');
   });
 });

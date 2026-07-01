@@ -102,7 +102,7 @@ describe('io-checkbox-group — error role=alert (render checks)', () => {
     c.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && (call[1] as Record<string, unknown>)?.class === 'checkbox-group__error',
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-group__error'),
     );
     expect(pCalls.length).toBeGreaterThan(0);
     const attrs = pCalls[0]![1] as Record<string, unknown>;
@@ -117,7 +117,7 @@ describe('io-checkbox-group — error role=alert (render checks)', () => {
     c.render();
 
     const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && (call[1] as Record<string, unknown>)?.class === 'checkbox-group__error',
+      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-group__error'),
     );
     expect(pCalls.length).toBe(0);
   });

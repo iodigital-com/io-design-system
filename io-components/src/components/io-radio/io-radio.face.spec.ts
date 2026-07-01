@@ -159,6 +159,24 @@ describe('io-radio — FACE', () => {
     expect(internals.setFormValue).toHaveBeenLastCalledWith('a');
   });
 
+  it('formStateRestoreCallback sets checked=true when state is non-null', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.checked = false;
+    (component as any).formStateRestoreCallback('a');
+    expect(component.checked).toBe(true);
+    expect(internals.setFormValue).toHaveBeenLastCalledWith('a');
+  });
+
+  it('formStateRestoreCallback sets checked=false when state is null', () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.checked = true;
+    (component as any).formStateRestoreCallback(null);
+    expect(component.checked).toBe(false);
+    expect(internals.setFormValue).toHaveBeenLastCalledWith(null);
+  });
+
   it('formResetCallback deselects same-name sibling when defaultChecked=true', () => {
     // Set up the radio that will reset to checked
     const radioA = new IoRadio();

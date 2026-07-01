@@ -4,6 +4,8 @@ import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
+import { Required } from '../common/required/Required';
+import { LoadingMessage } from '../../utils/common/loading-message';
 import { renderErrorIcon, renderSuccessIcon, renderWarningIcon } from '../../utils/input-base';
 
 import type { IoFieldState } from '../../utils/field-state';
@@ -406,7 +408,7 @@ export class IoInput {
     const showCounter = counter && maxLength != null;
     const counterSrId = `${this.counterId}-sr`;
     const describedBy = [
-      showMessage ? errorId : '',
+      errorId,
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
       description ? this.descriptionId : '',
@@ -497,10 +499,10 @@ export class IoInput {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="input-required" aria-hidden="true"> *</span>}
+                {required && <Required />}
               </span>
             )}
-            {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
+            {hasLabelSlot && required && <Required />}
           </label>
         </div>
         {showError && (

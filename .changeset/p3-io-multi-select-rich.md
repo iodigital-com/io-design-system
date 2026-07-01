@@ -15,3 +15,4 @@ feat(io-option, io-multi-select): add icon prop + slot to io-option (#1057), add
 - Add `@Prop() filterPlaceholder = 'Search...'` — placeholder text for the filter input
 - Add `--io-multi-select-filter-height` CSS custom property (component-scoped override for the filter input height, defaults to `--io-combobox-filter-height`)
 - The filter input is aria-labeled ("Filter options"), keyboard-accessible (Tab into filter, Arrow keys to options), and announces its controls via `aria-controls` pointing to the listbox
+

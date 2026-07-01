@@ -4,7 +4,6 @@ import { type BreakpointCustomizable, resolveBreakpoint } from '../../utils/brea
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import { LoadingMessage } from '../../utils/common/loading-message';
 import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
 

@@ -637,6 +637,11 @@
   --io-spinner-border-width-sm:    1.5px;
   --io-spinner-border-width-md:    2px;
   --io-spinner-border-width-lg:    3px;
+  /* Consumer override API — public-api tokens */
+  --io-spinner-size:               unset; /* Override to set custom size (e.g. 2rem). Unset by default so size class wins. */
+  --io-spinner-color:              unset; /* Override arc stroke color. Unset defers to color class. */
+  --io-spinner-track-color:        unset; /* Override track stroke color. Unset defers to color class. */
+  --io-spinner-duration:           0.7s; /* Override animation duration. Consumers can slow for WCAG 2.2.2. */
 
   /* Button Group */
   --io-button-group-bg:                var(--io-color-white);
@@ -784,6 +789,8 @@
   --io-progress-fill-success:    #1a7a4a;
   --io-progress-fill-warning:    #b85c00;
   --io-progress-fill-error:      var(--io-color-error, #c0392b);
+  /* Consumer override: slow down indeterminate animation for WCAG 2.2.2 compliance */
+  --io-progress-indeterminate-duration: 1s;
 
   /* ============================================================
      13. PIN CODE

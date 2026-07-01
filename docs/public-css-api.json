@@ -630,6 +630,12 @@
     "description": "Height of the custom horizontal scrollbar track of the carousel. Override to adjust scrollbar visual weight."
   },
   {
+    "cssVar": "--io-carousel-edge-fade-width",
+    "classification": "public-api",
+    "component": "io-carousel",
+    "description": "Width of the gradient fade mask applied at the left and right edges of the carousel track when edgeFade=true. Defaults to 64px."
+  },
+  {
     "cssVar": "--io-carousel-slides-per-page",
     "classification": "internal",
     "component": "io-carousel",

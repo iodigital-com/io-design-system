@@ -757,3 +757,230 @@ describe('io-carousel — skip link (#867)', () => {
     expect(linkCall?.[2]).toBe('Skip to content');
   });
 });
+
+// ── Issue #1041 — intl prop ────────────────────────────────────────────────
+
+describe('io-carousel — intl prop (#1041)', () => {
+  function makeCarousel() {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    (c as any).update = { emit: vi.fn() };
+    c.componentWillLoad();
+    return c;
+  }
+
+  it('intl defaults to undefined', () => {
+    const c = makeCarousel();
+    expect(c.intl).toBeUndefined();
+  });
+
+  it('intl.prev overrides prevLabel in render', () => {
+    const c = makeCarousel();
+    c.intl = { prev: 'Vorige' };
+    vi.mocked(h).mockClear();
+    c.render();
+    const prevBtn = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.['class']?.toString?.().includes('carousel-btn--prev'),
+    );
+    expect(prevBtn?.[1]?.['aria-label']).toBe('Vorige');
+  });
+
+  it('intl.next overrides nextLabel in render', () => {
+    const c = makeCarousel();
+    c.intl = { next: 'Volgende' };
+    vi.mocked(h).mockClear();
+    c.render();
+    const nextBtn = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.['class']?.toString?.().includes('carousel-btn--next'),
+    );
+    expect(nextBtn?.[1]?.['aria-label']).toBe('Volgende');
+  });
+
+  it('intl.skip overrides skipLabel in render', () => {
+    const c = makeCarousel();
+    c.intl = { skip: 'Sla carrousel over' };
+    vi.mocked(h).mockClear();
+    c.render();
+    const skipId = (c as any).skipTargetId;
+    const linkCall = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'a' &&
+        (attrs as Record<string, unknown>)?.['href'] === `#${skipId}`,
+    );
+    expect(linkCall?.[2]).toBe('Sla carrousel over');
+  });
+
+  it('falls back to individual prop when intl key is absent', () => {
+    const c = makeCarousel();
+    c.prevLabel = 'Prev';
+    c.intl = { next: 'Volgende' }; // no 'prev' key
+    vi.mocked(h).mockClear();
+    c.render();
+    const prevBtn = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'button' &&
+        (attrs as Record<string, unknown>)?.['class']?.toString?.().includes('carousel-btn--prev'),
+    );
+    expect(prevBtn?.[1]?.['aria-label']).toBe('Prev');
+  });
+});
+
+// ── Issue #1030 — aria-live always polite ─────────────────────────────────
+
+describe('io-carousel — aria-live always polite (#1030)', () => {
+  function makeCarousel() {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    (c as any).update = { emit: vi.fn() };
+    c.componentWillLoad();
+    return c;
+  }
+
+  it('aria-live span is always polite regardless of autoplay state', () => {
+    const c = makeCarousel();
+    (c as any).autoplay = true;
+    (c as any).isAutoplayPaused = false;
+    vi.mocked(h).mockClear();
+    c.render();
+    const liveSpan = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'span' &&
+        (attrs as Record<string, unknown>)?.['aria-live'] !== undefined,
+    );
+    expect(liveSpan?.[1]?.['aria-live']).toBe('polite');
+  });
+
+  it('aria-live span is polite when autoplay is paused', () => {
+    const c = makeCarousel();
+    (c as any).autoplay = true;
+    (c as any).isAutoplayPaused = true;
+    vi.mocked(h).mockClear();
+    c.render();
+    const liveSpan = vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'span' &&
+        (attrs as Record<string, unknown>)?.['aria-live'] !== undefined,
+    );
+    expect(liveSpan?.[1]?.['aria-live']).toBe('polite');
+  });
+
+  it('setActiveIndex keeps slideAnnouncement empty when autoplay is running', () => {
+    const c = makeCarousel();
+    (c as any).autoplay = true;
+    (c as any).isAutoplayPaused = false;
+    (c as any).update = { emit: vi.fn() };
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 4 });
+    (c as any).activeSlideIndex = 0;
+    (c as any).setActiveIndex(1, false);
+    expect((c as any).slideAnnouncement).toBe('');
+  });
+
+  it('setActiveIndex announces slide when autoplay is paused', () => {
+    const c = makeCarousel();
+    (c as any).autoplay = true;
+    (c as any).isAutoplayPaused = true;
+    (c as any).update = { emit: vi.fn() };
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 4 });
+    (c as any).activeSlideIndex = 0;
+    (c as any).setActiveIndex(1, false);
+    expect((c as any).slideAnnouncement).toBe('Slide 2 of 4');
+  });
+
+  it('setActiveIndex announces slide when autoplay is disabled', () => {
+    const c = makeCarousel();
+    (c as any).autoplay = false;
+    (c as any).update = { emit: vi.fn() };
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 3 });
+    (c as any).activeSlideIndex = 0;
+    (c as any).setActiveIndex(2, false);
+    expect((c as any).slideAnnouncement).toBe('Slide 3 of 3');
+  });
+});
+
+// ── Issue #1031 — trimSpace, edgeFade, focusOnCenterSlide ─────────────────
+
+describe('io-carousel — trimSpace prop (#1031)', () => {
+  it('trimSpace defaults to "none"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    expect(c.trimSpace).toBe('none');
+  });
+
+  it('trimSpace can be set to "start"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.trimSpace = 'start';
+    expect(c.trimSpace).toBe('start');
+  });
+
+  it('trimSpace can be set to "end"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.trimSpace = 'end';
+    expect(c.trimSpace).toBe('end');
+  });
+
+  it('trimSpace can be set to "both"', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.trimSpace = 'both';
+    expect(c.trimSpace).toBe('both');
+  });
+});
+
+describe('io-carousel — edgeFade prop (#1031)', () => {
+  it('edgeFade defaults to false', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    expect(c.edgeFade).toBe(false);
+  });
+
+  it('edgeFade can be set to true', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    c.edgeFade = true;
+    expect(c.edgeFade).toBe(true);
+  });
+});
+
+describe('io-carousel — focusOnCenterSlide prop (#1031)', () => {
+  it('focusOnCenterSlide defaults to false', () => {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    expect(c.focusOnCenterSlide).toBe(false);
+  });
+
+  it('focusOnCenterSlide adjusts scroll offset to center active slide', () => {
+    const c = new IoCarousel();
+    c.focusOnCenterSlide = true;
+
+    const track = document.createElement('div');
+    Object.defineProperty(track, 'clientWidth', { value: 800 });
+    Object.defineProperty(track, 'scrollWidth', { value: 3000 });
+    (track as any).scrollTo = vi.fn();
+
+    const slide = document.createElement('div');
+    Object.defineProperty(slide, 'getBoundingClientRect', { value: () => ({ width: 300 }) });
+
+    const shadowRoot = {
+      querySelector: vi.fn((sel: string) => {
+        if (sel === '.carousel-track') return track;
+        return null;
+      }),
+    };
+    (c as any).el = { shadowRoot };
+    // Stub slides getter to return one slide at index 0
+    Object.defineProperty(c as any, 'slides', { get: () => [slide] });
+    Object.defineProperty(c as any, 'totalSlides', { get: () => 1 });
+    (c as any).getSlideLeft = vi.fn(() => 500);
+
+    (c as any).scrollToIndex(0, 'smooth');
+
+    // Expected: left = 500 - (800/2) + (300/2) = 500 - 400 + 150 = 250
+    expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 250, behavior: 'smooth' });
+  });
+});

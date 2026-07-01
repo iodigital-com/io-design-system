@@ -27,9 +27,9 @@ export default function IoRadioGroupApiPage() {
             ],
             [
               <span key="n"><InlineCode>name</InlineCode></span>,
-              <InlineCode key="t">string</InlineCode>,
-              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>required</span>,
-              'HTML name attribute propagated to every slotted io-radio child. Groups the native inputs for mutual exclusivity and arrow-key navigation.',
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d">—</span>,
+              'HTML name attribute propagated to every slotted io-radio child. Groups the native inputs for mutual exclusivity and arrow-key navigation. Strongly recommended — omitting this prop logs a console error and breaks form participation.',
             ],
             [
               <InlineCode key="n">value</InlineCode>,
@@ -56,16 +56,28 @@ export default function IoRadioGroupApiPage() {
               'Disables the entire group. Propagated to all child io-radio elements. The native fieldset disabled attribute is set.',
             ],
             [
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state of the group. Controls border and message color for all child io-radio elements. Use alongside the message prop to provide an accessible validation message. This is the recommended API — it supersedes the deprecated error prop.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Validation or helper message shown below the group. Displayed whenever state is not "none". Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby. This is the recommended API — it supersedes the deprecated errorMessage prop.',
+            ],
+            [
               <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Puts the group in error state. Apply errorMessage alongside this to provide accessible error feedback.',
+              <span key="desc"><strong>Deprecated.</strong> Use <InlineCode>state=&quot;error&quot;</InlineCode> instead. Puts the group in error state. A console warning is emitted in development when this prop is used.</span>,
             ],
             [
               <InlineCode key="n">errorMessage</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
-              'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
+              <span key="desc"><strong>Deprecated.</strong> Use the <InlineCode>message</InlineCode> prop instead. Error message shown below the group when error is true. A console warning is emitted in development when this prop is used.</span>,
             ],
             [
               <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,

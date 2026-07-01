@@ -34,20 +34,54 @@ export default function IoBadgeApiPage() {
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoBadgeVariant</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(9 values)</span>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(12 values)</span>
               </span>,
-              <InlineCode key="d">&apos;blue&apos;</InlineCode>,
+              <InlineCode key="d">&apos;primary&apos;</InlineCode>,
               <span key="desc">
-                Colour and semantic style of the badge. Controls background, text colour, and border. One of:{' '}
+                Semantic colour variant of the badge. Controls background, text colour, and border. Preferred semantic values:{' '}
+                <InlineCode>neutral</InlineCode>{' '}
+                <InlineCode>primary</InlineCode>{' '}
+                <InlineCode>info</InlineCode>{' '}
+                <InlineCode>success</InlineCode>{' '}
+                <InlineCode>warning</InlineCode>{' '}
+                <InlineCode>error</InlineCode>{' '}
+                <InlineCode>subtle</InlineCode>.{' '}
+                Deprecated brand-colour aliases (kept for backwards compatibility):{' '}
                 <InlineCode>beige</InlineCode>{' '}
                 <InlineCode>blue</InlineCode>{' '}
                 <InlineCode>dark</InlineCode>{' '}
                 <InlineCode>orange</InlineCode>{' '}
                 <InlineCode>rouge</InlineCode>{' '}
-                <InlineCode>success</InlineCode>{' '}
-                <InlineCode>warning</InlineCode>{' '}
-                <InlineCode>error</InlineCode>{' '}
-                <InlineCode>outline</InlineCode>
+                <InlineCode>outline</InlineCode>.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>appearance</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;solid&apos; | &apos;soft&apos; | &apos;frosted&apos;</InlineCode>,
+              <InlineCode key="d">&apos;soft&apos;</InlineCode>,
+              <span key="desc">
+                Fill style of the badge.{' '}
+                <InlineCode>solid</InlineCode> uses a fully-filled background.{' '}
+                <InlineCode>soft</InlineCode> uses a translucent tinted background (default).{' '}
+                <InlineCode>frosted</InlineCode> applies a backdrop-filter blur over a semi-transparent fill.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>icon</InlineCode></span>,
+              <InlineCode key="t">IoIconName | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Optional leading icon from the io icon set. Rendered at <InlineCode>size=&apos;xs&apos;</InlineCode> with <InlineCode>aria-hidden=&apos;true&apos;</InlineCode>.
+                When both <InlineCode>icon</InlineCode> and <InlineCode>iconSource</InlineCode> are set, <InlineCode>iconSource</InlineCode> takes precedence as the icon source.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>iconSource</InlineCode></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Custom SVG URL for the leading icon. Takes precedence over <InlineCode>icon</InlineCode> when both are set.
+                Useful for project-specific icons not in the io icon set.
               </span>,
             ],
             [

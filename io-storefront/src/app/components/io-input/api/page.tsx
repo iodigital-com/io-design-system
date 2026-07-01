@@ -116,16 +116,34 @@ export default function IoInputApiPage() {
               'Minimum number of characters. Wired to native minlength and FACE tooShort validity.',
             ],
             [
-              <span key="n"><InlineCode>readonly</InlineCode><ReflectBadge /></span>,
+              <span key="n"><InlineCode>readOnly</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Makes the field read-only — value is not editable but the field stays in tab order.',
+              'Makes the field read-only — value is not editable but the field stays in tab order. The reflected HTML attribute is readonly (lowercase); the JS property name is readOnly (camelCase).',
             ],
             [
               <InlineCode key="n">loading</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'Shows an inline spinner and disables the field while true.',
+            ],
+            [
+              <InlineCode key="n">loadingDescription</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Loading&apos;</InlineCode>,
+              'Screen-reader announcement text while the loading spinner is active.',
+            ],
+            [
+              <InlineCode key="n">loadingFinishedDescription</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Loading finished&apos;</InlineCode>,
+              'Screen-reader announcement text when loading completes.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Supplementary description rendered as a persistent paragraph below the field. Always visible regardless of validation state. Distinct from helperText (which is hidden in error state) and from the slot="description" slot (which accepts rich markup).',
             ],
             [
               <InlineCode key="n">form</InlineCode>,
@@ -186,10 +204,10 @@ export default function IoInputApiPage() {
               'Native step interval for number/date/time inputs.',
             ],
             [
-              <InlineCode key="n">autocomplete</InlineCode>,
+              <span key="n"><InlineCode>autocomplete</InlineCode> <span className="text-xs" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>deprecated</span></span>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'HTML autocomplete attribute. Use standard token values such as "email", "name", "tel", "current-password" to enable browser autofill.',
+              <span key="desc">Legacy lowercase alias for the autocomplete attribute. Prefer <InlineCode>autoComplete</InlineCode> (camelCase). When both are set, <InlineCode>autoComplete</InlineCode> takes precedence.</span>,
             ],
             [
               <InlineCode key="n">inputMode</InlineCode>,

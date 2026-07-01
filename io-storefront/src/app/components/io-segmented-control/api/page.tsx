@@ -49,6 +49,36 @@ export default function IoSegmentedControlApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Disables the entire control. Propagated to all child io-segment elements.',
             ],
+            [
+              <InlineCode key="n">required</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Marks the control as required in form validation. When no segment is selected, FACE validity is set to valueMissing.',
+            ],
+            [
+              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Puts the control in error state. Applies error styling to the bar and legend. Pair with errorMessage to render a visible error text node below the bar.',
+            ],
+            [
+              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>—</span>,
+              'Error message rendered as a visible paragraph below the bar when error=true. When omitted, error styling is applied but no error text node is rendered.',
+            ],
+            [
+              <span key="n"><InlineCode>noWrap</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, the segments scroll horizontally via io-scroller instead of wrapping to a second row. Useful when many segments are present.',
+            ],
+            [
+              <span key="n"><InlineCode>columns</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">{"number | 'auto'"}</InlineCode>,
+              <InlineCode key="d">'auto'</InlineCode>,
+              "When 'auto' (default) the bar uses flex and segments size to their content. When a number is provided, the bar switches to a CSS grid with that many equal-width tracks.",
+            ],
           ]}
         />
       </section>
@@ -142,6 +172,37 @@ document.querySelector('io-segmented-control')
               <InlineCode key="t">IoIconName | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
               'Optional icon name to display alongside the label. Rendered as an io-icon with size="sm" before the label text.',
+            ],
+            [
+              <InlineCode key="n">iconSource</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>—</span>,
+              'URL to a custom SVG or image for the segment icon. Takes precedence over the icon prop when both are set. Use for brand icons or third-party glyphs not in the built-in icon set.',
+            ],
+            [
+              <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, renders only the icon and uses the label prop as aria-label on the button. The label is visually hidden but still announced by assistive technology. Requires either icon or iconSource to be set.',
+            ],
+          ]}
+        />
+      </section>
+
+      <section id="io-segment-slots" className="space-y-4">
+        <SectionHeader
+          title="io-segment Slots"
+          description="Content slots available on io-segment."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">badge</InlineCode>,
+              'Optional numeric or badge content rendered after the label (e.g. counts, notifications). Slotted content is excluded from the button aria-label to avoid duplicate announcements by assistive technology.',
             ],
           ]}
         />

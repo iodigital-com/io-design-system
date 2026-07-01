@@ -87,13 +87,39 @@ export default function IoPaginationApiPage() {
               <span key="description">When true, always renders the last page button at the trailing edge of the windowed range, even when it would otherwise be hidden by an ellipsis.</span>,
             ],
             [
+              <InlineCode key="property">perPageOptions</InlineCode>,
+              <InlineCode key="attribute">—</InlineCode>,
+              <InlineCode key="type">number[] | undefined</InlineCode>,
+              <InlineCode key="default">undefined</InlineCode>,
+              <span key="description">
+                Renders a per-page selector when provided. Each number in the array becomes an option.
+                Selecting a value emits a <InlineCode>change</InlineCode> event with the new <InlineCode>perPage</InlineCode> in the detail.
+              </span>,
+            ],
+            [
+              <InlineCode key="property">showPageJump</InlineCode>,
+              <InlineCode key="attribute">show-page-jump</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">Renders a &lsquo;Go to page&rsquo; input that lets users navigate directly to an arbitrary page number.</span>,
+            ],
+            [
+              <InlineCode key="property">showRange</InlineCode>,
+              <InlineCode key="attribute">show-range</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="description">
+                Renders a &lsquo;Showing X–Y of N&rsquo; range indicator. Requires <InlineCode>totalItems</InlineCode> and <InlineCode>perPage</InlineCode> to be set.
+              </span>,
+            ],
+            [
               <InlineCode key="property">intl</InlineCode>,
               <InlineCode key="attribute">—</InlineCode>,
               <InlineCode key="type">IoPaginationIntl | undefined</InlineCode>,
               <InlineCode key="default">undefined</InlineCode>,
               <span key="description">
                 Localisation strings. Override any key to internationalise navigation labels.
-                Shape: <InlineCode>{`{ root?: string; prev?: string; next?: string; page?: string }`}</InlineCode>.
+                Shape: <InlineCode>{`{ root?, prev?, next?, page?, perPageLabel?, goToPageLabel?, range?, of? }`}</InlineCode>.
                 When a key is omitted the component falls back to the corresponding prop (<InlineCode>prevLabel</InlineCode>, <InlineCode>nextLabel</InlineCode>) or its built-in default.
               </span>,
             ],
@@ -115,8 +141,8 @@ export default function IoPaginationApiPage() {
           rows={[
             [
               <InlineCode key="event">change</InlineCode>,
-              <InlineCode key="detail">{`{ page: number; previousPage: number }`}</InlineCode>,
-              <span key="description">Fires when the user navigates to a different 1-based page. <InlineCode>previousPage</InlineCode> is the page number before navigation — useful for animation direction and undo patterns.</span>,
+              <InlineCode key="detail">{`{ page: number; previousPage: number; perPage?: number }`}</InlineCode>,
+              <span key="description">Fires when the user navigates to a different 1-based page. <InlineCode>previousPage</InlineCode> is the page number before navigation — useful for animation direction and undo patterns. <InlineCode>perPage</InlineCode> is present only when the user changed the per-page selector; it is absent on regular page navigation.</span>,
             ],
           ]}
         />

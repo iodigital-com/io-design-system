@@ -123,6 +123,17 @@ export default function IoButtonGroupApiPage() {
                 shadow and dark text — suitable for property selectors and toolbar controls.
               </span>,
             ],
+            [
+              <span key="n">
+                <InlineCode>compact</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                Reduces height and padding for toolbar and dense UI contexts. Reflected to attribute.
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -278,12 +289,15 @@ function WeekdayFilter() {
           rows={[
             [
               <InlineCode key="n">IoButtonGroupType</InlineCode>,
-              <InlineCode key="d">&apos;single&apos; | &apos;multiple&apos;</InlineCode>,
+              <InlineCode key="d">&apos;single&apos; | &apos;multiple&apos; | &apos;toolbar&apos;</InlineCode>,
               <span key="desc">
                 Selection mode for the button group. <InlineCode>&apos;single&apos;</InlineCode> maps to the ARIA
                 radiogroup pattern (one item selected at a time).{' '}
                 <InlineCode>&apos;multiple&apos;</InlineCode> maps to the ARIA checkbox group pattern (any number of
-                items may be selected independently).
+                items may be selected independently).{' '}
+                <InlineCode>&apos;toolbar&apos;</InlineCode> — visual cluster of independent actions — no selection
+                model, no roving tabindex. Each button is individually focusable. Use for Save/Cancel/Delete
+                clusters and icon toolbars.
               </span>,
             ],
             [

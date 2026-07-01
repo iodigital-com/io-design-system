@@ -113,4 +113,34 @@ export const segmentedControlPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Disables the entire control and all child segments. Propagated to all io-segment children.',
   },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the control as required in form validation. When no segment is selected, FACE validity is set to valueMissing.',
+  },
+  {
+    name: 'error',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Puts the control in error state. Applies error styling to the bar and legend. Pair with errorMessage for a visible error text node.',
+  },
+  {
+    name: 'errorMessage',
+    type: 'string',
+    defaultValue: '',
+    description: 'Error message rendered below the bar when error=true. When omitted, error styling applies but no error text node is rendered.',
+  },
+  {
+    name: 'noWrap',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, the segments scroll horizontally via io-scroller instead of wrapping to a second row.',
+  },
+  {
+    name: 'columns',
+    type: 'string',
+    defaultValue: 'auto',
+    description: "Number of equal-width columns. When 'auto' the bar uses flex; when a number is provided the bar switches to a CSS grid with that many equal-width tracks.",
+  },
 ];

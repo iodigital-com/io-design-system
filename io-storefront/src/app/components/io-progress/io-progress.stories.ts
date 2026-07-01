@@ -115,6 +115,13 @@ export const progressPropDefinitions: PropDefinition[] = [
     description: 'Track height: sm=4px, md=8px, lg=12px.',
   },
   {
+    name: 'shape',
+    type: 'select',
+    options: ['linear', 'circular', 'step'],
+    defaultValue: 'linear',
+    description: 'Visual variant: linear = horizontal bar, circular = SVG ring, step = segmented step bar.',
+  },
+  {
     name: 'animated',
     type: 'boolean',
     defaultValue: true,

@@ -15,7 +15,7 @@ export const inputDateStory: Story<'io-input-date'> = {
       max: '',
       required: false,
       loading: false,
-      readonly: false,
+      readOnly: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -149,7 +149,7 @@ export const inputDatePropDefinitions: PropDefinition[] = [
     description: 'Shows a loading indicator and disables the input.',
   },
   {
-    name: 'readonly',
+    name: 'readOnly',
     type: 'boolean',
     defaultValue: false,
     description: 'Makes the input read-only.',

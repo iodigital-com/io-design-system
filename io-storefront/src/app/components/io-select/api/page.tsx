@@ -43,9 +43,9 @@ export default function IoSelectApiPage() {
             ],
             [
               <InlineCode key="n">value</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | number | null</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              'Controlled selected value. Mutable — updated internally when the user selects an option. Bind to change to keep external state in sync.',
+              'Controlled selected value. Mutable — updated internally when the user selects an option. Accepts string or number; numeric values are preserved in the change event but serialised to string by FormData on form submission. Bind to change to keep external state in sync.',
             ],
             [
               <InlineCode key="n">placeholder</InlineCode>,
@@ -151,9 +151,9 @@ export default function IoSelectApiPage() {
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">string | string[]</InlineCode>,
+              <InlineCode key="t">IoSelectChangeDetail</InlineCode>,
               'Yes',
-              'Fires when the selected value changes. Detail is the new value string (single mode) or array of selected values (multiple mode).',
+              <>Fires when the selected value changes. <InlineCode>detail.value</InlineCode> is <InlineCode>string | number</InlineCode> in single mode and <InlineCode>(string | number)[]</InlineCode> in multiple mode — numeric types are preserved. <InlineCode>detail.name</InlineCode> reflects the <InlineCode>name</InlineCode> prop value, if set.</>,
             ],
             [
               <InlineCode key="n">focus</InlineCode>,

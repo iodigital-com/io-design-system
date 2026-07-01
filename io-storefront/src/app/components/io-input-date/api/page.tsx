@@ -27,13 +27,15 @@ export default function IoInputDateApiPage() {
             [<InlineCode key="n">message</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;&apos;</InlineCode>, 'Validation message shown below the input.'],
             [<InlineCode key="n">helperText</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Helper text shown when state is none. Use to surface date constraints.'],
             [<span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Visually hides the label.'],
-            [<span key="n"><InlineCode>readonly</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Makes the input read-only. The native date picker is suppressed.'],
+            [<span key="n"><InlineCode>readOnly</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Makes the input read-only. The native date picker is suppressed.'],
             [<InlineCode key="n">loading</InlineCode>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Shows a loading spinner. Disables the input while true.'],
             [<InlineCode key="n">min</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Minimum selectable date in YYYY-MM-DD format. Triggers rangeUnderflow FACE validation when violated.'],
             [<InlineCode key="n">max</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Maximum selectable date in YYYY-MM-DD format. Triggers rangeOverflow FACE validation when violated.'],
             [<InlineCode key="n">step</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Step interval in days, or "any". Triggers stepMismatch FACE validation when violated.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
             [<InlineCode key="n">spellCheck</InlineCode>, <InlineCode key="t">boolean | undefined</InlineCode>, '—', 'Native spellcheck attribute — passed through to the inner input as-is.'],
+            [<InlineCode key="n">pickerLabel</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;Open date picker&apos;</InlineCode>, 'Accessible label for the calendar trigger button. Override for localisation.'],
+            [<InlineCode key="n">aria</InlineCode>, <InlineCode key="t">Record&lt;string, string&gt; | undefined</InlineCode>, '—', 'Custom ARIA attributes injected onto the native input element.'],
           ]}
         />
       </section>

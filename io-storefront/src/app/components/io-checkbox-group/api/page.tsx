@@ -27,9 +27,9 @@ export default function IoCheckboxGroupApiPage() {
             ],
             [
               <span key="n"><InlineCode>name</InlineCode></span>,
-              <InlineCode key="t">string</InlineCode>,
-              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>required</span>,
-              'HTML name attribute propagated to every slotted io-checkbox child. Groups the checkboxes for correct form submission.',
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              'HTML name attribute propagated to every slotted io-checkbox child. Groups the checkboxes for correct form submission. Optional — when omitted, children retain their own name attributes.',
             ],
             [
               <InlineCode key="n">helperText</InlineCode>,
@@ -50,16 +50,28 @@ export default function IoCheckboxGroupApiPage() {
               'Disables the entire group. Propagated to all child io-checkbox elements. The native fieldset disabled attribute is set.',
             ],
             [
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state that controls the border and message colour. Propagated to all slotted io-checkbox children. Use state="error" with message to provide accessible validation feedback.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Validation or helper message shown below the group when state is not "none". Rendered with role="alert" when state is "error" and linked to the fieldset via aria-describedby.',
+            ],
+            [
               <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Puts the group in error state. Apply errorMessage alongside this to provide accessible error feedback.',
+              <span key="desc"><span style={{ color: 'var(--io-color-warning, #b45309)', fontWeight: 600 }}>Deprecated.</span> Use <InlineCode>state=&quot;error&quot;</InlineCode> instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.</span>,
             ],
             [
               <InlineCode key="n">errorMessage</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
-              'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
+              <span key="desc"><span style={{ color: 'var(--io-color-warning, #b45309)', fontWeight: 600 }}>Deprecated.</span> Use <InlineCode>message</InlineCode> instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.</span>,
             ],
             [
               <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,

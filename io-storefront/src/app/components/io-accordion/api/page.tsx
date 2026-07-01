@@ -85,7 +85,7 @@ export default function IoAccordionApiPage() {
             [
               <span key="property"><InlineCode>background</InlineCode><ReflectBadge /></span>,
               <InlineCode key="attribute">background</InlineCode>,
-              <InlineCode key="type">'transparent' | 'surface' | 'canvas'</InlineCode>,
+              <InlineCode key="type">'transparent' | 'surface' | 'canvas' | 'frosted'</InlineCode>,
               <InlineCode key="default">'transparent'</InlineCode>,
               <span key="description">Background fill variant for the accordion host element. <InlineCode>transparent</InlineCode> (default): no background fill. <InlineCode>surface</InlineCode>: <InlineCode>var(--io-bg-surface)</InlineCode> — subtle fill. <InlineCode>canvas</InlineCode>: <InlineCode>var(--io-bg-page)</InlineCode> — page-level fill. <InlineCode>frosted</InlineCode>: semi-transparent with <InlineCode>backdrop-filter: blur</InlineCode> for legibility over image/video backdrops. Reflects to attribute.</span>,
             ],

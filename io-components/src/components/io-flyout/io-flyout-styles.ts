@@ -279,7 +279,10 @@ export function getFlyoutStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .flyout__panel,
       .flyout__panel--open.flyout__panel--right,
-      .flyout__panel--open.flyout__panel--left {
+      .flyout__panel--open.flyout__panel--left,
+      .flyout__panel--open.flyout__panel--end,
+      .flyout__panel--open.flyout__panel--start {
+        transition: none;
         transition-duration: 0ms;
       }
     }

@@ -206,6 +206,7 @@ export function getModalStyles(): string {
       dialog[open]::backdrop,
       .modal__backdrop,
       :host([prevent-top-layer][open=""]) .modal__backdrop {
+        animation: none;
         transition-duration: 0ms;
       }
     }

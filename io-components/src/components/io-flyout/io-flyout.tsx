@@ -83,6 +83,7 @@ export class IoFlyout {
 
   @State() private footerPinned = false;
   @State() private hasSubFooterSlot = false;
+  @State() private resolvedPosition: 'start' | 'end' = 'end';
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -147,6 +148,9 @@ export class IoFlyout {
     const seed = Math.random().toString(36).slice(2);
     this.headingId = `io-flyout-heading-${seed}`;
 
+    // Normalise legacy position values on first load
+    this.resolvedPosition = this.normalisePosition(this.position);
+
     // WCAG 4.1.2 — the flyout dialog must have an accessible name.
     // It is provided by aria-labelledby (when heading prop is set) or
     // aria-label on the host (when heading is absent). Log an error when
@@ -190,7 +194,24 @@ export class IoFlyout {
     }
   }
 
+  @Watch('position')
+  onPositionChange(newVal: IoFlyoutPosition) {
+    this.resolvedPosition = this.normalisePosition(newVal);
+  }
+
   // ── Private helpers ───────────────────────────────────────────
+
+  private normalisePosition(pos: IoFlyoutPosition): 'start' | 'end' {
+    if (pos === 'left') {
+      console.warn('[io-flyout] position="left" is deprecated. Use position="start" instead.');
+      return 'start';
+    }
+    if (pos === 'right') {
+      console.warn('[io-flyout] position="right" is deprecated. Use position="end" instead.');
+      return 'end';
+    }
+    return pos;
+  }
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
@@ -338,6 +359,7 @@ export class IoFlyout {
     const panelClass = [
       'flyout__panel',
       `flyout__panel--${position}`,
+      `flyout__panel--${this.resolvedPosition}`,
       open ? 'flyout__panel--open' : '',
       `flyout__panel--footer-${footerBehavior}`,
     ]

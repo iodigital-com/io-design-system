@@ -170,6 +170,15 @@ export class IoDrawer {
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',
       );
     }
+
+    // WCAG 2.5.7 / 2.1.1 — when placement='bottom', swipe gesture is the only
+    // close path if both dismissButton and closeOnBackdrop are disabled.
+    // Emit a console.error so authors know the configuration is inaccessible.
+    if (this.placement === 'bottom' && !this.dismissButton && !this.closeOnBackdrop) {
+      console.error(
+        '[io-drawer] Inaccessible configuration: placement="bottom" with dismissButton=false and closeOnBackdrop=false leaves swipe gesture as the only close path, violating WCAG 2.5.7 (Dragging Movements) and 2.1.1 (Keyboard). Enable at least dismissButton or closeOnBackdrop.',
+      );
+    }
   }
 
   componentDidLoad() {

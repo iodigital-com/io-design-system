@@ -438,6 +438,15 @@
   --io-ease-standard:            ease;
   --io-ease-snappy:              cubic-bezier(0.075, 0.82, 0.165, 1);
 
+  /* Overlay transition contract — semantic aliases for consistent enter/exit */
+  --io-motion-overlay-enter:     var(--io-motion-base);
+  --io-motion-overlay-easing:    var(--io-motion-easing-ease-out);
+  --io-motion-overlay-fade:      var(--io-motion-fast);
+  --io-motion-entrance-offset-y: 12px;
+  /* Consumer-facing duration token: override this to control overlay animation speed.
+     Resolves to near-zero under prefers-reduced-motion so overriding it is safe. */
+  --io-motion-overlay-duration:  var(--io-motion-overlay-enter);
+
   /* Two-phase overlay transitions (issue #1137):
      Enter: longer duration + ease-in (decelerate into resting position)
      Exit:  shorter duration + ease-out (accelerate out of view) */
@@ -1178,6 +1187,13 @@ io-table[compact] io-table-body-cell td {
    .io-tooltip-overlay {
       transition: none;
    }
+}
+
+/* Reduce overlay animation speed globally for vestibular-sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --io-motion-overlay-duration: 0.01ms;
+  }
 }
 
 /* ============================================================

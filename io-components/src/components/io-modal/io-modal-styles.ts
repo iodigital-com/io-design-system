@@ -51,7 +51,7 @@ export function getModalStyles(): string {
     }
 
     dialog::backdrop {
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--io-bg-overlay);
       backdrop-filter: blur(var(--io-backdrop-blur));
       opacity: 0;
       transition: opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
@@ -60,6 +60,12 @@ export function getModalStyles(): string {
     dialog[open]::backdrop {
       opacity: 1;
       transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
+    }
+
+    /* ── Backdrop: shading variant — solid overlay, no backdrop-filter ──────── */
+
+    :host([backdrop="shading"]) dialog::backdrop {
+      backdrop-filter: none;
     }
 
     /* ── preventTopLayer: backdrop is a flex-centering container in shadow DOM ──
@@ -96,6 +102,10 @@ export function getModalStyles(): string {
       backdrop-filter: blur(var(--io-backdrop-blur));
       opacity: 1;
       transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
+    }
+
+    :host([prevent-top-layer][open=""][backdrop="shading"]) .modal__backdrop {
+      backdrop-filter: none;
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }
@@ -196,6 +206,7 @@ export function getModalStyles(): string {
       dialog[open]::backdrop,
       .modal__backdrop,
       :host([prevent-top-layer][open=""]) .modal__backdrop {
+        animation: none;
         transition-duration: 0ms;
       }
     }

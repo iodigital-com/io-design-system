@@ -16,9 +16,10 @@ export type IoModalFullscreen = boolean;
 export type IoModalBackground = 'canvas' | 'surface' | 'elevated';
 
 /**
- * Allowed ARIA attribute keys for the io-modal `aria` prop.
- * Restricted to attributes that are meaningful on a `<dialog>` element.
- * Consumers who need other aria attributes should use the host element directly.
+ * Backdrop treatment behind the modal panel.
+ * - blur:    var(--io-backdrop-blur) backdrop-filter — use when the user explicitly opened the modal (default).
+ * - shading: solid var(--io-bg-overlay) with no backdrop-filter — use for auto-appearing dialogs (e.g. cookie consent)
+ *            where the blur GPU cost is undesirable on low-end devices.
  */
 export type IoModalAriaProps = Partial<
   Record<'aria-label' | 'aria-labelledby' | 'aria-describedby', string>

@@ -38,23 +38,84 @@ export function getFlyoutStyles(): string {
 
     /* ── Position variants ────────────────────────────────────── */
 
-    .flyout__panel--right {
-      right: 0;
-      left: auto;
-      border-right: none;
-      border-radius: var(--io-border-radius-md) 0 0 var(--io-border-radius-md);
+    /* end / right — inline-end edge (right in LTR, left in RTL) */
+    .flyout__panel--end {
+      inset-inline-end: 0;
+      inset-inline-start: auto;
+      border-inline-end: none;
+      border-start-start-radius: var(--io-border-radius-md);
+      border-end-start-radius: var(--io-border-radius-md);
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
       transform: translateX(100%);
     }
 
-    .flyout__panel--left {
-      left: 0;
-      right: auto;
-      border-left: none;
-      border-radius: 0 var(--io-border-radius-md) var(--io-border-radius-md) 0;
+    /* In RTL the panel slides in from the physical left, so invert the translation */
+    :host-context([dir="rtl"]) .flyout__panel--end,
+    :dir(rtl) .flyout__panel--end {
       transform: translateX(-100%);
     }
 
+    /* start / left — inline-start edge (left in LTR, right in RTL) */
+    .flyout__panel--start {
+      inset-inline-start: 0;
+      inset-inline-end: auto;
+      border-inline-start: none;
+      border-start-end-radius: var(--io-border-radius-md);
+      border-end-end-radius: var(--io-border-radius-md);
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      transform: translateX(-100%);
+    }
+
+    /* In RTL the start panel slides in from the physical right */
+    :host-context([dir="rtl"]) .flyout__panel--start,
+    :dir(rtl) .flyout__panel--start {
+      transform: translateX(100%);
+    }
+
     /* ── Open state ───────────────────────────────────────────── */
+
+    .flyout__panel--open.flyout__panel--end,
+    .flyout__panel--open.flyout__panel--start {
+      transform: translateX(0);
+    }
+
+    /* ── Legacy aliases (deprecated) ─────────────────────────── */
+    /* 'left' and 'right' are mapped to 'start'/'end' in JS but the CSS
+       classes are kept as aliases pointing to the logical variants so
+       any consumer that passes class names directly keeps working. */
+    .flyout__panel--right {
+      inset-inline-end: 0;
+      inset-inline-start: auto;
+      border-inline-end: none;
+      border-start-start-radius: var(--io-border-radius-md);
+      border-end-start-radius: var(--io-border-radius-md);
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+      transform: translateX(100%);
+    }
+
+    :host-context([dir="rtl"]) .flyout__panel--right,
+    :dir(rtl) .flyout__panel--right {
+      transform: translateX(-100%);
+    }
+
+    .flyout__panel--left {
+      inset-inline-start: 0;
+      inset-inline-end: auto;
+      border-inline-start: none;
+      border-start-end-radius: var(--io-border-radius-md);
+      border-end-end-radius: var(--io-border-radius-md);
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      transform: translateX(-100%);
+    }
+
+    :host-context([dir="rtl"]) .flyout__panel--left,
+    :dir(rtl) .flyout__panel--left {
+      transform: translateX(100%);
+    }
 
     .flyout__panel--open.flyout__panel--right,
     .flyout__panel--open.flyout__panel--left {
@@ -218,7 +279,10 @@ export function getFlyoutStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .flyout__panel,
       .flyout__panel--open.flyout__panel--right,
-      .flyout__panel--open.flyout__panel--left {
+      .flyout__panel--open.flyout__panel--left,
+      .flyout__panel--open.flyout__panel--end,
+      .flyout__panel--open.flyout__panel--start {
+        transition: none;
         transition-duration: 0ms;
       }
     }

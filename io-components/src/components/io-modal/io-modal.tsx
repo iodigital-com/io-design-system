@@ -69,13 +69,11 @@ export class IoModal {
 
   /**
    * Custom ARIA attributes to inject onto the native `<dialog>` element.
-   * Restricted to attributes that are meaningful on a dialog: `aria-label`,
-   * `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with
-   * a `console.warn` in development.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
    *
    * @example
-   * // Sets aria-label on the native <dialog> when no heading prop is used
-   * <io-modal .aria={{ 'aria-label': 'Confirm deletion' }}>...</io-modal>
+   * // Sets aria-owns="step-panel" on the native <dialog>
+   * <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
    */
   @Prop() aria?: IoModalAriaProps;
 
@@ -109,7 +107,12 @@ export class IoModal {
   @Prop({ reflect: true }) fullscreen = false;
 
   /**
-   * @default 'blur' (kept for API compat)
+   * Backdrop treatment behind the modal panel.
+   * - blur:    backdrop-filter blur — default for user-initiated dialogs.
+   * - shading: solid overlay with no backdrop-filter — use for auto-appearing
+   *            dialogs (e.g. cookie consent) where GPU cost of blur matters.
+   *
+   * @default 'blur'
    */
   @Prop({ reflect: true }) backdrop: IoModalBackdrop = 'blur';
 
@@ -139,7 +142,7 @@ export class IoModal {
 
   // ── Events ────────────────────────────────────────────────────
 
-  /** Emitted when the modal is dismissed by a user action (close button, backdrop click, or ESC key). NOT emitted on programmatic close via the `open` prop or `close()` method. */
+  /** Emitted after the modal closes (any close path: user-initiated or programmatic) */
   @Event({ eventName: 'dismiss' }) dismissEvent!: EventEmitter<void>;
 
   /** Emitted after the open animation/transition has completed (transitionend on the dialog panel) */
@@ -169,8 +172,7 @@ export class IoModal {
 
   /**
    * Programmatically close the modal. No-op if already closed.
-   * Does NOT emit the `dismiss` event (programmatic close is silent).
-   * Equivalent to setting `open = false`.
+   * Equivalent to setting `open = false`. Emits the `dismiss` event.
    *
    * @example
    *   const modal = document.querySelector('io-modal');
@@ -248,10 +250,7 @@ export class IoModal {
           this.attachBackdropHostListener();
           this.attachEscHandler();
         } else {
-          // Porsche pattern: inert briefly prevents the browser's auto-focus from
-          // conflicting with the CSS open animation, then focus the dialog directly.
-          // (#984: no setTimeout — deterministic focus on dialog element itself)
-          this.dialogEl.inert = true;
+          this.dialogEl.inert = true;    // prevent autofocus conflicting with open animation
           this.dialogEl.showModal();
           this.dialogEl.inert = false;
         }
@@ -261,9 +260,7 @@ export class IoModal {
 
       document.body.style.overflow = 'hidden';
 
-      // Apply inert to background elements to prevent screen reader navigation.
-      // (#992: preventTopLayer=false relies on native showModal() top-layer inertness;
-      //  preventTopLayer=true walks document.body.children with escape-hatch support)
+      // Apply inert to background elements to prevent screen reader navigation
       this.applyBackgroundInert();
 
       // Set up focus trap for keyboard navigation
@@ -338,10 +335,8 @@ export class IoModal {
    * io-modal is nested inside a React/Vue/Angular root div (#1180).
    */
   private applyBackgroundInert() {
-    // Native showModal() inertness handles everything — no manual walk needed.
     if (!this.preventTopLayer) return;
-
-    if (typeof document === 'undefined') return;
+    if (!this.el || typeof document === 'undefined') return;
 
     Array.from(document.body.children).forEach((child) => {
       if (child === this.el) return;
@@ -370,59 +365,46 @@ export class IoModal {
 
   /**
    * Set up focus trap: Tab/Shift+Tab within modal cycles through focusable elements.
-   *
-   * The selector covers all standard interactive content including elements missed
-   * by the previous implementation (#1083): contenteditable, audio/video[controls],
-   * iframe, and summary elements.
-   *
-   * No `setTimeout` is used — the dialog itself is already focused via
-   * `dialogEl.focus()` before this method is called, so initial focus is already
-   * deterministic without a timer race (#984).
-   *
-   * Uses `document.activeElement` (not `shadowRoot.activeElement`) — per the
-   * never-do-list, `shadowRoot.activeElement` returns the slot host, not the
-   * slotted node.
+   * Browser's native dialog focus trap may not work reliably in jsdom, so implement manual trap.
    */
   private setupFocusTrap() {
     if (!this.dialogEl) return;
 
-    // Always call clearFocusTrap first to prevent listener leak on re-open.
     this.clearFocusTrap();
 
-    // Extended selector that covers all interactive content categories (#1083).
+    // Get all focusable elements within the modal (in shadow DOM and slots).
+    // Extended selector covers interactive content missed by earlier implementations (#1083):
+    // contenteditable, audio/video[controls], iframe, and summary elements.
     const focusableSelector = [
-      'button:not([disabled])',
-      '[href]',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'textarea:not([disabled])',
+      'button', '[href]', 'input', 'select', 'textarea',
       '[tabindex]:not([tabindex="-1"])',
       '[contenteditable]:not([contenteditable="false"])',
-      'audio[controls]',
-      'video[controls]',
-      'iframe',
-      'summary',
+      'audio[controls]', 'video[controls]', 'iframe', 'summary',
     ].join(', ');
-
     const focusableElements = Array.from(
-      this.dialogEl.querySelectorAll<HTMLElement>(focusableSelector)
-    );
+      this.dialogEl.querySelectorAll(focusableSelector)
+    ) as HTMLElement[];
 
     if (focusableElements.length === 0) return;
 
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
 
+    // Auto-focus first focusable element when modal opens
+    // (browser's showModal may not focus correctly in all cases)
+    if (firstElement && firstElement !== this.dialogEl.ownerDocument?.activeElement) {
+      setTimeout(() => {
+        firstElement.focus();
+      }, 0);
+    }
+
     if (firstElement === lastElement) {
-      // Only one focusable element — no wrap-around needed.
       return;
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
       if (ev.key !== 'Tab') return;
 
-      // Use document.activeElement — works for both Shadow DOM and slotted
-      // light-DOM children (shadowRoot.activeElement returns the slot host)
       const activeElement = this.dialogEl?.ownerDocument?.activeElement;
 
       // Shift+Tab on first element → focus last element

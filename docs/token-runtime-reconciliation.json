@@ -2488,6 +2488,14 @@
       "notes": "Semantic alias for modal/overlay enter animation duration. Maps to --io-motion-base."
     },
     {
+      "runtimeCssVar": "--io-motion-overlay-duration",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Consumer-facing overlay animation duration token. Defaults to var(--io-motion-overlay-enter). Resolves to 0.01ms under prefers-reduced-motion."
+    },
+    {
       "runtimeCssVar": "--io-motion-overlay-fade",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

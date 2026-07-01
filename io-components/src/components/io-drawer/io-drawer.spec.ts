@@ -503,6 +503,98 @@ describe('io-drawer — dismiss event fires only on user-initiated close', () =>
   });
 });
 
+// ── WCAG 2.5.7 / 2.1.1 — inaccessible swipe-only config guard (#1098) ────────
+
+describe('io-drawer — swipe-only close path guard (#1098)', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('logs console.error when placement=bottom, dismissButton=false, closeOnBackdrop=false', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.placement = 'bottom';
+    component.dismissButton = false;
+    component.closeOnBackdrop = false;
+    component.heading = 'Bottom sheet';
+
+    (component as any).componentWillLoad();
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Inaccessible configuration'),
+    );
+  });
+
+  it('does NOT log the swipe-only warning when placement=bottom with dismissButton=true', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.placement = 'bottom';
+    component.dismissButton = true;
+    component.closeOnBackdrop = false;
+    component.heading = 'Bottom sheet';
+
+    (component as any).componentWillLoad();
+
+    // Only the label error would fire here, swipe warning must not
+    const swipeWarnings = errorSpy.mock.calls.filter(args =>
+      String(args[0]).includes('Inaccessible configuration'),
+    );
+    expect(swipeWarnings).toHaveLength(0);
+  });
+
+  it('does NOT log the swipe-only warning when placement=bottom with closeOnBackdrop=true', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.placement = 'bottom';
+    component.dismissButton = false;
+    component.closeOnBackdrop = true;
+    component.heading = 'Bottom sheet';
+
+    (component as any).componentWillLoad();
+
+    const swipeWarnings = errorSpy.mock.calls.filter(args =>
+      String(args[0]).includes('Inaccessible configuration'),
+    );
+    expect(swipeWarnings).toHaveLength(0);
+  });
+
+  it('does NOT log the swipe-only warning for non-bottom placements', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const component = new IoDrawer();
+    const el = document.createElement('io-drawer');
+    (component as any).el = el;
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    component.placement = 'right';
+    component.dismissButton = false;
+    component.closeOnBackdrop = false;
+    component.heading = 'Right drawer';
+
+    (component as any).componentWillLoad();
+
+    const swipeWarnings = errorSpy.mock.calls.filter(args =>
+      String(args[0]).includes('Inaccessible configuration'),
+    );
+    expect(swipeWarnings).toHaveLength(0);
+  });
+});
+
 // ── componentWillLoad console.error ──────────────────────────────────────────
 
 describe('io-drawer — componentWillLoad accessible label warning', () => {

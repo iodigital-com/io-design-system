@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { IoModal } from './io-modal';
 import { getModalStyles } from './io-modal-styles';
-import type { IoModalBackground } from './types';
+import type { IoModalBackdrop, IoModalBackground } from './types';
 
 describe('io-modal — default props', () => {
   let component: IoModal;
@@ -115,6 +115,46 @@ describe('io-modal — background prop', () => {
     const styles: string = getModalStyles();
     expect(styles).toContain('modal--bg-elevated');
     expect(styles).toContain('var(--io-bg-raised)');
+  });
+});
+
+describe('io-modal — backdrop prop (#983)', () => {
+  let component: IoModal;
+
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    component = new IoModal();
+    (component as any).el = document.createElement('io-modal');
+    (component as any).dismissEvent = { emit: vi.fn() };
+    (component as any).motionVisibleEndEvent = { emit: vi.fn() };
+    (component as any).motionHiddenEndEvent = { emit: vi.fn() };
+    (component as any).componentWillLoad();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('defaults to blur', () => {
+    expect(component.backdrop).toBe('blur');
+  });
+
+  it('accepts shading variant', () => {
+    component.backdrop = 'shading' as IoModalBackdrop;
+    expect(component.backdrop).toBe('shading');
+  });
+
+  it('styles contain shading selector that removes backdrop-filter', () => {
+    const styles: string = getModalStyles();
+    expect(styles).toContain('backdrop="shading"');
+    const shadingIdx = styles.indexOf('backdrop="shading"');
+    const shadingBlock = styles.slice(shadingIdx, shadingIdx + 100);
+    expect(shadingBlock).toContain('backdrop-filter: none');
+  });
+
+  it('styles use --io-bg-overlay token for the native ::backdrop', () => {
+    const styles: string = getModalStyles();
+    expect(styles).toContain('var(--io-bg-overlay)');
   });
 });
 

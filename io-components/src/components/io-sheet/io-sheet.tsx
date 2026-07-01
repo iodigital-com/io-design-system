@@ -13,6 +13,11 @@ import {
 
 import { getSheetStyles } from './io-sheet-styles';
 import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
+import {
+  attachSwipeToDismiss,
+  detachSwipeToDismiss,
+  type SwipeToDismissHandlers,
+} from '../../utils/swipe-to-dismiss';
 import type { IoSheetBackground } from './types';
 
 const FOCUSABLE_SELECTORS = [
@@ -76,11 +81,14 @@ export class IoSheet {
 
   private panelEl?: HTMLDivElement;
   private backdropEl?: HTMLDivElement;
+  private handleEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private animationEndHandler?: (ev: AnimationEvent) => void;
   private focusTrigger?: Element;
   private _scrollLockHeld = false;
+  private swipeHandlers?: SwipeToDismissHandlers;
+  private savedBodyOverflow = '';
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -181,6 +189,7 @@ export class IoSheet {
   disconnectedCallback() {
     this.detachFocusTrap();
     this.detachAnimationEndListener();
+    this.detachSwipeHandlers();
     if (this._scrollLockHeld) {
       releaseScrollLock();
       this._scrollLockHeld = false;
@@ -222,12 +231,15 @@ export class IoSheet {
 
   private applyOpenState() {
     this.focusTrigger = document.activeElement as Element;
+    // Save current body overflow before locking scroll so it can be restored
+    this.savedBodyOverflow = document.body.style.overflow;
     if (!this._scrollLockHeld) {
       acquireScrollLock();
       this._scrollLockHeld = true;
     }
 
     this.attachFocusTrap();
+    this.attachSwipeHandlers();
 
     requestAnimationFrame(() => {
       const focusable = this.getFocusableElements();
@@ -246,6 +258,9 @@ export class IoSheet {
       this._scrollLockHeld = false;
     }
     this.detachFocusTrap();
+    this.detachSwipeHandlers();
+    // Restore body overflow to what it was before we opened
+    document.body.style.overflow = this.savedBodyOverflow;
 
     // Restore focus to trigger
     if (this.focusTrigger instanceof HTMLElement) {
@@ -314,6 +329,21 @@ export class IoSheet {
     this.animationEndHandler = undefined;
   }
 
+  private attachSwipeHandlers() {
+    if (!this.handleEl) return;
+    this.detachSwipeHandlers();
+    this.swipeHandlers = attachSwipeToDismiss({
+      el: this.handleEl,
+      onDismiss: this.handleDismiss,
+    });
+  }
+
+  private detachSwipeHandlers() {
+    if (!this.handleEl || !this.swipeHandlers) return;
+    detachSwipeToDismiss(this.handleEl, this.swipeHandlers);
+    this.swipeHandlers = undefined;
+  }
+
   // ── Handlers ──────────────────────────────────────────────────
 
   private handleDismiss = () => {
@@ -367,7 +397,7 @@ export class IoSheet {
           tabIndex={-1}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >
-          <div class="sheet__handle" aria-hidden="true" />
+          <div class="sheet__handle" aria-hidden="true" ref={(el?: HTMLDivElement) => { this.handleEl = el; }} />
 
           <div class="sheet__header">
             <div class="sheet__header-slot">

@@ -48,11 +48,11 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
     },
   },
-  // Stencil component TSX files: `h` is the JSX factory — consumed by compiler, not at runtime.
+  // Stencil component and utility TSX files: `h` is the JSX factory — consumed by compiler, not at runtime.
   // jsx-a11y rules are `warn` here to surface issues without blocking PRs during Wave-B a11y remediation.
   // Wave-B (#213) will upgrade these to `error` once existing violations are fixed.
   {
-    files: ['io-components/src/components/**/*.tsx'],
+    files: ['io-components/src/components/**/*.tsx', 'io-components/src/utils/**/*.tsx'],
     plugins: {
       'jsx-a11y': jsxA11y,
     },

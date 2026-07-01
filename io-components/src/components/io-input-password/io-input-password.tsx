@@ -3,6 +3,14 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 import { getInputPasswordStyles } from './io-input-password-styles';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { applyAriaProp } from '../../utils/aria-prop';
+import {
+  renderErrorIcon,
+  renderSuccessIcon,
+  renderWarningIcon,
+  buildInputWrapperClass,
+  buildInputDescribedBy,
+  renderInputMessageTree,
+} from '../../utils/input-base';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputPasswordSize } from './types';
@@ -25,6 +33,7 @@ export class IoInputPassword {
   @Element() el!: HTMLElement;
   @AttachInternals() internals!: ElementInternals;
   private defaultValue = '';
+  private faceErrorMessage = '';
 
   private inputId!: string;
   private errorId!: string;
@@ -131,16 +140,20 @@ export class IoInputPassword {
     if (native) {
       if (!native.checkValidity()) {
         this.internals?.setValidity?.(native.validity, native.validationMessage, native);
+        this.faceErrorMessage = native.validationMessage;
         this.faceInvalid = this.touched;
       } else {
         this.internals?.setValidity?.({});
+        this.faceErrorMessage = '';
         this.faceInvalid = false;
       }
     } else if (this.required && !this.value) {
       this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
+      this.faceErrorMessage = 'Please fill in this field';
       this.faceInvalid = this.touched;
     } else {
       this.internals?.setValidity?.({});
+      this.faceErrorMessage = '';
       this.faceInvalid = false;
     }
   }
@@ -165,22 +178,14 @@ export class IoInputPassword {
 
   private handleFocus = (ev: FocusEvent) => {
     if (this.disabled) return;
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.focus.emit(ev);
   };
 
   private handleBlur = (ev: FocusEvent) => {
     if (this.disabled) return;
-    ev.stopPropagation();
-    ev.stopImmediatePropagation();
     this.touched = true;
     this.syncFormValue();
     this.blur.emit(ev);
-  };
-
-  private handleKeyDown = (ev: KeyboardEvent) => {
-    implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
   };
 
   formResetCallback() {
@@ -220,25 +225,25 @@ export class IoInputPassword {
     const { label, name, value, placeholder, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle } = this;
     const { inputId, errorId, helperId } = this;
 
-    const showError = state === 'error' || this.faceInvalid;
-    const showSuccess = state === 'success' && !this.faceInvalid;
-    const showWarning = state === 'warning' && !this.faceInvalid;
+    const showError = state === 'error';
+    const showSuccess = state === 'success';
+    const showWarning = state === 'warning';
     const showMessage = (showError || showSuccess || showWarning) && !!message;
     const showDescription = !showMessage && !!helperText;
 
-    const describedBy = [
-      showMessage ? errorId : '',
-      showDescription ? helperId : '',
-    ].filter(Boolean).join(' ') || undefined;
+    const showFaceError = this.touched && this.faceInvalid && !showError;
+    const faceErrorId = `${inputId}-face-error`;
 
-    const wrapperClass = [
-      'input-wrapper',
-      showError ? 'input-wrapper--state-error' : '',
-      showSuccess ? 'input-wrapper--state-success' : '',
-      showWarning ? 'input-wrapper--state-warning' : '',
-      disabled ? 'input-wrapper--disabled' : '',
-      readOnly ? 'input-wrapper--readonly' : '',
-    ].filter(Boolean).join(' ');
+    const describedBy = buildInputDescribedBy(
+      errorId,
+      helperId,
+      faceErrorId,
+      showMessage,
+      showDescription,
+      showFaceError,
+    );
+
+    const wrapperClass = buildInputWrapperClass(state, this.faceInvalid, disabled, readOnly);
 
     const fieldClass = [
       'input-field',
@@ -271,13 +276,12 @@ export class IoInputPassword {
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}
-              aria-invalid={showError ? 'true' : undefined}
+              aria-invalid={(showError || (this.touched && this.faceInvalid)) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
               onChange={this.handleChange}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
-              onKeyDown={this.handleKeyDown}
             />
             {toggle && (
               <button
@@ -306,54 +310,29 @@ export class IoInputPassword {
                 )}
               </button>
             )}
-            {showError && (
-              <div class="input-state-icon input-state-icon--error" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" x2="12" y1="8" y2="12" />
-                  <line x1="12" x2="12.01" y1="16" y2="16" />
-                </svg>
-              </div>
-            )}
-            {showSuccess && (
-              <div class="input-state-icon input-state-icon--success" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
-            )}
-            {showWarning && (
-              <div class="input-state-icon input-state-icon--warning" aria-hidden="true">
-                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                  <path d="M12 9v4" />
-                  <path d="M12 17h.01" />
-                </svg>
-              </div>
-            )}
+            {showError && renderErrorIcon()}
+            {showSuccess && renderSuccessIcon()}
+            {showWarning && renderWarningIcon()}
           </div>
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label'}>
             {label}
             {required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {(showError || showSuccess || showWarning) && (
-          <p
-            id={errorId}
-            class={[
-              'input-message',
-              showError ? 'input-message--error' : showSuccess ? 'input-message--success' : 'input-message--warning',
-              showMessage ? '' : 'input-error--hidden',
-            ].filter(Boolean).join(' ')}
-            role={showError ? 'alert' : 'status'}
-          >
-            {message}
-          </p>
-        )}
-        <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
-          {helperText}
-        </p>
+        {...renderInputMessageTree({
+          errorId,
+          helperId,
+          showError,
+          showSuccess,
+          showWarning,
+          showMessage,
+          message,
+          showDescription,
+          helperText,
+          showFaceError,
+          faceErrorId,
+          faceErrorMessage: this.faceErrorMessage,
+        })}
       </Host>
     );
   }

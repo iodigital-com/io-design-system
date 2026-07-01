@@ -81,13 +81,13 @@ describe('io-multi-select — componentDidLoad', () => {
 // ── disconnectedCallback ──────────────────────────────────────────────────────
 
 describe('io-multi-select — disconnectedCallback', () => {
-  it('clears typeaheadTimer on disconnect', () => {
+  it('clears typeaheadTimeout on disconnect', () => {
     vi.useFakeTimers();
     const c = makeComponent();
     const timeoutId = setTimeout(() => {}, 500);
-    (c as any).typeaheadTimer = timeoutId;
+    (c as any).typeaheadTimeout = timeoutId;
     (c as any).disconnectedCallback();
-    expect((c as any).typeaheadTimer).toBeUndefined();
+    expect((c as any).typeaheadTimeout).toBeUndefined();
     vi.useRealTimers();
   });
 

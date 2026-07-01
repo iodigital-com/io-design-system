@@ -136,6 +136,14 @@ export class IoMultiSelect {
   @Prop() maxDisplay = 3;
 
   /**
+   * When true, shows a "Select all" button paired with "Clear all" in the dropdown footer.
+   * With an active filter, selects only visible filtered options.
+   * Respects maxSelections when set.
+   * @default false
+   */
+  @Prop() selectAll = false;
+
+  /**
    * Maximum number of selections allowed.
    * When a user tries to add a value beyond this cap, the selection is blocked
    * and a `limitreached` event is emitted.
@@ -190,7 +198,7 @@ export class IoMultiSelect {
    * Fires when the user tries to add a selection beyond `maxSelections`.
    * Detail: `{ max: number, attempted: string | number }`
    */
-  @Event() limitreached!: EventEmitter<IoMultiSelectLimitReachedDetail>;
+  @Event({ bubbles: false }) limitreached!: EventEmitter<IoMultiSelectLimitReachedDetail>;
 
   // ── Public methods ────────────────────────────────────────────────────────
 
@@ -221,15 +229,18 @@ export class IoMultiSelect {
   private dropdownEl?: HTMLDivElement;
   private filterInputEl?: HTMLInputElement;
   private clickOutsideHandler?: (ev: PointerEvent) => void;
-  /** Typeahead: buffered key presses cleared after TYPEAHEAD_TIMEOUT ms of inactivity */
+  /** Typeahead: buffered key presses cleared after 500ms of inactivity */
   private typeaheadBuffer = '';
-  private typeaheadTimer: ReturnType<typeof setTimeout> | undefined;
+  private typeaheadTimeout: ReturnType<typeof setTimeout> | undefined;
   /** SSR/hydration guard: re-parse timeout for late-arriving option children */
   private lateParseTimeout: ReturnType<typeof setTimeout> | undefined;
   /** autoUpdate cleanup function for popover positioning */
   private autoUpdateCleanup?: () => void;
   /** True when browser supports native Popover API */
   private readonly hasPopoverSupport = typeof HTMLElement !== 'undefined' && 'popover' in HTMLElement.prototype;
+
+  /** How many options PageUp/PageDown skips at a time. */
+  private static readonly PAGE_SIZE = 10;
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -273,9 +284,9 @@ export class IoMultiSelect {
       clearTimeout(this.lateParseTimeout);
       this.lateParseTimeout = undefined;
     }
-    if (this.typeaheadTimer !== undefined) {
-      clearTimeout(this.typeaheadTimer);
-      this.typeaheadTimer = undefined;
+    if (this.typeaheadTimeout !== undefined) {
+      clearTimeout(this.typeaheadTimeout);
+      this.typeaheadTimeout = undefined;
     }
   }
 
@@ -357,9 +368,9 @@ export class IoMultiSelect {
       this.activeIndex = -1;
       this.filterQuery = '';
       this.typeaheadBuffer = '';
-      if (this.typeaheadTimer !== undefined) {
-        clearTimeout(this.typeaheadTimer);
-        this.typeaheadTimer = undefined;
+      if (this.typeaheadTimeout !== undefined) {
+        clearTimeout(this.typeaheadTimeout);
+        this.typeaheadTimeout = undefined;
       }
       setTimeout(() => this.triggerEl?.focus(), 0);
     }
@@ -436,21 +447,18 @@ export class IoMultiSelect {
     if (opt.disabled) return;
     const current = this.value ?? [];
     const optValueStr = String(opt.value);
-    if (current.includes(optValueStr)) {
-      // Deselect — always allowed
-      const next = current.filter(v => v !== optValueStr);
-      this.value = next;
-      this.change.emit({ value: [...next], name: this.name });
-    } else {
-      // Select — check maxSelections cap
-      if (this.maxSelections !== undefined && current.length >= this.maxSelections) {
-        this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
-        return;
-      }
-      const next = [...current, optValueStr];
-      this.value = next;
-      this.change.emit({ value: [...next], name: this.name });
+    const isSelected = current.includes(optValueStr);
+
+    if (!isSelected && this.maxSelections !== undefined && current.length >= this.maxSelections) {
+      this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
+      return;
     }
+
+    const next = isSelected
+      ? current.filter(v => v !== optValueStr)
+      : [...current, optValueStr];
+    this.value = next;
+    this.change.emit({ value: [...next], name: this.name });
   }
 
   private removeChip(value: string | number) {
@@ -463,6 +471,23 @@ export class IoMultiSelect {
   private clearAll() {
     this.value = [];
     this.change.emit({ value: [], name: this.name });
+  }
+
+  private selectAllVisible() {
+    const candidates = this.filteredOptions.filter(o => !o.disabled);
+    const current = this.value ?? [];
+    const next = [...current];
+    for (const opt of candidates) {
+      const optValueStr = String(opt.value);
+      if (next.includes(optValueStr)) continue;
+      if (this.maxSelections !== undefined && next.length >= this.maxSelections) {
+        this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
+        break;
+      }
+      next.push(optValueStr);
+    }
+    this.value = next;
+    this.change.emit({ value: [...next], name: this.name });
   }
 
   private moveActive(delta: number) {
@@ -482,55 +507,45 @@ export class IoMultiSelect {
     }
   }
 
-  /**
-   * PageUp / PageDown: move active index by `pageSize` (clamped to list bounds).
-   */
-  private moveActiveByPage(pageSize: number) {
+  private movePage(direction: 1 | -1) {
     const opts = this.filteredOptions;
     if (opts.length === 0) return;
-    const current = this.activeIndex < 0 ? 0 : this.activeIndex;
-    const raw = current + pageSize;
-    const clamped = Math.max(0, Math.min(opts.length - 1, raw));
-    const direction = pageSize > 0 ? -1 : 1;
-    let candidate = clamped;
-    let attempts = Math.abs(pageSize) + 1;
-    while (opts[candidate]?.disabled && attempts-- > 0) {
-      candidate += direction;
-      if (candidate < 0 || candidate >= opts.length) break;
+    const pageSize = IoMultiSelect.PAGE_SIZE;
+    let next = this.activeIndex + direction * pageSize;
+    next = Math.max(0, Math.min(next, opts.length - 1));
+    // Skip disabled options toward the target direction
+    while (opts[next]?.disabled && next > 0 && next < opts.length - 1) {
+      next += direction;
     }
-    if (candidate >= 0 && candidate < opts.length && !opts[candidate]?.disabled) {
-      this.activeIndex = candidate;
+    if (!opts[next]?.disabled) {
+      this.activeIndex = next;
     }
   }
 
-  /**
-   * Typeahead: accumulate pressed characters; after 500ms of inactivity the
-   * buffer resets. Jumps to the first non-disabled option whose label starts
-   * with the buffer (case-insensitive).
-   */
   private handleTypeahead(char: string) {
-    const TYPEAHEAD_TIMEOUT = 500;
-    if (this.typeaheadTimer !== undefined) {
-      clearTimeout(this.typeaheadTimer);
+    const opts = this.filteredOptions;
+    if (opts.length === 0) return;
+
+    if (this.typeaheadTimeout !== undefined) {
+      clearTimeout(this.typeaheadTimeout);
     }
     this.typeaheadBuffer += char.toLowerCase();
-    this.typeaheadTimer = setTimeout(() => {
+    this.typeaheadTimeout = setTimeout(() => {
       this.typeaheadBuffer = '';
-      this.typeaheadTimer = undefined;
-    }, TYPEAHEAD_TIMEOUT);
+      this.typeaheadTimeout = undefined;
+    }, 500);
 
-    // Find the first non-disabled option whose label starts with the buffer.
-    // Start searching after the current activeIndex so repeated presses cycle through matches.
-    const opts = this.filteredOptions;
     const buf = this.typeaheadBuffer;
-    const start = this.activeIndex >= 0 ? this.activeIndex + 1 : 0;
-    // Search from start to end, then wrap around from 0 to start
-    const searchOrder = [...opts.slice(start), ...opts.slice(0, start)];
-    const found = searchOrder.findIndex(o => !o.disabled && o.label.toLowerCase().startsWith(buf));
-    if (found >= 0) {
-      // Translate back to absolute index
-      const absIdx = (start + found) % opts.length;
-      this.activeIndex = absIdx;
+    const start = this.activeIndex >= 0 ? this.activeIndex : -1;
+
+    // Search from item after current through wrapping
+    for (let i = 1; i <= opts.length; i++) {
+      const idx = (start + i) % opts.length;
+      const opt = opts[idx];
+      if (!opt.disabled && opt.label.toLowerCase().startsWith(buf)) {
+        this.activeIndex = idx;
+        return;
+      }
     }
   }
 
@@ -581,11 +596,11 @@ export class IoMultiSelect {
         break;
       case 'PageDown':
         ev.preventDefault();
-        this.moveActiveByPage(10);
+        this.movePage(1);
         break;
       case 'PageUp':
         ev.preventDefault();
-        this.moveActiveByPage(-10);
+        this.movePage(-1);
         break;
       case 'Home': {
         ev.preventDefault();
@@ -613,13 +628,14 @@ export class IoMultiSelect {
       case 'Tab':
         this.isOpen = false;
         break;
-      default:
-        // Typeahead: single printable character → buffer and jump to matching option
-        if (ev.key.length === 1 && !ev.ctrlKey && !ev.altKey && !ev.metaKey) {
+      default: {
+        // Typeahead: printable single characters while filter input is not active
+        if (!this.filter && ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
           ev.preventDefault();
           this.handleTypeahead(ev.key);
         }
         break;
+      }
     }
   };
 
@@ -658,14 +674,12 @@ export class IoMultiSelect {
 
   // ── Render helpers ────────────────────────────────────────────────────────
 
-  private renderOption(opt: IoSelectOption, flatIndex: number) {
+  private renderOption(opt: IoSelectOption, flatIndex: number, atLimit = false) {
     const isSelected = (this.value ?? []).includes(String(opt.value));
     const isFocused = flatIndex === this.activeIndex;
     const listboxId = `${this.fieldId}-listbox`;
-    // When maxSelections is set and the limit is reached, disable unselected options
-    const atLimit = this.maxSelections !== undefined && (this.value ?? []).length >= this.maxSelections;
-    const isDisabledByLimit = atLimit && !isSelected;
-    const effectiveDisabled = opt.disabled || isDisabledByLimit;
+    // Unselected options become aria-disabled when maxSelections cap is reached
+    const effectivelyDisabled = opt.disabled || (atLimit && !isSelected);
 
     return (
       <li
@@ -673,9 +687,9 @@ export class IoMultiSelect {
         id={getMultiSelectOptionId(listboxId, flatIndex)}
         role="option"
         aria-selected={String(isSelected)}
-        aria-disabled={effectiveDisabled ? 'true' : undefined}
-        class={getMultiSelectOptionClass(isSelected, effectiveDisabled, isFocused)}
-        onClick={effectiveDisabled ? undefined : () => this.toggleOption(opt)}
+        aria-disabled={effectivelyDisabled ? 'true' : undefined}
+        class={getMultiSelectOptionClass(isSelected, effectivelyDisabled, isFocused)}
+        onClick={effectivelyDisabled ? undefined : () => this.toggleOption(opt)}
       >
         <span class="multi-select-option__checkbox" aria-hidden="true">
           {isSelected && (
@@ -707,9 +721,11 @@ export class IoMultiSelect {
 
   private renderListboxItems() {
     const isFiltering = this.filter && this.filterQuery.length > 0;
+    const selectedCount = (this.value ?? []).length;
+    const atLimit = this.maxSelections !== undefined && selectedCount >= this.maxSelections;
 
     if (isFiltering) {
-      return this.filteredOptions.map((opt, i) => this.renderOption(opt, i));
+      return this.filteredOptions.map((opt, i) => this.renderOption(opt, i, atLimit));
     }
 
     const items: ReturnType<typeof this.renderOption>[] = [];
@@ -719,7 +735,7 @@ export class IoMultiSelect {
       if (group.label) {
         const groupId = `${this.fieldId}-group-${flatIdx}`;
         const groupItems = group.options.map(opt => {
-          const el = this.renderOption(opt, flatIdx++);
+          const el = this.renderOption(opt, flatIdx++, atLimit);
           return el;
         });
         items.push(
@@ -734,7 +750,7 @@ export class IoMultiSelect {
         );
       } else {
         for (const opt of group.options) {
-          items.push(this.renderOption(opt, flatIdx++));
+          items.push(this.renderOption(opt, flatIdx++, atLimit));
         }
       }
     }
@@ -899,49 +915,35 @@ export class IoMultiSelect {
             </div>
           )}
 
-          {/* Trigger row: combobox button + optional clear button (#1111) */}
-          <div class="multi-select-trigger-row">
-            <button
-              type="button"
-              id={triggerId}
-              ref={el => {
-                this.triggerEl = el as HTMLButtonElement;
-              }}
-              class="multi-select-trigger"
-              role="combobox"
-              aria-haspopup="listbox"
-              aria-expanded={String(isOpen)}
-              aria-labelledby={hideLabel ? undefined : labelId}
-              aria-label={triggerAriaLabel}
-              aria-controls={listboxId}
-              aria-activedescendant={activeOptId}
-              aria-required={required ? 'true' : undefined}
-              aria-invalid={(showError) ? 'true' : undefined}
-              aria-describedby={describedBy}
-              disabled={disabled}
-              onClick={this.handleTriggerClick}
-              onKeyDown={this.handleTriggerKeyDown}
-              onBlur={this.handleTriggerBlur}
-            >
-              <span class="multi-select-trigger__text">
-                {displayText ?? (
-                  <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
-                )}
-              </span>
-              <span class="multi-select-trigger__chevron" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path
-                    d="M4 6l4 4 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </button>
-
-            {/* Inline clear button adjacent to trigger (#1111) — shown when selections exist */}
+          {/* Trigger button */}
+          <button
+            type="button"
+            id={triggerId}
+            ref={el => {
+              this.triggerEl = el as HTMLButtonElement;
+            }}
+            class="multi-select-trigger"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded={String(isOpen)}
+            aria-labelledby={hideLabel ? undefined : labelId}
+            aria-label={triggerAriaLabel}
+            aria-controls={listboxId}
+            aria-activedescendant={activeOptId}
+            aria-required={required ? 'true' : undefined}
+            aria-invalid={(showError) ? 'true' : undefined}
+            aria-describedby={describedBy}
+            disabled={disabled}
+            onClick={this.handleTriggerClick}
+            onKeyDown={this.handleTriggerKeyDown}
+            onBlur={this.handleTriggerBlur}
+          >
+            <span class="multi-select-trigger__text">
+              {displayText ?? (
+                <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
+              )}
+            </span>
+            {/* Inline clear button — visible when selection is non-empty and not disabled (#1111) */}
             {selectedValues.length > 0 && !disabled && (
               <button
                 type="button"
@@ -952,9 +954,9 @@ export class IoMultiSelect {
                   this.clearAll();
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path
-                    d="M2 2l10 10M12 2L2 12"
+                    d="M4 4l8 8M12 4l-8 8"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"
@@ -962,7 +964,18 @@ export class IoMultiSelect {
                 </svg>
               </button>
             )}
-          </div>
+            <span class="multi-select-trigger__chevron" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M4 6l4 4 4-4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
 
           {/* Dropdown */}
           <div
@@ -1010,17 +1023,35 @@ export class IoMultiSelect {
               )}
             </ul>
 
-            {/* Footer clear all (in dropdown) */}
-            {selectedValues.length > 0 && (
+            {/* Footer: select all + clear all + limit helper (#1069, #1070) */}
+            {(selectedValues.length > 0 || this.selectAll) && (
               <div class="multi-select-footer">
-                <button
-                  type="button"
-                  class="multi-select-clear-btn"
-                  aria-label={`Clear all ${this.label} selections`}
-                  onClick={() => this.clearAll()}
-                >
-                  Clear all
-                </button>
+                {this.selectAll && (
+                  <button
+                    type="button"
+                    class="multi-select-select-all-btn"
+                    aria-label={`Select all ${this.label} options`}
+                    onClick={() => this.selectAllVisible()}
+                  >
+                    Select all
+                  </button>
+                )}
+                {selectedValues.length > 0 && (
+                  <button
+                    type="button"
+                    class="multi-select-clear-btn"
+                    aria-label={`Clear all ${this.label} selections`}
+                    onClick={() => this.clearAll()}
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
+            )}
+            {/* maxSelections helper text */}
+            {this.maxSelections !== undefined && selectedValues.length > 0 && (
+              <div class="multi-select-limit-text" aria-live="polite" aria-atomic="true">
+                {selectedValues.length} of {this.maxSelections} selected
               </div>
             )}
           </div>

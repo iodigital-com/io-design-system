@@ -276,3 +276,200 @@ describe('io-multi-select — toggle event', () => {
     expect(toggleEmitSpy).toHaveBeenCalledWith({ open: false });
   });
 });
+
+// ── #1053 PageUp / PageDown navigation ────────────────────────────────────────
+
+describe('io-multi-select — PageUp/PageDown navigation (#1053)', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    ({ component } = makeComponent());
+    // 25 options: indices 0–24
+    (component as any).flatOptions = Array.from({ length: 25 }, (_, i) => ({
+      value: String(i),
+      label: `Option ${i}`,
+    }));
+    (component as any).isOpen = true;
+    (component as any).activeIndex = 5;
+  });
+
+  it('advances activeIndex by 10 on PageDown', () => {
+    const ev = new KeyboardEvent('keydown', { key: 'PageDown' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(15);
+  });
+
+  it('clamps to last option when PageDown would exceed bounds', () => {
+    (component as any).activeIndex = 20;
+    const ev = new KeyboardEvent('keydown', { key: 'PageDown' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(24);
+  });
+
+  it('retreats activeIndex by 10 on PageUp', () => {
+    (component as any).activeIndex = 15;
+    const ev = new KeyboardEvent('keydown', { key: 'PageUp' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(5);
+  });
+
+  it('clamps to first option when PageUp would go below 0', () => {
+    (component as any).activeIndex = 3;
+    const ev = new KeyboardEvent('keydown', { key: 'PageUp' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(0);
+  });
+});
+
+// ── #1077 Typeahead character search ──────────────────────────────────────────
+
+describe('io-multi-select — typeahead character search (#1077)', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    ({ component } = makeComponent());
+    (component as any).flatOptions = [
+      { value: 'nl', label: 'Netherlands' },
+      { value: 'be', label: 'Belgium' },
+      { value: 'de', label: 'Germany' },
+      { value: 'no', label: 'Norway' },
+    ];
+    (component as any).isOpen = true;
+    (component as any).activeIndex = -1;
+  });
+
+  it('jumps to first option whose label starts with pressed letter', () => {
+    const ev = new KeyboardEvent('keydown', { key: 'g' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(2); // Germany
+  });
+
+  it('cycles to next match on repeated same-letter press', () => {
+    (component as any).activeIndex = 0; // Netherlands
+    const ev1 = new KeyboardEvent('keydown', { key: 'n' });
+    vi.spyOn(ev1, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev1);
+    expect((component as any).activeIndex).toBe(3); // Norway
+  });
+
+  it('does not interfere with filter input mode (filter=true)', () => {
+    component.filter = true;
+    (component as any).activeIndex = 0;
+    const ev = new KeyboardEvent('keydown', { key: 'g' });
+    (component as any).handleTriggerKeyDown(ev);
+    // should not call handleTypeahead; index stays 0
+    expect((component as any).activeIndex).toBe(0);
+  });
+
+  it('skips disabled options during typeahead', () => {
+    (component as any).flatOptions = [
+      { value: 'de', label: 'Denmark', disabled: true },
+      { value: 'dk', label: 'Deutscheland' },
+    ];
+    (component as any).activeIndex = -1;
+    const ev = new KeyboardEvent('keydown', { key: 'd' });
+    vi.spyOn(ev, 'preventDefault');
+    (component as any).handleTriggerKeyDown(ev);
+    expect((component as any).activeIndex).toBe(1); // skips disabled Denmark
+  });
+});
+
+// ── #1070 maxSelections cap ────────────────────────────────────────────────────
+
+describe('io-multi-select — maxSelections cap (#1070)', () => {
+  let component: IoMultiSelect;
+  let emitSpy: ReturnType<typeof vi.fn>;
+  let limitEmitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    ({ component, emitSpy } = makeComponent());
+    limitEmitSpy = vi.fn();
+    (component as any).limitreached = { emit: limitEmitSpy };
+    component.maxSelections = 2;
+    (component as any).flatOptions = [
+      { value: 'nl', label: 'Netherlands' },
+      { value: 'be', label: 'Belgium' },
+      { value: 'de', label: 'Germany' },
+    ];
+  });
+
+  it('allows selection up to maxSelections', () => {
+    component.value = [];
+    (component as any).toggleOption({ value: 'nl', label: 'Netherlands' });
+    (component as any).toggleOption({ value: 'be', label: 'Belgium' });
+    expect(component.value).toEqual(['nl', 'be']);
+    expect(limitEmitSpy).not.toHaveBeenCalled();
+  });
+
+  it('blocks adding a value past maxSelections and emits limitreached', () => {
+    component.value = ['nl', 'be'];
+    (component as any).toggleOption({ value: 'de', label: 'Germany' });
+    expect(component.value).toEqual(['nl', 'be']); // no change
+    expect(limitEmitSpy).toHaveBeenCalledWith({ max: 2, attempted: 'de' });
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('allows deselection even when at cap', () => {
+    component.value = ['nl', 'be'];
+    (component as any).toggleOption({ value: 'nl', label: 'Netherlands' });
+    expect(component.value).toEqual(['be']);
+    expect(limitEmitSpy).not.toHaveBeenCalled();
+  });
+});
+
+// ── #1069 select all affordance ───────────────────────────────────────────────
+
+describe('io-multi-select — selectAll affordance (#1069)', () => {
+  let component: IoMultiSelect;
+  let emitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    ({ component, emitSpy } = makeComponent());
+    component.selectAll = true;
+    (component as any).flatOptions = [
+      { value: 'nl', label: 'Netherlands' },
+      { value: 'be', label: 'Belgium' },
+      { value: 'de', label: 'Germany', disabled: true },
+    ];
+    component.value = [];
+  });
+
+  it('selectAllVisible selects all non-disabled options', () => {
+    (component as any).selectAllVisible();
+    expect(component.value).toContain('nl');
+    expect(component.value).toContain('be');
+    expect(component.value).not.toContain('de'); // disabled
+    expect(emitSpy).toHaveBeenCalledWith({ value: ['nl', 'be'], name: 'test' });
+  });
+
+  it('does not re-add already selected options', () => {
+    component.value = ['nl'];
+    (component as any).selectAllVisible();
+    expect(component.value).toEqual(['nl', 'be']);
+  });
+
+  it('respects maxSelections when selecting all', () => {
+    const limitEmitSpy = vi.fn();
+    (component as any).limitreached = { emit: limitEmitSpy };
+    component.maxSelections = 1;
+    (component as any).selectAllVisible();
+    expect(component.value).toHaveLength(1);
+    expect(limitEmitSpy).toHaveBeenCalled();
+  });
+
+  it('selects only filteredOptions when filter is active', () => {
+    component.filter = true;
+    (component as any).filterQuery = 'nether';
+    (component as any).selectAllVisible();
+    expect(component.value).toContain('nl');
+    expect(component.value).not.toContain('be');
+  });
+});
+
+// ── #1111 trigger-level clear button ─────────────────────────────────────────
+// Styles are tested in io-multi-select.spec.ts which already imports the styles module.

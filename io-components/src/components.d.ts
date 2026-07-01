@@ -1820,6 +1820,11 @@ export namespace Components {
          */
         "required": boolean;
         /**
+          * When true, shows a "Select all" button paired with "Clear all" in the dropdown footer. With an active filter, selects only visible filtered options. Respects maxSelections when set.
+          * @default false
+         */
+        "selectAll": boolean;
+        /**
           * Programmatically moves focus to the trigger button.
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
@@ -3355,21 +3360,12 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-<<<<<<< HEAD
           * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
          */
         "autoComplete": string | undefined;
         /**
           * Autocomplete attribute.
           * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
-=======
-          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
-         */
-        "autoComplete": string | undefined;
-        /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
->>>>>>> 5049e06a (fix(io-input, io-textarea, io-select): b28 input fixes and FACE alignment)
          */
         "autocomplete": string | undefined;
         /**
@@ -7265,6 +7261,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * When true, shows a "Select all" button paired with "Clear all" in the dropdown footer. With an active filter, selects only visible filtered options. Respects maxSelections when set.
+          * @default false
+         */
+        "selectAll"?: boolean;
+        /**
           * Visual / validation state. - 'none'    — default - 'error'   — error border + red message - 'success' — success border + green message - 'warning' — warning border + amber message
           * @default 'none'
          */
@@ -8880,21 +8881,12 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-<<<<<<< HEAD
           * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
          */
         "autoComplete"?: string | undefined;
         /**
           * Autocomplete attribute.
           * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
-=======
-          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
-         */
-        "autoComplete"?: string | undefined;
-        /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
->>>>>>> 5049e06a (fix(io-input, io-textarea, io-select): b28 input fixes and FACE alignment)
          */
         "autocomplete"?: string | undefined;
         /**
@@ -9455,6 +9447,7 @@ declare namespace LocalJSX {
         "filter": boolean;
         "dropdownDirection": IoMultiSelectDirection;
         "maxDisplay": number;
+        "selectAll": boolean;
         "maxSelections": number | undefined;
     }
     interface IoOptgroupAttributes {

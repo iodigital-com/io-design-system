@@ -376,6 +376,19 @@ describe('io-multi-select — chip remove button touch target (WCAG 2.5.8)', () 
   });
 });
 
+describe('io-multi-select — trigger clear button touch target (#1111)', () => {
+  it('trigger clear button has min-width: var(--io-touch-target-min)', () => {
+    const styles = getMultiSelectStyles();
+    expect(styles).toContain('.multi-select-trigger__clear');
+    expect(styles).toContain('min-width: var(--io-touch-target-min)');
+  });
+
+  it('trigger clear button has min-height: var(--io-touch-target-min)', () => {
+    const styles = getMultiSelectStyles();
+    expect(styles).toContain('min-height: var(--io-touch-target-min)');
+  });
+});
+
 describe('io-multi-select — hideLabel render', () => {
   let component: IoMultiSelect;
 
@@ -757,5 +770,65 @@ describe('io-multi-select — trigger aria-label with selection summary (issue #
       .map(args => args[1] as Record<string, unknown>)
       .find(p => p?.['role'] === 'combobox');
     expect(triggerProps?.['aria-label']).toBeUndefined();
+  });
+});
+
+// ── #1111 trigger clear button render ─────────────────────────────────────────
+
+describe('io-multi-select — trigger clear button render (#1111)', () => {
+  function makeRenderComp(overrides: Partial<IoMultiSelect> = {}): IoMultiSelect {
+    const comp = new IoMultiSelect();
+    (comp as any).el = document.createElement('io-multi-select');
+    (comp as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (comp as any).change = { emit: vi.fn() };
+    comp.name = 'test';
+    comp.label = 'Countries';
+    Object.assign(comp, overrides);
+    (comp as any).componentWillLoad();
+    return comp;
+  }
+
+  it('renders inline clear button with aria-label="Clear selection" when values selected', () => {
+    const comp = makeRenderComp({ value: ['nl'] } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const clearBtn = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['aria-label'] === 'Clear selection');
+    expect(clearBtn).toBeDefined();
+  });
+
+  it('does not render inline clear button when no values selected', () => {
+    const comp = makeRenderComp({ value: [] } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const clearBtn = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['aria-label'] === 'Clear selection');
+    expect(clearBtn).toBeUndefined();
+  });
+});
+
+// ── #1070 maxSelections defaults ──────────────────────────────────────────────
+
+describe('io-multi-select — maxSelections default props (#1070)', () => {
+  it('maxSelections is undefined by default', () => {
+    const comp = new IoMultiSelect();
+    (comp as any).el = document.createElement('io-multi-select');
+    (comp as any).componentWillLoad();
+    expect(comp.maxSelections).toBeUndefined();
+  });
+});
+
+// ── #1069 selectAll default props ─────────────────────────────────────────────
+
+describe('io-multi-select — selectAll default props (#1069)', () => {
+  it('selectAll is false by default', () => {
+    const comp = new IoMultiSelect();
+    (comp as any).el = document.createElement('io-multi-select');
+    (comp as any).componentWillLoad();
+    expect(comp.selectAll).toBe(false);
   });
 });

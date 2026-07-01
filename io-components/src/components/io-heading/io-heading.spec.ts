@@ -43,12 +43,12 @@ describe('io-heading — tag fallback and dev warning', () => {
    */
   const OUTER = 1;
 
-  it('logs an error when tag is not provided (in componentWillLoad, not render)', () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+  it('logs a warning when tag is not provided (in componentWillLoad, not render)', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const component = new IoHeading();
     (component as any).componentWillLoad();
-    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('[io-heading]'));
-    errorSpy.mockRestore();
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('[io-heading]'));
+    warnSpy.mockRestore();
   });
 
   it('calls h() with "h2" as fallback when tag is not provided', () => {
@@ -74,7 +74,7 @@ describe('io-heading — render does not throw', () => {
   });
 
   it('renders without throwing for all supported sizes', () => {
-    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const;
+    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] as const;
     for (const size of sizes) {
       const component = new IoHeading();
       component.tag = 'h2';
@@ -127,11 +127,13 @@ describe('io-heading — h() call arguments (style computation)', () => {
     '2xl': 'var(--io-font-size-2xl)',
     '3xl': 'var(--io-font-size-3xl)',
     '4xl': 'var(--io-font-size-4xl)',
+    '5xl': 'var(--io-font-size-5xl)',
+    '6xl': 'var(--io-font-size-6xl)',
   };
 
   it('passes correct font-size token for each size', () => {
     const hMock = vi.mocked(h);
-    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const;
+    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] as const;
     for (const size of sizes) {
       hMock.mockClear();
       const component = new IoHeading();
@@ -214,7 +216,7 @@ describe('io-heading — h() call arguments (style computation)', () => {
 
   it('applies --io-line-height-dynamic to all sizes', () => {
     const hMock = vi.mocked(h);
-    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const;
+    const sizes = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] as const;
     for (const size of sizes) {
       hMock.mockClear();
       const component = new IoHeading();
@@ -236,6 +238,8 @@ describe('io-heading — h() call arguments (style computation)', () => {
       '2xl': 'var(--io-heading-tracking-3)',
       '3xl': 'var(--io-heading-tracking-2)',
       '4xl': 'var(--io-heading-tracking-1)',
+      '5xl': 'var(--io-heading-tracking-1)',
+      '6xl': 'var(--io-heading-tracking-1)',
     };
     for (const [size, expected] of Object.entries(TRACKING_MAP)) {
       hMock.mockClear();

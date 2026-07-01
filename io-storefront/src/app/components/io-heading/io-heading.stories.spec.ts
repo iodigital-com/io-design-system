@@ -48,7 +48,7 @@ describe('io-heading storefront stories', () => {
     });
 
     it('generator with each size option does not throw', () => {
-      for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
+      for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl']) {
         expect(() =>
           headingStory.generator?.({ properties: { ...headingStory.state?.properties, size } })
         ).not.toThrow();
@@ -131,7 +131,7 @@ describe('io-heading storefront stories', () => {
     it('size select options include all size variants', () => {
       const sizeDef = headingPropDefinitions.find((d) => d.name === 'size');
       expect(sizeDef).toBeDefined();
-      for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl']) {
+      for (const size of ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl']) {
         expect(((sizeDef as unknown as { options: string[] })).options).toContain(size);
       }
     });
@@ -167,7 +167,7 @@ describe('io-heading storefront stories', () => {
 
     it('returns one element per size variant', () => {
       const els = headingStorySizes.generator?.() ?? [];
-      expect(els.length).toBe(7);
+      expect(els.length).toBe(9);
     });
   });
 

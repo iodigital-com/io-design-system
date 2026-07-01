@@ -1,6 +1,8 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Element, Prop, h } from '@stencil/core';
 
 import type { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from './types';
+import type { BreakpointValue } from '../../utils/breakpoint';
+import { parseBreakpoint, buildMediaBlock } from '../../utils/breakpoint';
 
 const HEADING_SIZE_TOKEN_MAP: Record<IoHeadingSize, string> = {
   sm: 'var(--io-font-size-sm)',
@@ -10,9 +12,13 @@ const HEADING_SIZE_TOKEN_MAP: Record<IoHeadingSize, string> = {
   '2xl': 'var(--io-font-size-2xl)',
   '3xl': 'var(--io-font-size-3xl)',
   '4xl': 'var(--io-font-size-4xl)',
+  '5xl': 'var(--io-font-size-5xl)',
+  '6xl': 'var(--io-font-size-6xl)',
 };
 
 const HEADING_TRACKING_MAP: Partial<Record<IoHeadingSize, string>> = {
+  '6xl': 'var(--io-heading-tracking-1)',
+  '5xl': 'var(--io-heading-tracking-1)',
   '4xl': 'var(--io-heading-tracking-1)',
   '3xl': 'var(--io-heading-tracking-2)',
   '2xl': 'var(--io-heading-tracking-3)',
@@ -20,19 +26,42 @@ const HEADING_TRACKING_MAP: Partial<Record<IoHeadingSize, string>> = {
 };
 
 /**
+ * Size-to-tag inference map.
+ * When no explicit `tag` is provided, the component infers a reasonable heading
+ * level from the visual size. This is a best-effort default — the explicit `tag`
+ * prop always takes precedence.
+ */
+const HEADING_SIZE_TO_TAG_MAP: Record<IoHeadingSize, IoHeadingTag> = {
+  '6xl': 'h1',
+  '5xl': 'h1',
+  '4xl': 'h1',
+  '3xl': 'h2',
+  '2xl': 'h2',
+  xl: 'h3',
+  lg: 'h4',
+  md: 'h5',
+  sm: 'h6',
+};
+
+const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+
+/**
  * io-heading
  * ==========
  * Light DOM typography primitive for headings.
  * Renders h1–h6 with token-driven font size, weight, color, and alignment.
  *
- * The `tag` prop is required for correct document outline semantics.
- * A dev warning is logged if `tag` is omitted, and it falls back to 'h2'.
+ * When `tag` is omitted, the component infers a heading level from `size`
+ * (e.g. 4xl → h1, 2xl → h2) and logs a dev-mode warning. If a heading
+ * element is already present as a direct parent, the component downgrades
+ * to `div` to avoid nesting headings.
  *
  * Uses light DOM intentionally — typography must be stylable from outside.
  *
  * @example
  * <io-heading tag="h1" size="4xl">Page Title</io-heading>
  * <io-heading tag="h2" size="2xl">Section Heading</io-heading>
+ * <io-heading size="5xl">Hero Heading (tag inferred as h1)</io-heading>
  */
 @Component({
   tag: 'io-heading',
@@ -40,11 +69,20 @@ const HEADING_TRACKING_MAP: Partial<Record<IoHeadingSize, string>> = {
   scoped: false,
 })
 export class IoHeading {
-  /** Semantic HTML heading tag — required for correct document outline */
+  @Element() el!: HTMLElement;
+
+  /** Semantic HTML heading tag. When omitted, the tag is inferred from size. */
   @Prop({ reflect: true }) tag: IoHeadingTag | undefined;
 
-  /** Font size using --io-font-size-* tokens */
-  @Prop({ reflect: true }) size: IoHeadingSize = '2xl';
+  /**
+   * Font size using --io-font-size-* tokens.
+   * Accepts a scalar string ('sm'–'6xl') for a fixed size, or a breakpoint
+   * object for responsive sizing:
+   *   size="2xl"
+   *   :size="{ base: 'lg', l: '4xl' }"
+   *   size='{"base":"lg","l":"4xl"}'
+   */
+  @Prop({ reflect: true }) size: IoHeadingSize | BreakpointValue<IoHeadingSize> = '2xl';
 
   /** Font weight using --io-font-weight-* tokens */
   @Prop({ reflect: true }) weight: IoHeadingWeight = 'semibold';
@@ -61,14 +99,33 @@ export class IoHeading {
   /** CSS hyphens property for word breaking and hyphenation */
   @Prop({ reflect: true }) hyphens: IoHeadingHyphens = 'none';
 
+  private bpId?: string;
+
   componentWillLoad() {
     if (!this.tag) {
-      console.error('[io-heading] `tag` prop is required for correct document outline semantics (WCAG 1.3.1). Falling back to "h2".');
+      if (typeof console !== 'undefined' && process?.env?.NODE_ENV !== 'production') {
+        console.warn('[io-heading] `tag` prop omitted — inferring heading level from size. For reliable document outline semantics, always provide an explicit `tag` prop (WCAG 1.3.1).');
+      }
     }
+    // Generate a stable unique ID for responsive CSS scoping
+    this.bpId = `io-h-${Math.random().toString(36).slice(2, 8)}`;
+    if (this.el) this.el.setAttribute('data-bp-id', this.bpId);
   }
 
-  private resolveTag(): IoHeadingTag {
-    return this.tag ?? 'h2';
+  private hasHeadingAncestor(): boolean {
+    if (typeof document === 'undefined') return false;
+    let node: HTMLElement | null = this.el?.parentElement ?? null;
+    while (node) {
+      if (HEADING_TAGS.has(node.tagName.toLowerCase())) return true;
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  private resolveTag(): IoHeadingTag | 'div' {
+    if (this.hasHeadingAncestor()) return 'div';
+    const scalarSize = typeof this.size === 'string' ? (this.size as IoHeadingSize) : '2xl';
+    return this.tag ?? HEADING_SIZE_TO_TAG_MAP[scalarSize] ?? 'h2';
   }
 
   private resolveColor(): string {
@@ -78,10 +135,32 @@ export class IoHeading {
     return `var(--io-text-${this.color})`;
   }
 
+  private buildResponsiveSizeCSS(selector: string): string {
+    const parsed = parseBreakpoint<IoHeadingSize>(this.size as BreakpointValue<IoHeadingSize>, '2xl');
+    if (parsed.isFixed) return '';
+    return parsed.entries
+      .map(({ key, value }) => {
+        const token = HEADING_SIZE_TOKEN_MAP[value] ?? `var(--io-font-size-${value})`;
+        const tracking = HEADING_TRACKING_MAP[value];
+        const props = tracking
+          ? `font-size: ${token}; letter-spacing: ${tracking};`
+          : `font-size: ${token};`;
+        return buildMediaBlock(key, props, selector);
+      })
+      .join('\n');
+  }
+
   render() {
-    const Tag = this.resolveTag();
-    const sizeToken = HEADING_SIZE_TOKEN_MAP[this.size];
-    const tracking = HEADING_TRACKING_MAP[this.size];
+    const Tag = this.resolveTag() as string;
+
+    // Resolve scalar size for baseline styles (use base breakpoint or the scalar value)
+    const parsedSize = parseBreakpoint<IoHeadingSize>(this.size as BreakpointValue<IoHeadingSize>, '2xl');
+    const baseSize: IoHeadingSize = parsedSize.isFixed
+      ? parsedSize.value
+      : (parsedSize.entries.find((e) => e.key === 'base')?.value ?? '2xl');
+
+    const sizeToken = HEADING_SIZE_TOKEN_MAP[baseSize];
+    const tracking = HEADING_TRACKING_MAP[baseSize];
 
     const style: Record<string, string> = {
       fontSize: sizeToken,
@@ -106,10 +185,13 @@ export class IoHeading {
       style['whiteSpace'] = 'nowrap';
     }
 
-    return (
+    const responsiveCSS = this.bpId ? this.buildResponsiveSizeCSS(`[data-bp-id="${this.bpId}"]`) : '';
+
+    return [
+      responsiveCSS ? <style>{responsiveCSS}</style> : null,
       <Tag style={style}>
         <slot />
-      </Tag>
-    );
+      </Tag>,
+    ];
   }
 }

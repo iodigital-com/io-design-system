@@ -23,14 +23,14 @@ export default function IoHeadingApiPage() {
             [
               <span key="n"><InlineCode>tag</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;h1&apos; | &apos;h2&apos; | &apos;h3&apos; | &apos;h4&apos; | &apos;h5&apos; | &apos;h6&apos;</InlineCode>,
-              <span key="d" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic', fontSize: '0.85rem' }}>required</span>,
-              <span key="desc">Semantic heading element. Required for correct document outline. A dev warning is logged and the component falls back to h2 if omitted.</span>,
+              <span key="d" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic', fontSize: '0.85rem' }}>optional</span>,
+              <span key="desc">Semantic heading element. When omitted, the level is inferred from size (6xl/5xl/4xl → h1, 3xl/2xl → h2, xl → h3, lg → h4, md → h5, sm → h6). A dev warning is still logged — always provide an explicit tag for reliable document outline semantics. If a heading ancestor is detected in the DOM, the component renders a <InlineCode>div</InlineCode> instead to avoid illegal nesting.</span>,
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;2xl&apos; | &apos;3xl&apos; | &apos;4xl&apos;</InlineCode>,
+              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;2xl&apos; | &apos;3xl&apos; | &apos;4xl&apos; | &apos;5xl&apos; | &apos;6xl&apos; | BreakpointObject</InlineCode>,
               <InlineCode key="d">&apos;2xl&apos;</InlineCode>,
-              'Visual font size using --io-font-size-* tokens (14px–32px). Independent from semantic heading level.',
+              <span key="desc">Visual font size using --io-font-size-* tokens (14px–48px). Independent from semantic heading level. Also accepts a responsive breakpoint object: <InlineCode>{`{"base":"2xl","l":"5xl"}`}</InlineCode>. 5xl = 36px, 6xl = 48px.</span>,
             ],
             [
               <span key="n"><InlineCode>weight</InlineCode><ReflectBadge /></span>,

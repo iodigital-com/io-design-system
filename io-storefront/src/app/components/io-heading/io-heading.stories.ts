@@ -23,7 +23,7 @@ export const headingStory: Story<'io-heading'> = {
 export const headingStorySizes: Story<'io-heading'> = {
   state: { properties: {} },
   generator: () =>
-    (['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const).map((size) => ({
+    (['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'] as const).map((size) => ({
       tag: 'io-heading' as const,
       properties: { size, tag: 'h2', weight: 'semibold', color: 'primary' },
       children: [`Size ${size} — Heading text`],
@@ -108,14 +108,14 @@ export const headingPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     defaultValue: 'h2',
-    description: 'Semantic heading level — required for correct document outline. Defaults to h2 with a warning if omitted.',
+    description: 'Semantic heading level. When omitted, the level is inferred from size (e.g. 4xl–6xl → h1, 2xl–3xl → h2). Provide an explicit tag for reliable document outline semantics (WCAG 1.3.1).',
   },
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'],
+    options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'],
     defaultValue: '2xl',
-    description: 'Visual font size using --io-font-size-* tokens. Independent from the semantic heading level.',
+    description: 'Visual font size using --io-font-size-* tokens (14px–48px). Independent from the semantic heading level. Also accepts a breakpoint object for responsive sizing: size=\'{"base":"2xl","l":"5xl"}\'.',
   },
   {
     name: 'weight',

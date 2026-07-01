@@ -73,30 +73,86 @@ export default function IoTextUsagePage() {
       {/* ── Colors ───────────────────────────────────────────────── */}
       <section id="colors" className="space-y-6">
         <SectionHeader
-          title="Colors"
-          description="Semantic color roles cover all body copy contexts. Token values respond to light and dark mode automatically."
+          title="Colors — role-based model"
+          description="io-text organises color values around semantic roles, not contrast tiers. Each value expresses intent (what the text is for) rather than a visual weight step. This is a deliberate design-system choice that keeps copy clearly categorised by function."
         />
         <div className="space-y-3">
           <RuleCard label="primary — Default body text">
-            Use for all standard body copy. Maps to <C>--io-text-primary</C>.
+            Use for all standard body copy. Carries the highest visual weight for text and should be the default choice. Maps to <C>--io-text-primary</C>.
           </RuleCard>
           <RuleCard label="secondary — De-emphasised text">
-            Use for supporting information, metadata, and labels that should recede. Maps to <C>--io-text-secondary</C>.
+            Use for supporting information, metadata, captions, and labels that should recede visually behind primary content. This is a role value — it signals &quot;this content is subordinate&quot;, not just &quot;a little lighter than primary&quot;. Maps to <C>--io-text-secondary</C>.
           </RuleCard>
           <RuleCard label="disabled — Non-interactive state">
-            Use only when the surrounding interactive context is disabled. Maps to <C>--io-text-disabled</C>.
+            Use exclusively when the surrounding interactive context (button, input, etc.) is disabled. Do not use disabled color to de-emphasise active content — use secondary instead. Maps to <C>--io-text-disabled</C>.
           </RuleCard>
           <RuleCard label="inverse — Text on dark backgrounds">
             Use on dark or brand-colored surfaces where primary text would be illegible. Maps to <C>--io-text-inverse</C>.
           </RuleCard>
           <RuleCard label="success / warning / error — Semantic feedback">
-            Use alongside status indicators, form validation messages, and system alerts. Always pair with descriptive text.
+            Use alongside status indicators, form validation messages, and system alerts. These roles carry inherent meaning — always pair with descriptive text, never rely on color alone (WCAG 1.4.1). Maps to <C>--io-color-success</C>, <C>--io-color-warning</C>, <C>--io-color-error</C>.
           </RuleCard>
           <RuleCard label="info — Informational context">
             Use for informational callouts and neutral guidance that does not indicate success, warning, or error. Maps to <C>--io-color-info</C>.
           </RuleCard>
           <RuleCard label="inherit — Parent color passthrough">
-            Use when the text color should be inherited from a parent element rather than set by a token. Useful inside custom-colored containers.
+            Use when the text color should be inherited from a parent element rather than set by a token. Useful inside custom-colored containers where a local token override controls the text color.
+          </RuleCard>
+        </div>
+      </section>
+
+      {/* ── Role-based vs contrast-tier model ───────────────────── */}
+      <section id="color-model" className="space-y-6">
+        <SectionHeader
+          title="Why role-based, not contrast-tier?"
+          description="Some design systems (like Porsche PDS) use a contrast-tier model with values like contrast-higher, contrast-high, contrast-medium. io intentionally uses roles instead."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Intent over presentation">
+            Role names force a decision about why text is being de-emphasised. &quot;secondary&quot; communicates intent to future maintainers; &quot;contrast-medium&quot; does not. This reduces the risk of misuse — e.g. using a low-contrast value for body copy that should be primary.
+          </RuleCard>
+          <RuleCard label="No intermediate contrast values by design">
+            There is no equivalent of &quot;contrast-medium&quot; between primary and secondary. If a design needs an intermediate visual weight, the correct solution is a lighter font weight (e.g. <C>weight=&quot;regular&quot;</C> instead of <C>weight=&quot;semibold&quot;</C>), not a lower-contrast text token.
+          </RuleCard>
+          <DoOrDontCard type="do">
+            Use <C>color=&quot;secondary&quot;</C> for metadata and labels, <C>weight=&quot;regular&quot;</C> to soften body copy without changing semantics.
+          </DoOrDontCard>
+          <DoOrDontCard type="dont">
+            Do not use <C>color=&quot;disabled&quot;</C> to create a visual hierarchy effect on active, readable content. Disabled is reserved for non-interactive states.
+          </DoOrDontCard>
+        </div>
+      </section>
+
+      {/* ── Semantic tags ────────────────────────────────────────── */}
+      <section id="semantic-tags" className="space-y-6">
+        <SectionHeader
+          title="Semantic tag selection"
+          description="Choose the tag that matches your content's structural role in the document. io-text now supports address, figcaption, cite, and legend in addition to the core set."
+        />
+        <div className="space-y-3">
+          <RuleCard label="p — Body paragraphs (default)">
+            Default tag for standalone paragraphs of body copy.
+          </RuleCard>
+          <RuleCard label="span — Inline text">
+            For inline text that needs size, weight, or color variation within a paragraph. Does not add block-level spacing.
+          </RuleCard>
+          <RuleCard label="blockquote — Extended quotations">
+            For quoted content from external sources. Pair with a <C>cite</C> child or <C>cite</C> attribute for the source.
+          </RuleCard>
+          <RuleCard label="address — Contact information">
+            Wraps contact information (postal address, email, phone) for the nearest article or body element. Screen readers announce it as &quot;contact information&quot;.
+          </RuleCard>
+          <RuleCard label="figcaption — Figure captions">
+            For caption text inside a <C>&lt;figure&gt;</C> element, e.g. image captions, diagram descriptions.
+          </RuleCard>
+          <RuleCard label="cite — Work title or source reference">
+            Wraps the title of a work being cited (book, article, film). Use inside a blockquote or alongside a quotation.
+          </RuleCard>
+          <RuleCard label="legend — Fieldset labels">
+            Caption for a <C>&lt;fieldset&gt;</C> group. Required for accessible form grouping. Note: because io-text renders in the light DOM, it works as a legend without additional ARIA.
+          </RuleCard>
+          <RuleCard label="time — Machine-readable dates">
+            For dates and times. Always pair with a <C>datetime</C> prop containing a machine-parseable ISO 8601 string (WCAG 1.3.1).
           </RuleCard>
         </div>
       </section>

@@ -329,7 +329,7 @@ describe('io-text — h() call arguments (style computation)', () => {
 
   it('passes the correct tag to h()', () => {
     const hMock = vi.mocked(h);
-    const tags = ['p', 'span', 'div', 'blockquote', 'time'] as const;
+    const tags = ['p', 'span', 'div', 'blockquote', 'time', 'address', 'figcaption', 'cite', 'legend'] as const;
     for (const tag of tags) {
       hMock.mockClear();
       const component = new IoText();

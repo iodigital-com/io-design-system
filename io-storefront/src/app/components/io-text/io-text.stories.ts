@@ -77,6 +77,16 @@ export const textStoryEllipsis: Story<'io-text'> = {
   ],
 };
 
+export const textStorySemanticTags: Story<'io-text'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['address', 'figcaption', 'cite', 'legend'] as const).map((tag) => ({
+      tag: 'io-text' as const,
+      properties: { tag, size: 'sm', weight: 'regular', color: 'secondary' },
+      children: [`tag="${tag}" — Semantic ${tag} text example`],
+    })),
+};
+
 export const textPropDefinitions: PropDefinition[] = [
   {
     name: 'tag',

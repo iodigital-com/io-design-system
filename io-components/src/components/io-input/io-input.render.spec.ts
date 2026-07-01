@@ -826,7 +826,7 @@ describe('io-input — render() does not throw for prop combinations', () => {
     if ((props as any).faceInvalid !== undefined) (c as any).faceInvalid = (props as any).faceInvalid;
     if ((props as any).message !== undefined) c.message = (props as any).message as string;
     if (props.helperText !== undefined) c.helperText = props.helperText as string;
-    if ((props as any).readonly !== undefined) c.readonly = (props as any).readonly;
+    if ((props as any).readonly !== undefined) c.readOnly = (props as any).readonly;
     if ((props as any).disabled !== undefined) c.disabled = (props as any).disabled;
     if ((props as any).required !== undefined) c.required = (props as any).required;
     if ((props as any).maxLength !== undefined) c.maxLength = (props as any).maxLength;

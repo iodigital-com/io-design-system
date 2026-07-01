@@ -190,6 +190,19 @@ export function getSwitchStyles(): string {
       border: 0;
     }
 
+    /* ── Label alignment ─────────────────────────────────── */
+
+    /* alignLabel="start": label before toggle — reverse flex order */
+    .switch-wrapper--label-start .switch-label {
+      flex-direction: row-reverse;
+    }
+
+    /* stretch: full-width row — toggle pushed to opposite side */
+    .switch-wrapper--stretch .switch-label {
+      width: 100%;
+      justify-content: space-between;
+    }
+
     /* ── Compact density ────────────────────────────────── */
 
     :host([compact]) .switch-control {

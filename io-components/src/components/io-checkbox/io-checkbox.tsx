@@ -87,8 +87,7 @@ export class IoCheckbox {
   /** Programmatically move focus to the checkbox */
   @Method()
   async setFocus(options?: FocusOptions): Promise<void> {
-    const input = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
-    input?.focus(options);
+    this.nativeInputEl?.focus(options);
   }
 
   /** Check validity without showing browser validation UI. Returns true if valid. */
@@ -117,6 +116,7 @@ export class IoCheckbox {
   private fallbackId!: string;
   private fieldId!: string;
   private defaultChecked = false;
+  private nativeInputEl?: HTMLInputElement;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
@@ -146,6 +146,10 @@ export class IoCheckbox {
 
   componentDidLoad() {
     this.applyExternalLabelAOM();
+    // Set initial indeterminate state via ref — indeterminate is a JS-only property
+    if (this.nativeInputEl && this.indeterminate) {
+      this.nativeInputEl.indeterminate = this.indeterminate;
+    }
   }
 
   /**
@@ -208,9 +212,8 @@ export class IoCheckbox {
 
   @Watch('indeterminate')
   onIndeterminateChange() {
-    const nativeInput = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
-    if (nativeInput) {
-      nativeInput.indeterminate = this.indeterminate;
+    if (this.nativeInputEl) {
+      this.nativeInputEl.indeterminate = this.indeterminate;
     }
     this.syncFormValue();
   }
@@ -226,12 +229,6 @@ export class IoCheckbox {
       disabled: this.disabled,
     });
     this.faceInvalid = faceInvalid;
-  }
-
-  componentDidRender() {
-    // indeterminate is a JS-only property, not an HTML attribute
-    const input = this.el.shadowRoot?.querySelector<HTMLInputElement>('input');
-    if (input) input.indeterminate = this.indeterminate;
   }
 
   private handleLabelSlotChange = (ev: Event) => {
@@ -311,6 +308,7 @@ export class IoCheckbox {
                 id={inputId}
                 class="checkbox-native"
                 type="checkbox"
+                ref={(el) => { this.nativeInputEl = el as HTMLInputElement; }}
                 name={name}
                 value={value}
                 checked={checked}

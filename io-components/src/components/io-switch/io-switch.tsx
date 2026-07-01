@@ -5,7 +5,7 @@ import { resolveSwitchId, getSwitchWrapperClass, getSwitchTrackClass } from './i
 import { syncFormState } from '../../utils/form/sync-form-state';
 
 import type { IoFieldState } from '../../utils/field-state';
-import type { IoSwitchChangeDetail } from './types';
+import type { IoSwitchAlignLabel, IoSwitchChangeDetail } from './types';
 
 /**
  * io-switch
@@ -78,6 +78,20 @@ export class IoSwitch {
 
   /** Visually hides the label while keeping it accessible to screen readers */
   @Prop() hideLabel = false;
+
+  /**
+   * Label alignment relative to the toggle.
+   * - `'end'` (default) — label appears after the toggle (right in LTR).
+   * - `'start'` — label appears before the toggle (left in LTR).
+   */
+  @Prop({ reflect: true }) alignLabel: IoSwitchAlignLabel = 'end';
+
+  /**
+   * When `true`, the label row stretches to fill the available width,
+   * pushing the toggle to the opposite side of the label.
+   * Useful for settings lists and form rows.
+   */
+  @Prop({ reflect: true }) stretch = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -267,7 +281,7 @@ export class IoSwitch {
     return (
       <Host aria-busy={loading ? 'true' : undefined}>
         <style>{getSwitchStyles()}</style>
-        <div class={getSwitchWrapperClass(disabled, isError || this.faceInvalid)}>
+        <div class={getSwitchWrapperClass(disabled, isError || this.faceInvalid, this.alignLabel, this.stretch)}>
           <label class="switch-label" htmlFor={inputId}>
             <span class="switch-control">
               <input

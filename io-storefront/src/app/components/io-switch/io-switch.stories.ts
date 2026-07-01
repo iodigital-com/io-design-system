@@ -162,4 +162,17 @@ export const switchPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Displays supporting guidance below the switch.',
   },
+  {
+    name: 'alignLabel',
+    type: 'select',
+    options: ['start', 'end'],
+    defaultValue: 'end',
+    description: 'Controls whether the label appears before (start) or after (end) the toggle.',
+  },
+  {
+    name: 'stretch',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Makes the switch fill the width of its container, pushing the label and toggle to opposite ends.',
+  },
 ];

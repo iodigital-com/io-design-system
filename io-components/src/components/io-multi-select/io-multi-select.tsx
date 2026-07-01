@@ -151,15 +151,6 @@ export class IoMultiSelect {
    */
   @Prop() maxSelections: number | undefined;
 
-  /** Helper text shown below the trigger (replaces message when no error/warning). */
-  @Prop() helperText: string | undefined;
-
-  /**
-   * Supplementary description rendered as a persistent `<p>` below the field.
-   * Always visible, regardless of validation state.
-   */
-  @Prop() description: string | undefined;
-
   // ── State ─────────────────────────────────────────────────────────────────
 
   /** Mirrors FACE invalidity so the component re-renders on form validation. */
@@ -808,7 +799,6 @@ export class IoMultiSelect {
     const triggerId = `${fieldId}-trigger`;
     const listboxId = `${fieldId}-listbox`;
     const messageId = `${fieldId}-message`;
-    const helperId = `${fieldId}-helper`;
     const descriptionId = `${fieldId}-description`;
 
     const activeOptId =

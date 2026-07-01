@@ -14,7 +14,7 @@ import {
   shouldUseTargetScroll,
 } from './io-carousel-utils';
 
-import type { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from './types';
+import type { IoCarouselAlignHeader, IoCarouselIntl, IoCarouselSlidesPerPage, IoCarouselTrimSpace, IoCarouselUpdateDetail } from './types';
 
 /**
  * io-carousel
@@ -106,6 +106,35 @@ export class IoCarousel {
 
   /** Accessible label for the skip link that lets keyboard users bypass carousel slides. */
   @Prop() skipLabel = 'Skip carousel';
+
+  /**
+   * Internationalisation overrides for all user-visible strings.
+   * Keys in this object take precedence over the individual string props
+   * (`prevLabel`, `nextLabel`, `label`, `skipLabel`).
+   *
+   * @example
+   * <io-carousel .intl="${{ prev: 'Vorige', next: 'Volgende', skip: 'Sla carrousel over' }}">
+   */
+  @Prop() intl?: Partial<IoCarouselIntl>;
+
+  /**
+   * Trims the blank space before the first slide (`start`), after the last
+   * slide (`end`), or both (`both`). Has no effect when `none` (default).
+   */
+  @Prop() trimSpace: IoCarouselTrimSpace = 'none';
+
+  /**
+   * When `true`, adds a CSS gradient fade mask at the left and right edges of
+   * the carousel track, visually hinting at overflow content.
+   * The fade width is controlled by `--io-carousel-edge-fade-width`.
+   */
+  @Prop() edgeFade = false;
+
+  /**
+   * When `true`, the active slide is scrolled into the horizontal center of
+   * the visible track viewport.
+   */
+  @Prop() focusOnCenterSlide = false;
 
   /** Emitted when the active slide index changes. */
   @Event({ eventName: 'update', bubbles: true, composed: true, cancelable: false }) update!: EventEmitter<IoCarouselUpdateDetail>;
@@ -257,7 +286,16 @@ export class IoCarousel {
     const track = this.track;
     if (!track || this.totalSlides === 0) return;
     const clamped = this.clampIndex(index);
-    track.scrollTo({ left: this.getSlideLeft(clamped), behavior });
+    let left = this.getSlideLeft(clamped);
+    // Issue #1031: focusOnCenterSlide — offset so the slide lands in the center
+    // of the visible track viewport.
+    if (this.focusOnCenterSlide) {
+      const slide = this.slides[clamped];
+      const slideWidth = slide ? slide.getBoundingClientRect().width : 0;
+      left = left - (track.clientWidth / 2) + (slideWidth / 2);
+      left = Math.max(0, Math.min(left, track.scrollWidth - track.clientWidth));
+    }
+    track.scrollTo({ left, behavior });
   }
 
   private setActiveIndex(index: number, emitEvent: boolean): void {
@@ -269,8 +307,12 @@ export class IoCarousel {
     // interrupt smooth-scroll animations (most visibly: rewind navigation).
     this._internalScroll = true;
     this.activeSlideIndex = next;
-    // Always announce slide change — AT users need feedback regardless of event emission.
-    this.slideAnnouncement = `Slide ${next + 1} of ${this.totalSlides}`;
+    // Issue #1030: aria-live stays 'polite' always — WCAG SC 4.1.3 / SC 2.2.2.
+    // During autoplay the live region is kept silent (empty content) so screen
+    // readers are not bombarded with announcements for automatic advances.
+    // Only populate the content on user-driven navigation so the AT announces it.
+    const isAutoplayRunning = this.autoplay && !this.isAutoplayPaused;
+    this.slideAnnouncement = isAutoplayRunning ? '' : `Slide ${next + 1} of ${this.totalSlides}`;
     if (emitEvent) {
       this.update.emit({ activeIndex: next, previousIndex, totalSlides: this.totalSlides });
     }
@@ -408,7 +450,9 @@ export class IoCarousel {
       return;
     }
 
-    this.slideAnnouncement = `Slide ${normalized + 1} of ${this.totalSlides}`;
+    // Issue #1030: keep live region silent during autoplay (SC 2.2.2 / 4.1.3).
+    const isAutoplayRunning = this.autoplay && !this.isAutoplayPaused;
+    this.slideAnnouncement = isAutoplayRunning ? '' : `Slide ${normalized + 1} of ${this.totalSlides}`;
     this.scrollToIndex(normalized, 'auto');
   }
 
@@ -546,10 +590,7 @@ export class IoCarousel {
 
   render() {
     const {
-      prevLabel,
-      nextLabel,
       isDragging,
-      label,
       slideAnnouncement,
       hasHeadingSlot,
       hasDescriptionSlot,
@@ -566,7 +607,16 @@ export class IoCarousel {
       autoplay,
       isAutoplayPaused,
       effectiveSlidesPerPage,
+      intl,
+      trimSpace,
+      edgeFade,
     } = this;
+
+    // Issue #1041: intl keys override individual props, falling back to prop values.
+    const prevLabel = intl?.prev ?? this.prevLabel;
+    const nextLabel = intl?.next ?? this.nextLabel;
+    const label = intl?.label ?? this.label;
+    const skipLabel = intl?.skip ?? this.skipLabel;
 
     const totalSlides = this.totalSlides;
     const pageCount = getCarouselPageCount(totalSlides, effectiveSlidesPerPage);
@@ -599,14 +649,16 @@ export class IoCarousel {
     return (
       <Host>
         <style>{getCarouselStyles()}</style>
-        <a href={`#${this.skipTargetId}`} class="carousel-skip-link" onClick={this.handleSkipLinkClick}>{this.skipLabel}</a>
+        <a href={`#${this.skipTargetId}`} class="carousel-skip-link" onClick={this.handleSkipLinkClick}>{skipLabel}</a>
         <div
           role="region"
           aria-label={hasHeadingSlot || heading ? undefined : label}
           aria-labelledby={hasHeadingSlot || heading ? headingId : undefined}
           aria-roledescription="carousel"
         >
-          <span aria-live={autoplay && !isAutoplayPaused ? 'off' : 'polite'} aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
+          {/* Issue #1030: aria-live is always 'polite'. Content is set to '' during autoplay
+              so the region is silent without disabling it (SC 2.2.2 / SC 4.1.3). */}
+          <span aria-live="polite" aria-atomic="true" class="sr-only">{slideAnnouncement}</span>
 
           <div
             class={{
@@ -625,7 +677,15 @@ export class IoCarousel {
             </div>
           </div>
 
-          <div class="carousel-wrap" style={slidesPerPageStyle}>
+          <div
+            class={{
+              'carousel-wrap': true,
+              'carousel-wrap--trim-start': trimSpace === 'start' || trimSpace === 'both',
+              'carousel-wrap--trim-end': trimSpace === 'end' || trimSpace === 'both',
+              'carousel-wrap--edge-fade': edgeFade,
+            }}
+            style={slidesPerPageStyle}
+          >
             <div
               class={{
                 'carousel-track': true,

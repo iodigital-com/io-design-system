@@ -960,6 +960,14 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-carousel-edge-fade-width",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width of the gradient fade mask at carousel track edges when edgeFade=true. Defaults to 64px."
+    },
+    {
       "runtimeCssVar": "--io-checkbox-touch-target-min",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

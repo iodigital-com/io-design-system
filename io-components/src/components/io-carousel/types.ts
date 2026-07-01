@@ -20,7 +20,27 @@ export type IoCarouselAlignHeader = 'left' | 'center';
 
 /** Detail payload emitted by the `update` event. */
 export type IoCarouselUpdateDetail = {
-	activeIndex: number;
-	previousIndex: number;
-	totalSlides: number;
+  activeIndex: number;
+  previousIndex: number;
+  totalSlides: number;
 };
+
+/**
+ * Internationalisation strings for io-carousel.
+ * All keys are optional — provide only those that need translation.
+ * When an `intl` prop is supplied, its keys take precedence over the
+ * individual string props (`prevLabel`, `nextLabel`, `label`, `skipLabel`).
+ */
+export type IoCarouselIntl = {
+  /** Label for the "previous slide" button. */
+  prev?: string;
+  /** Label for the "next slide" button. */
+  next?: string;
+  /** Accessible label for the carousel region (`aria-label` / `aria-roledescription`). */
+  label?: string;
+  /** Text for the skip link that lets keyboard users bypass the carousel. */
+  skip?: string;
+};
+
+/** Trims whitespace from the start and/or end of the carousel slide track. */
+export type IoCarouselTrimSpace = 'start' | 'end' | 'both' | 'none';

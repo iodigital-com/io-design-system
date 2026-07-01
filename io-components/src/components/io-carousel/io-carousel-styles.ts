@@ -71,6 +71,52 @@ export function getCarouselStyles(): string {
       padding: 0 var(--io-space-8);
     }
 
+    /* ── Issue #1031: trimSpace variants ────────────────── */
+
+    /*
+     * trimSpace removes the leading/trailing gap at the scroll boundaries,
+     * making the first/last slide flush with the track edge.
+     * Applied via padding adjustments on the track itself so the scrollbar
+     * and nav buttons retain their normal positioning.
+     */
+
+    .carousel-wrap--trim-start .carousel-track {
+      scroll-padding-inline-start: 0;
+    }
+
+    .carousel-wrap--trim-start .carousel-track ::slotted(*:first-child) {
+      margin-inline-start: 0;
+    }
+
+    .carousel-wrap--trim-end .carousel-track ::slotted(*:last-child) {
+      margin-inline-end: 0;
+    }
+
+    /* ── Issue #1031: edgeFade ──────────────────────────── */
+
+    /*
+     * A gradient mask fades the carousel track edges to hint at overflow content.
+     * Uses mask-image with both edges when edge-fade is active.
+     * The fade width is the --io-carousel-edge-fade-width token (default: 64px).
+     */
+
+    .carousel-wrap--edge-fade .carousel-track {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black var(--io-carousel-edge-fade-width),
+        black calc(100% - var(--io-carousel-edge-fade-width)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black var(--io-carousel-edge-fade-width),
+        black calc(100% - var(--io-carousel-edge-fade-width)),
+        transparent 100%
+      );
+    }
+
     /* ── Scrollable track ───────────────────────────────── */
 
     .carousel-track {

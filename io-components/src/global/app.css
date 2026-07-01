@@ -745,6 +745,7 @@
 
   /* Carousel */
   --io-carousel-scrollbar-height: 4px;
+  --io-carousel-edge-fade-width: 64px;
 
   /* Multi-Select */
   --io-multi-select-chip-height:       var(--io-control-size-xs);  /* 24px — selected-value chips */

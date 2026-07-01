@@ -1,3 +1,5 @@
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getInputPasswordStyles(): string {
   return `
     :host {
@@ -43,15 +45,7 @@ export function getInputPasswordStyles(): string {
 
     /* Visually hide label while keeping it accessible */
     .input-label--sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
+      ${getSrOnlyStyles()}
     }
 
     :host([hide-label]) .input-wrapper {

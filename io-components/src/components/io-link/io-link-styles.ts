@@ -7,6 +7,8 @@
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getLinkStyles(): string {
   return `
     :host {
@@ -42,13 +44,7 @@ export function getLinkStyles(): string {
 
     /* Visually hidden label (screen-reader accessible) — matches io-button pattern */
     .link__label--hidden {
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      overflow: hidden;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
+      ${getSrOnlyStyles()}
     }
 
     /* Animated underline via ::after pseudo-element */

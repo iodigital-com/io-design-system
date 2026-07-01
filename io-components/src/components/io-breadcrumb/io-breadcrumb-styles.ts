@@ -1,3 +1,5 @@
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getBreadcrumbStyles(): string {
   return `
     :host {
@@ -21,15 +23,7 @@ export function getBreadcrumbStyles(): string {
     /* ── Visually-hidden collapsed items — remain in AT tree for screen readers ── */
 
     ::slotted(io-breadcrumb-item.breadcrumb-item--hidden) {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      ${getSrOnlyStyles()}
     }
 
     /* ── Expand button (injected into light DOM, styled via ::slotted) ── */

@@ -420,7 +420,7 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Download attribute for anchor mode. - `true` / empty string → triggers download with server-provided filename - string → triggers download and suggests the given filename - Only applies when `href` is set.
+          * Maps to the native anchor `download` attribute when `href` is set. Pass `true` to prompt save with the server filename, or a string to override the filename. Has no effect in button mode.
          */
         "download"?: string | boolean;
         /**
@@ -446,7 +446,7 @@ export namespace Components {
          */
         "icon"?: IoIconName;
         /**
-          * @deprecated Use `hideLabel` instead — it preserves accessible text via sr-only and renders a square icon-only layout when an icon/iconSource is present. `iconOnly` will be removed in the next minor bump after this deprecation period. Migration: replace `iconOnly` with `hideLabel` and ensure `label` prop is set.
+          * @deprecated Use `hideLabel` with an `icon` or `iconSource` prop instead. Renders a square icon-only button and suppresses text label rendering. Will be removed in the next minor release after the deprecation period.
           * @default false
          */
         "iconOnly": boolean;
@@ -5818,7 +5818,7 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Download attribute for anchor mode. - `true` / empty string → triggers download with server-provided filename - string → triggers download and suggests the given filename - Only applies when `href` is set.
+          * Maps to the native anchor `download` attribute when `href` is set. Pass `true` to prompt save with the server filename, or a string to override the filename. Has no effect in button mode.
          */
         "download"?: string | boolean;
         /**
@@ -5844,7 +5844,7 @@ declare namespace LocalJSX {
          */
         "icon"?: IoIconName;
         /**
-          * @deprecated Use `hideLabel` instead — it preserves accessible text via sr-only and renders a square icon-only layout when an icon/iconSource is present. `iconOnly` will be removed in the next minor bump after this deprecation period. Migration: replace `iconOnly` with `hideLabel` and ensure `label` prop is set.
+          * @deprecated Use `hideLabel` with an `icon` or `iconSource` prop instead. Renders a square icon-only button and suppresses text label rendering. Will be removed in the next minor release after the deprecation period.
           * @default false
          */
         "iconOnly"?: boolean;

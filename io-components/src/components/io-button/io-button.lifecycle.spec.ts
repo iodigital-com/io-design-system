@@ -271,6 +271,101 @@ describe('io-button — onLoadingChange / loading a11y', () => {
     (c as any).onLoadingChange(false);
     expect((c as any).loadingTransitioned).toBe(true);
   });
+
+  it('loadingFinished starts false', () => {
+    const c = makeButton();
+    expect((c as any).loadingFinished).toBe(false);
+  });
+
+  it('loadingFinished becomes true when loading goes true→false', () => {
+    const c = makeButton();
+    (c as any).onLoadingChange(true);
+    (c as any).onLoadingChange(false);
+    expect((c as any).loadingFinished).toBe(true);
+  });
+
+  it('loadingFinished stays false when loading goes false without ever being true', () => {
+    const c = makeButton();
+    (c as any).onLoadingChange(false);
+    expect((c as any).loadingFinished).toBe(false);
+  });
+
+  it('loadingFinished resets to false when loading goes true again', () => {
+    const c = makeButton();
+    (c as any).onLoadingChange(true);
+    (c as any).onLoadingChange(false);
+    expect((c as any).loadingFinished).toBe(true);
+    (c as any).onLoadingChange(true);
+    expect((c as any).loadingFinished).toBe(false);
+  });
+});
+
+describe('io-button — warnIconOnlyDeprecated', () => {
+  it('warns when iconOnly=true', () => {
+    const c = makeButton();
+    c.iconOnly = true;
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).warnIconOnlyDeprecated();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
+    spy.mockRestore();
+  });
+
+  it('does not warn twice (hasWarnedIconOnlyDeprecated guard)', () => {
+    const c = makeButton();
+    c.iconOnly = true;
+    (c as any).hasWarnedIconOnlyDeprecated = true;
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).warnIconOnlyDeprecated();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('does not warn when iconOnly=false', () => {
+    const c = makeButton();
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (c as any).warnIconOnlyDeprecated();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+});
+
+describe('io-button — warnHideLabelNoIcon', () => {
+  it('logs error when hideLabel=true and no icon', () => {
+    const c = makeButton();
+    c.hideLabel = true;
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (c as any).warnHideLabelNoIcon();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('icon'));
+    spy.mockRestore();
+  });
+
+  it('does not log error when hideLabel=true and icon is set', () => {
+    const c = makeButton();
+    c.hideLabel = true;
+    c.icon = 'search';
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (c as any).warnHideLabelNoIcon();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('does not log error when hideLabel=false', () => {
+    const c = makeButton();
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (c as any).warnHideLabelNoIcon();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('does not log error when iconOnly=true (legacy path, no icon needed via hideLabel)', () => {
+    const c = makeButton();
+    c.hideLabel = true;
+    c.iconOnly = true;
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (c as any).warnHideLabelNoIcon();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
 
 describe('io-button — renderIconOnlyContent', () => {

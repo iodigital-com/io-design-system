@@ -1,3 +1,5 @@
+import { getSrOnlyStyles } from '../../utils/sr-only';
+
 export function getInputStyles(): string {
   return `
     :host {
@@ -86,15 +88,7 @@ export function getInputStyles(): string {
 
     /* Visually hide label while keeping it accessible to screen readers */
     .input-label--sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
+      ${getSrOnlyStyles()}
     }
 
     /* Collapse the label space entirely when hideLabel=true */
@@ -232,15 +226,7 @@ export function getInputStyles(): string {
 
     /* Visually hidden sr-only live region for counter — announced by screen readers */
     .input-counter-sr {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
+      ${getSrOnlyStyles()}
     }
 
     .input-wrapper__loading {

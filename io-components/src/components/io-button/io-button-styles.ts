@@ -7,7 +7,7 @@
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
  */
-import { getTransition } from '../../utils/motion';
+import { getSrOnlyStyles } from '../../utils/sr-only';
 
 export function getButtonStyles(): string {
   return `
@@ -39,20 +39,18 @@ export function getButtonStyles(): string {
       text-decoration: none;
       border-radius: var(--io-border-radius-pill);
       position: relative;
-      transition: background-color var(--io-duration-lg) var(--io-ease-snappy),
-                  border-color     var(--io-duration-lg) var(--io-ease-snappy),
-                  color            var(--io-duration-lg) var(--io-ease-snappy),
-                  opacity          var(--io-duration-lg) var(--io-ease-snappy),
-                  transform        var(--io-duration-xs) var(--io-ease-out);
+      transition: background-color var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                  border-color     var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                  color            var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                  opacity          var(--io-button-transition-duration) var(--io-motion-easing-snappy),
+                  transform        var(--io-button-active-transition-duration) var(--io-motion-easing-snappy);
       white-space: nowrap;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Active press feedback ──────────────────────────── */
-
-    /* scale(0.98) press feedback — distinct from translateY (which is prohibited).
-       Applies only when not disabled/loading, composing cleanly with focus-visible
-       and arrow transforms. Reduced-motion resets this via the transition:none rule. */
+    /* Active press feedback — scale(0.98) is intentional and safe.
+       NOTE: translateY is explicitly prohibited (see .claude/rules/10-never-do-list.md);
+       scale() is a separate transform primitive and does not share that restriction. */
     .btn:active:not(.btn--disabled):not(.btn--loading) {
       transform: scale(0.98);
     }
@@ -101,8 +99,7 @@ export function getButtonStyles(): string {
     .btn--sm.btn--icon-only {
       width: var(--io-size-button-sm);
       height: var(--io-size-button-sm);
-      /* WCAG 2.5.5 AA floor: ensure sm icon-only never renders below 24x24px
-         even when --io-size-button-sm is overridden by a consumer. */
+      /* WCAG 2.5.5 AA floor: prevent token overrides from dropping below 24×24 px */
       min-width: var(--io-button-sm-icon-only-min, 24px);
       min-height: var(--io-button-sm-icon-only-min, 24px);
     }
@@ -148,22 +145,8 @@ export function getButtonStyles(): string {
     /* ── Focus visible ──────────────────────────────────── */
     /*
      * Issue #1086: WCAG 2.4.11 — focus ring must achieve ≥3:1 contrast against
-     * the element it surrounds. The previous box-shadow approach placed the inner
-     * ring (#7D0034) directly on the button fill (e.g. #0000D2 blue), giving only
-     * ~1.5:1 contrast.
-     *
-     * Fix: use outline + outline-offset: 3px so the ring sits in the PAGE
-     * background (white / #181818 dark), where:
-     *   #7D0034 vs white (#fff)    = 8.0:1 ✓
-     *   #ff9eb5 vs dark (#181818) = 9.5:1 ✓ (dark-mode focus inner)
-     *
-     * CSS :focus-visible already restricts the ring to keyboard navigation in
-     * modern browsers. The outer outline (3px, page-bg facing) + the inner
-     * box-shadow (2px via --io-focus-ring-active) together form the double-ring
-     * that was previously fully box-shadow based. initFocusVisible() still
-     * controls --io-focus-ring-active so pointer clicks suppress the inner ring;
-     * the outer outline is scoped to :focus-visible which browsers already
-     * suppress for pointer input on non-form elements.
+     * the element it surrounds. Use outline + outline-offset: 3px so the ring
+     * sits in the PAGE background for sufficient contrast at all button colors.
      */
     .btn:focus-visible {
       outline: 3px solid var(--io-focus-inner);
@@ -440,7 +423,7 @@ export function getButtonStyles(): string {
       width: 0;
       height: var(--io-button-link-underline-height);
       background-color: var(--io-color-primary);
-      transition: ${getTransition('width', 'md', 'in-out')};
+      transition: width var(--io-motion-base) var(--io-motion-easing-bounce);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -458,7 +441,7 @@ export function getButtonStyles(): string {
       width: var(--io-button-arrow-width-default);
       height: var(--io-button-arrow-height-default);
       flex-shrink: 0;
-      transition: transform var(--io-duration-lg) var(--io-ease-snappy);
+      transition: transform var(--io-button-transition-duration) var(--io-motion-easing-snappy);
     }
 
     .btn__arrow svg {
@@ -498,17 +481,15 @@ export function getButtonStyles(): string {
     .btn__label {
       display: inline-flex;
       align-items: center;
-      transition: opacity var(--io-duration-xs) var(--io-ease-standard);
+      transition: opacity var(--io-button-label-transition-duration) ease;
     }
 
     io-icon,
     .btn__icon-wrap {
-      transition: opacity var(--io-duration-xs) var(--io-ease-standard);
+      transition: opacity var(--io-button-label-transition-duration) ease;
     }
 
-    /* #1043 — size the iconSource wrapper to match io-icon's size map.
-       data-size mirrors ICON_SIZE_MAP so iconSource SVGs share the same
-       dimensions as named icons at each button size. */
+    /* #1043 — size the iconSource wrapper to match io-icon's size map. */
     .btn__icon-wrap[data-size="sm"] {
       width: var(--io-icon-size-sm);
       height: var(--io-icon-size-sm);
@@ -540,13 +521,7 @@ export function getButtonStyles(): string {
 
     /* Visually hidden label for icon+hideLabel mode — preserves accessible text */
     .btn__label--hidden {
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      overflow: hidden;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
+      ${getSrOnlyStyles()}
     }
 
     .btn--loading .btn__label,
@@ -559,13 +534,7 @@ export function getButtonStyles(): string {
     /* ── Loading live region (screen-reader only) ──────── */
 
     .btn__loading-sr {
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      overflow: hidden;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
+      ${getSrOnlyStyles()}
     }
 
     /* ── Loading spinner ────────────────────────────────── */
@@ -591,13 +560,11 @@ export function getButtonStyles(): string {
     @media (prefers-reduced-motion: reduce) {
       .btn,
       .btn::after,
-      .btn__label,
       .btn__arrow,
       io-icon,
       .btn__icon-wrap {
         transition: none;
       }
-      /* Also suppress :active scale in reduced-motion environments */
       .btn:active:not(.btn--disabled):not(.btn--loading) {
         transform: none;
       }

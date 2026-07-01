@@ -894,10 +894,10 @@ export namespace Components {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoDrawerAriaProps;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -1805,14 +1805,10 @@ export namespace Components {
           * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoModalAriaProps;
         /**
           * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
           * @default 'blur'
-         */
-        "backdrop": IoModalBackdrop;
-        /**
-          * @default 'blur' (kept for API compat)
          */
         "backdrop": IoModalBackdrop;
         /**
@@ -6562,10 +6558,10 @@ declare namespace LocalJSX {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
-          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
+          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoDrawerAriaProps;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -7494,14 +7490,10 @@ declare namespace LocalJSX {
           * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: Record<string, string>;
+        "aria"?: IoModalAriaProps;
         /**
           * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
           * @default 'blur'
-         */
-        "backdrop"?: IoModalBackdrop;
-        /**
-          * @default 'blur' (kept for API compat)
          */
         "backdrop"?: IoModalBackdrop;
         /**

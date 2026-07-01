@@ -429,7 +429,7 @@ export class IoInput {
     const showCounter = counter && maxLength != null;
     const counterSrId = `${this.counterId}-sr`;
     const describedBy = [
-      showMessage ? errorId : '',
+      errorId,
       showDescription ? helperId : '',
       showCounter ? counterSrId : '',
       description ? this.descriptionId : '',

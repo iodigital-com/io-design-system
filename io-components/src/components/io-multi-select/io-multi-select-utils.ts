@@ -14,6 +14,7 @@ export function getMultiSelectWrapperClass(state: string, disabled: boolean): st
     'multi-select-wrapper',
     state === 'error' ? 'multi-select-wrapper--error' : '',
     state === 'success' ? 'multi-select-wrapper--success' : '',
+    state === 'warning' ? 'multi-select-wrapper--warning' : '',
     disabled ? 'multi-select-wrapper--disabled' : '',
   ]
     .filter(Boolean)

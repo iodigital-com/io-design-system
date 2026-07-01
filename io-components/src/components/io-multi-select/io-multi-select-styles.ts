@@ -122,13 +122,21 @@ export function getMultiSelectStyles(): string {
       box-shadow: var(--io-focus-ring-active);
     }
 
+    /* ── Trigger row (combobox + optional clear button) ───────── */
+
+    .multi-select-trigger-row {
+      display: flex;
+      align-items: stretch;
+    }
+
     /* ── Trigger button ────────────────────────────────────────── */
 
     .multi-select-trigger {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+      flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
       border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
@@ -161,6 +169,22 @@ export function getMultiSelectStyles(): string {
       border-bottom-color: var(--io-color-success);
     }
 
+    .multi-select-wrapper--warning .multi-select-trigger {
+      border-bottom-color: var(--io-color-state-warning);
+    }
+
+    .multi-select-wrapper--error .multi-select-trigger__clear {
+      border-bottom-color: var(--io-border-error);
+    }
+
+    .multi-select-wrapper--success .multi-select-trigger__clear {
+      border-bottom-color: var(--io-color-success);
+    }
+
+    .multi-select-wrapper--warning .multi-select-trigger__clear {
+      border-bottom-color: var(--io-color-state-warning);
+    }
+
     .multi-select-trigger__text {
       flex: 1;
       overflow: hidden;
@@ -172,12 +196,47 @@ export function getMultiSelectStyles(): string {
       color: var(--io-text-secondary);
     }
 
+    /* ── Inline clear button adjacent to trigger (#1111) ──────── */
+
+    .multi-select-trigger__clear {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      /* WCAG 2.5.8: minimum 44x44px touch target */
+      min-width: var(--io-touch-target-min);
+      min-height: var(--io-touch-target-min);
+      width: var(--io-touch-target-min);
+      height: var(--io-touch-target-min);
+      padding: 0;
+      margin: 0;
+      border: none;
+      border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
+      border-radius: 0;
+      background: transparent;
+      color: var(--io-text-secondary);
+      cursor: pointer;
+      transition: background-color var(--io-motion-fast), color var(--io-motion-fast), border-bottom-width var(--io-motion-fast);
+    }
+
+    .multi-select-trigger__clear:hover {
+      background: var(--io-color-primary-muted);
+      color: var(--io-color-primary);
+    }
+
+    .multi-select-trigger__clear:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    /* ── Chevron — rotates 180° when open (#1075) ──────────────── */
+
     .multi-select-trigger__chevron {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       color: var(--io-text-secondary);
-      transition: transform var(--io-motion-fast);
+      transition: transform var(--io-motion-base);
     }
 
     .multi-select-trigger[aria-expanded="true"] .multi-select-trigger__chevron {
@@ -346,7 +405,7 @@ export function getMultiSelectStyles(): string {
       border-radius: var(--io-border-radius-xs);
     }
 
-    /* ── Message text (error / success / helper) ───────────────── */
+    /* ── Message text (error / success / warning / helper) ─────── */
 
     .multi-select-message {
       margin: var(--io-space-1) 0 0;
@@ -363,11 +422,39 @@ export function getMultiSelectStyles(): string {
       color: var(--io-color-success);
     }
 
+    .multi-select-message--warning {
+      color: var(--io-color-state-warning);
+    }
+
+    .multi-select-message--limit {
+      color: var(--io-text-secondary);
+    }
+
+    /* ── Helper text / description slot ────────────────────────── */
+
+    .multi-select-description {
+      display: block;
+      margin: var(--io-space-1) 0 0;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+    }
+
+    .multi-select-description--persistent {
+      margin: var(--io-space-1) 0 0;
+      font-size: var(--io-font-size-xs);
+      color: var(--io-text-secondary);
+    }
+
+    .multi-select-description__slot--hidden {
+      display: none;
+    }
+
     /* ── Reduced-motion overrides ──────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
       .multi-select-trigger,
       .multi-select-trigger__chevron,
+      .multi-select-trigger__clear,
       .multi-select-option,
       .multi-select-option__checkbox,
       .multi-select-chip__remove { transition: none; }

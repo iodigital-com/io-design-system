@@ -496,3 +496,266 @@ describe('io-multi-select — aria-describedby wiring for FACE error (#840)', ()
     expect(describedBy).toBeTruthy();
   });
 });
+
+// ── Issue #910: description, helperText, warning state ────────────────────────
+
+describe('io-multi-select — description prop (issue #910)', () => {
+  let component: InstanceType<typeof import('./io-multi-select').IoMultiSelect>;
+
+  beforeEach(async () => {
+    const { IoMultiSelect } = await import('./io-multi-select');
+    component = new IoMultiSelect() as typeof component;
+    (component as any).el = document.createElement('io-multi-select');
+    component.label = 'Items';
+    (component as any).groups = [];
+    (component as any).flatOptions = [];
+    (component as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      checkValidity: vi.fn().mockReturnValue(true),
+      reportValidity: vi.fn().mockReturnValue(true),
+    };
+    (component as any).componentWillLoad();
+  });
+
+  it('has description undefined by default', () => {
+    expect(component.description).toBeUndefined();
+  });
+
+  it('has helperText undefined by default', () => {
+    expect(component.helperText).toBeUndefined();
+  });
+
+  it('accepts description prop', () => {
+    component.description = 'Select your options';
+    expect(component.description).toBe('Select your options');
+  });
+
+  it('accepts helperText prop', () => {
+    component.helperText = 'Helper text here';
+    expect(component.helperText).toBe('Helper text here');
+  });
+
+  it('renders description paragraph when set', () => {
+    component.description = 'Persistent description';
+    vi.mocked(h).mockClear();
+    component.render();
+    const pCalls = vi.mocked(h).mock.calls.filter(
+      args => args[0] === 'p' && String((args[1] as Record<string, unknown>)?.class ?? '').includes('description--persistent'),
+    );
+    expect(pCalls.length).toBeGreaterThan(0);
+  });
+});
+
+describe('io-multi-select — warning state (issue #910)', () => {
+  let component: InstanceType<typeof import('./io-multi-select').IoMultiSelect>;
+
+  beforeEach(async () => {
+    const { IoMultiSelect } = await import('./io-multi-select');
+    component = new IoMultiSelect() as typeof component;
+    (component as any).el = document.createElement('io-multi-select');
+    component.label = 'Items';
+    (component as any).groups = [];
+    (component as any).flatOptions = [];
+    (component as any).internals = {
+      setFormValue: vi.fn(),
+      setValidity: vi.fn(),
+      checkValidity: vi.fn().mockReturnValue(true),
+      reportValidity: vi.fn().mockReturnValue(true),
+    };
+    (component as any).componentWillLoad();
+  });
+
+  it('state prop accepts "warning"', () => {
+    component.state = 'warning';
+    expect(component.state).toBe('warning');
+  });
+
+  it('render does not throw when state=warning and message set', () => {
+    component.state = 'warning';
+    component.message = 'Please review your selection';
+    expect(() => (component as any).render()).not.toThrow();
+  });
+
+  it('wrapper class includes warning modifier when state=warning', () => {
+    component.state = 'warning';
+    vi.mocked(h).mockClear();
+    component.render();
+    const divCalls = vi.mocked(h).mock.calls.filter(
+      args => args[0] === 'div' && String((args[1] as Record<string, unknown>)?.class ?? '').includes('multi-select-wrapper--warning'),
+    );
+    expect(divCalls.length).toBeGreaterThan(0);
+  });
+});
+
+// ── Issue #1070: maxSelections prop with limitreached event ───────────────────
+
+describe('io-multi-select — maxSelections (issue #1070)', () => {
+  let component: IoMultiSelect;
+  let emitSpy: ReturnType<typeof vi.fn>;
+  let limitEmitSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    emitSpy = vi.fn();
+    limitEmitSpy = vi.fn();
+    (component as any).change = { emit: emitSpy };
+    (component as any).limitreached = { emit: limitEmitSpy };
+    component.name = 'test';
+    component.maxSelections = 2;
+    (component as any).componentWillLoad();
+  });
+
+  it('has maxSelections undefined by default', () => {
+    const fresh = new IoMultiSelect();
+    expect(fresh.maxSelections).toBeUndefined();
+  });
+
+  it('allows selection when below the cap', () => {
+    component.value = [];
+    (component as any).toggleOption({ value: 'a', label: 'A' });
+    expect(component.value).toContain('a');
+    expect(emitSpy).toHaveBeenCalled();
+    expect(limitEmitSpy).not.toHaveBeenCalled();
+  });
+
+  it('blocks selection when at the cap and emits limitreached', () => {
+    component.value = ['a', 'b'];
+    (component as any).toggleOption({ value: 'c', label: 'C' });
+    expect(component.value).not.toContain('c');
+    expect(emitSpy).not.toHaveBeenCalled();
+    expect(limitEmitSpy).toHaveBeenCalledWith({ max: 2, attempted: 'c' });
+  });
+
+  it('always allows deselection even when at cap', () => {
+    component.value = ['a', 'b'];
+    (component as any).toggleOption({ value: 'a', label: 'A' });
+    expect(component.value).not.toContain('a');
+    expect(emitSpy).toHaveBeenCalled();
+  });
+
+  it('renders limit helper text when selections exist', () => {
+    component.value = ['a'];
+    (component as any).flatOptions = [{ value: 'a', label: 'A', disabled: false }];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const pCalls = vi.mocked(h).mock.calls.filter(
+      args => args[0] === 'p' && String((args[1] as Record<string, unknown>)?.class ?? '').includes('message--limit'),
+    );
+    expect(pCalls.length).toBeGreaterThan(0);
+  });
+});
+
+// ── Issue #1111: clear-all button in trigger row ──────────────────────────────
+
+describe('io-multi-select — inline clear button in trigger row (issue #1111)', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).limitreached = { emit: vi.fn() };
+    component.name = 'test';
+    component.label = 'Items';
+    (component as any).componentWillLoad();
+  });
+
+  it('renders clear button when selections exist and not disabled', () => {
+    component.value = ['a'];
+    (component as any).flatOptions = [{ value: 'a', label: 'A', disabled: false }];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const clearBtnCall = vi.mocked(h).mock.calls.find(
+      args =>
+        args[0] === 'button' &&
+        (args[1] as Record<string, unknown>)?.['aria-label'] === 'Clear selection',
+    );
+    expect(clearBtnCall).toBeDefined();
+  });
+
+  it('does not render clear button when no selections', () => {
+    component.value = [];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const clearBtnCall = vi.mocked(h).mock.calls.find(
+      args =>
+        args[0] === 'button' &&
+        (args[1] as Record<string, unknown>)?.['aria-label'] === 'Clear selection',
+    );
+    expect(clearBtnCall).toBeUndefined();
+  });
+
+  it('does not render clear button when disabled', () => {
+    component.value = ['a'];
+    component.disabled = true;
+    (component as any).flatOptions = [{ value: 'a', label: 'A', disabled: false }];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const clearBtnCall = vi.mocked(h).mock.calls.find(
+      args =>
+        args[0] === 'button' &&
+        (args[1] as Record<string, unknown>)?.['aria-label'] === 'Clear selection',
+    );
+    expect(clearBtnCall).toBeUndefined();
+  });
+
+  it('clear button has correct aria-label for accessibility', () => {
+    component.value = ['a'];
+    (component as any).flatOptions = [{ value: 'a', label: 'A', disabled: false }];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const clearBtnCall = vi.mocked(h).mock.calls.find(
+      args =>
+        args[0] === 'button' &&
+        (args[1] as Record<string, unknown>)?.['aria-label'] === 'Clear selection',
+    );
+    expect((clearBtnCall![1] as Record<string, unknown>)['aria-label']).toBe('Clear selection');
+  });
+});
+
+// ── Issue #937: trigger aria-label summarizes selection ──────────────────────
+
+describe('io-multi-select — trigger aria-label with selection summary (issue #937)', () => {
+  let component: IoMultiSelect;
+
+  beforeEach(() => {
+    component = new IoMultiSelect();
+    (component as any).el = document.createElement('io-multi-select');
+    (component as any).change = { emit: vi.fn() };
+    (component as any).limitreached = { emit: vi.fn() };
+    component.name = 'test';
+    component.label = 'Countries';
+    (component as any).componentWillLoad();
+  });
+
+  it('trigger aria-label includes label and selected labels when selections exist', () => {
+    component.value = ['nl', 'be'];
+    (component as any).flatOptions = [
+      { value: 'nl', label: 'Netherlands', disabled: false },
+      { value: 'be', label: 'Belgium', disabled: false },
+    ];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    const ariaLabel = triggerProps?.['aria-label'] as string | undefined;
+    expect(ariaLabel).toContain('Countries');
+    expect(ariaLabel).toContain('Netherlands');
+    expect(ariaLabel).toContain('Belgium');
+  });
+
+  it('trigger has no aria-label when no selections and hideLabel=false', () => {
+    component.value = [];
+    vi.mocked(h).mockClear();
+    (component as any).render();
+    const triggerProps = vi.mocked(h).mock.calls
+      .filter(args => args[0] === 'button')
+      .map(args => args[1] as Record<string, unknown>)
+      .find(p => p?.['role'] === 'combobox');
+    expect(triggerProps?.['aria-label']).toBeUndefined();
+  });
+});

@@ -93,7 +93,7 @@ describe('io-input-date — showPicker trigger (#956)', () => {
 
     it('button is disabled when readonly', () => {
       const c = makeComponent();
-      c.readonly = true;
+      c.readOnly = true;
       (c as any).componentWillLoad();
       vi.mocked(h).mockClear();
       c.render();
@@ -133,7 +133,7 @@ describe('io-input-date — showPicker trigger (#956)', () => {
 
     it('handlePickerTrigger is a no-op when readonly', () => {
       const c = makeComponent();
-      c.readonly = true;
+      c.readOnly = true;
       (c as any).componentWillLoad();
       const showPickerMock = vi.fn();
       (c as any).nativeInputEl = { showPicker: showPickerMock };

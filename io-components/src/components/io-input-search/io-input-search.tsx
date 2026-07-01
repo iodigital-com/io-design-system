@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, A
 
 import { getInputSearchStyles } from './io-input-search-styles';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
+import { applyAriaProp } from '../../utils/aria-prop';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputSearchSize } from './types';
@@ -28,6 +29,7 @@ export class IoInputSearch {
   private inputId!: string;
   private errorId!: string;
   private helperId!: string;
+  private nativeInputEl?: HTMLInputElement;
 
   /** Label text — required for accessibility */
   @Prop() label!: string;
@@ -48,7 +50,7 @@ export class IoInputSearch {
   @Prop({ reflect: true }) disabled = false;
 
   /** Makes the input read-only */
-  @Prop({ reflect: true }) readonly = false;
+  @Prop({ reflect: true }) readOnly = false;
 
   /** Shows a loading indicator */
   @Prop() loading = false;
@@ -79,6 +81,15 @@ export class IoInputSearch {
 
   /** Accessible label for the clear button */
   @Prop() clearAriaLabel = 'Clear search';
+
+  /**
+   * Custom ARIA attributes to inject onto the native `<input>` element.
+   * Keys may omit or include the `aria-` prefix — both forms are accepted.
+   *
+   * @example
+   * <io-input-search .aria={{ label: 'Search products', autocomplete: 'list' }} label="Search" />
+   */
+  @Prop() aria?: Record<string, string>;
 
   /** Tracks whether the clear button should be visible */
   @State() private hasValue = false;
@@ -117,6 +128,11 @@ export class IoInputSearch {
     this.syncFormValue();
   }
 
+  @Watch('aria')
+  onAriaChange() {
+    applyAriaProp(this.aria, this.nativeInputEl ?? null);
+  }
+
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
     const native = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
@@ -138,7 +154,7 @@ export class IoInputSearch {
   }
 
   private handleInput = (ev: InputEvent) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     const newValue = (ev.target as HTMLInputElement).value;
@@ -148,7 +164,7 @@ export class IoInputSearch {
   };
 
   private handleChange = (ev: Event) => {
-    if (this.disabled || this.readonly) return;
+    if (this.disabled || this.readOnly) return;
     ev.stopPropagation();
     ev.stopImmediatePropagation();
     const newVal = (ev.target as HTMLInputElement).value;
@@ -207,7 +223,7 @@ export class IoInputSearch {
   }
 
   private handleClear = () => {
-    if (this.readonly) return;
+    if (this.readOnly) return;
     this.value = '';
     this.hasValue = false;
     this.clear.emit();
@@ -217,7 +233,7 @@ export class IoInputSearch {
   };
 
   render() {
-    const { label, name, value, placeholder, required, disabled, readonly, loading, state, message, helperText, hideLabel, size, autocomplete, clearAriaLabel, hasValue, maxLength, minLength } = this;
+    const { label, name, value, placeholder, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, autocomplete, clearAriaLabel, hasValue, maxLength, minLength } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error' || this.faceInvalid;
@@ -237,7 +253,7 @@ export class IoInputSearch {
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',
-      readonly ? 'input-wrapper--readonly' : '',
+      readOnly ? 'input-wrapper--readonly' : '',
     ].filter(Boolean).join(' ');
 
     const fieldClass = [
@@ -261,14 +277,18 @@ export class IoInputSearch {
             <input
               id={inputId}
               class={fieldClass}
+              ref={(el?: HTMLInputElement) => {
+                this.nativeInputEl = el;
+                applyAriaProp(this.aria, el ?? null);
+              }}
               type="search"
               name={name}
               value={value}
               placeholder={placeholder ?? ' '}
               required={required}
               disabled={disabled || loading}
-              readOnly={readonly}
-              aria-readonly={readonly ? 'true' : undefined}
+              readOnly={readOnly}
+              aria-readonly={readOnly ? 'true' : undefined}
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}

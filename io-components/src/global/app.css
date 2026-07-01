@@ -434,9 +434,13 @@
   --io-motion-easing-bounce:     cubic-bezier(0.645, 0.045, 0.355, 1);
   --io-motion-easing-ease-out:   cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Fine-grained duration primitives — use for micro-interactions (check, dot, icon) */
+  --io-duration-xs:              120ms;
   /* Additional easing aliases — convenience tokens for component transitions */
   --io-ease-standard:            ease;
   --io-ease-snappy:              cubic-bezier(0.075, 0.82, 0.165, 1);
+  /* Ease-out alias — sugar over --io-motion-easing-ease-out for readability */
+  --io-ease-out:                 var(--io-motion-easing-ease-out);
 
   /* Overlay transition contract — semantic aliases for consistent enter/exit */
   --io-motion-overlay-enter:     var(--io-motion-base);
@@ -847,6 +851,9 @@
   --io-progress-fill-error:      var(--io-color-error, #c0392b);
   /* Consumer override: slow down indeterminate animation for WCAG 2.2.2 compliance */
   --io-progress-indeterminate-duration: 1s;
+  /* Consumer override for the width transition duration on the progress fill.
+     Set to 0s to disable the transition without needing the `animated` prop. */
+  --io-progress-transition-duration: var(--io-motion-base);
 
   /* ============================================================
      13. PIN CODE
@@ -1554,6 +1561,17 @@ io-table[compact] io-table-body-cell td {
    (both are single attribute-value selectors = [0,1,0]).
    Both work on any element, not just <html>.
    Children inherit overridden tokens via normal CSS inheritance.
+
+   FUTURE SIMPLIFICATION (after light-dark() P0 migration):
+   Once all color tokens use light-dark() CSS function the entire
+   only-dark / only-light bodies collapse to three lines each:
+
+     [data-theme="only-dark"]  { color-scheme: only dark; }
+     [data-theme="only-light"] { color-scheme: only light; }
+
+   The light-dark() values inside the token definitions then resolve
+   automatically from color-scheme. This removes ~270 lines of
+   duplicated override blocks. See #1132.
    ============================================================ */
 
 [data-theme="only-dark"] {

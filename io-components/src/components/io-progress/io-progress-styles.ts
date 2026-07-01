@@ -9,6 +9,9 @@
  *
  * ⚠️  GOVERNANCE: Do not hardcode colors, spacing, or radii here.
  *     Add new tokens to src/global/app.css first, then reference them.
+ *
+ * The fill transition is routed through the motion utility so consumers
+ * can override the timing with --io-progress-transition-duration.
  */
 import { getSrOnlyStyles } from '../../utils/sr-only';
 
@@ -40,7 +43,9 @@ export function getProgressStyles(): string {
     .progress-fill {
       height: 100%;
       border-radius: var(--io-border-radius-pill);
-      transition: width var(--io-motion-base, 300ms ease);
+      /* Transition routed through the override token so consumers can tune timing.
+         Falls back to --io-motion-base (300ms ease) when the token is not set. */
+      transition: width var(--io-progress-transition-duration, var(--io-motion-base));
     }
 
     /* ── Color fills ─────────────────────────────────────────────── */

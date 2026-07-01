@@ -2492,5 +2492,17 @@
     "classification": "public-api",
     "component": "io-step",
     "description": "Text color for content slotted into the description slot (secondary text below the step label). Defaults to --io-text-secondary."
+  },
+  {
+    "cssVar": "--io-input-date-trigger-color",
+    "classification": "public-api",
+    "component": "io-input-date",
+    "description": "Icon color of the calendar trigger button. Defaults to --io-text-secondary."
+  },
+  {
+    "cssVar": "--io-input-date-trigger-bg-hover",
+    "classification": "public-api",
+    "component": "io-input-date",
+    "description": "Background color of the calendar trigger button on hover. Defaults to --io-color-neutral-100."
   }
 ]

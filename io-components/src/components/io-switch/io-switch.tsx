@@ -113,17 +113,22 @@ export class IoSwitch {
   /** Tracks FACE form validation invalidity so aria-invalid reflects both error prop and form state */
   @State() faceInvalid = false;
 
+  /** True after the first time loading=true is observed — gates the aria-live loading announcement */
+  @State() private initialLoadingSeen = false;
+
   // ── Private ───────────────────────────────────────────────────
 
   private fallbackId!: string;
   private fieldId!: string;
   private defaultChecked = false;
+  private loadingMessageId!: string;
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
   componentWillLoad() {
     this.fallbackId = Math.random().toString(36).slice(2);
     this.fieldId = resolveSwitchId(this.name, this.fallbackId);
+    this.loadingMessageId = `${this.fieldId}-loading`;
     this.defaultChecked = this.checked;
     const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
     if (!isProd && this.error) {
@@ -131,6 +136,9 @@ export class IoSwitch {
     }
     if (!isProd && this.errorMessage !== undefined) {
       console.warn('[io-switch] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
+    }
+    if (this.loading) {
+      this.initialLoadingSeen = true;
     }
     this.syncFormValue();
   }
@@ -172,6 +180,11 @@ export class IoSwitch {
     this.disabled = disabled;
   }
 
+  formStateRestoreCallback(state: string | null) {
+    this.checked = state !== null;
+    this.syncFormValue();
+  }
+
   @Watch('checked')
   onCheckedChange() {
     this.syncFormValue();
@@ -185,6 +198,13 @@ export class IoSwitch {
   @Watch('required')
   onRequiredChange() {
     this.syncFormValue();
+  }
+
+  @Watch('loading')
+  onLoadingChange(newVal: boolean) {
+    if (newVal && !this.initialLoadingSeen) {
+      this.initialLoadingSeen = true;
+    }
   }
 
   private syncFormValue() {
@@ -234,10 +254,12 @@ export class IoSwitch {
     const showErrorBlock = isError || showFaceOnlyError;
     const errorMessageToShow = isError && effectiveMessage ? effectiveMessage : (showFaceOnlyError ? 'Please check this switch' : '');
     const showErrorMessage = showErrorBlock && !!errorMessageToShow;
+    const showLoadingMessage = loading && this.initialLoadingSeen;
 
     const describedBy = [
       !showErrorBlock && helperText ? helperId : null,
       showErrorMessage ? errorId : null,
+      showLoadingMessage ? this.loadingMessageId : null,
     ]
       .filter((id): id is string => Boolean(id))
       .join(' ');
@@ -295,6 +317,16 @@ export class IoSwitch {
             {helperText}
           </p>
         )}
+        {/* aria-live region — announces loading state to screen readers on first activation */}
+        <span
+          id={this.loadingMessageId}
+          class="switch-loading-message"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {showLoadingMessage ? 'Loading' : ''}
+        </span>
       </Host>
     );
   }

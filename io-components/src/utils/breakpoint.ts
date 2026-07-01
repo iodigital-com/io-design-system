@@ -19,23 +19,28 @@
 
 export type BreakpointKey = 'base' | 'xs' | 'sm' | 'md' | 'l' | 'lg' | 'xl' | '2xl' | '3xl';
 
-export type BreakpointValue<T extends string> = T | Partial<Record<BreakpointKey, T>>;
-
 /**
  * A value that can be either a fixed scalar or a responsive object mapping
  * breakpoint keys to values. The type parameter T should be a string union.
  *
  * @example
  * // Fixed scalar — always 'md'
- * const size: BreakpointCustomizable<IoButtonSize> = 'md';
+ * const size: BreakpointValue<IoButtonSize> = 'md';
  *
  * // Responsive — 'sm' on mobile, 'lg' on large+ viewports
- * const size: BreakpointCustomizable<IoButtonSize> = { base: 'sm', l: 'lg' };
+ * const size: BreakpointValue<IoButtonSize> = { base: 'sm', l: 'lg' };
  *
  * // JSON-string form (used when setting HTML attributes from HTML/template strings)
- * const size: BreakpointCustomizable<IoButtonSize> = '{"base":"sm","l":"lg"}';
+ * const size: BreakpointValue<IoButtonSize> = '{"base":"sm","l":"lg"}';
  */
-export type BreakpointCustomizable<T extends string> = T | Partial<Record<BreakpointKey, T>>;
+export type BreakpointValue<T extends string> = T | Partial<Record<BreakpointKey, T>>;
+
+/**
+ * Alias for BreakpointValue — use in component prop type declarations for consistency
+ * with the BreakpointCustomizable naming convention used in other design systems.
+ * Both types are structurally identical.
+ */
+export type BreakpointCustomizable<T extends string> = BreakpointValue<T>;
 
 /** Maps breakpoint key to min-width px value (same values as --io-breakpoint-* tokens) */
 const BREAKPOINT_PX: Record<Exclude<BreakpointKey, 'base'>, number> = {

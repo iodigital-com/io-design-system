@@ -197,7 +197,7 @@ describe('io-button — validatePropValues', () => {
   it('does not warn for valid default props', () => {
     const c = makeButton();
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).validatePropValues();
+    (c as any).validatePropValues('md');
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
@@ -206,7 +206,7 @@ describe('io-button — validatePropValues', () => {
     const c = makeButton();
     (c as any).variant = 'outline';
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).validatePropValues();
+    (c as any).validatePropValues('md');
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('"variant"'));
     spy.mockRestore();
   });
@@ -215,16 +215,15 @@ describe('io-button — validatePropValues', () => {
     const c = makeButton();
     (c as any).color = 'purple';
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).validatePropValues();
+    (c as any).validatePropValues('md');
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('"color"'));
     spy.mockRestore();
   });
 
   it('warns for invalid size', () => {
     const c = makeButton();
-    (c as any).size = 'xxl';
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).validatePropValues();
+    (c as any).validatePropValues('xxl' as any);
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('"size"'));
     spy.mockRestore();
   });
@@ -234,7 +233,7 @@ describe('io-button — validatePropValues', () => {
     (c as any).variant = 'invalid';
     (globalThis as any).__STENCIL_PROD__ = true;
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).validatePropValues();
+    (c as any).validatePropValues('md');
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
     delete (globalThis as any).__STENCIL_PROD__;
@@ -332,19 +331,18 @@ describe('io-button — warnIconOnlyDeprecated', () => {
 describe('io-button — warnHideLabelNoIcon', () => {
   it('logs error when hideLabel=true and no icon', () => {
     const c = makeButton();
-    c.hideLabel = true;
+    c.icon = undefined;
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    (c as any).warnHideLabelNoIcon();
+    (c as any).warnHideLabelNoIcon(true);
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('icon'));
     spy.mockRestore();
   });
 
   it('does not log error when hideLabel=true and icon is set', () => {
     const c = makeButton();
-    c.hideLabel = true;
     c.icon = 'search';
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    (c as any).warnHideLabelNoIcon();
+    (c as any).warnHideLabelNoIcon(true);
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
@@ -352,17 +350,16 @@ describe('io-button — warnHideLabelNoIcon', () => {
   it('does not log error when hideLabel=false', () => {
     const c = makeButton();
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    (c as any).warnHideLabelNoIcon();
+    (c as any).warnHideLabelNoIcon(false);
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 
   it('does not log error when iconOnly=true (legacy path, no icon needed via hideLabel)', () => {
     const c = makeButton();
-    c.hideLabel = true;
     c.iconOnly = true;
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    (c as any).warnHideLabelNoIcon();
+    (c as any).warnHideLabelNoIcon(true);
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
@@ -372,18 +369,18 @@ describe('io-button — renderIconOnlyContent', () => {
   it('does not throw when icon prop is set', () => {
     const c = makeButton();
     c.icon = 'search';
-    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+    expect(() => (c as any).renderIconOnlyContent('md')).not.toThrow();
   });
 
   it('does not throw when no icon or iconSource (brand arrow fallback path)', () => {
     const c = makeButton();
-    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+    expect(() => (c as any).renderIconOnlyContent('md')).not.toThrow();
   });
 
   it('does not throw when iconSource is set', () => {
     const c = makeButton();
     c.iconSource = '<svg></svg>';
-    expect(() => (c as any).renderIconOnlyContent()).not.toThrow();
+    expect(() => (c as any).renderIconOnlyContent('md')).not.toThrow();
   });
 });
 

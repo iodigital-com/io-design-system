@@ -1,5 +1,6 @@
 import { AttachInternals, Component, Element, Event, EventEmitter, Host, Method, Prop, State, Watch, h } from '@stencil/core';
 
+import { type BreakpointCustomizable, resolveBreakpoint } from '../../utils/breakpoint';
 import { getButtonStyles } from './io-button-styles';
 import { getButtonAriaAttrs, getButtonClassList } from './io-button-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
@@ -8,7 +9,6 @@ import type { IoIconName } from '../../utils/icons';
 import type { IoIconSize } from '../io-icon/types';
 
 import type { IoButtonVariant, IoButtonColor, IoButtonSize, IoButtonType, IoButtonArrow, IoButtonArrowPlacement, IoButtonIconPosition, IoButtonAriaAttribute } from './types';
-import { type BreakpointCustomizable, resolveBreakpoint } from '../../utils/breakpoint';
 
 /** One render tick in ms — used to clear the "Loading finished" announcement. */
 const LOADING_FINISHED_CLEAR_MS = 1000;
@@ -65,6 +65,9 @@ export class IoButton {
 
   /**
    * Size preset. Accepts a fixed value or a responsive breakpoint map.
+   * When a scalar value is used, it is reflected as an HTML attribute (e.g. `size="md"`),
+   * enabling CSS selectors like `io-button[size="lg"]`. Object/responsive values are not
+   * reflected — pass them via JavaScript property binding only.
    *
    * @example
    * // Fixed scalar
@@ -73,7 +76,7 @@ export class IoButton {
    * // Responsive — sm on mobile, lg on large+ viewports (JS/JSX only)
    * <io-button .size={{ base: 'sm', l: 'lg' }}>Button</io-button>
    */
-  @Prop() size: BreakpointCustomizable<IoButtonSize> = 'md';
+  @Prop({ reflect: true }) size: BreakpointCustomizable<IoButtonSize> = 'md';
 
   /**
    * Native button type.
@@ -157,6 +160,8 @@ export class IoButton {
   /**
    * Hides the text label visually (icon-only mode with accessible label via `label` prop).
    * Accepts a fixed boolean or a responsive breakpoint map of 'true'/'false' strings.
+   * Boolean values are reflected as the `hide-label` HTML attribute; object/responsive values
+   * are not reflected and must be set via JavaScript property binding.
    *
    * @example
    * // Always hidden
@@ -165,11 +170,13 @@ export class IoButton {
    * // Icon-only on mobile, show label on large+ viewports (JS/JSX only)
    * <io-button .hideLabel={{ base: 'true', l: 'false' }}>Button</io-button>
    */
-  @Prop() hideLabel: BreakpointCustomizable<'true' | 'false'> | boolean = false;
+  @Prop({ reflect: true }) hideLabel: BreakpointCustomizable<'true' | 'false'> | boolean = false;
 
   /**
    * Side on which the icon is rendered relative to the label. Defaults to 'left'.
    * Accepts a fixed value or a responsive breakpoint map.
+   * Scalar values are reflected as the `icon-position` HTML attribute; object/responsive
+   * values are not reflected and must be set via JavaScript property binding.
    *
    * @example
    * // Always left
@@ -178,7 +185,7 @@ export class IoButton {
    * // Left on mobile, right on large+ viewports (JS/JSX only)
    * <io-button .iconPosition={{ base: 'left', l: 'right' }}>Button</io-button>
    */
-  @Prop() iconPosition: BreakpointCustomizable<IoButtonIconPosition> = 'left';
+  @Prop({ reflect: true }) iconPosition: BreakpointCustomizable<IoButtonIconPosition> = 'left';
 
   /**
    * Custom ARIA attributes to inject onto the inner trigger element (`<button>` or `<a>`).

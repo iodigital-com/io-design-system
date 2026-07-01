@@ -6,6 +6,7 @@ import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
 import { getIconSvg } from '../../utils/icons';
 import { LoadingMessage } from '../../utils/common/loading-message';
+import { Required } from '../common/required/Required';
 import { StateIcon } from '../common/state-icon/StateIcon';
 
 import type { IoFieldState } from '../../utils/field-state';
@@ -413,7 +414,7 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
+    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator } = this;
     const indicatorIcon = resolveIndicatorIcon(indicator, type);
     const showIndicator = !!indicatorIcon;
     const { inputId, errorId, helperId } = this.getInputIds();
@@ -521,10 +522,10 @@ export class IoInput {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="input-required" aria-hidden="true"> *</span>}
+                {required && <Required />}
               </span>
             )}
-            {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
+            {hasLabelSlot && required && <Required />}
           </label>
         </div>
         {showError && (

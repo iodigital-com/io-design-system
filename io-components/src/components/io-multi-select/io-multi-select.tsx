@@ -446,16 +446,17 @@ export class IoMultiSelect {
   private toggleOption(opt: IoSelectOption) {
     if (opt.disabled) return;
     const current = this.value ?? [];
-    const isSelected = current.includes(opt.value);
+    const optValueStr = String(opt.value);
+    const isSelected = current.includes(optValueStr);
 
     if (!isSelected && this.maxSelections !== undefined && current.length >= this.maxSelections) {
-      this.limitreached.emit({ max: this.maxSelections, attempted: opt.value });
+      this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
       return;
     }
 
     const next = isSelected
-      ? current.filter(v => v !== opt.value)
-      : [...current, opt.value];
+      ? current.filter(v => v !== optValueStr)
+      : [...current, optValueStr];
     this.value = next;
     this.change.emit({ value: [...next], name: this.name });
   }
@@ -477,12 +478,13 @@ export class IoMultiSelect {
     const current = this.value ?? [];
     const next = [...current];
     for (const opt of candidates) {
-      if (next.includes(opt.value)) continue;
+      const optValueStr = String(opt.value);
+      if (next.includes(optValueStr)) continue;
       if (this.maxSelections !== undefined && next.length >= this.maxSelections) {
-        this.limitreached.emit({ max: this.maxSelections, attempted: opt.value });
+        this.limitreached.emit({ max: this.maxSelections, attempted: optValueStr });
         break;
       }
-      next.push(opt.value);
+      next.push(optValueStr);
     }
     this.value = next;
     this.change.emit({ value: [...next], name: this.name });
@@ -673,7 +675,7 @@ export class IoMultiSelect {
   // ── Render helpers ────────────────────────────────────────────────────────
 
   private renderOption(opt: IoSelectOption, flatIndex: number, atLimit = false) {
-    const isSelected = (this.value ?? []).includes(opt.value);
+    const isSelected = (this.value ?? []).includes(String(opt.value));
     const isFocused = flatIndex === this.activeIndex;
     const listboxId = `${this.fieldId}-listbox`;
     // Unselected options become aria-disabled when maxSelections cap is reached
@@ -925,7 +927,7 @@ export class IoMultiSelect {
             aria-haspopup="listbox"
             aria-expanded={String(isOpen)}
             aria-labelledby={hideLabel ? undefined : labelId}
-            aria-label={hideLabel && label ? label : undefined}
+            aria-label={triggerAriaLabel}
             aria-controls={listboxId}
             aria-activedescendant={activeOptId}
             aria-required={required ? 'true' : undefined}

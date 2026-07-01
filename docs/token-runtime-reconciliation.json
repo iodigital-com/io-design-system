@@ -2248,6 +2248,22 @@
       "notes": "Documented runtime variable in app.css inventory."
     },
     {
+      "runtimeCssVar": "--io-input-indicator-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Color of the auto-selected type indicator icon in io-input prefix area. Default: var(--io-text-secondary)."
+    },
+    {
+      "runtimeCssVar": "--io-input-indicator-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Size of the auto-selected type indicator icon in io-input. Default: 1.25rem (20px)."
+    },
+    {
       "runtimeCssVar": "--io-label-font-size",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

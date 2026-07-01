@@ -583,6 +583,8 @@
   --io-input-password-border-error-width: 2px;
   --io-input-padding-y:          0.5rem;
   --io-input-padding-right:      1.2rem;
+  --io-input-indicator-color:    var(--io-text-secondary);
+  --io-input-indicator-size:     1.25rem;
   --io-label-font-size:          0.875rem;     /* resting — label above the line (14px, iodigital.com) */
   --io-label-font-size-float:    0.75rem;      /* floating — smaller when field has value */
   --io-label-font-weight:        var(--io-font-weight-bold);  /* 700 — bold per iodigital.com */

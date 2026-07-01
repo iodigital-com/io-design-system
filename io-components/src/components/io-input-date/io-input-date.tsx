@@ -5,12 +5,10 @@ import { hasShowPickerSupport } from '../../utils/has-show-picker-support';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { applyAriaProp } from '../../utils/aria-prop';
 import {
-  renderErrorIcon,
-  renderSuccessIcon,
-  renderWarningIcon,
   buildInputWrapperClass,
   buildInputDescribedBy,
 } from '../../utils/input-base';
+import { StateIcon } from '../common/state-icon/StateIcon';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputDateSize } from './types';
@@ -346,9 +344,9 @@ export class IoInputDate {
                 </svg>
               </span>
             )}
-            {showError && renderErrorIcon()}
-            {showSuccess && renderSuccessIcon()}
-            {showWarning && renderWarningIcon()}
+            {showError && <StateIcon state="error" />}
+            {showSuccess && <StateIcon state="success" />}
+            {showWarning && <StateIcon state="warning" />}
           </div>
           {/* Label is permanently floated — date inputs always show a value placeholder */}
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label input-label--date-float'}>

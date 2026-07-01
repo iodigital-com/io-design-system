@@ -60,6 +60,52 @@ export default function IoScrollerApiPage() {
                 for dense layout contexts. Reflected as an attribute.
               </span>,
             ],
+            [
+              <InlineCode key="n">sticky</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                When <InlineCode>true</InlineCode>, the scroll indicator buttons switch from
+                {' '}<InlineCode>position: absolute</InlineCode> to{' '}
+                <InlineCode>position: sticky</InlineCode> so they remain visible during long
+                scrolls. Use <InlineCode>--io-scroller-indicator-sticky-offset</InlineCode> to
+                adjust the offset when the scroller sits inside a sticky-header layout.
+                Reflected as an attribute.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">scrollRole</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                ARIA <InlineCode>role</InlineCode> pass-through for the inner scroll container.
+                When set, the role is forwarded instead of the default{' '}
+                <InlineCode>&quot;region&quot;</InlineCode> role. Use this when composing
+                io-scroller inside a component that requires a specific ARIA role
+                (e.g. <InlineCode>&quot;tablist&quot;</InlineCode>).
+              </span>,
+            ],
+            [
+              <InlineCode key="n">scrollAriaOrientation</InlineCode>,
+              <InlineCode key="t">&apos;horizontal&apos; | &apos;vertical&apos; | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                ARIA <InlineCode>aria-orientation</InlineCode> pass-through for the scroll
+                container. When omitted, derived from the <InlineCode>orientation</InlineCode>{' '}
+                prop.
+              </span>,
+            ],
+            [
+              <InlineCode key="n">scrollAriaLabel</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                ARIA <InlineCode>aria-label</InlineCode> pass-through. When set, overrides the
+                auto-generated label derived from the <InlineCode>label</InlineCode> prop. Use
+                when the consuming component needs to forward a specific label to the scroll
+                container (e.g. <InlineCode>&quot;Main navigation&quot;</InlineCode> for a tablist).
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -135,6 +181,11 @@ export default function IoScrollerApiPage() {
               <InlineCode key="p">--io-scroller-fade-size</InlineCode>,
               <InlineCode key="d">var(--io-space-6, 24px)</InlineCode>,
               'Width (horizontal) or height (vertical) of the gradient fade overlay. Increase for a more prominent fade or decrease for a subtler affordance.',
+            ],
+            [
+              <InlineCode key="p">--io-scroller-indicator-sticky-offset</InlineCode>,
+              <InlineCode key="d">0</InlineCode>,
+              'Top/bottom offset for sticky indicator buttons when sticky=true. Override when the scroller is inside a layout with a fixed or sticky header to prevent the indicator from being hidden behind it.',
             ],
           ]}
         />

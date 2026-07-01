@@ -33,6 +33,22 @@ describe('io-scroller — default props', () => {
     expect(component.compact).toBe(false);
   });
 
+  it('sticky defaults to false', () => {
+    expect(component.sticky).toBe(false);
+  });
+
+  it('scrollRole defaults to undefined', () => {
+    expect(component.scrollRole).toBeUndefined();
+  });
+
+  it('scrollAriaOrientation defaults to undefined', () => {
+    expect(component.scrollAriaOrientation).toBeUndefined();
+  });
+
+  it('scrollAriaLabel defaults to undefined', () => {
+    expect(component.scrollAriaLabel).toBeUndefined();
+  });
+
   it('atStart defaults to true', () => {
     // @ts-expect-error accessing private state for test
     expect(component.atStart).toBe(true);
@@ -71,6 +87,30 @@ describe('io-scroller — render stability', () => {
   it('does not throw with a custom label', () => {
     const component = makeComponent();
     component.label = 'Navigation tabs';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with sticky=true', () => {
+    const component = makeComponent();
+    component.sticky = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with scrollRole set', () => {
+    const component = makeComponent();
+    component.scrollRole = 'tablist';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with scrollAriaOrientation set', () => {
+    const component = makeComponent();
+    component.scrollAriaOrientation = 'horizontal';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with scrollAriaLabel set', () => {
+    const component = makeComponent();
+    component.scrollAriaLabel = 'Navigation tabs';
     expect(() => component.render()).not.toThrow();
   });
 

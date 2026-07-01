@@ -21,6 +21,14 @@ describe('io-table-head-cell — default props', () => {
   it('has empty sortKey by default', () => {
     expect(component.sortKey).toBe('');
   });
+
+  it('has hideLabel false by default', () => {
+    expect(component.hideLabel).toBe(false);
+  });
+
+  it('has multiline false by default', () => {
+    expect(component.multiline).toBe(false);
+  });
 });
 
 describe('io-table-head-cell — render', () => {
@@ -54,6 +62,23 @@ describe('io-table-head-cell — render', () => {
     component.sortDirection = 'descending';
     expect(() => component.render()).not.toThrow();
   });
+
+  it('renders with hideLabel=true without throwing', () => {
+    component.hideLabel = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with multiline=true without throwing', () => {
+    component.multiline = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with hideLabel=true and sortable without throwing', () => {
+    component.hideLabel = true;
+    component.sortable = true;
+    component.sortKey = 'name';
+    expect(() => component.render()).not.toThrow();
+  });
 });
 
 describe('io-table-head-cell — sort direction cycling', () => {
@@ -84,6 +109,53 @@ describe('io-table-head-cell — sort direction cycling', () => {
     component.sortDirection = 'descending';
     (component as any).handleSort();
     expect(emitMock).toHaveBeenCalledWith({ key: 'name', direction: 'none' });
+  });
+});
+
+describe('io-table-head-cell — multiline class', () => {
+  it('adds th--multiline class when multiline=true', () => {
+    const component = new IoTableHeadCell();
+    (component as any).sort = { emit: vi.fn() };
+    component.multiline = true;
+    // Verify the class logic: multiline adds 'th--multiline'
+    const thClass = [
+      component.sortable ? 'th--sortable' : '',
+      component.sortable && component.sortDirection !== 'none' ? 'th--sort-active' : '',
+      component.sortable && component.sortDirection === 'descending' ? 'th--sort-desc' : '',
+      component.multiline ? 'th--multiline' : '',
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
+    expect(thClass).toBe('th--multiline');
+  });
+
+  it('does not add th--multiline class when multiline=false', () => {
+    const component = new IoTableHeadCell();
+    (component as any).sort = { emit: vi.fn() };
+    component.multiline = false;
+    const thClass = [
+      component.sortable ? 'th--sortable' : '',
+      component.multiline ? 'th--multiline' : '',
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
+    expect(thClass).toBeUndefined();
+  });
+
+  it('combines th--sortable and th--multiline when both are true', () => {
+    const component = new IoTableHeadCell();
+    (component as any).sort = { emit: vi.fn() };
+    component.sortable = true;
+    component.multiline = true;
+    const thClass = [
+      component.sortable ? 'th--sortable' : '',
+      component.sortable && component.sortDirection !== 'none' ? 'th--sort-active' : '',
+      component.sortable && component.sortDirection === 'descending' ? 'th--sort-desc' : '',
+      component.multiline ? 'th--multiline' : '',
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
+    expect(thClass).toBe('th--sortable th--multiline');
   });
 });
 

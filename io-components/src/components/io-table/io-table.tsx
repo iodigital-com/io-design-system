@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Listen, Prop, Host, h } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Listen, Prop, State, Host, h } from '@stencil/core';
 
 import { getTableStyles } from './io-table-styles';
 
@@ -11,6 +11,9 @@ import type { IoTableLayout, IoTableSize, IoTableSortDetail } from './types';
  *
  * Compose with io-table-head, io-table-head-row, io-table-head-cell,
  * io-table-body, io-table-body-row, and io-table-body-cell.
+ *
+ * Supports an `empty` named slot rendered when no body rows are present,
+ * and a `loading` named slot overlaid via the `loading` prop.
  *
  * @example
  * <io-table caption="Users" sticky size="md">
@@ -26,6 +29,7 @@ import type { IoTableLayout, IoTableSize, IoTableSortDetail } from './types';
  *       <io-table-body-cell>Admin</io-table-body-cell>
  *     </io-table-body-row>
  *   </io-table-body>
+ *   <div slot="empty">No results found.</div>
  * </io-table>
  */
 @Component({
@@ -33,6 +37,8 @@ import type { IoTableLayout, IoTableSize, IoTableSortDetail } from './types';
   shadow: true,
 })
 export class IoTable {
+  @Element() el!: HTMLIoTableElement;
+
   // ── Props ─────────────────────────────────────────────────────
 
   /** Visible table caption — required for accessibility. */
@@ -58,6 +64,21 @@ export class IoTable {
 
   /** CSS table-layout algorithm — 'auto' sizes columns by content, 'fixed' distributes width equally. */
   @Prop({ reflect: true }) layout: IoTableLayout = 'auto';
+
+  /**
+   * When `true`, overlays the table body with the `loading` slot content
+   * and applies `aria-busy="true"` to the table wrapper for assistive technology.
+   * The table layout does not shift — the loading overlay is absolutely positioned.
+   */
+  @Prop({ reflect: true }) loading: boolean = false;
+
+  // ── State ─────────────────────────────────────────────────────
+
+  /**
+   * True when the table body has no io-table-body-row children.
+   * Drives the empty-state slot visibility.
+   */
+  @State() isEmpty: boolean = false;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -86,10 +107,31 @@ export class IoTable {
     }
   }
 
+  componentDidLoad() {
+    this.updateEmptyState();
+  }
+
+  // ── Private helpers ───────────────────────────────────────────
+
+  /**
+   * Updates isEmpty by counting io-table-body-row children inside any
+   * io-table-body in the default slot.
+   * Called on initial mount and on each `slotchange` event.
+   */
+  private updateEmptyState(): void {
+    const body = this.el.querySelector('io-table-body');
+    const rowCount = body ? body.querySelectorAll('io-table-body-row').length : 0;
+    this.isEmpty = rowCount === 0;
+  }
+
+  private handleSlotChange = (): void => {
+    this.updateEmptyState();
+  };
+
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { caption, captionHidden } = this;
+    const { caption, captionHidden, loading, isEmpty } = this;
     // Label the scroll region whenever a caption is provided so the role="region"
     // landmark has an accessible name — required by ARIA for landmarks to be
     // distinguishable by AT users (WCAG 1.3.1 / ARIA spec §5.3.7).
@@ -103,12 +145,23 @@ export class IoTable {
           class="table-wrapper"
           role="region"
           aria-label={regionLabel}
+          aria-busy={loading ? 'true' : undefined}
           tabIndex={0}
         >
+          {loading && (
+            <div class="table-loading-overlay" aria-hidden="true">
+              <slot name="loading" />
+            </div>
+          )}
           <table>
             <caption class={captionClass}>{caption}</caption>
-            <slot />
+            <slot onSlotchange={this.handleSlotChange} />
           </table>
+          {isEmpty && !loading && (
+            <div class="table-empty-state">
+              <slot name="empty" />
+            </div>
+          )}
         </div>
       </Host>
     );

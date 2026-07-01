@@ -65,6 +65,35 @@ export class IoScroller {
    */
   @Prop({ reflect: true }) compact = false;
 
+  /**
+   * When `true`, the scroll indicator buttons use `position: sticky` so they
+   * remain visible during long scrolls. Reflected as an attribute so CSS can
+   * target it. Use `--io-scroller-indicator-sticky-offset` to adjust the
+   * top/bottom offset when the scroller is inside a layout with a sticky header.
+   */
+  @Prop({ reflect: true }) sticky = false;
+
+  /**
+   * ARIA `role` pass-through for the scroll container element.
+   * When set, the role is forwarded to the inner scroll `<div>` instead of
+   * the default `"region"` role. Use this when composing io-scroller inside
+   * another component that requires a specific role (e.g. `"tablist"`).
+   */
+  @Prop() scrollRole: string | undefined;
+
+  /**
+   * ARIA `aria-orientation` pass-through for the scroll container element.
+   * Forwarded verbatim — use `"horizontal"` or `"vertical"`.
+   * When omitted, `aria-orientation` is derived from the `orientation` prop.
+   */
+  @Prop() scrollAriaOrientation: 'horizontal' | 'vertical' | undefined;
+
+  /**
+   * ARIA `aria-label` pass-through for the scroll container element.
+   * When set, overrides the auto-generated label derived from the `label` prop.
+   */
+  @Prop() scrollAriaLabel: string | undefined;
+
   // ── State ─────────────────────────────────────────────────────
 
   /** True when scroll position is at the start edge (no fade shown at start). */
@@ -213,7 +242,15 @@ export class IoScroller {
   render() {
     const scrollerClass = getScrollerClass(this.orientation, this.showScrollbar);
 
-    const regionLabel = this.label ?? `Scrollable ${this.orientation} region`;
+    // ARIA pass-through: allow consumers to override role and aria attributes
+    // on the scroll container. This enables io-scroller to be composed inside
+    // components that require a specific role (e.g. tablist for io-tabs-bar).
+    const containerRole = this.scrollRole ?? 'region';
+    const containerAriaLabel = this.scrollAriaLabel ?? this.label ?? `Scrollable ${this.orientation} region`;
+    // When a custom role is set (e.g. "tablist"), aria-label on the container
+    // names the widget. When using the default "region" role, the label is
+    // required for the landmark to be distinguishable.
+    const containerAriaOrientation = this.scrollAriaOrientation ?? this.orientation;
 
     return (
       <Host>
@@ -221,7 +258,7 @@ export class IoScroller {
         {!this.atStart && (
           <button
             type="button"
-            class="scroller__indicator scroller__indicator--prev"
+            class={`scroller__indicator scroller__indicator--prev${this.sticky ? ' scroller__indicator--sticky' : ''}`}
             tabIndex={-1}
             aria-label="Scroll backward"
             onPointerDown={(e) => e.preventDefault()}
@@ -231,7 +268,7 @@ export class IoScroller {
         {!this.atEnd && (
           <button
             type="button"
-            class="scroller__indicator scroller__indicator--next"
+            class={`scroller__indicator scroller__indicator--next${this.sticky ? ' scroller__indicator--sticky' : ''}`}
             tabIndex={-1}
             aria-label="Scroll forward"
             onPointerDown={(e) => e.preventDefault()}
@@ -240,8 +277,9 @@ export class IoScroller {
         )}
         <div
           class={scrollerClass}
-          role="region"
-          aria-label={regionLabel}
+          role={containerRole}
+          aria-label={containerAriaLabel}
+          aria-orientation={containerAriaOrientation}
           tabIndex={(!this.atStart || !this.atEnd) ? 0 : undefined}
           onKeyDown={(ev: KeyboardEvent) => {
             const isVertical = this.orientation === 'vertical';

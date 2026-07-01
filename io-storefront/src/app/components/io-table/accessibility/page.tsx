@@ -142,6 +142,47 @@ export default function IoTableAccessibilityPage() {
         </div>
       </section>
 
+      {/* ── Tri-state sort design ────────────────────────────────── */}
+      <section id="tri-state-sort" className="space-y-6">
+        <SectionHeader
+          title="Tri-state sort and ARIA-aligned direction values"
+          description="io-table uses tri-state sort cycling and full-word direction values — both are intentional design decisions."
+        />
+        <AriaTable
+          rows={[
+            {
+              attribute: 'Sort cycling: none → ascending → descending → none',
+              value: (
+                <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>
+                  IoTableSortDirection
+                </code>
+              ),
+              description: 'Three clicks cycle through: unsorted → ascending → descending → unsorted. The third click restores the natural row order. This is a deliberate improvement over bi-state implementations (e.g. Porsche\'s \'asc\'|\'desc\'|undefined) where users can never return to the unsorted state.',
+            },
+            {
+              attribute: 'direction: \'ascending\' | \'descending\' | \'none\'',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>Full words</span>
+              ),
+              description: 'Direction values match the WAI-ARIA aria-sort attribute values verbatim. This eliminates any mapping between the sort event detail and the aria-sort attribute on the column header. Porsche uses short-form \'asc\'/\'desc\' which must be translated manually.',
+            },
+            {
+              attribute: 'sortKey vs id',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>Explicit identifier</span>
+              ),
+              description: 'io-table uses sortKey in the sort event detail (not id) to avoid collision with DOM element id attributes. On pages with multiple tables, the sortKey makes each column uniquely identifiable without risking id namespace conflicts.',
+            },
+          ]}
+        />
+        <RuleCard label="Respond to the 'none' direction in sortChange">
+          When direction is &apos;none&apos; in the sortChange event, restore your data to its original
+          unsorted order. Do not treat &apos;none&apos; as a no-op — it means &ldquo;the user wants the
+          natural order back.&rdquo; Also reset the sortDirection prop on all io-table-head-cell
+          elements to &apos;none&apos; so the ARIA state reflects the unsorted state.
+        </RuleCard>
+      </section>
+
       {/* ── Best practices ───────────────────────────────────────── */}
       <section id="best-practices" className="space-y-4">
         <SectionHeader

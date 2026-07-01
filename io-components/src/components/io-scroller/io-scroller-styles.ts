@@ -191,6 +191,25 @@ export function getScrollerStyles(): string {
       bottom: 0;
     }
 
+    /* ── Sticky indicator buttons ────────────────────────────── */
+
+    /* When sticky=true, indicator buttons switch from position:absolute to
+       position:sticky so they remain visible during long scrolls.
+       --io-scroller-indicator-sticky-offset controls the top/bottom offset —
+       useful when io-scroller is inside a layout with a sticky header. */
+
+    .scroller__indicator--sticky {
+      position: sticky;
+    }
+
+    .scroller__indicator--prev.scroller__indicator--sticky {
+      top: var(--io-scroller-indicator-sticky-offset, 0);
+    }
+
+    .scroller__indicator--next.scroller__indicator--sticky {
+      bottom: var(--io-scroller-indicator-sticky-offset, 0);
+    }
+
     /* ── Compact variant ──────────────────────────────────────── */
 
     :host([compact]) .scroller--horizontal {

@@ -195,6 +195,72 @@ describe('io-table — scroll wrapper aria-label', () => {
   });
 });
 
+describe('io-table — loading prop (#1051)', () => {
+  let component: IoTable;
+
+  beforeEach(() => {
+    component = new IoTable();
+  });
+
+  it('has loading false by default', () => {
+    expect(component.loading).toBe(false);
+  });
+
+  it('renders with loading=true without throwing', () => {
+    component.loading = true;
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders with loading=false without throwing', () => {
+    component.loading = false;
+    expect(() => component.render()).not.toThrow();
+  });
+});
+
+describe('io-table — isEmpty state (#1051)', () => {
+  it('has isEmpty false by default', () => {
+    const component = new IoTable();
+    expect((component as any).isEmpty).toBe(false);
+  });
+
+  it('updateEmptyState sets isEmpty=true when no io-table-body-row in DOM', () => {
+    const component = new IoTable();
+    const mockEl = document.createElement('io-table');
+    const body = document.createElement('io-table-body');
+    mockEl.appendChild(body);
+    (component as any).el = mockEl;
+    (component as any).updateEmptyState();
+    expect((component as any).isEmpty).toBe(true);
+  });
+
+  it('updateEmptyState sets isEmpty=false when io-table-body-row is present', () => {
+    const component = new IoTable();
+    const mockEl = document.createElement('io-table');
+    const body = document.createElement('io-table-body');
+    const row = document.createElement('io-table-body-row');
+    body.appendChild(row);
+    mockEl.appendChild(body);
+    (component as any).el = mockEl;
+    (component as any).updateEmptyState();
+    expect((component as any).isEmpty).toBe(false);
+  });
+
+  it('updateEmptyState sets isEmpty=true when no io-table-body in DOM', () => {
+    const component = new IoTable();
+    const mockEl = document.createElement('io-table');
+    (component as any).el = mockEl;
+    (component as any).updateEmptyState();
+    expect((component as any).isEmpty).toBe(true);
+  });
+
+  it('handleSlotChange calls updateEmptyState', () => {
+    const component = new IoTable();
+    const mockEl = document.createElement('io-table');
+    (component as any).el = mockEl;
+    expect(() => (component as any).handleSlotChange()).not.toThrow();
+  });
+});
+
 describe('io-table — layout prop (#869)', () => {
   let component: IoTable;
 

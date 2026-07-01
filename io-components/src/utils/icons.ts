@@ -8,7 +8,7 @@
  * Never import from lucide at runtime — use this pre-extracted map.
  */
 
-const ICON_NODES = {
+export const ICON_NODES = {
   'x': [["path",{"d":"M18 6 6 18"}],["path",{"d":"m6 6 12 12"}]],
   'check': [["path",{"d":"M20 6 9 17l-5-5"}]],
   'check-circle': [["path",{"d":"M21.801 10A10 10 0 1 1 17 3.335"}],["path",{"d":"m9 11 3 3L22 4"}]],

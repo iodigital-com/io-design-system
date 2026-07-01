@@ -5,6 +5,8 @@
  */
 import { initFocusVisible } from '../utils/focus-visible';
 import { initTooltipAttribute } from '../utils/tooltip-attribute';
+import { injectIconSprite } from '../utils/icon-sprite';
 
 initFocusVisible();
 initTooltipAttribute();
+injectIconSprite();

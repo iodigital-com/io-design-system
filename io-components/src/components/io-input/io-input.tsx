@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 import { getInputStyles } from './io-input-styles';
 import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import type { IoIconName } from '../../utils/icons';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';

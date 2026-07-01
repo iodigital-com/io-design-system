@@ -55,7 +55,7 @@ export class IoOption {
    * @example
    * <io-option value="us" icon="flag-us">United States</io-option>
    */
-  @Prop() icon?: string;
+  @Prop() icon?: IoIconName;
 
   /** Whether the default slot has any assigned content. */
   @State() private hasSlotContent = false;
@@ -111,7 +111,7 @@ export class IoOption {
           )}
           {this.icon && (
             <span class="option__icon" aria-hidden="true">
-              <io-icon name={this.icon as IoIconName} />
+              <io-icon name={this.icon} />
             </span>
           )}
           <span class="option__label">

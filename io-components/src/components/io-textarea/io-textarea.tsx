@@ -466,7 +466,7 @@ export class IoTextarea {
             hasSlot={hasMessageSlot}
             messageId={messageId}
             classPrefix="textarea"
-            visible={!!(showError ? (hasMessageSlot || message) : message)}
+            visible={!!(showMessage || (!showError && !!message))}
             onSlotChange={this.handleMessageSlotChange}
           />
         )}

@@ -396,3 +396,87 @@ describe('io-pin-code render() — form prop (#827)', () => {
     }
   });
 });
+
+// ── description prop (#1060) ──────────────────────────────────────────────────
+
+describe('io-pin-code render() — description prop (#1060)', () => {
+  it('renders description paragraph when description is provided', () => {
+    const c = makeComponent({ description: 'We sent a code to ja***@example.com' });
+    const calls = renderCalls(c);
+
+    const descP = calls.find(([tag, attrs]) => tag === 'p' && String(attrs?.class).includes('pin-code__description'));
+    expect(descP).toBeDefined();
+  });
+
+  it('does not render description paragraph when description is absent', () => {
+    const c = makeComponent();
+    const calls = renderCalls(c);
+
+    const descP = calls.find(([tag, attrs]) => tag === 'p' && String(attrs?.class).includes('pin-code__description'));
+    expect(descP).toBeUndefined();
+  });
+
+  it('description paragraph id is included in aria-describedby on slot container', () => {
+    const c = makeComponent({ description: 'Test description' });
+    const calls = renderCalls(c);
+
+    const slotDiv = calls.find(([tag, attrs]) => tag === 'div' && String(attrs?.class).includes('pin-code__slots'));
+    expect(slotDiv).toBeDefined();
+    expect(String(slotDiv![1]['aria-describedby'])).toContain('desc');
+  });
+
+  it('aria-describedby includes both description and message ids when both are set', () => {
+    const c = makeComponent({ description: 'Code sent', message: 'Enter 4 digits' });
+    const calls = renderCalls(c);
+
+    const slotDiv = calls.find(([tag, attrs]) => tag === 'div' && String(attrs?.class).includes('pin-code__slots'));
+    const describedBy = String(slotDiv![1]['aria-describedby']);
+    expect(describedBy).toContain('desc');
+    expect(describedBy).toContain('msg');
+  });
+});
+
+// ── alphanumeric mode (#1052) ─────────────────────────────────────────────────
+
+describe('io-pin-code render() — alphanumeric mode (#1052)', () => {
+  it('sets inputMode="text" when mode=alphanumeric', () => {
+    const c = makeComponent({ mode: 'alphanumeric' });
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(([tag]) => tag === 'input');
+    expect(inputCalls.length).toBeGreaterThan(0);
+    inputCalls.forEach((call) => {
+      expect(call[1].inputMode).toBe('text');
+    });
+  });
+
+  it('sets inputMode="numeric" when mode=numeric (default)', () => {
+    const c = makeComponent();
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.inputMode === 'numeric');
+    expect(inputCalls.length).toBe(4);
+  });
+
+  it('sets pattern="[A-Za-z0-9]*" when mode=alphanumeric', () => {
+    const c = makeComponent({ mode: 'alphanumeric' });
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(([tag]) => tag === 'input');
+    expect(inputCalls.length).toBeGreaterThan(0);
+    inputCalls.forEach((call) => {
+      expect(call[1].pattern).toBe('[A-Za-z0-9]*');
+    });
+  });
+
+  it('sets pattern="[0-9]*" when mode=numeric', () => {
+    const c = makeComponent();
+    const calls = renderCalls(c);
+
+    const inputCalls = calls.filter(([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.inputMode === 'numeric');
+    expect(inputCalls.length).toBeGreaterThan(0);
+    inputCalls.forEach((call) => {
+      expect(call[1].pattern).toBe('[0-9]*');
+    });
+  });
+});

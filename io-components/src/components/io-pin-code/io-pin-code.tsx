@@ -2,10 +2,8 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 
 import { getPinCodeStyles } from './io-pin-code-styles';
 import { splitDigits, joinDigits, buildDigitLabel, isPinComplete } from './io-pin-code-utils';
-import { implicitSubmit } from '../../utils/form/implicit-submit';
-import { syncFormState } from '../../utils/form/sync-form-state';
 
-import type { IoPinCodeLength, IoPinCodeType, IoPinCodeState, IoPinCodeChangeDetail } from './types';
+import type { IoPinCodeLength, IoPinCodeType, IoPinCodeMode, IoPinCodeState, IoPinCodeChangeDetail } from './types';
 
 /**
  * io-pin-code
@@ -34,6 +32,7 @@ export class IoPinCode {
   private digitLabels: string[] = [];
   private labelId!: string;
   private messageId!: string;
+  private descriptionId!: string;
   private defaultValue = '';
 
   // ── State ─────────────────────────────────────────────────────
@@ -61,6 +60,9 @@ export class IoPinCode {
   /** Input display mode: 'number' shows digits, 'password' masks them */
   @Prop() type: IoPinCodeType = 'number';
 
+  /** Character mode: 'numeric' (default) accepts only digits; 'alphanumeric' accepts letters and digits */
+  @Prop() mode: IoPinCodeMode = 'numeric';
+
   /** Current PIN value — all filled digits concatenated */
   @Prop({ mutable: true }) value = '';
 
@@ -84,6 +86,12 @@ export class IoPinCode {
 
   /** Helper / validation message displayed below the slots */
   @Prop() message: string | undefined;
+
+  /** Optional contextual description rendered between the label and the slots (e.g. "We sent a code to ja***@example.com"). Wired into aria-describedby. */
+  @Prop() description: string | undefined;
+
+  /** Override the default required-field validation message. When not set the built-in default is used. */
+  @Prop() validationMessage: string | undefined;
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -121,9 +129,10 @@ export class IoPinCode {
     const suffix = Math.random().toString(36).slice(2);
     this.labelId = `io-pin-code-label-${suffix}`;
     this.messageId = `io-pin-code-msg-${suffix}`;
+    this.descriptionId = `io-pin-code-desc-${suffix}`;
 
     this.defaultValue = this.value ?? '';
-    this.digits = splitDigits(this.value ?? '', this.length);
+    this.digits = splitDigits(this.value ?? '', this.length, this.mode === 'alphanumeric');
     this.digitLabels = Array.from({ length: this.length }, (_, i) =>
       buildDigitLabel(i, this.length),
     );
@@ -140,7 +149,7 @@ export class IoPinCode {
 
   formResetCallback() {
     this.value = this.defaultValue;
-    this.digits = splitDigits(this.defaultValue, this.length);
+    this.digits = splitDigits(this.defaultValue, this.length, this.mode === 'alphanumeric');
     this.touched = false;
     this.syncFormValue();
     // Reset visual invalidity indicator after form reset — users shouldn't see
@@ -154,7 +163,7 @@ export class IoPinCode {
 
   @Watch('value')
   onValueChange(newValue: string) {
-    this.digits = splitDigits(newValue ?? '', this.length);
+    this.digits = splitDigits(newValue ?? '', this.length, this.mode === 'alphanumeric');
     this.syncFormValue();
   }
 
@@ -165,7 +174,7 @@ export class IoPinCode {
 
   @Watch('length')
   onLengthChange() {
-    this.digits = splitDigits(this.value ?? '', this.length);
+    this.digits = splitDigits(this.value ?? '', this.length, this.mode === 'alphanumeric');
     this.digitLabels = Array.from({ length: this.length }, (_, i) =>
       buildDigitLabel(i, this.length),
     );
@@ -178,15 +187,17 @@ export class IoPinCode {
   private syncFormValue() {
     const pinValue = joinDigits(this.digits);
     const isComplete = isPinComplete(this.digits);
-    const isInvalid = this.required && !isComplete;
-    const { faceInvalid } = syncFormState(this.internals, null, {
-      formValue: pinValue || null,
-      validity: isInvalid ? { valueMissing: true } : {},
-      validationMessage: isInvalid ? 'Please complete the PIN' : '',
-      disabled: this.disabled,
-      touched: this.touched,
-    });
-    this.faceInvalid = faceInvalid;
+    this.internals?.setFormValue?.(pinValue || null);
+    const isValid = !this.required || isComplete;
+
+    if (!isValid) {
+      const msg = this.validationMessage ?? 'Please complete the PIN';
+      this.internals?.setValidity?.({ valueMissing: true }, msg);
+      this.faceInvalid = this.touched;
+    } else {
+      this.internals?.setValidity?.({});
+      this.faceInvalid = false;
+    }
   }
 
   private updateDigit(index: number, digit: string) {
@@ -210,6 +221,24 @@ export class IoPinCode {
     if (this.disabled || this.loading) return;
 
     const key = ev.key;
+
+    // Submit parent form on Enter (#1050)
+    if (key === 'Enter') {
+      const form = this.internals?.form;
+      if (form) {
+        ev.preventDefault();
+        form.requestSubmit();
+      }
+      return;
+    }
+
+    // Recover from Dead/Process keys (DE/FR keyboards, IME) (#1064)
+    if (key === 'Dead' || key === 'Process') {
+      const input = ev.target as HTMLInputElement;
+      input.blur();
+      requestAnimationFrame(() => input.focus());
+      return;
+    }
 
     if (key === 'Backspace') {
       ev.preventDefault();
@@ -245,22 +274,16 @@ export class IoPinCode {
       return;
     }
 
-    if (key === 'Enter') {
-      // Delegate to the shared implicit-submit utility so pressing Enter in any
-      // pin-code slot submits the associated form (matching native input behaviour).
-      implicitSubmit(ev, this.internals, { disabled: this.disabled || this.loading, loading: false });
-      return;
-    }
-
-    // Only accept single digits
-    if (/^[0-9]$/.test(key)) {
+    // Accept single character matching the configured mode (#1052)
+    const isAllowed = this.mode === 'alphanumeric' ? /^[A-Za-z0-9]$/.test(key) : /^[0-9]$/.test(key);
+    if (isAllowed) {
       ev.preventDefault();
       this.updateDigit(index, key);
       if (index < this.length - 1) {
         this.inputRefs[index + 1]?.focus();
       }
     } else if (key.length === 1) {
-      // Block non-digit printable characters
+      // Block disallowed printable characters
       ev.preventDefault();
     }
   };
@@ -269,12 +292,35 @@ export class IoPinCode {
     if (this.disabled || this.loading) return;
     const input = ev.target as HTMLInputElement;
     const raw = input.value;
-    // Only keep the last entered digit (handles mobile virtual keyboards)
-    const digit = raw.replace(/\D/g, '').slice(-1);
-    // Reset to current stored digit if invalid
-    input.value = digit || '';
-    if (digit) {
-      this.updateDigit(index, digit);
+    const isAlpha = this.mode === 'alphanumeric';
+    const sanitized = isAlpha ? raw.replace(/[^A-Za-z0-9]/g, '') : raw.replace(/\D/g, '');
+
+    // SMS autofill / paste via input event — distribute bulk input across slots (#1059)
+    if (sanitized.length > 1) {
+      const chars = sanitized.slice(0, this.length - index).split('');
+      const updated = [...this.digits];
+      chars.forEach((ch, i) => {
+        const slot = index + i;
+        if (slot < this.length) updated[slot] = ch;
+      });
+      this.digits = updated;
+      const pinValue = joinDigits(updated);
+      this.value = pinValue;
+      this.syncFormValue();
+      this.change.emit({ value: pinValue, isComplete: isPinComplete(updated) });
+      // Focus first empty or last slot
+      const firstEmpty = updated.findIndex((d) => !d);
+      const focusIndex = firstEmpty === -1 ? this.length - 1 : firstEmpty;
+      this.inputRefs[focusIndex]?.focus();
+      return;
+    }
+
+    // Single character — handles mobile virtual keyboards
+    const char = sanitized.slice(-1);
+    // Reset to current stored char if invalid
+    input.value = char || '';
+    if (char) {
+      this.updateDigit(index, char);
       if (index < this.length - 1) {
         this.inputRefs[index + 1]?.focus();
       }
@@ -287,7 +333,8 @@ export class IoPinCode {
     if (this.disabled || this.loading) return;
     ev.preventDefault();
     const text = ev.clipboardData?.getData('text') ?? '';
-    const digits = text.replace(/\D/g, '').slice(0, this.length - startIndex).split('');
+    const isAlpha = this.mode === 'alphanumeric';
+    const digits = (isAlpha ? text.replace(/[^A-Za-z0-9]/g, '') : text.replace(/\D/g, '')).slice(0, this.length - startIndex).split('');
     if (!digits.length) return;
 
     const updated = [...this.digits];
@@ -351,18 +398,27 @@ export class IoPinCode {
   }
 
   render() {
-    const { label, type, disabled, loading, form, required, message, length, hideLabel } = this;
+    const { label, type, mode, disabled, loading, form, required, message, description, validationMessage, length, hideLabel } = this;
     const isDisabled = disabled || loading;
     const isError = this.state === 'error' || this.faceInvalid;
     const showFaceError = this.faceInvalid && !message;
     const faceErrorId = `${this.messageId}-face-error`;
+    const faceErrorMsg = validationMessage ?? 'Please complete the PIN';
 
     const showLabel = !hideLabel && !!label;
     const ariaLabelledBy = showLabel ? this.labelId : undefined;
     const ariaLabel = hideLabel && label ? label : undefined;
-    const ariaDescribedBy = [message ? this.messageId : null, showFaceError ? faceErrorId : null]
+    const ariaDescribedBy = [
+      description ? this.descriptionId : null,
+      message ? this.messageId : null,
+      showFaceError ? faceErrorId : null,
+    ]
       .filter(Boolean)
       .join(' ') || undefined;
+
+    const isAlpha = mode === 'alphanumeric';
+    const inputMode = isAlpha ? 'text' : 'numeric';
+    const pattern = isAlpha ? '[A-Za-z0-9]*' : '[0-9]*';
 
     return (
       <Host
@@ -385,6 +441,12 @@ export class IoPinCode {
           </span>
         )}
 
+        {description && (
+          <p id={this.descriptionId} class="pin-code__description">
+            {description}
+          </p>
+        )}
+
         <div class="pin-code__slots-wrapper">
           <div class="pin-code__slots" aria-describedby={ariaDescribedBy}>
             {Array.from({ length }).map((_, i) => (
@@ -393,8 +455,8 @@ export class IoPinCode {
                 ref={(el) => { this.inputRefs[i] = el as HTMLInputElement | null; }}
                 class={this.getSlotClass(i)}
                 type={type === 'password' ? 'password' : 'text'}
-                inputMode="numeric"
-                pattern="[0-9]*"
+                inputMode={inputMode}
+                pattern={pattern}
                 maxLength={1}
                 value={this.digits[i] ?? ''}
                 disabled={isDisabled}
@@ -426,7 +488,7 @@ export class IoPinCode {
         )}
         {showFaceError && (
           <p id={faceErrorId} class="pin-code__message pin-code__message--error" role="alert">
-            Please complete the PIN
+            {faceErrorMsg}
           </p>
         )}
       </Host>

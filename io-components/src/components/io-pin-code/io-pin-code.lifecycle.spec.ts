@@ -35,7 +35,7 @@ function makeInternals() {
 function makeComponent(
   opts: {
     value?: string;
-    length?: 3 | 4 | 5 | 6;
+    length?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     required?: boolean;
     disabled?: boolean;
   } = {},

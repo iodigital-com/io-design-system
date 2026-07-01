@@ -4,11 +4,15 @@
  */
 
 /**
- * Splits a raw string into an array of single-digit strings, stripping
- * non-digit characters, up to `length` entries.
+ * Splits a raw string into an array of single-character strings, stripping
+ * disallowed characters, up to `length` entries.
+ *
+ * When `alphanumeric` is true, letters and digits are accepted.
+ * Otherwise only digits are accepted (the default).
  */
-export function splitDigits(raw: string, length: number): string[] {
-  const digits = raw.replace(/\D/g, '').slice(0, length).split('');
+export function splitDigits(raw: string, length: number, alphanumeric = false): string[] {
+  const sanitized = alphanumeric ? raw.replace(/[^A-Za-z0-9]/g, '') : raw.replace(/\D/g, '');
+  const digits = sanitized.slice(0, length).split('');
   while (digits.length < length) digits.push('');
   return digits;
 }

@@ -54,6 +54,15 @@ export function getPinCodeStyles(): string {
       color: var(--io-color-error);
     }
 
+    /* ── Description ────────────────────────────────────── */
+
+    .pin-code__description {
+      margin: 0 0 var(--io-space-2);
+      font-size: var(--io-font-size-sm);
+      color: var(--io-text-secondary);
+      font-family: var(--io-font-primary);
+    }
+
     /* ── Digit slot row ─────────────────────────────────── */
 
     .pin-code__slots {

@@ -289,3 +289,40 @@ describe('io-pin-code — FACE: checkValidity and reportValidity', () => {
     expect(await component.reportValidity()).toBe(true);
   });
 });
+
+describe('io-pin-code — FACE: validationMessage prop override (#1079)', () => {
+  it('uses default message when validationMessage is not set', () => {
+    const component = makeComponent('', true);
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { valueMissing: true },
+      'Please complete the PIN',
+    );
+  });
+
+  it('uses validationMessage when set', () => {
+    const component = makeComponent('', true);
+    component.validationMessage = 'Please fill in all fields';
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { valueMissing: true },
+      'Please fill in all fields',
+    );
+  });
+
+  it('uses default message when validationMessage is undefined', () => {
+    const component = makeComponent('', true);
+    component.validationMessage = undefined;
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    (component as any).syncFormValue();
+    expect(internals.setValidity).toHaveBeenCalledWith(
+      { valueMissing: true },
+      'Please complete the PIN',
+    );
+  });
+});

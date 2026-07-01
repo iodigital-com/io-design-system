@@ -1,9 +1,12 @@
 import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
-import type { IoIconName } from '../../utils/icons';
-import { getIconSvg, escapeAttr } from '../../utils/icons';
+import { ensureIconSymbol } from '../../utils/icon-sprite';
+import { ICON_NODES, escapeAttr } from '../../utils/icons';
+
 import { getIconStyles } from './io-icon-styles';
+
 import type { IoIconColor, IoIconSize } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 const svgCache = new Map<string, string>();
 
@@ -109,13 +112,20 @@ export class IoIcon {
       );
     }
 
-    const svg = getIconSvg(this.name);
-    if (!svg) return null;
+    if (!ICON_NODES[this.name]) return null;
+
+    ensureIconSymbol(this.name);
+
+    const ariaAttrs = this.label
+      ? { role: 'img', 'aria-label': this.label }
+      : { 'aria-hidden': 'true' };
 
     return (
       <Host style={this.hostStyle}>
         <style>{getIconStyles()}</style>
-        <span innerHTML={this.patchAria(svg)} />
+        <svg {...ariaAttrs}>
+          <use href={`#io-icon-${this.name}`} />
+        </svg>
       </Host>
     );
   }

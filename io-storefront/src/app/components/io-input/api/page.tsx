@@ -137,7 +137,12 @@ export default function IoInputApiPage() {
               <span key="n"><InlineCode>hideLabel</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Visually hides the label while keeping it accessible to screen readers.',
+              <span key="desc">
+                Visually hides the label while keeping it accessible to screen readers.{' '}
+                Plain <InlineCode>boolean</InlineCode> only — not{' '}
+                <InlineCode>BreakpointCustomizable</InlineCode>. For responsive label visibility
+                use a CSS media query on a wrapper element. See the Usage tab for patterns.
+              </span>,
             ],
             [
               <InlineCode key="n">spellCheck</InlineCode>,

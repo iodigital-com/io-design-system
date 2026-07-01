@@ -35,6 +35,21 @@ export default function IoInputPasswordUsagePage() {
         </div>
       </section>
 
+      <section id="label-visibility" className="space-y-6">
+        <SectionHeader
+          title="Label visibility"
+          description="hideLabel visually hides the floating label while keeping it accessible to screen readers. It is a plain boolean — not breakpoint-aware."
+        />
+        <div className="space-y-3">
+          <RuleCard label="No responsive breakpoint support">
+            <C>hideLabel</C> accepts only <C>true</C> or <C>false</C>. For responsive label
+            visibility, apply a CSS media query on a wrapper element or use your framework&apos;s
+            breakpoint utility to set the attribute conditionally. See the io-input usage page for
+            patterns.
+          </RuleCard>
+        </div>
+      </section>
+
       <section id="toggle-behaviour" className="space-y-6">
         <SectionHeader
           title="Show/hide toggle"

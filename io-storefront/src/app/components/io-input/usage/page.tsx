@@ -158,6 +158,43 @@ export default function IoInputUsagePage() {
       </section>
 
 
+      {/* ── Label visibility ─────────────────────────────────────── */}
+      <section id="label-visibility" className="space-y-6">
+        <SectionHeader
+          title="Label visibility"
+          description="hideLabel visually hides the floating label while keeping it in the accessibility tree. It is a plain boolean — it does not accept responsive breakpoint values."
+        />
+        <div className="space-y-3">
+          <RuleCard label="hideLabel is a plain boolean — not breakpoint-aware">
+            Unlike Porsche Design System&apos;s <C>p-text-field-wrapper</C> (where <C>hideLabel</C> accepts a{' '}
+            <C>BreakpointCustomizable&lt;boolean&gt;</C> object such as{' '}
+            <C>{'{ base: false, m: true }'}</C>), io-input&apos;s <C>hideLabel</C> is a single{' '}
+            <C>boolean</C>. Passing an object has no effect and will not switch the label at different
+            viewport widths.
+          </RuleCard>
+          <RuleCard label="Responsive label visibility — CSS media query wrapper">
+            To show the label on mobile and hide it on desktop (or vice-versa), wrap the input in a
+            container and use a CSS media query or a utility class to toggle the host attribute:
+          </RuleCard>
+          <RuleCard label="Responsive label visibility — two-instance pattern">
+            Alternatively, render two <C>io-input</C> elements with identical <C>name</C> and{' '}
+            <C>value</C> bindings — one with <C>hideLabel=false</C> visible on small screens, one
+            with <C>hideLabel=true</C> visible on large screens — toggled by your framework&apos;s
+            breakpoint utility or a CSS <C>display</C> rule. Both share the same form value; only
+            one is visible at any time.
+          </RuleCard>
+          <DoOrDontCard type="do">
+            Use a CSS media query on a wrapper element to conditionally set <C>hide-label</C> on the
+            host via an attribute selector, keeping a single input instance in the DOM.
+          </DoOrDontCard>
+          <DoOrDontCard type="dont">
+            Pass an object literal (<C>{'hideLabel={{ base: false, m: true }}'}</C>) hoping for
+            breakpoint behaviour — io-input will treat the object as truthy and always hide the
+            label, regardless of viewport width.
+          </DoOrDontCard>
+        </div>
+      </section>
+
       {/* ── Rich content via named slots ─────────────────────────── */}
       <section id="named-slots" className="space-y-6">
         <SectionHeader

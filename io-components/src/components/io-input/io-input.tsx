@@ -5,7 +5,6 @@ import { resolveInputId } from './io-input-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
 import type { IoIconName } from '../../utils/icons';
 import { getIconSvg } from '../../utils/icons';
-import { Required } from '../common/required/Required';
 import { LoadingMessage } from '../../utils/common/loading-message';
 import { StateIcon } from '../common/state-icon/StateIcon';
 
@@ -417,7 +416,6 @@ export class IoInput {
     const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator, stepper } = this;
     const indicatorIcon = resolveIndicatorIcon(indicator, type);
     const showIndicator = !!indicatorIcon;
-    const showStepper = stepper && type === 'number';
     const { inputId, errorId, helperId } = this.getInputIds();
 
     const isDisabled = disabled || loading;

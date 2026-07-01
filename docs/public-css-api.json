@@ -2576,5 +2576,59 @@
     "classification": "public-api",
     "component": "io-segment",
     "description": "Text color of the badge slot content rendered after the segment label. Override to adjust numeric context styling."
+  },
+  {
+    "cssVar": "--io-tooltip-max-width",
+    "classification": "public-api",
+    "component": "io-tooltip",
+    "description": "Maximum width of the tooltip overlay panel. Default: 20rem. Consumer override point."
+  },
+  {
+    "cssVar": "--io-tooltip-bg",
+    "classification": "public-api",
+    "component": "io-tooltip",
+    "description": "Background colour of the tooltip overlay (dark theme default: --io-color-grey-6 / #242424). Satisfies WCAG 1.4.3 with white text."
+  },
+  {
+    "cssVar": "--io-tooltip-color",
+    "classification": "public-api",
+    "component": "io-tooltip",
+    "description": "Text colour of the tooltip overlay (dark theme default: --io-color-white / #ffffff). Satisfies WCAG 1.4.3 against dark background."
+  },
+  {
+    "cssVar": "--io-tooltip-show-delay",
+    "classification": "public-api",
+    "component": "io-tooltip",
+    "description": "Delay before the tooltip appears on hover. Default: 500ms. Set to 0 to disable the delay."
+  },
+  {
+    "cssVar": "--io-tooltip-hide-delay",
+    "classification": "public-api",
+    "component": "io-tooltip",
+    "description": "Delay before the tooltip hides after the pointer leaves the trigger. Default: 150ms. Allows the pointer to move onto the tooltip panel (WCAG 1.4.13)."
+  },
+  {
+    "cssVar": "--io-progress-circle-size-sm",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Diameter of the circular progress indicator in the sm size variant. Default: 3rem (48px)."
+  },
+  {
+    "cssVar": "--io-progress-circle-size-md",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Diameter of the circular progress indicator in the md size variant. Default: 5rem (80px)."
+  },
+  {
+    "cssVar": "--io-progress-circle-size-lg",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Diameter of the circular progress indicator in the lg size variant. Default: 7rem (112px)."
+  },
+  {
+    "cssVar": "--io-progress-circle-thickness",
+    "classification": "public-api",
+    "component": "io-progress",
+    "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px)."
   }
 ]

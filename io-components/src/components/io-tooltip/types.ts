@@ -11,3 +11,5 @@ export type IoTooltipPlacement =
   | 'right'
   | 'right-start'
   | 'right-end';
+
+export type IoTooltipTheme = 'dark' | 'light';

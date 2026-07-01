@@ -644,4 +644,142 @@ describe('tooltip-attribute', () => {
       expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
     });
   });
+
+  describe('theme — io-tooltip-theme attribute support', () => {
+    it('sets data-tooltip-theme="light" on overlay for light theme trigger', async () => {
+      const button = document.createElement('button');
+      button.setAttribute('io-tooltip', 'Light tooltip');
+      button.setAttribute('io-tooltip-theme', 'light');
+      document.body.appendChild(button);
+
+      button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await flushAsyncTooltipShow();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-tooltip-theme')).toBe('light');
+    });
+
+    it('does not set data-tooltip-theme on overlay for dark (default) theme trigger', async () => {
+      const button = document.createElement('button');
+      button.setAttribute('io-tooltip', 'Dark tooltip');
+      document.body.appendChild(button);
+
+      button.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await flushAsyncTooltipShow();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.hasAttribute('data-tooltip-theme')).toBe(false);
+    });
+  });
+
+  describe('touch long-press support (WCAG 1.4.13)', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('shows tooltip after long-press on touch device', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Touch tooltip');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+
+      // Tooltip not yet visible
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
+
+      // Advance past LONG_PRESS_MS (500ms)
+      vi.advanceTimersByTime(500);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlayAfter = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlayAfter?.getAttribute('data-visible')).toBe('true');
+    });
+
+    it('does not show tooltip on tap (pointerup before long-press fires)', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Tap no-show');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+      // Release before timer fires
+      btn.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch' }));
+
+      vi.advanceTimersByTime(500);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
+    });
+
+    it('Escape dismisses touch-triggered tooltip', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Touch dismiss');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+      vi.advanceTimersByTime(500);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible')).toBe('true');
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      expect(overlay?.hasAttribute('data-visible')).toBe(false);
+    });
+
+    it('does not start long-press for non-touch pointerdown', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Mouse not touch');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'mouse' }));
+      vi.advanceTimersByTime(600);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
+    });
+
+    it('ignores pointerover from touch device', async () => {
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Touch hover no-show');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, pointerType: 'touch' }));
+      await flushAsyncTooltipShow();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible') ?? null).not.toBe('true');
+    });
+
+    it('click outside dismisses touch-triggered tooltip', async () => {
+      vi.useFakeTimers();
+      const btn = document.createElement('button');
+      btn.setAttribute('io-tooltip', 'Touch click outside');
+      document.body.appendChild(btn);
+
+      btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+      vi.advanceTimersByTime(500);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const overlay = document.getElementById('io-tooltip-attribute-overlay');
+      expect(overlay?.getAttribute('data-visible')).toBe('true');
+
+      const outside = document.createElement('div');
+      document.body.appendChild(outside);
+      document.dispatchEvent(new MouseEvent('click', { bubbles: true, target: outside }));
+
+      expect(overlay?.hasAttribute('data-visible')).toBe(false);
+    });
+  });
 });

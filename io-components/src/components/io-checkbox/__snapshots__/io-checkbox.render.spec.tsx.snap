@@ -103,6 +103,14 @@ MockHTMLElement {
       },
       MockEventListener {
         "handler": [Function],
+        "type": "pointerdown",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "pointerup",
+      },
+      MockEventListener {
+        "handler": [Function],
         "type": "focusin",
       },
       MockEventListener {
@@ -112,6 +120,10 @@ MockHTMLElement {
       MockEventListener {
         "handler": [Function],
         "type": "keydown",
+      },
+      MockEventListener {
+        "handler": [Function],
+        "type": "click",
       },
       MockEventListener {
         "handler": null,
@@ -318,6 +330,14 @@ MockHTMLElement {
         },
         MockEventListener {
           "handler": [Function],
+          "type": "pointerdown",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "pointerup",
+        },
+        MockEventListener {
+          "handler": [Function],
           "type": "focusin",
         },
         MockEventListener {
@@ -327,6 +347,10 @@ MockHTMLElement {
         MockEventListener {
           "handler": [Function],
           "type": "keydown",
+        },
+        MockEventListener {
+          "handler": [Function],
+          "type": "click",
         },
         MockEventListener {
           "handler": null,
@@ -505,6 +529,14 @@ MockHTMLElement {
               },
               MockEventListener {
                 "handler": [Function],
+                "type": "pointerdown",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "pointerup",
+              },
+              MockEventListener {
+                "handler": [Function],
                 "type": "focusin",
               },
               MockEventListener {
@@ -514,6 +546,10 @@ MockHTMLElement {
               MockEventListener {
                 "handler": [Function],
                 "type": "keydown",
+              },
+              MockEventListener {
+                "handler": [Function],
+                "type": "click",
               },
               MockEventListener {
                 "handler": null,
@@ -661,6 +697,14 @@ MockHTMLElement {
           },
           MockEventListener {
             "handler": [Function],
+            "type": "pointerdown",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "pointerup",
+          },
+          MockEventListener {
+            "handler": [Function],
             "type": "focusin",
           },
           MockEventListener {
@@ -670,6 +714,10 @@ MockHTMLElement {
           MockEventListener {
             "handler": [Function],
             "type": "keydown",
+          },
+          MockEventListener {
+            "handler": [Function],
+            "type": "click",
           },
           MockEventListener {
             "handler": null,
@@ -848,6 +896,14 @@ MockHTMLElement {
                         },
                         MockEventListener {
                           "handler": [Function],
+                          "type": "pointerdown",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "pointerup",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
                           "type": "focusin",
                         },
                         MockEventListener {
@@ -857,6 +913,10 @@ MockHTMLElement {
                         MockEventListener {
                           "handler": [Function],
                           "type": "keydown",
+                        },
+                        MockEventListener {
+                          "handler": [Function],
+                          "type": "click",
                         },
                         MockEventListener {
                           "handler": null,
@@ -929,6 +989,14 @@ MockHTMLElement {
                     },
                     MockEventListener {
                       "handler": [Function],
+                      "type": "pointerdown",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "pointerup",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
                       "type": "focusin",
                     },
                     MockEventListener {
@@ -938,6 +1006,10 @@ MockHTMLElement {
                     MockEventListener {
                       "handler": [Function],
                       "type": "keydown",
+                    },
+                    MockEventListener {
+                      "handler": [Function],
+                      "type": "click",
                     },
                     MockEventListener {
                       "handler": null,
@@ -1022,6 +1094,14 @@ MockHTMLElement {
                 },
                 MockEventListener {
                   "handler": [Function],
+                  "type": "pointerdown",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "pointerup",
+                },
+                MockEventListener {
+                  "handler": [Function],
                   "type": "focusin",
                 },
                 MockEventListener {
@@ -1031,6 +1111,10 @@ MockHTMLElement {
                 MockEventListener {
                   "handler": [Function],
                   "type": "keydown",
+                },
+                MockEventListener {
+                  "handler": [Function],
+                  "type": "click",
                 },
                 MockEventListener {
                   "handler": null,
@@ -1104,6 +1188,14 @@ MockHTMLElement {
             },
             MockEventListener {
               "handler": [Function],
+              "type": "pointerdown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerup",
+            },
+            MockEventListener {
+              "handler": [Function],
               "type": "focusin",
             },
             MockEventListener {
@@ -1113,6 +1205,10 @@ MockHTMLElement {
             MockEventListener {
               "handler": [Function],
               "type": "keydown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "click",
             },
             MockEventListener {
               "handler": null,
@@ -1179,6 +1275,14 @@ MockHTMLElement {
             },
             MockEventListener {
               "handler": [Function],
+              "type": "pointerdown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "pointerup",
+            },
+            MockEventListener {
+              "handler": [Function],
               "type": "focusin",
             },
             MockEventListener {
@@ -1188,6 +1292,10 @@ MockHTMLElement {
             MockEventListener {
               "handler": [Function],
               "type": "keydown",
+            },
+            MockEventListener {
+              "handler": [Function],
+              "type": "click",
             },
             MockEventListener {
               "handler": null,

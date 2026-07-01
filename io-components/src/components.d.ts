@@ -35,7 +35,7 @@ import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-opt
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoPopoverPlacement } from "./components/io-popover/types";
-import { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
+import { IoProgressColor, IoProgressShape, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 import { IoScrollerOrientation } from "./components/io-scroller/types";
@@ -54,7 +54,7 @@ import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextW
 import { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 import { IoToastAction, IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
-import { IoTooltipPlacement } from "./components/io-tooltip/types";
+import { IoTooltipPlacement, IoTooltipTheme } from "./components/io-tooltip/types";
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
@@ -86,7 +86,7 @@ export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-opt
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoPopoverPlacement } from "./components/io-popover/types";
-export { IoProgressColor, IoProgressSize } from "./components/io-progress/types";
+export { IoProgressColor, IoProgressShape, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
 export { IoScrollerOrientation } from "./components/io-scroller/types";
@@ -105,7 +105,7 @@ export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextW
 export { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
 export { IoToastAction, IoToastMessage, IoToastPosition, IoToastVariant } from "./components/io-toast/types";
-export { IoTooltipPlacement } from "./components/io-tooltip/types";
+export { IoTooltipPlacement, IoTooltipTheme } from "./components/io-tooltip/types";
 export { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export namespace Components {
     /**
@@ -2263,16 +2263,18 @@ export namespace Components {
     /**
      * io-progress
      * ===========
-     * Linear progress bar for determinate loading states.
-     * Use for file uploads, multi-step forms, and wizard flows.
-     * @example <io-progress value="60"></io-progress>
-     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
-     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
-     * <io-progress indeterminate label="Loading"></io-progress>
+     * Progress indicator for determinate and indeterminate loading states.
+     * Supports three shapes: linear (default), circular, and step.
+     * @example Linear
+     * <io-progress value="60" label="Upload progress"></io-progress>
+     * @example Circular
+     * <io-progress shape="circular" value="75" color="success" label="Loading"></io-progress>
+     * @example Step — max controls the number of segments
+     * <io-progress shape="step" value="3" min="0" max="5" label="Step 3 of 5"></io-progress>
      */
     interface IoProgress {
         /**
-          * When true, the fill width transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
+          * When true, the fill transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
           * @default true
          */
         "animated": boolean;
@@ -2304,6 +2306,11 @@ export namespace Components {
           * @default 0
          */
         "min": number;
+        /**
+          * Shape variant. - `'linear'` (default) — horizontal bar. - `'circular'` — SVG ring. Size controlled by `--io-progress-circle-size-{sm,md,lg}`. - `'step'` — segmented bar; each segment maps to one unit between `min` and `max`.
+          * @default 'linear'
+         */
+        "shape": IoProgressShape;
         /**
           * When true, renders a visible percentage label below the track.
           * @default false
@@ -3807,11 +3814,21 @@ export namespace Components {
      * io-tooltip
      * ===========
      * Compatibility wrapper around the global [io-tooltip] attribute API.
-     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
-     * directly on the trigger element. This wrapper is kept to avoid breaking
-     * existing markup and simply maps props to attributes on the first child.
+     * New usage should place `io-tooltip`, `io-tooltip-placement`, and
+     * `io-tooltip-theme` attributes directly on the trigger element. This wrapper
+     * maps props to attributes on the first child element.
+     * Token API (override via CSS custom properties):
+     *   --io-tooltip-max-width    Max width of the tooltip overlay. Default: 20rem.
+     *   --io-tooltip-bg           Tooltip background color (dark theme default).
+     *   --io-tooltip-color        Tooltip text color (dark theme default).
+     *   --io-tooltip-show-delay   Delay before showing tooltip on hover. Default: 500ms.
+     *   --io-tooltip-hide-delay   Delay before hiding tooltip after pointer leaves. Default: 150ms.
      * @example <io-tooltip content="More information">
      *   <io-button>Info</io-button>
+     * </io-tooltip>
+     * @example Light theme
+     * <io-tooltip content="Light tooltip" theme="light">
+     * <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -3825,6 +3842,11 @@ export namespace Components {
           * @default 'top'
          */
         "placement": IoTooltipPlacement;
+        /**
+          * Colour theme for the tooltip overlay. - `'dark'` (default) — dark background, white text. - `'light'` — white background, primary text (use on dark surfaces).
+          * @default 'dark'
+         */
+        "theme": IoTooltipTheme;
     }
     /**
      * io-wordmark
@@ -4922,12 +4944,14 @@ declare global {
     /**
      * io-progress
      * ===========
-     * Linear progress bar for determinate loading states.
-     * Use for file uploads, multi-step forms, and wizard flows.
-     * @example <io-progress value="60"></io-progress>
-     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
-     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
-     * <io-progress indeterminate label="Loading"></io-progress>
+     * Progress indicator for determinate and indeterminate loading states.
+     * Supports three shapes: linear (default), circular, and step.
+     * @example Linear
+     * <io-progress value="60" label="Upload progress"></io-progress>
+     * @example Circular
+     * <io-progress shape="circular" value="75" color="success" label="Loading"></io-progress>
+     * @example Step — max controls the number of segments
+     * <io-progress shape="step" value="3" min="0" max="5" label="Step 3 of 5"></io-progress>
      */
     interface HTMLIoProgressElement extends Components.IoProgress, HTMLStencilElement {
     }
@@ -5755,11 +5779,21 @@ declare global {
      * io-tooltip
      * ===========
      * Compatibility wrapper around the global [io-tooltip] attribute API.
-     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
-     * directly on the trigger element. This wrapper is kept to avoid breaking
-     * existing markup and simply maps props to attributes on the first child.
+     * New usage should place `io-tooltip`, `io-tooltip-placement`, and
+     * `io-tooltip-theme` attributes directly on the trigger element. This wrapper
+     * maps props to attributes on the first child element.
+     * Token API (override via CSS custom properties):
+     *   --io-tooltip-max-width    Max width of the tooltip overlay. Default: 20rem.
+     *   --io-tooltip-bg           Tooltip background color (dark theme default).
+     *   --io-tooltip-color        Tooltip text color (dark theme default).
+     *   --io-tooltip-show-delay   Delay before showing tooltip on hover. Default: 500ms.
+     *   --io-tooltip-hide-delay   Delay before hiding tooltip after pointer leaves. Default: 150ms.
      * @example <io-tooltip content="More information">
      *   <io-button>Info</io-button>
+     * </io-tooltip>
+     * @example Light theme
+     * <io-tooltip content="Light tooltip" theme="light">
+     * <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface HTMLIoTooltipElement extends Components.IoTooltip, HTMLStencilElement {
@@ -8081,16 +8115,18 @@ declare namespace LocalJSX {
     /**
      * io-progress
      * ===========
-     * Linear progress bar for determinate loading states.
-     * Use for file uploads, multi-step forms, and wizard flows.
-     * @example <io-progress value="60"></io-progress>
-     * <io-progress value="75" color="success" size="lg" show-label></io-progress>
-     * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
-     * <io-progress indeterminate label="Loading"></io-progress>
+     * Progress indicator for determinate and indeterminate loading states.
+     * Supports three shapes: linear (default), circular, and step.
+     * @example Linear
+     * <io-progress value="60" label="Upload progress"></io-progress>
+     * @example Circular
+     * <io-progress shape="circular" value="75" color="success" label="Loading"></io-progress>
+     * @example Step — max controls the number of segments
+     * <io-progress shape="step" value="3" min="0" max="5" label="Step 3 of 5"></io-progress>
      */
     interface IoProgress {
         /**
-          * When true, the fill width transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
+          * When true, the fill transitions smoothly on value change. Disabled automatically when prefers-reduced-motion is active.
           * @default true
          */
         "animated"?: boolean;
@@ -8122,6 +8158,11 @@ declare namespace LocalJSX {
           * @default 0
          */
         "min"?: number;
+        /**
+          * Shape variant. - `'linear'` (default) — horizontal bar. - `'circular'` — SVG ring. Size controlled by `--io-progress-circle-size-{sm,md,lg}`. - `'step'` — segmented bar; each segment maps to one unit between `min` and `max`.
+          * @default 'linear'
+         */
+        "shape"?: IoProgressShape;
         /**
           * When true, renders a visible percentage label below the track.
           * @default false
@@ -9693,11 +9734,21 @@ declare namespace LocalJSX {
      * io-tooltip
      * ===========
      * Compatibility wrapper around the global [io-tooltip] attribute API.
-     * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
-     * directly on the trigger element. This wrapper is kept to avoid breaking
-     * existing markup and simply maps props to attributes on the first child.
+     * New usage should place `io-tooltip`, `io-tooltip-placement`, and
+     * `io-tooltip-theme` attributes directly on the trigger element. This wrapper
+     * maps props to attributes on the first child element.
+     * Token API (override via CSS custom properties):
+     *   --io-tooltip-max-width    Max width of the tooltip overlay. Default: 20rem.
+     *   --io-tooltip-bg           Tooltip background color (dark theme default).
+     *   --io-tooltip-color        Tooltip text color (dark theme default).
+     *   --io-tooltip-show-delay   Delay before showing tooltip on hover. Default: 500ms.
+     *   --io-tooltip-hide-delay   Delay before hiding tooltip after pointer leaves. Default: 150ms.
      * @example <io-tooltip content="More information">
      *   <io-button>Info</io-button>
+     * </io-tooltip>
+     * @example Light theme
+     * <io-tooltip content="Light tooltip" theme="light">
+     * <io-button>Info</io-button>
      * </io-tooltip>
      */
     interface IoTooltip {
@@ -9711,6 +9762,11 @@ declare namespace LocalJSX {
           * @default 'top'
          */
         "placement"?: IoTooltipPlacement;
+        /**
+          * Colour theme for the tooltip overlay. - `'dark'` (default) — dark background, white text. - `'light'` — white background, primary text (use on dark surfaces).
+          * @default 'dark'
+         */
+        "theme"?: IoTooltipTheme;
     }
     /**
      * io-wordmark
@@ -10155,6 +10211,7 @@ declare namespace LocalJSX {
         "value": number;
         "color": IoProgressColor;
         "size": IoProgressSize;
+        "shape": IoProgressShape;
         "animated": boolean;
         "label": string | undefined;
         "showLabel": boolean;
@@ -10412,6 +10469,7 @@ declare namespace LocalJSX {
     interface IoTooltipAttributes {
         "content": string;
         "placement": IoTooltipPlacement;
+        "theme": IoTooltipTheme;
     }
     interface IoWordmarkAttributes {
         "variant": IoWordmarkVariant;
@@ -10950,12 +11008,14 @@ declare module "@stencil/core" {
             /**
              * io-progress
              * ===========
-             * Linear progress bar for determinate loading states.
-             * Use for file uploads, multi-step forms, and wizard flows.
-             * @example <io-progress value="60"></io-progress>
-             * <io-progress value="75" color="success" size="lg" show-label></io-progress>
-             * <io-progress value="40" color="warning" size="sm" label="Upload progress"></io-progress>
-             * <io-progress indeterminate label="Loading"></io-progress>
+             * Progress indicator for determinate and indeterminate loading states.
+             * Supports three shapes: linear (default), circular, and step.
+             * @example Linear
+             * <io-progress value="60" label="Upload progress"></io-progress>
+             * @example Circular
+             * <io-progress shape="circular" value="75" color="success" label="Loading"></io-progress>
+             * @example Step — max controls the number of segments
+             * <io-progress shape="step" value="3" min="0" max="5" label="Step 3 of 5"></io-progress>
              */
             "io-progress": LocalJSX.IntrinsicElements["io-progress"] & JSXBase.HTMLAttributes<HTMLIoProgressElement>;
             /**
@@ -11416,11 +11476,21 @@ declare module "@stencil/core" {
              * io-tooltip
              * ===========
              * Compatibility wrapper around the global [io-tooltip] attribute API.
-             * New usage should place `io-tooltip` and `io-tooltip-placement` attributes
-             * directly on the trigger element. This wrapper is kept to avoid breaking
-             * existing markup and simply maps props to attributes on the first child.
+             * New usage should place `io-tooltip`, `io-tooltip-placement`, and
+             * `io-tooltip-theme` attributes directly on the trigger element. This wrapper
+             * maps props to attributes on the first child element.
+             * Token API (override via CSS custom properties):
+             *   --io-tooltip-max-width    Max width of the tooltip overlay. Default: 20rem.
+             *   --io-tooltip-bg           Tooltip background color (dark theme default).
+             *   --io-tooltip-color        Tooltip text color (dark theme default).
+             *   --io-tooltip-show-delay   Delay before showing tooltip on hover. Default: 500ms.
+             *   --io-tooltip-hide-delay   Delay before hiding tooltip after pointer leaves. Default: 150ms.
              * @example <io-tooltip content="More information">
              *   <io-button>Info</io-button>
+             * </io-tooltip>
+             * @example Light theme
+             * <io-tooltip content="Light tooltip" theme="light">
+             * <io-button>Info</io-button>
              * </io-tooltip>
              */
             "io-tooltip": LocalJSX.IntrinsicElements["io-tooltip"] & JSXBase.HTMLAttributes<HTMLIoTooltipElement>;

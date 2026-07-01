@@ -6,6 +6,7 @@ import type { IoTooltipPlacement } from '../components/io-tooltip/types';
 
 const TOOLTIP_ATTR = 'io-tooltip';
 const TOOLTIP_PLACEMENT_ATTR = 'io-tooltip-placement';
+const TOOLTIP_THEME_ATTR = 'io-tooltip-theme';
 const TOOLTIP_SELECTOR = `[${TOOLTIP_ATTR}]`;
 const TOOLTIP_ID = 'io-tooltip-attribute-overlay';
 const DESCRIBEDBY_BACKUP_ATTR = 'data-io-tooltip-prev-describedby';
@@ -18,20 +19,53 @@ const DESCRIBEDBY_BACKUP_ATTR = 'data-io-tooltip-prev-describedby';
 const WIN_INIT_FLAG = '__io_tooltip_attr_init';
 type WinWithFlag = typeof globalThis & { [WIN_INIT_FLAG]?: boolean };
 
-// Delay (ms) before hiding after pointer leaves the trigger — allows the user
-// to move the pointer onto the tooltip panel without it disappearing (WCAG 1.4.13).
-const HIDE_DELAY_MS = 150;
+// Fallback delay values — actual values are read from CSS custom properties
+// on :root to honour --io-tooltip-show-delay and --io-tooltip-hide-delay tokens.
+// DEFAULT_SHOW_DELAY_MS is 0 so that when the CSS token is absent (e.g. in tests
+// without a full CSS environment) show is immediate. The CSS token sets the real
+// browser default to 500ms.
+const DEFAULT_SHOW_DELAY_MS = 0;
+const DEFAULT_HIDE_DELAY_MS = 150;
+
+// Long-press threshold for touch devices (matches --io-tooltip-show-delay default).
+const LONG_PRESS_MS = 500;
 
 let activeTrigger: HTMLElement | null = null;
 let tooltipEl: HTMLDivElement | null = null;
 let listenersBound = false;
 let hideTimer: ReturnType<typeof setTimeout> | null = null;
+let showTimer: ReturnType<typeof setTimeout> | null = null;
+let longPressTimer: ReturnType<typeof setTimeout> | null = null;
+let longPressTarget: HTMLElement | null = null;
 
-let pointerOverHandler: ((ev: Event) => void) | null = null;
-let pointerOutHandler: ((ev: MouseEvent) => void) | null = null;
+let pointerOverHandler: ((ev: PointerEvent) => void) | null = null;
+let pointerOutHandler: ((ev: PointerEvent) => void) | null = null;
+let pointerDownHandler: ((ev: PointerEvent) => void) | null = null;
+let pointerUpHandler: ((ev: PointerEvent) => void) | null = null;
 let focusInHandler: ((ev: FocusEvent) => void) | null = null;
 let focusOutHandler: ((ev: FocusEvent) => void) | null = null;
 let keyDownHandler: ((ev: KeyboardEvent) => void) | null = null;
+let clickOutsideHandler: ((ev: MouseEvent) => void) | null = null;
+
+/**
+ * Read a CSS custom property integer/ms value from the document root.
+ * Falls back to the provided default when the property is absent or unparseable.
+ */
+function readCssDelayMs(propertyName: string, fallback: number): number {
+  if (typeof getComputedStyle === 'undefined') return fallback;
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(propertyName).trim();
+  if (!raw) return fallback;
+  if (raw.endsWith('ms')) {
+    const n = parseFloat(raw);
+    return isNaN(n) ? fallback : n;
+  }
+  if (raw.endsWith('s')) {
+    const n = parseFloat(raw);
+    return isNaN(n) ? fallback : n * 1000;
+  }
+  const n = parseFloat(raw);
+  return isNaN(n) ? fallback : n;
+}
 
 function isPlacement(value: string | null): value is IoTooltipPlacement {
   return (
@@ -57,17 +91,51 @@ function cancelHideTimer(): void {
   }
 }
 
+function cancelShowTimer(): void {
+  if (showTimer !== null) {
+    clearTimeout(showTimer);
+    showTimer = null;
+  }
+}
+
+function cancelLongPressTimer(): void {
+  if (longPressTimer !== null) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+  longPressTarget = null;
+}
+
 function scheduleHide(): void {
   cancelHideTimer();
+  const delayMs = readCssDelayMs('--io-tooltip-hide-delay', DEFAULT_HIDE_DELAY_MS);
   hideTimer = setTimeout(() => {
     hideTimer = null;
     hideTooltip();
-  }, HIDE_DELAY_MS);
+  }, delayMs);
+}
+
+function scheduleShow(trigger: HTMLElement): void {
+  cancelShowTimer();
+  const delayMs = readCssDelayMs('--io-tooltip-show-delay', DEFAULT_SHOW_DELAY_MS);
+  if (delayMs <= 0) {
+    // No delay — show immediately (keeps async test flushing predictable).
+    void showTooltip(trigger);
+    return;
+  }
+  showTimer = setTimeout(() => {
+    showTimer = null;
+    void showTooltip(trigger);
+  }, delayMs);
 }
 
 function resolvePlacement(trigger: HTMLElement): IoTooltipPlacement {
   const value = trigger.getAttribute(TOOLTIP_PLACEMENT_ATTR);
   return isPlacement(value) ? value : 'top';
+}
+
+function resolveTheme(trigger: HTMLElement): string | null {
+  return trigger.getAttribute(TOOLTIP_THEME_ATTR);
 }
 
 function getTooltipText(trigger: HTMLElement): string {
@@ -157,6 +225,15 @@ async function showTooltip(trigger: HTMLElement): Promise<void> {
 
   activeTrigger = trigger;
   el.textContent = text;
+
+  // Apply theme from trigger attribute
+  const theme = resolveTheme(trigger);
+  if (theme === 'light') {
+    el.setAttribute('data-tooltip-theme', 'light');
+  } else {
+    el.removeAttribute('data-tooltip-theme');
+  }
+
   setDescribedBy(trigger, TOOLTIP_ID);
 
   try {
@@ -195,7 +272,10 @@ function findTooltipTrigger(target: EventTarget | null): HTMLElement | null {
   return trigger instanceof HTMLElement ? trigger : null;
 }
 
-async function onPointerOver(ev: Event): Promise<void> {
+function onPointerOver(ev: PointerEvent): void {
+  // Touch events are handled by long-press (pointerdown/up), not hover.
+  if (ev.pointerType === 'touch') return;
+
   // If pointer enters the tooltip panel itself, keep the tooltip visible.
   if (tooltipEl && ev.target instanceof Node && tooltipEl.contains(ev.target as Node)) {
     cancelHideTimer();
@@ -204,27 +284,65 @@ async function onPointerOver(ev: Event): Promise<void> {
   const trigger = findTooltipTrigger(ev.target);
   if (!trigger) return;
   cancelHideTimer();
-  await showTooltip(trigger);
+  cancelShowTimer();
+  scheduleShow(trigger);
 }
 
-function onPointerOut(ev: MouseEvent): void {
+function onPointerOut(ev: PointerEvent): void {
+  // Touch events are handled by long-press (pointerdown/up), not hover.
+  if (ev.pointerType === 'touch') return;
+
+  cancelShowTimer();
   if (!activeTrigger) return;
   const next = ev.relatedTarget;
   // Pointer moved to a child of the trigger — stay visible.
-  if (next instanceof Node && activeTrigger.contains(next)) return;
+  if (next instanceof Node && activeTrigger.contains(next as Node)) return;
   // Pointer moved onto the tooltip panel — stay visible (WCAG 1.4.13).
-  if (tooltipEl && next instanceof Node && tooltipEl.contains(next)) return;
+  if (tooltipEl && next instanceof Node && tooltipEl.contains(next as Node)) return;
   scheduleHide();
+}
+
+function onPointerDown(ev: PointerEvent): void {
+  // Only handle touch long-press.
+  if (ev.pointerType !== 'touch') return;
+  const trigger = findTooltipTrigger(ev.target);
+  if (!trigger) return;
+
+  cancelLongPressTimer();
+  longPressTarget = trigger;
+  const longPressDuration = readCssDelayMs('--io-tooltip-show-delay', LONG_PRESS_MS);
+  longPressTimer = setTimeout(() => {
+    longPressTimer = null;
+    if (longPressTarget === trigger) {
+      void showTooltip(trigger);
+    }
+  }, longPressDuration);
+}
+
+function onPointerUp(ev: PointerEvent): void {
+  if (ev.pointerType !== 'touch') return;
+  // If released before long-press fires, cancel it (it was a tap, not a long-press).
+  cancelLongPressTimer();
+}
+
+function onClickOutside(ev: MouseEvent): void {
+  // Dismiss touch-triggered tooltip when user taps outside trigger and panel.
+  if (!activeTrigger) return;
+  if (activeTrigger.contains(ev.target as Node)) return;
+  if (tooltipEl && tooltipEl.contains(ev.target as Node)) return;
+  hideTooltip();
 }
 
 async function onFocusIn(ev: FocusEvent): Promise<void> {
   const trigger = findTooltipTrigger(ev.target);
   if (!trigger) return;
   cancelHideTimer();
+  cancelShowTimer();
   await showTooltip(trigger);
 }
 
 function onFocusOut(ev: FocusEvent): void {
+  cancelShowTimer();
   if (!activeTrigger) return;
   const next = ev.relatedTarget;
   if (next instanceof Node && activeTrigger.contains(next)) return;
@@ -233,6 +351,8 @@ function onFocusOut(ev: FocusEvent): void {
 
 function onKeyDown(ev: KeyboardEvent): void {
   if (ev.key === 'Escape' && activeTrigger) {
+    cancelShowTimer();
+    cancelLongPressTimer();
     hideTooltip();
   }
 }
@@ -251,17 +371,23 @@ export function initTooltipAttribute(): void {
   if (win[WIN_INIT_FLAG]) return;
   win[WIN_INIT_FLAG] = true;
 
-  pointerOverHandler = (ev) => { void onPointerOver(ev); };
+  pointerOverHandler = onPointerOver;
   pointerOutHandler = onPointerOut;
+  pointerDownHandler = onPointerDown;
+  pointerUpHandler = onPointerUp;
   focusInHandler = (ev) => { void onFocusIn(ev); };
   focusOutHandler = onFocusOut;
   keyDownHandler = onKeyDown;
+  clickOutsideHandler = onClickOutside;
 
-  document.addEventListener('pointerover', pointerOverHandler, true);
-  document.addEventListener('pointerout', pointerOutHandler, true);
+  document.addEventListener('pointerover', pointerOverHandler as EventListener, true);
+  document.addEventListener('pointerout', pointerOutHandler as EventListener, true);
+  document.addEventListener('pointerdown', pointerDownHandler as EventListener, true);
+  document.addEventListener('pointerup', pointerUpHandler as EventListener, true);
   document.addEventListener('focusin', focusInHandler, true);
   document.addEventListener('focusout', focusOutHandler, true);
   document.addEventListener('keydown', keyDownHandler, true);
+  document.addEventListener('click', clickOutsideHandler, true);
   window.addEventListener('resize', onWindowChange, true);
   window.addEventListener('scroll', onWindowChange, true);
 
@@ -269,21 +395,29 @@ export function initTooltipAttribute(): void {
 }
 
 export function __resetTooltipAttributeForTests(): void {
-  if (pointerOverHandler) document.removeEventListener('pointerover', pointerOverHandler, true);
-  if (pointerOutHandler) document.removeEventListener('pointerout', pointerOutHandler, true);
+  if (pointerOverHandler) document.removeEventListener('pointerover', pointerOverHandler as EventListener, true);
+  if (pointerOutHandler) document.removeEventListener('pointerout', pointerOutHandler as EventListener, true);
+  if (pointerDownHandler) document.removeEventListener('pointerdown', pointerDownHandler as EventListener, true);
+  if (pointerUpHandler) document.removeEventListener('pointerup', pointerUpHandler as EventListener, true);
   if (focusInHandler) document.removeEventListener('focusin', focusInHandler, true);
   if (focusOutHandler) document.removeEventListener('focusout', focusOutHandler, true);
   if (keyDownHandler) document.removeEventListener('keydown', keyDownHandler, true);
+  if (clickOutsideHandler) document.removeEventListener('click', clickOutsideHandler, true);
   window.removeEventListener('resize', onWindowChange, true);
   window.removeEventListener('scroll', onWindowChange, true);
 
   pointerOverHandler = null;
   pointerOutHandler = null;
+  pointerDownHandler = null;
+  pointerUpHandler = null;
   focusInHandler = null;
   focusOutHandler = null;
   keyDownHandler = null;
+  clickOutsideHandler = null;
 
   cancelHideTimer();
+  cancelShowTimer();
+  cancelLongPressTimer();
   activeTrigger = null;
   tooltipEl?.remove();
   tooltipEl = null;

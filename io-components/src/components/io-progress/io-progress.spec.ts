@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoProgress } from './io-progress';
-import { computePercentage } from './io-progress-utils';
+import {
+  computePercentage,
+  computeCircleDashoffset,
+  computeCircleCircumference,
+  computeStepsFilled,
+} from './io-progress-utils';
 
 const hMock = h as unknown as ReturnType<typeof vi.fn>;
 
@@ -42,6 +47,10 @@ describe('io-progress — default props', () => {
     expect(component.size).toBe('md');
   });
 
+  it('shape defaults to linear', () => {
+    expect(component.shape).toBe('linear');
+  });
+
   it('animated defaults to true', () => {
     expect(component.animated).toBe(true);
   });
@@ -75,7 +84,7 @@ describe('io-progress — default props', () => {
   });
 });
 
-describe('io-progress — render stability', () => {
+describe('io-progress — render stability (shape=linear)', () => {
   it('does not throw for value=0', () => {
     const component = new IoProgress();
     expect(() => component.render()).not.toThrow();
@@ -245,6 +254,102 @@ describe('io-progress — no interactive methods', () => {
   });
 });
 
+describe('io-progress — render stability (shape=circular)', () => {
+  it('does not throw with shape=circular', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.label = 'Loading';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=circular and indeterminate', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.indeterminate = true;
+    component.label = 'Loading';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=circular and showLabel', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.value = 60;
+    component.showLabel = true;
+    component.label = 'Loading';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=circular size=sm', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.size = 'sm';
+    component.label = 'Loading';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=circular size=lg', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.size = 'lg';
+    component.label = 'Loading';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders SVG element for circular variant', () => {
+    const component = new IoProgress();
+    component.shape = 'circular';
+    component.value = 50;
+    component.label = 'Loading';
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const svgCall = calls.find(([tag]) => tag === 'svg');
+    expect(svgCall).toBeDefined();
+  });
+});
+
+describe('io-progress — render stability (shape=step)', () => {
+  it('does not throw with shape=step', () => {
+    const component = new IoProgress();
+    component.shape = 'step';
+    component.value = 2;
+    component.max = 5;
+    component.label = 'Step 2 of 5';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=step at max', () => {
+    const component = new IoProgress();
+    component.shape = 'step';
+    component.value = 5;
+    component.max = 5;
+    component.label = 'Complete';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('does not throw with shape=step at 0', () => {
+    const component = new IoProgress();
+    component.shape = 'step';
+    component.value = 0;
+    component.max = 4;
+    component.label = 'Not started';
+    expect(() => component.render()).not.toThrow();
+  });
+
+  it('renders progress-steps wrapper for step variant', () => {
+    const component = new IoProgress();
+    component.shape = 'step';
+    component.value = 1;
+    component.max = 3;
+    component.label = 'Step 1 of 3';
+    (h as ReturnType<typeof vi.fn>).mockClear();
+    (component as any).render();
+    const calls = (h as ReturnType<typeof vi.fn>).mock.calls as Array<[unknown, Record<string, unknown> | null, ...unknown[]]>;
+    const stepsWrapper = calls.find(([tag, attrs]) => tag === 'div' && typeof attrs?.['class'] === 'string' && (attrs['class'] as string).includes('progress-steps'));
+    expect(stepsWrapper).toBeDefined();
+  });
+});
+
 describe('io-progress — utility: computePercentage', () => {
   it('computes percentage for default range [0, 100]', () => {
     expect(computePercentage(0, 0, 100)).toBe(0);
@@ -278,5 +383,57 @@ describe('io-progress — utility: computePercentage', () => {
 
   it('returns 0 when min > max (invalid range)', () => {
     expect(computePercentage(50, 100, 50)).toBe(0);
+  });
+});
+
+describe('io-progress — utility: computeCircleCircumference', () => {
+  it('computes 2πr', () => {
+    const r = 21;
+    expect(computeCircleCircumference(r)).toBeCloseTo(2 * Math.PI * r);
+  });
+});
+
+describe('io-progress — utility: computeCircleDashoffset', () => {
+  it('returns 0 dashoffset for 100%', () => {
+    const r = 21;
+    expect(computeCircleDashoffset(r, 100)).toBeCloseTo(0);
+  });
+
+  it('returns full circumference for 0%', () => {
+    const r = 21;
+    const c = computeCircleCircumference(r);
+    expect(computeCircleDashoffset(r, 0)).toBeCloseTo(c);
+  });
+
+  it('returns half circumference for 50%', () => {
+    const r = 21;
+    const c = computeCircleCircumference(r);
+    expect(computeCircleDashoffset(r, 50)).toBeCloseTo(c / 2);
+  });
+});
+
+describe('io-progress — utility: computeStepsFilled', () => {
+  it('returns 0 when value equals min', () => {
+    expect(computeStepsFilled(0, 0, 5)).toBe(0);
+  });
+
+  it('returns max when value equals max', () => {
+    expect(computeStepsFilled(5, 0, 5)).toBe(5);
+  });
+
+  it('returns number of filled steps for value in range', () => {
+    expect(computeStepsFilled(3, 0, 5)).toBe(3);
+  });
+
+  it('returns 0 when max <= min (invalid range)', () => {
+    expect(computeStepsFilled(5, 5, 5)).toBe(0);
+  });
+
+  it('clamps value above max to max', () => {
+    expect(computeStepsFilled(10, 0, 5)).toBe(5);
+  });
+
+  it('clamps value below min to min (returns 0)', () => {
+    expect(computeStepsFilled(-1, 0, 5)).toBe(0);
   });
 });

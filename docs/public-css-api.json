@@ -1266,6 +1266,36 @@
     "description": "Backdrop filter blur intensity for toast items. Accepts any CSS length (e.g. 0 to disable). Default: 12px."
   },
   {
+    "cssVar": "--io-toast-position-offset",
+    "classification": "public-api",
+    "component": "io-toast",
+    "description": "Corner spacing between the toast container and the viewport edge for all 6 position values. Defaults to --io-space-6 (24px)."
+  },
+  {
+    "cssVar": "--io-toast-stack-gap",
+    "classification": "public-api",
+    "component": "io-toast",
+    "description": "Vertical gap between stacked toast items when multiple toasts are displayed simultaneously. Reserved for future stacking support."
+  },
+  {
+    "cssVar": "--io-toast-progress-height",
+    "classification": "public-api",
+    "component": "io-toast-item",
+    "description": "Height of the countdown progress bar rendered when showProgress=true. Default: 3px."
+  },
+  {
+    "cssVar": "--io-toast-progress-color",
+    "classification": "public-api",
+    "component": "io-toast-item",
+    "description": "Color of the countdown progress bar rendered when showProgress=true. Defaults to --io-color-primary."
+  },
+  {
+    "cssVar": "--io-toast-duration",
+    "classification": "public-api",
+    "component": "io-toast-item",
+    "description": "Auto-dismiss duration passed as a CSS custom property to drive the progress bar animation. Set by the parent io-toast. Default: 6000ms."
+  },
+  {
     "cssVar": "--io-z-tooltip",
     "classification": "internal",
     "component": "io-tooltip",

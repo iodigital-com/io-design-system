@@ -123,10 +123,15 @@ describe('io-inline-notification — ARIA role mapping', () => {
 });
 
 describe('io-inline-notification — slot content detection', () => {
-  function getSlotchangeHandler(c: IoInlineNotification): ((e: Event) => void) | undefined {
+  // Find the default slot (no name attribute)
+  function getDefaultSlotchangeHandler(c: IoInlineNotification): ((e: Event) => void) | undefined {
     hMock.mockClear();
     (c as any).render();
-    const slotCall = hMock.mock.calls.find(([tag]: [unknown]) => tag === 'slot');
+    const slotCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'slot' &&
+        (!attrs || typeof attrs !== 'object' || !('name' in (attrs as Record<string, unknown>))),
+    );
     return (slotCall?.[1] as Record<string, unknown>)?.['onSlotchange'] as ((e: Event) => void) | undefined;
   }
 
@@ -137,7 +142,7 @@ describe('io-inline-notification — slot content detection', () => {
 
   it('sets hasContent true when slot has assigned nodes', () => {
     const c = new IoInlineNotification();
-    const handler = getSlotchangeHandler(c);
+    const handler = getDefaultSlotchangeHandler(c);
     const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([document.createTextNode('text')]) };
     handler?.({ target: fakeSlot } as unknown as Event);
     expect((c as any).hasContent).toBe(true);
@@ -146,7 +151,7 @@ describe('io-inline-notification — slot content detection', () => {
   it('sets hasContent false when slot has no assigned nodes', () => {
     const c = new IoInlineNotification();
     (c as any).hasContent = true;
-    const handler = getSlotchangeHandler(c);
+    const handler = getDefaultSlotchangeHandler(c);
     const fakeSlot = { assignedNodes: vi.fn().mockReturnValue([]) };
     handler?.({ target: fakeSlot } as unknown as Event);
     expect((c as any).hasContent).toBe(false);
@@ -198,14 +203,17 @@ describe('io-inline-notification — headingTag prop', () => {
     },
   );
 
-  it('does not render a heading element when heading prop is not set', () => {
+  it('renders heading element with hidden class when heading prop is not set', () => {
     const c = new IoInlineNotification();
     hMock.mockClear();
     (c as any).render();
     const headingCall = hMock.mock.calls.find(([tag]: [unknown]) =>
       typeof tag === 'string' && /^h[1-6]$/.test(tag),
-    );
-    expect(headingCall).toBeUndefined();
+    ) as [string, Record<string, unknown>] | undefined;
+    // Heading is rendered but hidden via CSS class to host the heading slot
+    expect(headingCall).toBeDefined();
+    const classObj = headingCall?.[1]?.['class'] as Record<string, boolean> | undefined;
+    expect(classObj?.['inline-notification__heading--hidden']).toBe(true);
   });
 });
 
@@ -342,21 +350,50 @@ describe('io-inline-notification — action event emission', () => {
   });
 });
 
-describe('io-inline-notification — dismiss button touch target (WCAG 2.5.8)', () => {
-  it('dismiss button styles include min-width token (WCAG 2.5.8)', () => {
-    const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-width: var(--io-touch-target-min)');
+describe('io-inline-notification — dismiss button (WCAG 2.5.8)', () => {
+  it('renders dismiss as io-button when dismissible=true', () => {
+    const c = new IoInlineNotification();
+    c.dismissible = true;
+    hMock.mockClear();
+    (c as any).render();
+    const dismissBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'io-button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['icon'] === 'x',
+    );
+    expect(dismissBtn).toBeDefined();
   });
 
-  it('dismiss button styles include min-height token (WCAG 2.5.8)', () => {
-    const css = getInlineNotificationStyles('info');
-    expect(css).toContain('min-height: var(--io-touch-target-min)');
+  it('dismiss io-button receives aria-label', () => {
+    const c = new IoInlineNotification();
+    c.dismissible = true;
+    c.heading = 'Upload failed';
+    hMock.mockClear();
+    (c as any).render();
+    const dismissBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'io-button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['icon'] === 'x',
+    ) as [unknown, Record<string, unknown>] | undefined;
+    expect(dismissBtn?.[1]?.['aria-label']).toBe('Dismiss "Upload failed"');
   });
 
-  it('dismiss button styles include padding token (not zero)', () => {
-    const css = getInlineNotificationStyles('info');
-    // Should include padding with a token, not bare `padding: 0`
-    expect(css).toContain('padding: var(--io-space-1)');
-    expect(css).not.toContain('padding: 0');
+  it('does not render dismiss io-button when dismissible=false', () => {
+    const c = new IoInlineNotification();
+    c.dismissible = false;
+    hMock.mockClear();
+    (c as any).render();
+    const dismissBtn = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'io-button' &&
+        typeof attrs === 'object' &&
+        attrs !== null &&
+        (attrs as Record<string, unknown>)['icon'] === 'x',
+    );
+    expect(dismissBtn).toBeUndefined();
   });
 });

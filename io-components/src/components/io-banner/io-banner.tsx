@@ -1,6 +1,7 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, State, Watch, h } from '@stencil/core';
 
 import { getBannerStyles } from './io-banner-styles';
+import { getNotificationIconName } from '../../utils/notification-icons';
 import type { IoBannerVariant, IoBannerPosition, IoBannerHeadingTag } from './types';
 import type { IoIconName } from '../../utils/icons';
 
@@ -36,6 +37,11 @@ import type { IoIconName } from '../../utils/icons';
  *
  * <io-banner variant="success" open dismissible>
  *   Your changes have been saved.
+ * </io-banner>
+ *
+ * <io-banner variant="info" open>
+ *   <span slot="heading">Maintenance on <a href="/status">status page</a></span>
+ *   Extended details below.
  * </io-banner>
  */
 @Component({
@@ -88,6 +94,7 @@ export class IoBanner {
   @Event({ bubbles: false }) action!: EventEmitter<void>;
 
   @State() private hasContent = false;
+  @State() private hasHeadingSlot = false;
 
   /**
    * True while the exit animation is running.
@@ -110,6 +117,12 @@ export class IoBanner {
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
     if (this.heading) return `Dismiss "${this.heading}"`;
+    if (this.hasHeadingSlot) {
+      const slot = this.el?.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="heading"]');
+      const nodes = slot?.assignedNodes({ flatten: true }) ?? [];
+      const text = nodes.map((n) => n.textContent ?? '').join('').trim();
+      if (text) return `Dismiss "${text}"`;
+    }
     return `Dismiss ${this.variant} notification`;
   }
 
@@ -202,10 +215,12 @@ export class IoBanner {
 
   /**
    * @slot - Default slot. Notification message body text or inline elements.
+   * @slot heading - Optional rich heading content. Takes precedence over the `heading` prop.
    */
   render() {
     const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
     const HeadingTag = headingTag;
+    const iconName = getNotificationIconName(this.variant);
 
     // The live-region wrapper is always mounted (issue #1076) so assistive tech
     // registers it before the first announcement. aria-hidden hides it from the
@@ -233,36 +248,21 @@ export class IoBanner {
           onTransitionEnd={this.handleTransitionEnd}
         >
           <span class="banner__icon" aria-hidden="true">
-            {this.variant === 'info' && (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="16" x2="12" y2="12" />
-                <line x1="12" y1="8" x2="12.01" y2="8" />
-              </svg>
-            )}
-            {this.variant === 'success' && (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-              </svg>
-            )}
-            {this.variant === 'warning' && (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                <line x1="12" y1="9" x2="12" y2="13" />
-                <line x1="12" y1="17" x2="12.01" y2="17" />
-              </svg>
-            )}
-            {this.variant === 'error' && (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="15" y1="9" x2="9" y2="15" />
-                <line x1="9" y1="9" x2="15" y2="15" />
-              </svg>
-            )}
+            <io-icon name={iconName} />
           </span>
           <div class="banner__body">
-            {this.heading && <HeadingTag class="banner__heading">{this.heading}</HeadingTag>}
+            {this.heading
+              ? <HeadingTag class="banner__heading">{this.heading}</HeadingTag>
+              : <HeadingTag class={{ 'banner__heading': true, 'banner__heading--hidden': !this.hasHeadingSlot }}>
+                  <slot
+                    name="heading"
+                    onSlotchange={(e: Event) => {
+                      const slot = e.target as HTMLSlotElement;
+                      this.hasHeadingSlot = slot.assignedNodes({ flatten: true }).length > 0;
+                    }}
+                  />
+                </HeadingTag>
+            }
             {this.description && <p class="banner__description">{this.description}</p>}
             <div class={{ 'banner__content': true, 'banner__content--empty': !this.hasContent }}>
               <slot onSlotchange={(e: Event) => {
@@ -272,29 +272,26 @@ export class IoBanner {
             </div>
           </div>
           {this.actionLabel && (
-            <button
-              type="button"
-              class={{ 'banner__action': true, 'banner__action--loading': this.actionLoading }}
-              aria-busy={this.actionLoading ? 'true' : undefined}
-              disabled={this.actionLoading || undefined}
+            <io-button
+              variant="ghost"
+              size="sm"
+              icon={this.actionIcon}
+              icon-position="right"
+              loading={this.actionLoading}
               onClick={this.handleAction}
             >
               {this.actionLabel}
-              <io-icon name={this.actionIcon} aria-hidden="true" />
-            </button>
+            </io-button>
           )}
           {this.dismissible && (
-            <button
-              type="button"
+            <io-button
               class="banner__dismiss"
+              variant="ghost"
+              size="sm"
+              icon="x"
               aria-label={this.resolvedDismissLabel}
               onClick={this.handleDismiss}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+            />
           )}
         </div>
       </Host>

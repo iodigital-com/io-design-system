@@ -108,11 +108,6 @@ export function getBannerStyles(): string {
       color: var(--banner-icon-color);
     }
 
-    .banner__icon svg {
-      width: var(--io-icon-size-md);
-      height: var(--io-icon-size-md);
-    }
-
     .banner__body {
       flex: 1;
       min-width: 0;
@@ -129,6 +124,10 @@ export function getBannerStyles(): string {
       color: var(--io-text-primary);
     }
 
+    .banner__heading--hidden {
+      display: none;
+    }
+
     .banner__description {
       margin: 0;
       color: var(--io-text-primary);
@@ -140,69 +139,6 @@ export function getBannerStyles(): string {
 
     .banner__content--empty {
       display: none;
-    }
-
-    .banner__action {
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: var(--io-space-1);
-      min-height: var(--io-touch-target-min);
-      padding: 0 var(--io-space-2);
-      background: transparent;
-      border: 1px solid var(--io-border-interactive);
-      border-radius: var(--io-border-radius-sm);
-      cursor: pointer;
-      font-size: var(--io-font-size-sm);
-      font-weight: var(--io-font-weight-medium);
-      color: var(--io-text-primary);
-      font-family: var(--io-font-primary);
-      transition: color var(--io-motion-fast), border-color var(--io-motion-fast);
-    }
-
-    .banner__action:hover {
-      border-color: var(--io-text-primary);
-    }
-
-    .banner__action:focus-visible {
-      box-shadow: var(--io-focus-ring-active);
-      outline: none;
-    }
-
-    .banner__action--loading {
-      cursor: wait;
-      opacity: var(--io-state-disabled-opacity);
-    }
-
-    .banner__dismiss {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: var(--io-touch-target-min);
-      min-height: var(--io-touch-target-min);
-      padding: 0;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: var(--io-text-secondary);
-      transition: color var(--io-motion-fast);
-    }
-
-    .banner__dismiss:hover {
-      color: var(--io-text-primary);
-    }
-
-    .banner__dismiss:focus-visible {
-      box-shadow: var(--io-focus-ring-active);
-      outline: none;
-      border-radius: var(--io-border-radius-sm);
-    }
-
-    .banner__dismiss svg {
-      width: var(--io-icon-size-sm);
-      height: var(--io-icon-size-sm);
-      pointer-events: none;
     }
 
     /* Variants — set border accent + icon color only */
@@ -230,9 +166,6 @@ export function getBannerStyles(): string {
       .banner,
       .banner--dismissing {
         animation: none;
-        transition: none;
-      }
-      .banner__dismiss {
         transition: none;
       }
     }

@@ -125,9 +125,35 @@ export function getToastItemStyles(variant: IoToastVariant): string {
       }
     }
 
+    /* ── Progress bar (showProgress) ──────────────────────────── */
+
+    .toast__progress {
+      display: block;
+      height: var(--io-toast-progress-height, 3px);
+      border-radius: 0 0 var(--io-border-radius-sm) var(--io-border-radius-sm);
+      background: var(--io-toast-progress-color, var(--io-color-primary));
+      width: 100%;
+      transform-origin: left;
+      animation: io-toast-progress var(--io-toast-duration, 6000ms) linear forwards;
+    }
+
+    :host(:hover) .toast__progress,
+    :host(:focus-within) .toast__progress {
+      animation-play-state: paused;
+    }
+
+    @keyframes io-toast-progress {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(0); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .toast {
         animation: none;
+      }
+      .toast__progress {
+        animation: none;
+        transform: scaleX(0);
       }
     }
   `;

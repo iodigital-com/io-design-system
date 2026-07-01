@@ -158,4 +158,9 @@ describe('io-toast — style contracts', () => {
     expect(styles).toContain('[data-position="bottom-center"]');
     expect(styles).toContain('[data-position="bottom-end"]');
   });
+
+  it('uses --io-toast-position-offset token for all corner positions', () => {
+    const styles = getToastStyles();
+    expect(styles).toContain('--io-toast-position-offset');
+  });
 });

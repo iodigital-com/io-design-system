@@ -23,21 +23,25 @@ export function getToastStyles(): string {
       max-width: calc(100vw - 2 * var(--io-space-6));
 
       /* Default: bottom-end */
-      bottom: var(--io-space-6);
-      right: var(--io-space-6);
+      bottom: var(--io-toast-position-offset, var(--io-space-6));
+      right: var(--io-toast-position-offset, var(--io-space-6));
+
+      /* ── Stack gap (future stacking support) ─────────────── */
+      /* Reserved token — consumed when multiple toasts are stacked. */
+      --io-toast-stack-gap: var(--io-toast-stack-gap, var(--io-space-2));
     }
 
     /* ── Position variants ──────────────────────────────────── */
 
     :host([data-position="top-start"]) {
-      top: var(--io-space-6);
-      left: var(--io-space-6);
+      top: var(--io-toast-position-offset, var(--io-space-6));
+      left: var(--io-toast-position-offset, var(--io-space-6));
       bottom: auto;
       right: auto;
     }
 
     :host([data-position="top-center"]) {
-      top: var(--io-space-6);
+      top: var(--io-toast-position-offset, var(--io-space-6));
       left: 50%;
       transform: translateX(-50%);
       bottom: auto;
@@ -45,28 +49,28 @@ export function getToastStyles(): string {
     }
 
     :host([data-position="top-end"]) {
-      top: var(--io-space-6);
-      right: var(--io-space-6);
+      top: var(--io-toast-position-offset, var(--io-space-6));
+      right: var(--io-toast-position-offset, var(--io-space-6));
       bottom: auto;
       left: auto;
     }
 
     :host([data-position="bottom-start"]) {
-      bottom: var(--io-space-6);
-      left: var(--io-space-6);
+      bottom: var(--io-toast-position-offset, var(--io-space-6));
+      left: var(--io-toast-position-offset, var(--io-space-6));
       right: auto;
     }
 
     :host([data-position="bottom-center"]) {
-      bottom: var(--io-space-6);
+      bottom: var(--io-toast-position-offset, var(--io-space-6));
       left: 50%;
       transform: translateX(-50%);
       right: auto;
     }
 
     :host([data-position="bottom-end"]) {
-      bottom: var(--io-space-6);
-      right: var(--io-space-6);
+      bottom: var(--io-toast-position-offset, var(--io-space-6));
+      right: var(--io-toast-position-offset, var(--io-space-6));
       left: auto;
     }
 

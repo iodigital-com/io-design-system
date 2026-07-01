@@ -3656,14 +3656,6 @@
       "notes": "io-spinner track ring stroke color override. Unset by default; defers to color class at 20% opacity."
     },
     {
-      "runtimeCssVar": "--io-spinner-duration",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
-      "tokenPath": null,
-      "canonicalCssVar": null,
-      "notes": "io-spinner rotation animation duration. Default 0.7s."
-    },
-    {
       "runtimeCssVar": "--io-progress-indeterminate-duration",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",

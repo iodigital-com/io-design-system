@@ -212,14 +212,12 @@ export class IoInputPassword {
 
     const describedBy = [
       showMessage ? errorId : '',
-      showSuccessMessage ? errorId : '',
-      showWarningMessage ? errorId : '',
       showDescription ? helperId : '',
     ].filter(Boolean).join(' ') || undefined;
 
     const wrapperClass = [
       'input-wrapper',
-      showErrorBlock ? 'input-wrapper--state-error' : '',
+      showError ? 'input-wrapper--state-error' : '',
       showSuccess ? 'input-wrapper--state-success' : '',
       showWarning ? 'input-wrapper--state-warning' : '',
       disabled ? 'input-wrapper--disabled' : '',

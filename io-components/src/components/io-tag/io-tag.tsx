@@ -1,7 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
 import { getTagStyles } from './io-tag-styles';
-import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
+import { getTagClassName, shouldBlockTagInteraction } from './io-tag-utils';
 import type { IoIconName } from '../../utils/icons';
 
 import type { IoTagSize, IoTagVariant, IoTagAppearance } from './types';
@@ -107,7 +107,7 @@ export class IoTag {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { selected, disabled, size, label, compact, variant, appearance, icon, iconSource } = this;
+    const { selected, disabled, size, compact, variant, appearance, icon, iconSource } = this;
 
     const tagClass = getTagClassName(size, variant, appearance, selected, disabled, compact);
 

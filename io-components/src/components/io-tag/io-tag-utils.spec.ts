@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction, resolveTagVariant, DEPRECATED_COLOR_MAP } from './io-tag-utils';
+import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
 
 describe('io-tag-utils', () => {
   it('builds tag class names with semantic variant and appearance', () => {

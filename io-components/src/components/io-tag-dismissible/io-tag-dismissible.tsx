@@ -2,7 +2,6 @@ import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '
 
 import { getTagDismissibleStyles } from './io-tag-dismissible-styles';
 import type { IoIconName } from '../../utils/icons';
-import type { IoTagSize } from '../io-tag/types';
 import type { IoTagDismissibleVariant } from './types';
 
 /**

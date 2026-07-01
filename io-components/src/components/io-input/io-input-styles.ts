@@ -153,6 +153,7 @@ export function getInputStyles(): string {
 
     .input-wrapper--state-error .input-field {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-input-border-error-width);
     }
 
     .input-wrapper--state-success .input-field {

@@ -125,6 +125,7 @@ export function getSelectStyles(): string {
 
     .select-wrapper--state-error .select-field {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-select-border-error-width);
     }
 
     .select-wrapper--state-success .select-field {
@@ -232,6 +233,7 @@ export function getSelectStyles(): string {
 
     .select-wrapper--state-error .combobox-trigger {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-select-border-error-width);
     }
 
     .select-wrapper--state-success .combobox-trigger {

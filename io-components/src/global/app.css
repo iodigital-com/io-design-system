@@ -468,8 +468,16 @@
      11. FORM COMPONENT TOKENS
      ============================================================ */
 
-  --io-input-border-width:       1px;
-  --io-input-border-width-focus: 5px;
+  --io-input-border-width:             1px;
+  --io-input-border-width-focus:       5px;
+  --io-input-border-error-width:       2px;
+  --io-textarea-border-error-width:    2px;
+  --io-select-border-error-width:      2px;
+  --io-multi-select-border-error-width: 2px;
+  --io-switch-border-error-width:      2px;
+  --io-input-date-border-error-width:  2px;
+  --io-input-search-border-error-width: 2px;
+  --io-input-password-border-error-width: 2px;
   --io-input-padding-y:          0.5rem;
   --io-input-padding-right:      1.2rem;
   --io-label-font-size:          0.875rem;     /* resting — label above the line (14px, iodigital.com) */

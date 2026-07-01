@@ -108,6 +108,7 @@ export function getInputPasswordStyles(): string {
 
     .input-wrapper--state-error .input-field {
       border-bottom-color: var(--io-border-error);
+      border-bottom-width: var(--io-input-password-border-error-width);
     }
 
     .input-wrapper--state-success .input-field {

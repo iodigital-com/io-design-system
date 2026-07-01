@@ -1,0 +1,1431 @@
+{
+  "$schemaVersion": 1,
+  "$generated": "2026-06-29T00:00:00.000Z",
+  "$source": "docs/public-css-api.json + io-components/src/global/app.css",
+  "tokens": [
+    {
+      "cssVar": "--io-accordion-max-height",
+      "classification": "deprecated",
+      "component": "io-accordion",
+      "description": "Deprecated. Previously set a max-height cap on open panels. Removed when grid-template-rows animation replaced the max-height approach. No longer has any effect.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-accordion-icon-bar-thickness",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Thickness of the +/\u2212 icon bars. Override to adjust the visual weight of the toggle icon.",
+      "defaultValue": "8%"
+    },
+    {
+      "cssVar": "--io-accordion-icon-bar-inset",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Inset distance of the +/\u2212 icon bars from the edge of the icon container.",
+      "defaultValue": "1%"
+    },
+    {
+      "cssVar": "--io-accordion-icon-bar-axis-offset",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Axis offset that centres the vertical/horizontal bars of the +/\u2212 icon.",
+      "defaultValue": "44%"
+    },
+    {
+      "cssVar": "--io-accordion-icon-horizontal-collapsed-side",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Side value applied to the horizontal bar when the accordion is open, collapsing it to a point.",
+      "defaultValue": "50%"
+    },
+    {
+      "cssVar": "--io-color-primary",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global primary brand color. Used for the +/\u2212 icon fill.",
+      "defaultValue": "#0000D2"
+    },
+    {
+      "cssVar": "--io-focus-ring-active",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global focus ring shadow. Applied by initFocusVisible().",
+      "defaultValue": "none"
+    },
+    {
+      "cssVar": "--io-font-primary",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global primary font family.",
+      "defaultValue": "'Manrope', sans-serif"
+    },
+    {
+      "cssVar": "--io-font-size-base",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global base font size.",
+      "defaultValue": "1rem"
+    },
+    {
+      "cssVar": "--io-font-size-lg",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global large font size.",
+      "defaultValue": "1.125rem"
+    },
+    {
+      "cssVar": "--io-font-weight-semibold",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global semibold font weight.",
+      "defaultValue": "600"
+    },
+    {
+      "cssVar": "--io-line-height-relaxed",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global relaxed line height.",
+      "defaultValue": "1.6"
+    },
+    {
+      "cssVar": "--io-motion-base",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global base motion duration and easing.",
+      "defaultValue": "300ms ease"
+    },
+    {
+      "cssVar": "--io-motion-slow",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global slow motion used for panel open/close.",
+      "defaultValue": "500ms ease-in-out"
+    },
+    {
+      "cssVar": "--io-space-16",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global spacing token (64px).",
+      "defaultValue": "4rem"
+    },
+    {
+      "cssVar": "--io-space-4",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global spacing token (16px).",
+      "defaultValue": "1rem"
+    },
+    {
+      "cssVar": "--io-space-5",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global spacing token (20px).",
+      "defaultValue": "1.25rem"
+    },
+    {
+      "cssVar": "--io-space-6",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global spacing token (24px).",
+      "defaultValue": "1.5rem"
+    },
+    {
+      "cssVar": "--io-state-disabled-opacity",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global disabled state opacity.",
+      "defaultValue": "0.5"
+    },
+    {
+      "cssVar": "--io-text-primary",
+      "classification": "internal",
+      "component": "io-accordion",
+      "description": "Global primary text color.",
+      "defaultValue": "var(--io-color-grey-6)"
+    },
+    {
+      "cssVar": "--io-accordion-border-color",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Color of the horizontal divider lines between accordion items.",
+      "defaultValue": "var(--io-text-primary)"
+    },
+    {
+      "cssVar": "--io-accordion-py",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Vertical padding of the trigger button. Overrides the per-size preset when set.",
+      "defaultValue": "initial"
+    },
+    {
+      "cssVar": "--io-accordion-px",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "Horizontal padding of the trigger button. Defaults to 0.",
+      "defaultValue": "initial"
+    },
+    {
+      "cssVar": "--io-accordion-summary-top",
+      "classification": "public-api",
+      "component": "io-accordion",
+      "description": "top offset for the sticky trigger header when sticky is enabled. Defaults to 0.",
+      "defaultValue": "initial"
+    },
+    {
+      "cssVar": "--io-accent-bg",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Semantic accent background color. Responds to dark mode.",
+      "defaultValue": "var(--io-color-primary-bg)"
+    },
+    {
+      "cssVar": "--io-accent-text",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Semantic accent text color. Responds to dark mode.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-border",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global decorative border color.",
+      "defaultValue": "var(--io-color-grey-2)"
+    },
+    {
+      "cssVar": "--io-border-radius-pill",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global pill border radius.",
+      "defaultValue": "9999px"
+    },
+    {
+      "cssVar": "--io-color-beige",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global beige brand color.",
+      "defaultValue": "#DCCFC2"
+    },
+    {
+      "cssVar": "--io-color-error",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global error color.",
+      "defaultValue": "#ff6161"
+    },
+    {
+      "cssVar": "--io-color-error-soft",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global soft error background.",
+      "defaultValue": "rgba(255, 97, 97, 0.1)"
+    },
+    {
+      "cssVar": "--io-color-grey-6",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global dark grey color.",
+      "defaultValue": "#242424"
+    },
+    {
+      "cssVar": "--io-color-orange",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global orange brand color.",
+      "defaultValue": "#ed7f53"
+    },
+    {
+      "cssVar": "--io-color-rouge",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global rouge brand color.",
+      "defaultValue": "#a13865"
+    },
+    {
+      "cssVar": "--io-color-success",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global success color.",
+      "defaultValue": "#30c58e"
+    },
+    {
+      "cssVar": "--io-color-success-soft",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global soft success background.",
+      "defaultValue": "rgba(48, 197, 142, 0.1)"
+    },
+    {
+      "cssVar": "--io-color-warning",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global warning color.",
+      "defaultValue": "#ffa100"
+    },
+    {
+      "cssVar": "--io-color-warning-soft",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global soft warning background.",
+      "defaultValue": "rgba(255, 161, 0, 0.1)"
+    },
+    {
+      "cssVar": "--io-color-white",
+      "classification": "internal",
+      "component": "io-badge",
+      "description": "Global white color.",
+      "defaultValue": "#ffffff"
+    },
+    {
+      "cssVar": "--io-button-group-active-bg",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Background of the active/selected button in the group. Override to apply a custom brand active state.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-button-group-active-border",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Border color of the active/selected button in the group.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-button-group-active-color",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Text color of the active/selected button in the group.",
+      "defaultValue": "var(--io-color-white)"
+    },
+    {
+      "cssVar": "--io-button-group-color",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Text color of unselected buttons in the group. Overridden in dark mode.",
+      "defaultValue": "var(--io-text-secondary)"
+    },
+    {
+      "cssVar": "--io-button-group-disabled-opacity",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Opacity applied to the entire group or an individual disabled button.",
+      "defaultValue": "var(--io-state-disabled-opacity)"
+    },
+    {
+      "cssVar": "--io-button-group-font-size",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Font size of the button group label text.",
+      "defaultValue": "var(--io-font-size-sm)"
+    },
+    {
+      "cssVar": "--io-button-group-min-height",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Minimum height (touch target) for each button in the group.",
+      "defaultValue": "var(--io-space-8)"
+    },
+    {
+      "cssVar": "--io-button-group-padding-x",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Horizontal padding for each button in the group.",
+      "defaultValue": "var(--io-space-4)"
+    },
+    {
+      "cssVar": "--io-button-group-padding-y",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Vertical padding for each button in the group.",
+      "defaultValue": "5px"
+    },
+    {
+      "cssVar": "--io-button-group-transition",
+      "classification": "public-api",
+      "component": "io-button-group",
+      "description": "Transition shorthand applied to the button group buttons for smooth state changes.",
+      "defaultValue": "background-color 500ms var(--io-motion-easing-snappy),\n                                       color 500ms var(--io-motion-easing-snappy),\n                                       border-color 500ms var(--io-motion-easing-snappy)"
+    },
+    {
+      "cssVar": "--io-button-arrow-height-default",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Height of the arrow icon in default (sm/md/lg) button sizes.",
+      "defaultValue": "0.54rem"
+    },
+    {
+      "cssVar": "--io-button-arrow-shift-down",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Translation distance of the down-pointing arrow on hover.",
+      "defaultValue": "5px"
+    },
+    {
+      "cssVar": "--io-button-arrow-shift-forward",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Translation distance of the forward/back arrow on hover.",
+      "defaultValue": "6px"
+    },
+    {
+      "cssVar": "--io-button-arrow-width-default",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Width of the arrow icon in default (sm/md/lg) button sizes.",
+      "defaultValue": "0.875rem"
+    },
+    {
+      "cssVar": "--io-button-arrow-xl-height",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Height of the arrow icon in the xl button size.",
+      "defaultValue": "0.923rem"
+    },
+    {
+      "cssVar": "--io-button-arrow-xl-width",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Width of the arrow icon in the xl button size.",
+      "defaultValue": "1.5rem"
+    },
+    {
+      "cssVar": "--io-button-icon-padding",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Padding for icon-only buttons. Override to adjust the icon button touch target area.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-button-link-underline-height",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Height of the animated underline on link-variant buttons.",
+      "defaultValue": "1px"
+    },
+    {
+      "cssVar": "--io-button-spinner-border-width",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Border width of the loading spinner ring inside a button.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-button-spinner-duration",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Duration of one full loading spinner rotation.",
+      "defaultValue": "600ms"
+    },
+    {
+      "cssVar": "--io-button-xl-padding-y",
+      "classification": "public-api",
+      "component": "io-button",
+      "description": "Vertical padding for the xl button size.",
+      "defaultValue": "1.125rem"
+    },
+    {
+      "cssVar": "--io-border-radius-pill",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global pill border radius used for the button shape.",
+      "defaultValue": "9999px"
+    },
+    {
+      "cssVar": "--io-color-antraciet",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global anthracite brand color.",
+      "defaultValue": "#454545"
+    },
+    {
+      "cssVar": "--io-color-antraciet-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global anthracite hover color.",
+      "defaultValue": "#333333"
+    },
+    {
+      "cssVar": "--io-color-beige-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global beige hover color.",
+      "defaultValue": "#cdb99e"
+    },
+    {
+      "cssVar": "--io-color-black",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global black color.",
+      "defaultValue": "#000000"
+    },
+    {
+      "cssVar": "--io-color-grey-2",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global light grey color.",
+      "defaultValue": "#ebebeb"
+    },
+    {
+      "cssVar": "--io-color-grey-4",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global medium grey color.",
+      "defaultValue": "#747474"
+    },
+    {
+      "cssVar": "--io-color-orange-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global orange hover color.",
+      "defaultValue": "#d96a3b"
+    },
+    {
+      "cssVar": "--io-color-pink",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global pink brand color.",
+      "defaultValue": "#DCC8C2"
+    },
+    {
+      "cssVar": "--io-color-pink-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global pink hover color.",
+      "defaultValue": "#c9afa8"
+    },
+    {
+      "cssVar": "--io-color-primary-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global primary hover color.",
+      "defaultValue": "#0000a8"
+    },
+    {
+      "cssVar": "--io-color-rouge-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global rouge hover color.",
+      "defaultValue": "#8a2e54"
+    },
+    {
+      "cssVar": "--io-color-yellow",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global yellow brand color.",
+      "defaultValue": "#fdbc75"
+    },
+    {
+      "cssVar": "--io-color-yellow-hover",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global yellow hover color.",
+      "defaultValue": "#f0a952"
+    },
+    {
+      "cssVar": "--io-font-weight-medium",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global medium font weight.",
+      "defaultValue": "500"
+    },
+    {
+      "cssVar": "--io-motion-easing-bounce",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global bounce easing curve.",
+      "defaultValue": "cubic-bezier(0.645, 0.045, 0.355, 1)"
+    },
+    {
+      "cssVar": "--io-motion-easing-snappy",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global snappy cubic-bezier easing curve.",
+      "defaultValue": "cubic-bezier(0.075, 0.82, 0.165, 1)"
+    },
+    {
+      "cssVar": "--io-size-button-lg",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global large button touch target size.",
+      "defaultValue": "50px"
+    },
+    {
+      "cssVar": "--io-size-button-md",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global medium button touch target size.",
+      "defaultValue": "42px"
+    },
+    {
+      "cssVar": "--io-size-button-sm",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global small button touch target size.",
+      "defaultValue": "31px"
+    },
+    {
+      "cssVar": "--io-size-button-xl",
+      "classification": "internal",
+      "component": "io-button",
+      "description": "Global extra-large button touch target size.",
+      "defaultValue": "56px"
+    },
+    {
+      "cssVar": "--io-carousel-scrollbar-height",
+      "classification": "public-api",
+      "component": "io-carousel",
+      "description": "Height of the custom horizontal scrollbar track of the carousel. Override to adjust scrollbar visual weight.",
+      "defaultValue": "4px"
+    },
+    {
+      "cssVar": "--io-bg-card",
+      "classification": "internal",
+      "component": "io-carousel",
+      "description": "Global card background color.",
+      "defaultValue": "var(--io-color-white)"
+    },
+    {
+      "cssVar": "--io-shadow-lg",
+      "classification": "internal",
+      "component": "io-carousel",
+      "description": "Global large shadow elevation.",
+      "defaultValue": "0px 0px 24px rgba(36, 36, 36, 0.25)"
+    },
+    {
+      "cssVar": "--io-shadow-md",
+      "classification": "internal",
+      "component": "io-carousel",
+      "description": "Global medium shadow elevation.",
+      "defaultValue": "0px 0px 10px rgba(0, 0, 0, 0.04),\n                                 0px 0px 25px rgba(0, 0, 0, 0.02)"
+    },
+    {
+      "cssVar": "--io-checkbox-border-error-width",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Border width applied to the checkbox control in an error state (2px satisfies WCAG 1.4.1).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-checkbox-border-width",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Default border width of the checkbox control.",
+      "defaultValue": "1.5px"
+    },
+    {
+      "cssVar": "--io-checkbox-icon-size",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Size of the check/indeterminate icon inside the checkbox.",
+      "defaultValue": "10px"
+    },
+    {
+      "cssVar": "--io-checkbox-radius",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Border radius of the checkbox control square.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-checkbox-size",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Width and height of the checkbox control area.",
+      "defaultValue": "1rem"
+    },
+    {
+      "cssVar": "--io-border-error",
+      "classification": "internal",
+      "component": "io-checkbox",
+      "description": "Global error border color.",
+      "defaultValue": "var(--io-color-error)"
+    },
+    {
+      "cssVar": "--io-border-interactive",
+      "classification": "internal",
+      "component": "io-checkbox",
+      "description": "Global interactive border color (WCAG 1.4.11 compliant).",
+      "defaultValue": "#767676"
+    },
+    {
+      "cssVar": "--io-checkbox-border-color",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Override for the checkbox border colour in resting and hover states. Defaults to --io-border-interactive.",
+      "defaultValue": "var(--io-border-interactive)"
+    },
+    {
+      "cssVar": "--io-checkbox-background-color",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Override for the checked/indeterminate fill colour. Defaults to --io-color-primary.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-checkbox-icon-color",
+      "classification": "public-api",
+      "component": "io-checkbox",
+      "description": "Override for the checkmark/indeterminate icon colour. Defaults to --io-color-white.",
+      "defaultValue": "var(--io-text-on-primary)"
+    },
+    {
+      "cssVar": "--io-divider-color",
+      "classification": "public-api",
+      "component": "io-divider",
+      "description": "Color of the divider line. Override to match your surface or accent color.",
+      "defaultValue": "var(--io-border)"
+    },
+    {
+      "cssVar": "--io-divider-gap",
+      "classification": "public-api",
+      "component": "io-divider",
+      "description": "Gap between the divider line and the label text in a labeled divider.",
+      "defaultValue": "var(--io-space-3)"
+    },
+    {
+      "cssVar": "--io-divider-label-size",
+      "classification": "public-api",
+      "component": "io-divider",
+      "description": "Font size of the label in a labeled divider.",
+      "defaultValue": "var(--io-font-size-sm)"
+    },
+    {
+      "cssVar": "--io-divider-thickness",
+      "classification": "public-api",
+      "component": "io-divider",
+      "description": "Thickness of the divider line.",
+      "defaultValue": "1px"
+    },
+    {
+      "cssVar": "--io-flyout-backdrop",
+      "classification": "public-api",
+      "component": "io-flyout",
+      "description": "Background colour of the flyout backdrop overlay. Override to adjust overlay opacity or colour.",
+      "defaultValue": "rgba(0, 0, 0, 0.5)"
+    },
+    {
+      "cssVar": "--io-input-border-width",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Default border-bottom width of the input field underline.",
+      "defaultValue": "1px"
+    },
+    {
+      "cssVar": "--io-input-border-width-focus",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Border-bottom width when the input field is focused.",
+      "defaultValue": "5px"
+    },
+    {
+      "cssVar": "--io-input-padding-right",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Right padding of the input field, allowing space for icons.",
+      "defaultValue": "1.2rem"
+    },
+    {
+      "cssVar": "--io-input-padding-y",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Vertical padding of the input field.",
+      "defaultValue": "0.5rem"
+    },
+    {
+      "cssVar": "--io-label-font-size",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Font size of the floating label at rest.",
+      "defaultValue": "0.875rem"
+    },
+    {
+      "cssVar": "--io-label-font-size-float",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Font size of the floating label when it has floated above the field.",
+      "defaultValue": "0.75rem"
+    },
+    {
+      "cssVar": "--io-label-font-weight",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Font weight of the floating label.",
+      "defaultValue": "var(--io-font-weight-bold)"
+    },
+    {
+      "cssVar": "--io-modal-max-height",
+      "classification": "public-api",
+      "component": "io-modal",
+      "description": "Maximum height of the modal dialog. Override to control vertical overflow behavior.",
+      "defaultValue": "90vh"
+    },
+    {
+      "cssVar": "--io-modal-width-lg",
+      "classification": "public-api",
+      "component": "io-modal",
+      "description": "Width of the modal in the lg size variant.",
+      "defaultValue": "768px"
+    },
+    {
+      "cssVar": "--io-modal-width-md",
+      "classification": "public-api",
+      "component": "io-modal",
+      "description": "Width of the modal in the md size variant.",
+      "defaultValue": "560px"
+    },
+    {
+      "cssVar": "--io-modal-width-sm",
+      "classification": "public-api",
+      "component": "io-modal",
+      "description": "Width of the modal in the sm size variant.",
+      "defaultValue": "400px"
+    },
+    {
+      "cssVar": "--io-border-radius-md",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global medium border radius.",
+      "defaultValue": "12px"
+    },
+    {
+      "cssVar": "--io-border-radius-sm",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global small border radius.",
+      "defaultValue": "9px"
+    },
+    {
+      "cssVar": "--io-motion-overlay-easing",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global overlay enter easing function.",
+      "defaultValue": "var(--io-motion-easing-ease-out)"
+    },
+    {
+      "cssVar": "--io-motion-overlay-enter",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global overlay enter animation duration.",
+      "defaultValue": "var(--io-motion-base)"
+    },
+    {
+      "cssVar": "--io-shadow-xl",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global extra-large shadow elevation.",
+      "defaultValue": "0px 10px 15px -3px rgba(0, 0, 0, 0.1),\n                                 0px 4px 6px -4px rgba(0, 0, 0, 0.1)"
+    },
+    {
+      "cssVar": "--io-state-hover",
+      "classification": "internal",
+      "component": "io-modal",
+      "description": "Global hover state background color.",
+      "defaultValue": "rgba(0, 0, 210, 0.06)"
+    },
+    {
+      "cssVar": "--io-combobox-max-height",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Maximum height of the dropdown listbox before it becomes scrollable.",
+      "defaultValue": "280px"
+    },
+    {
+      "cssVar": "--io-combobox-option-height",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Minimum height of each option item in the dropdown.",
+      "defaultValue": "44px"
+    },
+    {
+      "cssVar": "--io-combobox-z",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Z-index of the combobox dropdown panel.",
+      "defaultValue": "var(--io-z-dropdown)"
+    },
+    {
+      "cssVar": "--io-option-hover-bg",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Background color of a hovered or keyboard-focused option. Overridden in dark mode.",
+      "defaultValue": "var(--io-color-grey-1)"
+    },
+    {
+      "cssVar": "--io-select-chevron-offset-y",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Vertical offset used to fine-position the chevron icon in the select field.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-select-padding-right",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Right padding of the select field, leaving space for the chevron icon.",
+      "defaultValue": "1.6rem"
+    },
+    {
+      "cssVar": "--io-field-focus-offset-y",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Negative top margin applied when a field is focused to compensate for border-width growth.",
+      "defaultValue": "-2px"
+    },
+    {
+      "cssVar": "--io-border-focus",
+      "classification": "internal",
+      "component": "io-select",
+      "description": "Global focus border color.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-surface-elevated",
+      "classification": "internal",
+      "component": "io-select",
+      "description": "Global elevated surface color. Overridden in dark mode.",
+      "defaultValue": "var(--io-color-white)"
+    },
+    {
+      "cssVar": "--io-tabs-icon-gap",
+      "classification": "public-api",
+      "component": "io-tabs",
+      "description": "Gap between the icon and label text inside a tab button.",
+      "defaultValue": "var(--io-space-1)"
+    },
+    {
+      "cssVar": "--io-tabs-indicator-color",
+      "classification": "public-api",
+      "component": "io-tabs",
+      "description": "Color of the active tab bottom-border indicator. Override to apply a custom brand accent.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-tabs-track-color",
+      "classification": "public-api",
+      "component": "io-tabs",
+      "description": "Color of the inactive track border below the tab list. Override to match your surface.",
+      "defaultValue": "var(--io-border)"
+    },
+    {
+      "cssVar": "--io-tabs-bar-indicator-duration",
+      "classification": "public-api",
+      "component": "io-tabs-bar",
+      "description": "Duration of the sliding indicator animation when switching tabs. Set to 0ms to disable animation.",
+      "defaultValue": "250ms"
+    },
+    {
+      "cssVar": "--io-tabs-bar-indicator-easing",
+      "classification": "public-api",
+      "component": "io-tabs-bar",
+      "description": "CSS easing function for the sliding indicator animation.",
+      "defaultValue": "ease-out"
+    },
+    {
+      "cssVar": "--io-border-radius-xs",
+      "classification": "internal",
+      "component": "io-tabs",
+      "description": "Global extra-small border radius.",
+      "defaultValue": "4px"
+    },
+    {
+      "cssVar": "--io-toast-item-close-offset-top",
+      "classification": "public-api",
+      "component": "io-toast-item",
+      "description": "Top margin offset that aligns the close button within the toast item.",
+      "defaultValue": "-2px"
+    },
+    {
+      "cssVar": "--io-toast-item-close-size",
+      "classification": "public-api",
+      "component": "io-toast-item",
+      "description": "Width and height of the close button in a toast item.",
+      "defaultValue": "var(--io-icon-size-lg)"
+    },
+    {
+      "cssVar": "--io-toast-item-enter-duration",
+      "classification": "public-api",
+      "component": "io-toast-item",
+      "description": "Duration of the slide-in entrance animation for a toast item.",
+      "defaultValue": "250ms"
+    },
+    {
+      "cssVar": "--io-toast-item-icon-offset-top",
+      "classification": "public-api",
+      "component": "io-toast-item",
+      "description": "Top margin offset that fine-aligns the status icon in a toast item.",
+      "defaultValue": "1px"
+    },
+    {
+      "cssVar": "--io-color-info",
+      "classification": "internal",
+      "component": "io-toast-item",
+      "description": "Global informational color.",
+      "defaultValue": "#1565C0"
+    },
+    {
+      "cssVar": "--io-motion-easing-ease-out",
+      "classification": "internal",
+      "component": "io-toast-item",
+      "description": "Global ease-out cubic-bezier easing.",
+      "defaultValue": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    {
+      "cssVar": "--io-toast-max-width",
+      "classification": "public-api",
+      "component": "io-toast",
+      "description": "Maximum width of the toast container. Override to widen or narrow the notification region.",
+      "defaultValue": "400px"
+    },
+    {
+      "cssVar": "--io-z-toast",
+      "classification": "internal",
+      "component": "io-toast",
+      "description": "Global z-index for the toast layer.",
+      "defaultValue": "70"
+    },
+    {
+      "cssVar": "--io-toast-item-blur",
+      "classification": "public-api",
+      "component": "io-toast-item",
+      "description": "Backdrop filter blur intensity for toast items. Accepts any CSS length (e.g. 0 to disable). Default: 12px.",
+      "defaultValue": "12px"
+    },
+    {
+      "cssVar": "--io-z-tooltip",
+      "classification": "internal",
+      "component": "io-tooltip",
+      "description": "Global z-index for the tooltip layer.",
+      "defaultValue": "55"
+    },
+    {
+      "cssVar": "--io-motion-overlay-fade",
+      "classification": "internal",
+      "component": "io-tooltip",
+      "description": "Global overlay fade transition duration.",
+      "defaultValue": "var(--io-motion-fast)"
+    },
+    {
+      "cssVar": "--io-radio-border-error-width",
+      "classification": "public-api",
+      "component": "io-radio",
+      "description": "Border width of the radio control in an error state (2px satisfies WCAG 1.4.1).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-radio-border-width",
+      "classification": "public-api",
+      "component": "io-radio",
+      "description": "Default border width of the radio control circle.",
+      "defaultValue": "1.5px"
+    },
+    {
+      "cssVar": "--io-radio-dot-size",
+      "classification": "public-api",
+      "component": "io-radio",
+      "description": "Size of the inner filled dot when the radio is in the checked state.",
+      "defaultValue": "8px"
+    },
+    {
+      "cssVar": "--io-radio-size",
+      "classification": "public-api",
+      "component": "io-radio",
+      "description": "Width and height of the radio control area.",
+      "defaultValue": "1rem"
+    },
+    {
+      "cssVar": "--io-scroller-fade-color",
+      "classification": "public-api",
+      "component": "io-scroller",
+      "description": "The opaque colour used at the outer edge of the gradient fade overlay. Defaults to var(--io-bg-page). Override when the scroller sits on a surface other than the page background.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-scroller-fade-size",
+      "classification": "public-api",
+      "component": "io-scroller",
+      "description": "Width (horizontal) or height (vertical) of the gradient fade overlay. Defaults to var(--io-space-6, 24px).",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-switch-track-width",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Width of the switch track pill. Defaults to 2.75rem (44px).",
+      "defaultValue": "2.75rem"
+    },
+    {
+      "cssVar": "--io-switch-track-height",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Height of the switch track pill. Defaults to 1.5rem (24px).",
+      "defaultValue": "1.5rem"
+    },
+    {
+      "cssVar": "--io-switch-track-radius",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Border-radius of the switch track. Defaults to 9999px (fully rounded pill).",
+      "defaultValue": "9999px"
+    },
+    {
+      "cssVar": "--io-switch-thumb-size",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Width and height of the circular thumb. Defaults to 1.25rem (20px).",
+      "defaultValue": "1.25rem"
+    },
+    {
+      "cssVar": "--io-switch-thumb-radius",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Border-radius of the thumb. Defaults to 9999px (fully rounded circle).",
+      "defaultValue": "9999px"
+    },
+    {
+      "cssVar": "--io-switch-thumb-offset-off",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Horizontal translateX offset of the thumb when the switch is unchecked. Defaults to 2px.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-switch-thumb-offset-on",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Horizontal translateX offset of the thumb when the switch is checked. Defaults to track-width minus thumb-size minus 2px.",
+      "defaultValue": "calc(var(--io-switch-track-width) - var(--io-switch-thumb-size) - 2px)"
+    },
+    {
+      "cssVar": "--io-switch-track-width-compact",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Track width when compact=true. Defaults to 2rem (32px).",
+      "defaultValue": "2rem"
+    },
+    {
+      "cssVar": "--io-switch-track-height-compact",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Track height when compact=true. Defaults to 1.125rem (18px).",
+      "defaultValue": "1.125rem"
+    },
+    {
+      "cssVar": "--io-switch-thumb-size-compact",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Thumb size when compact=true. Defaults to 0.875rem (14px).",
+      "defaultValue": "0.875rem"
+    },
+    {
+      "cssVar": "--io-tag-compact-padding-y",
+      "classification": "public-api",
+      "component": "io-tag",
+      "description": "Vertical padding override applied to tags when compact=true. Defaults to var(--io-space-1) (4px).",
+      "defaultValue": "var(--io-space-1)"
+    },
+    {
+      "cssVar": "--io-pin-code-slot-size",
+      "classification": "public-api",
+      "component": "io-pin-code",
+      "description": "Width and height of each digit input slot. Defaults to 3rem.",
+      "defaultValue": "3rem"
+    },
+    {
+      "cssVar": "--io-pin-code-slot-radius",
+      "classification": "public-api",
+      "component": "io-pin-code",
+      "description": "Border-radius of each digit input slot. Defaults to var(--io-border-radius-sm).",
+      "defaultValue": "var(--io-border-radius-sm)"
+    },
+    {
+      "cssVar": "--io-pin-code-slot-border-width",
+      "classification": "public-api",
+      "component": "io-pin-code",
+      "description": "Border width of unfocused digit slots. Defaults to 1.5px.",
+      "defaultValue": "1.5px"
+    },
+    {
+      "cssVar": "--io-pin-code-gap",
+      "classification": "public-api",
+      "component": "io-pin-code",
+      "description": "Gap between digit input slots. Defaults to var(--io-space-2).",
+      "defaultValue": "var(--io-space-2)"
+    },
+    {
+      "cssVar": "--io-pin-code-font-size",
+      "classification": "public-api",
+      "component": "io-pin-code",
+      "description": "Font size of the digit character inside each slot. Defaults to var(--io-font-size-xl).",
+      "defaultValue": "var(--io-font-size-xl)"
+    },
+    {
+      "cssVar": "--io-multi-select-chip-height",
+      "classification": "public-api",
+      "component": "io-multi-select",
+      "description": "Height of the selected-value chips displayed in the trigger. Defaults to 24px.",
+      "defaultValue": "24px"
+    },
+    {
+      "cssVar": "--io-multi-select-chip-max-width",
+      "classification": "public-api",
+      "component": "io-multi-select",
+      "description": "Maximum width of a selected-value chip before text is truncated. Defaults to 160px.",
+      "defaultValue": "160px"
+    },
+    {
+      "cssVar": "--io-multi-select-chip-remove-size",
+      "classification": "public-api",
+      "component": "io-multi-select",
+      "description": "Width and height of the chip remove button. Must meet WCAG 2.5.8 minimum touch target of 24x24px. Defaults to 24px.",
+      "defaultValue": "24px"
+    },
+    {
+      "cssVar": "--io-breadcrumb-separator",
+      "classification": "public-api",
+      "component": "io-breadcrumb",
+      "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '\u203a').",
+      "defaultValue": "'/'"
+    },
+    {
+      "cssVar": "--io-breadcrumb-font-size",
+      "classification": "public-api",
+      "component": "io-breadcrumb",
+      "description": "Font size for all breadcrumb items and the separator. Overrides the default --io-font-size-sm uniformly.",
+      "defaultValue": "var(--io-font-size-sm)"
+    },
+    {
+      "cssVar": "--io-breadcrumb-item-color",
+      "classification": "public-api",
+      "component": "io-breadcrumb",
+      "description": "Text color of breadcrumb link items. Override for dark or brand-coloured surfaces.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-breadcrumb-current-color",
+      "classification": "public-api",
+      "component": "io-breadcrumb",
+      "description": "Text color of the current page item (rendered as a span). Override when --io-text-secondary lacks sufficient contrast.",
+      "defaultValue": "var(--io-text-secondary)"
+    },
+    {
+      "cssVar": "--io-breadcrumb-separator-color",
+      "classification": "public-api",
+      "component": "io-breadcrumb",
+      "description": "Color of the separator character. Override for dark or brand-coloured containers.",
+      "defaultValue": "var(--io-text-secondary)"
+    },
+    {
+      "cssVar": "--io-banner-max-w",
+      "classification": "public-api",
+      "component": "io-banner",
+      "description": "Maximum width of the banner card. Defaults to --io-breakpoint-md (768px).",
+      "defaultValue": "var(--io-breakpoint-md)"
+    },
+    {
+      "cssVar": "--io-banner-top",
+      "classification": "public-api",
+      "component": "io-banner",
+      "description": "Distance from the top of the viewport when position=top. Defaults to --io-space-4 (16px).",
+      "defaultValue": "var(--io-space-4)"
+    },
+    {
+      "cssVar": "--io-banner-bottom",
+      "classification": "public-api",
+      "component": "io-banner",
+      "description": "Distance from the bottom of the viewport when position=bottom. Defaults to --io-space-4 (16px).",
+      "defaultValue": "var(--io-space-4)"
+    },
+    {
+      "cssVar": "--io-banner-inset-x",
+      "classification": "public-api",
+      "component": "io-banner",
+      "description": "Horizontal inset (left and right) from viewport edges. Defaults to --io-space-4 (16px).",
+      "defaultValue": "var(--io-space-4)"
+    },
+    {
+      "cssVar": "--io-banner-z-index",
+      "classification": "public-api",
+      "component": "io-banner",
+      "description": "Stack order of the banner overlay. Defaults to --io-z-toast.",
+      "defaultValue": "var(--io-z-toast)"
+    },
+    {
+      "cssVar": "--io-avatar-icon-size",
+      "classification": "public-api",
+      "component": "io-avatar",
+      "description": "Size of the person icon in the icon-fallback mode. Defaults to --io-icon-size-md (24px).",
+      "defaultValue": "var(--io-icon-size-md)"
+    },
+    {
+      "cssVar": "--io-icon-color",
+      "classification": "public-api",
+      "component": "io-icon",
+      "description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info).",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-input-border-error-width",
+      "classification": "public-api",
+      "component": "io-input",
+      "description": "Border-bottom width applied when the input field is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-textarea-border-error-width",
+      "classification": "public-api",
+      "component": "io-textarea",
+      "description": "Border-bottom width applied when the textarea is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-select-border-error-width",
+      "classification": "public-api",
+      "component": "io-select",
+      "description": "Border-bottom width applied when the select field is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-multi-select-border-error-width",
+      "classification": "public-api",
+      "component": "io-multi-select",
+      "description": "Border-bottom width applied when the multi-select trigger is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-switch-border-error-width",
+      "classification": "public-api",
+      "component": "io-switch",
+      "description": "Reserved consumer override for switch border width in error state. Available for future border-based error indicator variants. Default 2px.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-input-date-border-error-width",
+      "classification": "public-api",
+      "component": "io-input-date",
+      "description": "Border-bottom width applied when the date input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-input-search-border-error-width",
+      "classification": "public-api",
+      "component": "io-input-search",
+      "description": "Border-bottom width applied when the search input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-input-password-border-error-width",
+      "classification": "public-api",
+      "component": "io-input-password",
+      "description": "Border-bottom width applied when the password input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-color-semantic-red",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-error-dark. Retained for backward compatibility only. Use --io-color-error-dark instead.",
+      "defaultValue": "var(--io-color-error-dark)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-error-dark"
+    },
+    {
+      "cssVar": "--io-color-system-interactive-blue",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-system-blue. Retained for backward compatibility only. Use --io-color-system-blue instead.",
+      "defaultValue": "var(--io-color-system-blue)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-system-blue"
+    },
+    {
+      "cssVar": "--io-color-state-error",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-error. Retained for backward compatibility only. Use --io-color-error instead.",
+      "defaultValue": "var(--io-color-error)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-error"
+    },
+    {
+      "cssVar": "--io-color-state-error-soft",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-error-soft. Retained for backward compatibility only. Use --io-color-error-soft instead.",
+      "defaultValue": "var(--io-color-error-soft)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-error-soft"
+    },
+    {
+      "cssVar": "--io-color-state-info",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-info. Retained for backward compatibility only. Use --io-color-info instead.",
+      "defaultValue": "var(--io-color-info)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-info"
+    },
+    {
+      "cssVar": "--io-color-state-info-soft",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-info-soft. Retained for backward compatibility only. Use --io-color-info-soft instead.",
+      "defaultValue": "var(--io-color-info-soft)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-info-soft"
+    },
+    {
+      "cssVar": "--io-color-state-success",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-success. Retained for backward compatibility only. Use --io-color-success instead.",
+      "defaultValue": "var(--io-color-success)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-success"
+    },
+    {
+      "cssVar": "--io-color-state-success-soft",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-success-soft. Retained for backward compatibility only. Use --io-color-success-soft instead.",
+      "defaultValue": "var(--io-color-success-soft)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-success-soft"
+    },
+    {
+      "cssVar": "--io-color-state-warning",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-warning. Retained for backward compatibility only. Use --io-color-warning instead.",
+      "defaultValue": "var(--io-color-warning)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-warning"
+    },
+    {
+      "cssVar": "--io-color-state-warning-soft",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-color-warning-soft. Retained for backward compatibility only. Use --io-color-warning-soft instead.",
+      "defaultValue": "var(--io-color-warning-soft)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-color-warning-soft"
+    },
+    {
+      "cssVar": "--io-color-focus-dark-red",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-focus-inner. Retained for backward compatibility only. Use --io-focus-inner instead.",
+      "defaultValue": "var(--io-focus-inner)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-focus-inner"
+    },
+    {
+      "cssVar": "--io-color-focus-light-pink",
+      "classification": "deprecated",
+      "component": "global",
+      "description": "Naming-convergence alias for --io-focus-outer. Retained for backward compatibility only. Use --io-focus-outer instead.",
+      "defaultValue": "var(--io-focus-outer)",
+      "deprecatedSince": "2024-01-01",
+      "replacedBy": "--io-focus-outer"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
   "description": "Root workspace orchestration for io Digital Design System",
   "workspaces": [
     "io-components",
+    "io-tokens",
     "io-storefront",
     "io-components-react",
     "io-components-vue",
@@ -60,6 +61,7 @@
     "tokens:merge": "node scripts/merge-tokens.mjs",
     "tokens:html": "node scripts/generate-html.mjs",
     "tokens:sync": "npm run tokens:scrape && npm run tokens:merge && npm run tokens:html",
+    "tokens-meta:generate": "node --loader ts-node/esm scripts/generate-tokens-meta.ts || npx tsx scripts/generate-tokens-meta.ts",
     "changeset:add": "changeset",
     "changeset:status": "changeset status --verbose",
     "changeset:version": "changeset version && npm install --package-lock-only"

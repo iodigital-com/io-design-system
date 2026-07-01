@@ -46,6 +46,9 @@ export class IoModal {
   private backdropEl?: HTMLDivElement;
   private backdropHostHandler?: (ev: MouseEvent) => void;
   private escHandler?: (ev: KeyboardEvent) => void;
+  // Set to true before any user-action handler sets open=false so openChanged
+  // can distinguish user-initiated closes from programmatic ones (#1011).
+  private _userInitiatedClose = false;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -263,6 +266,13 @@ export class IoModal {
       // Set up focus trap for keyboard navigation
       this.setupFocusTrap();
     } else {
+      // Only emit dismiss for user-initiated closes (close button, backdrop, ESC).
+      // Programmatic close via open=false or close() is intentionally silent. (#1011)
+      if (this._userInitiatedClose) {
+        this.dismissEvent.emit();
+      }
+      this._userInitiatedClose = false;
+
       if (this.dialogEl.open) {
         this.dialogEl.close();
       }
@@ -280,8 +290,6 @@ export class IoModal {
       if (this.focusTrigger && this.focusTrigger instanceof HTMLElement) {
         this.focusTrigger.focus();
       }
-
-      this.dismissEvent.emit();
     }
   }
 
@@ -310,19 +318,37 @@ export class IoModal {
   }
 
   /**
-   * Apply inert attribute to sibling and parent elements when modal opens.
-   * This prevents screen reader users from navigating outside the modal.
+   * Apply inert attribute to background elements when modal opens.
+   *
+   * When `preventTopLayer=false` the modal uses `showModal()` which promotes the
+   * dialog to the browser's top layer — the browser itself makes everything behind
+   * the dialog unreachable, so no manual inert walk is needed (#992).
+   *
+   * When `preventTopLayer=true` (default) we walk `document.body.children`
+   * (not just the modal's parent siblings, which misses outer `<header>` etc.) and
+   * skip elements that have `data-io-allow-during-modal="true"` — this escape hatch
+   * lets io-toast and similar live-region elements remain interactive (#992).
+   *
+   * We also skip any element that is an ancestor of io-modal. Applying inert to
+   * an ancestor propagates inertness to all its descendants, which would make
+   * io-modal itself and its slotted footer buttons inert in framework apps where
+   * io-modal is nested inside a React/Vue/Angular root div (#1180).
    */
   private applyBackgroundInert() {
-    if (!this.el || !this.el.parentElement) return;
+    if (!this.preventTopLayer) return;
+    if (!this.el || typeof document === 'undefined') return;
 
-    const parent = this.el.parentElement;
-    const siblings = Array.from(parent.children).filter((child) => child !== this.el);
-
-    siblings.forEach((sibling) => {
-      if (!(sibling as HTMLElement).hasAttribute('inert')) {
-        (sibling as HTMLElement).setAttribute('inert', '');
-        this.inertElements.push(sibling);
+    Array.from(document.body.children).forEach((child) => {
+      if (child === this.el) return;
+      const el = child as HTMLElement;
+      // Honour escape hatch: toasts and other live-region elements can opt-out.
+      if (el.hasAttribute('data-io-allow-during-modal')) return;
+      // Skip ancestors of io-modal — inert propagates to all descendants, so
+      // making an ancestor inert would also block footer button clicks inside the modal.
+      if (el.contains(this.el)) return;
+      if (!el.hasAttribute('inert')) {
+        el.setAttribute('inert', '');
+        this.inertElements.push(el);
       }
     });
   }
@@ -346,9 +372,15 @@ export class IoModal {
 
     this.clearFocusTrap();
 
-    // Get all focusable elements within the modal (in shadow DOM and slots)
-    const focusableSelector =
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    // Get all focusable elements within the modal (in shadow DOM and slots).
+    // Extended selector covers interactive content missed by earlier implementations (#1083):
+    // contenteditable, audio/video[controls], iframe, and summary elements.
+    const focusableSelector = [
+      'button', '[href]', 'input', 'select', 'textarea',
+      '[tabindex]:not([tabindex="-1"])',
+      '[contenteditable]:not([contenteditable="false"])',
+      'audio[controls]', 'video[controls]', 'iframe', 'summary',
+    ].join(', ');
     const focusableElements = Array.from(
       this.dialogEl.querySelectorAll(focusableSelector)
     ) as HTMLElement[];
@@ -403,6 +435,7 @@ export class IoModal {
       // Only close when clicking the backdrop area itself, not elements inside the dialog.
       // ev.target is the backdrop div only when clicking outside the dialog panel.
       if (ev.target === this.backdropEl) {
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };
@@ -420,6 +453,7 @@ export class IoModal {
       if (ev.key === 'Escape') {
         ev.preventDefault();
         if (!this.dismissButton) return;
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };
@@ -434,12 +468,19 @@ export class IoModal {
 
   // ── Handlers ─────────────────────────────────────────────────
 
+  // ev.target === <dialog> means the click landed directly on the dialog padding
+  // (backdrop area), not on any content descendant — geometrically correct even
+  // at rounded corners where the bounding-rect check would give false negatives.
+  // Coordinate-based check (isBackdropClick) is used as a secondary gate to
+  // handle edge cases where ev.target may differ (e.g. synthetic events in tests).
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
+    const targetIsDialog = ev.target === dialog;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
+    const clickedBackdrop = targetIsDialog || isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
+      this._userInitiatedClose = true;
       this.open = false;
     }
   };
@@ -447,10 +488,12 @@ export class IoModal {
   private handleCancel = (ev: Event) => {
     ev.preventDefault();
     if (!this.dismissButton) return;
+    this._userInitiatedClose = true;
     this.open = false;
   };
 
   private handleCloseClick = () => {
+    this._userInitiatedClose = true;
     this.open = false;
   };
 

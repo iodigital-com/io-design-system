@@ -13,8 +13,14 @@ export function resolveSwitchId(name: string | undefined, fallbackId: string): s
     : `io-switch-${fallbackId}`;
 }
 
-export function getSwitchWrapperClass(disabled: boolean, error: boolean): string {
-  return ['switch-wrapper', disabled ? 'switch-wrapper--disabled' : '', error ? 'switch-wrapper--error' : '']
+export function getSwitchWrapperClass(disabled: boolean, error: boolean, alignLabel: 'start' | 'end' = 'end', stretch = false): string {
+  return [
+    'switch-wrapper',
+    disabled ? 'switch-wrapper--disabled' : '',
+    error ? 'switch-wrapper--error' : '',
+    alignLabel === 'start' ? 'switch-wrapper--label-start' : '',
+    stretch ? 'switch-wrapper--stretch' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 }

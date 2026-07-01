@@ -142,6 +142,7 @@ export class IoSelect {
   @State() private hasDescriptionSlot = false;
   @State() private hasMessageSlot = false;
   @State() private hasSelectedSlot = false;
+  @State() private hasOptionsStatusSlot = false;
 
   @State() private descriptionId = '';
 
@@ -569,6 +570,11 @@ export class IoSelect {
     this.hasSelectedSlot = slot.assignedElements().length > 0;
   };
 
+  private handleOptionsStatusSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasOptionsStatusSlot = slot.assignedElements().length > 0;
+  };
+
   // ── Handlers (native mode) ────────────────────────────────────
 
   private handleChange = (ev: Event) => {
@@ -784,6 +790,7 @@ export class IoSelect {
    * @slot message - Validation message content. Replaces the plain-text `message` prop in error state.
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    * @slot selected - Custom selected-value content rendered inside the combobox trigger (custom mode only). When slotted, replaces the default display value text.
+   * @slot options-status - Status content shown inside the listbox (custom mode only). Use for async loading/error states, e.g. `<span slot="options-status">Loading...</span>`. When slotted, replaces the "No options" empty state.
    */
   render() {
     if (this.custom) {
@@ -1022,9 +1029,16 @@ export class IoSelect {
               class="combobox-listbox"
             >
               {this.renderListboxItems()}
-              {opts.length === 0 && (
+              {opts.length === 0 && !this.hasOptionsStatusSlot && (
                 <li class="combobox-empty" role="option" aria-disabled="true">No options</li>
               )}
+              <li
+                class={this.hasOptionsStatusSlot ? 'combobox-options-status' : 'combobox-options-status combobox-options-status--hidden'}
+                role="status"
+                aria-live="polite"
+              >
+                <slot name="options-status" onSlotchange={this.handleOptionsStatusSlotChange} />
+              </li>
             </ul>
           </div>
         </div>

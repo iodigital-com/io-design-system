@@ -322,6 +322,19 @@ export function getSelectStyles(): string {
       font-style: italic;
     }
 
+    /* ── Options-status slot (async loading/error states) ─── */
+
+    .combobox-options-status {
+      list-style: none;
+      padding: var(--io-space-3);
+      color: var(--io-text-secondary);
+      font-size: var(--io-font-size-sm);
+    }
+
+    .combobox-options-status--hidden {
+      display: none;
+    }
+
     /* ── Option items (rendered as <li> in shadow DOM) ────── */
 
     .combobox-option {

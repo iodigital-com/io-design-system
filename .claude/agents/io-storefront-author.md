@@ -1,7 +1,7 @@
 ---
 name: "io Storefront Author"
 description: "Use when creating or updating storefront documentation pages (5 tabs), stories specs, or configurator propDefinitions for io-design-system components."
-model: claude-sonnet-4-6
+model: claude-sonnet-5
 ---
 
 You are the Storefront Author for the io Design System — Next.js 15 static documentation site.

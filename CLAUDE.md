@@ -366,9 +366,9 @@ Covers: frontend engineer, code reviewer, software architect, minimal-change eng
 technical writer, git workflow, accessibility auditor, reality checker, UX architect.
 
 **Model cost tiers:**
-- `haiku` — search, grep, read-only inspection, surgical 1-file fixes
-- `sonnet` — component authoring, storefront pages, spec writing, code review, changeset creation
-- `opus` — WCAG audit, security review, architecture decisions, complex FACE logic
+- `haiku` (`claude-haiku-4-5`) — search, grep, read-only inspection, surgical 1-file fixes
+- `sonnet` (`claude-sonnet-5` **primary**; `claude-sonnet-4-6` fallback only if 5 unavailable) — component authoring, storefront pages, spec writing, code review, changeset creation
+- `opus` (`claude-opus-4-8`) — WCAG audit, security review, architecture decisions, complex FACE logic
 
 **Prompt enhancement:** Every project-specific agent has a "Prompt enhancement" section that
 instructs it to internally expand requests, consider edge cases, and invoke sub-agents before
@@ -515,3 +515,122 @@ The following are local-only and must never be committed:
 - `prompts/`
 - `issues/`
 - `.codex/`
+
+## Work Hours & Autonomous Loop Rules
+
+Default working hours: **09:00–17:30 local time**.
+
+- Do not start new long-running workflows after 17:00 — flag the time and ask first
+- At 17:30: stop all running workflows, save state to `.claude/HEARTBEAT.md`, remind to log off
+- Override is valid: "overtime today", "just this once", or similar phrase → proceed
+- Scheduled crons (CI fixer, etc.) are fine unattended — they don't keep you at your desk
+- Short tasks (< 5 min, single-file fix, quick question) are fine any time
+
+**Autonomous loop safety rules:**
+
+- Never commit, push, deploy, publish, delete data, rotate secrets, or modify production resources without explicit instruction
+- Never store or expose secrets in any file
+- Never force-push to `main`
+- Never merge PRs automatically — human review required before merge
+- Never skip governance checks with `--no-verify` or similar flags
+- Never use `major` changeset bump unless the entire design system visual is being overhauled
+
+## Agentic Workflow — Loop Engineering
+
+All non-trivial coding tasks follow the loop pattern:
+
+```
+Goal → Current State → Hypothesis → Small Action → Verify → Reflect → Next Loop or Stop
+```
+
+**Model assignment:**
+
+| Tier | Primary model | Fallback | Use for |
+|---|---|---|---|
+| `haiku` | `claude-haiku-4-5` | — | Grep, file discovery, gh CLI reads, logs, config inspection, bash one-liners |
+| `sonnet` | `claude-sonnet-5` | `claude-sonnet-4-6` | Code changes, tests, refactors, debugging, UI/backend/schema work |
+| `opus` | `claude-opus-4-8` | — | Last resort — Sonnet 5 failed after 2 serious loops, or architecturally complex/security-sensitive/migration-heavy task |
+
+"Sonnet" = **Claude Sonnet 5** by default. Use Sonnet 4.6 only if Sonnet 5 is unavailable in the current provider/environment, the model ID fails, or explicitly requested.
+
+Use `opus` only when `sonnet` has genuinely failed. Do not preemptively escalate.
+
+**Agent routing:**
+
+- New component from scratch → `io-wave-implementor`
+- Single component feature / major rework → `io-component-author`
+- Bug fix ≤ 3 files → `io-minimal-change`
+- Read-only research / code exploration → `io-repo-scout`
+- After any implementation → `io-code-reviewer` + `io-a11y-auditor`
+- Before merging → `io-reality-checker`
+- Storefront / docs only → `io-storefront-author`
+
+For genuinely parallel multi-step work (multiple independent PRs, batch fixes), use the `Workflow` tool. Single-component changes: use `Agent` directly.
+
+## Verification Policy
+
+Never claim a task is done without running the relevant checks.
+
+**After any component change:**
+```bash
+npm run governance:check    # ALWAYS — catches missing files, token issues
+npm run events:guard        # ALWAYS — no io-prefixed event names
+npm run test                # ALWAYS — no regressions
+npm run lint                # Always
+npm run type-check          # Storefront TS changes
+```
+
+**Before PR:**
+```bash
+npm run build:quality-gates  # Full CI gate — run this before opening any PR
+```
+
+**Verification order matters:** governance → lint → build → test → type-check → storefront
+
+If a check fails, fix it before moving on. Never open a PR with a known failing gate.
+
+## Definition of Done
+
+A task is done when ALL of the following are true:
+
+- [ ] All required spec files exist (`.spec.ts`, `.a11y.spec.ts`, `.click.spec.ts` for interactive, `.face.spec.ts` for form fields)
+- [ ] `npm run governance:check` passes
+- [ ] `npm run test` passes (no new failures)
+- [ ] `npm run lint` passes
+- [ ] `npm run type-check` passes
+- [ ] Changeset added if published package changed (`@iodigital-com/components`)
+- [ ] PR opened, linked to issue(s)
+- [ ] No hardcoded hex/px values — all tokens via `var(--io-*)`
+- [ ] No inline CSS in `.tsx` files
+- [ ] Snapshot files free of contamination (non-own component tags)
+
+## Daily Closeout / Knowledge Sync
+
+Run `/day-close` (or invoke `.claude/skills/day-close/SKILL.md`) at session end or at 17:30.
+
+The closeout will:
+1. Inspect `git status` and today's diff
+2. Summarize what changed and what was verified
+3. Update `.claude/HEARTBEAT.md` with current state, blockers, and next action
+4. Note any stable facts worth saving to project memory
+5. End with: **Changed / Verified / Remaining / Memory updated / Next action**
+
+## Command Matrix
+
+| Purpose | Command |
+|---|---|
+| Install | `npm ci` |
+| Dev server | `npm run dev` |
+| Build all | `npm run build` |
+| Build components only | `npm run build:components` |
+| Build storefront | `npm run build:storefront` |
+| Unit tests | `npm run test` |
+| E2E tests | `npm run test:e2e` |
+| Lint | `npm run lint` |
+| Lint fix | `npm run lint:fix` |
+| Type check | `npm run type-check` |
+| Governance check | `npm run governance:check` |
+| Events guard | `npm run events:guard` |
+| Full quality gates | `npm run build:quality-gates` |
+| Add changeset | `npm run changeset:add` |
+| Changeset status | `npm run changeset:status` |

@@ -41,8 +41,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
-    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -70,8 +68,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
-    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -1258,8 +1254,6 @@ exports[`io-checkbox — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
-    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper checkbox-helper--hidden">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>
@@ -1286,8 +1280,6 @@ exports[`io-checkbox — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-checkbox-4fzzzxjylrx-message" class="checkbox-message checkbox-message--hidden"></p>
-    <p id="io-checkbox-4fzzzxjylrx-face-error" class="checkbox-message checkbox-message--error checkbox-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-checkbox-4fzzzxjylrx-helper" class="checkbox-helper">
       <span class="checkbox-description__slot checkbox-description__slot--hidden">
         <slot name="description"></slot>

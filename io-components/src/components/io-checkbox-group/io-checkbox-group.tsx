@@ -2,6 +2,7 @@ import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, h }
 
 import { applyAriaProp } from '../../utils/aria-prop';
 import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
+import { Required } from '../common/required/Required';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from './types';
@@ -268,7 +269,7 @@ export class IoCheckboxGroup {
         >
           <legend class="checkbox-group__legend">
             {label}
-            {required && <span aria-hidden="true" class="checkbox-group__required"> *</span>}
+            {required && <Required />}
           </legend>
           {helperText && (
             <span class="checkbox-group__helper">{helperText}</span>

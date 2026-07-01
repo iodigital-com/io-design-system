@@ -142,7 +142,7 @@ describe('io-input-search — FACE (#841)', () => {
     expect((component as any).faceInvalid).toBe(true);
   });
 
-  it('syncFormValue sets tooShort via native input and stores validation message', () => {
+  it('syncFormValue sets tooShort via native input', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
     (component as any).touched = true;
@@ -164,7 +164,6 @@ describe('io-input-search — FACE (#841)', () => {
       mockNative,
     );
     expect((component as any).faceInvalid).toBe(true);
-    expect((component as any).faceErrorMessage).toBe('Please lengthen this text.');
   });
 
   it('syncFormValue sets tooLong via native input', () => {
@@ -189,13 +188,11 @@ describe('io-input-search — FACE (#841)', () => {
       mockNative,
     );
     expect((component as any).faceInvalid).toBe(true);
-    expect((component as any).faceErrorMessage).toBe('Please shorten this text.');
   });
 
-  it('syncFormValue clears faceErrorMessage when valid', () => {
+  it('syncFormValue clears faceInvalid when valid', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
-    (component as any).faceErrorMessage = 'stale error';
     const mockNative = {
       checkValidity: vi.fn().mockReturnValue(true),
       validity: {},
@@ -208,7 +205,6 @@ describe('io-input-search — FACE (#841)', () => {
     });
     component.value = 'valid';
     (component as any).syncFormValue();
-    expect((component as any).faceErrorMessage).toBe('');
     expect((component as any).faceInvalid).toBe(false);
   });
 

@@ -110,6 +110,18 @@ describe('io-input — FACE', () => {
     expect(await component.reportValidity()).toBe(true);
   });
 
+  it('reportValidity() sets touched=true so FACE error surfaces before blur', async () => {
+    const internals = makeInternals();
+    (component as any).internals = internals;
+    component.required = true;
+    component.value = '';
+    expect((component as any).touched).toBe(false);
+    expect((component as any).faceInvalid).toBe(false);
+    await component.reportValidity();
+    expect((component as any).touched).toBe(true);
+    expect((component as any).faceInvalid).toBe(true);
+  });
+
 
   it('shows error UI when faceInvalid=true even if state is success', () => {
     const internals = makeInternals();

@@ -19,8 +19,6 @@ exports[`io-radio — render snapshots > renders checked state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
-    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>
@@ -49,8 +47,6 @@ exports[`io-radio — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
-    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>
@@ -79,8 +75,6 @@ exports[`io-radio — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-radio-choice-4fzzzxjylrx-message" class="radio-message radio-message--hidden"></p>
-    <p id="io-radio-choice-4fzzzxjylrx-face-error" class="radio-message radio-message--error radio-message--hidden" role="alert" aria-live="assertive"></p>
     <p id="io-radio-choice-4fzzzxjylrx-helper" class="radio-helper radio-helper--hidden">
       <span class="radio-description__slot radio-description__slot--hidden">
         <slot name="description"></slot>

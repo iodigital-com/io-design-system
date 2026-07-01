@@ -2,6 +2,9 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
+import { syncFormState } from '../../utils/form/sync-form-state';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoRadioChangeDetail } from './types';
@@ -166,31 +169,26 @@ export class IoRadio {
 
   private syncFormValue() {
     // Unchecked radio: null = excluded from FormData (matches native radio behaviour)
-    this.internals?.setFormValue?.(this.checked ? this.value : null);
-    if (this.required && !this.checked) {
-      // For a radio group, required is satisfied when *any* radio sharing the same
-      // name is checked — not just this one. Without this check, form.checkValidity()
-      // fails even when another radio in the group is selected.
-      // #941: scope the sibling search to the closest io-radio-group when present
-      // so two separate groups with the same name do not satisfy each other's required.
-      const scope = this.el?.closest('io-radio-group') ?? (typeof document !== 'undefined' ? document : null);
-      const groupSatisfied = (this.name && scope)
-        ? Array.from(scope.querySelectorAll('io-radio')).some((r) => {
-            const sibling = r as HTMLElement & { name?: string; checked?: boolean };
-            return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
-          })
-        : false;
-      if (!groupSatisfied) {
-        this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
-        this.faceInvalid = true;
-      } else {
-        this.internals?.setValidity?.({});
-        this.faceInvalid = false;
-      }
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    // For a radio group, required is satisfied when *any* radio sharing the same
+    // name is checked — not just this one. Without this check, form.checkValidity()
+    // fails even when another radio in the group is selected.
+    // #941: scope the sibling search to the closest io-radio-group when present
+    // so two separate groups with the same name do not satisfy each other's required.
+    const scope = this.el?.closest('io-radio-group') ?? (typeof document !== 'undefined' ? document : null);
+    const groupSatisfied = this.required && !this.checked && this.name && scope
+      ? Array.from(scope.querySelectorAll('io-radio')).some((r) => {
+          const sibling = r as HTMLElement & { name?: string; checked?: boolean };
+          return sibling !== this.el && sibling.name === this.name && sibling.checked === true;
+        })
+      : false;
+    const isInvalid = this.required && !this.checked && !groupSatisfied;
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue: this.checked ? this.value : null,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please select an option' : '',
+      disabled: this.disabled,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   private handleLabelSlotChange = (ev: Event) => {
@@ -271,7 +269,6 @@ export class IoRadio {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
     const showFaceError = this.faceInvalid && state !== 'error';
-    const showMessage = showError && (hasMessageSlot || message);
 
     // #1094: messageId and faceErrorId are always included in aria-describedby so
     // the live-region relationship is established before any error occurs.
@@ -320,44 +317,26 @@ export class IoRadio {
                 <slot name="label" onSlotchange={this.handleLabelSlotChange} />
               </span>
               {!hasLabelSlot && label}
-              {required && (
-                <span class="radio-required" aria-hidden="true">
-                  {' *'}
-                </span>
-              )}
+              {required && <Required />}
             </span>
           </label>
         </div>
-        {/* #1094: State message live-region is always mounted so aria-describedby
-            can reference it before an error occurs. Only inner content is gated. */}
-        <p
-          id={messageId}
-          class={[
-            'radio-message',
-            showError ? 'radio-message--error' : showSuccess ? 'radio-message--success' : showWarning ? 'radio-message--warning' : '',
-            showMessage ? '' : 'radio-message--hidden',
-          ].filter(Boolean).join(' ')}
-          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
-          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
-          aria-atomic={showMessage ? 'true' : undefined}
-        >
-          {showMessage && (
-            <span class={hasMessageSlot ? 'radio-message__slot' : 'radio-message__slot radio-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-          )}
-          {showMessage && !hasMessageSlot && message}
-        </p>
-        {/* #1094: FACE error live-region always mounted; inner text gated by showFaceError */}
-        <p
-          id={faceErrorId}
-          class={`radio-message radio-message--error${showFaceError ? '' : ' radio-message--hidden'}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic={showFaceError ? 'true' : undefined}
-        >
-          {showFaceError && 'Please select an option'}
-        </p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={messageId}
+            classPrefix="radio"
+            visible={!!(showError ? (hasMessageSlot || message) : message)}
+            onSlotChange={this.handleMessageSlotChange}
+          />
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="radio-message radio-message--error" role="alert">
+            Please select an option
+          </p>
+        )}
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`radio-helper${hasDescriptionSlot || helperText ? '' : ' radio-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'radio-description__slot' : 'radio-description__slot radio-description__slot--hidden'}>

@@ -3,6 +3,9 @@ import { Component, Prop, Event, EventEmitter, Method, State, Element, Host, Wat
 import { getTextareaStyles } from './io-textarea-styles';
 import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } from './io-textarea-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { syncFormState } from '../../utils/form/sync-form-state';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from './types';
@@ -73,8 +76,14 @@ export class IoTextarea {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoTextareaSize = 'md';
 
-  /** Autocomplete attribute */
+  /**
+   * Autocomplete attribute.
+   * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+   */
   @Prop() autocomplete: string | undefined;
+
+  /** Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form. */
+  @Prop() autoComplete: string | undefined;
 
   /** Visually hides the label while keeping it accessible to screen readers */
   @Prop({ reflect: true }) hideLabel = false;
@@ -233,26 +242,14 @@ export class IoTextarea {
   }
 
   private syncFormValue() {
-    this.internals?.setFormValue?.(this.value ?? '');
-    // Derive validity from the native <textarea> when available so constraints like
-    // maxLength (tooLong), minLength (tooShort) are reflected automatically.
-    // Falls back to required-only check before the shadow root exists.
     const nativeTextarea = this.el?.shadowRoot?.querySelector<HTMLTextAreaElement>('textarea');
-    if (nativeTextarea) {
-      if (!nativeTextarea.checkValidity()) {
-        this.internals?.setValidity?.(nativeTextarea.validity, nativeTextarea.validationMessage, nativeTextarea);
-        this.faceInvalid = this.touched;
-      } else {
-        this.internals?.setValidity?.({});
-        this.faceInvalid = false;
-      }
-    } else if (this.required && !this.value) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please fill in this field');
-      this.faceInvalid = this.touched;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const { faceInvalid } = syncFormState(this.internals, nativeTextarea, {
+      formValue: this.value ?? '',
+      required: this.required,
+      disabled: this.disabled,
+      touched: this.touched,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   private handleLabelSlotChange = (ev: Event) => {
@@ -375,6 +372,7 @@ export class IoTextarea {
       minLength,
       rows,
       autocomplete,
+      autoComplete,
       resize,
       size,
       spellCheck,
@@ -430,7 +428,7 @@ export class IoTextarea {
             maxLength={maxLength}
             minLength={minLength}
             rows={rows}
-            autocomplete={autocomplete}
+            autocomplete={autoComplete ?? autocomplete}
             spellcheck={spellCheck}
             form={form}
             wrap={wrap}
@@ -450,10 +448,10 @@ export class IoTextarea {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="textarea-required" aria-hidden="true">{' *'}</span>}
+                {required && <Required />}
               </span>
             )}
-            {hasLabelSlot && required && <span class="textarea-required" aria-hidden="true">{' *'}</span>}
+            {hasLabelSlot && required && <Required />}
           </label>
           {loading && (
             <div class="textarea-wrapper__loading" aria-hidden="true">
@@ -461,27 +459,17 @@ export class IoTextarea {
             </div>
           )}
         </div>
-        {/* #1094: Message live-region is always mounted so aria-describedby can
-            reference it before any error occurs. Only inner content is gated. */}
-        <p
-          id={messageId}
-          class={[
-            'textarea-message',
-            showError ? 'textarea-message--error' : showSuccess ? 'textarea-message--success' : showWarning ? 'textarea-message--warning' : '',
-            (showMessage || (showSuccess && message) || (showWarning && message)) ? '' : 'textarea-message--hidden',
-          ].filter(Boolean).join(' ')}
-          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
-          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
-          aria-atomic={(showMessage || ((showSuccess || showWarning) && message)) ? 'true' : undefined}
-        >
-          {showMessage && (
-            <span class={hasMessageSlot ? 'textarea-message__slot' : 'textarea-message__slot textarea-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-          )}
-          {showMessage && !hasMessageSlot && message}
-          {(showSuccess || showWarning) && message && !showMessage && message}
-        </p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={messageId}
+            classPrefix="textarea"
+            visible={!!(showMessage || (!showError && !!message))}
+            onSlotChange={this.handleMessageSlotChange}
+          />
+        )}
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`textarea-helper${showDescription ? '' : ' textarea-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'textarea-description__slot' : 'textarea-description__slot textarea-description__slot--hidden'}>

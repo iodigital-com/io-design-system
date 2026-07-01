@@ -27,7 +27,7 @@ import { IoInputDateSize } from "./components/io-input-date/types";
 import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-import { IoModalAriaProps, IoModalBackground, IoModalSize } from "./components/io-modal/types";
+import { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -75,7 +75,7 @@ export { IoInputDateSize } from "./components/io-input-date/types";
 export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkVariant } from "./components/io-link/types";
-export { IoModalAriaProps, IoModalBackground, IoModalSize } from "./components/io-modal/types";
+export { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -635,7 +635,8 @@ export namespace Components {
          */
         "skipLabel": string;
         /**
-          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * Controls how many slides are visible at once and how many to move per navigation step. Accepts: - A number: the same count on all viewports (e.g. `3`). - `'auto'`: each slide occupies its natural width; navigation moves one   slide at a time. - A responsive map `{ sm?, md?, lg?, xl? }`: resolved at runtime using   `matchMedia`. Each key is a min-width breakpoint (sm=640px, md=768px,   lg=1024px, xl=1280px). The largest matching key wins. Falls back to 1   when no key matches.
+          * @example <io-carousel slides-per-page='{"sm":1,"md":2,"lg":3}'> ... </io-carousel>
           * @default 1
          */
         "slidesPerPage": IoCarouselSlidesPerPage;
@@ -1167,7 +1168,8 @@ export namespace Components {
          */
         "autoComplete": string | undefined;
         /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -1202,6 +1204,11 @@ export namespace Components {
           * @default false
          */
         "hideLabel": boolean;
+        /**
+          * Optional icon name to render as a leading indicator inside the prefix area. When set, the icon is rendered before any slotted prefix content. Accepts any valid IoIconName (a Lucide icon key).
+          * @example indicator="search"
+         */
+        "indicator"?: IoIconName;
         /**
           * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
           * @default 'text'
@@ -1282,6 +1289,11 @@ export namespace Components {
           * Native step value (date/time/number)
          */
         "step": string | number | undefined;
+        /**
+          * When true and `type="number"`, renders custom increment/decrement stepper buttons alongside the input. Also suppresses the native browser spin buttons.
+          * @default false
+         */
+        "stepper": boolean;
         /**
           * Input type
           * @default 'text'
@@ -1652,6 +1664,11 @@ export namespace Components {
          */
         "aria"?: IoModalAriaProps;
         /**
+          * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
+          * @default 'blur'
+         */
+        "backdrop": IoModalBackdrop;
+        /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
          */
@@ -1675,6 +1692,11 @@ export namespace Components {
           * @default true
          */
         "dismissButton": boolean;
+        /**
+          * When `true`, the modal expands to fill the full viewport below `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal reverts to the `size` variant. Useful for the mobile-takeover pattern: full-screen on phones, centered dialog on desktop.
+          * @default false
+         */
+        "fullscreen": boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -3286,7 +3308,12 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+         */
+        "autoComplete": string | undefined;
+        /**
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -4506,6 +4533,7 @@ declare global {
     };
     interface HTMLIoRadioElementEventMap {
         "change": IoRadioChangeDetail;
+        "blur": FocusEvent;
     }
     /**
      * io-radio
@@ -5949,7 +5977,8 @@ declare namespace LocalJSX {
          */
         "skipLabel"?: string;
         /**
-          * Number of slides to move per navigation step; use auto for slide-by-slide.
+          * Controls how many slides are visible at once and how many to move per navigation step. Accepts: - A number: the same count on all viewports (e.g. `3`). - `'auto'`: each slide occupies its natural width; navigation moves one   slide at a time. - A responsive map `{ sm?, md?, lg?, xl? }`: resolved at runtime using   `matchMedia`. Each key is a min-width breakpoint (sm=640px, md=768px,   lg=1024px, xl=1280px). The largest matching key wins. Falls back to 1   when no key matches.
+          * @example <io-carousel slides-per-page='{"sm":1,"md":2,"lg":3}'> ... </io-carousel>
           * @default 1
          */
         "slidesPerPage"?: IoCarouselSlidesPerPage;
@@ -6485,7 +6514,8 @@ declare namespace LocalJSX {
          */
         "autoComplete"?: string | undefined;
         /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -6516,6 +6546,11 @@ declare namespace LocalJSX {
           * @default false
          */
         "hideLabel"?: boolean;
+        /**
+          * Optional icon name to render as a leading indicator inside the prefix area. When set, the icon is rendered before any slotted prefix content. Accepts any valid IoIconName (a Lucide icon key).
+          * @example indicator="search"
+         */
+        "indicator"?: IoIconName;
         /**
           * Native inputmode attribute — hints at the virtual keyboard type to show on mobile
           * @default 'text'
@@ -6595,6 +6630,11 @@ declare namespace LocalJSX {
           * Native step value (date/time/number)
          */
         "step"?: string | number | undefined;
+        /**
+          * When true and `type="number"`, renders custom increment/decrement stepper buttons alongside the input. Also suppresses the native browser spin buttons.
+          * @default false
+         */
+        "stepper"?: boolean;
         /**
           * Input type
           * @default 'text'
@@ -6987,6 +7027,11 @@ declare namespace LocalJSX {
          */
         "aria"?: IoModalAriaProps;
         /**
+          * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
+          * @default 'blur'
+         */
+        "backdrop"?: IoModalBackdrop;
+        /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
          */
@@ -7005,6 +7050,11 @@ declare namespace LocalJSX {
           * @default true
          */
         "dismissButton"?: boolean;
+        /**
+          * When `true`, the modal expands to fill the full viewport below `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal reverts to the `size` variant. Useful for the mobile-takeover pattern: full-screen on phones, centered dialog on desktop.
+          * @default false
+         */
+        "fullscreen"?: boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -7507,6 +7557,10 @@ declare namespace LocalJSX {
           * Input name — share across radio group
          */
         "name"?: string | undefined;
+        /**
+          * Fires when the radio loses focus — parity with io-checkbox and io-switch
+         */
+        "onBlur"?: (event: IoRadioCustomEvent<FocusEvent>) => void;
         /**
           * Fires when the checked state changes
          */
@@ -8707,7 +8761,12 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Autocomplete attribute
+          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+         */
+        "autoComplete"?: string | undefined;
+        /**
+          * Autocomplete attribute.
+          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -9169,6 +9228,8 @@ declare namespace LocalJSX {
         "inputMode": IoInputMode;
         "pattern": string;
         "compact": boolean;
+        "indicator": IoIconName;
+        "stepper": boolean;
     }
     interface IoInputDateAttributes {
         "label": string;
@@ -9247,6 +9308,8 @@ declare namespace LocalJSX {
         "description": string;
         "background": IoModalBackground;
         "dismissButton": boolean;
+        "fullscreen": boolean;
+        "backdrop": IoModalBackdrop;
         "preventTopLayer": boolean;
     }
     interface IoMultiSelectAttributes {
@@ -9531,6 +9594,7 @@ declare namespace LocalJSX {
         "rows": number;
         "size": IoTextareaSize;
         "autocomplete": string | undefined;
+        "autoComplete": string | undefined;
         "hideLabel": boolean;
         "resize": IoTextareaResize;
         "spellCheck": boolean | undefined;

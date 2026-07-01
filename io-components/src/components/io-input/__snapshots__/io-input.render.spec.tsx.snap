@@ -22,7 +22,6 @@ exports[`io-input — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -54,7 +53,6 @@ exports[`io-input — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -106,7 +104,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -135,7 +132,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>
@@ -164,7 +160,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-input-4fzzzxjylrx-error" class="input-message input-error--hidden"></p>
     <p id="io-input-4fzzzxjylrx-helper" class="input-helper input-helper--hidden">
       <span class="input-description__slot input-description__slot--hidden">
         <slot name="description"></slot>

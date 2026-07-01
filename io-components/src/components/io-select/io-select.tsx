@@ -13,6 +13,9 @@ import {
   getMatchingOptionIndex,
 } from './io-select-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
+import { syncFormState } from '../../utils/form/sync-form-state';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoIconName } from '../../utils/icons';
 import type { IoFieldState } from '../../utils/field-state';
@@ -289,28 +292,28 @@ export class IoSelect {
   }
 
   private syncFormValue() {
+    // Use FormData to submit multiple values under the same name.
+    // Only submit when name is set — unnamed controls are not successful (matches native behaviour).
+    let formValue: string | FormData | null;
     if (this.multiple) {
       // Use FormData to submit multiple values under the same name.
       // Only submit when name is set — unnamed controls are not successful (matches native behaviour).
-      if (!this.name || this.selectedValues.length === 0) {
-        this.internals?.setFormValue?.(null);
-      } else {
-        const fd = new FormData();
-        // FormData always serialises values to strings (numeric values become e.g. "42").
-        this.selectedValues.forEach(v => fd.append(this.name!, String(v)));
-        this.internals?.setFormValue?.(fd);
-      }
+      formValue = !this.name || this.selectedValues.length === 0
+        ? null
+        : (() => { const fd = new FormData(); this.selectedValues.forEach(v => fd.append(this.name!, String(v))); return fd; })();
     } else {
       // FormData serialises to string; numeric values become e.g. "42".
-      this.internals?.setFormValue?.(this.value != null ? String(this.value) : '');
+      formValue = this.value != null ? String(this.value) : '';
     }
-    if (this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value)) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please select an option');
-      this.faceInvalid = this.touched;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const isInvalid = this.required && (this.multiple ? this.selectedValues.length === 0 : !this.value);
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please select an option' : '',
+      disabled: this.disabled,
+      touched: this.touched,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   componentDidLoad() {
@@ -847,10 +850,10 @@ export class IoSelect {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+                {required && <Required />}
               </span>
             )}
-            {hasLabelSlot && required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+            {hasLabelSlot && required && <Required />}
           </label>
           {loading ? (
             <span class="select-chevron select-loading-indicator" aria-hidden="true">
@@ -864,16 +867,16 @@ export class IoSelect {
             </span>
           )}
         </div>
-        {showError && (
-          <p id={messageId} class={`select-message select-message--error${showMessage ? '' : ' select-message--hidden'}`} role="alert">
-            <span class={hasMessageSlot ? 'select-message__slot' : 'select-message__slot select-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {(showSuccess || showWarning) && message && (
-          <p id={messageId} class={`select-message select-message--${showSuccess ? 'success' : 'warning'}`} role="status">{message}</p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={messageId}
+            classPrefix="select"
+            visible={!!(showError ? (hasMessageSlot || message) : message)}
+            onSlotChange={this.handleMessageSlotChange}
+          />
         )}
         {!showError && (
           <p id={helperId} class={`select-helper${showDescription ? '' : ' select-helper--hidden'}`}>
@@ -928,10 +931,10 @@ export class IoSelect {
             {!hasLabelSlot && (
               <span>
                 {label}
-                {required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+                {required && <Required />}
               </span>
             )}
-            {hasLabelSlot && required && <span class="select-required" aria-hidden="true">{' *'}</span>}
+            {hasLabelSlot && required && <Required />}
           </label>
 
           <button
@@ -1009,16 +1012,16 @@ export class IoSelect {
           </div>
         </div>
 
-        {showError && (
-          <p id={messageId} class={`select-message select-message--error${showMessage ? '' : ' select-message--hidden'}`} role="alert">
-            <span class={hasMessageSlot ? 'select-message__slot' : 'select-message__slot select-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-            {!hasMessageSlot && message}
-          </p>
-        )}
-        {(showSuccess || showWarning) && message && (
-          <p id={messageId} class={`select-message select-message--${showSuccess ? 'success' : 'warning'}`} role="status">{message}</p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={messageId}
+            classPrefix="select"
+            visible={!!(showError ? (hasMessageSlot || message) : message)}
+            onSlotChange={this.handleMessageSlotChange}
+          />
         )}
         {!showError && (
           <p id={helperId} class={`select-helper${showDescription ? '' : ' select-helper--hidden'}`}>

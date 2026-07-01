@@ -8,6 +8,7 @@ import { h } from '@stencil/core';
 
 import { IoCheckboxGroup } from './io-checkbox-group';
 import { getCheckboxGroupStyles } from './io-checkbox-group-styles';
+import { Required } from '../common/required/Required';
 
 function makeComponent(overrides: Partial<IoCheckboxGroup> = {}) {
   const c = new IoCheckboxGroup();
@@ -53,28 +54,26 @@ describe('io-checkbox-group — default props', () => {
 });
 
 describe('io-checkbox-group — required prop (render checks)', () => {
-  it('renders asterisk span when required=true', () => {
+  it('renders Required component when required=true', () => {
     const c = makeComponent({ label: 'Options', required: true });
     vi.mocked(h).mockClear();
     c.render();
 
-    const spanCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'span' && (call[1] as Record<string, unknown>)?.class === 'checkbox-group__required',
+    const requiredCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === Required,
     );
-    expect(spanCalls.length).toBeGreaterThan(0);
-    // aria-hidden="true" so screen readers skip the visual indicator
-    expect((spanCalls[0]![1] as Record<string, unknown>)?.['aria-hidden']).toBe('true');
+    expect(requiredCalls.length).toBeGreaterThan(0);
   });
 
-  it('does not render asterisk span when required=false', () => {
+  it('does not render Required component when required=false', () => {
     const c = makeComponent({ label: 'Options', required: false });
     vi.mocked(h).mockClear();
     c.render();
 
-    const spanCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'span' && (call[1] as Record<string, unknown>)?.class === 'checkbox-group__required',
+    const requiredCalls = vi.mocked(h).mock.calls.filter(
+      (call) => call[0] === Required,
     );
-    expect(spanCalls.length).toBe(0);
+    expect(requiredCalls.length).toBe(0);
   });
 
   it('fieldset does not carry aria-required (not a valid ARIA attr for fieldset)', () => {

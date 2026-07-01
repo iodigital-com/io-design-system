@@ -14,7 +14,6 @@ exports[`io-textarea — render snapshots > renders default state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-textarea-4fzzzxjylrx-message" class="textarea-message textarea-message--hidden"></p>
     <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
       <span class="textarea-description__slot textarea-description__slot--hidden">
         <slot name="description"></slot>
@@ -38,7 +37,6 @@ exports[`io-textarea — render snapshots > renders disabled state 1`] = `
         </span>
       </label>
     </div>
-    <p id="io-textarea-4fzzzxjylrx-message" class="textarea-message textarea-message--hidden"></p>
     <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
       <span class="textarea-description__slot textarea-description__slot--hidden">
         <slot name="description"></slot>
@@ -82,7 +80,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-textarea-4fzzzxjylrx-message" class="textarea-message textarea-message--hidden"></p>
     <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
       <span class="textarea-description__slot textarea-description__slot--hidden">
         <slot name="description"></slot>
@@ -103,7 +100,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-textarea-4fzzzxjylrx-message" class="textarea-message textarea-message--hidden"></p>
     <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
       <span class="textarea-description__slot textarea-description__slot--hidden">
         <slot name="description"></slot>
@@ -124,7 +120,6 @@ MockHTMLElement {
         </span>
       </label>
     </div>
-    <p id="io-textarea-4fzzzxjylrx-message" class="textarea-message textarea-message--hidden"></p>
     <p id="io-textarea-4fzzzxjylrx-helper" class="textarea-helper textarea-helper--hidden">
       <span class="textarea-description__slot textarea-description__slot--hidden">
         <slot name="description"></slot>

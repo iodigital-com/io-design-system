@@ -102,7 +102,7 @@ export function getInputStyles(): string {
       padding-top: 0;
     }
 
-    .input-required {
+    .io-required {
       color: var(--io-color-error);
     }
 

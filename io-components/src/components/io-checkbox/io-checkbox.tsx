@@ -2,6 +2,9 @@ import { Component, Prop, Event, EventEmitter, Listen, Method, Element, Host, Wa
 
 import { getCheckboxStyles } from './io-checkbox-styles';
 import { resolveCheckboxId, getCheckboxWrapperClass, getCheckboxCustomClass } from './io-checkbox-utils';
+import { syncFormState } from '../../utils/form/sync-form-state';
+import { Required } from '../common/required/Required';
+import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from './types';
@@ -182,14 +185,14 @@ export class IoCheckbox {
   private syncFormValue() {
     // Unchecked checkbox: null = excluded from FormData (matches native checkbox behaviour)
     // Indeterminate state does not affect form value or validity — only checked/unchecked matters.
-    this.internals?.setFormValue?.(this.checked ? this.value : null);
-    if (this.required && !this.checked) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please check this box');
-      this.faceInvalid = true;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const isInvalid = this.required && !this.checked;
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue: this.checked ? this.value : null,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please check this box' : '',
+      disabled: this.disabled,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   componentDidRender() {
@@ -253,7 +256,6 @@ export class IoCheckbox {
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
     const showFaceError = this.faceInvalid && state !== 'error';
-    const showMessage = showError && (hasMessageSlot || message);
 
     // #1094: messageId and faceErrorId are always included in aria-describedby so
     // the live-region relationship is established before any error occurs.
@@ -315,44 +317,26 @@ export class IoCheckbox {
                 <slot name="label" onSlotchange={this.handleLabelSlotChange} />
               </span>
               {!hasLabelSlot && label}
-              {required && (
-                <span class="checkbox-required" aria-hidden="true">
-                  {' *'}
-                </span>
-              )}
+              {required && <Required />}
             </span>
           </label>
         </div>
-        {/* #1094: State message live-region is always mounted so aria-describedby
-            can reference it before an error occurs. Only inner content is gated. */}
-        <p
-          id={messageId}
-          class={[
-            'checkbox-message',
-            showError ? 'checkbox-message--error' : showSuccess ? 'checkbox-message--success' : showWarning ? 'checkbox-message--warning' : '',
-            showMessage ? '' : 'checkbox-message--hidden',
-          ].filter(Boolean).join(' ')}
-          role={showError ? 'alert' : (showSuccess || showWarning) ? 'status' : undefined}
-          aria-live={showError ? 'assertive' : (showSuccess || showWarning) ? 'polite' : undefined}
-          aria-atomic={showMessage ? 'true' : undefined}
-        >
-          {showMessage && (
-            <span class={hasMessageSlot ? 'checkbox-message__slot' : 'checkbox-message__slot checkbox-message__slot--hidden'}>
-              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
-            </span>
-          )}
-          {showMessage && !hasMessageSlot && message}
-        </p>
-        {/* #1094: FACE error live-region always mounted; inner text gated by showFaceError */}
-        <p
-          id={faceErrorId}
-          class={`checkbox-message checkbox-message--error${showFaceError ? '' : ' checkbox-message--hidden'}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic={showFaceError ? 'true' : undefined}
-        >
-          {showFaceError && 'Please check this box'}
-        </p>
+        {(showError || showSuccess || showWarning) && (
+          <StateMessage
+            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
+            message={message}
+            hasSlot={hasMessageSlot}
+            messageId={messageId}
+            classPrefix="checkbox"
+            visible={!!(showError ? (hasMessageSlot || message) : message)}
+            onSlotChange={this.handleMessageSlotChange}
+          />
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="checkbox-message checkbox-message--error" role="alert">
+            Please check this box
+          </p>
+        )}
         {!hasState && !this.faceInvalid && (
           <p id={helperId} class={`checkbox-helper${hasDescriptionSlot || helperText ? '' : ' checkbox-helper--hidden'}`}>
             <span class={hasDescriptionSlot ? 'checkbox-description__slot' : 'checkbox-description__slot checkbox-description__slot--hidden'}>

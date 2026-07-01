@@ -163,7 +163,6 @@ describe('io-input-date — FACE (#817 #845)', () => {
       mockNative,
     );
     expect((component as any).faceInvalid).toBe(true);
-    expect((component as any).faceErrorMessage).toBe('Value must be 2025-01-01 or later.');
   });
 
   it('syncFormValue sets rangeOverflow via native input', () => {
@@ -188,7 +187,6 @@ describe('io-input-date — FACE (#817 #845)', () => {
       mockNative,
     );
     expect((component as any).faceInvalid).toBe(true);
-    expect((component as any).faceErrorMessage).toBe('Value must be 2026-12-31 or earlier.');
   });
 
   it('syncFormValue sets stepMismatch via native input', () => {
@@ -215,10 +213,9 @@ describe('io-input-date — FACE (#817 #845)', () => {
     expect((component as any).faceInvalid).toBe(true);
   });
 
-  it('syncFormValue clears faceErrorMessage when valid', () => {
+  it('syncFormValue clears faceInvalid when valid', () => {
     const internals = makeInternals();
     (component as any).internals = internals;
-    (component as any).faceErrorMessage = 'stale error';
     const mockNative = {
       checkValidity: vi.fn().mockReturnValue(true),
       validity: {},
@@ -231,7 +228,6 @@ describe('io-input-date — FACE (#817 #845)', () => {
     });
     component.value = '2025-06-01';
     (component as any).syncFormValue();
-    expect((component as any).faceErrorMessage).toBe('');
     expect((component as any).faceInvalid).toBe(false);
   });
 

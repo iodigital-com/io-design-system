@@ -26,6 +26,7 @@ import {
   getMultiSelectDisplayText,
 } from './io-multi-select-utils';
 import { getMatchingOptionIndex } from '../io-select/io-select-utils';
+import { syncFormState } from '../../utils/form/sync-form-state';
 
 import type { IoIconName } from '../../utils/icons';
 import type {
@@ -334,23 +335,17 @@ export class IoMultiSelect {
 
   private syncFormValue() {
     const values = this.value ?? [];
-
-    if (!this.name || values.length === 0) {
-      this.internals?.setFormValue?.(null);
-    } else {
-      const fd = new FormData();
-      // FormData always serialises values to strings (numeric values become e.g. "42").
-      values.forEach(v => fd.append(this.name, String(v)));
-      this.internals?.setFormValue?.(fd);
-    }
-
-    if (this.required && values.length === 0) {
-      this.internals?.setValidity?.({ valueMissing: true }, 'Please select at least one option');
-      this.faceInvalid = true;
-    } else {
-      this.internals?.setValidity?.({});
-      this.faceInvalid = false;
-    }
+    const formValue = !this.name || values.length === 0
+      ? null
+      : (() => { const fd = new FormData(); values.forEach(v => fd.append(this.name, String(v))); return fd; })();
+    const isInvalid = this.required && values.length === 0;
+    const { faceInvalid } = syncFormState(this.internals, null, {
+      formValue,
+      validity: isInvalid ? { valueMissing: true } : {},
+      validationMessage: isInvalid ? 'Please select at least one option' : '',
+      disabled: this.disabled,
+    });
+    this.faceInvalid = faceInvalid;
   }
 
   // ── Computed ──────────────────────────────────────────────────────────────

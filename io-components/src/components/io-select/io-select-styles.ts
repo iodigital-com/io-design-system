@@ -54,7 +54,7 @@ export function getSelectStyles(): string {
       pointer-events: none;
     }
 
-    .select-required {
+    .io-required {
       color: var(--io-color-error);
     }
 

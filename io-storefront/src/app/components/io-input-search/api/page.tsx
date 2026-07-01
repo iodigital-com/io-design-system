@@ -35,6 +35,7 @@ export default function IoInputSearchApiPage() {
             [<InlineCode key="n">maxLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Maximum number of characters allowed. Native constraint — triggers tooLong FACE validation.'],
             [<InlineCode key="n">minLength</InlineCode>, <InlineCode key="t">number | undefined</InlineCode>, '—', 'Minimum number of characters required. Native constraint — triggers tooShort FACE validation.'],
             [<InlineCode key="n">clearAriaLabel</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;Clear search&apos;</InlineCode>, 'Accessible label for the clear (×) button.'],
+            [<InlineCode key="n">spellCheck</InlineCode>, <InlineCode key="t">boolean | undefined</InlineCode>, '—', 'Native spellcheck attribute — passed through to the inner input as-is.'],
           ]}
         />
       </section>
@@ -81,6 +82,33 @@ export default function IoInputSearchApiPage() {
 {`document.querySelector('io-input-search')
   .addEventListener('clear', () => resetResults());`}
         </CodeNote>
+      </section>
+
+      <section id="slots" className="space-y-4">
+        <SectionHeader
+          title="Slots"
+          description="io-input-search accepts named slots for placing rich markup in positions that props only support plain text."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Custom label content. When slotted, replaces the plain-text label prop and allows rich markup such as links or inline icons inside the label.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Validation message content. When slotted in error/warning/success state, replaces the plain-text message prop.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Helper text content. Replaces the plain-text helperText prop when the field is not in an error state.',
+            ],
+          ]}
+        />
       </section>
     </div>
   );

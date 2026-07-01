@@ -1032,14 +1032,14 @@ export class IoSelect {
               {opts.length === 0 && !this.hasOptionsStatusSlot && (
                 <li class="combobox-empty" role="option" aria-disabled="true">No options</li>
               )}
-              <li
-                class={this.hasOptionsStatusSlot ? 'combobox-options-status' : 'combobox-options-status combobox-options-status--hidden'}
-                role="status"
-                aria-live="polite"
-              >
-                <slot name="options-status" onSlotchange={this.handleOptionsStatusSlotChange} />
-              </li>
             </ul>
+            <div
+              class={this.hasOptionsStatusSlot ? 'combobox-options-status' : 'combobox-options-status combobox-options-status--hidden'}
+              role="status"
+              aria-live="polite"
+            >
+              <slot name="options-status" onSlotchange={this.handleOptionsStatusSlotChange} />
+            </div>
           </div>
         </div>
 

@@ -323,9 +323,9 @@ export function getSelectStyles(): string {
     }
 
     /* ── Options-status slot (async loading/error states) ─── */
+    /* Rendered as a sibling <div> outside the listbox — not a list item */
 
     .combobox-options-status {
-      list-style: none;
       padding: var(--io-space-3);
       color: var(--io-text-secondary);
       font-size: var(--io-font-size-sm);

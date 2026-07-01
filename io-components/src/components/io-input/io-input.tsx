@@ -6,7 +6,6 @@ import { applyAriaProp } from '../../utils/aria-prop';
 import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
-import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoInputType, IoInputSize, IoInputMode } from './types';

@@ -101,11 +101,6 @@ export class IoToastManagerClass {
     return [...this.visible, ...this.queue];
   }
 
-  /** @deprecated Use getQueue() or getVisible(). Returns oldest visible entry or null. */
-  getCurrent(): IoToastEntry | null {
-    return this.visible[0] ?? null;
-  }
-
   /** Returns the currently visible entries (up to maxVisible). */
   getVisible(): readonly IoToastEntry[] {
     return this.visible.slice();

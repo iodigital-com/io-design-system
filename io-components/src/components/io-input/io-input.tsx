@@ -128,9 +128,6 @@ export class IoInput {
   /** Native step value (date/time/number) */
   @Prop() step: string | number | undefined;
 
-  /** Autocomplete attribute (legacy — prefer autoComplete) */
-  @Prop() autocomplete: string | undefined;
-
   /** Native autocomplete attribute (e.g. 'email', 'current-password', 'off') */
   @Prop() autoComplete: string | undefined;
 
@@ -414,7 +411,7 @@ export class IoInput {
    * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
    */
   render() {
-    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autocomplete, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator } = this;
+    const { label, type, name, value, placeholder, required, readOnly, disabled, state, message, helperText, description, maxLength, minLength, min, max, step, autoComplete, spellCheck, loading, counter, form, size, hasPrefix, hasSuffix, hideLabel, hasLabelSlot, hasDescriptionSlot, hasMessageSlot, inputMode, pattern, indicator } = this;
     const indicatorIcon = resolveIndicatorIcon(indicator, type);
     const showIndicator = !!indicatorIcon;
     const { inputId, errorId, helperId } = this.getInputIds();
@@ -487,7 +484,7 @@ export class IoInput {
               min={min}
               max={max}
               step={step}
-              autocomplete={autoComplete ?? autocomplete}
+              autocomplete={autoComplete}
               spellcheck={spellCheck}
               form={form}
               inputmode={inputMode}

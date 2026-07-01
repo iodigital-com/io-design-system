@@ -36,14 +36,6 @@ describe('io-checkbox-group — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
-  });
-
-  it('has undefined errorMessage by default', () => {
-    expect(component.errorMessage).toBeUndefined();
-  });
-
   it('has empty helperText by default', () => {
     expect(component.helperText).toBe('');
   });
@@ -91,37 +83,6 @@ describe('io-checkbox-group — required prop (render checks)', () => {
   });
 });
 
-describe('io-checkbox-group — error role=alert (render checks)', () => {
-  it('renders error paragraph with role="alert" when error=true and errorMessage is set', () => {
-    const c = makeComponent({
-      label: 'Options',
-      error: true,
-      errorMessage: 'Please select at least one option',
-    });
-    vi.mocked(h).mockClear();
-    c.render();
-
-    const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-group__error'),
-    );
-    expect(pCalls.length).toBeGreaterThan(0);
-    const attrs = pCalls[0]![1] as Record<string, unknown>;
-    expect(attrs.role).toBe('alert');
-    expect(attrs['aria-atomic']).toBe('true');
-    expect(attrs['aria-live']).toBeUndefined();
-  });
-
-  it('does not render error paragraph when error=false', () => {
-    const c = makeComponent({ label: 'Options', error: false, errorMessage: 'Some error' });
-    vi.mocked(h).mockClear();
-    c.render();
-
-    const pCalls = vi.mocked(h).mock.calls.filter(
-      (call) => call[0] === 'p' && String((call[1] as Record<string, unknown>)?.class ?? '').includes('checkbox-group__error'),
-    );
-    expect(pCalls.length).toBe(0);
-  });
-});
 
 describe('io-checkbox-group — syncChildren', () => {
   it('sets name on all io-checkbox children', () => {
@@ -152,7 +113,6 @@ describe('io-checkbox-group — syncChildren', () => {
     (component as any).change = { emit: vi.fn() };
     component.name = 'g';
     component.disabled = true;
-    component.error = false;
 
     (component as any).syncChildren();
 
@@ -170,30 +130,13 @@ describe('io-checkbox-group — syncChildren', () => {
     component.name = 'g';
     // group is now re-enabled
     component.disabled = false;
-    component.error = false;
 
     (component as any).syncChildren();
 
     expect(cb.disabled).toBe(false);
   });
 
-  it('propagates error state to children when error=true', () => {
-    const component = new IoCheckboxGroup();
-    const host = document.createElement('io-checkbox-group');
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: '', checked: false, disabled: false, state: 'none' });
-    host.appendChild(cb);
-    (component as any).el = host;
-    (component as any).change = { emit: vi.fn() };
-    component.name = 'g';
-    component.disabled = false;
-    component.error = true;
-
-    (component as any).syncChildren();
-
-    expect(cb.state).toBe('error');
-  });
-
-  it('preserves existing child state when group error=false and state="none"', () => {
+  it('preserves existing child state when group disabled=false and state="none"', () => {
     // Issue #954: group in non-error state must NOT reset per-child state
     const component = new IoCheckboxGroup();
     const host = document.createElement('io-checkbox-group');
@@ -203,28 +146,11 @@ describe('io-checkbox-group — syncChildren', () => {
     (component as any).change = { emit: vi.fn() };
     component.name = 'g';
     component.disabled = false;
-    component.error = false;
 
     (component as any).syncChildren();
 
     // Child's own warning state must be preserved when group is in the default 'none' state
     expect(cb.state).toBe('warning');
-  });
-
-  it('forces all children to error when group error=true', () => {
-    const component = new IoCheckboxGroup();
-    const host = document.createElement('io-checkbox-group');
-    const cb = Object.assign(document.createElement('io-checkbox'), { value: 'x', name: '', checked: false, disabled: false, state: 'warning' });
-    host.appendChild(cb);
-    (component as any).el = host;
-    (component as any).change = { emit: vi.fn() };
-    component.name = 'g';
-    component.disabled = false;
-    component.error = true;
-
-    (component as any).syncChildren();
-
-    expect(cb.state).toBe('error');
   });
 
   it('does not throw when no children are present', () => {

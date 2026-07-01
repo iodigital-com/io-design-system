@@ -47,48 +47,19 @@ export class IoSpinner {
    */
   @Prop({ reflect: true }) context: IoSpinnerContext = 'inline';
 
-  /**
-   * @deprecated Pass aria-* attributes directly on the host element instead.
-   * E.g. <io-spinner aria-label="Saving"> instead of <io-spinner aria={{ 'aria-label': 'Saving' }}>.
-   * This prop will be removed in a future minor release.
-   *
-   * Additional ARIA attributes spread onto the Host element.
-   * When aria-label is provided here, it takes precedence over the label prop.
-   * Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
-   */
-  @Prop() aria?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
-
-  // ── Lifecycle ────────────────────────────────────────────────
-
-  componentWillLoad() {
-    if (this.aria !== undefined) {
-      console.warn(
-        '[io-spinner] The `aria` object prop is deprecated and will be removed in a future release. ' +
-        'Pass aria-* attributes directly on the host element instead: ' +
-        '<io-spinner aria-label="Loading" aria-live="polite">',
-      );
-    }
-  }
-
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { size, color, aria, context } = this;
+    const { size, color, context } = this;
     const label = normalizeSpinnerLabel(this.label);
 
-    // Read aria-label from host element (new pattern) or from deprecated aria prop
+    // Read aria-label from host element
     const hostAriaLabel = this.el?.getAttribute('aria-label')?.trim();
-    const legacyAriaLabel = aria?.['aria-label']?.trim();
-    const ariaLabel = hostAriaLabel || legacyAriaLabel || label;
-
-    // aria-live and aria-describedby can come from deprecated aria prop (host attrs handled natively)
-    const ariaDescribedby = aria?.['aria-describedby'];
-    const ariaLive = aria?.['aria-live'];
-    const ariaAtomic = aria?.['aria-atomic'];
+    const ariaLabel = hostAriaLabel || label;
 
     // context prop drives role and aria-live defaults
     const role = context === 'blocking' ? 'alert' : 'status';
-    const effectiveAriaLive = ariaLive ?? (context === 'blocking' ? 'assertive' : 'polite');
+    const effectiveAriaLive = context === 'blocking' ? 'assertive' : 'polite';
 
     const { r, circumference } = getSpinnerCircleRadius(size);
 
@@ -96,9 +67,8 @@ export class IoSpinner {
       <Host
         role={role}
         aria-label={ariaLabel}
-        aria-describedby={ariaDescribedby}
         aria-live={effectiveAriaLive}
-        aria-atomic={ariaAtomic ?? 'true'}
+        aria-atomic="true"
       >
         <style>{getSpinnerStyles()}</style>
         <svg

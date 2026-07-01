@@ -18,23 +18,4 @@ describe('io-tag-utils', () => {
     expect(shouldBlockTagInteraction(true)).toBe(true);
     expect(shouldBlockTagInteraction(false)).toBe(false);
   });
-
-  it('resolveTagVariant returns the semantic variant when non-neutral', () => {
-    expect(resolveTagVariant('primary', 'default')).toBe('primary');
-    expect(resolveTagVariant('success', 'blue')).toBe('success');
-  });
-
-  it('resolveTagVariant falls back to color mapping when variant is neutral', () => {
-    expect(resolveTagVariant('neutral', 'blue')).toBe('primary');
-    expect(resolveTagVariant('neutral', 'beige')).toBe('subtle');
-    expect(resolveTagVariant('neutral', 'rouge')).toBe('error');
-    expect(resolveTagVariant('neutral', 'default')).toBe('neutral');
-  });
-
-  it('DEPRECATED_COLOR_MAP covers all legacy color values', () => {
-    const legacyColors = ['default', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'];
-    for (const color of legacyColors) {
-      expect(DEPRECATED_COLOR_MAP[color]).toBeDefined();
-    }
-  });
 });

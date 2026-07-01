@@ -1,10 +1,10 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h, Watch } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
 import { getTagStyles } from './io-tag-styles';
-import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction, resolveTagVariant, DEPRECATED_COLOR_MAP } from './io-tag-utils';
+import { getTagClassName, getTagGroupClassName, shouldBlockTagInteraction } from './io-tag-utils';
 import type { IoIconName } from '../../utils/icons';
 
-import type { IoTagSize, IoTagColor, IoTagVariant, IoTagAppearance } from './types';
+import type { IoTagSize, IoTagVariant, IoTagAppearance } from './types';
 
 /**
  * io-tag
@@ -38,13 +38,6 @@ export class IoTag {
   /** Active/selected state — filled primary colour when true */
   @Prop({ mutable: true, reflect: true }) selected = false;
 
-  /**
-   * @deprecated Use `<io-tag-dismissible>` instead.
-   * Renders a remove (×) button alongside the tag.
-   * Will emit a console.warn in dev mode when used.
-   */
-  @Prop() removable = false;
-
   /** Disables all interaction */
   @Prop({ reflect: true }) disabled = false;
 
@@ -53,7 +46,6 @@ export class IoTag {
 
   /**
    * Semantic colour variant.
-   * Replaces `color` — use this in new code.
    */
   @Prop({ reflect: true }) variant: IoTagVariant = 'neutral';
 
@@ -64,13 +56,6 @@ export class IoTag {
    * - frosted: backdrop-filter blur with translucent fill
    */
   @Prop({ reflect: true }) appearance: IoTagAppearance = 'soft';
-
-  /**
-   * @deprecated Use `variant` instead.
-   * Background colour of the unselected state.
-   * Brand-colour names will be mapped to semantic variants with a console.warn.
-   */
-  @Prop({ reflect: true }) color: IoTagColor = 'default';
 
   /** Accessible label for the tag content — used to build the remove button's aria-label. */
   @Prop() label = '';
@@ -89,22 +74,6 @@ export class IoTag {
    * When set alongside `icon`, this URL takes precedence as the icon source.
    */
   @Prop() iconSource?: string;
-
-  // ── Lifecycle ─────────────────────────────────────────────────
-
-  @Watch('color')
-  onColorChange(newColor: IoTagColor) {
-    if (newColor !== 'default') {
-      const mapped = DEPRECATED_COLOR_MAP[newColor];
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `[io-tag] The 'color' prop is deprecated. Use 'variant="${mapped ?? 'neutral'}"' instead. ` +
-          `'color="${newColor}"' will be removed in a future release.`
-        );
-      }
-    }
-  }
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -138,11 +107,9 @@ export class IoTag {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { selected, removable, disabled, size, color, label, compact, variant, appearance, icon, iconSource } = this;
+    const { selected, disabled, size, label, compact, variant, appearance, icon, iconSource } = this;
 
-    // Resolve effective variant: semantic `variant` takes precedence; fall back to color mapping
-    const effectiveVariant = resolveTagVariant(variant, color);
-    const tagClass = getTagClassName(size, effectiveVariant, appearance, selected, disabled, compact);
+    const tagClass = getTagClassName(size, variant, appearance, selected, disabled, compact);
 
     const iconEl = (icon || iconSource) ? (
       <io-icon
@@ -152,46 +119,6 @@ export class IoTag {
         aria-hidden="true"
       />
     ) : null;
-
-    if (removable) {
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.warn(
-          '[io-tag] The `removable` prop is deprecated. Use `<io-tag-dismissible>` for chips with dismiss actions.'
-        );
-      }
-      return (
-        <Host>
-          <style>{getTagStyles()}</style>
-          <div
-            class={getTagGroupClassName(size, effectiveVariant, appearance, selected, disabled)}
-            role="none"
-          >
-            <button
-              type="button"
-              class={`${tagClass} tag--removable-main`}
-              aria-disabled={disabled ? 'true' : undefined}
-              aria-pressed={String(selected)}
-              onClick={this.handleToggle}
-            >
-              {iconEl}
-              <slot />
-            </button>
-            <button
-              type="button"
-              class={`tag tag--${size} tag--${effectiveVariant} tag--${appearance} tag__remove tag__remove--${size}${selected ? ' tag--selected' : ''}${disabled ? ' tag--disabled' : ''}`}
-              aria-label={label ? `Remove ${label}` : 'Remove'}
-              aria-disabled={disabled ? 'true' : undefined}
-              onClick={this.handleRemove}
-            >
-              <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
-            </button>
-          </div>
-        </Host>
-      );
-    }
 
     return (
       <Host>

@@ -90,11 +90,11 @@ describe('io-checkbox-group — render() branch coverage', () => {
     expect(() => (c as any).render()).not.toThrow();
   });
 
-  it('render() with error=true and errorMessage does not throw', () => {
+  it('render() with state="error" and message does not throw', () => {
     const { c } = makeComponent();
     c.label = 'Choose';
-    c.error = true;
-    c.errorMessage = 'Required';
+    c.state = 'error' as any;
+    c.message = 'Required';
     (c as any).componentWillLoad();
     expect(() => (c as any).render()).not.toThrow();
   });
@@ -147,7 +147,7 @@ describe('io-checkbox-group — syncChildren required propagation (#804)', () =>
     host.appendChild(cb);
     c.required = true;
     c.disabled = true;
-    c.error = true;
+    c.state = 'error' as any;
     (c as any).syncChildren();
     expect(cb.name).toBe('opts');
     expect(cb.disabled).toBe(true);

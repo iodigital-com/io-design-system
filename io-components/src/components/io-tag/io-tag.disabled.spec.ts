@@ -77,16 +77,4 @@ describe('io-tag — aria-disabled pattern (#864)', () => {
     expect((buttonCall?.[1] as any)?.disabled).toBeUndefined();
   });
 
-  it('removable: both buttons use aria-disabled when disabled', () => {
-    component.disabled = true;
-    component.removable = true;
-    vi.mocked(h).mockClear();
-    component.render();
-    const buttonCalls = vi.mocked(h).mock.calls.filter(([tag]) => tag === 'button');
-    expect(buttonCalls.length).toBeGreaterThanOrEqual(2);
-    for (const call of buttonCalls) {
-      expect((call[1] as any)?.['aria-disabled']).toBe('true');
-      expect((call[1] as any)?.disabled).toBeUndefined();
-    }
-  });
 });

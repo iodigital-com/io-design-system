@@ -54,10 +54,10 @@ describe('io-toast-item — a11y', () => {
     expect(closeButtonAttrs['aria-label']).toBeDefined();
   });
 
-  it('action rendered as button when actionLabel set without href', () => {
+  it('action rendered as button when actions has item without href', () => {
     const { allCalls } = renderToastItem((c) => {
       c.text = 'File uploaded';
-      c.actionLabel = 'View file';
+      c.actions = [{ label: 'View file' }];
     });
     const actionButtonCall = allCalls.find(
       ([tag, attrs]) =>
@@ -67,11 +67,10 @@ describe('io-toast-item — a11y', () => {
     expect(actionButtonCall).toBeDefined();
   });
 
-  it('action rendered as anchor when actionLabel and actionHref set', () => {
+  it('action rendered as anchor when actions has item with href', () => {
     const { allCalls } = renderToastItem((c) => {
       c.text = 'File uploaded';
-      c.actionLabel = 'View file';
-      c.actionHref = '/files/123';
+      c.actions = [{ label: 'View file', href: '/files/123' }];
     });
     const anchorCall = allCalls.find(([tag]) => tag === 'a');
     expect(anchorCall).toBeDefined();

@@ -47,20 +47,7 @@ export interface IoToastMessage {
    */
   persistent?: boolean;
   /**
-   * Label for the optional call-to-action button/link rendered beside the text.
-   * When omitted, no action is rendered.
-   * @deprecated Use `actions` for richer multi-action support.
-   */
-  actionLabel?: string;
-  /**
-   * When set alongside `actionLabel`, renders the CTA as an anchor pointing to
-   * this href (opens in the same tab). When omitted, the CTA is a button that
-   * emits the `action` event on io-toast-item.
-   * @deprecated Use `actions` for richer multi-action support.
-   */
-  actionHref?: string;
-  /**
-   * Array of up to 2 action items. Supersedes `actionLabel`/`actionHref`.
+   * Array of up to 2 action items.
    * Each entry supports `label`, `href`, `variant`, and a custom `onClick`.
    */
   actions?: IoToastAction[];

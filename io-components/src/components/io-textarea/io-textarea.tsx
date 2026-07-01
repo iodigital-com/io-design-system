@@ -75,13 +75,7 @@ export class IoTextarea {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoTextareaSize = 'md';
 
-  /**
-   * Autocomplete attribute (lowercase form).
-   * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
-   */
-  @Prop() autocomplete: string | undefined;
-
-  /** Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form. */
+  /** Native autocomplete attribute (e.g. 'off', 'on', 'email'). */
   @Prop() autoComplete: string | undefined;
 
   /** Visually hides the label while keeping it accessible to screen readers */
@@ -375,7 +369,6 @@ export class IoTextarea {
       maxLength,
       minLength,
       rows,
-      autocomplete,
       autoComplete,
       resize,
       size,
@@ -429,7 +422,7 @@ export class IoTextarea {
             maxLength={maxLength}
             minLength={minLength}
             rows={rows}
-            autocomplete={autoComplete ?? autocomplete}
+            autocomplete={autoComplete}
             spellcheck={spellCheck}
             form={form}
             wrap={wrap}

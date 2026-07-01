@@ -49,10 +49,6 @@ describe('io-multi-select — default props', () => {
     expect(component.message).toBeUndefined();
   });
 
-  it('has filter false by default', () => {
-    expect(component.filter).toBe(false);
-  });
-
   it('has filterable false by default', () => {
     expect(component.filterable).toBe(false);
   });
@@ -876,8 +872,8 @@ describe('io-multi-select — filterable prop (#1061)', () => {
     expect(filterInputCall).toBeDefined();
   });
 
-  it('does not render filter input when filterable=false and filter=false', () => {
-    const comp = makeRenderComp({ filterable: false, filter: false } as any);
+  it('does not render filter input when filterable=false', () => {
+    const comp = makeRenderComp({ filterable: false } as any);
     vi.mocked(h).mockClear();
     comp.render();
     const filterInputCall = vi.mocked(h).mock.calls.find(
@@ -897,13 +893,4 @@ describe('io-multi-select — filterable prop (#1061)', () => {
     expect((filterInputCall![1] as Record<string, unknown>)['placeholder']).toBe('Type to search');
   });
 
-  it('backward compat: renders filter input when deprecated filter=true', () => {
-    const comp = makeRenderComp({ filter: true } as any);
-    vi.mocked(h).mockClear();
-    comp.render();
-    const filterInputCall = vi.mocked(h).mock.calls.find(
-      args => args[0] === 'input' && (args[1] as Record<string, unknown>)?.['aria-label'] === 'Filter options',
-    );
-    expect(filterInputCall).toBeDefined();
-  });
 });

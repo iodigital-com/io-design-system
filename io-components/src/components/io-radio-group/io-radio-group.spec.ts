@@ -24,14 +24,6 @@ describe('io-radio-group — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
-  });
-
-  it('has undefined errorMessage by default', () => {
-    expect(component.errorMessage).toBeUndefined();
-  });
-
   it('has empty helperText by default', () => {
     expect(component.helperText).toBe('');
   });
@@ -447,8 +439,8 @@ describe('io-radio-group — error paragraph semantics (#856)', () => {
     (component as any).legendId = 'io-rg-legend-test';
     component.label = 'Contact';
     component.name = 'contact';
-    component.error = true;
-    component.errorMessage = 'Please select an option';
+    component.state = 'error';
+    component.message = 'Please select an option';
 
     vi.mocked(h).mockClear();
     component.render();
@@ -570,7 +562,7 @@ describe('io-radio-group — state/message API (#1152)', () => {
     expect((radio as any).state).toBe('success');
   });
 
-  it('legacy error=true maps to state="error" for children', () => {
+  it('state="error" propagates to children via syncChildren', () => {
     const component = new IoRadioGroup();
     const host = document.createElement('io-radio-group');
     const radio = Object.assign(document.createElement('io-radio'), {
@@ -580,14 +572,14 @@ describe('io-radio-group — state/message API (#1152)', () => {
     (component as any).el = host;
     (component as any).change = { emit: vi.fn() };
     component.name = 'choice';
-    component.error = true;
+    component.state = 'error';
 
     (component as any).syncChildren();
 
     expect((radio as any).state).toBe('error');
   });
 
-  it('explicit state prop takes precedence over legacy error prop', () => {
+  it('state="warning" propagates to children (not overridden)', () => {
     const component = new IoRadioGroup();
     const host = document.createElement('io-radio-group');
     const radio = Object.assign(document.createElement('io-radio'), {
@@ -598,11 +590,9 @@ describe('io-radio-group — state/message API (#1152)', () => {
     (component as any).change = { emit: vi.fn() };
     component.name = 'choice';
     component.state = 'warning';
-    component.error = true;
 
     (component as any).syncChildren();
 
-    // state="warning" takes precedence over error=true
     expect((radio as any).state).toBe('warning');
   });
 

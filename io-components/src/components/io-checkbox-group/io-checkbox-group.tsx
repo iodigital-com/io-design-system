@@ -61,23 +61,8 @@ export class IoCheckboxGroup {
 
   /**
    * Validation/helper message shown below the group.
-   * Replaces the legacy errorMessage prop when state is set explicitly.
    */
   @Prop() message = '';
-
-  /**
-   * @deprecated Use `state="error"` instead.
-   * Kept for one minor cycle for backwards compatibility.
-   * Puts the group in error state.
-   */
-  @Prop({ reflect: true }) error = false;
-
-  /**
-   * @deprecated Use `message` instead.
-   * Kept for one minor cycle for backwards compatibility.
-   * Error message shown below the group when error is true.
-   */
-  @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
   @Prop() helperText = '';
@@ -141,11 +126,6 @@ export class IoCheckboxGroup {
     this.syncChildren();
   }
 
-  @Watch('error')
-  onErrorChange() {
-    this.syncChildren();
-  }
-
   @Watch('required')
   onRequiredChange() {
     this.syncChildren();
@@ -191,7 +171,7 @@ export class IoCheckboxGroup {
     if (!this.aria) return undefined;
 
     const alwaysBlocked = new Set(['aria-invalid', 'invalid', 'aria-required', 'required', 'role']);
-    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
+    const effectiveState: IoFieldState = this.state;
     const conditionalBlocked = new Set<string>();
     if (effectiveState === 'error') {
       conditionalBlocked.add('aria-describedby');
@@ -229,9 +209,6 @@ export class IoCheckboxGroup {
     const checkboxes = Array.from(
       this.el.querySelectorAll<HTMLElement & { name: string; disabled: boolean; required: boolean; value: string; state: IoFieldState }>('io-checkbox'),
     );
-    // Resolve the effective state: explicit state prop takes precedence;
-    // legacy error=true maps to 'error' for one-cycle backwards compat.
-    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     for (const checkbox of checkboxes) {
       if (this.name !== undefined) {
         checkbox.name = this.name;
@@ -239,8 +216,8 @@ export class IoCheckboxGroup {
       checkbox.disabled = this.disabled;
       checkbox.required = this.required;
       // Only override child state when the group has a non-'none' state; preserve per-child state otherwise
-      if (effectiveState !== 'none') {
-        checkbox.state = effectiveState;
+      if (this.state !== 'none') {
+        checkbox.state = this.state;
       }
     }
   };
@@ -257,12 +234,9 @@ export class IoCheckboxGroup {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, error, errorMessage, required, state, message } = this;
-    // Resolve effective error/message: new state API takes precedence over legacy error prop.
-    const effectiveError = state === 'error' || error;
-    // Legacy errorMessage only shows when error=true (legacy behaviour preserved).
-    // New message prop shows when state is not 'none'.
-    const effectiveMessage = message || (error ? errorMessage : undefined);
+    const { label, disabled, loading, helperText, required, state, message } = this;
+    const effectiveError = state === 'error';
+    const effectiveMessage = message;
     const messageId = `${this.errorId}-msg`;
 
     const fieldsetClass = effectiveError ? 'checkbox-group checkbox-group--error' : 'checkbox-group';

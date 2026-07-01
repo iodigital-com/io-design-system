@@ -58,17 +58,6 @@ export class IoSwitch {
   /** Validation message shown below the switch when state is non-'none' */
   @Prop() message: string | undefined;
 
-  /**
-   * @deprecated Use `state="error"` instead. Will be removed in the next minor release.
-   * Puts the switch in error state. Emits a console.warn in non-production builds.
-   */
-  @Prop({ reflect: true }) error = false;
-
-  /**
-   * @deprecated Use `message` instead. Will be removed in the next minor release.
-   * Error message shown below the switch when error is true.
-   */
-  @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below (replaced by error when error=true) */
   @Prop() helperText: string | undefined;
@@ -144,13 +133,6 @@ export class IoSwitch {
     this.fieldId = resolveSwitchId(this.name, this.fallbackId);
     this.loadingMessageId = `${this.fieldId}-loading`;
     this.defaultChecked = this.checked;
-    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-    if (!isProd && this.error) {
-      console.warn('[io-switch] The "error" prop is deprecated. Use state="error" instead.');
-    }
-    if (!isProd && this.errorMessage !== undefined) {
-      console.warn('[io-switch] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
-    }
     if (this.loading) {
       this.initialLoadingSeen = true;
     }
@@ -252,11 +234,9 @@ export class IoSwitch {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, name, value, checked, required, disabled, loading, error, errorMessage, state, message, helperText } = this;
-    // Effective state: new `state` prop takes precedence; `error` is deprecated alias
-    const effectiveState: IoFieldState = state !== 'none' ? state : (error ? 'error' : 'none');
-    // Effective message: new `message` prop takes precedence; `errorMessage` is deprecated alias
-    const effectiveMessage = message ?? errorMessage;
+    const { label, name, value, checked, required, disabled, loading, state, message, helperText } = this;
+    const effectiveState: IoFieldState = state;
+    const effectiveMessage = message;
     const isError = effectiveState === 'error';
 
     const inputId = this.fieldId;

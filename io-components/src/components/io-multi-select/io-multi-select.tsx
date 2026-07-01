@@ -129,12 +129,6 @@ export class IoMultiSelect {
    */
   @Prop() filterPlaceholder = 'Search...';
 
-  /**
-   * @deprecated Use `filterable` instead. Retained for backward compatibility.
-   * When true, shows a search input inside the dropdown to filter options.
-   * @default false
-   */
-  @Prop({ reflect: true }) filter = false;
 
   /**
    * Dropdown opening direction.
@@ -410,9 +404,9 @@ export class IoMultiSelect {
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
-  /** True when either `filterable` or the deprecated `filter` prop is set. */
+  /** True when filterable prop is set. */
   private get isFilterEnabled(): boolean {
-    return this.filterable || this.filter;
+    return this.filterable;
   }
 
   private get filteredOptions(): IoSelectOption[] {

@@ -74,7 +74,7 @@ export function getSpinnerStyles(): string {
     /* ── Reduced motion — slow instead of stop ──────────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      .spinner { animation-duration: 4s; }
+      .spinner { animation-duration: var(--io-spinner-duration-reduced, 4s); }
     }
 
     /* ── Windows High Contrast Mode (forced-colors) ─────────── */

@@ -9,7 +9,6 @@ import {
   renderWarningIcon,
   buildInputWrapperClass,
   buildInputDescribedBy,
-  renderInputMessageTree,
 } from '../../utils/input-base';
 
 import type { IoFieldState } from '../../utils/field-state';
@@ -100,11 +99,17 @@ export class IoInputPassword {
    */
   @Prop() aria?: Record<string, string>;
 
+  /** Native spellcheck attribute — passed through as-is */
+  @Prop() spellCheck: boolean | undefined;
+
   /** Whether the password is currently visible as plain text */
   @State() showPassword = false;
 
   @State() faceInvalid = false;
   @State() private touched = false;
+  @State() private hasLabelSlot = false;
+  @State() private hasDescriptionSlot = false;
+  @State() private hasMessageSlot = false;
 
   @Event() input!: EventEmitter<InputEvent>;
   @Event() change!: EventEmitter<string>;
@@ -133,6 +138,21 @@ export class IoInputPassword {
   onAriaChange() {
     applyAriaProp(this.aria, this.nativeInputEl ?? null);
   }
+
+  private handleLabelSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasLabelSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleDescriptionSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasDescriptionSlot = slot.assignedElements().length > 0;
+  };
+
+  private handleMessageSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasMessageSlot = slot.assignedElements().length > 0;
+  };
 
   private syncFormValue() {
     this.internals?.setFormValue?.(this.value ?? '');
@@ -221,15 +241,20 @@ export class IoInputPassword {
     this.showPassword = !this.showPassword;
   };
 
+  /**
+   * @slot label - Custom label content. Replaces the plain-text `label` prop when rich markup is needed.
+   * @slot description - Helper text content. Replaces the plain-text `helperText` prop when not in error state.
+   * @slot message - Validation message content. Replaces the plain-text `message` prop in error/success/warning state.
+   */
   render() {
-    const { label, name, value, placeholder, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle } = this;
+    const { label, name, value, placeholder, required, disabled, readOnly, loading, state, message, helperText, hideLabel, size, autocomplete, showPassword, maxLength, minLength, toggle, spellCheck, hasLabelSlot, hasDescriptionSlot, hasMessageSlot } = this;
     const { inputId, errorId, helperId } = this;
 
     const showError = state === 'error';
     const showSuccess = state === 'success';
     const showWarning = state === 'warning';
-    const showMessage = (showError || showSuccess || showWarning) && !!message;
-    const showDescription = !showMessage && !!helperText;
+    const showMessage = (showError || showSuccess || showWarning) && (hasMessageSlot || !!message);
+    const showDescription = !showMessage && (hasDescriptionSlot || !!helperText);
 
     const showFaceError = this.touched && this.faceInvalid && !showError;
     const faceErrorId = `${inputId}-face-error`;
@@ -276,6 +301,7 @@ export class IoInputPassword {
               maxLength={maxLength}
               minLength={minLength}
               autocomplete={autocomplete}
+              spellcheck={spellCheck}
               aria-invalid={(showError || (this.touched && this.faceInvalid)) ? 'true' : undefined}
               aria-describedby={describedBy}
               onInput={this.handleInput}
@@ -315,24 +341,53 @@ export class IoInputPassword {
             {showWarning && renderWarningIcon()}
           </div>
           <label htmlFor={inputId} class={hideLabel ? 'input-label input-label--sr-only' : 'input-label'}>
-            {label}
-            {required && <span class="input-required" aria-hidden="true"> *</span>}
+            <span class={hasLabelSlot ? 'input-label__slot' : 'input-label__slot input-label__slot--hidden'}>
+              <slot name="label" onSlotchange={this.handleLabelSlotChange} />
+            </span>
+            {!hasLabelSlot && (
+              <span>
+                {label}
+                {required && <span class="input-required" aria-hidden="true"> *</span>}
+              </span>
+            )}
+            {hasLabelSlot && required && <span class="input-required" aria-hidden="true"> *</span>}
           </label>
         </div>
-        {...renderInputMessageTree({
-          errorId,
-          helperId,
-          showError,
-          showSuccess,
-          showWarning,
-          showMessage,
-          message,
-          showDescription,
-          helperText,
-          showFaceError,
-          faceErrorId,
-          faceErrorMessage: this.faceErrorMessage,
-        })}
+        {showError && (
+          <p id={errorId} class={`input-message input-message--error${showMessage ? '' : ' input-error--hidden'}`} role="alert">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {showSuccess && (
+          <p id={errorId} class={`input-message input-message--success${showMessage ? '' : ' input-error--hidden'}`} role="status">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {showWarning && (
+          <p id={errorId} class={`input-message input-message--warning${showMessage ? '' : ' input-error--hidden'}`} role="status">
+            <span class={hasMessageSlot ? 'input-message__slot' : 'input-message__slot input-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
+            </span>
+            {!hasMessageSlot && message}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="input-message input-message--error" role="alert">
+            {this.faceErrorMessage}
+          </p>
+        )}
+        <p id={helperId} class={`input-helper${showDescription ? '' : ' input-helper--hidden'}`}>
+          <span class={hasDescriptionSlot ? 'input-description__slot' : 'input-description__slot input-description__slot--hidden'}>
+            <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+          </span>
+          {!hasDescriptionSlot && helperText}
+        </p>
       </Host>
     );
   }

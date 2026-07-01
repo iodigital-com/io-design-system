@@ -38,7 +38,7 @@ export default function IoBadgeApiPage() {
               </span>,
               <InlineCode key="d">&apos;primary&apos;</InlineCode>,
               <span key="desc">
-                Semantic colour variant of the badge. Controls background, text colour, and border. Preferred semantic values:{' '}
+                Visual variant of the badge. Controls background, text colour, and border. Semantic values:{' '}
                 <InlineCode>neutral</InlineCode>{' '}
                 <InlineCode>primary</InlineCode>{' '}
                 <InlineCode>info</InlineCode>{' '}
@@ -46,7 +46,7 @@ export default function IoBadgeApiPage() {
                 <InlineCode>warning</InlineCode>{' '}
                 <InlineCode>error</InlineCode>{' '}
                 <InlineCode>subtle</InlineCode>.{' '}
-                Deprecated brand-colour aliases (kept for backwards compatibility):{' '}
+                Legacy values also accepted:{' '}
                 <InlineCode>beige</InlineCode>{' '}
                 <InlineCode>blue</InlineCode>{' '}
                 <InlineCode>dark</InlineCode>{' '}

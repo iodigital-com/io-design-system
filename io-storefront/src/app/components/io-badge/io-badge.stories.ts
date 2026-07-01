@@ -47,7 +47,7 @@ export const badgePropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle', 'beige', 'blue', 'dark', 'orange', 'rouge', 'outline'],
     defaultValue: 'primary',
-    description: 'Sets visual style and semantic meaning of the badge. Prefer semantic values (neutral, primary, info, success, warning, error, subtle); brand-colour aliases are deprecated.',
+    description: 'Sets the visual variant of the badge. Prefer semantic values (neutral, primary, info, success, warning, error, subtle) for new work.',
   },
   {
     name: 'appearance',

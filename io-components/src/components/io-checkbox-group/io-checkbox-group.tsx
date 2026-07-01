@@ -238,7 +238,10 @@ export class IoCheckboxGroup {
       }
       checkbox.disabled = this.disabled;
       checkbox.required = this.required;
-      checkbox.state = effectiveState;
+      // Only override child state when the group has a non-'none' state; preserve per-child state otherwise
+      if (effectiveState !== 'none') {
+        checkbox.state = effectiveState;
+      }
     }
   };
 

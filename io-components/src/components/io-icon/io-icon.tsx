@@ -1,10 +1,12 @@
 import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
-import type { IoIconName } from '../../utils/icons';
-import { ICON_NODES, escapeAttr } from '../../utils/icons';
 import { ensureIconSymbol } from '../../utils/icon-sprite';
+import { ICON_NODES, escapeAttr } from '../../utils/icons';
+
 import { getIconStyles } from './io-icon-styles';
+
 import type { IoIconColor, IoIconSize } from './types';
+import type { IoIconName } from '../../utils/icons';
 
 const svgCache = new Map<string, string>();
 

@@ -943,8 +943,8 @@ export class IoMultiSelect {
                 <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
               )}
             </span>
-            {/* Inline clear button — visible when selection is non-empty (#1111) */}
-            {selectedValues.length > 0 && (
+            {/* Inline clear button — visible when selection is non-empty and not disabled (#1111) */}
+            {selectedValues.length > 0 && !disabled && (
               <button
                 type="button"
                 class="multi-select-trigger__clear"

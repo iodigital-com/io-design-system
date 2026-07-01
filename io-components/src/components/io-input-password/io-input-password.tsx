@@ -1,7 +1,6 @@
 import { Component, Prop, Event, EventEmitter, State, Watch, Element, Host, h, AttachInternals, Method } from '@stencil/core';
 
 import { getInputPasswordStyles } from './io-input-password-styles';
-import { implicitSubmit } from '../../utils/form/implicit-submit';
 import { applyAriaProp } from '../../utils/aria-prop';
 import {
   renderErrorIcon,

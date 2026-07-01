@@ -33,6 +33,7 @@ export default function IoInputDateApiPage() {
             [<InlineCode key="n">max</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Maximum selectable date in YYYY-MM-DD format. Triggers rangeOverflow FACE validation when violated.'],
             [<InlineCode key="n">step</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Step interval in days, or "any". Triggers stepMismatch FACE validation when violated.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
+            [<InlineCode key="n">spellCheck</InlineCode>, <InlineCode key="t">boolean | undefined</InlineCode>, '—', 'Native spellcheck attribute — passed through to the inner input as-is.'],
           ]}
         />
       </section>
@@ -78,6 +79,33 @@ export default function IoInputDateApiPage() {
 {`document.querySelector('io-input-date')
   .addEventListener('change', (e) => console.log(e.detail)); // '2026-06-18'`}
         </CodeNote>
+      </section>
+
+      <section id="slots" className="space-y-4">
+        <SectionHeader
+          title="Slots"
+          description="io-input-date accepts named slots for placing rich markup in positions that props only support plain text."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Slot', width: '160px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">label</InlineCode>,
+              'Custom label content. When slotted, replaces the plain-text label prop and allows rich markup such as links or inline icons inside the label.',
+            ],
+            [
+              <InlineCode key="n">message</InlineCode>,
+              'Validation message content. When slotted in error/warning/success state, replaces the plain-text message prop.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              'Helper text content. Replaces the plain-text helperText prop when the field is not in an error state.',
+            ],
+          ]}
+        />
       </section>
     </div>
   );

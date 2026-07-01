@@ -218,6 +218,12 @@ export function getInputSearchStyles(): string {
       display: none;
     }
 
+    .input-label__slot--hidden,
+    .input-message__slot--hidden,
+    .input-description__slot--hidden {
+      display: none;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .input-field,
       .input-label { transition: none; }

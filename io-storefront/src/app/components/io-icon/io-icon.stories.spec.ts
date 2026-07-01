@@ -322,9 +322,9 @@ describe('io-icon storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('returns 5 elements for all size variants', () => {
+    it('returns 10 elements for all size variants (2xs through 5xl)', () => {
       const els = iconStorySizes.generator?.() ?? [];
-      expect(els.length).toBe(5);
+      expect(els.length).toBe(10);
     });
 
     it('every returned element has a tag', () => {

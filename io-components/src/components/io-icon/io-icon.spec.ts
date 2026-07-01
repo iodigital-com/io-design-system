@@ -153,12 +153,52 @@ describe('io-icon', () => {
   });
 
   it('render does not throw for each named color', () => {
-    const colors = ['primary', 'contrast-high', 'contrast-medium', 'success', 'warning', 'error', 'info', 'inherit'] as const;
+    const colors = ['primary', 'contrast-higher', 'contrast-high', 'contrast-medium', 'contrast-lower', 'success', 'warning', 'error', 'info', 'inherit'] as const;
     for (const color of colors) {
       const c = new IoIcon();
       c.name = 'check';
       c.color = color;
       expect(() => (c as any).render()).not.toThrow();
     }
+  });
+
+  it('sets --io-icon-color to contrast-higher token when color="contrast-higher"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'contrast-higher';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-text-contrast-higher)' });
+  });
+
+  it('sets --io-icon-color to contrast-lower token when color="contrast-lower"', () => {
+    const c = new IoIcon();
+    c.name = 'check';
+    c.color = 'contrast-lower';
+    expect((c as any).hostStyle).toEqual({ '--io-icon-color': 'var(--io-text-contrast-lower)' });
+  });
+
+  it('render does not throw for each new size', () => {
+    const sizes = ['2xs', '2xl', '3xl', '4xl', '5xl'] as const;
+    for (const size of sizes) {
+      const c = new IoIcon();
+      c.name = 'check';
+      c.size = size;
+      expect(() => (c as any).render()).not.toThrow();
+    }
+  });
+
+  it('accepts size="2xs"', () => {
+    const c = new IoIcon();
+    c.name = 'search';
+    c.size = '2xs';
+    expect(c.size).toBe('2xs');
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
+  it('accepts size="5xl"', () => {
+    const c = new IoIcon();
+    c.name = 'search';
+    c.size = '5xl';
+    expect(c.size).toBe('5xl');
+    expect(() => (c as any).render()).not.toThrow();
   });
 });

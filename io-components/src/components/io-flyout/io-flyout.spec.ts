@@ -147,7 +147,7 @@ describe('io-flyout — render contract', () => {
     const styles: string = getFlyoutStyles();
     expect(styles).toContain('@media (prefers-reduced-motion: reduce)');
     const idx = styles.indexOf('@media (prefers-reduced-motion: reduce)');
-    expect(styles.slice(idx)).toContain('transition: none');
+    expect(styles.slice(idx)).toContain('transition-duration: 0ms');
   });
 
   it('styles contain backdrop class', () => {

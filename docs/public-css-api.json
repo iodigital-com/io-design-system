@@ -1656,6 +1656,42 @@
     "description": "Stack order of the banner overlay. Defaults to --io-z-toast."
   },
   {
+    "cssVar": "--io-modal-fullscreen-breakpoint",
+    "classification": "public-api",
+    "component": "io-modal",
+    "description": "Breakpoint below which the modal expands to fill the full viewport when fullscreen=true. Defaults to 640px."
+  },
+  {
+    "cssVar": "--io-flyout-sticky-top",
+    "classification": "public-api",
+    "component": "io-flyout",
+    "description": "Top offset for the sticky flyout header when footerBehavior=sticky. Defaults to 0px. Override to account for a fixed site header."
+  },
+  {
+    "cssVar": "--io-duration-overlay-enter",
+    "classification": "internal",
+    "component": "io-modal",
+    "description": "Duration of the two-phase overlay enter transition. Defaults to 300ms."
+  },
+  {
+    "cssVar": "--io-duration-overlay-exit",
+    "classification": "internal",
+    "component": "io-modal",
+    "description": "Duration of the two-phase overlay exit transition. Defaults to 200ms."
+  },
+  {
+    "cssVar": "--io-ease-overlay-enter",
+    "classification": "internal",
+    "component": "io-modal",
+    "description": "Easing curve for the overlay enter phase (decelerate into resting position). Defaults to cubic-bezier(0, 0, 0.2, 1)."
+  },
+  {
+    "cssVar": "--io-ease-overlay-exit",
+    "classification": "internal",
+    "component": "io-modal",
+    "description": "Easing curve for the overlay exit phase (accelerate out of view). Defaults to cubic-bezier(0.4, 0, 1, 1)."
+  },
+  {
     "cssVar": "--io-avatar-icon-size",
     "classification": "public-api",
     "component": "io-avatar",

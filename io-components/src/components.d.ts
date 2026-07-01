@@ -19,7 +19,7 @@ import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-import { IoFlyoutPosition } from "./components/io-flyout/types";
+import { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -40,6 +40,7 @@ import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
+import { IoSheetBackground } from "./components/io-sheet/types";
 import { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 import { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -68,7 +69,7 @@ export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/
 export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-export { IoFlyoutPosition } from "./components/io-flyout/types";
+export { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -89,6 +90,7 @@ export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
+export { IoSheetBackground } from "./components/io-sheet/types";
 export { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
 export { IoSwitchChangeDetail } from "./components/io-switch/types";
@@ -322,8 +324,9 @@ export namespace Components {
          */
         "open": boolean;
         /**
-          * Screen position of the fixed banner — top or bottom of the viewport
-          * @default 'top'
+          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which matches the Porsche reference pattern: bottom on mobile, top on desktop.
+          * @example position="top" :position="{ base: 'bottom', s: 'top' }"
+          * @default { base: 'bottom', s: 'top' }
          */
         "position": IoBannerPosition;
         /**
@@ -952,6 +955,11 @@ export namespace Components {
           * @default 'Close flyout'
          */
         "closeLabel": string;
+        /**
+          * Controls footer stickiness behaviour. - sticky: header and footer remain in view while content scrolls (default) - fixed:  header and footer are always visible, unaffected by scroll
+          * @default 'sticky'
+         */
+        "footerBehavior": IoFlyoutFooterBehavior;
         /**
           * Heading text displayed in the flyout header
          */
@@ -1716,7 +1724,7 @@ export namespace Components {
          */
         "dismissButton": boolean;
         /**
-          * When `true`, the modal expands to fill the full viewport below `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal reverts to the `size` variant. Useful for the mobile-takeover pattern: full-screen on phones, centered dialog on desktop.
+          * When `true`, the modal expands to fill the full viewport at or below `--io-modal-fullscreen-breakpoint` (default 640px). At larger viewports the modal remains centered and respects the `size` prop.
           * @default false
          */
         "fullscreen": boolean;
@@ -2615,11 +2623,26 @@ export namespace Components {
      */
     interface IoSheet {
         /**
+          * Background surface level for the sheet panel. Matches sibling overlay APIs (io-modal, io-drawer, io-flyout). - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background": IoSheetBackground;
+        /**
           * Closes the sheet programmatically
          */
         "close": () => Promise<void>;
         /**
-          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
+          * When true, clicking the backdrop will NOT dismiss the sheet. The close button and ESC key are still controlled by `dismissButton`. Useful for confirmation flows that must not be accidentally dismissed.
+          * @default false
+         */
+        "disableBackdropClick": boolean;
+        /**
+          * When true (default), the close (×) button is rendered in the sheet header and pressing ESC will close the sheet. Set to false to hide the close button and suppress ESC dismissal — useful for confirmation flows where the user must explicitly choose an action.
+          * @default true
+         */
+        "dismissButton": boolean;
+        /**
+          * @deprecated Use `dismissButton` and `disableBackdropClick` instead. When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet. This prop is kept for one minor version for backwards compatibility.
           * @default true
          */
         "dismissible": boolean;
@@ -5752,8 +5775,9 @@ declare namespace LocalJSX {
          */
         "open"?: boolean;
         /**
-          * Screen position of the fixed banner — top or bottom of the viewport
-          * @default 'top'
+          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which matches the Porsche reference pattern: bottom on mobile, top on desktop.
+          * @example position="top" :position="{ base: 'bottom', s: 'top' }"
+          * @default { base: 'bottom', s: 'top' }
          */
         "position"?: IoBannerPosition;
         /**
@@ -6387,6 +6411,11 @@ declare namespace LocalJSX {
           * @default 'Close flyout'
          */
         "closeLabel"?: string;
+        /**
+          * Controls footer stickiness behaviour. - sticky: header and footer remain in view while content scrolls (default) - fixed:  header and footer are always visible, unaffected by scroll
+          * @default 'sticky'
+         */
+        "footerBehavior"?: IoFlyoutFooterBehavior;
         /**
           * Heading text displayed in the flyout header
          */
@@ -7170,7 +7199,7 @@ declare namespace LocalJSX {
          */
         "dismissButton"?: boolean;
         /**
-          * When `true`, the modal expands to fill the full viewport below `--io-modal-fullscreen-breakpoint`. Above that breakpoint the modal reverts to the `size` variant. Useful for the mobile-takeover pattern: full-screen on phones, centered dialog on desktop.
+          * When `true`, the modal expands to fill the full viewport at or below `--io-modal-fullscreen-breakpoint` (default 640px). At larger viewports the modal remains centered and respects the `size` prop.
           * @default false
          */
         "fullscreen"?: boolean;
@@ -8116,7 +8145,22 @@ declare namespace LocalJSX {
      */
     interface IoSheet {
         /**
-          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
+          * Background surface level for the sheet panel. Matches sibling overlay APIs (io-modal, io-drawer, io-flyout). - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+          * @default 'canvas'
+         */
+        "background"?: IoSheetBackground;
+        /**
+          * When true, clicking the backdrop will NOT dismiss the sheet. The close button and ESC key are still controlled by `dismissButton`. Useful for confirmation flows that must not be accidentally dismissed.
+          * @default false
+         */
+        "disableBackdropClick"?: boolean;
+        /**
+          * When true (default), the close (×) button is rendered in the sheet header and pressing ESC will close the sheet. Set to false to hide the close button and suppress ESC dismissal — useful for confirmation flows where the user must explicitly choose an action.
+          * @default true
+         */
+        "dismissButton"?: boolean;
+        /**
+          * @deprecated Use `dismissButton` and `disableBackdropClick` instead. When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet. This prop is kept for one minor version for backwards compatibility.
           * @default true
          */
         "dismissible"?: boolean;
@@ -9342,6 +9386,7 @@ declare namespace LocalJSX {
         "heading": string;
         "position": IoFlyoutPosition;
         "closeLabel": string;
+        "footerBehavior": IoFlyoutFooterBehavior;
     }
     interface IoFormFieldAttributes {
         "label": string;
@@ -9646,6 +9691,9 @@ declare namespace LocalJSX {
         "open": boolean;
         "heading": string;
         "dismissible": boolean;
+        "dismissButton": boolean;
+        "disableBackdropClick": boolean;
+        "background": IoSheetBackground;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;

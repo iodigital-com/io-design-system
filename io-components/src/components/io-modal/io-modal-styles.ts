@@ -16,7 +16,23 @@ export function getModalStyles(): string {
       overflow-y: auto;
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
-      animation: io-modal-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
+      /* Two-phase transition: exit uses shorter duration + ease-out (accelerate out) */
+      opacity: 0;
+      transform: translateY(var(--io-motion-entrance-offset-down, 12px));
+      transition:
+        opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1)),
+        transform var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
+    }
+
+    dialog[open] {
+      /* Enter: longer duration + ease-in (decelerate into resting position) */
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)),
+        transform var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     /* ── Background variants ─────────────────────────────────── */
@@ -34,15 +50,16 @@ export function getModalStyles(): string {
       box-shadow: var(--io-shadow-xl);
     }
 
-    dialog[open] {
-      display: flex;
-      flex-direction: column;
-    }
-
     dialog::backdrop {
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(var(--io-backdrop-blur));
-      animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
+      opacity: 0;
+      transition: opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
+    }
+
+    dialog[open]::backdrop {
+      opacity: 1;
+      transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     /* ── preventTopLayer: backdrop is a flex-centering container in shadow DOM ──
@@ -64,6 +81,8 @@ export function getModalStyles(): string {
        Using [open=""] avoids matching React 18's reflected open="false" string. */
     .modal__backdrop {
       display: none;
+      opacity: 0;
+      transition: opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
     }
 
     :host([prevent-top-layer][open=""]) .modal__backdrop {
@@ -75,7 +94,8 @@ export function getModalStyles(): string {
       z-index: var(--io-z-modal);
       background: var(--io-bg-overlay);
       backdrop-filter: blur(var(--io-backdrop-blur));
-      animation: io-backdrop-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
+      opacity: 1;
+      transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }
@@ -139,20 +159,27 @@ export function getModalStyles(): string {
       display: none;
     }
 
-    @keyframes io-modal-in {
-      from {
-        opacity: 0;
-        transform: translateY(var(--io-motion-entrance-offset-up));
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* ── Fullscreen breakpoint variant (#976) ────────────────── */
+
+    :host([fullscreen]) dialog {
+      border-radius: var(--io-border-radius-md);
     }
 
-    @keyframes io-backdrop-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+    @media (max-width: var(--io-modal-fullscreen-breakpoint, 640px)) {
+      :host([fullscreen]) dialog {
+        position: fixed;
+        inset: 0;
+        width: 100% !important;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        margin: 0;
+      }
+
+      :host([fullscreen]) dialog[open] {
+        display: flex;
+        flex-direction: column;
+      }
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -164,8 +191,12 @@ export function getModalStyles(): string {
 
     @media (prefers-reduced-motion: reduce) {
       dialog,
-      dialog::backdrop {
-        animation: none;
+      dialog[open],
+      dialog::backdrop,
+      dialog[open]::backdrop,
+      .modal__backdrop,
+      :host([prevent-top-layer][open=""]) .modal__backdrop {
+        transition-duration: 0ms;
       }
     }
   `;

@@ -6,13 +6,14 @@ import {
   Method,
   Element,
   Host,
+  State,
   Watch,
   h,
 } from '@stencil/core';
 
 import { getFlyoutStyles } from './io-flyout-styles';
 import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
-import type { IoFlyoutPosition } from './types';
+import type { IoFlyoutPosition, IoFlyoutFooterBehavior } from './types';
 
 const FOCUSABLE_SELECTORS = [
   'a[href]',
@@ -73,10 +74,15 @@ export class IoFlyout {
 
   private panelEl?: HTMLDivElement;
   private backdropEl?: HTMLDivElement;
+  private footerEl?: HTMLDivElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private focusTrigger?: Element;
   private _scrollLockHeld = false;
+  private footerObserver?: IntersectionObserver;
+
+  @State() private footerPinned = false;
+  @State() private hasSubFooterSlot = false;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -91,6 +97,15 @@ export class IoFlyout {
 
   /** Accessible label for the close button. Override to provide context when multiple overlays may be open. */
   @Prop() closeLabel = 'Close flyout';
+
+  /**
+   * Controls footer stickiness behaviour.
+   * - sticky: header and footer remain in view while content scrolls (default)
+   * - fixed:  header and footer are always visible, unaffected by scroll
+   *
+   * @default 'sticky'
+   */
+  @Prop({ reflect: true }) footerBehavior: IoFlyoutFooterBehavior = 'sticky';
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -144,6 +159,7 @@ export class IoFlyout {
   }
 
   componentDidLoad() {
+    this.attachFooterObserver();
     if (this.open) {
       this.applyOpenState();
     } else {
@@ -160,6 +176,7 @@ export class IoFlyout {
       releaseScrollLock();
       this._scrollLockHeld = false;
     }
+    this.detachFooterObserver();
   }
 
   // ── Watchers ──────────────────────────────────────────────────
@@ -256,6 +273,37 @@ export class IoFlyout {
     this.focusTrapHandler = undefined;
   }
 
+  /**
+   * IntersectionObserver: adds .flyout__footer--pinned when the footer element
+   * is partially out of the scroll container (i.e. content is still scrollable),
+   * adding a scroll shadow so consumers can visually indicate clipped content.
+   */
+  private attachFooterObserver() {
+    if (!this.footerEl || !this.panelEl || typeof IntersectionObserver === 'undefined') return;
+    this.detachFooterObserver();
+
+    this.footerObserver = new IntersectionObserver(
+      ([entry]) => {
+        // footer is "pinned" when it is fully visible but the panel still has overflow
+        this.footerPinned = entry.intersectionRatio < 1;
+      },
+      { root: this.panelEl, threshold: 1.0 },
+    );
+    this.footerObserver.observe(this.footerEl);
+  }
+
+  private detachFooterObserver() {
+    if (this.footerObserver) {
+      this.footerObserver.disconnect();
+      this.footerObserver = undefined;
+    }
+  }
+
+  private handleSubFooterSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasSubFooterSlot = slot.assignedNodes({ flatten: true }).length > 0;
+  };
+
   // ── Handlers ──────────────────────────────────────────────────
 
   private handleKeydown = (ev: KeyboardEvent) => {
@@ -283,13 +331,22 @@ export class IoFlyout {
    * @slot - Default slot. Body content of the flyout panel.
    * @slot header - Replaces the built-in heading area.
    * @slot footer - Action area at the bottom of the flyout. Typically 1–2 io-button elements.
+   * @slot sub-footer - Secondary footer area rendered after the main footer (e.g. legal text, FAQ links).
    */
   render() {
-    const { open, position, heading, headingId } = this;
+    const { open, position, heading, headingId, footerBehavior } = this;
     const panelClass = [
       'flyout__panel',
       `flyout__panel--${position}`,
       open ? 'flyout__panel--open' : '',
+      `flyout__panel--footer-${footerBehavior}`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    const footerClass = [
+      'flyout__footer',
+      this.footerPinned ? 'flyout__footer--pinned' : '',
     ]
       .filter(Boolean)
       .join(' ');
@@ -350,8 +407,15 @@ export class IoFlyout {
             <slot />
           </div>
 
-          <div class="flyout__footer">
+          <div
+            class={footerClass}
+            ref={(el?: HTMLDivElement) => { this.footerEl = el; }}
+          >
             <slot name="footer" />
+          </div>
+
+          <div class={`flyout__sub-footer${this.hasSubFooterSlot ? '' : ' flyout__sub-footer--hidden'}`}>
+            <slot name="sub-footer" onSlotchange={this.handleSubFooterSlotChange} />
           </div>
         </div>
       </Host>

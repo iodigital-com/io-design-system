@@ -15,6 +15,13 @@ export function getSheetStyles(): string {
       inset: 0;
       background: var(--io-color-overlay-bg);
       z-index: var(--io-z-overlay);
+      opacity: 0;
+      transition: opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
+    }
+
+    :host([open]) .sheet__backdrop {
+      opacity: 1;
+      transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     /* ── Panel ────────────────────────────────────────────────── */
@@ -26,7 +33,7 @@ export function getSheetStyles(): string {
       right: 0;
       max-height: 80vh;
       overflow-y: auto;
-      background: var(--io-bg-card);
+      background: var(--io-bg-page);
       border-radius: var(--io-border-radius-sm) var(--io-border-radius-sm) 0 0;
       box-shadow: var(--io-shadow-lg);
       z-index: calc(var(--io-z-overlay) + 1);
@@ -34,20 +41,36 @@ export function getSheetStyles(): string {
       flex-direction: column;
       color: var(--io-text-primary);
       font-family: var(--io-font-primary);
-      animation: io-sheet-in var(--io-motion-overlay-enter, 0.25s) ease-out forwards;
+      /* Two-phase transition: exit — accelerate out (slide down) */
+      transform: translateY(100%);
+      opacity: 0;
+      transition:
+        transform var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1)),
+        opacity var(--io-duration-overlay-exit, 200ms) var(--io-ease-overlay-exit, cubic-bezier(0.4, 0, 1, 1));
     }
 
-    /* ── Entry animation ──────────────────────────────────────── */
+    :host([open]) .sheet__panel {
+      /* Enter: decelerate into view (slide up) */
+      transform: translateY(0);
+      opacity: 1;
+      transition:
+        transform var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)),
+        opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
+    }
 
-    @keyframes io-sheet-in {
-      from {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    /* ── Background variants (#974) ──────────────────────────── */
+
+    .sheet__panel--bg-canvas {
+      background: var(--io-bg-page);
+    }
+
+    .sheet__panel--bg-surface {
+      background: var(--io-bg-surface);
+    }
+
+    .sheet__panel--bg-elevated {
+      background: var(--io-bg-raised);
+      box-shadow: var(--io-shadow-xl);
     }
 
     /* ── Drag handle ─────────────────────────────────────────── */
@@ -143,8 +166,11 @@ export function getSheetStyles(): string {
     /* ── Reduced motion ──────────────────────────────────────── */
 
     @media (prefers-reduced-motion: reduce) {
-      .sheet__panel {
-        animation: none;
+      .sheet__panel,
+      :host([open]) .sheet__panel,
+      .sheet__backdrop,
+      :host([open]) .sheet__backdrop {
+        transition-duration: 0ms;
       }
     }
   `;

@@ -5,20 +5,35 @@ export function getBannerStyles(): string {
       font-family: var(--io-font-primary);
     }
 
-    /* The live-region wrapper is always in the DOM (issue #1076).
-       aria-hidden="true" + display:none hides it from both layout and a11y tree. */
-    .banner[aria-hidden='true'] {
-      display: none;
+    /* ── Popover container — uses top-layer to escape z-index races ──
+       The popover element itself is invisible; only .banner is styled. */
+
+    .banner__popover {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      max-width: none;
+      max-height: none;
+    }
+
+    .banner__popover:popover-open {
+      display: block;
     }
 
     .banner {
       position: fixed;
-      top: var(--io-banner-top, var(--io-space-4));
       left: var(--io-banner-inset-x, var(--io-space-4));
       right: var(--io-banner-inset-x, var(--io-space-4));
       margin: 0 auto;
       max-width: var(--io-banner-max-w, var(--io-breakpoint-md, 768px));
+      /* z-index: fallback for browsers without Popover API support */
       z-index: var(--io-banner-z-index, var(--io-z-toast));
+      pointer-events: auto;
 
       display: flex;
       align-items: flex-start;
@@ -35,10 +50,18 @@ export function getBannerStyles(): string {
       color: var(--io-text-primary);
 
       box-sizing: border-box;
-      animation: io-banner-in var(--io-motion-overlay-enter) var(--io-motion-overlay-easing) both;
     }
 
-    @keyframes io-banner-in {
+    /* ── Position variants — top (default for ≥640px) ────────── */
+
+    .banner--position-top {
+      top: var(--io-banner-top, var(--io-space-4));
+      bottom: auto;
+      /* Enter from top: slide down */
+      animation: io-banner-in-top var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)) both;
+    }
+
+    @keyframes io-banner-in-top {
       from {
         opacity: 0;
         transform: translateY(calc(-100% - var(--io-space-4)));
@@ -49,27 +72,13 @@ export function getBannerStyles(): string {
       }
     }
 
-    /* Exit animation (issue #1012) — applied while _dismissing is true */
-    .banner--dismissing {
-      animation: io-banner-out var(--io-motion-overlay-exit, var(--io-motion-base, 200ms)) var(--io-motion-overlay-easing, ease-in) both;
-    }
+    /* ── Position variants — bottom (default for <640px) ─────── */
 
-    @keyframes io-banner-out {
-      from {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      to {
-        opacity: 0;
-        transform: translateY(calc(-100% - var(--io-space-4)));
-      }
-    }
-
-    /* Bottom position override — flip inset and animation direction */
-    :host([position='bottom']) .banner {
+    .banner--position-bottom {
       top: auto;
       bottom: var(--io-banner-bottom, var(--io-space-4));
-      animation-name: io-banner-in-bottom;
+      /* Enter from bottom: slide up */
+      animation: io-banner-in-bottom var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)) both;
     }
 
     :host([position='bottom']) .banner--dismissing {
@@ -163,8 +172,8 @@ export function getBannerStyles(): string {
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .banner,
-      .banner--dismissing {
+      .banner--position-top,
+      .banner--position-bottom {
         animation: none;
         transition: none;
       }

@@ -2117,7 +2117,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale \u2014 8px (0.5rem). Used by io-icon component in dense/chip contexts."
+      "notes": "Icon size scale — 8px (0.5rem). Used by io-icon component in dense/chip contexts."
     },
     {
       "runtimeCssVar": "--io-icon-size-xs",
@@ -2165,7 +2165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale \u2014 40px (2.5rem). Used for feature cards and empty-state illustrations."
+      "notes": "Icon size scale — 40px (2.5rem). Used for feature cards and empty-state illustrations."
     },
     {
       "runtimeCssVar": "--io-icon-size-3xl",
@@ -2173,7 +2173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale \u2014 48px (3rem). Used for hero sections."
+      "notes": "Icon size scale — 48px (3rem). Used for hero sections."
     },
     {
       "runtimeCssVar": "--io-icon-size-4xl",
@@ -2181,7 +2181,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale \u2014 64px (4rem). Used for hero CTAs and large empty-state illustrations."
+      "notes": "Icon size scale — 64px (4rem). Used for hero CTAs and large empty-state illustrations."
     },
     {
       "runtimeCssVar": "--io-icon-size-5xl",
@@ -2189,7 +2189,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale \u2014 80px (5rem). Used for full-page hero illustrations."
+      "notes": "Icon size scale — 80px (5rem). Used for full-page hero illustrations."
     },
     {
       "runtimeCssVar": "--io-text-contrast-higher",
@@ -3792,12 +3792,28 @@
       "notes": "io-spinner custom size override. Unset by default so size class preset takes effect."
     },
     {
+      "runtimeCssVar": "--io-duration-overlay-enter",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "io-spinner custom size override. Unset by default so size class preset takes effect."
+    },
+    {
       "runtimeCssVar": "--io-spinner-color",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "io-spinner arc stroke color override. Unset by default so color class preset takes effect."
+    },
+    {
+      "runtimeCssVar": "--io-duration-overlay-exit",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Two-phase overlay exit duration. Defaults to 200ms."
     },
     {
       "runtimeCssVar": "--io-spinner-track-color",
@@ -3808,12 +3824,28 @@
       "notes": "io-spinner track ring stroke color override. Unset by default; defers to color class at 20% opacity."
     },
     {
+      "runtimeCssVar": "--io-ease-overlay-enter",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Overlay enter easing curve. Defaults to cubic-bezier(0, 0, 0.2, 1)."
+    },
+    {
       "runtimeCssVar": "--io-progress-indeterminate-duration",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "io-progress indeterminate animation cycle duration. Default 1s."
+    },
+    {
+      "runtimeCssVar": "--io-ease-overlay-exit",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Overlay exit easing curve. Defaults to cubic-bezier(0.4, 0, 1, 1)."
     },
     {
       "runtimeCssVar": "--io-tag-strong-bg",
@@ -4040,12 +4072,28 @@
       "notes": "Horizontal enter offset for start-edge overlays (io-drawer, io-sheet). Default: 100%."
     },
     {
+      "runtimeCssVar": "--io-modal-fullscreen-breakpoint",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Breakpoint below which the modal fills the viewport when fullscreen=true. Defaults to 640px."
+    },
+    {
       "runtimeCssVar": "--io-motion-entrance-offset-end",
       "disposition": "documented",
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Horizontal enter offset for end-edge overlays (reserved). Default: 100%."
+    },
+    {
+      "runtimeCssVar": "--io-flyout-sticky-top",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Top offset for sticky flyout header/footer. Consumer override for fixed nav bars."
     },
     {
       "runtimeCssVar": "--io-input-border-error-width",

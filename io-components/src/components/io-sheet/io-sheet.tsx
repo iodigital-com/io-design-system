@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Element,
   Host,
+  Listen,
   Method,
   Watch,
   h,
@@ -12,6 +13,7 @@ import {
 
 import { getSheetStyles } from './io-sheet-styles';
 import { acquireScrollLock, releaseScrollLock } from '../../utils/scroll-lock';
+import type { IoSheetBackground } from './types';
 
 const FOCUSABLE_SELECTORS = [
   'a[href]',
@@ -88,8 +90,42 @@ export class IoSheet {
   /** Heading text displayed in the sheet header */
   @Prop() heading?: string;
 
-  /** When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet */
+  /**
+   * @deprecated Use `dismissButton` and `disableBackdropClick` instead.
+   * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet.
+   * This prop is kept for one minor version for backwards compatibility.
+   */
   @Prop() dismissible = true;
+
+  /**
+   * When true (default), the close (×) button is rendered in the sheet header
+   * and pressing ESC will close the sheet. Set to false to hide the close button
+   * and suppress ESC dismissal — useful for confirmation flows where the user must
+   * explicitly choose an action.
+   *
+   * @default true
+   */
+  @Prop() dismissButton = true;
+
+  /**
+   * When true, clicking the backdrop will NOT dismiss the sheet. The close button
+   * and ESC key are still controlled by `dismissButton`.
+   * Useful for confirmation flows that must not be accidentally dismissed.
+   *
+   * @default false
+   */
+  @Prop() disableBackdropClick = false;
+
+  /**
+   * Background surface level for the sheet panel.
+   * Matches sibling overlay APIs (io-modal, io-drawer, io-flyout).
+   * - canvas:   var(--io-bg-page) — default page background
+   * - surface:  var(--io-bg-surface) — slightly elevated surface
+   * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
+   *
+   * @default 'canvas'
+   */
+  @Prop({ reflect: true }) background: IoSheetBackground = 'canvas';
 
   // ── Events ────────────────────────────────────────────────────
 
@@ -125,6 +161,14 @@ export class IoSheet {
         '[io-sheet] Accessible name missing. Provide a "heading" prop or set aria-label on the host element.',
       );
     }
+
+    // Deprecation warning for legacy dismissible prop when it was explicitly set to false.
+    // (default true is safe — new dismissButton=true matches the old behaviour)
+    if (!this.dismissible) {
+      console.warn(
+        '[io-sheet] The "dismissible" prop is deprecated. Use "dismissButton" and "disableBackdropClick" instead.',
+      );
+    }
   }
 
   componentDidLoad() {
@@ -153,6 +197,26 @@ export class IoSheet {
       this.applyClosedState();
     }
   }
+
+  // ── Global listeners ──────────────────────────────────────────
+
+  /**
+   * Close on Escape key when sheet is open and dismiss is enabled.
+   * Respects both legacy `dismissible` prop and new `dismissButton` prop.
+   */
+  @Listen('keydown', { target: 'document' })
+  handleKeydown(ev: KeyboardEvent) {
+    if (!this.open) return;
+    // Support both legacy dismissible and new dismissButton prop.
+    // dismissButton takes precedence; fall back to dismissible for BC.
+    const canDismiss = this.dismissButton && this.dismissible;
+    if (!canDismiss) return;
+    if (ev.key === 'Escape') {
+      ev.stopPropagation();
+      this.handleDismiss();
+    }
+  }
+
 
   // ── Private helpers ───────────────────────────────────────────
 
@@ -252,21 +316,15 @@ export class IoSheet {
 
   // ── Handlers ──────────────────────────────────────────────────
 
-  private handleKeydown = (ev: KeyboardEvent) => {
-    if (!this.open || !this.dismissible) return;
-    if (ev.key === 'Escape') {
-      ev.stopPropagation();
-      this.handleDismiss();
-    }
-  };
-
   private handleDismiss = () => {
     this.open = false;
     this.dismissEvent.emit();
   };
 
   private handleBackdropClick = (ev: MouseEvent) => {
-    if (!this.dismissible) return;
+    // New prop: disableBackdropClick takes priority.
+    // Legacy: dismissible=false also disables backdrop click.
+    if (this.disableBackdropClick || !this.dismissible) return;
     if (ev.target === this.backdropEl) {
       this.handleDismiss();
     }
@@ -280,7 +338,10 @@ export class IoSheet {
    * @slot footer - Action area at the bottom of the sheet. Typically 1–2 io-button elements.
    */
   render() {
-    const { heading, headingId, dismissible } = this;
+    const { heading, headingId, background } = this;
+    // Resolve effective dismiss-button visibility:
+    // Legacy dismissible=false overrides dismissButton for backwards compat.
+    const showDismissButton = this.dismissButton && this.dismissible;
 
     const closeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
@@ -288,7 +349,6 @@ export class IoSheet {
       <Host
         role="dialog"
         aria-modal="true"
-        onKeyDown={this.handleKeydown}
         {...(heading ? { 'aria-labelledby': headingId } : {})}
       >
         <style>{getSheetStyles()}</style>
@@ -303,7 +363,7 @@ export class IoSheet {
 
         {/* Panel */}
         <div
-          class="sheet__panel"
+          class={`sheet__panel sheet__panel--bg-${background}`}
           tabIndex={-1}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >
@@ -319,7 +379,7 @@ export class IoSheet {
                 )}
               </slot>
             </div>
-            {dismissible && (
+            {showDismissButton && (
               <button
                 type="button"
                 class="sheet__close"

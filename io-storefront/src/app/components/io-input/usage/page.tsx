@@ -175,13 +175,32 @@ export default function IoInputUsagePage() {
           <RuleCard label="Responsive label visibility — CSS media query wrapper">
             To show the label on mobile and hide it on desktop (or vice-versa), wrap the input in a
             container and use a CSS media query or a utility class to toggle the host attribute:
+            <pre className="mt-3 text-xs font-mono rounded p-3 overflow-x-auto" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)' }}>{`/* Show label on mobile, hide on desktop */
+@media (min-width: 768px) {
+  .search-bar io-input {
+    hide-label: true; /* not valid CSS — use the attribute approach below */
+  }
+}
+
+/* Correct approach: use an attribute selector on the host element */
+@media (min-width: 768px) {
+  .search-bar io-input[hide-label] { /* set the attribute via JS or data-binding */ }
+}
+
+/* Or toggle the hide-label attribute in your framework: */
+/* React: <io-input hide-label={isDesktop ? true : undefined} /> */
+/* Vue:   <io-input :hide-label="isDesktop || undefined" /> */`}</pre>
           </RuleCard>
           <RuleCard label="Responsive label visibility — two-instance pattern">
             Alternatively, render two <C>io-input</C> elements with identical <C>name</C> and{' '}
             <C>value</C> bindings — one with <C>hideLabel=false</C> visible on small screens, one
-            with <C>hideLabel=true</C> visible on large screens — toggled by your framework&apos;s
-            breakpoint utility or a CSS <C>display</C> rule. Both share the same form value; only
-            one is visible at any time.
+            with <C>hideLabel=true</C> visible on large screens — toggled by a CSS{' '}
+            <C>display</C> rule. Both share the same form value; only one is visible at any time.
+            {' '}<strong>Caveat:</strong> ensure the hidden instance is removed from the DOM or
+            its native input is <C>disabled</C>, not just visually hidden via CSS{' '}
+            (<C>display: none</C> or <C>visibility: hidden</C>). A visually hidden but DOM-present
+            input with the same <C>name</C> will still submit its value, causing the field to be
+            submitted twice in the form payload.
           </RuleCard>
           <DoOrDontCard type="do">
             Use a CSS media query on a wrapper element to conditionally set <C>hide-label</C> on the

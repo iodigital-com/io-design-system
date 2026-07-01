@@ -235,14 +235,14 @@ export class IoButton {
   @Watch('loading')
   onLoadingChange(newVal: boolean): void {
     if (newVal) {
-      this.loadingTransitioned = true;
+      this.initialLoading = true;
       // Clear any pending "Loading finished" announcement from a previous cycle.
       if (this._loadingFinishedTimer !== undefined) {
         clearTimeout(this._loadingFinishedTimer);
         this._loadingFinishedTimer = undefined;
       }
       this.loadingFinished = false;
-    } else if (this.loadingTransitioned) {
+    } else if (this.initialLoading) {
       // loading went false after it was true — announce completion.
       this.loadingFinished = true;
       this._loadingFinishedTimer = setTimeout(() => {
@@ -517,7 +517,7 @@ export class IoButton {
     // - 'Loading finished' for one tick after loading goes false
     // - '' otherwise (no spurious announcement)
     let liveRegionText = '';
-    if (loading && this.loadingTransitioned) {
+    if (loading && this.initialLoading) {
       liveRegionText = 'Loading';
     } else if (this.loadingFinished) {
       liveRegionText = 'Loading finished';

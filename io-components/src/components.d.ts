@@ -10,7 +10,6 @@ import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoIconName } from "./utils/icons";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-import { IoIconName } from "./utils/icons";
 import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -61,7 +60,6 @@ export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoIconName } from "./utils/icons";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-export { IoIconName } from "./utils/icons";
 export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
@@ -267,11 +265,21 @@ export namespace Components {
      * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show; wire the dismiss event to set it back to false.
-     * ARIA live region strategy:
-     *   - error / warning variants: role="alert" on inner .banner div (assertive)
-     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
-     * Role is placed on the conditionally-rendered inner div so the live region only exists
-     * while the banner is visible — prevents spurious announcements when open=false.
+     * ARIA live region strategy (issue #1076):
+     *   The inner `.banner` wrapper is always present in the DOM; visibility is
+     *   toggled via aria-hidden + CSS display:none. This ensures screen readers
+     *   have seen the live region before the first announcement, preventing the
+     *   well-known NVDA/JAWS "first open missed" quirk with newly-inserted regions.
+     * Focus management (issues #997, #998):
+     *   - When `open && dismissible`, focus moves to the dismiss button on the
+     *     render after the transition occurs. This covers initial open, programmatic
+     *     open, and runtime toggling of `dismissible` on an already-open banner.
+     *   - A previous-focus reference is captured when the banner opens, and
+     *     restored when it dismisses.
+     * Dismiss guard (issue #1012):
+     *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
+     *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
+     *   is true, and `open` is set to false only after the CSS transition ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -1783,8 +1791,7 @@ export namespace Components {
          */
         "aria"?: IoModalAriaProps;
         /**
-          * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
-          * @default 'blur'
+          * @default 'blur' (kept for API compat)
          */
         "backdrop": IoModalBackdrop;
         /**
@@ -1940,10 +1947,10 @@ export namespace Components {
          */
         "state": IoMultiSelectState;
         /**
-          * Currently selected values. Mutable — updated internally on user selection. Accepts string or number values. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
+          * Currently selected values. Mutable — updated internally on user selection.
           * @default []
          */
-        "value": (string | number)[];
+        "value": string[];
     }
     /**
      * io-optgroup
@@ -3495,12 +3502,12 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
          */
         "autoComplete": string | undefined;
         /**
-          * Autocomplete attribute.
-          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
          */
         "autocomplete": string | undefined;
         /**
@@ -3622,6 +3629,16 @@ export namespace Components {
      * Fixed-position toast notification container. Place once in your app shell.
      * Call `addToast()` imperatively to enqueue notifications.
      * Only one <io-toast> element may exist per page (singleton pattern).
+     * ARIA live-region strategy (issue #1003):
+     *   - Host always carries role="status" aria-live="polite" so the live region
+     *     is stable — screen readers register it on mount and never lose track of it.
+     *   - A secondary <div role="alert" aria-live="assertive"> is rendered
+     *     unconditionally inside the host. Its text content is populated only when
+     *     a persistent/error toast is active, triggering an assertive announcement
+     *     without mutating the host's role attribute.
+     * Stacked toasts (issue #994):
+     *   - Up to `maxVisible` (default 3) toasts are shown simultaneously.
+     *   - Each <io-toast-item> carries its own role="status" for independent a11y.
      * @example <!-- App shell -->
      * <io-toast id="toast"></io-toast>
      * <script>
@@ -3637,6 +3654,14 @@ export namespace Components {
           * Enqueue a toast notification
          */
         "addToast": (message: IoToastMessage) => Promise<void>;
+        /**
+          * Dismiss all visible and queued toasts immediately.
+         */
+        "dismissAll": () => Promise<void>;
+        /**
+          * Dismiss a specific toast by id, or the oldest visible one when no id given.
+         */
+        "dismissToast": (id?: number) => Promise<void>;
         /**
           * Where on screen the toast stack appears.
           * @default 'bottom-end'
@@ -3984,11 +4009,21 @@ declare global {
      * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show; wire the dismiss event to set it back to false.
-     * ARIA live region strategy:
-     *   - error / warning variants: role="alert" on inner .banner div (assertive)
-     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
-     * Role is placed on the conditionally-rendered inner div so the live region only exists
-     * while the banner is visible — prevents spurious announcements when open=false.
+     * ARIA live region strategy (issue #1076):
+     *   The inner `.banner` wrapper is always present in the DOM; visibility is
+     *   toggled via aria-hidden + CSS display:none. This ensures screen readers
+     *   have seen the live region before the first announcement, preventing the
+     *   well-known NVDA/JAWS "first open missed" quirk with newly-inserted regions.
+     * Focus management (issues #997, #998):
+     *   - When `open && dismissible`, focus moves to the dismiss button on the
+     *     render after the transition occurs. This covers initial open, programmatic
+     *     open, and runtime toggling of `dismissible` on an already-open banner.
+     *   - A previous-focus reference is captured when the banner opens, and
+     *     restored when it dismisses.
+     * Dismiss guard (issue #1012):
+     *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
+     *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
+     *   is true, and `open` is set to false only after the CSS transition ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -5536,6 +5571,16 @@ declare global {
      * Fixed-position toast notification container. Place once in your app shell.
      * Call `addToast()` imperatively to enqueue notifications.
      * Only one <io-toast> element may exist per page (singleton pattern).
+     * ARIA live-region strategy (issue #1003):
+     *   - Host always carries role="status" aria-live="polite" so the live region
+     *     is stable — screen readers register it on mount and never lose track of it.
+     *   - A secondary <div role="alert" aria-live="assertive"> is rendered
+     *     unconditionally inside the host. Its text content is populated only when
+     *     a persistent/error toast is active, triggering an assertive announcement
+     *     without mutating the host's role attribute.
+     * Stacked toasts (issue #994):
+     *   - Up to `maxVisible` (default 3) toasts are shown simultaneously.
+     *   - Each <io-toast-item> carries its own role="status" for independent a11y.
      * @example <!-- App shell -->
      * <io-toast id="toast"></io-toast>
      * <script>
@@ -5843,11 +5888,21 @@ declare namespace LocalJSX {
      * Fixed-position page-level notification banner with four severity variants.
      * Visibility is controlled by the `open` prop — the host hides itself when open=false.
      * Set open=true to show; wire the dismiss event to set it back to false.
-     * ARIA live region strategy:
-     *   - error / warning variants: role="alert" on inner .banner div (assertive)
-     *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
-     * Role is placed on the conditionally-rendered inner div so the live region only exists
-     * while the banner is visible — prevents spurious announcements when open=false.
+     * ARIA live region strategy (issue #1076):
+     *   The inner `.banner` wrapper is always present in the DOM; visibility is
+     *   toggled via aria-hidden + CSS display:none. This ensures screen readers
+     *   have seen the live region before the first announcement, preventing the
+     *   well-known NVDA/JAWS "first open missed" quirk with newly-inserted regions.
+     * Focus management (issues #997, #998):
+     *   - When `open && dismissible`, focus moves to the dismiss button on the
+     *     render after the transition occurs. This covers initial open, programmatic
+     *     open, and runtime toggling of `dismissible` on an already-open banner.
+     *   - A previous-focus reference is captured when the banner opens, and
+     *     restored when it dismisses.
+     * Dismiss guard (issue #1012):
+     *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
+     *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
+     *   is true, and `open` is set to false only after the CSS transition ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -7396,8 +7451,7 @@ declare namespace LocalJSX {
          */
         "aria"?: IoModalAriaProps;
         /**
-          * Visual treatment of the backdrop overlay. - blur:    `backdrop-filter` blur (default) — for user-initiated dialogs - shading: solid `var(--io-bg-overlay)` without `backdrop-filter` — for            auto-appearing dialogs (e.g. cookie consent). Avoids expensive            GPU compositing on low-end devices.
-          * @default 'blur'
+          * @default 'blur' (kept for API compat)
          */
         "backdrop"?: IoModalBackdrop;
         /**
@@ -7563,10 +7617,10 @@ declare namespace LocalJSX {
          */
         "state"?: IoMultiSelectState;
         /**
-          * Currently selected values. Mutable — updated internally on user selection. Accepts string or number values. Numeric values are preserved in the `change` event but serialised to string by the browser's FormData API on form submission.
+          * Currently selected values. Mutable — updated internally on user selection.
           * @default []
          */
-        "value"?: (string | number)[];
+        "value"?: string[];
     }
     /**
      * io-optgroup
@@ -9202,12 +9256,12 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
          */
         "autoComplete"?: string | undefined;
         /**
-          * Autocomplete attribute.
-          * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+          * Autocomplete attribute (lowercase form).
+          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
          */
         "autocomplete"?: string | undefined;
         /**
@@ -9333,6 +9387,16 @@ declare namespace LocalJSX {
      * Fixed-position toast notification container. Place once in your app shell.
      * Call `addToast()` imperatively to enqueue notifications.
      * Only one <io-toast> element may exist per page (singleton pattern).
+     * ARIA live-region strategy (issue #1003):
+     *   - Host always carries role="status" aria-live="polite" so the live region
+     *     is stable — screen readers register it on mount and never lose track of it.
+     *   - A secondary <div role="alert" aria-live="assertive"> is rendered
+     *     unconditionally inside the host. Its text content is populated only when
+     *     a persistent/error toast is active, triggering an assertive announcement
+     *     without mutating the host's role attribute.
+     * Stacked toasts (issue #994):
+     *   - Up to `maxVisible` (default 3) toasts are shown simultaneously.
+     *   - Each <io-toast-item> carries its own role="status" for independent a11y.
      * @example <!-- App shell -->
      * <io-toast id="toast"></io-toast>
      * <script>
@@ -10222,11 +10286,21 @@ declare module "@stencil/core" {
              * Fixed-position page-level notification banner with four severity variants.
              * Visibility is controlled by the `open` prop — the host hides itself when open=false.
              * Set open=true to show; wire the dismiss event to set it back to false.
-             * ARIA live region strategy:
-             *   - error / warning variants: role="alert" on inner .banner div (assertive)
-             *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
-             * Role is placed on the conditionally-rendered inner div so the live region only exists
-             * while the banner is visible — prevents spurious announcements when open=false.
+             * ARIA live region strategy (issue #1076):
+             *   The inner `.banner` wrapper is always present in the DOM; visibility is
+             *   toggled via aria-hidden + CSS display:none. This ensures screen readers
+             *   have seen the live region before the first announcement, preventing the
+             *   well-known NVDA/JAWS "first open missed" quirk with newly-inserted regions.
+             * Focus management (issues #997, #998):
+             *   - When `open && dismissible`, focus moves to the dismiss button on the
+             *     render after the transition occurs. This covers initial open, programmatic
+             *     open, and runtime toggling of `dismissible` on an already-open banner.
+             *   - A previous-focus reference is captured when the banner opens, and
+             *     restored when it dismisses.
+             * Dismiss guard (issue #1012):
+             *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
+             *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
+             *   is true, and `open` is set to false only after the CSS transition ends.
              * @example <io-banner variant="info" open heading="Maintenance scheduled">
              *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
              * </io-banner>
@@ -11036,6 +11110,16 @@ declare module "@stencil/core" {
              * Fixed-position toast notification container. Place once in your app shell.
              * Call `addToast()` imperatively to enqueue notifications.
              * Only one <io-toast> element may exist per page (singleton pattern).
+             * ARIA live-region strategy (issue #1003):
+             *   - Host always carries role="status" aria-live="polite" so the live region
+             *     is stable — screen readers register it on mount and never lose track of it.
+             *   - A secondary <div role="alert" aria-live="assertive"> is rendered
+             *     unconditionally inside the host. Its text content is populated only when
+             *     a persistent/error toast is active, triggering an assertive announcement
+             *     without mutating the host's role attribute.
+             * Stacked toasts (issue #994):
+             *   - Up to `maxVisible` (default 3) toasts are shown simultaneously.
+             *   - Each <io-toast-item> carries its own role="status" for independent a11y.
              * @example <!-- App shell -->
              * <io-toast id="toast"></io-toast>
              * <script>

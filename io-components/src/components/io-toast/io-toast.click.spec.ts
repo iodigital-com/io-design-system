@@ -17,16 +17,16 @@ describe('io-toast — click behavior', () => {
     component.disconnectedCallback();
   });
 
-  it('delegates toast item dismiss handling to toastManager.dismiss', () => {
+  it('delegates toast item dismiss handling to toastManager.dismiss with the entry id', () => {
     const dismissSpy = vi.spyOn(toastManager, 'dismiss');
 
-    (component as any).handleItemDismiss();
+    (component as any).handleItemDismiss(42);
 
-    expect(dismissSpy).toHaveBeenCalledTimes(1);
+    expect(dismissSpy).toHaveBeenCalledWith(42);
   });
 
-  it('renders safely with an active message', () => {
-    (component as any).currentMsg = { id: 1, text: 'Saved', variant: 'success' };
+  it('renders safely with active messages', () => {
+    (component as any).visibleMsgs = [{ id: 1, text: 'Saved', variant: 'success' }];
 
     expect(() => component.render()).not.toThrow();
   });

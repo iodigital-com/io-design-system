@@ -11,12 +11,23 @@ import type { IoIconName } from '../../utils/icons';
  * Visibility is controlled by the `open` prop — the host hides itself when open=false.
  * Set open=true to show; wire the dismiss event to set it back to false.
  *
- * ARIA live region strategy:
- *   - error / warning variants: role="alert" on inner .banner div (assertive)
- *   - info / success variants:  role="status" + aria-live="polite" aria-atomic="true"
+ * ARIA live region strategy (issue #1076):
+ *   The inner `.banner` wrapper is always present in the DOM; visibility is
+ *   toggled via aria-hidden + CSS display:none. This ensures screen readers
+ *   have seen the live region before the first announcement, preventing the
+ *   well-known NVDA/JAWS "first open missed" quirk with newly-inserted regions.
  *
- * Role is placed on the conditionally-rendered inner div so the live region only exists
- * while the banner is visible — prevents spurious announcements when open=false.
+ * Focus management (issues #997, #998):
+ *   - When `open && dismissible`, focus moves to the dismiss button on the
+ *     render after the transition occurs. This covers initial open, programmatic
+ *     open, and runtime toggling of `dismissible` on an already-open banner.
+ *   - A previous-focus reference is captured when the banner opens, and
+ *     restored when it dismisses.
+ *
+ * Dismiss guard (issue #1012):
+ *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
+ *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
+ *   is true, and `open` is set to false only after the CSS transition ends.
  *
  * @example
  * <io-banner variant="info" open heading="Maintenance scheduled">
@@ -78,8 +89,23 @@ export class IoBanner {
 
   @State() private hasContent = false;
 
-  /** Set to true in @Watch('open') to focus the dismiss button after the next render */
-  private needsFocus = false;
+  /**
+   * True while the exit animation is running.
+   * Prevents duplicate dismiss events from rapid Escape presses or double-clicks.
+   */
+  @State() private _dismissing = false;
+
+  /**
+   * Tracks whether the dismiss button should receive focus on the next render.
+   * Set whenever `open && dismissible` transitions become true.
+   */
+  private _shouldFocusDismiss = false;
+
+  /**
+   * The element that had focus before the banner opened.
+   * Focus is restored here when the banner closes.
+   */
+  private _openerEl: HTMLElement | null = null;
 
   private get resolvedDismissLabel(): string {
     if (this.dismissLabel) return this.dismissLabel;
@@ -88,8 +114,22 @@ export class IoBanner {
   }
 
   private handleDismiss = () => {
-    this.open = false;
-    this.dismiss.emit();
+    // Guard: ignore if already in the process of dismissing
+    if (this._dismissing) return;
+    this._dismissing = true;
+
+    // Restore focus to the opener before closing (WCAG 2.4.3, issue #998)
+    this._openerEl?.focus();
+    this._openerEl = null;
+  };
+
+  private handleTransitionEnd = (e: TransitionEvent) => {
+    // Only react to the primary transition on the banner element itself
+    if ((e.target as HTMLElement)?.classList?.contains('banner') && this._dismissing) {
+      this._dismissing = false;
+      this.open = false;
+      this.dismiss.emit();
+    }
   };
 
   private handleAction = () => {
@@ -102,7 +142,10 @@ export class IoBanner {
 
   componentWillLoad(): void {
     if (this.open && this.dismissible) {
-      this.needsFocus = true;
+      this._shouldFocusDismiss = true;
+    }
+    if (this.open && this.dismissible) {
+      document.addEventListener('keydown', this.handleKeyDown);
     }
   }
 
@@ -117,12 +160,19 @@ export class IoBanner {
   }
 
   @Watch('open')
-  onOpenChange(newVal: boolean): void {
-    if (newVal && this.dismissible) {
+  onOpenChange(newVal: boolean, oldVal: boolean): void {
+    if (newVal) {
       document.addEventListener('keydown', this.handleKeyDown);
-      this.needsFocus = true;
+      // Capture opener when transitioning false → true
+      if (!oldVal) {
+        this._openerEl = document.activeElement as HTMLElement | null;
+      }
+      if (this.dismissible) {
+        this._shouldFocusDismiss = true;
+      }
     } else {
       document.removeEventListener('keydown', this.handleKeyDown);
+      this._dismissing = false;
     }
   }
 
@@ -131,6 +181,8 @@ export class IoBanner {
     if (this.open) {
       if (newVal) {
         document.addEventListener('keydown', this.handleKeyDown);
+        // Banner is open and dismissible just became true — focus the button
+        this._shouldFocusDismiss = true;
       } else {
         document.removeEventListener('keydown', this.handleKeyDown);
       }
@@ -138,8 +190,8 @@ export class IoBanner {
   }
 
   componentDidRender(): void {
-    if (this.needsFocus) {
-      this.needsFocus = false;
+    if (this._shouldFocusDismiss && this.open && this.dismissible) {
+      this._shouldFocusDismiss = false;
       this.el?.shadowRoot?.querySelector<HTMLButtonElement>('.banner__dismiss')?.focus();
     }
   }
@@ -155,6 +207,11 @@ export class IoBanner {
     const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
     const HeadingTag = headingTag;
 
+    // The live-region wrapper is always mounted (issue #1076) so assistive tech
+    // registers it before the first announcement. aria-hidden hides it from the
+    // a11y tree when closed; CSS display:none removes it from layout.
+    const bannerHidden = !this.open;
+
     return (
       <Host>
         <style>{getBannerStyles()}</style>
@@ -163,12 +220,17 @@ export class IoBanner {
             and display:none — matches the WAI-ARIA Authoring Practices guidance
             for pre-established live regions. */}
         <div
-          class={`banner banner--${this.variant}`}
+          class={{
+            banner: true,
+            [`banner--${this.variant}`]: true,
+            'banner--dismissing': this._dismissing,
+          }}
           role={this.isAssertive ? 'alert' : 'status'}
           aria-live={this.isAssertive ? undefined : 'polite'}
           aria-atomic={this.isAssertive ? undefined : 'true'}
-          aria-hidden={this.open ? undefined : 'true'}
+          aria-hidden={bannerHidden ? 'true' : undefined}
           style={{ display: this.open ? undefined : 'none' }}
+          onTransitionEnd={this.handleTransitionEnd}
         >
           <span class="banner__icon" aria-hidden="true">
             {this.variant === 'info' && (

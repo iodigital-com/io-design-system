@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { IoToastManagerClass } from './io-toast-manager';
+import { IoToastManagerClass, MAX_VISIBLE } from './io-toast-manager';
 
 function makeManager() {
   return new IoToastManagerClass();
@@ -34,9 +34,19 @@ describe('IoToastManagerClass — registration', () => {
     manager.unregister();
     expect(manager.getCurrent()).toBeNull();
   });
+
+  it('getVisible returns empty array initially', () => {
+    manager.register(vi.fn());
+    expect(manager.getVisible()).toHaveLength(0);
+  });
+
+  it('getQueue returns empty array initially', () => {
+    manager.register(vi.fn());
+    expect(manager.getQueue()).toHaveLength(0);
+  });
 });
 
-describe('IoToastManagerClass — addToast', () => {
+describe('IoToastManagerClass — addToast (stacked, issue #994)', () => {
   let manager: IoToastManagerClass;
   let refresh: ReturnType<typeof vi.fn>;
 
@@ -52,14 +62,28 @@ describe('IoToastManagerClass — addToast', () => {
 
   it('shows first message immediately', () => {
     manager.addToast({ text: 'First' });
-    expect(refresh).toHaveBeenCalledWith(expect.objectContaining({ text: 'First' }));
+    expect(refresh).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ text: 'First' })]));
   });
 
-  it('queues second message if one is already visible', () => {
+  it('shows up to maxVisible toasts simultaneously', () => {
+    for (let i = 0; i < MAX_VISIBLE; i++) {
+      manager.addToast({ text: `Toast ${i}` });
+    }
+    expect(manager.getVisible()).toHaveLength(MAX_VISIBLE);
+  });
+
+  it('queues items beyond maxVisible', () => {
+    for (let i = 0; i < MAX_VISIBLE + 2; i++) {
+      manager.addToast({ text: `Toast ${i}` });
+    }
+    expect(manager.getVisible()).toHaveLength(MAX_VISIBLE);
+    expect(manager.getQueue()).toHaveLength(MAX_VISIBLE + 2); // visible + queued
+  });
+
+  it('getCurrent returns oldest visible entry', () => {
     manager.addToast({ text: 'First' });
-    const callCount = refresh.mock.calls.length;
     manager.addToast({ text: 'Second' });
-    expect(refresh.mock.calls.length).toBe(callCount); // not called again yet
+    expect(manager.getCurrent()?.text).toBe('First');
   });
 
   it('applies neutral variant by default', () => {
@@ -88,7 +112,7 @@ describe('IoToastManagerClass — addToast', () => {
   });
 });
 
-describe('IoToastManagerClass — dismiss', () => {
+describe('IoToastManagerClass — dismiss (stacked, issue #994)', () => {
   let manager: IoToastManagerClass;
   let refresh: ReturnType<typeof vi.fn>;
 
@@ -104,19 +128,42 @@ describe('IoToastManagerClass — dismiss', () => {
     manager.unregister();
   });
 
-  it('dismiss() sets current to null immediately', () => {
-    manager.addToast({ text: 'First' });
-    manager.dismiss();
-    expect(manager.getCurrent()).toBeNull();
-    expect(refresh).toHaveBeenLastCalledWith(null);
-  });
-
-  it('shows next queued item after DISMISS_DELAY', () => {
+  it('dismiss() with no id removes oldest visible toast', () => {
     manager.addToast({ text: 'First' });
     manager.addToast({ text: 'Second' });
     manager.dismiss();
+    const visible = manager.getVisible();
+    expect(visible.find((e) => e.text === 'First')).toBeUndefined();
+    expect(visible.find((e) => e.text === 'Second')).toBeDefined();
+  });
+
+  it('dismiss(id) removes the specific toast', () => {
+    manager.addToast({ text: 'First' });
+    manager.addToast({ text: 'Second' });
+    const secondId = manager.getVisible()[1]?.id;
+    manager.dismiss(secondId);
+    expect(manager.getVisible().find((e) => e.text === 'Second')).toBeUndefined();
+    expect(manager.getVisible().find((e) => e.text === 'First')).toBeDefined();
+  });
+
+  it('dismiss() promotes queued item after DISMISS_DELAY', () => {
+    for (let i = 0; i < MAX_VISIBLE + 1; i++) {
+      manager.addToast({ text: `Toast ${i}` });
+    }
+    expect(manager.getVisible()).toHaveLength(MAX_VISIBLE);
+    manager.dismiss();
     vi.advanceTimersByTime(300); // > DISMISS_DELAY (200ms)
-    expect(manager.getCurrent()?.text).toBe('Second');
+    expect(manager.getVisible()).toHaveLength(MAX_VISIBLE);
+  });
+
+  it('dismissAll() clears all visible and queued toasts', () => {
+    for (let i = 0; i < MAX_VISIBLE + 2; i++) {
+      manager.addToast({ text: `Toast ${i}` });
+    }
+    manager.dismissAll();
+    expect(manager.getVisible()).toHaveLength(0);
+    expect(manager.getQueue()).toHaveLength(0);
+    expect(refresh).toHaveBeenLastCalledWith([]);
   });
 
   it('auto-dismisses after default duration (6000ms)', () => {
@@ -155,5 +202,47 @@ describe('IoToastManagerClass — dismiss', () => {
     manager.addToast({ text: 'Info', variant: 'info' });
     vi.advanceTimersByTime(6000);
     expect(manager.getCurrent()).toBeNull();
+  });
+
+  it('dismiss() on empty queue does not throw', () => {
+    expect(() => manager.dismiss()).not.toThrow();
+  });
+
+  it('each visible toast auto-dismisses independently', () => {
+    vi.useFakeTimers();
+    manager.addToast({ text: 'Fast', duration: 1000 });
+    manager.addToast({ text: 'Slow', duration: 5000 });
+    vi.advanceTimersByTime(1000);
+    expect(manager.getVisible().find((e) => e.text === 'Fast')).toBeUndefined();
+    expect(manager.getVisible().find((e) => e.text === 'Slow')).toBeDefined();
+    vi.advanceTimersByTime(4000);
+    expect(manager.getVisible().find((e) => e.text === 'Slow')).toBeUndefined();
+  });
+});
+
+describe('IoToastManagerClass — getQueue / getVisible snapshots (issue #994)', () => {
+  let manager: IoToastManagerClass;
+
+  beforeEach(() => {
+    manager = makeManager();
+    manager.register(vi.fn());
+  });
+
+  afterEach(() => {
+    manager.unregister();
+  });
+
+  it('getQueue includes both visible and queued entries', () => {
+    for (let i = 0; i < MAX_VISIBLE + 1; i++) {
+      manager.addToast({ text: `Toast ${i}` });
+    }
+    expect(manager.getQueue()).toHaveLength(MAX_VISIBLE + 1);
+  });
+
+  it('getVisible returns a copy (mutation does not affect manager state)', () => {
+    manager.addToast({ text: 'Test' });
+    const snap = manager.getVisible() as IoToastManagerClass['getVisible'] extends () => infer R ? R : never;
+    (snap as unknown[]).length = 0;
+    expect(manager.getVisible()).toHaveLength(1);
   });
 });

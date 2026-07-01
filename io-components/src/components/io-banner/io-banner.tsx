@@ -282,7 +282,7 @@ export class IoBanner {
           popover="manual"
           ref={(el?: HTMLDivElement) => { this.popoverEl = el; }}
         >
-        {this.open && <div
+        <div
           class={`banner banner--${this.variant} ${this.bannerPositionClass}`}
           role={this.isAssertive ? 'alert' : 'status'}
           aria-live={this.isAssertive ? undefined : 'polite'}
@@ -337,7 +337,7 @@ export class IoBanner {
               onClick={this.handleDismiss}
             />
           )}
-        </div>}
+        </div>
         </div>
       </Host>
     );

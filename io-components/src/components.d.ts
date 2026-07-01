@@ -357,6 +357,12 @@ export namespace Components {
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
      *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
      * </io-breadcrumb>
+     * @example SEO with JSON-LD
+     * <io-breadcrumb seo>
+     * <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface IoBreadcrumb {
         /**
@@ -365,9 +371,14 @@ export namespace Components {
          */
         "label": string;
         /**
-          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals all items. Screen readers receive a descriptive label on the expand button indicating how many items are hidden (WCAG 1.3.1).
+          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals hidden items via a popover menu (no layout shift). Screen readers receive a descriptive label on the expand button (WCAG 1.3.1).
          */
         "maxItems"?: number;
+        /**
+          * When true, renders a <script type="application/ld+json"> child containing a schema.org BreadcrumbList graph. Defaults to false to avoid duplicate JSON-LD when consumers manage their own structured data. Guard with SSG safety: the script is only injected client-side.
+          * @default false
+         */
+        "seo": boolean;
     }
     /**
      * io-breadcrumb-item
@@ -2828,10 +2839,11 @@ export namespace Components {
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
      * <io-step label="Verify" status="warning"></io-step>
+     * <io-step label="Payment" status="error"></io-step>
      */
     interface IoStep {
         /**
-          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations.
+          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations. Note: combining status="current" with disabled=true is contradictory — a console.error is logged (current step must remain focusable).
           * @default false
          */
         "disabled": boolean;
@@ -4066,6 +4078,12 @@ declare global {
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
      *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
      * </io-breadcrumb>
+     * @example SEO with JSON-LD
+     * <io-breadcrumb seo>
+     * <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface HTMLIoBreadcrumbElement extends Components.IoBreadcrumb, HTMLStencilElement {
     }
@@ -5090,6 +5108,7 @@ declare global {
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
      * <io-step label="Verify" status="warning"></io-step>
+     * <io-step label="Payment" status="error"></io-step>
      */
     interface HTMLIoStepElement extends Components.IoStep, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoStepElementEventMap>(type: K, listener: (this: HTMLIoStepElement, ev: IoStepCustomEvent<HTMLIoStepElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5993,6 +6012,12 @@ declare namespace LocalJSX {
      *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
      *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
      * </io-breadcrumb>
+     * @example SEO with JSON-LD
+     * <io-breadcrumb seo>
+     * <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+     * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+     * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+     * </io-breadcrumb>
      */
     interface IoBreadcrumb {
         /**
@@ -6001,9 +6026,14 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals all items. Screen readers receive a descriptive label on the expand button indicating how many items are hidden (WCAG 1.3.1).
+          * Maximum visible items before collapsing intermediate items into an expand button. When set and the item count exceeds this value, items between the first and last (maxItems − 1) are hidden. Activating the expand button reveals hidden items via a popover menu (no layout shift). Screen readers receive a descriptive label on the expand button (WCAG 1.3.1).
          */
         "maxItems"?: number;
+        /**
+          * When true, renders a <script type="application/ld+json"> child containing a schema.org BreadcrumbList graph. Defaults to false to avoid duplicate JSON-LD when consumers manage their own structured data. Guard with SSG safety: the script is only injected client-side.
+          * @default false
+         */
+        "seo"?: boolean;
     }
     /**
      * io-breadcrumb-item
@@ -8539,10 +8569,11 @@ declare namespace LocalJSX {
      * <io-step label="Details" status="current"></io-step>
      * <io-step label="Review" status="upcoming"></io-step>
      * <io-step label="Verify" status="warning"></io-step>
+     * <io-step label="Payment" status="error"></io-step>
      */
     interface IoStep {
         /**
-          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations.
+          * When true, the step is non-interactive regardless of status. Applies aria-disabled="true" and suppresses click events. Use to block navigation during async operations. Note: combining status="current" with disabled=true is contradictory — a console.error is logged (current step must remain focusable).
           * @default false
          */
         "disabled"?: boolean;
@@ -9589,6 +9620,7 @@ declare namespace LocalJSX {
     interface IoBreadcrumbAttributes {
         "label": string;
         "maxItems": number;
+        "seo": boolean;
     }
     interface IoBreadcrumbItemAttributes {
         "href": string;
@@ -10335,6 +10367,12 @@ declare module "@stencil/core" {
              *   <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
              *   <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
              * </io-breadcrumb>
+             * @example SEO with JSON-LD
+             * <io-breadcrumb seo>
+             * <io-breadcrumb-item href="/">Home</io-breadcrumb-item>
+             * <io-breadcrumb-item href="/services">Services</io-breadcrumb-item>
+             * <io-breadcrumb-item current>Digital Strategy</io-breadcrumb-item>
+             * </io-breadcrumb>
              */
             "io-breadcrumb": LocalJSX.IntrinsicElements["io-breadcrumb"] & JSXBase.HTMLAttributes<HTMLIoBreadcrumbElement>;
             /**
@@ -10859,6 +10897,7 @@ declare module "@stencil/core" {
              * <io-step label="Details" status="current"></io-step>
              * <io-step label="Review" status="upcoming"></io-step>
              * <io-step label="Verify" status="warning"></io-step>
+             * <io-step label="Payment" status="error"></io-step>
              */
             "io-step": LocalJSX.IntrinsicElements["io-step"] & JSXBase.HTMLAttributes<HTMLIoStepElement>;
             /**

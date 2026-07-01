@@ -445,6 +445,168 @@ describe('io-step — warning status', () => {
   });
 });
 
+// ─── io-step error status (#955) ──────────────────────────────────────────
+
+describe('io-step — error status', () => {
+  it('renders without throwing for status=error', () => {
+    const step = new IoStep();
+    step.label = 'Payment';
+    step.status = 'error';
+    step.index = 2;
+    step.total = 3;
+    expect(() => step.render()).not.toThrow();
+  });
+
+  it('aria-disabled is set for error step (non-interactive)', () => {
+    const step = new IoStep();
+    step.label = 'Payment';
+    step.status = 'error';
+    step.index = 2;
+    step.total = 3;
+    const attrs = getButtonAttrs(step);
+    expect(attrs['aria-disabled']).toBe('true');
+  });
+
+  it('renders an error SVG icon for status=error', () => {
+    const step = new IoStep();
+    step.label = 'Payment';
+    step.status = 'error';
+    step.index = 2;
+    step.total = 3;
+    hMock.mockClear();
+    step.render();
+    const svgCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'svg' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        (attrs as Record<string, unknown>)['class'] === 'step__error-icon',
+    );
+    expect(svgCall).toBeDefined();
+  });
+
+  it('does not emit stepClick for error step', () => {
+    const step = new IoStep();
+    step.label = 'Payment';
+    step.status = 'error';
+    step.index = 2;
+    const emitted: unknown[] = [];
+    (step as any).stepClick = { emit: (detail: unknown) => emitted.push(detail) };
+    (step as any).handleClick();
+    expect(emitted).toHaveLength(0);
+  });
+});
+
+// ─── io-step componentWillLoad validation (#973) ──────────────────────────
+
+describe('io-step — componentWillLoad validation', () => {
+  it('logs console.error when status=current and disabled=true', () => {
+    const step = new IoStep();
+    step.label = 'Details';
+    step.status = 'current';
+    step.disabled = true;
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (step as any).componentWillLoad();
+    expect(spy).toHaveBeenCalledWith(
+      '[io-step] status="current" and disabled=true are mutually exclusive. The current step must remain focusable.',
+    );
+    spy.mockRestore();
+  });
+
+  it('does not log console.error when status=current and disabled=false', () => {
+    const step = new IoStep();
+    step.label = 'Details';
+    step.status = 'current';
+    step.disabled = false;
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (step as any).componentWillLoad();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('does not log console.error when status=upcoming and disabled=true', () => {
+    const step = new IoStep();
+    step.label = 'Review';
+    step.status = 'upcoming';
+    step.disabled = true;
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (step as any).componentWillLoad();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+});
+
+// ─── io-step description slot (#962) ──────────────────────────────────────
+
+describe('io-step — description slot', () => {
+  it('renders step__description span in the output', () => {
+    const step = new IoStep();
+    step.label = 'Account';
+    step.status = 'current';
+    step.index = 1;
+    step.total = 3;
+    hMock.mockClear();
+    step.render();
+    const descCall = hMock.mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'slot' &&
+        attrs &&
+        typeof attrs === 'object' &&
+        (attrs as Record<string, unknown>)['name'] === 'description',
+    );
+    expect(descCall).toBeDefined();
+  });
+});
+
+// ─── io-stepper scroll centering (#964) ───────────────────────────────────
+
+describe('io-stepper — scroll centering', () => {
+  it('componentWillLoad logs error when more than 9 steps', () => {
+    const stepper = new IoStepper();
+    const steps = Array.from({ length: 10 }, () => document.createElement('io-step'));
+    (stepper as any).el = {
+      querySelectorAll: vi.fn().mockReturnValue(steps),
+    };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (stepper as any).componentWillLoad();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('[io-stepper] Maximum 9 steps are supported'));
+    spy.mockRestore();
+  });
+
+  it('componentWillLoad does not log error for 9 steps', () => {
+    const stepper = new IoStepper();
+    const steps = Array.from({ length: 9 }, () => document.createElement('io-step'));
+    (stepper as any).el = {
+      querySelectorAll: vi.fn().mockReturnValue(steps),
+    };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    (stepper as any).componentWillLoad();
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('scrollCurrentIntoView does nothing for vertical orientation', () => {
+    const stepper = new IoStepper();
+    stepper.orientation = 'vertical';
+    stepper.current = 1;
+    const mockStep = { scrollIntoView: vi.fn() } as unknown as HTMLElement;
+    (stepper as any).el = {
+      querySelectorAll: vi.fn().mockReturnValue([mockStep]),
+    };
+    (stepper as any).scrollCurrentIntoView();
+    expect(mockStep.scrollIntoView).not.toHaveBeenCalled();
+  });
+
+  it('disconnectedCallback detaches resize observer', () => {
+    const stepper = new IoStepper();
+    const disconnectSpy = vi.fn();
+    (stepper as any).resizeObserver = { disconnect: disconnectSpy };
+    stepper.disconnectedCallback();
+    expect(disconnectSpy).toHaveBeenCalled();
+    expect((stepper as any).resizeObserver).toBeNull();
+  });
+});
+
 // ─── io-step disabled prop ─────────────────────────────────────────────────
 
 describe('io-step — disabled prop', () => {

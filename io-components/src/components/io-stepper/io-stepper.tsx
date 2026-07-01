@@ -58,8 +58,26 @@ export class IoStepper {
 
   // ── Lifecycle ─────────────────────────────────────────────────
 
+  componentWillLoad() {
+    const steps = Array.from(this.el.querySelectorAll('io-step'));
+    // Cap at 9 steps — log error without throwing (backwards compatible).
+    if (steps.length > 9) {
+      console.error(`[io-stepper] Maximum 9 steps are supported; found ${steps.length}. Extra steps will still render but may cause layout issues.`);
+    }
+  }
+
   componentDidLoad() {
     this.updateSteps();
+    this.attachResizeObserver();
+    this.scrollCurrentIntoView();
+  }
+
+  componentDidUpdate() {
+    this.scrollCurrentIntoView();
+  }
+
+  disconnectedCallback() {
+    this.detachResizeObserver();
   }
 
   @Watch('current')
@@ -72,10 +90,44 @@ export class IoStepper {
     this.updateSteps();
   }
 
+  // ── ResizeObserver for scroll centering ──────────────────────
+
+  private resizeObserver: ResizeObserver | null = null;
+
+  private attachResizeObserver() {
+    if (typeof ResizeObserver === 'undefined') return;
+    this.resizeObserver = new ResizeObserver(() => {
+      this.scrollCurrentIntoView();
+    });
+    const list = this.el.shadowRoot?.querySelector('.stepper');
+    if (list) this.resizeObserver.observe(list);
+  }
+
+  private detachResizeObserver() {
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+  }
+
+  private scrollCurrentIntoView() {
+    if (this.orientation !== 'horizontal') return;
+    const steps = Array.from(this.el.querySelectorAll('io-step'));
+    const currentStep = steps.find((_, i) => i + 1 === this.current) as HTMLElement | undefined;
+    if (!currentStep) return;
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    currentStep.scrollIntoView({
+      inline: 'center',
+      block: 'nearest',
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    });
+  }
+
   // ── Slot handling ─────────────────────────────────────────────
 
   private handleSlotChange = () => {
     this.updateSteps();
+    this.scrollCurrentIntoView();
   };
 
   private updateSteps() {

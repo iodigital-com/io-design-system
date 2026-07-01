@@ -135,13 +135,116 @@ describe('io-breadcrumb — maxItems collapse (#836)', () => {
     items.forEach(item => expect(item.classList.contains('breadcrumb-item--hidden')).toBe(false));
   });
 
-  it('handleExpand sets collapsed to false', () => {
+  it('handleTriggerClick toggles popoverOpen state', () => {
     const c = new IoBreadcrumb();
     (c as any).el = document.createElement('io-breadcrumb');
     (c as any).collapsed = true;
 
-    (c as any).handleExpand();
+    // Simulate having a trigger button and a popover wired up
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-expanded', 'false');
+    const mockPopover = { open: false };
+    (c as any).triggerBtn = btn;
+    (c as any).popoverEl = mockPopover;
 
-    expect((c as any).collapsed).toBe(false);
+    (c as any).handleTriggerClick();
+
+    expect((c as any).popoverOpen).toBe(true);
+    expect(btn.getAttribute('aria-expanded')).toBe('true');
+  });
+});
+
+// ── JSON-LD SEO (#969) ────────────────────────────────────────────────────────
+
+describe('io-breadcrumb — seo prop and JSON-LD (#969)', () => {
+  it('seo defaults to false', () => {
+    const c = new IoBreadcrumb();
+    expect(c.seo).toBe(false);
+  });
+
+  it('jsonLd is empty string when seo=false', () => {
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).regenerateJsonLd();
+    expect((c as any).jsonLd).toBe('');
+  });
+
+  it('regenerateJsonLd generates valid BreadcrumbList when seo=true', () => {
+    const c = new IoBreadcrumb();
+    const hostEl = document.createElement('io-breadcrumb');
+    (c as any).el = hostEl;
+    (c as any).seo = true;
+
+    // Create mock breadcrumb items
+    const item1 = document.createElement('io-breadcrumb-item');
+    item1.setAttribute('href', '/');
+    item1.textContent = 'Home';
+    const item2 = document.createElement('io-breadcrumb-item');
+    item2.setAttribute('href', '/services');
+    item2.textContent = 'Services';
+    const item3 = document.createElement('io-breadcrumb-item');
+    item3.setAttribute('current', '');
+    item3.textContent = 'Digital Strategy';
+    hostEl.appendChild(item1);
+    hostEl.appendChild(item2);
+    hostEl.appendChild(item3);
+
+    (c as any).regenerateJsonLd();
+
+    const jsonLd = (c as any).jsonLd;
+    expect(jsonLd).toBeTruthy();
+    const parsed = JSON.parse(jsonLd);
+    expect(parsed['@type']).toBe('BreadcrumbList');
+    expect(parsed['@context']).toBe('https://schema.org');
+    expect(parsed.itemListElement).toHaveLength(3);
+    expect(parsed.itemListElement[0].position).toBe(1);
+    expect(parsed.itemListElement[0].name).toBe('Home');
+    expect(parsed.itemListElement[1].position).toBe(2);
+    expect(parsed.itemListElement[2].position).toBe(3);
+    expect(parsed.itemListElement[2].name).toBe('Digital Strategy');
+  });
+
+  it('render does not throw when seo=true and jsonLd is set', () => {
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).seo = true;
+    (c as any).jsonLd = '{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[]}';
+    expect(() => (c as any).render()).not.toThrow();
+  });
+});
+
+// ── Popover for hidden items (#960) ──────────────────────────────────────────
+
+describe('io-breadcrumb — popover trigger (#960)', () => {
+  it('handlePopoverClose resets popoverOpen and aria-expanded', () => {
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).popoverOpen = true;
+
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-expanded', 'true');
+    (c as any).triggerBtn = btn;
+
+    (c as any).handlePopoverClose();
+
+    expect((c as any).popoverOpen).toBe(false);
+    expect(btn.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('handleTriggerClick sets popoverOpen=false on second call (toggle)', () => {
+    const c = new IoBreadcrumb();
+    (c as any).el = document.createElement('io-breadcrumb');
+    (c as any).popoverOpen = true;
+
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-expanded', 'true');
+    const mockPopover = { open: true };
+    (c as any).triggerBtn = btn;
+    (c as any).popoverEl = mockPopover;
+
+    (c as any).handleTriggerClick();
+
+    expect((c as any).popoverOpen).toBe(false);
+    expect(btn.getAttribute('aria-expanded')).toBe('false');
   });
 });

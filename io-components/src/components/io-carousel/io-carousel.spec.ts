@@ -984,3 +984,96 @@ describe('io-carousel — focusOnCenterSlide prop (#1031)', () => {
     expect((track as any).scrollTo).toHaveBeenCalledWith({ left: 250, behavior: 'smooth' });
   });
 });
+
+// ── Render / CSS class-binding tests for trimSpace, edgeFade (#1031) ────────
+
+describe('io-carousel — carousel-wrap class bindings (#1031)', () => {
+  function makeCarousel() {
+    const c = new IoCarousel();
+    (c as any).el = { shadowRoot: null };
+    (c as any).update = { emit: vi.fn() };
+    c.componentWillLoad();
+    return c;
+  }
+
+  /** Find the carousel-wrap div in the h.mock.calls. */
+  function findWrapDiv() {
+    return vi.mocked(h).mock.calls.find(
+      ([tag, attrs]: [unknown, unknown]) =>
+        tag === 'div' &&
+        typeof (attrs as Record<string, unknown>)?.['class'] === 'object' &&
+        (attrs as Record<string, unknown>)?.['class'] !== null &&
+        'carousel-wrap' in ((attrs as Record<string, unknown>)['class'] as object),
+    );
+  }
+
+  it('carousel-wrap--edge-fade class is NOT present when edgeFade=false', () => {
+    const c = makeCarousel();
+    c.edgeFade = false;
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--edge-fade']).toBe(false);
+  });
+
+  it('carousel-wrap--edge-fade class IS present when edgeFade=true', () => {
+    const c = makeCarousel();
+    c.edgeFade = true;
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--edge-fade']).toBe(true);
+  });
+
+  it('carousel-wrap--trim-start class IS present when trimSpace="start"', () => {
+    const c = makeCarousel();
+    c.trimSpace = 'start';
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--trim-start']).toBe(true);
+    expect(classObj?.['carousel-wrap--trim-end']).toBe(false);
+  });
+
+  it('carousel-wrap--trim-end class IS present when trimSpace="end"', () => {
+    const c = makeCarousel();
+    c.trimSpace = 'end';
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--trim-start']).toBe(false);
+    expect(classObj?.['carousel-wrap--trim-end']).toBe(true);
+  });
+
+  it('both trim classes are present when trimSpace="both"', () => {
+    const c = makeCarousel();
+    c.trimSpace = 'both';
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--trim-start']).toBe(true);
+    expect(classObj?.['carousel-wrap--trim-end']).toBe(true);
+  });
+
+  it('no trim classes are present when trimSpace="none"', () => {
+    const c = makeCarousel();
+    c.trimSpace = 'none';
+    vi.mocked(h).mockClear();
+    c.render();
+    const wrapDiv = findWrapDiv();
+    expect(wrapDiv).toBeDefined();
+    const classObj = (wrapDiv?.[1] as Record<string, unknown>)?.['class'] as Record<string, boolean>;
+    expect(classObj?.['carousel-wrap--trim-start']).toBe(false);
+    expect(classObj?.['carousel-wrap--trim-end']).toBe(false);
+  });
+});

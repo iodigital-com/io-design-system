@@ -134,6 +134,32 @@ describe('io-carousel storefront stories', () => {
       expect(slidesPerPageDef).toBeDefined();
       expect(((slidesPerPageDef as unknown as { options: string[] })).options).toContain('auto');
     });
+
+    it('trimSpace definition exists with correct type and options', () => {
+      const def = carouselPropDefinitions.find((d) => d.name === 'trimSpace');
+      expect(def).toBeDefined();
+      expect(def?.type).toBe('select');
+      const opts = (def as unknown as { options: string[] }).options;
+      expect(opts).toContain('none');
+      expect(opts).toContain('start');
+      expect(opts).toContain('end');
+      expect(opts).toContain('both');
+      expect(def?.defaultValue).toBe('none');
+    });
+
+    it('edgeFade definition exists as boolean', () => {
+      const def = carouselPropDefinitions.find((d) => d.name === 'edgeFade');
+      expect(def).toBeDefined();
+      expect(def?.type).toBe('boolean');
+      expect(def?.defaultValue).toBe(false);
+    });
+
+    it('focusOnCenterSlide definition exists as boolean', () => {
+      const def = carouselPropDefinitions.find((d) => d.name === 'focusOnCenterSlide');
+      expect(def).toBeDefined();
+      expect(def?.type).toBe('boolean');
+      expect(def?.defaultValue).toBe(false);
+    });
   });
 
   // ── Named stories ───────────────────────────────────────────────────────

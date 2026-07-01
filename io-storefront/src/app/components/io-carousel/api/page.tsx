@@ -105,6 +105,48 @@ export default function IoCarouselApiPage() {
               <InlineCode key="default">&apos;left&apos;</InlineCode>,
               <span key="desc">Alignment of the heading and description header area.</span>,
             ],
+            [
+              <InlineCode key="name">intl</InlineCode>,
+              <InlineCode key="type">Partial&lt;IoCarouselIntl&gt; | undefined</InlineCode>,
+              <InlineCode key="default">undefined</InlineCode>,
+              <span key="desc">
+                Internationalisation overrides for all user-visible strings. Keys — <InlineCode>prev</InlineCode>,{' '}
+                <InlineCode>next</InlineCode>, <InlineCode>label</InlineCode>, <InlineCode>skip</InlineCode> — take precedence over the
+                individual <InlineCode>prevLabel</InlineCode>, <InlineCode>nextLabel</InlineCode>, <InlineCode>label</InlineCode>, and{' '}
+                <InlineCode>skipLabel</InlineCode> props. Only the keys you supply are overridden; omitted keys fall back to the
+                individual props.
+              </span>,
+            ],
+            [
+              <InlineCode key="name">trimSpace</InlineCode>,
+              <InlineCode key="type">&apos;none&apos; | &apos;start&apos; | &apos;end&apos; | &apos;both&apos;</InlineCode>,
+              <InlineCode key="default">&apos;none&apos;</InlineCode>,
+              <span key="desc">
+                Removes the blank scroll margin from the start (<InlineCode>&apos;start&apos;</InlineCode>), end (
+                <InlineCode>&apos;end&apos;</InlineCode>), or both sides (<InlineCode>&apos;both&apos;</InlineCode>) of the carousel track.
+                Useful when flush-edge layouts require no leading/trailing gap. Has no effect when set to{' '}
+                <InlineCode>&apos;none&apos;</InlineCode> (default).
+              </span>,
+            ],
+            [
+              <InlineCode key="name">edgeFade</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="desc">
+                When <InlineCode>true</InlineCode>, adds a CSS gradient fade mask at the left and right edges of the carousel track,
+                visually hinting at overflow content. The fade width is controlled by the{' '}
+                <InlineCode>--io-carousel-edge-fade-width</InlineCode> CSS custom property (default <InlineCode>64px</InlineCode>).
+              </span>,
+            ],
+            [
+              <InlineCode key="name">focusOnCenterSlide</InlineCode>,
+              <InlineCode key="type">boolean</InlineCode>,
+              <InlineCode key="default">false</InlineCode>,
+              <span key="desc">
+                When <InlineCode>true</InlineCode>, the active slide is scrolled into the horizontal center of the visible track
+                viewport on each navigation step. Useful for peek-style layouts where the center slide is the focal point.
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -322,6 +364,15 @@ const onUpdate = (_e: CustomEvent<{ activeIndex: number; previousIndex: number; 
               <InlineCode key="n">--io-carousel-scrollbar-height</InlineCode>,
               <InlineCode key="d">4px</InlineCode>,
               'Height of the custom scrollbar track rendered below the carousel slide area.',
+            ],
+            [
+              <InlineCode key="n">--io-carousel-edge-fade-width</InlineCode>,
+              <InlineCode key="d">64px</InlineCode>,
+              <span key="desc">
+                Width of the gradient fade mask applied to the left and right edges of the carousel track when{' '}
+                <InlineCode>edgeFade=true</InlineCode>. Increase this value for a more pronounced fade effect; set to{' '}
+                <InlineCode>0</InlineCode> to effectively disable the fade while keeping the prop active.
+              </span>,
             ],
           ]}
         />

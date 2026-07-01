@@ -21,6 +21,22 @@ export type BreakpointKey = 'base' | 'xs' | 'sm' | 'md' | 'l' | 'lg' | 'xl' | '2
 
 export type BreakpointValue<T extends string> = T | Partial<Record<BreakpointKey, T>>;
 
+/**
+ * A value that can be either a fixed scalar or a responsive object mapping
+ * breakpoint keys to values. The type parameter T should be a string union.
+ *
+ * @example
+ * // Fixed scalar — always 'md'
+ * const size: BreakpointCustomizable<IoButtonSize> = 'md';
+ *
+ * // Responsive — 'sm' on mobile, 'lg' on large+ viewports
+ * const size: BreakpointCustomizable<IoButtonSize> = { base: 'sm', l: 'lg' };
+ *
+ * // JSON-string form (used when setting HTML attributes from HTML/template strings)
+ * const size: BreakpointCustomizable<IoButtonSize> = '{"base":"sm","l":"lg"}';
+ */
+export type BreakpointCustomizable<T extends string> = T | Partial<Record<BreakpointKey, T>>;
+
 /** Maps breakpoint key to min-width px value (same values as --io-breakpoint-* tokens) */
 const BREAKPOINT_PX: Record<Exclude<BreakpointKey, 'base'>, number> = {
   xs: 375,
@@ -117,4 +133,60 @@ export function buildMediaBlock(key: BreakpointKey, cssProps: string, selector: 
   }
   const px = BREAKPOINT_PX[key as Exclude<BreakpointKey, 'base'>];
   return `@media (min-width: ${px}px) { ${selector} { ${cssProps} } }`;
+}
+
+/**
+ * Resolve a BreakpointCustomizable<T> value to the current T at render time.
+ *
+ * Uses window.matchMedia to check which breakpoint is currently active,
+ * then returns the value for the largest matching breakpoint. Falls back to
+ * `fallback` when no matching entry is found.
+ *
+ * This is a static read — it does NOT subscribe to viewport changes. The
+ * component is responsible for triggering re-renders on resize if live
+ * breakpoint tracking is required. For the initial release, static resolution
+ * on each render() call is sufficient because Stencil will re-render when
+ * the prop changes.
+ *
+ * Safe in SSR/jsdom environments: when `window` or `matchMedia` is not
+ * available, returns the `base` value (or `fallback`).
+ *
+ * @param raw      - The BreakpointCustomizable value (scalar, object, or JSON string)
+ * @param fallback - Value to return when `raw` is undefined/null or no match found
+ */
+export function resolveBreakpoint<T extends string>(
+  raw: BreakpointCustomizable<T> | undefined | null,
+  fallback: T,
+): T {
+  const parsed = parseBreakpoint<T>(raw as BreakpointValue<T> | undefined | null, fallback);
+
+  if (parsed.isFixed) {
+    return parsed.value;
+  }
+
+  // Responsive: find the last (largest) active breakpoint. BREAKPOINT_ORDER is
+  // smallest-first so iterating in reverse gives us largest-first priority.
+  const { entries } = parsed;
+
+  // Guard: no window.matchMedia (SSR / jsdom without mock)
+  const canMatchMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function';
+
+  // Walk from largest breakpoint to smallest (reverse of BREAKPOINT_ORDER).
+  // Return the first entry whose media query matches.
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const { key, value } = entries[i];
+    if (key === 'base') {
+      return value;
+    }
+    if (canMatchMedia) {
+      const px = BREAKPOINT_PX[key as Exclude<BreakpointKey, 'base'>];
+      if (window.matchMedia(`(min-width: ${px}px)`).matches) {
+        return value;
+      }
+    }
+  }
+
+  // Fallback: use `base` entry if present, otherwise the provided fallback
+  const baseEntry = entries.find((e) => e.key === 'base');
+  return baseEntry ? baseEntry.value : fallback;
 }

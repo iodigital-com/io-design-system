@@ -2,7 +2,6 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, Watch, Sta
 
 import { getRadioStyles } from './io-radio-styles';
 import { resolveRadioId, getRadioWrapperClass, getRadioCustomClass } from './io-radio-utils';
-import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
 import { StateMessage } from '../common/state-message/StateMessage';
 

@@ -1,8 +1,9 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
+import { Component, Prop, State, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
 import { getOptionStyles } from './io-option-styles';
 import { getOptionClass } from './io-option-utils';
 
+import type { IoIconName } from '../../utils/icons';
 import type { IoOptionSelectDetail, IoOptionConnectDetail } from './types';
 
 /**
@@ -11,8 +12,14 @@ import type { IoOptionSelectDetail, IoOptionConnectDetail } from './types';
  * Individual option item for the custom combobox mode of io-select.
  * Must be a direct child of io-select[custom] (slotted into the listbox).
  *
+ * Supports two content modes:
+ * 1. Prop-based: `<io-option value="us" label="United States" icon="flag-us"></io-option>`
+ * 2. Slot-based (rich HTML): `<io-option value="us">United States</io-option>`
+ *    When slotted content is present it replaces the `label` prop display.
+ *
  * @example
  * <io-option value="alice" label="Alice Smith"></io-option>
+ * <io-option value="us" icon="flag-us">United States</io-option>
  */
 @Component({
   tag: 'io-option',
@@ -24,7 +31,7 @@ export class IoOption {
   /** The value submitted on selection */
   @Prop() value = '';
 
-  /** Display text */
+  /** Display text — used when no slotted content is provided */
   @Prop() label!: string;
 
   /** Prevents selection */
@@ -42,6 +49,17 @@ export class IoOption {
   /** Visual keyboard-focus indicator (driven by parent's activeIndex) */
   @Prop({ reflect: true }) focused = false;
 
+  /**
+   * Optional icon name rendered before the label text via `<io-icon>`.
+   * Accepts any valid `IoIconName` value.
+   * @example
+   * <io-option value="us" icon="flag-us">United States</io-option>
+   */
+  @Prop() icon?: IoIconName;
+
+  /** Whether the default slot has any assigned content. */
+  @State() private hasSlotContent = false;
+
   /** Fires when the option is activated (click or keyboard Enter/Space from parent) */
   @Event() optionSelect!: EventEmitter<IoOptionSelectDetail>;
 
@@ -56,12 +74,17 @@ export class IoOption {
     // Notify parent io-select / io-multi-select that this option is available.
     // The event bubbles and is composed so it escapes any Shadow DOM boundary
     // between this element and the nearest io-select / io-multi-select ancestor.
-    this.optionConnect.emit({ value: this.value, label: this.label, disabled: this.disabled });
+    this.optionConnect.emit({ value: this.value, label: this.label, disabled: this.disabled, icon: this.icon });
   }
 
   private handleClick = () => {
     if (this.disabled) return;
     this.optionSelect.emit({ value: this.value, label: this.label });
+  };
+
+  private handleSlotChange = (ev: Event) => {
+    const slot = ev.target as HTMLSlotElement;
+    this.hasSlotContent = slot.assignedNodes({ flatten: true }).length > 0;
   };
 
   render() {
@@ -86,7 +109,16 @@ export class IoOption {
               )}
             </span>
           )}
-          <span class="option__label">{this.label}</span>
+          {this.icon && (
+            <span class="option__icon" aria-hidden="true">
+              <io-icon name={this.icon} />
+            </span>
+          )}
+          <span class="option__label">
+            <slot onSlotchange={this.handleSlotChange}>
+              {!this.hasSlotContent && this.label}
+            </slot>
+          </span>
           {!this.multipleMode && this.selected && (
             <span class="option__check" aria-hidden="true">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

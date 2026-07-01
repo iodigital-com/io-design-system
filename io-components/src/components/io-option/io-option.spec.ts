@@ -32,6 +32,15 @@ describe('io-option — default props', () => {
   it('focused defaults to false', () => {
     expect(component.focused).toBe(false);
   });
+
+  it('icon defaults to undefined', () => {
+    expect(component.icon).toBeUndefined();
+  });
+
+  it('accepts icon prop', () => {
+    component.icon = 'flag-us';
+    expect(component.icon).toBe('flag-us');
+  });
 });
 
 describe('io-option-utils — resolveOptionId', () => {

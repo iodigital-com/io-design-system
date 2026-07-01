@@ -53,6 +53,14 @@ describe('io-multi-select — default props', () => {
     expect(component.filter).toBe(false);
   });
 
+  it('has filterable false by default', () => {
+    expect(component.filterable).toBe(false);
+  });
+
+  it('has filterPlaceholder "Search..." by default', () => {
+    expect(component.filterPlaceholder).toBe('Search...');
+  });
+
   it('has dropdownDirection "auto" by default', () => {
     expect(component.dropdownDirection).toBe('auto');
   });
@@ -830,5 +838,72 @@ describe('io-multi-select — selectAll default props (#1069)', () => {
     (comp as any).el = document.createElement('io-multi-select');
     (comp as any).componentWillLoad();
     expect(comp.selectAll).toBe(false);
+  });
+});
+
+// ── #1061 filterable prop and filterPlaceholder ───────────────────────────────
+
+describe('io-multi-select — filterable prop (#1061)', () => {
+  function makeRenderComp(overrides: Partial<IoMultiSelect> = {}): IoMultiSelect {
+    const comp = new IoMultiSelect();
+    (comp as any).el = document.createElement('io-multi-select');
+    (comp as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+    (comp as any).change = { emit: vi.fn() };
+    comp.name = 'test';
+    comp.label = 'Items';
+    Object.assign(comp, overrides);
+    (comp as any).componentWillLoad();
+    return comp;
+  }
+
+  it('filterable is false by default', () => {
+    const comp = makeRenderComp();
+    expect(comp.filterable).toBe(false);
+  });
+
+  it('filterPlaceholder is "Search..." by default', () => {
+    const comp = makeRenderComp();
+    expect(comp.filterPlaceholder).toBe('Search...');
+  });
+
+  it('renders filter input when filterable=true', () => {
+    const comp = makeRenderComp({ filterable: true } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const filterInputCall = vi.mocked(h).mock.calls.find(
+      args => args[0] === 'input' && (args[1] as Record<string, unknown>)?.['aria-label'] === 'Filter options',
+    );
+    expect(filterInputCall).toBeDefined();
+  });
+
+  it('does not render filter input when filterable=false and filter=false', () => {
+    const comp = makeRenderComp({ filterable: false, filter: false } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const filterInputCall = vi.mocked(h).mock.calls.find(
+      args => args[0] === 'input' && (args[1] as Record<string, unknown>)?.['aria-label'] === 'Filter options',
+    );
+    expect(filterInputCall).toBeUndefined();
+  });
+
+  it('renders filter input with custom placeholder when filterPlaceholder is set', () => {
+    const comp = makeRenderComp({ filterable: true, filterPlaceholder: 'Type to search' } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const filterInputCall = vi.mocked(h).mock.calls.find(
+      args => args[0] === 'input' && (args[1] as Record<string, unknown>)?.['aria-label'] === 'Filter options',
+    );
+    expect(filterInputCall).toBeDefined();
+    expect((filterInputCall![1] as Record<string, unknown>)['placeholder']).toBe('Type to search');
+  });
+
+  it('backward compat: renders filter input when deprecated filter=true', () => {
+    const comp = makeRenderComp({ filter: true } as any);
+    vi.mocked(h).mockClear();
+    comp.render();
+    const filterInputCall = vi.mocked(h).mock.calls.find(
+      args => args[0] === 'input' && (args[1] as Record<string, unknown>)?.['aria-label'] === 'Filter options',
+    );
+    expect(filterInputCall).toBeDefined();
   });
 });

@@ -751,6 +751,7 @@
   --io-multi-select-chip-height:       var(--io-control-size-xs);  /* 24px — selected-value chips */
   --io-multi-select-chip-max-width:    160px; /* max width of selected-value chips before truncation */
   --io-multi-select-chip-remove-size:  var(--io-control-size-xs);  /* 24px — chip remove button (WCAG 2.5.8) */
+  --io-multi-select-filter-height:     var(--io-combobox-filter-height); /* height of the filter search input area */
 
   /* ── Pin Code ────────────────────────────────────────── */
   --io-pin-code-slot-size:               var(--io-control-size-lg);  /* 48px — pin slot size */

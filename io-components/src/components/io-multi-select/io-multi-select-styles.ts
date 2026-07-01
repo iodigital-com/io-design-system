@@ -278,7 +278,7 @@ export function getMultiSelectStyles(): string {
       color: var(--io-text-primary);
       background: transparent;
       outline: none;
-      min-height: var(--io-combobox-filter-height);
+      min-height: var(--io-multi-select-filter-height, var(--io-combobox-filter-height));
     }
 
     .multi-select-filter__input:focus {

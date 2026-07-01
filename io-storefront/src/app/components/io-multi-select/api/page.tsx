@@ -81,10 +81,22 @@ export default function IoMultiSelectApiPage() {
               'Hides the visible label and collapses its space. The label value is still used as the accessible name via aria-label on the trigger and listbox.',
             ],
             [
-              <span key="n"><InlineCode>filter</InlineCode><ReflectBadge /></span>,
+              <span key="n"><InlineCode>filterable</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'Adds a search input at the top of the dropdown to filter visible options by label. Recommended when the option list exceeds 7 items.',
+            ],
+            [
+              <InlineCode key="n">filterPlaceholder</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Search...&apos;</InlineCode>,
+              'Placeholder text for the filter search input. Only shown when filterable is true.',
+            ],
+            [
+              <span key="n"><InlineCode>filter</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="d2"><strong>Deprecated.</strong> Use <InlineCode>filterable</InlineCode> instead. Retained for backward compatibility.</span>,
             ],
             [
               <InlineCode key="n">dropdownDirection</InlineCode>,

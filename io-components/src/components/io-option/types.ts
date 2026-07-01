@@ -9,4 +9,6 @@ export type IoOptionConnectDetail = {
   value: string;
   label: string;
   disabled: boolean;
+  /** Optional icon name forwarded from the `icon` prop. */
+  icon?: string;
 };

@@ -20,7 +20,8 @@ export const multiSelectStory: Story<'io-multi-select'> = {
       required: false,
       state: 'none',
       message: '',
-      filter: false,
+      filterable: false,
+      filterPlaceholder: 'Search...',
     },
   },
   generator: ({ properties } = {}) => [
@@ -34,7 +35,8 @@ export const multiSelectStory: Story<'io-multi-select'> = {
         required: (properties?.required as boolean) ?? false,
         state: (properties?.state as string) ?? 'none',
         message: (properties?.message as string) || undefined,
-        filter: (properties?.filter as boolean) ?? false,
+        filterable: (properties?.filterable as boolean) ?? false,
+        filterPlaceholder: (properties?.filterPlaceholder as string) || undefined,
         hideLabel: (properties?.hideLabel as boolean) ?? false,
       },
       children: DEFAULT_CHILDREN,
@@ -54,11 +56,11 @@ export const multiSelectStoryDefault: Story<'io-multi-select'> = {
 };
 
 export const multiSelectStoryWithFilter: Story<'io-multi-select'> = {
-  state: { properties: { label: 'Countries', filter: true } },
+  state: { properties: { label: 'Countries', filterable: true } },
   generator: () => [
     {
       tag: 'io-multi-select' as const,
-      properties: { name: 'countries', label: 'Countries', filter: true, placeholder: 'Search countries' },
+      properties: { name: 'countries', label: 'Countries', filterable: true, filterPlaceholder: 'Search countries' },
       children: DEFAULT_CHILDREN,
     },
   ],
@@ -163,10 +165,16 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
     description: 'Message text shown below the trigger (error, success, or helper).',
   },
   {
-    name: 'filter',
+    name: 'filterable',
     type: 'boolean',
     defaultValue: false,
     description: 'Shows a search input inside the dropdown to filter options by label.',
+  },
+  {
+    name: 'filterPlaceholder',
+    type: 'string',
+    defaultValue: 'Search...',
+    description: 'Placeholder text for the filter search input. Only relevant when filterable is true.',
   },
   {
     name: 'dropdownDirection',

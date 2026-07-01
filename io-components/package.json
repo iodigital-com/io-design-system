@@ -53,6 +53,10 @@
       "types": "./dist/types/utils/focus-visible.d.ts",
       "import": "./dist/collection/utils/focus-visible.js"
     },
+    "./global/breakpoints": {
+      "types": "./dist/types/global/breakpoints.d.ts",
+      "import": "./dist/collection/global/breakpoints.js"
+    },
     "./global.css": "./dist/io-components/io-components.css",
     "./dist/io-components/io-components.css": "./dist/io-components/io-components.css"
   },

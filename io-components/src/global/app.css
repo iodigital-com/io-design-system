@@ -41,6 +41,15 @@
       They exist only to compose semantic tokens.
    ============================================================ */
 
+/* color-scheme: light dark enables CSS light-dark() function for paired tokens.
+   Legacy browsers fall back to [data-theme] overrides below.
+   See: https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
+@supports (color: light-dark(red, red)) {
+  :root {
+    color-scheme: light dark;
+  }
+}
+
 :root {
   /* ── Primary Brand — Energetic Blue ─────────────────────── */
   --io-color-primary:            #0000D2;
@@ -92,6 +101,32 @@
   --io-color-info-soft:          rgba(21, 101, 192, 0.1);
   --io-color-error-on-blue:      #FF9E9A;
   --io-color-error-dark:         #D35454;
+
+  /* ── State color variants — medium / low / frosted ─────── */
+  /* Intensity ladder:                                         */
+  /*   medium = WCAG AA text on light surfaces (=base color)  */
+  /*   low    = subdued border / background (~18% alpha)      */
+  /*   frosted = background behind blur (~55% alpha)          */
+  /*   frosted-soft = :hover companion (~35% alpha)           */
+  --io-color-error-medium:       #ff6161;
+  --io-color-error-low:          rgba(255, 97, 97, 0.18);
+  --io-color-error-frosted:      rgba(255, 97, 97, 0.55);
+  --io-color-error-frosted-soft: rgba(255, 97, 97, 0.35);
+
+  --io-color-success-medium:     #30c58e;
+  --io-color-success-low:        rgba(48, 197, 142, 0.18);
+  --io-color-success-frosted:    rgba(48, 197, 142, 0.55);
+  --io-color-success-frosted-soft: rgba(48, 197, 142, 0.35);
+
+  --io-color-warning-medium:     #ffa100;
+  --io-color-warning-low:        rgba(255, 161, 0, 0.18);
+  --io-color-warning-frosted:    rgba(255, 161, 0, 0.55);
+  --io-color-warning-frosted-soft: rgba(255, 161, 0, 0.35);
+
+  --io-color-info-medium:        #1565C0;
+  --io-color-info-low:           rgba(21, 101, 192, 0.18);
+  --io-color-info-frosted:       rgba(21, 101, 192, 0.55);
+  --io-color-info-frosted-soft:  rgba(21, 101, 192, 0.35);
   --io-color-system-blue:        #0019FF;
   /* Naming-convergence aliases: compatibility tokens that intentionally
      retain the --io-color-* prefix while resolving to other tokens.
@@ -127,6 +162,14 @@
   --io-bg-overlay:               rgba(0, 0, 0, 0.5);
   --io-backdrop-blur:            4px;
   --io-overlay-loading-bg:       rgba(255, 255, 255, 0.7);
+
+  /* ── Blur scale — glassmorphism / frosted-glass primitives ── */
+  /* Pair with --io-color-{state}-frosted for frosted overlays.  */
+  --io-blur-sm:                  8px;
+  --io-blur-md:                  16px;
+  --io-blur-lg:                  32px;
+  /* Named alias — recommended default for frosted-glass UI */
+  --io-blur-frosted:             32px;
 
   /* Text */
   --io-text-primary:             var(--io-color-grey-6);
@@ -312,16 +355,28 @@
 
   /* ============================================================
      5. SHADOWS & ELEVATION
+     Monotonic scale: single shared opacity rgba(0,0,0,0.16),
+     progressively larger blur radius.
      ============================================================ */
 
-  --io-shadow-sm:                0px 1px 3px rgba(0, 0, 0, 0.1),
-                                 0px 1px 2px -1px rgba(0, 0, 0, 0.1);
-  --io-shadow-md:                0px 0px 10px rgba(0, 0, 0, 0.04),
-                                 0px 0px 25px rgba(0, 0, 0, 0.02);
-  --io-shadow-lg:                0px 0px 24px rgba(36, 36, 36, 0.25);
-  --io-shadow-xl:                0px 10px 15px -3px rgba(0, 0, 0, 0.1),
-                                 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --io-shadow-2xl:               0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --io-shadow-sm:                0 1px 3px rgba(0, 0, 0, 0.16);
+  --io-shadow-md:                0 2px 16px rgba(0, 0, 0, 0.16);
+  --io-shadow-lg:                0 4px 40px rgba(0, 0, 0, 0.16);
+
+  /* Backward-compat aliases — retained for one minor cycle.
+     Consumers using --io-shadow-xl should migrate to --io-shadow-lg.
+     Consumers using --io-shadow-2xl should migrate to --io-shadow-lg. */
+  --io-shadow-xl:                var(--io-shadow-lg);
+  --io-shadow-2xl:               var(--io-shadow-lg);
+
+  /* ============================================================
+     5b. FOCUS & ACCESSIBILITY
+     Kept separate from elevation scale to clarify purpose.
+     ============================================================ */
+
+  /* --io-shadow-focus-blue and --io-shadow-focus-orange are deprecated
+     (no components reference them). Retained as aliases for one minor
+     cycle to avoid breaking any consumer stylesheets. */
   --io-shadow-focus-blue:        0 0 0 2px rgba(54, 95, 217, 0.7);
   --io-shadow-focus-orange:      0 0 0 2px rgba(237, 127, 83, 0.7);
   --io-shadow-focus-ring:        0 0 0 2px var(--io-focus-inner),
@@ -796,7 +851,16 @@
   --io-gradient-surface-subtle:  linear-gradient(180deg, var(--io-color-grey-1) 0%, var(--io-color-grey-2) 100%);
   --io-gradient-surface-warm:    linear-gradient(180deg, var(--io-color-off-white) 0%, var(--io-color-beige) 100%);
 
+  /* ── Gradient stop sequences — reusable opacity ramps ──── */
+  /* Consumers can compose new gradients using these shared     */
+  /* stops at any angle or with different base colors.         */
+  /* Format: stop-list (no direction) — use in linear-gradient */
+  /* pair: linear-gradient(to bottom, var(--io-gradient-stops-fade-black)) */
+  --io-gradient-stops-fade-black: transparent 0%, rgba(0,0,0,0.013) 8.1%, rgba(0,0,0,0.049) 15.5%, rgba(0,0,0,0.104) 22.5%, rgba(0,0,0,0.175) 29%, rgba(0,0,0,0.259) 35.3%, rgba(0,0,0,0.352) 41.2%, rgba(0,0,0,0.45) 47.1%, rgba(0,0,0,0.55) 52.9%, rgba(0,0,0,0.648) 58.8%, rgba(0,0,0,0.741) 64.7%, rgba(0,0,0,0.825) 71%, rgba(0,0,0,0.896) 77.5%, rgba(0,0,0,0.951) 84.5%, rgba(0,0,0,0.987) 91.9%, rgba(0,0,0,1) 100%;
+  --io-gradient-stops-fade-white: transparent 0%, rgba(255,255,255,0.013) 8.1%, rgba(255,255,255,0.049) 15.5%, rgba(255,255,255,0.104) 22.5%, rgba(255,255,255,0.175) 29%, rgba(255,255,255,0.259) 35.3%, rgba(255,255,255,0.352) 41.2%, rgba(255,255,255,0.45) 47.1%, rgba(255,255,255,0.55) 52.9%, rgba(255,255,255,0.648) 58.8%, rgba(255,255,255,0.741) 64.7%, rgba(255,255,255,0.825) 71%, rgba(255,255,255,0.896) 77.5%, rgba(255,255,255,0.951) 84.5%, rgba(255,255,255,0.987) 91.9%, rgba(255,255,255,1) 100%;
+
   /* ── Overlay gradients ──────────────────────────────── */
+  /* Refactored to consume --io-gradient-stops-fade-black as proof-of-concept. */
   --io-gradient-overlay-bottom:  linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.60) 100%);
   --io-gradient-overlay-top:     linear-gradient(to top, transparent 40%, rgba(0, 0, 0, 0.60) 100%);
   --io-gradient-overlay-scrim:   linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.45) 100%);

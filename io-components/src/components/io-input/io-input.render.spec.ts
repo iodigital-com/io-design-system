@@ -17,7 +17,6 @@ import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 import { Required } from '../common/required/Required';
-import { StateMessage } from '../common/state-message/StateMessage';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -561,17 +560,17 @@ describe('io-input — render() error and helper text paragraphs', () => {
     c = makeInput();
   });
 
-  it('renders StateMessage with state=error when state=error and message is set', () => {
+  it('renders message paragraph with state=error when state=error and message is set', () => {
     c.state = 'error';
     c.message = 'Something went wrong';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('error');
-    expect(props['visible']).toBe(true);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 
   it('does not render error paragraph when state=none', () => {
@@ -587,16 +586,17 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(errorPara).toBeUndefined();
   });
 
-  it('renders StateMessage with visible=false when state=error but message is absent', () => {
+  it('renders message paragraph as hidden when state=error but message is absent', () => {
     c.state = 'error';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['visible']).toBe(false);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).toContain('input-error--hidden');
   });
 
   it('renders helper paragraph when showError=false and helperText is set', () => {
@@ -641,55 +641,56 @@ describe('io-input — render() error and helper text paragraphs', () => {
     expect(helperPara).toBeUndefined();
   });
 
-  it('renders StateMessage with state=error when faceInvalid=true and message is set', () => {
+  it('renders message paragraph with state=error when faceInvalid=true and message is set', () => {
     (c as any).faceInvalid = true;
     c.message = 'Field is invalid';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('error');
-    expect(props['visible']).toBe(true);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 
-  it('renders StateMessage with state=success when state=success and message is set', () => {
+  it('renders message paragraph with state=success when state=success and message is set', () => {
     c.state = 'success';
     c.message = 'Saved successfully';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('success');
-    expect(props['visible']).toBe(true);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 
-  it('renders StateMessage with state=warning when state=warning and message is set', () => {
+  it('renders message paragraph with state=warning when state=warning and message is set', () => {
     c.state = 'warning';
     c.message = 'Check your entry';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('warning');
-    expect(props['visible']).toBe(true);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--warning'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 
-  it('renders StateMessage with visible=false when state=success but message is absent', () => {
+  it('renders message paragraph as hidden when state=success but message is absent', () => {
     c.state = 'success';
     c.message = '';
     vi.mocked(h).mockClear();
     c.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find((call) => call[0] === StateMessage);
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['visible']).toBe(false);
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--success'),
+    );
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).toContain('input-error--hidden');
   });
 
   it('does not render success paragraph when state=none', () => {

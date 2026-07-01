@@ -5,7 +5,6 @@ import { resolveTextareaId, getTextareaWrapperClass, getTextareaFieldClass } fro
 import { applyAriaProp } from '../../utils/aria-prop';
 import { syncFormState } from '../../utils/form/sync-form-state';
 import { Required } from '../common/required/Required';
-import { StateMessage } from '../common/state-message/StateMessage';
 
 import type { IoFieldState } from '../../utils/field-state';
 import type { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from './types';
@@ -77,12 +76,12 @@ export class IoTextarea {
   @Prop({ reflect: true }) size: IoTextareaSize = 'md';
 
   /**
-   * Autocomplete attribute.
-   * @deprecated Use `autoComplete` (camelCase) instead. This prop will be removed in the next minor release.
+   * Autocomplete attribute (lowercase form).
+   * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
    */
   @Prop() autocomplete: string | undefined;
 
-  /** Native autocomplete attribute (e.g. 'on', 'off', 'name'). Canonical camelCase form. */
+  /** Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form. */
   @Prop() autoComplete: string | undefined;
 
   /** Visually hides the label while keeping it accessible to screen readers */
@@ -161,6 +160,11 @@ export class IoTextarea {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
+    // Force touched so FACE error UI surfaces even before the user has blurred
+    // the field — matches native <textarea> behaviour where reportValidity() always
+    // shows the validation state regardless of interaction history.
+    this.touched = true;
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -394,11 +398,8 @@ export class IoTextarea {
     const showSuccess = state === 'success' && !this.faceInvalid;
     const showWarning = state === 'warning' && !this.faceInvalid;
     const hasState = showError || showSuccess || showWarning;
-    const showMessage = showError && (hasMessageSlot || message);
-    const showDescription = !showError && (hasDescriptionSlot || helperText);
-    // #1094: messageId is always referenced so the live-region relationship is
-    // established when the textarea receives focus, before any error occurs.
-    // The <p> wrapper is rendered unconditionally; only its inner text is gated.
+    const showMessage = hasState && (hasMessageSlot || !!message);
+    const showDescription = !showError && (hasDescriptionSlot || !!helperText);
     const describedBy = [
       messageId,
       showDescription ? helperId : '',
@@ -459,25 +460,33 @@ export class IoTextarea {
             </div>
           )}
         </div>
+        {/* Single state-message element — avoids duplicate-id collisions and prevents
+            aria-describedby pointing to a hidden element. Role switches between
+            'alert' (error) and 'status' (success/warning) as per WCAG 4.1.3. */}
         {(showError || showSuccess || showWarning) && (
-          <StateMessage
-            state={showError ? 'error' : showSuccess ? 'success' : 'warning'}
-            message={message}
-            hasSlot={hasMessageSlot}
-            messageId={messageId}
-            classPrefix="textarea"
-            visible={!!(showMessage || (!showError && !!message))}
-            onSlotChange={this.handleMessageSlotChange}
-          />
-        )}
-        {!hasState && !this.faceInvalid && (
-          <p id={helperId} class={`textarea-helper${showDescription ? '' : ' textarea-helper--hidden'}`}>
-            <span class={hasDescriptionSlot ? 'textarea-description__slot' : 'textarea-description__slot textarea-description__slot--hidden'}>
-              <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+          <p
+            id={messageId}
+            class={[
+              'textarea-message',
+              showError ? 'textarea-message--error' : '',
+              showSuccess ? 'textarea-message--success' : '',
+              showWarning ? 'textarea-message--warning' : '',
+              !showMessage ? 'textarea-message--hidden' : '',
+            ].filter(Boolean).join(' ')}
+            role={showError ? 'alert' : 'status'}
+          >
+            <span class={hasMessageSlot ? 'textarea-message__slot' : 'textarea-message__slot textarea-message__slot--hidden'}>
+              <slot name="message" onSlotchange={this.handleMessageSlotChange} />
             </span>
-            {!hasDescriptionSlot && helperText}
+            {!hasMessageSlot && message}
           </p>
         )}
+        <p id={helperId} class={`textarea-helper${showDescription ? '' : ' textarea-helper--hidden'}`}>
+          <span class={hasDescriptionSlot ? 'textarea-description__slot' : 'textarea-description__slot textarea-description__slot--hidden'}>
+            <slot name="description" onSlotchange={this.handleDescriptionSlotChange} />
+          </span>
+          {!hasDescriptionSlot && helperText}
+        </p>
         {showCounter && (
           <span class="textarea-counter-sr" aria-live="polite" aria-atomic="true">
             {currentLength} of {maxLength} characters

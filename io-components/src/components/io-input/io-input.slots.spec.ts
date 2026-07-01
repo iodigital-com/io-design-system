@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
-import { StateMessage } from '../common/state-message/StateMessage';
 
 describe('io-input — named slots (label, description, message)', () => {
   let component: IoInput;
@@ -128,35 +127,32 @@ describe('io-input — named slots (label, description, message)', () => {
     expect((component as any).hasMessageSlot).toBe(true);
   });
 
-  it('renders StateMessage when message slot is occupied and error is true', () => {
+  it('renders message paragraph when message slot is occupied and error is true', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = true;
     component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === StateMessage,
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('error');
-    expect(props['visible']).toBe(true);
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 
-  it('hides StateMessage when error is true but no slot or errorMessage', () => {
+  it('hides message paragraph when error is true but no slot or errorMessage', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = false;
     component.message = '';
     vi.mocked(h).mockClear();
     component.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === StateMessage,
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['visible']).toBe(false);
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).toContain('input-error--hidden');
   });
 
   // ── backward compatibility ────────────────────────────────────
@@ -187,20 +183,17 @@ describe('io-input — named slots (label, description, message)', () => {
     expect(String(pProps['class'] ?? '')).not.toContain('--hidden');
   });
 
-  it('renders StateMessage with visible=true when no slot but message prop and error is true', () => {
+  it('renders message paragraph with visible=true when no slot but message prop and error is true', () => {
     component.state = 'error';
     (component as any).hasMessageSlot = false;
     component.message = 'Enter a valid email address';
     vi.mocked(h).mockClear();
     component.render();
 
-    const stateMessageCall = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === StateMessage,
+    const msgCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === 'p' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-message--error'),
     );
-    expect(stateMessageCall).toBeDefined();
-    const props = stateMessageCall![1] as Record<string, unknown>;
-    expect(props['state']).toBe('error');
-    expect(props['message']).toBe('Enter a valid email address');
-    expect(props['visible']).toBe(true);
+    expect(msgCall).toBeDefined();
+    expect(String(msgCall![1]?.class ?? '')).not.toContain('input-error--hidden');
   });
 });

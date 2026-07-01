@@ -304,6 +304,38 @@ export function getInputStyles(): string {
     .input-indicator-icon {
       flex-shrink: 0;
       color: var(--io-text-secondary);
+    /* ── Forced Colors (High Contrast Mode) ─────────────────────
+       In HCM the browser strips custom colors so error/success/warning
+       state changes (border-color only) become invisible. These rules
+       use system color keywords so states remain distinguishable. */
+    @media (forced-colors: active) {
+      /* Error: thick Highlight outline so the field stands out */
+      .input-wrapper--state-error .input-field {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+        border-bottom-color: Highlight;
+      }
+
+      /* Disabled: use GrayText and restore full opacity so the field
+         is still readable (opacity is stripped by HCM anyway) */
+      .input-wrapper--disabled {
+        opacity: 1;
+      }
+      .input-wrapper--disabled .input-field {
+        border-bottom-color: GrayText;
+        color: GrayText;
+      }
+
+      /* State icons must be ButtonText so they are visible in HCM */
+      .input-state-icon {
+        forced-color-adjust: none;
+        color: ButtonText;
+      }
+
+      /* Error icon uses Highlight to match the error outline */
+      .input-state-icon--error {
+        color: Highlight;
+      }
     }
 
     /* ── Compact variant ─────────────────────────────────────── */

@@ -75,7 +75,7 @@ export class IoModal {
    * // Sets aria-owns="step-panel" on the native <dialog>
    * <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
    */
-  @Prop() aria?: Record<string, string>;
+  @Prop() aria?: IoModalAriaProps;
 
   /**
    * Background surface level for the modal panel.

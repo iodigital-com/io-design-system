@@ -7,17 +7,22 @@ import type { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from './types
 /**
  * io-wordmark
  * ===========
- * Reusable iO brand identity component with two variants:
+ * Reusable iO brand identity component with three variants:
  *
  * - variant="mark"    — The official geometric iO mark SVG (i + O). Default.
  *                       Supports size scale and all four color values (incl. beige).
  * - variant="lockup"  — Full official brand lockup SVG (mark + "io digital" text).
  *                       Supports size scale and blue/black/white color values.
+ * - variant="badge"   — Square brand mark for app icons, social avatars, and watermarks.
+ *                       Renders the iO mark centered on a filled square/rounded background.
+ *                       Supports size scale and blue/black/white/beige color values.
  *
  * @example
  * <io-wordmark />
  * <io-wordmark variant="mark" color="blue" size="lg" />
  * <io-wordmark variant="lockup" color="black" size="md" href="/" />
+ * <io-wordmark variant="badge" color="blue" size="md" />
+ * <io-wordmark size="inherit" style="height: 48px" />
  */
 @Component({
   tag: 'io-wordmark',
@@ -73,6 +78,39 @@ export class IoWordmark {
     }
   }
 
+  /** Renders the badge variant — square brand mark for app icons and watermarks */
+  private renderBadge(ariaLabel: string, size: IoWordmarkSize, _resolvedColor: IoWordmarkColor) {
+    return (
+      <Host role="img" aria-label={ariaLabel} color={_resolvedColor}>
+        <style>{getWordmarkStyles()}</style>
+        {this.renderBadgeSVG(size)}
+      </Host>
+    );
+  }
+
+  private renderBadgeSVG(size: IoWordmarkSize) {
+    return (
+      <svg
+        class={`badge-svg badge-svg--${size}`}
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <title>{this.ariaLabel}</title>
+        {/* Square background fill */}
+        <rect width="100" height="100" rx="var(--io-wordmark-badge-radius-unitless, 18)" fill="currentColor" />
+        {/* iO mark glyph centered and scaled to fit — white on colored background */}
+        {/* i — diagonal stroke (scaled from 881×599 viewBox to ~40% centered in 100×100) */}
+        <g class="badge-glyph" transform="translate(8, 20) scale(0.096, 0.1)">
+          <path d="M135.15,219.96h0L0,523.52l152.19,67.76,67.39-151.37c37.42-84.05-.38-182.53-84.43-219.96Z" />
+          <path d="M50.68,0c-37.42,84.05.38,182.53,84.43,219.96l67.76-152.19L50.68,0Z" />
+          <path d="M594.5,26c-158.22,0-286.5,128.27-286.5,286.5s128.28,286.5,286.5,286.5,286.5-128.27,286.5-286.5S752.73,26,594.5,26ZM594.5,464.51c-83.95,0-152.01-68.06-152.01-152.01s68.05-152.02,152.01-152.02,152.01,68.07,152.01,152.02-68.05,152.01-152.01,152.01Z" />
+        </g>
+      </svg>
+    );
+  }
+
   componentShouldUpdate(newVal: unknown, oldVal: unknown): boolean {
     return newVal !== oldVal;
   }
@@ -99,6 +137,7 @@ export class IoWordmark {
 
     // Default: render as img role
     if (variant === 'lockup') return this.renderLockup(ariaLabel, size, resolvedColor);
+    if (variant === 'badge') return this.renderBadge(ariaLabel, size, resolvedColor);
     return this.renderMark(ariaLabel, size, resolvedColor);
   }
 

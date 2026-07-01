@@ -211,6 +211,72 @@ describe('io-wordmark — size="inherit"', () => {
   });
 });
 
+// ── variant='badge' ────────────────────────────────────────────────────────────
+
+describe('io-wordmark — variant="badge" render contract', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
+  it('renders without throwing', () => {
+    expect(() => makeWordmark({ variant: 'badge' }).render()).not.toThrow();
+  });
+
+  it('renders without throwing for each supported size', () => {
+    for (const size of ['sm', 'md', 'lg', 'xl', 'inherit'] as const) {
+      expect(() => makeWordmark({ variant: 'badge', size }).render()).not.toThrow();
+    }
+  });
+
+  it('renders without throwing for each supported color', () => {
+    for (const color of ['blue', 'black', 'white', 'beige'] as const) {
+      expect(() => makeWordmark({ variant: 'badge', color }).render()).not.toThrow();
+    }
+  });
+
+  it('Host has role="img"', () => {
+    makeWordmark({ variant: 'badge' }).render();
+    const [host] = hostCalls();
+    expect(host?.['role']).toBe('img');
+  });
+
+  it('Host has default aria-label', () => {
+    makeWordmark({ variant: 'badge' }).render();
+    const [host] = hostCalls();
+    expect(host?.['aria-label']).toBe('io Digital');
+  });
+
+  it('renders an SVG element', () => {
+    makeWordmark({ variant: 'badge' }).render();
+    expect(hCallsForTag('svg').length).toBeGreaterThan(0);
+  });
+
+  it('SVG has badge-svg class', () => {
+    makeWordmark({ variant: 'badge', size: 'md' }).render();
+    const svgCalls = hCallsForTag('svg');
+    const badgeSvg = svgCalls.find(attrs => typeof attrs?.['class'] === 'string' && (attrs['class'] as string).includes('badge-svg'));
+    expect(badgeSvg).toBeDefined();
+  });
+});
+
+// ── size='inherit' fix ──────────────────────────────────────────────────────────
+
+describe('io-wordmark — size="inherit" fix (#1048)', () => {
+  beforeEach(() => { vi.mocked(h).mockClear(); });
+
+  it('renders mark SVG with class mark-svg--inherit when size="inherit"', () => {
+    makeWordmark({ variant: 'mark', size: 'inherit' }).render();
+    const svgCalls = hCallsForTag('svg');
+    const inheritSvg = svgCalls.find(attrs => typeof attrs?.['class'] === 'string' && (attrs['class'] as string).includes('mark-svg--inherit'));
+    expect(inheritSvg).toBeDefined();
+  });
+
+  it('renders lockup SVG with class lockup-svg--inherit when size="inherit"', () => {
+    makeWordmark({ variant: 'lockup', size: 'inherit' }).render();
+    const svgCalls = hCallsForTag('svg');
+    const inheritSvg = svgCalls.find(attrs => typeof attrs?.['class'] === 'string' && (attrs['class'] as string).includes('lockup-svg--inherit'));
+    expect(inheritSvg).toBeDefined();
+  });
+});
+
 // ── beige + lockup validation ────────────────────────────────────────────────
 
 describe('io-wordmark — beige + lockup validation', () => {

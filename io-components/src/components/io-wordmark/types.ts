@@ -1,5 +1,10 @@
-/** Which visual representation the wordmark renders */
-export type IoWordmarkVariant = 'mark' | 'lockup';
+/**
+ * Which visual representation the wordmark renders.
+ * - 'mark'   → geometric iO mark SVG (i + O)
+ * - 'lockup' → full official brand lockup SVG (mark + "io digital" text)
+ * - 'badge'  → square brand mark for app icons, avatars, and watermarks
+ */
+export type IoWordmarkVariant = 'mark' | 'lockup' | 'badge';
 
 /**
  * Colour applied to the wordmark.

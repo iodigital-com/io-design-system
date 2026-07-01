@@ -9,10 +9,16 @@ export type IoButtonGroupVariant = 'primary' | 'secondary';
 
 /**
  * Selection mode for the button group.
- * - `'single'` — single-select (radiogroup): exactly one item active at a time. Container gets `role="radiogroup"`, items get `role="radio"`.
- * - `'multiple'` — multi-select (checkbox group): any number of items may be active. Container gets `role="group"`, items get `role="checkbox"`.
+ * - `'single'`   — single-select (radiogroup): exactly one item active at a time.
+ *                  Container gets `role="radiogroup"`, items get `role="radio"`.
+ * - `'multiple'` — multi-select (checkbox group): any number of items may be active.
+ *                  Container gets `role="group"`, items get `role="checkbox"`.
+ * - `'toolbar'`  — visual cluster of independent actions (no selection model).
+ *                  Container gets `role="group"`, items get `role="button"`.
+ *                  No roving tabindex — each button is individually focusable.
+ *                  Use for Save/Cancel/Delete clusters and icon toolbars.
  */
-export type IoButtonGroupType = 'single' | 'multiple';
+export type IoButtonGroupType = 'single' | 'multiple' | 'toolbar';
 
 /** Layout direction for the button group. 'row' stacks buttons horizontally (default); 'column' stacks them vertically. */
 export type IoButtonGroupDirection = 'row' | 'column';

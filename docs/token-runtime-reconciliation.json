@@ -117,7 +117,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Avatar background token: green variant (#1a7a4a — no palette primitive available)."
+      "notes": "Avatar background token: green variant (#1a7a4a \u2014 no palette primitive available)."
     },
     {
       "runtimeCssVar": "--io-avatar-bg-grey",
@@ -141,7 +141,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Avatar background token: purple variant (#6b3fa0 — no palette primitive available)."
+      "notes": "Avatar background token: purple variant (#6b3fa0 \u2014 no palette primitive available)."
     },
     {
       "runtimeCssVar": "--io-avatar-border-radius",
@@ -149,7 +149,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar border-radius: 50% (circular)"
+      "notes": "Wave XI (#376) \u2014 Avatar border-radius: 50% (circular)"
     },
     {
       "runtimeCssVar": "--io-avatar-font-size-lg",
@@ -157,7 +157,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font size token lg=16px"
+      "notes": "Wave XI (#376) \u2014 Avatar font size token lg=16px"
     },
     {
       "runtimeCssVar": "--io-avatar-font-size-md",
@@ -165,7 +165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font size token md=14px"
+      "notes": "Wave XI (#376) \u2014 Avatar font size token md=14px"
     },
     {
       "runtimeCssVar": "--io-avatar-font-size-sm",
@@ -173,7 +173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font size token sm=12px"
+      "notes": "Wave XI (#376) \u2014 Avatar font size token sm=12px"
     },
     {
       "runtimeCssVar": "--io-avatar-font-size-xl",
@@ -181,7 +181,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font size token xl=20px"
+      "notes": "Wave XI (#376) \u2014 Avatar font size token xl=20px"
     },
     {
       "runtimeCssVar": "--io-avatar-font-size-xs",
@@ -189,7 +189,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font size token xs=10px"
+      "notes": "Wave XI (#376) \u2014 Avatar font size token xs=10px"
     },
     {
       "runtimeCssVar": "--io-avatar-font-weight",
@@ -197,7 +197,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar font weight: var(--io-font-weight-semibold, 600)"
+      "notes": "Wave XI (#376) \u2014 Avatar font weight: var(--io-font-weight-semibold, 600)"
     },
     {
       "runtimeCssVar": "--io-avatar-size-lg",
@@ -205,7 +205,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar size token lg=48px"
+      "notes": "Wave XI (#376) \u2014 Avatar size token lg=48px"
     },
     {
       "runtimeCssVar": "--io-avatar-size-md",
@@ -213,7 +213,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar size token md=40px"
+      "notes": "Wave XI (#376) \u2014 Avatar size token md=40px"
     },
     {
       "runtimeCssVar": "--io-avatar-size-sm",
@@ -221,7 +221,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar size token sm=32px"
+      "notes": "Wave XI (#376) \u2014 Avatar size token sm=32px"
     },
     {
       "runtimeCssVar": "--io-avatar-size-xl",
@@ -229,7 +229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar size token xl=64px"
+      "notes": "Wave XI (#376) \u2014 Avatar size token xl=64px"
     },
     {
       "runtimeCssVar": "--io-avatar-size-xs",
@@ -237,7 +237,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#376) — Avatar size token xs=24px"
+      "notes": "Wave XI (#376) \u2014 Avatar size token xs=24px"
     },
     {
       "runtimeCssVar": "--io-avatar-text-blue",
@@ -397,7 +397,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#366) — 2px micro border-radius for tight UI elements (breadcrumb, stepper)."
+      "notes": "Wave XI (#366) \u2014 2px micro border-radius for tight UI elements (breadcrumb, stepper)."
     },
     {
       "runtimeCssVar": "--io-border-radius-lg",
@@ -453,7 +453,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#359 #367) — RGB components of --io-border for alpha-opacity variants (e.g. rgba(var(--io-border-rgb), 0.5)); overridden in dark theme."
+      "notes": "Wave XI (#359 #367) \u2014 RGB components of --io-border for alpha-opacity variants (e.g. rgba(var(--io-border-rgb), 0.5)); overridden in dark theme."
     },
     {
       "runtimeCssVar": "--io-breakpoint-2xl",
@@ -973,7 +973,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
       "runtimeCssVar": "--io-segmented-control-border-error-width",
@@ -981,7 +981,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Segmented control error state border width — 2px non-color indicator for WCAG 1.4.1 (#1074)."
+      "notes": "Segmented control error state border width \u2014 2px non-color indicator for WCAG 1.4.1 (#1074)."
     },
     {
       "runtimeCssVar": "--io-checkbox-border-width",
@@ -1165,7 +1165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Focus ring inner color for dark surfaces (#ff9eb5 — 9.5:1 vs #181818). Overrides --io-focus-inner in [data-theme=dark]."
+      "notes": "Focus ring inner color for dark surfaces (#ff9eb5 \u2014 9.5:1 vs #181818). Overrides --io-focus-inner in [data-theme=dark]."
     },
     {
       "runtimeCssVar": "--io-color-dark-info",
@@ -1173,7 +1173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode info colour token — added Wave H."
+      "notes": "Dark-mode info colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-dark-playground-dot",
@@ -1197,7 +1197,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode success colour token — added Wave H."
+      "notes": "Dark-mode success colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-dark-text-muted",
@@ -1229,7 +1229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Dark-mode warning colour token — added Wave H."
+      "notes": "Dark-mode warning colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-error",
@@ -1333,7 +1333,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Info colour token — added Wave H."
+      "notes": "Info colour token \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-info-soft",
@@ -1341,7 +1341,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Soft info colour token (rgba, 10% opacity) — added Wave H."
+      "notes": "Soft info colour token (rgba, 10% opacity) \u2014 added Wave H."
     },
     {
       "runtimeCssVar": "--io-color-lavendel",
@@ -1461,7 +1461,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for error color. Maps to --io-color-error."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for error color. Maps to --io-color-error."
     },
     {
       "runtimeCssVar": "--io-color-state-error-soft",
@@ -1469,7 +1469,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for soft error tint. Maps to --io-color-error-soft."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for soft error tint. Maps to --io-color-error-soft."
     },
     {
       "runtimeCssVar": "--io-color-state-info",
@@ -1477,7 +1477,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for info color. Maps to --io-color-info."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for info color. Maps to --io-color-info."
     },
     {
       "runtimeCssVar": "--io-color-state-info-soft",
@@ -1485,7 +1485,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for soft info tint. Maps to --io-color-info-soft."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for soft info tint. Maps to --io-color-info-soft."
     },
     {
       "runtimeCssVar": "--io-color-state-success",
@@ -1493,7 +1493,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for success color. Maps to --io-color-success."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for success color. Maps to --io-color-success."
     },
     {
       "runtimeCssVar": "--io-color-state-success-soft",
@@ -1501,7 +1501,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for soft success tint. Maps to --io-color-success-soft."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for soft success tint. Maps to --io-color-success-soft."
     },
     {
       "runtimeCssVar": "--io-color-state-warning",
@@ -1509,7 +1509,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for warning color. Maps to --io-color-warning."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for warning color. Maps to --io-color-warning."
     },
     {
       "runtimeCssVar": "--io-color-state-warning-soft",
@@ -1517,7 +1517,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#363) — Semantic state alias for soft warning tint. Maps to --io-color-warning-soft."
+      "notes": "Wave XI (#363) \u2014 Semantic state alias for soft warning tint. Maps to --io-color-warning-soft."
     },
     {
       "runtimeCssVar": "--io-color-success",
@@ -1685,7 +1685,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#381) — Drawer backdrop overlay color."
+      "notes": "Wave XI (#381) \u2014 Drawer backdrop overlay color."
     },
     {
       "runtimeCssVar": "--io-drawer-width-lg",
@@ -1693,7 +1693,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#381) — Drawer width large=640px."
+      "notes": "Wave XI (#381) \u2014 Drawer width large=640px."
     },
     {
       "runtimeCssVar": "--io-drawer-width-md",
@@ -1701,7 +1701,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#381) — Drawer width medium=480px."
+      "notes": "Wave XI (#381) \u2014 Drawer width medium=480px."
     },
     {
       "runtimeCssVar": "--io-drawer-width-sm",
@@ -1709,7 +1709,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#381) — Drawer width small=320px."
+      "notes": "Wave XI (#381) \u2014 Drawer width small=320px."
     },
     {
       "runtimeCssVar": "--io-flyout-backdrop",
@@ -1717,7 +1717,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "P2 (#875) — Flyout backdrop overlay color=rgba(0,0,0,0.5). Replaces cross-component --io-drawer-backdrop usage."
+      "notes": "P2 (#875) \u2014 Flyout backdrop overlay color=rgba(0,0,0,0.5). Replaces cross-component --io-drawer-backdrop usage."
     },
     {
       "runtimeCssVar": "--io-field-focus-offset-y",
@@ -1829,7 +1829,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) — Fluid display font size 2xl: clamp(2rem, 2.5vw + 1.5rem, 3rem). Responsive scaling between ~320px (min 32px) and ~960px (max 48px) viewports."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 2xl: clamp(2rem, 2.5vw + 1.5rem, 3rem). Responsive scaling between ~320px (min 32px) and ~960px (max 48px) viewports."
     },
     {
       "runtimeCssVar": "--io-font-size-display-3xl",
@@ -1837,7 +1837,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) — Fluid display font size 3xl: clamp(2.5rem, 3vw + 1.5rem, 4rem). Responsive scaling; crossover from min at ~533px, reaches max 64px at ~1333px viewport width."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 3xl: clamp(2.5rem, 3vw + 1.5rem, 4rem). Responsive scaling; crossover from min at ~533px, reaches max 64px at ~1333px viewport width."
     },
     {
       "runtimeCssVar": "--io-font-size-display-4xl",
@@ -1845,7 +1845,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#348) — Fluid display font size 4xl: clamp(3rem, 4vw + 2rem, 5rem). Responsive scaling between ~400px (min 48px) and ~1200px (max 80px) viewports."
+      "notes": "Wave XI (#348) \u2014 Fluid display font size 4xl: clamp(3rem, 4vw + 2rem, 5rem). Responsive scaling between ~400px (min 48px) and ~1200px (max 80px) viewports."
     },
     {
       "runtimeCssVar": "--io-font-size-lg",
@@ -1981,7 +1981,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Brand cool gradient — lavender to primary-muted, for calm accent panels."
+      "notes": "Brand cool gradient \u2014 lavender to primary-muted, for calm accent panels."
     },
     {
       "runtimeCssVar": "--io-gradient-brand-primary",
@@ -1989,7 +1989,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Brand primary gradient — primary blue to primary-hover, for CTA and hero accent."
+      "notes": "Brand primary gradient \u2014 primary blue to primary-hover, for CTA and hero accent."
     },
     {
       "runtimeCssVar": "--io-gradient-brand-warm",
@@ -1997,7 +1997,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Brand warm gradient — orange to yellow, for warm accent surfaces."
+      "notes": "Brand warm gradient \u2014 orange to yellow, for warm accent surfaces."
     },
     {
       "runtimeCssVar": "--io-gradient-card-overlay",
@@ -2029,7 +2029,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Transparent to dark overlay fading at the bottom — card and image captions."
+      "notes": "Transparent to dark overlay fading at the bottom \u2014 card and image captions."
     },
     {
       "runtimeCssVar": "--io-gradient-overlay-scrim",
@@ -2045,7 +2045,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Transparent to dark overlay fading at the top — reverse caption placement."
+      "notes": "Transparent to dark overlay fading at the top \u2014 reverse caption placement."
     },
     {
       "runtimeCssVar": "--io-gradient-surface-hero",
@@ -2117,7 +2117,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 8px (0.5rem). Used by io-icon component in dense/chip contexts."
+      "notes": "Icon size scale \u2014 8px (0.5rem). Used by io-icon component in dense/chip contexts."
     },
     {
       "runtimeCssVar": "--io-icon-size-xs",
@@ -2125,7 +2125,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 12px (0.75rem). Used by io-icon component."
+      "notes": "Icon size scale \u2014 12px (0.75rem). Used by io-icon component."
     },
     {
       "runtimeCssVar": "--io-icon-size-lg",
@@ -2157,7 +2157,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 32px (2rem). Used by io-icon component."
+      "notes": "Icon size scale \u2014 32px (2rem). Used by io-icon component."
     },
     {
       "runtimeCssVar": "--io-icon-size-2xl",
@@ -2165,7 +2165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 40px (2.5rem). Used for feature cards and empty-state illustrations."
+      "notes": "Icon size scale \u2014 40px (2.5rem). Used for feature cards and empty-state illustrations."
     },
     {
       "runtimeCssVar": "--io-icon-size-3xl",
@@ -2173,7 +2173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 48px (3rem). Used for hero sections."
+      "notes": "Icon size scale \u2014 48px (3rem). Used for hero sections."
     },
     {
       "runtimeCssVar": "--io-icon-size-4xl",
@@ -2181,7 +2181,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 64px (4rem). Used for hero CTAs and large empty-state illustrations."
+      "notes": "Icon size scale \u2014 64px (4rem). Used for hero CTAs and large empty-state illustrations."
     },
     {
       "runtimeCssVar": "--io-icon-size-5xl",
@@ -2189,7 +2189,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Icon size scale — 80px (5rem). Used for full-page hero illustrations."
+      "notes": "Icon size scale \u2014 80px (5rem). Used for full-page hero illustrations."
     },
     {
       "runtimeCssVar": "--io-text-contrast-higher",
@@ -2461,7 +2461,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#366) — 1200ms ease-in-out for deliberate entrance/exit animations (page transitions, hero reveals)."
+      "notes": "Wave XI (#366) \u2014 1200ms ease-in-out for deliberate entrance/exit animations (page transitions, hero reveals)."
     },
     {
       "runtimeCssVar": "--io-motion-fast",
@@ -2557,7 +2557,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — font size for digit glyphs inside each pin-code slot"
+      "notes": "Wave XI \u2014 font size for digit glyphs inside each pin-code slot"
     },
     {
       "runtimeCssVar": "--io-pin-code-gap",
@@ -2565,7 +2565,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — gap between pin-code input slots"
+      "notes": "Wave XI \u2014 gap between pin-code input slots"
     },
     {
       "runtimeCssVar": "--io-pin-code-slot-border-error-width",
@@ -2573,7 +2573,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — border width of a pin-code slot in error state"
+      "notes": "Wave XI \u2014 border width of a pin-code slot in error state"
     },
     {
       "runtimeCssVar": "--io-pin-code-slot-border-width",
@@ -2581,7 +2581,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — default border width of a pin-code slot"
+      "notes": "Wave XI \u2014 default border width of a pin-code slot"
     },
     {
       "runtimeCssVar": "--io-pin-code-slot-radius",
@@ -2589,7 +2589,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — border radius of each pin-code slot"
+      "notes": "Wave XI \u2014 border radius of each pin-code slot"
     },
     {
       "runtimeCssVar": "--io-pin-code-slot-size",
@@ -2597,7 +2597,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI — width and height of each pin-code slot"
+      "notes": "Wave XI \u2014 width and height of each pin-code slot"
     },
     {
       "runtimeCssVar": "--io-playground-dot-color",
@@ -2685,7 +2685,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Error state border width — 2px non-color indicator for WCAG 1.4.1."
+      "notes": "Error state border width \u2014 2px non-color indicator for WCAG 1.4.1."
     },
     {
       "runtimeCssVar": "--io-radio-border-width",
@@ -3077,7 +3077,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#360) — Fluid spacing lg: clamp(1.5rem, 3vw + 0.75rem, 3rem). Use for section padding and generous gaps."
+      "notes": "Wave XI (#360) \u2014 Fluid spacing lg: clamp(1.5rem, 3vw + 0.75rem, 3rem). Use for section padding and generous gaps."
     },
     {
       "runtimeCssVar": "--io-space-fluid-md",
@@ -3085,7 +3085,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#360) — Fluid spacing md: clamp(1rem, 2vw + 0.5rem, 2rem). Use for component gaps and card padding."
+      "notes": "Wave XI (#360) \u2014 Fluid spacing md: clamp(1rem, 2vw + 0.5rem, 2rem). Use for component gaps and card padding."
     },
     {
       "runtimeCssVar": "--io-space-fluid-sm",
@@ -3093,7 +3093,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#360) — Fluid spacing sm: clamp(0.5rem, 1vw + 0.25rem, 1rem). Use for inline spacing and tight gaps."
+      "notes": "Wave XI (#360) \u2014 Fluid spacing sm: clamp(0.5rem, 1vw + 0.25rem, 1rem). Use for inline spacing and tight gaps."
     },
     {
       "runtimeCssVar": "--io-spacing-component-x",
@@ -3149,7 +3149,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#384) — Step circle border thickness=2px."
+      "notes": "Wave XI (#384) \u2014 Step circle border thickness=2px."
     },
     {
       "runtimeCssVar": "--io-stepper-circle-size",
@@ -3157,7 +3157,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#384) — Step circle diameter=2rem (32px)."
+      "notes": "Wave XI (#384) \u2014 Step circle diameter=2rem (32px)."
     },
     {
       "runtimeCssVar": "--io-stepper-connector-offset",
@@ -3165,7 +3165,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#384) — Connector offset aligns to circle centre=1rem."
+      "notes": "Wave XI (#384) \u2014 Connector offset aligns to circle centre=1rem."
     },
     {
       "runtimeCssVar": "--io-stepper-connector-width",
@@ -3173,7 +3173,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#384) — Connector height/width=2px."
+      "notes": "Wave XI (#384) \u2014 Connector height/width=2px."
     },
     {
       "runtimeCssVar": "--io-step-error-color",
@@ -3197,7 +3197,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Elevated surface — floating overlays (select dropdown, combobox, tooltip). White in light mode; dark-bg-raised in dark mode."
+      "notes": "Elevated surface \u2014 floating overlays (select dropdown, combobox, tooltip). White in light mode; dark-bg-raised in dark mode."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-offset-off",
@@ -3205,7 +3205,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch thumb left offset when unchecked=2px."
+      "notes": "Wave XI (#342) \u2014 Switch thumb left offset when unchecked=2px."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-offset-on",
@@ -3213,7 +3213,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch thumb offset when checked=calc(track-width - thumb-size - 2px)."
+      "notes": "Wave XI (#342) \u2014 Switch thumb offset when checked=calc(track-width - thumb-size - 2px)."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-radius",
@@ -3221,7 +3221,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch thumb border-radius=9999px (fully rounded)."
+      "notes": "Wave XI (#342) \u2014 Switch thumb border-radius=9999px (fully rounded)."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-shadow",
@@ -3229,7 +3229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave J (#452) — Switch thumb elevation shadow; replaces hardcoded rgba value."
+      "notes": "Wave J (#452) \u2014 Switch thumb elevation shadow; replaces hardcoded rgba value."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-size",
@@ -3237,7 +3237,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch circular thumb diameter=1.25rem (20px)."
+      "notes": "Wave XI (#342) \u2014 Switch circular thumb diameter=1.25rem (20px)."
     },
     {
       "runtimeCssVar": "--io-switch-track-height",
@@ -3245,7 +3245,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch pill track height=1.5rem (24px)."
+      "notes": "Wave XI (#342) \u2014 Switch pill track height=1.5rem (24px)."
     },
     {
       "runtimeCssVar": "--io-switch-track-radius",
@@ -3253,7 +3253,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch track border-radius=9999px (fully rounded pill)."
+      "notes": "Wave XI (#342) \u2014 Switch track border-radius=9999px (fully rounded pill)."
     },
     {
       "runtimeCssVar": "--io-switch-track-width",
@@ -3261,7 +3261,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#342) — Switch pill track width=2.75rem (44px)."
+      "notes": "Wave XI (#342) \u2014 Switch pill track width=2.75rem (44px)."
     },
     {
       "runtimeCssVar": "--io-switch-track-width-compact",
@@ -3269,7 +3269,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "P2 (#844) — Switch compact track width=2rem (32px). Applied when compact=true."
+      "notes": "P2 (#844) \u2014 Switch compact track width=2rem (32px). Applied when compact=true."
     },
     {
       "runtimeCssVar": "--io-switch-track-height-compact",
@@ -3277,7 +3277,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "P2 (#844) — Switch compact track height=1.125rem (18px). Applied when compact=true."
+      "notes": "P2 (#844) \u2014 Switch compact track height=1.125rem (18px). Applied when compact=true."
     },
     {
       "runtimeCssVar": "--io-switch-thumb-size-compact",
@@ -3285,7 +3285,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "P2 (#844) — Switch compact thumb size=0.875rem (14px). Applied when compact=true."
+      "notes": "P2 (#844) \u2014 Switch compact thumb size=0.875rem (14px). Applied when compact=true."
     },
     {
       "runtimeCssVar": "--io-tag-compact-padding-y",
@@ -3293,7 +3293,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "P2 (#866) — Tag compact vertical padding override=var(--io-space-1) (4px). Applied when compact=true."
+      "notes": "P2 (#866) \u2014 Tag compact vertical padding override=var(--io-space-1) (4px). Applied when compact=true."
     },
     {
       "runtimeCssVar": "--io-table-row-selected-bg",
@@ -3493,7 +3493,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Canonical interactive control height scale — xs (24px). Used for chips, compact UI."
+      "notes": "Canonical interactive control height scale \u2014 xs (24px). Used for chips, compact UI."
     },
     {
       "runtimeCssVar": "--io-control-size-sm",
@@ -3501,7 +3501,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Canonical interactive control height scale — sm (32px). Used for small controls."
+      "notes": "Canonical interactive control height scale \u2014 sm (32px). Used for small controls."
     },
     {
       "runtimeCssVar": "--io-control-size-md",
@@ -3509,7 +3509,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Canonical interactive control height scale — md (40px). Default input/button height."
+      "notes": "Canonical interactive control height scale \u2014 md (40px). Default input/button height."
     },
     {
       "runtimeCssVar": "--io-control-size-lg",
@@ -3517,7 +3517,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Canonical interactive control height scale — lg (48px). Large controls, pin-code slots."
+      "notes": "Canonical interactive control height scale \u2014 lg (48px). Large controls, pin-code slots."
     },
     {
       "runtimeCssVar": "--io-control-size-xl",
@@ -3525,7 +3525,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Canonical interactive control height scale — xl (64px). XL button, hero controls."
+      "notes": "Canonical interactive control height scale \u2014 xl (64px). XL button, hero controls."
     },
     {
       "runtimeCssVar": "--io-skeleton-duration",
@@ -3557,7 +3557,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#386) — Wordmark font-size large=28px."
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size large=28px."
     },
     {
       "runtimeCssVar": "--io-wordmark-font-size-md",
@@ -3565,7 +3565,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#386) — Wordmark font-size medium=20px."
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size medium=20px."
     },
     {
       "runtimeCssVar": "--io-wordmark-font-size-sm",
@@ -3573,7 +3573,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#386) — Wordmark font-size small."
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size small."
     },
     {
       "runtimeCssVar": "--io-wordmark-font-size-xl",
@@ -3581,7 +3581,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#386) — Wordmark font-size xl=40px."
+      "notes": "Wave XI (#386) \u2014 Wordmark font-size xl=40px."
     },
     {
       "runtimeCssVar": "--io-wordmark-letter-spacing",
@@ -3589,7 +3589,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XI (#386) — Wordmark letter-spacing=-0.01em."
+      "notes": "Wave XI (#386) \u2014 Wordmark letter-spacing=-0.01em."
     },
     {
       "runtimeCssVar": "--io-wordmark-lockup-height-lg",
@@ -3597,7 +3597,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark lockup variant SVG height lg=120px."
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height lg=120px."
     },
     {
       "runtimeCssVar": "--io-wordmark-lockup-height-md",
@@ -3605,7 +3605,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark lockup variant SVG height md=80px."
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height md=80px."
     },
     {
       "runtimeCssVar": "--io-wordmark-lockup-height-sm",
@@ -3613,7 +3613,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark lockup variant SVG height sm=48px."
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height sm=48px."
     },
     {
       "runtimeCssVar": "--io-wordmark-lockup-height-xl",
@@ -3621,7 +3621,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark lockup variant SVG height xl=168px."
+      "notes": "Wave XIII \u2014 io-wordmark lockup variant SVG height xl=168px."
     },
     {
       "runtimeCssVar": "--io-wordmark-mark-height-lg",
@@ -3629,7 +3629,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark mark variant SVG height lg=36px."
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height lg=36px."
     },
     {
       "runtimeCssVar": "--io-wordmark-mark-height-md",
@@ -3637,7 +3637,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark mark variant SVG height md=24px."
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height md=24px."
     },
     {
       "runtimeCssVar": "--io-wordmark-mark-height-sm",
@@ -3645,7 +3645,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark mark variant SVG height sm=16px."
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height sm=16px."
     },
     {
       "runtimeCssVar": "--io-wordmark-mark-height-xl",
@@ -3653,7 +3653,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Wave XIII — io-wordmark mark variant SVG height xl=56px."
+      "notes": "Wave XIII \u2014 io-wordmark mark variant SVG height xl=56px."
     },
     {
       "runtimeCssVar": "--io-z-above",
@@ -4213,7 +4213,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Blur scale primitive — small (8px). Use with frosted-glass UI patterns."
+      "notes": "Blur scale primitive \u2014 small (8px). Use with frosted-glass UI patterns."
     },
     {
       "runtimeCssVar": "--io-blur-md",
@@ -4221,7 +4221,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Blur scale primitive — medium (16px). Use with frosted-glass UI patterns."
+      "notes": "Blur scale primitive \u2014 medium (16px). Use with frosted-glass UI patterns."
     },
     {
       "runtimeCssVar": "--io-blur-lg",
@@ -4229,7 +4229,7 @@
       "documentationScope": "app-css-runtime",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Blur scale primitive — large (32px). Alias: --io-blur-frosted."
+      "notes": "Blur scale primitive \u2014 large (32px). Alias: --io-blur-frosted."
     },
     {
       "runtimeCssVar": "--io-blur-frosted",
@@ -4398,6 +4398,70 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Standard easing function (ease)."
+    },
+    {
+      "runtimeCssVar": "--io-segment-badge-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Text color of the badge slot content in io-segment. Defaults to --io-text-secondary."
+    },
+    {
+      "runtimeCssVar": "--io-segment-icon-source-size",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Size of the custom iconSource image in io-segment. Matches built-in icon size (16px)."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-border-radius",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Border radius of the io-wordmark badge variant background. Defaults to --io-border-radius-sm."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-glyph-color",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Color of the iO glyph inside the io-wordmark badge variant. Defaults to --io-color-white."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-size-sm",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width and height of io-wordmark badge variant at sm scale."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-size-md",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width and height of io-wordmark badge variant at md scale."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-size-lg",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width and height of io-wordmark badge variant at lg scale."
+    },
+    {
+      "runtimeCssVar": "--io-wordmark-badge-size-xl",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Width and height of io-wordmark badge variant at xl scale."
     }
   ]
 }

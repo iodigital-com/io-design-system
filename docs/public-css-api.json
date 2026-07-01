@@ -633,7 +633,7 @@
     "cssVar": "--io-carousel-slides-per-page",
     "classification": "internal",
     "component": "io-carousel",
-    "description": "Internal counter set by the component via inline style when slidesPerPage is a number > 1. Used in calc() to size each slide to fill exactly 1/N of the visible track. Do not override directly — use the slidesPerPage prop."
+    "description": "Internal counter set by the component via inline style when slidesPerPage is a number > 1. Used in calc() to size each slide to fill exactly 1/N of the visible track. Do not override directly \u2014 use the slidesPerPage prop."
   },
   {
     "cssVar": "--io-bg-card",
@@ -1745,7 +1745,6 @@
     "component": "io-icon",
     "description": "Lowest visible neutral contrast stop (--io-color-grey-3, #C4C4C4). Used for subtle decorative icons on light backgrounds."
   },
-
   {
     "cssVar": "--io-input-border-error-width",
     "classification": "public-api",
@@ -1794,48 +1793,47 @@
     "component": "io-input-password",
     "description": "Border-bottom width applied when the password input is in error state. Pairs with border-color change to satisfy WCAG 1.4.1 (use of color)."
   },
-
   {
     "cssVar": "--io-space-fluid-2xs",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing 2xs: clamp(1px → 2px). Use for micro-gap in dense icon clusters."
+    "description": "Fluid spacing 2xs: clamp(1px \u2192 2px). Use for micro-gap in dense icon clusters."
   },
   {
     "cssVar": "--io-space-fluid-xs",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing xs: clamp(4px → 8px). Use for tight inline gaps."
+    "description": "Fluid spacing xs: clamp(4px \u2192 8px). Use for tight inline gaps."
   },
   {
     "cssVar": "--io-space-fluid-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing sm: clamp(8px → 16px). Use for component-level gutters."
+    "description": "Fluid spacing sm: clamp(8px \u2192 16px). Use for component-level gutters."
   },
   {
     "cssVar": "--io-space-fluid-md",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing md: clamp(16px → 32px). Use for section-level gutters."
+    "description": "Fluid spacing md: clamp(16px \u2192 32px). Use for section-level gutters."
   },
   {
     "cssVar": "--io-space-fluid-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing lg: clamp(24px → 48px). Use for layout block spacing."
+    "description": "Fluid spacing lg: clamp(24px \u2192 48px). Use for layout block spacing."
   },
   {
     "cssVar": "--io-space-fluid-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing xl: clamp(32px → 64px). Use for page section separators."
+    "description": "Fluid spacing xl: clamp(32px \u2192 64px). Use for page section separators."
   },
   {
     "cssVar": "--io-space-fluid-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing 2xl: clamp(48px → 96px). Use for hero/major section separators."
+    "description": "Fluid spacing 2xl: clamp(48px \u2192 96px). Use for hero/major section separators."
   },
   {
     "cssVar": "--io-space-14",
@@ -1849,19 +1847,18 @@
     "component": "global",
     "description": "DEPRECATED. Orphan static step (60px). Use --io-space-16 (64px) or --io-space-fluid-xl instead."
   },
-
   {
     "cssVar": "--io-border-radius-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius 2xl (16px). Target components: io-banner, io-toast-item — overlays and inline feedback.",
+    "description": "Border radius 2xl (16px). Target components: io-banner, io-toast-item \u2014 overlays and inline feedback.",
     "usage": "io-banner, io-toast-item"
   },
   {
     "cssVar": "--io-border-radius-3xl",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius 3xl (24px). Target components: io-modal, io-sheet, io-flyout, io-drawer — card-like containers and dialogs.",
+    "description": "Border radius 3xl (24px). Target components: io-modal, io-sheet, io-flyout, io-drawer \u2014 card-like containers and dialogs.",
     "usage": "io-modal, io-sheet, io-flyout, io-drawer"
   },
   {
@@ -1875,7 +1872,7 @@
     "cssVar": "--io-border-radius-full",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius full (9999px). Fully rounded — pill shapes, switch tracks. Preferred canonical name; --io-border-radius-pill is a deprecated alias.",
+    "description": "Border radius full (9999px). Fully rounded \u2014 pill shapes, switch tracks. Preferred canonical name; --io-border-radius-pill is a deprecated alias.",
     "usage": "io-switch, io-tag, io-button (pill variant)"
   },
   {
@@ -1884,56 +1881,54 @@
     "component": "global",
     "description": "DEPRECATED. Use --io-border-radius-full instead. Alias kept for one minor cycle for backward compatibility."
   },
-
   {
     "cssVar": "--io-font-size-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size lg: clamp(18px → 20px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size lg: clamp(18px \u2192 20px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size xl: clamp(20px → 24px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size xl: clamp(20px \u2192 24px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 2xl: clamp(24px → 30px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 2xl: clamp(24px \u2192 30px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-3xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 3xl: clamp(30px → 36px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 3xl: clamp(30px \u2192 36px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-4xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 4xl: clamp(32px → 40px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 4xl: clamp(32px \u2192 40px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-5xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 5xl: clamp(36px → 48px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 5xl: clamp(36px \u2192 48px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-6xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 6xl: clamp(48px → 64px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 6xl: clamp(48px \u2192 64px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-7xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 7xl: clamp(64px → 80px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 7xl: clamp(64px \u2192 80px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
-
   {
     "cssVar": "--io-line-height-dynamic",
     "classification": "internal",
@@ -1962,7 +1957,7 @@
     "cssVar": "--io-line-height-normal",
     "classification": "internal",
     "component": "global",
-    "description": "Legacy line-height normal (1.5). Use for WCAG 1.4.12-critical body paragraphs requiring guaranteed 1.5× ratio."
+    "description": "Legacy line-height normal (1.5). Use for WCAG 1.4.12-critical body paragraphs requiring guaranteed 1.5\u00d7 ratio."
   },
   {
     "cssVar": "--io-line-height-relaxed",
@@ -1988,7 +1983,6 @@
     "component": "global",
     "description": "Legacy line-height heading (1.2). io-heading has migrated to --io-line-height-dynamic. Retained as fallback alias."
   },
-
   {
     "cssVar": "--io-density-spacing-y",
     "classification": "internal",
@@ -2425,31 +2419,31 @@
     "cssVar": "--io-control-size-xs",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — xs (24px). Used for chips, compact UI elements. Resolves to 1.5rem."
+    "description": "Canonical interactive control height scale \u2014 xs (24px). Used for chips, compact UI elements. Resolves to 1.5rem."
   },
   {
     "cssVar": "--io-control-size-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — sm (32px). Used for small controls, stepper circles. Resolves to 2rem."
+    "description": "Canonical interactive control height scale \u2014 sm (32px). Used for small controls, stepper circles. Resolves to 2rem."
   },
   {
     "cssVar": "--io-control-size-md",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — md (40px). Default input and button height. Resolves to 2.5rem."
+    "description": "Canonical interactive control height scale \u2014 md (40px). Default input and button height. Resolves to 2.5rem."
   },
   {
     "cssVar": "--io-control-size-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — lg (48px). Large controls, pin-code slots. Resolves to 3rem."
+    "description": "Canonical interactive control height scale \u2014 lg (48px). Large controls, pin-code slots. Resolves to 3rem."
   },
   {
     "cssVar": "--io-control-size-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — xl (64px). XL button, hero controls. Resolves to 4rem."
+    "description": "Canonical interactive control height scale \u2014 xl (64px). XL button, hero controls. Resolves to 4rem."
   },
   {
     "cssVar": "--io-skeleton-duration",
@@ -2534,5 +2528,53 @@
     "classification": "public-api",
     "component": "io-progress",
     "description": "Duration (and optional easing) of the fill-width transition when the progress value changes. Defaults to var(--io-motion-base) (300ms ease). Set to 0s to disable the transition without using the animated prop."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-size-sm",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Size (width and height) of the badge variant at the 'sm' scale. Override to adjust badge dimensions."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-size-md",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Size (width and height) of the badge variant at the 'md' scale. Override to adjust badge dimensions."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-size-lg",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Size (width and height) of the badge variant at the 'lg' scale. Override to adjust badge dimensions."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-size-xl",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Size (width and height) of the badge variant at the 'xl' scale. Override to adjust badge dimensions."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-border-radius",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Border radius of the badge variant's square background. Defaults to --io-border-radius-sm."
+  },
+  {
+    "cssVar": "--io-wordmark-badge-glyph-color",
+    "classification": "public-api",
+    "component": "io-wordmark",
+    "description": "Color of the iO glyph rendered inside the badge variant. Defaults to white for contrast against the colored background."
+  },
+  {
+    "cssVar": "--io-segment-icon-source-size",
+    "classification": "public-api",
+    "component": "io-segment",
+    "description": "Size (width and height) of the custom icon image when iconSource is set. Matches the built-in icon size."
+  },
+  {
+    "cssVar": "--io-segment-badge-color",
+    "classification": "public-api",
+    "component": "io-segment",
+    "description": "Text color of the badge slot content rendered after the segment label. Override to adjust numeric context styling."
   }
 ]

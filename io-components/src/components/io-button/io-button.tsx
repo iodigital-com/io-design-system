@@ -78,6 +78,14 @@ export class IoButton {
   /** Rel attribute — only used when href is set */
   @Prop() rel: string | undefined;
 
+  /**
+   * Download attribute for anchor mode.
+   * - `true` / empty string → triggers download with server-provided filename
+   * - string → triggers download and suggests the given filename
+   * - Only applies when `href` is set.
+   */
+  @Prop() download?: string | boolean;
+
   /** Disables the button and applies reduced opacity */
   @Prop({ reflect: true }) disabled = false;
 
@@ -108,7 +116,12 @@ export class IoButton {
    */
   @Prop({ reflect: true }) form: string | undefined;
 
-  /** Renders a square icon-only button and suppresses text label rendering */
+  /**
+   * @deprecated Use `hideLabel` instead — it preserves accessible text via sr-only and
+   * renders a square icon-only layout when an icon/iconSource is present.
+   * `iconOnly` will be removed in the next minor bump after this deprecation period.
+   * Migration: replace `iconOnly` with `hideLabel` and ensure `label` prop is set.
+   */
   @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
 
   /** Direction of the optional animated arrow icon. Omit to hide the arrow. */
@@ -141,13 +154,22 @@ export class IoButton {
   @Prop() aria?: Partial<Record<IoButtonAriaAttribute, string>>;
 
   private hasWarnedIconOnlyLabel = false;
+  private hasWarnedIconOnlyDeprecated = false;
   private btnEl?: HTMLElement;
   private readonly loadingId: string;
   private _implicitSubmitHandler?: (ev: KeyboardEvent) => void;
   private _implicitSubmitForm?: HTMLFormElement;
+  private _loadingFinishedTimer?: ReturnType<typeof setTimeout>;
 
   /** True once `loading` has transitioned to true at least once after mount. Guards live-region announcement. */
   @State() private loadingTransitioned = false;
+
+  /**
+   * Tracks the live-region text: 'loading' | 'finished' | 'idle'.
+   * 'finished' is held for one tick (200ms) so screen readers can announce it,
+   * then cleared to 'idle' to avoid persistent stale text.
+   */
+  @State() private loadingAnnouncement: 'loading' | 'finished' | 'idle' = 'idle';
 
   constructor() {
     this.loadingId = `io-btn-loading-${++_idCounter}`;
@@ -188,6 +210,9 @@ export class IoButton {
 
   disconnectedCallback(): void {
     this.detachImplicitSubmitListener();
+    if (this._loadingFinishedTimer !== undefined) {
+      clearTimeout(this._loadingFinishedTimer);
+    }
   }
 
   // ── Watchers ─────────────────────────────────────────────────
@@ -201,7 +226,22 @@ export class IoButton {
 
   @Watch('loading')
   onLoadingChange(newVal: boolean): void {
-    if (newVal) this.loadingTransitioned = true;
+    if (newVal) {
+      // loading started
+      this.loadingTransitioned = true;
+      if (this._loadingFinishedTimer !== undefined) {
+        clearTimeout(this._loadingFinishedTimer);
+        this._loadingFinishedTimer = undefined;
+      }
+      this.loadingAnnouncement = 'loading';
+    } else if (this.loadingTransitioned) {
+      // loading ended — only announce if we actually showed a loading state
+      this.loadingAnnouncement = 'finished';
+      this._loadingFinishedTimer = setTimeout(() => {
+        this.loadingAnnouncement = 'idle';
+        this._loadingFinishedTimer = undefined;
+      }, 200);
+    }
   }
 
   @Watch('aria')
@@ -322,15 +362,24 @@ export class IoButton {
   }
 
   private warnIconOnlyLabelMissing(): void {
-    if (!this.iconOnly || this.hasWarnedIconOnlyLabel || this.getAccessibleLabel()) {
-      return;
-    }
-
     const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-    if (!isStencilProd) {
-      console.warn('io-button: icon-only buttons require an accessible label via the label prop or aria-label attribute.');
+
+    if (this.iconOnly) {
+      if (!isStencilProd && !this.hasWarnedIconOnlyDeprecated) {
+        console.warn(
+          'io-button: `iconOnly` is deprecated. Use `hideLabel` instead — it preserves accessible text ' +
+          'and renders as icon-only when an icon or iconSource is present. Remove `iconOnly` and add `hideLabel`.',
+        );
+        this.hasWarnedIconOnlyDeprecated = true;
+      }
+
+      if (!this.hasWarnedIconOnlyLabel && !this.getAccessibleLabel()) {
+        if (!isStencilProd) {
+          console.warn('io-button: icon-only buttons require an accessible label via the label prop or aria-label attribute.');
+        }
+        this.hasWarnedIconOnlyLabel = true;
+      }
     }
-    this.hasWarnedIconOnlyLabel = true;
   }
 
   private validatePropValues(): void {
@@ -353,11 +402,24 @@ export class IoButton {
   private renderIcon() {
     if (!this.icon && !this.iconSource) return null;
 
+    const iconSize = ICON_SIZE_MAP[this.size] ?? 'sm';
+
     if (this.iconSource) {
-      return <span class="btn__icon-wrap" aria-hidden="true" innerHTML={this.iconSource} />;
+      // #1043 — iconSource path: wrap raw SVG in a sized span that inherits the
+      // same dimensions as io-icon would use (via data-size attribute + CSS).
+      // Full URL-based routing through io-icon (which does a fetch) is deferred
+      // because io-button.iconSource is a raw SVG string, not a URL.
+      return (
+        <span
+          class="btn__icon-wrap"
+          aria-hidden="true"
+          data-size={iconSize}
+          innerHTML={this.iconSource}
+        />
+      );
     }
 
-    return <io-icon name={this.icon!} size={ICON_SIZE_MAP[this.size] ?? 'sm'} aria-hidden="true" />;
+    return <io-icon name={this.icon!} size={iconSize} aria-hidden="true" />;
   }
 
   private renderIconOnlyContent() {
@@ -382,16 +444,28 @@ export class IoButton {
 
     this.validatePropValues();
 
+    // #1047 — hideLabel behaves as icon-only when an icon/iconSource is present.
+    // When hideLabel=true AND no icon is set, emit a console.error guidance.
+    const hasIcon = Boolean(this.icon || this.iconSource);
+    const hideLabelIconOnly = hideLabel && hasIcon && !iconOnly;
+
+    const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
+    if (hideLabel && !hasIcon && !iconOnly && !isStencilProd) {
+      console.error('io-button: `hideLabel=true` with no icon/iconSource produces an empty button. Add an `icon` or `iconSource` prop.');
+    }
+
+    // Effective icon-only flag — true if iconOnly prop OR hideLabel+icon combo
+    const effectiveIconOnly = iconOnly || hideLabelIconOnly;
+
     const ariaAttrs = getButtonAriaAttrs({ disabled, loading, href });
-    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly });
+    const classList = getButtonClassList({ variant, color, size, disabled, loading, fullWidth, iconOnly: effectiveIconOnly });
     const accessibleLabel = this.getAccessibleLabel();
     this.warnIconOnlyLabelMissing();
 
     const Tag = href ? 'a' : 'button';
-    const hasIcon = Boolean(this.icon || this.iconSource);
 
     const innerProps: Record<string, unknown> = {
-      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${iconOnly ? ' btn--icon-only' : ''}`,
+      class: `btn btn--${variant} btn--${color} btn--${size}${disabled ? ' btn--disabled' : ''}${loading ? ' btn--loading' : ''}${fullWidth ? ' btn--full-width' : ''}${effectiveIconOnly ? ' btn--icon-only' : ''}`,
       ref: (el?: HTMLElement) => {
         this.btnEl = el;
         applyAriaProp(this.aria, el ?? null);
@@ -404,7 +478,20 @@ export class IoButton {
     if (href) {
       innerProps['href'] = disabled || loading ? undefined : href;
       innerProps['target'] = target;
-      innerProps['rel'] = rel;
+
+      // #1065 — auto-add rel="noopener noreferrer" when target="_blank" and rel not set.
+      // This matches io-wordmark.tsx line 91 and prevents opener/referrer leaks.
+      if (target === '_blank' && !rel) {
+        innerProps['rel'] = 'noopener noreferrer';
+      } else {
+        innerProps['rel'] = rel;
+      }
+
+      // #1065 — download prop: boolean true → empty attribute; string → filename suggestion.
+      if (this.download !== undefined && this.download !== false) {
+        innerProps['download'] = this.download === true ? '' : this.download;
+      }
+
       // Keep disabled/loading anchors in the tab order so keyboard users can discover them.
       // href is cleared to prevent activation; tabIndex={0} restores focusability.
       if (disabled || loading) {
@@ -419,24 +506,37 @@ export class IoButton {
       innerProps['aria-label'] = accessibleLabel;
     }
 
-    if (loading && this.loadingTransitioned) {
+    if (this.loadingAnnouncement !== 'idle') {
       innerProps['aria-describedby'] = this.loadingId;
     }
 
-    const labelSlot = iconOnly
+    // #1047 — hideLabel+icon renders sr-only label span instead of iconOnly path,
+    // preserving accessible text (per Porsche / WCAG 2.4.6 pattern).
+    const labelSlot = effectiveIconOnly && !hideLabelIconOnly
       ? this.renderIconOnlyContent()
-      : (
-        <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
-          <slot />
-        </span>
-      );
+      : hideLabelIconOnly
+        ? (
+          <span class="btn__label btn__label--hidden">
+            <slot />
+          </span>
+        )
+        : (
+          <span class={hideLabel ? 'btn__label btn__label--hidden' : 'btn__label'}>
+            <slot />
+          </span>
+        );
+
+    // #1110 — live region text for screen reader announcement
+    let liveText = '';
+    if (this.loadingAnnouncement === 'loading') liveText = 'Loading';
+    else if (this.loadingAnnouncement === 'finished') liveText = 'Loading finished';
 
     return (
       <Host class={classList}>
         <style>{getButtonStyles()}</style>
         <Tag {...innerProps}>
           {loading && <span class="btn__spinner" aria-hidden="true" />}
-          {!iconOnly && arrow !== undefined && arrowPlacement === 'left' && (
+          {!effectiveIconOnly && arrow !== undefined && arrowPlacement === 'left' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"
@@ -446,10 +546,11 @@ export class IoButton {
               </svg>
             </span>
           )}
-          {hasIcon && !iconOnly && iconPosition === 'left' && this.renderIcon()}
+          {hasIcon && !effectiveIconOnly && iconPosition === 'left' && this.renderIcon()}
           {labelSlot}
-          {hasIcon && !iconOnly && iconPosition === 'right' && this.renderIcon()}
-          {!iconOnly && arrow !== undefined && arrowPlacement === 'right' && (
+          {hasIcon && !effectiveIconOnly && iconPosition === 'right' && this.renderIcon()}
+          {hideLabelIconOnly && this.renderIcon()}
+          {!effectiveIconOnly && arrow !== undefined && arrowPlacement === 'right' && (
             <span
               class={`btn__arrow${arrow === 'back' ? ' btn__arrow--back' : ''}${arrow === 'down' ? ' btn__arrow--down' : ''}`}
               aria-hidden="true"
@@ -460,7 +561,9 @@ export class IoButton {
             </span>
           )}
         </Tag>
-        {/* Loading live region — sibling to button so it's outside the interactive element's accessible subtree */}
+        {/* Stable live region — persists in DOM so announcements are reliable.
+            'Loading' while loading=true; 'Loading finished' for one tick after
+            loading transitions true→false; then cleared to prevent stale text. */}
         <span
           id={this.loadingId}
           role="status"
@@ -468,7 +571,7 @@ export class IoButton {
           aria-atomic="true"
           class="btn__loading-sr"
         >
-          {loading && this.loadingTransitioned ? 'Loading' : ''}
+          {liveText}
         </span>
       </Host>
     );

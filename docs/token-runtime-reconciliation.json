@@ -4134,6 +4134,30 @@
       "tokenPath": null,
       "canonicalCssVar": null,
       "notes": "Reusable 16-step opacity ramp from transparent to white. Use in linear-gradient() for scrim/overlay composition."
+    },
+    {
+      "runtimeCssVar": "--io-button-sm-icon-only-min",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Minimum size floor for sm icon-only buttons (WCAG 2.5.5 AA = 24px)."
+    },
+    {
+      "runtimeCssVar": "--io-ease-snappy",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Snappy easing (cubic-bezier(0.075, 0.82, 0.165, 1)) for button hover."
+    },
+    {
+      "runtimeCssVar": "--io-ease-standard",
+      "disposition": "documented",
+      "documentationScope": "app-css-runtime",
+      "tokenPath": null,
+      "canonicalCssVar": null,
+      "notes": "Standard easing function (ease)."
     }
   ]
 }

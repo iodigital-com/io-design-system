@@ -22,9 +22,8 @@ import type { IoBadgeVariant, IoBadgeAppearance, IoBadgeSize } from './types';
 })
 export class IoBadge {
   /**
-   * Semantic colour variant.
-   * Replaces legacy brand-colour names (beige, rouge, etc.).
-   * Legacy values are still accepted for backwards compatibility.
+   * Semantic colour variant. Accepts semantic values (primary, neutral, positive, negative, etc.)
+   * and brand-colour names (beige, rouge, orange, etc.).
    */
   @Prop({ reflect: true }) variant: IoBadgeVariant = 'primary';
 

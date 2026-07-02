@@ -42,10 +42,8 @@ import type { IoSelectOption, IoSelectOptionGroup, IoSelectSize, IoSelectChangeD
  *   </io-optgroup>
  * </io-select>
  *
- * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
- *   Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
- *   optional search filter, and full FACE form participation.
- *   The single-select native and custom modes are NOT deprecated.
+ * For multi-value selection use `io-multi-select`, which provides dedicated chip display,
+ * optional search filter, and full FACE form participation.
  */
 @Component({
   tag: 'io-select',

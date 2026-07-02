@@ -18,7 +18,7 @@ import type { IoTagSize, IoTagVariant, IoTagAppearance } from './types';
  * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
  * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
  *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
- * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+ * 3. Dismissible: Use `<io-tag-dismissible>` for tags with a remove action.
  * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
  *
  * @example

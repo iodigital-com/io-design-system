@@ -30,7 +30,7 @@ const ROADMAP_ITEMS: RoadmapItem[] = [
     summary: 'New dedicated icon-only button component to replace the iconOnly prop on io-button.',
     status: 'In progress',
     owner: 'Component engineering',
-    outcome: 'Clean API separation between text buttons and icon controls; removes iconOnly deprecation from io-button.',
+    outcome: 'Clean API separation between text buttons and icon controls.',
     horizon: 'Now',
   },
   {

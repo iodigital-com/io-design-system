@@ -53,9 +53,6 @@ import type {
  *   <io-option value="de" label="Germany"></io-option>
  * </io-multi-select>
  *
- * @deprecated io-select[multiple] — use io-multi-select instead.
- *   Migration: replace `<io-select multiple custom label="…">` with
- *   `<io-multi-select label="…">` and the same child io-option elements.
  */
 @Component({
   tag: 'io-multi-select',

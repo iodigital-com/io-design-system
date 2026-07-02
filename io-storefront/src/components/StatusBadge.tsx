@@ -13,11 +13,5 @@ export function StatusBadge({ status }: { status?: ComponentStatus }) {
     );
   }
 
-  return (
-    <span
-      aria-label="Status: Deprecated"
-      role="img"
-      className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"
-    />
-  );
+  return null;
 }

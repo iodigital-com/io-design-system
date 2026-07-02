@@ -173,13 +173,13 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['none', 'error', 'success', 'warning'],
     defaultValue: 'none',
-    description: 'Validation state of the group. Controls border and message color. Recommended API — supersedes the deprecated error prop.',
+    description: 'Validation state of the group. Controls border and message color. Use in place of the error prop for full state support (error, success, warning).',
   },
   {
     name: 'message',
     type: 'string',
     defaultValue: '',
-    description: 'Validation or helper message shown below the group when state is not "none". Recommended API — supersedes the deprecated errorMessage prop.',
+    description: 'Validation or helper message shown below the group when state is not "none". Use in place of the errorMessage prop for state-aware messaging.',
   },
   {
     name: 'orientation',

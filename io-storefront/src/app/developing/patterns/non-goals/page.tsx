@@ -55,7 +55,7 @@ export default function PatternsNonGoalsPage() {
         <div className="space-y-4">
           <RuleCard label="io-heading is the sole display-level typographic primitive">
             Some design systems have shipped a separate display-level heading component for oversized
-            marketing headlines, only to deprecate it in favour of the standard heading component.
+            marketing headlines, only to later remove it in favour of the standard heading component.
             io-heading already covers the same use case — it accepts a size prop that scales from
             heading-6 through heading-1 and a display variant for above-fold hero text.
           </RuleCard>
@@ -72,8 +72,8 @@ export default function PatternsNonGoalsPage() {
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Do not request an <code style={{ fontSize: '0.85em' }}>io-display</code> component —
-              it would duplicate io-heading with no functional benefit. The pattern was deprecated
-              by other design systems for the same reason.
+              it would duplicate io-heading with no functional benefit. Other design systems removed
+              this pattern for the same reason.
             </DoOrDontCard>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function PatternsNonGoalsPage() {
           </RuleCard>
           <RuleCard label="Cite the reference design system in issues">
             When raising a request inspired by another design system, link to the specific component
-            and note whether it is stable, deprecated, or removed. This saves triage time and
+            and note whether it is stable, beta, or removed. This saves triage time and
             prevents re-surfacing already-resolved decisions like the three non-goals above.
           </RuleCard>
         </div>

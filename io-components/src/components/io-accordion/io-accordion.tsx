@@ -235,7 +235,7 @@ export class IoAccordion {
 
   /**
    * @slot - Default slot. Expanded panel content shown when the accordion is open.
-   * @slot heading - Trigger label text (deprecated — use `summary` slot instead). Falls back to the `heading` prop when not provided.
+   * @slot heading - Trigger label text. Falls back to the `heading` prop when not provided. Use the `summary` slot for rich trigger markup.
    * @slot summary - Free-form trigger content. Replaces the heading slot for rich trigger markup.
    * @slot summary-before - Content rendered as a flex sibling before the trigger button. Interactive children remain operable.
    * @slot summary-after - Content rendered as a flex sibling after the trigger button. Interactive children remain operable.
@@ -266,7 +266,7 @@ export class IoAccordion {
                 onKeyDown={this.handleTriggerKeyDown}
               >
                 <span class="accordion-title">
-                  {/* #1042: summary slot supersedes heading slot; heading slot kept for backwards compat */}
+                  {/* #1042: summary slot supports rich trigger content; heading slot supports plain text */}
                   <slot name="summary">
                     <slot name="heading">{this.heading}</slot>
                   </slot>

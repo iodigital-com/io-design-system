@@ -254,7 +254,7 @@ export namespace Components {
          */
         "size": IoBadgeSize;
         /**
-          * Semantic colour variant. Replaces legacy brand-colour names (beige, rouge, etc.). Legacy values are still accepted for backwards compatibility.
+          * Semantic colour variant. Accepts semantic values (primary, neutral, positive, negative, etc.) and brand-colour names (beige, rouge, orange, etc.).
           * @default 'primary'
          */
         "variant": IoBadgeVariant;
@@ -477,7 +477,7 @@ export namespace Components {
          */
         "icon"?: IoIconName;
         /**
-          * @deprecated Use `hideLabel` with an `icon` or `iconSource` prop instead. Renders a square icon-only button and suppresses text label rendering. Will be removed in the next minor release after the deprecation period.
+          * Renders a square icon-only button and suppresses text label rendering. Requires label prop or host aria-label for accessibility.
           * @default false
          */
         "iconOnly": boolean;
@@ -1940,9 +1940,6 @@ export namespace Components {
      *   <io-option value="be" label="Belgium"></io-option>
      *   <io-option value="de" label="Germany"></io-option>
      * </io-multi-select>
-     * @deprecated io-select[multiple] — use io-multi-select instead.
-     * Migration: replace `<io-select multiple custom label="…">` with
-     * `<io-multi-select label="…">` and the same child io-option elements.
      */
     interface IoMultiSelect {
         /**
@@ -2731,10 +2728,8 @@ export namespace Components {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
-     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
-     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * For multi-value selection use `io-multi-select`, which provides dedicated chip display,
      * optional search filter, and full FACE form participation.
-     * The single-select native and custom modes are NOT deprecated.
      */
     interface IoSelect {
         /**
@@ -2886,10 +2881,7 @@ export namespace Components {
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
      * <io-spinner context="blocking" label="Processing payment"></io-spinner>
-     * // Deprecated (still works with console.warn):
-     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
-     * // Preferred:
-     * // <io-spinner aria-label="Uploading file"></io-spinner>
+     * <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface IoSpinner {
         /**
@@ -3413,7 +3405,7 @@ export namespace Components {
      * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
      * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
      *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
-     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 3. Dismissible: Use `<io-tag-dismissible>` for tags with a remove action.
      * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
      * <io-tag variant="primary" selected>Amsterdam</io-tag>
@@ -4791,9 +4783,6 @@ declare global {
      *   <io-option value="be" label="Belgium"></io-option>
      *   <io-option value="de" label="Germany"></io-option>
      * </io-multi-select>
-     * @deprecated io-select[multiple] — use io-multi-select instead.
-     * Migration: replace `<io-select multiple custom label="…">` with
-     * `<io-multi-select label="…">` and the same child io-option elements.
      */
     interface HTMLIoMultiSelectElement extends Components.IoMultiSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoMultiSelectElementEventMap>(type: K, listener: (this: HTMLIoMultiSelectElement, ev: IoMultiSelectCustomEvent<HTMLIoMultiSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5139,10 +5128,8 @@ declare global {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
-     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
-     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * For multi-value selection use `io-multi-select`, which provides dedicated chip display,
      * optional search filter, and full FACE form participation.
-     * The single-select native and custom modes are NOT deprecated.
      */
     interface HTMLIoSelectElement extends Components.IoSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoSelectElementEventMap>(type: K, listener: (this: HTMLIoSelectElement, ev: IoSelectCustomEvent<HTMLIoSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5205,10 +5192,7 @@ declare global {
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
      * <io-spinner context="blocking" label="Processing payment"></io-spinner>
-     * // Deprecated (still works with console.warn):
-     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
-     * // Preferred:
-     * // <io-spinner aria-label="Uploading file"></io-spinner>
+     * <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface HTMLIoSpinnerElement extends Components.IoSpinner, HTMLStencilElement {
     }
@@ -5587,7 +5571,7 @@ declare global {
      * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
      * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
      *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
-     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 3. Dismissible: Use `<io-tag-dismissible>` for tags with a remove action.
      * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
      * <io-tag variant="primary" selected>Amsterdam</io-tag>
@@ -6048,7 +6032,7 @@ declare namespace LocalJSX {
          */
         "size"?: IoBadgeSize;
         /**
-          * Semantic colour variant. Replaces legacy brand-colour names (beige, rouge, etc.). Legacy values are still accepted for backwards compatibility.
+          * Semantic colour variant. Accepts semantic values (primary, neutral, positive, negative, etc.) and brand-colour names (beige, rouge, orange, etc.).
           * @default 'primary'
          */
         "variant"?: IoBadgeVariant;
@@ -6279,7 +6263,7 @@ declare namespace LocalJSX {
          */
         "icon"?: IoIconName;
         /**
-          * @deprecated Use `hideLabel` with an `icon` or `iconSource` prop instead. Renders a square icon-only button and suppresses text label rendering. Will be removed in the next minor release after the deprecation period.
+          * Renders a square icon-only button and suppresses text label rendering. Requires label prop or host aria-label for accessibility.
           * @default false
          */
         "iconOnly"?: boolean;
@@ -7773,9 +7757,6 @@ declare namespace LocalJSX {
      *   <io-option value="be" label="Belgium"></io-option>
      *   <io-option value="de" label="Germany"></io-option>
      * </io-multi-select>
-     * @deprecated io-select[multiple] — use io-multi-select instead.
-     * Migration: replace `<io-select multiple custom label="…">` with
-     * `<io-multi-select label="…">` and the same child io-option elements.
      */
     interface IoMultiSelect {
         /**
@@ -8600,10 +8581,8 @@ declare namespace LocalJSX {
      *     <io-option value="alice" label="Alice Smith"></io-option>
      *   </io-optgroup>
      * </io-select>
-     * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
-     * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+     * For multi-value selection use `io-multi-select`, which provides dedicated chip display,
      * optional search filter, and full FACE form participation.
-     * The single-select native and custom modes are NOT deprecated.
      */
     interface IoSelect {
         /**
@@ -8763,10 +8742,7 @@ declare namespace LocalJSX {
      * @example <io-spinner></io-spinner>
      * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
      * <io-spinner context="blocking" label="Processing payment"></io-spinner>
-     * // Deprecated (still works with console.warn):
-     * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
-     * // Preferred:
-     * // <io-spinner aria-label="Uploading file"></io-spinner>
+     * <io-spinner aria-label="Uploading file"></io-spinner>
      */
     interface IoSpinner {
         /**
@@ -9326,7 +9302,7 @@ declare namespace LocalJSX {
      * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
      * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
      *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
-     * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+     * 3. Dismissible: Use `<io-tag-dismissible>` for tags with a remove action.
      * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
      * @example <io-tag>Design</io-tag>
      * <io-tag variant="primary" selected>Amsterdam</io-tag>
@@ -10937,9 +10913,6 @@ declare module "@stencil/core" {
              *   <io-option value="be" label="Belgium"></io-option>
              *   <io-option value="de" label="Germany"></io-option>
              * </io-multi-select>
-             * @deprecated io-select[multiple] — use io-multi-select instead.
-             * Migration: replace `<io-select multiple custom label="…">` with
-             * `<io-multi-select label="…">` and the same child io-option elements.
              */
             "io-multi-select": LocalJSX.IntrinsicElements["io-multi-select"] & JSXBase.HTMLAttributes<HTMLIoMultiSelectElement>;
             /**
@@ -11119,10 +11092,8 @@ declare module "@stencil/core" {
              *     <io-option value="alice" label="Alice Smith"></io-option>
              *   </io-optgroup>
              * </io-select>
-             * @deprecated The `multiple` + `custom` mode on io-select is deprecated as of v2.x.
-             * Migrate to `io-multi-select` for dedicated multi-value selection with removable chips,
+             * For multi-value selection use `io-multi-select`, which provides dedicated chip display,
              * optional search filter, and full FACE form participation.
-             * The single-select native and custom modes are NOT deprecated.
              */
             "io-select": LocalJSX.IntrinsicElements["io-select"] & JSXBase.HTMLAttributes<HTMLIoSelectElement>;
             /**
@@ -11154,10 +11125,7 @@ declare module "@stencil/core" {
              * @example <io-spinner></io-spinner>
              * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
              * <io-spinner context="blocking" label="Processing payment"></io-spinner>
-             * // Deprecated (still works with console.warn):
-             * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
-             * // Preferred:
-             * // <io-spinner aria-label="Uploading file"></io-spinner>
+             * <io-spinner aria-label="Uploading file"></io-spinner>
              */
             "io-spinner": LocalJSX.IntrinsicElements["io-spinner"] & JSXBase.HTMLAttributes<HTMLIoSpinnerElement>;
             /**
@@ -11362,7 +11330,7 @@ declare module "@stencil/core" {
              * 1. Toggle chip (default): `<io-tag>Label</io-tag>` — renders as `<button aria-pressed>`
              * 2. Display chip: Add `role="none"` externally; wrap in `<ul role="listbox">` for a
              *    selectable group. Use `aria-selected` via role="option" for listbox patterns.
-             * 3. Removable: `<io-tag removable>` — deprecated. Use `<io-tag-dismissible>` instead.
+             * 3. Dismissible: Use `<io-tag-dismissible>` for tags with a remove action.
              * 4. Navigation chip: slot an `<a>` or `<button>` inside `<io-tag interactive="false">`.
              * @example <io-tag>Design</io-tag>
              * <io-tag variant="primary" selected>Amsterdam</io-tag>

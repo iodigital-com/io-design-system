@@ -9,19 +9,19 @@
     "cssVar": "--io-accordion-icon-bar-thickness",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Thickness of the +/− icon bars. Override to adjust the visual weight of the toggle icon."
+    "description": "Thickness of the +/\u2212 icon bars. Override to adjust the visual weight of the toggle icon."
   },
   {
     "cssVar": "--io-accordion-icon-bar-inset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Inset distance of the +/− icon bars from the edge of the icon container."
+    "description": "Inset distance of the +/\u2212 icon bars from the edge of the icon container."
   },
   {
     "cssVar": "--io-accordion-icon-bar-axis-offset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Axis offset that centres the vertical/horizontal bars of the +/− icon."
+    "description": "Axis offset that centres the vertical/horizontal bars of the +/\u2212 icon."
   },
   {
     "cssVar": "--io-accordion-icon-horizontal-collapsed-side",
@@ -33,7 +33,7 @@
     "cssVar": "--io-color-primary",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Global primary brand color. Used for the +/− icon fill."
+    "description": "Global primary brand color. Used for the +/\u2212 icon fill."
   },
   {
     "cssVar": "--io-focus-ring-active",
@@ -69,19 +69,19 @@
     "cssVar": "--io-line-height-relaxed",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Fixed line-height scale — relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-motion-base",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Composed motion shorthand — combines --io-duration-md with default easing. Both split-token and composed forms are supported."
+    "description": "Composed motion shorthand \u2014 combines --io-duration-md with default easing. Both split-token and composed forms are supported."
   },
   {
     "cssVar": "--io-motion-slow",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Composed motion shorthand — combines --io-duration-lg with --io-ease-in-out. Both split-token and composed forms are supported."
+    "description": "Composed motion shorthand \u2014 combines --io-duration-lg with --io-ease-in-out. Both split-token and composed forms are supported."
   },
   {
     "cssVar": "--io-space-16",
@@ -177,19 +177,19 @@
     "cssVar": "--io-accordion-icon-bar-axis-offset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Axis offset that centres the vertical/horizontal bars of the +/− icon."
+    "description": "Axis offset that centres the vertical/horizontal bars of the +/\u2212 icon."
   },
   {
     "cssVar": "--io-accordion-icon-bar-inset",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Inset distance of the +/− icon bars from the edge of the icon container."
+    "description": "Inset distance of the +/\u2212 icon bars from the edge of the icon container."
   },
   {
     "cssVar": "--io-accordion-icon-bar-thickness",
     "classification": "public-api",
     "component": "io-accordion",
-    "description": "Thickness of the +/− icon bars. Override to adjust the visual weight of the toggle icon."
+    "description": "Thickness of the +/\u2212 icon bars. Override to adjust the visual weight of the toggle icon."
   },
   {
     "cssVar": "--io-accordion-icon-horizontal-collapsed-side",
@@ -333,7 +333,7 @@
     "cssVar": "--io-breadcrumb-separator",
     "classification": "public-api",
     "component": "io-breadcrumb",
-    "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '›')."
+    "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '\u203a')."
   },
   {
     "cssVar": "--io-breadcrumb-separator-color",
@@ -627,7 +627,7 @@
     "cssVar": "--io-carousel-slides-per-page",
     "classification": "internal",
     "component": "io-carousel",
-    "description": "Internal counter set by the component via inline style when slidesPerPage is a number > 1. Used in calc() to size each slide to fill exactly 1/N of the visible track. Do not override directly — use the slidesPerPage prop."
+    "description": "Internal counter set by the component via inline style when slidesPerPage is a number > 1. Used in calc() to size each slide to fill exactly 1/N of the visible track. Do not override directly \u2014 use the slidesPerPage prop."
   },
   {
     "cssVar": "--io-bg-card",
@@ -783,7 +783,7 @@
     "cssVar": "--io-color-primary",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Global primary brand color. Used for the +/− icon fill."
+    "description": "Global primary brand color. Used for the +/\u2212 icon fill."
   },
   {
     "cssVar": "--io-color-primary-hover",
@@ -886,6 +886,30 @@
     "classification": "public-api",
     "component": "io-divider",
     "description": "Thickness of the divider line."
+  },
+  {
+    "cssVar": "--io-fieldset-border-error-width",
+    "classification": "public-api",
+    "component": "io-fieldset",
+    "description": "Width of the left error border applied when error=true. Pairs with border-color to satisfy WCAG 1.4.1 (use of colour)."
+  },
+  {
+    "cssVar": "--io-fieldset-error-color",
+    "classification": "public-api",
+    "component": "io-fieldset",
+    "description": "Color of the error message text and error border. Defaults to --io-color-error."
+  },
+  {
+    "cssVar": "--io-fieldset-gap",
+    "classification": "public-api",
+    "component": "io-fieldset",
+    "description": "Gap between slotted children in the fieldset body. Defaults to --io-space-3."
+  },
+  {
+    "cssVar": "--io-fieldset-legend-color",
+    "classification": "public-api",
+    "component": "io-fieldset",
+    "description": "Color of the legend text. Defaults to --io-color-neutral-900."
   },
   {
     "cssVar": "--io-duration-lg",
@@ -1041,7 +1065,7 @@
     "cssVar": "--io-line-height-relaxed",
     "classification": "internal",
     "component": "io-accordion",
-    "description": "Fixed line-height scale — relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-modal-max-height",
@@ -1611,7 +1635,7 @@
     "cssVar": "--io-breadcrumb-separator",
     "classification": "public-api",
     "component": "io-breadcrumb",
-    "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '›')."
+    "description": "CSS content value for the separator character between items. Default: '/'. Override with any CSS string (e.g. '\u203a')."
   },
   {
     "cssVar": "--io-breadcrumb-font-size",
@@ -1803,68 +1827,68 @@
     "cssVar": "--io-space-fluid-2xs",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing 2xs: clamp(1px → 2px). Use for micro-gap in dense icon clusters."
+    "description": "Fluid spacing 2xs: clamp(1px \u2192 2px). Use for micro-gap in dense icon clusters."
   },
   {
     "cssVar": "--io-space-fluid-xs",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing xs: clamp(4px → 8px). Use for tight inline gaps."
+    "description": "Fluid spacing xs: clamp(4px \u2192 8px). Use for tight inline gaps."
   },
   {
     "cssVar": "--io-space-fluid-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing sm: clamp(8px → 16px). Use for component-level gutters."
+    "description": "Fluid spacing sm: clamp(8px \u2192 16px). Use for component-level gutters."
   },
   {
     "cssVar": "--io-space-fluid-md",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing md: clamp(16px → 32px). Use for section-level gutters."
+    "description": "Fluid spacing md: clamp(16px \u2192 32px). Use for section-level gutters."
   },
   {
     "cssVar": "--io-space-fluid-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing lg: clamp(24px → 48px). Use for layout block spacing."
+    "description": "Fluid spacing lg: clamp(24px \u2192 48px). Use for layout block spacing."
   },
   {
     "cssVar": "--io-space-fluid-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing xl: clamp(32px → 64px). Use for page section separators."
+    "description": "Fluid spacing xl: clamp(32px \u2192 64px). Use for page section separators."
   },
   {
     "cssVar": "--io-space-fluid-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid spacing 2xl: clamp(48px → 96px). Use for hero/major section separators."
+    "description": "Fluid spacing 2xl: clamp(48px \u2192 96px). Use for hero/major section separators."
   },
   {
     "cssVar": "--io-space-14",
     "classification": "internal",
     "component": "global",
-    "description": "Additional static spacing step — 56px. Supported v1 token outside the main 4× scale."
+    "description": "Additional static spacing step \u2014 56px. Supported v1 token outside the main 4\u00d7 scale."
   },
   {
     "cssVar": "--io-space-15",
     "classification": "internal",
     "component": "global",
-    "description": "Additional static spacing step — 60px. Supported v1 token outside the main 4× scale."
+    "description": "Additional static spacing step \u2014 60px. Supported v1 token outside the main 4\u00d7 scale."
   },
   {
     "cssVar": "--io-border-radius-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius 2xl (16px). Target components: io-banner, io-toast-item — overlays and inline feedback.",
+    "description": "Border radius 2xl (16px). Target components: io-banner, io-toast-item \u2014 overlays and inline feedback.",
     "usage": "io-banner, io-toast-item"
   },
   {
     "cssVar": "--io-border-radius-3xl",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius 3xl (24px). Target components: io-modal, io-sheet, io-flyout, io-drawer — card-like containers and dialogs.",
+    "description": "Border radius 3xl (24px). Target components: io-modal, io-sheet, io-flyout, io-drawer \u2014 card-like containers and dialogs.",
     "usage": "io-modal, io-sheet, io-flyout, io-drawer"
   },
   {
@@ -1878,62 +1902,62 @@
     "cssVar": "--io-border-radius-full",
     "classification": "internal",
     "component": "global",
-    "description": "Border radius full (9999px). Fully rounded — pill shapes, switch tracks. Canonical name; --io-border-radius-pill is an alias — both names are supported.",
+    "description": "Border radius full (9999px). Fully rounded \u2014 pill shapes, switch tracks. Canonical name; --io-border-radius-pill is an alias \u2014 both names are supported.",
     "usage": "io-switch, io-tag, io-button (pill variant)"
   },
   {
     "cssVar": "--io-border-radius-pill",
     "classification": "internal",
     "component": "global",
-    "description": "Alias for --io-border-radius-full — pill shape (9999px). Both names are supported."
+    "description": "Alias for --io-border-radius-full \u2014 pill shape (9999px). Both names are supported."
   },
   {
     "cssVar": "--io-font-size-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size lg: clamp(18px → 20px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size lg: clamp(18px \u2192 20px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size xl: clamp(20px → 24px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size xl: clamp(20px \u2192 24px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-2xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 2xl: clamp(24px → 30px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 2xl: clamp(24px \u2192 30px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-3xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 3xl: clamp(30px → 36px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 3xl: clamp(30px \u2192 36px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-4xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 4xl: clamp(32px → 40px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 4xl: clamp(32px \u2192 40px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-5xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 5xl: clamp(36px → 48px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 5xl: clamp(36px \u2192 48px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-6xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 6xl: clamp(48px → 64px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 6xl: clamp(48px \u2192 64px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-font-size-7xl",
     "classification": "internal",
     "component": "global",
-    "description": "Fluid font size 7xl: clamp(64px → 80px). Responsive via CSS clamp(); static at ≤375px and ≥1440px."
+    "description": "Fluid font size 7xl: clamp(64px \u2192 80px). Responsive via CSS clamp(); static at \u2264375px and \u22651440px."
   },
   {
     "cssVar": "--io-line-height-dynamic",
@@ -1945,49 +1969,49 @@
     "cssVar": "--io-line-height-none",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — none (1). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 none (1). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-tight",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — tight (1.2). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 tight (1.2). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-snug",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — snug (1.25). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 snug (1.25). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-normal",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — normal (1.5). Use for WCAG 1.4.12-critical body paragraphs requiring guaranteed 1.5× ratio."
+    "description": "Fixed line-height scale \u2014 normal (1.5). Use for WCAG 1.4.12-critical body paragraphs requiring guaranteed 1.5\u00d7 ratio."
   },
   {
     "cssVar": "--io-line-height-relaxed",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 relaxed (1.6). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-loose",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — loose (1.75). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 loose (1.75). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-display",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — display (1.1). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
+    "description": "Fixed line-height scale \u2014 display (1.1). Supported v1 token; prefer --io-line-height-dynamic for fluid sizing."
   },
   {
     "cssVar": "--io-line-height-heading",
     "classification": "internal",
     "component": "global",
-    "description": "Fixed line-height scale — heading (1.2). io-heading uses --io-line-height-dynamic; this is a supported fallback alias."
+    "description": "Fixed line-height scale \u2014 heading (1.2). io-heading uses --io-line-height-dynamic; this is a supported fallback alias."
   },
   {
     "cssVar": "--io-density-spacing-y",
@@ -2035,31 +2059,31 @@
     "cssVar": "--io-duration-xs",
     "classification": "internal",
     "component": "global",
-    "description": "Extra-small duration (100ms). Bare time value — compose with an easing scale token via getTransition()."
+    "description": "Extra-small duration (100ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
   },
   {
     "cssVar": "--io-duration-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Small duration (200ms). Bare time value — compose with an easing scale token via getTransition()."
+    "description": "Small duration (200ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
   },
   {
     "cssVar": "--io-duration-md",
     "classification": "internal",
     "component": "global",
-    "description": "Medium duration (300ms). Bare time value — compose with an easing scale token via getTransition()."
+    "description": "Medium duration (300ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
   },
   {
     "cssVar": "--io-duration-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Large duration (500ms). Bare time value — compose with an easing scale token via getTransition()."
+    "description": "Large duration (500ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
   },
   {
     "cssVar": "--io-duration-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Extra-large duration (1200ms). Bare time value — compose with an easing scale token via getTransition()."
+    "description": "Extra-large duration (1200ms). Bare time value \u2014 compose with an easing scale token via getTransition()."
   },
   {
     "cssVar": "--io-ease-in",
@@ -2227,19 +2251,19 @@
     "cssVar": "--io-blur-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Blur scale primitive — small (8px). Use as backdrop-filter: blur(var(--io-blur-sm)) for subtle glassmorphism."
+    "description": "Blur scale primitive \u2014 small (8px). Use as backdrop-filter: blur(var(--io-blur-sm)) for subtle glassmorphism."
   },
   {
     "cssVar": "--io-blur-md",
     "classification": "internal",
     "component": "global",
-    "description": "Blur scale primitive — medium (16px). Use as backdrop-filter: blur(var(--io-blur-md)) for moderate frosted-glass effects."
+    "description": "Blur scale primitive \u2014 medium (16px). Use as backdrop-filter: blur(var(--io-blur-md)) for moderate frosted-glass effects."
   },
   {
     "cssVar": "--io-blur-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Blur scale primitive — large (32px). Alias: --io-blur-frosted."
+    "description": "Blur scale primitive \u2014 large (32px). Alias: --io-blur-frosted."
   },
   {
     "cssVar": "--io-blur-frosted",
@@ -2401,31 +2425,31 @@
     "cssVar": "--io-control-size-xs",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — xs (24px). Used for chips, compact UI elements. Resolves to 1.5rem."
+    "description": "Canonical interactive control height scale \u2014 xs (24px). Used for chips, compact UI elements. Resolves to 1.5rem."
   },
   {
     "cssVar": "--io-control-size-sm",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — sm (32px). Used for small controls, stepper circles. Resolves to 2rem."
+    "description": "Canonical interactive control height scale \u2014 sm (32px). Used for small controls, stepper circles. Resolves to 2rem."
   },
   {
     "cssVar": "--io-control-size-md",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — md (40px). Default input and button height. Resolves to 2.5rem."
+    "description": "Canonical interactive control height scale \u2014 md (40px). Default input and button height. Resolves to 2.5rem."
   },
   {
     "cssVar": "--io-control-size-lg",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — lg (48px). Large controls, pin-code slots. Resolves to 3rem."
+    "description": "Canonical interactive control height scale \u2014 lg (48px). Large controls, pin-code slots. Resolves to 3rem."
   },
   {
     "cssVar": "--io-control-size-xl",
     "classification": "internal",
     "component": "global",
-    "description": "Canonical interactive control height scale — xl (64px). XL button, hero controls. Resolves to 4rem."
+    "description": "Canonical interactive control height scale \u2014 xl (64px). XL button, hero controls. Resolves to 4rem."
   },
   {
     "cssVar": "--io-skeleton-duration",

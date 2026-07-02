@@ -195,6 +195,14 @@ export const sitemap: NavSection[] = [
         related: ['io-icon', 'io-badge', 'io-tag'],
       },
       {
+        label: 'Fieldset',
+        href: '/components/io-fieldset/configurator',
+        status: 'beta',
+        slug: 'io-fieldset',
+        description: 'Generic fieldset primitive for grouping mixed form controls or content sections under a shared legend. Use when io-checkbox-group or io-radio-group do not fit.',
+        related: ['io-checkbox-group', 'io-radio-group', 'io-input'],
+      },
+      {
         label: 'Flyout',
         href: '/components/io-flyout/configurator',
         status: 'beta',

@@ -22,6 +22,7 @@ export type IoTagNames =
   | 'io-checkbox-group'
   | 'io-divider'
   | 'io-drawer'
+  | 'io-fieldset'
   | 'io-flag'
   | 'io-flyout'
   | 'io-form-field'

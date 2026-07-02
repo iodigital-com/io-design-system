@@ -686,6 +686,12 @@
   --io-divider-gap:                var(--io-space-3);
   --io-divider-label-size:         var(--io-font-size-sm);
 
+  /* Fieldset */
+  --io-fieldset-gap:                var(--io-space-3);          /* public-api: gap between slotted children */
+  --io-fieldset-legend-color:       var(--io-color-neutral-900); /* public-api: legend text color */
+  --io-fieldset-error-color:        var(--io-color-error);       /* public-api: error message and border color */
+  --io-fieldset-border-error-width: 2px;                         /* public-api: WCAG 1.4.1 error border width */
+
   /* Spinner */
   --io-spinner-duration:           700ms;   /* public-api: one full rotation duration */
   --io-spinner-duration-reduced:   1500ms;

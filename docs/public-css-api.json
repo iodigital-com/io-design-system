@@ -2762,5 +2762,83 @@
     "classification": "public-api",
     "component": "io-app-shell",
     "description": "Width of the sidebar-end panel. Defaults to 320px."
+  },
+  {
+    "cssVar": "--io-product-tile-media-radius",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Border radius of the product image container. Defaults to --io-border-radius-sm."
+  },
+  {
+    "cssVar": "--io-product-tile-media-bg",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Background color of the product image container when no image is present. Defaults to --io-bg-surface."
+  },
+  {
+    "cssVar": "--io-product-tile-like-size",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Width and height of the like (wishlist) toggle button. Minimum 44px for WCAG 2.5.8 touch target compliance."
+  },
+  {
+    "cssVar": "--io-product-tile-like-bg",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Background color of the like button. Defaults to --io-bg-surface."
+  },
+  {
+    "cssVar": "--io-product-tile-like-bg-hover",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Background color of the like button on hover. Defaults to --io-bg-raised."
+  },
+  {
+    "cssVar": "--io-product-tile-like-color",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Icon color for the like button in its default (not liked) state. Defaults to --io-text-primary."
+  },
+  {
+    "cssVar": "--io-product-tile-like-color-liked",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Icon color for the like button in its active (liked) state. Defaults to --io-color-rouge."
+  },
+  {
+    "cssVar": "--io-product-tile-heading-size",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Font size of the product tile heading. Defaults to --io-font-size-base."
+  },
+  {
+    "cssVar": "--io-product-tile-price-size",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Font size of the current/sale price. Defaults to --io-font-size-base."
+  },
+  {
+    "cssVar": "--io-product-tile-price-color",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Color of the current price text (non-sale state). Defaults to --io-text-primary."
+  },
+  {
+    "cssVar": "--io-product-tile-price-sale-color",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Color of the sale price text. Defaults to --io-color-rouge."
+  },
+  {
+    "cssVar": "--io-product-tile-price-original-size",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Font size of the original (strikethrough) price. Defaults to --io-font-size-sm."
+  },
+  {
+    "cssVar": "--io-product-tile-price-original-color",
+    "classification": "public-api",
+    "component": "io-product-tile",
+    "description": "Color of the original (strikethrough) price text. Defaults to --io-text-secondary."
   }
 ]

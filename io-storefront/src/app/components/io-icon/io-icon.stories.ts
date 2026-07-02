@@ -239,7 +239,7 @@ export const iconStoryCharts: Story<'io-icon'> = {
 export const iconStoryDesign: Story<'io-icon'> = {
   state: { properties: { size: 'md' } },
   generator: () =>
-    (['crop','frame','layers','layers-2','layout-dashboard','layout-grid','layout-list','layout-panel-left','palette','pencil-ruler','proportions','ruler','swatch-book','view','wand','wand-sparkles'] as const).map((name) => ({
+    (['crop','frame','layers','layers-2','layout-dashboard','layout-grid','layout-list','layout-panel-left','palette','pencil-ruler','proportions','ruler','sparkles','swatch-book','view','wand','wand-sparkles'] as const).map((name) => ({
       tag: 'io-icon' as const,
       properties: { name, size: 'md', label: name },
     })),

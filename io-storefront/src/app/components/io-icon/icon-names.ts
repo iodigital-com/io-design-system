@@ -250,6 +250,7 @@ export const IO_ICON_NAMES = [
   'pencil-ruler',
   'proportions',
   'ruler',
+  'sparkles',
   'swatch-book',
   'view',
   'wand',

@@ -144,6 +144,13 @@ export class IoCheckbox {
     return newVal !== oldVal;
   }
 
+  componentDidRender() {
+    const input = this.el?.shadowRoot?.querySelector<HTMLInputElement>('input');
+    if (input) {
+      input.indeterminate = this.indeterminate;
+    }
+  }
+
   componentDidLoad() {
     this.applyExternalLabelAOM();
     // Set initial indeterminate state via ref — indeterminate is a JS-only property

@@ -166,6 +166,12 @@ export class IoDrawer {
         '[io-drawer] Missing accessible label: supply a `heading` prop or an `aria-label` attribute on the element.',
       );
     }
+
+    if (this.placement === 'bottom' && !this.dismissButton && !this.closeOnBackdrop) {
+      console.error(
+        '[io-drawer] Inaccessible configuration: placement="bottom" with dismissButton=false and closeOnBackdrop=false leaves swipe-to-dismiss as the only close path, which is inaccessible for users who cannot perform swipe gestures (WCAG 2.5.7, 2.1.1). Set dismissButton=true or closeOnBackdrop=true.',
+      );
+    }
   }
 
   componentDidLoad() {
@@ -251,8 +257,9 @@ export class IoDrawer {
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
+    const isTarget = ev.target === ev.currentTarget;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
+    const clickedBackdrop = isTarget || isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
       this._userInitiatedClose = true;
       this.open = false;

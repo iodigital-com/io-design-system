@@ -213,8 +213,8 @@ export class IoInput {
       console.warn('[io-input] hideLabel=true requires a non-empty label for accessibility.');
     }
     if (this.counter && this.maxLength != null) {
-      const remaining = this.maxLength - (this.value ?? '').length;
-      this.announcedCounter = `${remaining} characters remaining`;
+      const currentLength = (this.value ?? '').length;
+      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
     }
   }
 
@@ -362,6 +362,8 @@ export class IoInput {
   /** Check validity and show browser validation UI if invalid. Returns true if valid. */
   @Method()
   async reportValidity(): Promise<boolean> {
+    this.touched = true;
+    (this as any).syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 
@@ -373,10 +375,8 @@ export class IoInput {
     this.input.emit(ev);
     if (this.counter && this.maxLength != null) {
       if (this.counterTimer) clearTimeout(this.counterTimer);
-      const remaining = this.maxLength - (this.value ?? '').length;
-      this.counterTimer = setTimeout(() => {
-        this.announcedCounter = `${remaining} characters remaining`;
-      }, 1000);
+      const currentLength = (this.value ?? '').length;
+      this.announcedCounter = `${currentLength} of ${this.maxLength} characters`;
     }
   };
 

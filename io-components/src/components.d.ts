@@ -29,7 +29,7 @@ import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 import { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
-import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+import { IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -79,7 +79,7 @@ export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 export { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
-export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
+export { IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -1874,6 +1874,11 @@ export namespace Components {
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
         "aria"?: Record<string, string>;
+        /**
+          * Backdrop style behind the modal dialog. - blur:    backdrop-filter blur (default) - shading: solid overlay color only
+          * @default 'blur'
+         */
+        "backdrop": IoModalBackdrop;
         /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -7701,6 +7706,11 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
+          * Backdrop style behind the modal dialog. - blur:    backdrop-filter blur (default) - shading: solid overlay color only
+          * @default 'blur'
+         */
+        "backdrop"?: IoModalBackdrop;
+        /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
          */
@@ -10131,6 +10141,7 @@ declare namespace LocalJSX {
         "closeOnBackdrop": boolean;
         "description": string;
         "background": IoModalBackground;
+        "backdrop": IoModalBackdrop;
         "dismissButton": boolean;
         "preventTopLayer": boolean;
     }

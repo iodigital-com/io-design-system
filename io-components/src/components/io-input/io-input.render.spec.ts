@@ -17,6 +17,7 @@ import { h } from '@stencil/core';
 
 import { IoInput } from './io-input';
 import { Required } from '../common/required/Required';
+import { StateIcon } from '../common/state-icon/StateIcon';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -721,11 +722,12 @@ describe('io-input — render() error icon div', () => {
     vi.mocked(h).mockClear();
     c.render();
 
-    const iconDiv = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'div' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-state-icon'),
+    // StateIcon is a FunctionalComponent — h = vi.fn() captures h(StateIcon, {state:'error'})
+    // but does not expand the inner h('div', ...) call.
+    const stateIconCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === StateIcon && (call[1] as any)?.state === 'error',
     );
-    expect(iconDiv).toBeDefined();
-    expect(iconDiv?.[1]?.['aria-hidden']).toBe('true');
+    expect(stateIconCall).toBeDefined();
   });
 
   it('does not render the state icon div when state=none', () => {
@@ -734,10 +736,10 @@ describe('io-input — render() error icon div', () => {
     vi.mocked(h).mockClear();
     c.render();
 
-    const iconDiv = vi.mocked(h).mock.calls.find(
-      (call) => call[0] === 'div' && typeof call[1]?.class === 'string' && (call[1].class as string).includes('input-state-icon'),
+    const stateIconCall = vi.mocked(h).mock.calls.find(
+      (call) => call[0] === StateIcon,
     );
-    expect(iconDiv).toBeUndefined();
+    expect(stateIconCall).toBeUndefined();
   });
 });
 

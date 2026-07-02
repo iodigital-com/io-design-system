@@ -67,4 +67,23 @@ describe('io-input — a11y (ARIA patterns)', () => {
     `;
     await renderAndCheckA11y(el);
   });
+
+  it('email input with decorative indicator icon (aria-hidden) has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div>
+        <label for="i6">Email address</label>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span aria-hidden="true" style="display:flex;align-items:center;width:20px;height:20px;">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+            </svg>
+          </span>
+          <input type="email" id="i6" />
+        </div>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
 });

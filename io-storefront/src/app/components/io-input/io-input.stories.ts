@@ -105,6 +105,24 @@ export const inputStoryCounter: Story<'io-input'> = {
   ],
 };
 
+export const inputStoryIndicator: Story<'io-input'> = {
+  state: { properties: {} },
+  generator: () => [
+    {
+      tag: 'io-input' as const,
+      properties: { label: 'Email address', type: 'email', indicator: 'mail', placeholder: 'you@example.com' },
+    },
+    {
+      tag: 'io-input' as const,
+      properties: { label: 'Phone number', type: 'tel', indicator: 'phone', placeholder: '+31 6 00000000' },
+    },
+    {
+      tag: 'io-input' as const,
+      properties: { label: 'Website URL', type: 'url', indicator: 'link', placeholder: 'https://example.com' },
+    },
+  ],
+};
+
 export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'label',

@@ -9,6 +9,7 @@ import {
   inputStoryConstraints,
   inputStoryLoading,
   inputStoryCounter,
+  inputStoryIndicator,
   inputPropDefinitions,
 } from './io-input.stories';
 
@@ -314,6 +315,41 @@ describe('io-input storefront stories', () => {
 
     it('does not throw', () => {
       expect(() => inputStoryCounter.generator?.()).not.toThrow();
+    });
+  });
+
+  describe('inputStoryIndicator (named story)', () => {
+    it('generator with no args returns non-empty array', () => {
+      const els = inputStoryIndicator.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = inputStoryIndicator.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('does not throw', () => {
+      expect(() => inputStoryIndicator.generator?.()).not.toThrow();
+    });
+
+    it('returns three indicator variants (email, tel, url)', () => {
+      const els = inputStoryIndicator.generator?.() ?? [];
+      expect(els.length).toBe(3);
+    });
+
+    it('each element uses io-input tag', () => {
+      const els = inputStoryIndicator.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect((el as { tag: string }).tag).toBe('io-input');
+        }
+      }
     });
   });
 });

@@ -1,5 +1,462 @@
 # @iodigital-com/components
 
+## 1.8.0
+
+### Minor Changes
+
+- bbc4ccc: feat(io-accordion): add keyboard navigation, defaultExpanded coordination, summary slots, frosted background, and indent prop
+
+  - #1087: ArrowDown/ArrowUp moves focus between sibling accordion headers; Home/End jump to first/last; disabled headers are skipped
+  - #1066: When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`, only the first in DOM order remains open after mount
+  - #1042: New `summary`, `summary-before`, and `summary-after` slots — `summary-before`/`summary-after` render outside the trigger button so interactive children (edit/delete buttons) remain independently operable
+  - #1029: New `frosted` value for the `background` prop — applies `backdrop-filter: blur(12px)` for legibility over image/video backdrops; customisable via `--io-accordion-bg-frosted`
+  - #1023: New `indent` boolean prop — indents panel content to align with the summary text column past the expand/collapse icon; customisable via `--io-accordion-indent`
+
+- 0dbcc87: Split motion tokens into separate duration (--io-duration-xs/sm/md/lg/xl) and easing (--io-ease-in/out/in-out) scales. Added getTransition/getAnimation/getEnterTransform composition helpers in src/utils/motion.ts that wrap durations with --io-transition-duration/--io-animation-duration override hooks for consumer and test control. Added a single global @media (prefers-reduced-motion: reduce) block in app.css that collapses all duration tokens to 0ms, removing the need for per-component media blocks. Replaced the single --io-motion-entrance-offset-y token with four directional variants (--io-motion-entrance-offset-up/down/start/end). Migrated io-button, io-modal, and io-spinner styles to the new token scale. Added --io-spinner-duration public token. Vitest setup now injects 0s motion overrides globally for deterministic specs. Legacy composed tokens (--io-motion-fast, --io-motion-base, etc.) are kept as deprecated aliases for one release cycle.
+- 618daaa: feat(io-select, io-multi-select): add typeahead letter search (#930), PageUp/PageDown navigation (#938), native Popover API migration with autoUpdate (#945), value prop widened to string | number | null (#942), icon/description metadata on options (#928), event-based child registration replacing setTimeout SSR hack (#963, #920)
+- 5629a44: fix(io-drawer, io-modal): restore focus to trigger element on close (WCAG 2.4.3); include slotted footer elements in modal focus trap (#1091, #972)
+
+  - io-drawer: capture `focusTrigger` before `showModal()` on open; restore via `.focus()` on close
+  - io-modal: `setupFocusTrap()` now collects slotted light-DOM children via `slot.assignedElements({ flatten: true })` in addition to shadow-DOM focusables, so slot="footer" buttons are reachable by Tab
+
+- 7957c20: Add shared utility helpers, global CSS utilities, and new tokens.
+
+  - **sr-only utility** (#1082): new `getSrOnlyStyles()` helper in `utils/sr-only.ts` centralises the visually-hidden pattern; 12 component style files refactored to consume it; global `.io-sr-only` class added to `app.css`.
+  - **control-size scale** (#1119): new `--io-control-size-{xs,sm,md,lg,xl}` canonical token scale (24–64px); `--io-touch-target-min-size` duplicate removed; multi-select chip, stepper circle, and pin-code slot tokens now reference the scale.
+  - **utility classes** (#1095, #1144): new `.io-focus-visible`, `.io-skeleton` (with shimmer keyframe and reduced-motion path), `.io-prose-heading-{xs–xl}`, and `.io-prose-text-{xs–xl}` global utility classes in `app.css`; skeleton tokens `--io-skeleton-duration`, `--io-skeleton-bg-start`, `--io-skeleton-bg-end` added with dark-mode overrides.
+  - **top-layer controller** (#1150): new `utils/top-layer-controller.ts` — `createTopLayerController()` defers overlay close until exit transition finishes; feature-detects `transition-behavior: allow-discrete`; reduces-motion path is synchronous; fully unit-tested.
+  - **animateBar helper** (#1160): new `utils/animate-bar.ts` — `animateBar()` JS-driven Web Animations API helper for sliding tab indicators, segmented-control thumbs, and moving markers; reduced-motion path snaps instantly; fully unit-tested.
+
+- 305e816: feat(io-button): B27 enhancements — press feedback, token transitions, download prop, deprecate iconOnly, iconSource sizing, loading-finished announcement
+
+  - #1134 Add `scale(0.98)` `:active` press feedback on `.btn`; skipped under `prefers-reduced-motion`. Transition uses new `--io-duration-xs`/`--io-ease-out` tokens. translateY remains prohibited; scale is a separate primitive.
+  - #1153 Replace all hardcoded `500ms`/`150ms` values in `io-button-styles.ts` and `--io-button-group-transition` in `app.css` with new split duration/easing tokens (`--io-duration-xs`, `--io-duration-lg`, `--io-ease-snappy`, `--io-ease-standard`, `--io-ease-out`).
+  - #1101 Add `min-width`/`min-height: var(--io-button-sm-icon-only-min, 24px)` to `.btn--sm.btn--icon-only` so the sm icon-only button cannot be CSS-overridden below the WCAG 2.5.5 AA floor of 24px.
+  - #1065 Add `download` prop for anchor mode (`boolean true` → empty attribute, `string` → filename suggestion). Auto-set `rel="noopener noreferrer"` when `target="_blank"` and no `rel` is provided, matching `io-wordmark`.
+  - #1047 Deprecate `iconOnly` prop with a `console.warn` pointing to `hideLabel`. `hideLabel=true` + icon/iconSource now renders a square icon-only layout with an sr-only label span. `hideLabel=true` without any icon emits `console.error`.
+  - #1043 Size `iconSource` raw-SVG wrapper (`.btn__icon-wrap`) via `data-size` attribute so it matches `io-icon`'s size map at each button size, unifying visual sizing.
+  - #1110 Replace the transient live-region pattern with a stable `loadingAnnouncement` state (`'loading'` | `'finished'` | `'idle'`). Screen readers now hear 'Loading' on start and 'Loading finished' once after `loading` transitions `true→false`. Re-run cycles correctly announce both states.
+
+  New tokens registered in `docs/public-css-api.json` and `docs/token-runtime-reconciliation.json`:
+  `--io-button-sm-icon-only-min`, `--io-duration-xs`, `--io-duration-sm`, `--io-duration-md`, `--io-duration-lg`, `--io-ease-standard`, `--io-ease-out`, `--io-ease-snappy`
+
+- 79a0061: fix(io-input, io-select, io-textarea): align touched-gated FACE error behaviour, consolidate state-message elements, deprecate lowercase autocomplete prop, and add forced-colors HCM fallbacks
+
+  - #1168: `reportValidity()` now forces `touched=true` on io-input, io-select, and io-textarea so FACE error UI surfaces before the user has blurred the field, matching native form element behaviour
+  - #1167: io-input and io-textarea now render a single consolidated `<p>` state-message element instead of three separate elements sharing the same id; prevents duplicate-id violations and ensures `aria-describedby` always points to a visible element
+  - #1146: The lowercase `autocomplete` prop on io-input is marked `@deprecated` (use `autoComplete`); io-textarea gains the canonical `autoComplete` camelCase prop to match io-input
+  - #1081: io-input, io-select, and io-textarea now include `@media (forced-colors: active)` blocks — error states use `Highlight` outline, disabled states use `GrayText` with `opacity: 1`
+
+- fdb9d24: feat(io-segmented-control): align fieldset semantics, reconcile ARIA roles, add validation surface, noWrap scroll mode, and columns prop
+
+  - #1080 — wraps segments in an inner `<fieldset role="radiogroup">` with `<legend>` to align group semantics with io-radio-group; removes `role="group"` from Host
+  - #1084 — moves `role="radio"` and `aria-checked` from the Host onto the inner `<button>` in io-segment to prevent screen-reader double-announcement
+  - #1074 — adds `required`, `error`, and `errorMessage` props with FACE validity wiring (`valueMissing`), `role="alert"` error message, and `--io-segmented-control-border-error-width` token (WCAG 1.4.1)
+  - #1072 — adds `noWrap` prop that wraps the slot in `<io-scroller>` for horizontal scroll on many segments
+  - #1063 — adds `columns` prop (`'auto' | number`) that switches the bar from flex to CSS grid for equal-width segment cells
+
+- 65a0f81: fix: P1 component bug fixes — spinner token, ESC handler scoping, popover window listener cleanup, pagination Space scroll, event propagation (#1128, #995, #993, #957, #925, #935)
+
+  - io-spinner: replace hardcoded `0.7s`/`1500ms` with `--io-spinner-duration` and `--io-spinner-duration-reduced` tokens registered in `docs/public-css-api.json`
+  - io-flyout, io-sheet: move ESC handler from `@Listen('keydown', {target:'document'})` to `<Host onKeyDown>` — no longer fires for every keystroke when closed
+  - io-popover: replace 4 always-on `@Listen({target:'window'})` decorators with `attachWindowListeners()`/`detachWindowListeners()` called on open/close — zero window listeners while closed
+  - io-pagination: add `onKeyDown` Space-key `preventDefault` on all page buttons — prevents viewport scroll on Space activation
+  - io-checkbox, io-switch: call `ev.stopPropagation()` + `ev.stopImmediatePropagation()` in `handleChange` — prevents double-fire via native + custom events
+  - io-input, io-input-password, io-input-search, io-input-date, io-textarea: same stop-propagation in all four event handlers (input, change, focus, blur)
+
+- 090c630: feat(io-multi-select): expose trigger-level clear-all button, typeahead search, chevron rotation, maxSelections cap, select-all affordance, and PageUp/PageDown navigation
+
+  - #1111 — inline "Clear selection" icon button in the trigger when `selectedValues.length > 0`; `stopPropagation` prevents dropdown toggle; `aria-label="Clear selection"` + 44×44 touch target
+  - #1077 — typeahead character search while dropdown is open (filter mode excluded); 500ms buffer reset; cycles through matches; skips disabled options
+  - #1075 — chevron already rotated 180° via `[aria-expanded="true"]` CSS rule (existing); prefers-reduced-motion guard in styles
+  - #1070 — `maxSelections` prop; blocks selection past cap and emits `limitreached` event with `{ max, attempted }`; unselected options receive `aria-disabled="true"` at cap; helper text "X of Y selected" rendered in dropdown
+  - #1069 — `selectAll` prop (default `false`); "Select all" button in dropdown footer; respects active filter (selects filtered subset only); respects `maxSelections` cap
+  - #1053 — `PageDown`/`PageUp` keys jump `activeIndex` by 10 (bounded by option count)
+
+- 9b2f6d5: feat(io-icon): expand size scale to 11 steps, add contrast-higher/lower colors, and document 507-icon registry
+
+  - IoIconSize now includes 2xs (8px) and 2xl–5xl (40–80px), totaling 11 steps: 2xs | xs | sm | md | lg | xl | 2xl | 3xl | 4xl | 5xl | inherit
+  - New CSS tokens added to app.css: --io-icon-size-2xs through --io-icon-size-5xl
+  - IoIconColor adds contrast-higher (--io-text-contrast-higher → #000000) and contrast-lower (--io-text-contrast-lower → #C4C4C4), completing the 5-stop neutral ramp
+  - New semantic tokens --io-text-contrast-higher and --io-text-contrast-lower with full dark-mode overrides
+  - io-icon-styles.ts updated with all new size and fixed-width CSS rules
+  - Storefront configurator propDefinitions updated to expose all 11 sizes and 10 color options
+  - iconStorySizes story updated to render all 10 numeric size steps
+  - Icon registry already at 507 Lucide glyphs (exceeds the ~150 target from #1058)
+  - All new tokens registered in docs/public-css-api.json and docs/token-runtime-reconciliation.json
+
+  Closes #1067, #1058, #1073
+
+- 4a80ad7: fix(io-toast-item): mark decorative variant icon with aria-hidden=true to prevent double-announcement by screen readers
+
+  feat(io-toast): add --io-toast-position-offset and --io-toast-stack-gap public CSS tokens for consumer fine-tuning of corner spacing
+
+  feat(io-toast-item): add showProgress prop rendering a countdown progress bar that pauses on hover/focus-within and respects prefers-reduced-motion
+
+  feat(io-toast): support multi-action toasts via actions array on IoToastMessage; backward-compatible with existing actionLabel/actionHref API
+
+  feat(io-banner): add named heading slot for rich title content (inline links, interpolated text); falls back to heading prop
+
+  refactor(io-banner): replace four inline SVG paths with io-icon using shared getNotificationIconName utility
+
+  refactor(io-banner): compose io-button for action and dismiss controls; remove bespoke .banner**action and .banner**dismiss CSS
+
+  feat(io-inline-notification): add named heading slot for rich title content
+
+  refactor(io-inline-notification): replace four inline SVG paths with io-icon using shared getNotificationIconName utility
+
+  refactor(io-inline-notification): compose io-button for dismiss control; remove bespoke raw button with inline SVG
+
+- d6b2c8f: feat(overlays): add two-phase enter/exit transitions, fullscreen modal, sheet background/dismiss props, flyout sticky footer, and banner responsive position
+
+  - **#1137** — Replace keyframe animations with CSS property transitions across io-modal, io-sheet, io-drawer (via shared tokens), io-flyout. Enter uses longer duration + ease-in (decelerate); exit uses shorter duration + ease-out (accelerate). `prefers-reduced-motion` collapses both phases to 0ms. New tokens: `--io-duration-overlay-enter`, `--io-duration-overlay-exit`, `--io-ease-overlay-enter`, `--io-ease-overlay-exit`, `--io-motion-entrance-offset-down`.
+  - **#976** — `io-modal` gains `fullscreen: boolean = false` prop. When true, the modal fills the full viewport at or below `--io-modal-fullscreen-breakpoint` (default 640px) and centers on larger screens.
+  - **#965** — `io-sheet` adds `dismissButton: boolean = true` (controls × button and ESC dismissal) and `disableBackdropClick: boolean = false` (controls backdrop-click dismissal) props. The `dismissible` prop is deprecated but remains functional for one minor version.
+  - **#974** — `io-sheet` adds `background: 'canvas' | 'surface' | 'elevated' = 'canvas'` prop matching sibling overlay APIs.
+  - **#989** — `io-flyout` adds `footerBehavior: 'sticky' | 'fixed' = 'sticky'` prop with IntersectionObserver-driven scroll shadow, and a `sub-footer` slot for secondary content rendered after the main footer. New token: `--io-flyout-sticky-top`.
+  - **#1002** — `io-banner` gains responsive `position` prop (accepts `{ base, s, m, l }` breakpoint object; defaults to `{ base: 'bottom', s: 'top' }`). Banner renders inside `<div popover="manual">` to escape z-index stacking races with native top-layer elements.
+
+- 80543ba: feat(io-pagination): add showRange, perPageOptions, and showPageJump props; sr-only live region already present
+
+  - `showRange` displays "Showing X–Y of N" range indicator with aria-live polite announcement
+  - `perPageOptions` renders a per-page selector before the prev arrow; selecting emits `change` with new `perPage`
+  - `showPageJump` renders a "Go to page" input that emits `change` on Enter after validating the target page
+  - `IoPaginationIntl` extended with `perPageLabel`, `goToPageLabel`, `range`, and `of` keys for localisation
+  - `IoPaginationChangeDetail` extended with optional `perPage` discriminant for per-page change events
+
+  feat(io-link): add `active` prop for current-nav-item styling and `underline` prop to decouple underline from variant
+
+  - `active=true` applies brand-blue active visual treatment, defaults `aria-current` to `'page'` (overridable via `ariaCurrent`)
+  - `underline` prop (`'always' | 'hover' | 'none'`) overrides variant-driven underline state when set
+  - New token `--io-link-active-underline-color` registered as public-api in `docs/public-css-api.json`
+
+  feat(io-link-pure): add new component for icon+label tertiary CTA links
+
+  - `alignLabel: 'start' | 'end'` controls icon position relative to label
+  - `stretch` fills container width, pushing label and icon to opposite ends
+  - `active` renders with visual treatment and `aria-current='page'`
+  - `size: 'xs' | 'sm' | 'md'` text size variants
+  - `hideLabel` renders icon-only with the slot text as `aria-label`
+  - Renders as `<a>` with href, falls back to `<button>` without
+  - Full storefront (5 tabs), stories spec, governance, and a11y spec included
+  - New token `--io-link-pure-active-color` registered as public-api
+
+- 9bbd069: feat(io-stepper, io-breadcrumb): B38 batch enhancements
+
+  io-stepper / io-step:
+
+  - #955: Add `error` status variant to `IoStepStatus` union with red X-mark icon and `--io-step-error-color` token
+  - #962: Add `description` named slot to `io-step` for secondary text under the step label, with `--io-step-description-color` token
+  - #964: Add horizontal scroll with active-step centering via `scrollIntoView` on load, step change, and ResizeObserver; cap child count at 9 with console.error guard
+  - #970: Complete vertical orientation layout — circle left, label-group to the right, connector as a vertical line; horizontal layout is now scrollable with hidden scrollbars
+  - #973: Log `console.error` in `componentWillLoad` when `status="current"` and `disabled=true` are both set (contradictory, current step must remain focusable)
+
+  io-breadcrumb:
+
+  - #969: Add opt-in `seo` prop (default `false`) that renders a `<script type="application/ld+json">` BreadcrumbList graph; re-generates on slotchange; SSG-safe
+  - #960: Replace inline-expand ellipsis behavior with an `io-popover` menu listing hidden items as links; ellipsis button gains `aria-haspopup="menu"` and `aria-expanded` state; no layout shift on open/close
+
+- e50b330: feat(io-input-date): add showPicker() trigger button with support detection (#956). Renders an interactive calendar button (Chromium 99+, Safari 16+, Firefox 101+) that opens the native date picker via `HTMLInputElement.showPicker()`. Falls back to the existing decorative SVG icon on unsupported browsers. Adds `pickerLabel` prop (default 'Open date picker') for i18n. Adds `--io-input-date-trigger-color` and `--io-input-date-trigger-bg-hover` public CSS API tokens.
+
+  fix(io-switch): add formStateRestoreCallback for bfcache restore support (#952). Mirrors the io-checkbox implementation — restores checked state from previously-submitted form data on back-forward cache restoration. Also adds an aria-live polite loading announcement region that fires on the first transition into loading state, giving screen-reader users feedback when `loading=true` is set.
+
+- 966143b: feat(motion): add scale-in animation for checkbox icon and radio dot, motion utility getTransition(), and progress transition override token
+
+  - io-checkbox: `.checkbox-icon` now scales from 0 to 1 on check/uncheck via `var(--io-duration-xs) var(--io-ease-out)` (120ms ease-out cubic-bezier). Indeterminate icon also animates. Respects `prefers-reduced-motion`.
+  - io-radio: `.radio-dot` transition updated from `--io-motion-fast` to `--io-duration-xs var(--io-ease-out)` for consistent micro-interaction timing across form controls. Respects `prefers-reduced-motion`.
+  - global: adds `--io-duration-xs` (120ms) duration primitive and `--io-ease-out` (alias for `--io-motion-easing-ease-out`) for readable micro-interaction CSS.
+  - motion utility: new `getTransition(property, duration?, easing?)` helper in `src/utils/motion.ts` — centralises transition shorthands so components reference tokens rather than inline values.
+  - io-progress: fill-width transition routed through `--io-progress-transition-duration` public-api token (defaults to `var(--io-motion-base)`). Consumers can override or set to `0s` to disable. Indeterminate animation duration uses `var(--io-motion-extra-slow)`.
+  - docs: `[data-theme="only-dark|only-light"]` block in app.css annotated with future `light-dark()` simplification path (#1132). Storefront theming page already documents per-subtree theme overrides.
+
+- c3657d4: feat(io-table): add hideLabel and multiline to io-table-head-cell (#1035)
+
+  - `hideLabel` prop: visually hides the column label via sr-only while preserving it for screen readers — enables accessible select-all header cells
+  - `multiline` prop: drops `white-space: nowrap` to allow header text wrapping in fixed-layout tables
+
+  feat(io-table): add selectionState prop to io-table-head-row (#1055)
+
+  - `selectionState: 'none' | 'some' | 'all'` — tri-state convenience prop that drives both checked and indeterminate states from a single, clearly-named value
+  - Existing `selectAllChecked` / `selectAllIndeterminate` props continue to work as a fallback when `selectionState` is not provided
+
+  feat(io-table): add empty-state slot and loading overlay (#1051)
+
+  - `empty` named slot: rendered automatically when `io-table-body` has no `io-table-body-row` children (detected via slotchange)
+  - `loading` named slot + `loading` prop: absolutely-positioned overlay with `aria-busy="true"` on the scroll wrapper
+  - New public-api tokens: `--io-table-empty-min-height`, `--io-table-loading-bg`
+
+  feat(io-scroller): add sticky indicator and ARIA pass-through (#1038)
+
+  - `sticky` prop: switches indicator buttons to `position: sticky` during long scrolls
+  - `scrollRole` prop: forwards a custom ARIA role to the scroll container (e.g. `"tablist"`)
+  - `scrollAriaOrientation` prop: overrides the derived `aria-orientation` attribute
+  - `scrollAriaLabel` prop: overrides the auto-generated aria-label
+  - New public-api token: `--io-scroller-indicator-sticky-offset`
+
+  docs(io-table): document tri-state sort and full-word direction values (#1044)
+
+  - `IoTableSortDirection` JSDoc explains tri-state cycling and ARIA-aligned full-word values vs Porsche bi-state short-form
+  - `IoTableSortDetail` JSDoc documents the `key` naming rationale
+  - Accessibility tab: new "Tri-state sort" section with design rationale and best practices
+
+- 02e697d: feat(io-heading, io-text, io-divider): B42 typography and layout enhancements
+
+  **io-heading:**
+
+  - Add `5xl` (36px) and `6xl` (48px) hero-scale sizes to `IoHeadingSize` (#1037)
+  - Infer semantic heading tag from size when `tag` prop is omitted (6xl/5xl/4xl→h1, 3xl/2xl→h2, xl→h3, lg→h4, md→h5, sm→h6); downgrade to `div` when a heading ancestor is detected to prevent illegal nesting (#1036)
+  - Downgrade console.error to console.warn (dev-only) for missing `tag` prop
+  - Support responsive breakpoint sizes via breakpoint object: `size='{"base":"2xl","l":"5xl"}'` (#1032)
+
+  **io-text:**
+
+  - Add `address`, `figcaption`, `cite`, and `legend` to `IoTextTag` union (#1020)
+  - Guard against illegal self-nesting: `blockquote`, `address`, `p` downgrade to `div` when nested inside the same element type (#1036)
+  - Support responsive breakpoint sizes: `size='{"base":"sm","l":"lg"}'` (#1032)
+
+  **io-divider:**
+
+  - Support responsive orientation via breakpoint object: `orientation='{"base":"horizontal","l":"vertical"}'` (#1033)
+
+  **io-storefront:**
+
+  - Update io-text usage page with role-based color model documentation vs contrast-tier systems, semantic tag selection guide (#1027)
+  - Update io-heading configurator and API docs for new sizes and tag inference
+  - Add `textStorySemanticTags` example story for new io-text tag values
+
+- f4e384d: feat(io-segment): add iconSource prop for custom SVG glyphs, hideLabel prop for icon-only dense toolbars, and badge slot for secondary numeric context
+
+  feat(io-wordmark): add badge variant for square brand-mark contexts (app icons, avatars, watermarks); fix size=inherit to respect host CSS height via height:100%
+
+  refactor(io-button-group): add toolbar type for independent-action clusters with no selection model, individual tabIndex per button, and no roving tabindex navigation
+
+  Closes #1068 Closes #958 Closes #950 Closes #1054 Closes #1048 Closes #1039
+
+- 4c1e789: feat(io-tooltip): add theme, max-width, delay tokens, long-press support, WCAG 1.4.13
+
+  - Add `theme: 'dark' | 'light'` prop — light theme renders white background with primary text, suitable for use on dark surfaces
+  - Add `--io-tooltip-max-width` token (default 20rem) — consumer override for panel width
+  - Add `--io-tooltip-bg` and `--io-tooltip-color` public-api tokens for dark theme colors
+  - Add `--io-tooltip-show-delay` (default 500ms) and `--io-tooltip-hide-delay` (default 150ms) tokens — read at runtime by the attribute engine
+  - Touch device long-press support: `pointerdown` + 500ms fires show; `pointerup` before timer cancels; tap-outside dismisses
+  - Esc dismisses any active tooltip including touch-triggered ones
+  - Hover show is now delayed via `--io-tooltip-show-delay` (prevents tooltip flash on rapid mouse movement)
+  - All new tokens registered in `docs/public-css-api.json` and `docs/token-runtime-reconciliation.json` with dark mode overrides
+
+  feat(io-progress): add circular and step shape variants
+
+  - Add `shape: 'linear' | 'circular' | 'step'` prop (default `'linear'` — existing behavior unchanged)
+  - Circular variant renders SVG track + fill rings with `stroke-dasharray` bound to percentage; supports all existing `color`, `size`, `animated`, `indeterminate`, `showLabel` props
+  - Step variant renders segmented bar where `max - min` segments are derived from range; filled segments use existing color tokens
+  - New public-api tokens: `--io-progress-circle-size-{sm,md,lg}` and `--io-progress-circle-thickness`
+  - All new tokens registered in `docs/public-css-api.json` and `docs/token-runtime-reconciliation.json`
+
+- f8c6f7b: feat(form): add isParentGroupRequired utility, LoadingMessage live-region primitive, and prefers-contrast media query
+
+  - `is-parent-group-required.ts`: new utility that returns true when a host element is a direct child of an `io-checkbox-group` or `io-radio-group` that is `required`. Used by `io-checkbox` and `io-radio` to suppress their own required asterisk (`*`) when the parent group already shows the indicator — prevents duplicate visual markers and double AT announcements (closes #1155)
+  - `LoadingMessage`: new shared functional component rendering a polite `role="status"` live-region that announces `'Loading'` on entry and `'Loading finished'` on exit. Wired into `io-button` and `io-input` with localizable `loadingDescription` and `loadingFinishedDescription` props. Replaces the inline live-region in `io-button` and adds equivalent coverage to `io-input`. Addresses WCAG SC 4.1.3 Status Messages gap (closes #1157, closes #1046)
+  - `app.css`: adds `@media (prefers-contrast: more)` block overriding `--io-border-interactive`, `--io-border`, `--io-focus-inner`, and `--io-focus-outer` to maximum-contrast values for users who request more contrast via OS/browser preferences — WCAG SC 1.4.6 AAA (closes #1126)
+
+- 40902f7: B49: io-multi-select a11y chips fix, io-input stepper + indicator + counter SR fix, io-radio blur event
+
+  - fix(io-multi-select): chip remove buttons use tabIndex=-1 to preserve combobox tab order; chips container gets role=group; Backspace on trigger removes last chip (#937)
+  - feat(io-input): add stepper prop — renders custom +/- buttons for type=number and suppresses native spin buttons; scroll-wheel value changes always suppressed for number inputs (#929)
+  - feat(io-radio): add blur event (EventEmitter<FocusEvent>) for parity with io-checkbox and io-switch (#933)
+  - feat(io-input): add indicator prop (IoIconName) — renders a Lucide icon in the prefix area (#934)
+  - fix(io-input): counter SR live region now reads "X of Y characters" instead of "X characters remaining"; debounce removed so updates are immediate (#921)
+
+- 07131e4: feat(forms): description/warning parity, readOnly normalization, aria prop bags
+
+  - **io-multi-select** (#910): add `warning` state, `helperText` prop, and `description` prop for parity with io-select
+  - **io-select** (#918): add `slot="selected"` inside the combobox trigger so consumers can render custom selected-value UI
+  - **io-input, io-input-password, io-input-search, io-input-date** (#919): normalize `readOnly` prop to camelCase (was `readonly` — breaking for direct attribute binding, but correct Stencil convention)
+  - **io-input** (#927): add `description` prop for a persistent supplementary text paragraph below the field
+  - **io-input-password, io-input-search, io-input-date** (#943): add `aria` prop bag (`Record<string, string>`) to inject custom ARIA attributes onto the native `<input>` element via `applyAriaProp()`
+
+- fbefce9: feat(io-carousel): add responsive `slidesPerPage` breakpoint map and accurate pagination
+
+  `slidesPerPage` now accepts a responsive breakpoint map `{ sm?, md?, lg?, xl? }` that is resolved at runtime via `matchMedia`. Each key corresponds to a min-width breakpoint (sm=640px, md=768px, lg=1024px, xl=1280px); the largest matching key wins. When no key matches the viewport, the value falls back to `1`.
+
+  Pagination dots now reflect the actual number of pages (`ceil(totalSlides / slidesPerPage)`) rather than the raw slide count, and each dot navigates to the start of its corresponding page.
+
+  When `slidesPerPage` is a number > 1, slotted slides are automatically sized to fill exactly `1/N` of the visible track width via a new `--io-carousel-slides-per-page` internal CSS custom property.
+
+- 289b603: feat(io-button): add BreakpointCustomizable responsive support for size, hideLabel, and iconPosition props
+
+  Consumers can now pass a responsive breakpoint map to `size`, `hideLabel`, and `iconPosition` instead of a fixed scalar value:
+
+  ```html
+  <!-- Icon-only on mobile, full button on large+ viewports -->
+  <io-button .hideLabel={{ base: 'true', l: 'false' }} icon="menu" label="Menu">Menu</io-button>
+
+  <!-- Small on mobile, large on desktop -->
+  <io-button .size={{ base: 'sm', l: 'lg' }}>Get started</io-button>
+  ```
+
+  The `BreakpointCustomizable<T>` utility type and `resolveBreakpoint()` function are now exported from `@iodigital-com/components/utils/breakpoint` for use in custom wrapper scenarios.
+
+  Resolution is static (reads on each render, no live viewport subscription). The `IoButtonIconPosition` named type is now exported from the types module.
+
+- 50d4122: feat(io-carousel): add intl prop, trimSpace/edgeFade/focusOnCenterSlide layout props, and fix aria-live WCAG SC 2.2.2
+
+  - **#1030 (WCAG SC 2.2.2):** `aria-live` attribute on the slide announcement region is now always `polite`. During autoplay the region content is kept empty (silent) instead of toggling `aria-live` to `off`, which violated SC 4.1.3 and SC 2.2.2.
+  - **#1041 (intl):** New `@Prop() intl?: Partial<IoCarouselIntl>` — provide any subset of `{ prev, next, label, skip }` to override the individual string props for localisation. Individual props remain backward-compatible.
+  - **#1031 (layout):** Three new layout props:
+    - `trimSpace: 'start' | 'end' | 'both' | 'none'` (default `'none'`) — trims the blank gap before the first or after the last slide.
+    - `edgeFade: boolean` (default `false`) — adds a CSS gradient fade at the carousel track edges. Width is configurable via `--io-carousel-edge-fade-width` (default `64px`).
+    - `focusOnCenterSlide: boolean` (default `false`) — centers the active slide in the visible track viewport when scrolling.
+
+- b664998: feat(io-icon): deduplicate SVG rendering via document-level sprite
+
+  Each unique icon name is now injected once as a `<symbol>` in a hidden
+  `<svg id="io-icon-sprite">` appended to `document.body`. Every `io-icon`
+  instance references its symbol via `<use href="#io-icon-{name}">` instead
+  of stamping the full SVG path data inline. This eliminates redundant DOM
+  nodes when the same icon is used multiple times on a page.
+
+  - `injectIconSprite()` in `global/app.ts` pre-injects all symbols at library
+    init time (guards against SSR with `typeof document` check)
+  - `ensureIconSymbol(name)` provides a lazy per-icon fallback for edge cases
+  - `iconSource` (custom SVG URL) path is unchanged — still renders inline
+  - Accessibility is preserved: decorative icons carry `aria-hidden="true"`,
+    labelled icons carry `role="img"` + `aria-label` on the outer `<svg>`
+
+- c0bd69f: io-input: extract shared StateIcon functional component and add indicator prop rendering
+
+  - Extract `StateIcon` functional component to `common/state-icon/StateIcon.tsx` to eliminate duplicated SVG markup across io-input, io-input-password, io-input-search, io-input-date
+  - Wire the existing `indicator?: IoIconName` prop to render a leading icon in the input prefix area; when `indicator` is set to `true` (boolean), an icon is auto-selected based on `type` (email→mail, tel→phone, url→link)
+  - Add `--io-input-indicator-color` and `--io-input-indicator-size` CSS custom properties as consumer override points
+  - Fix malformed `.input-indicator-icon` CSS rule in io-input-styles.ts
+
+- 6541e48: **io-checkbox** (#917): Refactor indeterminate input tracking to use an element ref (`nativeInputEl`) instead of `componentDidRender` shadow root query. Eliminates a repeated DOM query on every render cycle. Internal implementation improvement — no API change.
+
+  **io-select** (#914): Add `options-status` slot to the custom combobox listbox for async loading and error states. When content is slotted, the "No options" empty state is suppressed and the slot container is shown with `aria-live="polite"` for screen reader announcements. Usage: `<span slot="options-status">Loading...</span>`.
+
+  **io-switch** (#946): Add `alignLabel` prop (`'start' | 'end'`, default `'end'`) and `stretch` prop (`boolean`, default `false`). `alignLabel="start"` places the label before the toggle (row-reverse); `stretch=true` fills the available width with the toggle pushed to the opposite side — useful for settings list rows.
+
+- e21dc3b: fix(global): add prefers-color-scheme fallback, color-scheme to :root, and forced-colors focus-ring support
+
+  - Resolves #1118: `@media (prefers-color-scheme: dark)` block mirrors `[data-theme="dark"]` so consumers without a theme JS switcher get dark tokens automatically when the OS is in dark mode
+  - Resolves #1133: `color-scheme: light dark` added to `:root` so native UI elements (scrollbars, form controls) adapt to the active scheme
+  - Resolves #1103: `@media (forced-colors: active)` redefines `--io-shadow-focus-ring` to use `ButtonText`/`ButtonFace` system colours so the focus ring remains visible in Windows High Contrast Mode (WCAG 2.4.7, 1.4.11)
+
+- d6789a4: feat(io-input-password, io-input-search, io-input-date): add spellCheck prop and label/description/message slots (#913, #931)
+
+  - Add `spellCheck?: boolean` prop to io-input-password, io-input-search, and io-input-date, passed through to the native `<input spellcheck>` attribute (matching io-input's existing spellCheck prop)
+  - Add `slot="label"`, `slot="description"`, and `slot="message"` slots to all three components, following the same pattern as io-input
+    - `slot="label"` renders inside the `<label>` element for rich label markup
+    - `slot="description"` replaces the plain-text `helperText` prop when rich content is needed
+    - `slot="message"` replaces the plain-text `message` prop in error/success/warning states
+  - Slot presence is tracked via `onSlotchange` on each `<slot>` element (not `@Listen`)
+
+- 2d9faba: feat(io-option, io-multi-select): add icon prop + slot to io-option (#1057), add filterable/filterPlaceholder props to io-multi-select (#1061)
+
+  **io-option — Issue #1057:**
+
+  - Add `@Prop() icon?: string` — when set, renders an `<io-icon>` before the label text
+  - Add default slot support — slotted rich HTML content replaces the `label` prop display
+  - Update `IoOptionConnectDetail` type to include `icon?: string`
+  - Example: `<io-option value="us" icon="flag-us">United States</io-option>`
+
+  **io-multi-select — Issue #1061:**
+
+  - Add `@Prop() filterable = false` — shows a search input at the top of the dropdown for client-side filtering (preferred name; `filter` retained for backward compatibility)
+  - Add `@Prop() filterPlaceholder = 'Search...'` — placeholder text for the filter input
+  - Add `--io-multi-select-filter-height` CSS custom property (component-scoped override for the filter input height, defaults to `--io-combobox-filter-height`)
+  - The filter input is aria-labeled ("Filter options"), keyboard-accessible (Tab into filter, Arrow keys to options), and announces its controls via `aria-controls` pointing to the listbox
+
+- fecd46a: Remove deprecated props, variants, and aliases from 14 components:
+
+  - io-badge: remove legacy color variants (beige, blue, dark, orange, rouge, outline) and DEPRECATED_BADGE_COLOR_MAP
+  - io-checkbox-group: remove deprecated boolean error/errorMessage props (use state/message)
+  - io-radio-group: remove deprecated boolean error/errorMessage props (use state/message)
+  - io-flyout: remove left/right position aliases (use start/end), add top/bottom positions
+  - io-multi-select: remove deprecated filter prop (use filterable)
+  - io-spinner: remove deprecated aria object prop (use aria-label on host)
+  - io-switch: remove deprecated boolean error/errorMessage props (use state/message)
+  - io-tag: remove deprecated removable prop, color prop, and IoTagColor type
+  - io-tag-dismissible: define IoTagDismissibleVariant type (replaces re-export of removed IoTagColor)
+  - io-table-head-row: remove deprecated selectAllChecked/selectAllIndeterminate props (use selectionState)
+  - io-textarea: remove deprecated lowercase autocomplete prop (use autoComplete)
+  - io-input: remove deprecated lowercase autocomplete prop (use autoComplete)
+  - io-toast-item: remove deprecated actionLabel/actionHref props (use actions array)
+  - io-toast: remove deprecated getCurrent() method from IoToastManagerClass (use getVisible())
+
+- c67abe1: feat(io-tag, io-badge, io-tag-dismissible): semantic variant API, appearance modifier, icon props, optional label
+
+  - io-tag and io-badge: introduce semantic `variant` prop (`neutral | primary | info | success | warning | error | subtle`) replacing brand-colour `color` names; `color` is still accepted with a dev-mode deprecation warning
+  - io-tag and io-badge: add `appearance` prop (`soft | solid | frosted`) for fill-style control; frosted applies `backdrop-filter: blur` over a translucent fill
+  - io-tag and io-badge: add `icon` (IoIconName) and `iconSource` (custom SVG URL) props for leading icons; matches io-tag-dismissible API
+  - io-tag: deprecate `removable` prop with dev-mode console.warn pointing to `<io-tag-dismissible>`; removable still works for backwards compatibility
+  - io-tag-dismissible: make `label` prop optional; when omitted, the default slot is rendered as chip content and the dismiss button aria-label falls back to slot text content then 'Remove'
+
+### Patch Changes
+
+- 0dbcc87: fix(io-input): standardise counter SR wording to "{n} of {max} characters" and remove setTimeout debounce (#921); consolidate three duplicate state-message `<p>` blocks into a single element with role driven by state (#1167); unify FACE/error rendering across io-input-password, io-input-search, and io-input-date by merging faceInvalid into showError and removing the separate double-rendered error block (#922); make reportValidity() set touched=true so FACE errors surface before blur on programmatic calls (#1168); deprecate lowercase `autocomplete` prop on io-input and add canonical camelCase `autoComplete` to io-textarea (#1146).
+- ad3db67: Add automatic dark-mode via `@media (prefers-color-scheme: dark)` and `.io-scheme-*` utility classes; add missing dark-mode overrides for overlays, shadows, and primary tints; fix `--io-focus-inner` contrast on solid buttons via `outline + outline-offset`; replace primitive token references in io-tag, io-tag-dismissible, io-badge, io-pagination, and io-sheet with semantic tokens that flip in dark mode; add `@media (forced-colors: active)` blocks to io-button, io-input, io-checkbox, io-radio, io-select, io-tag, and io-badge for WCAG 1.4.1 / 1.4.11 Windows High Contrast Mode support.
+- 7f5ebeb: Add WCAG 1.4.1 error border-width tokens for all form-field components (io-input, io-textarea, io-select, io-multi-select, io-switch, io-input-date, io-input-search, io-input-password). Each error state now pairs border-color change with border-width change via a component-scoped token, satisfying the non-color-only indicator requirement. Introduces per-component typed CSS-variable constant files (css-variables.ts) for io-button, io-toast, io-toast-item, and io-modal; marks naming-convergence alias tokens as deprecated in public-css-api.json with replacedBy metadata; generates docs/tokens-meta.json from public-css-api.json for storefront auto-generation; and documents the per-component css-variables.ts pattern in CONTRIBUTING.md.
+- ded681f: Add fluid spacing scale (2xs–2xl via clamp), extended radius tokens (2xl/3xl/4xl + full alias), fluid clamp-based typography scale (lg–7xl), dynamic ex-based line-height token, system-wide density contract tokens, and structured color palette JSON primitive. Migrates io-heading and io-text to --io-line-height-dynamic; deprecates --io-space-14/15 orphan steps and --io-border-radius-pill in favour of --io-border-radius-full.
+- 92613b1: feat(tokens): add blur-frosted primitives, gradient-stop sequences, color state variants (medium/low/frosted), breakpoint JS exports, shadow elevation refactor, font-weight scale reduction, and CSS light-dark() support. Adds --io-blur-frosted (32px) with scale (sm/md/lg), 16-step fade-black/fade-white gradient stop sequences, 16 semantic state color variants across error/success/warning/info, bare-number breakpoints.ts module for JS callers, monotonic shadow scale (sm/md/lg with xl/2xl backward-compat aliases), deprecated font-weight tokens reclassified as internal, and @supports color-scheme: light dark declaration in :root.
+- e5aa9d1: refactor(forms): extract shared FACE utilities — syncFormState, StateMessage, Required, IO_FIELD_STATES
+
+  - **#1141** Add `src/utils/form/sync-form-state.ts` — centralises ElementInternals wiring across all 8 form components. Fixes the `disabled=true` invalid-form-control-not-focusable browser error by skipping `setValidity` for disabled fields. Refactored: io-input, io-textarea, io-checkbox, io-radio, io-select, io-switch, io-multi-select, io-pin-code.
+  - **#1151** Add `src/components/common/state-message/StateMessage.tsx` — shared functional component for error/success/warning message rendering. `role="alert"` for error, `role="status"` for success/warning. Adopted by io-input, io-textarea, io-checkbox, io-radio, io-select.
+  - **#1143** Add `src/components/common/required/Required.tsx` — shared functional component for the required asterisk indicator (`aria-hidden="true"`). CSS class unified to `.io-required` across all form components.
+  - **#1171** Add `IO_FIELD_STATES` runtime constant to `src/utils/field-state.ts` and mirror to `io-storefront/src/utils/field-state.ts`. Storefront stories for io-input, io-textarea, io-checkbox, io-radio, io-select, io-input-search, io-input-password, io-input-date, io-pin-code now use `[...IO_FIELD_STATES]` instead of literal arrays.
+  - **#1140** Document warning state semantics with JSDoc in `field-state.ts`: warning is advisory-only, never affects FACE validity, uses `role="status"` (polite). Add `field-state.spec.ts` locking the FACE/role contract.
+
+- 2da75db: Add implicit form submission on Enter key for all io form-field inputs. Creates a shared `implicitSubmit` utility in `utils/form/implicit-submit.ts` that walks the associated form's submit controls (native and `io-button[type=submit]`) and wires it into `io-input`, `io-input-password`, `io-input-search`, `io-input-date`, and `io-pin-code` via `onKeyDown`. Textarea supports Ctrl+Enter for submission while plain Enter continues to insert newlines.
+- ee7f201: fix(io-multi-select): improve ARIA semantics, keyboard UX, and field-state parity
+
+  - Trigger `aria-label` now summarises selection (e.g. "Label: A, B") so screen readers announce selections without relying on chip DOM order (#937)
+  - Typeahead: single printable keypress while listbox is open jumps to first matching option; buffer resets after 500 ms (#1077)
+  - Chevron rotates 180° when dropdown opens, respects `prefers-reduced-motion` (#1075)
+  - Inline "Clear selection" button placed as sibling of trigger (44×44 px, keyboard-accessible) so users can clear without opening the dropdown (#1111)
+  - Add `maxSelections` prop; blocks additions beyond the cap and emits `limitreached` event with `{ max, attempted }`; over-limit unselected options rendered `aria-disabled` (#1070)
+  - Add `description`, `helperText`, and `warning` state props for parity with `io-select` (#910)
+
+- 598179a: fix(io-radio, io-checkbox, io-radio-group, io-checkbox-group): formStateRestoreCallback for io-radio (#1159); AOM ariaLabelledByElements external label support for io-checkbox, io-radio, io-switch (#1164); aria-labelledby wired to fieldset legend in both groups (#1154); presentational-only contract documented and locked for io-checkbox-group (#1162); state/message API added to io-radio-group and io-checkbox-group matching Wave-XI form standard (#1152); io-radio mutual-exclusion scoped to ancestor io-radio-group to prevent cross-group interference (#941).
+- edcd804: fix(io-pin-code): Enter now submits parent form via requestSubmit(); Dead/Process keys recover via blur-rAF-focus; SMS autofill distributes bulk input across all slots. feat(io-pin-code): add `mode` prop ('numeric'|'alphanumeric'), extend `length` range to 1-8, add `description` prop (renders between label and slots, wired into aria-describedby), and add `validationMessage` prop for customising the required-field error string.
+- 76c7b82: fix(io-toast, io-banner): live region mounts, focus restore, stacked dismiss, dismiss double-emit
+
+  io-toast: host role is now always "status" (never mutates to alertdialog); a separate always-mounted role="alert" assertive region is populated only for persistent/error toasts, preventing screen-reader live-region re-registration. The toast manager now shows up to 3 toasts simultaneously with independent auto-dismiss timers, and exposes `dismiss(id?)`, `dismissAll()`, and `getQueue()` on both the manager and the io-toast element.
+
+  io-banner: the inner live-region wrapper is now always present in the DOM and toggled via aria-hidden + CSS display:none (fixes NVDA/JAWS first-open missed announcement). Focus management refactored: opener element is captured on open and restored on dismiss (WCAG 2.4.3). Focus moves to the dismiss button whenever open && dismissible transitions become true (including runtime toggles). A \_dismissing guard prevents duplicate dismiss events from rapid Escape presses; an exit animation plays before open is set to false.
+
+- 0786922: fix(io-tabs-bar): use navigation semantics for anchor children (#978); anchor-only children now render inside a `<nav>` landmark with `aria-current="page"` instead of `role="tablist"` + `aria-selected`. Add ResizeObserver to re-center the active tab on container resize (#968). Add edge-fade CSS mask with IntersectionObserver sentinels to signal overflow (#961). Add `--io-tabs-bar-fade-size` and `--io-tabs-bar-fade-color` public tokens. Add new `io-tab-panel` sub-component that auto-wires ARIA contracts when used inside `io-tabs`, eliminating manual `panelIds` management (#953). Add `closeable` prop and `tabClose` event to `io-tabs` for dismissible tabs with accessible close buttons (#949).
+- f1acbe5: fix(io-spinner, io-progress): ARIA and animation improvements. io-progress now sets aria-busy="true" in indeterminate mode and throttles aria-valuenow to integer-only changes to reduce screen reader verbosity; indeterminate animation replaced with a two-stage primary/secondary keyframe pattern that eliminates the gap between cycles, controlled by the new --io-progress-indeterminate-duration token. io-spinner migrates from a CSS-border ring to a two-circle SVG (track + arc) for smoother rendering and forced-colors support; adds a context prop (inline|blocking) to switch between role="status" and role="alert"; expands size scale to include xs and xl; exposes --io-spinner-size, --io-spinner-color, --io-spinner-track-color, and --io-spinner-duration CSS variable overrides; deprecates the aria object prop in favor of native host attributes.
+- 33ae708: fix(io-modal): use target-based backdrop detection instead of coordinate check (#991)
+
+  fix(io-modal,io-flyout,io-sheet): refcount scroll lock across stacked overlays (#966)
+
+  fix(io-modal,io-drawer): defer dialog.close() until fade-out transition completes on Safari/Firefox (#975)
+
+- 851ea11: fix(io-modal): native dialog top-layer inertness, extended focus trap selector, deterministic auto-focus, user-initiated dismiss event semantics, and narrowed aria prop type for io-modal and io-drawer.
+- 774df65: refactor(io-input,io-modal): extract shared input-base and dialog-utils helpers
+
+  Introduces two internal utility modules with no public API changes:
+
+  - `src/utils/input-base.tsx` — shared state icons, wrapper class builder, describedBy builder, and below-field message tree used by io-input, io-input-password, io-input-search, and io-input-date.
+  - `src/utils/dialog-utils.ts` — shared focusable element query, scroll lock, inert sibling management, and focus trap attach/detach used by io-modal, io-drawer, io-flyout, and io-sheet.
+
+  No component props, events, slots, or behaviors were changed.
+
+- 0f2a763: fix(overlays): add backdrop prop to io-modal (#983), add logical start/end RTL position to io-flyout (#981), guard inaccessible swipe-only close path in io-drawer (#1098), implement swipe-to-dismiss on io-sheet drag handle via shared util (#982), and add --io-motion-overlay-duration token with prefers-reduced-motion override across all four overlay components (#1019).
+- 02a8ea8: fix(io-popover): adopt @floating-ui/dom for viewport-aware positioning with flip, shift, and autoUpdate; add directional arrow indicator via new `arrow` prop and `--io-popover-arrow-size` token; mirror `aria-controls` and `aria-expanded` onto inner shadow-DOM focusables of custom-element triggers while preserving consumer-set `aria-haspopup`; move focus into panel only when opened by keyboard (Enter/Space) per WCAG 3.2.1.
+- ab82d28: Fix form and notification live-region and accessibility correctness (#1094, #1092, #941, #1024, #1076). Error live-regions in io-input, io-checkbox, io-radio, and io-textarea are now permanently mounted with aria-describedby pre-established before any error occurs. io-checkbox and io-radio gain a ::after pseudo-element extending the hit zone to 24 px minimum (WCAG 2.5.8). io-radio mutual exclusion is now scoped to the nearest io-radio-group, preventing cross-group interference when two groups share the same name. io-inline-notification moves role/aria-live off the Host element onto the inner div with a variant-keyed remount so severity changes are re-announced. io-banner keeps its live-region wrapper permanently mounted, toggling visibility via aria-hidden and display:none so the first-open announcement is reliable across NVDA, JAWS, and VoiceOver.
+- 1a566e1: Unify form error API and fix state consistency across form components. Adds `state`+`message` props to `io-checkbox-group`, `io-radio-group`, and `io-switch` (deprecating `error`/`errorMessage`). Fixes `io-checkbox-group` to preserve per-child state when group state is `'none'`. Extends `io-checkbox-group` aria denylist with `aria-required` and `role`. Removes double error `<p>` rendering from `io-input-password`, `io-input-search`, and `io-input-date`. Makes `name` prop optional (non-null-asserted) on `io-radio-group` and `io-checkbox-group`, emitting a `console.error` when omitted.
+- 604dcf4: fix: resolve post-parity release blockers
+
+  - Remove internal reference terms from component source, JSDoc, and storefront pages
+  - Delete dead CSS selectors in io-modal-styles (backdrop shading block, CSS-var-in-@media fullscreen breakpoint)
+  - Remove orphaned public-css-api.json token entry for removed CSS var
+  - Fix io-modal focus trap to resolve slotted elements via assignedElements({ flatten: true })
+  - Fix io-multi-select nested button structure (button > button is invalid HTML5)
+  - Add @State faceInvalid to io-radio-group for WCAG 4.1.3 re-render on validation change
+  - Set shadow: { delegatesFocus: true } on io-toast and io-segmented-control (was shadow: true)
+  - Fix io-banner double keydown listener (connectedCallback registers, componentWillLoad was redundant)
+  - Simplify io-progress aria-valuenow to pure inline integer rounding (removes @State mutation in render)
+
 ## 1.7.0
 
 ### Minor Changes

@@ -1,5 +1,0 @@
----
-"@iodigital-com/components": minor
----
-
-Split motion tokens into separate duration (--io-duration-xs/sm/md/lg/xl) and easing (--io-ease-in/out/in-out) scales. Added getTransition/getAnimation/getEnterTransform composition helpers in src/utils/motion.ts that wrap durations with --io-transition-duration/--io-animation-duration override hooks for consumer and test control. Added a single global @media (prefers-reduced-motion: reduce) block in app.css that collapses all duration tokens to 0ms, removing the need for per-component media blocks. Replaced the single --io-motion-entrance-offset-y token with four directional variants (--io-motion-entrance-offset-up/down/start/end). Migrated io-button, io-modal, and io-spinner styles to the new token scale. Added --io-spinner-duration public token. Vitest setup now injects 0s motion overrides globally for deterministic specs. Legacy composed tokens (--io-motion-fast, --io-motion-base, etc.) are kept as deprecated aliases for one release cycle.

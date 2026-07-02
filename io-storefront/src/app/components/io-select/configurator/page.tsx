@@ -2,6 +2,7 @@
 
 import { selectStory, selectPropDefinitions } from '../io-select.stories';
 
+import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
 import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoSelectConfiguratorPage() {
@@ -10,7 +11,7 @@ export default function IoSelectConfiguratorPage() {
       tagName="io-select"
       story={selectStory}
       propDefinitions={selectPropDefinitions}
-      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+      previewStyle={FORM_FIELD_PREVIEW_STYLE}
     />
   );
 }

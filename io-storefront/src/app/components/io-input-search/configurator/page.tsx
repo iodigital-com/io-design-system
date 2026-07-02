@@ -2,6 +2,7 @@
 
 import { inputSearchStory, inputSearchPropDefinitions } from '../io-input-search.stories';
 
+import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
 import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoInputSearchConfiguratorPage() {
@@ -10,7 +11,7 @@ export default function IoInputSearchConfiguratorPage() {
       tagName="io-input-search"
       story={inputSearchStory}
       propDefinitions={inputSearchPropDefinitions}
-      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+      previewStyle={FORM_FIELD_PREVIEW_STYLE}
     />
   );
 }

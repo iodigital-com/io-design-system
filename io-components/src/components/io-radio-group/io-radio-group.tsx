@@ -55,23 +55,8 @@ export class IoRadioGroup {
 
   /**
    * Validation/helper message shown below the group.
-   * Replaces the legacy errorMessage prop when state is set explicitly.
    */
   @Prop() message = '';
-
-  /**
-   * @deprecated Use `error={true}` with `state="error"` instead.
-   * Kept for one minor cycle for backwards compatibility.
-   * Puts the group in error state.
-   */
-  @Prop({ reflect: true }) error = false;
-
-  /**
-   * @deprecated Use `message` instead.
-   * Kept for one minor cycle for backwards compatibility.
-   * Error message shown below the group when error is true.
-   */
-  @Prop() errorMessage: string | undefined;
 
   /** Helper text shown below the legend */
   @Prop() helperText = '';
@@ -105,13 +90,6 @@ export class IoRadioGroup {
     if (!this.name) {
       console.error('[io-radio-group] The "name" prop is required for form participation and accessibility. Provide a unique name for this group.');
     }
-    const isProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-    if (!isProd && this.error) {
-      console.warn('[io-radio-group] The "error" prop is deprecated. Use state="error" instead.');
-    }
-    if (!isProd && this.errorMessage !== undefined) {
-      console.warn('[io-radio-group] The "errorMessage" prop is deprecated. Use the "message" prop instead.');
-    }
     this.syncFormValue();
   }
 
@@ -144,11 +122,6 @@ export class IoRadioGroup {
 
   @Watch('state')
   onStateChange() {
-    this.syncChildren();
-  }
-
-  @Watch('error')
-  onErrorChange() {
     this.syncChildren();
   }
 
@@ -269,9 +242,6 @@ export class IoRadioGroup {
 
   private syncChildren = () => {
     const radios = this.getRadios();
-    // Resolve the effective state: explicit state prop takes precedence;
-    // legacy error=true maps to 'error' for one-cycle backwards compat.
-    const effectiveState: IoFieldState = this.state !== 'none' ? this.state : (this.error ? 'error' : 'none');
     radios.forEach(r => {
       r.disabled = this.disabled;
     });
@@ -281,19 +251,16 @@ export class IoRadioGroup {
       }
       radio.checked = radio.value === this.value;
       radio.required = this.required;
-      radio.state = effectiveState;
+      radio.state = this.state;
     }
   };
 
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { label, disabled, loading, helperText, description, error, errorMessage, orientation, required, state, message } = this;
-    // Resolve effective error/message: new state API takes precedence over legacy error prop.
-    const effectiveError = state === 'error' || error;
-    // Legacy errorMessage only shows when error=true (legacy behaviour preserved).
-    // New message prop shows when state is not 'none'.
-    const effectiveMessage = message || (error ? errorMessage : undefined);
+    const { label, disabled, loading, helperText, description, orientation, required, state, message } = this;
+    const effectiveError = state === 'error';
+    const effectiveMessage = message;
     const messageId = `${this.errorId}-msg`;
 
     const fieldsetClass = effectiveError ? 'radio-group radio-group--error' : 'radio-group';

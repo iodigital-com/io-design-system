@@ -32,17 +32,4 @@ describe('io-badge — render snapshots', () => {
     expect(root).toMatchSnapshot();
   });
 
-  it('renders deprecated brand-colour variants (backwards compat)', async () => {
-    const { root } = await render(
-      <div>
-        <io-badge variant="beige">Beige</io-badge>
-        <io-badge variant="blue">Blue</io-badge>
-        <io-badge variant="dark">Dark</io-badge>
-        <io-badge variant="orange">Orange</io-badge>
-        <io-badge variant="rouge">Rouge</io-badge>
-        <io-badge variant="outline">Outline</io-badge>
-      </div>
-    );
-    expect(root).toMatchSnapshot();
-  });
 });

@@ -8,8 +8,6 @@ export const checkboxGroupStory: Story<'io-checkbox-group'> = {
       name: 'notifications',
       required: false,
       disabled: false,
-      error: false,
-      errorMessage: '',
       helperText: '',
     },
   },
@@ -84,8 +82,8 @@ export const checkboxGroupStoryError: Story<'io-checkbox-group'> = {
       properties: {
         label: 'Notification channels',
         name: 'notifications-error',
-        error: true,
-        errorMessage: 'Please select at least one notification channel.',
+        state: 'error',
+        message: 'Please select at least one notification channel.',
       },
       children: [
         { tag: 'io-checkbox' as const, properties: { label: 'Email', value: 'email' } },
@@ -142,16 +140,17 @@ export const checkboxGroupPropDefinitions: PropDefinition[] = [
     description: 'Disables the entire group and all child checkboxes.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Puts the group in error state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border/message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
-    description: 'Error message shown below the group when error is true.',
+    description: 'Validation/helper message shown below the group.',
   },
   {
     name: 'orientation',

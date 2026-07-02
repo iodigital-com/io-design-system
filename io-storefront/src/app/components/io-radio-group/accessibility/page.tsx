@@ -52,17 +52,17 @@ export default function IoRadioGroupAccessibilityPage() {
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
                   <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
-                  {' '}when error
+                  {' '}when state is error
                 </span>
               ),
-              description: 'Set on the fieldset when the error prop is true. Screen readers announce the group as invalid.',
+              description: 'Set on the fieldset when the state prop is "error". Screen readers announce the group as invalid.',
             },
             {
               attribute: 'aria-describedby',
               value: (
-                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Error element id</span>
+                <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Message element id</span>
               ),
-              description: 'When error and errorMessage are both set, the fieldset is linked to the error paragraph via aria-describedby. Screen readers announce the error message after the group label.',
+              description: 'When state is "error" and message is set, the fieldset is linked to the message paragraph via aria-describedby. Screen readers announce the message after the group label.',
             },
           ]}
         />
@@ -96,7 +96,7 @@ export default function IoRadioGroupAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error is rendered with role='alert' and linked to the fieldset via aria-describedby so screen readers announce it."
+            note="When state='error' and message is set, the message is rendered with role='alert' and linked to the fieldset via aria-describedby so screen readers announce it."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -121,8 +121,8 @@ export default function IoRadioGroupAccessibilityPage() {
         <RuleCard label="Use helperText for group-level instructions">
           If the group needs additional guidance — for example &ldquo;You can change this at any time&rdquo; — use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code> rather than a separate paragraph, so the text is visually and semantically part of the group.
         </RuleCard>
-        <RuleCard label="Always pair error with errorMessage">
-          Setting <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code> without <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code> marks the group as invalid but gives screen reader users no explanation. Always provide a meaningful error message.
+        <RuleCard label="Always pair state=&quot;error&quot; with message">
+          Setting <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>state=&quot;error&quot;</code> without <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code> marks the group as invalid but gives screen reader users no explanation. Always provide a meaningful message.
         </RuleCard>
       </section>
 

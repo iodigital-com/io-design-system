@@ -72,17 +72,17 @@ export default function IoSwitchAccessibilityPage() {
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>
                   <code className="text-xs font-mono px-1 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;true&quot;</code>
-                  {' when error'}
+                  {' when state is error'}
                 </span>
               ),
-              description: 'Set to "true" when the error prop is true. Combined with role="alert" on the error message element, the error is announced immediately when it appears.',
+              description: 'Set to "true" when the state prop is "error". Combined with role="alert" on the message element, the error is announced immediately when it appears.',
             },
             {
               attribute: 'aria-describedby',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>Generated id</span>
               ),
-              description: 'Points to the error message or helper text element. Screen readers read the associated text after the switch label.',
+              description: 'Points to the message or helper text element. Screen readers read the associated text after the switch label.',
             },
           ]}
         />
@@ -117,7 +117,7 @@ export default function IoSwitchAccessibilityPage() {
             criterion="3.3.1"
             level="A"
             title="Error Identification"
-            note="When error=true and errorMessage is set, the error paragraph is rendered with role='alert'. The visual indicator (red track, red text) is always paired with descriptive text."
+            note="When state='error' and message is set, the message paragraph is rendered with role='alert'. The visual indicator (red track, red text) is always paired with descriptive text."
           />
           <ComplianceCard
             criterion="3.3.2"
@@ -143,11 +143,11 @@ export default function IoSwitchAccessibilityPage() {
         <RuleCard label="Use switches only for immediate-effect settings">
           The switch metaphor implies immediate action. If the setting only applies after a form submit, use a checkbox instead. Users expect switches to work like light switches — instant feedback.
         </RuleCard>
-        <RuleCard label="Always pair error with errorMessage">
+        <RuleCard label="Always pair state=&quot;error&quot; with message">
           Setting{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>state=&quot;error&quot;</code>{' '}
           without{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>{' '}
           shows a red visual with no text explanation. Screen reader users receive no feedback. Always provide a specific, actionable message.
         </RuleCard>
         <RuleCard label="Do not intercept Enter key">

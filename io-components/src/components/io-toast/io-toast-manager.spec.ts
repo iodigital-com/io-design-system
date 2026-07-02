@@ -16,7 +16,7 @@ describe('IoToastManagerClass — registration', () => {
   it('registers a refresh callback', () => {
     const fn = vi.fn();
     manager.register(fn);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('warns if a second instance tries to register', () => {
@@ -32,7 +32,7 @@ describe('IoToastManagerClass — registration', () => {
     manager.register(fn);
     manager.addToast({ text: 'Test' });
     manager.unregister();
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('getVisible returns empty array initially', () => {
@@ -80,20 +80,20 @@ describe('IoToastManagerClass — addToast (stacked, issue #994)', () => {
     expect(manager.getQueue()).toHaveLength(MAX_VISIBLE + 2); // visible + queued
   });
 
-  it('getCurrent returns oldest visible entry', () => {
+  it('getVisible()[0] returns oldest visible entry', () => {
     manager.addToast({ text: 'First' });
     manager.addToast({ text: 'Second' });
-    expect(manager.getCurrent()?.text).toBe('First');
+    expect((manager.getVisible()[0] ?? null)?.text).toBe('First');
   });
 
   it('applies neutral variant by default', () => {
     manager.addToast({ text: 'No variant' });
-    expect(manager.getCurrent()?.variant).toBe('neutral');
+    expect((manager.getVisible()[0] ?? null)?.variant).toBe('neutral');
   });
 
   it('respects explicit variant', () => {
     manager.addToast({ text: 'Error!', variant: 'error' });
-    expect(manager.getCurrent()?.variant).toBe('error');
+    expect((manager.getVisible()[0] ?? null)?.variant).toBe('error');
   });
 
   it('warns on empty text', () => {
@@ -169,39 +169,39 @@ describe('IoToastManagerClass — dismiss (stacked, issue #994)', () => {
   it('auto-dismisses after default duration (6000ms)', () => {
     manager.addToast({ text: 'Auto' });
     vi.advanceTimersByTime(6000);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('respects custom duration', () => {
     manager.addToast({ text: 'Fast', duration: 1000 });
     vi.advanceTimersByTime(999);
-    expect(manager.getCurrent()).not.toBeNull();
+    expect(manager.getVisible()[0] ?? null).not.toBeNull();
     vi.advanceTimersByTime(1);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('does not auto-dismiss when duration is 0 (persistent)', () => {
     manager.addToast({ text: 'Persistent', duration: 0 });
     vi.advanceTimersByTime(60000);
-    expect(manager.getCurrent()).not.toBeNull();
+    expect(manager.getVisible()[0] ?? null).not.toBeNull();
   });
 
   it('does not auto-dismiss when persistent: true', () => {
     manager.addToast({ text: 'Must close', persistent: true });
     vi.advanceTimersByTime(60000);
-    expect(manager.getCurrent()).not.toBeNull();
+    expect(manager.getVisible()[0] ?? null).not.toBeNull();
   });
 
   it('does not auto-dismiss error-variant toasts', () => {
     manager.addToast({ text: 'Error occurred', variant: 'error' });
     vi.advanceTimersByTime(60000);
-    expect(manager.getCurrent()).not.toBeNull();
+    expect(manager.getVisible()[0] ?? null).not.toBeNull();
   });
 
   it('auto-dismisses non-error toasts after default duration', () => {
     manager.addToast({ text: 'Info', variant: 'info' });
     vi.advanceTimersByTime(6000);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('dismiss() on empty queue does not throw', () => {

@@ -28,35 +28,18 @@ export class IoTableHeadRow {
    * `'none'` — no rows selected (unchecked).
    * `'some'` — some rows selected (indeterminate).
    * `'all'`  — all rows selected (checked).
-   *
-   * When provided, this prop drives both `checked` and `indeterminate`.
-   * If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
    */
   @Prop() selectionState: IoTableSelectionState | undefined;
-
-  /**
-   * Controlled checked state of the select-all checkbox.
-   * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-   */
-  @Prop() selectAllChecked: boolean = false;
-
-  /**
-   * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
-   * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-   */
-  @Prop() selectAllIndeterminate: boolean = false;
 
   /** Emitted when the select-all checkbox changes. */
   @Event() selectAll!: EventEmitter<IoTableHeadRowSelectAllDetail>;
 
   private get isChecked(): boolean {
-    if (this.selectionState !== undefined) return this.selectionState === 'all';
-    return this.selectAllChecked;
+    return this.selectionState === 'all';
   }
 
   private get isIndeterminate(): boolean {
-    if (this.selectionState !== undefined) return this.selectionState === 'some';
-    return this.selectAllIndeterminate && !this.selectAllChecked;
+    return this.selectionState === 'some';
   }
 
   componentDidRender() {

@@ -1,7 +1,7 @@
-import { Component, Prop, Host, h, Watch } from '@stencil/core';
+import { Component, Prop, Host, h } from '@stencil/core';
 
 import { getBadgeStyles } from './io-badge-styles';
-import { getBadgeClassName, DEPRECATED_BADGE_COLOR_MAP } from './io-badge-utils';
+import { getBadgeClassName } from './io-badge-utils';
 import type { IoIconName } from '../../utils/icons';
 
 import type { IoBadgeVariant, IoBadgeAppearance, IoBadgeSize } from './types';
@@ -53,23 +53,6 @@ export class IoBadge {
    * When set alongside `icon`, this URL takes precedence as the icon source.
    */
   @Prop() iconSource?: string;
-
-  // ── Lifecycle ─────────────────────────────────────────────────
-
-  @Watch('variant')
-  onVariantChange(newVariant: IoBadgeVariant) {
-    const legacyNames = ['beige', 'blue', 'dark', 'orange', 'rouge', 'outline'];
-    if (legacyNames.includes(newVariant as string)) {
-      const mapped = DEPRECATED_BADGE_COLOR_MAP[newVariant as string];
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `[io-badge] variant="${newVariant}" is a deprecated brand-colour name. ` +
-          `Use variant="${mapped ?? 'neutral'}" instead. This alias will be removed in a future release.`
-        );
-      }
-    }
-  }
 
   render() {
     const { variant, appearance, size, icon, iconSource } = this;

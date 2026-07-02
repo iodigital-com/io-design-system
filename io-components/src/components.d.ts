@@ -47,8 +47,8 @@ import { IoSwitchAlignLabel, IoSwitchChangeDetail } from "./components/io-switch
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
-import { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
-import { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
+import { IoTagAppearance, IoTagSize, IoTagVariant } from "./components/io-tag/types";
+import { IoTagDismissibleVariant } from "./components/io-tag-dismissible/types";
 import { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 import { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 import { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
@@ -97,8 +97,8 @@ export { IoSwitchAlignLabel, IoSwitchChangeDetail } from "./components/io-switch
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
-export { IoTagAppearance, IoTagColor, IoTagSize, IoTagVariant } from "./components/io-tag/types";
-export { IoTagColor as IoTagColor1 } from "./components/io-tag-dismissible/types";
+export { IoTagAppearance, IoTagSize, IoTagVariant } from "./components/io-tag/types";
+export { IoTagDismissibleVariant } from "./components/io-tag-dismissible/types";
 export { IoTextAlign, IoTextColor, IoTextHyphens, IoTextSize, IoTextTag, IoTextWeight } from "./components/io-text/types";
 export { IoTextListColor, IoTextListSize, IoTextListTag } from "./components/io-text-list/types";
 export { IoTextareaResize, IoTextareaSize, IoTextareaWrap } from "./components/io-textarea/types";
@@ -839,15 +839,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * @deprecated Use `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below the legend
           * @default ''
          */
@@ -862,7 +853,7 @@ export namespace Components {
          */
         "loading": boolean;
         /**
-          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * Validation/helper message shown below the group.
           * @default ''
          */
         "message": string;
@@ -1030,7 +1021,7 @@ export namespace Components {
         "open": boolean;
         /**
           * Which side the flyout panel is anchored to
-          * @default 'right'
+          * @default 'end'
          */
         "position": IoFlyoutPosition;
         /**
@@ -1260,10 +1251,6 @@ export namespace Components {
           * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
          */
         "autoComplete": string | undefined;
-        /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
-         */
-        "autocomplete": string | undefined;
         /**
           * Check validity without showing browser validation UI. Returns true if valid.
          */
@@ -1972,11 +1959,6 @@ export namespace Components {
          */
         "dropdownDirection": IoMultiSelectDirection;
         /**
-          * @deprecated Use `filterable` instead. Retained for backward compatibility. When true, shows a search input inside the dropdown to filter options.
-          * @default false
-         */
-        "filter": boolean;
-        /**
           * Placeholder text for the filter search input. Only relevant when `filterable=true`.
           * @default 'Search...'
          */
@@ -2507,15 +2489,6 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * @deprecated Use `error={true}` with `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
-         */
-        "errorMessage": string | undefined;
-        /**
           * Helper text shown below the legend
           * @default ''
          */
@@ -2530,7 +2503,7 @@ export namespace Components {
          */
         "loading": boolean;
         /**
-          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * Validation/helper message shown below the group.
           * @default ''
          */
         "message": string;
@@ -2915,10 +2888,6 @@ export namespace Components {
      */
     interface IoSpinner {
         /**
-          * @deprecated Pass aria-* attributes directly on the host element instead. E.g. <io-spinner aria-label="Saving"> instead of <io-spinner aria={{ 'aria-label': 'Saving' }}>. This prop will be removed in a future minor release.  Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
-         */
-        "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
-        /**
           * Color of the spinner arc
           * @default 'primary'
          */
@@ -3050,15 +3019,6 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
-        /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the switch in error state. Emits a console.warn in non-production builds.
-          * @default false
-         */
-        "error": boolean;
-        /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the switch when error is true.
-         */
-        "errorMessage": string | undefined;
         /**
           * Helper text shown below (replaced by error when error=true)
          */
@@ -3331,24 +3291,12 @@ export namespace Components {
      */
     interface IoTableHeadRow {
         /**
-          * Controlled checked state of the select-all checkbox.
-          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-          * @default false
-         */
-        "selectAllChecked": boolean;
-        /**
-          * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
-          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-          * @default false
-         */
-        "selectAllIndeterminate": boolean;
-        /**
           * Renders the select-all checkbox header cell.
           * @default false
          */
         "selectable": boolean;
         /**
-          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).  When provided, this prop drives both `checked` and `indeterminate`. If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
+          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).
          */
         "selectionState": IoTableSelectionState | undefined;
     }
@@ -3473,11 +3421,6 @@ export namespace Components {
          */
         "appearance": IoTagAppearance;
         /**
-          * @deprecated Use `variant` instead. Background colour of the unselected state. Brand-colour names will be mapped to semantic variants with a console.warn.
-          * @default 'default'
-         */
-        "color": IoTagColor;
-        /**
           * Compact density — reduces vertical padding for dense UI contexts
           * @default false
          */
@@ -3501,11 +3444,6 @@ export namespace Components {
          */
         "label": string;
         /**
-          * @deprecated Use `<io-tag-dismissible>` instead. Renders a remove (×) button alongside the tag. Will emit a console.warn in dev mode when used.
-          * @default false
-         */
-        "removable": boolean;
-        /**
           * Active/selected state — filled primary colour when true
           * @default false
          */
@@ -3516,7 +3454,7 @@ export namespace Components {
          */
         "size": IoTagSize;
         /**
-          * Semantic colour variant. Replaces `color` — use this in new code.
+          * Semantic colour variant.
           * @default 'neutral'
          */
         "variant": IoTagVariant;
@@ -3563,7 +3501,7 @@ export namespace Components {
           * Colour variant of the chip
           * @default 'default'
          */
-        "variant": IoTagColor1;
+        "variant": IoTagDismissibleVariant;
     }
     /**
      * io-text
@@ -3672,14 +3610,9 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email').
          */
         "autoComplete": string | undefined;
-        /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
-         */
-        "autocomplete": string | undefined;
         /**
           * Check validity without showing browser validation UI. Returns true if valid.
          */
@@ -3847,17 +3780,7 @@ export namespace Components {
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
-          * @deprecated Use `actions` for richer action support.
-         */
-        "actionHref"?: string;
-        /**
-          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
-          * @deprecated Use `actions` for richer action support.
-         */
-        "actionLabel"?: string;
-        /**
-          * Array of up to 2 action items to render beside the toast text. Supersedes `actionLabel`/`actionHref` when provided. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
+          * Array of up to 2 action items to render beside the toast text. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
          */
         "actions"?: IoToastAction[];
         /**
@@ -5648,7 +5571,6 @@ declare global {
     };
     interface HTMLIoTagElementEventMap {
         "toggle": boolean;
-        "remove": void;
     }
     /**
      * io-tag
@@ -6718,15 +6640,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * @deprecated Use `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * Helper text shown below the legend
           * @default ''
          */
@@ -6741,7 +6654,7 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
-          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * Validation/helper message shown below the group.
           * @default ''
          */
         "message"?: string;
@@ -6914,7 +6827,7 @@ declare namespace LocalJSX {
         "open"?: boolean;
         /**
           * Which side the flyout panel is anchored to
-          * @default 'right'
+          * @default 'end'
          */
         "position"?: IoFlyoutPosition;
     }
@@ -7147,10 +7060,6 @@ declare namespace LocalJSX {
           * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
          */
         "autoComplete"?: string | undefined;
-        /**
-          * Autocomplete attribute (legacy — prefer autoComplete)
-         */
-        "autocomplete"?: string | undefined;
         /**
           * Compact variant — reduces the field height and vertical padding for dense layouts
           * @default false
@@ -7874,11 +7783,6 @@ declare namespace LocalJSX {
          */
         "dropdownDirection"?: IoMultiSelectDirection;
         /**
-          * @deprecated Use `filterable` instead. Retained for backward compatibility. When true, shows a search input inside the dropdown to filter options.
-          * @default false
-         */
-        "filter"?: boolean;
-        /**
           * Placeholder text for the filter search input. Only relevant when `filterable=true`.
           * @default 'Search...'
          */
@@ -8433,15 +8337,6 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * @deprecated Use `error={true}` with `state="error"` instead. Kept for one minor cycle for backwards compatibility. Puts the group in error state.
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * @deprecated Use `message` instead. Kept for one minor cycle for backwards compatibility. Error message shown below the group when error is true.
-         */
-        "errorMessage"?: string | undefined;
-        /**
           * The `id` of a `<form>` element to associate this element with.
          */
         "form"?: string;
@@ -8460,7 +8355,7 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         /**
-          * Validation/helper message shown below the group. Replaces the legacy errorMessage prop when state is set explicitly.
+          * Validation/helper message shown below the group.
           * @default ''
          */
         "message"?: string;
@@ -8865,10 +8760,6 @@ declare namespace LocalJSX {
      */
     interface IoSpinner {
         /**
-          * @deprecated Pass aria-* attributes directly on the host element instead. E.g. <io-spinner aria-label="Saving"> instead of <io-spinner aria={{ 'aria-label': 'Saving' }}>. This prop will be removed in a future minor release.  Additional ARIA attributes spread onto the Host element. When aria-label is provided here, it takes precedence over the label prop. Accepted keys: aria-label, aria-describedby, aria-live, aria-atomic.
-         */
-        "aria"?: Partial<Record<'aria-label' | 'aria-describedby' | 'aria-live' | 'aria-atomic', string>>;
-        /**
           * Color of the spinner arc
           * @default 'primary'
          */
@@ -9004,15 +8895,6 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
-        /**
-          * @deprecated Use `state="error"` instead. Will be removed in the next minor release. Puts the switch in error state. Emits a console.warn in non-production builds.
-          * @default false
-         */
-        "error"?: boolean;
-        /**
-          * @deprecated Use `message` instead. Will be removed in the next minor release. Error message shown below the switch when error is true.
-         */
-        "errorMessage"?: string | undefined;
         /**
           * The `id` of a `<form>` element to associate this element with.
          */
@@ -9305,24 +9187,12 @@ declare namespace LocalJSX {
          */
         "onSelectAll"?: (event: IoTableHeadRowCustomEvent<IoTableHeadRowSelectAllDetail>) => void;
         /**
-          * Controlled checked state of the select-all checkbox.
-          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-          * @default false
-         */
-        "selectAllChecked"?: boolean;
-        /**
-          * Renders the checkbox in an indeterminate state when true and selectAllChecked is false.
-          * @deprecated Prefer `selectionState` for clearer tri-state semantics.
-          * @default false
-         */
-        "selectAllIndeterminate"?: boolean;
-        /**
           * Renders the select-all checkbox header cell.
           * @default false
          */
         "selectable"?: boolean;
         /**
-          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).  When provided, this prop drives both `checked` and `indeterminate`. If omitted, fall back to `selectAllChecked` / `selectAllIndeterminate`.
+          * Tri-state selection state of the select-all checkbox. `'none'` — no rows selected (unchecked). `'some'` — some rows selected (indeterminate). `'all'`  — all rows selected (checked).
          */
         "selectionState"?: IoTableSelectionState | undefined;
     }
@@ -9459,11 +9329,6 @@ declare namespace LocalJSX {
          */
         "appearance"?: IoTagAppearance;
         /**
-          * @deprecated Use `variant` instead. Background colour of the unselected state. Brand-colour names will be mapped to semantic variants with a console.warn.
-          * @default 'default'
-         */
-        "color"?: IoTagColor;
-        /**
           * Compact density — reduces vertical padding for dense UI contexts
           * @default false
          */
@@ -9487,18 +9352,9 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Fires when the remove button is clicked (removable only).
-         */
-        "onRemove"?: (event: IoTagCustomEvent<void>) => void;
-        /**
           * Fires when the tag is toggled. Payload is the new selected value.
          */
         "onToggle"?: (event: IoTagCustomEvent<boolean>) => void;
-        /**
-          * @deprecated Use `<io-tag-dismissible>` instead. Renders a remove (×) button alongside the tag. Will emit a console.warn in dev mode when used.
-          * @default false
-         */
-        "removable"?: boolean;
         /**
           * Active/selected state — filled primary colour when true
           * @default false
@@ -9510,7 +9366,7 @@ declare namespace LocalJSX {
          */
         "size"?: IoTagSize;
         /**
-          * Semantic colour variant. Replaces `color` — use this in new code.
+          * Semantic colour variant.
           * @default 'neutral'
          */
         "variant"?: IoTagVariant;
@@ -9561,7 +9417,7 @@ declare namespace LocalJSX {
           * Colour variant of the chip
           * @default 'default'
          */
-        "variant"?: IoTagColor1;
+        "variant"?: IoTagDismissibleVariant;
     }
     /**
      * io-text
@@ -9670,14 +9526,9 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'off', 'on', 'email'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'off', 'on', 'email').
          */
         "autoComplete"?: string | undefined;
-        /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
-         */
-        "autocomplete"?: string | undefined;
         /**
           * Shows {currentLength} / {maxLength} character counter below the field
           * @default false
@@ -9837,17 +9688,7 @@ declare namespace LocalJSX {
      */
     interface IoToastItem {
         /**
-          * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to this URL. When omitted the CTA is a `<button>` that emits `action`.
-          * @deprecated Use `actions` for richer action support.
-         */
-        "actionHref"?: string;
-        /**
-          * Label for an optional call-to-action rendered beside the text. When omitted, no action is rendered.
-          * @deprecated Use `actions` for richer action support.
-         */
-        "actionLabel"?: string;
-        /**
-          * Array of up to 2 action items to render beside the toast text. Supersedes `actionLabel`/`actionHref` when provided. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
+          * Array of up to 2 action items to render beside the toast text. Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
          */
         "actions"?: IoToastAction[];
         /**
@@ -10099,8 +9940,6 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "state": IoFieldState;
         "message": string;
-        "error": boolean;
-        "errorMessage": string | undefined;
         "helperText": string;
         "orientation": IoCheckboxGroupOrientation;
         "loading": boolean;
@@ -10180,7 +10019,6 @@ declare namespace LocalJSX {
         "min": string;
         "max": string;
         "step": string;
-        "autocomplete": string | undefined;
         "autoComplete": string | undefined;
         "spellCheck": boolean | undefined;
         "loading": boolean;
@@ -10309,7 +10147,6 @@ declare namespace LocalJSX {
         "description": string | undefined;
         "filterable": boolean;
         "filterPlaceholder": string;
-        "filter": boolean;
         "dropdownDirection": IoMultiSelectDirection;
         "maxDisplay": number;
         "selectAll": boolean;
@@ -10404,8 +10241,6 @@ declare namespace LocalJSX {
         "loading": boolean;
         "state": IoFieldState;
         "message": string;
-        "error": boolean;
-        "errorMessage": string | undefined;
         "helperText": string;
         "orientation": IoRadioGroupOrientation;
         "description": string | undefined;
@@ -10493,8 +10328,6 @@ declare namespace LocalJSX {
         "loading": boolean;
         "state": IoFieldState;
         "message": string | undefined;
-        "error": boolean;
-        "errorMessage": string | undefined;
         "helperText": string | undefined;
         "compact": boolean;
         "hideLabel": boolean;
@@ -10537,8 +10370,6 @@ declare namespace LocalJSX {
     interface IoTableHeadRowAttributes {
         "selectable": boolean;
         "selectionState": IoTableSelectionState | undefined;
-        "selectAllChecked": boolean;
-        "selectAllIndeterminate": boolean;
     }
     interface IoTabsAttributes {
         "activeTabIndex": number;
@@ -10556,12 +10387,10 @@ declare namespace LocalJSX {
     }
     interface IoTagAttributes {
         "selected": boolean;
-        "removable": boolean;
         "disabled": boolean;
         "size": IoTagSize;
         "variant": IoTagVariant;
         "appearance": IoTagAppearance;
-        "color": IoTagColor;
         "label": string;
         "compact": boolean;
         "icon": IoIconName;
@@ -10569,7 +10398,7 @@ declare namespace LocalJSX {
     }
     interface IoTagDismissibleAttributes {
         "label": string;
-        "variant": IoTagColor;
+        "variant": IoTagDismissibleVariant;
         "icon": IoIconName;
         "disabled": boolean;
     }
@@ -10603,7 +10432,6 @@ declare namespace LocalJSX {
         "minLength": number | undefined;
         "rows": number;
         "size": IoTextareaSize;
-        "autocomplete": string | undefined;
         "autoComplete": string | undefined;
         "hideLabel": boolean;
         "resize": IoTextareaResize;
@@ -10620,8 +10448,6 @@ declare namespace LocalJSX {
     interface IoToastItemAttributes {
         "text": string;
         "variant": IoToastVariant;
-        "actionLabel": string;
-        "actionHref": string;
         "showProgress": boolean;
         "duration": number;
     }

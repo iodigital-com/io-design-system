@@ -53,22 +53,22 @@ function ArrowIcon() {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 const COMPONENT_PREVIEWS: Record<string, ReactNode> = {
-  'io-accordion': <io-badge variant="blue">Accordion</io-badge>,
-  'io-badge': <io-badge variant="blue">Active</io-badge>,
+  'io-accordion': <io-badge variant="info">Accordion</io-badge>,
+  'io-badge': <io-badge variant="info">Active</io-badge>,
   'io-button': <io-button>Button</io-button>,
-  'io-carousel': <io-badge variant="blue">Carousel</io-badge>,
+  'io-carousel': <io-badge variant="info">Carousel</io-badge>,
   'io-checkbox': <io-checkbox label="Checkbox" />,
   'io-input': <div className="w-full"><io-input label="Label" placeholder="Enter text" /></div>,
   'io-link': <io-link href="/" variant="standalone">Link text</io-link>,
   'io-modal': <io-button size="sm">Open modal</io-button>,
-  'io-pagination': <io-badge variant="blue">Pagination</io-badge>,
+  'io-pagination': <io-badge variant="info">Pagination</io-badge>,
   'io-radio': <io-radio label="Option" name="preview" />,
   'io-select': <div className="w-full"><io-select label="Colour" placeholder="Choose…" /></div>,
   'io-spinner': <io-spinner size="md" />,
   'io-tabs': <div className="w-full"><io-tabs active-tab-index={0}><button type="button">Tab 1</button><button type="button">Tab 2</button></io-tabs></div>,
   'io-tag': <io-tag>Label</io-tag>,
   'io-textarea': <div className="w-full"><io-textarea label="Textarea" rows={2} /></div>,
-  'io-toast': <io-badge variant="blue">Toast</io-badge>,
+  'io-toast': <io-badge variant="info">Toast</io-badge>,
   'io-tooltip': <io-tooltip content="Tooltip text"><span>Hover me</span></io-tooltip>,
 };
 
@@ -77,7 +77,7 @@ const ALL_COMPONENTS = getComponentItems().map((item) => ({
   tag: item.slug,
   href: item.href,
   status: item.status,
-  preview: COMPONENT_PREVIEWS[item.slug] ?? <io-badge variant="blue">{item.label}</io-badge>,
+  preview: COMPONENT_PREVIEWS[item.slug] ?? <io-badge variant="info">{item.label}</io-badge>,
 }));
 
 const STEPS = [

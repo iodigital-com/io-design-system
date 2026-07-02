@@ -126,8 +126,6 @@ export class IoToast {
             key={msg.id}
             text={msg.text}
             variant={getToastItemVariant(msg)}
-            actionLabel={msg.actionLabel}
-            actionHref={msg.actionHref}
             actions={msg.actions}
             showProgress={msg.showProgress}
             duration={msg.duration ?? 6000}

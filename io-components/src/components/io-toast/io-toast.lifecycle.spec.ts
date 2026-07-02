@@ -157,14 +157,14 @@ describe('io-toast-manager — dismiss() with empty queue', () => {
 
   it('removes the toast and no more toasts visible after dismiss', () => {
     manager.addToast({ text: 'Only toast' });
-    expect(manager.getCurrent()?.text).toBe('Only toast');
+    expect((manager.getVisible()[0] ?? null)?.text).toBe('Only toast');
 
     manager.dismiss();
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
 
     // Advance past DISMISS_DELAY (200ms) — no queued item to show
     vi.advanceTimersByTime(300);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 
   it('refresh is called with empty array immediately on dismiss', () => {
@@ -197,7 +197,7 @@ describe('io-toast-manager — dismiss() with empty queue', () => {
     manager.dismiss();
     expect(() => manager.dismiss()).not.toThrow();
     vi.advanceTimersByTime(300);
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
   });
 });
 
@@ -226,10 +226,10 @@ describe('io-toast-manager — dismiss() with queued item', () => {
     manager.addToast({ text: 'Second' });
 
     manager.dismiss();
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
 
     vi.advanceTimersByTime(300);
-    expect(manager.getCurrent()?.text).toBe('Second');
+    expect((manager.getVisible()[0] ?? null)?.text).toBe('Second');
   });
 
   it('refresh is called with array containing the next toast after DISMISS_DELAY', () => {
@@ -255,15 +255,15 @@ describe('io-toast — handleItemDismiss', () => {
     const refresh = vi.fn();
     manager.register(refresh);
     manager.addToast({ text: 'Error occurred', variant: 'error' });
-    expect(manager.getCurrent()?.variant).toBe('error');
+    expect((manager.getVisible()[0] ?? null)?.variant).toBe('error');
 
     // Verify persistent toast does not auto-dismiss
     vi.advanceTimersByTime(60000);
-    expect(manager.getCurrent()).not.toBeNull();
+    expect(manager.getVisible()[0] ?? null).not.toBeNull();
 
     // Manual dismiss works
     manager.dismiss();
-    expect(manager.getCurrent()).toBeNull();
+    expect(manager.getVisible()[0] ?? null).toBeNull();
 
     manager.unregister();
     vi.useRealTimers();

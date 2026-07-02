@@ -22,19 +22,3 @@ export type IoTagVariant =
  */
 export type IoTagAppearance = 'solid' | 'soft' | 'frosted';
 
-/**
- * @deprecated Use `IoTagVariant` instead.
- * Brand-colour names are kept for backwards compatibility and will be
- * removed in a future release.
- */
-export type IoTagColor =
-  | 'default'
-  | 'blue'
-  | 'beige'
-  | 'dark'
-  | 'orange'
-  | 'rouge'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'outline';

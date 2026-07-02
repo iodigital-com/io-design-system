@@ -104,8 +104,8 @@ describe('io-radio-group storefront stories', () => {
       expect(names).toContain('helperText');
       expect(names).toContain('required');
       expect(names).toContain('disabled');
-      expect(names).toContain('error');
-      expect(names).toContain('errorMessage');
+      expect(names).toContain('state');
+      expect(names).toContain('message');
     });
 
     it('calling generator with each select option does not throw', () => {
@@ -181,17 +181,17 @@ describe('io-radio-group storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('root element has error true', () => {
+    it('root element has state error', () => {
       const els = radioGroupStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.error).toBe(true);
+      expect(first.properties.state).toBe('error');
     });
 
-    it('root element has errorMessage', () => {
+    it('root element has message', () => {
       const els = radioGroupStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(typeof first.properties.errorMessage).toBe('string');
-      expect((first.properties.errorMessage as string).length).toBeGreaterThan(0);
+      expect(typeof first.properties.message).toBe('string');
+      expect((first.properties.message as string).length).toBeGreaterThan(0);
     });
   });
 

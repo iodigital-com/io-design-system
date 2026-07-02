@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { IoBadge } from './io-badge';
-import { getBadgeClassName, DEPRECATED_BADGE_COLOR_MAP } from './io-badge-utils';
+import { getBadgeClassName } from './io-badge-utils';
 
 describe('io-badge - default props and render contract', () => {
   it('has primary as the default variant', () => {
@@ -35,16 +35,6 @@ describe('io-badge - default props and render contract', () => {
     }
   });
 
-  it('renders without throwing for deprecated brand-colour variants', () => {
-    const legacyVariants = ['beige', 'blue', 'dark', 'orange', 'rouge', 'outline'] as const;
-
-    for (const variant of legacyVariants) {
-      const component = new IoBadge();
-      component.variant = variant;
-      expect(() => component.render()).not.toThrow();
-    }
-  });
-
   it('includes badge--lg class when size is lg', () => {
     expect(getBadgeClassName('success', 'soft', 'lg')).toBe('badge badge--success badge--soft badge--lg');
   });
@@ -68,12 +58,5 @@ describe('io-badge - default props and render contract', () => {
   it('has no iconSource by default', () => {
     const component = new IoBadge();
     expect(component.iconSource).toBeUndefined();
-  });
-
-  it('DEPRECATED_BADGE_COLOR_MAP covers all legacy color names', () => {
-    const legacyColors = ['blue', 'beige', 'dark', 'orange', 'rouge', 'outline'];
-    for (const color of legacyColors) {
-      expect(DEPRECATED_BADGE_COLOR_MAP[color]).toBeDefined();
-    }
   });
 });

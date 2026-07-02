@@ -31,9 +31,9 @@ export default function IoFlyoutApiPage() {
             ],
             [
               <span key="n"><InlineCode>position</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">left | right</InlineCode>,
-              <InlineCode key="d">right</InlineCode>,
-              'Which side of the viewport the flyout panel is anchored to. Right is the conventional edge for detail panels; left for navigation menus.',
+              <InlineCode key="t">start | end | top | bottom</InlineCode>,
+              <InlineCode key="d">end</InlineCode>,
+              'Which side of the viewport the flyout panel is anchored to. end (right in LTR) is the conventional edge for detail panels; start (left in LTR) for navigation menus. top and bottom anchor to the horizontal edges.',
             ],
             [
               <InlineCode key="n">heading</InlineCode>,

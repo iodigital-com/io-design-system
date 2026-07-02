@@ -19,7 +19,7 @@ export default function IoMultiSelectUsagePage() {
               Use when users need to select multiple items from a medium to large option set — e.g. countries, tags, team members.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <C>filter</C> when the list has more than 7 options to help users find items quickly.
+              Use <C>filterable</C> when the list has more than 7 options to help users find items quickly.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Always set both <C>label</C> and <C>name</C>. The label provides the accessible name; name is required for FACE form submission.
@@ -75,11 +75,11 @@ export default function IoMultiSelectUsagePage() {
       <section id="filter" className="space-y-6">
         <SectionHeader
           title="Search filter"
-          description="Enable filter to add a search input at the top of the dropdown. The listbox updates as the user types, showing only options whose labels match the query."
+          description="Enable filterable to add a search input at the top of the dropdown. The listbox updates as the user types, showing only options whose labels match the query."
         />
         <div className="space-y-3">
           <RuleCard label="Focus management">
-            When the dropdown opens with filter enabled, focus moves to the search input automatically. Keyboard navigation (ArrowDown / ArrowUp / Enter) still works from the filter input.
+            When the dropdown opens with filterable enabled, focus moves to the search input automatically. Keyboard navigation (ArrowDown / ArrowUp / Enter) still works from the filter input.
           </RuleCard>
           <RuleCard label="No match state">
             When the query matches zero options, a &ldquo;No options&rdquo; message appears in the listbox.

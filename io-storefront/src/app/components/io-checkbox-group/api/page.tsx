@@ -77,7 +77,7 @@ export default function IoCheckboxGroupApiPage() {
               <InlineCode key="n">aria</InlineCode>,
               <InlineCode key="t">{'Record<string, string>'}</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
-              'Arbitrary ARIA attributes spread onto the fieldset element. Keys may omit or include the aria- prefix. Component-managed attributes (aria-invalid, aria-describedby when error is active) take precedence and cannot be overridden.',
+              'Arbitrary ARIA attributes spread onto the fieldset element. Keys may omit or include the aria- prefix. Component-managed attributes (aria-invalid, aria-describedby when state is error) take precedence and cannot be overridden.',
             ],
           ]}
         />

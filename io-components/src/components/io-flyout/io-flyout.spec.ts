@@ -22,10 +22,8 @@ describe('io-flyout — default props', () => {
     expect(component.open).toBe(false);
   });
 
-  it('defaults to right position (legacy, normalised to end at load)', () => {
-    expect(component.position).toBe('right');
-    // resolvedPosition is normalised
-    expect((component as any).resolvedPosition).toBe('end');
+  it('defaults to end position', () => {
+    expect(component.position).toBe('end');
   });
 
   it('has no heading by default', () => {
@@ -108,24 +106,17 @@ describe('io-flyout — position prop', () => {
     expect(component.position).toBe('end');
   });
 
-  it('normalises legacy left to start and emits console.warn', () => {
-    const warnSpy = vi.spyOn(console, 'warn');
-    component.position = 'left';
-    (component as any).onPositionChange('left');
-    expect((component as any).resolvedPosition).toBe('start');
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('position="left" is deprecated'));
+  it('accepts start position', () => {
+    component.position = 'start';
+    expect(component.position).toBe('start');
   });
 
-  it('normalises legacy right to end and emits console.warn', () => {
-    const warnSpy = vi.spyOn(console, 'warn');
-    component.position = 'right';
-    (component as any).onPositionChange('right');
-    expect((component as any).resolvedPosition).toBe('end');
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('position="right" is deprecated'));
-  });
-
-  it('resolvedPosition defaults to end (right default)', () => {
-    expect((component as any).resolvedPosition).toBe('end');
+  it('defaults position to end', () => {
+    const c = new IoFlyout();
+    (c as any).el = document.createElement('io-flyout');
+    (c as any).dismissEvent = { emit: vi.fn() };
+    (c as any).componentWillLoad();
+    expect(c.position).toBe('end');
   });
 });
 
@@ -311,25 +302,21 @@ describe('io-flyout — render method', () => {
 
   it('render does not throw with position=start', () => {
     component.position = 'start';
-    (component as any).resolvedPosition = 'start';
     expect(() => (component as any).render()).not.toThrow();
   });
 
   it('render does not throw with position=end', () => {
     component.position = 'end';
-    (component as any).resolvedPosition = 'end';
     expect(() => (component as any).render()).not.toThrow();
   });
 
-  it('render does not throw with legacy position=left (normalised to start)', () => {
-    component.position = 'left';
-    (component as any).resolvedPosition = 'start';
+  it('render does not throw with position=top', () => {
+    component.position = 'top';
     expect(() => (component as any).render()).not.toThrow();
   });
 
-  it('render does not throw with legacy position=right (normalised to end)', () => {
-    component.position = 'right';
-    (component as any).resolvedPosition = 'end';
+  it('render does not throw with position=bottom', () => {
+    component.position = 'bottom';
     expect(() => (component as any).render()).not.toThrow();
   });
 });

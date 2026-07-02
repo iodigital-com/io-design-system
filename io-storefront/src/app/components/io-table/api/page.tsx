@@ -178,19 +178,7 @@ export default function IoTableApiPage() {
               <InlineCode key="n">selectionState</InlineCode>,
               <InlineCode key="t">&apos;none&apos; | &apos;some&apos; | &apos;all&apos;</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,
-              'Preferred tri-state API. none = checkbox unchecked, some = indeterminate, all = checked. When set, this overrides selectAllChecked and selectAllIndeterminate.',
-            ],
-            [
-              <InlineCode key="n">selectAllChecked</InlineCode>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Controlled checked state of the select-all checkbox. Superseded by selectionState when that prop is set.',
-            ],
-            [
-              <InlineCode key="n">selectAllIndeterminate</InlineCode>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Renders the checkbox in an indeterminate state when true and selectAllChecked is false. Communicates partial selection to screen readers via aria-checked="mixed". Superseded by selectionState when that prop is set.',
+              'Tri-state API for the select-all checkbox. none = unchecked, some = indeterminate (aria-checked="mixed"), all = checked.',
             ],
           ]}
         />

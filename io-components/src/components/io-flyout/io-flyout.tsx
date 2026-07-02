@@ -64,7 +64,7 @@ export class IoFlyout {
   @Prop() heading?: string;
 
   /** Which side the flyout panel is anchored to */
-  @Prop({ reflect: true }) position: IoFlyoutPosition = 'right';
+  @Prop({ reflect: true }) position: IoFlyoutPosition = 'end';
 
   /** Accessible label for the close button. Override to provide context when multiple overlays may be open. */
   @Prop() closeLabel = 'Close flyout';

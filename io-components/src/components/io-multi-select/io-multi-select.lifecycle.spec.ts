@@ -159,7 +159,7 @@ describe('io-multi-select — onIsOpenChange (open)', () => {
 
   it('schedules focus on filterInputEl when opening with filter=true', () => {
     vi.useFakeTimers();
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     const focusMock = vi.fn();
     (c as any).filterInputEl = { focus: focusMock };
     (c as any).onIsOpenChange(true);
@@ -275,7 +275,7 @@ describe('io-multi-select — handleFilterKeyDown navigation', () => {
   let c: IoMultiSelect;
 
   beforeEach(() => {
-    c = makeComponent({ filter: true } as any);
+    c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
       { value: 'be', label: 'Belgium', disabled: false },
@@ -318,7 +318,7 @@ describe('io-multi-select — filteredOptions getter', () => {
   });
 
   it('returns all flatOptions when filter=true but filterQuery is empty', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
       { value: 'be', label: 'Belgium', disabled: false },
@@ -328,7 +328,7 @@ describe('io-multi-select — filteredOptions getter', () => {
   });
 
   it('filters options by label case-insensitively when filter=true and query set', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
       { value: 'be', label: 'Belgium', disabled: false },
@@ -340,7 +340,7 @@ describe('io-multi-select — filteredOptions getter', () => {
   });
 
   it('returns empty array when no options match the query', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
     ];
@@ -406,7 +406,7 @@ describe('io-multi-select — render() branches', () => {
   });
 
   it('render() executes without throwing when filter=true (filter input branch)', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     expect(() => (c as any).render()).not.toThrow();
   });
 
@@ -545,7 +545,7 @@ describe('io-multi-select — renderListboxItems', () => {
   });
 
   it('renders filtered options when filter=true and filterQuery is set', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
       { value: 'be', label: 'Belgium', disabled: false },
@@ -689,7 +689,7 @@ describe('io-multi-select — formResetCallback detail', () => {
 
 describe('io-multi-select — handleFilterInput activeIndex', () => {
   it('sets activeIndex to 0 when there is at least one match', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
     (c as any).flatOptions = [
       { value: 'nl', label: 'Netherlands', disabled: false },
       { value: 'be', label: 'Belgium', disabled: false },
@@ -872,7 +872,7 @@ describe('io-multi-select — render() ref callbacks and clearAll onClick', () =
   });
 
   it('filterInputEl ref callback assigns the element when filter=true', () => {
-    const c = makeComponent({ filter: true } as any);
+    const c = makeComponent({ filterable: true } as any);
 
     const hMock = h as unknown as ReturnType<typeof vi.fn>;
     hMock.mockClear();

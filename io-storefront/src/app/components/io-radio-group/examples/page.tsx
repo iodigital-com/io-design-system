@@ -46,7 +46,7 @@ export default function IoRadioGroupExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Error state"
-          description="Set error and errorMessage to show group-level validation feedback."
+          description="Set state to &quot;error&quot; and provide a message to show group-level validation feedback."
         />
         <ComponentStory story={radioGroupStoryError} />
       </section>

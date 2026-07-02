@@ -135,8 +135,8 @@ describe('io-checkbox-group — state/message API (#1152)', () => {
     expect(cb.state).toBe('success');
   });
 
-  it('legacy error=true maps to state="error" for children', () => {
-    const { c, host } = makeComponent({ error: true });
+  it('state="error" propagates to children via syncChildren', () => {
+    const { c, host } = makeComponent({ state: 'error' as any });
     const cb = makeCheckbox('a');
     host.appendChild(cb);
 
@@ -145,14 +145,13 @@ describe('io-checkbox-group — state/message API (#1152)', () => {
     expect(cb.state).toBe('error');
   });
 
-  it('explicit state prop takes precedence over legacy error prop', () => {
-    const { c, host } = makeComponent({ state: 'warning' as any, error: true });
+  it('state="warning" propagates to children via syncChildren', () => {
+    const { c, host } = makeComponent({ state: 'warning' as any });
     const cb = makeCheckbox('a');
     host.appendChild(cb);
 
     (c as any).syncChildren();
 
-    // state="warning" wins over error=true
     expect(cb.state).toBe('warning');
   });
 });

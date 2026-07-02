@@ -26,22 +26,7 @@ export class IoToastItem {
   @Prop({ reflect: true }) variant: IoToastVariant = 'neutral';
 
   /**
-   * Label for an optional call-to-action rendered beside the text.
-   * When omitted, no action is rendered.
-   * @deprecated Use `actions` for richer action support.
-   */
-  @Prop({ reflect: true }) actionLabel?: string;
-
-  /**
-   * When set alongside `actionLabel`, renders the CTA as an `<a>` pointing to
-   * this URL. When omitted the CTA is a `<button>` that emits `action`.
-   * @deprecated Use `actions` for richer action support.
-   */
-  @Prop({ reflect: true }) actionHref?: string;
-
-  /**
    * Array of up to 2 action items to render beside the toast text.
-   * Supersedes `actionLabel`/`actionHref` when provided.
    * Each entry may specify `label`, optional `href`, optional `variant`, and optional `onClick`.
    */
   @Prop() actions?: IoToastAction[];
@@ -87,9 +72,6 @@ export class IoToastItem {
   private resolveActions(): IoToastAction[] {
     if (this.actions && this.actions.length > 0) {
       return this.actions.slice(0, 2);
-    }
-    if (this.actionLabel) {
-      return [{ label: this.actionLabel, href: this.actionHref }];
     }
     return [];
   }

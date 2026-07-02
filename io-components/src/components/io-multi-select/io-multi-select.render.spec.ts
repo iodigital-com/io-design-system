@@ -89,7 +89,7 @@ describe('io-multi-select render() — dropdownEl ref callback', () => {
 
 describe('io-multi-select render() — filterInputEl ref callback', () => {
   it('assigns element to filterInputEl when filter=true and ref is called', () => {
-    const c = makeComponent({ label: 'Select items', filter: true });
+    const c = makeComponent({ label: 'Select items', filterable: true });
     const calls = renderCalls(c);
 
     const filterInputCall = calls.find(

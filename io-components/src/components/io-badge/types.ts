@@ -9,14 +9,7 @@ export type IoBadgeVariant =
   | 'success'
   | 'warning'
   | 'error'
-  | 'subtle'
-  // deprecated brand-colour aliases — kept for backwards compatibility
-  | 'beige'
-  | 'blue'
-  | 'dark'
-  | 'orange'
-  | 'rouge'
-  | 'outline';
+  | 'subtle';
 
 /**
  * Appearance modifier — controls the fill/blend style.

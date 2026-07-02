@@ -55,31 +55,6 @@ describe('io-radio-group — a11y (component ARIA attributes)', () => {
     expect(fieldsetAttrs['aria-required']).toBeUndefined();
   });
 
-  it('renders aria-invalid="true" on fieldset when error=true', () => {
-    const { fieldsetAttrs } = renderRadioGroup((c) => {
-      c.label = 'Preferred contact';
-      c.error = true;
-    });
-    expect(fieldsetAttrs['aria-invalid']).toBe('true');
-  });
-
-  it('does not render aria-invalid when error=false', () => {
-    const { fieldsetAttrs } = renderRadioGroup((c) => {
-      c.label = 'Preferred contact';
-      c.error = false;
-    });
-    expect(fieldsetAttrs['aria-invalid']).toBeUndefined();
-  });
-
-  it('renders aria-describedby when error message is set', () => {
-    const { fieldsetAttrs } = renderRadioGroup((c) => {
-      c.label = 'Preferred contact';
-      c.error = true;
-      c.errorMessage = 'Please select an option';
-    });
-    expect(fieldsetAttrs['aria-describedby']).toBeDefined();
-    expect(String(fieldsetAttrs['aria-describedby']).length).toBeGreaterThan(0);
-  });
 
   it('renders disabled on fieldset when disabled=true', () => {
     const { fieldsetAttrs } = renderRadioGroup((c) => {

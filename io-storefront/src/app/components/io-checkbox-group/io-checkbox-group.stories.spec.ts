@@ -50,15 +50,15 @@ describe('io-checkbox-group storefront stories', () => {
       ).not.toThrow();
     });
 
-    it('generator with error=true does not throw', () => {
+    it('generator with state=error does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, error: true } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, state: 'error' } }),
       ).not.toThrow();
     });
 
-    it('generator with error=false does not throw', () => {
+    it('generator with state=none does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, error: false } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, state: 'none' } }),
       ).not.toThrow();
     });
 
@@ -112,16 +112,16 @@ describe('io-checkbox-group storefront stories', () => {
       ).not.toThrow();
     });
 
-    it('generator with empty errorMessage does not throw', () => {
+    it('generator with empty message does not throw', () => {
       expect(() =>
-        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, errorMessage: '' } }),
+        checkboxGroupStory.generator?.({ properties: { ...checkboxGroupStory.state?.properties, message: '' } }),
       ).not.toThrow();
     });
 
-    it('generator with non-empty errorMessage does not throw', () => {
+    it('generator with non-empty message does not throw', () => {
       expect(() =>
         checkboxGroupStory.generator?.({
-          properties: { ...checkboxGroupStory.state?.properties, errorMessage: 'Please select at least one option.' },
+          properties: { ...checkboxGroupStory.state?.properties, message: 'Please select at least one option.' },
         }),
       ).not.toThrow();
     });

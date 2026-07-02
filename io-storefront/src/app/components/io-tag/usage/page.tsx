@@ -21,7 +21,7 @@ export default function IoTagUsagePage() {
               Use in filter bars where a user can activate multiple categories simultaneously — e.g. &ldquo;Technology&rdquo;, &ldquo;Design&rdquo;, &ldquo;Product&rdquo;.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <C>removable=true</C> in input-style tag fields where users have already selected a value and can deselect it by clicking the remove icon.
+              Use <C>{'<io-tag-dismissible>'}</C> in input-style tag fields where users have already selected a value and can deselect it by clicking the remove icon.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Keep tag label text concise — one or two words. Tags are compact UI elements; long text breaks the pill shape and creates visual inconsistency.
@@ -39,7 +39,7 @@ export default function IoTagUsagePage() {
               Use io-tag as a status badge or non-interactive label. For read-only status indicators, use <C>{'<io-badge>'}</C> instead.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Mix <C>removable</C> and toggle behaviour in the same tag group — these serve different mental models and combining them confuses users.
+              Mix <C>{'<io-tag-dismissible>'}</C> and toggle behaviour in the same tag group — these serve different mental models and combining them confuses users.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Show more than eight or nine tags in a group without a &ldquo;Show more&rdquo; affordance. Overloaded filter bars are cognitively expensive.
@@ -64,21 +64,21 @@ export default function IoTagUsagePage() {
         </div>
       </section>
 
-      {/* ── Colours ──────────────────────────────────────────────── */}
-      <section id="colours" className="space-y-6">
+      {/* ── Variants ─────────────────────────────────────────────── */}
+      <section id="variants" className="space-y-6">
         <SectionHeader
-          title="Colours"
-          description="Colour communicates category or semantic grouping across a tag set. Use consistently within a single group."
+          title="Variants"
+          description="The variant prop communicates category or semantic grouping across a tag set. Use consistently within a single group."
         />
         <div className="space-y-3">
-          <RuleCard label="default — neutral baseline">
+          <RuleCard label="neutral — default baseline">
             Use for general-purpose tags with no semantic colour coding. Works on all standard background surfaces. The most versatile option.
           </RuleCard>
-          <RuleCard label="blue — brand accent">
+          <RuleCard label="primary — brand accent">
             Use to highlight a primary category or to align with the io brand in a context where colour coding adds meaningful structure.
           </RuleCard>
-          <RuleCard label="beige — warm neutral">
-            Use for editorial, content, or lifestyle categories. Pairs well with default and blue in mixed-colour tag groups.
+          <RuleCard label="success / warning / error — status">
+            Reserve these for tags that convey a semantic state. Always pair with a visible label so the meaning is not conveyed by colour alone.
           </RuleCard>
         </div>
       </section>
@@ -87,17 +87,17 @@ export default function IoTagUsagePage() {
       <section id="removable" className="space-y-6">
         <SectionHeader
           title="Removable tags"
-          description="Set removable=true when the tag represents an item that has already been selected and can be deselected."
+          description="Use <io-tag-dismissible> when the tag represents an item that has already been selected and can be deselected."
         />
         <div className="space-y-3">
           <RuleCard label="Typical pattern — input tag field">
-            Removable tags appear after a user has typed or selected a value — e.g. a multi-select autocomplete or a keyword entry field. Each tag in the field represents one confirmed selection. The remove icon (×) allows the user to deselect that individual item.
+            Dismissible tags appear after a user has typed or selected a value — e.g. a multi-select autocomplete or a keyword entry field. Each tag in the field represents one confirmed selection. The remove icon (×) allows the user to deselect that individual item.
           </RuleCard>
-          <RuleCard label="Do not combine removable with selected toggle">
-            Removable tags should not also fire <C>toggle</C>. The remove icon is the interaction trigger. If you need both toggle and remove in the same group, reconsider the information architecture.
+          <RuleCard label="Do not combine io-tag-dismissible with toggle behaviour">
+            Dismissible tags should not also fire <C>toggle</C>. The remove icon is the interaction trigger. If you need both toggle and remove in the same group, reconsider the information architecture.
           </RuleCard>
           <RuleCard label="Safe in HTML forms">
-            io-tag removable buttons carry <C>type="button"</C> and are safe to use inside HTML <C>{'<form>'}</C> elements without triggering form submission. You can place removable tags in forms and trust that clicking the remove button will only remove the tag, not submit the form.
+            io-tag-dismissible&apos;s internal buttons carry <C>type="button"</C> and are safe to use inside HTML <C>{'<form>'}</C> elements without triggering form submission. You can place dismissible tags in forms and trust that clicking the remove button will only remove the tag, not submit the form.
           </RuleCard>
         </div>
       </section>

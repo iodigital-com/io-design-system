@@ -29,14 +29,6 @@ describe('io-switch — default props', () => {
     expect(component.disabled).toBe(false);
   });
 
-  it('is not in error state by default', () => {
-    expect(component.error).toBe(false);
-  });
-
-  it('has no errorMessage by default', () => {
-    expect(component.errorMessage).toBeUndefined();
-  });
-
   it('has no helperText by default', () => {
     expect(component.helperText).toBeUndefined();
   });

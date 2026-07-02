@@ -34,25 +34,18 @@ export default function IoBadgeApiPage() {
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoBadgeVariant</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(13 values)</span>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(7 values)</span>
               </span>,
               <InlineCode key="d">&apos;primary&apos;</InlineCode>,
               <span key="desc">
-                Visual variant of the badge. Controls background, text colour, and border. Semantic values:{' '}
+                Colour and semantic style of the badge. Controls background, text colour, and border. One of:{' '}
                 <InlineCode>neutral</InlineCode>{' '}
                 <InlineCode>primary</InlineCode>{' '}
                 <InlineCode>info</InlineCode>{' '}
                 <InlineCode>success</InlineCode>{' '}
                 <InlineCode>warning</InlineCode>{' '}
                 <InlineCode>error</InlineCode>{' '}
-                <InlineCode>subtle</InlineCode>.{' '}
-                Legacy values also accepted:{' '}
-                <InlineCode>beige</InlineCode>{' '}
-                <InlineCode>blue</InlineCode>{' '}
-                <InlineCode>dark</InlineCode>{' '}
-                <InlineCode>orange</InlineCode>{' '}
-                <InlineCode>rouge</InlineCode>{' '}
-                <InlineCode>outline</InlineCode>.
+                <InlineCode>subtle</InlineCode>
               </span>,
             ],
             [

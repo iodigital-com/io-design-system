@@ -24,7 +24,7 @@ export default function IoMultiSelectExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="With search filter"
-          description="When filter is true, a search input appears inside the dropdown to narrow options by label."
+          description="When filterable is true, a search input appears inside the dropdown to narrow options by label."
         />
         <ComponentStory story={multiSelectStoryWithFilter} />
       </section>

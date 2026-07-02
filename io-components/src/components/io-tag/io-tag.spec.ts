@@ -17,10 +17,6 @@ describe('io-tag — default props', () => {
     expect(component.selected).toBe(false);
   });
 
-  it('is not removable by default', () => {
-    expect(component.removable).toBe(false);
-  });
-
   it('is not disabled by default', () => {
     expect(component.disabled).toBe(false);
   });
@@ -35,10 +31,6 @@ describe('io-tag — default props', () => {
 
   it('has appearance soft by default', () => {
     expect(component.appearance).toBe('soft');
-  });
-
-  it('has color default by default (deprecated prop)', () => {
-    expect(component.color).toBe('default');
   });
 
   it('is not compact by default', () => {

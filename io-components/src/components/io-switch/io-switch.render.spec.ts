@@ -94,7 +94,7 @@ function makeInternals() {
   };
 }
 
-function makeSwitch(overrides: Partial<IoSwitch> & { required?: boolean; error?: boolean; checked?: boolean } = {}) {
+function makeSwitch(overrides: Partial<IoSwitch> & { required?: boolean; checked?: boolean } = {}) {
   const c = new IoSwitch();
   (c as any).el = document.createElement('io-switch');
   (c as any).internals = makeInternals();
@@ -112,17 +112,17 @@ function renderAndGetCalls(c: IoSwitch) {
 }
 
 describe('io-switch render() — error message branch', () => {
-  it('renders error <p> when error=true and errorMessage is set', () => {
-    const c = makeSwitch({ error: true });
-    c.errorMessage = 'This field is required';
+  it('renders error <p> when state="error" and message is set', () => {
+    const c = makeSwitch({ state: 'error' } as any);
+    c.message = 'This field is required';
     const calls = renderAndGetCalls(c);
 
     const errorP = calls.find(([tag, attrs]) => tag === 'p' && String(attrs?.class).includes('switch-error'));
     expect(errorP).toBeDefined();
   });
 
-  it('does not render error <p> when error=false', () => {
-    const c = makeSwitch({ error: false });
+  it('does not render error <p> when state="none"', () => {
+    const c = makeSwitch();
     const calls = renderAndGetCalls(c);
 
     const errorP = calls.find(([tag, attrs]) => tag === 'p' && String(attrs?.class).includes('switch-error') && attrs?.role === 'alert');
@@ -154,7 +154,7 @@ describe('io-switch render() — faceInvalid (FACE error) branch', () => {
 
 describe('io-switch render() — helper text branch', () => {
   it('renders helper <p> when helperText is set and no error', () => {
-    const c = makeSwitch({ error: false });
+    const c = makeSwitch();
     c.helperText = 'You can change this later.';
     const calls = renderAndGetCalls(c);
 
@@ -162,9 +162,9 @@ describe('io-switch render() — helper text branch', () => {
     expect(helperP).toBeDefined();
   });
 
-  it('does not render helper <p> when error=true (error takes precedence)', () => {
-    const c = makeSwitch({ error: true });
-    c.errorMessage = 'Required';
+  it('does not render helper <p> when state="error" (error takes precedence)', () => {
+    const c = makeSwitch({ state: 'error' } as any);
+    c.message = 'Required';
     c.helperText = 'Some helper text';
     const calls = renderAndGetCalls(c);
 
@@ -195,7 +195,7 @@ describe('io-switch render() — required asterisk branch', () => {
 
 describe('io-switch render() — aria-invalid absent when no error', () => {
   it('aria-invalid is undefined on input when no error and no faceInvalid', () => {
-    const c = makeSwitch({ error: false, checked: false });
+    const c = makeSwitch({ checked: false });
     const calls = renderAndGetCalls(c);
 
     const inputCall = calls.find(([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.type === 'checkbox');
@@ -205,9 +205,9 @@ describe('io-switch render() — aria-invalid absent when no error', () => {
 });
 
 describe('io-switch render() — describedBy combinations', () => {
-  it('aria-describedby points to error id when error=true', () => {
-    const c = makeSwitch({ error: true });
-    c.errorMessage = 'Error!';
+  it('aria-describedby points to error id when state="error"', () => {
+    const c = makeSwitch({ state: 'error' } as any);
+    c.message = 'Error!';
     const calls = renderAndGetCalls(c);
 
     const inputCall = calls.find(([tag, attrs]) => tag === 'input' && (attrs as Record<string, unknown>)?.type === 'checkbox');
@@ -217,7 +217,7 @@ describe('io-switch render() — describedBy combinations', () => {
   });
 
   it('aria-describedby points to helper id when helperText is set', () => {
-    const c = makeSwitch({ error: false, checked: true });
+    const c = makeSwitch({ checked: true });
     c.helperText = 'Helper text';
     const calls = renderAndGetCalls(c);
 

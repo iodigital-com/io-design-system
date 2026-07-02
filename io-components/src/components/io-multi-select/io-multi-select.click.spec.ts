@@ -170,7 +170,7 @@ describe('io-multi-select — trigger keydown (open)', () => {
 
 describe('io-multi-select — filter input events', () => {
   it('updates filterQuery on input', () => {
-    const { component } = makeComponent({ filter: true } as any);
+    const { component } = makeComponent({ filterable: true } as any);
     (component as any).flatOptions = [
       { value: 'nl', label: 'Netherlands' },
       { value: 'be', label: 'Belgium' },
@@ -185,7 +185,7 @@ describe('io-multi-select — filter input events', () => {
   });
 
   it('sets activeIndex to -1 when no matches', () => {
-    const { component } = makeComponent({ filter: true } as any);
+    const { component } = makeComponent({ filterable: true } as any);
     (component as any).flatOptions = [{ value: 'nl', label: 'Netherlands' }];
     const input = document.createElement('input');
     input.value = 'xyz';
@@ -196,7 +196,7 @@ describe('io-multi-select — filter input events', () => {
   });
 
   it('closes dropdown on Escape in filter', () => {
-    const { component } = makeComponent({ filter: true } as any);
+    const { component } = makeComponent({ filterable: true } as any);
     (component as any).isOpen = true;
     const ev = new KeyboardEvent('keydown', { key: 'Escape' });
     vi.spyOn(ev, 'stopPropagation');
@@ -205,7 +205,7 @@ describe('io-multi-select — filter input events', () => {
   });
 
   it('toggles option on Enter in filter', () => {
-    const { component } = makeComponent({ filter: true } as any);
+    const { component } = makeComponent({ filterable: true } as any);
     (component as any).flatOptions = [{ value: 'nl', label: 'Netherlands' }];
     (component as any).activeIndex = 0;
     component.value = [];
@@ -358,7 +358,7 @@ describe('io-multi-select — typeahead character search (#1077)', () => {
   });
 
   it('does not interfere with filter input mode (filter=true)', () => {
-    component.filter = true;
+    component.filterable = true;
     (component as any).activeIndex = 0;
     const ev = new KeyboardEvent('keydown', { key: 'g' });
     (component as any).handleTriggerKeyDown(ev);
@@ -463,7 +463,7 @@ describe('io-multi-select — selectAll affordance (#1069)', () => {
   });
 
   it('selects only filteredOptions when filter is active', () => {
-    component.filter = true;
+    component.filterable = true;
     (component as any).filterQuery = 'nether';
     (component as any).selectAllVisible();
     expect(component.value).toContain('nl');

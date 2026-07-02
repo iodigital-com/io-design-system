@@ -39,7 +39,7 @@ export default function IoSwitchUsagePage() {
               Use for mutually exclusive choices where only one option can be active — use <C>io-radio</C> instead.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Show <C>error</C> state before the user has interacted or before form submission. Validate on submit or on explicit user action.
+              Show <C>state=&quot;error&quot;</C> before the user has interacted or before form submission. Validate on submit or on explicit user action.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Use multiple switches side by side without clear visual separation — users may not distinguish which label belongs to which switch.
@@ -62,7 +62,7 @@ export default function IoSwitchUsagePage() {
             Set <C>checked=true</C>. The track fills with the primary brand colour. The thumb translates to the right. The native input carries checked=true and aria-checked=&quot;true&quot;.
           </RuleCard>
           <RuleCard label="Error — validation feedback">
-            Set <C>error=true</C> and provide an <C>errorMessage</C>. The track turns red when off. The error message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
+            Set <C>state=&quot;error&quot;</C> and provide a <C>message</C>. The track turns red when off. The message appears below with <C>role=&quot;alert&quot;</C> for immediate screen reader announcement.
           </RuleCard>
           <RuleCard label="Disabled — unavailable">
             Set <C>disabled=true</C>. The entire component renders at reduced opacity. Pointer events are blocked and the native input is disabled.
@@ -109,7 +109,7 @@ export default function IoSwitchUsagePage() {
             Do not show errors before the user has interacted with the switch. Trigger validation on form submit or on the explicit <C>change</C> event — not on mount or on every render.
           </RuleCard>
           <RuleCard label="formResetCallback">
-            io-switch responds to form reset. When the parent form is reset, the switch reverts to its initial <C>checked</C> value and clears any FACE validation state (the error prop is externally controlled and is not reset). You do not need to handle form reset manually.
+            io-switch responds to form reset. When the parent form is reset, the switch reverts to its initial <C>checked</C> value and clears any FACE validation state (the state prop is externally controlled and is not reset). You do not need to handle form reset manually.
           </RuleCard>
         </div>
       </section>

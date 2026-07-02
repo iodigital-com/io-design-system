@@ -9,8 +9,6 @@ export const switchStory: Story<'io-switch'> = {
       required: false,
       disabled: false,
       loading: false,
-      error: false,
-      errorMessage: '',
       helperText: '',
     },
   },
@@ -23,8 +21,6 @@ export const switchStory: Story<'io-switch'> = {
         required: (properties?.required as boolean) ?? false,
         disabled: (properties?.disabled as boolean) ?? false,
         loading: (properties?.loading as boolean) ?? false,
-        error: (properties?.error as boolean) ?? false,
-        errorMessage: (properties?.errorMessage as string) ?? undefined,
         helperText: (properties?.helperText as string) ?? undefined,
       },
     },
@@ -65,8 +61,8 @@ export const switchStoryError: Story<'io-switch'> = {
   state: {
     properties: {
       label: 'Accept data processing',
-      error: true,
-      errorMessage: 'You must accept to continue',
+      state: 'error',
+      message: 'You must accept to continue',
     },
   },
   generator: () => [
@@ -74,8 +70,8 @@ export const switchStoryError: Story<'io-switch'> = {
       tag: 'io-switch' as const,
       properties: {
         label: 'Accept data processing',
-        error: true,
-        errorMessage: 'You must accept to continue',
+        state: 'error',
+        message: 'You must accept to continue',
       },
     },
   ],
@@ -145,16 +141,17 @@ export const switchPropDefinitions: PropDefinition[] = [
     description: 'Visually hides the label while keeping it accessible to screen readers.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Applies the invalid visual state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state of the switch.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
-    description: 'Shows validation feedback below the switch.',
+    description: 'Validation message shown below the switch when state is non-\'none\'.',
   },
   {
     name: 'helperText',

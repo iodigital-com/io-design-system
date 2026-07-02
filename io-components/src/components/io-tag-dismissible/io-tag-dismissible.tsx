@@ -1,8 +1,8 @@
 import { Component, Element, Event, EventEmitter, Host, Listen, Prop, h } from '@stencil/core';
 
 import { getTagDismissibleStyles } from './io-tag-dismissible-styles';
-import type { IoTagColor } from './types';
 import type { IoIconName } from '../../utils/icons';
+import type { IoTagDismissibleVariant } from './types';
 
 /**
  * io-tag-dismissible
@@ -51,7 +51,7 @@ export class IoTagDismissible {
   @Prop() label?: string;
 
   /** Colour variant of the chip */
-  @Prop({ reflect: true }) variant: IoTagColor = 'default';
+  @Prop({ reflect: true }) variant: IoTagDismissibleVariant = 'default';
 
   /** Optional leading icon name (from the io icon set) */
   @Prop() icon?: IoIconName;

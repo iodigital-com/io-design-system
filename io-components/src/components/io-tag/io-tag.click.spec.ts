@@ -5,7 +5,6 @@ import { IoTag } from './io-tag';
 describe('io-tag — click handling', () => {
   let component: IoTag;
   let toggleMock: ReturnType<typeof vi.fn>;
-  let removeMock: ReturnType<typeof vi.fn>;
 
   function makeEvent() {
     const ev = new MouseEvent('click');
@@ -18,9 +17,7 @@ describe('io-tag — click handling', () => {
     component = new IoTag();
     (component as any).el = document.createElement('io-tag');
     toggleMock = vi.fn();
-    removeMock = vi.fn();
     (component as any).toggle = { emit: toggleMock };
-    (component as any).remove = { emit: removeMock };
   });
 
   it('emits toggle with true when toggling from false', () => {
@@ -41,18 +38,5 @@ describe('io-tag — click handling', () => {
     component.disabled = true;
     (component as any).handleToggle(makeEvent());
     expect(toggleMock).not.toHaveBeenCalled();
-  });
-
-  it('emits remove when remove handler fires', () => {
-    component.removable = true;
-    (component as any).handleRemove(makeEvent());
-    expect(removeMock).toHaveBeenCalledOnce();
-  });
-
-  it('does not emit remove when disabled', () => {
-    component.disabled = true;
-    component.removable = true;
-    (component as any).handleRemove(makeEvent());
-    expect(removeMock).not.toHaveBeenCalled();
   });
 });

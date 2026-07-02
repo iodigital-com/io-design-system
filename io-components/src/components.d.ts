@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 import { IoAiTagLocale, IoAiTagVariant } from "./components/io-ai-tag/types";
+import { IoAppShellSidebarEndDismissDetail, IoAppShellSidebarStartUpdateDetail } from "./components/io-app-shell/types";
 import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoIconName } from "./utils/icons";
@@ -15,14 +16,17 @@ import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonC
 import { BreakpointCustomizable, BreakpointValue } from "./utils/breakpoint";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 import { IoButtonPureAlignLabel, IoButtonPureType } from "./components/io-button-pure/types";
+import { IoButtonTileClickDetail, IoTileAlign, IoTileAspectRatio, IoTileSize, IoTileWeight } from "./components/io-button-tile/types";
 import { IoCarouselAlignHeader, IoCarouselIntl, IoCarouselSlidesPerPage, IoCarouselTrimSpace, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoFieldsetAriaRecord } from "./components/io-fieldset/types";
 import { IoFlagName, IoFlagSize } from "./components/io-flag/types";
 import { IoFlyoutPosition } from "./components/io-flyout/types";
+import { IoGridAlign, IoGridGap, IoGridJustify } from "./components/io-grid/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -32,12 +36,14 @@ import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 import { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
+import { IoTileAlign as IoTileAlign1, IoTileAspectRatio as IoTileAspectRatio1, IoTileSize as IoTileSize1, IoTileWeight as IoTileWeight1 } from "./components/io-link-tile/types";
 import { IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 import { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 import { IoPopoverPlacement } from "./components/io-popover/types";
+import { IoProductTileAspect, IoProductTileHeadingTag } from "./components/io-product-tile/types";
 import { IoProgressColor, IoProgressShape, IoProgressSize } from "./components/io-progress/types";
 import { IoRadioChangeDetail } from "./components/io-radio/types";
 import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
@@ -60,6 +66,7 @@ import { IoTooltipPlacement, IoTooltipTheme } from "./components/io-tooltip/type
 import { IoWordmarkColor, IoWordmarkSize, IoWordmarkVariant } from "./components/io-wordmark/types";
 export { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from "./components/io-accordion/types";
 export { IoAiTagLocale, IoAiTagVariant } from "./components/io-ai-tag/types";
+export { IoAppShellSidebarEndDismissDetail, IoAppShellSidebarStartUpdateDetail } from "./components/io-app-shell/types";
 export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./components/io-avatar/types";
 export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoIconName } from "./utils/icons";
@@ -68,14 +75,17 @@ export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonC
 export { BreakpointCustomizable, BreakpointValue } from "./utils/breakpoint";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
 export { IoButtonPureAlignLabel, IoButtonPureType } from "./components/io-button-pure/types";
+export { IoButtonTileClickDetail, IoTileAlign, IoTileAspectRatio, IoTileSize, IoTileWeight } from "./components/io-button-tile/types";
 export { IoCarouselAlignHeader, IoCarouselIntl, IoCarouselSlidesPerPage, IoCarouselTrimSpace, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
 export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoFieldsetAriaRecord } from "./components/io-fieldset/types";
 export { IoFlagName, IoFlagSize } from "./components/io-flag/types";
 export { IoFlyoutPosition } from "./components/io-flyout/types";
+export { IoGridAlign, IoGridGap, IoGridJustify } from "./components/io-grid/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -85,12 +95,14 @@ export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 export { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
+export { IoTileAlign as IoTileAlign1, IoTileAspectRatio as IoTileAspectRatio1, IoTileSize as IoTileSize1, IoTileWeight as IoTileWeight1 } from "./components/io-link-tile/types";
 export { IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
 export { IoPinCodeChangeDetail, IoPinCodeLength, IoPinCodeMode, IoPinCodeState, IoPinCodeType } from "./components/io-pin-code/types";
 export { IoPopoverPlacement } from "./components/io-popover/types";
+export { IoProductTileAspect, IoProductTileHeadingTag } from "./components/io-product-tile/types";
 export { IoProgressColor, IoProgressShape, IoProgressSize } from "./components/io-progress/types";
 export { IoRadioChangeDetail } from "./components/io-radio/types";
 export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/io-radio-group/types";
@@ -204,6 +216,34 @@ export namespace Components {
           * @default 'generated'
          */
         "variant": IoAiTagVariant;
+    }
+    /**
+     * io-app-shell
+     * ============
+     * Reusable full-page application shell with sticky header, collapsible
+     * sidebar navigation, optional secondary sidebar, and main content area.
+     * Reuses focus-trap and scroll-lock patterns from io-flyout.
+     * The sidebar-start panel becomes a modal overlay on mobile (< lg breakpoint).
+     * @example <io-app-shell sidebar-start-open>
+     *   <nav slot="sidebar-start">Navigation</nav>
+     *   <main>Page content</main>
+     * </io-app-shell>
+     */
+    interface IoAppShell {
+        /**
+          * Height of the sticky header bar. Used as CSS variable.
+         */
+        "headerHeight": string | undefined;
+        /**
+          * Whether the sidebar-end panel is open.
+          * @default false
+         */
+        "sidebarEndOpen": boolean;
+        /**
+          * Whether the sidebar-start panel is open.
+          * @default false
+         */
+        "sidebarStartOpen": boolean;
     }
     /**
      * io-avatar
@@ -711,6 +751,74 @@ export namespace Components {
         "underline": boolean;
     }
     /**
+     * io-button-tile
+     * ==============
+     * Media tile primitive with an embedded button action.
+     * Identical visual structure to io-link-tile but renders as <button>
+     * rather than <a>. Use when the tile triggers an action (open modal,
+     * add to cart, toggle favourite) rather than navigating to a new URL.
+     * Focus delegates from the host to the embedded button via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-button-tile
+     *   label="Add Blue Widget"
+     *   description="Click to add to your dashboard."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-button-tile>
+     */
+    interface IoButtonTile {
+        /**
+          * Text alignment of the overlay content.
+          * @default 'bottom'
+         */
+        "align": IoTileAlign;
+        /**
+          * Media aspect ratio.
+          * @default '4/3'
+         */
+        "aspectRatio": IoTileAspectRatio;
+        /**
+          * Supporting description text displayed below the label.
+         */
+        "description": string | undefined;
+        /**
+          * Disabled state. Prevents clicks and reduces opacity.
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Show gradient overlay behind the label/description.
+          * @default true
+         */
+        "gradient": boolean;
+        /**
+          * Tile label (required — accessible name for the button).
+         */
+        "label": string;
+        /**
+          * Loading state — shows spinner, prevents double-submit.
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Label text size preset.
+          * @default 'md'
+         */
+        "size": IoTileSize;
+        /**
+          * Native button type.
+          * @default 'button'
+         */
+        "type": 'button' | 'submit' | 'reset';
+        /**
+          * Label font weight.
+          * @default 'semibold'
+         */
+        "weight": IoTileWeight;
+    }
+    /**
      * io-carousel
      * ============
      * Generic horizontally scrollable container with prev/next navigation,
@@ -1076,6 +1184,51 @@ export namespace Components {
         "size": IoDrawerSize;
     }
     /**
+     * io-fieldset
+     * ===========
+     * Generic fieldset primitive for grouping mixed form controls or content sections.
+     * Renders a semantic <fieldset> / <legend> pair with full ARIA customisation support.
+     * Use io-fieldset when you need to group heterogeneous controls (e.g. a mix of
+     * io-input + io-checkbox) that io-checkbox-group or io-radio-group do not cover.
+     * io-fieldset is **non-interactive and non-form-associated**:
+     * - It renders no native form controls itself.
+     * - It does NOT implement `formAssociated` — each slotted child manages its own value.
+     * - It does NOT emit custom events.
+     * @example <io-fieldset label="Shipping address" required>
+     *   <io-input label="Street" name="street" required />
+     *   <io-input label="City" name="city" required />
+     * </io-fieldset>
+     * @example <io-fieldset label="Notification preferences" .aria={{ role: 'group' }}>
+     *   <io-checkbox label="Email" name="notif" value="email" />
+     *   <io-checkbox label="SMS" name="notif" value="sms" />
+     * </io-fieldset>
+     */
+    interface IoFieldset {
+        /**
+          * Arbitrary ARIA attributes to spread onto the inner <fieldset> element. Keys may include or omit the `aria-` prefix — both forms are accepted. The special key `role` is passed through as-is (e.g. `{ role: 'radiogroup' }`).
+          * @example <io-fieldset .aria={{ role: 'radiogroup' }} label="Delivery type">   ... </io-fieldset>
+         */
+        "aria"?: IoFieldsetAriaRecord;
+        /**
+          * Puts the fieldset in error state. Use the io-DS standard `error` prop name. Reflected so `:host([error])` CSS selectors work.
+          * @default false
+         */
+        "error": boolean;
+        /**
+          * Error message shown when `error=true`. An empty or undefined value suppresses the error text node while leaving error styling active.
+         */
+        "errorMessage": string | undefined;
+        /**
+          * Legend text — required for accessibility. Reflected so CSS selectors can target it.
+         */
+        "label": string;
+        /**
+          * Marks the group as required. Reflected.
+          * @default false
+         */
+        "required": boolean;
+    }
+    /**
      * io-flag
      * ========
      * Country flag indicator using the io icon size scale.
@@ -1187,6 +1340,68 @@ export namespace Components {
           * @default 'none'
          */
         "state": IoFieldState;
+    }
+    /**
+     * io-grid
+     * ========
+     * 12-column responsive CSS Grid layout primitive.
+     * Thin layout wrapper that sets up the grid context via CSS custom
+     * properties. All real column arithmetic is left to child io-grid-item
+     * elements (or light-DOM children using the same tokens).
+     * Uses shadow: false (light DOM) so consumers can use CSS selectors on
+     * child elements without crossing a shadow boundary.
+     * @example <io-grid gap="md">
+     *   <io-grid-item col-span="6">Left half</io-grid-item>
+     *   <io-grid-item col-span="6">Right half</io-grid-item>
+     * </io-grid>
+     */
+    interface IoGrid {
+        /**
+          * Align-items for all grid cells.
+          * @default 'start'
+         */
+        "align": IoGridAlign;
+        /**
+          * Number of columns in the grid. Default 12.
+          * @default 12
+         */
+        "columns": number;
+        /**
+          * Gap between grid cells. Maps to --io-grid-gap-* tokens.
+          * @default 'md'
+         */
+        "gap": IoGridGap;
+        /**
+          * Justify-items for all grid cells.
+          * @default 'stretch'
+         */
+        "justify": IoGridJustify;
+    }
+    /**
+     * io-grid-item
+     * ============
+     * Grid cell companion for io-grid.
+     * Controls how many columns (and optionally rows) this cell occupies.
+     * Uses shadow: false (light DOM) to participate cleanly in the parent
+     * CSS Grid layout — shadow DOM nodes would create an extra stacking layer.
+     * @example <io-grid>
+     *   <io-grid-item col-span="8">Main content</io-grid-item>
+     *   <io-grid-item col-span="4">Sidebar</io-grid-item>
+     * </io-grid>
+     */
+    interface IoGridItem {
+        /**
+          * Number of grid columns this item spans (1–12).
+         */
+        "colSpan": number | undefined;
+        /**
+          * Starting column line (1–12 or 'auto').
+         */
+        "colStart": number | string | undefined;
+        /**
+          * Number of grid rows this item spans.
+         */
+        "rowSpan": number | undefined;
     }
     /**
      * io-heading
@@ -1970,6 +2185,79 @@ export namespace Components {
         "target": string | undefined;
     }
     /**
+     * io-link-tile
+     * ============
+     * Media tile primitive with an embedded link action.
+     * Wraps a media element (img/picture/video) in a visually rich card with
+     * an optional gradient overlay, label, description, and navigational action.
+     * A full-surface transparent anchor covers the entire tile for easy click
+     * target while still allowing slotted interactive elements (io-tag chips,
+     * custom footer links) to receive focus independently.
+     * Focus delegates from the host to the embedded anchor via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-link-tile
+     *   href="/products/blue-widget"
+     *   label="Blue Widget"
+     *   description="High-performance widget in iO blue."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-link-tile>
+     */
+    interface IoLinkTile {
+        /**
+          * Text alignment of the overlay content.
+          * @default 'bottom'
+         */
+        "align": IoTileAlign1;
+        /**
+          * Media aspect ratio.
+          * @default '4/3'
+         */
+        "aspectRatio": IoTileAspectRatio1;
+        /**
+          * Supporting description text displayed below the label.
+         */
+        "description": string | undefined;
+        /**
+          * Download attribute for the link.
+         */
+        "download": string | undefined;
+        /**
+          * Show gradient overlay behind the label/description.
+          * @default true
+         */
+        "gradient": boolean;
+        /**
+          * Navigation destination (required).
+         */
+        "href": string;
+        /**
+          * Tile label (required — accessible name for the link).
+         */
+        "label": string;
+        /**
+          * Rel attribute.
+         */
+        "rel": string | undefined;
+        /**
+          * Label text size preset.
+          * @default 'md'
+         */
+        "size": IoTileSize1;
+        /**
+          * Link target. '_blank' auto-adds noopener noreferrer.
+          * @default '_self'
+         */
+        "target": string | undefined;
+        /**
+          * Label font weight.
+          * @default 'semibold'
+         */
+        "weight": IoTileWeight1;
+    }
+    /**
      * io-modal
      * =========
      * Accessible modal dialog built on the native <dialog> element.
@@ -2437,6 +2725,84 @@ export namespace Components {
           * @default 'bottom'
          */
         "placement": IoPopoverPlacement;
+    }
+    /**
+     * io-product-tile
+     * ===============
+     * Commerce primitive tile for product listings: heading + price display +
+     * optional strikethrough original price + optional wishlist/like button.
+     * Accessible price differentiation: use
+     * `<s>` for semantic strikethrough with visually-hidden 'Original price:' / 'Sale price:'
+     * labels so screen readers announce both values with meaningful context.
+     * The tile is optionally linked via the `href` prop (renders an `<a>` wrapper)
+     * or a slotted `<a>` element. Providing both is disallowed.
+     * @example <io-product-tile
+     *   heading="Product name"
+     *   price="€ 49,00"
+     *   price-original="€ 79,00"
+     *   description="Short description"
+     *   href="/products/1"
+     *   like-button
+     * >
+     *   <img slot="image" src="/product.jpg" alt="Product name" />
+     * </io-product-tile>
+     */
+    interface IoProductTile {
+        /**
+          * Image aspect ratio. Defaults to 'square'.
+          * @default 'square'
+         */
+        "aspect": IoProductTileAspect;
+        /**
+          * Optional short description shown beneath the heading
+         */
+        "description"?: string;
+        /**
+          * Product name displayed as the tile heading
+         */
+        "heading": string;
+        /**
+          * Semantic HTML tag for the heading. Defaults to 'h2'.
+          * @default 'h2'
+         */
+        "headingTag": IoProductTileHeadingTag;
+        /**
+          * Optional URL — renders the tile content inside an `<a>` tag. Mutually exclusive with a slotted `<a>` element.
+         */
+        "href"?: string;
+        /**
+          * Show a wishlist/like toggle button over the product image
+          * @default false
+         */
+        "likeButton": boolean;
+        /**
+          * Accessible label for the like button in its default (not liked) state
+          * @default 'Add to wishlist'
+         */
+        "likeLabel": string;
+        /**
+          * Controls whether the like button is in its active (liked) state. Mutable so consumers can bind this reactively.
+          * @default false
+         */
+        "liked": boolean;
+        /**
+          * Current/sale price to display
+         */
+        "price": string;
+        /**
+          * Optional original (pre-sale) price. When provided, it renders as `<s>` (strikethrough) with screen-reader labels announcing the price difference: "Sale price: €49.00 / Original price: €79.00".
+         */
+        "priceOriginal"?: string;
+        /**
+          * Link target — only used when `href` is set
+          * @default '_self'
+         */
+        "target"?: string;
+        /**
+          * Accessible label for the like button in its liked (active) state
+          * @default 'Remove from wishlist'
+         */
+        "unlikeLabel": string;
     }
     /**
      * io-progress
@@ -3709,6 +4075,8 @@ export namespace Components {
          */
         "tag": IoTextListTag;
     }
+    interface IoTextListItem {
+    }
     /**
      * io-textarea
      * ============
@@ -4010,6 +4378,10 @@ export interface IoAccordionCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoAccordionElement;
 }
+export interface IoAppShellCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoAppShellElement;
+}
 export interface IoBannerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoBannerElement;
@@ -4025,6 +4397,10 @@ export interface IoButtonGroupCustomEvent<T> extends CustomEvent<T> {
 export interface IoButtonPureCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoButtonPureElement;
+}
+export interface IoButtonTileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoButtonTileElement;
 }
 export interface IoCarouselCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -4097,6 +4473,10 @@ export interface IoPinCodeCustomEvent<T> extends CustomEvent<T> {
 export interface IoPopoverCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIoPopoverElement;
+}
+export interface IoProductTileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIoProductTileElement;
 }
 export interface IoRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -4216,6 +4596,36 @@ declare global {
     var HTMLIoAiTagElement: {
         prototype: HTMLIoAiTagElement;
         new (): HTMLIoAiTagElement;
+    };
+    interface HTMLIoAppShellElementEventMap {
+        "sidebarStartUpdate": IoAppShellSidebarStartUpdateDetail;
+        "sidebarEndDismiss": IoAppShellSidebarEndDismissDetail;
+    }
+    /**
+     * io-app-shell
+     * ============
+     * Reusable full-page application shell with sticky header, collapsible
+     * sidebar navigation, optional secondary sidebar, and main content area.
+     * Reuses focus-trap and scroll-lock patterns from io-flyout.
+     * The sidebar-start panel becomes a modal overlay on mobile (< lg breakpoint).
+     * @example <io-app-shell sidebar-start-open>
+     *   <nav slot="sidebar-start">Navigation</nav>
+     *   <main>Page content</main>
+     * </io-app-shell>
+     */
+    interface HTMLIoAppShellElement extends Components.IoAppShell, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoAppShellElementEventMap>(type: K, listener: (this: HTMLIoAppShellElement, ev: IoAppShellCustomEvent<HTMLIoAppShellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoAppShellElementEventMap>(type: K, listener: (this: HTMLIoAppShellElement, ev: IoAppShellCustomEvent<HTMLIoAppShellElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoAppShellElement: {
+        prototype: HTMLIoAppShellElement;
+        new (): HTMLIoAppShellElement;
     };
     /**
      * io-avatar
@@ -4439,6 +4849,41 @@ declare global {
         prototype: HTMLIoButtonPureElement;
         new (): HTMLIoButtonPureElement;
     };
+    interface HTMLIoButtonTileElementEventMap {
+        "tileClick": IoButtonTileClickDetail;
+    }
+    /**
+     * io-button-tile
+     * ==============
+     * Media tile primitive with an embedded button action.
+     * Identical visual structure to io-link-tile but renders as <button>
+     * rather than <a>. Use when the tile triggers an action (open modal,
+     * add to cart, toggle favourite) rather than navigating to a new URL.
+     * Focus delegates from the host to the embedded button via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-button-tile
+     *   label="Add Blue Widget"
+     *   description="Click to add to your dashboard."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-button-tile>
+     */
+    interface HTMLIoButtonTileElement extends Components.IoButtonTile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoButtonTileElementEventMap>(type: K, listener: (this: HTMLIoButtonTileElement, ev: IoButtonTileCustomEvent<HTMLIoButtonTileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoButtonTileElementEventMap>(type: K, listener: (this: HTMLIoButtonTileElement, ev: IoButtonTileCustomEvent<HTMLIoButtonTileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoButtonTileElement: {
+        prototype: HTMLIoButtonTileElement;
+        new (): HTMLIoButtonTileElement;
+    };
     interface HTMLIoCarouselElementEventMap {
         "update": IoCarouselUpdateDetail;
     }
@@ -4594,6 +5039,32 @@ declare global {
         new (): HTMLIoDrawerElement;
     };
     /**
+     * io-fieldset
+     * ===========
+     * Generic fieldset primitive for grouping mixed form controls or content sections.
+     * Renders a semantic <fieldset> / <legend> pair with full ARIA customisation support.
+     * Use io-fieldset when you need to group heterogeneous controls (e.g. a mix of
+     * io-input + io-checkbox) that io-checkbox-group or io-radio-group do not cover.
+     * io-fieldset is **non-interactive and non-form-associated**:
+     * - It renders no native form controls itself.
+     * - It does NOT implement `formAssociated` — each slotted child manages its own value.
+     * - It does NOT emit custom events.
+     * @example <io-fieldset label="Shipping address" required>
+     *   <io-input label="Street" name="street" required />
+     *   <io-input label="City" name="city" required />
+     * </io-fieldset>
+     * @example <io-fieldset label="Notification preferences" .aria={{ role: 'group' }}>
+     *   <io-checkbox label="Email" name="notif" value="email" />
+     *   <io-checkbox label="SMS" name="notif" value="sms" />
+     * </io-fieldset>
+     */
+    interface HTMLIoFieldsetElement extends Components.IoFieldset, HTMLStencilElement {
+    }
+    var HTMLIoFieldsetElement: {
+        prototype: HTMLIoFieldsetElement;
+        new (): HTMLIoFieldsetElement;
+    };
+    /**
      * io-flag
      * ========
      * Country flag indicator using the io icon size scale.
@@ -4662,6 +5133,44 @@ declare global {
     var HTMLIoFormFieldElement: {
         prototype: HTMLIoFormFieldElement;
         new (): HTMLIoFormFieldElement;
+    };
+    /**
+     * io-grid
+     * ========
+     * 12-column responsive CSS Grid layout primitive.
+     * Thin layout wrapper that sets up the grid context via CSS custom
+     * properties. All real column arithmetic is left to child io-grid-item
+     * elements (or light-DOM children using the same tokens).
+     * Uses shadow: false (light DOM) so consumers can use CSS selectors on
+     * child elements without crossing a shadow boundary.
+     * @example <io-grid gap="md">
+     *   <io-grid-item col-span="6">Left half</io-grid-item>
+     *   <io-grid-item col-span="6">Right half</io-grid-item>
+     * </io-grid>
+     */
+    interface HTMLIoGridElement extends Components.IoGrid, HTMLStencilElement {
+    }
+    var HTMLIoGridElement: {
+        prototype: HTMLIoGridElement;
+        new (): HTMLIoGridElement;
+    };
+    /**
+     * io-grid-item
+     * ============
+     * Grid cell companion for io-grid.
+     * Controls how many columns (and optionally rows) this cell occupies.
+     * Uses shadow: false (light DOM) to participate cleanly in the parent
+     * CSS Grid layout — shadow DOM nodes would create an extra stacking layer.
+     * @example <io-grid>
+     *   <io-grid-item col-span="8">Main content</io-grid-item>
+     *   <io-grid-item col-span="4">Sidebar</io-grid-item>
+     * </io-grid>
+     */
+    interface HTMLIoGridItemElement extends Components.IoGridItem, HTMLStencilElement {
+    }
+    var HTMLIoGridItemElement: {
+        prototype: HTMLIoGridItemElement;
+        new (): HTMLIoGridItemElement;
     };
     /**
      * io-heading
@@ -4912,6 +5421,33 @@ declare global {
         prototype: HTMLIoLinkPureElement;
         new (): HTMLIoLinkPureElement;
     };
+    /**
+     * io-link-tile
+     * ============
+     * Media tile primitive with an embedded link action.
+     * Wraps a media element (img/picture/video) in a visually rich card with
+     * an optional gradient overlay, label, description, and navigational action.
+     * A full-surface transparent anchor covers the entire tile for easy click
+     * target while still allowing slotted interactive elements (io-tag chips,
+     * custom footer links) to receive focus independently.
+     * Focus delegates from the host to the embedded anchor via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-link-tile
+     *   href="/products/blue-widget"
+     *   label="Blue Widget"
+     *   description="High-performance widget in iO blue."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-link-tile>
+     */
+    interface HTMLIoLinkTileElement extends Components.IoLinkTile, HTMLStencilElement {
+    }
+    var HTMLIoLinkTileElement: {
+        prototype: HTMLIoLinkTileElement;
+        new (): HTMLIoLinkTileElement;
+    };
     interface HTMLIoModalElementEventMap {
         "dismiss": void;
         "motionVisibleEnd": void;
@@ -5116,6 +5652,44 @@ declare global {
     var HTMLIoPopoverElement: {
         prototype: HTMLIoPopoverElement;
         new (): HTMLIoPopoverElement;
+    };
+    interface HTMLIoProductTileElementEventMap {
+        "like": boolean;
+    }
+    /**
+     * io-product-tile
+     * ===============
+     * Commerce primitive tile for product listings: heading + price display +
+     * optional strikethrough original price + optional wishlist/like button.
+     * Accessible price differentiation: use
+     * `<s>` for semantic strikethrough with visually-hidden 'Original price:' / 'Sale price:'
+     * labels so screen readers announce both values with meaningful context.
+     * The tile is optionally linked via the `href` prop (renders an `<a>` wrapper)
+     * or a slotted `<a>` element. Providing both is disallowed.
+     * @example <io-product-tile
+     *   heading="Product name"
+     *   price="€ 49,00"
+     *   price-original="€ 79,00"
+     *   description="Short description"
+     *   href="/products/1"
+     *   like-button
+     * >
+     *   <img slot="image" src="/product.jpg" alt="Product name" />
+     * </io-product-tile>
+     */
+    interface HTMLIoProductTileElement extends Components.IoProductTile, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIoProductTileElementEventMap>(type: K, listener: (this: HTMLIoProductTileElement, ev: IoProductTileCustomEvent<HTMLIoProductTileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIoProductTileElementEventMap>(type: K, listener: (this: HTMLIoProductTileElement, ev: IoProductTileCustomEvent<HTMLIoProductTileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIoProductTileElement: {
+        prototype: HTMLIoProductTileElement;
+        new (): HTMLIoProductTileElement;
     };
     /**
      * io-progress
@@ -5859,6 +6433,12 @@ declare global {
         prototype: HTMLIoTextListElement;
         new (): HTMLIoTextListElement;
     };
+    interface HTMLIoTextListItemElement extends Components.IoTextListItem, HTMLStencilElement {
+    }
+    var HTMLIoTextListItemElement: {
+        prototype: HTMLIoTextListItemElement;
+        new (): HTMLIoTextListItemElement;
+    };
     interface HTMLIoTextareaElementEventMap {
         "input": InputEvent;
         "change": string;
@@ -5998,6 +6578,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "io-accordion": HTMLIoAccordionElement;
         "io-ai-tag": HTMLIoAiTagElement;
+        "io-app-shell": HTMLIoAppShellElement;
         "io-avatar": HTMLIoAvatarElement;
         "io-badge": HTMLIoBadgeElement;
         "io-banner": HTMLIoBannerElement;
@@ -6006,14 +6587,18 @@ declare global {
         "io-button": HTMLIoButtonElement;
         "io-button-group": HTMLIoButtonGroupElement;
         "io-button-pure": HTMLIoButtonPureElement;
+        "io-button-tile": HTMLIoButtonTileElement;
         "io-carousel": HTMLIoCarouselElement;
         "io-checkbox": HTMLIoCheckboxElement;
         "io-checkbox-group": HTMLIoCheckboxGroupElement;
         "io-divider": HTMLIoDividerElement;
         "io-drawer": HTMLIoDrawerElement;
+        "io-fieldset": HTMLIoFieldsetElement;
         "io-flag": HTMLIoFlagElement;
         "io-flyout": HTMLIoFlyoutElement;
         "io-form-field": HTMLIoFormFieldElement;
+        "io-grid": HTMLIoGridElement;
+        "io-grid-item": HTMLIoGridItemElement;
         "io-heading": HTMLIoHeadingElement;
         "io-icon": HTMLIoIconElement;
         "io-inline-notification": HTMLIoInlineNotificationElement;
@@ -6023,6 +6608,7 @@ declare global {
         "io-input-search": HTMLIoInputSearchElement;
         "io-link": HTMLIoLinkElement;
         "io-link-pure": HTMLIoLinkPureElement;
+        "io-link-tile": HTMLIoLinkTileElement;
         "io-modal": HTMLIoModalElement;
         "io-multi-select": HTMLIoMultiSelectElement;
         "io-optgroup": HTMLIoOptgroupElement;
@@ -6030,6 +6616,7 @@ declare global {
         "io-pagination": HTMLIoPaginationElement;
         "io-pin-code": HTMLIoPinCodeElement;
         "io-popover": HTMLIoPopoverElement;
+        "io-product-tile": HTMLIoProductTileElement;
         "io-progress": HTMLIoProgressElement;
         "io-radio": HTMLIoRadioElement;
         "io-radio-group": HTMLIoRadioGroupElement;
@@ -6056,6 +6643,7 @@ declare global {
         "io-tag-dismissible": HTMLIoTagDismissibleElement;
         "io-text": HTMLIoTextElement;
         "io-text-list": HTMLIoTextListElement;
+        "io-text-list-item": HTMLIoTextListItemElement;
         "io-textarea": HTMLIoTextareaElement;
         "io-toast": HTMLIoToastElement;
         "io-toast-item": HTMLIoToastItemElement;
@@ -6162,6 +6750,42 @@ declare namespace LocalJSX {
           * @default 'generated'
          */
         "variant"?: IoAiTagVariant;
+    }
+    /**
+     * io-app-shell
+     * ============
+     * Reusable full-page application shell with sticky header, collapsible
+     * sidebar navigation, optional secondary sidebar, and main content area.
+     * Reuses focus-trap and scroll-lock patterns from io-flyout.
+     * The sidebar-start panel becomes a modal overlay on mobile (< lg breakpoint).
+     * @example <io-app-shell sidebar-start-open>
+     *   <nav slot="sidebar-start">Navigation</nav>
+     *   <main>Page content</main>
+     * </io-app-shell>
+     */
+    interface IoAppShell {
+        /**
+          * Height of the sticky header bar. Used as CSS variable.
+         */
+        "headerHeight"?: string | undefined;
+        /**
+          * Emitted when the user dismisses the sidebar-end.
+         */
+        "onSidebarEndDismiss"?: (event: IoAppShellCustomEvent<IoAppShellSidebarEndDismissDetail>) => void;
+        /**
+          * Emitted when the user requests to open or close the sidebar-start.
+         */
+        "onSidebarStartUpdate"?: (event: IoAppShellCustomEvent<IoAppShellSidebarStartUpdateDetail>) => void;
+        /**
+          * Whether the sidebar-end panel is open.
+          * @default false
+         */
+        "sidebarEndOpen"?: boolean;
+        /**
+          * Whether the sidebar-start panel is open.
+          * @default false
+         */
+        "sidebarStartOpen"?: boolean;
     }
     /**
      * io-avatar
@@ -6685,6 +7309,78 @@ declare namespace LocalJSX {
         "underline"?: boolean;
     }
     /**
+     * io-button-tile
+     * ==============
+     * Media tile primitive with an embedded button action.
+     * Identical visual structure to io-link-tile but renders as <button>
+     * rather than <a>. Use when the tile triggers an action (open modal,
+     * add to cart, toggle favourite) rather than navigating to a new URL.
+     * Focus delegates from the host to the embedded button via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-button-tile
+     *   label="Add Blue Widget"
+     *   description="Click to add to your dashboard."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-button-tile>
+     */
+    interface IoButtonTile {
+        /**
+          * Text alignment of the overlay content.
+          * @default 'bottom'
+         */
+        "align"?: IoTileAlign;
+        /**
+          * Media aspect ratio.
+          * @default '4/3'
+         */
+        "aspectRatio"?: IoTileAspectRatio;
+        /**
+          * Supporting description text displayed below the label.
+         */
+        "description"?: string | undefined;
+        /**
+          * Disabled state. Prevents clicks and reduces opacity.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Show gradient overlay behind the label/description.
+          * @default true
+         */
+        "gradient"?: boolean;
+        /**
+          * Tile label (required — accessible name for the button).
+         */
+        "label": string;
+        /**
+          * Loading state — shows spinner, prevents double-submit.
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Emitted when the tile button is clicked (not fired when disabled or loading).
+         */
+        "onTileClick"?: (event: IoButtonTileCustomEvent<IoButtonTileClickDetail>) => void;
+        /**
+          * Label text size preset.
+          * @default 'md'
+         */
+        "size"?: IoTileSize;
+        /**
+          * Native button type.
+          * @default 'button'
+         */
+        "type"?: 'button' | 'submit' | 'reset';
+        /**
+          * Label font weight.
+          * @default 'semibold'
+         */
+        "weight"?: IoTileWeight;
+    }
+    /**
      * io-carousel
      * ============
      * Generic horizontally scrollable container with prev/next navigation,
@@ -7056,6 +7752,51 @@ declare namespace LocalJSX {
         "size"?: IoDrawerSize;
     }
     /**
+     * io-fieldset
+     * ===========
+     * Generic fieldset primitive for grouping mixed form controls or content sections.
+     * Renders a semantic <fieldset> / <legend> pair with full ARIA customisation support.
+     * Use io-fieldset when you need to group heterogeneous controls (e.g. a mix of
+     * io-input + io-checkbox) that io-checkbox-group or io-radio-group do not cover.
+     * io-fieldset is **non-interactive and non-form-associated**:
+     * - It renders no native form controls itself.
+     * - It does NOT implement `formAssociated` — each slotted child manages its own value.
+     * - It does NOT emit custom events.
+     * @example <io-fieldset label="Shipping address" required>
+     *   <io-input label="Street" name="street" required />
+     *   <io-input label="City" name="city" required />
+     * </io-fieldset>
+     * @example <io-fieldset label="Notification preferences" .aria={{ role: 'group' }}>
+     *   <io-checkbox label="Email" name="notif" value="email" />
+     *   <io-checkbox label="SMS" name="notif" value="sms" />
+     * </io-fieldset>
+     */
+    interface IoFieldset {
+        /**
+          * Arbitrary ARIA attributes to spread onto the inner <fieldset> element. Keys may include or omit the `aria-` prefix — both forms are accepted. The special key `role` is passed through as-is (e.g. `{ role: 'radiogroup' }`).
+          * @example <io-fieldset .aria={{ role: 'radiogroup' }} label="Delivery type">   ... </io-fieldset>
+         */
+        "aria"?: IoFieldsetAriaRecord;
+        /**
+          * Puts the fieldset in error state. Use the io-DS standard `error` prop name. Reflected so `:host([error])` CSS selectors work.
+          * @default false
+         */
+        "error"?: boolean;
+        /**
+          * Error message shown when `error=true`. An empty or undefined value suppresses the error text node while leaving error styling active.
+         */
+        "errorMessage"?: string | undefined;
+        /**
+          * Legend text — required for accessibility. Reflected so CSS selectors can target it.
+         */
+        "label": string;
+        /**
+          * Marks the group as required. Reflected.
+          * @default false
+         */
+        "required"?: boolean;
+    }
+    /**
      * io-flag
      * ========
      * Country flag indicator using the io icon size scale.
@@ -7161,6 +7902,68 @@ declare namespace LocalJSX {
           * @default 'none'
          */
         "state"?: IoFieldState;
+    }
+    /**
+     * io-grid
+     * ========
+     * 12-column responsive CSS Grid layout primitive.
+     * Thin layout wrapper that sets up the grid context via CSS custom
+     * properties. All real column arithmetic is left to child io-grid-item
+     * elements (or light-DOM children using the same tokens).
+     * Uses shadow: false (light DOM) so consumers can use CSS selectors on
+     * child elements without crossing a shadow boundary.
+     * @example <io-grid gap="md">
+     *   <io-grid-item col-span="6">Left half</io-grid-item>
+     *   <io-grid-item col-span="6">Right half</io-grid-item>
+     * </io-grid>
+     */
+    interface IoGrid {
+        /**
+          * Align-items for all grid cells.
+          * @default 'start'
+         */
+        "align"?: IoGridAlign;
+        /**
+          * Number of columns in the grid. Default 12.
+          * @default 12
+         */
+        "columns"?: number;
+        /**
+          * Gap between grid cells. Maps to --io-grid-gap-* tokens.
+          * @default 'md'
+         */
+        "gap"?: IoGridGap;
+        /**
+          * Justify-items for all grid cells.
+          * @default 'stretch'
+         */
+        "justify"?: IoGridJustify;
+    }
+    /**
+     * io-grid-item
+     * ============
+     * Grid cell companion for io-grid.
+     * Controls how many columns (and optionally rows) this cell occupies.
+     * Uses shadow: false (light DOM) to participate cleanly in the parent
+     * CSS Grid layout — shadow DOM nodes would create an extra stacking layer.
+     * @example <io-grid>
+     *   <io-grid-item col-span="8">Main content</io-grid-item>
+     *   <io-grid-item col-span="4">Sidebar</io-grid-item>
+     * </io-grid>
+     */
+    interface IoGridItem {
+        /**
+          * Number of grid columns this item spans (1–12).
+         */
+        "colSpan"?: number | undefined;
+        /**
+          * Starting column line (1–12 or 'auto').
+         */
+        "colStart"?: number | string | undefined;
+        /**
+          * Number of grid rows this item spans.
+         */
+        "rowSpan"?: number | undefined;
     }
     /**
      * io-heading
@@ -7969,6 +8772,79 @@ declare namespace LocalJSX {
         "target"?: string | undefined;
     }
     /**
+     * io-link-tile
+     * ============
+     * Media tile primitive with an embedded link action.
+     * Wraps a media element (img/picture/video) in a visually rich card with
+     * an optional gradient overlay, label, description, and navigational action.
+     * A full-surface transparent anchor covers the entire tile for easy click
+     * target while still allowing slotted interactive elements (io-tag chips,
+     * custom footer links) to receive focus independently.
+     * Focus delegates from the host to the embedded anchor via
+     * shadow: { delegatesFocus: true }.
+     * @example <io-link-tile
+     *   href="/products/blue-widget"
+     *   label="Blue Widget"
+     *   description="High-performance widget in iO blue."
+     *   aspect-ratio="4/3"
+     *   gradient
+     * >
+     *   <img src="/img/widget.jpg" alt="Blue Widget" />
+     * </io-link-tile>
+     */
+    interface IoLinkTile {
+        /**
+          * Text alignment of the overlay content.
+          * @default 'bottom'
+         */
+        "align"?: IoTileAlign1;
+        /**
+          * Media aspect ratio.
+          * @default '4/3'
+         */
+        "aspectRatio"?: IoTileAspectRatio1;
+        /**
+          * Supporting description text displayed below the label.
+         */
+        "description"?: string | undefined;
+        /**
+          * Download attribute for the link.
+         */
+        "download"?: string | undefined;
+        /**
+          * Show gradient overlay behind the label/description.
+          * @default true
+         */
+        "gradient"?: boolean;
+        /**
+          * Navigation destination (required).
+         */
+        "href": string;
+        /**
+          * Tile label (required — accessible name for the link).
+         */
+        "label": string;
+        /**
+          * Rel attribute.
+         */
+        "rel"?: string | undefined;
+        /**
+          * Label text size preset.
+          * @default 'md'
+         */
+        "size"?: IoTileSize1;
+        /**
+          * Link target. '_blank' auto-adds noopener noreferrer.
+          * @default '_self'
+         */
+        "target"?: string | undefined;
+        /**
+          * Label font weight.
+          * @default 'semibold'
+         */
+        "weight"?: IoTileWeight1;
+    }
+    /**
      * io-modal
      * =========
      * Accessible modal dialog built on the native <dialog> element.
@@ -8462,6 +9338,88 @@ declare namespace LocalJSX {
           * @default 'bottom'
          */
         "placement"?: IoPopoverPlacement;
+    }
+    /**
+     * io-product-tile
+     * ===============
+     * Commerce primitive tile for product listings: heading + price display +
+     * optional strikethrough original price + optional wishlist/like button.
+     * Accessible price differentiation: use
+     * `<s>` for semantic strikethrough with visually-hidden 'Original price:' / 'Sale price:'
+     * labels so screen readers announce both values with meaningful context.
+     * The tile is optionally linked via the `href` prop (renders an `<a>` wrapper)
+     * or a slotted `<a>` element. Providing both is disallowed.
+     * @example <io-product-tile
+     *   heading="Product name"
+     *   price="€ 49,00"
+     *   price-original="€ 79,00"
+     *   description="Short description"
+     *   href="/products/1"
+     *   like-button
+     * >
+     *   <img slot="image" src="/product.jpg" alt="Product name" />
+     * </io-product-tile>
+     */
+    interface IoProductTile {
+        /**
+          * Image aspect ratio. Defaults to 'square'.
+          * @default 'square'
+         */
+        "aspect"?: IoProductTileAspect;
+        /**
+          * Optional short description shown beneath the heading
+         */
+        "description"?: string;
+        /**
+          * Product name displayed as the tile heading
+         */
+        "heading": string;
+        /**
+          * Semantic HTML tag for the heading. Defaults to 'h2'.
+          * @default 'h2'
+         */
+        "headingTag"?: IoProductTileHeadingTag;
+        /**
+          * Optional URL — renders the tile content inside an `<a>` tag. Mutually exclusive with a slotted `<a>` element.
+         */
+        "href"?: string;
+        /**
+          * Show a wishlist/like toggle button over the product image
+          * @default false
+         */
+        "likeButton"?: boolean;
+        /**
+          * Accessible label for the like button in its default (not liked) state
+          * @default 'Add to wishlist'
+         */
+        "likeLabel"?: string;
+        /**
+          * Controls whether the like button is in its active (liked) state. Mutable so consumers can bind this reactively.
+          * @default false
+         */
+        "liked"?: boolean;
+        /**
+          * Emitted when the like button is toggled. `event.detail` contains the new `liked` state.
+         */
+        "onLike"?: (event: IoProductTileCustomEvent<boolean>) => void;
+        /**
+          * Current/sale price to display
+         */
+        "price": string;
+        /**
+          * Optional original (pre-sale) price. When provided, it renders as `<s>` (strikethrough) with screen-reader labels announcing the price difference: "Sale price: €49.00 / Original price: €79.00".
+         */
+        "priceOriginal"?: string;
+        /**
+          * Link target — only used when `href` is set
+          * @default '_self'
+         */
+        "target"?: string;
+        /**
+          * Accessible label for the like button in its liked (active) state
+          * @default 'Remove from wishlist'
+         */
+        "unlikeLabel"?: string;
     }
     /**
      * io-progress
@@ -9798,6 +10756,8 @@ declare namespace LocalJSX {
          */
         "tag"?: IoTextListTag;
     }
+    interface IoTextListItem {
+    }
     /**
      * io-textarea
      * ============
@@ -10113,6 +11073,11 @@ declare namespace LocalJSX {
         "variant": IoAiTagVariant;
         "locale": IoAiTagLocale;
     }
+    interface IoAppShellAttributes {
+        "sidebarStartOpen": boolean;
+        "sidebarEndOpen": boolean;
+        "headerHeight": string | undefined;
+    }
     interface IoAvatarAttributes {
         "src": string | undefined;
         "alt": string;
@@ -10204,6 +11169,18 @@ declare namespace LocalJSX {
         "label": string | undefined;
         "icon": IoIconName;
     }
+    interface IoButtonTileAttributes {
+        "label": string;
+        "description": string | undefined;
+        "aspectRatio": IoTileAspectRatio;
+        "align": IoTileAlign;
+        "size": IoTileSize;
+        "weight": IoTileWeight;
+        "gradient": boolean;
+        "type": 'button' | 'submit' | 'reset';
+        "disabled": boolean;
+        "loading": boolean;
+    }
     interface IoCarouselAttributes {
         "prevLabel": string;
         "nextLabel": string;
@@ -10264,6 +11241,12 @@ declare namespace LocalJSX {
         "dismissButton": boolean;
         "background": IoDrawerBackground;
     }
+    interface IoFieldsetAttributes {
+        "label": string;
+        "required": boolean;
+        "error": boolean;
+        "errorMessage": string | undefined;
+    }
     interface IoFlagAttributes {
         "name": IoFlagName;
         "size": IoFlagSize;
@@ -10281,6 +11264,17 @@ declare namespace LocalJSX {
         "message": string;
         "state": IoFieldState;
         "required": boolean;
+    }
+    interface IoGridAttributes {
+        "gap": IoGridGap;
+        "columns": number;
+        "align": IoGridAlign;
+        "justify": IoGridJustify;
+    }
+    interface IoGridItemAttributes {
+        "colSpan": number | undefined;
+        "rowSpan": number | undefined;
+        "colStart": string;
     }
     interface IoHeadingAttributes {
         "tag": IoHeadingTag | undefined;
@@ -10434,6 +11428,19 @@ declare namespace LocalJSX {
         "iconSource": string;
         "hideLabel": boolean;
     }
+    interface IoLinkTileAttributes {
+        "href": string;
+        "target": string | undefined;
+        "rel": string | undefined;
+        "download": string | undefined;
+        "label": string;
+        "description": string | undefined;
+        "aspectRatio": IoTileAspectRatio;
+        "align": IoTileAlign;
+        "size": IoTileSize;
+        "weight": IoTileWeight;
+        "gradient": boolean;
+    }
     interface IoModalAttributes {
         "open": boolean;
         "heading": string;
@@ -10514,6 +11521,20 @@ declare namespace LocalJSX {
         "description": string | undefined;
         "ariaLabel": string | undefined;
         "arrow": boolean;
+    }
+    interface IoProductTileAttributes {
+        "heading": string;
+        "headingTag": IoProductTileHeadingTag;
+        "price": string;
+        "priceOriginal": string;
+        "description": string;
+        "href": string;
+        "target": string;
+        "likeButton": boolean;
+        "liked": boolean;
+        "aspect": IoProductTileAspect;
+        "likeLabel": string;
+        "unlikeLabel": string;
     }
     interface IoProgressAttributes {
         "value": number;
@@ -10779,6 +11800,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "io-accordion": Omit<IoAccordion, keyof IoAccordionAttributes> & { [K in keyof IoAccordion & keyof IoAccordionAttributes]?: IoAccordion[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `attr:${K}`]?: IoAccordionAttributes[K] } & { [K in keyof IoAccordion & keyof IoAccordionAttributes as `prop:${K}`]?: IoAccordion[K] };
         "io-ai-tag": Omit<IoAiTag, keyof IoAiTagAttributes> & { [K in keyof IoAiTag & keyof IoAiTagAttributes]?: IoAiTag[K] } & { [K in keyof IoAiTag & keyof IoAiTagAttributes as `attr:${K}`]?: IoAiTagAttributes[K] } & { [K in keyof IoAiTag & keyof IoAiTagAttributes as `prop:${K}`]?: IoAiTag[K] };
+        "io-app-shell": Omit<IoAppShell, keyof IoAppShellAttributes> & { [K in keyof IoAppShell & keyof IoAppShellAttributes]?: IoAppShell[K] } & { [K in keyof IoAppShell & keyof IoAppShellAttributes as `attr:${K}`]?: IoAppShellAttributes[K] } & { [K in keyof IoAppShell & keyof IoAppShellAttributes as `prop:${K}`]?: IoAppShell[K] };
         "io-avatar": Omit<IoAvatar, keyof IoAvatarAttributes> & { [K in keyof IoAvatar & keyof IoAvatarAttributes]?: IoAvatar[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `attr:${K}`]?: IoAvatarAttributes[K] } & { [K in keyof IoAvatar & keyof IoAvatarAttributes as `prop:${K}`]?: IoAvatar[K] };
         "io-badge": Omit<IoBadge, keyof IoBadgeAttributes> & { [K in keyof IoBadge & keyof IoBadgeAttributes]?: IoBadge[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `attr:${K}`]?: IoBadgeAttributes[K] } & { [K in keyof IoBadge & keyof IoBadgeAttributes as `prop:${K}`]?: IoBadge[K] };
         "io-banner": Omit<IoBanner, keyof IoBannerAttributes> & { [K in keyof IoBanner & keyof IoBannerAttributes]?: IoBanner[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `attr:${K}`]?: IoBannerAttributes[K] } & { [K in keyof IoBanner & keyof IoBannerAttributes as `prop:${K}`]?: IoBanner[K] };
@@ -10787,14 +11809,18 @@ declare namespace LocalJSX {
         "io-button": Omit<IoButton, keyof IoButtonAttributes> & { [K in keyof IoButton & keyof IoButtonAttributes]?: IoButton[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `attr:${K}`]?: IoButtonAttributes[K] } & { [K in keyof IoButton & keyof IoButtonAttributes as `prop:${K}`]?: IoButton[K] };
         "io-button-group": Omit<IoButtonGroup, keyof IoButtonGroupAttributes> & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes]?: IoButtonGroup[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `attr:${K}`]?: IoButtonGroupAttributes[K] } & { [K in keyof IoButtonGroup & keyof IoButtonGroupAttributes as `prop:${K}`]?: IoButtonGroup[K] };
         "io-button-pure": Omit<IoButtonPure, keyof IoButtonPureAttributes> & { [K in keyof IoButtonPure & keyof IoButtonPureAttributes]?: IoButtonPure[K] } & { [K in keyof IoButtonPure & keyof IoButtonPureAttributes as `attr:${K}`]?: IoButtonPureAttributes[K] } & { [K in keyof IoButtonPure & keyof IoButtonPureAttributes as `prop:${K}`]?: IoButtonPure[K] };
+        "io-button-tile": Omit<IoButtonTile, keyof IoButtonTileAttributes> & { [K in keyof IoButtonTile & keyof IoButtonTileAttributes]?: IoButtonTile[K] } & { [K in keyof IoButtonTile & keyof IoButtonTileAttributes as `attr:${K}`]?: IoButtonTileAttributes[K] } & { [K in keyof IoButtonTile & keyof IoButtonTileAttributes as `prop:${K}`]?: IoButtonTile[K] } & OneOf<"label", IoButtonTile["label"], IoButtonTileAttributes["label"]>;
         "io-carousel": Omit<IoCarousel, keyof IoCarouselAttributes> & { [K in keyof IoCarousel & keyof IoCarouselAttributes]?: IoCarousel[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `attr:${K}`]?: IoCarouselAttributes[K] } & { [K in keyof IoCarousel & keyof IoCarouselAttributes as `prop:${K}`]?: IoCarousel[K] };
         "io-checkbox": Omit<IoCheckbox, keyof IoCheckboxAttributes> & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes]?: IoCheckbox[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `attr:${K}`]?: IoCheckboxAttributes[K] } & { [K in keyof IoCheckbox & keyof IoCheckboxAttributes as `prop:${K}`]?: IoCheckbox[K] } & OneOf<"label", IoCheckbox["label"], IoCheckboxAttributes["label"]>;
         "io-checkbox-group": Omit<IoCheckboxGroup, keyof IoCheckboxGroupAttributes> & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes]?: IoCheckboxGroup[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `attr:${K}`]?: IoCheckboxGroupAttributes[K] } & { [K in keyof IoCheckboxGroup & keyof IoCheckboxGroupAttributes as `prop:${K}`]?: IoCheckboxGroup[K] } & OneOf<"label", IoCheckboxGroup["label"], IoCheckboxGroupAttributes["label"]>;
         "io-divider": Omit<IoDivider, keyof IoDividerAttributes> & { [K in keyof IoDivider & keyof IoDividerAttributes]?: IoDivider[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `attr:${K}`]?: IoDividerAttributes[K] } & { [K in keyof IoDivider & keyof IoDividerAttributes as `prop:${K}`]?: IoDivider[K] };
         "io-drawer": Omit<IoDrawer, keyof IoDrawerAttributes> & { [K in keyof IoDrawer & keyof IoDrawerAttributes]?: IoDrawer[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `attr:${K}`]?: IoDrawerAttributes[K] } & { [K in keyof IoDrawer & keyof IoDrawerAttributes as `prop:${K}`]?: IoDrawer[K] };
+        "io-fieldset": Omit<IoFieldset, keyof IoFieldsetAttributes> & { [K in keyof IoFieldset & keyof IoFieldsetAttributes]?: IoFieldset[K] } & { [K in keyof IoFieldset & keyof IoFieldsetAttributes as `attr:${K}`]?: IoFieldsetAttributes[K] } & { [K in keyof IoFieldset & keyof IoFieldsetAttributes as `prop:${K}`]?: IoFieldset[K] } & OneOf<"label", IoFieldset["label"], IoFieldsetAttributes["label"]>;
         "io-flag": Omit<IoFlag, keyof IoFlagAttributes> & { [K in keyof IoFlag & keyof IoFlagAttributes]?: IoFlag[K] } & { [K in keyof IoFlag & keyof IoFlagAttributes as `attr:${K}`]?: IoFlagAttributes[K] } & { [K in keyof IoFlag & keyof IoFlagAttributes as `prop:${K}`]?: IoFlag[K] } & OneOf<"name", IoFlag["name"], IoFlagAttributes["name"]>;
         "io-flyout": Omit<IoFlyout, keyof IoFlyoutAttributes> & { [K in keyof IoFlyout & keyof IoFlyoutAttributes]?: IoFlyout[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `attr:${K}`]?: IoFlyoutAttributes[K] } & { [K in keyof IoFlyout & keyof IoFlyoutAttributes as `prop:${K}`]?: IoFlyout[K] };
         "io-form-field": Omit<IoFormField, keyof IoFormFieldAttributes> & { [K in keyof IoFormField & keyof IoFormFieldAttributes]?: IoFormField[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `attr:${K}`]?: IoFormFieldAttributes[K] } & { [K in keyof IoFormField & keyof IoFormFieldAttributes as `prop:${K}`]?: IoFormField[K] } & OneOf<"label", IoFormField["label"], IoFormFieldAttributes["label"]>;
+        "io-grid": Omit<IoGrid, keyof IoGridAttributes> & { [K in keyof IoGrid & keyof IoGridAttributes]?: IoGrid[K] } & { [K in keyof IoGrid & keyof IoGridAttributes as `attr:${K}`]?: IoGridAttributes[K] } & { [K in keyof IoGrid & keyof IoGridAttributes as `prop:${K}`]?: IoGrid[K] };
+        "io-grid-item": Omit<IoGridItem, keyof IoGridItemAttributes> & { [K in keyof IoGridItem & keyof IoGridItemAttributes]?: IoGridItem[K] } & { [K in keyof IoGridItem & keyof IoGridItemAttributes as `attr:${K}`]?: IoGridItemAttributes[K] } & { [K in keyof IoGridItem & keyof IoGridItemAttributes as `prop:${K}`]?: IoGridItem[K] };
         "io-heading": Omit<IoHeading, keyof IoHeadingAttributes> & { [K in keyof IoHeading & keyof IoHeadingAttributes]?: IoHeading[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `attr:${K}`]?: IoHeadingAttributes[K] } & { [K in keyof IoHeading & keyof IoHeadingAttributes as `prop:${K}`]?: IoHeading[K] };
         "io-icon": Omit<IoIcon, keyof IoIconAttributes> & { [K in keyof IoIcon & keyof IoIconAttributes]?: IoIcon[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `attr:${K}`]?: IoIconAttributes[K] } & { [K in keyof IoIcon & keyof IoIconAttributes as `prop:${K}`]?: IoIcon[K] } & OneOf<"name", IoIcon["name"], IoIconAttributes["name"]>;
         "io-inline-notification": Omit<IoInlineNotification, keyof IoInlineNotificationAttributes> & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes]?: IoInlineNotification[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `attr:${K}`]?: IoInlineNotificationAttributes[K] } & { [K in keyof IoInlineNotification & keyof IoInlineNotificationAttributes as `prop:${K}`]?: IoInlineNotification[K] };
@@ -10804,6 +11830,7 @@ declare namespace LocalJSX {
         "io-input-search": Omit<IoInputSearch, keyof IoInputSearchAttributes> & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes]?: IoInputSearch[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `attr:${K}`]?: IoInputSearchAttributes[K] } & { [K in keyof IoInputSearch & keyof IoInputSearchAttributes as `prop:${K}`]?: IoInputSearch[K] } & OneOf<"label", IoInputSearch["label"], IoInputSearchAttributes["label"]>;
         "io-link": Omit<IoLink, keyof IoLinkAttributes> & { [K in keyof IoLink & keyof IoLinkAttributes]?: IoLink[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `attr:${K}`]?: IoLinkAttributes[K] } & { [K in keyof IoLink & keyof IoLinkAttributes as `prop:${K}`]?: IoLink[K] } & OneOf<"href", IoLink["href"], IoLinkAttributes["href"]>;
         "io-link-pure": Omit<IoLinkPure, keyof IoLinkPureAttributes> & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes]?: IoLinkPure[K] } & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes as `attr:${K}`]?: IoLinkPureAttributes[K] } & { [K in keyof IoLinkPure & keyof IoLinkPureAttributes as `prop:${K}`]?: IoLinkPure[K] };
+        "io-link-tile": Omit<IoLinkTile, keyof IoLinkTileAttributes> & { [K in keyof IoLinkTile & keyof IoLinkTileAttributes]?: IoLinkTile[K] } & { [K in keyof IoLinkTile & keyof IoLinkTileAttributes as `attr:${K}`]?: IoLinkTileAttributes[K] } & { [K in keyof IoLinkTile & keyof IoLinkTileAttributes as `prop:${K}`]?: IoLinkTile[K] } & OneOf<"href", IoLinkTile["href"], IoLinkTileAttributes["href"]> & OneOf<"label", IoLinkTile["label"], IoLinkTileAttributes["label"]>;
         "io-modal": Omit<IoModal, keyof IoModalAttributes> & { [K in keyof IoModal & keyof IoModalAttributes]?: IoModal[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `attr:${K}`]?: IoModalAttributes[K] } & { [K in keyof IoModal & keyof IoModalAttributes as `prop:${K}`]?: IoModal[K] };
         "io-multi-select": Omit<IoMultiSelect, keyof IoMultiSelectAttributes> & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes]?: IoMultiSelect[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `attr:${K}`]?: IoMultiSelectAttributes[K] } & { [K in keyof IoMultiSelect & keyof IoMultiSelectAttributes as `prop:${K}`]?: IoMultiSelect[K] } & OneOf<"label", IoMultiSelect["label"], IoMultiSelectAttributes["label"]> & OneOf<"name", IoMultiSelect["name"], IoMultiSelectAttributes["name"]>;
         "io-optgroup": Omit<IoOptgroup, keyof IoOptgroupAttributes> & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes]?: IoOptgroup[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `attr:${K}`]?: IoOptgroupAttributes[K] } & { [K in keyof IoOptgroup & keyof IoOptgroupAttributes as `prop:${K}`]?: IoOptgroup[K] } & OneOf<"label", IoOptgroup["label"], IoOptgroupAttributes["label"]>;
@@ -10811,6 +11838,7 @@ declare namespace LocalJSX {
         "io-pagination": Omit<IoPagination, keyof IoPaginationAttributes> & { [K in keyof IoPagination & keyof IoPaginationAttributes]?: IoPagination[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `attr:${K}`]?: IoPaginationAttributes[K] } & { [K in keyof IoPagination & keyof IoPaginationAttributes as `prop:${K}`]?: IoPagination[K] };
         "io-pin-code": Omit<IoPinCode, keyof IoPinCodeAttributes> & { [K in keyof IoPinCode & keyof IoPinCodeAttributes]?: IoPinCode[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `attr:${K}`]?: IoPinCodeAttributes[K] } & { [K in keyof IoPinCode & keyof IoPinCodeAttributes as `prop:${K}`]?: IoPinCode[K] };
         "io-popover": Omit<IoPopover, keyof IoPopoverAttributes> & { [K in keyof IoPopover & keyof IoPopoverAttributes]?: IoPopover[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `attr:${K}`]?: IoPopoverAttributes[K] } & { [K in keyof IoPopover & keyof IoPopoverAttributes as `prop:${K}`]?: IoPopover[K] };
+        "io-product-tile": Omit<IoProductTile, keyof IoProductTileAttributes> & { [K in keyof IoProductTile & keyof IoProductTileAttributes]?: IoProductTile[K] } & { [K in keyof IoProductTile & keyof IoProductTileAttributes as `attr:${K}`]?: IoProductTileAttributes[K] } & { [K in keyof IoProductTile & keyof IoProductTileAttributes as `prop:${K}`]?: IoProductTile[K] } & OneOf<"heading", IoProductTile["heading"], IoProductTileAttributes["heading"]> & OneOf<"price", IoProductTile["price"], IoProductTileAttributes["price"]>;
         "io-progress": Omit<IoProgress, keyof IoProgressAttributes> & { [K in keyof IoProgress & keyof IoProgressAttributes]?: IoProgress[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `attr:${K}`]?: IoProgressAttributes[K] } & { [K in keyof IoProgress & keyof IoProgressAttributes as `prop:${K}`]?: IoProgress[K] };
         "io-radio": Omit<IoRadio, keyof IoRadioAttributes> & { [K in keyof IoRadio & keyof IoRadioAttributes]?: IoRadio[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `attr:${K}`]?: IoRadioAttributes[K] } & { [K in keyof IoRadio & keyof IoRadioAttributes as `prop:${K}`]?: IoRadio[K] } & OneOf<"label", IoRadio["label"], IoRadioAttributes["label"]>;
         "io-radio-group": Omit<IoRadioGroup, keyof IoRadioGroupAttributes> & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes]?: IoRadioGroup[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `attr:${K}`]?: IoRadioGroupAttributes[K] } & { [K in keyof IoRadioGroup & keyof IoRadioGroupAttributes as `prop:${K}`]?: IoRadioGroup[K] } & OneOf<"label", IoRadioGroup["label"], IoRadioGroupAttributes["label"]>;
@@ -10837,6 +11865,7 @@ declare namespace LocalJSX {
         "io-tag-dismissible": Omit<IoTagDismissible, keyof IoTagDismissibleAttributes> & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes]?: IoTagDismissible[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `attr:${K}`]?: IoTagDismissibleAttributes[K] } & { [K in keyof IoTagDismissible & keyof IoTagDismissibleAttributes as `prop:${K}`]?: IoTagDismissible[K] };
         "io-text": Omit<IoText, keyof IoTextAttributes> & { [K in keyof IoText & keyof IoTextAttributes]?: IoText[K] } & { [K in keyof IoText & keyof IoTextAttributes as `attr:${K}`]?: IoTextAttributes[K] } & { [K in keyof IoText & keyof IoTextAttributes as `prop:${K}`]?: IoText[K] };
         "io-text-list": Omit<IoTextList, keyof IoTextListAttributes> & { [K in keyof IoTextList & keyof IoTextListAttributes]?: IoTextList[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `attr:${K}`]?: IoTextListAttributes[K] } & { [K in keyof IoTextList & keyof IoTextListAttributes as `prop:${K}`]?: IoTextList[K] };
+        "io-text-list-item": IoTextListItem;
         "io-textarea": Omit<IoTextarea, keyof IoTextareaAttributes> & { [K in keyof IoTextarea & keyof IoTextareaAttributes]?: IoTextarea[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `attr:${K}`]?: IoTextareaAttributes[K] } & { [K in keyof IoTextarea & keyof IoTextareaAttributes as `prop:${K}`]?: IoTextarea[K] } & OneOf<"label", IoTextarea["label"], IoTextareaAttributes["label"]>;
         "io-toast": Omit<IoToast, keyof IoToastAttributes> & { [K in keyof IoToast & keyof IoToastAttributes]?: IoToast[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `attr:${K}`]?: IoToastAttributes[K] } & { [K in keyof IoToast & keyof IoToastAttributes as `prop:${K}`]?: IoToast[K] };
         "io-toast-item": Omit<IoToastItem, keyof IoToastItemAttributes> & { [K in keyof IoToastItem & keyof IoToastItemAttributes]?: IoToastItem[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `attr:${K}`]?: IoToastItemAttributes[K] } & { [K in keyof IoToastItem & keyof IoToastItemAttributes as `prop:${K}`]?: IoToastItem[K] };
@@ -10869,6 +11898,19 @@ declare module "@stencil/core" {
              * <io-ai-tag variant="abbreviation" locale="nl"></io-ai-tag>
              */
             "io-ai-tag": LocalJSX.IntrinsicElements["io-ai-tag"] & JSXBase.HTMLAttributes<HTMLIoAiTagElement>;
+            /**
+             * io-app-shell
+             * ============
+             * Reusable full-page application shell with sticky header, collapsible
+             * sidebar navigation, optional secondary sidebar, and main content area.
+             * Reuses focus-trap and scroll-lock patterns from io-flyout.
+             * The sidebar-start panel becomes a modal overlay on mobile (< lg breakpoint).
+             * @example <io-app-shell sidebar-start-open>
+             *   <nav slot="sidebar-start">Navigation</nav>
+             *   <main>Page content</main>
+             * </io-app-shell>
+             */
+            "io-app-shell": LocalJSX.IntrinsicElements["io-app-shell"] & JSXBase.HTMLAttributes<HTMLIoAppShellElement>;
             /**
              * io-avatar
              * =========
@@ -11007,6 +12049,25 @@ declare module "@stencil/core" {
              */
             "io-button-pure": LocalJSX.IntrinsicElements["io-button-pure"] & JSXBase.HTMLAttributes<HTMLIoButtonPureElement>;
             /**
+             * io-button-tile
+             * ==============
+             * Media tile primitive with an embedded button action.
+             * Identical visual structure to io-link-tile but renders as <button>
+             * rather than <a>. Use when the tile triggers an action (open modal,
+             * add to cart, toggle favourite) rather than navigating to a new URL.
+             * Focus delegates from the host to the embedded button via
+             * shadow: { delegatesFocus: true }.
+             * @example <io-button-tile
+             *   label="Add Blue Widget"
+             *   description="Click to add to your dashboard."
+             *   aspect-ratio="4/3"
+             *   gradient
+             * >
+             *   <img src="/img/widget.jpg" alt="Blue Widget" />
+             * </io-button-tile>
+             */
+            "io-button-tile": LocalJSX.IntrinsicElements["io-button-tile"] & JSXBase.HTMLAttributes<HTMLIoButtonTileElement>;
+            /**
              * io-carousel
              * ============
              * Generic horizontally scrollable container with prev/next navigation,
@@ -11089,6 +12150,27 @@ declare module "@stencil/core" {
              */
             "io-drawer": LocalJSX.IntrinsicElements["io-drawer"] & JSXBase.HTMLAttributes<HTMLIoDrawerElement>;
             /**
+             * io-fieldset
+             * ===========
+             * Generic fieldset primitive for grouping mixed form controls or content sections.
+             * Renders a semantic <fieldset> / <legend> pair with full ARIA customisation support.
+             * Use io-fieldset when you need to group heterogeneous controls (e.g. a mix of
+             * io-input + io-checkbox) that io-checkbox-group or io-radio-group do not cover.
+             * io-fieldset is **non-interactive and non-form-associated**:
+             * - It renders no native form controls itself.
+             * - It does NOT implement `formAssociated` — each slotted child manages its own value.
+             * - It does NOT emit custom events.
+             * @example <io-fieldset label="Shipping address" required>
+             *   <io-input label="Street" name="street" required />
+             *   <io-input label="City" name="city" required />
+             * </io-fieldset>
+             * @example <io-fieldset label="Notification preferences" .aria={{ role: 'group' }}>
+             *   <io-checkbox label="Email" name="notif" value="email" />
+             *   <io-checkbox label="SMS" name="notif" value="sms" />
+             * </io-fieldset>
+             */
+            "io-fieldset": LocalJSX.IntrinsicElements["io-fieldset"] & JSXBase.HTMLAttributes<HTMLIoFieldsetElement>;
+            /**
              * io-flag
              * ========
              * Country flag indicator using the io icon size scale.
@@ -11132,6 +12214,34 @@ declare module "@stencil/core" {
              * </io-form-field>
              */
             "io-form-field": LocalJSX.IntrinsicElements["io-form-field"] & JSXBase.HTMLAttributes<HTMLIoFormFieldElement>;
+            /**
+             * io-grid
+             * ========
+             * 12-column responsive CSS Grid layout primitive.
+             * Thin layout wrapper that sets up the grid context via CSS custom
+             * properties. All real column arithmetic is left to child io-grid-item
+             * elements (or light-DOM children using the same tokens).
+             * Uses shadow: false (light DOM) so consumers can use CSS selectors on
+             * child elements without crossing a shadow boundary.
+             * @example <io-grid gap="md">
+             *   <io-grid-item col-span="6">Left half</io-grid-item>
+             *   <io-grid-item col-span="6">Right half</io-grid-item>
+             * </io-grid>
+             */
+            "io-grid": LocalJSX.IntrinsicElements["io-grid"] & JSXBase.HTMLAttributes<HTMLIoGridElement>;
+            /**
+             * io-grid-item
+             * ============
+             * Grid cell companion for io-grid.
+             * Controls how many columns (and optionally rows) this cell occupies.
+             * Uses shadow: false (light DOM) to participate cleanly in the parent
+             * CSS Grid layout — shadow DOM nodes would create an extra stacking layer.
+             * @example <io-grid>
+             *   <io-grid-item col-span="8">Main content</io-grid-item>
+             *   <io-grid-item col-span="4">Sidebar</io-grid-item>
+             * </io-grid>
+             */
+            "io-grid-item": LocalJSX.IntrinsicElements["io-grid-item"] & JSXBase.HTMLAttributes<HTMLIoGridItemElement>;
             /**
              * io-heading
              * ==========
@@ -11246,6 +12356,28 @@ declare module "@stencil/core" {
              */
             "io-link-pure": LocalJSX.IntrinsicElements["io-link-pure"] & JSXBase.HTMLAttributes<HTMLIoLinkPureElement>;
             /**
+             * io-link-tile
+             * ============
+             * Media tile primitive with an embedded link action.
+             * Wraps a media element (img/picture/video) in a visually rich card with
+             * an optional gradient overlay, label, description, and navigational action.
+             * A full-surface transparent anchor covers the entire tile for easy click
+             * target while still allowing slotted interactive elements (io-tag chips,
+             * custom footer links) to receive focus independently.
+             * Focus delegates from the host to the embedded anchor via
+             * shadow: { delegatesFocus: true }.
+             * @example <io-link-tile
+             *   href="/products/blue-widget"
+             *   label="Blue Widget"
+             *   description="High-performance widget in iO blue."
+             *   aspect-ratio="4/3"
+             *   gradient
+             * >
+             *   <img src="/img/widget.jpg" alt="Blue Widget" />
+             * </io-link-tile>
+             */
+            "io-link-tile": LocalJSX.IntrinsicElements["io-link-tile"] & JSXBase.HTMLAttributes<HTMLIoLinkTileElement>;
+            /**
              * io-modal
              * =========
              * Accessible modal dialog built on the native <dialog> element.
@@ -11341,6 +12473,28 @@ declare module "@stencil/core" {
              * </io-popover>
              */
             "io-popover": LocalJSX.IntrinsicElements["io-popover"] & JSXBase.HTMLAttributes<HTMLIoPopoverElement>;
+            /**
+             * io-product-tile
+             * ===============
+             * Commerce primitive tile for product listings: heading + price display +
+             * optional strikethrough original price + optional wishlist/like button.
+             * Accessible price differentiation: use
+             * `<s>` for semantic strikethrough with visually-hidden 'Original price:' / 'Sale price:'
+             * labels so screen readers announce both values with meaningful context.
+             * The tile is optionally linked via the `href` prop (renders an `<a>` wrapper)
+             * or a slotted `<a>` element. Providing both is disallowed.
+             * @example <io-product-tile
+             *   heading="Product name"
+             *   price="€ 49,00"
+             *   price-original="€ 79,00"
+             *   description="Short description"
+             *   href="/products/1"
+             *   like-button
+             * >
+             *   <img slot="image" src="/product.jpg" alt="Product name" />
+             * </io-product-tile>
+             */
+            "io-product-tile": LocalJSX.IntrinsicElements["io-product-tile"] & JSXBase.HTMLAttributes<HTMLIoProductTileElement>;
             /**
              * io-progress
              * ===========
@@ -11758,6 +12912,7 @@ declare module "@stencil/core" {
              * </io-text-list>
              */
             "io-text-list": LocalJSX.IntrinsicElements["io-text-list"] & JSXBase.HTMLAttributes<HTMLIoTextListElement>;
+            "io-text-list-item": LocalJSX.IntrinsicElements["io-text-list-item"] & JSXBase.HTMLAttributes<HTMLIoTextListItemElement>;
             /**
              * io-textarea
              * ============

@@ -94,6 +94,18 @@ export default function IoSwitchApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'Visually hides the label text using a clip-rect sr-only pattern while keeping it accessible to screen readers via the <label> association. Use when surrounding context makes the label redundant visually.',
             ],
+            [
+              <span key="n"><InlineCode>alignLabel</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;start&apos; | &apos;end&apos;</InlineCode>,
+              <InlineCode key="d">&apos;end&apos;</InlineCode>,
+              'Controls whether the label appears before (start) or after (end) the toggle track. Reflected to the host attribute align-label.',
+            ],
+            [
+              <span key="n"><InlineCode>stretch</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, the switch row stretches to fill the available container width, pushing the label and toggle to opposite ends. Useful for settings lists and full-width form rows.',
+            ],
           ]}
         />
       </section>

@@ -113,5 +113,11 @@ export const tabsPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Comma-separated panel IDs (or array in JSX) that map to each tab. Sets aria-controls on each slotted tab button for ARIA APG compliance.',
   },
+  {
+    name: 'closeable',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, all tabs render a close button that fires the tabClose event with the tab index.',
+  },
 ];
 

@@ -6,6 +6,7 @@ import {
   wordmarkStoryLockupSizes,
   wordmarkStoryMarkColors,
   wordmarkStoryLockupColors,
+  wordmarkStoryBadge,
 } from '../io-wordmark.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -67,6 +68,17 @@ export default function IoWordmarkExamplesPage() {
         <ComponentStory
           story={wordmarkStoryLockupColors}
           previewClassName="flex flex-col items-start gap-6"
+        />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Badge variant"
+          description="Square brand mark for app icons, social avatars, and watermarks. Available in blue, black, and white."
+        />
+        <ComponentStory
+          story={wordmarkStoryBadge}
+          previewClassName="flex flex-row items-end gap-8"
         />
       </section>
 

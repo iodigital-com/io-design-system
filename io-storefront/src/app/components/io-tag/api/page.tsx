@@ -82,6 +82,18 @@ export default function IoTagApiPage() {
               <InlineCode key="d">&apos;&apos;</InlineCode>,
               'Accessible label for the tag content.',
             ],
+            [
+              <InlineCode key="n">icon</InlineCode>,
+              <InlineCode key="t">IoIconName | undefined</InlineCode>,
+              '—',
+              'Optional leading icon name from the io icon set. Renders an io-icon element before the tag label text. When set alongside iconSource, iconSource takes precedence as the SVG source.',
+            ],
+            [
+              <InlineCode key="n">iconSource</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Custom SVG URL for the leading icon. When set alongside icon, this URL takes precedence over the icon name as the SVG source.',
+            ],
           ]}
         />
       </section>

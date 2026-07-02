@@ -98,4 +98,11 @@ export const tooltipPropDefinitions: PropDefinition[] = [
     defaultValue: 'top',
     description: 'Preferred placement of the tooltip relative to the trigger element.',
   },
+  {
+    name: 'theme',
+    type: 'select',
+    options: ['dark', 'light'],
+    defaultValue: 'dark',
+    description: 'Colour theme of the tooltip overlay. dark (default) or light.',
+  },
 ];

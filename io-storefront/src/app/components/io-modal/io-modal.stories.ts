@@ -68,6 +68,7 @@ export const modalPropDefinitions: PropDefinition[] = [
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md', group: 'Appearance' },
   { name: 'closeOnBackdrop', type: 'boolean', defaultValue: true, group: 'Behaviour' },
   { name: 'background', type: 'select', options: ['canvas', 'surface', 'elevated'], defaultValue: 'canvas', group: 'Appearance' },
+  { name: 'backdrop', type: 'select', options: ['blur', 'shading'], defaultValue: 'blur', group: 'Appearance', description: 'Visual treatment of the backdrop. blur applies a backdrop-filter; shading uses a solid overlay without backdrop-filter.' },
   { name: 'preventTopLayer', type: 'boolean', defaultValue: true, group: 'Behaviour' },
   { name: 'description', type: 'string', defaultValue: '', group: 'Content' },
   {

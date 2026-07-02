@@ -139,9 +139,9 @@ import { IoStepper, IoStep } from '@iodigital-com/components-react';
             ],
             [
               <span key="n"><InlineCode>status</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;complete&apos; | &apos;current&apos; | &apos;upcoming&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="t">&apos;complete&apos; | &apos;current&apos; | &apos;upcoming&apos; | &apos;warning&apos; | &apos;error&apos;</InlineCode>,
               <InlineCode key="d">&apos;upcoming&apos;</InlineCode>,
-              'Completion status of this step. Set automatically by io-stepper via the current prop. Can also be set manually when using io-step without a parent io-stepper. The warning status renders a warning indicator on the step circle.',
+              'Completion status of this step. Set automatically by io-stepper via the current prop. Can also be set manually when using io-step without a parent io-stepper. The warning status renders a warning indicator; the error status renders an error indicator on the step circle.',
             ],
             [
               <InlineCode key="n">index</InlineCode>,

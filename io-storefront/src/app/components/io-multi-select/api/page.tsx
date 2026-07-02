@@ -64,9 +64,9 @@ export default function IoMultiSelectApiPage() {
             ],
             [
               <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos;</InlineCode>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
               <InlineCode key="d">&apos;none&apos;</InlineCode>,
-              'Visual and semantic validation state. error changes the trigger border to red. success changes it to green. Use with message to show descriptive feedback.',
+              'Visual and semantic validation state. error changes the trigger border to red. success changes it to green. warning changes it to amber. Use with message to show descriptive feedback.',
             ],
             [
               <InlineCode key="n">message</InlineCode>,
@@ -104,6 +104,30 @@ export default function IoMultiSelectApiPage() {
               <InlineCode key="d">3</InlineCode>,
               'Maximum number of selected labels to show in the trigger before collapsing to "{N} selected". Does not affect chip display.',
             ],
+            [
+              <InlineCode key="n">selectAll</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, shows "Select all" and "Clear all" footer buttons inside the dropdown. Respects maxSelections when set.',
+            ],
+            [
+              <InlineCode key="n">maxSelections</InlineCode>,
+              <InlineCode key="t">number | undefined</InlineCode>,
+              '—',
+              'Maximum number of selections allowed. When the cap is reached and the user tries to add another option, the limitreached event fires instead of adding the value.',
+            ],
+            [
+              <InlineCode key="n">helperText</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Helper text displayed below the trigger. Hidden when state is error. Replaced by the slot="description" slot when that slot has content.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Supplementary description rendered as a persistent paragraph below the field. Always visible — not hidden in error state. Also settable via the slot="description" slot.',
+            ],
           ]}
         />
       </section>
@@ -124,9 +148,9 @@ export default function IoMultiSelectApiPage() {
           rows={[
             [
               <InlineCode key="n">change</InlineCode>,
-              <InlineCode key="t">{'{ value: string[], name: string }'}</InlineCode>,
+              <InlineCode key="t">{'{ value: (string | number)[]; name: string }'}</InlineCode>,
               'Yes',
-              'Fires when the selection changes — on option toggle, chip removal, or clear all. Detail includes the full updated value array and the name prop.',
+              'Fires when the selection changes — on option toggle, chip removal, or clear all. Detail includes the full updated value array (preserving original string | number types) and the name prop.',
             ],
             [
               <InlineCode key="n">blur</InlineCode>,
@@ -139,6 +163,12 @@ export default function IoMultiSelectApiPage() {
               <InlineCode key="t">{'{ open: boolean }'}</InlineCode>,
               'No',
               'Fires when the dropdown opens or closes. detail.open is true when opening, false when closing.',
+            ],
+            [
+              <InlineCode key="n">limitreached</InlineCode>,
+              <InlineCode key="t">{'{ max: number; attempted: string }'}</InlineCode>,
+              'No',
+              'Fires when the user tries to add a selection beyond maxSelections. detail.max is the configured cap; detail.attempted is the value the user tried to add.',
             ],
           ]}
         />

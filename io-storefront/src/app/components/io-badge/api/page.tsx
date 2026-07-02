@@ -49,6 +49,35 @@ export default function IoBadgeApiPage() {
               </span>,
             ],
             [
+              <span key="n"><InlineCode>appearance</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;solid&apos; | &apos;soft&apos; | &apos;frosted&apos;</InlineCode>,
+              <InlineCode key="d">&apos;soft&apos;</InlineCode>,
+              <span key="desc">
+                Fill style of the badge.{' '}
+                <InlineCode>solid</InlineCode> uses a fully-filled background.{' '}
+                <InlineCode>soft</InlineCode> uses a translucent tinted background (default).{' '}
+                <InlineCode>frosted</InlineCode> applies a backdrop-filter blur over a semi-transparent fill.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>icon</InlineCode></span>,
+              <InlineCode key="t">IoIconName | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Optional leading icon from the io icon set. Rendered at <InlineCode>size=&apos;xs&apos;</InlineCode> with <InlineCode>aria-hidden=&apos;true&apos;</InlineCode>.
+                When both <InlineCode>icon</InlineCode> and <InlineCode>iconSource</InlineCode> are set, <InlineCode>iconSource</InlineCode> takes precedence as the icon source.
+              </span>,
+            ],
+            [
+              <span key="n"><InlineCode>iconSource</InlineCode></span>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="d">undefined</InlineCode>,
+              <span key="desc">
+                Custom SVG URL for the leading icon. Takes precedence over <InlineCode>icon</InlineCode> when both are set.
+                Useful for project-specific icons not in the io icon set.
+              </span>,
+            ],
+            [
               <span key="n"><InlineCode>ariaLabel</InlineCode></span>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">undefined</InlineCode>,

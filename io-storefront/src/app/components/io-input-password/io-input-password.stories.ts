@@ -12,6 +12,9 @@ export const inputPasswordStory: Story<'io-input-password'> = {
       message: '',
       helperText: '',
       autocomplete: 'current-password',
+      required: false,
+      loading: false,
+      readOnly: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -147,7 +150,7 @@ export const inputPasswordPropDefinitions: PropDefinition[] = [
     description: 'Shows a loading indicator and disables the input.',
   },
   {
-    name: 'readonly',
+    name: 'readOnly',
     type: 'boolean',
     defaultValue: false,
     description: 'Makes the input read-only.',

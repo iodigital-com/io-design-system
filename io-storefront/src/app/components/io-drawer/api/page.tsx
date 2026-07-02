@@ -75,7 +75,7 @@ export default function IoDrawerApiPage() {
               <span key="n"><InlineCode>background</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;canvas&apos; | &apos;surface&apos; | &apos;elevated&apos;</InlineCode>,
               <InlineCode key="d">&apos;canvas&apos;</InlineCode>,
-              'Background token applied to the drawer panel. canvas uses var(--io-bg-page); surface uses var(--io-bg-surface); elevated uses var(--io-bg-elevated).',
+              'Background token applied to the drawer panel. canvas uses var(--io-bg-page); surface uses var(--io-bg-surface); elevated uses var(--io-bg-raised).',
             ],
           ]}
         />

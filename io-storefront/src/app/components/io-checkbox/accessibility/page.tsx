@@ -75,7 +75,7 @@ export default function IoCheckboxAccessibilityPage() {
                   {' '}when error
                 </span>
               ),
-              description: 'Set to "true" when the error prop is true. Combined with role="alert" on the error message element, the error is announced immediately when it appears.',
+              description: 'Set to "true" when state is "error" or FACE validity is invalid (faceInvalid=true). Combined with role="alert" on the message element, the error is announced immediately when it appears.',
             },
             {
               attribute: 'aria-required',
@@ -143,9 +143,9 @@ export default function IoCheckboxAccessibilityPage() {
         </RuleCard>
         <RuleCard label="Always pair state with message">
           Setting{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>error</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>state=&quot;error&quot;</code>{' '}
           without{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>{' '}
           shows a red visual with no text explanation. Screen reader users receive no feedback. Always provide a specific, actionable message.
         </RuleCard>
         <RuleCard label="Use indeterminate only for genuine partial selection">

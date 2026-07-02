@@ -50,6 +50,25 @@ export const badgePropDefinitions: PropDefinition[] = [
     description: 'Sets visual style and semantic meaning of the badge.',
   },
   {
+    name: 'appearance',
+    type: 'select',
+    options: ['solid', 'soft', 'frosted'],
+    defaultValue: 'soft',
+    description: 'Fill style of the badge: solid (fully-filled), soft (translucent tint, default), or frosted (backdrop-blur).',
+  },
+  {
+    name: 'icon',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional leading icon name from the io icon set. Rendered aria-hidden at size xs.',
+  },
+  {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
+    description: 'Custom SVG URL for the leading icon. Takes precedence over icon when both are set.',
+  },
+  {
     name: 'ariaLabel',
     type: 'string',
     defaultValue: '',

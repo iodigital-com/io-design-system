@@ -39,6 +39,12 @@ export default function IoBreadcrumbApiPage() {
                 number of hidden items (WCAG 1.3.1). Activating it reveals the full trail.
               </span>,
             ],
+            [
+              <InlineCode key="p">seo</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'When true, renders a <script type="application/ld+json"> child containing a schema.org BreadcrumbList. Defaults to false to avoid duplicate JSON-LD when consumers manage their own structured data.',
+            ],
           ]}
         />
       </section>

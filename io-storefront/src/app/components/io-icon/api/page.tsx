@@ -34,15 +34,17 @@ export default function IoIconApiPage() {
             ],
             [
               <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">IoIconColor</InlineCode>,
+              <InlineCode key="t">&apos;primary&apos; | &apos;contrast-higher&apos; | &apos;contrast-high&apos; | &apos;contrast-medium&apos; | &apos;contrast-lower&apos; | &apos;success&apos; | &apos;warning&apos; | &apos;error&apos; | &apos;info&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;inherit&apos;</InlineCode>,
               <span key="desc">
                 Semantic color applied via <InlineCode>--io-icon-color</InlineCode> CSS custom property.{' '}
                 <InlineCode>inherit</InlineCode> uses the CSS currentColor cascade from the parent element.
                 Maps each value to a design-system token:{' '}
                 <InlineCode>primary</InlineCode> → <InlineCode>--io-color-primary</InlineCode>,{' '}
+                <InlineCode>contrast-higher</InlineCode> → <InlineCode>--io-text-contrast-higher</InlineCode>,{' '}
                 <InlineCode>contrast-high</InlineCode> → <InlineCode>--io-text-primary</InlineCode>,{' '}
                 <InlineCode>contrast-medium</InlineCode> → <InlineCode>--io-text-secondary</InlineCode>,{' '}
+                <InlineCode>contrast-lower</InlineCode> → <InlineCode>--io-text-contrast-lower</InlineCode>,{' '}
                 <InlineCode>success</InlineCode> → <InlineCode>--io-color-success</InlineCode>,{' '}
                 <InlineCode>warning</InlineCode> → <InlineCode>--io-color-warning</InlineCode>,{' '}
                 <InlineCode>error</InlineCode> → <InlineCode>--io-color-error</InlineCode>,{' '}
@@ -51,15 +53,20 @@ export default function IoIconApiPage() {
             ],
             [
               <span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;inherit&apos;</InlineCode>,
+              <InlineCode key="t">&apos;2xs&apos; | &apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;2xl&apos; | &apos;3xl&apos; | &apos;4xl&apos; | &apos;5xl&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
               <span key="desc">
                 Rendered icon size. Maps to design-token pixel values:{' '}
+                <InlineCode>2xs</InlineCode> = 8 px,{' '}
                 <InlineCode>xs</InlineCode> = 12 px,{' '}
                 <InlineCode>sm</InlineCode> = 16 px,{' '}
                 <InlineCode>md</InlineCode> = 20 px,{' '}
                 <InlineCode>lg</InlineCode> = 24 px,{' '}
-                <InlineCode>xl</InlineCode> = 32 px.
+                <InlineCode>xl</InlineCode> = 32 px,{' '}
+                <InlineCode>2xl</InlineCode> = 40 px,{' '}
+                <InlineCode>3xl</InlineCode> = 48 px,{' '}
+                <InlineCode>4xl</InlineCode> = 64 px,{' '}
+                <InlineCode>5xl</InlineCode> = 80 px.
               </span>,
             ],
             [

@@ -71,6 +71,12 @@ export default function IoButtonApiPage() {
               'Forwarded to the anchor rel attribute. Only used when href is set. Recommended value for external links: "noreferrer noopener".',
             ],
             [
+              <InlineCode key="n">download</InlineCode>,
+              <InlineCode key="t">string | boolean | undefined</InlineCode>,
+              '—',
+              'Maps to the native anchor download attribute when href is set. Pass true to prompt save with the server filename, or a string to override the filename. Has no effect in button mode.',
+            ],
+            [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
@@ -81,6 +87,18 @@ export default function IoButtonApiPage() {
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
               'Displays a centred spinner, hides label and arrow (opacity: 0), and blocks interaction. Sets aria-busy="true" and aria-disabled="true". Button dimensions are preserved — no layout shift.',
+            ],
+            [
+              <InlineCode key="n">loadingDescription</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Loading&apos;</InlineCode>,
+              'Screen-reader announcement while the button is in loading state. Localizable.',
+            ],
+            [
+              <InlineCode key="n">loadingFinishedDescription</InlineCode>,
+              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="d">&apos;Loading finished&apos;</InlineCode>,
+              'Screen-reader announcement emitted once when loading completes. Localizable.',
             ],
             [
               <InlineCode key="n">fullWidth</InlineCode>,

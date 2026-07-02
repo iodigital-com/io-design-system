@@ -111,4 +111,23 @@ export const pinCodePropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'mode',
+    type: 'select',
+    options: ['numeric', 'alphanumeric'],
+    defaultValue: 'numeric',
+    description: 'Character mode — numeric accepts only digits; alphanumeric accepts letters and digits.',
+  },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional contextual description rendered between the label and the slots.',
+  },
+  {
+    name: 'validationMessage',
+    type: 'string',
+    defaultValue: '',
+    description: 'Override for the default required-field validation message.',
+  },
 ];

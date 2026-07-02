@@ -5571,7 +5571,6 @@ declare global {
     };
     interface HTMLIoTagElementEventMap {
         "toggle": boolean;
-        "remove": void;
     }
     /**
      * io-tag
@@ -9352,10 +9351,6 @@ declare namespace LocalJSX {
           * @default ''
          */
         "label"?: string;
-        /**
-          * Fires when the remove button is clicked (removable only).
-         */
-        "onRemove"?: (event: IoTagCustomEvent<void>) => void;
         /**
           * Fires when the tag is toggled. Payload is the new selected value.
          */

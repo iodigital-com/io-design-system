@@ -25,21 +25,3 @@ export function getTagClassName(
     .join(' ');
 }
 
-export function getTagGroupClassName(
-  size: IoTagSize,
-  variant: IoTagVariant,
-  appearance: IoTagAppearance,
-  selected: boolean,
-  disabled: boolean,
-): string {
-  return [
-    'tag-group',
-    `tag-group--${size}`,
-    `tag-group--${variant}`,
-    `tag-group--${appearance}`,
-    selected ? 'tag-group--selected' : '',
-    disabled ? 'tag-group--disabled' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-}

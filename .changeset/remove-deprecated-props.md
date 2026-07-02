@@ -2,7 +2,7 @@
 '@iodigital-com/components': minor
 ---
 
-Remove deprecated props, variants, and aliases from 13 components:
+Remove deprecated props, variants, and aliases from 14 components:
 
 - io-badge: remove legacy color variants (beige, blue, dark, orange, rouge, outline) and DEPRECATED_BADGE_COLOR_MAP
 - io-checkbox-group: remove deprecated boolean error/errorMessage props (use state/message)

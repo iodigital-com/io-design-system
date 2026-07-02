@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`io-toast-item — render snapshots > renders CTA as anchor when actionLabel and actionHref are both set 1`] = `
-<io-toast-item variant="neutral" action-label="View changelog" action-href="/changelog" class="hydrated">
+exports[`io-toast-item — render snapshots > renders CTA as anchor when action has href 1`] = `
+<io-toast-item variant="neutral" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="toast">
       <span class="toast__icon" aria-hidden="true">
@@ -28,8 +28,8 @@ exports[`io-toast-item — render snapshots > renders CTA as anchor when actionL
 </io-toast-item>
 `;
 
-exports[`io-toast-item — render snapshots > renders CTA as button when actionLabel is set without actionHref 1`] = `
-<io-toast-item variant="neutral" action-label="Download" class="hydrated">
+exports[`io-toast-item — render snapshots > renders CTA as button when action is set without href 1`] = `
+<io-toast-item variant="neutral" class="hydrated">
   <mock:shadow-root shadowrootdelegatesfocus>
     <div class="toast">
       <span class="toast__icon" aria-hidden="true">

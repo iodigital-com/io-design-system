@@ -43,7 +43,9 @@ exports[`io-select — render snapshots > renders default state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Netherlands
+          <slot>
+            Netherlands
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -52,7 +54,9 @@ exports[`io-select — render snapshots > renders default state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Belgium
+          <slot>
+            Belgium
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -61,7 +65,9 @@ exports[`io-select — render snapshots > renders default state 1`] = `
     <mock:shadow-root>
       <div class="option option--disabled">
         <span class="option__label">
-          Germany
+          <slot>
+            Germany
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -109,7 +115,9 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Netherlands
+          <slot>
+            Netherlands
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -118,7 +126,9 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Belgium
+          <slot>
+            Belgium
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -127,7 +137,9 @@ exports[`io-select — render snapshots > renders disabled state 1`] = `
     <mock:shadow-root>
       <div class="option option--disabled">
         <span class="option__label">
-          Germany
+          <slot>
+            Germany
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -175,7 +187,9 @@ exports[`io-select — render snapshots > renders selected value state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Netherlands
+          <slot>
+            Netherlands
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -184,7 +198,9 @@ exports[`io-select — render snapshots > renders selected value state 1`] = `
     <mock:shadow-root>
       <div class="option">
         <span class="option__label">
-          Belgium
+          <slot>
+            Belgium
+          </slot>
         </span>
       </div>
     </mock:shadow-root>
@@ -193,7 +209,9 @@ exports[`io-select — render snapshots > renders selected value state 1`] = `
     <mock:shadow-root>
       <div class="option option--disabled">
         <span class="option__label">
-          Germany
+          <slot>
+            Germany
+          </slot>
         </span>
       </div>
     </mock:shadow-root>

@@ -586,3 +586,140 @@ describe('io-input — counter SR wording (#921)', () => {
     expect((component as any).announcedCounter).toBe('11 of 20 characters');
   });
 });
+
+describe('io-input — indicator prop (#932)', () => {
+  let component: IoInput;
+
+  beforeEach(() => {
+    component = new IoInput();
+    (component as any).el = document.createElement('io-input');
+    (component as any).input = { emit: vi.fn() };
+    (component as any).change = { emit: vi.fn() };
+    (component as any).focus = { emit: vi.fn() };
+    (component as any).blur = { emit: vi.fn() };
+    (component as any).internals = { setFormValue: vi.fn(), setValidity: vi.fn() };
+  });
+
+  it('has indicator=undefined by default', () => {
+    expect(component.indicator).toBeUndefined();
+  });
+
+  it('does not render indicator span when indicator is not set', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Email';
+    component.type = 'email';
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeUndefined();
+  });
+
+  it('renders indicator span with aria-hidden when indicator is a named icon', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Search';
+    component.type = 'text';
+    component.indicator = 'search' as any;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeDefined();
+    const spanProps = (indicatorSpan?.[1] ?? {}) as Record<string, unknown>;
+    expect(spanProps['aria-hidden']).toBe('true');
+  });
+
+  it('auto-selects mail icon when indicator=true and type=email', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Email';
+    component.type = 'email';
+    // Simulate boolean true (the resolveIndicatorIcon function handles this)
+    (component as any)['indicator'] = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeDefined();
+  });
+
+  it('auto-selects phone icon when indicator=true and type=tel', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Phone';
+    component.type = 'tel';
+    (component as any)['indicator'] = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeDefined();
+  });
+
+  it('auto-selects link icon when indicator=true and type=url', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Website';
+    component.type = 'url';
+    (component as any)['indicator'] = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeDefined();
+  });
+
+  it('does not render indicator when type=text and indicator=true (no auto-map for text)', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Name';
+    component.type = 'text';
+    (component as any)['indicator'] = true;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const indicatorSpan = vi.mocked(h).mock.calls.find(
+      (call) =>
+        call[0] === 'span' &&
+        (call[1] as Record<string, unknown>)?.['class'] === 'input-indicator-icon',
+    );
+    expect(indicatorSpan).toBeUndefined();
+  });
+
+  it('adds input-field--has-prefix class when indicator is shown', () => {
+    (component as any).componentWillLoad();
+    component.label = 'Email';
+    component.type = 'email';
+    component.indicator = 'mail' as any;
+
+    vi.mocked(h).mockClear();
+    component.render();
+
+    const inputCall = vi.mocked(h).mock.calls.find((call) => call[0] === 'input');
+    const inputProps = (inputCall?.[1] ?? {}) as Record<string, unknown>;
+    const fieldClass = inputProps['class'] as string;
+    expect(fieldClass).toContain('input-field--has-prefix');
+  });
+});

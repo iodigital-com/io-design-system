@@ -7,6 +7,7 @@ import {
   inputStoryConstraints,
   inputStoryError,
   inputStoryDisabled,
+  inputStoryIndicator,
 } from '../io-input.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
@@ -43,6 +44,14 @@ export default function IoInputExamplesPage() {
       <section>
         <ExamplesSectionHeader title="Disabled state" />
         <ComponentStory story={inputStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+      </section>
+
+      <section>
+        <ExamplesSectionHeader
+          title="Type indicator icons"
+          description="Set the indicator prop to a Lucide icon name to render a visual affordance in the prefix area. Useful for email, tel, and url inputs to reinforce field purpose at a glance. The icon is decorative (aria-hidden) and does not change the accessible label."
+        />
+        <ComponentStory story={inputStoryIndicator} previewStyle={{ flexDirection: 'column', alignItems: 'stretch', maxWidth: '480px' }} />
       </section>
 
       <section>

@@ -12,8 +12,7 @@ export function getHeartIcon(filled: boolean): string {
 
 /**
  * Validate href + slotted anchor combination.
- * Mirrors Porsche's `throwIfInvalidLinkTileProductUsage`:
- * providing both an `href` prop and a slotted `<a>` is ambiguous and disallowed.
+ * Providing both an `href` prop and a slotted `<a>` is ambiguous and disallowed.
  */
 export function validateProductTileUsage(
   href: string | undefined,

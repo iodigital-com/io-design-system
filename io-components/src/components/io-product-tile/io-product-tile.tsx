@@ -10,7 +10,7 @@ import type { IoProductTileHeadingTag, IoProductTileAspect } from './types';
  * Commerce primitive tile for product listings: heading + price display +
  * optional strikethrough original price + optional wishlist/like button.
  *
- * Accessible price differentiation follows the Porsche Design System pattern:
+ * Accessible price differentiation: use
  * `<s>` for semantic strikethrough with visually-hidden 'Original price:' / 'Sale price:'
  * labels so screen readers announce both values with meaningful context.
  *

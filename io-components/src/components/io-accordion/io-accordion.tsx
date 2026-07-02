@@ -1,7 +1,7 @@
 import { Component, Prop, Event, EventEmitter, Element, Host, h } from '@stencil/core';
 
 import { getAccordionStyles } from './io-accordion-styles';
-import { getAccordionBaseId, getAccordionItemClass, getSiblingTriggers } from './io-accordion-utils';
+import { getAccordionBaseId, getAccordionItemClass } from './io-accordion-utils';
 
 import type { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingTag, IoAccordionSize, IoAccordionUpdateDetail } from './types';
 
@@ -11,7 +11,7 @@ import type { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingT
  * Collapsible sections with animated +/− icon and title indent animation.
  * Extracted from the "Our expertise" section of the iO Brand & Business page.
  *
- * Design system pattern: one accordion instance controls one content section.
+ * Design pattern: one accordion instance controls one content section.
  *
  * @example
  * <io-accordion></io-accordion>
@@ -56,7 +56,6 @@ export class IoAccordion {
    * - `transparent` (default): no background fill
    * - `surface`: `var(--io-bg-surface)` — subtle fill for card/nested layouts
    * - `canvas`: `var(--io-bg-page)` — page-level fill
-   * - `frosted`: `backdrop-filter: blur(12px)` — for accordions placed over image/video backdrops
    */
   @Prop({ reflect: true }) background: IoAccordionBackground = 'transparent';
 
@@ -74,8 +73,11 @@ export class IoAccordion {
    * Expands this panel on the very first render.
    * Has no effect after initial render — use the `open` prop for runtime control.
    *
-   * When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`,
-   * only the first in DOM order remains open after mount (coordinated in `componentDidLoad`).
+   * Note: setting `defaultExpanded` on multiple siblings whose `allowMultiple`
+   * is `false` (the default) will leave all of them open at initial render,
+   * because coordination events are not dispatched during `componentWillLoad`.
+   * Only one `defaultExpanded` accordion per group is recommended when
+   * `allowMultiple` is `false`.
    */
   @Prop() defaultExpanded = false;
 
@@ -90,14 +92,6 @@ export class IoAccordion {
    * will auto-close even if the opener has `allowMultiple=true`.
    */
   @Prop({ reflect: true }) allowMultiple = false;
-
-  /**
-   * When `true`, indents the panel content to visually align with the summary
-   * text column (past the expand/collapse icon). Useful when `alignMarker="start"`.
-   *
-   * Drives via `--io-accordion-indent` token. Register in `docs/public-css-api.json`.
-   */
-  @Prop({ reflect: true }) indent = false;
 
   private baseId = '';
 
@@ -128,18 +122,6 @@ export class IoAccordion {
   componentDidLoad() {
     this.groupParent = this.el.parentElement;
     this.groupParent?.addEventListener('accordion-group-open', this.handleGroupOpen);
-
-    // #1066: coordinate defaultExpanded across siblings on mount.
-    // When multiple siblings have defaultExpanded=true and open=true and
-    // allowMultiple=false, keep only the first in DOM order.
-    if (this.defaultExpanded && this.open && !this.allowMultiple) {
-      const openSiblings = this.el.parentElement?.querySelectorAll<HTMLElement>(
-        'io-accordion[default-expanded][open]',
-      );
-      if (openSiblings && openSiblings.length > 1 && openSiblings[0] !== this.el) {
-        this.open = false;
-      }
-    }
   }
 
   disconnectedCallback() {
@@ -180,65 +162,11 @@ export class IoAccordion {
     }
   };
 
-  /**
-   * #1087: Handle ArrowUp/ArrowDown/Home/End keyboard navigation between
-   * sibling accordion trigger buttons within the same parent element.
-   * Disabled headers are skipped; wrapping is not applied.
-   */
-  private handleTriggerKeyDown = (event: KeyboardEvent) => {
-    const { key } = event;
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
-
-    event.preventDefault();
-
-    const siblings = getSiblingTriggers(this.el);
-    if (siblings.length === 0) return;
-
-    const currentIndex = siblings.indexOf(this.el);
-
-    let targetIndex = currentIndex;
-    if (key === 'ArrowDown') {
-      targetIndex = currentIndex + 1;
-      while (targetIndex < siblings.length) {
-        if (!siblings[targetIndex].hasAttribute('disabled')) break;
-        targetIndex++;
-      }
-    } else if (key === 'ArrowUp') {
-      targetIndex = currentIndex - 1;
-      while (targetIndex >= 0) {
-        if (!siblings[targetIndex].hasAttribute('disabled')) break;
-        targetIndex--;
-      }
-    } else if (key === 'Home') {
-      targetIndex = 0;
-      while (targetIndex < siblings.length) {
-        if (!siblings[targetIndex].hasAttribute('disabled')) break;
-        targetIndex++;
-      }
-    } else if (key === 'End') {
-      targetIndex = siblings.length - 1;
-      while (targetIndex >= 0) {
-        if (!siblings[targetIndex].hasAttribute('disabled')) break;
-        targetIndex--;
-      }
-    }
-
-    if (targetIndex !== currentIndex && targetIndex >= 0 && targetIndex < siblings.length) {
-      const target = siblings[targetIndex];
-      // Focus the trigger button inside the shadow root of the target accordion.
-      const targetButton = target.shadowRoot?.querySelector<HTMLButtonElement>('.accordion-trigger');
-      targetButton?.focus();
-    }
-  };
-
   // ── Render ───────────────────────────────────────────────────
 
   /**
    * @slot - Default slot. Expanded panel content shown when the accordion is open.
-   * @slot heading - Trigger label text. Falls back to the `heading` prop when not provided. Use the `summary` slot for rich trigger markup.
-   * @slot summary - Free-form trigger content. Replaces the heading slot for rich trigger markup.
-   * @slot summary-before - Content rendered as a flex sibling before the trigger button. Interactive children remain operable.
-   * @slot summary-after - Content rendered as a flex sibling after the trigger button. Interactive children remain operable.
+   * @slot heading - Trigger label text. Falls back to the `heading` prop when not provided.
    */
   render() {
     const headingTag = this.headingTag as keyof HTMLElementTagNameMap;
@@ -254,8 +182,6 @@ export class IoAccordion {
         <div class="accordion">
           <div class={itemClass}>
             <HeadingTag class="accordion-heading">
-              {/* #1042: summary-before slot — rendered outside button so interactive children work */}
-              <slot name="summary-before" />
               <button
                 id={triggerId}
                 class="accordion-trigger"
@@ -263,18 +189,12 @@ export class IoAccordion {
                 aria-controls={panelId}
                 aria-disabled={this.disabled ? 'true' : undefined}
                 onClick={this.toggleSingle}
-                onKeyDown={this.handleTriggerKeyDown}
               >
                 <span class="accordion-title">
-                  {/* #1042: summary slot supports rich trigger content; heading slot supports plain text */}
-                  <slot name="summary">
-                    <slot name="heading">{this.heading}</slot>
-                  </slot>
+                  <slot name="heading">{this.heading}</slot>
                 </span>
                 <span class="accordion-icon" aria-hidden="true" />
               </button>
-              {/* #1042: summary-after slot — rendered outside button so interactive children work */}
-              <slot name="summary-after" />
             </HeadingTag>
             <div
               id={panelId}
@@ -283,7 +203,7 @@ export class IoAccordion {
               aria-labelledby={triggerId}
               inert={!isOpen || undefined}
             >
-              <div class={`accordion-panel-inner${this.indent ? ' accordion-panel-inner--indent' : ''}`}>
+              <div class="accordion-panel-inner">
                 <slot />
               </div>
             </div>

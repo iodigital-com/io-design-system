@@ -26,9 +26,9 @@ export default function IoTagDismissibleApiPage() {
           rows={[
             [
               <InlineCode key="n">label</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
-              <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>required</span>,
-              'Visible label text for the chip. Also used to build the dismiss button\'s accessible name: "Remove {label}". Required.',
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Visible label text for the chip. Also used to build the dismiss button\'s accessible name: "Remove {label}". When omitted, the default slot renders instead.',
             ],
             [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
@@ -112,12 +112,17 @@ chip.addEventListener('dismiss', () => removeChip(chip));
       <section id="slots" className="space-y-4">
         <SectionHeader
           title="Slots"
-          description="io-tag-dismissible has no public slots. The visible label is set via the label prop."
+          description="The default slot renders when the label prop is omitted, supporting rich slotted content such as an icon plus text."
         />
-        <EmptyNote>
-          <strong style={{ color: 'var(--io-text-primary)' }}>No slots.</strong>
-          {' '}Use the <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code> prop to set the chip text. This ensures the dismiss button&apos;s accessible name is always consistent with the visible label.
-        </EmptyNote>
+        <ApiTable
+          columns={[{ label: 'Slot' }, { label: 'Purpose' }]}
+          rows={[
+            [
+              <InlineCode key="s">(default)</InlineCode>,
+              'Rich chip content — used when the label prop is not set. When both are provided, label takes precedence.',
+            ],
+          ]}
+        />
       </section>
 
       {/* ── CSS Custom Properties ─────────────────────────────────── */}

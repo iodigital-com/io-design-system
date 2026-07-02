@@ -102,7 +102,7 @@ export default function IoModalApiPage() {
             [
               <InlineCode key="n">close()</InlineCode>,
               <InlineCode key="t">{'() => Promise<void>'}</InlineCode>,
-              'Programmatically closes the modal and emits the dismiss event. No-op if the modal is already closed.',
+              'Programmatically closes the modal. Does NOT emit the dismiss event (dismiss fires only on user-initiated close paths such as backdrop click, ESC, or dismiss button). No-op if the modal is already closed.',
             ],
           ]}
         />

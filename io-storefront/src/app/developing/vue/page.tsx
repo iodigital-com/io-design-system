@@ -261,7 +261,7 @@ describe('MyComponent', () => {
             </p>
             <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
               The wrappers in <code>@iodigital-com/components-vue</code> are generated with full TypeScript types.
-              Make sure your <code>tsconfig.json</code> includes <code>node_modules/@io-digital</code> in its
+              Make sure your <code>tsconfig.json</code> includes <code>node_modules/@iodigital-com</code> in its
               type resolution paths and that you are on Vue 3.4 or later.
             </p>
           </div>

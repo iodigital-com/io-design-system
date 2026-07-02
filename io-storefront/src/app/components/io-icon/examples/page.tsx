@@ -57,7 +57,7 @@ export default function IoIconExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Size scale"
-          description="The search icon at all five sizes: xs (12 px), sm (16 px), md (20 px), lg (24 px), xl (32 px)."
+          description="The search icon at all 10 sizes (2xs through 5xl)."
         />
         <ComponentStory
           story={iconStorySizes}

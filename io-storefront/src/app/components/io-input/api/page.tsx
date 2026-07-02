@@ -27,7 +27,7 @@ export default function IoInputApiPage() {
               <span key="n"><InlineCode>label</InlineCode></span>,
               <InlineCode key="t">string</InlineCode>,
               <span key="d" style={{ color: 'var(--io-text-muted)', fontStyle: 'italic' }}>required</span>,
-              'Label text. Rendered as a floating label above the input on focus or when a value is present. This is the only accessible name for the field — it must always be set.',
+              'Label text. Always visible above the input — it does not move on focus or when a value is present. This is the only accessible name for the field and must always be set.',
             ],
             [
               <InlineCode key="n">type</InlineCode>,
@@ -202,12 +202,6 @@ export default function IoInputApiPage() {
               <InlineCode key="t">string | number | undefined</InlineCode>,
               '—',
               'Native step interval for number/date/time inputs.',
-            ],
-            [
-              <InlineCode key="n">autocomplete</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
-              'Lowercase alias for the autocomplete attribute. When both autocomplete and autoComplete are set, autoComplete takes precedence.',
             ],
             [
               <InlineCode key="n">inputMode</InlineCode>,

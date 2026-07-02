@@ -37,7 +37,7 @@ export default function IoMultiSelectExamplesPage() {
       <section>
         <ExamplesSectionHeader
           title="Pre-selected values"
-          description="Pass a comma-separated string to the value prop to pre-populate the selection on mount."
+          description="Pass a string[] array to the value prop to pre-populate the selection on mount."
         />
         <ComponentStory story={multiSelectStoryPreselected} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>

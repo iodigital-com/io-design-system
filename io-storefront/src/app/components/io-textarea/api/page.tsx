@@ -75,7 +75,7 @@ export default function IoTextareaApiPage() {
               'Maximum character count. Forwarded as the native maxlength attribute.',
             ],
             [
-              <InlineCode key="n">autocomplete</InlineCode>,
+              <InlineCode key="n">autoComplete</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'HTML autocomplete attribute. Use standard token values to enable browser autofill where appropriate.',

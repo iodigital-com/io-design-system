@@ -71,7 +71,7 @@ const PREREQUISITES = [
 ];
 
 const NEXT_ACTIONS = [
-  { label: 'Browse the component library', href: '/components', description: '15 production-ready components with live configurators.' },
+  { label: 'Browse the component library', href: '/components', description: 'Production-ready components with live configurators.' },
   { label: 'Vanilla JS / HTML guide', href: '/developing/vanilla-js', description: 'Install, initialize, and use io-* elements today.' },
   { label: 'Design tokens', href: '/styles', description: 'Colour, typography, spacing, and motion tokens.' },
 ];

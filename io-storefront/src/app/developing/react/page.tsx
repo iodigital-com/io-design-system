@@ -342,7 +342,7 @@ test('updates email on change', async () => {
             },
             {
               problem: 'Styles do not apply / component looks unstyled',
-              fix: 'Import the global stylesheet once in your entry point: import "@iodigital-com/components/dist/io/io.css". This file ships the design tokens and base resets.',
+              fix: 'Import the global stylesheet once in your entry point: import "@iodigital-com/components/dist/io-components/io-components.css". This file ships the design tokens and base resets.',
             },
             {
               problem: 'hydration mismatch warnings in Next.js',

@@ -65,7 +65,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
       {
         heading: 'Are the components WCAG AA compliant?',
         answer:
-          'Yes. All interactive components target WCAG 2.1 AA conformance — keyboard navigation, focus management, colour contrast, and ARIA semantics are built in. Run the axe-core integration tests (npm run test:a11y) to verify conformance in your environment.',
+          'Yes. All interactive components target WCAG 2.1 AA conformance — keyboard navigation, focus management, colour contrast, and ARIA semantics are built in. Run the unit test suite (npm run test) to execute the axe-core .a11y.spec.ts checks in your environment.',
       },
       {
         heading: 'Which browsers are supported?',

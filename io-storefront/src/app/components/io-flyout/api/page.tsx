@@ -145,7 +145,7 @@ flyout.addEventListener('dismiss', () => console.log('dismissed'));
           ]}
         />
         <CodeNote label="Slot usage">
-{`<io-flyout heading="Navigation" position="right">
+{`<io-flyout heading="Navigation" position="end">
   <!-- default slot: body content -->
   <p>Select a section to navigate to.</p>
 

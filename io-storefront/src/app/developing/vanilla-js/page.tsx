@@ -105,11 +105,11 @@ export default function DevelopingVanillaJsPage() {
         <CodeBlock>{`<!-- Add inside <head> or at the end of <body> -->
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@iodigital-com/components@1.0.0/dist/io-components/io-components.esm.js"
+  src="https://cdn.jsdelivr.net/npm/@iodigital-com/components@1.8.0/dist/io-components/io-components.esm.js"
 ></script>`}</CodeBlock>
         <Note>
           <strong style={{ color: 'var(--io-text-primary)' }}>CDN note:</strong> Pin a specific version in production (e.g.{' '}
-          <InlineCode>@iodigital-com/components@1.0.0/dist/io-components/io-components.esm.js</InlineCode>) to prevent unexpected
+          <InlineCode>@iodigital-com/components@1.8.0/dist/io-components/io-components.esm.js</InlineCode>) to prevent unexpected
           breaking changes from un-pinned <InlineCode>latest</InlineCode> resolutions.
         </Note>
       </section>
@@ -185,7 +185,7 @@ customElements.whenDefined('io-input').then(() => {
   });
 });`}</CodeBlock>
         <Note>
-          All io component events are prefixed with <InlineCode>io</InlineCode> and documented on each component&apos;s{' '}
+          Component custom events use plain, un-prefixed names (e.g. <InlineCode>click</InlineCode>, <InlineCode>change</InlineCode>, <InlineCode>dismiss</InlineCode>) and are documented on each component&apos;s{' '}
           <strong style={{ color: 'var(--io-text-primary)' }}>API</strong> tab. Event details are typed in the{' '}
           <InlineCode>event.detail</InlineCode> object.
         </Note>

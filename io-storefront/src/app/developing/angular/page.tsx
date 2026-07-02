@@ -85,8 +85,8 @@ export class AppComponent {}`}
           Event handling
         </h2>
         <p className="text-sm" style={{ color: 'var(--io-text-secondary)', lineHeight: '1.6' }}>
-          io components emit custom events prefixed with <code>io</code>. The Angular wrapper proxies these as
-          typed Angular <code>@Output()</code> emitters so you can bind them with <code>(ioEventName)</code>.
+          io components emit un-prefixed custom events (e.g. <code>click</code>, <code>change</code>, <code>dismiss</code>). The Angular wrapper proxies these as
+          typed Angular <code>@Output()</code> emitters so you can bind them with matching event bindings.
         </p>
         <pre
           className="rounded-lg p-4 text-sm overflow-x-auto"

@@ -9,7 +9,7 @@ export const progressStory: Story<'io-progress'> = {
       size: 'md',
       animated: true,
       showLabel: false,
-      label: '',
+      label: 'Progress',
     },
   },
   generator: ({ properties } = {}) => [
@@ -32,7 +32,7 @@ export const progressStoryDefault: Story<'io-progress'> = {
   generator: () => [
     {
       tag: 'io-progress' as const,
-      properties: { value: 60, color: 'blue', size: 'md', animated: true },
+      properties: { value: 60, color: 'blue', size: 'md', animated: true, label: 'Upload progress' },
     },
   ],
 };
@@ -40,56 +40,56 @@ export const progressStoryDefault: Story<'io-progress'> = {
 export const progressStoryColors: Story<'io-progress'> = {
   state: { properties: { value: 75, color: 'orange', size: 'md' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 75, color: 'orange', size: 'md' } },
+    { tag: 'io-progress' as const, properties: { value: 75, color: 'orange', size: 'md', label: 'Progress' } },
   ],
 };
 
 export const progressStorySizes: Story<'io-progress'> = {
   state: { properties: { value: 50, color: 'blue', size: 'sm' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 50, color: 'blue', size: 'sm' } },
+    { tag: 'io-progress' as const, properties: { value: 50, color: 'blue', size: 'sm', label: 'Progress' } },
   ],
 };
 
 export const progressStoryWithLabel: Story<'io-progress'> = {
   state: { properties: { value: 88, color: 'success', size: 'md', showLabel: true } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 88, color: 'success', size: 'md', showLabel: true } },
+    { tag: 'io-progress' as const, properties: { value: 88, color: 'success', size: 'md', showLabel: true, label: 'Download progress' } },
   ],
 };
 
 export const progressStoryEmpty: Story<'io-progress'> = {
   state: { properties: { value: 0, color: 'blue', size: 'md' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 0, color: 'blue', size: 'md' } },
+    { tag: 'io-progress' as const, properties: { value: 0, color: 'blue', size: 'md', label: 'Progress' } },
   ],
 };
 
 export const progressStorySuccess: Story<'io-progress'> = {
   state: { properties: { value: 100, color: 'success', size: 'md', showLabel: true } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 100, color: 'success', size: 'md', showLabel: true } },
+    { tag: 'io-progress' as const, properties: { value: 100, color: 'success', size: 'md', showLabel: true, label: 'Upload complete' } },
   ],
 };
 
 export const progressStoryWarning: Story<'io-progress'> = {
   state: { properties: { value: 45, color: 'warning', size: 'md' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 45, color: 'warning', size: 'md' } },
+    { tag: 'io-progress' as const, properties: { value: 45, color: 'warning', size: 'md', label: 'Storage usage' } },
   ],
 };
 
 export const progressStoryError: Story<'io-progress'> = {
   state: { properties: { value: 30, color: 'error', size: 'md' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { value: 30, color: 'error', size: 'md' } },
+    { tag: 'io-progress' as const, properties: { value: 30, color: 'error', size: 'md', label: 'Upload failed' } },
   ],
 };
 
 export const progressStoryIndeterminate: Story<'io-progress'> = {
   state: { properties: { indeterminate: true, color: 'blue', size: 'md' } },
   generator: () => [
-    { tag: 'io-progress' as const, properties: { indeterminate: true, color: 'blue', size: 'md' } },
+    { tag: 'io-progress' as const, properties: { indeterminate: true, color: 'blue', size: 'md', label: 'Loading' } },
   ],
 };
 

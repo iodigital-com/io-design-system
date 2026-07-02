@@ -684,7 +684,7 @@ export default function TypographyPage() {
 .body-copy {
   font-family: var(--io-font-primary);
   font-size: var(--io-font-size-base);
-  line-height: var(--io-line-height-base);
+  line-height: var(--io-line-height-normal);
   color: var(--io-text-primary);
 }
 

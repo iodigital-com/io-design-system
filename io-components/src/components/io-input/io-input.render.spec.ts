@@ -417,7 +417,7 @@ describe('io-input — render() aria and native input attributes', () => {
   });
 
   it('passes autocomplete to the native input', () => {
-    c.autocomplete = 'email';
+    c.autoComplete = 'email';
     vi.mocked(h).mockClear();
     c.render();
 

@@ -9,6 +9,7 @@ import {
 } from '../io-textarea.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoTextareaExamplesPage() {
@@ -16,7 +17,7 @@ export default function IoTextareaExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={textareaStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={textareaStoryDefault} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
       </section>
 
       <section>
@@ -34,12 +35,12 @@ export default function IoTextareaExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={textareaStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={textareaStoryError} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={textareaStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={textareaStoryDisabled} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
       </section>
     </div>
   );

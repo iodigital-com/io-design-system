@@ -2,6 +2,7 @@
 
 import { multiSelectStory, multiSelectPropDefinitions } from '../io-multi-select.stories';
 
+import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
 import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoMultiSelectConfiguratorPage() {
@@ -10,7 +11,7 @@ export default function IoMultiSelectConfiguratorPage() {
       tagName="io-multi-select"
       story={multiSelectStory}
       propDefinitions={multiSelectPropDefinitions}
-      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
+      previewStyle={FORM_FIELD_PREVIEW_STYLE}
     />
   );
 }

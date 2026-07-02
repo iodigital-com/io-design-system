@@ -144,8 +144,8 @@ export default function IoTooltipApiPage() {
       {/* ── Slots ────────────────────────────────────────────────── */}
       <section id="slots" className="space-y-4">
         <SectionHeader
-          title="Compatibility Wrapper"
-          description="Legacy <io-tooltip> remains as a non-breaking wrapper that maps props to trigger attributes."
+          title="Component Wrapper"
+          description="<io-tooltip> also works as a component wrapper — maps its content and placement props to trigger attributes on the first child element."
         />
         <ApiTable
           columns={[
@@ -163,8 +163,8 @@ export default function IoTooltipApiPage() {
         />
         <EmptyNote>
           <strong style={{ color: 'var(--io-text-primary)' }}>Prefer attributes on trigger elements.</strong>
-          {' '}Use <InlineCode>io-tooltip</InlineCode> directly on controls. Keep <InlineCode>&lt;io-tooltip&gt;</InlineCode>
-          only while migrating older markup.
+          {' '}Use <InlineCode>io-tooltip</InlineCode> directly on controls. The <InlineCode>&lt;io-tooltip&gt;</InlineCode>
+          wrapper is supported for markup where adding attributes directly to the trigger is not practical.
         </EmptyNote>
         <CodeNote label="Usage">
 {`<!-- HTML — attribute directly on any focusable element -->

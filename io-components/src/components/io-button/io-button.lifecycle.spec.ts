@@ -48,28 +48,23 @@ describe('io-button — warnIconOnlyLabelMissing', () => {
     spy.mockRestore();
   });
 
-  it('does not warn label-missing twice (hasWarnedIconOnlyLabel guard), but does warn deprecation once', () => {
+  it('does not warn label-missing twice (hasWarnedIconOnlyLabel guard)', () => {
     const c = makeButton();
     c.iconOnly = true;
     (c as any).hasWarnedIconOnlyLabel = true;
-    // hasWarnedIconOnlyDeprecated not set — deprecation fires once
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     (c as any).warnIconOnlyLabelMissing();
-    // Only the deprecation warning fires (label warning is guarded)
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
+    expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 
-  it('does not warn label-missing when iconOnly=true but label is provided; still warns deprecation', () => {
+  it('does not warn label-missing when iconOnly=true but label is provided', () => {
     const c = makeButton();
     c.iconOnly = true;
     c.label = 'Close';
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     (c as any).warnIconOnlyLabelMissing();
-    // Deprecation fires but label-missing should not
     const calls = spy.mock.calls.map((call) => call[0] as string);
-    expect(calls.some((msg) => msg.includes('deprecated'))).toBe(true);
     expect(calls.some((msg) => msg.includes('accessible label'))).toBe(false);
     spy.mockRestore();
   });
@@ -299,34 +294,6 @@ describe('io-button — onLoadingChange / loading a11y', () => {
   });
 });
 
-describe('io-button — warnIconOnlyDeprecated', () => {
-  it('warns when iconOnly=true', () => {
-    const c = makeButton();
-    c.iconOnly = true;
-    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).warnIconOnlyDeprecated();
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining('deprecated'));
-    spy.mockRestore();
-  });
-
-  it('does not warn twice (hasWarnedIconOnlyDeprecated guard)', () => {
-    const c = makeButton();
-    c.iconOnly = true;
-    (c as any).hasWarnedIconOnlyDeprecated = true;
-    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).warnIconOnlyDeprecated();
-    expect(spy).not.toHaveBeenCalled();
-    spy.mockRestore();
-  });
-
-  it('does not warn when iconOnly=false', () => {
-    const c = makeButton();
-    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    (c as any).warnIconOnlyDeprecated();
-    expect(spy).not.toHaveBeenCalled();
-    spy.mockRestore();
-  });
-});
 
 describe('io-button — warnHideLabelNoIcon', () => {
   it('logs error when hideLabel=true and no icon', () => {

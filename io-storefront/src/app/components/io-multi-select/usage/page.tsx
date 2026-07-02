@@ -112,11 +112,11 @@ export default function IoMultiSelectUsagePage() {
       {/* ── Migration ────────────────────────────────────────────── */}
       <section id="migration" className="space-y-6">
         <SectionHeader
-          title="Migration from io-select[multiple]"
-          description="io-select[multiple custom] is now deprecated. Migrate to io-multi-select for better isolation, improved API, and dedicated chip display."
+          title="Replacing io-select[multiple] with io-multi-select"
+          description="io-multi-select is the dedicated multi-value component. It provides dedicated chip display, improved API, and full FACE form participation."
         />
         <div className="space-y-3">
-          <RuleCard label="Before (deprecated)">
+          <RuleCard label="Before (old approach)">
             {`<io-select label="Countries" name="countries" custom multiple>\n  <io-option value="nl" label="Netherlands"></io-option>\n</io-select>`}
           </RuleCard>
           <RuleCard label="After">

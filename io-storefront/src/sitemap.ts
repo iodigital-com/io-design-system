@@ -1,5 +1,5 @@
 /** Navigation tree for the io Design System storefront sidebar. */
-export type ComponentStatus = 'stable' | 'beta' | 'deprecated';
+export type ComponentStatus = 'stable' | 'beta';
 
 export type NavItem = {
   label: string;

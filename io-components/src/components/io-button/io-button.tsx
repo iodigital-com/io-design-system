@@ -137,11 +137,7 @@ export class IoButton {
    */
   @Prop({ reflect: true }) form: string | undefined;
 
-  /**
-   * @deprecated Use `hideLabel` with an `icon` or `iconSource` prop instead.
-   * Renders a square icon-only button and suppresses text label rendering.
-   * Will be removed in the next minor release after the deprecation period.
-   */
+  /** Renders a square icon-only button and suppresses text label rendering. Requires label prop or host aria-label for accessibility. */
   @Prop({ reflect: true, attribute: 'icon-only' }) iconOnly = false;
 
   /** Direction of the optional animated arrow icon. Omit to hide the arrow. */
@@ -198,7 +194,6 @@ export class IoButton {
   @Prop() aria?: Partial<Record<IoButtonAriaAttribute, string>>;
 
   private hasWarnedIconOnlyLabel = false;
-  private hasWarnedIconOnlyDeprecated = false;
   private btnEl?: HTMLElement;
   private readonly loadingId: string;
   private _implicitSubmitHandler?: (ev: KeyboardEvent) => void;
@@ -405,22 +400,8 @@ export class IoButton {
     return this.label ?? hostAriaLabel;
   }
 
-  private warnIconOnlyDeprecated(): void {
-    if (!this.iconOnly || this.hasWarnedIconOnlyDeprecated) return;
-    const isStencilProd = (globalThis as { __STENCIL_PROD__?: boolean }).__STENCIL_PROD__ === true;
-    if (!isStencilProd) {
-      console.warn(
-        'io-button: The `iconOnly` prop is deprecated. Use `hideLabel` with an `icon` or `iconSource` prop instead. ' +
-        '`iconOnly` will be removed in the next minor release.',
-      );
-    }
-    this.hasWarnedIconOnlyDeprecated = true;
-  }
-
   private warnIconOnlyLabelMissing(): void {
     if (!this.iconOnly) return;
-    // Also fire the deprecation warning (once per instance) when iconOnly is in use.
-    this.warnIconOnlyDeprecated();
 
     if (this.hasWarnedIconOnlyLabel || this.getAccessibleLabel()) return;
 
@@ -514,10 +495,9 @@ export class IoButton {
     const arrow = rawArrow === 'none' || rawArrow === null ? undefined : this.arrow;
 
     this.validatePropValues(size);
-    this.warnIconOnlyDeprecated();
     this.warnHideLabelNoIcon(hideLabel);
 
-    // Effective icon-only mode: either the legacy iconOnly prop, or hideLabel + has icon.
+    // Effective icon-only mode: either the iconOnly prop, or hideLabel + has icon.
     const hasIcon = Boolean(this.icon || this.iconSource);
     const effectiveIconOnly = iconOnly || (hideLabel && hasIcon);
 

@@ -18,7 +18,7 @@ export interface StateMessageProps {
   /**
    * CSS class to apply when the message is hidden.
    * Defaults to `${classPrefix}-message--hidden`.
-   * Override this to preserve legacy CSS class names (e.g. 'input-error--hidden').
+   * Override to use a custom CSS class name (e.g. 'input-error--hidden').
    */
   hiddenClass?: string;
   /** Slot change handler (optional — wire to `<slot name="message">`). */

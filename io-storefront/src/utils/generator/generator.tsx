@@ -155,6 +155,26 @@ function createElement(
   // attribute reflection after hydration.
   const suppressHydration = isCustomEl || parentIsCustomEl;
 
+  // For custom elements, pass non-empty string and number props as kebab-case
+  // HTML attributes so Stencil's attributeChangedCallback picks them up during
+  // componentWillLoad() — before the ref fires. Without this, non-reflected
+  // string props (e.g. io-select label, io-radio-group name) are absent on
+  // first render and WCAG console errors fire for missing accessible names.
+  // Booleans are omitted here; Stencil defaults and the ref callback handle them.
+  const primitiveAttrs: Record<string, unknown> = {};
+  if (isCustomEl) {
+    for (const [k, v] of Object.entries(properties)) {
+      // Exclude 'style' — it is a string in stories but React requires an object for style props.
+      // Exclude ARIAMixin camelCase props (ariaLabel, ariaLabelledby, …) — converting them to
+      // aria-* HTML attributes on the host does not affect the Shadow DOM's internal aria state.
+      // The ref callback (applyPropertiesToElement) handles both style and aria props correctly.
+      if (k === 'style' || k.startsWith('aria')) continue;
+      if ((typeof v === 'string' && v !== '') || typeof v === 'number') {
+        primitiveAttrs[k.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`)] = v;
+      }
+    }
+  }
+
   const customRef = isCustomEl
     ? (el: StoryHostElement | null) => {
         if (!el) return;
@@ -182,6 +202,7 @@ function createElement(
     ? {
         key,
         ...(suppressHydration ? { suppressHydrationWarning: true } : {}),
+        ...primitiveAttrs,
         ...(customRef ? { ref: customRef } : {}),
       }
     : {

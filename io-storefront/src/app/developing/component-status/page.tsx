@@ -7,7 +7,7 @@ import { type ComponentStatus, getComponentItems } from '@/sitemap';
 
 export const metadata: Metadata = {
   title: 'Component Status — io Design System',
-  description: 'Maturity model and per-component stability matrix for all io Design System components — stable, beta, and deprecated classifications with promotion criteria.',
+  description: 'Maturity model and per-component stability matrix for all io Design System components — stable and beta classifications with promotion criteria.',
   openGraph: {
     title: 'Component Status — io Design System',
     description: 'Per-component stability matrix and promotion criteria for the io Design System.',
@@ -46,7 +46,6 @@ function StatusPill({ status }: { status: ComponentStatus | undefined }) {
   const styles: Record<ComponentStatus, { bg: string; text: string; label: string }> = {
     stable: { bg: 'var(--io-color-success)', text: 'var(--io-color-white)', label: 'Stable' },
     beta: { bg: 'var(--io-color-warning)', text: 'var(--io-color-grey-6)', label: 'Beta' },
-    deprecated: { bg: 'var(--io-color-error)', text: 'var(--io-color-white)', label: 'Deprecated' },
   };
 
   const { bg, text, label } = styles[resolved];
@@ -68,13 +67,12 @@ export default function ComponentStatusPage() {
 
   const stable = components.filter((c) => !c.status || c.status === 'stable');
   const beta = components.filter((c) => c.status === 'beta');
-  const deprecated = components.filter((c) => c.status === 'deprecated');
 
   return (
     <div className="space-y-16">
       <PageHeader
         title="Component Status"
-        description="Every io Design System component carries a maturity status — stable, beta, or deprecated. Use this page to understand what each classification means and to check the current status of any component."
+        description="Every io Design System component carries a maturity status — stable or beta. Use this page to understand what each classification means and to check the current status of any component."
         tabs={[]}
       />
 
@@ -82,9 +80,9 @@ export default function ComponentStatusPage() {
       <section id="status-model" className="space-y-6">
         <SectionHeader
           title="Status model"
-          description="Three canonical statuses govern component maturity. The source of truth for all statuses is sitemap.ts."
+          description="Two canonical statuses govern component maturity. The source of truth for all statuses is sitemap.ts."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             {
               status: 'stable' as ComponentStatus,
@@ -95,11 +93,6 @@ export default function ComponentStatusPage() {
               status: 'beta' as ComponentStatus,
               heading: 'Beta',
               body: 'The component is functionally complete but the API may change in a minor release. Suitable for production adoption with awareness of upcoming adjustments.',
-            },
-            {
-              status: 'deprecated' as ComponentStatus,
-              heading: 'Deprecated',
-              body: 'The component has a documented replacement. It continues to function but will be removed in the next major release. Migrate before upgrading.',
             },
           ].map(({ status, heading, body }) => (
             <div
@@ -119,7 +112,7 @@ export default function ComponentStatusPage() {
       <section id="matrix" className="space-y-6">
         <SectionHeader
           title="Component matrix"
-          description={`${components.length} components — ${stable.length} stable, ${beta.length} beta${deprecated.length > 0 ? `, ${deprecated.length} deprecated` : ''}.`}
+          description={`${components.length} components — ${stable.length} stable, ${beta.length} beta.`}
         />
         <div className="space-y-2">
           {components.map((item) => (

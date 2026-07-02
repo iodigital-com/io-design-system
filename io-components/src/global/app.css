@@ -42,7 +42,7 @@
    ============================================================ */
 
 /* color-scheme: light dark enables CSS light-dark() function for paired tokens.
-   Legacy browsers fall back to [data-theme] overrides below.
+   Older browsers fall back to [data-theme] overrides below.
    See: https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
 @supports (color: light-dark(red, red)) {
   :root {
@@ -203,7 +203,7 @@
   --io-border-radius-4xl:        32px;  /* extra-large surfaces, hero cards */
   /* Preferred canonical name. Components should use --io-border-radius-full going forward. */
   --io-border-radius-full:       9999px;
-  /* @deprecated Use --io-border-radius-full instead. Alias kept for one minor cycle. */
+  /* Alias for --io-border-radius-full — both names are supported. */
   --io-border-radius-pill:       var(--io-border-radius-full);
 
   /* State */
@@ -261,7 +261,7 @@
    */
   --io-line-height-dynamic:      calc(6px + 2.125ex); /* recommended default for headings + body */
 
-  /* Legacy fixed scale — retained as internal tokens for backward compatibility.
+  /* Fixed line-height scale — internal tokens.
    * Prefer --io-line-height-dynamic for new components.
    * Classification: internal (not consumer override points).
    */
@@ -305,8 +305,7 @@
   --io-density-border-radius:   var(--io-border-radius-sm);   /* default: 9px */
   --io-density-gap:             var(--io-space-2, 8px);    /* default: 8px gap between items */
 
-  /* Legacy aliases — kept for backward compat; components migrating to density contract
-   * should switch to --io-density-spacing-y / --io-density-spacing-x. */
+  /* Aliases for --io-density-spacing-y / --io-density-spacing-x. Both names are supported. */
   --io-spacing-component-y: var(--io-density-spacing-y);
   --io-spacing-component-x: var(--io-density-spacing-x);
 
@@ -345,15 +344,9 @@
   --io-space-fluid-xl:           clamp(2rem, 4vw + 1rem, 4rem);               /* 32px → 64px */
   --io-space-fluid-2xl:          clamp(3rem, 6vw + 1.5rem, 6rem);             /* 48px → 96px */
 
-  /* Orphan static steps — deprecated in favour of nearest fluid/scale step.
-   * --io-space-14 (56px): use --io-space-fluid-xl or --io-space-16 (64px).
-   * --io-space-15 (60px): use --io-space-fluid-xl or --io-space-16 (64px).
-   * These aliases remain for backward compatibility; will be removed in the next major cycle.
-   */
-  /* @deprecated Use --io-space-16 (64px) or --io-space-fluid-xl instead */
-  --io-space-14:                 3.5rem;     /* 56px — DEPRECATED: orphan step */
-  /* @deprecated Use --io-space-16 (64px) or --io-space-fluid-xl instead */
-  --io-space-15:                 3.75rem;    /* 60px — DEPRECATED: orphan step */
+  /* Additional static steps outside the main 4× scale steps. */
+  --io-space-14:                 3.5rem;     /* 56px */
+  --io-space-15:                 3.75rem;    /* 60px */
 
   /* ============================================================
      5. SHADOWS & ELEVATION
@@ -365,9 +358,7 @@
   --io-shadow-md:                0 2px 16px rgba(0, 0, 0, 0.16);
   --io-shadow-lg:                0 4px 40px rgba(0, 0, 0, 0.16);
 
-  /* Backward-compat aliases — retained for one minor cycle.
-     Consumers using --io-shadow-xl should migrate to --io-shadow-lg.
-     Consumers using --io-shadow-2xl should migrate to --io-shadow-lg. */
+  /* Aliases for --io-shadow-lg. All three names are supported. */
   --io-shadow-xl:                var(--io-shadow-lg);
   --io-shadow-2xl:               var(--io-shadow-lg);
 
@@ -376,9 +367,7 @@
      Kept separate from elevation scale to clarify purpose.
      ============================================================ */
 
-  /* --io-shadow-focus-blue and --io-shadow-focus-orange are deprecated
-     (no components reference them). Retained as aliases for one minor
-     cycle to avoid breaking any consumer stylesheets. */
+  /* Additional focus shadow aliases — supported for consumer use. */
   --io-shadow-focus-blue:        0 0 0 2px rgba(54, 95, 217, 0.7);
   --io-shadow-focus-orange:      0 0 0 2px rgba(237, 127, 83, 0.7);
   --io-shadow-focus-ring:        0 0 0 2px var(--io-focus-inner),
@@ -416,18 +405,16 @@
   --io-motion-entrance-offset-down:  12px;  /* (reserved: panels entering from top) */
   --io-motion-entrance-offset-start: 100%;  /* drawer/sheet slides from start edge */
   --io-motion-entrance-offset-end:   100%;  /* (reserved: panels entering from end) */
-  /* @deprecated — use --io-motion-entrance-offset-up instead */
+  /* Alias for --io-motion-entrance-offset-up. Both names are supported. */
   --io-motion-entrance-offset-y: var(--io-motion-entrance-offset-up);
 
-  /* ── 6f. Legacy composed aliases — @deprecated ───────────────── */
-  /* These aliases compose duration + easing into a single shorthand.    */
-  /* They will be removed in the next major motion token cleanup cycle.  */
-  /* Migrate to: transition: prop var(--io-duration-sm) var(--io-ease-out) */
+  /* ── 6f. Composed motion aliases ────────────────────────────── */
+  /* Shorthand tokens combining duration + easing. Supported v1 API. */
   --io-motion-fast:              200ms ease;
   --io-motion-base:              300ms ease;
   --io-motion-slow:              500ms ease-in-out;
   --io-motion-extra-slow:        1200ms ease-in-out;
-  /* @deprecated easing aliases — prefer --io-ease-{in,out,in-out} */
+  /* Easing aliases — named shorthand for common cubic-bezier curves. */
   --io-motion-easing-standard:   ease;
   --io-motion-easing-in-out:     ease-in-out;
   --io-motion-easing-snappy:     cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -1575,7 +1562,7 @@ io-table[compact] io-table-body-cell td {
   --io-density-line-height:   1.4;
   --io-density-border-radius: var(--io-border-radius-xs);
   --io-density-gap:           var(--io-space-1, 4px);
-  /* Legacy compat */
+  /* Alias for density contract */
   --io-spacing-component-y:   var(--io-space-1, 4px);
   --io-spacing-component-x:   var(--io-space-2, 8px);
 }
@@ -1587,7 +1574,7 @@ io-table[compact] io-table-body-cell td {
   --io-density-line-height:   var(--io-line-height-normal);
   --io-density-border-radius: var(--io-border-radius-sm);
   --io-density-gap:           var(--io-space-2, 8px);
-  /* Legacy compat */
+  /* Alias for density contract */
   --io-spacing-component-y:   var(--io-space-2, 8px);
   --io-spacing-component-x:   var(--io-space-6, 24px);
 }
@@ -1599,7 +1586,7 @@ io-table[compact] io-table-body-cell td {
   --io-density-line-height:   var(--io-line-height-relaxed);
   --io-density-border-radius: var(--io-border-radius-md);
   --io-density-gap:           var(--io-space-3, 12px);
-  /* Legacy compat */
+  /* Alias for density contract */
   --io-spacing-component-y:   var(--io-space-3, 12px);
   --io-spacing-component-x:   var(--io-space-8, 32px);
 }

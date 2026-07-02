@@ -226,7 +226,7 @@ export const modalStoryNoHeading: Story<'io-modal'> = {
       },
       {
         tag: 'io-modal' as const,
-        properties: { open, ariaLabel: 'Custom header via slot' },
+        properties: { open, aria: { 'aria-label': 'Custom header via slot' } },
         children: [
           {
             tag: 'h2' as const,

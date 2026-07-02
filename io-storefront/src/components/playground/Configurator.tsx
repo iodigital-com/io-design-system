@@ -118,9 +118,27 @@ function ConfiguratorInner({ story, propDefinitions, previewClassName, previewSt
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [exampleState, setExampleState] = useState<StoryState<HTMLTagOrComponent>>(() =>
-    buildInitialState(story, propDefinitions, searchParams),
+  // Initialize from story defaults only — URL params applied client-side below.
+  // buildInitialState with searchParams during SSR would produce different initial state
+  // than the server-rendered HTML when the URL contains search params → React #418.
+  const [exampleState, setExampleState] = useState<StoryState<HTMLTagOrComponent>>(
+    () => (story.state ?? {}) as StoryState<HTMLTagOrComponent>,
   );
+
+  // Apply URL search params once after mount; skip on subsequent renders.
+  const urlParamsApplied = useRef(false);
+  useEffect(() => {
+    if (urlParamsApplied.current) return;
+    urlParamsApplied.current = true;
+    const initial = buildInitialState(story, propDefinitions, searchParams);
+    const base = (story.state ?? {}) as StoryState<HTMLTagOrComponent>;
+    const baseProps = base.properties ?? {};
+    const merged = initial.properties ?? {};
+    const hasUrlParams = Object.keys(merged).some(
+      (k) => String(merged[k]) !== String((baseProps as Record<string, unknown>)[k]),
+    );
+    if (hasUrlParams) setExampleState(initial);
+  }, []);
 
   const [exampleElement, setExampleElement] = useState<ReactNode>(() =>
     createElements(story.generator(exampleState), setExampleState),

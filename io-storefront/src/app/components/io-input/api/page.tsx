@@ -172,7 +172,7 @@ export default function IoInputApiPage() {
               <InlineCode key="n">autoComplete</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Native autocomplete attribute (e.g. "email", "current-password", "off"). Preferred over the legacy autocomplete prop.',
+              'Native autocomplete attribute (e.g. "email", "current-password", "off").',
             ],
             [
               <InlineCode key="n">counter</InlineCode>,

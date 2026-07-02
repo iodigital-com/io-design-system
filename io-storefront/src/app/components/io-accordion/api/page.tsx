@@ -145,7 +145,7 @@ export default function IoAccordionApiPage() {
             ],
             [
               <InlineCode key="slot">heading</InlineCode>,
-              <span key="description">Named slot (deprecated — use <InlineCode>summary</InlineCode> instead). Replaces the <InlineCode>heading</InlineCode> prop with rich heading content.</span>,
+              <span key="description">Trigger label text. Falls back to the <InlineCode>heading</InlineCode> prop when not provided. Use the <InlineCode>summary</InlineCode> slot for rich trigger markup.</span>,
             ],
             [
               <InlineCode key="slot">summary-before</InlineCode>,

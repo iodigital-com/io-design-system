@@ -21,21 +21,17 @@ const repoRoot = path.resolve(__dirname, '..');
 
 interface PublicApiEntry {
   cssVar: string;
-  classification: 'public-api' | 'internal' | 'deprecated';
+  classification: 'public-api' | 'internal';
   component: string;
   description: string;
-  deprecatedSince?: string;
-  replacedBy?: string;
 }
 
 interface TokenMeta {
   cssVar: string;
-  classification: 'public-api' | 'internal' | 'deprecated';
+  classification: 'public-api' | 'internal';
   component: string;
   description: string;
   defaultValue: string | null;
-  deprecatedSince?: string;
-  replacedBy?: string;
 }
 
 interface TokensMetaOutput {
@@ -88,14 +84,6 @@ function main(): void {
       defaultValue: defaults.get(entry.cssVar) ?? null,
     };
 
-    if (entry.deprecatedSince) {
-      meta.deprecatedSince = entry.deprecatedSince;
-    }
-
-    if (entry.replacedBy) {
-      meta.replacedBy = entry.replacedBy;
-    }
-
     return meta;
   });
 
@@ -110,12 +98,11 @@ function main(): void {
 
   const publicCount = tokens.filter((t) => t.classification === 'public-api').length;
   const internalCount = tokens.filter((t) => t.classification === 'internal').length;
-  const deprecatedCount = tokens.filter((t) => t.classification === 'deprecated').length;
   const withDefault = tokens.filter((t) => t.defaultValue !== null).length;
 
   console.log(`✅ tokens-meta.json generated`);
   console.log(`   ${tokens.length} total tokens`);
-  console.log(`   ${publicCount} public-api | ${internalCount} internal | ${deprecatedCount} deprecated`);
+  console.log(`   ${publicCount} public-api | ${internalCount} internal`);
   console.log(`   ${withDefault} have default values from app.css`);
 }
 

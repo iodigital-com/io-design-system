@@ -26,9 +26,9 @@ export default function IoSpinnerApiPage() {
           rows={[
             [
               <InlineCode key="n">size</InlineCode>,
-              <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;inherit&apos;</InlineCode>,
+              <InlineCode key="t">&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos; | &apos;inherit&apos;</InlineCode>,
               <InlineCode key="d">&apos;md&apos;</InlineCode>,
-              'Controls the rendered diameter of the spinner. sm = 16px, md = 24px, lg = 40px. inherit sizes the spinner at 1em × 1em relative to the parent\'s font-size, useful for inline loading indicators.',
+              'Controls the rendered diameter of the spinner. xs = 12px, sm = 16px, md = 24px, lg = 40px, xl = 64px. inherit sizes the spinner at 1em × 1em relative to the parent\'s font-size, useful for inline loading indicators.',
             ],
             [
               <InlineCode key="n">color</InlineCode>,
@@ -49,15 +49,15 @@ export default function IoSpinnerApiPage() {
               'Visually hidden accessible label announced by screen readers via aria-label on the host element. Provide a contextual value when the generic "Loading" text would be ambiguous.',
             ],
             [
-              <InlineCode key="n">aria</InlineCode>,
-              <InlineCode key="t">Partial&lt;Record&lt;&apos;aria-label&apos; | &apos;aria-describedby&apos; | &apos;aria-live&apos; | &apos;aria-atomic&apos;, string&gt;&gt;</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
+              <InlineCode key="n">context</InlineCode>,
+              <InlineCode key="t">&apos;inline&apos; | &apos;blocking&apos;</InlineCode>,
+              <InlineCode key="d">&apos;inline&apos;</InlineCode>,
               <span key="desc">
-                ARIA attribute overrides spread onto the host element.{' '}
-                When <InlineCode>aria[&apos;aria-label&apos;]</InlineCode> is set it takes precedence over the{' '}
-                <InlineCode>label</InlineCode> prop. Use{' '}
-                <InlineCode>aria-live=&apos;polite&apos;</InlineCode> with{' '}
-                <InlineCode>aria-atomic=&apos;true&apos;</InlineCode> for live regions that announce loading state changes.
+                Controls the spinner layout context.{' '}
+                <InlineCode>inline</InlineCode> renders as an inline-block element alongside other content.{' '}
+                <InlineCode>blocking</InlineCode> renders centered in its container with{' '}
+                <InlineCode>aria-live=&quot;polite&quot;</InlineCode> and{' '}
+                <InlineCode>aria-atomic=&quot;true&quot;</InlineCode> for full-area loading states.
               </span>,
             ],
           ]}
@@ -98,8 +98,9 @@ export default function IoSpinnerApiPage() {
           <strong style={{ color: 'var(--io-text-primary)' }}>io-spinner has no content slots.</strong>
           {' '}The component renders a self-contained CSS animation. All configuration is passed through props:{' '}
           <InlineCode>size</InlineCode>,{' '}
-          <InlineCode>color</InlineCode>, and{' '}
-          <InlineCode>label</InlineCode>.
+          <InlineCode>color</InlineCode>,{' '}
+          <InlineCode>label</InlineCode>, and{' '}
+          <InlineCode>context</InlineCode>.
         </EmptyNote>
       </section>
 

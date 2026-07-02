@@ -182,7 +182,7 @@ export function Navigation() {
                               : 'font-medium text-[var(--io-text-secondary)] hover:text-[var(--io-text-primary)] hover:bg-[var(--io-bg-hover)]',
                           ].join(' ')}
                         >
-                          <span className={item.status === 'deprecated' ? 'line-through' : undefined}>{item.label}</span>
+                          <span>{item.label}</span>
                           <StatusBadge status={item.status} />
                         </Link>
                       </li>

@@ -298,7 +298,7 @@ export class IoRadio {
           }
         });
       } else {
-        // Standalone fallback: document-wide (deprecated, kept for backwards compat)
+        // Standalone fallback: document-wide mutual exclusion (wrap in io-radio-group for proper group scoping)
         if (process.env.NODE_ENV !== 'test') {
           console.warn('[io-radio] Using document-wide mutual exclusion for standalone radios. Wrap in io-radio-group for proper scoping.');
         }

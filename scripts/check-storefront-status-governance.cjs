@@ -19,7 +19,7 @@ const layoutPaths = [
   'io-storefront/src/app/components/io-carousel/layout.tsx',
 ].map((relative) => path.join(repoRoot, relative));
 
-const allowedStatuses = new Set(['stable', 'beta', 'deprecated']);
+const allowedStatuses = new Set(['stable', 'beta']);
 const errors = [];
 
 function read(filePath) {
@@ -42,7 +42,7 @@ const badge = read(statusBadgePath);
 const homepage = read(homepagePath);
 
 if (sitemap) {
-  requireContains(sitemap, sitemapPath, "export type ComponentStatus = 'stable' | 'beta' | 'deprecated';");
+  requireContains(sitemap, sitemapPath, "export type ComponentStatus = 'stable' | 'beta';");
 
   const statusRegex = /status:\s*'([^']+)'/g;
   let match = statusRegex.exec(sitemap);
@@ -58,11 +58,10 @@ if (sitemap) {
 if (badge) {
   requireContains(badge, statusBadgePath, "status === 'stable'");
   requireContains(badge, statusBadgePath, "status === 'beta'");
-  requireContains(badge, statusBadgePath, 'Status: Deprecated');
 }
 
 if (homepage) {
-  if (/status:\s*'(stable|beta|deprecated)'/.test(homepage)) {
+  if (/status:\s*'(stable|beta)'/.test(homepage)) {
     errors.push('io-storefront/src/app/page.tsx must not hardcode component status literals; source status from sitemap.');
   }
   requireContains(homepage, homepagePath, 'getComponentItems');
@@ -72,7 +71,7 @@ for (const layoutPath of layoutPaths) {
   const content = read(layoutPath);
   if (!content) continue;
 
-  if (/status="(stable|beta|deprecated)"/.test(content)) {
+  if (/status="(stable|beta)"/.test(content)) {
     errors.push(`${path.relative(repoRoot, layoutPath)} must not hardcode status literals.`);
   }
 

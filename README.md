@@ -101,7 +101,7 @@ This system targets modern evergreen browsers:
 - Firefox (latest)
 - Safari (latest)
 
-Internet Explorer and other legacy browsers are out of scope.
+Internet Explorer and other end-of-life browsers are out of scope.
 
 ## Architecture and Source-of-Truth Rules
 

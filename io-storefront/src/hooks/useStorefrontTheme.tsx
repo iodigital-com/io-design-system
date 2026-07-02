@@ -23,7 +23,11 @@ function getSystemTheme(): 'dark' | 'light' {
 
 export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<StorefrontTheme>('auto');
-  const resolvedTheme: 'dark' | 'light' = theme === 'auto' ? getSystemTheme() : theme;
+  // Start resolved as 'light' to match server render; updated client-side after mount.
+  // getSystemTheme() calls window.matchMedia — undefined in Node.js — so computing it
+  // synchronously during render would produce 'light' on server but potentially 'dark'
+  // on client, causing a React hydration mismatch (#418) in SyntaxHighlighter output.
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('light');
 
   // Apply data-theme to <html> and persist to localStorage
   const applyTheme = useCallback((t: StorefrontTheme) => {
@@ -34,13 +38,17 @@ export function StorefrontThemeProvider({ children }: { children: ReactNode }) {
   // Read persisted preference on mount; fall back to OS preference on first visit
   useEffect(() => {
     const stored = (localStorage.getItem(STORAGE_KEY) as StorefrontTheme | null) ?? 'auto';
+    const resolved: 'dark' | 'light' = stored === 'auto' ? getSystemTheme() : stored;
     setThemeState(stored);
+    setResolvedTheme(resolved);
     applyTheme(stored);
   }, [applyTheme]);
 
   const setTheme = useCallback(
     (t: StorefrontTheme) => {
+      const resolved: 'dark' | 'light' = t === 'auto' ? getSystemTheme() : t;
       setThemeState(t);
+      setResolvedTheme(resolved);
       localStorage.setItem(STORAGE_KEY, t);
       applyTheme(t);
     },

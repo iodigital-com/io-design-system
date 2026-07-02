@@ -17,11 +17,7 @@ import type { IoSpinnerSize, IoSpinnerColor, IoSpinnerContext } from './types';
  * <io-spinner></io-spinner>
  * <io-spinner size="lg" color="white" label="Saving..."></io-spinner>
  * <io-spinner context="blocking" label="Processing payment"></io-spinner>
- *
- * // Deprecated (still works with console.warn):
- * // <IoSpinner aria={{ 'aria-label': 'Uploading file' }} />
- * // Preferred:
- * // <io-spinner aria-label="Uploading file"></io-spinner>
+ * <io-spinner aria-label="Uploading file"></io-spinner>
  */
 @Component({
   tag: 'io-spinner',

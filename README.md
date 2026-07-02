@@ -12,7 +12,7 @@ This repository is responsible for all of the following:
 2. Generating wrapper libraries so product teams can consume the same components in React, Vue, and Angular.
 3. Maintaining a static Next.js documentation storefront for component docs and examples.
 4. Enforcing governance and quality gates for API surface, design tokens, bundle size, accessibility, and release hygiene.
-5. Publishing versioned packages under the io-digital scope to GitHub Packages.
+5. Publishing versioned packages under the iodigital-com scope to GitHub Packages.
 
 ## Repository Contents
 
@@ -28,30 +28,57 @@ This repository is responsible for all of the following:
 
 ## Component Catalog
 
-Current component set (37):
+Current component set (49):
 
 - io-accordion
+- io-avatar
 - io-badge
+- io-banner
+- io-breadcrumb
 - io-button
 - io-button-group
 - io-carousel
 - io-checkbox
+- io-checkbox-group
 - io-divider
+- io-drawer
+- io-flyout
+- io-heading
+- io-icon
+- io-inline-notification
 - io-input
+- io-input-date
+- io-input-password
+- io-input-search
 - io-link
+- io-link-pure
 - io-modal
-- io-optgroup
-- io-option
+- io-multi-select
 - io-pagination
+- io-pin-code
+- io-popover
+- io-progress
 - io-radio
+- io-radio-group
+- io-scroller
+- io-segmented-control
 - io-select
+- io-sheet
 - io-spinner
+- io-stepper
+- io-switch
+- io-tab-panel
+- io-table
 - io-tabs
+- io-tabs-bar
 - io-tag
+- io-tag-dismissible
+- io-text
+- io-text-list
 - io-textarea
 - io-toast
-- io-toast-item
 - io-tooltip
+- io-wordmark
 
 Component status (Stable or Beta) is governed in storefront status docs and rendered in the component pages.
 
@@ -105,7 +132,7 @@ npm ci
 npm run dev
 ```
 
-This starts Stencil watch mode and the storefront. The storefront is available at http://localhost:3000.
+This starts Stencil watch mode, the Next.js storefront, and the asset sync watcher concurrently. The storefront is available at http://localhost:3000.
 
 ## Repository Structure
 
@@ -155,6 +182,7 @@ npm run build:storefront:release
 ```bash
 npm run governance:check
 npm run events:guard
+npm run check:public-css-api
 npm run api:check
 npm run sync:stencil-assets:check
 npm run token-naming:check
@@ -162,6 +190,7 @@ npm run token-runtime:check
 npm run token-doc-coverage:check
 npm run style-literals:check
 npm run status-governance:check
+npm run dark-mode-tokens:check
 ```
 
 ### Quality and compliance checks
@@ -183,17 +212,18 @@ This runs the complete release-grade sequence:
 
 1. governance:check
 2. events:guard
-3. lint
-4. build
-5. api:check
-6. sync:stencil-assets:check
-7. size
-8. test
-9. type-coverage
-10. type-check
-11. build:storefront
-12. lighthouse:ci
-13. security:audit
+3. check:public-css-api
+4. lint
+5. build
+6. api:check
+7. sync:stencil-assets:check
+8. size
+9. test
+10. type-coverage
+11. type-check
+12. build:storefront
+13. lighthouse:ci
+14. security:audit
 
 ### Token documentation pipeline
 
@@ -209,14 +239,14 @@ These generate and synchronize token docs artifacts under docs/.
 
 ## How To Consume The Design System
 
-Packages are published to GitHub Packages under the io-digital scope.
+Packages are published to GitHub Packages under the iodigital-com scope.
 
 ### Consumer .npmrc setup
 
 Create project-level .npmrc:
 
 ```ini
-@io-digital:registry=https://npm.pkg.github.com
+@iodigital-com:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
 always-auth=true
 ```
@@ -402,9 +432,9 @@ This repo tracks public API contracts using docs/api-surface.json.
 
 SemVer policy:
 
-- MAJOR: breaking API/event/behavior changes.
-- MINOR: backward-compatible features.
-- PATCH: backward-compatible fixes.
+- MAJOR: complete visual overhaul of the design system (new brand palette, full token rename). Not for individual API changes.
+- MINOR: new components, new props, new defaults, removals with migration path.
+- PATCH: bug fixes, a11y fixes, visual tweaks, doc fixes.
 
 Conventional commits are expected for clarity in release intent.
 
@@ -415,20 +445,19 @@ Conventional commits are expected for clarity in release intent.
 All publishable packages target:
 
 - https://npm.pkg.github.com
-- scope: @io-digital
+- scope: @iodigital-com
 
 ### Release workflow
 
-Automated publishing is handled by .github/workflows/release-packages.yml.
+Releases are driven by Changesets. On merge to main, the release workflow opens a Release PR aggregating all pending changesets. When that PR merges, packages publish to npm with provenance attestation.
 
-Supported tag triggers:
+To add a changeset for your PR:
 
-- release/components/v*
-- release/components-react/v*
-- release/components-vue/v*
-- release/components-angular/v*
+```bash
+npm run changeset:add
+```
 
-Manual workflow_dispatch also supports package selection and dry-run mode.
+Use `@iodigital-com/components` as the package name (not `@io-digital/components`).
 
 ### Publish preconditions
 
@@ -458,7 +487,7 @@ Publish core first, then wrappers.
 Example user-level .npmrc:
 
 ```ini
-@io-digital:registry=https://npm.pkg.github.com
+@iodigital-com:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}
 always-auth=true
 ```
@@ -474,7 +503,7 @@ Token scopes:
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | 401 Unauthorized when install/publish | Missing or invalid token | Confirm token value and scopes, then retry |
-| 404 for @io-digital package | Registry scope mapping missing or package/version not published | Verify .npmrc mapping and run npm view against GitHub registry |
+| 404 for @iodigital-com package | Registry scope mapping missing or package/version not published | Verify .npmrc mapping and run npm view against GitHub registry |
 | Wrapper install warnings | Core-wrapper version mismatch | Align versions and reinstall dependencies |
 | CI release skips publish | Version already exists | Bump version and rerun release |
 | Storefront type drift check fails | Generated files outdated | Run build:components and sync:stencil-assets |
@@ -482,7 +511,7 @@ Token scopes:
 Useful checks:
 
 ```bash
-npm config get @io-digital:registry
+npm config get @iodigital-com:registry
 npm view @iodigital-com/components versions --registry https://npm.pkg.github.com
 npm ls @iodigital-com/components
 ```

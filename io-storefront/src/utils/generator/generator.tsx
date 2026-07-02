@@ -165,8 +165,10 @@ function createElement(
   if (isCustomEl) {
     for (const [k, v] of Object.entries(properties)) {
       // Exclude 'style' — it is a string in stories but React requires an object for style props.
-      // The ref callback (applyPropertiesToElement) handles style correctly via el.style.setProperty.
-      if (k === 'style') continue;
+      // Exclude ARIAMixin camelCase props (ariaLabel, ariaLabelledby, …) — converting them to
+      // aria-* HTML attributes on the host does not affect the Shadow DOM's internal aria state.
+      // The ref callback (applyPropertiesToElement) handles both style and aria props correctly.
+      if (k === 'style' || k.startsWith('aria')) continue;
       if ((typeof v === 'string' && v !== '') || typeof v === 'number') {
         primitiveAttrs[k.replace(/([A-Z])/g, (m) => `-${m.toLowerCase()}`)] = v;
       }

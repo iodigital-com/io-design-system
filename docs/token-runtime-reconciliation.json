@@ -3297,11 +3297,11 @@
     },
     {
       "runtimeCssVar": "--io-touch-target-min-size",
-      "disposition": "documented",
-      "documentationScope": "app-css-runtime",
+      "disposition": "removed",
+      "documentationScope": "retired",
       "tokenPath": null,
       "canonicalCssVar": null,
-      "notes": "Documented runtime variable in app.css inventory."
+      "notes": "Removed duplicate. Use --io-touch-target-min instead (defined in :root section 10)."
     },
     {
       "runtimeCssVar": "--io-wordmark-font-size-lg",

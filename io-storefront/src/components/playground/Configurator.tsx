@@ -138,7 +138,6 @@ function ConfiguratorInner({ story, propDefinitions, previewClassName, previewSt
       (k) => String(merged[k]) !== String((baseProps as Record<string, unknown>)[k]),
     );
     if (hasUrlParams) setExampleState(initial);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [exampleElement, setExampleElement] = useState<ReactNode>(() =>

@@ -9,7 +9,7 @@ export default function IoAiTagUsagePage() {
       <section id="when-to-use" className="space-y-6">
         <SectionHeader
           title="When to use"
-          description="io-ai-tag is a disclosure badge for the EU AI Act. Use it wherever content was produced or modified by an AI system."
+          description="io-ai-tag is a disclosure badge for the EU AI Act. Use it wherever content was produced or modified by an AI system. The badge renders a decorative sparkles icon followed by the disclosure label — the icon is aria-hidden and does not affect screen reader output."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
@@ -36,7 +36,7 @@ export default function IoAiTagUsagePage() {
               Do not suppress or hide the tag from users who need transparency about AI-generated content. Visibility is a legal requirement under the EU AI Act.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Do not roll your own AI disclosure badge using io-tag + icons — this component provides the correct <C>&lt;abbr&gt;</C> semantics and i18n structure.
+              Do not roll your own AI disclosure badge using io-tag + icons — this component provides the correct <C>&lt;abbr&gt;</C> semantics, i18n structure, and the official Lucide sparkles icon via <C>&lt;io-icon&gt;</C>.
             </DoOrDontCard>
           </div>
         </div>

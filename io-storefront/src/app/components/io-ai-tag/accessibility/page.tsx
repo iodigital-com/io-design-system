@@ -31,6 +31,15 @@ export default function IoAiTagAccessibilityPage() {
               ),
               description: 'For generated and modified variants, the component renders plain text inside a span. No special ARIA role is needed — the label text itself is the disclosure.',
             },
+            {
+              attribute: 'aria-hidden (icon)',
+              value: (
+                <span style={{ color: 'var(--io-text-secondary)' }}>
+                  &quot;true&quot;
+                </span>
+              ),
+              description: 'The leading sparkles icon rendered by <io-icon> is purely decorative. aria-hidden="true" prevents it from being announced by screen readers — the label text alone carries the disclosure meaning.',
+            },
           ]}
         />
       </section>

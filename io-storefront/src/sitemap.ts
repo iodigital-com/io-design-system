@@ -83,6 +83,14 @@ export const sitemap: NavSection[] = [
         related: ['io-tabs', 'io-modal', 'io-button'],
       },
       {
+        label: 'AI Tag',
+        href: '/components/io-ai-tag/configurator',
+        status: 'beta',
+        slug: 'io-ai-tag',
+        description: 'EU AI Act transparency disclosure badge. Renders "AI-generated" or "AI-modified" with proper <abbr> semantics and EN/NL translations.',
+        related: ['io-badge', 'io-tag'],
+      },
+      {
         label: 'App Shell',
         href: '/components/io-app-shell/configurator',
         status: 'beta',
@@ -131,6 +139,14 @@ export const sitemap: NavSection[] = [
         related: ['io-link', 'io-modal', 'io-tabs'],
       },
       {
+        label: 'Button Pure',
+        href: '/components/io-button-pure/configurator',
+        status: 'beta',
+        slug: 'io-button-pure',
+        description: 'Link-styled inline action button that inherits surrounding font-size. Supports active, underline, stretch, and icon alignment for toolbars and inline body-copy actions.',
+        related: ['io-button', 'io-link'],
+      },
+      {
         label: 'Button Group',
         href: '/components/io-button-group/configurator',
         status: 'beta',
@@ -169,6 +185,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-drawer',
         description: 'Slide-out overlay panel attached to a screen edge. Supports left, right, and bottom placements with four size presets. Built on the native dialog element.',
         related: ['io-modal', 'io-button', 'io-tabs'],
+      },
+      {
+        label: 'Flag',
+        href: '/components/io-flag/configurator',
+        status: 'beta',
+        slug: 'io-flag',
+        description: 'Country flag indicator for international UI. Covers EU member states and key client regions. Lazy-loaded from flagcdn.com with accessible alt text.',
+        related: ['io-icon', 'io-badge', 'io-tag'],
       },
       {
         label: 'Flyout',

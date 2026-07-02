@@ -928,6 +928,25 @@
      elements (scrollbars, form controls, system colours) adapt to the
      active scheme without requiring an explicit data-theme attribute. */
   color-scheme: light dark;
+
+  /* ── AI Tag ──────────────────────────────────────────── */
+  --io-ai-tag-padding-y:         var(--io-space-1);
+  --io-ai-tag-padding-x:         var(--io-space-2);
+  --io-ai-tag-color:             var(--io-color-primary);
+  --io-ai-tag-bg:                var(--io-color-primary-bg);
+  --io-ai-tag-border-color:      var(--io-color-primary);
+  --io-ai-tag-font-size:         var(--io-font-size-xs);
+
+  /* ── Button Pure ─────────────────────────────────────── */
+  --io-button-pure-color:             var(--io-color-primary);
+  --io-button-pure-hover-color:       var(--io-color-primary-hover);
+  --io-button-pure-active-color:      var(--io-color-primary-active);
+  --io-button-pure-underline-color:   currentColor;
+  --io-button-pure-underline-offset:  2px;
+
+  /* ── Flag ────────────────────────────────────────────── */
+  --io-flag-border-radius:       2px;
+
 }
 
 /* ============================================================

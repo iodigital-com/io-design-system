@@ -17,7 +17,7 @@ export default function IoInputExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputStoryDefault} />
+        <ComponentStory story={inputStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -32,17 +32,17 @@ export default function IoInputExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Numeric constraints" description="min, max, and step forwarded to native number/date/time inputs." />
-        <ComponentStory story={inputStoryConstraints} />
+        <ComponentStory story={inputStoryConstraints} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputStoryError} />
+        <ComponentStory story={inputStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputStoryDisabled} />
+        <ComponentStory story={inputStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>

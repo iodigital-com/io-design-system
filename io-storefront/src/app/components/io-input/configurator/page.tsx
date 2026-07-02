@@ -10,6 +10,7 @@ export default function IoInputConfiguratorPage() {
       tagName="io-input"
       story={inputStory}
       propDefinitions={inputPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

@@ -10,6 +10,7 @@ export default function IoInputDateConfiguratorPage() {
       tagName="io-input-date"
       story={inputDateStory}
       propDefinitions={inputDatePropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

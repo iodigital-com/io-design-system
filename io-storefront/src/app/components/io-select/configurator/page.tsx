@@ -10,6 +10,7 @@ export default function IoSelectConfiguratorPage() {
       tagName="io-select"
       story={selectStory}
       propDefinitions={selectPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

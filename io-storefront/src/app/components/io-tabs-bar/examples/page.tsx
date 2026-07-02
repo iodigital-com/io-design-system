@@ -100,17 +100,17 @@ export default function IoTabsBarExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={tabsBarStoryDefault} />
+        <ComponentStory story={tabsBarStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="With disabled tab" />
-        <ComponentStory story={tabsBarStoryWithDisabled} />
+        <ComponentStory story={tabsBarStoryWithDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Many tabs" />
-        <ComponentStory story={tabsBarStoryManyTabs} />
+        <ComponentStory story={tabsBarStoryManyTabs} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>

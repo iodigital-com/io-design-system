@@ -10,6 +10,7 @@ export default function IoProgressConfiguratorPage() {
       tagName="io-progress"
       story={progressStory}
       propDefinitions={progressPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

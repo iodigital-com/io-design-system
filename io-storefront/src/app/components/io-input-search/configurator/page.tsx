@@ -10,6 +10,7 @@ export default function IoInputSearchConfiguratorPage() {
       tagName="io-input-search"
       story={inputSearchStory}
       propDefinitions={inputSearchPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

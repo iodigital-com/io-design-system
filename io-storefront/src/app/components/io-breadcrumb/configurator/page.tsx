@@ -10,6 +10,7 @@ export default function IoBreadcrumbConfiguratorPage() {
       tagName="io-breadcrumb"
       story={breadcrumbStory}
       propDefinitions={breadcrumbPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

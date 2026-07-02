@@ -20,7 +20,7 @@ export default function IoSelectExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={selectStoryDefault} />
+        <ComponentStory story={selectStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -30,17 +30,17 @@ export default function IoSelectExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="With placeholder" />
-        <ComponentStory story={selectStoryPlaceholder} />
+        <ComponentStory story={selectStoryPlaceholder} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={selectStoryError} />
+        <ComponentStory story={selectStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={selectStoryDisabled} />
+        <ComponentStory story={selectStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -48,7 +48,7 @@ export default function IoSelectExamplesPage() {
           title="Combobox (custom)"
           description="Set custom to switch from the native select to a fully accessible ARIA combobox. The trigger is a button with role=combobox and a keyboard-managed listbox dropdown."
         />
-        <ComponentStory story={selectStoryCombobox} />
+        <ComponentStory story={selectStoryCombobox} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -56,7 +56,7 @@ export default function IoSelectExamplesPage() {
           title="Multi-select (custom + multiple)"
           description="Set multiple with custom to allow selecting several options at once. The dropdown stays open after each selection. Options show a checkbox indicator and aria-checked reflects each item's state."
         />
-        <ComponentStory story={selectStoryMultiple} />
+        <ComponentStory story={selectStoryMultiple} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -64,7 +64,7 @@ export default function IoSelectExamplesPage() {
           title="With filter (custom + filter)"
           description="Set filter with custom to add a search input at the top of the dropdown. Options are filtered by label as the user types. Focus moves to the filter input when the dropdown opens."
         />
-        <ComponentStory story={selectStoryFilter} />
+        <ComponentStory story={selectStoryFilter} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -72,7 +72,7 @@ export default function IoSelectExamplesPage() {
           title="Multi-select with filter (custom + multiple + filter)"
           description="Combine multiple and filter for a searchable multi-select combobox. Useful when the option list is long and users need to find and select several items efficiently."
         />
-        <ComponentStory story={selectStoryMultipleFilter} />
+        <ComponentStory story={selectStoryMultipleFilter} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
     </div>
   );

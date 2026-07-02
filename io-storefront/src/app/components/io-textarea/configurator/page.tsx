@@ -10,6 +10,7 @@ export default function IoTextareaConfiguratorPage() {
       tagName="io-textarea"
       story={textareaStory}
       propDefinitions={textareaPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

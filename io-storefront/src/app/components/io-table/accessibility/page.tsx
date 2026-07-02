@@ -157,14 +157,14 @@ export default function IoTableAccessibilityPage() {
                   IoTableSortDirection
                 </code>
               ),
-              description: 'Three clicks cycle through: unsorted → ascending → descending → unsorted. The third click restores the natural row order. This is a deliberate improvement over bi-state implementations (e.g. Porsche\'s \'asc\'|\'desc\'|undefined) where users can never return to the unsorted state.',
+              description: 'Three clicks cycle through: unsorted → ascending → descending → unsorted. The third click restores the natural row order. This is a deliberate improvement over bi-state implementations (e.g. \'asc\'|\'desc\'|undefined) where users can never return to the unsorted state.',
             },
             {
               attribute: 'direction: \'ascending\' | \'descending\' | \'none\'',
               value: (
                 <span style={{ color: 'var(--io-text-secondary)' }}>Full words</span>
               ),
-              description: 'Direction values match the WAI-ARIA aria-sort attribute values verbatim. This eliminates any mapping between the sort event detail and the aria-sort attribute on the column header. Porsche uses short-form \'asc\'/\'desc\' which must be translated manually.',
+              description: 'Direction values match the WAI-ARIA aria-sort attribute values verbatim. This eliminates any mapping between the sort event detail and the aria-sort attribute on the column header. Abbreviated values like \'asc\'/\'desc\' must be translated manually.',
             },
             {
               attribute: 'sortKey vs id',

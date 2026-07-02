@@ -19,6 +19,11 @@ import {
   attachDialogFocusTrap,
   detachDialogFocusTrap,
 } from '../../utils/dialog-utils';
+import {
+  attachSwipeToDismiss,
+  detachSwipeToDismiss,
+  type SwipeToDismissHandlers,
+} from '../../utils/swipe-to-dismiss';
 
 /**
  * io-sheet
@@ -52,11 +57,13 @@ export class IoSheet {
 
   private panelEl?: HTMLDivElement;
   private backdropEl?: HTMLDivElement;
+  private handleEl?: HTMLElement;
   private headingId!: string;
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
   private animationEndHandler?: (ev: AnimationEvent) => void;
   private focusTrigger?: Element;
   private savedBodyOverflow = '';
+  private swipeHandlers?: SwipeToDismissHandlers;
 
   // ── Props ─────────────────────────────────────────────────────
 
@@ -241,6 +248,20 @@ export class IoSheet {
     }
   };
 
+  private attachSwipeHandlers() {
+    if (!this.handleEl) return;
+    this.swipeHandlers = attachSwipeToDismiss({
+      el: this.handleEl,
+      onDismiss: () => { this.handleDismiss(); },
+    });
+  }
+
+  private detachSwipeHandlers() {
+    if (!this.handleEl || !this.swipeHandlers) return;
+    detachSwipeToDismiss(this.handleEl, this.swipeHandlers);
+    this.swipeHandlers = undefined;
+  }
+
   // ── Render ───────────────────────────────────────────────────
 
   /**
@@ -275,7 +296,11 @@ export class IoSheet {
           tabIndex={-1}
           ref={(el?: HTMLDivElement) => { this.panelEl = el; }}
         >
-          <div class="sheet__handle" aria-hidden="true" />
+          <div
+            class="sheet__handle"
+            ref={(el?: HTMLDivElement) => { this.handleEl = el; }}
+            aria-hidden="true"
+          />
 
           <div class="sheet__header">
             <div class="sheet__header-slot">

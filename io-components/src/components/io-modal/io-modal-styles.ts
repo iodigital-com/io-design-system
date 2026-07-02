@@ -62,12 +62,6 @@ export function getModalStyles(): string {
       transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
-    /* ── Backdrop: shading variant — solid overlay, no backdrop-filter ──────── */
-
-    :host([backdrop="shading"]) dialog::backdrop {
-      backdrop-filter: none;
-    }
-
     /* ── preventTopLayer: backdrop is a flex-centering container in shadow DOM ──
        The host stays as display:contents so it never intercepts pointer events
        on slotted light-DOM children (e.g. IoButton slot="footer").
@@ -102,10 +96,6 @@ export function getModalStyles(): string {
       backdrop-filter: blur(var(--io-backdrop-blur));
       opacity: 1;
       transition: opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
-    }
-
-    :host([prevent-top-layer][open=""][backdrop="shading"]) .modal__backdrop {
-      backdrop-filter: none;
     }
 
     dialog.modal--sm { width: var(--io-modal-width-sm); }
@@ -167,29 +157,6 @@ export function getModalStyles(): string {
 
     .modal__footer--hidden {
       display: none;
-    }
-
-    /* ── Fullscreen breakpoint variant (#976) ────────────────── */
-
-    :host([fullscreen]) dialog {
-      border-radius: var(--io-border-radius-md);
-    }
-
-    @media (max-width: var(--io-modal-fullscreen-breakpoint, 640px)) {
-      :host([fullscreen]) dialog {
-        position: fixed;
-        inset: 0;
-        width: 100% !important;
-        max-width: 100%;
-        max-height: 100%;
-        border-radius: 0;
-        margin: 0;
-      }
-
-      :host([fullscreen]) dialog[open] {
-        display: flex;
-        flex-direction: column;
-      }
     }
 
     @media (hover: hover) and (pointer: fine) {

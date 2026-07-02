@@ -3,14 +3,9 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, State, Wat
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import {
-  applyDialogInert,
-  removeDialogInert,
-  lockBodyScroll,
-  unlockBodyScroll,
-} from '../../utils/dialog-utils';
+import { lockBodyScroll, unlockBodyScroll } from '../../utils/dialog-utils';
 
-import type { IoModalBackground, IoModalSize } from './types';
+import type { IoModalBackground, IoModalBackdrop, IoModalSize } from './types';
 
 /**
  * io-modal
@@ -48,6 +43,7 @@ export class IoModal {
   private focusTrigger?: Element; // Track element that opened modal for focus restoration
   private inertElements: Element[] = []; // Track elements with inert applied
   private focusTrapHandler?: (ev: KeyboardEvent) => void;
+  private _userInitiatedClose = false;
   private transitionEndHandler?: (ev: TransitionEvent) => void;
   private backdropEl?: HTMLDivElement;
   private backdropHostHandler?: (ev: MouseEvent) => void;
@@ -87,6 +83,13 @@ export class IoModal {
    * - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
    */
   @Prop({ reflect: true }) background: IoModalBackground = 'canvas';
+
+  /**
+   * Backdrop style behind the modal dialog.
+   * - blur:    backdrop-filter blur (default)
+   * - shading: solid overlay color only
+   */
+  @Prop({ reflect: true }) backdrop: IoModalBackdrop = 'blur';
 
   /**
    * When `true` (default), the built-in close (×) button is rendered in the
@@ -268,7 +271,10 @@ export class IoModal {
         this.focusTrigger.focus();
       }
 
-      this.dismissEvent.emit();
+      if (this._userInitiatedClose) {
+        this.dismissEvent.emit();
+      }
+      this._userInitiatedClose = false;
     }
   }
 
@@ -298,17 +304,31 @@ export class IoModal {
 
   /**
    * Apply inert attribute to sibling elements when modal opens.
-   * This prevents screen reader users from navigating outside the modal.
+   * Walks document.body.children so inertness is applied at the top level
+   * regardless of how deeply the modal is nested in framework wrapper divs.
+   * Skips elements that contain this.el (ancestors) so slotted footer buttons remain interactive.
+   * No-op when preventTopLayer=false — showModal() handles inertness natively via top-layer.
    */
   private applyBackgroundInert() {
-    this.inertElements = applyDialogInert(this.el);
+    if (!this.preventTopLayer) return;
+    this.inertElements = [];
+    Array.from(document.body.children).forEach((child) => {
+      const el = child as HTMLElement;
+      if (el === this.el) return;
+      if (el.contains(this.el)) return;
+      if (el.hasAttribute('data-io-allow-during-modal')) return;
+      if (el.hasAttribute('inert')) return;
+      el.setAttribute('inert', '');
+      this.inertElements.push(el);
+    });
   }
 
   /**
    * Remove inert attribute from background elements when modal closes.
    */
   private removeBackgroundInert() {
-    removeDialogInert(this.inertElements);
+    this.inertElements.forEach((el) => (el as HTMLElement).removeAttribute('inert'));
+    this.inertElements = [];
   }
 
   /**
@@ -320,12 +340,24 @@ export class IoModal {
 
     this.clearFocusTrap();
 
-    // Get all focusable elements within the modal (in shadow DOM and slots)
     const focusableSelector =
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    const focusableElements = Array.from(
-      this.dialogEl.querySelectorAll(focusableSelector)
-    ) as HTMLElement[];
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]), summary';
+
+    // Walk the shadow tree in DOM order, resolving <slot> elements to their assigned
+    // light-DOM nodes. This ensures both shadow-DOM elements (e.g. the close button)
+    // and slotted footer/body elements are included in the correct tab order.
+    const focusableElements: HTMLElement[] = [];
+    const collect = (el: Element) => {
+      if (el.tagName === 'SLOT') {
+        (el as HTMLSlotElement).assignedElements({ flatten: true }).forEach(collect);
+      } else {
+        if ((el as HTMLElement).matches?.(focusableSelector)) {
+          focusableElements.push(el as HTMLElement);
+        }
+        Array.from(el.children).forEach(collect);
+      }
+    };
+    Array.from(this.dialogEl.children).forEach(collect);
 
     if (focusableElements.length === 0) return;
 
@@ -377,6 +409,7 @@ export class IoModal {
       // Only close when clicking the backdrop area itself, not elements inside the dialog.
       // ev.target is the backdrop div only when clicking outside the dialog panel.
       if (ev.target === this.backdropEl) {
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };
@@ -394,6 +427,7 @@ export class IoModal {
       if (ev.key === 'Escape') {
         ev.preventDefault();
         if (!this.dismissButton) return;
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };
@@ -411,9 +445,11 @@ export class IoModal {
   private handleDialogClick = (ev: MouseEvent) => {
     if (!this.closeOnBackdrop) return;
     const dialog = ev.currentTarget as HTMLDialogElement;
+    const isTarget = ev.target === ev.currentTarget;
     const rect = dialog.getBoundingClientRect();
-    const clickedBackdrop = isBackdropClick(rect, ev.clientX, ev.clientY);
+    const clickedBackdrop = isTarget || isBackdropClick(rect, ev.clientX, ev.clientY);
     if (clickedBackdrop) {
+      this._userInitiatedClose = true;
       this.open = false;
     }
   };
@@ -421,10 +457,12 @@ export class IoModal {
   private handleCancel = (ev: Event) => {
     ev.preventDefault();
     if (!this.dismissButton) return;
+    this._userInitiatedClose = true;
     this.open = false;
   };
 
   private handleCloseClick = () => {
+    this._userInitiatedClose = true;
     this.open = false;
   };
 

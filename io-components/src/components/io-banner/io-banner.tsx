@@ -72,7 +72,7 @@ export class IoBanner {
   /**
    * Screen position of the banner. Accepts a flat string or a responsive
    * breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which
-   * matches the Porsche reference pattern: bottom on mobile, top on desktop.
+   * follows the standard notification pattern: bottom on mobile, top on desktop.
    *
    * @example
    * position="top"
@@ -189,9 +189,6 @@ export class IoBanner {
   componentWillLoad(): void {
     if (this.open && this.dismissible) {
       this._shouldFocusDismiss = true;
-    }
-    if (this.open && this.dismissible) {
-      document.addEventListener('keydown', this.handleKeyDown);
     }
   }
 

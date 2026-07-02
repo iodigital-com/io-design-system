@@ -15,11 +15,11 @@ export default function PatternsNonGoalsPage() {
       <section id="brand-shield" className="space-y-6">
         <SectionHeader
           title="Brand-shield / crest component"
-          description="io does not ship an equivalent to Porsche's p-crest (shield logo component)."
+          description="io does not ship a dedicated shield logo component."
         />
         <div className="space-y-4">
           <RuleCard label="Use io-wordmark + a custom asset instead">
-            The Porsche p-crest renders the Porsche shield SVG as a web component so brand consumers can
+            Some design systems render a shield or crest SVG as a web component so brand consumers can
             embed it without managing the asset themselves. io already ships io-wordmark for the analogous
             use case. Any brand-specific shield, crest, or logo asset that is not the iO wordmark should
             be embedded directly as an{' '}
@@ -54,11 +54,10 @@ export default function PatternsNonGoalsPage() {
         />
         <div className="space-y-4">
           <RuleCard label="io-heading is the sole display-level typographic primitive">
-            Porsche once shipped a p-display component for oversized marketing headlines. It was
-            deprecated in PDS v4 with an explicit migration note:{' '}
-            <em>use p-heading instead</em>. io-heading already covers the same use case — it accepts
-            a size prop that scales from heading-6 through heading-1 and a display variant for
-            above-fold hero text.
+            Some design systems have shipped a separate display-level heading component for oversized
+            marketing headlines, only to deprecate it in favour of the standard heading component.
+            io-heading already covers the same use case — it accepts a size prop that scales from
+            heading-6 through heading-1 and a display variant for above-fold hero text.
           </RuleCard>
           <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
             Rationale: a separate display component creates a parallel typographic hierarchy that
@@ -73,8 +72,8 @@ export default function PatternsNonGoalsPage() {
             </DoOrDontCard>
             <DoOrDontCard type="dont">
               Do not request an <code style={{ fontSize: '0.85em' }}>io-display</code> component —
-              it would duplicate io-heading with no functional benefit and was deprecated by Porsche
-              for the same reason.
+              it would duplicate io-heading with no functional benefit. The pattern was deprecated
+              by other design systems for the same reason.
             </DoOrDontCard>
           </div>
         </div>
@@ -87,8 +86,7 @@ export default function PatternsNonGoalsPage() {
         />
         <div className="space-y-4">
           <RuleCard label="io-input's type prop covers all HTML5 native input types">
-            Porsche ships nine sibling input components (p-input-email, p-input-tel, p-input-url,
-            p-input-number, p-input-time, p-input-month, p-input-week, p-input-text, p-input-search),
+            Some design systems ship nine sibling input components — one per native HTML input type —
             each baking in type-appropriate validation messages, default autocomplete hints, and
             default inputmode values. io-input collapses these into a single component with a{' '}
             <code style={{ fontSize: '0.85em' }}>type</code> prop. The io-input component also
@@ -136,11 +134,10 @@ export default function PatternsNonGoalsPage() {
             page. Check whether a composition of existing components covers the need before requesting
             a new primitive.
           </RuleCard>
-          <RuleCard label="Cite the Porsche reference in issues">
-            When raising a request inspired by a Porsche Design System comparison, link to the specific
-            Porsche component and cite whether it is stable, deprecated, or removed. This saves
-            triage time and prevents re-surfacing already-resolved decisions like the three non-goals
-            above.
+          <RuleCard label="Cite the reference design system in issues">
+            When raising a request inspired by another design system, link to the specific component
+            and note whether it is stable, deprecated, or removed. This saves triage time and
+            prevents re-surfacing already-resolved decisions like the three non-goals above.
           </RuleCard>
         </div>
       </section>

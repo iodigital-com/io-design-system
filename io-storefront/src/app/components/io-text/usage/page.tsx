@@ -105,7 +105,7 @@ export default function IoTextUsagePage() {
       <section id="color-model" className="space-y-6">
         <SectionHeader
           title="Why role-based, not contrast-tier?"
-          description="Some design systems (like Porsche PDS) use a contrast-tier model with values like contrast-higher, contrast-high, contrast-medium. io intentionally uses roles instead."
+          description="Some design systems use a contrast-tier model with values like contrast-higher, contrast-high, contrast-medium. io intentionally uses roles instead."
         />
         <div className="space-y-3">
           <RuleCard label="Intent over presentation">

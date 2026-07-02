@@ -1,4 +1,4 @@
-import { Component, Prop, State, Host, Element, h } from '@stencil/core';
+import { Component, Prop, Host, Element, h } from '@stencil/core';
 
 import { getProgressStyles } from './io-progress-styles';
 import {
@@ -84,15 +84,6 @@ export class IoProgress {
 
   /** When true, shows indeterminate (shimmer) animation. Omits aria-valuenow per ARIA spec. */
   @Prop({ reflect: true }) indeterminate = false;
-
-  // ── Internal state ────────────────────────────────────────────
-
-  /**
-   * Last integer percentage announced to screen readers.
-   * aria-valuenow only updates when Math.round(percentage) changes to avoid
-   * excessive announcements during smooth transitions (issue #1021).
-   */
-  @State() private _lastAnnouncedValue: number | undefined = undefined;
 
   // ── Lifecycle ────────────────────────────────────────────────
 
@@ -209,15 +200,8 @@ export class IoProgress {
     // Compute normalized percentage using min/max range
     const percentage = this.indeterminate ? 0 : computePercentage(this.value, this.min, this.max);
 
-    // Throttle aria-valuenow: only update on integer percentage change (#1021)
-    let announcedValue: number | undefined;
-    if (!this.indeterminate) {
-      const rounded = Math.round(percentage);
-      if (this._lastAnnouncedValue !== rounded) {
-        this._lastAnnouncedValue = rounded;
-      }
-      announcedValue = this._lastAnnouncedValue;
-    }
+    // Round to integer so aria-valuenow only updates on whole-percent changes
+    const announcedValue = this.indeterminate ? undefined : Math.round(computePercentage(this.value, this.min, this.max));
 
     // Determine aria-label: labelledBy takes precedence, falls back to label prop
     const ariaLabel = this.labelledBy ? undefined : this.label ?? undefined;

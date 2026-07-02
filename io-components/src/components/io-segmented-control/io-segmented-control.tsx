@@ -33,7 +33,7 @@ import type { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from '
  */
 @Component({
   tag: 'io-segmented-control',
-  shadow: true,
+  shadow: { delegatesFocus: true },
   formAssociated: true,
 })
 export class IoSegmentedControl {

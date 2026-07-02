@@ -211,7 +211,8 @@ export function getMultiSelectStyles(): string {
       padding: 0;
       margin: 0;
       border: none;
-      border-radius: 50%;
+      border-bottom: var(--io-input-border-width) solid var(--io-text-primary);
+      border-radius: 0;
       background: transparent;
       color: var(--io-text-secondary);
       cursor: pointer;

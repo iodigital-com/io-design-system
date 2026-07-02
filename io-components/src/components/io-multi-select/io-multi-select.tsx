@@ -930,35 +930,48 @@ export class IoMultiSelect {
             </div>
           )}
 
-          {/* Trigger button */}
-          <button
-            type="button"
-            id={triggerId}
-            ref={el => {
-              this.triggerEl = el as HTMLButtonElement;
-            }}
-            class="multi-select-trigger"
-            role="combobox"
-            aria-haspopup="listbox"
-            aria-expanded={String(isOpen)}
-            aria-labelledby={hideLabel ? undefined : labelId}
-            aria-label={triggerAriaLabel}
-            aria-controls={listboxId}
-            aria-activedescendant={activeOptId}
-            aria-required={required ? 'true' : undefined}
-            aria-invalid={(showError) ? 'true' : undefined}
-            aria-describedby={describedBy}
-            disabled={disabled}
-            onClick={this.handleTriggerClick}
-            onKeyDown={this.handleTriggerKeyDown}
-            onBlur={this.handleTriggerBlur}
-          >
-            <span class="multi-select-trigger__text">
-              {displayText ?? (
-                <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
-              )}
-            </span>
-            {/* Inline clear button — visible when selection is non-empty and not disabled (#1111) */}
+          {/* Trigger row — flex container for combobox and clear button (siblings, never nested) */}
+          <div class="multi-select-trigger-row">
+            <button
+              type="button"
+              id={triggerId}
+              ref={el => {
+                this.triggerEl = el as HTMLButtonElement;
+              }}
+              class="multi-select-trigger"
+              role="combobox"
+              aria-haspopup="listbox"
+              aria-expanded={String(isOpen)}
+              aria-labelledby={hideLabel ? undefined : labelId}
+              aria-label={triggerAriaLabel}
+              aria-controls={listboxId}
+              aria-activedescendant={activeOptId}
+              aria-required={required ? 'true' : undefined}
+              aria-invalid={(showError) ? 'true' : undefined}
+              aria-describedby={describedBy}
+              disabled={disabled}
+              onClick={this.handleTriggerClick}
+              onKeyDown={this.handleTriggerKeyDown}
+              onBlur={this.handleTriggerBlur}
+            >
+              <span class="multi-select-trigger__text">
+                {displayText ?? (
+                  <span class="multi-select-trigger__placeholder">{this.placeholder}</span>
+                )}
+              </span>
+              <span class="multi-select-trigger__chevron" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M4 6l4 4 4-4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            {/* Clear button — sibling of combobox trigger, never a child (#1111) */}
             {selectedValues.length > 0 && !disabled && (
               <button
                 type="button"
@@ -979,18 +992,7 @@ export class IoMultiSelect {
                 </svg>
               </button>
             )}
-            <span class="multi-select-trigger__chevron" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M4 6l4 4 4-4"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </button>
+          </div>
 
           {/* Dropdown */}
           <div

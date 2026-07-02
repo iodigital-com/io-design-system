@@ -4,7 +4,7 @@ import type { Story } from '@/models/story';
 export const badgeStory: Story<'io-badge'> = {
   state: {
     properties: {
-      variant: 'blue',
+      variant: 'primary',
       size: 'md',
     },
   },
@@ -45,9 +45,28 @@ export const badgePropDefinitions: PropDefinition[] = [
   {
     name: 'variant',
     type: 'select',
-    options: ['beige', 'blue', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
-    defaultValue: 'blue',
-    description: 'Sets visual style and semantic meaning of the badge.',
+    options: ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle', 'beige', 'blue', 'dark', 'orange', 'rouge', 'outline'],
+    defaultValue: 'primary',
+    description: 'Sets the visual variant of the badge. Prefer semantic values (neutral, primary, info, success, warning, error, subtle) for new work.',
+  },
+  {
+    name: 'appearance',
+    type: 'select',
+    options: ['solid', 'soft', 'frosted'],
+    defaultValue: 'soft',
+    description: 'Fill style of the badge: solid (fully-filled), soft (translucent tint, default), or frosted (backdrop-blur).',
+  },
+  {
+    name: 'icon',
+    type: 'string',
+    defaultValue: '',
+    description: 'Optional leading icon name from the io icon set. Rendered aria-hidden at size xs.',
+  },
+  {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
+    description: 'Custom SVG URL for the leading icon. Takes precedence over icon when both are set.',
   },
   {
     name: 'ariaLabel',

@@ -118,6 +118,10 @@ export default function IoInlineNotificationApiPage() {
               <span key="n" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>default</span>,
               'Body content of the notification. Accepts any HTML — plain text, links, lists, or emphasis. Rendered below the optional heading.',
             ],
+            [
+              <InlineCode key="n">heading</InlineCode>,
+              'Optional rich heading content. Replaces the heading prop with arbitrary HTML. Takes precedence over the heading prop when assigned. Use for headings that contain links or formatted elements.',
+            ],
           ]}
         />
       </section>

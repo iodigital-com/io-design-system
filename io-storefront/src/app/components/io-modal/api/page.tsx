@@ -81,6 +81,33 @@ export default function IoModalApiPage() {
         />
       </section>
 
+      {/* ── Methods ──────────────────────────────────────────────── */}
+      <section id="methods" className="space-y-4">
+        <SectionHeader
+          title="Methods"
+          description="Public @Method() declarations on io-modal. Call these on the element reference to control the modal programmatically."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Name', width: '160px' },
+            { label: 'Signature', width: '200px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">show()</InlineCode>,
+              <InlineCode key="t">{'() => Promise<void>'}</InlineCode>,
+              'Programmatically opens the modal. No-op if the modal is already open.',
+            ],
+            [
+              <InlineCode key="n">close()</InlineCode>,
+              <InlineCode key="t">{'() => Promise<void>'}</InlineCode>,
+              'Programmatically closes the modal and emits the dismiss event. No-op if the modal is already closed.',
+            ],
+          ]}
+        />
+      </section>
+
       {/* ── Development Warnings ─────────────────────────────────── */}
       <section id="development-warnings" className="space-y-4">
         <SectionHeader

@@ -48,6 +48,17 @@ export default function IoProgressApiPage() {
               </span>,
             ],
             [
+              <InlineCode key="n">shape</InlineCode>,
+              <InlineCode key="t">&apos;linear&apos; | &apos;circular&apos; | &apos;step&apos;</InlineCode>,
+              <InlineCode key="d">&apos;linear&apos;</InlineCode>,
+              <span key="desc">
+                Visual variant for the progress indicator. Reflected as an attribute.{' '}
+                <InlineCode>linear</InlineCode> renders a horizontal bar,{' '}
+                <InlineCode>circular</InlineCode> renders an SVG ring, and{' '}
+                <InlineCode>step</InlineCode> renders a segmented step bar.
+              </span>,
+            ],
+            [
               <InlineCode key="n">animated</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">true</InlineCode>,

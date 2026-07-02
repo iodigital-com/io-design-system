@@ -130,7 +130,7 @@ export const inputSearchPropDefinitions: PropDefinition[] = [
     description: 'Marks the field as required for form submission.',
   },
   {
-    name: 'readonly',
+    name: 'readOnly',
     type: 'boolean',
     defaultValue: false,
     description: 'Makes the input read-only — value is visible but not editable.',

@@ -154,7 +154,7 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
   {
     name: 'state',
     type: 'select',
-    options: ['none', 'error', 'success'],
+    options: ['none', 'error', 'success', 'warning'],
     defaultValue: 'none',
     description: 'Visual and semantic validation state.',
   },

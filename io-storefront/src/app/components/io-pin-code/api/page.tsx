@@ -27,9 +27,9 @@ export default function IoPinCodeApiPage() {
             ],
             [
               <InlineCode key="n">length</InlineCode>,
-              <InlineCode key="t">3 | 4 | 5 | 6</InlineCode>,
+              <InlineCode key="t">1 | 2 | 3 | 4 | 5 | 6 | 7 | 8</InlineCode>,
               <InlineCode key="d">4</InlineCode>,
-              'Number of digit slots. Accepts 3, 4, 5, or 6.',
+              'Number of digit slots. Accepts 1 through 8.',
             ],
             [
               <InlineCode key="n">type</InlineCode>,
@@ -94,6 +94,24 @@ export default function IoPinCodeApiPage() {
               'Hides the visible label and collapses its space. Provide a non-empty label value for screen-reader accessibility — the label becomes aria-label on the group.',
             ],
             [
+              <InlineCode key="n">mode</InlineCode>,
+              <InlineCode key="t">&apos;numeric&apos; | &apos;alphanumeric&apos;</InlineCode>,
+              <InlineCode key="d">&apos;numeric&apos;</InlineCode>,
+              'Character mode. numeric accepts only digits (0–9); alphanumeric accepts letters and digits.',
+            ],
+            [
+              <InlineCode key="n">description</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,
+              'Optional contextual description rendered between the label and the slots (e.g. "We sent a code to ja***@example.com"). Wired into aria-describedby on the PIN group.',
+            ],
+            [
+              <InlineCode key="n">validationMessage</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,
+              'Override for the default required-field validation message shown when the PIN is incomplete on form submission.',
+            ],
+            [
               <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               <span key="d" style={{ color: 'var(--io-text-muted)' }}>—</span>,
@@ -130,7 +148,7 @@ export default function IoPinCodeApiPage() {
               <InlineCode key="n">blur</InlineCode>,
               <InlineCode key="t">FocusEvent</InlineCode>,
               'No',
-              'Yes',
+              'No',
               'Fires when focus leaves the component entirely (relatedTarget is not one of the slot inputs). Use for form-library touched/dirty tracking. Does NOT fire when focus moves between PIN slots.',
             ],
           ]}

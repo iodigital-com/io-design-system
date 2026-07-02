@@ -48,7 +48,7 @@ export default function IoLinkApiPage() {
             ],
             [
               <InlineCode key="n">target</InlineCode>,
-              <InlineCode key="t">string</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
               <InlineCode key="d">&apos;_self&apos;</InlineCode>,
               'HTML target attribute. Defaults to "_self". Overridden to "_blank" automatically when external=true — no need to set this manually for external links.',
             ],
@@ -95,6 +95,26 @@ export default function IoLinkApiPage() {
               </span>,
               <InlineCode key="d">null</InlineCode>,
               'Marks the link as the current item in a set for screen readers (e.g. active nav link). Maps to the aria-current attribute on the anchor. Null or "false" removes the attribute.',
+            ],
+            [
+              <span key="n"><InlineCode>active</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              'Marks the link as the active/current navigation item. Applies the .link--active visual treatment and defaults aria-current to "page" when ariaCurrent is not explicitly set.',
+            ],
+            [
+              <span key="n"><InlineCode>underline</InlineCode><ReflectBadge /></span>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
+                <InlineCode>&apos;always&apos;</InlineCode>{' | '}<InlineCode>&apos;hover&apos;</InlineCode>{' | '}<InlineCode>&apos;none&apos;</InlineCode>{' | undefined'}
+              </span>,
+              '—',
+              'Explicit underline override, decoupled from variant. "always" — underline visible at rest regardless of variant. "hover" — underline appears only on hover. "none" — underline suppressed in all states. When undefined (default), the variant controls underline behaviour.',
+            ],
+            [
+              <InlineCode key="n">download</InlineCode>,
+              <InlineCode key="t">string | undefined</InlineCode>,
+              '—',
+              'Downloadable file name. When set, the link triggers a file download on click. The value becomes the suggested file name.',
             ],
           ]}
         />

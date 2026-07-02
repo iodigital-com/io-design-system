@@ -10,16 +10,16 @@ import { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 import { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 import { IoIconName } from "./utils/icons";
 import { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonIconPosition, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+import { BreakpointCustomizable, BreakpointValue } from "./utils/breakpoint";
 import { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
-import { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+import { IoCarouselAlignHeader, IoCarouselIntl, IoCarouselSlidesPerPage, IoCarouselTrimSpace, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 import { IoFieldState } from "./utils/field-state";
 import { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 import { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 import { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-import { BreakpointValue } from "./utils/breakpoint";
-import { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-import { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
+import { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+import { IoFlyoutPosition } from "./components/io-flyout/types";
 import { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 import { IoIconColor, IoIconSize } from "./components/io-icon/types";
 import { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -29,7 +29,7 @@ import { IoInputPasswordSize } from "./components/io-input-password/types";
 import { IoInputSearchSize } from "./components/io-input-search/types";
 import { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 import { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
-import { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
+import { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 import { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 import { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 import { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -41,10 +41,9 @@ import { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 import { IoScrollerOrientation } from "./components/io-scroller/types";
 import { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 import { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
-import { IoSheetBackground } from "./components/io-sheet/types";
 import { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 import { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
-import { IoSwitchChangeDetail } from "./components/io-switch/types";
+import { IoSwitchAlignLabel, IoSwitchChangeDetail } from "./components/io-switch/types";
 import { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 import { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 import { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
@@ -61,16 +60,16 @@ export { IoAvatarColor, IoAvatarRole, IoAvatarShape, IoAvatarSize } from "./comp
 export { IoBadgeAppearance, IoBadgeSize, IoBadgeVariant } from "./components/io-badge/types";
 export { IoIconName } from "./utils/icons";
 export { IoBannerHeadingTag, IoBannerPosition, IoBannerVariant } from "./components/io-banner/types";
-export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { IoButtonAriaAttribute, IoButtonArrow, IoButtonArrowPlacement, IoButtonColor, IoButtonIconPosition, IoButtonSize, IoButtonType, IoButtonVariant } from "./components/io-button/types";
+export { BreakpointCustomizable, BreakpointValue } from "./utils/breakpoint";
 export { IoButtonGroupChangeDetail, IoButtonGroupDirection, IoButtonGroupType, IoButtonGroupVariant } from "./components/io-button-group/types";
-export { IoCarouselAlignHeader, IoCarouselSlidesPerPage, IoCarouselUpdateDetail } from "./components/io-carousel/types";
+export { IoCarouselAlignHeader, IoCarouselIntl, IoCarouselSlidesPerPage, IoCarouselTrimSpace, IoCarouselUpdateDetail } from "./components/io-carousel/types";
 export { IoFieldState } from "./utils/field-state";
 export { IoCheckboxBlurEventDetail, IoCheckboxChangeDetail } from "./components/io-checkbox/types";
 export { IoCheckboxGroupChangeDetail, IoCheckboxGroupOrientation } from "./components/io-checkbox-group/types";
 export { IoDividerColor, IoDividerOrientation } from "./components/io-divider/types";
-export { BreakpointValue } from "./utils/breakpoint";
-export { IoDrawerAriaProps, IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
-export { IoFlyoutFooterBehavior, IoFlyoutPosition } from "./components/io-flyout/types";
+export { IoDrawerBackground, IoDrawerPlacement, IoDrawerSize } from "./components/io-drawer/types";
+export { IoFlyoutPosition } from "./components/io-flyout/types";
 export { IoHeadingAlign, IoHeadingColor, IoHeadingHyphens, IoHeadingSize, IoHeadingTag, IoHeadingWeight } from "./components/io-heading/types";
 export { IoIconColor, IoIconSize } from "./components/io-icon/types";
 export { IoInlineNotificationHeadingTag, IoInlineNotificationVariant } from "./components/io-inline-notification/types";
@@ -80,7 +79,7 @@ export { IoInputPasswordSize } from "./components/io-input-password/types";
 export { IoInputSearchSize } from "./components/io-input-search/types";
 export { IoLinkAriaCurrent, IoLinkColor, IoLinkUnderline, IoLinkVariant } from "./components/io-link/types";
 export { IoLinkPureAlignLabel, IoLinkPureSize } from "./components/io-link-pure/types";
-export { IoModalAriaProps, IoModalBackdrop, IoModalBackground, IoModalSize } from "./components/io-modal/types";
+export { IoModalBackground, IoModalSize } from "./components/io-modal/types";
 export { IoMultiSelectChangeDetail, IoMultiSelectDirection, IoMultiSelectLimitReachedDetail, IoMultiSelectState } from "./components/io-multi-select/types";
 export { IoOptionConnectDetail, IoOptionSelectDetail } from "./components/io-option/types";
 export { IoPaginationChangeDetail, IoPaginationIntl } from "./components/io-pagination/types";
@@ -92,10 +91,9 @@ export { IoRadioGroupChangeDetail, IoRadioGroupOrientation } from "./components/
 export { IoScrollerOrientation } from "./components/io-scroller/types";
 export { IoSegmentedControlChangeDetail, IoSegmentedControlColumns } from "./components/io-segmented-control/types";
 export { IoSelectChangeDetail, IoSelectSize, IoSelectToggleDetail } from "./components/io-select/types";
-export { IoSheetBackground } from "./components/io-sheet/types";
 export { IoSpinnerColor, IoSpinnerContext, IoSpinnerSize } from "./components/io-spinner/types";
 export { IoStepperOrientation, IoStepStatus } from "./components/io-stepper/types";
-export { IoSwitchChangeDetail } from "./components/io-switch/types";
+export { IoSwitchAlignLabel, IoSwitchChangeDetail } from "./components/io-switch/types";
 export { IoTableBodyRowSelectDetail, IoTableHeadRowSelectAllDetail, IoTableLayout, IoTableSelectionState, IoTableSize, IoTableSortDetail, IoTableSortDirection } from "./components/io-table/types";
 export { IoTabsCloseDetail, IoTabsSize, IoTabsUpdateDetail } from "./components/io-tabs/types";
 export { IoTabsBarUpdateDetail } from "./components/io-tabs-bar/types";
@@ -465,10 +463,11 @@ export namespace Components {
          */
         "fullWidth": boolean;
         /**
-          * Hides the text label visually (icon-only mode with accessible label via `label` prop).
+          * Hides the text label visually (icon-only mode with accessible label via `label` prop). Accepts a fixed boolean or a responsive breakpoint map of 'true'/'false' strings. Boolean values are reflected as the `hide-label` HTML attribute; object/responsive values are not reflected and must be set via JavaScript property binding.
+          * @example // Always hidden <io-button hide-label>Button</io-button>  // Icon-only on mobile, show label on large+ viewports (JS/JSX only) <io-button .hideLabel={{ base: 'true', l: 'false' }}>Button</io-button>
           * @default false
          */
-        "hideLabel": boolean;
+        "hideLabel": BreakpointCustomizable<'true' | 'false'> | boolean;
         /**
           * Renders the button as an anchor tag with this href
          */
@@ -483,10 +482,11 @@ export namespace Components {
          */
         "iconOnly": boolean;
         /**
-          * Side on which the icon is rendered relative to the label. Defaults to 'left'.
+          * Side on which the icon is rendered relative to the label. Defaults to 'left'. Accepts a fixed value or a responsive breakpoint map. Scalar values are reflected as the `icon-position` HTML attribute; object/responsive values are not reflected and must be set via JavaScript property binding.
+          * @example // Always left <io-button icon-position="left">Button</io-button>  // Left on mobile, right on large+ viewports (JS/JSX only) <io-button .iconPosition={{ base: 'left', l: 'right' }}>Button</io-button>
           * @default 'left'
          */
-        "iconPosition": 'left' | 'right';
+        "iconPosition": BreakpointCustomizable<IoButtonIconPosition>;
         /**
           * Custom SVG string for a non-library icon (mutually exclusive with `icon`).
          */
@@ -523,10 +523,11 @@ export namespace Components {
          */
         "setFocus": (options?: FocusOptions) => Promise<void>;
         /**
-          * Size preset
+          * Size preset. Accepts a fixed value or a responsive breakpoint map. When a scalar value is used, it is reflected as an HTML attribute (e.g. `size="md"`), enabling CSS selectors like `io-button[size="lg"]`. Object/responsive values are not reflected — pass them via JavaScript property binding only.
+          * @example // Fixed scalar <io-button size="md">Button</io-button>  // Responsive — sm on mobile, lg on large+ viewports (JS/JSX only) <io-button .size={{ base: 'sm', l: 'lg' }}>Button</io-button>
           * @default 'md'
          */
-        "size": IoButtonSize;
+        "size": BreakpointCustomizable<IoButtonSize>;
         /**
           * Link target — only used when href is set
           * @default '_self'
@@ -657,9 +658,24 @@ export namespace Components {
          */
         "description"?: string;
         /**
+          * When `true`, adds a CSS gradient fade mask at the left and right edges of the carousel track, visually hinting at overflow content. The fade width is controlled by `--io-carousel-edge-fade-width`.
+          * @default false
+         */
+        "edgeFade": boolean;
+        /**
+          * When `true`, the active slide is scrolled into the horizontal center of the visible track viewport.
+          * @default false
+         */
+        "focusOnCenterSlide": boolean;
+        /**
           * Optional heading text rendered above the slide track.
          */
         "heading"?: string;
+        /**
+          * Internationalisation overrides for all user-visible strings. Keys in this object take precedence over the individual string props (`prevLabel`, `nextLabel`, `label`, `skipLabel`).
+          * @example <io-carousel .intl="${{ prev: 'Vorige', next: 'Volgende', skip: 'Sla carrousel over' }}">
+         */
+        "intl"?: Partial<IoCarouselIntl>;
         /**
           * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
@@ -696,6 +712,11 @@ export namespace Components {
           * @default 1
          */
         "slidesPerPage": IoCarouselSlidesPerPage;
+        /**
+          * Trims the blank space before the first slide (`start`), after the last slide (`end`), or both (`both`). Has no effect when `none` (default).
+          * @default 'none'
+         */
+        "trimSpace": IoCarouselTrimSpace;
     }
     /**
      * io-checkbox
@@ -916,10 +937,10 @@ export namespace Components {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
          */
-        "aria"?: IoDrawerAriaProps;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -998,11 +1019,6 @@ export namespace Components {
           * @default 'Close flyout'
          */
         "closeLabel": string;
-        /**
-          * Controls footer stickiness behaviour. - sticky: header and footer remain in view while content scrolls (default) - fixed:  header and footer are always visible, unaffected by scroll
-          * @default 'sticky'
-         */
-        "footerBehavior": IoFlyoutFooterBehavior;
         /**
           * Heading text displayed in the flyout header
          */
@@ -1241,12 +1257,11 @@ export namespace Components {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
          */
         "autoComplete": string | undefined;
         /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
+          * Autocomplete attribute (legacy — prefer autoComplete)
          */
         "autocomplete": string | undefined;
         /**
@@ -1263,6 +1278,10 @@ export namespace Components {
           * @default false
          */
         "counter": boolean;
+        /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Always visible, regardless of validation state. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content).
+         */
+        "description": string | undefined;
         /**
           * Disables the input
           * @default false
@@ -1347,7 +1366,7 @@ export namespace Components {
           * Makes the field read-only — value is not editable but the field stays in tab order
           * @default false
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         /**
           * Check validity and show browser validation UI if invalid. Returns true if valid.
          */
@@ -1402,6 +1421,11 @@ export namespace Components {
      * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
      */
     interface IoInputDate {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-date .aria={{ describedby: 'date-hint' }} label="Birth date" />
+         */
+        "aria"?: Record<string, string>;
         "checkValidity": () => Promise<boolean>;
         /**
           * Disables the input
@@ -1452,7 +1476,7 @@ export namespace Components {
           * Makes the input read-only
           * @default false
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         "reportValidity": () => Promise<boolean>;
         /**
           * Marks the input as required
@@ -1464,6 +1488,10 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoInputDateSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck": boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -1487,6 +1515,11 @@ export namespace Components {
      * @example <io-input-password label="Password" name="password" required />
      */
     interface IoInputPassword {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-password .aria={{ describedby: 'hint-id' }} label="Password" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Native autocomplete attribute
           * @default 'current-password'
@@ -1541,7 +1574,7 @@ export namespace Components {
           * Makes the input read-only
           * @default false
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         "reportValidity": () => Promise<boolean>;
         /**
           * Marks the input as required
@@ -1553,6 +1586,10 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoInputPasswordSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck": boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -1577,6 +1614,11 @@ export namespace Components {
      * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
      */
     interface IoInputSearch {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-search .aria={{ label: 'Search products', autocomplete: 'list' }} label="Search" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Native autocomplete attribute
           * @default 'off'
@@ -1636,7 +1678,7 @@ export namespace Components {
           * Makes the input read-only
           * @default false
          */
-        "readonly": boolean;
+        "readOnly": boolean;
         "reportValidity": () => Promise<boolean>;
         /**
           * Marks the input as required
@@ -1648,6 +1690,10 @@ export namespace Components {
           * @default 'md'
          */
         "size": IoInputSearchSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck": boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -1840,12 +1886,7 @@ export namespace Components {
           * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: IoModalAriaProps;
-        /**
-          * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
-          * @default 'blur'
-         */
-        "backdrop": IoModalBackdrop;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -1870,11 +1911,6 @@ export namespace Components {
           * @default true
          */
         "dismissButton": boolean;
-        /**
-          * When `true`, the modal expands to fill the full viewport at or below `--io-modal-fullscreen-breakpoint` (default 640px). At larger viewports the modal remains centered and respects the `size` prop.
-          * @default false
-         */
-        "fullscreen": boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -1936,10 +1972,20 @@ export namespace Components {
          */
         "dropdownDirection": IoMultiSelectDirection;
         /**
-          * When true, shows a search input inside the dropdown to filter options.
+          * @deprecated Use `filterable` instead. Retained for backward compatibility. When true, shows a search input inside the dropdown to filter options.
           * @default false
          */
         "filter": boolean;
+        /**
+          * Placeholder text for the filter search input. Only relevant when `filterable=true`.
+          * @default 'Search...'
+         */
+        "filterPlaceholder": string;
+        /**
+          * When true, shows a search input inside the dropdown to filter options. Client-side filtering by label text as the user types.
+          * @default false
+         */
+        "filterable": boolean;
         /**
           * Helper text shown below the trigger. Hidden in error state; replaced by the `slot="description"` slot when that slot has content.
          */
@@ -2028,7 +2074,12 @@ export namespace Components {
      * ==========
      * Individual option item for the custom combobox mode of io-select.
      * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * Supports two content modes:
+     * 1. Prop-based: `<io-option value="us" label="United States" icon="flag-us"></io-option>`
+     * 2. Slot-based (rich HTML): `<io-option value="us">United States</io-option>`
+     *    When slotted content is present it replaces the `label` prop display.
      * @example <io-option value="alice" label="Alice Smith"></io-option>
+     * <io-option value="us" icon="flag-us">United States</io-option>
      */
     interface IoOption {
         /**
@@ -2047,7 +2098,12 @@ export namespace Components {
          */
         "focused": boolean;
         /**
-          * Display text
+          * Optional icon name rendered before the label text via `<io-icon>`. Accepts any valid `IoIconName` value.
+          * @example <io-option value="us" icon="flag-us">United States</io-option>
+         */
+        "icon"?: IoIconName;
+        /**
+          * Display text — used when no slotted content is provided
          */
         "label": string;
         /**
@@ -2821,26 +2877,11 @@ export namespace Components {
      */
     interface IoSheet {
         /**
-          * Background surface level for the sheet panel. Matches sibling overlay APIs (io-modal, io-drawer, io-flyout). - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
-          * @default 'canvas'
-         */
-        "background": IoSheetBackground;
-        /**
           * Closes the sheet programmatically
          */
         "close": () => Promise<void>;
         /**
-          * When true, clicking the backdrop will NOT dismiss the sheet. The close button and ESC key are still controlled by `dismissButton`. Useful for confirmation flows that must not be accidentally dismissed.
-          * @default false
-         */
-        "disableBackdropClick": boolean;
-        /**
-          * When true (default), the close (×) button is rendered in the sheet header and pressing ESC will close the sheet. Set to false to hide the close button and suppress ESC dismissal — useful for confirmation flows where the user must explicitly choose an action.
-          * @default true
-         */
-        "dismissButton": boolean;
-        /**
-          * @deprecated Use `dismissButton` and `disableBackdropClick` instead. When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet. This prop is kept for one minor version for backwards compatibility.
+          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
           * @default true
          */
         "dismissible": boolean;
@@ -2986,6 +3027,11 @@ export namespace Components {
      */
     interface IoSwitch {
         /**
+          * Label alignment relative to the toggle. - `'end'` (default) — label appears after the toggle (right in LTR). - `'start'` — label appears before the toggle (left in LTR).
+          * @default 'end'
+         */
+        "alignLabel": IoSwitchAlignLabel;
+        /**
           * Check validity without showing browser validation UI. Returns true if valid.
          */
         "checkValidity": () => Promise<boolean>;
@@ -3057,6 +3103,11 @@ export namespace Components {
           * @default 'none'
          */
         "state": IoFieldState;
+        /**
+          * When `true`, the label row stretches to fill the available width, pushing the toggle to the opposite side of the label. Useful for settings lists and form rows.
+          * @default false
+         */
+        "stretch": boolean;
         /**
           * Value submitted with the form
           * @default 'on'
@@ -4853,7 +4904,12 @@ declare global {
      * ==========
      * Individual option item for the custom combobox mode of io-select.
      * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * Supports two content modes:
+     * 1. Prop-based: `<io-option value="us" label="United States" icon="flag-us"></io-option>`
+     * 2. Slot-based (rich HTML): `<io-option value="us">United States</io-option>`
+     *    When slotted content is present it replaces the `label` prop display.
      * @example <io-option value="alice" label="Alice Smith"></io-option>
+     * <io-option value="us" icon="flag-us">United States</io-option>
      */
     interface HTMLIoOptionElement extends Components.IoOption, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIoOptionElementEventMap>(type: K, listener: (this: HTMLIoOptionElement, ev: IoOptionCustomEvent<HTMLIoOptionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6282,10 +6338,11 @@ declare namespace LocalJSX {
          */
         "fullWidth"?: boolean;
         /**
-          * Hides the text label visually (icon-only mode with accessible label via `label` prop).
+          * Hides the text label visually (icon-only mode with accessible label via `label` prop). Accepts a fixed boolean or a responsive breakpoint map of 'true'/'false' strings. Boolean values are reflected as the `hide-label` HTML attribute; object/responsive values are not reflected and must be set via JavaScript property binding.
+          * @example // Always hidden <io-button hide-label>Button</io-button>  // Icon-only on mobile, show label on large+ viewports (JS/JSX only) <io-button .hideLabel={{ base: 'true', l: 'false' }}>Button</io-button>
           * @default false
          */
-        "hideLabel"?: boolean;
+        "hideLabel"?: BreakpointCustomizable<'true' | 'false'> | boolean;
         /**
           * Renders the button as an anchor tag with this href
          */
@@ -6300,10 +6357,11 @@ declare namespace LocalJSX {
          */
         "iconOnly"?: boolean;
         /**
-          * Side on which the icon is rendered relative to the label. Defaults to 'left'.
+          * Side on which the icon is rendered relative to the label. Defaults to 'left'. Accepts a fixed value or a responsive breakpoint map. Scalar values are reflected as the `icon-position` HTML attribute; object/responsive values are not reflected and must be set via JavaScript property binding.
+          * @example // Always left <io-button icon-position="left">Button</io-button>  // Left on mobile, right on large+ viewports (JS/JSX only) <io-button .iconPosition={{ base: 'left', l: 'right' }}>Button</io-button>
           * @default 'left'
          */
-        "iconPosition"?: 'left' | 'right';
+        "iconPosition"?: BreakpointCustomizable<IoButtonIconPosition>;
         /**
           * Custom SVG string for a non-library icon (mutually exclusive with `icon`).
          */
@@ -6340,10 +6398,11 @@ declare namespace LocalJSX {
          */
         "rel"?: string | undefined;
         /**
-          * Size preset
+          * Size preset. Accepts a fixed value or a responsive breakpoint map. When a scalar value is used, it is reflected as an HTML attribute (e.g. `size="md"`), enabling CSS selectors like `io-button[size="lg"]`. Object/responsive values are not reflected — pass them via JavaScript property binding only.
+          * @example // Fixed scalar <io-button size="md">Button</io-button>  // Responsive — sm on mobile, lg on large+ viewports (JS/JSX only) <io-button .size={{ base: 'sm', l: 'lg' }}>Button</io-button>
           * @default 'md'
          */
-        "size"?: IoButtonSize;
+        "size"?: BreakpointCustomizable<IoButtonSize>;
         /**
           * Link target — only used when href is set
           * @default '_self'
@@ -6478,9 +6537,24 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
+          * When `true`, adds a CSS gradient fade mask at the left and right edges of the carousel track, visually hinting at overflow content. The fade width is controlled by `--io-carousel-edge-fade-width`.
+          * @default false
+         */
+        "edgeFade"?: boolean;
+        /**
+          * When `true`, the active slide is scrolled into the horizontal center of the visible track viewport.
+          * @default false
+         */
+        "focusOnCenterSlide"?: boolean;
+        /**
           * Optional heading text rendered above the slide track.
          */
         "heading"?: string;
+        /**
+          * Internationalisation overrides for all user-visible strings. Keys in this object take precedence over the individual string props (`prevLabel`, `nextLabel`, `label`, `skipLabel`).
+          * @example <io-carousel .intl="${{ prev: 'Vorige', next: 'Volgende', skip: 'Sla carrousel over' }}">
+         */
+        "intl"?: Partial<IoCarouselIntl>;
         /**
           * Accessible label for the carousel region. Used as `aria-label` when no `heading` slot content is present. When the `heading` slot is occupied, `aria-labelledby` is used instead and this prop is ignored.
           * @default 'Carousel'
@@ -6521,6 +6595,11 @@ declare namespace LocalJSX {
           * @default 1
          */
         "slidesPerPage"?: IoCarouselSlidesPerPage;
+        /**
+          * Trims the blank space before the first slide (`start`), after the last slide (`end`), or both (`both`). Has no effect when `none` (default).
+          * @default 'none'
+         */
+        "trimSpace"?: IoCarouselTrimSpace;
     }
     /**
      * io-checkbox
@@ -6741,10 +6820,10 @@ declare namespace LocalJSX {
      */
     interface IoDrawer {
         /**
-          * Custom ARIA attributes to inject onto the native `<dialog>` element. Restricted to attributes that are meaningful on a dialog: `aria-label`, `aria-labelledby`, and `aria-describedby`. Unknown keys are ignored with a `console.warn` in development.
-          * @example // Sets aria-label on the native <dialog> when no heading prop is used <io-drawer .aria={{ 'aria-label': 'Navigation settings' }}>...</io-drawer>
+          * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example // Sets aria-controls="main-content" on the native <dialog> <io-drawer .aria={{ controls: 'main-content' }}>...</io-drawer>
          */
-        "aria"?: IoDrawerAriaProps;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the drawer panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -6820,11 +6899,6 @@ declare namespace LocalJSX {
           * @default 'Close flyout'
          */
         "closeLabel"?: string;
-        /**
-          * Controls footer stickiness behaviour. - sticky: header and footer remain in view while content scrolls (default) - fixed:  header and footer are always visible, unaffected by scroll
-          * @default 'sticky'
-         */
-        "footerBehavior"?: IoFlyoutFooterBehavior;
         /**
           * Heading text displayed in the flyout header
          */
@@ -7070,12 +7144,11 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
-          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off'). Canonical camelCase form.
+          * Native autocomplete attribute (e.g. 'email', 'current-password', 'off')
          */
         "autoComplete"?: string | undefined;
         /**
-          * Autocomplete attribute (lowercase form).
-          * @deprecated Use `autoComplete` (camelCase) instead. The lowercase form will be removed in the next minor release.
+          * Autocomplete attribute (legacy — prefer autoComplete)
          */
         "autocomplete"?: string | undefined;
         /**
@@ -7088,6 +7161,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "counter"?: boolean;
+        /**
+          * Supplementary description rendered as a persistent `<p>` below the field. Always visible, regardless of validation state. Distinct from `helperText` (which is hidden in error state) and from the `slot="description"` slot (which accepts rich HTML content).
+         */
+        "description"?: string | undefined;
         /**
           * Disables the input
           * @default false
@@ -7176,7 +7253,7 @@ declare namespace LocalJSX {
           * Makes the field read-only — value is not editable but the field stays in tab order
           * @default false
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
           * Marks the input as required
           * @default false
@@ -7226,6 +7303,11 @@ declare namespace LocalJSX {
      * @example <io-input-date label="Birth date" name="dob" min="1900-01-01" max="2026-12-31" />
      */
     interface IoInputDate {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-date .aria={{ describedby: 'date-hint' }} label="Birth date" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Disables the input
           * @default false
@@ -7283,7 +7365,7 @@ declare namespace LocalJSX {
           * Makes the input read-only
           * @default false
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
           * Marks the input as required
           * @default false
@@ -7294,6 +7376,10 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoInputDateSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck"?: boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -7317,6 +7403,11 @@ declare namespace LocalJSX {
      * @example <io-input-password label="Password" name="password" required />
      */
     interface IoInputPassword {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-password .aria={{ describedby: 'hint-id' }} label="Password" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Native autocomplete attribute
           * @default 'current-password'
@@ -7378,7 +7469,7 @@ declare namespace LocalJSX {
           * Makes the input read-only
           * @default false
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
           * Marks the input as required
           * @default false
@@ -7389,6 +7480,10 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoInputPasswordSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck"?: boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -7413,6 +7508,11 @@ declare namespace LocalJSX {
      * @example <io-input-search label="Search" name="q" placeholder="Search products…" />
      */
     interface IoInputSearch {
+        /**
+          * Custom ARIA attributes to inject onto the native `<input>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
+          * @example <io-input-search .aria={{ label: 'Search products', autocomplete: 'list' }} label="Search" />
+         */
+        "aria"?: Record<string, string>;
         /**
           * Native autocomplete attribute
           * @default 'off'
@@ -7483,7 +7583,7 @@ declare namespace LocalJSX {
           * Makes the input read-only
           * @default false
          */
-        "readonly"?: boolean;
+        "readOnly"?: boolean;
         /**
           * Marks the input as required
           * @default false
@@ -7494,6 +7594,10 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: IoInputSearchSize;
+        /**
+          * Native spellcheck attribute — passed through as-is
+         */
+        "spellCheck"?: boolean | undefined;
         /**
           * Validation state
           * @default 'none'
@@ -7686,12 +7790,7 @@ declare namespace LocalJSX {
           * Custom ARIA attributes to inject onto the native `<dialog>` element. Keys may omit or include the `aria-` prefix — both forms are accepted.
           * @example // Sets aria-owns="step-panel" on the native <dialog> <io-modal .aria={{ owns: 'step-panel' }}>...</io-modal>
          */
-        "aria"?: IoModalAriaProps;
-        /**
-          * Backdrop treatment behind the modal panel. - blur:    backdrop-filter blur — default for user-initiated dialogs. - shading: solid overlay with no backdrop-filter — use for auto-appearing            dialogs (e.g. cookie consent) where GPU cost of blur matters.
-          * @default 'blur'
-         */
-        "backdrop"?: IoModalBackdrop;
+        "aria"?: Record<string, string>;
         /**
           * Background surface level for the modal panel. - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
           * @default 'canvas'
@@ -7711,11 +7810,6 @@ declare namespace LocalJSX {
           * @default true
          */
         "dismissButton"?: boolean;
-        /**
-          * When `true`, the modal expands to fill the full viewport at or below `--io-modal-fullscreen-breakpoint` (default 640px). At larger viewports the modal remains centered and respects the `size` prop.
-          * @default false
-         */
-        "fullscreen"?: boolean;
         /**
           * Heading text displayed in the modal header
          */
@@ -7780,10 +7874,20 @@ declare namespace LocalJSX {
          */
         "dropdownDirection"?: IoMultiSelectDirection;
         /**
-          * When true, shows a search input inside the dropdown to filter options.
+          * @deprecated Use `filterable` instead. Retained for backward compatibility. When true, shows a search input inside the dropdown to filter options.
           * @default false
          */
         "filter"?: boolean;
+        /**
+          * Placeholder text for the filter search input. Only relevant when `filterable=true`.
+          * @default 'Search...'
+         */
+        "filterPlaceholder"?: string;
+        /**
+          * When true, shows a search input inside the dropdown to filter options. Client-side filtering by label text as the user types.
+          * @default false
+         */
+        "filterable"?: boolean;
         /**
           * The `id` of a `<form>` element to associate this element with.
          */
@@ -7884,7 +7988,12 @@ declare namespace LocalJSX {
      * ==========
      * Individual option item for the custom combobox mode of io-select.
      * Must be a direct child of io-select[custom] (slotted into the listbox).
+     * Supports two content modes:
+     * 1. Prop-based: `<io-option value="us" label="United States" icon="flag-us"></io-option>`
+     * 2. Slot-based (rich HTML): `<io-option value="us">United States</io-option>`
+     *    When slotted content is present it replaces the `label` prop display.
      * @example <io-option value="alice" label="Alice Smith"></io-option>
+     * <io-option value="us" icon="flag-us">United States</io-option>
      */
     interface IoOption {
         /**
@@ -7903,7 +8012,12 @@ declare namespace LocalJSX {
          */
         "focused"?: boolean;
         /**
-          * Display text
+          * Optional icon name rendered before the label text via `<io-icon>`. Accepts any valid `IoIconName` value.
+          * @example <io-option value="us" icon="flag-us">United States</io-option>
+         */
+        "icon"?: IoIconName;
+        /**
+          * Display text — used when no slotted content is provided
          */
         "label": string;
         /**
@@ -8709,22 +8823,7 @@ declare namespace LocalJSX {
      */
     interface IoSheet {
         /**
-          * Background surface level for the sheet panel. Matches sibling overlay APIs (io-modal, io-drawer, io-flyout). - canvas:   var(--io-bg-page) — default page background - surface:  var(--io-bg-surface) — slightly elevated surface - elevated: var(--io-bg-raised) + var(--io-shadow-xl) — floating overlay level
-          * @default 'canvas'
-         */
-        "background"?: IoSheetBackground;
-        /**
-          * When true, clicking the backdrop will NOT dismiss the sheet. The close button and ESC key are still controlled by `dismissButton`. Useful for confirmation flows that must not be accidentally dismissed.
-          * @default false
-         */
-        "disableBackdropClick"?: boolean;
-        /**
-          * When true (default), the close (×) button is rendered in the sheet header and pressing ESC will close the sheet. Set to false to hide the close button and suppress ESC dismissal — useful for confirmation flows where the user must explicitly choose an action.
-          * @default true
-         */
-        "dismissButton"?: boolean;
-        /**
-          * @deprecated Use `dismissButton` and `disableBackdropClick` instead. When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet. This prop is kept for one minor version for backwards compatibility.
+          * When true, a close button is rendered in the header and backdrop click / Escape key dismiss the sheet
           * @default true
          */
         "dismissible"?: boolean;
@@ -8886,6 +8985,11 @@ declare namespace LocalJSX {
      */
     interface IoSwitch {
         /**
+          * Label alignment relative to the toggle. - `'end'` (default) — label appears after the toggle (right in LTR). - `'start'` — label appears before the toggle (left in LTR).
+          * @default 'end'
+         */
+        "alignLabel"?: IoSwitchAlignLabel;
+        /**
           * Checked/toggled state
           * @default false
          */
@@ -8957,6 +9061,11 @@ declare namespace LocalJSX {
           * @default 'none'
          */
         "state"?: IoFieldState;
+        /**
+          * When `true`, the label row stretches to fill the available width, pushing the toggle to the opposite side of the label. Useful for settings lists and form rows.
+          * @default false
+         */
+        "stretch"?: boolean;
         /**
           * Value submitted with the form
           * @default 'on'
@@ -9915,7 +10024,7 @@ declare namespace LocalJSX {
     interface IoButtonAttributes {
         "variant": IoButtonVariant;
         "color": IoButtonColor;
-        "size": IoButtonSize;
+        "size": BreakpointCustomizable<IoButtonSize>;
         "type": IoButtonType;
         "href": string | undefined;
         "target": string | undefined;
@@ -9935,8 +10044,8 @@ declare namespace LocalJSX {
         "arrowPlacement": IoButtonArrowPlacement;
         "icon": IoIconName;
         "iconSource": string;
-        "hideLabel": boolean;
-        "iconPosition": 'left' | 'right';
+        "hideLabel": string;
+        "iconPosition": BreakpointCustomizable<IoButtonIconPosition>;
     }
     interface IoButtonGroupAttributes {
         "type": IoButtonGroupType;
@@ -9963,6 +10072,9 @@ declare namespace LocalJSX {
         "autoplay": boolean;
         "autoplayInterval": number;
         "skipLabel": string;
+        "trimSpace": IoCarouselTrimSpace;
+        "edgeFade": boolean;
+        "focusOnCenterSlide": boolean;
     }
     interface IoCheckboxAttributes {
         "label": string;
@@ -10013,7 +10125,6 @@ declare namespace LocalJSX {
         "heading": string;
         "position": IoFlyoutPosition;
         "closeLabel": string;
-        "footerBehavior": IoFlyoutFooterBehavior;
     }
     interface IoFormFieldAttributes {
         "label": string;
@@ -10059,7 +10170,7 @@ declare namespace LocalJSX {
         "value": string;
         "placeholder": string | undefined;
         "required": boolean;
-        "readonly": boolean;
+        "readOnly": boolean;
         "disabled": boolean;
         "state": IoFieldState;
         "message": string;
@@ -10083,6 +10194,7 @@ declare namespace LocalJSX {
         "compact": boolean;
         "indicator": IoIconName;
         "stepper": boolean;
+        "description": string | undefined;
     }
     interface IoInputDateAttributes {
         "label": string;
@@ -10090,7 +10202,7 @@ declare namespace LocalJSX {
         "value": string;
         "required": boolean;
         "disabled": boolean;
-        "readonly": boolean;
+        "readOnly": boolean;
         "loading": boolean;
         "state": IoFieldState;
         "message": string;
@@ -10101,6 +10213,7 @@ declare namespace LocalJSX {
         "step": string | undefined;
         "size": IoInputDateSize;
         "pickerLabel": string;
+        "spellCheck": boolean | undefined;
     }
     interface IoInputPasswordAttributes {
         "label": string;
@@ -10109,7 +10222,7 @@ declare namespace LocalJSX {
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
-        "readonly": boolean;
+        "readOnly": boolean;
         "loading": boolean;
         "maxLength": number | undefined;
         "minLength": number | undefined;
@@ -10120,6 +10233,7 @@ declare namespace LocalJSX {
         "size": IoInputPasswordSize;
         "autocomplete": string;
         "toggle": boolean;
+        "spellCheck": boolean | undefined;
     }
     interface IoInputSearchAttributes {
         "label": string;
@@ -10128,7 +10242,7 @@ declare namespace LocalJSX {
         "placeholder": string | undefined;
         "required": boolean;
         "disabled": boolean;
-        "readonly": boolean;
+        "readOnly": boolean;
         "loading": boolean;
         "maxLength": number | undefined;
         "minLength": number | undefined;
@@ -10139,6 +10253,7 @@ declare namespace LocalJSX {
         "size": IoInputSearchSize;
         "autocomplete": string;
         "clearAriaLabel": string;
+        "spellCheck": boolean | undefined;
     }
     interface IoLinkAttributes {
         "variant": IoLinkVariant;
@@ -10179,8 +10294,6 @@ declare namespace LocalJSX {
         "description": string;
         "background": IoModalBackground;
         "dismissButton": boolean;
-        "fullscreen": boolean;
-        "backdrop": IoModalBackdrop;
         "preventTopLayer": boolean;
     }
     interface IoMultiSelectAttributes {
@@ -10194,6 +10307,8 @@ declare namespace LocalJSX {
         "message": string | undefined;
         "helperText": string | undefined;
         "description": string | undefined;
+        "filterable": boolean;
+        "filterPlaceholder": string;
         "filter": boolean;
         "dropdownDirection": IoMultiSelectDirection;
         "maxDisplay": number;
@@ -10212,6 +10327,7 @@ declare namespace LocalJSX {
         "checked": boolean;
         "multipleMode": boolean;
         "focused": boolean;
+        "icon": IoIconName;
     }
     interface IoPaginationAttributes {
         "page": number;
@@ -10347,9 +10463,6 @@ declare namespace LocalJSX {
         "open": boolean;
         "heading": string;
         "dismissible": boolean;
-        "dismissButton": boolean;
-        "disableBackdropClick": boolean;
-        "background": IoSheetBackground;
     }
     interface IoSpinnerAttributes {
         "size": IoSpinnerSize;
@@ -10385,6 +10498,8 @@ declare namespace LocalJSX {
         "helperText": string | undefined;
         "compact": boolean;
         "hideLabel": boolean;
+        "alignLabel": IoSwitchAlignLabel;
+        "stretch": boolean;
     }
     interface IoTabPanelAttributes {
         "label": string;
@@ -11004,7 +11119,12 @@ declare module "@stencil/core" {
              * ==========
              * Individual option item for the custom combobox mode of io-select.
              * Must be a direct child of io-select[custom] (slotted into the listbox).
+             * Supports two content modes:
+             * 1. Prop-based: `<io-option value="us" label="United States" icon="flag-us"></io-option>`
+             * 2. Slot-based (rich HTML): `<io-option value="us">United States</io-option>`
+             *    When slotted content is present it replaces the `label` prop display.
              * @example <io-option value="alice" label="Alice Smith"></io-option>
+             * <io-option value="us" icon="flag-us">United States</io-option>
              */
             "io-option": LocalJSX.IntrinsicElements["io-option"] & JSXBase.HTMLAttributes<HTMLIoOptionElement>;
             /**

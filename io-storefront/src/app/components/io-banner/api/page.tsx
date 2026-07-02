@@ -57,9 +57,9 @@ export default function IoBannerApiPage() {
             ],
             [
               <span key="n"><InlineCode>position</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;top&apos; | &apos;bottom&apos;</InlineCode>,
-              <InlineCode key="d">&apos;top&apos;</InlineCode>,
-              'Viewport edge where the banner is fixed. Bottom position flips the entry animation direction.',
+              <span key="t"><InlineCode>&apos;top&apos; | &apos;bottom&apos;</InlineCode>{' or a responsive object '}<InlineCode>{'{ base?, s?, m?, l? }'}</InlineCode>{' where each value is '}<InlineCode>&apos;top&apos; | &apos;bottom&apos;</InlineCode></span>,
+              <InlineCode key="d">{'{ base: \'bottom\', s: \'top\' }'}</InlineCode>,
+              <span key="desc">Viewport edge where the banner is fixed. On mobile viewports the default is <InlineCode>bottom</InlineCode>; from the <InlineCode>s</InlineCode> breakpoint up it defaults to <InlineCode>top</InlineCode>. Bottom position flips the entry animation direction. Accepts a plain string or a responsive breakpoint object.</span>,
             ],
             [
               <InlineCode key="n">dismissLabel</InlineCode>,
@@ -129,6 +129,10 @@ export default function IoBannerApiPage() {
             [
               <span key="n" style={{ color: 'var(--io-text-secondary)', fontStyle: 'italic' }}>default</span>,
               'Body content of the banner. Accepts any HTML — plain text, links, or emphasis. Rendered below the optional heading.',
+            ],
+            [
+              <InlineCode key="n">heading</InlineCode>,
+              <span key="desc">Optional rich heading content that takes precedence over the <InlineCode>heading</InlineCode> prop. Use for headings with inline links or other HTML.</span>,
             ],
           ]}
         />

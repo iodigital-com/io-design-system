@@ -45,6 +45,12 @@ export default function IoPopoverApiPage() {
               'Controls visibility of the panel. Mutable — reflects back to attribute.',
             ],
             [
+              <InlineCode key="n">arrow</InlineCode>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">true</InlineCode>,
+              'Controls whether the directional arrow indicator pointing toward the trigger is rendered.',
+            ],
+            [
               <InlineCode key="n">closeOnClickOutside</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">true</InlineCode>,

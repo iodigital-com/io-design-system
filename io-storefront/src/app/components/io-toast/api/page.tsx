@@ -96,18 +96,11 @@ export default function IoToastApiPage() {
                 'When true the toast will not auto-dismiss and must be manually closed. Error-variant toasts are always treated as persistent regardless of this flag.',
               ],
               [
-                <InlineCode key="n">actionLabel</InlineCode>,
-                <InlineCode key="t">string | undefined</InlineCode>,
+                <InlineCode key="n">actions</InlineCode>,
+                <InlineCode key="t">IoToastAction[] | undefined</InlineCode>,
                 'No',
                 '—',
-                'Label for an optional call-to-action rendered beside the notification text. When omitted, no action is shown. When set alongside actionHref, renders an anchor; otherwise renders a button that emits the action event on io-toast-item.',
-              ],
-              [
-                <InlineCode key="n">actionHref</InlineCode>,
-                <InlineCode key="t">string | undefined</InlineCode>,
-                'No',
-                '—',
-                'When set alongside actionLabel, renders the CTA as an anchor pointing to this URL (opens in the same tab). When omitted, the CTA is a button.',
+                'Array of up to 2 action items rendered beside the notification text. Each entry supports label, href, variant, and a custom onClick. Entries with href render as anchors; entries without href render as buttons that emit the action event on io-toast-item.',
               ],
             ]}
           />
@@ -180,16 +173,10 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
               'Visual variant controlling the colour accent and icon. Reflects to the host attribute. One of: neutral, success, error, warning, info.',
             ],
             [
-              <InlineCode key="n">actionLabel</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
+              <InlineCode key="n">actions</InlineCode>,
+              <InlineCode key="t">IoToastAction[] | undefined</InlineCode>,
               '—',
-              'Label for an optional call-to-action rendered beside the notification text. When omitted, no action is shown. When set without actionHref, renders a button that emits the action event. When set with actionHref, renders an anchor.',
-            ],
-            [
-              <InlineCode key="n">actionHref</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              '—',
-              'When set alongside actionLabel, renders the CTA as an <a> element pointing to this URL. When omitted, the CTA is a button.',
+              'Array of up to 2 action items rendered beside the notification text. Entries with href render as <a> elements; entries without href render as buttons that emit the action event.',
             ],
           ]}
         />
@@ -217,9 +204,9 @@ toast.value?.addToast({ text: 'Saved!', variant: 'success' });`}
             ],
             [
               <InlineCode key="n">action</InlineCode>,
-              <InlineCode key="t">void</InlineCode>,
+              <InlineCode key="t">number</InlineCode>,
               'Yes',
-              'Fires when the user clicks the action button (only when actionLabel is set and actionHref is not). Bubbles and is composed — consumers can listen directly on <io-toast> or any ancestor. Not fired for anchor-based CTAs.',
+              'Fires when a button-based action (no href) is clicked. The detail is the zero-based index of the action in the actions array. Bubbles and is composed — consumers can listen directly on <io-toast> or any ancestor. Not fired for anchor-based (href) actions.',
             ],
           ]}
         />

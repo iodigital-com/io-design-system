@@ -119,10 +119,10 @@ describe('io-switch storefront stories', () => {
       expect(disabledDef!.type).toBe('boolean');
     });
 
-    it('includes error definition', () => {
-      const errorDef = switchPropDefinitions.find((d) => d.name === 'error');
-      expect(errorDef).toBeDefined();
-      expect(errorDef!.type).toBe('boolean');
+    it('includes state definition', () => {
+      const stateDef = switchPropDefinitions.find((d) => d.name === 'state');
+      expect(stateDef).toBeDefined();
+      expect(stateDef!.type).toBe('select');
     });
   });
 
@@ -195,16 +195,16 @@ describe('io-switch storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('element has error=true', () => {
+    it('element has state=error', () => {
       const els = switchStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.error).toBe(true);
+      expect(first.properties.state).toBe('error');
     });
 
-    it('element has errorMessage set', () => {
+    it('element has message set', () => {
       const els = switchStoryError.generator?.() ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.errorMessage).toBeTruthy();
+      expect(first.properties.message).toBeTruthy();
     });
   });
 

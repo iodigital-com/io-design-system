@@ -66,9 +66,9 @@ describe('io-multi-select storefront stories', () => {
       ).not.toThrow();
     });
 
-    it('generator with filter=true does not throw', () => {
+    it('generator with filterable=true does not throw', () => {
       expect(() =>
-        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, filter: true } })
+        multiSelectStory.generator?.({ properties: { ...multiSelectStory.state?.properties, filterable: true } })
       ).not.toThrow();
     });
 

@@ -5,7 +5,6 @@ import {
   tagStoryDefault,
   tagStorySelected,
   tagStoryColors,
-  tagStoryRemovable,
   tagStoryDisabled,
 } from './io-tag.stories';
 
@@ -52,10 +51,10 @@ describe('io-tag storefront stories', () => {
       expect(first.properties.disabled).toBe(true);
     });
 
-    it('generator respects color override', () => {
-      const els = tagStory.generator?.({ properties: { color: 'blue' } }) ?? [];
+    it('generator respects variant override', () => {
+      const els = tagStory.generator?.({ properties: { variant: 'primary' } }) ?? [];
       const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.color).toBe('blue');
+      expect(first.properties.variant).toBe('primary');
     });
 
     it('generator respects size override', () => {
@@ -64,18 +63,12 @@ describe('io-tag storefront stories', () => {
       expect(first.properties.size).toBe('sm');
     });
 
-    it('generator respects removable override', () => {
-      const els = tagStory.generator?.({ properties: { removable: true } }) ?? [];
-      const first = els[0] as { properties: Record<string, unknown> };
-      expect(first.properties.removable).toBe(true);
-    });
-
     it('state.properties includes selected', () => {
       expect((tagStory.state?.properties as Record<string, unknown>).selected).toBeDefined();
     });
 
-    it('state.properties includes color', () => {
-      expect((tagStory.state?.properties as Record<string, unknown>).color).toBeDefined();
+    it('state.properties includes variant', () => {
+      expect((tagStory.state?.properties as Record<string, unknown>).variant).toBeDefined();
     });
 
     it('element has children', () => {
@@ -126,12 +119,6 @@ describe('io-tag storefront stories', () => {
       expect(def!.defaultValue).toBe(false);
     });
 
-    it('includes removable definition of type boolean', () => {
-      const def = tagPropDefinitions.find((d) => d.name === 'removable');
-      expect(def).toBeDefined();
-      expect(def!.type).toBe('boolean');
-    });
-
     it('includes disabled definition of type boolean', () => {
       const def = tagPropDefinitions.find((d) => d.name === 'disabled');
       expect(def).toBeDefined();
@@ -147,14 +134,14 @@ describe('io-tag storefront stories', () => {
       expect(def!.defaultValue).toBe('md');
     });
 
-    it('includes color select with default/blue/beige options', () => {
-      const def = tagPropDefinitions.find((d) => d.name === 'color');
+    it('includes variant select with neutral/primary/info options', () => {
+      const def = tagPropDefinitions.find((d) => d.name === 'variant');
       expect(def).toBeDefined();
       expect(def!.type).toBe('select');
-      expect(((def as unknown as { options: string[] })).options).toContain('default');
-      expect(((def as unknown as { options: string[] })).options).toContain('blue');
-      expect(((def as unknown as { options: string[] })).options).toContain('beige');
-      expect(def!.defaultValue).toBe('default');
+      expect(((def as unknown as { options: string[] })).options).toContain('neutral');
+      expect(((def as unknown as { options: string[] })).options).toContain('primary');
+      expect(((def as unknown as { options: string[] })).options).toContain('info');
+      expect(def!.defaultValue).toBe('neutral');
     });
   });
 
@@ -196,10 +183,10 @@ describe('io-tag storefront stories', () => {
       }
     });
 
-    it('elements use multiple colors', () => {
+    it('elements use multiple variants', () => {
       const els = tagStorySelected.generator?.() ?? [];
-      const colors = els.map((el) => (el as { properties: Record<string, unknown> }).properties.color);
-      expect(new Set(colors).size).toBeGreaterThan(1);
+      const variants = els.map((el) => (el as { properties: Record<string, unknown> }).properties.variant);
+      expect(new Set(variants).size).toBeGreaterThan(1);
     });
   });
 
@@ -214,32 +201,12 @@ describe('io-tag storefront stories', () => {
       expect(els!.length).toBeGreaterThan(0);
     });
 
-    it('covers default, blue, and beige colors', () => {
+    it('covers neutral, primary, and info variants', () => {
       const els = tagStoryColors.generator?.() ?? [];
-      const colors = els.map((el) => (el as { properties: Record<string, unknown> }).properties.color);
-      expect(colors).toContain('default');
-      expect(colors).toContain('blue');
-      expect(colors).toContain('beige');
-    });
-  });
-
-  describe('tagStoryRemovable', () => {
-    it('generator does not throw', () => {
-      expect(() => tagStoryRemovable.generator?.()).not.toThrow();
-    });
-
-    it('generator returns non-empty array', () => {
-      const els = tagStoryRemovable.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('all elements have removable=true', () => {
-      const els = tagStoryRemovable.generator?.() ?? [];
-      for (const el of els) {
-        const element = el as { properties: Record<string, unknown> };
-        expect(element.properties.removable).toBe(true);
-      }
+      const variants = els.map((el) => (el as { properties: Record<string, unknown> }).properties.variant);
+      expect(variants).toContain('neutral');
+      expect(variants).toContain('primary');
+      expect(variants).toContain('info');
     });
   });
 

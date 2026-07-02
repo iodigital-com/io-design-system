@@ -26,11 +26,11 @@ export default function IoTagAccessibilityPage() {
             },
             {
               key: <Kbd>Enter</Kbd>,
-              action: 'Toggles the selected state and fires toggle, or fires remove if the tag is removable.',
+              action: 'Toggles the selected state and fires toggle.',
             },
             {
               key: <Kbd>Space</Kbd>,
-              action: 'Same as Enter — toggles the selected state or removes the tag. This is the standard keyboard activation for button elements.',
+              action: 'Same as Enter — toggles the selected state. This is the standard keyboard activation for button elements.',
             },
           ]}
         />
@@ -89,7 +89,7 @@ export default function IoTagAccessibilityPage() {
             criterion="1.4.3"
             level="AA"
             title="Contrast (Minimum)"
-            note="Tag label text meets the 4.5:1 contrast ratio against the tag background in all colour variants — default, blue, and beige — in both unselected and selected states."
+            note="Tag label text meets the 4.5:1 contrast ratio against the tag background in all colour variants — neutral, primary, info, success, warning, error, and subtle — in both unselected and selected states."
           />
           <ComplianceCard
             criterion="2.4.7"
@@ -137,9 +137,9 @@ export default function IoTagAccessibilityPage() {
           on the result count container so screen reader users are informed of the change without losing their current focus position.
         </RuleCard>
         <RuleCard label="The remove icon button must have an accessible label">
-          When{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>removable</code>{' '}
-          is true, the internal remove icon button carries an{' '}
+          When using{' '}
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>io-tag-dismissible</code>{' '}
+          , the internal remove icon button carries an{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>aria-label</code>{' '}
           of &ldquo;Remove [tag label]&rdquo; so the action is unambiguous to screen reader users.
         </RuleCard>

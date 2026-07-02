@@ -36,15 +36,15 @@ describe('io-flyout storefront stories', () => {
       expect(typeof flyoutStory.state?.properties).toBe('object');
     });
 
-    it('generator with position=left does not throw', () => {
+    it('generator with position=start does not throw', () => {
       expect(() =>
-        flyoutStory.generator?.({ properties: { ...flyoutStory.state?.properties, position: 'left' } })
+        flyoutStory.generator?.({ properties: { ...flyoutStory.state?.properties, position: 'start' } })
       ).not.toThrow();
     });
 
-    it('generator with position=right does not throw', () => {
+    it('generator with position=end does not throw', () => {
       expect(() =>
-        flyoutStory.generator?.({ properties: { ...flyoutStory.state?.properties, position: 'right' } })
+        flyoutStory.generator?.({ properties: { ...flyoutStory.state?.properties, position: 'end' } })
       ).not.toThrow();
     });
 
@@ -102,11 +102,11 @@ describe('io-flyout storefront stories', () => {
       expect(new Set(names).size).toBe(names.length);
     });
 
-    it('position select options include left and right', () => {
+    it('position select options include start and end', () => {
       const positionDef = flyoutPropDefinitions.find((d) => d.name === 'position');
       expect(positionDef).toBeDefined();
-      expect(((positionDef as unknown as { options: string[] })).options).toContain('left');
-      expect(((positionDef as unknown as { options: string[] })).options).toContain('right');
+      expect(((positionDef as unknown as { options: string[] })).options).toContain('start');
+      expect(((positionDef as unknown as { options: string[] })).options).toContain('end');
     });
 
     it('heading definition exists as a string type', () => {

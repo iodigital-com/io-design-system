@@ -24,7 +24,7 @@ export default function IoBadgeUsagePage() {
               Use semantic variants (<C>success</C>, <C>warning</C>, <C>error</C>) to communicate status alongside descriptive text or an icon.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use the <C>blue</C> variant for neutral brand-linked labels such as &ldquo;New&rdquo;, &ldquo;Beta&rdquo;, or category tags where the accent colour adds context.
+              Use the <C>primary</C> variant for brand-linked labels such as &ldquo;New&rdquo;, &ldquo;Beta&rdquo;, or category tags where the accent colour adds context.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Anchor a badge to a heading, table cell, card, or list item so users have full context for what the label refers to.
@@ -42,7 +42,7 @@ export default function IoBadgeUsagePage() {
               Stack more than 2–3 badges in a single row. Consolidate into one descriptive label, or reconsider whether badges are the right pattern.
             </DoOrDontCard>
             <DoOrDontCard type="dont">
-              Use the <C>outline</C> variant on dark or strongly coloured backgrounds — the low-contrast border becomes invisible. Use <C>dark</C> or a solid variant instead.
+              Use the <C>subtle</C> variant on dark or strongly coloured backgrounds — the low-contrast fill becomes hard to read. Use <C>primary</C> or a semantic variant instead.
             </DoOrDontCard>
           </div>
         </div>
@@ -52,30 +52,23 @@ export default function IoBadgeUsagePage() {
       <section id="variants" className="space-y-6">
         <SectionHeader
           title="Variants"
-          description="Nine variants cover brand colours and semantic states. Choose by meaning first — reserve brand colours for categorisation, semantic colours for system feedback."
+          description="Seven semantic variants cover brand and system-feedback states. Choose by meaning first — reserve brand colours for categorisation, semantic colours for system feedback."
         />
 
         <div className="space-y-3">
           <SubsectionTitle>Brand variants</SubsectionTitle>
-          <RuleCard label="blue — Brand-linked neutral label">
+          <RuleCard label="primary — Brand-linked label">
             The default variant. Uses accent-aware tokens so it remains legible in both light and dark mode.
             Ideal for &ldquo;New&rdquo;, &ldquo;Beta&rdquo;, &ldquo;Featured&rdquo;, or category tags that should carry the io Digital brand colour.
           </RuleCard>
-          <RuleCard label="beige — Calm warm neutral">
-            A muted, warm-toned label for low-priority tags. Works well on warm off-white surfaces (cards, sidebars)
-            where a blue badge would feel out of place.
+          <RuleCard label="neutral — Calm baseline">
+            A muted, low-emphasis label for general-purpose or low-priority tags. Works on all standard background surfaces.
           </RuleCard>
-          <RuleCard label="dark — High-contrast solid">
-            Maximum contrast on light surfaces. Use for prominent classification tags — content type, tier, or
-            plan labels — where the badge must anchor the layout and draw the eye without a brand colour.
+          <RuleCard label="info — Informational accent">
+            Use for contextual or informational labels that are not tied to a positive/negative outcome — e.g. &ldquo;Draft&rdquo;, &ldquo;Preview&rdquo;.
           </RuleCard>
-          <RuleCard label="orange — Energetic accent">
-            Signals energy, action, or &ldquo;featured&rdquo; status. Use sparingly for promotional or highlighted categories.
-            Overuse reduces its distinctiveness — limit to one or two badges per view.
-          </RuleCard>
-          <RuleCard label="rouge — Bold brand accent">
-            A bold, distinctive label for exclusive or special-status contexts — &ldquo;Premium&rdquo;, &ldquo;Limited&rdquo;, &ldquo;Invitation only&rdquo;.
-            Do not use for system errors; use <C>error</C> instead.
+          <RuleCard label="subtle — Minimal low-fill label">
+            A low-contrast, understated label for contexts where a strong colour would be too loud. Use on clean surfaces only — avoid on dark or strongly coloured backgrounds.
           </RuleCard>
         </div>
 
@@ -92,10 +85,6 @@ export default function IoBadgeUsagePage() {
           <RuleCard label="error — Critical state">
             Use for failed, blocked, or invalid states. Never use as a substitute for inline form validation — use
             the input component&apos;s error state instead. Reserve this badge for record- or entity-level status indicators.
-          </RuleCard>
-          <RuleCard label="outline — Minimal no-fill label">
-            No background or brand colour — a subtle, neutral label for contexts where colour would be too loud.
-            Use on clean white or lightly tinted surfaces only. Invisible on dark backgrounds.
           </RuleCard>
         </div>
       </section>

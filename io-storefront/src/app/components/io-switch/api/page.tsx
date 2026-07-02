@@ -65,22 +65,22 @@ export default function IoSwitchApiPage() {
               'Shows a loading spinner overlaid on the track and blocks all interaction. Use during async operations triggered by the switch.',
             ],
             [
-              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Puts the switch in error state. The track turns red when off. Sets aria-invalid="true" on the input.',
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state of the switch. When \'error\', the track turns red when off and aria-invalid="true" is set on the input.',
             ],
             [
-              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Error message shown below the switch when error is true. Rendered with role="alert" and linked via aria-describedby.',
+              'Validation message shown below the switch when state is non-\'none\'. Rendered with role="alert" (error) and linked via aria-describedby.',
             ],
             [
               <InlineCode key="n">helperText</InlineCode>,
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
-              'Helper text shown below the switch when error is false. Hidden when the error state is active.',
+              'Helper text shown below the switch when there is no error message being shown. Hidden when the error state is active.',
             ],
             [
               <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
@@ -190,7 +190,7 @@ document.querySelector('io-switch')
           {' '}All content is passed through props:{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>label</code>,{' '}
           <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>helperText</code>, and{' '}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>.
+          <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>message</code>.
         </EmptyNote>
       </section>
 

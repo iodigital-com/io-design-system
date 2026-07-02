@@ -5,10 +5,9 @@ export const tagStory: Story<'io-tag'> = {
   state: {
     properties: {
       selected: false,
-      removable: false,
       disabled: false,
       size: 'md',
-      color: 'default',
+      variant: 'neutral',
       label: '',
       compact: false,
     },
@@ -18,10 +17,9 @@ export const tagStory: Story<'io-tag'> = {
       tag: 'io-tag' as const,
       properties: {
         selected: (properties?.selected as boolean) ?? false,
-        removable: (properties?.removable as boolean) ?? false,
         disabled: (properties?.disabled as boolean) ?? false,
         size: (properties?.size as string) ?? 'md',
-        color: (properties?.color as string) ?? 'default',
+        variant: (properties?.variant as string) ?? 'neutral',
         label: (properties?.label as string) ?? '',
         compact: (properties?.compact as boolean) ?? false,
       },
@@ -31,56 +29,43 @@ export const tagStory: Story<'io-tag'> = {
 };
 
 export const tagStoryDefault: Story<'io-tag'> = {
-  state: { properties: { color: 'default', size: 'md' } },
+  state: { properties: { variant: 'neutral', size: 'md' } },
   generator: () => [
-    { tag: 'io-tag' as const, properties: { color: 'default', size: 'md' }, children: ['React'] },
-    { tag: 'io-tag' as const, properties: { color: 'default', size: 'md' }, children: ['TypeScript'] },
-    { tag: 'io-tag' as const, properties: { color: 'default', size: 'md' }, children: ['Accessibility'] },
+    { tag: 'io-tag' as const, properties: { variant: 'neutral', size: 'md' }, children: ['React'] },
+    { tag: 'io-tag' as const, properties: { variant: 'neutral', size: 'md' }, children: ['TypeScript'] },
+    { tag: 'io-tag' as const, properties: { variant: 'neutral', size: 'md' }, children: ['Accessibility'] },
   ],
 };
 
 export const tagStorySelected: Story<'io-tag'> = {
-  state: { properties: { selected: true, color: 'default', size: 'md' } },
+  state: { properties: { selected: true, variant: 'neutral', size: 'md' } },
   generator: () => [
-    { tag: 'io-tag' as const, properties: { selected: true, color: 'default', size: 'md' }, children: ['React'] },
-    { tag: 'io-tag' as const, properties: { selected: true, color: 'blue', size: 'md' }, children: ['TypeScript'] },
-    { tag: 'io-tag' as const, properties: { selected: true, color: 'beige', size: 'md' }, children: ['Accessibility'] },
+    { tag: 'io-tag' as const, properties: { selected: true, variant: 'neutral', size: 'md' }, children: ['React'] },
+    { tag: 'io-tag' as const, properties: { selected: true, variant: 'primary', size: 'md' }, children: ['TypeScript'] },
+    { tag: 'io-tag' as const, properties: { selected: true, variant: 'info', size: 'md' }, children: ['Accessibility'] },
   ],
 };
 
 export const tagStoryColors: Story<'io-tag'> = {
   state: { properties: {} },
   generator: () => [
-    { tag: 'io-tag' as const, properties: { color: 'default', size: 'md' }, children: ['Default'] },
-    { tag: 'io-tag' as const, properties: { color: 'blue', size: 'md' }, children: ['Blue'] },
-    { tag: 'io-tag' as const, properties: { color: 'beige', size: 'md' }, children: ['Beige'] },
-  ],
-};
-
-export const tagStoryRemovable: Story<'io-tag'> = {
-  state: { properties: { removable: true } },
-  generator: () => [
-    { tag: 'io-tag' as const, properties: { removable: true, color: 'default', size: 'md' }, children: ['Remove me'] },
-    { tag: 'io-tag' as const, properties: { removable: true, color: 'blue', size: 'md' }, children: ['Tag two'] },
+    { tag: 'io-tag' as const, properties: { variant: 'neutral', size: 'md' }, children: ['Neutral'] },
+    { tag: 'io-tag' as const, properties: { variant: 'primary', size: 'md' }, children: ['Primary'] },
+    { tag: 'io-tag' as const, properties: { variant: 'info', size: 'md' }, children: ['Info'] },
   ],
 };
 
 export const tagStoryDisabled: Story<'io-tag'> = {
   state: { properties: { disabled: true } },
   generator: () => [
-    { tag: 'io-tag' as const, properties: { disabled: true, color: 'default', size: 'md' }, children: ['Disabled'] },
-    { tag: 'io-tag' as const, properties: { disabled: true, selected: true, color: 'blue', size: 'md' }, children: ['Selected disabled'] },
+    { tag: 'io-tag' as const, properties: { disabled: true, variant: 'neutral', size: 'md' }, children: ['Disabled'] },
+    { tag: 'io-tag' as const, properties: { disabled: true, selected: true, variant: 'primary', size: 'md' }, children: ['Selected disabled'] },
   ],
 };
 
 export const tagPropDefinitions: PropDefinition[] = [
   {
     name: 'selected',
-    type: 'boolean',
-    defaultValue: false,
-  },
-  {
-    name: 'removable',
     type: 'boolean',
     defaultValue: false,
   },
@@ -96,9 +81,9 @@ export const tagPropDefinitions: PropDefinition[] = [
     defaultValue: 'md',
   },
   {
-    name: 'color',
+    name: 'variant',
     type: 'select',
-    options: ['default', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
-    defaultValue: 'default',
+    options: ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle'],
+    defaultValue: 'neutral',
   },
 ];

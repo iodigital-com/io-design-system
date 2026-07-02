@@ -10,8 +10,6 @@ export const radioGroupStory: Story<'io-radio-group'> = {
       required: false,
       disabled: false,
       loading: false,
-      error: false,
-      errorMessage: '',
       helperText: '',
     },
   },
@@ -85,8 +83,8 @@ export const radioGroupStoryError: Story<'io-radio-group'> = {
       properties: {
         label: 'Preferred contact',
         name: 'contact-error',
-        error: true,
-        errorMessage: 'Please select a contact method.',
+        state: 'error',
+        message: 'Please select a contact method.',
       },
       children: [
         { tag: 'io-radio' as const, properties: { label: 'Email', value: 'email' } },
@@ -169,16 +167,17 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     description: 'Shows a spinner overlay and blocks interaction while an async operation is in progress.',
   },
   {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Puts the group in error state.',
+    name: 'state',
+    type: 'select',
+    options: ['none', 'error', 'success', 'warning'],
+    defaultValue: 'none',
+    description: 'Validation state — controls border/message color.',
   },
   {
-    name: 'errorMessage',
+    name: 'message',
     type: 'string',
     defaultValue: '',
-    description: 'Error message shown below the group when error is true.',
+    description: 'Validation/helper message shown below the group.',
   },
   {
     name: 'orientation',

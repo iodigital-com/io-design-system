@@ -6,8 +6,6 @@ export const toastStory: Story<'io-toast-item'> = {
     properties: {
       variant: 'neutral',
       text: 'Notification message.',
-      actionLabel: '',
-      actionHref: '',
     },
   },
   generator: ({ properties } = {}) => [
@@ -16,8 +14,6 @@ export const toastStory: Story<'io-toast-item'> = {
       properties: {
         variant: (properties?.variant as string) ?? 'neutral',
         text: (properties?.text as string) ?? 'Notification message.',
-        ...(properties?.actionLabel ? { actionLabel: properties.actionLabel as string } : {}),
-        ...(properties?.actionHref ? { actionHref: properties.actionHref as string } : {}),
       },
     },
   ],
@@ -74,21 +70,21 @@ export const toastStoryInfo: Story<'io-toast-item'> = {
 };
 
 export const toastStoryWithAction: Story<'io-toast-item'> = {
-  state: { properties: { variant: 'neutral', text: 'Your file is ready.', actionLabel: 'Download' } },
+  state: { properties: { variant: 'neutral', text: 'Your file is ready.', actions: [{ label: 'Download', href: '/file' }] } },
   generator: () => [
     {
       tag: 'io-toast-item' as const,
-      properties: { variant: 'neutral', text: 'Your file is ready.', actionLabel: 'Download' },
+      properties: { variant: 'neutral', text: 'Your file is ready.', actions: [{ label: 'Download', href: '/file' }] },
     },
   ],
 };
 
 export const toastStoryWithActionHref: Story<'io-toast-item'> = {
-  state: { properties: { variant: 'info', text: 'New release available.', actionLabel: 'View changelog', actionHref: '#' } },
+  state: { properties: { variant: 'info', text: 'New release available.', actions: [{ label: 'View changelog', href: '#' }] } },
   generator: () => [
     {
       tag: 'io-toast-item' as const,
-      properties: { variant: 'info', text: 'New release available.', actionLabel: 'View changelog', actionHref: '#' },
+      properties: { variant: 'info', text: 'New release available.', actions: [{ label: 'View changelog', href: '#' }] },
     },
   ],
 };
@@ -117,13 +113,9 @@ export const toastPropDefinitions: PropDefinition[] = [
     defaultValue: false,
   },
   {
-    name: 'actionLabel',
+    name: 'actions',
     type: 'string',
     defaultValue: '',
-  },
-  {
-    name: 'actionHref',
-    type: 'string',
-    defaultValue: '',
+    description: 'Array of up to 2 action items ({ label, href?, variant?, onClick? }) rendered beside the toast text.',
   },
 ];

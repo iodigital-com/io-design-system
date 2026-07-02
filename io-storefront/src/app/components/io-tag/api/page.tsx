@@ -30,12 +30,6 @@ export default function IoTagApiPage() {
               'Whether the tag is in its selected (active) state. Mutable — updated internally on toggle. Set aria-pressed="true" on the host when selected.',
             ],
             [
-              <InlineCode key="n">removable</InlineCode>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Renders a remove icon (×) inside the tag. Clicking the icon fires remove instead of toggle. Use in tag input fields where selected values can be cleared.',
-            ],
-            [
               <span key="n"><InlineCode>disabled</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
@@ -50,26 +44,31 @@ export default function IoTagApiPage() {
               'Visual size of the tag. sm is for compact or dense UI contexts; md is the default for standard filter bars and form contexts.',
             ],
             [
-              <span key="n"><InlineCode>color</InlineCode><ReflectBadge /></span>,
+              <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
-                <InlineCode>IoTagColor</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(10 values)</span>
+                <InlineCode>IoTagVariant</InlineCode>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(7 values)</span>
               </span>,
-              <InlineCode key="d">&apos;default&apos;</InlineCode>,
+              <InlineCode key="d">&apos;neutral&apos;</InlineCode>,
               <span key="desc">
-                Colour palette applied to the tag background and text. One of:{' '}
-                <InlineCode>default</InlineCode>{' '}
-                <InlineCode>blue</InlineCode>{' '}
-                <InlineCode>beige</InlineCode>{' '}
-                <InlineCode>dark</InlineCode>{' '}
-                <InlineCode>orange</InlineCode>{' '}
-                <InlineCode>rouge</InlineCode>{' '}
+                Semantic colour variant applied to the tag background and text. One of:{' '}
+                <InlineCode>neutral</InlineCode>{' '}
+                <InlineCode>primary</InlineCode>{' '}
+                <InlineCode>info</InlineCode>{' '}
                 <InlineCode>success</InlineCode>{' '}
                 <InlineCode>warning</InlineCode>{' '}
                 <InlineCode>error</InlineCode>{' '}
-                <InlineCode>outline</InlineCode>.
-                Use semantic status colors (<InlineCode>success</InlineCode>, <InlineCode>warning</InlineCode>, <InlineCode>error</InlineCode>) with a visible label to avoid conveying state through colour alone.
+                <InlineCode>subtle</InlineCode>.
+                Use semantic status variants (<InlineCode>success</InlineCode>, <InlineCode>warning</InlineCode>, <InlineCode>error</InlineCode>) with a visible label to avoid conveying state through colour alone.
               </span>,
+            ],
+            [
+              <span key="n"><InlineCode>appearance</InlineCode><ReflectBadge /></span>,
+              <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
+                <InlineCode>&apos;solid&apos;</InlineCode>{' | '}<InlineCode>&apos;soft&apos;</InlineCode>{' | '}<InlineCode>&apos;frosted&apos;</InlineCode>
+              </span>,
+              <InlineCode key="d">&apos;soft&apos;</InlineCode>,
+              'Controls the background fill style. solid is a fully-filled background; soft is a translucent tinted background; frosted applies a backdrop-filter blur over a semi-transparent fill.',
             ],
             [
               <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
@@ -81,7 +80,7 @@ export default function IoTagApiPage() {
               <InlineCode key="n">label</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
               <InlineCode key="d">&apos;&apos;</InlineCode>,
-              <span key="desc">Accessible label for the tag content. Used to build the remove button&apos;s <InlineCode>aria-label</InlineCode> when <InlineCode>removable</InlineCode> is true — announces &quot;Remove [label]&quot; instead of &quot;Remove&quot;. Recommended whenever <InlineCode>removable=true</InlineCode>.</span>,
+              'Accessible label for the tag content.',
             ],
           ]}
         />
@@ -105,13 +104,7 @@ export default function IoTagApiPage() {
               <InlineCode key="n">toggle</InlineCode>,
               <InlineCode key="t">boolean</InlineCode>,
               'No',
-              'Fires when the main tag button is clicked (whether or not the tag is removable) and the tag is not disabled. The detail is the new selected value (true if now selected, false if now deselected). On a removable tag, clicking the main label area fires toggle; clicking the remove icon fires remove instead.',
-            ],
-            [
-              <InlineCode key="n">remove</InlineCode>,
-              <InlineCode key="t">void</InlineCode>,
-              'No',
-              'Fires when the remove icon is clicked on a removable tag. No detail value. Handle this event to remove the tag from your data model.',
+              'Fires when the tag button is clicked and the tag is not disabled. The detail is the new selected value (true if now selected, false if now deselected).',
             ],
           ]}
         />
@@ -119,11 +112,9 @@ export default function IoTagApiPage() {
 {`// Vanilla JS
 const tag = document.querySelector('io-tag');
 tag.addEventListener('toggle', (e) => console.log('selected:', e.detail));
-tag.addEventListener('remove', () => removeTag(tag));
 
 // React
 <IoTag onToggle={(e) => setSelected(e.detail)}>React</IoTag>
-<IoTag removable onRemove={() => removeTag(id)}>TypeScript</IoTag>
 
 // Angular
 <io-tag (toggle)="onToggle($event)">React</io-tag>
@@ -175,7 +166,7 @@ tag.addEventListener('remove', () => removeTag(tag));
         />
         <div className="space-y-4">
           <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
-            <strong style={{ color: 'var(--io-text-primary)' }}>Form safety:</strong> All internal button elements carry <InlineCode>type="button"</InlineCode>. This prevents accidental form submission when io-tag (especially the removable variant) is placed inside a <InlineCode>&lt;form&gt;</InlineCode> element. You can safely use removable tags in forms without worrying that clicking the remove button will trigger a submit.
+            <strong style={{ color: 'var(--io-text-primary)' }}>Form safety:</strong> The internal button element carries <InlineCode>type="button"</InlineCode>. This prevents accidental form submission when io-tag is placed inside a <InlineCode>&lt;form&gt;</InlineCode> element.
           </p>
         </div>
       </section>

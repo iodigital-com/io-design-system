@@ -93,12 +93,6 @@ export default function IoMultiSelectApiPage() {
               'Placeholder text for the filter search input. Only shown when filterable is true.',
             ],
             [
-              <span key="n"><InlineCode>filter</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              <span key="d2"><strong>Deprecated.</strong> Use <InlineCode>filterable</InlineCode> instead. Retained for backward compatibility.</span>,
-            ],
-            [
               <InlineCode key="n">dropdownDirection</InlineCode>,
               <InlineCode key="t">&apos;auto&apos; | &apos;up&apos; | &apos;down&apos;</InlineCode>,
               <InlineCode key="d">&apos;auto&apos;</InlineCode>,

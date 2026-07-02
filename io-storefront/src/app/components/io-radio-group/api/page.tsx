@@ -56,16 +56,16 @@ export default function IoRadioGroupApiPage() {
               'Disables the entire group. Propagated to all child io-radio elements. The native fieldset disabled attribute is set.',
             ],
             [
-              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Puts the group in error state. Apply errorMessage alongside this to provide accessible error feedback.',
+              <span key="n"><InlineCode>state</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;none&apos; | &apos;error&apos; | &apos;success&apos; | &apos;warning&apos;</InlineCode>,
+              <InlineCode key="d">&apos;none&apos;</InlineCode>,
+              'Validation state — controls border and message colour. Apply message alongside this to provide accessible feedback.',
             ],
             [
-              <InlineCode key="n">errorMessage</InlineCode>,
+              <InlineCode key="n">message</InlineCode>,
               <InlineCode key="t">string</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
-              'Error message shown below the group when error is true. Rendered as a paragraph with role="alert" and linked to the fieldset via aria-describedby.',
+              <InlineCode key="d">&apos;&apos;</InlineCode>,
+              'Validation/helper message shown below the group. Rendered as a paragraph with role="alert" (state="error") or role="status" (other states), and linked to the fieldset via aria-describedby when state is error.',
             ],
             [
               <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,

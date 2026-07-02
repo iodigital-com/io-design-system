@@ -4,7 +4,6 @@ import {
   tagStoryDefault,
   tagStorySelected,
   tagStoryColors,
-  tagStoryRemovable,
   tagStoryDisabled,
 } from '../io-tag.stories';
 
@@ -25,13 +24,8 @@ export default function IoTagExamplesPage() {
       </section>
 
       <section>
-        <ExamplesSectionHeader title="Colours" />
+        <ExamplesSectionHeader title="Variants" />
         <ComponentStory story={tagStoryColors} />
-      </section>
-
-      <section>
-        <ExamplesSectionHeader title="Removable" />
-        <ComponentStory story={tagStoryRemovable} />
       </section>
 
       <section>

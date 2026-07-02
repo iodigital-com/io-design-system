@@ -24,15 +24,15 @@ export default function IoFlyoutExamplesPage() {
   return (
     <div className="space-y-2">
       <Section
-        title="Default (right)"
-        description="A right-anchored flyout panel with heading, body content, and footer close button. Dismiss via the close button, Escape key, or clicking the backdrop."
+        title="Default (end)"
+        description="An end-anchored flyout panel with heading, body content, and footer close button. Dismiss via the close button, Escape key, or clicking the backdrop."
       >
         <ComponentStory story={flyoutStoryDefault} interactive />
       </Section>
 
       <Section
-        title="Left position"
-        description="A left-anchored flyout suited for navigation menus and side panels."
+        title="Start position"
+        description="A start-anchored flyout suited for navigation menus and side panels."
       >
         <ComponentStory story={flyoutStoryLeft} interactive />
       </Section>

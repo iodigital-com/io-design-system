@@ -82,14 +82,14 @@ export default function IoBadgeAccessibilityPage() {
       <section id="wcag-compliance" className="space-y-6">
         <SectionHeader
           title="WCAG 2.2 compliance"
-          description="io-badge is tested against WCAG 2.2 Level AA. All relevant success criteria pass across all 9 variants."
+          description="io-badge is tested against WCAG 2.2 Level AA. All relevant success criteria pass across all 7 variants."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <ComplianceCard
             criterion="1.4.3"
             level="AA"
             title="Contrast (Minimum)"
-            note="All 9 variants meet the 4.5:1 contrast ratio for normal text. Semantic variants (success/warning/error) use a soft background with a saturated text colour. Solid variants (dark/orange/rouge) use white text on a filled background."
+            note="All 7 variants meet the 4.5:1 contrast ratio for normal text. Semantic variants (success/warning/error) use a soft background with a saturated text colour."
           />
           <ComplianceCard
             criterion="1.4.1"
@@ -101,7 +101,7 @@ export default function IoBadgeAccessibilityPage() {
             criterion="1.4.11"
             level="AA"
             title="Non-text Contrast"
-            note="The badge border meets the 3:1 contrast ratio against adjacent page backgrounds in both light and dark themes. The blue variant uses color-mix to derive its border from the accent text token."
+            note="The badge border meets the 3:1 contrast ratio against adjacent page backgrounds in both light and dark themes. The primary variant uses color-mix to derive its border from the accent text token."
           />
           <ComplianceCard
             criterion="4.1.2"
@@ -142,9 +142,8 @@ export default function IoBadgeAccessibilityPage() {
         </RuleCard>
         <RuleCard label="Test in Windows High Contrast Mode">
           In High Contrast Mode, background colours are overridden and only foreground text and borders remain.
-          Verify that all 9 variants remain legible — pay particular attention to solid variants (dark/orange/rouge)
-          where white text on a coloured fill may reduce to white on black, and the outline variant where the border
-          may disappear against certain system themes.
+          Verify that all 7 variants remain legible — pay particular attention to the subtle variant, where the
+          low-contrast border may disappear against certain system themes.
         </RuleCard>
         <RuleCard label="Match size to surrounding text hierarchy">
           Use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;sm&quot;</code> for dense metadata and <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>&quot;lg&quot;</code> only where higher emphasis aids scanning.

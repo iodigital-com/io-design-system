@@ -32,33 +32,27 @@ describe('io-badge storefront stories', () => {
       expect(badgeStory.state?.properties).toBeDefined();
     });
 
-    it('generator with variant=beige does not throw', () => {
+    it('generator with variant=neutral does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'beige' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'neutral' } }),
       ).not.toThrow();
     });
 
-    it('generator with variant=blue does not throw', () => {
+    it('generator with variant=primary does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'blue' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'primary' } }),
       ).not.toThrow();
     });
 
-    it('generator with variant=dark does not throw', () => {
+    it('generator with variant=info does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'dark' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'info' } }),
       ).not.toThrow();
     });
 
-    it('generator with variant=orange does not throw', () => {
+    it('generator with variant=subtle does not throw', () => {
       expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'orange' } }),
-      ).not.toThrow();
-    });
-
-    it('generator with variant=rouge does not throw', () => {
-      expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'rouge' } }),
+        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'subtle' } }),
       ).not.toThrow();
     });
 
@@ -77,12 +71,6 @@ describe('io-badge storefront stories', () => {
     it('generator with variant=error does not throw', () => {
       expect(() =>
         badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'error' } }),
-      ).not.toThrow();
-    });
-
-    it('generator with variant=outline does not throw', () => {
-      expect(() =>
-        badgeStory.generator?.({ properties: { ...badgeStory.state?.properties, variant: 'outline' } }),
       ).not.toThrow();
     });
 

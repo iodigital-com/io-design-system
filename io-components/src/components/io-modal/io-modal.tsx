@@ -3,12 +3,7 @@ import { Component, Prop, Event, EventEmitter, Method, Element, Host, State, Wat
 import { getModalStyles } from './io-modal-styles';
 import { createModalHeadingId, getModalCloseIcon, isBackdropClick } from './io-modal-utils';
 import { applyAriaProp } from '../../utils/aria-prop';
-import {
-  applyDialogInert,
-  removeDialogInert,
-  lockBodyScroll,
-  unlockBodyScroll,
-} from '../../utils/dialog-utils';
+import { lockBodyScroll, unlockBodyScroll } from '../../utils/dialog-utils';
 
 import type { IoModalBackground, IoModalBackdrop, IoModalSize } from './types';
 

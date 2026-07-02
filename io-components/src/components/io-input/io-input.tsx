@@ -363,7 +363,7 @@ export class IoInput {
   @Method()
   async reportValidity(): Promise<boolean> {
     this.touched = true;
-    (this as any).syncFormValue();
+    this.syncFormValue();
     return this.internals?.reportValidity?.() ?? true;
   }
 

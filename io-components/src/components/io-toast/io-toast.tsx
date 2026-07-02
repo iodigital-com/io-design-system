@@ -40,7 +40,7 @@ import type { IoToastMessage, IoToastEntry, IoToastPosition } from './types';
  */
 @Component({
   tag: 'io-toast',
-  shadow: true,
+  shadow: { delegatesFocus: true },
 })
 export class IoToast {
   @Element() el!: HTMLElement;

@@ -166,9 +166,8 @@ export default function IoInputUsagePage() {
         />
         <div className="space-y-3">
           <RuleCard label="hideLabel is a plain boolean — not breakpoint-aware">
-            Unlike Porsche Design System&apos;s <C>p-text-field-wrapper</C> (where <C>hideLabel</C> accepts a{' '}
-            <C>BreakpointCustomizable&lt;boolean&gt;</C> object such as{' '}
-            <C>{'{ base: false, m: true }'}</C>), io-input&apos;s <C>hideLabel</C> is a single{' '}
+            Unlike wrappers that accept a <C>BreakpointCustomizable&lt;boolean&gt;</C> object such as{' '}
+            <C>{'{ base: false, m: true }'}</C>, io-input&apos;s <C>hideLabel</C> is a plain{' '}
             <C>boolean</C>. Passing an object has no effect and will not switch the label at different
             viewport widths.
           </RuleCard>

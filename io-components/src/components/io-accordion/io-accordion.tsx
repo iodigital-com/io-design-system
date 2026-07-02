@@ -11,7 +11,7 @@ import type { IoAccordionAlignMarker, IoAccordionBackground, IoAccordionHeadingT
  * Collapsible sections with animated +/− icon and title indent animation.
  * Extracted from the "Our expertise" section of the iO Brand & Business page.
  *
- * PDS-style: one accordion instance controls one content section.
+ * Design system pattern: one accordion instance controls one content section.
  *
  * @example
  * <io-accordion></io-accordion>

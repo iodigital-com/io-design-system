@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
+import { Component, Prop, State, Event, EventEmitter, Element, Host, Watch, Listen, AttachInternals, h } from '@stencil/core';
 
 import { getRadioGroupStyles } from './io-radio-group-styles';
 
@@ -66,6 +66,9 @@ export class IoRadioGroup {
 
   /** Supplementary description shown below the legend for additional context */
   @Prop() description: string | undefined;
+
+  /** Mirrors FACE invalidity so the component re-renders on form validation state change. */
+  @State() faceInvalid = false;
 
   // ── Private ───────────────────────────────────────────────────
 
@@ -219,8 +222,10 @@ export class IoRadioGroup {
         'Please select an option.',
         this.el?.shadowRoot?.querySelector('input') ?? undefined,
       );
+      this.faceInvalid = true;
     } else {
       this.internals?.setValidity?.({});
+      this.faceInvalid = false;
     }
   }
 
@@ -262,10 +267,17 @@ export class IoRadioGroup {
     const effectiveError = state === 'error';
     const effectiveMessage = message;
     const messageId = `${this.errorId}-msg`;
+    const faceErrorId = `${this.errorId}-face`;
+    const showFaceError = this.faceInvalid && !effectiveError;
 
-    const fieldsetClass = effectiveError ? 'radio-group radio-group--error' : 'radio-group';
+    const fieldsetClass = [
+      'radio-group',
+      (effectiveError || this.faceInvalid) ? 'radio-group--error' : '',
+    ].filter(Boolean).join(' ');
+
     const describedBy = [
       effectiveError && effectiveMessage ? messageId : '',
+      showFaceError ? faceErrorId : '',
       description ? this.descriptionId : '',
     ].filter(Boolean).join(' ') || undefined;
 
@@ -278,7 +290,7 @@ export class IoRadioGroup {
             disabled={disabled}
             role="radiogroup"
             aria-labelledby={this.legendId}
-            aria-invalid={effectiveError ? 'true' : undefined}
+            aria-invalid={(effectiveError || this.faceInvalid) ? 'true' : undefined}
             aria-describedby={describedBy}
             aria-orientation={orientation}
             aria-required={required ? 'true' : undefined}
@@ -308,6 +320,11 @@ export class IoRadioGroup {
             aria-atomic="true"
           >
             {effectiveMessage}
+          </p>
+        )}
+        {showFaceError && (
+          <p id={faceErrorId} class="radio-group__error radio-group__message--error" role="alert">
+            Please select an option.
           </p>
         )}
       </Host>

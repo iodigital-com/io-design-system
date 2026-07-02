@@ -228,7 +228,7 @@ export default function InputTypesPage() {
         />
         <div className="space-y-4">
           <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
-            Some design systems (e.g., Porsche PDS) ship nine sibling components — one per native
+            Some design systems ship nine sibling components — one per native
             HTML input type. io takes the leaner path: a single{' '}
             <InlineCode>&lt;io-input&gt;</InlineCode> with a{' '}
             <InlineCode>type</InlineCode> prop. This reduces surface area and avoids nine near-identical

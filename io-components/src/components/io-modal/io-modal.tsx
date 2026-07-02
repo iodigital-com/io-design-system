@@ -320,12 +320,24 @@ export class IoModal {
 
     this.clearFocusTrap();
 
-    // Get all focusable elements within the modal (in shadow DOM and slots)
     const focusableSelector =
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    const focusableElements = Array.from(
-      this.dialogEl.querySelectorAll(focusableSelector)
-    ) as HTMLElement[];
+
+    // Walk the shadow tree in DOM order, resolving <slot> elements to their assigned
+    // light-DOM nodes. This ensures both shadow-DOM elements (e.g. the close button)
+    // and slotted footer/body elements are included in the correct tab order.
+    const focusableElements: HTMLElement[] = [];
+    const collect = (el: Element) => {
+      if (el.tagName === 'SLOT') {
+        (el as HTMLSlotElement).assignedElements({ flatten: true }).forEach(collect);
+      } else {
+        if ((el as HTMLElement).matches?.(focusableSelector)) {
+          focusableElements.push(el as HTMLElement);
+        }
+        Array.from(el.children).forEach(collect);
+      }
+    };
+    Array.from(this.dialogEl.children).forEach(collect);
 
     if (focusableElements.length === 0) return;
 

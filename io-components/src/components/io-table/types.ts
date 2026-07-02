@@ -6,16 +6,16 @@
  *
  * - **Tri-state** lets users return to the unsorted (natural) row order by
  *   clicking a third time, instead of being locked into ascending/descending.
- *   This is a deliberate improvement over bi-state (Porsche: `'asc'|'desc'|undefined`).
+ *   This is a deliberate improvement over bi-state implementations using `'asc'|'desc'|undefined`.
  *
  * - **Full-word values** map directly to the `aria-sort` attribute values defined
  *   in the WAI-ARIA specification (`"ascending"` / `"descending"` / `"none"`),
  *   eliminating translation between the sort event and the ARIA attribute.
- *   Porsche uses short-form `'asc'`/`'desc'` which must be mapped manually.
+ *   Abbreviated values like `'asc'`/`'desc'` require manual mapping to ARIA attributes.
  *
  * The `key` field in {@link IoTableSortDetail} uses `sortKey` (a more explicit
- * column identifier) where Porsche uses `id` — this avoids confusion with DOM
- * element `id` attributes and makes multi-table pages easier to reason about.
+ * column identifier) — this avoids confusion with DOM element `id` attributes
+ * and makes multi-table pages easier to reason about.
  */
 export type IoTableSortDirection = 'ascending' | 'descending' | 'none';
 

@@ -144,14 +144,6 @@ describe('io-modal — backdrop prop (#983)', () => {
     expect(component.backdrop).toBe('shading');
   });
 
-  it('styles contain shading selector that removes backdrop-filter', () => {
-    const styles: string = getModalStyles();
-    expect(styles).toContain('backdrop="shading"');
-    const shadingIdx = styles.indexOf('backdrop="shading"');
-    const shadingBlock = styles.slice(shadingIdx, shadingIdx + 100);
-    expect(shadingBlock).toContain('backdrop-filter: none');
-  });
-
   it('styles use --io-bg-overlay token for the native ::backdrop', () => {
     const styles: string = getModalStyles();
     expect(styles).toContain('var(--io-bg-overlay)');

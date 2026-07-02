@@ -334,7 +334,7 @@
   /* Fluid spacing — responsive scaling via CSS clamp()
    * Guideline: prefer fluid tokens for layout spacing; use static tokens for
    * component-internal padding/gap where visual consistency matters more than scaling.
-   * Scale mirrors Porsche cadence: 2xs → 2xl (7 steps).
+   * Scale: 2xs → 2xl (7 steps).
    * Viewport range: 375px (mobile min) → 1440px (desktop max).
    */
   --io-space-fluid-2xs:          clamp(0.0625rem, 0.1vw + 0.05rem, 0.125rem);  /*  1px →  2px */

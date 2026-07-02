@@ -111,7 +111,7 @@ export namespace Components {
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * PDS-style: one accordion instance controls one content section.
+     * Design system pattern: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
      */
     interface IoAccordion {
@@ -334,7 +334,7 @@ export namespace Components {
          */
         "open": boolean;
         /**
-          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which matches the Porsche reference pattern: bottom on mobile, top on desktop.
+          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which follows the standard notification pattern: bottom on mobile, top on desktop.
           * @example position="top" :position="{ base: 'bottom', s: 'top' }"
           * @default { base: 'bottom', s: 'top' }
          */
@@ -4064,7 +4064,7 @@ declare global {
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * PDS-style: one accordion instance controls one content section.
+     * Design system pattern: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
      */
     interface HTMLIoAccordionElement extends Components.IoAccordion, HTMLStencilElement {
@@ -5896,7 +5896,7 @@ declare namespace LocalJSX {
      * =============
      * Collapsible sections with animated +/− icon and title indent animation.
      * Extracted from the "Our expertise" section of the iO Brand & Business page.
-     * PDS-style: one accordion instance controls one content section.
+     * Design system pattern: one accordion instance controls one content section.
      * @example <io-accordion></io-accordion>
      */
     interface IoAccordion {
@@ -6131,7 +6131,7 @@ declare namespace LocalJSX {
          */
         "open"?: boolean;
         /**
-          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which matches the Porsche reference pattern: bottom on mobile, top on desktop.
+          * Screen position of the banner. Accepts a flat string or a responsive breakpoint object. Defaults to `{ base: 'bottom', s: 'top' }` which follows the standard notification pattern: bottom on mobile, top on desktop.
           * @example position="top" :position="{ base: 'bottom', s: 'top' }"
           * @default { base: 'bottom', s: 'top' }
          */
@@ -10539,7 +10539,7 @@ declare module "@stencil/core" {
              * =============
              * Collapsible sections with animated +/− icon and title indent animation.
              * Extracted from the "Our expertise" section of the iO Brand & Business page.
-             * PDS-style: one accordion instance controls one content section.
+             * Design system pattern: one accordion instance controls one content section.
              * @example <io-accordion></io-accordion>
              */
             "io-accordion": LocalJSX.IntrinsicElements["io-accordion"] & JSXBase.HTMLAttributes<HTMLIoAccordionElement>;

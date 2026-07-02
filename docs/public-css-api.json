@@ -1680,12 +1680,6 @@
     "description": "Stack order of the banner overlay. Defaults to --io-z-toast."
   },
   {
-    "cssVar": "--io-modal-fullscreen-breakpoint",
-    "classification": "public-api",
-    "component": "io-modal",
-    "description": "Breakpoint below which the modal expands to fill the full viewport when fullscreen=true. Defaults to 640px."
-  },
-  {
     "cssVar": "--io-flyout-sticky-top",
     "classification": "public-api",
     "component": "io-flyout",

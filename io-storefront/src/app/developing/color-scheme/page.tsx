@@ -257,10 +257,10 @@ export default function ColorSchemePage() {
         >
           <span className="text-xs leading-6" style={{ color: 'var(--io-text-secondary)' }}>
             <strong style={{ color: 'var(--io-text-primary)' }}>Note on the theme Prop:</strong>{' '}
-            io components do not accept a <InlineCode>theme</InlineCode> prop. Porsche removed
-            this pattern in PDS v4 because a per-component prop bloats every component's API
-            surface and forces a re-render on every toggle. CSS custom property inheritance through
-            Shadow DOM makes a parent-element attribute the superior approach.
+            io components do not accept a <InlineCode>theme</InlineCode> prop. This pattern was
+            removed from the reference design system because a per-component prop bloats every
+            component&apos;s API surface and forces a re-render on every toggle. CSS custom property
+            inheritance through Shadow DOM makes a parent-element attribute the superior approach.
           </span>
         </div>
       </section>

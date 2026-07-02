@@ -438,7 +438,7 @@ export class IoSelect {
   private async positionDropdown(): Promise<void> {
     if (!this.triggerEl || !this.dropdownEl) return;
     // Use 'fixed' strategy when rendering in the top-layer (native Popover API),
-    // 'absolute' for the legacy inline-positioned fallback.
+    // 'absolute' for the inline-positioned fallback.
     const strategy = this.hasPopoverSupport ? 'fixed' : 'absolute';
     const { x, y } = await computePosition(this.triggerEl, this.dropdownEl, {
       middleware: getComboboxMiddleware(),

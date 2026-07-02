@@ -185,8 +185,8 @@ export function getBadgeStyles(): string {
       backdrop-filter: blur(8px);
     }
 
-    /* ── Deprecated brand-colour aliases ────────────────── */
-    /* These map to semantic equivalents for backwards compatibility */
+    /* ── Brand-colour name aliases ──────────────────────── */
+    /* These map to semantic equivalents — both name sets are supported. */
 
     .badge--blue.badge--soft {
       background-color: var(--io-accent-bg);

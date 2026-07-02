@@ -423,8 +423,8 @@ export class IoMultiSelect {
         ? 'top-start'
         : 'bottom-start';
 
-    // Use 'fixed' strategy for both popover (top-layer) and legacy modes;
-    // multi-select always used 'fixed' for its overlay panel.
+    // Use 'fixed' strategy for both popover (top-layer) and fallback modes;
+    // multi-select always uses 'fixed' for its overlay panel.
     const { x, y } = await computePosition(this.triggerEl, this.dropdownEl, {
       middleware: isAuto ? getMultiSelectMiddleware() : getMultiSelectPinnedMiddleware(),
       placement,
@@ -1000,7 +1000,7 @@ export class IoMultiSelect {
             data-open={isOpen ? 'true' : undefined}
             {...(this.hasPopoverSupport ? { popover: 'manual' } : {})}
           >
-            {/* Filter input — shown when filterable=true (or deprecated filter=true) */}
+            {/* Filter input — shown when filterable=true or filter=true */}
             {this.isFilterEnabled && (
               <div class="multi-select-filter">
                 <input

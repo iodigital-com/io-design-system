@@ -111,7 +111,7 @@ export async function applyFloatingPosition(
 }
 
 /**
- * Legacy fallback — kept for tests and direct callers that don't yet use
+ * Synchronous fallback for tests and direct callers that don't use
  * the async floating-ui path. Do NOT use this for new positioning logic.
  *
  * getBoundingClientRect() already returns viewport coords — do NOT add scrollY/scrollX.

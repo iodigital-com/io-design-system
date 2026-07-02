@@ -81,10 +81,9 @@ export function getFlyoutStyles(): string {
       transform: translateX(0);
     }
 
-    /* ── Legacy aliases (deprecated) ─────────────────────────── */
-    /* 'left' and 'right' are mapped to 'start'/'end' in JS but the CSS
-       classes are kept as aliases pointing to the logical variants so
-       any consumer that passes class names directly keeps working. */
+    /* ── Direction aliases ───────────────────────────────────── */
+    /* 'left' and 'right' are mapped to 'start'/'end' in JS; the CSS
+       classes point to the logical variants — all names are supported. */
     .flyout__panel--right {
       inset-inline-end: 0;
       inset-inline-start: auto;

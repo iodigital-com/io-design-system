@@ -6,6 +6,7 @@
 
 export type IoTagNames =
   | 'io-accordion'
+  | 'io-app-shell'
   | 'io-avatar'
   | 'io-badge'
   | 'io-banner'
@@ -13,6 +14,7 @@ export type IoTagNames =
   | 'io-breadcrumb-item'
   | 'io-button'
   | 'io-button-group'
+  | 'io-button-tile'
   | 'io-carousel'
   | 'io-checkbox'
   | 'io-checkbox-group'
@@ -20,6 +22,8 @@ export type IoTagNames =
   | 'io-drawer'
   | 'io-flyout'
   | 'io-form-field'
+  | 'io-grid'
+  | 'io-grid-item'
   | 'io-heading'
   | 'io-icon'
   | 'io-inline-notification'
@@ -29,6 +33,7 @@ export type IoTagNames =
   | 'io-input-search'
   | 'io-link'
   | 'io-link-pure'
+  | 'io-link-tile'
   | 'io-modal'
   | 'io-multi-select'
   | 'io-optgroup'

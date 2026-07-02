@@ -83,6 +83,14 @@ export const sitemap: NavSection[] = [
         related: ['io-tabs', 'io-modal', 'io-button'],
       },
       {
+        label: 'App Shell',
+        href: '/components/io-app-shell/configurator',
+        status: 'beta',
+        slug: 'io-app-shell',
+        description: 'Full-page application shell with sticky header, collapsible sidebar navigation, optional secondary panel, and skip-link accessibility.',
+        related: ['io-drawer', 'io-flyout', 'io-modal'],
+      },
+      {
         label: 'Avatar',
         href: '/components/io-avatar/configurator',
         status: 'beta',
@@ -129,6 +137,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-button-group',
         description: 'Segmented single or multi-select control. Renders a horizontal button strip with shared borders, active state in brand blue, and full radiogroup/checkbox ARIA semantics.',
         related: ['io-button', 'io-tabs', 'io-checkbox'],
+      },
+      {
+        label: 'Button Tile',
+        href: '/components/io-button-tile/configurator',
+        status: 'beta',
+        slug: 'io-button-tile',
+        description: 'Media tile primitive with an embedded button action. Bundles media, label, description, gradient overlay, and focus delegation in a single responsive card.',
+        related: ['io-link-tile', 'io-button', 'io-card'],
       },
       {
         label: 'Carousel',
@@ -185,6 +201,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-checkbox-group',
         description: 'Wraps io-checkbox items in a semantic fieldset with a shared legend, name propagation, and a group-level change event.',
         related: ['io-checkbox', 'io-radio-group'],
+      },
+      {
+        label: 'Grid',
+        href: '/components/io-grid/configurator',
+        status: 'beta',
+        slug: 'io-grid',
+        description: '12-column responsive CSS Grid layout primitive. Fluid gap tokens, column-span helpers, and light DOM children for unrestricted consumer styling.',
+        related: ['io-app-shell', 'io-scroller'],
       },
       {
         label: 'Heading',
@@ -257,6 +281,14 @@ export const sitemap: NavSection[] = [
         slug: 'io-link-pure',
         description: 'Icon + label tertiary CTA link with no underline at rest. Use for navigation, card CTAs, list actions, and icon-only affordances.',
         related: ['io-link', 'io-button', 'io-icon'],
+      },
+      {
+        label: 'Link Tile',
+        href: '/components/io-link-tile/configurator',
+        status: 'beta',
+        slug: 'io-link-tile',
+        description: 'Media tile primitive with an embedded link action. Bundles media, label, description, gradient overlay, and focus delegation in a single responsive card.',
+        related: ['io-button-tile', 'io-link', 'io-badge'],
       },
       {
         label: 'Modal',

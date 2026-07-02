@@ -2611,6 +2611,85 @@
     "cssVar": "--io-progress-circle-thickness",
     "classification": "public-api",
     "component": "io-progress",
-    "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px)."
+    "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px).",
+"description": "Semantic color token for the icon. Set via the color prop; defaults to currentColor. Values map to design system tokens (primary, contrast-high, contrast-medium, success, warning, error, info)."
+  },
+  {
+    "cssVar": "--io-grid-columns",
+    "classification": "public-api",
+    "component": "io-grid",
+    "description": "Number of columns in the grid. Defaults to 12. Override to set a custom grid column count."
+  },
+  {
+    "cssVar": "--io-grid-gap-none",
+    "classification": "public-api",
+    "component": "io-grid",
+    "description": "Grid gap for gap='none'. Defaults to 0px."
+  },
+  {
+    "cssVar": "--io-grid-gap-sm",
+    "classification": "public-api",
+    "component": "io-grid",
+    "description": "Grid gap for gap='sm'. Fluid from 8px to 16px via clamp()."
+  },
+  {
+    "cssVar": "--io-grid-gap-md",
+    "classification": "public-api",
+    "component": "io-grid",
+    "description": "Grid gap for gap='md'. Fluid from 16px to 36px via clamp(). This is the default gap."
+  },
+  {
+    "cssVar": "--io-grid-gap-lg",
+    "classification": "public-api",
+    "component": "io-grid",
+    "description": "Grid gap for gap='lg'. Fluid from 24px to 48px via clamp()."
+  },
+  {
+    "cssVar": "--io-container-narrow-max",
+    "classification": "internal",
+    "component": "io-grid",
+    "description": "Maximum width for the narrow container preset (48rem / 768px)."
+  },
+  {
+    "cssVar": "--io-container-basic-max",
+    "classification": "internal",
+    "component": "io-grid",
+    "description": "Maximum width for the basic container preset (64rem / 1024px)."
+  },
+  {
+    "cssVar": "--io-container-wide-max",
+    "classification": "internal",
+    "component": "io-grid",
+    "description": "Maximum width for the wide container preset (90rem / 1440px)."
+  },
+  {
+    "cssVar": "--io-link-tile-aspect-ratio",
+    "classification": "public-api",
+    "component": "io-link-tile",
+    "description": "Override the default aspect ratio of the tile. Defaults to the value set by the aspect-ratio prop."
+  },
+  {
+    "cssVar": "--io-button-tile-aspect-ratio",
+    "classification": "public-api",
+    "component": "io-button-tile",
+    "description": "Override the default aspect ratio of the tile. Defaults to the value set by the aspect-ratio prop."
+  },
+  {
+    "cssVar": "--io-app-shell-header-height",
+    "classification": "public-api",
+    "component": "io-app-shell",
+    "description": "Height of the sticky header bar. Defaults to --io-header-height (72px)."
+  },
+  {
+    "cssVar": "--io-app-shell-sidebar-start-width",
+    "classification": "public-api",
+    "component": "io-app-shell",
+    "description": "Width of the sidebar-start panel. Defaults to 320px."
+  },
+  {
+    "cssVar": "--io-app-shell-sidebar-end-width",
+    "classification": "public-api",
+    "component": "io-app-shell",
+    "description": "Width of the sidebar-end panel. Defaults to 320px."
   }
 ]

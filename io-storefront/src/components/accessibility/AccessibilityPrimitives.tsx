@@ -145,6 +145,52 @@ export function AriaTable({ rows }: { rows: AriaRow[] }) {
   );
 }
 
+export type A11yCheckStatus = 'pass' | 'note' | 'fail';
+
+const A11Y_CHECK_STYLES: Record<A11yCheckStatus, { icon: string; textClass: string; bg: string; border: string }> = {
+  pass: {
+    icon: '✓',
+    textClass: 'text-io-color-success',
+    bg: 'color-mix(in srgb, var(--io-color-success) 8%, transparent)',
+    border: 'color-mix(in srgb, var(--io-color-success) 30%, transparent)',
+  },
+  note: {
+    icon: '→',
+    textClass: 'text-io-color-warning',
+    bg: 'color-mix(in srgb, var(--io-color-warning) 8%, transparent)',
+    border: 'color-mix(in srgb, var(--io-color-warning) 30%, transparent)',
+  },
+  fail: {
+    icon: '✕',
+    textClass: 'text-io-color-error',
+    bg: 'color-mix(in srgb, var(--io-color-error) 8%, transparent)',
+    border: 'color-mix(in srgb, var(--io-color-error) 30%, transparent)',
+  },
+};
+
+export function A11yCheck({
+  status = 'pass',
+  children,
+}: {
+  status?: A11yCheckStatus;
+  children: ReactNode;
+}) {
+  const { icon, textClass, bg, border } = A11Y_CHECK_STYLES[status];
+  return (
+    <div
+      className="flex gap-3 p-4 rounded-lg"
+      style={{ background: bg, border: `1px solid ${border}` }}
+    >
+      <span className={`text-sm font-bold shrink-0 mt-0.5 ${textClass}`} aria-hidden="true">
+        {icon}
+      </span>
+      <p className="text-sm text-io-text-secondary leading-[1.6]">
+        {children}
+      </p>
+    </div>
+  );
+}
+
 export type Level = 'A' | 'AA' | 'AAA';
 
 const COMPLIANCE_STATUS_STYLES = {

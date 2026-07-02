@@ -13,6 +13,7 @@ declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
   'io-accordion': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAccordionElement>, HTMLIoAccordionElement> & Partial<StencilJSX.IoAccordion>;
+  'io-app-shell': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAppShellElement>, HTMLIoAppShellElement> & Partial<StencilJSX.IoAppShell>;
   'io-avatar': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoAvatarElement>, HTMLIoAvatarElement> & Partial<StencilJSX.IoAvatar>;
   'io-badge': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBadgeElement>, HTMLIoBadgeElement> & Partial<StencilJSX.IoBadge>;
   'io-banner': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBannerElement>, HTMLIoBannerElement> & Partial<StencilJSX.IoBanner>;
@@ -20,6 +21,7 @@ declare module 'react' {
   'io-breadcrumb-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoBreadcrumbItemElement>, HTMLIoBreadcrumbItemElement> & Partial<StencilJSX.IoBreadcrumbItem>;
   'io-button': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonElement>, HTMLIoButtonElement> & Partial<StencilJSX.IoButton>;
   'io-button-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonGroupElement>, HTMLIoButtonGroupElement> & Partial<StencilJSX.IoButtonGroup>;
+  'io-button-tile': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoButtonTileElement>, HTMLIoButtonTileElement> & Partial<StencilJSX.IoButtonTile>;
   'io-carousel': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCarouselElement>, HTMLIoCarouselElement> & Partial<StencilJSX.IoCarousel>;
   'io-checkbox': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxElement>, HTMLIoCheckboxElement> & Partial<StencilJSX.IoCheckbox>;
   'io-checkbox-group': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoCheckboxGroupElement>, HTMLIoCheckboxGroupElement> & Partial<StencilJSX.IoCheckboxGroup>;
@@ -27,6 +29,8 @@ declare module 'react' {
   'io-drawer': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoDrawerElement>, HTMLIoDrawerElement> & Partial<StencilJSX.IoDrawer>;
   'io-flyout': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFlyoutElement>, HTMLIoFlyoutElement> & Partial<StencilJSX.IoFlyout>;
   'io-form-field': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoFormFieldElement>, HTMLIoFormFieldElement> & Partial<StencilJSX.IoFormField>;
+  'io-grid': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoGridElement>, HTMLIoGridElement> & Partial<StencilJSX.IoGrid>;
+  'io-grid-item': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoGridItemElement>, HTMLIoGridItemElement> & Partial<StencilJSX.IoGridItem>;
   'io-heading': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoHeadingElement>, HTMLIoHeadingElement> & Partial<StencilJSX.IoHeading>;
   'io-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoIconElement>, HTMLIoIconElement> & Partial<StencilJSX.IoIcon>;
   'io-inline-notification': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInlineNotificationElement>, HTMLIoInlineNotificationElement> & Partial<StencilJSX.IoInlineNotification>;
@@ -36,6 +40,7 @@ declare module 'react' {
   'io-input-search': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoInputSearchElement>, HTMLIoInputSearchElement> & Partial<StencilJSX.IoInputSearch>;
   'io-link': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkElement>, HTMLIoLinkElement> & Partial<StencilJSX.IoLink>;
   'io-link-pure': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkPureElement>, HTMLIoLinkPureElement> & Partial<StencilJSX.IoLinkPure>;
+  'io-link-tile': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoLinkTileElement>, HTMLIoLinkTileElement> & Partial<StencilJSX.IoLinkTile>;
   'io-modal': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoModalElement>, HTMLIoModalElement> & Partial<StencilJSX.IoModal>;
   'io-multi-select': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoMultiSelectElement>, HTMLIoMultiSelectElement> & Partial<StencilJSX.IoMultiSelect>;
   'io-optgroup': React.DetailedHTMLProps<React.HTMLAttributes<HTMLIoOptgroupElement>, HTMLIoOptgroupElement> & Partial<StencilJSX.IoOptgroup>;

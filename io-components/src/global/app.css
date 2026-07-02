@@ -500,6 +500,17 @@
 
   --io-container-max:            76.5rem;    /* 1224px */
   --io-container-edge:           calc((100vw - 76.5rem) / 2);
+  --io-container-narrow-max:     48rem;      /* 768px — tightly constrained reading column */
+  --io-container-basic-max:      64rem;      /* 1024px — standard content width */
+  --io-container-wide-max:       90rem;      /* 1440px — wide-format marketing layouts */
+
+  /* Grid system — 12-column layout primitive */
+  --io-grid-columns:             12;
+  --io-grid-gap-none:            0px;
+  --io-grid-gap-sm:              clamp(0.5rem, 0.75vw + 0.25rem, 1rem);   /* 8–16px */
+  --io-grid-gap-md:              clamp(1rem, 1.25vw + 0.75rem, 2.25rem);  /* 16–36px */
+  --io-grid-gap-lg:              clamp(1.5rem, 2vw + 1rem, 3rem);         /* 24–48px */
+
   --io-section-spacing-mobile:   6rem;       /* 96px — spacing.24 */
   --io-section-spacing-tablet:   8rem;       /* 128px — spacing.32 */
   --io-section-spacing-desktop:  10rem;      /* 160px — spacing.40 */

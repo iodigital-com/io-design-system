@@ -34,7 +34,7 @@ export default function IoBadgeApiPage() {
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoBadgeVariant</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(12 values)</span>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(13 values)</span>
               </span>,
               <InlineCode key="d">&apos;primary&apos;</InlineCode>,
               <span key="desc">

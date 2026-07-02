@@ -62,18 +62,6 @@ export default function IoCheckboxGroupApiPage() {
               'Validation or helper message shown below the group when state is not "none". Rendered with role="alert" when state is "error" and linked to the fieldset via aria-describedby.',
             ],
             [
-              <span key="n"><InlineCode>error</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Puts the group in error state. Use state="error" for the recommended validation API.',
-            ],
-            [
-              <InlineCode key="n">errorMessage</InlineCode>,
-              <InlineCode key="t">string | undefined</InlineCode>,
-              <InlineCode key="d">undefined</InlineCode>,
-              'Error message shown below the group when error is true. Use the message prop alongside state for the recommended validation API.',
-            ],
-            [
               <span key="n"><InlineCode>orientation</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">&apos;vertical&apos; | &apos;horizontal&apos;</InlineCode>,
               <InlineCode key="d">&apos;vertical&apos;</InlineCode>,

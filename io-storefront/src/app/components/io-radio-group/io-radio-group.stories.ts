@@ -12,8 +12,6 @@ export const radioGroupStory: Story<'io-radio-group'> = {
       loading: false,
       state: 'none',
       message: '',
-      error: false,
-      errorMessage: '',
       helperText: '',
     },
   },
@@ -87,8 +85,8 @@ export const radioGroupStoryError: Story<'io-radio-group'> = {
       properties: {
         label: 'Preferred contact',
         name: 'contact-error',
-        error: true,
-        errorMessage: 'Please select a contact method.',
+        state: 'error',
+        message: 'Please select a contact method.',
       },
       children: [
         { tag: 'io-radio' as const, properties: { label: 'Email', value: 'email' } },
@@ -182,18 +180,6 @@ export const radioGroupPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Validation or helper message shown below the group when state is not "none". Recommended API — supersedes the deprecated errorMessage prop.',
-  },
-  {
-    name: 'error',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Puts the group in error state. Use state="error" for the recommended validation API.',
-  },
-  {
-    name: 'errorMessage',
-    type: 'string',
-    defaultValue: '',
-    description: 'Error message shown below the group when error is true. Use the message prop alongside state for the recommended validation API.',
   },
   {
     name: 'orientation',

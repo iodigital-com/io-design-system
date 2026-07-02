@@ -119,7 +119,7 @@ export default function IoInputApiPage() {
               <span key="n"><InlineCode>readOnly</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">false</InlineCode>,
-              'Makes the field read-only — value is not editable but the field stays in tab order. The reflected HTML attribute is readonly (lowercase); the JS property name is readOnly (camelCase).',
+              'Makes the field read-only — value is not editable but the field stays in tab order. The reflected HTML attribute is read-only (with dash); the JS property name is readOnly (camelCase).',
             ],
             [
               <InlineCode key="n">loading</InlineCode>,

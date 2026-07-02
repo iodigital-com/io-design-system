@@ -1,6 +1,5 @@
 import { Component, Host, Prop, State, Watch, h } from '@stencil/core';
 
-import { ensureIconSymbol } from '../../utils/icon-sprite';
 import { ICON_NODES, escapeAttr } from '../../utils/icons';
 
 import { getIconStyles } from './io-icon-styles';
@@ -112,9 +111,8 @@ export class IoIcon {
       );
     }
 
-    if (!ICON_NODES[this.name]) return null;
-
-    ensureIconSymbol(this.name);
+    const nodes = ICON_NODES[this.name];
+    if (!nodes) return null;
 
     const ariaAttrs = this.label
       ? { role: 'img', 'aria-label': this.label }
@@ -123,8 +121,16 @@ export class IoIcon {
     return (
       <Host style={this.hostStyle}>
         <style>{getIconStyles()}</style>
-        <svg {...ariaAttrs}>
-          <use href={`#io-icon-${this.name}`} />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          {...ariaAttrs}
+        >
+          {nodes.map(([tag, attrs]: [string, Record<string, string>]) => h(tag, attrs))}
         </svg>
       </Host>
     );

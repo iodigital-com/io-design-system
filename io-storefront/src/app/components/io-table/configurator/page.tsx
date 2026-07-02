@@ -10,6 +10,7 @@ export default function IoTableConfiguratorPage() {
       tagName="io-table"
       story={tableStory}
       propDefinitions={tablePropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

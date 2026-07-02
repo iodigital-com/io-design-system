@@ -10,6 +10,7 @@ export default function IoInputPasswordConfiguratorPage() {
       tagName="io-input-password"
       story={inputPasswordStory}
       propDefinitions={inputPasswordPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

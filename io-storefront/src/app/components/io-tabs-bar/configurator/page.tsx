@@ -10,6 +10,7 @@ export default function IoTabsBarConfiguratorPage() {
       tagName="io-tabs-bar"
       story={tabsBarStory}
       propDefinitions={tabsBarPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

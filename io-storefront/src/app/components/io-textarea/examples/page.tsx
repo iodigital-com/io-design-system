@@ -16,7 +16,7 @@ export default function IoTextareaExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={textareaStoryDefault} />
+        <ComponentStory story={textareaStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -34,12 +34,12 @@ export default function IoTextareaExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={textareaStoryError} />
+        <ComponentStory story={textareaStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={textareaStoryDisabled} />
+        <ComponentStory story={textareaStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
     </div>
   );

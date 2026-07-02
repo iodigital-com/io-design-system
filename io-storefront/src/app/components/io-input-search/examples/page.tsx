@@ -16,7 +16,7 @@ export default function IoInputSearchExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputSearchStoryDefault} />
+        <ComponentStory story={inputSearchStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -26,17 +26,17 @@ export default function IoInputSearchExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="With placeholder" description="Use placeholder to hint the expected input format or scope." />
-        <ComponentStory story={inputSearchStoryWithPlaceholder} />
+        <ComponentStory story={inputSearchStoryWithPlaceholder} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputSearchStoryError} />
+        <ComponentStory story={inputSearchStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputSearchStoryDisabled} />
+        <ComponentStory story={inputSearchStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
     </div>
   );

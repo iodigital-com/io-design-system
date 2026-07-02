@@ -10,6 +10,7 @@ export default function IoStepperConfiguratorPage() {
       tagName="io-stepper"
       story={stepperStory}
       propDefinitions={stepperPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

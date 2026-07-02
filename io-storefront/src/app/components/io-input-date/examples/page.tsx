@@ -17,7 +17,7 @@ export default function IoInputDateExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputDateStoryDefault} />
+        <ComponentStory story={inputDateStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
@@ -27,22 +27,22 @@ export default function IoInputDateExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="With constraints" description="Use min and max to restrict the selectable date range." />
-        <ComponentStory story={inputDateStoryWithConstraints} />
+        <ComponentStory story={inputDateStoryWithConstraints} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Date of birth" description="Use max to enforce age requirements. Surface the constraint in helperText." />
-        <ComponentStory story={inputDateStoryBirthDate} />
+        <ComponentStory story={inputDateStoryBirthDate} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputDateStoryError} />
+        <ComponentStory story={inputDateStoryError} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputDateStoryDisabled} />
+        <ComponentStory story={inputDateStoryDisabled} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
       </section>
     </div>
   );

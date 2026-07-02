@@ -10,6 +10,7 @@ export default function IoTabsConfiguratorPage() {
       tagName="io-tabs"
       story={tabsStory}
       propDefinitions={tabsPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

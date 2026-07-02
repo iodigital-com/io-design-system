@@ -10,6 +10,7 @@ export default function IoScrollerConfiguratorPage() {
       tagName="io-scroller"
       story={scrollerStory}
       propDefinitions={scrollerPropDefinitions}
+      previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }}
     />
   );
 }

@@ -409,6 +409,7 @@ export class IoModal {
       // Only close when clicking the backdrop area itself, not elements inside the dialog.
       // ev.target is the backdrop div only when clicking outside the dialog panel.
       if (ev.target === this.backdropEl) {
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };
@@ -426,6 +427,7 @@ export class IoModal {
       if (ev.key === 'Escape') {
         ev.preventDefault();
         if (!this.dismissButton) return;
+        this._userInitiatedClose = true;
         this.open = false;
       }
     };

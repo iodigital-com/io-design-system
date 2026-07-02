@@ -22,7 +22,7 @@ export const wordmarkStory: Story<'io-wordmark'> = {
 export const wordmarkStoryVariants: Story<'io-wordmark'> = {
   state: { properties: {} },
   generator: () =>
-    (['mark', 'lockup'] as const).map((variant) => ({
+    (['mark', 'lockup', 'badge'] as const).map((variant) => ({
       tag: 'io-wordmark' as const,
       properties: { variant, size: 'md' },
       children: [],
@@ -73,15 +73,27 @@ export const wordmarkStoryLockupColors: Story<'io-wordmark'> = {
     })),
 };
 
+// ── Badge story ───────────────────────────────────────────────────────────────
+
+export const wordmarkStoryBadge: Story<'io-wordmark'> = {
+  state: { properties: {} },
+  generator: () =>
+    (['blue', 'black', 'white'] as const).map((color) => ({
+      tag: 'io-wordmark' as const,
+      properties: { variant: 'badge' as const, color, size: 'lg' },
+      children: [],
+    })),
+};
+
 // ── Prop definitions ──────────────────────────────────────────────────────────
 
 export const wordmarkPropDefinitions: PropDefinition[] = [
   {
     name: 'variant',
     type: 'select',
-    options: ['mark', 'lockup'],
+    options: ['mark', 'lockup', 'badge'],
     defaultValue: 'mark',
-    description: 'Which visual representation to render.',
+    description: 'Which visual representation to render. mark = geometric iO mark. lockup = full brand lockup. badge = square brand mark for app icons and avatars.',
   },
   {
     name: 'color',

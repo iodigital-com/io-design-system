@@ -24,12 +24,13 @@ export default function IoWordmarkApiPage() {
           rows={[
             [
               <span key="n"><InlineCode>variant</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">&apos;mark&apos; | &apos;lockup&apos;</InlineCode>,
+              <InlineCode key="t">&apos;mark&apos; | &apos;lockup&apos; | &apos;badge&apos;</InlineCode>,
               <InlineCode key="d">&apos;mark&apos;</InlineCode>,
               <span key="desc">
                 Which visual representation to render.{' '}
                 <InlineCode>mark</InlineCode> = geometric iO mark SVG (default).{' '}
-                <InlineCode>lockup</InlineCode> = full official brand lockup SVG.
+                <InlineCode>lockup</InlineCode> = full official brand lockup SVG.{' '}
+                <InlineCode>badge</InlineCode> = square brand mark for app icons, social avatars, and watermarks.
               </span>,
             ],
             [

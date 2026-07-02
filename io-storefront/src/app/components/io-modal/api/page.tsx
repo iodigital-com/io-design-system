@@ -72,6 +72,12 @@ export default function IoModalApiPage() {
               'Background colour of the dialog panel. canvas uses the page background; surface uses the card/panel background; elevated uses a raised surface background.',
             ],
             [
+              <span key="n"><InlineCode>backdrop</InlineCode><ReflectBadge /></span>,
+              <InlineCode key="t">&apos;blur&apos; | &apos;shading&apos;</InlineCode>,
+              <InlineCode key="d">&apos;blur&apos;</InlineCode>,
+              'Visual treatment of the backdrop behind the dialog panel. blur applies a backdrop-filter blur effect — use for user-initiated dialogs. shading uses a solid overlay colour without backdrop-filter — use for auto-appearing dialogs (e.g. cookie consent) to avoid GPU compositing cost on low-end devices.',
+            ],
+            [
               <span key="n"><InlineCode>preventTopLayer</InlineCode><ReflectBadge /></span>,
               <InlineCode key="t">boolean</InlineCode>,
               <InlineCode key="d">true</InlineCode>,

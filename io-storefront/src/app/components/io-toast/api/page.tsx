@@ -51,6 +51,16 @@ export default function IoToastApiPage() {
               <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
               'Enqueue a notification. The message is added to the FIFO queue and displayed when the current toast (if any) has been dismissed. The promise resolves once the message has been enqueued.',
             ],
+            [
+              <InlineCode key="m">dismissToast(id?: number)</InlineCode>,
+              <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
+              'Dismiss a specific toast by its numeric id. If id is omitted, dismisses the currently visible toast. No-op if no toast is visible or the specified id is not in the queue.',
+            ],
+            [
+              <InlineCode key="m">dismissAll()</InlineCode>,
+              <InlineCode key="r">Promise&lt;void&gt;</InlineCode>,
+              'Dismiss all queued and currently visible toasts immediately. Use to clear notifications on route changes or session termination.',
+            ],
           ]}
         />
 
@@ -101,6 +111,13 @@ export default function IoToastApiPage() {
                 'No',
                 '—',
                 'Array of up to 2 action items rendered beside the notification text. Each entry supports label, href, variant, and a custom onClick. Entries with href render as anchors; entries without href render as buttons that emit the action event on io-toast-item.',
+              ],
+              [
+                <InlineCode key="n">showProgress</InlineCode>,
+                <InlineCode key="t">boolean</InlineCode>,
+                'No',
+                <InlineCode key="d">false</InlineCode>,
+                'When true, renders a countdown progress bar inside the toast item showing the time remaining before auto-dismiss. Has no effect on persistent toasts.',
               ],
             ]}
           />

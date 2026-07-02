@@ -168,15 +168,16 @@ describe('io-wordmark storefront stories', () => {
       expect(() => wordmarkStoryVariants.generator?.()).not.toThrow();
     });
 
-    it('generator returns 2 elements (mark and lockup)', () => {
-      expect(wordmarkStoryVariants.generator?.()!.length).toBe(2);
+    it('generator returns 3 elements (mark, lockup, and badge)', () => {
+      expect(wordmarkStoryVariants.generator?.()!.length).toBe(3);
     });
 
-    it('elements cover mark/lockup variants', () => {
+    it('elements cover mark/lockup/badge variants', () => {
       const els = wordmarkStoryVariants.generator?.() ?? [];
       const variants = els.map((el) => (el as { properties: Record<string, unknown> }).properties.variant);
       expect(variants).toContain('mark');
       expect(variants).toContain('lockup');
+      expect(variants).toContain('badge');
       expect(variants).not.toContain('text');
     });
   });

@@ -60,6 +60,14 @@ export default function IoTooltipApiPage() {
               <InlineCode key="d">&apos;top&apos;</InlineCode>,
               'Preferred placement of the tooltip relative to the trigger. Maps to the io-tooltip-placement attribute on the first child trigger element.',
             ],
+            [
+              <span key="n"><InlineCode>theme</InlineCode></span>,
+              <span key="t">
+                <InlineCode>&apos;dark&apos;</InlineCode>{' | '}<InlineCode>&apos;light&apos;</InlineCode>
+              </span>,
+              <InlineCode key="d">&apos;dark&apos;</InlineCode>,
+              'Colour theme of the tooltip overlay. dark renders a dark background with light text (default). light renders a light background with dark text.',
+            ],
           ]}
         />
       </section>
@@ -113,6 +121,14 @@ export default function IoTooltipApiPage() {
               </span>,
               <InlineCode key="d">&apos;top&apos;</InlineCode>,
               'Preferred placement. All 12 floating-ui placements are supported. The component auto-flips to an available placement if the preferred one would clip outside the viewport.',
+            ],
+            [
+              <InlineCode key="n">io-tooltip-theme</InlineCode>,
+              <span key="t">
+                <InlineCode>&apos;dark&apos;</InlineCode>{' | '}<InlineCode>&apos;light&apos;</InlineCode>
+              </span>,
+              <InlineCode key="d">&apos;dark&apos;</InlineCode>,
+              'Colour theme for the tooltip overlay. Set to light on dark backgrounds to render a light-coloured tooltip. Omit for the default dark theme.',
             ],
           ]}
         />

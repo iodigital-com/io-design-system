@@ -89,6 +89,20 @@ export default function IoTabsApiPage() {
                 its associated panel — required for full ARIA APG tabpanel pattern compliance.
               </span>,
             ],
+            [
+              <span key="n">
+                <InlineCode>closeable</InlineCode>
+                <ReflectBadge />
+              </span>,
+              <InlineCode key="t">boolean</InlineCode>,
+              <InlineCode key="d">false</InlineCode>,
+              <span key="desc">
+                When true, all tabs render a close button that fires the{' '}
+                <InlineCode>tabClose</InlineCode> event with the tab index when clicked or activated
+                via Enter or Space. Individual tabs can also opt in via the{' '}
+                <InlineCode>data-closeable</InlineCode> attribute without enabling it globally.
+              </span>,
+            ],
           ]}
         />
       </section>
@@ -145,6 +159,18 @@ export default function IoTabsApiPage() {
               <InlineCode key="t">{'{ activeTabIndex: number }'}</InlineCode>,
               'No',
               'Fires when the user activates a different tab (via click, Enter, or Space). Does NOT fire when activeTabIndex is changed programmatically — only on direct user interaction. Update your controlled state with the emitted activeTabIndex.',
+            ],
+            [
+              <InlineCode key="n">tabClose</InlineCode>,
+              <InlineCode key="t">{'{ index: number }'}</InlineCode>,
+              'No',
+              <span key="desc">
+                Fires when the user clicks or keyboard-activates the close button on a closeable tab.
+                The detail object contains <InlineCode>index</InlineCode> — the 0-based index of the
+                tab that was closed. Only fires when <InlineCode>closeable</InlineCode> is true or the
+                individual tab has the <InlineCode>data-closeable</InlineCode> attribute. Removing the
+                tab from the DOM is the consumer&apos;s responsibility.
+              </span>,
             ],
           ]}
         />

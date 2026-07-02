@@ -1,5 +1,53 @@
 # @iodigital-com/components
 
+## 1.9.0
+
+### Minor Changes
+
+- 33d2496: feat: add io-grid, io-link-tile, io-button-tile, and io-app-shell components
+
+  - **io-grid**: 12-column responsive CSS Grid layout primitive with four fluid gap presets (none/sm/md/lg) driven by clamp() tokens, align and justify props, and companion io-grid-item with colSpan/rowSpan/colStart support. Uses shadow: false (light DOM) so consumers can style children without Shadow DOM boundaries. New tokens: --io-grid-columns, --io-grid-gap-{none,sm,md,lg}, --io-container-{narrow,basic,wide}-max.
+
+  - **io-link-tile**: Media tile primitive with an embedded full-surface anchor. Bundles media (img/picture/video), overlay label/description, optional gradient, four aspect ratio presets (1/1, 4/3, 3/4, 16/9), and header/footer named slots. Focus delegates from host to the anchor via delegatesFocus.
+
+  - **io-button-tile**: Sibling to io-link-tile for action-triggered tiles. Renders a full-surface button instead of an anchor, with disabled/loading states, aria-busy support, and tileClick event emission.
+
+  - **io-app-shell**: Full-page application shell with sticky header (header-start/title/header-end slots), collapsible sidebar-start (focus trap + scroll lock on mobile overlay), optional sidebar-end panel, main content area with skip-to-main link (WCAG 2.4.1), footer, and background media slot. Matches io-flyout patterns for focus management.
+
+- 9160877: feat: add io-ai-tag, io-button-pure, and io-flag components
+
+  - io-ai-tag: EU AI Act disclosure badge with abbreviation/generated/modified variants, EN + NL i18n, and <abbr> semantics
+  - io-button-pure: link-styled inline action button inheriting font-size, with active/underline/stretch/alignLabel props
+  - io-flag: country flag indicator for international UI covering 40 ISO 3166-1 alpha-2 codes (EU + key regions), lazy-loaded from flagcdn.com
+
+- bc8011b: Add io-product-tile commerce primitive, dialog shared utilities, io-icon SVG sprite deduplication, and BreakpointCustomizable responsive props for io-button.
+
+  - feat(io-product-tile): new commerce primitive with heading, price, sale price, like button, image slot, and accessible sr-only price labels (issue #1097)
+  - refactor(io-modal): extract shared dialog utils (scroll-lock, focus-trap, backdrop-click, inert, transition-end) to utils/dialog/ (issue #959)
+  - perf(io-icon): add SVG sprite deduplication via shared <symbol> + <use> pattern to reduce DOM clones (issue #1040)
+  - feat(io-button): add BreakpointCustomizable<T> type for size, hideLabel, and iconPosition props with @media CSS generation (issue #1056)
+
+- a924818: feat(io-fieldset): add generic fieldset primitive for grouping mixed controls
+- 21c8342: feat(io-input): add indicator prop for type-specific visual affordances
+
+  Adds an `indicator` prop to `io-input` that renders a leading Lucide icon in the prefix area. Pass any valid `IoIconName` string (e.g. `"mail"`, `"phone"`, `"link"`) to show a decorative, aria-hidden icon before the input value. The `TYPE_ICON_MAP` also enables boolean-style usage where `true` auto-selects the icon based on `type` (email→mail, tel→phone, url→link).
+
+  New CSS custom properties for consumer overrides:
+
+  - `--io-input-indicator-color` (default: `var(--io-text-secondary)`)
+  - `--io-input-indicator-size` (default: `1.25rem`)
+
+- d4de04a: feat(io-text-list-item): add child component for io-text-list
+
+  New `io-text-list-item` component for slot-based content projection into list items.
+  Renders with `shadow: false` to preserve native list semantics and carries
+  `role="listitem"` automatically. Logs a console warning when used outside
+  `io-text-list`. Plain `<li>` children remain fully supported alongside this component.
+
+### Patch Changes
+
+- dc84733: Remove stale JSDoc deprecation annotations and console.warn from public component APIs. io-button no longer emits a deprecation warning for `iconOnly`. All prop descriptions are neutral v1 language.
+
 ## 1.8.0
 
 ### Minor Changes

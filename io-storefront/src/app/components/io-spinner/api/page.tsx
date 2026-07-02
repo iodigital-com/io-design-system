@@ -56,7 +56,7 @@ export default function IoSpinnerApiPage() {
                 Controls the spinner layout context.{' '}
                 <InlineCode>inline</InlineCode> renders as an inline-block element alongside other content.{' '}
                 <InlineCode>blocking</InlineCode> renders centered in its container with{' '}
-                <InlineCode>aria-live=&quot;polite&quot;</InlineCode> and{' '}
+                <InlineCode>aria-live=&quot;assertive&quot;</InlineCode> and{' '}
                 <InlineCode>aria-atomic=&quot;true&quot;</InlineCode> for full-area loading states.
               </span>,
             ],

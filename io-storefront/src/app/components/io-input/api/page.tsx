@@ -236,6 +236,12 @@ export default function IoInputApiPage() {
               <InlineCode key="d">false</InlineCode>,
               'When true and type="number", renders custom +/- stepper buttons and suppresses the native browser spin buttons. Scroll-wheel value changes are always prevented for number inputs.',
             ],
+            [
+              <InlineCode key="n">aria</InlineCode>,
+              <InlineCode key="t">Record&lt;string, string&gt; | undefined</InlineCode>,
+              '—',
+              'Pass-through ARIA attributes applied directly to the native input element. Use for advanced accessibility patterns not covered by built-in props (e.g. aria-controls, aria-expanded).',
+            ],
           ]}
         />
       </section>

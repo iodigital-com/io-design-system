@@ -85,7 +85,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
       {
         heading: 'How do I know if a component changed in a release?',
         answer:
-          'Each release block in the Changelog lists Added, Changed, Fixed, and Deprecated entries per package. Breaking changes are highlighted separately. Subscribe to the GitHub repository to receive release notifications.',
+          'Each release block in the Changelog lists Minor Changes and Patch Changes per package. Breaking changes are highlighted separately. Subscribe to the GitHub repository to receive release notifications.',
       },
     ],
   },

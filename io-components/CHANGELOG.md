@@ -243,7 +243,7 @@
 
   docs(io-table): document tri-state sort and full-word direction values (#1044)
 
-  - `IoTableSortDirection` JSDoc explains tri-state cycling and ARIA-aligned full-word values vs Porsche bi-state short-form
+  - `IoTableSortDirection` JSDoc explains tri-state cycling and ARIA-aligned full-word values (ascending/descending/none)
   - `IoTableSortDetail` JSDoc documents the `key` naming rationale
   - Accessibility tab: new "Tri-state sort" section with design rationale and best practices
 

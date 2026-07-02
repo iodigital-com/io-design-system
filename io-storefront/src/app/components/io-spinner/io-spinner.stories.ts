@@ -75,7 +75,7 @@ export const spinnerPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['sm', 'md', 'lg', 'inherit'],
+    options: ['xs', 'sm', 'md', 'lg', 'xl', 'inherit'],
     defaultValue: 'md',
   },
   {
@@ -88,5 +88,11 @@ export const spinnerPropDefinitions: PropDefinition[] = [
     name: 'label',
     type: 'string',
     defaultValue: 'Loading',
+  },
+  {
+    name: 'context',
+    type: 'select',
+    options: ['inline', 'blocking'],
+    defaultValue: 'inline',
   },
 ];

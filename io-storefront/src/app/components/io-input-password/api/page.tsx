@@ -36,6 +36,7 @@ export default function IoInputPasswordApiPage() {
             [<InlineCode key="n">autocomplete</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;current-password&apos;</InlineCode>, 'Native autocomplete attribute. Use "new-password" on registration forms.'],
             [<InlineCode key="n">toggle</InlineCode>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">true</InlineCode>, 'When false, hides the show/hide password toggle button. Useful when consumers implement their own visibility control.'],
             [<InlineCode key="n">spellCheck</InlineCode>, <InlineCode key="t">boolean | undefined</InlineCode>, '—', 'Native spellcheck attribute — passed through to the inner input as-is.'],
+            [<InlineCode key="n">aria</InlineCode>, <InlineCode key="t">Record&lt;string, string&gt; | undefined</InlineCode>, '—', 'Pass-through ARIA attributes applied directly to the native input element. Use for advanced accessibility patterns not covered by built-in props.'],
           ]}
         />
       </section>

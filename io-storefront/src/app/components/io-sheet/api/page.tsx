@@ -97,6 +97,33 @@ sheet.addEventListener('dismiss', () => console.log('dismissed'));
         </CodeNote>
       </section>
 
+      {/* ── Methods ──────────────────────────────────────────────── */}
+      <section id="methods" className="space-y-4">
+        <SectionHeader
+          title="Methods"
+          description="Public @Method() calls exposed on the element reference. Call after the component has been upgraded."
+        />
+        <ApiTable
+          columns={[
+            { label: 'Method', width: '160px' },
+            { label: 'Signature', width: '320px' },
+            { label: 'Description' },
+          ]}
+          rows={[
+            [
+              <InlineCode key="n">show</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;void&gt;</InlineCode>,
+              'Programmatically opens the sheet. Equivalent to setting open={true}. Use when you cannot directly bind the open prop.',
+            ],
+            [
+              <InlineCode key="n">close</InlineCode>,
+              <InlineCode key="s">() =&gt; Promise&lt;void&gt;</InlineCode>,
+              'Programmatically closes the sheet. Equivalent to setting open={false}. Does not emit the dismiss event — dismiss fires only on user-initiated close actions.',
+            ],
+          ]}
+        />
+      </section>
+
       {/* ── Slots ────────────────────────────────────────────────── */}
       <section id="slots" className="space-y-4">
         <SectionHeader

@@ -158,7 +158,7 @@ function MotionToggleDemo({
         <div
           className="relative rounded"
           style={{
-            height: 'calc(var(--io-space-7) + var(--io-space-4))',
+            height: 'calc(var(--io-space-8) + var(--io-space-3))',
             border: '1px solid var(--io-border)',
             background: 'var(--io-bg-card)',
           }}
@@ -250,7 +250,7 @@ function EasingComparisonDemo({
       <div
         className="relative rounded"
         style={{
-          height: 'calc(var(--io-space-7) + var(--io-space-2))',
+          height: 'calc(var(--io-space-6) + var(--io-space-3))',
           border: '1px solid var(--io-border)',
           background: 'var(--io-bg-card)',
         }}

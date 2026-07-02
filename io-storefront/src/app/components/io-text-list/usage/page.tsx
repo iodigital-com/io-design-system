@@ -123,6 +123,30 @@ export default function IoTextListUsagePage() {
         </div>
       </section>
 
+      {/* ── io-text-list-item ────────────────────────────────────── */}
+      <section id="io-text-list-item" className="space-y-6">
+        <SectionHeader
+          title="io-text-list-item"
+          description="io-text-list-item is a dedicated child component that provides slot-based content projection into a list item. It renders directly into the parent list's DOM (shadow: false) and carries role=&quot;listitem&quot; automatically."
+        />
+        <div className="space-y-3">
+          <RuleCard label="Recommended child element">
+            Use <C>&lt;io-text-list-item&gt;</C> when you need to project rich markup (icons, links, badges)
+            into a list item via the default slot. The component handles the <C>role=&quot;listitem&quot;</C>{' '}
+            attribute for you.
+          </RuleCard>
+          <RuleCard label="Raw &lt;li&gt; still works">
+            Plain <C>&lt;li&gt;</C> elements slotted directly into <C>io-text-list</C> remain fully
+            supported. Use them when the list item content is plain text with no component composition.
+          </RuleCard>
+          <RuleCard label="Must be a direct child of io-text-list">
+            <C>io-text-list-item</C> logs a console warning if it is placed outside of{' '}
+            <C>io-text-list</C>. It relies on the parent list element for proper list semantics
+            and inherited typography styles.
+          </RuleCard>
+        </div>
+      </section>
+
     </div>
   );
 }

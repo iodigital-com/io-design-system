@@ -27,12 +27,6 @@ export function getAiTagStyles(): string {
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Sparkle icon */
-    .ai-tag__icon {
-      display: inline-flex;
-      flex-shrink: 0;
-    }
-
     abbr {
       text-decoration: none;
       cursor: help;

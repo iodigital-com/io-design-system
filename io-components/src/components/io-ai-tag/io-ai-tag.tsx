@@ -39,23 +39,6 @@ export class IoAiTag {
    */
   @Prop({ reflect: true }) locale: IoAiTagLocale = 'en';
 
-  private renderSparkle() {
-    return (
-      <span class="ai-tag__icon" aria-hidden="true">
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Simple 4-point star / sparkle */}
-          <path d="M5 0 L5.8 3.7 L9.5 5 L5.8 6.3 L5 10 L4.2 6.3 L0.5 5 L4.2 3.7 Z" />
-        </svg>
-      </span>
-    );
-  }
-
   render() {
     const { variant, locale } = this;
     const translation = getAiTagTranslation(locale);
@@ -72,7 +55,7 @@ export class IoAiTag {
       <Host>
         <style>{getAiTagStyles()}</style>
         <span class="ai-tag">
-          {this.renderSparkle()}
+          <io-icon name="sparkles" size="xs" aria-hidden="true" />
           {content}
         </span>
       </Host>

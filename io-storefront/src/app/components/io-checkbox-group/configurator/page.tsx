@@ -10,7 +10,7 @@ export default function IoCheckboxGroupConfiguratorPage() {
       tagName="io-checkbox-group"
       story={checkboxGroupStory}
       propDefinitions={checkboxGroupPropDefinitions}
-      previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
+      previewStyle={{ flexDirection: 'column', alignItems: 'center' }}
     />
   );
 }

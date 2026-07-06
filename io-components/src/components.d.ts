@@ -348,7 +348,7 @@ export namespace Components {
      * Dismiss guard (issue #1012):
      *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
      *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
-     *   is true, and `open` is set to false only after the CSS transition ends.
+     *   is true, and `open` is set to false only after the CSS animation ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -4682,7 +4682,7 @@ declare global {
      * Dismiss guard (issue #1012):
      *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
      *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
-     *   is true, and `open` is set to false only after the CSS transition ends.
+     *   is true, and `open` is set to false only after the CSS animation ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -6890,7 +6890,7 @@ declare namespace LocalJSX {
      * Dismiss guard (issue #1012):
      *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
      *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
-     *   is true, and `open` is set to false only after the CSS transition ends.
+     *   is true, and `open` is set to false only after the CSS animation ends.
      * @example <io-banner variant="info" open heading="Maintenance scheduled">
      *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
      * </io-banner>
@@ -11952,7 +11952,7 @@ declare module "@stencil/core" {
              * Dismiss guard (issue #1012):
              *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
              *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
-             *   is true, and `open` is set to false only after the CSS transition ends.
+             *   is true, and `open` is set to false only after the CSS animation ends.
              * @example <io-banner variant="info" open heading="Maintenance scheduled">
              *   Scheduled maintenance on Saturday 10:00–12:00 UTC.
              * </io-banner>

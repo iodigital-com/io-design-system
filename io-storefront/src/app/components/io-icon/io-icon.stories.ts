@@ -423,9 +423,9 @@ export const iconPropDefinitions: PropDefinition[] = [
 ];
 
 export const iconStoryColors: Story<'io-icon'> = {
-  state: { properties: { name: 'heart', size: 'md' } },
+  state: { properties: { name: 'star', size: 'md' } },
   generator: () =>
     (['primary', 'contrast-higher', 'contrast-high', 'contrast-medium', 'contrast-lower', 'success', 'warning', 'error', 'info'] as const).map(
-      (color) => ({ tag: 'io-icon' as const, properties: { name: 'heart', size: 'md', color }, children: [] }),
+      (color) => ({ tag: 'io-icon' as const, properties: { name: 'star', size: 'md', color }, children: [] }),
     ),
 };

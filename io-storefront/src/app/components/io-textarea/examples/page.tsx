@@ -9,7 +9,7 @@ import {
 } from '../io-textarea.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
-import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoTextareaExamplesPage() {
@@ -17,7 +17,7 @@ export default function IoTextareaExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={textareaStoryDefault} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={textareaStoryDefault} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
@@ -29,18 +29,19 @@ export default function IoTextareaExamplesPage() {
         <ExamplesSectionHeader title="Resize variants" />
         <ComponentStory
           story={textareaStoryResize}
+          previewClassName={FORM_PREVIEW_CLASSNAME}
           previewStyle={{ flexDirection: 'column', alignItems: 'center', gap: 'var(--io-space-2, 8px)' }}
         />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={textareaStoryError} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={textareaStoryError} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={textareaStoryDisabled} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={textareaStoryDisabled} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
     </div>
   );

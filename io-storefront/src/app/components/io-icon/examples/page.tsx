@@ -105,7 +105,7 @@ export default function IoIconExamplesPage() {
         />
         <ComponentStory
           story={iconStoryFixedWidth}
-          previewClassName="flex flex-col gap-2 items-start"
+          previewClassName="flex flex-col gap-2 items-center"
         />
       </section>
 

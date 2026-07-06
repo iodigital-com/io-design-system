@@ -953,6 +953,49 @@
   /* ── Flag ────────────────────────────────────────────── */
   --io-flag-border-radius:       2px;
 
+  /* ── Drawer — percentage-based widths scale with viewport ── */
+  --io-drawer-width-sm:          clamp(280px, 30vw, 420px);
+  --io-drawer-width-md:          clamp(360px, 45vw, 600px);
+  --io-drawer-width-lg:          clamp(480px, 60vw, 800px);
+  --io-drawer-backdrop:          rgba(0, 0, 0, 0.5);
+
+  /* ── Flyout ──────────────────────────────────────────── */
+  --io-flyout-backdrop:          rgba(0, 0, 0, 0.5);
+  --io-flyout-sticky-top:        0px;
+
+  /* ── Wordmark — text variant ─────────────────────────── */
+  --io-wordmark-font-size-sm:         var(--io-font-size-sm);
+  --io-wordmark-font-size-md:         20px;
+  --io-wordmark-font-size-lg:         28px;
+  --io-wordmark-font-size-xl:         40px;
+  --io-wordmark-letter-spacing:       -0.01em;
+
+  /* ── Wordmark — mark variant heights (viewBox 0 0 881 599, aspect ~1.47:1) */
+  --io-wordmark-mark-height-sm:       16px;
+  --io-wordmark-mark-height-md:       24px;
+  --io-wordmark-mark-height-lg:       36px;
+  --io-wordmark-mark-height-xl:       56px;
+
+  /* ── Wordmark — lockup variant heights (viewBox 0 0 1500 1500) */
+  --io-wordmark-lockup-height-sm:     48px;
+  --io-wordmark-lockup-height-md:     80px;
+  --io-wordmark-lockup-height-lg:    120px;
+  --io-wordmark-lockup-height-xl:    168px;
+
+  /* ── Wordmark — badge variant (square brand mark for app icons) */
+  --io-wordmark-badge-size-sm:        24px;
+  --io-wordmark-badge-size-md:        40px;
+  --io-wordmark-badge-size-lg:        64px;
+  --io-wordmark-badge-size-xl:        96px;
+  --io-wordmark-badge-border-radius:  var(--io-border-radius-sm);
+  --io-wordmark-badge-glyph-color:    var(--io-color-white);
+
+  /* ── Segment — iconSource sizing (matches io-icon size="sm" = 16px) ── */
+  --io-segment-icon-source-size:      16px;
+
+  /* ── Segment — badge slot text color ─────────────────── */
+  --io-segment-badge-color:           var(--io-text-secondary);
+
 }
 
 /* ============================================================

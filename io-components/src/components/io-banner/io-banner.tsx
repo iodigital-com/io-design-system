@@ -28,7 +28,7 @@ import type { IoIconName } from '../../utils/icons';
  * Dismiss guard (issue #1012):
  *   A `_dismissing` state flag prevents duplicate dismiss events from rapid
  *   Escape presses or double-clicks. An exit animation runs while `_dismissing`
- *   is true, and `open` is set to false only after the CSS transition ends.
+ *   is true, and `open` is set to false only after the CSS animation ends.
  *
  * @example
  * <io-banner variant="info" open heading="Maintenance scheduled">
@@ -169,8 +169,8 @@ export class IoBanner {
     this._openerEl = null;
   };
 
-  private handleTransitionEnd = (e: TransitionEvent) => {
-    // Only react to the primary transition on the banner element itself
+  private handleAnimationEnd = (e: AnimationEvent) => {
+    // Only react to the exit animation on the banner element itself
     if ((e.target as HTMLElement)?.classList?.contains('banner') && this._dismissing) {
       this._dismissing = false;
       this.open = false;
@@ -280,13 +280,13 @@ export class IoBanner {
           ref={(el?: HTMLDivElement) => { this.popoverEl = el; }}
         >
         <div
-          class={`banner banner--${this.variant} ${this.bannerPositionClass}`}
+          class={`banner banner--${this.variant} ${this.bannerPositionClass} ${this._dismissing ? 'banner--dismissing' : ''}`}
           role={this.isAssertive ? 'alert' : 'status'}
           aria-live={this.isAssertive ? undefined : 'polite'}
           aria-atomic={this.isAssertive ? undefined : 'true'}
           aria-hidden={bannerHidden ? 'true' : undefined}
           style={{ display: this.open ? undefined : 'none' }}
-          onTransitionEnd={this.handleTransitionEnd}
+          onAnimationEnd={this.handleAnimationEnd}
         >
           <span class="banner__icon" aria-hidden="true">
             <io-icon name={iconName} />
@@ -325,14 +325,14 @@ export class IoBanner {
             </io-button>
           )}
           {this.dismissible && (
-            <io-button
+            <button
+              type="button"
               class="banner__dismiss"
-              variant="ghost"
-              size="sm"
-              icon="x"
               aria-label={this.resolvedDismissLabel}
               onClick={this.handleDismiss}
-            />
+            >
+              <io-icon name="x" aria-hidden="true" />
+            </button>
           )}
         </div>
         </div>

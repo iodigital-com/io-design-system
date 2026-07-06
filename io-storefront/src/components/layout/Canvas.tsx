@@ -328,7 +328,7 @@ export function Canvas({ children }: { children: ReactNode }) {
       </header>
 
       {/* ── Body ────────────────────────────────────────────────── */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Sidebar start */}
         {isSidebarStartOpen && (
           <>
@@ -348,7 +348,7 @@ export function Canvas({ children }: { children: ReactNode }) {
               aria-label="Navigation panel"
               tabIndex={-1}
               className={[
-                  'border-r border-[var(--io-border)] overflow-y-auto bg-[var(--io-bg-raised)] flex flex-col',
+                  'border-r border-[var(--io-border)] overflow-y-auto min-h-0 bg-[var(--io-bg-raised)] flex flex-col',
                   isMobileViewport
                     ? 'fixed left-0 bottom-0 top-[var(--io-header-height)] z-50 w-[min(86vw,var(--io-sidebar-nav-width))] shadow-xl io-drawer-start'
                     : 'w-[var(--io-sidebar-nav-width)] shrink-0',
@@ -360,7 +360,7 @@ export function Canvas({ children }: { children: ReactNode }) {
         )}
 
         {/* Main */}
-        <main id="main-content" tabIndex={-1} ref={mainRef} className="flex-1 min-w-0 overflow-y-auto">
+        <main id="main-content" tabIndex={-1} ref={mainRef} className="flex-1 min-w-0 min-h-0 overflow-y-auto">
           <div className="mx-auto px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8" style={{ maxWidth: '1224px' }}>
             {children}
           </div>

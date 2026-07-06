@@ -72,6 +72,21 @@ export function getBannerStyles(): string {
       }
     }
 
+    .banner--position-top.banner--dismissing {
+      animation-name: io-banner-out-top;
+    }
+
+    @keyframes io-banner-out-top {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(calc(-100% - var(--io-space-4)));
+      }
+    }
+
     /* ── Position variants — bottom (default for <640px) ─────── */
 
     .banner--position-bottom {
@@ -81,7 +96,7 @@ export function getBannerStyles(): string {
       animation: io-banner-in-bottom var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)) both;
     }
 
-    :host([position='bottom']) .banner--dismissing {
+    .banner--position-bottom.banner--dismissing {
       animation-name: io-banner-out-bottom;
     }
 
@@ -150,6 +165,35 @@ export function getBannerStyles(): string {
       display: none;
     }
 
+    /* ── Dismiss button — plain icon, no pill background ─────── */
+
+    .banner__dismiss {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--io-touch-target-min);
+      height: var(--io-touch-target-min);
+      border: none;
+      background: transparent;
+      color: var(--io-text-secondary);
+      border-radius: var(--io-border-radius-sm);
+      cursor: pointer;
+      transition: color var(--io-motion-fast), background-color var(--io-motion-fast);
+    }
+
+    .banner__dismiss:focus-visible {
+      outline: none;
+      box-shadow: var(--io-focus-ring-active);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .banner__dismiss:hover {
+        color: var(--io-text-primary);
+        background-color: var(--io-state-hover);
+      }
+    }
+
     /* Variants — set border accent + icon color only */
     .banner--info {
       border-color: var(--io-color-info);
@@ -172,9 +216,11 @@ export function getBannerStyles(): string {
     }
 
     @media (prefers-reduced-motion: reduce) {
+      /* Keep a near-instant animation (rather than \`none\`) so \`animationend\`
+         still fires — the dismiss flow relies on it to complete. */
       .banner--position-top,
       .banner--position-bottom {
-        animation: none;
+        animation-duration: 0.01ms;
         transition: none;
       }
     }

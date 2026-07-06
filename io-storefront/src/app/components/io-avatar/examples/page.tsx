@@ -44,7 +44,7 @@ export default function IoAvatarExamplesPage() {
           title="Sizes"
           description="Five sizes from xs (24 px) to xl (64 px)."
         />
-        <ComponentStory story={avatarStorySizes} previewClassName="flex flex-wrap gap-4 items-end" />
+        <ComponentStory story={avatarStorySizes} previewClassName="flex flex-wrap gap-4 items-center" />
       </section>
 
       <section>

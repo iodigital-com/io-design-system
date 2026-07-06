@@ -9,6 +9,7 @@ import {
 } from '../io-input-password.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoInputPasswordExamplesPage() {
@@ -16,7 +17,7 @@ export default function IoInputPasswordExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputPasswordStoryDefault} />
+        <ComponentStory story={inputPasswordStoryDefault} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
@@ -26,17 +27,17 @@ export default function IoInputPasswordExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="New password" description="Use autocomplete='new-password' on registration forms to trigger password manager hints." />
-        <ComponentStory story={inputPasswordStoryNewPassword} />
+        <ComponentStory story={inputPasswordStoryNewPassword} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputPasswordStoryError} />
+        <ComponentStory story={inputPasswordStoryError} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputPasswordStoryDisabled} />
+        <ComponentStory story={inputPasswordStoryDisabled} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
     </div>
   );

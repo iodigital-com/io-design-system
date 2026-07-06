@@ -79,6 +79,11 @@ export function getFlyoutStyles(): string {
     .flyout__panel--open.flyout__panel--end,
     .flyout__panel--open.flyout__panel--start {
       transform: translateX(0);
+      opacity: 1;
+      /* Enter: longer duration + ease-in (decelerate into resting position) */
+      transition:
+        transform var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1)),
+        opacity var(--io-duration-overlay-enter, 300ms) var(--io-ease-overlay-enter, cubic-bezier(0, 0, 0.2, 1));
     }
 
     /* ── Direction aliases ───────────────────────────────────── */

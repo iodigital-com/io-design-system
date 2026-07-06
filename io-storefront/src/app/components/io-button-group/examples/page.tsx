@@ -34,20 +34,31 @@ function ExclusiveLiveDemo() {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <io-button-group
-        ref={ref}
-        type="single"
-        value={value}
-        label="View period"
+    <div className="rounded-lg overflow-hidden border border-[var(--io-border)]">
+      <div
+        className="p-4 sm:p-8 flex flex-col items-center justify-center gap-4 min-h-[var(--io-playground-min-height)]"
+        style={{
+          backgroundColor: 'var(--io-bg-raised)',
+          color: 'var(--io-text-primary)',
+          backgroundImage:
+            'linear-gradient(var(--io-border) 1px, transparent 1px), linear-gradient(to right, var(--io-border) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
       >
-        <io-button value="day">Day</io-button>
-        <io-button value="week">Week</io-button>
-        <io-button value="month">Month</io-button>
-      </io-button-group>
-      <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>
-        Selected: <strong style={{ color: 'var(--io-text-primary)' }}>{value}</strong>
-      </p>
+        <io-button-group
+          ref={ref}
+          type="single"
+          value={value}
+          label="View period"
+        >
+          <io-button value="day">Day</io-button>
+          <io-button value="week">Week</io-button>
+          <io-button value="month">Month</io-button>
+        </io-button-group>
+        <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>
+          Selected: <strong style={{ color: 'var(--io-text-primary)' }}>{value}</strong>
+        </p>
+      </div>
     </div>
   );
 }
@@ -70,24 +81,35 @@ function MultiSelectLiveDemo() {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <io-button-group
-        ref={ref}
-        type="multiple"
-        label="Working days"
+    <div className="rounded-lg overflow-hidden border border-[var(--io-border)]">
+      <div
+        className="p-4 sm:p-8 flex flex-col items-center justify-center gap-4 min-h-[var(--io-playground-min-height)]"
+        style={{
+          backgroundColor: 'var(--io-bg-raised)',
+          color: 'var(--io-text-primary)',
+          backgroundImage:
+            'linear-gradient(var(--io-border) 1px, transparent 1px), linear-gradient(to right, var(--io-border) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
       >
-        <io-button value="mon">Mon</io-button>
-        <io-button value="tue">Tue</io-button>
-        <io-button value="wed">Wed</io-button>
-        <io-button value="thu">Thu</io-button>
-        <io-button value="fri">Fri</io-button>
-      </io-button-group>
-      <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>
-        Selected:{' '}
-        <strong style={{ color: 'var(--io-text-primary)' }}>
-          {values.length > 0 ? values.join(', ') : '(none)'}
-        </strong>
-      </p>
+        <io-button-group
+          ref={ref}
+          type="multiple"
+          label="Working days"
+        >
+          <io-button value="mon">Mon</io-button>
+          <io-button value="tue">Tue</io-button>
+          <io-button value="wed">Wed</io-button>
+          <io-button value="thu">Thu</io-button>
+          <io-button value="fri">Fri</io-button>
+        </io-button-group>
+        <p className="text-sm" style={{ color: 'var(--io-text-secondary)' }}>
+          Selected:{' '}
+          <strong style={{ color: 'var(--io-text-primary)' }}>
+            {values.length > 0 ? values.join(', ') : '(none)'}
+          </strong>
+        </p>
+      </div>
     </div>
   );
 }

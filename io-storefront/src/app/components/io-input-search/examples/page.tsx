@@ -9,7 +9,7 @@ import {
 } from '../io-input-search.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
-import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoInputSearchExamplesPage() {
@@ -17,7 +17,7 @@ export default function IoInputSearchExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputSearchStoryDefault} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputSearchStoryDefault} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
@@ -27,17 +27,17 @@ export default function IoInputSearchExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="With placeholder" description="Use placeholder to hint the expected input format or scope." />
-        <ComponentStory story={inputSearchStoryWithPlaceholder} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputSearchStoryWithPlaceholder} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputSearchStoryError} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputSearchStoryError} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputSearchStoryDisabled} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputSearchStoryDisabled} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
     </div>
   );

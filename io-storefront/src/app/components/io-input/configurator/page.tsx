@@ -2,7 +2,7 @@
 
 import { inputStory, inputPropDefinitions } from '../io-input.stories';
 
-import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoInputConfiguratorPage() {
@@ -11,7 +11,7 @@ export default function IoInputConfiguratorPage() {
       tagName="io-input"
       story={inputStory}
       propDefinitions={inputPropDefinitions}
-      previewStyle={FORM_FIELD_PREVIEW_STYLE}
+      previewClassName={FORM_PREVIEW_CLASSNAME}
     />
   );
 }

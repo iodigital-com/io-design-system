@@ -14,5 +14,5 @@ export function getToastVariantIcon(variant: IoToastItemVariant): string {
 }
 
 export function getToastCloseIcon(): string {
-  return getIconSvg('x', 14);
+  return getIconSvg('x', 20);
 }

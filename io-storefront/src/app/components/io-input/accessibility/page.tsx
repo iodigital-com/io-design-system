@@ -157,9 +157,6 @@ export default function IoInputAccessibilityPage() {
         <RuleCard label="Do not auto-advance focus">
           Programmatically moving focus to the next field when a maximum length is reached (e.g. OTP fields) bypasses user control. Let users move focus themselves with Tab. If you use <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>setFocus()</code>, ensure it is in response to an explicit user action.
         </RuleCard>
-        <RuleCard label="Surface date/time constraints clearly">
-          For <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type=&quot;date&quot;</code> and <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>type=&quot;time&quot;</code>, expose <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>min</code>/<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>max</code>/<code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>step</code> rules in helper text and mirror failures in an explicit <code className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--io-bg-surface)', border: '1px solid var(--io-border)', color: 'var(--io-text-primary)' }}>errorMessage</code>.
-        </RuleCard>
       </section>
 
     </div>

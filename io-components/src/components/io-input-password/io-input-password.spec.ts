@@ -24,6 +24,13 @@ describe('io-input-password — default props', () => {
   it('size defaults to md', () => { expect(component.size).toBe('md'); });
   it('compact defaults to false', () => { expect(component.compact).toBe(false); });
   it('accepts compact=true', () => { component.compact = true; expect(component.compact).toBe(true); });
+
+  it('renders without throwing when compact=true', () => {
+    component.label = 'Password';
+    component.compact = true;
+    (component as any).componentWillLoad();
+    expect(() => component.render()).not.toThrow();
+  });
   it('autocomplete defaults to current-password', () => { expect(component.autocomplete).toBe('current-password'); });
   it('showPassword defaults to false', () => { expect((component as any).showPassword).toBe(false); });
 

@@ -86,7 +86,8 @@ export function getInputDateStyles(): string {
       padding-right: var(--io-space-2);
     }
 
-    /* Native calendar indicator is suppressed — .date-trigger/.date-suffix is the sole visible icon */
+    /* Native calendar indicator is suppressed — .date-trigger/.date-suffix is the sole visible icon.
+       Webkit-only pseudo-element (Chrome/Edge/Safari); Firefox has no equivalent to suppress. */
     .input-field::-webkit-calendar-picker-indicator {
       display: none;
     }
@@ -116,14 +117,17 @@ export function getInputDateStyles(): string {
 
     :host([compact]) .input-field--sm {
       height: calc(var(--io-size-input-sm) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-sm) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--md {
       height: calc(var(--io-size-input-md) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-md) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--lg {
       height: calc(var(--io-size-input-lg) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-lg) - var(--io-space-2));
     }
 
     .input-field:focus {

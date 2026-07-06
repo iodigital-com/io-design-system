@@ -120,14 +120,17 @@ export function getInputSearchStyles(): string {
 
     :host([compact]) .input-field--sm {
       height: calc(var(--io-size-input-sm) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-sm) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--md {
       height: calc(var(--io-size-input-md) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-md) - var(--io-space-2));
     }
 
     :host([compact]) .input-field--lg {
       height: calc(var(--io-size-input-lg) - var(--io-space-2));
+      min-height: calc(var(--io-size-input-lg) - var(--io-space-2));
     }
 
     .input-field:focus {

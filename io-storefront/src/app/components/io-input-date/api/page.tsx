@@ -33,6 +33,7 @@ export default function IoInputDateApiPage() {
             [<InlineCode key="n">max</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Maximum selectable date in YYYY-MM-DD format. Triggers rangeOverflow FACE validation when violated.'],
             [<InlineCode key="n">step</InlineCode>, <InlineCode key="t">string | undefined</InlineCode>, '—', 'Step interval in days, or "any". Triggers stepMismatch FACE validation when violated.'],
             [<span key="n"><InlineCode>size</InlineCode><ReflectBadge /></span>, <InlineCode key="t">&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</InlineCode>, <InlineCode key="d">&apos;md&apos;</InlineCode>, 'Field size.'],
+            [<span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>, <InlineCode key="t">boolean</InlineCode>, <InlineCode key="d">false</InlineCode>, 'Reduces padding and height for dense form layouts.'],
             [<InlineCode key="n">spellCheck</InlineCode>, <InlineCode key="t">boolean | undefined</InlineCode>, '—', 'Native spellcheck attribute — passed through to the inner input as-is.'],
             [<InlineCode key="n">pickerLabel</InlineCode>, <InlineCode key="t">string</InlineCode>, <InlineCode key="d">&apos;Open date picker&apos;</InlineCode>, 'Accessible label for the calendar trigger button. Override for localisation.'],
             [<InlineCode key="n">aria</InlineCode>, <InlineCode key="t">Record&lt;string, string&gt; | undefined</InlineCode>, '—', 'Custom ARIA attributes injected onto the native input element.'],

@@ -25,6 +25,13 @@ describe('io-input-search — default props', () => {
   it('size defaults to md', () => { expect(component.size).toBe('md'); });
   it('compact defaults to false', () => { expect(component.compact).toBe(false); });
   it('accepts compact=true', () => { component.compact = true; expect(component.compact).toBe(true); });
+
+  it('renders without throwing when compact=true', () => {
+    component.label = 'Search';
+    component.compact = true;
+    (component as any).componentWillLoad();
+    expect(() => component.render()).not.toThrow();
+  });
   it('autocomplete defaults to off', () => { expect(component.autocomplete).toBe('off'); });
   it('clearAriaLabel defaults to Clear search', () => { expect(component.clearAriaLabel).toBe('Clear search'); });
 

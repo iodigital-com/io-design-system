@@ -536,7 +536,7 @@
   },
   {
     "ticket_id": 1146,
-    "title": "fix(io-input): deprecate lowercase `autocomplete` prop in favour of `autoComplete`",
+    "title": "fix(io-input): retire lowercase `autocomplete` prop in favour of `autoComplete`",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1146",
     "labels": [
       "enhancement",
@@ -978,7 +978,7 @@
   },
   {
     "ticket_id": 1123,
-    "title": "refactor(design-tokens): mark deprecated naming-convergence aliases for removal",
+    "title": "refactor(design-tokens): mark retired naming-convergence aliases for removal",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1123",
     "labels": [
       "enhancement",
@@ -2472,7 +2472,7 @@
   },
   {
     "ticket_id": 1047,
-    "title": "fix(io-button): deprecate iconOnly in favor of hideLabel",
+    "title": "fix(io-button): retire iconOnly in favor of hideLabel",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1047",
     "labels": [
       "enhancement",
@@ -3153,7 +3153,7 @@
   },
   {
     "ticket_id": 1013,
-    "title": "refactor(io-spinner): deprecate aria object prop in favor of native attributes",
+    "title": "refactor(io-spinner): retire aria object prop in favor of native attributes",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1013",
     "labels": [
       "accessibility",
@@ -5000,7 +5000,7 @@
   },
   {
     "ticket_id": 920,
-    "title": "refactor(io-select): extract shared combobox primitives; plan custom/multiple deprecation",
+    "title": "refactor(io-select): extract shared combobox primitives; plan custom/multiple retirement",
     "url": "https://github.com/iodigital-com/io-design-system/issues/920",
     "labels": [
       "P1",

@@ -48,7 +48,15 @@ describe('io-flag — utils', () => {
     const src = getFlagSrc('nl', 24);
     expect(src).toContain('flagcdn.com');
     expect(src).toContain('nl');
-    expect(src).toContain('24');
+    expect(src).toContain('w40');
+  });
+
+  it('getFlagSrc snaps an arbitrary size up to the nearest flagcdn.com width bucket', () => {
+    expect(getFlagSrc('nl', 20)).toContain('w20');
+    expect(getFlagSrc('nl', 24)).toContain('w40');
+    expect(getFlagSrc('nl', 32)).toContain('w40');
+    expect(getFlagSrc('nl', 48)).toContain('w80');
+    expect(getFlagSrc('nl', 64)).toContain('w80');
   });
 
   it('FLAG_COUNTRY_NAMES has entries for all EU member states', () => {

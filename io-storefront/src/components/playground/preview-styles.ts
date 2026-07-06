@@ -17,3 +17,14 @@ export const FORM_FIELD_PREVIEW_STYLE: React.CSSProperties = {
   maxWidth: '400px',
   margin: '0 auto',
 };
+
+/**
+ * Shared preview-canvas class for io-button-tile / io-link-tile.
+ *
+ * Both components render `:host { display: block }` with every visible
+ * child absolutely positioned (media, overlay), so the host has no
+ * intrinsic size. Inside the Playground's flex preview canvas this
+ * collapses the host to 0×0. Give each tile instance an explicit width so
+ * `aspect-ratio` on the host has something to resolve against.
+ */
+export const TILE_PREVIEW_CLASSNAME = '[&_io-button-tile]:w-64 [&_io-link-tile]:w-64';

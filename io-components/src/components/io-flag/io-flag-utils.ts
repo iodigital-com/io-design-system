@@ -60,11 +60,18 @@ export function getFlagLabel(name: string, label?: string): string {
   return FLAG_COUNTRY_NAMES[name as IoFlagName] ?? name.toUpperCase();
 }
 
+/** Fixed set of pixel widths flagcdn.com actually serves; other widths 404/ORB-block. */
+const FLAGCDN_WIDTH_BUCKETS = [20, 40, 80, 160, 320, 640, 1280, 2560];
+
+/** Snaps an arbitrary pixel size up to the nearest width flagcdn.com serves. */
+function snapToFlagcdnWidth(sizePx: number): number {
+  return FLAGCDN_WIDTH_BUCKETS.find((bucket) => bucket >= sizePx) ?? FLAGCDN_WIDTH_BUCKETS[FLAGCDN_WIDTH_BUCKETS.length - 1];
+}
+
 /** Returns the CDN URL for a flag image using flagcdn.com. */
 export function getFlagSrc(name: string, sizePx: number): string {
-  // flagcdn.com serves country flags as PNG at standard widths.
-  // We use 40px as the canonical size for the 'md' slot.
-  return `https://flagcdn.com/w${sizePx}/${name.toLowerCase()}.png`;
+  // flagcdn.com only serves fixed width buckets — snap up to the nearest one.
+  return `https://flagcdn.com/w${snapToFlagcdnWidth(sizePx)}/${name.toLowerCase()}.png`;
 }
 
 /** Maps IoIconSize values to pixel widths for the flag image. */

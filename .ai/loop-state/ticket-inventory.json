@@ -1,7 +1,7 @@
 [
   {
     "ticket_id": 1175,
-    "title": "docs(patterns): record decisions to skip brand-specific Porsche components",
+    "title": "docs(patterns): record decisions to skip brand-specific reference-library components",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1175",
     "labels": [],
     "state": "open",
@@ -649,7 +649,7 @@
   },
   {
     "ticket_id": 1140,
-    "title": "docs(form): clarify or remove warning state to align with Porsche FORM_STATES",
+    "title": "docs(form): clarify or remove warning state to align with reference-library FORM_STATES",
     "url": "https://github.com/iodigital-com/io-design-system/issues/1140",
     "labels": [
       "enhancement",

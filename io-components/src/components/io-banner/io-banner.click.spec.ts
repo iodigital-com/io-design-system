@@ -25,7 +25,7 @@ describe('io-banner — dismiss interaction (issue #1012: double-emit guard)', (
     expect((c as any)._dismissing).toBe(true);
   });
 
-  it('does NOT emit dismiss immediately (waits for transitionend, issue #1012)', () => {
+  it('does NOT emit dismiss immediately (waits for animationend, issue #1012)', () => {
     (c as any).handleDismiss();
     expect((c as any).dismiss.emit).not.toHaveBeenCalled();
   });
@@ -39,24 +39,24 @@ describe('io-banner — dismiss interaction (issue #1012: double-emit guard)', (
     expect((c as any).dismiss.emit).not.toHaveBeenCalled();
   });
 
-  it('emits dismiss after transitionend on .banner element', () => {
+  it('emits dismiss after animationend on .banner element', () => {
     (c as any).handleDismiss();
-    // Simulate transitionend on the banner div
+    // Simulate animationend on the banner div (exit keyframes)
     const fakeEvent = {
       target: { classList: { contains: (cls: string) => cls === 'banner' } },
-    } as unknown as TransitionEvent;
-    (c as any).handleTransitionEnd(fakeEvent);
+    } as unknown as AnimationEvent;
+    (c as any).handleAnimationEnd(fakeEvent);
     expect((c as any).dismiss.emit).toHaveBeenCalledTimes(1);
     expect(c.open).toBe(false);
     expect((c as any)._dismissing).toBe(false);
   });
 
-  it('does not emit dismiss on transitionend from non-banner element', () => {
+  it('does not emit dismiss on animationend from non-banner element', () => {
     (c as any).handleDismiss();
     const fakeEvent = {
       target: { classList: { contains: (_cls: string) => false } },
-    } as unknown as TransitionEvent;
-    (c as any).handleTransitionEnd(fakeEvent);
+    } as unknown as AnimationEvent;
+    (c as any).handleAnimationEnd(fakeEvent);
     expect((c as any).dismiss.emit).not.toHaveBeenCalled();
     expect(c.open).toBe(true); // still open
   });
@@ -219,11 +219,11 @@ describe('io-banner — Escape key dismiss (WCAG 2.1.2)', () => {
     (c as any).handleKeyDown({ key: 'Escape' });
     (c as any).handleKeyDown({ key: 'Escape' });
     (c as any).handleKeyDown({ key: 'Escape' });
-    // Simulate transitionend to complete dismiss
+    // Simulate animationend to complete dismiss
     const fakeEvent = {
       target: { classList: { contains: (cls: string) => cls === 'banner' } },
-    } as unknown as TransitionEvent;
-    (c as any).handleTransitionEnd(fakeEvent);
+    } as unknown as AnimationEvent;
+    (c as any).handleAnimationEnd(fakeEvent);
     expect((c as any).dismiss.emit).toHaveBeenCalledTimes(1);
   });
 

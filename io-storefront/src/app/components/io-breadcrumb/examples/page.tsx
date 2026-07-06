@@ -19,7 +19,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Basic breadcrumb"
           description="Three items: two links and a current page item. Separators are rendered automatically between items."
         />
-        <ComponentStory story={breadcrumbStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={breadcrumbStoryDefault} previewStyle={{ flexDirection: 'column', alignItems: 'center' }} />
       </section>
 
       <section>
@@ -27,7 +27,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Custom separator via CSS"
           description="Default separator is '/'. Override it with any character using the --io-breadcrumb-separator CSS custom property. This example uses the guillemet '›'."
         />
-        <ComponentStory story={breadcrumbStoryGuillemet} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={breadcrumbStoryGuillemet} previewStyle={{ flexDirection: 'column', alignItems: 'center' }} />
       </section>
 
       <section>
@@ -35,7 +35,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Deep hierarchy"
           description="Five items showing a deeper navigation path. The last item is automatically marked as the current page."
         />
-        <ComponentStory story={breadcrumbStoryLong} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={breadcrumbStoryLong} previewStyle={{ flexDirection: 'column', alignItems: 'center' }} />
       </section>
 
       <section>
@@ -43,7 +43,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="Localised label (i18n)"
           description="Override the default 'Breadcrumb' nav aria-label using the label prop for non-English UIs or when multiple breadcrumbs appear on the same page (WCAG 2.4.6)."
         />
-        <ComponentStory story={breadcrumbStoryLabel} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={breadcrumbStoryLabel} previewStyle={{ flexDirection: 'column', alignItems: 'center' }} />
       </section>
 
       <section>
@@ -51,7 +51,7 @@ export default function IoBreadcrumbExamplesPage() {
           title="External link (target=&quot;_blank&quot;)"
           description="Set target='_blank' on io-breadcrumb-item to open in a new tab. rel='noopener noreferrer' is added automatically for security."
         />
-        <ComponentStory story={breadcrumbStoryTargetBlank} previewStyle={{ flexDirection: 'column', alignItems: 'stretch' }} />
+        <ComponentStory story={breadcrumbStoryTargetBlank} previewStyle={{ flexDirection: 'column', alignItems: 'center' }} />
       </section>
 
       <section>

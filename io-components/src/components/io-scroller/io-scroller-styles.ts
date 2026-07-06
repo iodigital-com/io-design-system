@@ -18,6 +18,12 @@ export function getScrollerStyles(): string {
     :host {
       display: block;
       position: relative;
+      /* A scroller is a layout wrapper, not an atomic inline control — it
+         should fill its container's available width by default (matching
+         normal block-box behavior) rather than shrink-wrap to content when
+         placed inside a flex/grid parent. Consumers can still override via
+         an instance-level style/width attribute, which wins over this. */
+      width: 100%;
       /* Expose the fade color as a public CSS API so consumers can override
          it when the scroller sits on a surface other than the page background. */
       --io-scroller-fade-size: var(--io-space-6, 24px);
@@ -28,6 +34,12 @@ export function getScrollerStyles(): string {
     .scroller {
       position: relative;
       overflow: auto;
+      /* Percentage height resolves to auto when the host has no explicit
+         height set (per CSS spec), so this is a no-op unless a consumer
+         constrains the host (e.g. height: 160px inline) — in that case the
+         inner scroll container must fill it, otherwise it grows to content
+         size and never actually becomes scrollable. */
+      height: 100%;
     }
 
     /* ── Orientation ──────────────────────────────────────────── */

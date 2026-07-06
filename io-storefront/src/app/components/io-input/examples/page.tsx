@@ -11,7 +11,7 @@ import {
 } from '../io-input.stories';
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
-import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { ComponentStory } from '@/components/playground/ComponentStory';
 
 export default function IoInputExamplesPage() {
@@ -19,7 +19,7 @@ export default function IoInputExamplesPage() {
     <div className="space-y-10">
       <section>
         <ExamplesSectionHeader title="Default" />
-        <ComponentStory story={inputStoryDefault} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputStoryDefault} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
@@ -34,17 +34,17 @@ export default function IoInputExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Numeric constraints" description="min, max, and step forwarded to native number/date/time inputs." />
-        <ComponentStory story={inputStoryConstraints} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputStoryConstraints} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Error state" />
-        <ComponentStory story={inputStoryError} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputStoryError} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
         <ExamplesSectionHeader title="Disabled state" />
-        <ComponentStory story={inputStoryDisabled} previewStyle={FORM_FIELD_PREVIEW_STYLE} />
+        <ComponentStory story={inputStoryDisabled} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 
       <section>
@@ -52,7 +52,7 @@ export default function IoInputExamplesPage() {
           title="Type indicator icons"
           description="Set the indicator prop to a Lucide icon name to render a visual affordance in the prefix area. Useful for email, tel, and url inputs to reinforce field purpose at a glance. The icon is decorative (aria-hidden) and does not change the accessible label."
         />
-        <ComponentStory story={inputStoryIndicator} previewStyle={{ ...FORM_FIELD_PREVIEW_STYLE, maxWidth: '480px' }} />
+        <ComponentStory story={inputStoryIndicator} previewClassName={`${FORM_PREVIEW_CLASSNAME} [&_io-input]:!max-w-[30rem]`} />
       </section>
 
       <section>

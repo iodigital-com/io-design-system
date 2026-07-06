@@ -10,7 +10,7 @@ export default function IoRadioGroupConfiguratorPage() {
       tagName="io-radio-group"
       story={radioGroupStory}
       propDefinitions={radioGroupPropDefinitions}
-      previewStyle={{ flexDirection: 'column', alignItems: 'flex-start' }}
+      previewStyle={{ flexDirection: 'column', alignItems: 'center' }}
     />
   );
 }

@@ -1,22 +1,22 @@
-import type React from 'react';
-
 /**
- * Shared preview-canvas style for Category B form-field components
- * (io-input, io-textarea, io-select, io-multi-select, io-input-date,
- * io-input-search, io-input-password, io-pin-code, io-switch, io-checkbox,
- * io-radio) so every form field previews at one consistent, intentional
- * width instead of stretching to fill the full canvas.
+ * Shared preview-canvas class for form-field components (io-input,
+ * io-input-date, io-input-password, io-input-search, io-multi-select,
+ * io-select, io-textarea) so every form field previews at one consistent,
+ * intentional width instead of stretching edge-to-edge across the canvas.
  *
- * Stretches the field to a natural form-control width, then centers that
- * fixed-width block within the (full-bleed) Playground preview container.
+ * Unlike a preview-wrapper style override, this targets the component
+ * instance itself via a child selector — the Playground preview canvas
+ * stays full width and centered (`flex items-center justify-center`); only
+ * the field inside it is bounded to a natural form-control width.
  */
-export const FORM_FIELD_PREVIEW_STYLE: React.CSSProperties = {
-  flexDirection: 'column',
-  alignItems: 'stretch',
-  width: '100%',
-  maxWidth: '400px',
-  margin: '0 auto',
-};
+export const FORM_PREVIEW_CLASSNAME =
+  '[&_io-input]:w-full [&_io-input]:max-w-sm ' +
+  '[&_io-input-date]:w-full [&_io-input-date]:max-w-sm ' +
+  '[&_io-input-password]:w-full [&_io-input-password]:max-w-sm ' +
+  '[&_io-input-search]:w-full [&_io-input-search]:max-w-sm ' +
+  '[&_io-multi-select]:w-full [&_io-multi-select]:max-w-sm ' +
+  '[&_io-select]:w-full [&_io-select]:max-w-sm ' +
+  '[&_io-textarea]:w-full [&_io-textarea]:max-w-sm';
 
 /**
  * Shared preview-canvas class for io-button-tile / io-link-tile.

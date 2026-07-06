@@ -91,14 +91,6 @@ export const sitemap: NavSection[] = [
         related: ['io-badge', 'io-tag'],
       },
       {
-        label: 'App Shell',
-        href: '/components/io-app-shell/configurator',
-        status: 'beta',
-        slug: 'io-app-shell',
-        description: 'Full-page application shell with sticky header, collapsible sidebar navigation, optional secondary panel, and skip-link accessibility.',
-        related: ['io-drawer', 'io-flyout', 'io-modal'],
-      },
-      {
         label: 'Avatar',
         href: '/components/io-avatar/configurator',
         status: 'beta',
@@ -240,7 +232,7 @@ export const sitemap: NavSection[] = [
         status: 'beta',
         slug: 'io-grid',
         description: '12-column responsive CSS Grid layout primitive. Fluid gap tokens, column-span helpers, and light DOM children for unrestricted consumer styling.',
-        related: ['io-app-shell', 'io-scroller'],
+        related: ['io-scroller'],
       },
       {
         label: 'Heading',
@@ -449,14 +441,6 @@ export const sitemap: NavSection[] = [
         slug: 'io-table',
         description: 'Accessible data table with optional sortable columns and row selection. Supports sticky headers, selectable rows, and a JavaScript data API.',
         related: ['io-checkbox', 'io-pagination', 'io-spinner'],
-      },
-      {
-        label: 'Tab Panel',
-        href: '/components/io-tab-panel/configurator',
-        status: 'beta',
-        slug: 'io-tab-panel',
-        description: 'Companion panel component for io-tabs. Declares a tab pane with a label prop — io-tabs auto-wires all ARIA relationships, removing the need for manual panelIds management.',
-        related: ['io-tabs', 'io-tabs-bar'],
       },
       {
         label: 'Tabs',

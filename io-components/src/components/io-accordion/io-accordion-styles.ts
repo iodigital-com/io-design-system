@@ -158,8 +158,17 @@ export function getAccordionStyles(): string {
       cursor: not-allowed;
     }
 
+    /*
+     * padding-bottom is applied only in the open state (below), not here.
+     * An unconditional padding-bottom would add to this element's min-content
+     * contribution, preventing the grid-template-rows: 0fr -> 1fr trick above
+     * from fully collapsing the panel to 0 height when closed.
+     */
     .accordion-panel-inner {
       min-height: 0;
+    }
+
+    .accordion-item--open .accordion-panel-inner {
       padding-bottom: var(--io-space-16);
     }
 

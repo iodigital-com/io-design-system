@@ -2,7 +2,7 @@
 
 import { inputDateStory, inputDatePropDefinitions } from '../io-input-date.stories';
 
-import { FORM_FIELD_PREVIEW_STYLE } from '@/components/playground/preview-styles';
+import { FORM_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 import { Configurator } from '@/components/playground/Configurator';
 
 export default function IoInputDateConfiguratorPage() {
@@ -11,7 +11,7 @@ export default function IoInputDateConfiguratorPage() {
       tagName="io-input-date"
       story={inputDateStory}
       propDefinitions={inputDatePropDefinitions}
-      previewStyle={FORM_FIELD_PREVIEW_STYLE}
+      previewClassName={FORM_PREVIEW_CLASSNAME}
     />
   );
 }

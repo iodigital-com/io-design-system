@@ -45,7 +45,7 @@ export default function IoButtonExamplesPage() {
           title="Solid"
           description="Filled backgrounds — use for primary actions. Hover to see the snappy transition."
         />
-        <ComponentStory story={buttonStorySolid} previewClassName="flex-wrap gap-3 items-center" />
+        <ComponentStory story={buttonStorySolid} previewClassName="flex-wrap gap-3 items-center [&_io-button]:self-center" />
         <StageLabel>
           radius: borderRadius.pill · transition: 500ms cubic-bezier(0.075, 0.82, 0.165, 1)
         </StageLabel>
@@ -57,10 +57,10 @@ export default function IoButtonExamplesPage() {
           title="Ghost"
           description="Transparent fill with a coloured border — fills with the matching solid on hover."
         />
-        <ComponentStory story={buttonStoryGhost} previewClassName="flex-wrap gap-3 items-center" />
+        <ComponentStory story={buttonStoryGhost} previewClassName="flex-wrap gap-3 items-center [&_io-button]:self-center" />
         <ComponentStory
           story={buttonStoryGhostWhite}
-          previewClassName="flex-wrap gap-3 items-center"
+          previewClassName="flex-wrap gap-3 items-center [&_io-button]:self-center"
           previewStyle={DARK_STAGE}
         />
         <StageLabel>
@@ -97,7 +97,7 @@ export default function IoButtonExamplesPage() {
           title="With arrow icon"
           description="Three directions — forward, back, down. Hover to see translateX(6px) animation."
         />
-        <ComponentStory story={buttonStoryArrows} previewClassName="flex-wrap gap-3 items-center" />
+        <ComponentStory story={buttonStoryArrows} previewClassName="flex-wrap gap-3 items-center [&_io-button]:self-center" />
         <StageLabel>
           SVG arrow · forward: translateX(6px) · back: rotate(180deg) translateX(6px) · down: rotate(90deg) translateX(5px)
         </StageLabel>
@@ -109,7 +109,7 @@ export default function IoButtonExamplesPage() {
           title="States"
           description="Disabled and loading states reduce opacity and block interaction."
         />
-        <ComponentStory story={buttonStoryStates} previewClassName="flex-wrap gap-3 items-center" />
+        <ComponentStory story={buttonStoryStates} previewClassName="flex-wrap gap-3 items-center [&_io-button]:self-center" />
         <StageLabel>
           opacity: var(--io-state-disabled-opacity) · cursor: not-allowed · pointer-events: none
         </StageLabel>
@@ -123,7 +123,7 @@ export default function IoButtonExamplesPage() {
         />
         <div
           dir="rtl"
-          className="p-4 sm:p-8 flex flex-wrap gap-3 items-center rounded-lg border border-[var(--io-border)]"
+          className="p-4 sm:p-8 flex flex-wrap gap-3 items-center rounded-lg border border-[var(--io-border)] [&_io-button]:self-center"
           style={{ backgroundColor: 'var(--io-bg-raised)' }}
         >
           <io-button variant="solid" color="blue" arrow="forward">قدم</io-button>

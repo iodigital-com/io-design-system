@@ -16,6 +16,7 @@ export function getButtonStyles(): string {
       align-self: flex-start;
       cursor: pointer;
       font-family: var(--io-font-primary);
+      position: relative;
     }
 
     :host([disabled]),

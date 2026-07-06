@@ -93,7 +93,7 @@ const showToast = () => toast.value?.addToast({ text: '${text}', variant: '${var
         <div className="flex flex-col items-center gap-4 w-full">
           {/* Toast container — fixed-position, rendered here so the ref is wired */}
           <io-toast ref={toastRef} suppressHydrationWarning />
-          <io-button variant="solid" onClick={showToast}>
+          <io-button className="self-center" variant="solid" onClick={showToast}>
             Show toast
           </io-button>
         </div>

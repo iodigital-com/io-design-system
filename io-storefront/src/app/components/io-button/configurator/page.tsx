@@ -10,6 +10,7 @@ export default function IoButtonConfiguratorPage() {
       tagName="io-button"
       story={buttonStory}
       propDefinitions={buttonPropDefinitions}
+      previewClassName="[&_io-button]:self-center"
     />
   );
 }

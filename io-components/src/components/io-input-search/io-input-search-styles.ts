@@ -112,6 +112,24 @@ export function getInputSearchStyles(): string {
       font-size: var(--io-font-size-base);
     }
 
+    /* ── Compact variant ─────────────────────────────────────── */
+    :host([compact]) .input-field {
+      padding-top: var(--io-space-1);
+      padding-bottom: var(--io-space-1);
+    }
+
+    :host([compact]) .input-field--sm {
+      height: calc(var(--io-size-input-sm) - var(--io-space-2));
+    }
+
+    :host([compact]) .input-field--md {
+      height: calc(var(--io-size-input-md) - var(--io-space-2));
+    }
+
+    :host([compact]) .input-field--lg {
+      height: calc(var(--io-size-input-lg) - var(--io-space-2));
+    }
+
     .input-field:focus {
       border-bottom-width: var(--io-input-border-width-focus);
       margin-top: var(--io-field-focus-offset-y);

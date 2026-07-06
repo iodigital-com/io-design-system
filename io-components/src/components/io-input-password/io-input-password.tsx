@@ -81,6 +81,9 @@ export class IoInputPassword {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoInputPasswordSize = 'md';
 
+  /** Reduces field height and vertical padding for dense layouts */
+  @Prop({ reflect: true }) compact = false;
+
   /** Native autocomplete attribute */
   @Prop() autocomplete = 'current-password';
 

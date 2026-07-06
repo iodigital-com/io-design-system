@@ -94,6 +94,12 @@ export const inputDatePropDefinitions: PropDefinition[] = [
     description: 'Aligns field height with io-button sizes.',
   },
   {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces field height and padding for dense layouts.',
+  },
+  {
     name: 'min',
     type: 'string',
     defaultValue: '',

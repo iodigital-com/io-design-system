@@ -60,14 +60,6 @@ export const inputStorySizes: Story<'io-input'> = {
   ],
 };
 
-export const inputStoryDateTime: Story<'io-input'> = {
-  state: { properties: {} },
-  generator: () => [
-    { tag: 'io-input' as const, properties: { label: 'Date', type: 'date', min: '2026-01-01', max: '2026-12-31' } },
-    { tag: 'io-input' as const, properties: { label: 'Time', type: 'time', step: '900' } },
-  ],
-};
-
 export const inputStoryConstraints: Story<'io-input'> = {
   state: { properties: {} },
   generator: () => [
@@ -133,9 +125,9 @@ export const inputPropDefinitions: PropDefinition[] = [
   {
     name: 'type',
     type: 'select',
-    options: ['text', 'email', 'password', 'search', 'number', 'tel', 'url', 'date', 'time'],
+    options: ['text', 'email', 'password', 'search', 'number', 'tel', 'url'],
     defaultValue: 'text',
-    description: 'Defines the native input type and keyboard behavior.',
+    description: 'Defines the native input type and keyboard behavior. Use io-input-date for date/time fields.',
   },
   {
     name: 'size',
@@ -148,19 +140,19 @@ export const inputPropDefinitions: PropDefinition[] = [
     name: 'min',
     type: 'string',
     defaultValue: '',
-    description: 'Minimum value forwarded to the native input (number/date/time).',
+    description: 'Minimum value forwarded to the native input (number).',
   },
   {
     name: 'max',
     type: 'string',
     defaultValue: '',
-    description: 'Maximum value forwarded to the native input (number/date/time).',
+    description: 'Maximum value forwarded to the native input (number).',
   },
   {
     name: 'step',
     type: 'string',
     defaultValue: '',
-    description: 'Step value forwarded to the native input (number/date/time).',
+    description: 'Step value forwarded to the native input (number).',
   },
   {
     name: 'minLength',

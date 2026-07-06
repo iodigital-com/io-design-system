@@ -22,6 +22,8 @@ describe('io-input-date — default props', () => {
   it('state defaults to none', () => { expect(component.state).toBe('none'); });
   it('hideLabel defaults to false', () => { expect(component.hideLabel).toBe(false); });
   it('size defaults to md', () => { expect(component.size).toBe('md'); });
+  it('compact defaults to false', () => { expect(component.compact).toBe(false); });
+  it('accepts compact=true', () => { component.compact = true; expect(component.compact).toBe(true); });
   it('message defaults to empty string', () => { expect(component.message).toBe(''); });
   it('min defaults to undefined', () => { expect(component.min).toBeUndefined(); });
   it('max defaults to undefined', () => { expect(component.max).toBeUndefined(); });

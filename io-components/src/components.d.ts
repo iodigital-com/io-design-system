@@ -1748,6 +1748,11 @@ export namespace Components {
         "aria"?: Record<string, string>;
         "checkValidity": () => Promise<boolean>;
         /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact": boolean;
+        /**
           * Disables the input
           * @default false
          */
@@ -1846,6 +1851,11 @@ export namespace Components {
          */
         "autocomplete": string;
         "checkValidity": () => Promise<boolean>;
+        /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Disables the input
           * @default false
@@ -1950,6 +1960,11 @@ export namespace Components {
           * @default 'Clear search'
          */
         "clearAriaLabel": string;
+        /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact": boolean;
         /**
           * Disables the input
           * @default false
@@ -8312,6 +8327,11 @@ declare namespace LocalJSX {
          */
         "aria"?: Record<string, string>;
         /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact"?: boolean;
+        /**
           * Disables the input
           * @default false
          */
@@ -8416,6 +8436,11 @@ declare namespace LocalJSX {
           * @default 'current-password'
          */
         "autocomplete"?: string;
+        /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Disables the input
           * @default false
@@ -8526,6 +8551,11 @@ declare namespace LocalJSX {
           * @default 'Clear search'
          */
         "clearAriaLabel"?: string;
+        /**
+          * Reduces field height and vertical padding for dense layouts
+          * @default false
+         */
+        "compact"?: boolean;
         /**
           * Disables the input
           * @default false
@@ -11354,6 +11384,7 @@ declare namespace LocalJSX {
         "max": string | undefined;
         "step": string | undefined;
         "size": IoInputDateSize;
+        "compact": boolean;
         "pickerLabel": string;
         "spellCheck": boolean | undefined;
     }
@@ -11373,6 +11404,7 @@ declare namespace LocalJSX {
         "helperText": string | undefined;
         "hideLabel": boolean;
         "size": IoInputPasswordSize;
+        "compact": boolean;
         "autocomplete": string;
         "toggle": boolean;
         "spellCheck": boolean | undefined;
@@ -11393,6 +11425,7 @@ declare namespace LocalJSX {
         "helperText": string | undefined;
         "hideLabel": boolean;
         "size": IoInputSearchSize;
+        "compact": boolean;
         "autocomplete": string;
         "clearAriaLabel": string;
         "spellCheck": boolean | undefined;

@@ -23,6 +23,8 @@ describe('io-input-search — default props', () => {
   it('state defaults to none', () => { expect(component.state).toBe('none'); });
   it('hideLabel defaults to false', () => { expect(component.hideLabel).toBe(false); });
   it('size defaults to md', () => { expect(component.size).toBe('md'); });
+  it('compact defaults to false', () => { expect(component.compact).toBe(false); });
+  it('accepts compact=true', () => { component.compact = true; expect(component.compact).toBe(true); });
   it('autocomplete defaults to off', () => { expect(component.autocomplete).toBe('off'); });
   it('clearAriaLabel defaults to Clear search', () => { expect(component.clearAriaLabel).toBe('Clear search'); });
 

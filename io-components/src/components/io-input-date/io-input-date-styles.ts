@@ -86,6 +86,11 @@ export function getInputDateStyles(): string {
       padding-right: var(--io-space-2);
     }
 
+    /* Native calendar indicator is suppressed — .date-trigger/.date-suffix is the sole visible icon */
+    .input-field::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+
     .input-field--sm {
       height: var(--io-size-input-sm);
       min-height: var(--io-size-input-sm);
@@ -101,6 +106,24 @@ export function getInputDateStyles(): string {
       height: var(--io-size-input-lg);
       min-height: var(--io-size-input-lg);
       font-size: var(--io-font-size-base);
+    }
+
+    /* ── Compact variant ─────────────────────────────────────── */
+    :host([compact]) .input-field {
+      padding-top: var(--io-space-1);
+      padding-bottom: var(--io-space-1);
+    }
+
+    :host([compact]) .input-field--sm {
+      height: calc(var(--io-size-input-sm) - var(--io-space-2));
+    }
+
+    :host([compact]) .input-field--md {
+      height: calc(var(--io-size-input-md) - var(--io-space-2));
+    }
+
+    :host([compact]) .input-field--lg {
+      height: calc(var(--io-size-input-lg) - var(--io-space-2));
     }
 
     .input-field:focus {

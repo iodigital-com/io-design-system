@@ -81,6 +81,12 @@ export const inputSearchPropDefinitions: PropDefinition[] = [
     description: 'Aligns field height with io-button sizes.',
   },
   {
+    name: 'compact',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Reduces field height and padding for dense layouts.',
+  },
+  {
     name: 'placeholder',
     type: 'string',
     defaultValue: '',

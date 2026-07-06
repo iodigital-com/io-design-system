@@ -6,9 +6,7 @@ export type IoInputType =
   | 'search'
   | 'tel'
   | 'url'
-  | 'number'
-  | 'date'
-  | 'time';
+  | 'number';
 
 /** Visual size scale aligned with io-button sizing tokens */
 export type IoInputSize = 'sm' | 'md' | 'lg';

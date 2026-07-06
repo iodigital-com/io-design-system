@@ -4,6 +4,7 @@ import { linkTileStoryAspectRatios, linkTileStoryAlignments } from '../io-link-t
 
 import { ExamplesSectionHeader } from '@/components/examples/ExamplesPrimitives';
 import { ComponentStory } from '@/components/playground/ComponentStory';
+import { TILE_PREVIEW_CLASSNAME } from '@/components/playground/preview-styles';
 
 export default function IoLinkTileExamplesPage() {
   return (
@@ -14,7 +15,7 @@ export default function IoLinkTileExamplesPage() {
           title="Aspect ratios"
           description="Four built-in presets — 1:1, 4:3, 3:4, and 16:9. The tile always fills its container width."
         />
-        <ComponentStory story={linkTileStoryAspectRatios} previewClassName="flex-wrap gap-4 items-start" />
+        <ComponentStory story={linkTileStoryAspectRatios} previewClassName={`flex-wrap gap-4 items-start ${TILE_PREVIEW_CLASSNAME}`} />
       </section>
 
       <section>
@@ -22,7 +23,7 @@ export default function IoLinkTileExamplesPage() {
           title="Content alignment"
           description="The overlay content can be anchored to the top or bottom of the tile."
         />
-        <ComponentStory story={linkTileStoryAlignments} previewClassName="flex-wrap gap-4 items-start" />
+        <ComponentStory story={linkTileStoryAlignments} previewClassName={`flex-wrap gap-4 items-start ${TILE_PREVIEW_CLASSNAME}`} />
       </section>
 
     </div>

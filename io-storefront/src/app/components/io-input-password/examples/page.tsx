@@ -21,7 +21,7 @@ export default function IoInputPasswordExamplesPage() {
 
       <section>
         <ExamplesSectionHeader title="Sizes" description="sm, md, and lg sizes aligned with form control rhythm." />
-        <ComponentStory story={inputPasswordStorySizes} previewClassName="flex flex-wrap gap-4 items-end" />
+        <ComponentStory story={inputPasswordStorySizes} previewClassName="flex flex-wrap gap-4 items-end justify-center [&_io-input-password]:w-44 [&_io-input-password]:flex-none" />
       </section>
 
       <section>

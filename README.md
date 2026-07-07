@@ -28,11 +28,10 @@ This repository is responsible for all of the following:
 
 ## Component Catalog
 
-Current component set (58):
+Current component set (55):
 
 - io-accordion
 - io-ai-tag
-- io-app-shell
 - io-avatar
 - io-badge
 - io-banner
@@ -49,7 +48,6 @@ Current component set (58):
 - io-fieldset
 - io-flag
 - io-flyout
-- io-grid
 - io-heading
 - io-icon
 - io-inline-notification
@@ -76,7 +74,6 @@ Current component set (58):
 - io-spinner
 - io-stepper
 - io-switch
-- io-tab-panel
 - io-table
 - io-tabs
 - io-tabs-bar

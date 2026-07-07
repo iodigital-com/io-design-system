@@ -1,5 +1,17 @@
 # @iodigital-com/components
 
+## 1.10.0
+
+### Minor Changes
+
+- 37beba3: Remove redundant `compact` prop from `io-tag`, `io-tabs`, and `io-accordion` — each already has a `size` prop. `io-tabs` and `io-accordion` gain a new `compact`/`xs` size tier respectively to preserve the density level `compact` provided; `io-tag`'s `compact` had no meaningful visual difference from `size="sm"` and is removed with no replacement tier. Remove the unused `IoSheetBackground` type export from `io-sheet`.
+- 37beba3: Remove the `compact` prop from `io-input`, `io-input-date`, `io-input-password`, and `io-input-search` — redundant with the existing `size` prop. Remove `date`/`time` from `io-input`'s `type` prop — use `io-input-date` instead, avoiding two components that do the same job. Fix `io-input-date` rendering both its custom calendar-trigger icon and the native browser calendar icon by hiding `::-webkit-calendar-picker-indicator`.
+
+### Patch Changes
+
+- 897c9d0: Fix io-flag requesting invalid flagcdn.com image widths. `getFlagSrc` now snaps arbitrary pixel sizes up to the nearest width flagcdn.com actually serves (20/40/80/160/320/640/1280/2560), preventing 404/ORB-blocked flag images at non-standard sizes.
+- dbf690c: Fix visual and containment defects found in a manual storefront QA sweep: io-banner's dismiss button no longer renders with an incorrect pill radius, io-toast's close icon is bumped to the canonical 20px size, io-button's `:host` gains `position: relative` so its sr-only loading text no longer escapes shadow-root layout, io-scroller correctly fills its container height, io-flyout's panel now becomes visible when opened, and a set of design tokens (`--io-wordmark-*`, `--io-drawer-*`, `--io-flyout-*`, and segmented control icon/badge tokens) that were declared only under `[data-theme="light"]` are now also defined on the base `:root`, fixing blank/invisible rendering in the default theme.
+
 ## 1.9.2
 
 ### Patch Changes

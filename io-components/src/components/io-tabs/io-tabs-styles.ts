@@ -98,9 +98,8 @@ export function getTabsStyles(): string {
       font-size: var(--io-font-size-base) !important;
     }
 
-    /* ── Compact ─────────────────────────────────────────── */
-
-    :host([compact]) .tablist ::slotted(button) {
+    .tabs--size-compact ::slotted(button) {
+      font-size: var(--io-font-size-xs) !important;
       padding: var(--io-space-2) var(--io-space-3) !important;
     }
 

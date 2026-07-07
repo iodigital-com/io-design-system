@@ -627,8 +627,6 @@
   --io-switch-track-height-compact: 1.125rem;      /* 18px — compact track height */
   --io-switch-thumb-size-compact:   0.875rem;      /* 14px — compact thumb diameter */
 
-  --io-tag-compact-padding-y:    var(--io-space-1); /* 4px — compact vertical padding override */
-
   --io-radio-size:               1rem;       /* 16px — same as --io-checkbox-size */
   --io-radio-touch-target-min: 24px;    /* #1092: minimum hit zone per WCAG 2.5.8 */
   --io-radio-border-width:            1.5px;

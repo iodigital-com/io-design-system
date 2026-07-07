@@ -198,4 +198,29 @@ export const scrollerPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'When true, reduces internal gap between slotted items for dense layout contexts.',
   },
+  {
+    name: 'sticky',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, the scroll indicator buttons use position: sticky so they remain visible during long scrolls.',
+  },
+  {
+    name: 'scrollRole',
+    type: 'string',
+    defaultValue: '',
+    description: 'ARIA role pass-through for the inner scroll container. When set, forwarded instead of the default "region" role.',
+  },
+  {
+    name: 'scrollAriaOrientation',
+    type: 'select',
+    options: ['horizontal', 'vertical'],
+    defaultValue: '',
+    description: 'ARIA aria-orientation pass-through for the scroll container. When omitted, derived from the orientation prop.',
+  },
+  {
+    name: 'scrollAriaLabel',
+    type: 'string',
+    defaultValue: '',
+    description: 'ARIA aria-label pass-through. When set, overrides the auto-generated label derived from the label prop.',
+  },
 ];

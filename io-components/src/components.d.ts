@@ -149,11 +149,6 @@ export namespace Components {
          */
         "background": IoAccordionBackground;
         /**
-          * Dense layout mode — reduces trigger padding independent of the size preset
-          * @default false
-         */
-        "compact": boolean;
-        /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`, only the first in DOM order remains open after mount (coordinated in `componentDidLoad`).
           * @default false
          */
@@ -3803,11 +3798,6 @@ export namespace Components {
          */
         "closeable": boolean;
         /**
-          * When true, reduces tab button padding using density tokens.
-          * @default false
-         */
-        "compact": boolean;
-        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
@@ -3820,7 +3810,7 @@ export namespace Components {
          */
         "panelIds"?: string[];
         /**
-          * Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium').
+          * Size scale for the tab buttons. Drives typography and padding via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-base` for 'medium', `--io-font-size-xs` + reduced padding for 'compact').
           * @default 'small'
          */
         "size": IoTabsSize;
@@ -3896,11 +3886,6 @@ export namespace Components {
           * @default 'soft'
          */
         "appearance": IoTagAppearance;
-        /**
-          * Compact density — reduces vertical padding for dense UI contexts
-          * @default false
-         */
-        "compact": boolean;
         /**
           * Disables all interaction
           * @default false
@@ -6673,11 +6658,6 @@ declare namespace LocalJSX {
           * @default 'transparent'
          */
         "background"?: IoAccordionBackground;
-        /**
-          * Dense layout mode — reduces trigger padding independent of the size preset
-          * @default false
-         */
-        "compact"?: boolean;
         /**
           * Expands this panel on the very first render. Has no effect after initial render — use the `open` prop for runtime control.  When multiple siblings have `defaultExpanded=true` and `allowMultiple=false`, only the first in DOM order remains open after mount (coordinated in `componentDidLoad`).
           * @default false
@@ -10459,11 +10439,6 @@ declare namespace LocalJSX {
          */
         "closeable"?: boolean;
         /**
-          * When true, reduces tab button padding using density tokens.
-          * @default false
-         */
-        "compact"?: boolean;
-        /**
           * Optional accessible label for the tablist region.
          */
         "label"?: string;
@@ -10484,7 +10459,7 @@ declare namespace LocalJSX {
          */
         "panelIds"?: string[];
         /**
-          * Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium').
+          * Size scale for the tab buttons. Drives typography and padding via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-base` for 'medium', `--io-font-size-xs` + reduced padding for 'compact').
           * @default 'small'
          */
         "size"?: IoTabsSize;
@@ -10564,11 +10539,6 @@ declare namespace LocalJSX {
           * @default 'soft'
          */
         "appearance"?: IoTagAppearance;
-        /**
-          * Compact density — reduces vertical padding for dense UI contexts
-          * @default false
-         */
-        "compact"?: boolean;
         /**
           * Disables all interaction
           * @default false
@@ -11050,7 +11020,6 @@ declare namespace LocalJSX {
         "heading": string;
         "headingTag": IoAccordionHeadingTag;
         "size": IoAccordionSize;
-        "compact": boolean;
         "alignMarker": IoAccordionAlignMarker;
         "disabled": boolean;
         "background": IoAccordionBackground;
@@ -11696,7 +11665,6 @@ declare namespace LocalJSX {
         "activeTabIndex": number;
         "label": string;
         "size": IoTabsSize;
-        "compact": boolean;
         "labelledby": string;
         "closeable": boolean;
     }
@@ -11713,7 +11681,6 @@ declare namespace LocalJSX {
         "variant": IoTagVariant;
         "appearance": IoTagAppearance;
         "label": string;
-        "compact": boolean;
         "icon": IoIconName;
         "iconSource": string;
     }

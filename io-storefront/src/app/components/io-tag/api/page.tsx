@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { SectionHeader, InlineCode, ApiTable, ReflectBadge, EmptyNote, CodeNote } from '@/components/api/ApiPrimitives';
 
 
@@ -69,12 +70,6 @@ export default function IoTagApiPage() {
               </span>,
               <InlineCode key="d">&apos;soft&apos;</InlineCode>,
               'Controls the background fill style. solid is a fully-filled background; soft is a translucent tinted background; frosted applies a backdrop-filter blur over a semi-transparent fill.',
-            ],
-            [
-              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Compact density — reduces vertical padding for dense UI contexts. Override the padding via --io-tag-compact-padding-y.',
             ],
             [
               <InlineCode key="n">label</InlineCode>,
@@ -189,20 +184,9 @@ tag.addEventListener('toggle', (e) => console.log('selected:', e.detail));
           title="CSS Custom Properties"
           description="These tokens can be set on the host element (or any ancestor) to override component-specific defaults without breaking out of the design system."
         />
-        <ApiTable
-          columns={[
-            { label: 'Property', width: '280px' },
-            { label: 'Default', width: '220px' },
-            { label: 'Description' },
-          ]}
-          rows={[
-            [
-              <InlineCode key="n">--io-tag-compact-padding-y</InlineCode>,
-              <InlineCode key="d">var(--io-space-1)</InlineCode>,
-              'Vertical padding applied to tags when compact=true. Defaults to 4px.',
-            ],
-          ]}
-        />
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--io-text-secondary)' }}>
+          This component has no component-level override tokens. All visual properties are governed by global design tokens documented in the <Link href="/styles/tokens" className="underline">Token Explorer</Link>.
+        </p>
       </section>
 
     </div>

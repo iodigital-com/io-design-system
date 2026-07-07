@@ -38,11 +38,8 @@ export class IoTabs {
   /** Optional accessible label for the tablist region. */
   @Prop() label?: string;
 
-  /** Font size scale for the tab buttons. Drives typography via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-md` for 'medium'). */
+  /** Size scale for the tab buttons. Drives typography and padding via design tokens (`--io-font-size-sm` for 'small', `--io-font-size-base` for 'medium', `--io-font-size-xs` + reduced padding for 'compact'). */
   @Prop() size: IoTabsSize = 'small';
-
-  /** When true, reduces tab button padding using density tokens. */
-  @Prop({ reflect: true }) compact = false;
 
   /** ID of an element that labels the tablist (ARIA 4.1.2). Applied as aria-labelledby on the tablist div. */
   @Prop() labelledby?: string;

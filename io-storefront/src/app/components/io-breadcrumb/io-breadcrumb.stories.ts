@@ -109,6 +109,7 @@ export const breadcrumbStory = breadcrumbStoryDefault;
 export const breadcrumbPropDefinitions: PropDefinition[] = [
   { name: 'label', type: 'string', defaultValue: 'Breadcrumb', description: 'Accessible label for the nav landmark.' },
   { name: 'maxItems', type: 'number', description: 'Maximum visible items before collapsing intermediate items into an expand button.' },
+  { name: 'seo', type: 'boolean', defaultValue: false, description: 'Render a schema.org BreadcrumbList JSON-LD script element.' },
 ];
 
 export const breadcrumbStoryLong: Story<'io-breadcrumb'> = {

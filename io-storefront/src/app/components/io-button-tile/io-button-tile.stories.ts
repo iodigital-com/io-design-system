@@ -35,6 +35,7 @@ export const buttonTilePropDefinitions: PropDefinition[] = [
   { name: 'size', type: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
   { name: 'weight', type: 'select', options: ['regular', 'medium', 'semibold', 'bold'], defaultValue: 'semibold' },
   { name: 'gradient', type: 'boolean', defaultValue: true },
+  { name: 'type', type: 'select', options: ['button', 'submit', 'reset'], defaultValue: 'button' },
   { name: 'disabled', type: 'boolean', defaultValue: false },
   { name: 'loading', type: 'boolean', defaultValue: false },
 ];

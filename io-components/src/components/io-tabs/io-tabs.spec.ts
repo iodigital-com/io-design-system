@@ -35,11 +35,6 @@ describe('io-tabs — default props', () => {
     expect(component.size).toBe('small');
   });
 
-  it('has compact=false by default', () => {
-    const component = makeComponent();
-    expect(component.compact).toBe(false);
-  });
-
   it('has no labelledby by default', () => {
     const component = makeComponent();
     expect(component.labelledby).toBeUndefined();
@@ -286,7 +281,7 @@ describe('io-tabs — panelIds aria-controls', () => {
   });
 });
 
-describe('io-tabs — size and compact props', () => {
+describe('io-tabs — size prop', () => {
   it('accepts size=medium without error', () => {
     const component = makeComponent();
     component.size = 'medium';
@@ -299,10 +294,10 @@ describe('io-tabs — size and compact props', () => {
     expect(component.size).toBe('small');
   });
 
-  it('accepts compact=true without error', () => {
+  it('accepts size=compact without error', () => {
     const component = makeComponent();
-    component.compact = true;
-    expect(component.compact).toBe(true);
+    component.size = 'compact';
+    expect(component.size).toBe('compact');
   });
 
   it('render() tablist includes tabs--size-small class when size=small', () => {
@@ -333,6 +328,21 @@ describe('io-tabs — size and compact props', () => {
     expect(tablistCall).toBeDefined();
     const cls = tablistCall![1].class as Record<string, boolean>;
     expect(cls['tabs--size-medium']).toBe(true);
+  });
+
+  it('render() tablist includes tabs--size-compact class when size=compact', () => {
+    const component = makeComponent();
+    component.size = 'compact';
+    const hMock = h as unknown as ReturnType<typeof vi.fn>;
+    hMock.mockClear();
+    (component as any).render();
+    const calls = hMock.mock.calls as Array<[unknown, Record<string, unknown>, ...unknown[]]>;
+    const tablistCall = calls.find(
+      ([tag, attrs]) => tag === 'div' && (attrs as Record<string, unknown>)?.role === 'tablist',
+    );
+    expect(tablistCall).toBeDefined();
+    const cls = tablistCall![1].class as Record<string, boolean>;
+    expect(cls['tabs--size-compact']).toBe(true);
   });
 });
 

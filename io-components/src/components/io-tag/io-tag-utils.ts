@@ -10,7 +10,6 @@ export function getTagClassName(
   appearance: IoTagAppearance,
   selected: boolean,
   disabled: boolean,
-  compact?: boolean,
 ): string {
   return [
     'tag',
@@ -19,7 +18,6 @@ export function getTagClassName(
     `tag--${appearance}`,
     selected ? 'tag--selected' : '',
     disabled ? 'tag--disabled' : '',
-    compact ? 'tag--compact' : '',
   ]
     .filter(Boolean)
     .join(' ');

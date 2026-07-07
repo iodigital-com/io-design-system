@@ -55,4 +55,16 @@ export const tabPanelPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'When true, the panel is hidden (display: none). Set automatically by io-tabs.',
   },
+  {
+    name: 'labelledBy',
+    type: 'string',
+    defaultValue: '',
+    description: 'ID of the tab button that controls this panel. Assigned automatically by io-tabs.',
+  },
+  {
+    name: 'panelId',
+    type: 'string',
+    defaultValue: '',
+    description: 'Explicit ID override for the panel element. If not set, a stable auto-generated ID is applied.',
+  },
 ];

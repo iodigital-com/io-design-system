@@ -105,6 +105,12 @@ export const switchPropDefinitions: PropDefinition[] = [
     description: 'Controls whether the switch is on or off.',
   },
   {
+    name: 'name',
+    type: 'string',
+    defaultValue: '',
+    description: 'Sets the HTML name attribute for form submission.',
+  },
+  {
     name: 'value',
     type: 'string',
     defaultValue: 'on',

@@ -409,6 +409,12 @@ export const iconPropDefinitions: PropDefinition[] = [
     description: 'Accessible label. When set, the icon renders with role="img" and aria-label. Omit for decorative icons.',
   },
   {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
+    description: 'URL to a custom SVG source to render instead of a registered icon name. Ignored when unset; overrides "name" when provided.',
+  },
+  {
     name: 'fixedWidth',
     type: 'boolean',
     defaultValue: false,

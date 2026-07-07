@@ -7,6 +7,7 @@ export const spinnerStory: Story<'io-spinner'> = {
       size: 'md',
       color: 'primary',
       label: 'Loading',
+      context: 'inline',
     },
   },
   generator: ({ properties } = {}) => [
@@ -16,57 +17,58 @@ export const spinnerStory: Story<'io-spinner'> = {
         size: (properties?.size as string) ?? 'md',
         color: (properties?.color as string) ?? 'primary',
         label: (properties?.label as string) ?? 'Loading',
+        context: (properties?.context as string) ?? 'inline',
       },
     },
   ],
 };
 
 export const spinnerStorySm: Story<'io-spinner'> = {
-  state: { properties: { size: 'sm', color: 'primary', label: 'Loading' } },
+  state: { properties: { size: 'sm', color: 'primary', label: 'Loading', context: 'inline' } },
   generator: () => [
     {
       tag: 'io-spinner' as const,
-      properties: { size: 'sm', color: 'primary', label: 'Loading' },
+      properties: { size: 'sm', color: 'primary', label: 'Loading', context: 'inline' },
     },
   ],
 };
 
 export const spinnerStoryMd: Story<'io-spinner'> = {
-  state: { properties: { size: 'md', color: 'primary', label: 'Loading' } },
+  state: { properties: { size: 'md', color: 'primary', label: 'Loading', context: 'inline' } },
   generator: () => [
     {
       tag: 'io-spinner' as const,
-      properties: { size: 'md', color: 'primary', label: 'Loading' },
+      properties: { size: 'md', color: 'primary', label: 'Loading', context: 'inline' },
     },
   ],
 };
 
 export const spinnerStoryLg: Story<'io-spinner'> = {
-  state: { properties: { size: 'lg', color: 'primary', label: 'Loading' } },
+  state: { properties: { size: 'lg', color: 'primary', label: 'Loading', context: 'inline' } },
   generator: () => [
     {
       tag: 'io-spinner' as const,
-      properties: { size: 'lg', color: 'primary', label: 'Loading' },
+      properties: { size: 'lg', color: 'primary', label: 'Loading', context: 'inline' },
     },
   ],
 };
 
 export const spinnerStoryWhite: Story<'io-spinner'> = {
-  state: { properties: { size: 'md', color: 'white', label: 'Loading' } },
+  state: { properties: { size: 'md', color: 'white', label: 'Loading', context: 'inline' } },
   generator: () => [
     {
       tag: 'io-spinner' as const,
-      properties: { size: 'md', color: 'white', label: 'Loading' },
+      properties: { size: 'md', color: 'white', label: 'Loading', context: 'inline' },
     },
   ],
 };
 
 export const spinnerStoryCurrent: Story<'io-spinner'> = {
-  state: { properties: { size: 'md', color: 'current', label: 'Loading' } },
+  state: { properties: { size: 'md', color: 'current', label: 'Loading', context: 'inline' } },
   generator: () => [
     {
       tag: 'io-spinner' as const,
-      properties: { size: 'md', color: 'current', label: 'Loading' },
+      properties: { size: 'md', color: 'current', label: 'Loading', context: 'inline' },
     },
   ],
 };

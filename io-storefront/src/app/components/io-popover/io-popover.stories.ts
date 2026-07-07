@@ -242,4 +242,18 @@ export const popoverPropDefinitions: PropDefinition[] = [
     description: 'Accessible label for the popover.',
     group: 'Accessibility',
   },
+  {
+    name: 'open',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Controls visibility of the popover panel.',
+    group: 'Behaviour',
+  },
+  {
+    name: 'arrow',
+    type: 'boolean',
+    defaultValue: true,
+    description: 'Show the directional arrow pointing toward the trigger.',
+    group: 'Appearance',
+  },
 ];

@@ -149,6 +149,18 @@ export const textareaPropDefinitions: PropDefinition[] = [
     description: 'Sets the field label shown above the textarea.',
   },
   {
+    name: 'name',
+    type: 'string',
+    defaultValue: undefined,
+    description: 'Sets the name submitted with form data.',
+  },
+  {
+    name: 'autoComplete',
+    type: 'string',
+    defaultValue: undefined,
+    description: 'Sets the native autocomplete attribute for browser autofill behavior.',
+  },
+  {
     name: 'size',
     type: 'select',
     options: ['sm', 'md', 'lg'],

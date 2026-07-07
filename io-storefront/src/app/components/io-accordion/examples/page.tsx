@@ -15,6 +15,7 @@ import {
   accordionStorySizeLg,
   accordionStorySizeMd,
   accordionStorySizeSm,
+  accordionStorySizeXs,
   accordionStoryStickyWithSurface,
   accordionStorySummarySlots,
   accordionStorySurfaceBackground,
@@ -131,6 +132,13 @@ export default function IoAccordionExamplesPage() {
           description="Use default-expanded to expand a panel on first render without setting open externally. The prop has no effect after initial mount."
         />
         <ComponentStory story={accordionStoryDefaultExpanded} />
+      </section>
+      <section>
+        <ExamplesSectionHeader
+          title="Size xs"
+          description="Use size='xs' for the densest layouts where vertical space is most limited."
+        />
+        <ComponentStory story={accordionStorySizeXs} />
       </section>
       <section>
         <ExamplesSectionHeader

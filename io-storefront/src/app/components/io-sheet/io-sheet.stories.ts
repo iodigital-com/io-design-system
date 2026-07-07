@@ -50,7 +50,7 @@ export const sheetStory: Story<'io-sheet'> = {
 
 export const sheetPropDefinitions: PropDefinition[] = [
   { name: 'open', type: 'boolean', defaultValue: false, group: 'Behaviour' },
-  { name: 'heading', type: 'string', defaultValue: 'Share', group: 'Content' },
+  { name: 'heading', type: 'string', defaultValue: '', group: 'Content' },
   { name: 'dismissible', type: 'boolean', defaultValue: true, group: 'Behaviour' },
 ];
 

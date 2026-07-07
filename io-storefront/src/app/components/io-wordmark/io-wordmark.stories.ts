@@ -115,4 +115,17 @@ export const wordmarkPropDefinitions: PropDefinition[] = [
     defaultValue: 'io Digital',
     description: 'Accessible label for the host element.',
   },
+  {
+    name: 'href',
+    type: 'string',
+    defaultValue: '',
+    description: 'When set, renders the wordmark as a link pointing to this URL.',
+  },
+  {
+    name: 'target',
+    type: 'select',
+    options: ['_self', '_blank', '_parent', '_top'],
+    defaultValue: '_self',
+    description: 'Target attribute applied to the rendered link when href is set.',
+  },
 ];

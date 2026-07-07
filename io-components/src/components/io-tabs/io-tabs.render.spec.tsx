@@ -74,12 +74,13 @@ describe('io-tabs — render-level prop assertions', () => {
     expect(tablist?.getAttribute('aria-label')).toBe('My tabs');
   });
 
-  it('reflects compact attribute on the host when compact=true', async () => {
+  it('adds tabs--size-compact class on the tablist when size="compact"', async () => {
     const { root } = await render(
-      <io-tabs compact={true}>
+      <io-tabs size="compact">
         <button type="button">Tab A</button>
       </io-tabs>
     );
-    expect(root.hasAttribute('compact')).toBe(true);
+    const tablist = root.shadowRoot?.querySelector('[role="tablist"]');
+    expect(tablist?.classList.contains('tabs--size-compact')).toBe(true);
   });
 });

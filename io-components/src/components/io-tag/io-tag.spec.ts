@@ -33,24 +33,12 @@ describe('io-tag — default props', () => {
     expect(component.appearance).toBe('soft');
   });
 
-  it('is not compact by default', () => {
-    expect(component.compact).toBe(false);
-  });
-
   it('has no icon by default', () => {
     expect(component.icon).toBeUndefined();
   });
 
   it('has no iconSource by default', () => {
     expect(component.iconSource).toBeUndefined();
-  });
-});
-
-describe('io-tag — compact density (#866)', () => {
-  it('compact CSS uses --io-tag-compact-padding-y token', () => {
-    const styles = getTagStyles();
-    expect(styles).toContain('.tag--compact');
-    expect(styles).toContain('var(--io-tag-compact-padding-y)');
   });
 });
 

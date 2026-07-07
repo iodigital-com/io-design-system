@@ -147,14 +147,20 @@ describe('io-wordmark storefront stories', () => {
       expect(def).toBeUndefined();
     });
 
-    it('does not include href', () => {
+    it('includes href definition of type string', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'href');
-      expect(def).toBeUndefined();
+      expect(def).toBeDefined();
+      expect(def!.type).toBe('string');
     });
 
-    it('does not include target', () => {
+    it('includes target select with _self default', () => {
       const def = wordmarkPropDefinitions.find((d) => d.name === 'target');
-      expect(def).toBeUndefined();
+      expect(def).toBeDefined();
+      expect(def!.type).toBe('select');
+      const opts = (def as unknown as { options: string[] }).options;
+      expect(opts).toContain('_self');
+      expect(opts).toContain('_blank');
+      expect(def!.defaultValue).toBe('_self');
     });
 
     it('does not include rel', () => {

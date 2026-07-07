@@ -149,6 +149,12 @@ export const tablePropDefinitions: PropDefinition[] = [
     options: ['auto', 'fixed'],
     defaultValue: 'auto',
   },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'When true, overlays the table body with the loading slot content and applies aria-busy="true" to the scroll wrapper.',
+  },
 ];
 
 // ---------------------------------------------------------------------------

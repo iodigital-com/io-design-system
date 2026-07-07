@@ -22,6 +22,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
       variant: 'primary',
       direction: 'row',
       compact: false,
+      required: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -36,6 +37,7 @@ export const buttonGroupStory: Story<'io-button-group'> = {
         direction: (properties?.direction as 'row' | 'column') ?? 'row',
         compact: properties?.compact as boolean ?? false,
         hideLabel: (properties?.hideLabel as boolean) ?? false,
+        required: (properties?.required as boolean) ?? false,
       },
       children: [
         createButtonGroupItem('day', 'Day'),
@@ -254,5 +256,11 @@ export const buttonGroupPropDefinitions: PropDefinition[] = [
     type: 'boolean',
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
+  },
+  {
+    name: 'required',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Marks the group as required. Shows an asterisk next to the label.',
   },
 ];

@@ -34,16 +34,18 @@ describe('io-accordion — default props', () => {
     expect(component.size).toBe('md');
   });
 
-  it('defaults compact to false', () => {
-    expect(component.compact).toBe(false);
-  });
-
   it('defaults alignMarker to end', () => {
     expect(component.alignMarker).toBe('end');
   });
 });
 
 describe('io-accordion — size prop', () => {
+  it('accepts size xs', () => {
+    const component = new IoAccordion();
+    component.size = 'xs';
+    expect(component.size).toBe('xs');
+  });
+
   it('accepts size sm', () => {
     const component = new IoAccordion();
     component.size = 'sm';
@@ -60,6 +62,12 @@ describe('io-accordion — size prop', () => {
     const component = new IoAccordion();
     component.size = 'lg';
     expect(component.size).toBe('lg');
+  });
+
+  it('size CSS includes xs host selector with densest padding token', () => {
+    const styles = getAccordionStyles();
+    expect(styles).toContain(':host([size="xs"])');
+    expect(styles).toContain('var(--io-space-2)');
   });
 
   it('size CSS includes sm host selector with compact padding token', () => {
@@ -82,6 +90,7 @@ describe('io-accordion — size prop', () => {
 
   it('size CSS uses font-size tokens for each size variant', () => {
     const styles = getAccordionStyles();
+    expect(styles).toContain('var(--io-font-size-sm)');
     expect(styles).toContain('var(--io-font-size-base)');
     expect(styles).toContain('var(--io-font-size-lg)');
     expect(styles).toContain('var(--io-font-size-xl)');
@@ -264,31 +273,6 @@ describe('io-accordion — sticky prop', () => {
     component.componentWillLoad();
     expect(warnSpy).not.toHaveBeenCalled();
     warnSpy.mockRestore();
-  });
-});
-
-describe('io-accordion — compact prop', () => {
-  it('defaults compact to false', () => {
-    const component = new IoAccordion();
-    expect(component.compact).toBe(false);
-  });
-
-  it('accepts compact=true', () => {
-    const component = new IoAccordion();
-    component.compact = true;
-    expect(component.compact).toBe(true);
-  });
-
-  it('CSS includes :host([compact]) with tighter padding tokens', () => {
-    const styles = getAccordionStyles();
-    expect(styles).toContain(':host([compact]) .accordion-trigger');
-    expect(styles).toContain('var(--io-space-2)');
-  });
-
-  it('CSS includes :host([compact]) with smaller font-size token', () => {
-    const styles = getAccordionStyles();
-    expect(styles).toContain(':host([compact]) .accordion-title');
-    expect(styles).toContain('var(--io-font-size-sm)');
   });
 });
 

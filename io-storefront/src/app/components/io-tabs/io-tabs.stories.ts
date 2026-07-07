@@ -43,7 +43,6 @@ export const tabsStory: Story<'io-tabs'> = {
       properties: {
         activeTabIndex: (properties?.activeTabIndex as number) ?? DEFAULT_ACTIVE_TAB_INDEX,
         size: (properties?.size as string) ?? 'small',
-        compact: (properties?.compact as boolean) ?? false,
         label: (properties?.label as string) || undefined,
         labelledby: (properties?.labelledby as string) ?? undefined,
         panelIds: (properties?.panelIds as string[]) ?? undefined,
@@ -83,15 +82,9 @@ export const tabsPropDefinitions: PropDefinition[] = [
   {
     name: 'size',
     type: 'select',
-    options: ['small', 'medium'],
+    options: ['small', 'medium', 'compact'],
     defaultValue: 'small',
-    description: 'Visual size of the tab list. medium increases tab height and font size for prominent navigation.',
-  },
-  {
-    name: 'compact',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Reduces tab padding for dense layouts.',
+    description: 'Visual size of the tab list. medium increases tab height and font size for prominent navigation; compact reduces padding and font size for dense layouts.',
   },
   {
     name: 'label',

@@ -168,4 +168,31 @@ export const linkPurePropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Visually hides the label while keeping it accessible. Use for icon-only links.',
   },
+  {
+    name: 'external',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Automatically sets target="_blank" and rel="noopener noreferrer".',
+  },
+  {
+    name: 'target',
+    type: 'string',
+    defaultValue: '_self',
+    description: 'Link target. Overridden to "_blank" when external is true.',
+  },
+  {
+    name: 'rel',
+    type: 'string',
+    description: 'Rel attribute. Overridden to "noopener noreferrer" when external is true.',
+  },
+  {
+    name: 'download',
+    type: 'string',
+    description: 'Downloadable file name. Enables download behavior on click.',
+  },
+  {
+    name: 'iconSource',
+    type: 'string',
+    description: 'Custom SVG source string for a non-library icon. Takes precedence over icon.',
+  },
 ];

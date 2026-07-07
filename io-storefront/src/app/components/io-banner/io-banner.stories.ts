@@ -91,7 +91,8 @@ export const bannerPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['top', 'bottom'],
     defaultValue: 'top',
-    description: 'Viewport edge where the banner is fixed (top or bottom).',
+    description:
+      "Viewport edge where the banner is fixed (top or bottom). Component default is actually responsive ({ base: 'bottom', s: 'top' }) — 'top' reflects the s-breakpoint-and-up default; on base (mobile) viewports the banner defaults to 'bottom'.",
   },
   {
     name: 'dismissLabel',
@@ -108,7 +109,7 @@ export const bannerPropDefinitions: PropDefinition[] = [
   {
     name: 'actionIcon',
     type: 'string',
-    defaultValue: '',
+    defaultValue: 'arrow-right',
     description: 'Icon name rendered inside the action button.',
   },
   {

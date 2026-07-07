@@ -53,4 +53,10 @@ export const flagPropDefinitions: PropDefinition[] = [
     defaultValue: 'md',
     description: 'Visual size — aligned with io-icon size scale.',
   },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label for the flag image. Defaults to the country name derived from the ISO code. Pass an empty string to treat the flag as decorative.',
+  },
 ];

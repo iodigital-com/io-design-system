@@ -7,13 +7,13 @@ import {
   accordionStoryGroupSingleOpen,
   accordionStoryDefaultExpanded,
   accordionStoryGroupMultiOpen,
+  accordionStorySizeXs,
   accordionStorySizeSm,
   accordionStorySizeMd,
   accordionStorySizeLg,
   accordionStorySurfaceBackground,
   accordionStoryCanvasBackground,
   accordionStoryStickyWithSurface,
-  accordionStoryCompact,
   accordionStoryAlignMarkerStart,
   accordionStoryFrostedBackground,
   accordionStoryIndent,
@@ -284,6 +284,29 @@ describe('io-accordion storefront stories', () => {
     });
   });
 
+  describe('accordionStorySizeXs', () => {
+    it('generator returns non-empty array', () => {
+      const els = accordionStorySizeXs.generator?.();
+      expect(Array.isArray(els)).toBe(true);
+      expect(els!.length).toBeGreaterThan(0);
+    });
+
+    it('every returned element has a tag', () => {
+      const els = accordionStorySizeXs.generator?.() ?? [];
+      for (const el of els) {
+        if (el && typeof el === 'object' && 'tag' in el) {
+          expect(typeof (el as { tag: unknown }).tag).toBe('string');
+        }
+      }
+    });
+
+    it('story sets size to xs', () => {
+      const els = accordionStorySizeXs.generator?.() ?? [];
+      const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
+      expect(accordion.properties['size']).toBe('xs');
+    });
+  });
+
   describe('accordionStorySizeSm', () => {
     it('generator returns non-empty array', () => {
       const els = accordionStorySizeSm.generator?.();
@@ -383,29 +406,6 @@ describe('io-accordion storefront stories', () => {
           expect(typeof (el as { tag: unknown }).tag).toBe('string');
         }
       }
-    });
-  });
-
-  describe('accordionStoryCompact', () => {
-    it('generator returns non-empty array', () => {
-      const els = accordionStoryCompact.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('every returned element has a tag', () => {
-      const els = accordionStoryCompact.generator?.() ?? [];
-      for (const el of els) {
-        if (el && typeof el === 'object' && 'tag' in el) {
-          expect(typeof (el as { tag: unknown }).tag).toBe('string');
-        }
-      }
-    });
-
-    it('story sets compact to true', () => {
-      const els = accordionStoryCompact.generator?.() ?? [];
-      const accordion = els[0] as { tag: string; properties: Record<string, unknown> };
-      expect(accordion.properties['compact']).toBe(true);
     });
   });
 

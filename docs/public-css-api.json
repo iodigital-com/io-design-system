@@ -1566,12 +1566,6 @@
     "description": "Color of the inactive track border below the tab list. Override to match your surface."
   },
   {
-    "cssVar": "--io-tag-compact-padding-y",
-    "classification": "public-api",
-    "component": "io-tag",
-    "description": "Vertical padding override applied to tags when compact=true. Defaults to var(--io-space-1) (4px)."
-  },
-  {
     "cssVar": "--io-text-primary",
     "classification": "internal",
     "component": "io-accordion",

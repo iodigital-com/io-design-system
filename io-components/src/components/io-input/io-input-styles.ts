@@ -349,28 +349,6 @@ export function getInputStyles(): string {
       }
     }
 
-    /* ── Compact variant ─────────────────────────────────────── */
-
-    /* Compact: reduces field height and vertical padding for dense layouts.
-       Uses the compact density token (--io-space-1 = 4px) to override the default
-       (--io-spacing-component-y = 8px) without relying on the global density selector. */
-    :host([compact]) .input-field {
-      padding-top: var(--io-space-1);
-      padding-bottom: var(--io-space-1);
-    }
-
-    :host([compact]) .input-field--sm {
-      height: calc(var(--io-size-input-sm) - var(--io-space-2));
-    }
-
-    :host([compact]) .input-field--md {
-      height: calc(var(--io-size-input-md) - var(--io-space-2));
-    }
-
-    :host([compact]) .input-field--lg {
-      height: calc(var(--io-size-input-lg) - var(--io-space-2));
-    }
-
     /* ── RTL support ─────────────────────────────────────────── */
 
     /* Mirror the label anchor: left → right in RTL */

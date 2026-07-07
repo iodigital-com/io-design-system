@@ -5,7 +5,6 @@ import {
   inputStoryError,
   inputStoryDisabled,
   inputStorySizes,
-  inputStoryDateTime,
   inputStoryConstraints,
   inputStoryLoading,
   inputStoryCounter,
@@ -43,7 +42,7 @@ describe('io-input storefront stories', () => {
     });
 
     it('generator with each type option does not throw', () => {
-      for (const type of ['text', 'email', 'password', 'number', 'tel', 'url', 'date', 'time']) {
+      for (const type of ['text', 'email', 'password', 'number', 'tel', 'url']) {
         expect(() =>
           inputStory.generator?.({ properties: { ...inputStory.state?.properties, type } })
         ).not.toThrow();
@@ -231,27 +230,6 @@ describe('io-input storefront stories', () => {
     it('returns three size variants', () => {
       const els = inputStorySizes.generator?.() ?? [];
       expect(els.length).toBe(3);
-    });
-  });
-
-  describe('inputStoryDateTime (named story)', () => {
-    it('generator with no args returns non-empty array', () => {
-      const els = inputStoryDateTime.generator?.();
-      expect(Array.isArray(els)).toBe(true);
-      expect(els!.length).toBeGreaterThan(0);
-    });
-
-    it('every returned element has a tag', () => {
-      const els = inputStoryDateTime.generator?.() ?? [];
-      for (const el of els) {
-        if (el && typeof el === 'object' && 'tag' in el) {
-          expect(typeof (el as { tag: unknown }).tag).toBe('string');
-        }
-      }
-    });
-
-    it('does not throw', () => {
-      expect(() => inputStoryDateTime.generator?.()).not.toThrow();
     });
   });
 

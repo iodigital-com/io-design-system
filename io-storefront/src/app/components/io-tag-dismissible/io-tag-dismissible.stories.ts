@@ -61,4 +61,14 @@ export const tagDismissiblePropDefinitions: PropDefinition[] = [
     options: ['default', 'blue', 'beige', 'dark', 'orange', 'rouge', 'success', 'warning', 'error', 'outline'],
     defaultValue: 'default',
   },
+  {
+    name: 'icon',
+    type: 'string',
+    defaultValue: undefined,
+  },
+  {
+    name: 'disabled',
+    type: 'boolean',
+    defaultValue: false,
+  },
 ];

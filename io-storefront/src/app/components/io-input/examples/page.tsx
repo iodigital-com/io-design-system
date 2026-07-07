@@ -3,7 +3,6 @@
 import {
   inputStoryDefault,
   inputStorySizes,
-  inputStoryDateTime,
   inputStoryConstraints,
   inputStoryError,
   inputStoryDisabled,
@@ -28,12 +27,7 @@ export default function IoInputExamplesPage() {
       </section>
 
       <section>
-        <ExamplesSectionHeader title="Date and time types" description="Native date/time inputs with platform pickers and constraints." />
-        <ComponentStory story={inputStoryDateTime} previewClassName="flex flex-wrap gap-4 items-end" />
-      </section>
-
-      <section>
-        <ExamplesSectionHeader title="Numeric constraints" description="min, max, and step forwarded to native number/date/time inputs." />
+        <ExamplesSectionHeader title="Numeric constraints" description="min, max, and step forwarded to the native number input." />
         <ComponentStory story={inputStoryConstraints} previewClassName={FORM_PREVIEW_CLASSNAME} />
       </section>
 

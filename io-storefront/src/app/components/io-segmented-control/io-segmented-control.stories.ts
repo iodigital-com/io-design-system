@@ -86,7 +86,7 @@ export const segmentedControlPropDefinitions: PropDefinition[] = [
   {
     name: 'value',
     type: 'string',
-    defaultValue: 'list',
+    defaultValue: '',
     description: 'Currently selected segment value. Controls which io-segment child renders as selected.',
   },
   {
@@ -139,7 +139,8 @@ export const segmentedControlPropDefinitions: PropDefinition[] = [
   },
   {
     name: 'columns',
-    type: 'string',
+    type: 'select',
+    options: ['auto', '1', '2', '3', '4', '6', '12'],
     defaultValue: 'auto',
     description: "Number of equal-width columns. When 'auto' the bar uses flex; when a number is provided the bar switches to a CSS grid with that many equal-width tracks.",
   },

@@ -180,6 +180,16 @@ export function getAccordionStyles(): string {
 
     /* ── Size variants ──────────────────────────────────── */
 
+    /* xs — densest: tightest padding, smallest title font */
+    :host([size="xs"]) .accordion-trigger {
+      padding-top: var(--io-accordion-py, var(--io-space-2));
+      padding-bottom: var(--io-accordion-py, var(--io-space-2));
+    }
+
+    :host([size="xs"]) .accordion-title {
+      font-size: var(--io-font-size-sm);
+    }
+
     /* sm — compact: tighter padding, smaller title font */
     :host([size="sm"]) .accordion-trigger {
       padding-top: var(--io-accordion-py, var(--io-space-3));
@@ -208,17 +218,6 @@ export function getAccordionStyles(): string {
 
     :host([size="lg"]) .accordion-title {
       font-size: var(--io-font-size-xl);
-    }
-
-    /* ── Compact prop — dense layout independent of size ─── */
-
-    :host([compact]) .accordion-trigger {
-      padding-top: var(--io-accordion-py, var(--io-space-2));
-      padding-bottom: var(--io-accordion-py, var(--io-space-2));
-    }
-
-    :host([compact]) .accordion-title {
-      font-size: var(--io-font-size-sm);
     }
 
     /* ── Align marker ────────────────────────────────────── */

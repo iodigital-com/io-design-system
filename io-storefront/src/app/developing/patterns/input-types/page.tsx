@@ -53,13 +53,6 @@ const INPUT_RECIPES: InputRecipe[] = [
     notes: 'inputmode="decimal" shows decimal keyboard. Consider step="0.01" for two-decimal precision.',
   },
   {
-    useCase: 'Time (HH:MM)',
-    type: 'time',
-    inputMode: 'text',
-    autoComplete: 'off',
-    notes: 'Native time picker. Use step="900" for 15-minute increments. Use min/max to constrain range.',
-  },
-  {
     useCase: 'Full name',
     type: 'text',
     inputMode: 'text',
@@ -224,7 +217,7 @@ export default function InputTypesPage() {
       <section id="why-one-component" className="space-y-6">
         <SectionHeader
           title="Why one component for all types?"
-          description="io-input collapses email, tel, url, number, time, search, and text into a single component with a type prop."
+          description="io-input collapses email, tel, url, number, search, and text into a single component with a type prop."
         />
         <div className="space-y-4">
           <p className="text-sm leading-7" style={{ color: 'var(--io-text-secondary)' }}>
@@ -356,10 +349,10 @@ export default function InputTypesPage() {
               cases where those affordances are unwanted.
             </DoOrDontCard>
             <DoOrDontCard type="do">
-              Use <InlineCode>io-input-date</InlineCode> for date-only fields — it provides a
-              calendar icon and consistent sizing. Use{' '}
-              <code style={{ fontSize: '0.85em' }}>io-input type=&quot;time&quot;</code> when
-              you need time-only input without a dedicated wrapper.
+              Use <InlineCode>io-input-date</InlineCode> for date fields — it provides a
+              calendar icon, native date picker, and consistent sizing.
+              <InlineCode>io-input</InlineCode> no longer accepts a date or time{' '}
+              <InlineCode>type</InlineCode> to avoid two components doing the same job.
             </DoOrDontCard>
             <DoOrDontCard type="do">
               Use <InlineCode>io-pin-code</InlineCode> for 4–8 digit OTP or PIN entry — it

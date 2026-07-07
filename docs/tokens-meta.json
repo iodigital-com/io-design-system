@@ -1,6 +1,6 @@
 {
   "$schemaVersion": 1,
-  "$generated": "2026-07-02T14:19:02.278Z",
+  "$generated": "2026-07-07T08:53:22.678Z",
   "$source": "docs/public-css-api.json + io-components/src/global/app.css",
   "tokens": [
     {
@@ -1040,6 +1040,34 @@
       "defaultValue": "1px"
     },
     {
+      "cssVar": "--io-fieldset-border-error-width",
+      "classification": "public-api",
+      "component": "io-fieldset",
+      "description": "Width of the left error border applied when error=true. Pairs with border-color to satisfy WCAG 1.4.1 (use of colour).",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-fieldset-error-color",
+      "classification": "public-api",
+      "component": "io-fieldset",
+      "description": "Color of the error message text and error border. Defaults to --io-color-error.",
+      "defaultValue": "var(--io-color-error)"
+    },
+    {
+      "cssVar": "--io-fieldset-gap",
+      "classification": "public-api",
+      "component": "io-fieldset",
+      "description": "Gap between slotted children in the fieldset body. Defaults to --io-space-3.",
+      "defaultValue": "var(--io-space-3)"
+    },
+    {
+      "cssVar": "--io-fieldset-legend-color",
+      "classification": "public-api",
+      "component": "io-fieldset",
+      "description": "Color of the legend text. Defaults to --io-color-neutral-900.",
+      "defaultValue": "var(--io-color-neutral-900)"
+    },
+    {
       "cssVar": "--io-duration-lg",
       "classification": "internal",
       "component": "global",
@@ -1801,13 +1829,6 @@
       "component": "io-tabs",
       "description": "Color of the inactive track border below the tab list. Override to match your surface.",
       "defaultValue": "var(--io-border)"
-    },
-    {
-      "cssVar": "--io-tag-compact-padding-y",
-      "classification": "public-api",
-      "component": "io-tag",
-      "description": "Vertical padding override applied to tags when compact=true. Defaults to var(--io-space-1) (4px).",
-      "defaultValue": "var(--io-space-1)"
     },
     {
       "cssVar": "--io-text-primary",
@@ -3047,6 +3068,272 @@
       "component": "io-progress",
       "description": "Stroke width of the circular progress track and fill rings. Default: 0.375rem (6px).",
       "defaultValue": "0.375rem"
+    },
+    {
+      "cssVar": "--io-ai-tag-padding-y",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Vertical padding inside the AI Tag badge pill.",
+      "defaultValue": "var(--io-space-1)"
+    },
+    {
+      "cssVar": "--io-ai-tag-padding-x",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Horizontal padding inside the AI Tag badge pill.",
+      "defaultValue": "var(--io-space-2)"
+    },
+    {
+      "cssVar": "--io-ai-tag-color",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Text and icon colour of the AI Tag badge.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-ai-tag-bg",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Background fill of the AI Tag badge.",
+      "defaultValue": "var(--io-color-primary-bg)"
+    },
+    {
+      "cssVar": "--io-ai-tag-border-color",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Border colour of the AI Tag badge pill.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-ai-tag-font-size",
+      "classification": "public-api",
+      "component": "io-ai-tag",
+      "description": "Font size of the AI Tag label text.",
+      "defaultValue": "var(--io-font-size-xs)"
+    },
+    {
+      "cssVar": "--io-button-pure-color",
+      "classification": "public-api",
+      "component": "io-button-pure",
+      "description": "Text colour of the button-pure.",
+      "defaultValue": "var(--io-color-primary)"
+    },
+    {
+      "cssVar": "--io-button-pure-hover-color",
+      "classification": "public-api",
+      "component": "io-button-pure",
+      "description": "Text colour of button-pure on hover.",
+      "defaultValue": "var(--io-color-primary-hover)"
+    },
+    {
+      "cssVar": "--io-button-pure-active-color",
+      "classification": "public-api",
+      "component": "io-button-pure",
+      "description": "Text colour of button-pure in the active/pressed state.",
+      "defaultValue": "var(--io-color-primary-active)"
+    },
+    {
+      "cssVar": "--io-button-pure-underline-color",
+      "classification": "public-api",
+      "component": "io-button-pure",
+      "description": "Colour of the text underline decoration.",
+      "defaultValue": "currentColor"
+    },
+    {
+      "cssVar": "--io-button-pure-underline-offset",
+      "classification": "public-api",
+      "component": "io-button-pure",
+      "description": "Vertical offset of the text underline from the baseline.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-flag-border-radius",
+      "classification": "public-api",
+      "component": "io-flag",
+      "description": "Border radius of the flag image. Override to adjust rounding on flag thumbnails.",
+      "defaultValue": "2px"
+    },
+    {
+      "cssVar": "--io-grid-columns",
+      "classification": "public-api",
+      "component": "io-grid",
+      "description": "Number of columns in the grid. Defaults to 12. Override to set a custom grid column count.",
+      "defaultValue": "12"
+    },
+    {
+      "cssVar": "--io-grid-gap-none",
+      "classification": "public-api",
+      "component": "io-grid",
+      "description": "Grid gap for gap='none'. Defaults to 0px.",
+      "defaultValue": "0px"
+    },
+    {
+      "cssVar": "--io-grid-gap-sm",
+      "classification": "public-api",
+      "component": "io-grid",
+      "description": "Grid gap for gap='sm'. Fluid from 8px to 16px via clamp().",
+      "defaultValue": "clamp(0.5rem, 0.75vw + 0.25rem, 1rem)"
+    },
+    {
+      "cssVar": "--io-grid-gap-md",
+      "classification": "public-api",
+      "component": "io-grid",
+      "description": "Grid gap for gap='md'. Fluid from 16px to 36px via clamp(). This is the default gap.",
+      "defaultValue": "clamp(1rem, 1.25vw + 0.75rem, 2.25rem)"
+    },
+    {
+      "cssVar": "--io-grid-gap-lg",
+      "classification": "public-api",
+      "component": "io-grid",
+      "description": "Grid gap for gap='lg'. Fluid from 24px to 48px via clamp().",
+      "defaultValue": "clamp(1.5rem, 2vw + 1rem, 3rem)"
+    },
+    {
+      "cssVar": "--io-container-narrow-max",
+      "classification": "internal",
+      "component": "io-grid",
+      "description": "Maximum width for the narrow container preset (48rem / 768px).",
+      "defaultValue": "48rem"
+    },
+    {
+      "cssVar": "--io-container-basic-max",
+      "classification": "internal",
+      "component": "io-grid",
+      "description": "Maximum width for the basic container preset (64rem / 1024px).",
+      "defaultValue": "64rem"
+    },
+    {
+      "cssVar": "--io-container-wide-max",
+      "classification": "internal",
+      "component": "io-grid",
+      "description": "Maximum width for the wide container preset (90rem / 1440px).",
+      "defaultValue": "90rem"
+    },
+    {
+      "cssVar": "--io-link-tile-aspect-ratio",
+      "classification": "public-api",
+      "component": "io-link-tile",
+      "description": "Override the default aspect ratio of the tile. Defaults to the value set by the aspect-ratio prop.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-button-tile-aspect-ratio",
+      "classification": "public-api",
+      "component": "io-button-tile",
+      "description": "Override the default aspect ratio of the tile. Defaults to the value set by the aspect-ratio prop.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-app-shell-header-height",
+      "classification": "public-api",
+      "component": "io-app-shell",
+      "description": "Height of the sticky header bar. Defaults to --io-header-height (72px).",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-app-shell-sidebar-start-width",
+      "classification": "public-api",
+      "component": "io-app-shell",
+      "description": "Width of the sidebar-start panel. Defaults to 320px.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-app-shell-sidebar-end-width",
+      "classification": "public-api",
+      "component": "io-app-shell",
+      "description": "Width of the sidebar-end panel. Defaults to 320px.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-media-radius",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Border radius of the product image container. Defaults to --io-border-radius-sm.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-media-bg",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Background color of the product image container when no image is present. Defaults to --io-bg-surface.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-like-size",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Width and height of the like (wishlist) toggle button. Minimum 44px for WCAG 2.5.8 touch target compliance.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-like-bg",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Background color of the like button. Defaults to --io-bg-surface.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-like-bg-hover",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Background color of the like button on hover. Defaults to --io-bg-raised.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-like-color",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Icon color for the like button in its default (not liked) state. Defaults to --io-text-primary.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-like-color-liked",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Icon color for the like button in its active (liked) state. Defaults to --io-color-rouge.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-heading-size",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Font size of the product tile heading. Defaults to --io-font-size-base.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-price-size",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Font size of the current/sale price. Defaults to --io-font-size-base.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-price-color",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Color of the current price text (non-sale state). Defaults to --io-text-primary.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-price-sale-color",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Color of the sale price text. Defaults to --io-color-rouge.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-price-original-size",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Font size of the original (strikethrough) price. Defaults to --io-font-size-sm.",
+      "defaultValue": null
+    },
+    {
+      "cssVar": "--io-product-tile-price-original-color",
+      "classification": "public-api",
+      "component": "io-product-tile",
+      "description": "Color of the original (strikethrough) price text. Defaults to --io-text-secondary.",
+      "defaultValue": null
     }
   ]
 }

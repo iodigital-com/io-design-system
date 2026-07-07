@@ -78,4 +78,41 @@ export const buttonPurePropDefinitions: PropDefinition[] = [
     defaultValue: 'start',
     description: "Controls the icon side. 'start' puts the icon before the label; 'end' puts it after.",
   },
+  {
+    name: 'type',
+    type: 'select',
+    options: ['button', 'submit', 'reset'],
+    defaultValue: 'button',
+    description: 'Native button type. Irrelevant when href is set.',
+  },
+  {
+    name: 'href',
+    type: 'string',
+    defaultValue: '',
+    description: 'When set, renders as an anchor instead of a button.',
+  },
+  {
+    name: 'target',
+    type: 'string',
+    defaultValue: '_self',
+    description: 'Link target. Only used when href is set.',
+  },
+  {
+    name: 'rel',
+    type: 'string',
+    defaultValue: '',
+    description: 'Rel attribute for the anchor. Only used when href is set.',
+  },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+    description: 'Accessible label — required for icon-only buttons where no visible text is provided.',
+  },
+  {
+    name: 'icon',
+    type: 'string',
+    defaultValue: '',
+    description: 'Name of a Lucide icon to render alongside the label.',
+  },
 ];

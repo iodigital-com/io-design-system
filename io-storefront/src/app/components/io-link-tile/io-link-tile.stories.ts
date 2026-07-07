@@ -28,6 +28,9 @@ export const linkTileStory: Story<'io-link-tile'> = {
 
 export const linkTilePropDefinitions: PropDefinition[] = [
   { name: 'href', type: 'string', defaultValue: '/components/io-link' },
+  { name: 'target', type: 'string', defaultValue: '_self' },
+  { name: 'rel', type: 'string', defaultValue: undefined },
+  { name: 'download', type: 'string', defaultValue: undefined },
   { name: 'label', type: 'string', defaultValue: 'Explore io-link' },
   { name: 'description', type: 'string', defaultValue: 'Animated underline hyperlink component.' },
   { name: 'aspectRatio', type: 'select', options: ['1/1', '4/3', '3/4', '16/9'], defaultValue: '4/3' },

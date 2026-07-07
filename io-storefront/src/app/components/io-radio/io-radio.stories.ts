@@ -152,4 +152,34 @@ export const radioPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Displays supporting guidance below the radio field.',
   },
+  {
+    name: 'name',
+    type: 'string',
+    defaultValue: '',
+    description: 'HTML name attribute. Set the same name on every io-radio in a group to enable mutual exclusivity.',
+  },
+  {
+    name: 'value',
+    type: 'string',
+    defaultValue: '',
+    description: 'Value submitted with the form when this radio is selected.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading spinner in place of the radio control and disables interaction.',
+  },
+  {
+    name: 'form',
+    type: 'string',
+    defaultValue: '',
+    description: 'Associates this field with a <form> element by its ID, enabling out-of-DOM form participation.',
+  },
+  {
+    name: 'hideLabel',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Visually hides the label while keeping it accessible to screen readers.',
+  },
 ];

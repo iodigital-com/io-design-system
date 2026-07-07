@@ -7,7 +7,7 @@ import { describe, it } from 'vitest';
  * (button + region + aria-expanded/controls/labelledby). Full component-level
  * auditing against the Shadow DOM requires the Stencil render environment.
  *
- * Size variants (sm, md, lg) are tested here to confirm that adding the size
+ * Size variants (xs, sm, md, lg) are tested here to confirm that adding the size
  * attribute does not introduce any accessibility violations.
  */
 import { renderAndCheckA11y } from '../../../tests/unit/helpers/axe';
@@ -86,6 +86,32 @@ describe('io-accordion — a11y (ARIA disclosure pattern)', () => {
           hidden
         >
           <p>Panel content here.</p>
+        </div>
+      </div>
+    `;
+    await renderAndCheckA11y(el);
+  });
+
+  it('size xs — accordion trigger with region has no axe violations', async () => {
+    const el = document.createElement('div');
+    el.innerHTML = `
+      <div>
+        <h3>
+          <button
+            id="acc-trigger-xs"
+            aria-expanded="false"
+            aria-controls="acc-panel-xs"
+          >
+            Extra small accordion
+          </button>
+        </h3>
+        <div
+          id="acc-panel-xs"
+          role="region"
+          aria-labelledby="acc-trigger-xs"
+          hidden
+        >
+          <p>Densest panel content.</p>
         </div>
       </div>
     `;

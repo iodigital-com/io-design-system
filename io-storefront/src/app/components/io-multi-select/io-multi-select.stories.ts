@@ -195,4 +195,28 @@ export const multiSelectPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'Collapses the label area entirely. Provide a label value for screen-reader accessibility.',
   },
+  {
+    name: 'selectAll',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows "Select all" and "Clear all" footer buttons inside the dropdown.',
+  },
+  {
+    name: 'maxSelections',
+    type: 'number',
+    defaultValue: 0,
+    description: 'Maximum number of selections allowed before limitreached event fires.',
+  },
+  {
+    name: 'helperText',
+    type: 'string',
+    defaultValue: '',
+    description: 'Helper text displayed below the trigger. Hidden when state is error.',
+  },
+  {
+    name: 'description',
+    type: 'string',
+    defaultValue: '',
+    description: 'Persistent description rendered below the field. Always visible, not hidden in error state.',
+  },
 ];

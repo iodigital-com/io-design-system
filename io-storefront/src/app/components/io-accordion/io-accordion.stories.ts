@@ -2,7 +2,7 @@ import type { FrameworkCode } from '@/models/framework';
 import type { PropDefinition } from '@/models/propDefinition';
 import type { Story } from '@/models/story';
 
-type IoAccordionSize = 'sm' | 'md' | 'lg';
+type IoAccordionSize = 'xs' | 'sm' | 'md' | 'lg';
 type IoAccordionBackground = 'transparent' | 'surface' | 'canvas' | 'frosted';
 type IoAccordionAlignMarker = 'start' | 'end';
 
@@ -452,19 +452,19 @@ export const accordionStoryCanvasBackground: Story<'io-accordion'> = {
   ],
 };
 
-export const accordionStoryCompact: Story<'io-accordion'> = {
-  state: { properties: { heading: 'Compact accordion', compact: true } },
+export const accordionStorySizeXs: Story<'io-accordion'> = {
+  state: { properties: { heading: 'Extra small accordion', 'heading-tag': 'h3', size: 'xs' as IoAccordionSize } },
   generator: () => [
     {
       tag: 'io-accordion' as const,
-      properties: { heading: 'Compact accordion', compact: true },
+      properties: { heading: 'Extra small accordion', 'heading-tag': 'h3', size: 'xs' as IoAccordionSize },
       events: {
         onUpdate: { target: 'io-accordion', prop: 'open', eventValueKey: 'open' },
       },
       children: [
         {
           tag: 'p' as const,
-          children: ['Dense layout mode — reduced trigger padding independent of the size preset.'],
+          children: ['Densest size — tightest trigger padding and smallest heading font.'],
         },
       ],
     },
@@ -611,14 +611,8 @@ export const accordionPropDefinitions: PropDefinition[] = [
     name: 'size',
     type: 'select',
     defaultValue: 'md',
-    options: ['sm', 'md', 'lg'],
-    description: 'Controls trigger padding and heading font size. sm = compact, md = default, lg = comfortable.',
-  },
-  {
-    name: 'compact',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Dense layout mode — reduces trigger padding independent of the size preset.',
+    options: ['xs', 'sm', 'md', 'lg'],
+    description: 'Controls trigger padding and heading font size. xs = densest, sm = compact, md = default, lg = comfortable.',
   },
   {
     name: 'align-marker',
@@ -663,7 +657,6 @@ export const accordionPropDefinitions: PropDefinition[] = [
     name: 'use-heading-slot',
     type: 'boolean',
     defaultValue: false,
-    group: 'slots',
-    description: 'Use the named heading slot instead of the heading prop fallback.',
+    description: 'Story-only toggle. Demonstrates passing custom heading markup via the heading slot instead of the heading prop.',
   },
 ];

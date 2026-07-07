@@ -9,4 +9,4 @@ export interface IoTabsCloseDetail {
   index: number;
 }
 
-export type IoTabsSize = 'small' | 'medium';
+export type IoTabsSize = 'small' | 'medium' | 'compact';

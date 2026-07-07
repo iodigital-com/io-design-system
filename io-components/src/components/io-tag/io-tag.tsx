@@ -60,9 +60,6 @@ export class IoTag {
   /** Accessible label for the tag content — used to build the remove button's aria-label. */
   @Prop() label = '';
 
-  /** Compact density — reduces vertical padding for dense UI contexts */
-  @Prop({ reflect: true }) compact = false;
-
   /**
    * Optional leading icon name (from the io icon set).
    * Renders with `aria-hidden="true"` and `size="xs"`.
@@ -96,9 +93,9 @@ export class IoTag {
   // ── Render ───────────────────────────────────────────────────
 
   render() {
-    const { selected, disabled, size, compact, variant, appearance, icon, iconSource } = this;
+    const { selected, disabled, size, variant, appearance, icon, iconSource } = this;
 
-    const tagClass = getTagClassName(size, variant, appearance, selected, disabled, compact);
+    const tagClass = getTagClassName(size, variant, appearance, selected, disabled);
 
     const iconEl = (icon || iconSource) ? (
       <io-icon

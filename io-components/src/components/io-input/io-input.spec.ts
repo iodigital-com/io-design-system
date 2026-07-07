@@ -331,7 +331,7 @@ describe('io-input — stable id linkage', () => {
   });
 });
 
-describe('io-input — inputMode, pattern, compact props (#643)', () => {
+describe('io-input — inputMode, pattern props (#643)', () => {
   let component: IoInput;
 
   beforeEach(() => {
@@ -418,23 +418,6 @@ describe('io-input — inputMode, pattern, compact props (#643)', () => {
     const syncSpy = vi.spyOn(component as any, 'syncFormValue');
     (component as any).onPatternChange();
     expect(syncSpy).toHaveBeenCalled();
-  });
-
-  // ── compact ───────────────────────────────────────────────────
-
-  it('has compact=false by default', () => {
-    expect(component.compact).toBe(false);
-  });
-
-  it('accepts compact=true', () => {
-    component.compact = true;
-    expect(component.compact).toBe(true);
-  });
-
-  it('render does not throw when compact=true', () => {
-    (component as any).componentWillLoad();
-    component.compact = true;
-    expect(() => component.render()).not.toThrow();
   });
 
   // ── counter sr-only live region ───────────────────────────────

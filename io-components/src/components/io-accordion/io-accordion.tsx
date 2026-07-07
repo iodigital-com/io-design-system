@@ -38,9 +38,6 @@ export class IoAccordion {
   /** Size preset — controls trigger padding and title font size */
   @Prop({ reflect: true }) size: IoAccordionSize = 'md';
 
-  /** Dense layout mode — reduces trigger padding independent of the size preset */
-  @Prop({ reflect: true }) compact = false;
-
   /**
    * Position of the expand/collapse marker icon.
    * - `end` (default): icon appears after the title (right side in LTR)

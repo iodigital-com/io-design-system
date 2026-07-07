@@ -180,6 +180,18 @@ export const selectPropDefinitions: PropDefinition[] = [
     description: 'Sets the field label shown above the select.',
   },
   {
+    name: 'name',
+    type: 'string',
+    defaultValue: '',
+    description: 'HTML name attribute. Used for form submission and to generate the internal select id.',
+  },
+  {
+    name: 'value',
+    type: 'string',
+    defaultValue: '',
+    description: 'Controlled selected value (single mode). Accepts string or number; numeric values are serialised to string on form submission.',
+  },
+  {
     name: 'size',
     type: 'select',
     options: ['sm', 'md', 'lg'],
@@ -222,6 +234,36 @@ export const selectPropDefinitions: PropDefinition[] = [
     type: 'string',
     defaultValue: '',
     description: 'Displays supporting guidance below the select.',
+  },
+  {
+    name: 'custom',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Switches from the native <select> element to a fully accessible ARIA combobox/listbox implementation. Required for multiple selection and filter mode.',
+  },
+  {
+    name: 'multiple',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Enables multi-value selection. Requires custom=true. The change event detail becomes string[] instead of string.',
+  },
+  {
+    name: 'filter',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Adds a search input inside the dropdown to filter options by label. Requires custom=true.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Shows a loading spinner replacing the chevron and disables interaction while async data loads.',
+  },
+  {
+    name: 'form',
+    type: 'string',
+    defaultValue: '',
+    description: 'Associates this field with a form element by ID, enabling out-of-DOM form participation (FACE formAssociated pattern).',
   },
   {
     name: 'hideLabel',

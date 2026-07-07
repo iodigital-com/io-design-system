@@ -9,7 +9,6 @@ export const tagStory: Story<'io-tag'> = {
       size: 'md',
       variant: 'neutral',
       label: '',
-      compact: false,
     },
   },
   generator: ({ properties } = {}) => [
@@ -21,7 +20,6 @@ export const tagStory: Story<'io-tag'> = {
         size: (properties?.size as string) ?? 'md',
         variant: (properties?.variant as string) ?? 'neutral',
         label: (properties?.label as string) ?? '',
-        compact: (properties?.compact as boolean) ?? false,
       },
       children: ['Design system'],
     },
@@ -85,5 +83,26 @@ export const tagPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['neutral', 'primary', 'info', 'success', 'warning', 'error', 'subtle'],
     defaultValue: 'neutral',
+  },
+  {
+    name: 'appearance',
+    type: 'select',
+    options: ['solid', 'soft', 'frosted'],
+    defaultValue: 'soft',
+  },
+  {
+    name: 'label',
+    type: 'string',
+    defaultValue: '',
+  },
+  {
+    name: 'icon',
+    type: 'string',
+    defaultValue: '',
+  },
+  {
+    name: 'iconSource',
+    type: 'string',
+    defaultValue: '',
   },
 ];

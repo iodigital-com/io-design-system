@@ -8,7 +8,7 @@ export interface IoAccordionUpdateDetail {
 export type IoAccordionHeadingTag = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 /** Size preset — controls trigger padding and title font size */
-export type IoAccordionSize = 'sm' | 'md' | 'lg';
+export type IoAccordionSize = 'xs' | 'sm' | 'md' | 'lg';
 
 /**
  * Background fill variant for the accordion item.

@@ -87,6 +87,12 @@ describe('io-accordion — render() headingTag variants', () => {
 });
 
 describe('io-accordion — render() size variants', () => {
+  it('does not throw with size=xs', () => {
+    const c = makeComponent({ size: 'xs' });
+    c.componentWillLoad();
+    expect(() => (c as any).render()).not.toThrow();
+  });
+
   it('does not throw with size=sm', () => {
     const c = makeComponent({ size: 'sm' });
     c.componentWillLoad();

@@ -49,23 +49,12 @@ export default function IoTabsApiPage() {
             ],
             [
               <InlineCode key="n">size</InlineCode>,
-              <InlineCode key="t">&apos;small&apos; | &apos;medium&apos;</InlineCode>,
+              <InlineCode key="t">&apos;small&apos; | &apos;medium&apos; | &apos;compact&apos;</InlineCode>,
               <InlineCode key="d">&apos;small&apos;</InlineCode>,
               <span key="desc">
                 Visual size of the tab list. <InlineCode>medium</InlineCode> increases tab height and font
-                size for prominent navigation contexts.
-              </span>,
-            ],
-            [
-              <span key="n">
-                <InlineCode>compact</InlineCode>
-                <ReflectBadge />
-              </span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              <span key="desc">
-                Reduces tab button padding using density tokens. Useful for dense layouts where vertical
-                space is constrained. Reflected to the host attribute <InlineCode>compact</InlineCode>.
+                size for prominent navigation contexts. <InlineCode>compact</InlineCode> reduces tab button
+                padding and font size using density tokens for layouts where vertical space is constrained.
               </span>,
             ],
             [

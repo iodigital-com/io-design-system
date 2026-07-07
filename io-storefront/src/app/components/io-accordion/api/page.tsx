@@ -36,16 +36,9 @@ export default function IoAccordionApiPage() {
             [
               <span key="property"><InlineCode>size</InlineCode><ReflectBadge /></span>,
               <InlineCode key="attribute">size</InlineCode>,
-              <InlineCode key="type">'sm' | 'md' | 'lg'</InlineCode>,
+              <InlineCode key="type">'xs' | 'sm' | 'md' | 'lg'</InlineCode>,
               <InlineCode key="default">'md'</InlineCode>,
-              <span key="description">Size preset controlling trigger padding and heading font size. <InlineCode>sm</InlineCode> = compact, <InlineCode>md</InlineCode> = default, <InlineCode>lg</InlineCode> = comfortable. Reflects to attribute.</span>,
-            ],
-            [
-              <span key="property"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="attribute">compact</InlineCode>,
-              <InlineCode key="type">boolean</InlineCode>,
-              <InlineCode key="default">false</InlineCode>,
-              <span key="description">Dense layout mode — reduces trigger padding independently of the <InlineCode>size</InlineCode> preset. Useful for space-constrained UI contexts. Reflects to attribute.</span>,
+              <span key="description">Size preset controlling trigger padding and heading font size. <InlineCode>xs</InlineCode> = densest, <InlineCode>sm</InlineCode> = compact, <InlineCode>md</InlineCode> = default, <InlineCode>lg</InlineCode> = comfortable. Reflects to attribute.</span>,
             ],
             [
               <span key="property"><InlineCode>alignMarker</InlineCode><ReflectBadge /></span>,

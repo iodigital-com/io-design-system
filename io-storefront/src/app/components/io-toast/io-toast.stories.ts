@@ -118,4 +118,10 @@ export const toastPropDefinitions: PropDefinition[] = [
     defaultValue: '',
     description: 'Array of up to 2 action items ({ label, href?, variant?, onClick? }) rendered beside the toast text.',
   },
+  {
+    name: 'showProgress',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Renders a countdown progress bar inside the toast item showing the time remaining before auto-dismiss. Has no effect on persistent toasts.',
+  },
 ];

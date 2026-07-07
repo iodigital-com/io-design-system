@@ -33,7 +33,7 @@ export default function IoInputApiPage() {
               <InlineCode key="n">type</InlineCode>,
               <span key="t" style={{ color: 'var(--io-text-secondary)' }}>
                 <InlineCode>IoInputType</InlineCode>
-                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(9 values)</span>
+                <span className="text-xs ml-1" style={{ color: 'var(--io-text-muted)' }}>(7 values)</span>
               </span>,
               <InlineCode key="d">&apos;text&apos;</InlineCode>,
               <span key="desc">
@@ -44,9 +44,8 @@ export default function IoInputApiPage() {
                 <InlineCode>search</InlineCode>{' '}
                 <InlineCode>tel</InlineCode>{' '}
                 <InlineCode>url</InlineCode>{' '}
-                <InlineCode>number</InlineCode>{' '}
-                <InlineCode>date</InlineCode>{' '}
-                <InlineCode>time</InlineCode>
+                <InlineCode>number</InlineCode>. For date input, use{' '}
+                <InlineCode>io-input-date</InlineCode>.
               </span>,
             ],
             [
@@ -189,19 +188,19 @@ export default function IoInputApiPage() {
               <InlineCode key="n">min</InlineCode>,
               <InlineCode key="t">string | number | undefined</InlineCode>,
               '—',
-              'Native minimum value for number/date/time inputs.',
+              'Native minimum value for number inputs.',
             ],
             [
               <InlineCode key="n">max</InlineCode>,
               <InlineCode key="t">string | number | undefined</InlineCode>,
               '—',
-              'Native maximum value for number/date/time inputs.',
+              'Native maximum value for number inputs.',
             ],
             [
               <InlineCode key="n">step</InlineCode>,
               <InlineCode key="t">string | number | undefined</InlineCode>,
               '—',
-              'Native step interval for number/date/time inputs.',
+              'Native step interval for number inputs.',
             ],
             [
               <InlineCode key="n">inputMode</InlineCode>,
@@ -217,12 +216,6 @@ export default function IoInputApiPage() {
               <InlineCode key="t">string | undefined</InlineCode>,
               '—',
               'HTML5 pattern attribute for native validation. Triggers patternMismatch validity state which FACE reports via setValidity.',
-            ],
-            [
-              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Reduces padding and height for dense form layouts.',
             ],
             [
               <InlineCode key="n">indicator</InlineCode>,

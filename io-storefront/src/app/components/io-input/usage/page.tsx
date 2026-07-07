@@ -77,8 +77,8 @@ export default function IoInputUsagePage() {
             Shows a numeric keyboard on mobile. Browser hides native spinners (hidden via CSS). Only use when the value is genuinely numeric — for phone numbers, postcodes, or card numbers, prefer <C>tel</C> or <C>text</C> with <C>inputmode</C>.
           </RuleCard>
         </div>
-        <RuleCard label="Need a date or time value?">
-          Use <C>{'<io-input-date>'}</C> instead — a dedicated component with a calendar-trigger icon and native picker support. <C>io-input</C> does not support <C>type=&quot;date&quot;</C> or <C>type=&quot;time&quot;</C>.
+        <RuleCard label="Need a date value?">
+          Use <C>{'<io-input-date>'}</C> instead — a dedicated component with a calendar-trigger icon and native date picker support. <C>io-input</C> does not support <C>type=&quot;date&quot;</C> or <C>type=&quot;time&quot;</C>.
         </RuleCard>
       </section>
 

@@ -44,7 +44,7 @@ export default function IoInputApiPage() {
                 <InlineCode>search</InlineCode>{' '}
                 <InlineCode>tel</InlineCode>{' '}
                 <InlineCode>url</InlineCode>{' '}
-                <InlineCode>number</InlineCode>. For date/time input, use{' '}
+                <InlineCode>number</InlineCode>. For date input, use{' '}
                 <InlineCode>io-input-date</InlineCode>.
               </span>,
             ],

@@ -127,7 +127,7 @@ export const inputPropDefinitions: PropDefinition[] = [
     type: 'select',
     options: ['text', 'email', 'password', 'search', 'number', 'tel', 'url'],
     defaultValue: 'text',
-    description: 'Defines the native input type and keyboard behavior. Use io-input-date for date/time fields.',
+    description: 'Defines the native input type and keyboard behavior. Use io-input-date for date fields.',
   },
   {
     name: 'size',

@@ -653,4 +653,10 @@ export const accordionPropDefinitions: PropDefinition[] = [
     defaultValue: false,
     description: 'When true, indents panel content to align with the summary text column past the expand/collapse icon. Useful with alignMarker="start".',
   },
+  {
+    name: 'use-heading-slot',
+    type: 'boolean',
+    defaultValue: false,
+    description: 'Story-only toggle. Demonstrates passing custom heading markup via the heading slot instead of the heading prop.',
+  },
 ];

@@ -218,12 +218,6 @@ export default function IoInputApiPage() {
               'HTML5 pattern attribute for native validation. Triggers patternMismatch validity state which FACE reports via setValidity.',
             ],
             [
-              <span key="n"><InlineCode>compact</InlineCode><ReflectBadge /></span>,
-              <InlineCode key="t">boolean</InlineCode>,
-              <InlineCode key="d">false</InlineCode>,
-              'Reduces padding and height for dense form layouts.',
-            ],
-            [
               <InlineCode key="n">indicator</InlineCode>,
               <InlineCode key="t">IoIconName | undefined</InlineCode>,
               '—',

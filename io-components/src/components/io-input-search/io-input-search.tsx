@@ -81,9 +81,6 @@ export class IoInputSearch {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoInputSearchSize = 'md';
 
-  /** Reduces field height and vertical padding for dense layouts */
-  @Prop({ reflect: true }) compact = false;
-
   /** Native autocomplete attribute */
   @Prop() autocomplete = 'off';
 

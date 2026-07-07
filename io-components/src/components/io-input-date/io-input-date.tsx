@@ -85,9 +85,6 @@ export class IoInputDate {
   /** Field size aligned to io-button scale */
   @Prop({ reflect: true }) size: IoInputDateSize = 'md';
 
-  /** Reduces field height and vertical padding for dense layouts */
-  @Prop({ reflect: true }) compact = false;
-
   /**
    * Accessible label for the calendar trigger button.
    * Defaults to 'Open date picker'. Override for localisation.

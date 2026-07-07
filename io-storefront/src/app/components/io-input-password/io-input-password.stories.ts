@@ -83,12 +83,6 @@ export const inputPasswordPropDefinitions: PropDefinition[] = [
     description: 'Aligns field height with io-button sizes.',
   },
   {
-    name: 'compact',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Reduces field height and padding for dense layouts.',
-  },
-  {
     name: 'disabled',
     type: 'boolean',
     defaultValue: false,

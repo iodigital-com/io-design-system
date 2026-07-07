@@ -235,12 +235,6 @@ export const inputPropDefinitions: PropDefinition[] = [
     description: 'HTML5 regular expression for client-side validation. The native input patternMismatch validity state is automatically reported via FACE.',
   },
   {
-    name: 'compact',
-    type: 'boolean',
-    defaultValue: false,
-    description: 'Reduces input height and padding for dense layouts.',
-  },
-  {
     name: 'indicator',
     type: 'string',
     defaultValue: '',

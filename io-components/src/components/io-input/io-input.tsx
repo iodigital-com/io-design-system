@@ -168,9 +168,6 @@ export class IoInput {
   /** Native pattern attribute — regex that the input value must match for validity */
   @Prop() pattern?: string;
 
-  /** Compact variant — reduces the field height and vertical padding for dense layouts */
-  @Prop({ reflect: true }) compact = false;
-
   /**
    * Optional icon name to render as a leading indicator inside the prefix area.
    * When set, the icon is rendered before any slotted prefix content.

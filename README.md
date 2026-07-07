@@ -28,21 +28,28 @@ This repository is responsible for all of the following:
 
 ## Component Catalog
 
-Current component set (49):
+Current component set (58):
 
 - io-accordion
+- io-ai-tag
+- io-app-shell
 - io-avatar
 - io-badge
 - io-banner
 - io-breadcrumb
 - io-button
 - io-button-group
+- io-button-pure
+- io-button-tile
 - io-carousel
 - io-checkbox
 - io-checkbox-group
 - io-divider
 - io-drawer
+- io-fieldset
+- io-flag
 - io-flyout
+- io-grid
 - io-heading
 - io-icon
 - io-inline-notification
@@ -52,11 +59,13 @@ Current component set (49):
 - io-input-search
 - io-link
 - io-link-pure
+- io-link-tile
 - io-modal
 - io-multi-select
 - io-pagination
 - io-pin-code
 - io-popover
+- io-product-tile
 - io-progress
 - io-radio
 - io-radio-group

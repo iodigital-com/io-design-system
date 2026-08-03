@@ -1,0 +1,482 @@
+# Developer Handover — io Design System
+
+This document is the entry point for a developer taking over this repository. It reflects the
+actual, verified state of the codebase as of **2026-08-03**, not the intended or documented
+state where the two diverge. Where something could not be verified in this session, that is
+stated explicitly rather than assumed.
+
+For day-to-day contribution mechanics (branching, commit style, code review expectations) see
+[CONTRIBUTING.md](CONTRIBUTING.md) — it is accurate and current; this document does not
+duplicate it. For the vulnerability-reporting process see [SECURITY.md](SECURITY.md). For
+day-to-day AI-agent operating rules see [CLAUDE.md](CLAUDE.md) and `.claude/rules/*.md`.
+
+---
+
+## 1. Project overview
+
+**io Design System** is a Web Component library for iO Digital, built on **Stencil 4** and
+published as `@iodigital-com/components` (currently **v1.10.0**). The Stencil core
+auto-generates thin wrapper packages for **React**, **Vue**, and **Angular** so consumers can use
+the components idiomatically in their framework of choice. A private **Next.js 15** static
+documentation site (`io-storefront`) hosts component docs, live examples, and an interactive
+prop configurator, and is deployed to Firebase Hosting.
+
+All 59 documented components are currently marked `status: 'beta'` in the storefront sitemap —
+this is a deliberate, existing product decision, not an oversight.
+
+## 2. Current project status
+
+### What works (verified this session)
+
+- `npm run build` — **succeeds**. Builds the Stencil core plus all three framework wrappers
+  (React, Vue, Angular). Produces only non-blocking warnings (see §12).
+- `npm run build:storefront` — **succeeds**. Produces a full static export of the documentation
+  site with no errors.
+- `npm run type-check` — **passes** (storefront TypeScript).
+- `npm run governance:check` — **passes** (all 9 sub-checks).
+- `npm run events:guard` — **passes**.
+- `npm run lint` — **passes with 0 errors**; 506 `import/order` warnings across ~20
+  storefront-only files (453 auto-fixable via `npm run lint:fix`).
+- Storefront unit test suite, run directly (`npm --workspace @iodigital-com/storefront run
+  test`) — **1822/1822 tests pass across 61 files.**
+- Cross-framework E2E coverage exists and is wired into CI (`playground-e2e.yml`) for React,
+  Angular, Vue, and plain HTML consumers of the built wrapper packages.
+
+### What is broken (verified this session)
+
+- **`npm run test` (root) fails.** The root script chains
+  `npm --workspace @iodigital-com/components run test && npm --workspace @iodigital-com/storefront run test`.
+  The components-workspace suite fails on one test:
+  `io-tag.render.spec.tsx` → `"renders semantic variant and appearance combinations"` →
+  `Error: Test timed out in 5000ms`. Because of the `&&`, **the storefront suite never runs** when
+  you use the root script — it only ran because it was invoked directly in this session, and it
+  passed cleanly. A developer relying solely on `npm run test` will incorrectly believe the whole
+  test suite failed, when in fact only one Stencil spec timed out.
+  - Component-suite summary from this run: `Test Files: 1 failed | 17 passed (18)`,
+    `Tests: 1 failed | 66 passed (67)`, and **7 new snapshot files were written** as a side effect
+    of that run. These are untracked/modified files in the working tree that a developer should
+    review with `git status` and `git diff -- '*.snap'` before committing anything — do not blindly
+    accept them, per the snapshot-contamination guidance in §9.
+- No other build, lint, type-check, or governance failures were found.
+
+### Documented-but-not-implemented (verified this session)
+
+- **The Figma token-sync pipeline (`sync-tokens.yml`) is a placeholder, not a working
+  integration.** On `workflow_dispatch` or `repository_dispatch`, it runs governance checks,
+  rebuilds the project, and opens a PR — but the actual "sync" step is a comment-documented
+  stub that writes a timestamped marker file (`docs/last-token-sync.json`) so the PR has a diff.
+  There is no real Figma API call, Style Dictionary transform, or Token Studio/Supernova export
+  yet. `docs/token-pipeline.md` and `docs/token-sync-pr-template.md` exist and are the intended
+  extension points for a real implementation.
+
+### Gaps between documentation and reality
+
+- `README.md` states the library has **55** components; the storefront sitemap
+  (`io-storefront/src/sitemap.ts`) currently lists **59**. The README count is stale.
+- `pnpm-workspace.yaml` lists only 6 packages; the root `package.json` `workspaces` array lists
+  **10** (it is missing the four `io-playground-*` packages). The project uses npm workspaces in
+  practice — `pnpm-workspace.yaml` appears to be stale/unused rather than load-bearing, but this
+  was not exhaustively confirmed (no CI step references pnpm).
+- The root `CHANGELOG.md` is stale (stuck at `v1.0.0`). The real, actively-updated changelog is
+  `io-components/CHANGELOG.md`, generated by Changesets — this is also the file whose changes on
+  `main` trigger `deploy-storefront.yml`.
+- CLAUDE.md describes the release flow as publishing "to npm with provenance attestation." The
+  actual target, verified by reading `.github/workflows/release.yml`, is **GitHub Packages**
+  (`npm.pkg.github.com`), scoped to `@iodigital-com` — not the public npmjs.org registry. See §11
+  for the precise mechanics.
+- `scripts/check-copilot-agent-drift.cjs` is invoked by `sync-tokens.yml`'s `validate` job but is
+  **not** part of the `governance:check` script chain or the `pr.yml` governance job. It is a real
+  governance check that runs in one CI workflow but not in the command developers are told to run
+  locally before every commit.
+
+### Priority next steps
+
+See §14 (Recommended next steps) for the full ordered list. In short: fix or skip the `io-tag`
+timeout so the true root-level test command is trustworthy; decide whether to fix or remove the
+stale `pnpm-workspace.yaml`; either fold `check-copilot-agent-drift.cjs` into `governance:check`
+or document why it is intentionally CI-only.
+
+## 3. Repository structure
+
+```
+io-design-system/
+├── io-components/            @iodigital-com/components — Stencil 4 core (edit here)
+│   ├── src/components/       One directory per component (io-button/, io-modal/, …)
+│   ├── src/global/app.css    Design tokens as CSS custom properties on :root
+│   ├── src/global/app.ts     Global script — calls initFocusVisible()
+│   ├── src/utils/            Shared utilities (focus-visible.ts, form helpers)
+│   └── CHANGELOG.md          Real, Changesets-generated changelog (not the root one)
+├── io-tokens/                 Design-token workspace package
+├── io-storefront/             Private Next.js 15 static documentation site
+│   ├── src/app/components/    5 tab pages per component (usage/accessibility/api/examples/configurator)
+│   ├── src/components/        Shared UI (layout, playground, configurator, shared primitives)
+│   ├── src/utils/generator/   Code-generation utilities + IoTagNames union
+│   ├── src/types/             custom-elements.d.ts — JSX typings for Stencil tags
+│   ├── src/sitemap.ts         Navigation tree — source of truth for component count/status
+│   └── .lighthouserc.json     Lighthouse CI config (confirmed present)
+├── io-components-react/       Auto-generated React wrapper — NEVER edit manually
+├── io-components-vue/         Auto-generated Vue wrapper — NEVER edit manually
+├── io-components-angular/     Auto-generated Angular wrapper — NEVER edit manually
+├── io-playground-react/       React 19 / Next.js 15 E2E playground consuming the wrapper
+├── io-playground-angular/     Angular 20 E2E playground
+├── io-playground-vue/         Vue 3 E2E playground
+├── io-playground-html/        Plain HTML/native custom-element E2E playground
+├── scripts/                   Governance, token, build-verification, and release helper scripts
+├── docs/                      Governance data files (public-css-api.json, token registries, etc.)
+├── .github/workflows/         6 workflows — see §4 and §11 (directory is gitignored except this path)
+├── .claude/                   Project-local agent definitions (gitignored except .claude/agents/*.md)
+├── CLAUDE.md, .claude/rules/  AI-agent operating instructions for this repo
+├── CONTRIBUTING.md            Contribution workflow and standards (accurate, not duplicated here)
+├── SECURITY.md                Vulnerability reporting policy (accurate, not duplicated here)
+└── package.json                Root workspace orchestration — see §6 for the full script list
+```
+
+Generated/vendor/cache directories (`node_modules/`, Stencil `dist*`/`loader`/`www`/`hydrate`,
+Next.js `.next`/`out`, Angular `.angular/`, coverage output) are omitted above; see `.gitignore`
+for the full exclusion list.
+
+## 4. Architecture
+
+**Service boundaries.** This is a component-library monorepo, not a client/server application —
+there is no backend service, no database, and no runtime API server. The "services" are build
+and CI pipelines:
+
+- **Stencil core → wrappers**: `io-components` compiles to a Custom Elements bundle, a loader,
+  and TypeScript type definitions. `build:wrappers` then regenerates
+  `io-components-react/src/components.ts`, `io-components-vue/src/components.ts`, and
+  `io-components-angular/src/directives/{proxies,index}.ts` from those artifacts. These three
+  generated files are explicitly gitignored and must never be hand-edited — they are destroyed
+  and regenerated on every `npm run build:components`.
+- **Storefront**: a **fully static** Next.js export (`output: 'export'` in `next.config.ts`).
+  There is no Node.js server at request time; the entire site is static HTML/JS/CSS served from
+  Firebase Hosting. Stencil components are loaded into storefront pages via a `<script
+  type="module">` tag pointing at `/stencil/io-components.esm.js` (synced into
+  `io-storefront/public/stencil/` by `scripts/sync-stencil-assets.cjs`), **not** via ES module
+  import — this is what lets the Stencil bundle (which touches `window`/`document` at module
+  load time) coexist with Next.js static generation without crashing the Node.js build step. See
+  CLAUDE.md's "SSR/SSG Compatibility" section for the full set of rules this implies for any new
+  storefront code.
+- **Playgrounds** (`io-playground-{react,angular,vue,html}`): standalone apps that consume the
+  real built wrapper packages, used exclusively for cross-framework E2E testing in CI
+  (`playground-e2e.yml`) — not shipped or deployed anywhere.
+
+**Build/deploy flow** (see §11 for full detail): pushing to `main` triggers two independent
+release paths — a Changesets-driven flow (`release.yml`) that versions and publishes
+`@iodigital-com/components` (and its wrappers, when tagged) to **GitHub Packages**, and a
+separate Firebase deploy (`deploy-storefront.yml`) that rebuilds and redeploys the documentation
+site whenever `io-components/CHANGELOG.md` or storefront/component source changes.
+
+**No database, no background jobs, no message queues, no auth boundaries** exist in this
+repository — confirmed by searching for SQL/Prisma/migration files (none found) and by the
+absence of any server runtime.
+
+**No Mermaid diagrams are included here** — the flows above are linear enough (build → sync →
+export → deploy; or build → version → publish) that a diagram would not add clarity beyond the
+prose, and an inaccurate diagram would be worse than none.
+
+## 5. Local development setup
+
+Verified against this repository; commands below were actually run in this session unless noted.
+
+1. **Install Node.js ≥ 20** (root `package.json` `engines.node` requires `>=20.0.0`; the CI
+   workflows themselves mostly pin Node 20, except `playground-e2e.yml` which uses Node 22 — see
+   §12).
+2. **Clone the repository** and `cd` into it.
+3. **Install dependencies** from the repo root — this is an npm-workspaces monorepo, so a single
+   install at the root resolves every workspace package:
+   ```bash
+   npm ci
+   ```
+4. **No environment variables are required for local development.** There is no `.env.example`
+   file in this repository, and none is needed — a repo-wide search found zero application-level
+   environment variable usage. The only secrets that exist anywhere in this project are CI-only
+   GitHub Actions secrets (see §6) — you will never need them to run the project locally.
+5. **No database or external service needs to be started.** This repository has no database and
+   no backend service.
+6. **Start the dev server:**
+   ```bash
+   npm run dev
+   ```
+   This runs `npm --workspace @iodigital-com/components run dev` — a Stencil watch build. It does
+   **not** by itself start the storefront's Next.js dev server; if you need to browse the
+   documentation site while iterating on components, also run the storefront separately (see
+   `io-storefront/package.json` for its own `dev` script) or use `npm run build:storefront` for a
+   one-off static build.
+7. **Ports in use during local development** (see §13 for the full troubleshooting table):
+   storefront `3000`, playground-react `3001`, playground-angular `4200`, playground-vue `5175`,
+   playground-html `5176`.
+8. **Verify the setup** by running the quality gates most relevant to what you're touching:
+   ```bash
+   npm run governance:check   # workspace topology + token/API governance
+   npm run events:guard       # no io-prefixed custom events
+   npm run test               # see §7 — the root script's current failure mode
+   npm run type-check         # storefront TypeScript
+   ```
+
+## 6. Environment variables and secrets
+
+**No application-level environment variables exist in this repository.** This was verified by
+searching the codebase for `.env` files (none exist at any level) and for `process.env` usage
+outside of CI workflow files (none found that require configuration for local development).
+
+The only secrets in this project are **CI-only GitHub Actions secrets**, each already documented
+via inline comments in the workflow file that consumes it:
+
+| Secret | Purpose | Consumed by | Where to obtain |
+|---|---|---|---|
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase Hosting deploy credential (service-account JSON) for the `io-design-system-showcase` project | `.github/workflows/deploy-storefront.yml` | Firebase Console → Project Settings → Service Accounts, or `firebase init hosting` |
+| `ORG_PACKAGES_TOKEN` | PAT used by `changeset publish` to publish `@iodigital-com/*` packages to GitHub Packages | `.github/workflows/release.yml` | Must be a personal access token from an `iodigital-com` org member with `write:packages` + `read:packages` scope — `GITHUB_TOKEN` cannot read/write the org's package scope for this step |
+| `GITHUB_TOKEN` | Standard, automatically-provided Actions token | `deploy-storefront.yml` (repo-token for the deploy action), `release-packages.yml` (`npm publish` for the tag-triggered per-package release path), `sync-tokens.yml` (PR creation via `gh`) | Provided automatically by GitHub Actions — no setup needed |
+
+No secrets were found committed to the repository. Nothing here needs rotation.
+
+## 7. Development commands
+
+All commands run from the repository root unless stated otherwise.
+
+| Purpose | Command | Notes |
+|---|---|---|
+| Install | `npm ci` | |
+| Dev server | `npm run dev` | Stencil watch only — see §5 step 6 |
+| Build everything | `npm run build` | Components + all 3 wrappers. **Verified passing this session.** |
+| Build components only | `npm run build:components` | |
+| Build wrappers only | `npm run build:wrappers` | React → Vue → Angular, sequential |
+| Build storefront | `npm run build:storefront` | Static export. **Verified passing this session.** |
+| Unit tests (root) | `npm run test` | **Currently fails** — see §2 and §8 |
+| Unit tests (storefront only) | `npm --workspace @iodigital-com/storefront run test` | **Verified passing this session — 1822/1822.** |
+| Unit tests (components only) | `npm --workspace @iodigital-com/components run test` | Currently fails on one spec — see §8 |
+| E2E — one framework | `npm run test:e2e:react` \| `:angular` \| `:vue` \| `:html` | Requires Playwright browsers installed; not run in this session |
+| E2E — all frameworks | `npm run test:e2e` | |
+| Lint | `npm run lint` | **Verified passing this session** (warnings only) |
+| Lint (autofix) | `npm run lint:fix` | Fixes 453 of the 506 current `import/order` warnings |
+| Type check | `npm run type-check` | Storefront only. **Verified passing.** |
+| Governance check | `npm run governance:check` | **Verified passing.** Run before every commit |
+| Events guard | `npm run events:guard` | **Verified passing.** No `io`-prefixed custom events |
+| Full CI-equivalent gate | `npm run build:quality-gates` | Runs governance → events → check:public-css-api → lint → build → api:check → sync check → size → test → type-coverage → type-check → build:storefront → lighthouse:ci → security:audit, in that order. Not run start-to-finish in this session (it re-runs the failing `test` step); the individual stages that were run independently are documented above |
+| Add a changeset | `npm run changeset:add` | Interactive. Required for any published-package change |
+| Changeset status | `npm run changeset:status` | |
+| Migrations / seed | — | **N/A — no database exists in this project** |
+| Package (publish) | `npx changeset publish` / tag-triggered `release-packages.yml` | Never run manually against `main` without following the Changesets PR flow — see §11 |
+| Deploy | `deploy-storefront.yml` (CI-only) | Not executed in this session — see §11 |
+
+## 8. Testing and quality gates
+
+**Frameworks**: Vitest + jsdom for both `io-components` and `io-storefront` unit tests; axe-core
+(via `renderAndCheckA11y`, `tests/unit/helpers/axe.ts`) for accessibility smoke tests; Playwright
+for E2E (both the storefront's own E2E suite, run inside `pr.yml`'s `e2e` job, and the four
+framework-compatibility playgrounds in `playground-e2e.yml`); Lighthouse CI
+(`io-storefront/.lighthouserc.json`, confirmed present) for performance/accessibility budgets.
+
+**Spec locations**: co-located with each component, e.g.
+`io-components/src/components/io-button/io-button.spec.ts`,
+`io-button.click.spec.ts`, `io-button.disabled.spec.ts`, `io-button.a11y.spec.ts`, and
+`io-button.face.spec.ts` for form-field components. See CLAUDE.md and
+`.claude/rules/20-component-authoring.md` / `30-testing.md` for the full required-file matrix per
+component type.
+
+**Current verified test status (this session, 2026-08-03):**
+
+- `npm --workspace @iodigital-com/components run test` — **1 failed, 17 passed** (18 files);
+  **66 passed, 1 failed** (67 tests). The failure is
+  `io-tag.render.spec.tsx` → `"renders semantic variant and appearance combinations"` →
+  `Error: Test timed out in 5000ms`. This run also **wrote 7 new snapshot files** — review these
+  with `git diff` before committing anything from this suite; do not assume they're correct.
+- `npm --workspace @iodigital-com/storefront run test` — **1822 passed, 0 failed** (61 files).
+- `npm run test` (root, chained) — **fails**, and because of the `&&` chain, this means the
+  storefront suite (which is actually healthy) never gets a chance to run under the root script.
+- E2E suites (`test:e2e:*`, Playwright) were **not run** in this session — they require browser
+  binaries to be installed (`npx playwright install`) and were out of scope for a
+  documentation-focused audit. Their CI equivalents (`pr.yml`'s `e2e` job, `playground-e2e.yml`)
+  are described in §11 based on reading the workflow files, not based on a local run.
+- `npm run lighthouse:ci` was **not run** in this session.
+- `npm run security:audit` (`npm audit --audit-level=high --omit=dev`) was **not run** in this
+  session.
+
+**Known flaky/failing test**: `io-tag.render.spec.tsx`'s variant/appearance combination test times
+out at the default 5-second Vitest timeout. This was not investigated further, per this task's
+scope (documentation, not behavior changes) — flagged as a P1 item in §12.
+
+**Pre-merge quality gates** (from `.github/workflows/pr.yml`, read in full): every PR to `main`
+runs a `governance` job (8 individual checks + lint) gating a `test` job and an `api-contract` job
+(build + `sync-stencil-assets --check` + `check-api-surface.cjs`, which blocks breaking API
+changes unless labeled `breaking-change` with a CHANGELOG update), which in turn gate a
+`type-check` job and, in parallel, `size-limit` and `security-audit` jobs, which together gate a
+`storefront` job (full static build + Lighthouse), which finally gates an `e2e` job (Playwright
+against the built storefront export). All of this is the CI equivalent of running
+`npm run build:quality-gates` locally, but parallelized and with artifacts passed between jobs
+rather than rebuilt at each stage.
+
+## 9. Coding and contribution conventions
+
+Fully covered by [CONTRIBUTING.md](CONTRIBUTING.md) (639 lines, verified accurate and current —
+not duplicated here) and by `CLAUDE.md` / `.claude/rules/*.md`. Highlights most relevant to a new
+contributor:
+
+- **Styling is token-only.** Never hardcode hex/px/border-radius values — always
+  `var(--io-*)`. All tokens live in `io-components/src/global/app.css`.
+- **Shadow DOM everywhere**: every component uses `shadow: { delegatesFocus: true }`; CSS custom
+  properties are the only styling API that crosses the shadow boundary.
+- **`slotchange` does not bubble through Shadow DOM.** Wire `onSlotchange` directly on each
+  `<slot>` element — never `@Listen('slotchange')` on the host.
+- **No `io`-prefixed custom event names** — enforced by `npm run events:guard`.
+- **Form-field components** (`io-input`, `io-textarea`, `io-checkbox`, `io-radio`, `io-select`)
+  implement the Form-Associated Custom Elements pattern via `ElementInternals`, with strict rules
+  around double-optional-chaining (`this.internals?.setFormValue?.()`) because jsdom's
+  `attachInternals()` returns a partial object rather than `null`. See CLAUDE.md's "Form-Associated
+  Custom Elements (FACE)" section for the full pattern, including reset-callback ordering rules for
+  radio groups.
+- **Never edit `io-components-react/`, `io-components-vue/`, or `io-components-angular/`
+  directly** — regenerated on every `npm run build:components`.
+- **Changesets** are required for any user-facing change to a published package
+  (`@iodigital-com/components`); bump-level guidance is strict and non-standard relative to most
+  projects — `major` is reserved **only** for a full visual/brand overhaul, not for breaking API
+  changes (see CLAUDE.md's Changesets table for the full rationale).
+- **Snapshot contamination check**: after any parallel-agent or multi-branch session touching
+  components, run `git diff origin/main..HEAD -- "*.snap"` and look for component tags that don't
+  belong to the file under test — reset with `git checkout origin/main -- <file.snap>` if found.
+
+## 10. Common development workflows
+
+- **Adding/fixing a single component**: edit the Stencil source under
+  `io-components/src/components/io-{name}/`, run the component's spec files, then
+  `npm run governance:check && npm run test && npm run lint`.
+- **Updating documentation for an existing component**: edit the relevant tab page under
+  `io-storefront/src/app/components/io-{name}/`; shared primitives live in
+  `io-storefront/src/components/usage/UsagePrimitives.tsx` and
+  `.../accessibility/AccessibilityPrimitives.tsx` — import them, don't redefine them locally.
+- **Adding a brand-new component**: see CLAUDE.md's "Adding a New Component" checklist —
+  it requires registering the tag in **two** TypeScript files
+  (`io-storefront/src/utils/generator/generator.tsx` and
+  `io-storefront/src/types/custom-elements.d.ts`) before `governance:check` will pass, plus all
+  five storefront tab pages before the sitemap entry is added.
+- **Database workflows (migrations, seeding, schema changes)**: **not applicable** — this
+  repository has no database. Confirmed by searching for SQL/Prisma/migration files; none exist.
+- **Releasing a version**: see §11 — normally automatic via the Changesets Release PR; do not
+  publish manually.
+
+## 11. Deployment and operations
+
+There are **three** independent CI/CD mechanisms in this repository, all triggered from pushes or
+tags on `main`. All were read in full this session.
+
+### a) Changesets release (`release.yml`) — the normal path
+
+On every push to `main`: installs dependencies from the **public npm registry**
+(`npm ci --registry https://registry.npmjs.org` — this is just for resolving the repo's own
+dependencies, not for publishing), builds, then runs `changesets/action@v1`. If there are pending
+changesets, this opens/updates a "chore(release): version packages" PR. When that PR is merged
+(and there are no more pending changesets), the workflow instead runs `npx changeset publish`,
+authenticated with the `ORG_PACKAGES_TOKEN` secret. **The publish target is GitHub Packages**
+(`registry-url: https://npm.pkg.github.com`, `scope: '@iodigital-com'`) — **not** the public
+npmjs.org registry, despite looser wording elsewhere describing this as "publishing to npm."
+
+### b) Tag-triggered per-package release (`release-packages.yml`) — the manual/emergency path
+
+A separate mechanism for publishing one specific package outside the normal Changesets cadence.
+Triggered either by pushing a tag matching `release/{package}/v*` or via `workflow_dispatch` with
+a required `confirm: "PUBLISH"` input (a literal string match) to prevent accidental runs. Strong
+safety gates: manual dispatch is restricted to `main`, non-dry-run publishes require a protected
+branch/tag, version numbers are SemVer-validated, and each package's `package.json` version is
+checked against `npm view <pkg>@<version> --registry https://npm.pkg.github.com` to refuse
+republishing an existing version. Also publishes to GitHub Packages, but authenticates the
+`npm publish` step with `GITHUB_TOKEN` rather than `ORG_PACKAGES_TOKEN` (a deliberate-looking
+distinction between the two workflows, not something this session investigated further — noted as
+a fact, not explained).
+
+### c) Storefront deploy (`deploy-storefront.yml`)
+
+Triggered by a push to `main` touching `io-components/CHANGELOG.md`, `io-storefront/**`,
+`io-components/src/**`, or `io-components/package.json` (or manually via `workflow_dispatch`).
+Builds components, syncs Stencil assets into the storefront's `public/stencil/` directory, builds
+the static export, and deploys it to **Firebase Hosting**, project `io-design-system-showcase`,
+via `FirebaseExtended/action-hosting-deploy@v0`. There is no separate staging environment defined
+in this workflow — it deploys directly to the live channel (`channelId: live`).
+
+**Rollback approach**: not documented anywhere in the repository. Firebase Hosting supports
+rollback to a previous release through its own console/CLI, but no repo-specific rollback runbook
+exists. This is a gap — see §12.
+
+**Health checks / monitoring / logs**: none are configured in any workflow read this session.
+There is no post-deploy smoke test or health-check step in `deploy-storefront.yml`.
+
+**No deployment was executed in this session** — this section is based entirely on reading the
+workflow YAML files, not on a live run.
+
+### d) Figma token sync (`sync-tokens.yml`)
+
+Documented in §2 as a placeholder — included here for completeness of the CI/CD picture, since it
+is a real workflow that runs and produces PRs, even though its core "sync" step does not yet do
+real work.
+
+## 12. Known issues / risks / technical debt
+
+No `TODO`/`FIXME`/`XXX`/`HACK` markers exist anywhere in the codebase — this list is built from
+structural and governance observations made this session, not from carried-over code comments.
+
+| # | Description | Impact | Location | Suggested action | Priority |
+|---|---|---|---|---|---|
+| 1 | `io-tag.render.spec.tsx` times out (5s Vitest default) on the "semantic variant and appearance combinations" test | Root `npm run test` always fails; masks the fact that the storefront suite (1822 tests) is actually healthy, since the `&&` chain never reaches it | `io-components/src/components/io-tag/io-tag.render.spec.tsx` | Investigate whether the test is doing real async work that legitimately exceeds 5s (e.g. too many rendered permutations) vs. a genuine hang; raise the timeout or split the test if the former, fix the component/test if the latter | P1 |
+| 2 | Root `test` script uses `&&` between the two workspace test runs | A failure in the components suite silently prevents the storefront suite from ever running, which can hide real regressions in the docs site | root `package.json` → `"test"` script | Change to run both unconditionally and report combined status (e.g. `run-p`/`npm-run-all` or a small script that captures both exit codes) | P1 |
+| 3 | `pnpm-workspace.yaml` lists 6 packages; root `package.json`'s `workspaces` array lists 10 (missing all 4 `io-playground-*` packages) | Misleading if anyone assumes pnpm is a supported/maintained install path; npm is what's actually used everywhere (CI, docs) | `pnpm-workspace.yaml` | Either update it to match, or delete it if pnpm is not actually a supported package manager for this repo | P2 |
+| 4 | `scripts/check-copilot-agent-drift.cjs` runs in `sync-tokens.yml`'s CI job but is not part of `governance:check` or `pr.yml`'s governance job | A check that gates one CI workflow silently doesn't gate PRs or local pre-commit checks — inconsistent governance surface | `scripts/check-copilot-agent-drift.cjs`, `package.json` `governance:check` script, `.github/workflows/pr.yml` | Decide whether this check should be universal (add to `governance:check`) or intentionally token-sync-only (document why) | P2 |
+| 5 | Figma token-sync pipeline (`sync-tokens.yml`) is an explicit placeholder — no real Figma/Style Dictionary integration exists yet | Anyone triggering `workflow_dispatch` on this workflow gets a marker-file PR, not real token updates — could be mistaken for a working feature | `.github/workflows/sync-tokens.yml`, `docs/token-pipeline.md`, `docs/token-sync-pr-template.md` | Implement the real integration described in `docs/token-pipeline.md`, or clearly label the workflow as experimental/unimplemented in its own description | P2 |
+| 6 | Root `CHANGELOG.md` is stale (stuck at v1.0.0) while `io-components/CHANGELOG.md` is the real, current, Changesets-generated changelog | A developer reading the root CHANGELOG gets a badly outdated picture of release history | `CHANGELOG.md` (root) | Either keep the root file in sync (e.g. a redirect/pointer note) or delete it to avoid the two-changelog confusion | P3 |
+| 7 | `README.md` states 55 components; the actual current count (`io-storefront/src/sitemap.ts`) is 59 | Minor factual drift for anyone counting on the README for an accurate inventory | `README.md` | Update the count, or phrase it without a specific number and link to the sitemap/storefront nav as the source of truth | P3 |
+| 8 | No documented rollback runbook for the Firebase storefront deploy, and no post-deploy health check in `deploy-storefront.yml` | If a bad deploy ships, there's no scripted/documented recovery path — relies on manual Firebase console/CLI knowledge | `.github/workflows/deploy-storefront.yml` | Add a short rollback section to this handover or a runbook doc, and consider a basic post-deploy smoke check | P3 |
+| 9 | `playground-e2e.yml` uses Node 22 while every other workflow uses Node 20 | Not necessarily a bug (may be intentional for newer framework compatibility), but undocumented and inconsistent | `.github/workflows/playground-e2e.yml` | Add a one-line comment in the workflow explaining why Node 22 is required there, or align versions if there's no real reason for the difference | P3 |
+
+## 13. Recommended next steps
+
+Ordered per the priority scheme requested for this handover (security/data-loss risk first, then
+broken builds/critical functionality, then release blockers, then DX, then product, then optional
+cleanup):
+
+1. **No security or data-loss risks were identified** in this session — `SECURITY.md`'s process is
+   sound and no committed secrets were found.
+2. **Fix the `io-tag` test timeout and the root `test` script's `&&` masking** (Known Issues #1–#2)
+   — this is the one thing actively breaking a documented developer command (`npm run test`).
+3. **No release blockers were identified** — the Changesets flow, tag-triggered release, and
+   storefront deploy all read as functionally sound from their workflow definitions.
+4. **DX improvements**: reconcile `pnpm-workspace.yaml` (#3), decide the fate of
+   `check-copilot-agent-drift.cjs` (#4), add a rollback note for the Firebase deploy (#8).
+5. **Product**: decide whether/when to implement the real Figma token-sync integration (#5) — this
+   is a genuine capability gap, not a bug, and should be scoped as its own project once prioritized.
+6. **Optional cleanup**: sync or retire the root `CHANGELOG.md` (#6), fix the README component
+   count (#7), document the Node 22 vs. 20 discrepancy (#9).
+
+## 14. Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Port already in use on `3000`, `3001`, `4200`, `5175`, or `5176` | Another dev server (storefront, playground-react, -angular, -vue, -html respectively) is already running | Stop the other process, or run only the workspace you need |
+| "Missing environment variable" errors | **Should not happen** — this project has no application-level env vars. If you see this, it's almost certainly coming from a tool's own defaults (e.g. a CI-only tool run locally) rather than this codebase | Re-check which command you ran; there is nothing to configure via `.env` here |
+| Database connection failure | **Not applicable** — there is no database in this project | N/A |
+| `npm run test` fails at the root | Known issue — see §8/§12 #1–#2. The failure is isolated to one components-workspace spec; the storefront suite is healthy | Run `npm --workspace @iodigital-com/components run test` and `npm --workspace @iodigital-com/storefront run test` separately to see the real per-workspace status |
+| Build fails with `window is not defined` in a storefront file | A file that touches `window`/`document`/`navigator`, or imports a runtime value from `@iodigital-com/components`, is missing `'use client';` or is being evaluated as a Server Component | See CLAUDE.md's "SSR/SSG Compatibility" section — add `'use client';`, or wrap the import with `dynamic(..., { ssr: false })` |
+| Stencil build warnings about event names colliding with native DOM events (`focus`, `blur`, `click`, `change`) | Pre-existing, non-blocking warnings in `io-input-password`, `io-input-search`, `io-link`, `io-link-pure`, `io-multi-select` — verified present on a clean build this session | No action required unless you're specifically asked to rename these events (would be a breaking change requiring a changeset) |
+| Governance check fails after adding a component | A required file is missing, or the tag isn't registered in both `generator.tsx` and `custom-elements.d.ts` | Follow CLAUDE.md's "Adding a New Component" checklist in order |
+| External API / auth failures | **Not applicable** — this project makes no external API calls at runtime and has no auth layer | N/A |
+| Stale generated wrapper files after pulling new component changes | `io-components-react/vue/angular` generated files are gitignored and rebuilt from Stencil output | Run `npm run build` (or at least `build:components && build:wrappers`) after pulling |
+| `git diff` shows unexpected `.snap` file changes after a test run | Vitest snapshot tests can write new/updated snapshots as a side effect of running (as happened with `io-tag` in this session) | Review the diff carefully before committing; reset with `git checkout origin/main -- <file.snap>` if it looks wrong or unrelated to your change |
+
+## 15. Handover checklist
+
+- [x] Confirmed no environment variables are required for local development.
+- [x] Confirmed `npm ci` + `npm run dev`/`build`/`build:storefront` are the correct startup
+      commands (build and storefront build verified passing this session).
+- [x] Confirmed test suite status honestly: storefront 1822/1822 passing; components 66/67
+      passing with one known timeout; root `test` script currently fails due to the `&&` chain.
+- [x] Confirmed `npm run build` (components + all 3 wrappers) succeeds.
+- [x] Confirmed no secrets are committed; documented the 3 CI-only secrets that do exist and where
+      they're used.
+- [x] Confirmed no database exists in this project.
+- [x] Confirmed the two npm-registry-adjacent integrations (Firebase Hosting deploy, GitHub
+      Packages publish) and their required secrets/permissions.
+- [x] Documented the deployment mechanics (three independent CI paths) without executing an actual
+      deployment.
+- [x] Documented known blockers: the `io-tag` test timeout, the placeholder Figma token-sync
+      pipeline, and the governance-check coverage gap.
+- [ ] **First recommended task for the incoming developer**: fix or intentionally skip the
+      `io-tag.render.spec.tsx` timeout (Known Issues #1) and change the root `test` script so a
+      components-workspace failure no longer silently prevents the storefront suite from running
+      (#2) — this immediately makes `npm run test` trustworthy again for everyone after you.
